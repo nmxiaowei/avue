@@ -1,0 +1,73 @@
+@font-face {
+	font-family: "iconfont";
+	src: url('fonts/iconfont.eot?t=1505970244361');
+	/* IE9*/
+	src: url('fonts/iconfont.eot?t=1505970244361#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	url('fonts/iconfont.ttf?t=1505970244361') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+	url('.font/iconfont.svg?t=1505970244361#iconfont') format('svg');
+	/* iOS 4.1- */
+}
+
+[class^="el-icon-my-"],
+[class*=" el-icon-my-"],
+fa{
+	font-family: "iconfont" !important;
+	/* 以下内容参照第三方图标库本身的规则 */
+	font-size: 18px !important;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.el-submenu__title .fa,.el-submenu .fa {
+	vertical-align: middle;
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+}
+.el-icon-my-home:before {
+	content: "\e680";
+}
+.el-icon-my-gongzuo:before { content: "\e646"; }
+
+.el-icon-my-yingxiangcaiji:before { content: "\e6ab"; }
+
+.el-icon-my-caiwu:before { content: "\e600"; }
+
+.el-icon-my-shouye1:before { content: "\e680"; }
+
+.el-icon-my-qita:before { content: "\e62e"; }
+
+.el-icon-my-weibiaoti-:before { content: "\e62c"; }
+
+.el-icon-my-fumianxinxi:before { content: "\e624"; }
+
+.el-icon-my-jibenxinxi:before { content: "\e60a"; }
+
+.el-icon-my-kehuguanli:before { content: "\e73d"; }
+
+.el-icon-my-tubiao:before { content: "\e649"; }
+
+.el-icon-my-oa:before { content: "\e601"; }
+
+.el-icon-my-chart:before { content: "\e684"; }
+
+.el-icon-my-out:before { content: "\e63f"; }
+
+.el-icon-my-zg:before { content: "\e6f2"; }
+
+.el-icon-my-zz:before { content: "\e692"; }
+
+.el-icon-my-yz:before { content: "\e691"; }
+
+.el-icon-my-js:before { content: "\e602"; }
+
+.el-icon-my-scsp:before { content: "\e668"; }
+
+.el-icon-my-gzzd:before { content: "\e625"; }
+
+.el-icon-my-yj:before { content: "\e641"; }
+
+.el-icon-my-tx:before { content: "\e621"; }
+
+.el-icon-my-tj:before { content: "\e684"; }

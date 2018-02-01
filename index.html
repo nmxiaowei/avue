@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="static/cdn/element-ui/2.0.5/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/cdn/iconfont/1.0.0/index.css">
+	<link rel="stylesheet" href="static/cdn/font-awesome/4.7.0/index.css">
+	<title>快易贷采集系统</title>
+	<link rel="manifest" href="manifest.json">
+	<% for (var chunk of webpack.chunks) {
+			for (var file of chunk.files) {
+			  if (file.match(/\.(js|css)$/)) { %>
+		<link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>">
+		<% }}} %>
+</head>
+
+<body>
+	<div id="app">
+		<!--vue-ssr-outlet-->
+	</div>
+	<script src="static/cdn/store/1.3.20/store.js"></script>
+	<script src="static/cdn/vue/2.5.9/vue.min.js" charset="utf-8"></script>
+	<script src="static/cdn/vuex/2.4.1/vuex.min.js" charset="utf-8"></script>
+	<script src="static/cdn/vue-router/3.0.1/vue-router.js" charset="utf-8"></script>
+	<script src="static/cdn/axios/1.0.0/axios.min.js" charset="utf-8"></script>
+	<script src="static/cdn/element-ui/2.0.5/index.js" charset="utf-8"></script>
+	<script src="static/util/screen.js" charset="utf-8"></script>
+</body>
+
+</html>

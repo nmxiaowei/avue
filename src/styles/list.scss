@@ -1,0 +1,72 @@
+.page-cell {
+    width: 100%;
+    background: #fff;
+    .item-cell {
+        position: relative;
+        height: 45px;
+        line-height: 45px;
+        color: #333;
+        font-size: 16px;
+        border-bottom: 1px solid #eee;
+        .item-cell-left {
+            position: absolute;
+            left: 10px;
+            .item-cell-icon {
+                padding: 5px;
+                color: #999;
+                border-radius: 5px;
+                font-size: 18px;
+            }
+        }
+        .item-cell-text {
+            text-indent: 50px;
+        }
+        .item-cell-right {
+            position: absolute;
+            right: 10px;
+            .item-cell-icon {
+                color: #eee;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.mint-header {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #3a4962;
+    box-sizing: border-box;
+    color: #fffff9;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 18px;
+    height: 60px;
+    line-height: 1;
+    padding: 0 10px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.mint-header-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: inherit;
+    font-weight: 400;
+    flex: 1;
+}
+
+.mint-header-button.is-left {
+    text-align: left;
+}
+
+.mint-header-button.is-right {
+    text-align: right;
+}
+
+.mint-header-button {
+    flex: .5;
+}
