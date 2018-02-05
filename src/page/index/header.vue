@@ -16,13 +16,11 @@
 </template>
 
 <script>
-import logoSrc from "@/assets/img/logo.png";
 import { mapState } from "vuex";
 export default {
   name: "header",
   data() {
     return {
-      logoSrc: logoSrc,
       time: new Date()
     };
   },
