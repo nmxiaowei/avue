@@ -10,25 +10,14 @@
  * 
  */
 
- 
-let baseUrl = ''; 
-let khglUrl=''
-let dicUrl = '';
+
+let baseUrl = '';
 let routerMode = '';
-let imgBaseUrl = ``;
-let welUrl='/UI/schedule';
-let vueUrl='';
 
 if (process.env.NODE_ENV == 'development') {
 	baseUrl = `http://zll.tunnel.echomod.cn`;
-	khglUrl=`${baseUrl}/CLIENT`
-	dicUrl = `${baseUrl}`
-	vueUrl=`http://zll.tunnel.echomod.cn`; 
-}else if(process.env.NODE_ENV == 'production'){
-	baseUrl = `http://192.168.0.12:8070`; 
-	khglUrl=`${baseUrl}/CLIENT`
-	dicUrl = `${baseUrl}`
-	vueUrl=`${baseUrl}/index.html`; 
+} else if (process.env.NODE_ENV == 'production') {
+	baseUrl = `http://192.168.0.12:8070`;
 }
-imgBaseUrl = `${khglUrl}/file/getPic?fileName=`;
-export {baseUrl,dicUrl,khglUrl,routerMode,imgBaseUrl,welUrl,vueUrl,}
+
+export { baseUrl, routerMode }

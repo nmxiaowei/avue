@@ -12,6 +12,9 @@
 	user-select: none;
 	outline: none;
 }*/
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+}
 @include scrollBar();
 body,
 div,
@@ -40,7 +43,6 @@ td {
 }
 
 body {
-	font-size: 12px;
 	color: #666;
 	font-family: Microsoft YaHei, SimSun;
 	// background: #f6f6f6;
@@ -143,15 +145,31 @@ table {
 	margin: 0 !important;
 }
 .pull-right {
-	float: right;
+	float: right!important;;
 }
 
 .pull-left {
-	float: left;
+	float: left!important;
 }
 .pull-center {
 	text-align: center;
 }
 .pull-flex{
 	display: flex;
+}
+
+.pull-overflow{
+	overflow: hidden;
+}
+.pull-height{
+	height: 100%;
+}
+.pull-fixed{
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.text-white{
+	color: #fff;
 }

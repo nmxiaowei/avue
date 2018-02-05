@@ -8,23 +8,17 @@ import { getStore, getSessionStore, vaildUtil } from '@/util/yun'
 
 import Myiframe from '@/components/iframe/iframe.vue'
 
-import LOGIN from '@/page/login.vue';
-import INDEX from '@/page/index/index.vue';
+import LOGIN from '@/page/login';
+import INDEX from '@/page/index';
 import WEL from '@/page/wel.vue';
 import errorPage401 from '@/components/errorPage/401.vue';
 import errorPage404 from '@/components/errorPage/404.vue';
 Vue.use(VueRouter);
-export const constantRouterMap = [{
-	path: '/login',
-	name: '登录页',
-	component: LOGIN,
-	meta: {
-
-	}
-},
-{ path: '*', redirect: '/404', hidden: true },
-{ path: '/401', component: errorPage401, name: '401' },
-{ path: '/404', component: errorPage404, name: '404' }
+export const constantRouterMap = [
+	{ path: '/login', name: '登录页', component: LOGIN },
+	{ path: '*', redirect: '/404', hidden: true },
+	{ path: '/401', component: errorPage401, name: '401' },
+	{ path: '/404', component: errorPage404, name: '404' }
 ];
 export default new VueRouter({
 	// mode: 'history',
@@ -47,20 +41,17 @@ export default new VueRouter({
 export const asyncRouterMap = [
 	{
 		path: '/',
-		name: '主路径',
+		name: '主页',
+		redirect: '/wel/'
+	},
+	{
+		path: '/myiframe',
 		component: INDEX,
-		redirect: '/index',
-		meta: {
-			requireAuth: true,
-		},
+		redirect: '/myiframe',
 		children: [
 			{
-				path: 'index',
-				name: '主页',
-				component: INDEX,
-			},
-			{
-				path: "/myiframe/:routerPath",
+				path: ":routerPath",
+				name: 'iframe',
 				component: Myiframe,
 				props: true
 			}
@@ -68,7 +59,14 @@ export const asyncRouterMap = [
 
 	}, {
 		path: '/wel',
-		name: '欢迎页面',
-		component: WEL,
+		component: INDEX,
+		redirect: '/wel/',
+		children: [
+			{
+				path: '/',
+				name: '欢迎主页',
+				component: WEL
+			}
+		]
 	}
 ]

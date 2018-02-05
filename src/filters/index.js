@@ -6,6 +6,33 @@ function pluralize(time, label) {
   }
   return time + label + 's'
 }
+/**
+ * 日期格式化
+ */
+export function dateFormat(date) {
+  let format = 'yyyy-MM-dd hh:mm:ss';
+  if (date != 'Invalid Date') {
+    var o = {
+      "M+": date.getMonth() + 1, //month
+      "d+": date.getDate(), //day
+      "h+": date.getHours(), //hour
+      "m+": date.getMinutes(), //minute
+      "s+": date.getSeconds(), //second
+      "q+": Math.floor((date.getMonth() + 3) / 3), //quarter
+      "S": date.getMilliseconds() //millisecond
+    }
+    if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
+      (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+      if (new RegExp("(" + k + ")").test(format))
+        format = format.replace(RegExp.$1,
+          RegExp.$1.length == 1 ? o[k] :
+            ("00" + o[k]).substr(("" + o[k]).length));
+    return format;
+  }
+  return '';
+
+}
 export function timeAgo(time) {
   const between = Date.now() / 1000 - Number(time)
   if (between < 3600) {
@@ -79,12 +106,12 @@ export function formatTime(time, option) {
 /* 数字 格式化*/
 export function nFormatter(num, digits) {
   const si = [
-        { value: 1E18, symbol: 'E' },
-        { value: 1E15, symbol: 'P' },
-        { value: 1E12, symbol: 'T' },
-        { value: 1E9, symbol: 'G' },
-        { value: 1E6, symbol: 'M' },
-        { value: 1E3, symbol: 'k' }
+    { value: 1E18, symbol: 'E' },
+    { value: 1E15, symbol: 'P' },
+    { value: 1E12, symbol: 'T' },
+    { value: 1E9, symbol: 'G' },
+    { value: 1E6, symbol: 'M' },
+    { value: 1E3, symbol: 'k' }
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
@@ -103,20 +130,4 @@ export function html2Text(val) {
 export function toThousandslsFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
-export function completeInt(num) {
-  if(!vaildUtil.ifnull(num)){
-    let list=num.split('/');
-    if(list.length==2){
-      let result='-/-';
-      if(list[0].length<2){
-        list[0]=`0${list[0]}`;
-      }if(list[1].length<2){
-        list[1]=`0${list[1]}`;
-      }
-      result=`${list[0]}/${list[1]}`;
-      return result;
-    }
-   return num;
-  }
-  return '-/-';
-}
+

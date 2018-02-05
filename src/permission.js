@@ -7,38 +7,34 @@ function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
+const whiteList = ['/login', '/404', '/401']
 router.addRoutes(asyncRouterMap); // 动态添加可访问路由表
 router.beforeEach((to, from, next) => {
-    if (store.state.online) {
-        login();
-    } else {
-        next();
-    }
-    function login() {
-        if (!vaildUtil.ifnull(getToken())) { // 判断是否有token
-            if (to.path === '/login') {
-                next({ path: '/' })
-            } else {
-                if (!store.state.roles) { // 判断当前用户是否已拉取完user_info信息
-                    store.dispatch('LogOut').then(() => {
-
-                    })
-                } else {
-                    if (hasPermission(store.state.roles, to.meta.role)) {
-                        next()
-                    } else {
-                        next({ path: '/401' })
-                    }
-                }
-            }
+    store.commit('SET_TAG', from.query.src ? from.query.src : from.path);
+    if (getToken()) { // determine if there has token
+        /* has token*/
+        if (to.path === '/login') {
+            next({ path: '/' })
         } else {
-            if (!to.matched.some(res => res.meta.requireAuth)) { // 在免登录白名单，直接进入
-                next()
-            } else {
-                store.dispatch('LogOut').then(() => {
-                    next({ path: '/login' })
+            if (store.getters.roles.length === 0) {
+                store.dispatch('GetUserInfo').then(res => {
+                    const roles = res.roles
+                    next({ ...to, replace: true })
+                }).catch(() => {
+                    store.dispatch('FedLogOut').then(() => {
+                        next({ path: '/login' })
+                    })
                 })
+            } else {
+                next()
             }
+        }
+    } else {
+        /* has no token*/
+        if (whiteList.indexOf(to.path) !== -1) {
+            next()
+        } else {
+            next('/login')
         }
     }
 })

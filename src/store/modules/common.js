@@ -1,10 +1,10 @@
-import { IsPC, setStore, getStore, getCache, vaildUtil } from '@/util/yun'
-import { baseUrl, khglUrl, dicUrl } from '@/config/env';
+import { setStore, getStore, getCache } from '@/util/store'
+import { validatenull } from '@/util/validate'
+import { baseUrl } from '@/config/env';
 const common = {
 
     state: {
-        mobile: !IsPC(),
-        httpReqState: false,
+
     },
     actions: {
         //获取字典公用类
@@ -15,13 +15,13 @@ const common = {
                 for (let obj in dic) {
                     let dicName = `DIC_${obj}`
                     let str = getCache(dicName, time);
-                    if (!vaildUtil.ifnull(str)) {
+                    if (!validatenull(str)) {
                         dic[obj] = str;
                         resolve(str);
                     } else if (state.online) {
                         axios({
                             method: 'get',
-                            url: `${dicUrl}/admin/dic/${obj}`,
+                            url: `${baseUrl}/admin/dic/${obj}`,
                         }).then((res) => {
                             res = res.data;
                             if (!vaildUtil.ifnull(res.data)) {

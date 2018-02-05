@@ -3,7 +3,7 @@
 		<div class="yun-content">
 			<div class="banner-sky"></div>
 			<div class="banner-text">
-				<h1>《严肃信贷纪律、防控信贷风险的“八条禁令”》</h1>
+				<h2>Avue 通用管理系统快速开发框架</h2>
 				<span :class="['actor',{typeing:isText}]">{{text}}</span>
 			</div>
 			
@@ -13,15 +13,12 @@
 
 <script>
 import DATA from "@/const/wel";
-import { mapState } from "vuex";
-import { dateFormat } from "@/util/yun";
 export default {
   name: "wel",
   data() {
     return {
       DATA: DATA,
       text: "",
-      time: "",
       actor: "",
       count: 0,
       isText: false
@@ -33,13 +30,7 @@ export default {
       this.isText = true;
       this.setData();
     }, 2000);
-    setInterval(() => {
-      this.time = dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
-    }, 1000);
   },
-  computed: mapState({
-    user: state => state.user
-  }),
   methods: {
     getData() {
       if (this.count < this.DATA.length - 1) {

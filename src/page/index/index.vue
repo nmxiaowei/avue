@@ -3,10 +3,14 @@
     <Header></Header>
 		<div class="yun-content index" style="min-height: auto;">
 			<div class="left">
-          <Sidebar v-on:openUrl="openUrl"></Sidebar>
+          <Sidebar :isCollapse="isCollapse"></Sidebar>
 			</div>
 			<div class="right">
-          <Nav ref="nav"></Nav>
+        <div class="nav">
+            <i class="collapse el-icon-menu" @click="showCollapse"></i>
+            <Tags ref="nav"></Tags>
+        </div>
+         
           <router-view></router-view>  
 			</div>
 		</div>
@@ -14,44 +18,54 @@
 </template>
 
 <script>
-import Nav from "./nav";
+import Tags from "./tags";
 import Header from "./Header";
-import Sidebar from "./sidebar";
+import Sidebar from "./sidebar/";
 export default {
   name: "index",
   data() {
-    return {};
+    return {
+      isCollapse: false
+    };
   },
   created() {},
   mounted() {},
   props: [],
   methods: {
-    openUrl(url, name) {
-      this.$refs.nav.openUrl(url, name);
+    showCollapse() {
+      this.isCollapse = !this.isCollapse;
     }
   },
   components: {
     Header,
-    Nav,
+    Tags,
     Sidebar
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.collapse {
+  position: absolute;
+  left: 10px;
+  line-height: 52px;
+  font-size: 20px;
+  color: #999;
+}
 .index {
   display: flex;
   height: calc(100% - 60px);
   overflow: hidden;
   .left {
     position: relative;
-    background: #545c64;
-    overflow-y: scroll;
   }
   .right {
     position: relative;
     flex: 1;
     overflow-y: scroll;
+  }
+  .nav {
+    background: #f0f0f0;
   }
 }
 </style>

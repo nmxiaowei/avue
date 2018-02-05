@@ -7,24 +7,14 @@ import router from './router/router';
 import store from './store';
 import ELEMENT from 'element-ui';
 //引入全局Url
-import { baseUrl, khglUrl, dicUrl, imgBaseUrl, vueUrl} from '@/config/env';
-//引入全局工具类
-import roles from '@/const/roles'
-import { findByvalue, messageBox, findStrArray } from '@/util/yun'
+import { baseUrl, khglUrl, dicUrl, imgBaseUrl, vueUrl } from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
 Vue.use(ELEMENT)
 Vue.use(VueAxios, axios)
 
-Vue.prototype.vueUrl=vueUrl;
-Vue.prototype.baseUrl=baseUrl;
-Vue.prototype.khglUrl=khglUrl;
-Vue.prototype.dicUrl=dicUrl;
-Vue.prototype.imgBaseUrl=imgBaseUrl;
-Vue.prototype.roles=roles;
-Vue.prototype.findByvalue=findByvalue;
-Vue.prototype.findStrArray=findStrArray;
-Vue.prototype.messageBox=messageBox;
+
+Vue.prototype.baseUrl = baseUrl;
 
 
 Object.keys(filters).forEach(key => {
@@ -36,11 +26,10 @@ Vue.config.productionTip = false;
 
 
 
-const app =new Vue({
+const app = new Vue({
   // el: '#app',
   router,
   store,
   template: '<App/>',
   components: { App }
-})
-export { app, router, store }
+}).$mount('#app')

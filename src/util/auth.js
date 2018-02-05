@@ -1,18 +1,15 @@
 import Cookies from 'js-cookie'
 import store from '@/store'
-import {getSessionStore, setSessionStore} from '@/util/yun.js'
 const TokenKey = 'x-access-token'
 
 export function getToken() {
-  // return Cookies.get(TokenKey)
-  return getSessionStore('token');
+  return Cookies.get(TokenKey)
 }
 
 export function setToken(token) {
-  //  return Cookies.set(TokenKey, token)
-  return setSessionStore('token',token);
+  return Cookies.set(TokenKey, token)
 }
 
 export function removeToken() {
-   return Cookies.remove(TokenKey)
+  return Cookies.remove(TokenKey)
 }
