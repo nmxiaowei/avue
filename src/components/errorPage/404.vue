@@ -1,6 +1,9 @@
 <template>
-  <div class="404-container">
-    <img :src="img_404" />
+  <div class="error404-container pull-height">
+    <div class="error404-image">
+      <img :src="img_404" />
+    </div>
+    <router-link to="/"><el-button class="error404-btn" type="primary">返回主页</el-button></router-link>
   </div>
 </template>
 
@@ -22,12 +25,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.404-container {
+.error404-container {
   width: 100%;
   margin-top: -20px;
-  background-color: #f0f2f5;
-  & > img {
-    width: 100%;
-  }
+  background-color: #fff;
+  text-align: center;
+}
+.error404-image {
+  margin-top: 120px;
 }
 </style>
