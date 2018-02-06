@@ -1,6 +1,6 @@
 <template>
 	<div class="app-main" style="min-height: 100%">
-    <Header></Header>
+    <Top></Top>
 		<div class="yun-content index" style="min-height: auto;">
 			<div class="left">
           <Sidebar :isCollapse="isCollapse"></Sidebar>
@@ -19,7 +19,7 @@
 
 <script>
 import Tags from "./tags";
-import Header from "./Header";
+import Top from "./top";
 import Sidebar from "./sidebar/";
 export default {
   name: "index",
@@ -37,7 +37,7 @@ export default {
     }
   },
   components: {
-    Header,
+    Top,
     Tags,
     Sidebar
   }

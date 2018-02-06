@@ -18,7 +18,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "header",
+  name: "top",
   data() {
     return {
       time: new Date()
