@@ -64,10 +64,7 @@ const serve = (path, cache) => express.static(resolve(path), {
 })
 
 app.use(compression({ threshold: 0 }))
-
-app.use('/dist', serve('./dist', true))
-app.use('/public', serve('./public', true))
-app.use('/manifest.json', serve('./manifest.json', true))
+app.use('/static', serve('./dist/static', true))
 
 // since this app has no user-specific content, every page is micro-cacheable.
 // if your app involves user-specific content, you need to implement custom

@@ -19,7 +19,7 @@ export const constantRouterMap = [
 	{ path: '/404', component: errorPage404, name: '404' }
 ];
 export default new VueRouter({
-	// mode: 'history',
+	mode: 'history',
 	strict: process.env.NODE_ENV !== 'production',
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
