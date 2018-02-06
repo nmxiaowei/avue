@@ -25,11 +25,11 @@ Object.keys(filters).forEach(key => {
 Vue.config.productionTip = false;
 
 
-
-const app = new Vue({
-  // el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
-}).$mount('#app')
+export function createApp() {
+  const app = new Vue({
+    router,
+    store,
+    render: h => h(App)
+  })
+  return { app, router, store }
+}
