@@ -12,6 +12,11 @@
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-login.png">
 </p>
 
+**登录页面SSR渲染**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/login-ssr.png">
+</p>
+
 **主页**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-index.png">
