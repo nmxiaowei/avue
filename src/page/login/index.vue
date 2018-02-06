@@ -21,7 +21,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click.native.prevent="handleLogin" v-waves class="login-submit">登录</el-button>
+          <el-button type="primary" @click.native.prevent="handleLogin"  class="login-submit">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -29,13 +29,9 @@
 </template>
 
 <script>
-import waves from "@/directive/waves/index.js"; // 水波纹指令
 import { isvalidUsername } from "@/util/validate";
 export default {
   name: "login",
-  directives: {
-    waves
-  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
