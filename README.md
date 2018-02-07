@@ -3,11 +3,11 @@
 
 ## 简介
 
-`avue` 是一个后台集成解决方案支持SSR(服务端渲染)和SPA(单例页面),它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待</br>
-`1.加入了本地离线的包引入方法去引入vue，vue-router等第三方包`
-`2.支持SSR服务端渲染(express)`
-`3.支持js动态可配CRUD,节约大量开发成本`
-`4.支持多种登录方式`
+`avue` 是一个后台集成解决方案支持SSR(服务端渲染)和SPA(单例页面),它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待<br />
+`1.加入了本地离线的包引入方法去引入vue，vue-router等第三方包`<br />
+`2.支持SSR服务端渲染(express)`<br />
+`3.支持js动态可配CRUD,节约大量开发成本`<br />
+`4.支持多种登录方式`<br />
 [详细介绍](https://my.oschina.net/sunshineS/blog/1583563)
 
 **登录**
