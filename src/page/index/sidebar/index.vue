@@ -1,6 +1,13 @@
 <template>
      <div class="menu pull-height">
-        <el-menu  unique-opened  :default-active="$route.query.src ? $route.query.src : $route.path" class="el-menu-vertical-demo"  background-color="#263238" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse">
+        <el-menu  
+        unique-opened  
+        :default-active="$route.query.src ? $route.query.src : $route.path" 
+        class="el-menu-vertical-demo"  
+        background-color="#263238" 
+        text-color="#fff" 
+        active-text-color="#ffd04b" 
+        :collapse="isCollapse">
             <SidebarItem :menu="menu"></SidebarItem>
         </el-menu>
      </div>

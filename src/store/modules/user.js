@@ -20,6 +20,17 @@ const user = {
                 })
             })
         },
+        //根据手机号登录
+        LoginByPhone({ commit, state, dispatch }, userInfo) {
+            return new Promise((resolve, reject) => {
+                loginByUsername(userInfo.phone, userInfo.code).then(res => {
+                    const data = res.data;
+                    commit('SET_TOKEN', data);
+                    setToken(data);
+                    resolve();
+                })
+            })
+        },
         GetTableData({ commit, state, dispatch }, userInfo) {
             return new Promise((resolve, reject) => {
                 getTableData().then(res => {

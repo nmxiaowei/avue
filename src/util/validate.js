@@ -99,7 +99,7 @@ export function cardid(code) {
         82: "澳门",
         91: "国外 "
     };
-    if (!this.ifnull(code)) {
+    if (!validatenull(code)) {
         if (code.length == 18) {
             if (!code || !/(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(code)) {
                 msg = "证件号码格式错误";
@@ -143,14 +143,14 @@ export function cardid(code) {
 /**
  * 判断手机号码是否正确
  */
-export function validatemobile(phone) {
+export function isvalidatemobile(phone) {
     let list = [];
     let result = true;
     let msg = '';
     var isPhone = /^0\d{2,3}-?\d{7,8}$/;
     //增加134 减少|1349[0-9]{7}，增加181,增加145，增加17[678]  
     var isMob = /^((\+?86)|(\(\+86\)))?(13[0123456789][0-9]{8}|15[012356789][0-9]{8}|18[012356789][0-9]{8}|14[57][0-9]{8}|17[3678][0-9]{8})$/;
-    if (!this.ifnull(phone)) {
+    if (!validatenull(phone)) {
         if (phone.length == 11) {
             if (isPhone.test(phone)) {
                 msg = '手机号码格式不正确';

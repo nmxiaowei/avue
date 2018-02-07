@@ -5,7 +5,7 @@
             <i :class="item.icon"></i>
             <span slot="title">{{item.title}}</span>
         </el-menu-item>
-      <el-submenu  v-else :index="item.title" :key="item.name">
+      <el-submenu v-else :index="item.title" :key="item.name">
           <template slot="title">
               <i :class="item.icon"></i>
               <span slot="title">{{item.title}}</span>

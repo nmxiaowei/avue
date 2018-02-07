@@ -7,7 +7,7 @@
 			</div>
 			<div class="right">
         <div class="nav">
-            <i class="collapse el-icon-menu" @click="showCollapse"></i>
+            <i class="collapse el-icon-d-arrow-left" :class="[{ collapse_right: isCollapse }]" @click="showCollapse"></i>
             <Tags ref="nav"></Tags>
         </div>
          
@@ -51,6 +51,10 @@ export default {
   line-height: 52px;
   font-size: 20px;
   color: #999;
+  transition: all 0.5s;
+}
+.collapse.collapse_right {
+  transform: rotate(-180deg);
 }
 .index {
   display: flex;

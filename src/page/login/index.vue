@@ -11,56 +11,30 @@
 		<div class="login-main pull-height animated fadeIn">
         <h2>登录 Avue</h2>
         <p>Avue 在线演示系统</p>
-        <el-form  class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0" >
-        <el-form-item prop="username">
-          <el-input @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
-            <i class="el-icon-view el-input__icon" slot="suffix" @click="showPassword"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click.native.prevent="handleLogin"  class="login-submit">登录</el-button>
-        </el-form-item>
-      </el-form>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="用户密码" name="user">
+            <userLogin></userLogin>
+          </el-tab-pane>
+          <el-tab-pane label="短信验证码" name="code">
+             <codeLogin></codeLogin>
+          </el-tab-pane>
+          <el-tab-pane label="第三方授权登录" name="third">
+            <thirdLogin></thirdLogin>
+          </el-tab-pane>
+        </el-tabs>
+        
     </div>
 	</div>
 </template>
-
 <script>
-import { isvalidUsername } from "@/util/validate";
+import userLogin from "./userlogin";
+import codeLogin from "./codelogin";
+import thirdLogin from "./thirdlogin";
 export default {
   name: "login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error("请输入正确的用户名"));
-      } else {
-        callback();
-      }
-    };
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("请输入大于6位数的密码"));
-      } else {
-        callback();
-      }
-    };
     return {
-      loginForm: {
-        username: "admin",
-        password: "123456"
-      },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername }
-        ],
-        password: [
-          { required: true, trigger: "blur", validator: validatePassword }
-        ]
-      },
-      passwordType: "password"
+      activeName: "user"
     };
   },
   created() {},
@@ -68,26 +42,17 @@ export default {
   computed: {},
   props: [],
   methods: {
-    showPassword() {
-      this.passwordType == ""
-        ? (this.passwordType = "password")
-        : (this.passwordType = "");
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.$store.dispatch("LoginByUsername", this.loginForm).then(res => {
-            this.$router.push({ path: "/" });
-          });
-        }
-      });
-    }
+    handleClick() {}
   },
-  components: {}
+  components: {
+    userLogin,
+    codeLogin,
+    thirdLogin
+  }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .login-container {
   display: flex;
   align-items: center;
@@ -116,12 +81,15 @@ export default {
   font-size: 14px;
 }
 .login-main {
-  padding: 180px 60px;
+  padding: 140px 60px;
   width: 450px;
   height: 100%;
   border-radius: 3px;
   box-sizing: border-box;
   background-color: #fff;
+  & > .el-tabs {
+    margin-top: 30px;
+  }
 }
 .login-main > h3 {
   margin-bottom: 20px;

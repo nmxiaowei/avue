@@ -80,6 +80,7 @@ export default {
     border-radius: 2px;
     min-width: 90px;
     text-align: center;
+    cursor: pointer;
   }
   .el-tag--success {
     color: #fff;
