@@ -12,7 +12,7 @@
 
 **登录**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-login.png">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-logins.png">
 </p>
 
 **CRUD**
