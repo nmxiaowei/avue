@@ -10,10 +10,11 @@ import ELEMENT from 'element-ui';
 import { baseUrl, khglUrl, dicUrl, imgBaseUrl, vueUrl } from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
+import { findByvalue } from "@/util/util";
 Vue.use(ELEMENT)
 Vue.use(VueAxios, axios)
 
-
+Vue.prototype.findByvalue = findByvalue;
 Vue.prototype.baseUrl = baseUrl;
 
 

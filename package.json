@@ -22,6 +22,8 @@
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^2.1.2",
     "js-cookie": "2.1.4",
+    "mock": "^0.1.1",
+    "mockjs": "^1.0.1-beta3",
     "vue": "2.5.2",
     "vue-axios": "^2.0.2",
     "vue-router": "^3.0.0",

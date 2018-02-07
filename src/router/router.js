@@ -7,14 +7,12 @@ import { getStore, getSessionStore, vaildUtil } from '@/util/yun'
 
 
 import Myiframe from '@/components/iframe/iframe.vue'
-
-import LOGIN from '@/page/login';
-import INDEX from '@/page/index';
-import WEL from '@/page/wel.vue';
+import INDEX from '@/page/index/'
 import errorPage404 from '@/components/errorPage/404.vue';
+const _import = require('./_import');
 Vue.use(VueRouter);
 export const constantRouterMap = [
-	{ path: '/login', name: '登录页', component: LOGIN },
+	{ path: '/login', name: '登录页', component: _import('login/index') },
 	{ path: '*', redirect: '/404', hidden: true },
 	{ path: '/404', component: errorPage404, name: '404' }
 ];
@@ -63,7 +61,18 @@ export const asyncRouterMap = [
 			{
 				path: '/',
 				name: '欢迎主页',
-				component: WEL
+				component: _import('wel')
+			}
+		]
+	}, {
+		path: '/crud',
+		component: INDEX,
+		redirect: '/crud/',
+		children: [
+			{
+				path: '/',
+				name: 'CRUD',
+				component: _import('crud/index')
 			}
 		]
 	}

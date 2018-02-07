@@ -26,4 +26,9 @@ export default [{
 			children: [],
 
 		}]
+}, {
+	title: "CRUD",
+	href: '/crud/',
+	icon: 'el-icon-my-chart',
+	children: []
 }]

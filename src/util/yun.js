@@ -227,50 +227,8 @@ export const formatJson = function (json, options) {
 	return formatted;
 }
 
-/**
- * 根据字典的value显示label
- */
-export const findByvalue = (dic, value) => {
-	let result = '';
-	if (typeof (value) == 'string') {
-		let index = 0;
-		index = findArray(dic, value);
-		if (!!dic == true) {
-			result = dic[index] == undefined ? '' : dic[index].label;
-		} else {
-			result = value;
-		}
-	} else if (typeof (value) == 'object') {
-		let index = 0;
-		let count = 0
-		while (count < value.length) {
-			if (!!dic == true) {
-				index = findArray(dic, value[count]);
-				if (dic[index] != undefined) {
-					result = result + dic[index].label + '/';
-					dic = dic[index].children;
-				} else {
-					return result;
-				}
 
-			}
-			count++;
-		}
-		result = result.substr(0, result.length - 1);
-	}
-	return result;
-}
-/**
- * 根据字典的value查找对应的index
- */
-export const findArray = (dic, value) => {
-	for (let i = 0; i < dic.length; i++) {
-		if (dic[i].value == value) {
-			return i;
-			break;
-		}
-	}
-}
+
 /**
  * 查找字符串是否存在
  */

@@ -1,6 +1,6 @@
 import { getToken, setToken, removeToken } from '@/util/auth'
 import { setStore, getStore, setCache, getCache } from '@/util/yun'
-import { loginByUsername, getUserInfo, getMenu, logout } from '@/api/user'
+import { loginByUsername, getUserInfo, getTableData, getMenu, logout } from '@/api/user'
 const user = {
     state: {
         userInfo: {},
@@ -17,6 +17,14 @@ const user = {
                     commit('SET_TOKEN', data);
                     setToken(data);
                     resolve();
+                })
+            })
+        },
+        GetTableData({ commit, state, dispatch }, userInfo) {
+            return new Promise((resolve, reject) => {
+                getTableData().then(res => {
+                    const data = res.data;
+                    resolve(data);
                 })
             })
         },

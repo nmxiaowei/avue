@@ -1,6 +1,6 @@
 import { baseUrl, khglUrl, dicUrl } from '@/config/env'
 import request from '@/router/axios'
-import { userInfo } from '@/mock/user'
+import { userInfo, tableData } from '@/mock/user'
 import menu from '@/mock/menu'
 export const loginByUsername = (username, password) => {
     return new Promise((resolve, reject) => {
@@ -16,6 +16,11 @@ export const getUserInfo = () => {
 export const getMenu = () => {
     return new Promise((resolve, reject) => {
         resolve({ data: menu });
+    })
+}
+export const getTableData = () => {
+    return new Promise((resolve, reject) => {
+        resolve({ data: tableData });
     })
 }
 export const logout = () => {

@@ -3,13 +3,18 @@
 
 ## 简介
 
-`avue` 是一个后台集成解决方案支持SSR(服务端渲染)和SPA(单例页面)，它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待</br>
+`avue` 是一个后台集成解决方案支持SSR(服务端渲染)和SPA(单例页面)，并且支持js动态可配CRUD,节约大量开发成本,它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待</br>
 `并且加入了本地离线的包引入方法去引入vue，vue-router等第三方包`
 [详细介绍](https://my.oschina.net/sunshineS/blog/1583563)
 
 **登录**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-login.png">
+</p>
+
+**CRUD**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-crud.png">
 </p>
 
 **登录页面SSR渲染**
@@ -33,7 +38,38 @@
 - 登录/注销
 - 权限验证
 - 第三方网站嵌套
+- CRUD(增删改查)
 - 更多功能开在开发
+```
+
+## CRUD使用说明————根据配置json文件自动生成CRUD
+```bash
+{
+  border: true,//表格是否显示边框
+  index: true,///表格是否显示序号
+  selection: true,//表格是否显示可选select
+  column: [
+    {
+      label: "用户名",//表格的标题
+      prop: "username",//表格的key
+      width: "150",//表格的宽度
+      type:'select', //select | radio | checkbox 默认为text
+      dicData: [
+        {
+          label: "男",
+          value: 0
+        },
+        {
+          label: "女",
+          value: 1
+        }
+      ],//type的数据字典,当type为：select | radio | checkbox 加载
+      dataDetail: row => {
+        return row.username;//是否对列表数据处理
+      },
+      rules: [{ required: true, message: "请输入用户名", trigger: "blur" }] //表单校验规则
+    }
+}
 ```
 
 ## 开发
