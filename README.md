@@ -1,5 +1,7 @@
 ### <font>avue只是刚起步，很多功能还在开发中敬请期待!</font>
 简体中文
+欢迎加入QQ交流群，互相学习  
+一键加群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5zWEvg5"></a> 
 
 ## 简介
 
