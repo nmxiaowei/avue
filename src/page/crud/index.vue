@@ -40,7 +40,7 @@
                     {{findByvalue(column.dicData,scope.row[column.prop])}}
                  </template>
                 <template v-else>
-                    {{column.dataDetai?column.dataDetail(scope.row):scope.row[column.prop]}}
+                    {{column.dataDetail?column.dataDetail(scope.row):scope.row[column.prop]}}
                  </template>
               </template>
             </el-table-column>

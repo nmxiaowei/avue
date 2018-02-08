@@ -59,6 +59,7 @@
       label: "用户名",//表格的标题
       prop: "username",//表格的key
       width: "150",//表格的宽度
+      fixed: true,//是否冻结列
       type:'select', //select | radio | checkbox 默认为text
       dicData: [
         {

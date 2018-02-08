@@ -1,8 +1,10 @@
+import { validatenull } from './validate'
 /**
  * 根据字典的value显示label
  */
 export const findByvalue = (dic, value) => {
     let result = '';
+    if (validatenull(dic)) return value;
     if (typeof (value) == 'string' || typeof (value) == 'number') {
         let index = 0;
         index = findArray(dic, value);
