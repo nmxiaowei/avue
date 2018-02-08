@@ -7,8 +7,8 @@ export default {
             label: "用户名",
             prop: "username",
             width: "150",
-            dataDetail: row => {
-                return row.username;
+            dataDetail: val => {
+                return `<span class="el-tag el-tag--success">${val}</span>`;
             },
             rules: [{ required: true, message: "请输入用户名", trigger: "blur" }]
         },
@@ -19,6 +19,9 @@ export default {
         {
             label: "类型",
             prop: "type",
+            dataDetail: val => {
+                return `<span class="el-tag">${val}</span>`;
+            },
             type: "select",
             dicData: [
                 {
@@ -35,6 +38,7 @@ export default {
             label: "性别",
             prop: "sex",
             type: "radio",
+            width: "80",
             dicData: [
                 {
                     label: "男",
@@ -64,7 +68,8 @@ export default {
         {
             label: "地址",
             prop: "address",
-            width: "200"
+            width: "300",
+            hidden: true
         }
     ]
 };

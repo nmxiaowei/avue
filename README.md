@@ -64,6 +64,7 @@
       width: "150",//表格的宽度
       fixed: true,//是否冻结列
       type:'select', //select | radio | checkbox 默认为text
+      hidden: true,//超出省略号显示
       dicData: [
         {
           label: "男",
@@ -74,8 +75,8 @@
           value: 1
         }
       ],//type的数据字典,当type为：select | radio | checkbox 加载
-      dataDetail: row => {
-        return row.username;//是否对列表数据处理
+      dataDetail: val => {
+        return `<span class="el-tag">${val}</span>`;;//是否对列表数据处理
       },
       rules: [{ required: true, message: "请输入用户名", trigger: "blur" }] //表单校验规则
     }

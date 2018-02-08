@@ -35,12 +35,13 @@
             :fixed="column.fixed" 
             :sortable="column.sortable">
               <template  slot-scope="scope">
-                 <template v-if="column.type">
-                    {{findByvalue(column.dicData,scope.row[column.prop])}}
-                 </template>
-                <template v-else>
-                    {{column.dataDetail?column.dataDetail(scope.row):scope.row[column.prop]}}
-                 </template>
+                <span  v-if="!column.hidden" v-html="handleDetail(scope.row,column)"></span>
+                <el-popover v-else trigger="hover" placement="top">
+                  <p>{{column.label}}: {{ scope.row[column.prop]}}</p>
+                  <div slot="reference" class="name-wrapper">
+                     <span  v-html="handleDetail(scope.row,column)" class="crud--overflow"></span>
+                  </div>
+                </el-popover>
               </template>
             </el-table-column>
       </template>
@@ -92,6 +93,7 @@
   </div>
 </template>
 <script>
+import { findByvalue } from "@/util/util";
 export default {
   name: "crud",
   data() {
@@ -143,6 +145,20 @@ export default {
     handleSelectionChange(val) {
       this.tableSelect = val;
       this.$emit("handleSelectionChange", val);
+    },
+    //处理数据
+    handleDetail(row, column) {
+      let result = "";
+      if (column.type) {
+        result = findByvalue(column.dicData, row[column.prop]);
+      } else {
+        result = row[column.prop];
+      }
+      if (column.dataDetail) {
+        result = column.dataDetail(result);
+      } else {
+      }
+      return result;
     },
     // 新增
     handleAdd() {
@@ -222,5 +238,11 @@ export default {
   & > .el-button {
     padding: 12px 25px;
   }
+}
+.crud--overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
 </style>
