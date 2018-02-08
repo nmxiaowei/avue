@@ -49,6 +49,7 @@
 ```
 
 ## CRUD使用说明————根据配置json文件自动生成CRUD
+### 详细demo请看./src/page/table/index.vue实例
 ```bash
 {
   border: true,//表格是否显示边框

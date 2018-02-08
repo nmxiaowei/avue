@@ -1,35 +1,34 @@
 <template>
   <div class="crud-container pull-height">
-      <div class="crud-header">
+      <!-- <div class="crud-header">
         <el-button type="primary" @click="handleAdd" size="small">新 增</el-button>
-        <el-button type="info" @click="handleRefresh" size="small">刷 新</el-button>
         <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
         <el-button @click="toggleSelection()" size="small">取消选择</el-button>
-      </div>
+      </div> -->
       <el-table 
       :data="tableData"  
       ref="table" 
       style="width:100%"  
       height="100%" 
-      :border="table.border" 
-      v-loading="table.loading"
+      :border="tableOption.border" 
+      v-loading="tableOption.loading"
       @selection-change="handleSelectionChange" >
       <!-- 选择框 -->
-      <template v-if="table.selection">
+      <template v-if="tableOption.selection">
             <el-table-column
             type="selection"
             width="55">
           </el-table-column>
       </template>
       <!-- 序号 -->
-      <template v-if="table.index">
+      <template v-if="tableOption.index">
         <el-table-column
           type="index"
           width="50">
         </el-table-column>
       </template>
       <!-- 循环列 -->
-      <template v-for="(column,index) in table.column">
+      <template v-for="(column,index) in tableOption.column">
             <el-table-column 
             :width="column.width" 
             :label="column.label" 
@@ -57,7 +56,7 @@
       :visible.sync="boxVisible"
       width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
-         <template v-for="(column,index) in table.column">
+         <template v-for="(column,index) in tableOption.column">
           <el-form-item :label="column.label" :prop="column.prop">
             <template v-if="column.type == 'select'">
                 <el-select v-model="tableForm[column.prop]" :placeholder="'请选择'+column.label">
@@ -102,93 +101,31 @@ export default {
       tableForm: {},
       tableFormRules: {},
       tableIndex: -1,
-      tableSelect: [],
-      table: [],
-      tableData: []
+      tableSelect: []
     };
   },
   created() {
-    //初始化数据格式
-    this.table = {
-      border: true,
-      index: true,
-      selection: true,
-      column: [
-        {
-          label: "用户名",
-          prop: "username",
-          width: "150",
-          dataDetail: row => {
-            return row.username;
-          },
-          rules: [{ required: true, message: "请输入用户名", trigger: "blur" }]
-        },
-        {
-          label: "姓名",
-          prop: "name"
-        },
-        {
-          label: "类型",
-          prop: "type",
-          type: "select",
-          dicData: [
-            {
-              label: "一级",
-              value: 0
-            },
-            {
-              label: "二级",
-              value: 1
-            }
-          ]
-        },
-        {
-          label: "性别",
-          prop: "sex",
-          type: "radio",
-          dicData: [
-            {
-              label: "男",
-              value: 0
-            },
-            {
-              label: "女",
-              value: 1
-            }
-          ]
-        },
-        {
-          label: "权限",
-          prop: "grade",
-          type: "checkbox",
-          dicData: [
-            {
-              label: "管理员",
-              value: 0
-            },
-            {
-              label: "二级管理员",
-              value: 1
-            }
-          ]
-        },
-        {
-          label: "地址",
-          prop: "address",
-          width: "200"
-        }
-      ]
-    };
     //规则初始化
     this.rulesInit();
-    // 初始化数据
-    this.handleList();
   },
   mounted() {},
-  props: [],
+  props: {
+    beforeClose: Function,
+    beforeOpen: Function,
+    tableData: {
+      type: Array,
+      required: true,
+      default: []
+    },
+    tableOption: {
+      type: Object,
+      required: true,
+      default: {}
+    }
+  },
   methods: {
     rulesInit() {
-      this.table.column.forEach(ele => {
+      this.tableOption.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
@@ -202,33 +139,14 @@ export default {
         this.$refs.table.clearSelection();
       }
     },
-    //获取数据
-    handleList() {
-      this.table.loading = true;
-      this.$store.dispatch("GetTableData").then(data => {
-        setTimeout(() => {
-          this.table.loading = false;
-          this.tableData = data;
-        }, 1000);
-      });
-    },
     //选择回调
     handleSelectionChange(val) {
       this.tableSelect = val;
-    },
-    //刷新
-    handleRefresh() {
-      this.tableData = [];
-      this.$message({
-        showClose: true,
-        message: "刷新成功",
-        type: "success"
-      });
-      this.handleList();
+      this.$emit("handleSelectionChange", val);
     },
     // 新增
     handleAdd() {
-      const list = this.table.column;
+      const list = this.tableOption.column;
       let from = {};
       list.forEach(ele => {
         if (ele.type == "checkbox") {
@@ -239,41 +157,26 @@ export default {
       });
       this.tableForm = Object.assign({}, from);
       this.boxType = 0;
-      this.boxVisible = true;
+      if (typeof this.beforeClose === "function") this.beforeOpen(this.show);
+      else this.show();
     },
     // 编辑
     handleEdit(row, index) {
       this.tableForm = Object.assign({}, row);
       this.tableIndex = index;
       this.boxType = 1;
-      this.boxVisible = true;
+      if (typeof this.beforeClose === "function") this.beforeOpen(this.show);
+      else this.show();
     },
     // 删除
     handleDel(row, index) {
-      this.$confirm(`是否确认删除序号为${index + 1}行的数据`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        this.tableData.splice(index, 1);
-        this.$message({
-          showClose: true,
-          message: "删除成功",
-          type: "success"
-        });
-      });
+      this.$emit("handleDel", row, index);
     },
     //保存
     handleSave() {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
-          this.tableData.push(this.tableForm);
-          this.$message({
-            showClose: true,
-            message: "添加成功",
-            type: "success"
-          });
-          this.boxVisible = false;
+          this.$emit("handleSave", this.tableForm, this.hide);
         }
       });
     },
@@ -282,21 +185,28 @@ export default {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
           const index = this.tableIndex;
-          this.tableData.splice(index, 1, this.tableForm);
-          this.$message({
-            showClose: true,
-            message: "修改成功",
-            type: "success"
-          });
-          this.boxVisible = false;
+          this.$emit("handleUpdate", this.tableForm, index, this.hide);
         }
       });
+    },
+    //显示表单
+    show(cancel) {
+      if (cancel !== true) {
+        this.boxVisible = true;
+      }
+    },
+    //隐藏表单
+    hide(cancel) {
+      if (cancel !== false) {
+        this.boxVisible = false;
+      }
     },
     //窗口关闭处理事件
     boxhandleClose() {
       //释放form表单
       this.tableForm = {};
-      this.boxVisible = false;
+      if (typeof this.beforeClose === "function") this.beforeClose(this.hide);
+      else this.hide();
     }
   },
   components: {}
@@ -305,7 +215,7 @@ export default {
 
 <style lang="scss" scoped>
 .crud-container {
-  padding: 8px 10px;
+  // padding: 8px 10px;
 }
 .crud-header {
   margin-bottom: 10px;

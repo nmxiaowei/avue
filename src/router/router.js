@@ -65,14 +65,14 @@ export const asyncRouterMap = [
 			}
 		]
 	}, {
-		path: '/crud',
+		path: '/table',
 		component: INDEX,
-		redirect: '/crud/',
+		redirect: '/table/',
 		children: [
 			{
 				path: '/',
-				name: 'CRUD',
-				component: _import('crud/index')
+				name: '表格CRUD',
+				component: _import('table/index')
 			}
 		]
 	}

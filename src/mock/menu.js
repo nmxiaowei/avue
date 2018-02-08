@@ -27,8 +27,8 @@ export default [{
 
 		}]
 }, {
-	title: "CRUD",
-	href: '/crud/',
+	title: "表格CRUD",
+	href: '/table/',
 	icon: 'el-icon-my-chart',
 	children: []
 }]
