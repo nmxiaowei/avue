@@ -6,19 +6,23 @@ import './permission' // 权限
 import router from './router/router';
 import store from './store';
 import ELEMENT from 'element-ui';
-//引入全局Url
-import { baseUrl, khglUrl, dicUrl, imgBaseUrl, vueUrl } from '@/config/env';
+import { loadStyle } from './util/util'
+import * as urls from '@/config/env';
+import { iconfontUrl } from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
 Vue.use(ELEMENT)
 Vue.use(VueAxios, axios)
-Vue.prototype.baseUrl = baseUrl;
 
+Object.keys(urls).forEach(key => {
+  Vue.prototype[key] = urls[key];
+})
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
+loadStyle(iconfontUrl);
 
 Vue.config.productionTip = false;
 

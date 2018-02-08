@@ -12,12 +12,12 @@
 
 
 let baseUrl = '';
-let routerMode = '';
-
+let iconfontVersion = '567566_b79a1r0hb3p7gb9';
+let iconfontUrl = `//at.alicdn.com/t/font_${iconfontVersion}.css`;
 if (process.env.NODE_ENV == 'development') {
-	baseUrl = `http://zll.tunnel.echomod.cn`;
+	baseUrl = `http://localhost`;
 } else if (process.env.NODE_ENV == 'production') {
-	baseUrl = `http://192.168.0.12:8070`;
+	baseUrl = `http://localhost`;
 }
 
-export { baseUrl, routerMode }
+export { baseUrl, iconfontUrl }

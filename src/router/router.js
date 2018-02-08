@@ -75,5 +75,16 @@ export const asyncRouterMap = [
 				component: _import('table/index')
 			}
 		]
+	}, {
+		path: '/iconfont',
+		component: INDEX,
+		redirect: '/iconfont/',
+		children: [
+			{
+				path: '/',
+				name: '阿里图标',
+				component: _import('iconfont/index')
+			}
+		]
 	}
 ]

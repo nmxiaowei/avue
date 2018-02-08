@@ -2,33 +2,38 @@ import { baseUrl } from '@/config/env'
 export default [{
 	title: "欢迎页面",
 	href: '/wel/',
-	icon: 'el-icon-my-shouye1',
+	icon: 'icon-huanyingye',
 	children: [],
 }, {
 	title: "第三方网站",
 	href: '',
-	icon: 'el-icon-my-jibenxinxi',
+	icon: 'icon-iframe',
 	children: [
 		{
 			title: "百度",
 			href: 'https://www.baidu.com',
-			icon: 'el-icon-my-kehuguanli',
+			icon: 'icon-baidu1',
 			children: [],
 		}, {
 			title: "搜狐",
-			href: 'http://www.sohu.com',
-			icon: 'el-icon-my-kehuguanli',
+			href: 'icon-souhu',
+			icon: 'icon-souhu',
 			children: [],
 		}, {
 			title: "360",
 			href: 'http://www.06.com',
-			icon: 'el-icon-my-kehuguanli',
+			icon: 'icon-msnui-360',
 			children: [],
 
 		}]
 }, {
 	title: "表格CRUD",
 	href: '/table/',
-	icon: 'el-icon-my-chart',
+	icon: 'icon-biaoge',
+	children: []
+}, {
+	title: "阿里图标",
+	href: '/iconfont/',
+	icon: 'icon-changyonglogo27',
 	children: []
 }]
