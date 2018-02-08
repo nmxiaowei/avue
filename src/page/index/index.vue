@@ -10,8 +10,7 @@
             <i class="icon-daohanglanmoshi02 collapse" :class="[{ collapse_right: isCollapse }]" @click="showCollapse"></i>
             <Tags ref="nav"></Tags>
         </div>
-         
-          <router-view></router-view>  
+          <router-view class="main"></router-view>  
 			</div>
 		</div>
 	</div>
@@ -50,7 +49,7 @@ export default {
   left: 10px;
   line-height: 52px;
   font-size: 20px;
-  color: #999;
+  color: #333;
   transition: all 0.5s;
 }
 .collapse.collapse_right {
@@ -64,11 +63,18 @@ export default {
     position: relative;
   }
   .right {
+    padding-top: 50px;
     position: relative;
     flex: 1;
+  }
+  .main {
     overflow-y: scroll;
   }
   .nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     background: #f0f0f0;
   }
 }

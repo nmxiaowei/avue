@@ -102,7 +102,9 @@ export default {
   }
 
   .title {
-    color: #333;
+    color: #666;
+    letter-spacing: 1px;
+    font-size: 16px;
   }
 }
 </style>

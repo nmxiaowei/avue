@@ -16,12 +16,12 @@ export default [{
 			children: [],
 		}, {
 			title: "搜狐",
-			href: 'icon-souhu',
+			href: 'http://www.shouhu.com',
 			icon: 'icon-souhu',
 			children: [],
 		}, {
 			title: "360",
-			href: 'http://www.06.com',
+			href: 'http://www.360.com',
 			icon: 'icon-msnui-360',
 			children: [],
 
