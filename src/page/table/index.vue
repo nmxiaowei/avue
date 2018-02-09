@@ -2,6 +2,7 @@
  <div class="table-container pull-height">
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small">新 增</el-button>
+      <el-button type="success" @click="handleExport" size="small">导出excel</el-button>
       <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
@@ -49,6 +50,30 @@ export default {
   mounted() {},
   props: [],
   methods: {
+    /**
+     * @title 导出excel
+     *
+     **/
+    handleExport() {
+      import("@/vendor/Export2Excel").then(excel => {
+        const tHeader = ["username", "name"];
+        const filterVal = ["username", "name"];
+        const list = this.tableData;
+        const data = this.formatJson(filterVal, list);
+        excel.export_json_to_excel(tHeader, data, this.filename);
+      });
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === "timestamp") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
     /**
      * @title 页面改变值
      *
