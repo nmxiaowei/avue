@@ -13,12 +13,17 @@
 `5.支持iframe嵌套第三方网站`[详细介绍](https://my.oschina.net/sunshineS/blog/1615716)<br /><br />
 `6.支持js动态可配CRUD,节约大量开发成本`<br /><br />
 `7.支持多种登录方式`<br /><br />
+`8.全局错误日志记录`<br /><br />
 
 **登录**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-logins.png">
 </p>
 
+**错误日志记录**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-errlog.png">
+</p>
 **CRUD**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-crud.png">
@@ -46,6 +51,7 @@
 
 ## 功能
 ```
+- 全局错误日志记录
 - vuex持久化存储
 - SSR渲染页面
 - 登录/注销
@@ -58,8 +64,11 @@
 - 阿里巴巴图标库(在线调用)
 - 更多功能开在开发
 ```
+### 全局错误日志记录
+#### 放开./src/page/errlog/index.vue中的errorA的组件即可测试他是存储在本地，可以自己回掉方法上传服务器，调用CLEAR_ALL_ERR方法清空本地
+
 ### vuex持久化存demo请看
-### 详细demo请看./src/store/modules/tgs.js实例
+#### 详细demo请看./src/store/modules/tgs.js实例
 ```bash
 ...
 state:{
@@ -73,8 +82,8 @@ state:{
   ...
  }
 ```
-## CRUD使用说明————根据配置json文件自动生成CRUD
-### 详细demo请看./src/page/table/index.vue实例
+### CRUD使用说明————根据配置json文件自动生成CRUD
+#### 详细demo请看./src/page/table/index.vue实例
 ```bash
 {
   border: true,//表格是否显示边框

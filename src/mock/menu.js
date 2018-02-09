@@ -37,4 +37,9 @@ export default [{
   href: '/iconfont/',
   icon: 'icon-changyonglogo27',
   children: []
+}, {
+  title: "错误日志",
+  href: '/errlog/',
+  icon: 'icon-cuowu',
+  children: []
 }]

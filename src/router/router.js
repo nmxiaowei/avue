@@ -86,5 +86,16 @@ export const asyncRouterMap = [
 				component: _import('iconfont/index')
 			}
 		]
+	}, {
+		path: '/errlog',
+		component: INDEX,
+		redirect: '/errlog/',
+		children: [
+			{
+				path: '/',
+				name: '错误日志',
+				component: _import('errlog/index')
+			}
+		]
 	}
 ]

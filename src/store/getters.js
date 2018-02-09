@@ -4,6 +4,7 @@ const getters = {
     tagList: state => state.tags.tagList,
     token: state => state.user.token,
     roles: state => state.user.roles,
-    menu: state => state.user.menu
+    menu: state => state.user.menu,
+    errLog: state => state.errLog.errLog
 }
 export default getters

@@ -3,6 +3,7 @@ import axios from './router/axios';
 import VueAxios from 'vue-axios';
 import App from './App';
 import './permission' // 权限
+import './errorLog' // 错误日志
 import router from './router/router';
 import store from './store';
 import ELEMENT from 'element-ui';

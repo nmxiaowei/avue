@@ -12,7 +12,7 @@
 
 
 let baseUrl = '';
-let iconfontVersion = '567566_txg02s7f2nzmpldi';
+let iconfontVersion = '567566_gshnnyaujta10pb9';
 let iconfontUrl = `//at.alicdn.com/t/font_${iconfontVersion}.css`;
 if (process.env.NODE_ENV == 'development') {
 	baseUrl = `http://localhost`;
