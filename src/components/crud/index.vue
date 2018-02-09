@@ -8,10 +8,9 @@
       <el-table 
       :data="tableData"  
       ref="table" 
-      style="width:100%"  
-      height="100%" 
+      style="width:100%;min-height:430px;"
       :border="tableOption.border" 
-      v-loading="tableOption.loading"
+      v-loading="tableLoading"
       @selection-change="handleSelectionChange" >
       <!-- 选择框 -->
       <template v-if="tableOption.selection">
@@ -52,6 +51,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination class="crud-pagination pull-right"
+    :current-page.sync="page.currentPage"
+    :background = "page.background?page.background:true"
+    :page-size="page.pageSize"
+    @current-change="handleCurrentChange"
+    layout="total, sizes, prev, pager, next, jumper"
+    :total="page.total"></el-pagination>
     <el-dialog
       :title="boxType==0?'新增':'编辑'"
       :visible.sync="boxVisible"
@@ -114,6 +120,19 @@ export default {
   props: {
     beforeClose: Function,
     beforeOpen: Function,
+    page: {
+      type: Object,
+      default: {
+        total: 0, //总页数
+        currentPage: 0, //当前页数
+        pageSize: 10, //每页显示多少条
+        background: true //背景颜色
+      }
+    },
+    tableLoading: {
+      type: Boolean,
+      default: false
+    },
     tableData: {
       type: Array,
       required: true,
@@ -130,6 +149,10 @@ export default {
       this.tableOption.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
+    },
+    //页码回掉
+    handleCurrentChange(val) {
+      this.$emit("handleCurrentChange", val);
     },
     // 选中实例
     toggleSelection(rows) {
@@ -232,6 +255,10 @@ export default {
 <style lang="scss" scoped>
 .crud-container {
   // padding: 8px 10px;
+}
+.crud-pagination {
+  margin-top: 15px;
+  padding: 10px 20px;
 }
 .crud-header {
   margin-bottom: 10px;

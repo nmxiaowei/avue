@@ -32,7 +32,7 @@ export default {
     };
     const validateCode = (rule, value, callback) => {
       if (value.length != 4) {
-        callback(new Error("请输入4位数的密码"));
+        callback(new Error("请输入4位数的验证码"));
       } else {
         callback();
       }

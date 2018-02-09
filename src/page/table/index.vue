@@ -8,12 +8,16 @@
   <Crud 
   :tableOption="tableOption"
   :tableData="tableData"
+  :tableLoading="tableLoading"
   @handleSave="handleSave"
   @handleUpdate="handleUpdate"
   @handleDel="handleDel"
-  @handleSelectionChange=handleSelectionChange
+  @handleCurrentChange="handleCurrentChange"
+  @handleSelectionChange="handleSelectionChange"
   :before-open="boxhandleOpen"
-  :before-close="boxhandleClose" ref="crud">
+  :before-close="boxhandleClose" 
+  :page="page"
+  ref="crud">
   </Crud>
  </div>
 </template>
@@ -25,8 +29,15 @@ export default {
   name: "table",
   data() {
     return {
-      tableOption: {},
-      tableData: []
+      tableOption: {}, //表格设置属性
+      tableData: [], //表格的数据
+      tablePage: 1,
+      tableLoading: false,
+      page: {
+        total: 0, //总页数
+        currentPage: 1, //当前页数
+        pageSize: 10 //每页显示多少条
+      }
     };
   },
   created() {
@@ -34,9 +45,18 @@ export default {
     this.tableOption = tableOption;
     this.handleList();
   },
+  watch: {},
   mounted() {},
   props: [],
   methods: {
+    /**
+     * @title 页面改变值
+     *
+     **/
+    handleCurrentChange(val) {
+      this.tablePage = val;
+      this.handleList();
+    },
     /**
      * @title 打开新增窗口
      * @detail 调用crud的handleadd方法即可
@@ -60,11 +80,19 @@ export default {
      *
      **/
     handleList() {
-      this.$store.dispatch("GetTableData").then(data => {
-        setTimeout(() => {
-          this.tableData = data;
-        }, 1000);
-      });
+      this.tableLoading = true;
+      this.$store
+        .dispatch("GetTableData", { page: `${this.tablePage}` })
+        .then(data => {
+          setTimeout(() => {
+            this.tableData = data.tableData;
+            this.page = {
+              total: data.total,
+              pageSize: data.pageSize
+            };
+            this.tableLoading = false;
+          }, 1000);
+        });
     },
     /**
      * @title 当前选中的数据

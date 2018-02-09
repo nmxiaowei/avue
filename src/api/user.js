@@ -18,7 +18,7 @@ export const getMenu = () => {
         resolve({ data: menu });
     })
 }
-export const getTableData = () => {
+export const getTableData = (page) => {
     return new Promise((resolve, reject) => {
         resolve({ data: tableData });
     })

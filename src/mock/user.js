@@ -7,7 +7,7 @@ export const userInfo = {
     roles: ['admin']
 }
 let List = []
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 5; i++) {
     List.push(Mock.mock({
         id: '@increment',
         name: Mock.mock('@cname'),
@@ -18,4 +18,8 @@ for (let i = 0; i < 4; i++) {
         address: Mock.mock('@cparagraph(1, 3)')
     }))
 }
-export const tableData = List;
+export const tableData = {
+    total: 11,
+    pageSize: 10,
+    tableData: List
+};

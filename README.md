@@ -119,7 +119,7 @@ state:{
 ## 开发
 ```bash
 # 克隆项目
-https://gitee.com/smallweigit/avue.git
+git clone https://gitee.com/smallweigit/avue.git
 
 # 安装依赖
 npm install

@@ -31,9 +31,9 @@ const user = {
                 })
             })
         },
-        GetTableData({ commit, state, dispatch }, userInfo) {
+        GetTableData({ commit, state, dispatch }, page) {
             return new Promise((resolve, reject) => {
-                getTableData().then(res => {
+                getTableData(page).then(res => {
                     const data = res.data;
                     resolve(data);
                 })
