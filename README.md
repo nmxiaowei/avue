@@ -5,13 +5,14 @@
 
 ## 简介
 
-`avue` 是一个后台集成解决方案支持SSR(服务端渲染)和SPA(单例页面),它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待<br />
-`1.加入了本地离线的包引入方法去引入vue，vue-router等第三方包` [详细介绍](https://my.oschina.net/sunshineS/blog/1583563)<br />
-`2.支持SSR服务端渲染(express)`[vue-server-renderer](https://ssr.vuejs.org/zh/)<br />
-`3.支持阿里巴巴图标库在线调用，自动同步图标` [阿里巴巴图标库](http://www.iconfont.cn/)<br />
-`3.支持iframe嵌套第三方网站`[详细介绍](https://my.oschina.net/sunshineS/blog/1615716)<br />
-`4.支持js动态可配CRUD,节约大量开发成本`<br />
-`5.支持多种登录方式`<br />
+`avue` 是一个后台集成解决方案支持SSR(服务端渲染)和SPA(单例页面),它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待<br />`<br />
+`1.vuex本地持久化存储,封装h5的sessionStorage和localStorage`<br />`<br />
+`2.加入了本地离线的包引入方法去引入vue，vue-router等第三方包` [详细介绍](https://my.oschina.net/sunshineS/blog/1583563)<br />`<br />
+`3.支持SSR服务端渲染(express)`[vue-server-renderer](https://ssr.vuejs.org/zh/)<br />`<br />
+`4.支持阿里巴巴图标库在线调用，自动同步图标` [阿里巴巴图标库](http://www.iconfont.cn/)<br />`<br />
+`5.支持iframe嵌套第三方网站`[详细介绍](https://my.oschina.net/sunshineS/blog/1615716)<br />`<br />
+`6.支持js动态可配CRUD,节约大量开发成本`<br />`<br />
+`7.支持多种登录方式`<br />`<br />
 
 **登录**
 <p align="center">
@@ -45,6 +46,7 @@
 
 ## 功能
 ```
+- vuex持久化存储
 - SSR渲染页面
 - 登录/注销
  - 用户名登录
@@ -56,7 +58,21 @@
 - 阿里巴巴图标库(在线调用)
 - 更多功能开在开发
 ```
-
+### vuex持久化存demo请看
+### 详细demo请看./src/store/modules/tgs.js实例
+```bash
+...
+state:{
+  ...
+  tag: getStore({ name: 'tag' }) || tagObj
+},
+...
+ mutations: {
+  ...
+  setStore({ name: 'tagList', content: state.tagList, type: 'session' })
+  ...
+ }
+```
 ## CRUD使用说明————根据配置json文件自动生成CRUD
 ### 详细demo请看./src/page/table/index.vue实例
 ```bash

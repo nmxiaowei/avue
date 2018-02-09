@@ -58,7 +58,7 @@ export default {
       const key = this.eachTag(item);
       let tag;
       this.$store.commit("DEL_TAG", item);
-      if (this.tagList.length > 0 && item.value == this.tag.value) {
+      if (item.value == this.tag.value) {
         tag = this.tagList[key == 0 ? key : key - 1];
         this.openUrl(tag.value, tag.label, tag.num);
       }

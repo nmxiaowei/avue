@@ -55,6 +55,7 @@ const user = {
                 logout().then(() => {
                     commit('SET_TOKEN', '')
                     commit('SET_ROLES', [])
+                    commit('DEL_ALL_TAG');
                     removeToken()
                     resolve()
                 }).catch(error => {
@@ -66,6 +67,7 @@ const user = {
         FedLogOut({ commit }) {
             return new Promise(resolve => {
                 commit('SET_TOKEN', '')
+                commit('DEL_ALL_TAG');
                 removeToken()
                 resolve()
             })

@@ -63,6 +63,10 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch("LoginByUsername", this.loginForm).then(res => {
+            this.$store.commit("ADD_TAG", {
+              label: "欢迎页面",
+              value: "/wel/"
+            });
             this.$router.push({ path: "/" });
           });
         }

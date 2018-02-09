@@ -1,3 +1,4 @@
+import { setStore, getStore } from '@/util/store'
 const tagObj = {
     label: '',
     value: '',
@@ -17,8 +18,8 @@ function setFistTag(list) {
 }
 const navs = {
     state: {
-        tagList: [],
-        tag: tagObj,
+        tagList: getStore({ name: 'tagList' }) || [],
+        tag: getStore({ name: 'tag' }) || tagObj,
     },
     actions: {
 
@@ -26,6 +27,7 @@ const navs = {
     mutations: {
         ADD_TAG: (state, action) => {
             state.tag = action;
+            setStore({ name: 'tag', content: state.tag, type: 'session' })
             if (state.tagList.some(a => a.value === action.value)) return
             state.tagList.push({
                 label: action.label,
@@ -33,24 +35,21 @@ const navs = {
                 value: action.value,
             })
             state.tagList = setFistTag(state.tagList);
+            setStore({ name: 'tagList', content: state.tagList, type: 'session' })
         },
-        SET_TAG: (state, value) => {
-            state.tagList.forEach(ele => {
-                if (ele.value === value) {
-                    state.tag = ele;
-                }
-
-            })
-        },
-        DEL_ALL: (state, action) => {
+        DEL_ALL_TAG: (state, action) => {
             state.tag = tagObj;
             state.tagList = [];
+            setStore({ name: 'tag', content: state.tagList, type: 'session' })
+            setStore({ name: 'tagList', content: state.tagList, type: 'session' })
         },
         DEL_TAG: (state, action) => {
             for (const [i, a] of state.tagList.entries()) {
                 if (a.value === action.value) {
                     state.tagList.splice(i, 1)
                     state.tagList = setFistTag(state.tagList);
+                    setStore({ name: 'tag', content: state.tagList, type: 'session' })
+                    setStore({ name: 'tagList', content: state.tagList, type: 'session' })
                     break
                 }
             }

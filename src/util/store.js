@@ -1,49 +1,44 @@
+import { validatenull } from '@/util/validate';
 /**
  * 存储localStorage
  */
-export const setStore = (name, content) => {
-    if (!name) return;
-    if (typeof content !== 'string') {
-        content = JSON.stringify(content);
+export const setStore = (params) => {
+    let { name, content, type } = params;
+    let obj = {
+        dataType: typeof (content),
+        content: content,
+        type: type
     }
-    window.localStorage.setItem(name, content);
+    if (type) window.sessionStorage.setItem(name, JSON.stringify(obj));
+    else window.localStorage.setItem(name, JSON.stringify(obj));
 }
 /**
  * 获取localStorage
  */
-export const getStore = name => {
-    if (!name) return;
-    return window.localStorage.getItem(name);
+export const getStore = (params) => {
+    let { name, type } = params;
+    let obj = {}, content;
+    obj = window.localStorage.getItem(name);
+    if (validatenull(obj)) obj = window.sessionStorage.getItem(name);
+    if (validatenull(obj)) return;
+    obj = JSON.parse(obj);
+    if (obj.dataType == 'string') {
+        content = obj.content;
+    } else if (obj.dataType == 'number') {
+        content = Number(obj.content);
+    } else if (obj.dataType == 'boolean') {
+        content = eval(obj.content);
+    } else if (obj.dataType == 'object') {
+        content = obj.content;
+    }
+    return content;
 }
-
 /**
  * 删除localStorage
  */
 export const removeStore = name => {
     if (!name) return;
     window.localStorage.removeItem(name);
-}
-export const setSessionStore = (name, content) => {
-    if (!name) return;
-    if (typeof content !== 'string') {
-        content = JSON.stringify(content);
-    }
-    window.sessionStorage.setItem(name, content);
-}
-/**
- * 获取sessionStorage
- */
-export const getSessionStore = name => {
-    if (!name) return;
-    return window.sessionStorage.getItem(name);
-}
-
-/**
- * 删除lsessionStorage
- */
-export const removeSessionStore = name => {
-    if (!name) return;
-    window.sessionStorage.removeItem(name);
 }
 
 /**

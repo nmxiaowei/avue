@@ -9,7 +9,7 @@
         <span>欢迎使用 ,&nbsp;</span>
         <small>{{userInfo.username}}</small>
         <span style="padding:0 5px 0 8px">
-            <i class="el-icon-my-out" @click="logout"></i>
+            <i class="icon-tuichu" @click="logout"></i>
         </span>
 		</div>
 	</div>
