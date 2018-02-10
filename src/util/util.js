@@ -1,5 +1,16 @@
 import { validatenull } from './validate'
 
+
+export const resolveUrlPath = (url) => {
+    let reqUrl = url;
+    if (url.indexOf("http") != -1) {
+        reqUrl = `/myiframe/urlPath?src=${reqUrl}`;
+    } else {
+        reqUrl = url.replace("#/", "");
+        reqUrl = `/${reqUrl}`;
+    }
+    return reqUrl;
+}
 /**
  * 动态插入css
  */

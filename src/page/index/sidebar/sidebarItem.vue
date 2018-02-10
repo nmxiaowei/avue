@@ -22,6 +22,7 @@
   </div>
 </template>
 <script>
+import { resolveUrlPath } from "@/util/util";
 export default {
   name: "sidebarItem",
   data() {
@@ -36,15 +37,11 @@ export default {
   mounted() {},
   methods: {
     open(item) {
-      const path =
-        item.href.indexOf("http") != -1 || item.href.indexOf("https") != -1
-          ? `/myiframe/urlPath?src=${item.href} `
-          : item.href;
+      this.$router.push({ path: resolveUrlPath(item.href) });
       this.$store.commit("ADD_TAG", {
         label: item.title,
         value: item.href
       });
-      this.$router.push({ path: path });
     }
   }
 };

@@ -8,6 +8,7 @@
     </div>
 </template>
 <script>
+import { resolveUrlPath } from "@/util/util";
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "tags",
@@ -27,19 +28,7 @@ export default {
   },
   methods: {
     openUrl(url, name, num) {
-      if (this.tagList.length >= 8) {
-        this.$message({
-          message: "选项卡数量不能超过8个，请关闭一些后再试",
-          type: "warning"
-        });
-        return;
-      }
-      let reqUrl = url;
-      if (url.indexOf("http") != -1) {
-        this.$router.push({ path: `/myiframe/urlPath?src=${reqUrl}` });
-      } else {
-        this.$router.push({ path: `${reqUrl}` });
-      }
+      this.$router.push({ path: resolveUrlPath(url) });
       this.$store.commit("ADD_TAG", {
         label: name,
         value: url,

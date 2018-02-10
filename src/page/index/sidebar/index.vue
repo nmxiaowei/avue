@@ -34,6 +34,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menu {
+  overflow-y: scroll;
   background: #263238;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
