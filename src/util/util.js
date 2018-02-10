@@ -6,8 +6,7 @@ export const resolveUrlPath = (url) => {
     if (url.indexOf("http") != -1) {
         reqUrl = `/myiframe/urlPath?src=${reqUrl}`;
     } else {
-        reqUrl = url.replace("#/", "");
-        reqUrl = `/${reqUrl}`;
+        reqUrl = `${reqUrl}`;
     }
     return reqUrl;
 }

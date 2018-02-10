@@ -1,10 +1,15 @@
 <template>
   <div class="tags">
-        <el-tag  :type="nowTagValue==item.value?'success':'info'" v-for="(item,index) in tagList" :key="index" @click.native="openUrl(item.value,item.label,item.num)">
+        <el-tag  @contextmenu.prevent.native="openMenu(item,$event)" :type="nowTagValue==item.value?'success':'info'" v-for="(item,index) in tagList" :key="index" @click.native="openUrl(item.value,item.label,item.num)">
             {{item.label}}
             <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
         </el-tag>
         <h3 class="title pull-right">{{tag.label}}</h3>
+         <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+          <li @click="closeSelectedTag(selectedTag)">关闭</li>
+          <li @click="closeOthersTags">关闭其他</li>
+          <li @click="closeAllTags">关闭全部</li>
+        </ul>
     </div>
 </template>
 <script>
@@ -13,7 +18,11 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "tags",
   data() {
-    return {};
+    return {
+      visible: false,
+      top: 0,
+      left: 0
+    };
   },
   created() {},
   mounted() {},
@@ -27,6 +36,25 @@ export default {
     }
   },
   methods: {
+    openMenu(tag, e) {
+      this.visible = true;
+      this.selectedTag = tag;
+      this.left = e.clientX;
+      this.top = e.clientY;
+    },
+    closeOthersTags() {
+      this.$router.push(this.selectedTag.path);
+      this.$store.dispatch("delOthersViews", this.selectedTag).then(() => {
+        this.moveToCurrentTag();
+      });
+    },
+    closeAllTags() {
+      this.$store.dispatch("DEL_ALL_TAG");
+      this.$router.push("/");
+    },
+    closeMenu() {
+      this.visible = false;
+    },
     openUrl(url, name, num) {
       this.$router.push({ path: resolveUrlPath(url) });
       this.$store.commit("ADD_TAG", {
@@ -94,6 +122,27 @@ export default {
     color: #666;
     letter-spacing: 1px;
     font-size: 16px;
+  }
+}
+.contextmenu {
+  margin: 0;
+  background: #fff;
+  z-index: 2;
+  position: absolute;
+  list-style-type: none;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+  li {
+    margin: 0;
+    padding: 7px 16px;
+    cursor: pointer;
+    &:hover {
+      background: #eee;
+    }
   }
 }
 </style>
