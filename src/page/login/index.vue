@@ -8,7 +8,8 @@
         <li><i class="el-icon-check"></i> Avue 构建简单上手快，最大程度上帮助企业节省时间成本和费用开支。 </li>
       </ul>
     </div>
-		<div class="login-main pull-height animated fadeIn">
+    <div class="login-border pull-height">
+      <div class="login-main animated fadeIn">
         <h2>登录 Avue</h2>
         <p>Avue 在线演示系统</p>
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -21,9 +22,10 @@
           <el-tab-pane label="第三方授权登录" name="third">
             <thirdLogin></thirdLogin>
           </el-tab-pane>
-        </el-tabs>
-        
+        </el-tabs> 
+      </div>
     </div>
+		
 	</div>
 </template>
 <script>
@@ -80,10 +82,14 @@ export default {
 .login-info > ul > li {
   font-size: 14px;
 }
+.login-border {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
 .login-main {
   padding: 140px 60px;
   width: 450px;
-  height: 100%;
   border-radius: 3px;
   box-sizing: border-box;
   background-color: #fff;

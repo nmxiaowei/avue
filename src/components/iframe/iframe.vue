@@ -91,7 +91,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .iframe {
   width: 100%;
   height: 100%;

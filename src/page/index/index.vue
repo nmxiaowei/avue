@@ -1,5 +1,5 @@
 <template>
-	<div class="app-main" style="min-height: 100%">
+	<div class="app-main">
     <Top></Top>
 		<div class="yun-content index" style="min-height: auto;">
 			<div class="left">

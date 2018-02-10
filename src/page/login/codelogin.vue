@@ -20,6 +20,7 @@ const MSGINIT = "发送验证码",
   MSGSCUCCESS = "${time}秒后重发",
   MSGTIME = 60;
 import { isvalidatemobile } from "@/util/validate";
+import { mapGetters } from "vuex";
 export default {
   name: "codelogin",
   data() {
@@ -53,7 +54,9 @@ export default {
   },
   created() {},
   mounted() {},
-  computed: {},
+  computed: {
+    ...mapGetters(["tagWel"])
+  },
   props: [],
   methods: {
     handleSend() {
@@ -75,11 +78,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch("LoginByPhone", this.loginForm).then(res => {
-            this.$store.commit("ADD_TAG", {
-              label: "欢迎页面",
-              value: "/wel/"
-            });
-            this.$router.push({ path: "/" });
+            this.$store.commit("ADD_TAG", this.tagWel);
+            this.$router.push({ path: this.tagWel.value });
           });
         }
       });

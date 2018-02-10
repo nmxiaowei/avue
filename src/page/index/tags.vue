@@ -1,12 +1,12 @@
 <template>
-  <div class="tags">
+  <div class="tags-container">
         <el-tag  @contextmenu.prevent.native="openMenu(item,$event)" :type="nowTagValue==item.value?'success':'info'" v-for="(item,index) in tagList" :key="index" @click.native="openUrl(item.value,item.label,item.num)">
             {{item.label}}
             <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
         </el-tag>
         <h3 class="title pull-right">{{tag.label}}</h3>
          <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-          <li @click="closeSelectedTag(selectedTag)">关闭</li>
+          <li @click="closeTag(selectedTag)">关闭</li>
           <li @click="closeOthersTags">关闭其他</li>
           <li @click="closeAllTags">关闭全部</li>
         </ul>
@@ -21,13 +21,23 @@ export default {
     return {
       visible: false,
       top: 0,
-      left: 0
+      left: 0,
+      selectedTag: {}
     };
   },
   created() {},
   mounted() {},
+  watch: {
+    visible(value) {
+      if (value) {
+        document.body.addEventListener("click", this.closeMenu);
+      } else {
+        document.body.removeEventListener("click", this.closeMenu);
+      }
+    }
+  },
   computed: {
-    ...mapGetters(["tag", "tagList"]),
+    ...mapGetters(["tagWel", "tag", "tagList"]),
     nowTagValue: function() {
       return this.$route.query.src ? this.$route.query.src : this.$route.path;
     },
@@ -37,23 +47,25 @@ export default {
   },
   methods: {
     openMenu(tag, e) {
+      if (this.tagList.length == 1) {
+        return;
+      }
       this.visible = true;
       this.selectedTag = tag;
       this.left = e.clientX;
       this.top = e.clientY;
     },
     closeOthersTags() {
-      this.$router.push(this.selectedTag.path);
-      this.$store.dispatch("delOthersViews", this.selectedTag).then(() => {
-        this.moveToCurrentTag();
-      });
-    },
-    closeAllTags() {
-      this.$store.dispatch("DEL_ALL_TAG");
-      this.$router.push("/");
+      this.$router.push(this.selectedTag.value);
+      this.$store.commit("DEL_TAG_OTHER", this.selectedTag);
     },
     closeMenu() {
       this.visible = false;
+    },
+    closeAllTags() {
+      this.$store.commit("DEL_ALL_TAG");
+      this.$store.commit("ADD_TAG", this.tagWel);
+      this.$router.push({ path: this.tagWel.value });
     },
     openUrl(url, name, num) {
       this.$router.push({ path: resolveUrlPath(url) });
@@ -84,7 +96,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.tags {
+.tags-container {
+  position: relative;
   margin-left: 40px;
   padding: 0 12px;
   height: 50px;
@@ -128,7 +141,7 @@ export default {
   margin: 0;
   background: #fff;
   z-index: 2;
-  position: absolute;
+  position: fixed;
   list-style-type: none;
   padding: 5px 0;
   border-radius: 4px;
@@ -138,7 +151,9 @@ export default {
   box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
   li {
     margin: 0;
-    padding: 7px 16px;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 15px;
     cursor: pointer;
     &:hover {
       background: #eee;
