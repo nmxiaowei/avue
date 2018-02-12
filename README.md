@@ -65,6 +65,9 @@
 - 阿里巴巴图标库(在线调用)
 - 更多功能开在开发
 ```
+
+### 按钮的显隐控制
+#### 返回的vuex对象中额permission数组包括按钮的权限 例如: ['sys_crud_add', 'sys_crud_export'], crud的增加按钮和导出按钮
 ### 全局错误日志记录
 #### 放开./src/page/errlog/index.vue中的errorA的组件即可测试他是存储在本地，可以自己回掉方法上传服务器，调用CLEAR_ALL_ERR方法清空本地
 

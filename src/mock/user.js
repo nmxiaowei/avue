@@ -4,7 +4,8 @@ export const userInfo = {
         username: 'admin',
         name: 'avue',
     },
-    roles: ['admin']
+    roles: ['admin'],
+    permission: ['sys_crud_add', 'sys_crud_export'],//权限级别
 }
 let List = []
 for (let i = 0; i < 5; i++) {

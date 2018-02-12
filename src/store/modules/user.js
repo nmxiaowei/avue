@@ -1,12 +1,14 @@
 import { getToken, setToken, removeToken } from '@/util/auth'
-import { setStore, getStore, setCache, getCache } from '@/util/yun'
+import { setStore, getStore } from '@/util/store'
+import { setCache, getCache } from '@/util/yun'
 import { loginByUsername, getUserInfo, getTableData, getMenu, logout } from '@/api/user'
 const user = {
     state: {
         userInfo: {},
-        roles: [],
+        permission: getStore('permission') || {},
+        roles: getStore('roles') || [],
         menu: [],
-        token: '',
+        token: getStore('token') || '',
     },
     actions: {
         //根据用户名登录
@@ -45,6 +47,7 @@ const user = {
                     const data = res.data;
                     commit('SET_USERIFNO', data.userInfo);
                     commit('SET_ROLES', data.roles);
+                    commit('SET_PERMISSION', data.permission)
                     resolve(data);
                 })
             })
@@ -87,6 +90,7 @@ const user = {
     mutations: {
         SET_TOKEN: (state, token) => {
             state.token = token;
+            setStore({ name: 'token', content: state.token, type: 'session' })
         },
         SET_USERIFNO: (state, userInfo) => {
             state.userInfo = userInfo;
@@ -96,7 +100,14 @@ const user = {
         },
         SET_ROLES: (state, roles) => {
             state.roles = roles;
+            setStore({ name: 'roles', content: state.roles, type: 'session' })
         },
+        SET_PERMISSION: (state, permission) => {
+            permission.forEach(ele => {
+                state.permission[ele] = true;
+            });
+            setStore({ name: 'permission', content: state.permission, type: 'session' })
+        }
     }
 
 }
