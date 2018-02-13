@@ -47,47 +47,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.menu-wrapper {
-  a {
-    width: 100%;
-  }
-}
-//菜单选择小标题字体颜色
-.el-submenu__title >  {
-  span,
-  i {
-    color: rgba(163, 175, 183, 0.9);
-  }
-  i {
-    font-size: 16px !important;
-  }
-}
-//菜单的大标题色
-.el-submenu.is-active >  {
-  .el-submenu__title {
-    span,
-    i {
-      color: #fff;
-    }
-  }
-}
-//菜单选择小标题字体颜色
-.el-menu-item.is-active >  {
-  span,
-  i {
-    color: #fff;
-  }
-}
 
-//菜单小标题字体颜色
-.el-menu-item >  {
-  span,
-  i {
-    color: rgba(163, 175, 183, 0.9);
-  }
-  i {
-    font-size: 16px !important;
-  }
-}
 </style>
 

@@ -4,9 +4,9 @@
         unique-opened  
         :default-active="$route.query.src ? $route.query.src : $route.path" 
         class="el-menu-vertical-demo"  
-        background-color="#263238" 
-        text-color="#fff" 
-        active-text-color="#ffd04b" 
+        background-color="#304156" 
+        text-color="#bfcbd9" 
+        active-text-color="#409EFF"
         :collapse="isCollapse">
             <SidebarItem :menu="menu"></SidebarItem>
         </el-menu>
@@ -33,13 +33,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.menu {
-  overflow-y: scroll;
-  background: #263238;
-}
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  min-width: 220px;
-  max-width: 300px;
-}
+
 </style>
 

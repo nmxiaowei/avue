@@ -53,43 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #409eff;
-  box-sizing: border-box;
-  color: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 18px;
-  height: 60px;
-  line-height: 1;
-  padding: 0 10px;
-  text-align: center;
-  white-space: nowrap;
-}
 
-.header-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: inherit;
-  font-weight: 400;
-  flex: 1;
-}
-
-.header-button.is-left {
-  text-align: left;
-}
-
-.header-button.is-right {
-  text-align: right;
-}
-
-.header-button {
-  flex: 0.5;
-}
 </style>
 

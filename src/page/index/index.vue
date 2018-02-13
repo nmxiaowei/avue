@@ -1,8 +1,8 @@
 <template>
-	<div class="app-main">
+	<div class="pull-height">
     <Top></Top>
-		<div class="yun-content index" style="min-height: auto;">
-			<div class="left">
+		<div class="index">
+			<div class="left pull-height">
           <Sidebar :isCollapse="isCollapse"></Sidebar>
 			</div>
 			<div class="right">
@@ -58,6 +58,10 @@ export default {
 .index {
   display: flex;
   height: calc(100% - 60px);
+  padding: 0 0 20px 0;
+  position: relative;
+  min-height: 100%;
+  background: #fff;
   overflow: hidden;
   .left {
     position: relative;
@@ -76,6 +80,7 @@ export default {
     left: 0;
     width: 100%;
     background: #f0f0f0;
+    z-index: 999;
   }
 }
 </style>
