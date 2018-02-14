@@ -32,9 +32,9 @@
             :width="column.width" 
             :label="column.label" 
             :fixed="column.fixed" 
-            :sortable="column.sortable">
+            :sortable="column.sortable" v-if="!column.hide">
               <template  slot-scope="scope">
-                <span  v-if="!column.hidden" v-html="handleDetail(scope.row,column)"></span>
+                <span  v-if="!column.overHidden" v-html="handleDetail(scope.row,column)"></span>
                 <el-popover v-else trigger="hover" placement="top">
                   <p>{{column.label}}: {{ scope.row[column.prop]}}</p>
                   <div slot="reference" class="name-wrapper">
@@ -67,7 +67,7 @@
       width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
          <template v-for="(column,index) in tableOption.column">
-          <el-form-item :label="column.label" :prop="column.prop">
+          <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
             <template v-if="column.type == 'select'">
                 <el-select v-model="tableForm[column.prop]" :placeholder="'请选择'+column.label">
                 <el-option
@@ -80,6 +80,9 @@
             </template>
             <template v-if="column.type == 'radio'">
                   <el-radio  v-for="(item,index) in column.dicData" v-model="tableForm[column.prop]" :label="item.value" :key="index">{{item.label}}</el-radio>
+            </template>
+            <template v-if="column.type == 'date'">
+                  <el-date-picker v-model="tableForm[column.prop]" type="date" :placeholder="'请输入'+column.label"> </el-date-picker>
             </template>
             <template v-if="column.type == 'checkbox'">
                <el-checkbox-group  v-model="tableForm[column.prop]">

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import common from './modules/common'
 import tags from './modules/tags'
+import admin from './modules/admin'
 import errLog from './modules/errLog'
 import getters from './getters'
 
@@ -12,6 +13,7 @@ const store = new Vuex.Store({
     user,
     common,
     errLog,
+    admin,
     tags
   },
   getters,

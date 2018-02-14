@@ -14,7 +14,8 @@
 `6.支持js动态可配CRUD,节约大量开发成本`<br /><br />
 `7.支持多种登录方式`<br /><br />
 `8.全局错误日志记录`<br /><br />
-`9.scss模块化开发` 
+`9.scss模块化开发`<br /><br />
+`10.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
 
 **登录**
 <p align="center">
@@ -30,6 +31,16 @@
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-crud.png">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-grade.png">
+</p>
+
+**用户管理**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-user.png">
+</p>
+
+**角色管理**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-role.png">
 </p>
 
 **菜单设置**
@@ -70,6 +81,10 @@
 - 第三方网站嵌套
 - CRUD(增删改查)
 - 阿里巴巴图标库(在线调用)
+- 系统管理
+ - 用户管理
+ - 角色管理
+ - 菜单管理
 - 更多功能开在开发
 ```
 
@@ -110,8 +125,10 @@ state:{
       prop: "username",//表格的key
       width: "150",//表格的宽度
       fixed: true,//是否冻结列
-      type:'select', //select | radio | checkbox 默认为text
-      hidden: true,//超出省略号显示
+      hide:true,//是否隐藏
+      type:'select', //select | radio | checkbox | date 默认为text
+      visdiplay:true,//表单不显示
+      overHidden: true,//超出省略号显示
       dicData: [
         {
           label: "男",

@@ -53,7 +53,7 @@ export default {
             label: "地址",
             prop: "address",
             width: "300",
-            hidden: true
+            overHidden: true
         }
     ]
 };
