@@ -1,19 +1,19 @@
 <template>
   <div class="menu-wrapper">
     <template  v-for="(item,index) in menu">
-        <el-menu-item v-if="item.children.length===0 " :index="item.href" @click="open(item)" :key="item.title">
+        <el-menu-item v-if="item.children.length===0 " :index="item.href" @click="open(item)" :key="item.label">
             <i :class="item.icon"></i>
-            <span slot="title">{{item.title}}</span>
+            <span slot="title">{{item.label}}</span>
         </el-menu-item>
-      <el-submenu v-else :index="item.title" :key="item.name">
+      <el-submenu v-else :index="item.label" :key="item.name">
           <template slot="title">
               <i :class="item.icon"></i>
-              <span slot="title">{{item.title}}</span>
+              <span slot="title">{{item.label}}</span>
           </template>
           <template v-for="child in item.children">
               <el-menu-item :index="child.href" @click="open(child)" v-if="child.children.length==0">
                   <i :class="child.icon"></i>
-                  <span slot="title">{{child.title}}</span>
+                  <span slot="title">{{child.label}}</span>
               </el-menu-item>
             <sidebarItem  v-else  :menu="[child]"></sidebarItem>
          </template>
@@ -39,7 +39,7 @@ export default {
     open(item) {
       this.$router.push({ path: resolveUrlPath(item.href) });
       this.$store.commit("ADD_TAG", {
-        label: item.title,
+        label: item.label,
         value: item.href
       });
     }

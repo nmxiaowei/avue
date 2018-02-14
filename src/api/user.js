@@ -1,7 +1,7 @@
 import { baseUrl, khglUrl, dicUrl } from '@/config/env'
 import request from '@/router/axios'
 import { userInfo, tableData } from '@/mock/user'
-import menu from '@/mock/menu'
+import { menu, menuAll } from '@/mock/menu'
 export const loginByUsername = (username, password) => {
     return new Promise((resolve, reject) => {
         resolve({ data: new Date().getTime() });
@@ -18,6 +18,12 @@ export const getMenu = () => {
         resolve({ data: menu });
     })
 }
+export const getMenuAll = () => {
+    return new Promise((resolve, reject) => {
+        resolve({ data: menu });
+    })
+}
+
 export const getTableData = (page) => {
     return new Promise((resolve, reject) => {
         resolve({ data: tableData });

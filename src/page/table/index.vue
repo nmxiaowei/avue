@@ -10,16 +10,38 @@
   :tableOption="tableOption"
   :tableData="tableData"
   :tableLoading="tableLoading"
+  :before-open="boxhandleOpen"
+  :before-close="boxhandleClose" 
+  :page="page"
+  ref="crud" 
+  width="290" 
   @handleSave="handleSave"
   @handleUpdate="handleUpdate"
   @handleDel="handleDel"
   @handleCurrentChange="handleCurrentChange"
   @handleSelectionChange="handleSelectionChange"
-  :before-open="boxhandleOpen"
-  :before-close="boxhandleClose" 
-  :page="page"
-  ref="crud">
+  :menu="true">
+    <template slot-scope="scope">
+        <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+    </template>
   </Crud>
+  <el-dialog
+  title="菜单"
+  :visible.sync="grade.box"
+  width="40%">
+<el-tree
+  :data="menuAll"
+  :default-checked-keys="grade.check"
+  :default-expanded-keys="grade.check"
+  show-checkbox
+  node-key="id"
+  @check-change="handleGradeCheckChange">
+</el-tree>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="handleGradeUpdate">更新</el-button>
+  </span>
+</el-dialog>
+
  </div>
 </template>
 
@@ -35,10 +57,15 @@ export default {
       tableData: [], //表格的数据
       tablePage: 1,
       tableLoading: false,
+      tabelObj: {},
       page: {
         total: 0, //总页数
         currentPage: 1, //当前页数
         pageSize: 10 //每页显示多少条
+      },
+      grade: {
+        box: false,
+        check: []
       }
     };
   },
@@ -50,10 +77,41 @@ export default {
   watch: {},
   mounted() {},
   computed: {
-    ...mapGetters(["permission"])
+    ...mapGetters(["permission", "menuAll"])
   },
   props: [],
   methods: {
+    /**
+     * @title 权限更新
+     *
+     **/
+    handleGradeUpdate() {
+      this.tabelObj.check = [].concat(this.grade.check);
+      this.tabelObj = {};
+      this.grade.check = [];
+      this.grade.box = false;
+    },
+    /**
+     * @title 权限选择
+     *
+     **/
+    handleGradeCheckChange(data, checked, indeterminate) {
+      if (checked) {
+        this.grade.check.push(data.id);
+      } else {
+        this.grade.check.splice(this.grade.check.indexOf(data.id), 1);
+      }
+    },
+    /**
+     * @title 打开权限
+     */
+    handleGrade(row, index) {
+      this.$store.dispatch("GetMenuAll").then(data => {
+        this.grade.box = true;
+        this.tabelObj = row;
+        this.grade.check = this.tabelObj.check;
+      });
+    },
     /**
      * @title 导出excel
      *

@@ -1,45 +1,61 @@
 import {
   baseUrl
 } from '@/config/env'
-export default [{
-  title: "欢迎页面!",
-  href: '/wel/',
+export const menu = [{
+  id: 1,
+  label: "欢迎页面!",
+  href: '/wel',
   icon: 'icon-huanyingye',
   children: [],
 }, {
-  title: "第三方网站",
+  id: 2,
+  label: "第三方网站",
   href: '',
   icon: 'icon-iframe',
   children: [{
-    title: "百度",
+    id: 3,
+    label: "百度",
     href: 'https://www.baidu.com',
     icon: 'icon-baidu1',
     children: [],
   }, {
-    title: "搜狐",
+    id: 4,
+    label: "搜狐",
     href: 'http://www.shouhu.com',
     icon: 'icon-souhu',
     children: [],
   }, {
-    title: "360",
+    id: 5,
+    label: "360",
     href: 'http://www.360.com',
     icon: 'icon-msnui-360',
     children: [],
 
   }]
 }, {
-  title: "表格CRUD",
-  href: '/table/',
+  id: 6,
+  label: "表格CRUD",
+  href: '/table',
   icon: 'icon-biaoge',
   children: []
 }, {
-  title: "阿里图标",
-  href: '/iconfont/',
+  id: 7,
+  label: "阿里图标",
+  href: '/iconfont',
   icon: 'icon-changyonglogo27',
   children: []
 }, {
-  title: "错误日志",
-  href: '/errlog/',
+  id: 8,
+  label: "错误日志",
+  href: '/errlog',
   icon: 'icon-cuowu',
   children: []
-}]
+}, {
+  id: 9,
+  label: "菜单管理",
+  href: '/menu',
+  icon: 'el-icon-menu',
+  children: []
+}
+]
+

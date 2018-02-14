@@ -29,6 +29,12 @@
 **CRUD**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-crud.png">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-grade.png">
+</p>
+
+**菜单设置**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-menu.png">
 </p>
 
 **阿里巴巴图标库(在线调用)**
@@ -90,6 +96,10 @@ state:{
 ### CRUD使用说明————根据配置json文件自动生成CRUD
 #### 详细demo请看./src/page/table/index.vue实例
 ```bash
+子定义操作按钮<br />
+<template slot-scope="scope">
+    <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+</template>
 {
   border: true,//表格是否显示边框
   index: true,///表格是否显示序号

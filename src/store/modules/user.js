@@ -1,13 +1,14 @@
 import { getToken, setToken, removeToken } from '@/util/auth'
 import { setStore, getStore } from '@/util/store'
 import { setCache, getCache } from '@/util/yun'
-import { loginByUsername, getUserInfo, getTableData, getMenu, logout } from '@/api/user'
+import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll } from '@/api/user'
 const user = {
     state: {
         userInfo: {},
         permission: getStore('permission') || {},
         roles: getStore('roles') || [],
         menu: [],
+        menuAll: [],
         token: getStore('token') || '',
     },
     actions: {
@@ -85,6 +86,16 @@ const user = {
                 })
             })
         },
+        //获取全部菜单
+        GetMenuAll({ commit }) {
+            return new Promise(resolve => {
+                getMenuAll().then((res) => {
+                    const data = res.data;
+                    commit('SET_MENU_ALL', data);
+                    resolve(data);
+                })
+            })
+        },
 
     },
     mutations: {
@@ -97,6 +108,9 @@ const user = {
         },
         SET_MENU: (state, menu) => {
             state.menu = menu;
+        },
+        SET_MENU_ALL: (state, menuAll) => {
+            state.menuAll = menuAll;
         },
         SET_ROLES: (state, roles) => {
             state.roles = roles;

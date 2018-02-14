@@ -11,11 +11,6 @@ import INDEX from '@/page/index/'
 import errorPage404 from '@/components/errorPage/404.vue';
 const _import = require('./_import');
 Vue.use(VueRouter);
-export const constantRouterMap = [
-	{ path: '/login', name: '登录页', component: _import('login/index') },
-	{ path: '*', redirect: '/404', hidden: true },
-	{ path: '/404', component: errorPage404, name: '404' }
-];
 export default new VueRouter({
 	mode: 'history',
 	strict: process.env.NODE_ENV !== 'production',
@@ -32,9 +27,11 @@ export default new VueRouter({
 			}
 		}
 	},
-	routes: constantRouterMap
 });
 export const asyncRouterMap = [
+	{ path: '/login', name: '登录页', component: _import('login/index') },
+	{ path: '*', redirect: '/404', hidden: true },
+	{ path: '/404', component: errorPage404, name: '404' },
 	{
 		path: '/',
 		name: '主页',
@@ -95,6 +92,17 @@ export const asyncRouterMap = [
 				path: '/',
 				name: '错误日志',
 				component: _import('errlog/index')
+			}
+		]
+	}, {
+		path: '/menu',
+		component: INDEX,
+		redirect: '/menu/',
+		children: [
+			{
+				path: '/',
+				name: '菜单管理',
+				component: _import('menu/index')
 			}
 		]
 	}

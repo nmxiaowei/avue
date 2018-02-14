@@ -5,7 +5,7 @@
         <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
         <el-button @click="toggleSelection()" size="small">取消选择</el-button>
       </div> -->
-      <el-table 
+    <el-table 
       :data="tableData"  
       ref="table" 
       style="width:100%;min-height:430px;"
@@ -44,10 +44,13 @@
               </template>
             </el-table-column>
       </template>
-      <el-table-column label="操作" width="220">
-        <template  slot-scope="scope">
+      <el-table-column label="操作" :width="width">
+        <template  slot-scope="scope" >
+           <template v-if="menu">
             <el-button type="primary" icon="el-icon-edit" size="small"  @click="handleEdit(scope.row,scope.$index)">编 辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)">删 除</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)">删 除</el-button>   
+          </template>   
+          <slot :row="scope.row"></slot>    
         </template>
       </el-table-column>
     </el-table>
@@ -132,6 +135,13 @@ export default {
     tableLoading: {
       type: Boolean,
       default: false
+    },
+    menu: {
+      type: Boolean,
+      default: true
+    },
+    width: {
+      type: String
     },
     tableData: {
       type: Array,

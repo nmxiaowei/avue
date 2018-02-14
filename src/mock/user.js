@@ -16,7 +16,8 @@ for (let i = 0; i < 5; i++) {
         'type|0-1': 0,
         'sex|0-1': 0,
         grade: [0, 1],
-        address: Mock.mock('@cparagraph(1, 3)')
+        address: Mock.mock('@cparagraph(1, 3)'),
+        check: [1, 3, 4]
     }))
 }
 export const tableData = {

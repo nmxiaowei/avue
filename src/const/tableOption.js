@@ -35,22 +35,6 @@ export default {
             ]
         },
         {
-            label: "性别",
-            prop: "sex",
-            type: "radio",
-            width: "80",
-            dicData: [
-                {
-                    label: "男",
-                    value: 0
-                },
-                {
-                    label: "女",
-                    value: 1
-                }
-            ]
-        },
-        {
             label: "权限",
             prop: "grade",
             type: "checkbox",
