@@ -19,14 +19,12 @@
         </el-aside>
         <el-main>
             <el-form ref="form" :model="form" label-width="80px">
-                <template v-if="formAdd">
-                     <el-form-item label="父节点ID">
-                        <el-input  v-model="parentForm.id" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="父节点">
-                        <el-input  v-model="parentForm.label" :disabled="true"></el-input>
-                    </el-form-item>
-                </template>
+                <el-form-item label="父节点ID">
+                    <el-input  v-model="parentForm.id" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="父节点">
+                    <el-input  v-model="parentForm.label" :disabled="true"></el-input>
+                </el-form-item>
                 <el-form-item label="菜单名称">
                     <el-input v-model="form.label" :disabled="formEdit"></el-input>
                 </el-form-item>
@@ -68,7 +66,25 @@ export default {
   },
   props: [],
   methods: {
+    findParent(menu, id) {
+      let result;
+      menu.forEach(ele => {
+        if (ele.children) {
+          for (let j = 0; j < ele.children.length; j++) {
+            if (ele.children[j].id == id) {
+              console.log(this.parentForm);
+              this.parentForm = ele;
+            } else {
+              if (ele.children[j].children) {
+                this.findParent(ele.children[j].children, id);
+              }
+            }
+          }
+        }
+      });
+    },
     handleNodeClick(data, checked, indeterminate) {
+      this.findParent(this.menuAll, data.id);
       this.formAdd = false;
       this.formEdit = true;
       this.form = data;
@@ -76,7 +92,6 @@ export default {
     handleAdd() {
       this.formEdit = false;
       this.formAdd = true;
-      this.parentForm = Object.assign({}, this.form);
       this.form = Object.assign({}, this.obj);
     },
     handleEdit() {

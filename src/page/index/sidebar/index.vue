@@ -2,7 +2,7 @@
      <div class="menu pull-height">
         <el-menu  
         unique-opened  
-        :default-active="$route.query.src ? $route.query.src : $route.path" 
+        :default-active="tag.value" 
         class="el-menu-vertical-demo"  
         background-color="#304156" 
         text-color="#bfcbd9" 
@@ -26,7 +26,7 @@ export default {
   created() {
     this.$store.dispatch("GetMenu").then(data => {});
   },
-  computed: mapGetters(["menu"]),
+  computed: mapGetters(["menu", "tag"]),
   mounted() {},
   methods: {},
   components: { SidebarItem }

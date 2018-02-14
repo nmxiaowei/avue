@@ -39,7 +39,7 @@ export default {
   computed: {
     ...mapGetters(["tagWel", "tag", "tagList"]),
     nowTagValue: function() {
-      return this.$route.query.src ? this.$route.query.src : this.$route.path;
+      return this.tag.value;
     },
     tagListNum: function() {
       return this.tagList.length != 0;
