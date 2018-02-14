@@ -5,7 +5,7 @@ export const userInfo = {
         name: 'avue',
     },
     roles: ['admin'],
-    permission: ['sys_crud_add', 'sys_crud_export'],//权限级别
+    permission: ['sys_crud_btn_add', 'sys_crud_btn_export', 'sys_menu_btn_add', 'sys_menu_btn_edit', 'sys_menu_btn_del'],//权限级别
 }
 let List = []
 for (let i = 0; i < 5; i++) {

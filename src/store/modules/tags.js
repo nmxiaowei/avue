@@ -22,7 +22,7 @@ const navs = {
         tag: getStore({ name: 'tag' }) || tagObj,
         tagWel: {
             label: "欢迎页面",
-            value: "/wel/"
+            value: "/wel"
         }
     },
     actions: {

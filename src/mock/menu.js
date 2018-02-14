@@ -52,10 +52,30 @@ export const menu = [{
   children: []
 }, {
   id: 9,
-  label: "菜单管理",
-  href: '/menu',
-  icon: 'el-icon-menu',
-  children: []
+  label: "系统管理",
+  icon: 'icon-liuliangyunpingtaitubiao08',
+  children: [
+    {
+      id: 10,
+      label: "用户管理",
+      href: '/admin/user',
+      icon: 'icon-yonghuguanli',
+      children: []
+    }, {
+      id: 11,
+      label: "角色管理",
+      href: '/admin/role',
+      icon: 'icon-jiaoseguanli',
+      children: []
+    },
+    {
+      id: 12,
+      label: "菜单管理",
+      href: '/admin/menu',
+      icon: 'icon-caidanguanli',
+      children: []
+    }
+  ]
 }
 ]
 

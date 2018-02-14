@@ -95,14 +95,21 @@ export const asyncRouterMap = [
 			}
 		]
 	}, {
-		path: '/menu',
+		path: '/admin',
 		component: INDEX,
-		redirect: '/menu/',
 		children: [
 			{
-				path: '/',
+				path: 'user',
+				name: '用户管理',
+				component: _import('admin/user/index')
+			}, {
+				path: 'role',
+				name: '角色管理',
+				component: _import('admin/role/index')
+			}, {
+				path: 'menu',
 				name: '菜单管理',
-				component: _import('menu/index')
+				component: _import('admin/menu/index')
 			}
 		]
 	}
