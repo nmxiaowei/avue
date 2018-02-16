@@ -71,7 +71,7 @@
             <template v-if="column.type == 'select'">
                 <el-select v-model="tableForm[column.prop]" :placeholder="'请选择'+column.label">
                 <el-option
-                  v-for="(item,index) in column.dicData"
+                  v-for="(item,index) in DIC[column.dicData]"
                   :key="index"
                   :label="item.label"
                   :value="item.value">
@@ -79,14 +79,14 @@
               </el-select>
             </template>
             <template v-if="column.type == 'radio'">
-                  <el-radio  v-for="(item,index) in column.dicData" v-model="tableForm[column.prop]" :label="item.value" :key="index">{{item.label}}</el-radio>
+                  <el-radio  v-for="(item,index) in DIC[column.dicData]" v-model="tableForm[column.prop]" :label="item.value" :key="index">{{item.label}}</el-radio>
             </template>
             <template v-if="column.type == 'date'">
                   <el-date-picker v-model="tableForm[column.prop]" type="date" :placeholder="'请输入'+column.label"> </el-date-picker>
             </template>
             <template v-if="column.type == 'checkbox'">
                <el-checkbox-group  v-model="tableForm[column.prop]">
-                  <el-checkbox  v-for="(item,index) in column.dicData" :label="item.value" :key="index">{{item.label}}</el-checkbox>
+                  <el-checkbox  v-for="(item,index) in DIC[column.dicData]" :label="item.value" :key="index">{{item.label}}</el-checkbox>
                </el-checkbox-group>
             </template>
              <template v-if="!column.type">
@@ -106,12 +106,14 @@
 </template>
 <script>
 import { findByvalue } from "@/util/util";
+import { mapActions } from "vuex";
 export default {
   name: "crud",
   data() {
     return {
       boxVisible: false,
       boxType: 0,
+      DIC: {},
       tableForm: {},
       tableFormRules: {},
       tableIndex: -1,
@@ -158,9 +160,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["GetDic"]),
     rulesInit() {
       this.tableOption.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
+      });
+      //初始化字典
+      this.GetDic(this.tableOption.dic).then(data => {
+        this.DIC = data;
       });
     },
     //页码回掉
@@ -186,13 +193,12 @@ export default {
     handleDetail(row, column) {
       let result = "";
       if (column.type) {
-        result = findByvalue(column.dicData, row[column.prop]);
+        result = findByvalue(this.DIC[column.dicData], row[column.prop]);
       } else {
         result = row[column.prop];
       }
       if (column.dataDetail) {
         result = column.dataDetail(result);
-      } else {
       }
       return result;
     },

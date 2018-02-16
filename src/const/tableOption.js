@@ -2,6 +2,7 @@ export default {
     border: true,
     index: true,
     selection: true,
+    dic: ['GRADE', 'SEX'],
     column: [
         {
             label: "用户名",
@@ -23,31 +24,13 @@ export default {
                 return `<span class="el-tag">${val}</span>`;
             },
             type: "select",
-            dicData: [
-                {
-                    label: "一级",
-                    value: 0
-                },
-                {
-                    label: "二级",
-                    value: 1
-                }
-            ]
+            dicData: 'GRADE'
         },
         {
             label: "权限",
             prop: "grade",
             type: "checkbox",
-            dicData: [
-                {
-                    label: "管理员",
-                    value: 0
-                },
-                {
-                    label: "二级管理员",
-                    value: 1
-                }
-            ]
+            dicData: 'GRADE'
         },
         {
             label: "地址",

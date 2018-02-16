@@ -34,8 +34,7 @@
   :default-checked-keys="grade.check"
   :default-expanded-keys="grade.check"
   show-checkbox
-  node-key="id"
-  @check-change="handleGradeCheckChange">
+  node-key="id">
 </el-tree>
   <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="handleGradeUpdate">更新</el-button>

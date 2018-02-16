@@ -6,14 +6,13 @@
   <Crud 
   :tableOption="tableOption"
   :tableData="tableData"
-  :tableLoading="tableLoading" 
+  :tableLoading="tableLoading"
   :page="page"
   ref="crud" 
   width="290" 
   @handleSave="handleSave"
   @handleUpdate="handleUpdate"
   @handleDel="handleDel"
-  @handleCurrentChange="handleCurrentChange"
   @handleSelectionChange="handleSelectionChange"
   menu>
 

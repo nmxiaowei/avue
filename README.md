@@ -11,7 +11,7 @@
 `3.支持SSR服务端渲染(express)`[vue-server-renderer](https://ssr.vuejs.org/zh/)<br /><br />
 `4.支持阿里巴巴图标库在线调用，自动同步图标` [阿里巴巴图标库](http://www.iconfont.cn/)<br /><br />
 `5.支持iframe嵌套第三方网站`[详细介绍](https://my.oschina.net/sunshineS/blog/1615716)<br /><br />
-`6.支持js动态可配CRUD,节约大量开发成本`<br /><br />
+`6.支持js动态可配CRUD,节约大量开发成本，配置字典接口自动匹配字典`<br /><br />
 `7.支持多种登录方式`<br /><br />
 `8.全局错误日志记录`<br /><br />
 `9.scss模块化开发`<br /><br />
@@ -89,12 +89,13 @@
 ```
 
 ### 按钮的显隐控制
-#### 返回的vuex对象中额permission数组包括按钮的权限 例如: ['sys_crud_add', 'sys_crud_export'], crud的增加按钮和导出按钮
+返回的vuex对象中额permission数组包括按钮的权限 例如: ['sys_crud_add', 'sys_crud_export'], crud的增加按钮和导出按钮
+
 ### 全局错误日志记录
-#### 放开./src/page/errlog/index.vue中的errorA的组件即可测试他是存储在本地，可以自己回掉方法上传服务器，调用CLEAR_ALL_ERR方法清空本地
+放开./src/page/errlog/index.vue中的errorA的组件即可测试他是存储在本地，可以自己回掉方法上传服务器，调用CLEAR_ALL_ERR方法清空本地
 
 ### vuex持久化存demo请看
-#### 详细demo请看./src/store/modules/tgs.js实例
+详细demo请看./src/store/modules/tgs.js实例
 ```bash
 ...
 state:{
@@ -108,17 +109,19 @@ state:{
   ...
  }
 ```
-### CRUD使用说明————根据配置json文件自动生成CRUD
-#### 详细demo请看./src/page/table/index.vue实例
+### CRUD使用说明————根据配置json文件自动生成CRUD，并且配置字典接口，自动匹配字典
+详细demo请看./src/page/table/index.vue实例
 ```bash
 子定义操作按钮<br />
 <template slot-scope="scope">
     <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
 </template>
+js自动配置crud<br />
 {
   border: true,//表格是否显示边框
   index: true,///表格是否显示序号
   selection: true,//表格是否显示可选select
+  dic:['GRADE','SEX'],//传入需要获取字典的变量，看vuex中的getDic方法
   column: [
     {
       label: "用户名",//表格的标题
@@ -129,15 +132,7 @@ state:{
       type:'select', //select | radio | checkbox | date 默认为text
       visdiplay:true,//表单不显示
       overHidden: true,//超出省略号显示
-      dicData: [
-        {
-          label: "男",
-          value: 0
-        },
-        {
-          label: "女",
-          value: 1
-        }
+      dicData: 'GRADE', //传入需要引用的字典
       ],//type的数据字典,当type为：select | radio | checkbox 加载
       dataDetail: val => {
         return `<span class="el-tag">${val}</span>`;;//是否对列表数据处理

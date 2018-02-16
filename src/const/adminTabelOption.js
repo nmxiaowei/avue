@@ -2,6 +2,7 @@ export const userOption = {
     border: true,
     index: true,
     selection: false,
+    dic: ['GRADE', 'STATE'],
     column: [
         {
             label: "用户名",
@@ -13,16 +14,7 @@ export const userOption = {
             label: "角色",
             prop: "grade",
             type: "checkbox",
-            dicData: [
-                {
-                    label: "超级管理员",
-                    value: 0
-                },
-                {
-                    label: "普通用户",
-                    value: 1
-                }
-            ]
+            dicData: 'GRADE'
         },
         {
             label: "创建时间",
@@ -37,16 +29,7 @@ export const userOption = {
                 return `<span class="el-tag ${val == '有效' ? 'el-tag--success' : 'el-tag--danger'}">${val}</span>`;
             },
             type: "radio",
-            dicData: [
-                {
-                    label: "有效",
-                    value: 0
-                },
-                {
-                    label: "无效",
-                    value: 1
-                }
-            ]
+            dicData: 'STATE'
         }
     ]
 };
