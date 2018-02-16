@@ -13,26 +13,9 @@
   @handleSave="handleSave"
   @handleUpdate="handleUpdate"
   @handleDel="handleDel"
-  @handleSelectionChange="handleSelectionChange"
   menu>
 
   </Crud>
-  <el-dialog
-  title="菜单"
-  :visible.sync="grade.box"
-  width="40%">
-<el-tree
-  :data="menuAll"
-  :default-checked-keys="grade.check"
-  :default-expanded-keys="grade.check"
-  show-checkbox
-  node-key="id"
-  @check-change="handleGradeCheckChange">
-</el-tree>
-  <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="handleGradeUpdate">更新</el-button>
-  </span>
-</el-dialog>
 
  </div>
 </template>

@@ -13,8 +13,6 @@
   @handleSave="handleSave"
   @handleUpdate="handleUpdate"
   @handleDel="handleDel"
-  @handleCurrentChange="handleCurrentChange"
-  @handleSelectionChange="handleSelectionChange"
   menu>
     <template slot-scope="scope">
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
