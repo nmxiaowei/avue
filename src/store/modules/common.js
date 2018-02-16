@@ -12,17 +12,13 @@ const common = {
         GetDic({ commit, state, dispatch }, dic) {
             return new Promise((resolve, reject) => {
                 if (dic instanceof Array) {
-                    const list = dic;
-                    const len = list.length - 1;
-                    dic = {};
-                    list.forEach((ele, index) => {
-                        getDic(ele).then(data => {
-                            dic[ele] = data.data;
-                            if (index == len) {
-                                resolve(dic)
-                            };
+                    Promise.all(dic.map(ele => getDic(ele))).then(data => {
+                        let result = {};
+                        dic.forEach((ele, index) => {
+                            result[ele] = data[index].data;
                         })
-                    });
+                        resolve(result)
+                    })
                 }
 
 
