@@ -1,6 +1,25 @@
 import { validatenull } from './validate'
 
 
+/**
+ * 递归寻找子类的父类
+ */
+
+export const findParent = (menu, id) => {
+    for (let i = 0; i < menu.length; i++) {
+        if (menu[i].children.length != 0) {
+            for (let j = 0; j < menu[i].children.length; j++) {
+                if (menu[i].children[j].id == id) {
+                    return menu[i];
+                } else {
+                    if (menu[i].children[j].children.length != 0) {
+                        return findParent(menu[i].children[j].children, id);
+                    }
+                }
+            }
+        }
+    };
+}
 export const resolveUrlPath = (url) => {
     let reqUrl = url;
     if (url.indexOf("http") != -1) {

@@ -47,6 +47,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { validatenull } from "@/util/validate";
+import { findParent } from "@/util/util";
 export default {
   name: "menu",
   data() {
@@ -67,25 +68,8 @@ export default {
   },
   props: [],
   methods: {
-    findParent(menu, id) {
-      let result;
-      menu.forEach(ele => {
-        if (ele.children) {
-          for (let j = 0; j < ele.children.length; j++) {
-            if (ele.children[j].id == id) {
-              console.log(this.parentForm);
-              this.parentForm = ele;
-            } else {
-              if (ele.children[j].children) {
-                this.findParent(ele.children[j].children, id);
-              }
-            }
-          }
-        }
-      });
-    },
     handleNodeClick(data, checked, indeterminate) {
-      this.findParent(this.menuAll, data.id);
+      this.parentForm = Object.assign({}, findParent(this.menuAll, data.id));
       this.formGrade = true;
       this.formStatus = "";
       this.obj = data;
