@@ -5,6 +5,9 @@
     }
     .el-menu{
         border-right: 0;
+        .is-active{
+          color:$mainBg !important;
+        }
     }
     .el-menu-vertical-demo:not(.el-menu--collapse) {
         min-width: 220px;

@@ -20,8 +20,6 @@ const common = {
                         resolve(result)
                     })
                 }
-
-
             })
         }
     },
