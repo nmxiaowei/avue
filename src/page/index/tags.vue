@@ -78,7 +78,7 @@ export default {
     closeAllTags() {
       this.$store.commit("DEL_ALL_TAG");
       this.$store.commit("ADD_TAG", this.tagWel);
-      this.$router.push({ path: this.tagWel.value });
+      this.$router.push({ path: resolveUrlPath(this.tagWel.value) });
     },
     openUrl(url, name, num) {
       this.$router.push({ path: resolveUrlPath(url) });
