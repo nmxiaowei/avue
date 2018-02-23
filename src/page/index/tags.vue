@@ -1,9 +1,13 @@
 <template>
   <div class="tags-container">
-        <el-tag  @contextmenu.prevent.native="openMenu(item,$event)" :type="nowTagValue==item.value?'success':'info'" v-for="(item,index) in tagList" :key="index" @click.native="openUrl(item.value,item.label,item.num)">
-            {{item.label}}
-            <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
-        </el-tag>
+       <div class="tags-box" @mousewheel="hadelMousewheel">
+          <div class="tags-list" ref="tagsList">
+              <el-tag  @contextmenu.prevent.native="openMenu(item,$event)" :type="nowTagValue==item.value?'success':'info'" v-for="(item,index) in tagList" :key="index" @click.native="openUrl(item.value,item.label,item.num)">
+              {{item.label}}
+              <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
+            </el-tag>
+          </div>
+        </div>
         <h3 class="title pull-right">{{tag.label}}</h3>
          <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
           <li @click="closeTag(selectedTag)">关闭</li>
@@ -46,6 +50,15 @@ export default {
     }
   },
   methods: {
+    hadelMousewheel(e) {
+      var left = Number(this.$refs.tagsList.style.left.replace("px", ""));
+      var step = 80;
+      if (e.deltaY > 0 && left > -(this.tagList.length - 8) * step) {
+        this.$refs.tagsList.style.left = left - step + "px";
+      } else if (e.deltaY < 0 && left < 0) {
+        this.$refs.tagsList.style.left = left + step + "px";
+      }
+    },
     openMenu(tag, e) {
       if (this.tagList.length == 1) {
         return;
