@@ -39,7 +39,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 
 **FORM**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-from.png">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-form.png">
 </p>
 
 **用户管理**
