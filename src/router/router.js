@@ -73,6 +73,17 @@ export const asyncRouterMap = [
 			}
 		]
 	}, {
+		path: '/form',
+		component: INDEX,
+		redirect: '/form/',
+		children: [
+			{
+				path: '/',
+				name: '表单CRUD',
+				component: _import('form/index')
+			}
+		]
+	}, {
 		path: '/iconfont',
 		component: INDEX,
 		redirect: '/iconfont/',

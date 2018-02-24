@@ -66,35 +66,39 @@
       :visible.sync="boxVisible"
       width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
-         <template v-for="(column,index) in tableOption.column">
-          <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
-            <template v-if="column.type == 'select'">
-                <el-select v-model="tableForm[column.prop]" :placeholder="'请选择'+column.label">
-                <el-option
-                  v-for="(item,index) in DIC[column.dicData]"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </template>
-            <template v-if="column.type == 'radio'">
-                  <el-radio  v-for="(item,index) in DIC[column.dicData]" v-model="tableForm[column.prop]" :label="item.value" :key="index">{{item.label}}</el-radio>
-            </template>
-            <template v-if="column.type == 'date'">
-                  <el-date-picker v-model="tableForm[column.prop]" type="date" :placeholder="'请输入'+column.label"> </el-date-picker>
-            </template>
-            <template v-if="column.type == 'checkbox'">
-               <el-checkbox-group  v-model="tableForm[column.prop]">
-                  <el-checkbox  v-for="(item,index) in DIC[column.dicData]" :label="item.value" :key="index">{{item.label}}</el-checkbox>
-               </el-checkbox-group>
-            </template>
-             <template v-if="!column.type">
-                <el-input v-model="tableForm[column.prop]" :placeholder="'请输入'+column.label"></el-input>  
-            </template>
+         <el-row :gutter="20" :span="24">
+          <template v-for="(column,index) in tableOption.column">
+            <el-col :span="column.span||12">
+              <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
+                <template v-if="column.type == 'select'">
+                    <el-select v-model="tableForm[column.prop]" :placeholder="'请选择'+column.label">
+                    <el-option
+                      v-for="(item,index) in DIC[column.dicData]"
+                      :key="index"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+                <template v-if="column.type == 'radio'">
+                      <el-radio  v-for="(item,index) in DIC[column.dicData]" v-model="tableForm[column.prop]" :label="item.value" :key="index">{{item.label}}</el-radio>
+                </template>
+                <template v-if="column.type == 'date'">
+                      <el-date-picker v-model="tableForm[column.prop]" type="date" :placeholder="'请输入'+column.label"> </el-date-picker>
+                </template>
+                <template v-if="column.type == 'checkbox'">
+                  <el-checkbox-group  v-model="tableForm[column.prop]">
+                      <el-checkbox  v-for="(item,index) in DIC[column.dicData]" :label="item.value" :key="index">{{item.label}}</el-checkbox>
+                  </el-checkbox-group>
+                </template>
+                <template v-if="!column.type">
+                    <el-input v-model="tableForm[column.prop]" :placeholder="'请输入'+column.label"></el-input>  
+                </template>
 
-          </el-form-item>
-         </template>
+              </el-form-item>
+              </el-col>
+          </template>
+         </el-row >
       </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="handleUpdate" v-if="boxType==1">修 改</el-button>
@@ -123,6 +127,10 @@ export default {
   created() {
     //规则初始化
     this.rulesInit();
+    //初始化字典
+    this.dicInit();
+    //form表单初始化
+    this.formInit();
   },
   mounted() {},
   props: {
@@ -165,10 +173,23 @@ export default {
       this.tableOption.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
-      //初始化字典
+    },
+    dicInit() {
       this.GetDic(this.tableOption.dic).then(data => {
         this.DIC = data;
       });
+    },
+    formInit() {
+      const list = this.tableOption.column;
+      let from = {};
+      list.forEach(ele => {
+        if (ele.type == "checkbox" || ele.type == "radio") {
+          from[ele.prop] = [];
+        } else {
+          from[ele.prop] = "";
+        }
+      });
+      this.tableForm = Object.assign({}, from);
     },
     //页码回掉
     handleCurrentChange(val) {
@@ -204,16 +225,6 @@ export default {
     },
     // 新增
     handleAdd() {
-      const list = this.tableOption.column;
-      let from = {};
-      list.forEach(ele => {
-        if (ele.type == "checkbox") {
-          from[ele.prop] = [];
-        } else {
-          from[ele.prop] = "";
-        }
-      });
-      this.tableForm = Object.assign({}, from);
       this.boxType = 0;
       if (typeof this.beforeClose === "function") this.beforeOpen(this.show);
       else this.show();

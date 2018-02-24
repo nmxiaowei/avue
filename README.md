@@ -15,7 +15,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `3.支持SSR服务端渲染(express)`[vue-server-renderer](https://ssr.vuejs.org/zh/)<br /><br />
 `4.支持阿里巴巴图标库在线调用，自动同步图标` [阿里巴巴图标库](http://www.iconfont.cn/)<br /><br />
 `5.支持iframe嵌套第三方网站`[详细介绍](https://my.oschina.net/sunshineS/blog/1615716)<br /><br />
-`6.支持js动态可配CRUD,节约大量开发成本，配置字典接口自动匹配字典`<br /><br />
+`6.支持js动态可配CRUD和FORM,节约大量开发成本，配置字典接口自动匹配字典`<br /><br />
 `7.支持多种登录方式`<br /><br />
 `8.全局错误日志记录`<br /><br />
 `9.scss模块化开发`<br /><br />
@@ -35,6 +35,11 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-crud.png">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-grade.png">
+</p>
+
+**FORM**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-from.png">
 </p>
 
 **用户管理**
@@ -84,6 +89,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 - 权限验证
 - 第三方网站嵌套
 - CRUD(增删改查)
+- FORM(动态生成)
 - 阿里巴巴图标库(在线调用)
 - 系统管理
  - 用户管理
@@ -113,8 +119,8 @@ state:{
   ...
  }
 ```
-### CRUD使用说明————根据配置json文件自动生成CRUD，并且配置字典接口，自动匹配字典
-详细demo请看./src/page/table/index.vue实例
+### CRUD和FORM使用说明————根据配置json文件自动生成CRUD和FORM，并且配置字典接口，自动匹配字典
+详细demo请看./src/page/table/index.vue和./src/page/form/index.vue实例实例
 ```bash
 子定义操作按钮<br />
 <template slot-scope="scope">
@@ -133,6 +139,7 @@ js自动配置crud<br />
       width: "150",//表格的宽度
       fixed: true,//是否冻结列
       hide:true,//是否隐藏
+      span:12,//表单格栅显示的列
       type:'select', //select | radio | checkbox | date 默认为text
       visdiplay:true,//表单不显示
       overHidden: true,//超出省略号显示

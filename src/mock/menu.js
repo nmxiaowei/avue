@@ -39,6 +39,12 @@ export const menu = [{
   icon: 'icon-biaoge',
   children: []
 }, {
+  id: 9,
+  label: "表单CRUD",
+  href: '/form',
+  icon: 'icon-biaodan',
+  children: []
+}, {
   id: 7,
   label: "阿里图标",
   href: '/iconfont',
