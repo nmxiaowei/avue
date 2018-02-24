@@ -21,6 +21,12 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `9.scss模块化开发`<br /><br />
 `10.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
 
+**实例**
+<p align="center">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/form.gif">
+</p>
+
+
 **登录**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-login.png">
