@@ -23,7 +23,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 
 **登录**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-logins.png">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-login.png">
 </p>
 
 **错误日志记录**
