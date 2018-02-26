@@ -1,6 +1,7 @@
 
 const getters = {
     tag: state => state.tags.tag,
+    isCollapse: state => state.common.isCollapse,
     tagList: state => state.tags.tagList,
     tagWel: state => state.tags.tagWel,
     token: state => state.user.token,

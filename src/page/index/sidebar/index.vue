@@ -1,16 +1,14 @@
 <template>
-     <div class="menu pull-height">
-        <el-menu  
-        unique-opened  
-        :default-active="tag.value" 
-        class="el-menu-vertical-demo"  
-        background-color="#304156" 
-        text-color="#bfcbd9" 
-        active-text-color="#409EFF"
-        :collapse="isCollapse">
-            <SidebarItem :menu="menu"></SidebarItem>
-        </el-menu>
-     </div>
+      <el-menu  
+      unique-opened  
+      :default-active="tag.value" 
+      class="el-menu-vertical-demo"  
+      background-color="#304156" 
+      text-color="#bfcbd9" 
+      active-text-color="#409EFF"
+      :collapse="isCollapse">
+          <sidebar-item :menu="menu" :show="!isCollapse"></sidebar-item>
+      </el-menu>
 </template>
 
 <script>
@@ -22,11 +20,10 @@ export default {
   data() {
     return {};
   },
-  props: ["isCollapse"],
   created() {
     this.$store.dispatch("GetMenu").then(data => {});
   },
-  computed: mapGetters(["menu", "tag"]),
+  computed: mapGetters(["menu", "tag", "isCollapse"]),
   mounted() {},
   methods: {},
   components: { SidebarItem }

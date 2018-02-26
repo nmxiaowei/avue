@@ -5,7 +5,7 @@ import { baseUrl } from '@/config/env';
 const common = {
 
     state: {
-
+        isCollapse: false,
     },
     actions: {
         //获取字典公用类
@@ -24,7 +24,9 @@ const common = {
         }
     },
     mutations: {
-
+        SET_COLLAPSE: (state, action) => {
+            state.isCollapse = !state.isCollapse;
+        },
     }
 }
 export default common

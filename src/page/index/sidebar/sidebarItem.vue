@@ -8,14 +8,14 @@
       <el-submenu v-else :index="item.label" :key="item.name">
           <template slot="title">
               <i :class="item.icon"></i>
-              <span slot="title">{{item.label}}</span>
+              <span slot="title" :class="{display:!show}">{{item.label}}</span>
           </template>
           <template v-for="child in item.children">
               <el-menu-item :index="child.href" @click="open(child)" v-if="child.children.length==0">
                   <i :class="child.icon"></i>
                   <span slot="title">{{child.label}}</span>
               </el-menu-item>
-            <sidebarItem  v-else  :menu="[child]"></sidebarItem>
+           <sidebar-item  v-else  :menu="[child]" :show="show"></sidebar-item>
          </template>
       </el-submenu>
     </template>
@@ -24,13 +24,16 @@
 <script>
 import { resolveUrlPath } from "@/util/util";
 export default {
-  name: "sidebarItem",
+  name: "SidebarItem",
   data() {
     return {};
   },
   props: {
     menu: {
       type: Array
+    },
+    show: {
+      type: Boolean
     }
   },
   created() {},
@@ -47,6 +50,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
+.display {
+  display: none;
+}
 </style>
 

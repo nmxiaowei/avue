@@ -2,9 +2,7 @@
 	<div class="pull-height">
     <Top></Top>
 		<div class="index">
-			<div class="left pull-height">
-          <Sidebar :isCollapse="isCollapse"></Sidebar>
-			</div>
+      <Sidebar :isCollapse="isCollapse" class="left pull-height"></Sidebar>
 			<div class="right">
         <div class="nav">
             <i class="icon-daohanglanmoshi02 collapse" :class="[{ collapse_right: isCollapse }]" @click="showCollapse"></i>
@@ -23,16 +21,14 @@ import Sidebar from "./sidebar/";
 export default {
   name: "index",
   data() {
-    return {
-      isCollapse: false
-    };
+    return {};
   },
   created() {},
   mounted() {},
   props: [],
   methods: {
     showCollapse() {
-      this.isCollapse = !this.isCollapse;
+      this.$store.commit("SET_COLLAPSE");
     }
   },
   components: {
@@ -63,8 +59,8 @@ export default {
   min-height: 100%;
   background: #fff;
   overflow: hidden;
-  .left {
-    position: relative;
+  .left:not(.el-menu--collapse) {
+    width: 220px;
   }
   .right {
     padding-top: 50px;

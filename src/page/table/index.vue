@@ -1,6 +1,6 @@
 <template>
- <div class="table-container pull-height">
-    <div class="table-header">
+ <div class="table-container pull-chheight">
+  <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
       <el-button type="success" @click="handleExport" size="small"  v-if="permission.sys_crud_btn_export">导出excel</el-button>
       <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
@@ -25,6 +25,13 @@
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
     </template>
   </Crud>
+  <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
+    <el-input
+    type="textarea"
+    :autosize="{ minRows: 2, maxRows: 15}"
+    placeholder="请输入内容"
+    v-model="formJson">
+  </el-input>
   <el-dialog
   title="菜单"
   :visible.sync="grade.box"
@@ -52,11 +59,12 @@ export default {
   name: "table",
   data() {
     return {
-      tableOption: {}, //表格设置属性
+      tableOption: tableOption, //表格设置属性
       tableData: [], //表格的数据
       tablePage: 1,
       tableLoading: false,
       tabelObj: {},
+      formJson: "",
       page: {
         total: 0, //总页数
         currentPage: 1, //当前页数
@@ -69,8 +77,7 @@ export default {
     };
   },
   created() {
-    //初始化数据格式
-    this.tableOption = tableOption;
+    this.formJson = JSON.stringify(tableOption, null, 2);
     this.handleList();
   },
   watch: {},
@@ -80,6 +87,28 @@ export default {
   },
   props: [],
   methods: {
+    formate() {
+      let p = new Promise((resolve, reject) => {
+        resolve(JSON.parse(this.formJson));
+      });
+      p
+        .then(data => {
+          this.tableOption = data;
+          this.formJson = JSON.stringify(data, null, 2);
+          this.$message({
+            message: "数据加载成功",
+            type: "success"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            center: true,
+            dangerouslyUseHTMLString: true,
+            message: `JSON格式错误<br \>\n${err}`,
+            type: "error"
+          });
+        });
+    },
     /**
      * @title 权限更新
      *

@@ -1,17 +1,17 @@
 <template>
  <div class="from-container pull-chheight">
-  <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
+   <Form 
+   :formOption="formOption" 
+   :formSubmitText="formSubmitText"
+   @handleSubmit="handleSubmit" 
+   ></Form>
+    <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
     <el-input
     type="textarea"
     :autosize="{ minRows: 2, maxRows: 15}"
     placeholder="请输入内容"
     v-model="formJson">
   </el-input>
-   <Form 
-   :formOption="formOption" 
-   :formSubmitText="formSubmitText"
-   @handleSubmit="handleSubmit" 
-   ></Form>
  </div>
 </template>
 
