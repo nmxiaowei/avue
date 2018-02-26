@@ -14,8 +14,9 @@
         <li><span><i class="icon-weixin"></i><span class="icon-name">icon-weixin</span></span></li>
         <li><span><i class="icon-qq"></i><span class="icon-name">icon-qq</span></span></li>
         <li><span><i class="icon-tuichu"></i><span class="icon-name">icon-tuichu</span></span></li>
-
-        
+        <li><span><i class="icon-jiaoseguanli"></i><span class="icon-name">icon-jiaoseguanli</span></span></li>
+        <li><span><i class="icon-yonghuguanli"></i><span class="icon-name">icon-yonghuguanli</span></span></li>
+        <li><span><i class="icon-caidanguanli"></i><span class="icon-name">icon-caidanguanli</span></span></li>
     </ul>
     <img class="iconfon-explace" src="http://oetrwxnhv.bkt.clouddn.com/avue-iconfont.png" alt="">
 </div>

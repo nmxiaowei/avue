@@ -61,7 +61,11 @@ export default {
     //初始化form表单
     this.formInit();
   },
-  watch: {},
+  watch: {
+    formOption: function(n, o) {
+      this.rulesInit();
+    }
+  },
   mounted() {},
   computed: {},
   props: {
@@ -78,6 +82,7 @@ export default {
   methods: {
     ...mapActions(["GetDic"]),
     rulesInit() {
+      this.formRules = {};
       this.formOption.column.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });

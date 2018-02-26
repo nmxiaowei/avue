@@ -1,5 +1,5 @@
 <template>
-  <div class="crud-container">
+  <div class="crud-container pull-auto">
       <!-- <div class="crud-header">
         <el-button type="primary" @click="handleAdd" size="small">新 增</el-button>
         <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
@@ -130,6 +130,11 @@ export default {
     //初始化字典
     this.dicInit();
   },
+  wathch: {
+    tableOption: function(n, o) {
+      this.rulesInit();
+    }
+  },
   mounted() {},
   props: {
     beforeClose: Function,
@@ -168,6 +173,7 @@ export default {
   methods: {
     ...mapActions(["GetDic"]),
     rulesInit() {
+      this.tableFormRules = {};
       this.tableOption.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
