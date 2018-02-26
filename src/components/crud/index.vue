@@ -1,5 +1,5 @@
 <template>
-  <div class="crud-container pull-height">
+  <div class="crud-container">
       <!-- <div class="crud-header">
         <el-button type="primary" @click="handleAdd" size="small">新 增</el-button>
         <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
@@ -129,8 +129,6 @@ export default {
     this.rulesInit();
     //初始化字典
     this.dicInit();
-    //form表单初始化
-    this.formInit();
   },
   mounted() {},
   props: {
@@ -225,6 +223,8 @@ export default {
     },
     // 新增
     handleAdd() {
+      //form表单初始化
+      this.formInit();
       this.boxType = 0;
       if (typeof this.beforeClose === "function") this.beforeOpen(this.show);
       else this.show();

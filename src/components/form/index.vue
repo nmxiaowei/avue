@@ -1,5 +1,5 @@
 <template>
- <div class="from-container pull-height">
+ <div class="from-container pull-auto">
     <el-form  ref="form" :model="form" label-width="80px" :rules="formRules">
       <el-row :gutter="20" :span="24">
         <template v-for="(column,index) in formOption.column">

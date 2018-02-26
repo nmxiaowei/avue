@@ -141,12 +141,11 @@ table {
 .padding{
 	padding: 0 !important;
 }
-.padding1{
-	padding: 10px !important;
-}
+
 .margin{
 	margin: 0 !important;
 }
+
 .pull-right {
 	float: right!important;;
 }
@@ -164,8 +163,15 @@ table {
 .pull-overflow{
 	overflow: hidden;
 }
+.pull-auto{
+	height: auto;
+	overflow: hidden;
+}
 .pull-height{
 	height: 100%;
+}
+.pull-chheight{
+	height: calc( 100% - 60px );
 }
 .pull-fixed{
   position: fixed;

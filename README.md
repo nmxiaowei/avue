@@ -26,7 +26,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 
 **实例**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/form.gif">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue.gif">
 </p>
 
 
