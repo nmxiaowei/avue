@@ -1,7 +1,9 @@
-### <font>avue只是刚起步，很多功能还在开发中敬请期待......</font>
+### <font>avue只是刚起步，完成了大部分常用的功能，更多新颖的功能还在开发中敬请期待......</font>
 简体中文
 欢迎加入QQ交流群，互相学习  
 一键加群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5zWEvg5"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png"></a><br />
+
+演示地址:[http://122.4.205.228:7777](http://122.4.205.228:7777)<br />
 
 github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)<br />
 
@@ -20,6 +22,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `8.全局错误日志记录`<br /><br />
 `9.scss模块化开发`<br /><br />
 `10.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
+`11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
 
 **实例**
 <p align="center">
