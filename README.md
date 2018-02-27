@@ -32,58 +32,58 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 
 **登录**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-login.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-login.png">
 </p>
 
 **错误日志记录**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-errlog.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-errlog.png">
 </p>
 
 **CRUD**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-crud.png">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-grade.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-crud.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-grade.png">
 </p>
 
 **FORM**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-form.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-form.png">
 </p>
 
 **用户管理**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-user.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-user.png">
 </p>
 
 **角色管理**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-role.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-role.png">
 </p>
 
 **菜单设置**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-menu.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-menu.png">
 </p>
 
 **阿里巴巴图标库(在线调用)**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-ali.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-ali.png">
 </p>
 
 **登录页面SSR渲染**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/login-ssr.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/login-ssr.png">
 </p>
 
 **主页**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-index.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-index.png">
 </p>
 
 **第三方网站**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-iframe.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-iframe.png">
 </p>
 
 ## 功能
