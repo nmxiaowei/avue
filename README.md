@@ -5,9 +5,9 @@
 
 演示地址:[http://122.4.205.228:7777](http://122.4.205.228:7777)<br />
 
-github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)<br />
-
 码云地址:[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)<br />
+
+github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)<br />
 
 ## 简介
 
