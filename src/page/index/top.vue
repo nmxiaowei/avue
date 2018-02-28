@@ -5,37 +5,36 @@
 		</div>
 		<h1 class="header-title"></h1>
 		<div class="header-button is-right">
-        <small>{{time | dateFormat}}</small>&nbsp;
-        <span>欢迎使用 ,&nbsp;</span>
-        <small>{{userInfo.username}}</small>
-        <span style="padding:0 5px 0 8px">
-            <i class="icon-tuichu" @click="logout"></i>
-        </span>
+        <i class="icon-bofangqi-suoping header-item"></i>
+        <i class="icon-quanping header-item" @click="handleScreen"></i>
+         <el-dropdown>
+          <span class="el-dropdown-link">
+            {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="logout">退出系统</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
 		</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { fullscreenToggel } from "@/util/util";
 export default {
   name: "top",
   data() {
-    return {
-      time: new Date()
-    };
+    return {};
   },
   filters: {},
-  created() {
-    this.initDate();
-  },
+  created() {},
   computed: mapState({
     userInfo: state => state.user.userInfo
   }),
   methods: {
-    initDate() {
-      setInterval(() => {
-        this.time = new Date();
-      }, 1000);
+    handleScreen() {
+      fullscreenToggel();
     },
     logout() {
       this.$confirm("是否退出系统, 是否继续?", "提示", {

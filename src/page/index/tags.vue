@@ -1,19 +1,38 @@
 <template>
   <div class="tags-container">
-       <div class="tags-box" @mousewheel="hadelMousewheel">
+      <!-- <div class="tags-breadcrumb">
+           <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
+            <el-breadcrumb separator="/" class="tags-breadcrumb-list">
+              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+              <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+              <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+            </el-breadcrumb>
+      </div> -->
+       <div class="tags-box" @mousewheel="hadelMousewheel" @touchmove="hadelMousewheel" @touchstart="hadelMousestart">
           <div class="tags-list" ref="tagsList">
-              <el-tag  @contextmenu.prevent.native="openMenu(item,$event)" :type="nowTagValue==item.value?'success':'info'" v-for="(item,index) in tagList" :key="index" @click.native="openUrl(item.value,item.label,item.num)">
-              {{item.label}}
+            <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
+              <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
+              <span class="tag-text">{{item.label}}</span> 
               <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
-            </el-tag>
+
+            </div>
           </div>
-        </div>
-        <h3 class="title pull-right">{{tag.label}}</h3>
-         <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+           <el-dropdown class="tags-menu pull-right">
+            <el-button type="primary" size="mini">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item  @click.native="closeOthersTags">关闭其他</el-dropdown-item>
+              <el-dropdown-item  @click.native="closeAllTags">关闭全部</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>       
+        <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
           <li @click="closeTag(selectedTag)">关闭</li>
           <li @click="closeOthersTags">关闭其他</li>
           <li @click="closeAllTags">关闭全部</li>
-        </ul>
+        </ul> -->
     </div>
 </template>
 <script>
@@ -24,6 +43,10 @@ export default {
   data() {
     return {
       visible: false,
+      startX: 0,
+      startY: 0,
+      endX: 0,
+      endY: 0,
       top: 0,
       left: 0,
       selectedTag: {}
@@ -41,22 +64,52 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["tagWel", "tag", "tagList"]),
+    ...mapGetters(["tagWel", "tagList", "isCollapse", "tag"]),
     nowTagValue: function() {
-      return this.tag.value;
+      const value = this.$route.query.src
+        ? this.$route.query.src
+        : this.$route.path;
+      this.$store.commit("SET_TAG", value);
+      return value;
     },
     tagListNum: function() {
       return this.tagList.length != 0;
     }
   },
   methods: {
+    showCollapse() {
+      this.$store.commit("SET_COLLAPSE");
+    },
+    hadelMousestart(e) {
+      this.startX = e.changedTouches[0].pageX;
+      this.startY = e.changedTouches[0].pageY;
+    },
     hadelMousewheel(e) {
-      var left = Number(this.$refs.tagsList.style.left.replace("px", ""));
-      var step = 80;
-      if (e.deltaY > 0 && left > -(this.tagList.length - 8) * step) {
-        this.$refs.tagsList.style.left = left - step + "px";
-      } else if (e.deltaY < 0 && left < 0) {
-        this.$refs.tagsList.style.left = left + step + "px";
+      const left = Number(this.$refs.tagsList.style.left.replace("px", ""));
+      const step = 80;
+      const boundarystart = 0,
+        boundaryend = -(this.tagList.length - 7) * step;
+      if (!e.deltaY) {
+        //获取滑动屏幕时的X,Y
+        this.endX = e.changedTouches[0].pageX;
+        this.endY = e.changedTouches[0].pageY;
+        //获取滑动距离
+        let distanceX = this.endX - this.startX;
+        let distanceY = this.endY - this.startY;
+        //判断滑动方向——向右滑动
+        distanceX = distanceX * 0.08;
+        if (distanceX > 0 && left < boundarystart) {
+          this.$refs.tagsList.style.left = left + distanceX + "px";
+        } else if (distanceX < 0 && left > boundaryend) {
+          this.$refs.tagsList.style.left = left + distanceX + "px";
+        }
+      } else {
+        this.endY = e.deltaY;
+        if (this.endY > 0 && left > boundaryend) {
+          this.$refs.tagsList.style.left = left - step + "px";
+        } else if (this.endY < 0 && left < boundarystart) {
+          this.$refs.tagsList.style.left = left + step + "px";
+        }
       }
     },
     openMenu(tag, e) {
@@ -69,8 +122,7 @@ export default {
       this.top = e.clientY;
     },
     closeOthersTags() {
-      this.$router.push(this.selectedTag.value);
-      this.$store.commit("DEL_TAG_OTHER", this.selectedTag);
+      this.$store.commit("DEL_TAG_OTHER");
     },
     closeMenu() {
       this.visible = false;

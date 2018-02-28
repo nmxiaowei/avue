@@ -21,8 +21,8 @@ const navs = {
         tagList: getStore({ name: 'tagList' }) || [],
         tag: getStore({ name: 'tag' }) || tagObj,
         tagWel: {
-            label: "欢迎页面",
-            value: "/wel"
+            label: "首页",
+            value: "/wel/"
         }
     },
     actions: {
@@ -41,6 +41,15 @@ const navs = {
             state.tagList = setFistTag(state.tagList);
             setStore({ name: 'tagList', content: state.tagList, type: 'session' })
         },
+        SET_TAG: (state, value) => {
+            for (const [i, v] of state.tagList.entries()) {
+                if (v.value === value) {
+                    state.tag = state.tagList[i];
+                    setStore({ name: 'tag', content: state.tag, type: 'session' })
+                    break
+                }
+            }
+        },
         DEL_ALL_TAG: (state, action) => {
             state.tag = tagObj;
             state.tagList = [];
@@ -49,7 +58,7 @@ const navs = {
         },
         DEL_TAG_OTHER: (state, action) => {
             for (const [i, v] of state.tagList.entries()) {
-                if (v.value === action.value) {
+                if (v.value === state.tag.value) {
                     state.tagList = state.tagList.slice(i, i + 1)
                     state.tag = state.tagList[0];
                     state.tagList[0].close = false;

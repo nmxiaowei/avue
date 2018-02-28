@@ -1,5 +1,5 @@
 <template>
-    <div class="errlog-container pull-height">
+    <div class="errlog-container pull-chheight">
         <!-- <errorA></errorA> -->
         <div v-for="(err,index) in errLog" :key="index" class="errlog-list">
             <p class="errlog-item"><el-tag type="info">地址</el-tag><span>{{err.url}}</span></p>

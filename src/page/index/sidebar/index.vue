@@ -3,8 +3,8 @@
       unique-opened  
       :default-active="tag.value" 
       class="el-menu-vertical-demo"  
-      background-color="#304156" 
-      text-color="#bfcbd9" 
+      background-color="#495060" 
+      text-color="#c9cbd0" 
       active-text-color="#409EFF"
       :collapse="isCollapse">
           <sidebar-item :menu="menu" :show="!isCollapse"></sidebar-item>

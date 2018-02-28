@@ -1,54 +1,66 @@
 .tags-container {
   position: relative;
-  margin-left: 35px;
-  padding: 0 12px;
-  height: 50px;
-  line-height: 50px;
+  box-sizing: border-box;
   overflow: hidden;
+  .tags-breadcrumb{
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 60px;
+  }
+  .tags-breadcrumb-list{
+    padding: 0 25px;
+  }
   .tags-box{
+    display: flex;
+    align-items: center;
     position: relative;
-    padding: 0 12px;
-    width: calc(100% - 150px);
-    height: 50px;
+    width: 100%;
+    height: 40px;
     overflow:hidden;
-    display: inline-block;
+    background: #f0f0f0;
+    
+  }
+  .tag-collapse{
+    font-size: 36px !important;
+  }
+  .tag-collapse.tag-collapse_right {
+    transform: rotate(90deg);
   }
   .tags-list{
-    position: absolute;
-    left: 0;
-    top:0;
-    width:200%;
+    flex: 1;
+    position: relative;
+    padding: 0 16px;
   }
-  .el-tag {
-    margin-right: 8px;
-    border-radius: 2px;
-    min-width: 90px;
-    text-align: center;
-    cursor: pointer;
+  .tag-item-icon{
+    color: #eee;
+    font-size: 10px !important;
   }
-  .el-tag--success {
-    color:  $mainColor;
-    background-color: $mainBg;
-    border-color: $mainBg;
+  .tag-item-icon.is-active{
+    color: $mainBg;
   }
-  .el-tag--info {
-    color: $mainDisColor;
-    background-color: $mainDisBg;
-    border-color: $mainDisBg;
+  .tag-item {
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      margin: 2px 4px 2px 0;
+      padding: 0 12px;
+      border: 1px solid #e9eaec;
+      border-radius: 3px;
+      background: #fff;
+      color: #495060!important;
+      font-size: 12px;
+      vertical-align: middle;
+      opacity: 1;
+      overflow: hidden;
+      cursor: pointer;
   }
-  .el-tag--success .el-tag__close,
-  .el-tag--success .el-icon-close {
-    color: #fff;
+  .tag-item:hover {
+    opacity: .85;
   }
-  .el-tag--info .el-tag__close,
-  .el-tag--info .el-icon-close {
-    color: $mainDisColor;
-  }
-
-  .title {
-    color: #666;
-    letter-spacing: 1px;
-    font-size: 16px;
+  .tags-menu{
+   margin-right: 5px;
+   box-sizing: border-box;
   }
 }
 .contextmenu {
