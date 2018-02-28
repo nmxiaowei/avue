@@ -51,6 +51,9 @@ const navs = {
             for (const [i, v] of state.tagList.entries()) {
                 if (v.value === action.value) {
                     state.tagList = state.tagList.slice(i, i + 1)
+                    state.tag = state.tagList[0];
+                    state.tagList[0].close = false;
+                    setStore({ name: 'tag', content: state.tag, type: 'session' })
                     setStore({ name: 'tagList', content: state.tagList, type: 'session' })
                     break
                 }
