@@ -66,6 +66,8 @@ export default {
     padding-top: 50px;
     position: relative;
     flex: 1;
+    overflow: auto;
+    box-sizing: border-box;
   }
   .main {
     overflow-y: scroll;
