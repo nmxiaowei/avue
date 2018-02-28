@@ -12,7 +12,7 @@ import errorPage404 from '@/components/errorPage/404.vue';
 const _import = require('./_import');
 Vue.use(VueRouter);
 export default new VueRouter({
-	mode: 'history',
+	// mode: 'history',
 	strict: process.env.NODE_ENV !== 'production',
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
@@ -36,7 +36,7 @@ export const asyncRouterMap = [
 	{
 		path: '/',
 		name: '主页',
-		redirect: '/wel/'
+		redirect: '/wel'
 	},
 	{
 		path: '/myiframe',
@@ -58,7 +58,7 @@ export const asyncRouterMap = [
 		children: [
 			{
 				path: '/',
-				name: '欢迎主页',
+				name: '首页',
 				component: _import('wel')
 			}
 		]
