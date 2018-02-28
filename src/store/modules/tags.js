@@ -23,7 +23,11 @@ const navs = {
         tagWel: {
             label: "首页",
             value: "/wel/"
-        }
+        },
+        tagCurrentPath: [{
+            label: "首页",
+            value: "/wel/"
+        }],
     },
     actions: {
 

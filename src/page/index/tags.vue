@@ -1,22 +1,20 @@
 <template>
   <div class="tags-container">
-      <!-- <div class="tags-breadcrumb">
+      <div class="tags-breadcrumb">
            <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
-            <el-breadcrumb separator="/" class="tags-breadcrumb-list">
-              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-              <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-              <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-              <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-            </el-breadcrumb>
-      </div> -->
-       <div class="tags-box" @mousewheel="hadelMousewheel" @touchmove="hadelMousewheel" @touchstart="hadelMousestart">
-          <div class="tags-list" ref="tagsList">
-            <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
-              <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
-              <span class="tag-text">{{item.label}}</span> 
-              <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
-
+           <Breadcrumb  class="tags-breadcrumb-list"></Breadcrumb>
+      </div>
+       <div class="tags-box">
+         
+          <div class="tags-list" ref="tagsList" >
+            <div  class="tag-scroll" @mousewheel="hadelMousewheel" @touchmove="hadelMousewheel" @touchstart="hadelMousestart">
+              <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
+                <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
+                <span class="tag-text">{{item.label}}</span> 
+                <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
+              </div>
             </div>
+           
           </div>
            <el-dropdown class="tags-menu pull-right">
             <el-button type="primary" size="mini">
@@ -38,8 +36,12 @@
 <script>
 import { resolveUrlPath } from "@/util/util";
 import { mapState, mapGetters } from "vuex";
+import Breadcrumb from "./breadcrumb";
 export default {
   name: "tags",
+  components: {
+    Breadcrumb
+  },
   data() {
     return {
       visible: false,

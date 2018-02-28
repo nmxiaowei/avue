@@ -46,7 +46,7 @@ export default {
     width: 200px;
   }
   .right {
-    padding-top: 45px;
+    padding-top: 102px;
     position: relative;
     flex: 1;
     overflow: auto;

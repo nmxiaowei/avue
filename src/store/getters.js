@@ -3,6 +3,7 @@ const getters = {
     tag: state => state.tags.tag,
     isCollapse: state => state.common.isCollapse,
     tagList: state => state.tags.tagList,
+    tagCurrentPath: state => state.tags.tagCurrentPath,
     tagWel: state => state.tags.tagWel,
     token: state => state.user.token,
     roles: state => state.user.roles,
