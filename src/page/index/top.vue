@@ -5,8 +5,12 @@
 		</div>
 		<h1 class="header-title"></h1>
 		<div class="header-button is-right">
-        <i class="icon-bofangqi-suoping header-item"></i>
-        <i class="icon-quanping header-item" @click="handleScreen"></i>
+        <el-tooltip class="item" effect="dark" content="锁屏" placement="bottom">
+            <i class="icon-bofangqi-suoping header-item" @click="handleLock"></i>
+        </el-tooltip>
+         <el-tooltip class="item" effect="dark" content="全屏" placement="bottom">
+           <i class="icon-quanping header-item" @click="handleScreen"></i>
+         </el-tooltip>
          <el-dropdown>
           <span class="el-dropdown-link">
             {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -20,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { fullscreenToggel } from "@/util/util";
 export default {
   name: "top",
@@ -29,10 +33,18 @@ export default {
   },
   filters: {},
   created() {},
-  computed: mapState({
-    userInfo: state => state.user.userInfo
-  }),
+  computed: {
+    ...mapState({
+      userInfo: state => state.user.userInfo
+    })
+  },
   methods: {
+    handleLock() {
+      this.$store.commit("SET_LOCK");
+      setTimeout(() => {
+        this.$router.push({ path: "/lock" });
+      }, 100);
+    },
     handleScreen() {
       fullscreenToggel();
     },

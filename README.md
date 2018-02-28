@@ -24,6 +24,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `10.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
 `11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
 
+
 **实例**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/form.gif">
@@ -90,6 +91,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 ```
 - 全局错误日志记录
 - vuex持久化存储
+- 锁屏
 - SSR渲染页面
 - 登录/注销
  - 用户名登录

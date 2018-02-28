@@ -1,5 +1,5 @@
 <template>
-	<div class="pull-height">
+	<div class="pull-height animated" :class="{'zoomOutUp': isLock}">
     <Top></Top>
 		<div class="index">
       <Sidebar class="left pull-height"></Sidebar>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Tags from "./tags";
 import Top from "./top";
 import Sidebar from "./sidebar/";
@@ -22,7 +23,7 @@ export default {
   },
   created() {},
   mounted() {},
-  computed: {},
+  computed: mapGetters(["isLock"]),
   props: [],
   methods: {},
   components: {

@@ -8,12 +8,15 @@ function hasPermission(roles, permissionRoles) {
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 const whiteList = ['/login', '/404', '/401']
+const lockPage = '/lock'
 router.addRoutes(asyncRouterMap); // 动态添加可访问路由表
 router.beforeEach((to, from, next) => {
     store.commit('SET_TAG', from.query.src ? from.query.src : from.path);
     if (getToken()) { // determine if there has token
         /* has token*/
-        if (to.path === '/login') {
+        if (store.getters.isLock && to.path != lockPage) {
+            next({ path: lockPage })
+        } else if (to.path === '/login') {
             next({ path: '/' })
         } else {
             if (store.getters.roles.length === 0) {

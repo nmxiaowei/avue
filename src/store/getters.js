@@ -2,6 +2,7 @@
 const getters = {
     tag: state => state.tags.tag,
     isCollapse: state => state.common.isCollapse,
+    isLock: state => state.common.isLock,
     tagList: state => state.tags.tagList,
     tagCurrentPath: state => state.tags.tagCurrentPath,
     tagWel: state => state.tags.tagWel,

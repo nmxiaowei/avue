@@ -6,6 +6,7 @@ const common = {
 
     state: {
         isCollapse: false,
+        isLock: getStore({ name: 'isLock' }) || false,
     },
     actions: {
         //获取字典公用类
@@ -26,6 +27,14 @@ const common = {
     mutations: {
         SET_COLLAPSE: (state, action) => {
             state.isCollapse = !state.isCollapse;
+        },
+        SET_LOCK: (state, action) => {
+            state.isLock = true;
+            setStore({ name: 'isLock', content: state.isLock })
+        },
+        CLEAR_LOCK: (state, action) => {
+            state.isLock = false;
+            setStore({ name: 'isLock', content: state.isLock })
         },
     }
 }
