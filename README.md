@@ -18,7 +18,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `4.支持阿里巴巴图标库在线调用，自动同步图标` [阿里巴巴图标库](http://www.iconfont.cn/)<br /><br />
 `5.支持iframe嵌套第三方网站`[详细介绍](https://my.oschina.net/sunshineS/blog/1615716)<br /><br />
 `6.支持js动态可配CRUD和FORM,节约大量开发成本，配置字典接口自动匹配字典`<br /><br />
-`7.支持多种登录方式`<br /><br />
+`7.支持多种登录方式,本地验证码校验和服务端验证码校验`<br /><br />
 `8.全局错误日志记录`<br /><br />
 `9.scss模块化开发`<br /><br />
 `10.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />

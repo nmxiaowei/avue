@@ -109,4 +109,24 @@ export default {
 .login-form {
   margin: 20px 0;
 }
+.login-code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 0 10px;
+}
+.login-code-img {
+  width: 100px;
+  height: 43px;
+  background-color: #eee;
+  border: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-indent: 2px;
+  text-align: center;
+}
+.login-code-icon {
+}
 </style>

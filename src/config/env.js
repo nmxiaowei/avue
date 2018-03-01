@@ -12,12 +12,13 @@
 
 
 let baseUrl = '';
-let iconfontVersion = '567566_e5xid5qooinklnmi';
-let iconfontUrl = `//at.alicdn.com/t/font_${iconfontVersion}.css`;
+let iconfontVersion = 'sxxk4dft8egq4cxr';
+let iconfontUrl = `//at.alicdn.com/t/font_567566_${iconfontVersion}.css`;
+let codeUrl = `${baseUrl}/code`
 if (process.env.NODE_ENV == 'development') {
 	baseUrl = `http://localhost`;
 } else if (process.env.NODE_ENV == 'production') {
 	baseUrl = `http://localhost`;
 }
 
-export { baseUrl, iconfontUrl }
+export { baseUrl, iconfontUrl, codeUrl }

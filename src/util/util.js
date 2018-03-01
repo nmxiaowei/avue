@@ -66,6 +66,10 @@ export const findParent = (menu, id) => {
         }
     };
 }
+
+/**
+ * 总体路由处理器
+ */
 export const resolveUrlPath = (url) => {
     let reqUrl = url;
     if (url.indexOf("http") != -1) {
@@ -128,3 +132,14 @@ export const findArray = (dic, value) => {
     }
     return -1;
 }
+/**
+ * 生成随机len位数字
+ */
+export const randomLenNum = (len, date) => {
+    let random = '';
+    random = Math.ceil(Math.random() * 100000000000000).toString().substr(0, len ? len : 4);
+    if (date) random = random + Date.now();
+    return random;
+}
+
+

@@ -2,7 +2,7 @@ import { baseUrl, khglUrl, dicUrl } from '@/config/env'
 import request from '@/router/axios'
 import { userInfo, tableData } from '@/mock/user'
 import { menu, menuAll } from '@/mock/menu'
-export const loginByUsername = (username, password) => {
+export const loginByUsername = (username, password, code, redomStr) => {
     return new Promise((resolve, reject) => {
         resolve({ data: new Date().getTime() });
     })

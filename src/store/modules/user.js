@@ -15,7 +15,7 @@ const user = {
         //根据用户名登录
         LoginByUsername({ commit, state, dispatch }, userInfo) {
             return new Promise((resolve, reject) => {
-                loginByUsername(userInfo.username, userInfo.password).then(res => {
+                loginByUsername(userInfo.username, userInfo.password, userInfo.code, userInfo.redomStr).then(res => {
                     const data = res.data;
                     commit('SET_TOKEN', data);
                     setToken(data);
