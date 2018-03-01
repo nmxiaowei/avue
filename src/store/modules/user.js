@@ -18,6 +18,7 @@ const user = {
                 loginByUsername(userInfo.username, userInfo.password, userInfo.code, userInfo.redomStr).then(res => {
                     const data = res.data;
                     commit('SET_TOKEN', data);
+                    commit('CLEAR_LOCK');
                     setToken(data);
                     resolve();
                 })
@@ -29,6 +30,7 @@ const user = {
                 loginByUsername(userInfo.phone, userInfo.code).then(res => {
                     const data = res.data;
                     commit('SET_TOKEN', data);
+                    commit('CLEAR_LOCK');
                     setToken(data);
                     resolve();
                 })
