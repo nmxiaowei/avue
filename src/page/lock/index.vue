@@ -1,8 +1,8 @@
 <template>
     <div class="lock-container pull-height">
-      <div class="lock-form  animated bounceInDown">
-            <h3 class="text-white">{{userInfo.username}}</h3>
-           <el-input placeholder="请输入登录密码"  class="input-with-select">
+      <div class="lock-form  animated bounceInDown" :class="{'bounceOut':pass}">
+          <h3 class="text-white">{{userInfo.username}}——<small>默认密码:avue</small></h3>
+           <el-input placeholder="请输入登录密码" type="password" class="input-with-select animated" v-model="passwd" :class="{'wobble':passwdError}">
              <el-button slot="append" icon="icon-bofangqi-suoping" @click="handleLogin" ></el-button>
            </el-input>
       </div>
@@ -13,7 +13,11 @@ import { mapGetters, mapState } from "vuex";
 export default {
   name: "lock",
   data() {
-    return {};
+    return {
+      passwd: "",
+      passwdError: false,
+      pass: false
+    };
   },
   created() {},
   mounted() {},
@@ -26,8 +30,23 @@ export default {
   props: [],
   methods: {
     handleLogin() {
-      this.$store.commit("CLEAR_LOCK");
-      this.$router.push({ path: this.tag.value || "/" });
+      if (this.passwd != "avue") {
+        this.passwd = "";
+        this.$message({
+          message: "解锁密码错误,默认为avue",
+          type: "error"
+        });
+        this.passwdError = true;
+        setTimeout(() => {
+          this.passwdError = false;
+        }, 1000);
+        return;
+      }
+      this.pass = true;
+      setTimeout(() => {
+        this.$store.commit("CLEAR_LOCK");
+        this.$router.push({ path: this.tag.value || "/" });
+      }, 1000);
     }
   },
   components: {}
