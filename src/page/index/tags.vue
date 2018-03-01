@@ -7,7 +7,13 @@
        <div class="tags-box">
          
           <div class="tags-list" ref="tagsList" >
-            <div  class="tag-scroll" @mousewheel="hadelMousewheel" @touchmove="hadelMousewheel" @touchstart="hadelMousestart">
+            <div  class="tag-scroll" @mousewheel="hadelMousewheel" 
+             @mouseup="hadelMouseUp" 
+             @mousemove="hadelMousewheel" 
+             @mousedown="hadelMousestart" 
+             @touchup="hadelMouseUp" 
+             @touchmove="hadelMousewheel" 
+             @touchstart="hadelMousestart">
               <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
                 <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
                 <span class="tag-text">{{item.label}}</span> 
@@ -45,6 +51,7 @@ export default {
   data() {
     return {
       visible: false,
+      lock: false,
       startX: 0,
       startY: 0,
       endX: 0,
@@ -82,36 +89,58 @@ export default {
     showCollapse() {
       this.$store.commit("SET_COLLAPSE");
     },
+    hadelMouseUp(e) {
+      this.lock = false;
+    },
     hadelMousestart(e) {
-      this.startX = e.changedTouches[0].pageX;
-      this.startY = e.changedTouches[0].pageY;
+      this.lock = true;
+      if (e.clientX && e.clientY) {
+        this.startX = e.clientX;
+        this.startY = e.clientY;
+      } else {
+        this.startX = e.changedTouches[0].pageX;
+        this.startY = e.changedTouches[0].pageY;
+      }
     },
     hadelMousewheel(e) {
       const left = Number(this.$refs.tagsList.style.left.replace("px", ""));
-      const step = 80;
+      const step = 100; //一个tag长度
+      const len = 10; //tag的个数
       const boundarystart = 0,
-        boundaryend = -(this.tagList.length - 7) * step;
-      if (!e.deltaY) {
-        //获取滑动屏幕时的X,Y
-        this.endX = e.changedTouches[0].pageX;
-        this.endY = e.changedTouches[0].pageY;
-        //获取滑动距离
-        let distanceX = this.endX - this.startX;
-        let distanceY = this.endY - this.startY;
-        //判断滑动方向——向右滑动
-        distanceX = distanceX * 0.08;
-        if (distanceX > 0 && left < boundarystart) {
-          this.$refs.tagsList.style.left = left + distanceX + "px";
-        } else if (distanceX < 0 && left > boundaryend) {
-          this.$refs.tagsList.style.left = left + distanceX + "px";
-        }
-      } else {
+        boundaryend = -(this.tagList.length - len) * step;
+      //鼠标滑轮滚动
+      if (e.deltaY) {
         this.endY = e.deltaY;
         if (this.endY > 0 && left > boundaryend) {
           this.$refs.tagsList.style.left = left - step + "px";
         } else if (this.endY < 0 && left < boundarystart) {
           this.$refs.tagsList.style.left = left + step + "px";
         }
+        return;
+      }
+      if (!this.lock) {
+        return;
+      }
+      //鼠标滑动
+      if (e.clientX && e.clientY) {
+        this.endX = e.clientX;
+        this.endY = e.clientY;
+        //触摸屏滑动
+      } else {
+        //获取滑动屏幕时的X,Y
+        this.endX = e.changedTouches[0].pageX;
+        this.endY = e.changedTouches[0].pageY;
+      }
+      //获取滑动距离
+      let distanceX = this.endX - this.startX;
+      let distanceY = this.endY - this.startY;
+      //判断滑动方向——向右滑动
+      distanceX = distanceX * 0.08;
+      if (distanceX > 0 && left <= boundarystart) {
+        this.$refs.tagsList.style.left = left + distanceX + "px";
+        //判断滑动方向——向左滑动
+      } else if (distanceX < 0 && left >= boundaryend) {
+        this.$refs.tagsList.style.left = left + distanceX + "px";
       }
     },
     openMenu(tag, e) {
