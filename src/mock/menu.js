@@ -35,25 +35,25 @@ export const menu = [{
 }, {
   id: 6,
   label: "表格CRUD",
-  href: '/table',
+  href: '/table/',
   icon: 'icon-biaoge',
   children: []
 }, {
   id: 9,
   label: "表单CRUD",
-  href: '/form',
+  href: '/form/',
   icon: 'icon-biaodan',
   children: []
 }, {
   id: 7,
   label: "阿里图标",
-  href: '/iconfont',
+  href: '/iconfont/',
   icon: 'icon-changyonglogo27',
   children: []
 }, {
   id: 8,
   label: "错误日志",
-  href: '/errlog',
+  href: '/errlog/',
   icon: 'icon-cuowu',
   children: []
 }, {
@@ -64,20 +64,20 @@ export const menu = [{
     {
       id: 10,
       label: "用户管理",
-      href: '/admin/user',
+      href: '/admin/user/',
       icon: 'icon-yonghuguanli',
       children: []
     }, {
       id: 11,
       label: "角色管理",
-      href: '/admin/role',
+      href: '/admin/role/',
       icon: 'icon-jiaoseguanli',
       children: []
     },
     {
       id: 12,
       label: "菜单管理",
-      href: '/admin/menu',
+      href: '/admin/menu/',
       icon: 'icon-caidanguanli',
       children: []
     }
