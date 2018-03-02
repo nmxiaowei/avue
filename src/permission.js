@@ -2,6 +2,8 @@ import router from './router/router'
 import store from './store'
 import { getToken } from '@/util/auth'
 import { vaildUtil } from '@/util/yun';
+import { setTitle } from '@/util/util';
+import { validatenull } from '@/util/validate';
 import { asyncRouterMap } from '@/router/router'
 function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
@@ -42,3 +44,47 @@ router.beforeEach((to, from, next) => {
     }
 })
 
+//寻找子菜单的父类
+function findMenuParent(tagCurrent, tag, tagWel) {
+    let index = -1;
+    tagCurrent.forEach((ele, i) => {
+        if (ele.value == tag.value) {
+            index = i;
+        }
+    })
+    if (tag.value == tagWel.value) {//判断是否为首页
+        tagCurrent = [tagWel];
+    } else if (index != -1) {//判断是否存在了
+        tagCurrent.splice(index, tagCurrent.length - 1);
+    } else {//其他操作
+        let currentPathObj = store.getters.menu.filter(item => {
+            if (item.children.length == 1) {
+                return item.children[0].href === tag.value;
+            } else {
+                let i = 0;
+                let childArr = item.children;
+                let len = childArr.length;
+                while (i < len) {
+                    if (childArr[i].href === tag.value) {
+                        return true;
+                    }
+                    i++;
+                }
+                return false;
+            }
+        })[0];
+        tagCurrent = [tagWel];
+        validatenull(currentPathObj) ? '' : tagCurrent.push(currentPathObj);
+        tagCurrent.push(tag);
+    }
+    return tagCurrent;
+}
+router.afterEach((to, from) => {
+    setTimeout(() => {
+        const tag = store.getters.tag;
+        const tagWel = store.getters.tagWel;
+        let tagCurrent = store.getters.tagCurrent;
+        setTitle(tag.label);
+        store.commit('SET_TAG_CURRENT', findMenuParent(tagCurrent, tag, tagWel));
+    }, 0);
+})

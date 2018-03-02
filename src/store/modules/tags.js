@@ -1,4 +1,5 @@
 import { setStore, getStore } from '@/util/store'
+import { validatenull } from "@/util/validate"
 const tagObj = {
     label: '',
     value: '',
@@ -24,7 +25,7 @@ const navs = {
             label: "首页",
             value: "/wel/"
         },
-        tagCurrentPath: [{
+        tagCurrent: [{
             label: "首页",
             value: "/wel/"
         }],
@@ -44,6 +45,10 @@ const navs = {
             })
             state.tagList = setFistTag(state.tagList);
             setStore({ name: 'tagList', content: state.tagList, type: 'session' })
+        },
+        SET_TAG_CURRENT: (state, tagCurrent) => {
+            state.tagCurrent = tagCurrent;
+            setStore({ name: 'tagCurrent', content: state.tagCurrent, type: 'session' })
         },
         SET_TAG: (state, value) => {
             for (const [i, v] of state.tagList.entries()) {

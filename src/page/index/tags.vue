@@ -164,12 +164,12 @@ export default {
       this.$router.push({ path: resolveUrlPath(this.tagWel.value) });
     },
     openUrl(url, name, num) {
-      this.$router.push({ path: resolveUrlPath(url) });
       this.$store.commit("ADD_TAG", {
         label: name,
         value: url,
         num: num
       });
+      this.$router.push({ path: resolveUrlPath(url) });
     },
     eachTag(tag) {
       for (var key in this.tagList) {
