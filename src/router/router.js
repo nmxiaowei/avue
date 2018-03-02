@@ -9,6 +9,8 @@ import { getStore, getSessionStore, vaildUtil } from '@/util/yun'
 import Myiframe from '@/components/iframe/iframe.vue'
 import INDEX from '@/page/index/'
 import errorPage404 from '@/components/errorPage/404.vue';
+import errorPage403 from '@/components/errorPage/403.vue';
+import errorPage500 from '@/components/errorPage/500.vue';
 const _import = require('./_import');
 Vue.use(VueRouter);
 export default new VueRouter({
@@ -33,6 +35,8 @@ export const asyncRouterMap = [
 	{ path: '/lock', name: '锁屏页', component: _import('lock/index') },
 	{ path: '*', redirect: '/404', hidden: true },
 	{ path: '/404', component: errorPage404, name: '404' },
+	{ path: '/403', component: errorPage403, name: '403' },
+	{ path: '/500', component: errorPage500, name: '500' },
 	{
 		path: '/',
 		name: '主页',
@@ -115,6 +119,10 @@ export const asyncRouterMap = [
 				path: 'index',
 				name: '错误日志',
 				component: _import('errlog/index')
+			}, {
+				path: 'page',
+				name: '错误页面',
+				component: _import('errlog/errorPage')
 			}
 		]
 	}, {

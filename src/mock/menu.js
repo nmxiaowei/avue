@@ -65,13 +65,6 @@ export const menu = [{
   meta: {},
   children: []
 }, {
-  id: 8,
-  label: "错误日志",
-  href: '/errlog/index',
-  icon: 'icon-cuowu',
-  meta: {},
-  children: []
-}, {
   id: 9,
   label: "系统管理",
   icon: 'icon-liuliangyunpingtaitubiao08',
@@ -95,6 +88,27 @@ export const menu = [{
       label: "菜单管理",
       href: '/admin/menu',
       icon: 'icon-caidanguanli',
+      children: []
+    }
+  ]
+}, {
+  id: 8,
+  label: "综合错误",
+  href: '#',
+  icon: 'icon-cuowu',
+  meta: {},
+  children: [
+    {
+      id: 14,
+      label: "错误日志",
+      href: '/errlog/index',
+      icon: 'icon-rizhi',
+      children: []
+    }, {
+      id: 15,
+      label: "错误页面",
+      href: '/errlog/page',
+      icon: 'icon-cuowutishitubiao',
       children: []
     }
   ]
