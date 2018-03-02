@@ -23,11 +23,11 @@ const navs = {
         tag: getStore({ name: 'tag' }) || tagObj,
         tagWel: {
             label: "首页",
-            value: "/wel/"
+            value: "/wel/index"
         },
         tagCurrent: [{
             label: "首页",
-            value: "/wel/"
+            value: "/wel/index"
         }],
     },
     actions: {

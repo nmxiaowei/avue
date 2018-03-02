@@ -1,6 +1,6 @@
 import { getToken, setToken, removeToken } from '@/util/auth'
 import { setStore, getStore } from '@/util/store'
-import { setCache, getCache } from '@/util/yun'
+import { validatenull } from '@/util/validate'
 import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll } from '@/api/user'
 const user = {
     state: {
@@ -109,7 +109,18 @@ const user = {
             state.userInfo = userInfo;
         },
         SET_MENU: (state, menu) => {
-            state.menu = menu;
+            const list = menu.filter(ele => {
+                if (validatenull(ele.meta.roles)) {
+                    return true;
+                }
+                if (ele.meta.roles.indexOf(state.roles[0]) != -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            });
+            state.menu = list;
         },
         SET_MENU_ALL: (state, menuAll) => {
             state.menuAll = menuAll;
@@ -119,6 +130,7 @@ const user = {
             setStore({ name: 'roles', content: state.roles, type: 'session' })
         },
         SET_PERMISSION: (state, permission) => {
+            state.permission = {};
             permission.forEach(ele => {
                 state.permission[ele] = true;
             });

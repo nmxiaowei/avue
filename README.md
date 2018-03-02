@@ -36,6 +36,11 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-login.png">
 </p>
 
+**权限测试页面**
+<p align="center">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-roles-test.png">
+</p>
+
 **错误日志记录**
 <p align="center">
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-errlog.png">

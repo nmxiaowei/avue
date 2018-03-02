@@ -5,7 +5,19 @@ export const userInfo = {
         name: 'avue',
     },
     roles: ['admin'],
-    permission: ['sys_crud_btn_add', 'sys_crud_btn_export', 'sys_menu_btn_add', 'sys_menu_btn_edit', 'sys_menu_btn_del'],//权限级别
+    permission: [
+        'sys_crud_btn_add',
+        'sys_crud_btn_export',
+        'sys_menu_btn_add',
+        'sys_menu_btn_edit',
+        'sys_menu_btn_del',
+        'sys_role_btn1',
+        'sys_role_btn2',
+        'sys_role_btn3',
+        'sys_role_btn4',
+        'sys_role_btn5',
+        'sys_role_btn6',
+    ],//权限级别
 }
 let List = []
 for (let i = 0; i < 5; i++) {

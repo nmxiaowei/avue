@@ -54,21 +54,32 @@ export const asyncRouterMap = [
 	}, {
 		path: '/wel',
 		component: INDEX,
-		redirect: '/wel/',
+		redirect: '/wel/index',
 		children: [
 			{
-				path: '/',
+				path: 'index',
 				name: '首页',
 				component: _import('wel')
 			}
 		]
 	}, {
-		path: '/table',
+		path: '/role',
 		component: INDEX,
-		redirect: '/table/',
+		redirect: '/role/index',
 		children: [
 			{
-				path: '/',
+				path: 'index',
+				name: '权限测试页',
+				component: _import('role')
+			}
+		]
+	}, {
+		path: '/table',
+		component: INDEX,
+		redirect: '/table/index',
+		children: [
+			{
+				path: 'index',
 				name: '表格CRUD',
 				component: _import('table/index')
 			}
@@ -76,10 +87,10 @@ export const asyncRouterMap = [
 	}, {
 		path: '/form',
 		component: INDEX,
-		redirect: '/form/',
+		redirect: '/form/index',
 		children: [
 			{
-				path: '/',
+				path: 'index',
 				name: '表单CRUD',
 				component: _import('form/index')
 			}
@@ -87,10 +98,10 @@ export const asyncRouterMap = [
 	}, {
 		path: '/iconfont',
 		component: INDEX,
-		redirect: '/iconfont/',
+		redirect: '/iconfont/index',
 		children: [
 			{
-				path: '/',
+				path: 'index',
 				name: '阿里图标',
 				component: _import('iconfont/index')
 			}
@@ -98,10 +109,10 @@ export const asyncRouterMap = [
 	}, {
 		path: '/errlog',
 		component: INDEX,
-		redirect: '/errlog/',
+		redirect: '/errlog/index',
 		children: [
 			{
-				path: '/',
+				path: 'index',
 				name: '错误日志',
 				component: _import('errlog/index')
 			}
