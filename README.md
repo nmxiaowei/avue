@@ -25,6 +25,16 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
 
 
+**支持路由改变单例页面title**
+<p align="center">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/title.gif">
+</p>
+
+**权限动态切换**
+<p align="center">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/role.gif">
+</p>
+
 **实例**
 <p align="center">
   <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/form.gif">

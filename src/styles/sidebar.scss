@@ -1,7 +1,7 @@
 
-    .menu {
-        overflow-y: scroll;
-        background-color: $menuBg;
+    .el-menu:not(.el-menu--collapse) {
+      width: 200px;
+      overflow-y: auto;
     }
     .el-menu{
         border-right: 0;

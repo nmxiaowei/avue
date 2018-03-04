@@ -43,12 +43,12 @@
     color: $mainBg;
   }
   .tag-item {
+      position: relative;
       display: inline-block;
       height: 30px;
       line-height: 30px;
       margin: 2px 4px 2px 0;
-      padding: 0 12px;
-      min-width: 80px;
+      padding: 0 6px 0 10px;
       border: 1px solid #e9eaec;
       border-radius: 3px;
       background: #fff;
@@ -60,6 +60,9 @@
       cursor: pointer;
   }
   .tag-text{
+    margin-left: 8px;
+  }
+  .tag-close{
     margin-left: 8px;
   }
   .tag-item:hover {

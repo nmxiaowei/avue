@@ -2,7 +2,7 @@
 	<div class="pull-height animated" :class="{'zoomOutUp': isLock}">
     <Top></Top>
 		<div class="index">
-      <Sidebar class="left pull-height"></Sidebar>
+      <Sidebar class="left pull-chheight"></Sidebar>
 			<div class="right">
           <Tags ref="nav" class="nav"></Tags>
           <router-view class="main"></router-view>  
@@ -43,8 +43,7 @@ export default {
   min-height: 100%;
   background: #fff;
   overflow: hidden;
-  .left:not(.el-menu--collapse) {
-    width: 200px;
+  .left {
   }
   .right {
     padding-top: 102px;

@@ -17,7 +17,7 @@
               <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
                 <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
                 <span class="tag-text">{{item.label}}</span> 
-                <i class="el-icon-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
+                <i class="el-icon-close tag-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
               </div>
             </div>
            

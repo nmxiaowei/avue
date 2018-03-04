@@ -6,6 +6,7 @@ const common = {
 
     state: {
         isCollapse: false,
+        isFullScren: false,
         isLock: getStore({ name: 'isLock' }) || false,
     },
     actions: {
@@ -27,6 +28,9 @@ const common = {
     mutations: {
         SET_COLLAPSE: (state, action) => {
             state.isCollapse = !state.isCollapse;
+        },
+        SET_FULLSCREN: (state, action) => {
+            state.isFullScren = !state.isFullScren;
         },
         SET_LOCK: (state, action) => {
             state.isLock = true;

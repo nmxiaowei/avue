@@ -6,10 +6,14 @@
 		<h1 class="header-title"></h1>
 		<div class="header-button is-right">
         <el-tooltip class="item" effect="dark" content="锁屏" placement="bottom">
-            <i class="icon-bofangqi-suoping header-item" @click="handleLock"></i>
+           <span  class="header-item">
+              <i class="icon-bofangqi-suoping" @click="handleLock"></i>
+           </span>
         </el-tooltip>
-         <el-tooltip class="item" effect="dark" content="全屏" placement="bottom">
-           <i class="icon-quanping header-item" @click="handleScreen"></i>
+         <el-tooltip class="item" effect="dark" :content="isFullScren?'退出全屏':'全屏'" placement="bottom">
+           <span  class="header-item">
+               <i :class="isFullScren?'icon-tuichuquanping':'icon-quanping'" @click="handleScreen"></i>
+           </span>
          </el-tooltip>
          <el-dropdown>
           <span class="el-dropdown-link">
@@ -36,7 +40,8 @@ export default {
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
-    })
+    }),
+    ...mapGetters(["isFullScren"])
   },
   methods: {
     handleLock() {
@@ -46,6 +51,7 @@ export default {
       }, 100);
     },
     handleScreen() {
+      this.$store.commit("SET_FULLSCREN");
       fullscreenToggel();
     },
     logout() {

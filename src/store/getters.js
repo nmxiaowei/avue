@@ -3,6 +3,7 @@ const getters = {
     tag: state => state.tags.tag,
     isCollapse: state => state.common.isCollapse,
     isLock: state => state.common.isLock,
+    isFullScren: state => state.common.isFullScren,
     tagList: state => state.tags.tagList,
     tagCurrent: state => state.tags.tagCurrent,
     tagWel: state => state.tags.tagWel,
