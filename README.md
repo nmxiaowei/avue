@@ -1,4 +1,4 @@
-### <font>avue只是刚起步，完成了大部分常用的功能，更多新颖的功能还在开发中敬请期待......</font>
+## <font>avue1.0发布了！！！欢迎点击演示地址体验</font>
 简体中文
 欢迎加入QQ交流群，互相学习  
 一键加群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5zWEvg5"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png"></a><br />
