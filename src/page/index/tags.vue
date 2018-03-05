@@ -1,43 +1,38 @@
 <template>
   <div class="tags-container">
-      <div class="tags-breadcrumb">
-           <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
-           <Breadcrumb  class="tags-breadcrumb-list"></Breadcrumb>
-      </div>
-       <div class="tags-box">
-         
-          <div class="tags-list" ref="tagsList" >
-            <div  class="tag-scroll" @mousewheel="hadelMousewheel" 
-             @mouseup="hadelMouseUp" 
-             @mousemove="hadelMousewheel" 
-             @mousedown="hadelMousestart" 
-             @touchup="hadelMouseUp" 
-             @touchmove="hadelMousewheel" 
-             @touchstart="hadelMousestart">
-              <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
-                <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
-                <span class="tag-text">{{item.label}}</span> 
-                <i class="el-icon-close tag-close" @click.stop="closeTag(item)"  v-if="item.close"></i>
-              </div>
-            </div>
-           
+    <div class="tags-breadcrumb">
+      <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
+      <Breadcrumb class="tags-breadcrumb-list"></Breadcrumb>
+    </div>
+    <div class="tags-box">
+
+      <div class="tags-list" ref="tagsList">
+        <div class="tag-scroll" @mousewheel="hadelMousewheel" @mouseup="hadelMouseUp" @mousemove="hadelMousewheel" @mousedown="hadelMousestart" @touchup="hadelMouseUp" @touchmove="hadelMousewheel" @touchstart="hadelMousestart">
+          <div class="tag-item" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
+            <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span>
+            <span class="tag-text">{{item.label}}</span>
+            <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
           </div>
-           <el-dropdown class="tags-menu pull-right">
-            <el-button type="primary" size="mini">
-              更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item  @click.native="closeOthersTags">关闭其他</el-dropdown-item>
-              <el-dropdown-item  @click.native="closeAllTags">关闭全部</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>       
-        <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+        </div>
+
+      </div>
+      <el-dropdown class="tags-menu pull-right">
+        <el-button type="primary" size="mini">
+          更多
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="closeOthersTags">关闭其他</el-dropdown-item>
+          <el-dropdown-item @click.native="closeAllTags">关闭全部</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
           <li @click="closeTag(selectedTag)">关闭</li>
           <li @click="closeOthersTags">关闭其他</li>
           <li @click="closeAllTags">关闭全部</li>
         </ul> -->
-    </div>
+  </div>
 </template>
 <script>
 import { resolveUrlPath } from "@/util/util";

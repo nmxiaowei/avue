@@ -5,11 +5,11 @@ import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll
 const user = {
     state: {
         userInfo: {},
-        permission: getStore('permission') || {},
-        roles: getStore('roles') || [],
+        permission: getStore({ name: 'permission' }) || {},
+        roles: getStore({ name: 'roles' }) || [],
         menu: [],
         menuAll: [],
-        token: getStore('token') || '',
+        token: getStore({ name: 'token' }) || '',
     },
     actions: {
         //根据用户名登录

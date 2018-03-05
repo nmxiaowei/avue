@@ -1,14 +1,14 @@
 <template>
-	<div class="pull-height animated" :class="{'zoomOutUp': isLock}">
+  <div class="pull-height animated" :class="{'zoomOutUp': isLock}">
     <Top></Top>
-		<div class="index">
+    <div class="index">
       <Sidebar class="left pull-chheight"></Sidebar>
-			<div class="right">
-          <Tags ref="nav" class="nav"></Tags>
-          <router-view class="main"></router-view>  
-			</div>
-		</div>
-	</div>
+      <div class="right">
+        <Tags ref="nav" class="nav"></Tags>
+        <router-view class="main"></router-view>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -43,13 +43,14 @@ export default {
   min-height: 100%;
   background: #fff;
   overflow: hidden;
-  .left {
+  .left:not(.el-menu--collapse) {
+    width: 200px;
+    overflow-y: auto;
   }
   .right {
     padding-top: 102px;
     position: relative;
     flex: 1;
-    overflow: auto;
     box-sizing: border-box;
   }
   .main {
