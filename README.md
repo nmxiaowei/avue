@@ -151,6 +151,7 @@ state:{
  }
 ```
 ### 数据加密工具类——在./src/util/util.js中encryption
+支持Base64和Aes加密
 ```bash
 const data ={
   username:'admin',
@@ -158,7 +159,8 @@ const data ={
 }
 const userInfo = encryption({
     data: data,//加密的数据
-    type: 'Base64',//要加密的类型
+    key:'123',//aes加密时的类型，不是aes加密不用传
+    type: 'Base64',//要加密的类型 Base64 || Aes
     param: ['useranme', 'password'] //要加密的字段
 });
 ```

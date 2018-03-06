@@ -17,7 +17,8 @@ const user = {
         LoginByUsername({ commit, state, dispatch }, userInfo) {
             userInfo = encryption({
                 data: userInfo,
-                type: 'Base64',
+                type: 'Aes',
+                key: 'avue',
                 param: ['useranme', 'password']
             });
             console.log(userInfo);

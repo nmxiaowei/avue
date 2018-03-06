@@ -6,12 +6,17 @@ import { validatenull } from './validate'
  * 加密处理
  */
 export const encryption = (params) => {
-    let { data, type, param } = params;
+    let { data, type, param, key } = params;
     let result = data;
     if (type == 'Base64') {
         param.forEach(ele => {
             result[ele] = btoa(result[ele]);
         })
+    } else if (type == 'Aes') {
+        param.forEach(ele => {
+            result[ele] = CryptoJS.AES.encrypt(result[ele], key).toString();
+        })
+
     }
     return result;
 };
