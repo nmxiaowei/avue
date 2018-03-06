@@ -150,6 +150,18 @@ state:{
   ...
  }
 ```
+### 数据加密工具类——在./src/util/util.js中encryption
+```bash
+const data ={
+  username:'admin',
+  password:'123456'
+}
+const userInfo = encryption({
+    data: data,//加密的数据
+    type: 'Base64',//要加密的类型
+    param: ['useranme', 'password'] //要加密的字段
+});
+```
 ### CRUD和FORM使用说明————根据配置json文件自动生成CRUD和FORM，并且配置字典接口，自动匹配字典
 详细demo请看./src/page/table/index.vue和./src/page/form/index.vue实例实例
 ```bash

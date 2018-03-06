@@ -1,6 +1,7 @@
 import { getToken, setToken, removeToken } from '@/util/auth'
 import { setStore, getStore, removeStore } from '@/util/store'
 import { validatenull } from '@/util/validate'
+import { encryption } from '@/util/util'
 import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll } from '@/api/user'
 const user = {
     state: {
@@ -14,6 +15,12 @@ const user = {
     actions: {
         //根据用户名登录
         LoginByUsername({ commit, state, dispatch }, userInfo) {
+            userInfo = encryption({
+                data: userInfo,
+                type: 'Base64',
+                param: ['useranme', 'password']
+            });
+            console.log(userInfo);
             return new Promise((resolve, reject) => {
                 loginByUsername(userInfo.username, userInfo.password, userInfo.code, userInfo.redomStr).then(res => {
                     const data = res.data;
