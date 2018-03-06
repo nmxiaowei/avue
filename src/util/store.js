@@ -37,7 +37,8 @@ export const getStore = (params) => {
 /**
  * 删除localStorage
  */
-export const removeStore = name => {
-    if (!name) return;
+export const removeStore = params => {
+    let { name } = params;
     window.localStorage.removeItem(name);
+    window.sessionStorage.removeItem(name);
 }

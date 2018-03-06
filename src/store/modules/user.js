@@ -1,12 +1,12 @@
 import { getToken, setToken, removeToken } from '@/util/auth'
-import { setStore, getStore } from '@/util/store'
+import { setStore, getStore, removeStore } from '@/util/store'
 import { validatenull } from '@/util/validate'
 import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll } from '@/api/user'
 const user = {
     state: {
         userInfo: {},
-        permission: getStore({ name: 'permission' }) || {},
-        roles: getStore({ name: 'roles' }) || [],
+        permission: {},
+        roles: [],
         menu: [],
         menuAll: [],
         token: getStore({ name: 'token' }) || '',
@@ -62,6 +62,7 @@ const user = {
                     commit('SET_TOKEN', '')
                     commit('SET_ROLES', [])
                     commit('DEL_ALL_TAG');
+                    commit('CLEAR_LOCK');
                     removeToken()
                     resolve()
                 }).catch(error => {
@@ -74,6 +75,7 @@ const user = {
             return new Promise(resolve => {
                 commit('SET_TOKEN', '')
                 commit('DEL_ALL_TAG');
+                commit('CLEAR_LOCK');
                 removeToken()
                 resolve()
             })
@@ -127,14 +129,12 @@ const user = {
         },
         SET_ROLES: (state, roles) => {
             state.roles = roles;
-            setStore({ name: 'roles', content: state.roles, type: 'session' })
         },
         SET_PERMISSION: (state, permission) => {
             state.permission = {};
             permission.forEach(ele => {
                 state.permission[ele] = true;
             });
-            setStore({ name: 'permission', content: state.permission, type: 'session' })
         }
     }
 

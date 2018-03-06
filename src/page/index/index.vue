@@ -1,10 +1,10 @@
 <template>
   <div class="pull-height animated" :class="{'zoomOutUp': isLock}">
-    <Top></Top>
+    <top></top>
     <div class="index">
-      <Sidebar class="left pull-chheight"></Sidebar>
+      <sidebar class="left pull-chheight"></sidebar>
       <div class="right">
-        <Tags ref="nav" class="nav"></Tags>
+        <tags ref="nav" class="nav"></tags>
         <router-view class="main"></router-view>
       </div>
     </div>
@@ -13,10 +13,15 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Tags from "./tags";
-import Top from "./top";
-import Sidebar from "./sidebar/";
+import tags from "./tags";
+import top from "./top/";
+import sidebar from "./sidebar/";
 export default {
+  components: {
+    top,
+    tags,
+    sidebar
+  },
   name: "index",
   data() {
     return {};
@@ -25,12 +30,7 @@ export default {
   mounted() {},
   computed: mapGetters(["isLock"]),
   props: [],
-  methods: {},
-  components: {
-    Top,
-    Tags,
-    Sidebar
-  }
+  methods: {}
 };
 </script>
 

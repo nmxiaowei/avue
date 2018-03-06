@@ -3,6 +3,7 @@ export const userInfo = {
     userInfo: {
         username: 'admin',
         name: 'avue',
+        avatar: 'https://gitee.com/uploads/61/632261_smallweigit.jpg',
     },
     roles: ['admin'],
     permission: [

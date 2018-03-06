@@ -1,4 +1,4 @@
-import { setStore, getStore } from '@/util/store'
+import { setStore, getStore, removeStore } from '@/util/store'
 import { validatenull } from "@/util/validate"
 const tagObj = {
     label: '',
@@ -62,8 +62,8 @@ const navs = {
         DEL_ALL_TAG: (state, action) => {
             state.tag = tagObj;
             state.tagList = [];
-            setStore({ name: 'tag', content: state.tagList, type: 'session' })
-            setStore({ name: 'tagList', content: state.tagList, type: 'session' })
+            removeStore({ name: 'tag' });
+            removeStore({ name: 'tagList' });
         },
         DEL_TAG_OTHER: (state, action) => {
             for (const [i, v] of state.tagList.entries()) {
