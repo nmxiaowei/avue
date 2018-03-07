@@ -33,6 +33,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import { fullscreenToggel } from "@/util/util";
 import topLock from "./top-lock";
 export default {
   components: { topLock },

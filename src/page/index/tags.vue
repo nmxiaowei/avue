@@ -99,7 +99,7 @@ export default {
     },
     hadelMousewheel(e) {
       const left = Number(this.$refs.tagsList.style.left.replace("px", ""));
-      const step = 100; //一个tag长度
+      const step = 90; //一个tag长度
       const len = 10; //tag的个数
       const boundarystart = 0,
         boundaryend = -(this.tagList.length - len) * step;
@@ -130,7 +130,7 @@ export default {
       let distanceX = this.endX - this.startX;
       let distanceY = this.endY - this.startY;
       //判断滑动方向——向右滑动
-      distanceX = distanceX * 0.08;
+      distanceX = parseInt(distanceX * 0.08);
       if (distanceX > 0 && left <= boundarystart) {
         this.$refs.tagsList.style.left = left + distanceX + "px";
         //判断滑动方向——向左滑动
