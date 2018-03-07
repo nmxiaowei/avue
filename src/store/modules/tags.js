@@ -40,7 +40,6 @@ const navs = {
             if (state.tagList.some(a => a.value === action.value)) return
             state.tagList.push({
                 label: action.label,
-                num: action.num,
                 value: action.value,
             })
             state.tagList = setFistTag(state.tagList);
