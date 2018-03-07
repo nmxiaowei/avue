@@ -185,16 +185,11 @@ export default {
       } else if (
         tag.offsetLeft + 10 > -this.tagBodyLeft &&
         tag.offsetLeft + tag.offsetWidth <
-          -this.tagBodyLeft + this.$refs.tagsList.offsetWidth - step
+          -this.tagBodyLeft + this.$refs.tagsList.offsetWidth - 20
       ) {
         // 标签在可视区域
       } else {
-        // 标签在可视区域右侧
-        console.log(
-          tag.offsetLeft -
-            (this.$refs.tagsList.offsetWidth - step - tag.offsetWidth) +
-            20
-        );
+        // 标签在可视区域右侧x
         this.tagBodyLeft = -(
           tag.offsetLeft -
           (this.$refs.tagsList.offsetWidth - step - tag.offsetWidth) +
