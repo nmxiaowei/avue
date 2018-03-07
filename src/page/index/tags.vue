@@ -178,21 +178,20 @@ export default {
       this.$router.push({ path: resolveUrlPath(this.tagWel.value) });
     },
     moveToView(tag) {
-      const step = 270;
       if (tag.offsetLeft < -this.tagBodyLeft) {
         // 标签在可视区域左侧
         this.tagBodyLeft = -tag.offsetLeft + 10;
       } else if (
         tag.offsetLeft + 10 > -this.tagBodyLeft &&
         tag.offsetLeft + tag.offsetWidth <
-          -this.tagBodyLeft + this.$refs.tagsList.offsetWidth - 20
+          -this.tagBodyLeft + this.$refs.tagBox.offsetWidth
       ) {
         // 标签在可视区域
       } else {
-        // 标签在可视区域右侧x
+        // 标签在可视区域右侧
         this.tagBodyLeft = -(
           tag.offsetLeft -
-          (this.$refs.tagsList.offsetWidth - step - tag.offsetWidth) +
+          (this.$refs.tagBox.offsetWidth - 100 - tag.offsetWidth) +
           20
         );
       }
