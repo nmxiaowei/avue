@@ -43,17 +43,17 @@ const navs = {
                 value: action.value,
             })
             state.tagList = setFistTag(state.tagList);
-            setStore({ name: 'tagList', content: state.tagList, type: 'session' })
+            setStore({ name: 'tagList', content: state.tagList })
         },
         SET_TAG_CURRENT: (state, tagCurrent) => {
             state.tagCurrent = tagCurrent;
-            setStore({ name: 'tagCurrent', content: state.tagCurrent, type: 'session' })
+            setStore({ name: 'tagCurrent', content: state.tagCurrent })
         },
         SET_TAG: (state, value) => {
             for (const [i, v] of state.tagList.entries()) {
                 if (v.value === value) {
                     state.tag = state.tagList[i];
-                    setStore({ name: 'tag', content: state.tag, type: 'session' })
+                    setStore({ name: 'tag', content: state.tag })
                     break
                 }
             }
@@ -70,8 +70,8 @@ const navs = {
                     state.tagList = state.tagList.slice(i, i + 1)
                     state.tag = state.tagList[0];
                     state.tagList[0].close = false;
-                    setStore({ name: 'tag', content: state.tag, type: 'session' })
-                    setStore({ name: 'tagList', content: state.tagList, type: 'session' })
+                    setStore({ name: 'tag', content: state.tag })
+                    setStore({ name: 'tagList', content: state.tagList })
                     break
                 }
             }
