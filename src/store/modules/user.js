@@ -15,15 +15,14 @@ const user = {
     actions: {
         //根据用户名登录
         LoginByUsername({ commit, state, dispatch }, userInfo) {
-            userInfo = encryption({
+            const user = encryption({
                 data: userInfo,
                 type: 'Aes',
                 key: 'avue',
                 param: ['useranme', 'password']
             });
-            console.log(userInfo);
             return new Promise((resolve, reject) => {
-                loginByUsername(userInfo.username, userInfo.password, userInfo.code, userInfo.redomStr).then(res => {
+                loginByUsername(user.username, user.password, userInfo.code, userInfo.redomStr).then(res => {
                     const data = res.data;
                     commit('SET_TOKEN', data);
                     commit('DEL_ALL_TAG');
