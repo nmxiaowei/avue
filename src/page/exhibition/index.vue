@@ -1,5 +1,6 @@
 <template>
-  <div class="pull-height">
+  <div class="exhibition-contailer  pull-chheight">
+    <h4>选项卡展示</h4>
     <el-row :span="24">
       <template v-for="item in dataOption">
         <el-col :span="6">
@@ -7,16 +8,25 @@
         </el-col>
       </template>
     </el-row>
-
+    <div class="pull-auto" style="margin-top:20px;">
+      <h4>带数字的展示</h4>
+      <easyData :option="easyDataOption1"></easyData>
+    </div>
+    <div class="pull-auto" style="margin-top:20px;">
+      <h4>简易展示</h4>
+      <easyData :option="easyDataOption2"></easyData>
+    </div>
   </div>
 </template>
 
 <script>
 import Datashow from "@/components/datashow/";
+import easyData from "@/components/datashow/easyData";
 export default {
   name: "exhibition",
   components: {
-    Datashow
+    Datashow,
+    easyData
   },
   data() {
     return {
@@ -57,7 +67,74 @@ export default {
           color: "rgb(59, 103, 164)",
           key: "新"
         }
-      ]
+      ],
+      easyDataOption1: {
+        color: "rgb(63, 161, 255)",
+        span: 4,
+        data: [
+          {
+            title: "今日注册",
+            count: 12678,
+            icon: "icon-cuowu"
+          },
+          {
+            title: "今日登录",
+            count: 22139,
+            icon: "icon-shujuzhanshi2"
+          },
+          {
+            title: "今日订阅",
+            count: 35623,
+            icon: "icon-jiaoseguanli"
+          },
+          {
+            title: "今日评论",
+            count: 16826,
+            icon: "icon-caidanguanli"
+          },
+          {
+            title: "今日评论",
+            count: 16826,
+            icon: "icon-caidanguanli"
+          },
+          {
+            title: "今日评论",
+            count: 16826,
+            icon: "icon-caidanguanli"
+          }
+        ]
+      },
+      easyDataOption2: {
+        color: "rgb(63, 161, 255)",
+        span: 4,
+        discount: true,
+        data: [
+          {
+            title: "错误日志",
+            icon: "icon-cuowu"
+          },
+          {
+            title: "数据展示",
+            icon: "icon-shujuzhanshi2"
+          },
+          {
+            title: "权限管理",
+            icon: "icon-jiaoseguanli"
+          },
+          {
+            title: "菜单管理",
+            icon: "icon-caidanguanli"
+          },
+          {
+            title: "权限测试",
+            icon: "icon-caidanguanli"
+          },
+          {
+            title: "错误页面",
+            icon: "icon-caidanguanli"
+          }
+        ]
+      }
     };
   },
   created() {},
@@ -68,5 +145,7 @@ export default {
 </script>
 
 <style scoped>
-
+.exhibition-contailer {
+  padding: 0 20px;
+}
 </style>

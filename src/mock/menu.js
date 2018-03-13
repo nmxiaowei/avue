@@ -21,7 +21,7 @@ export const menu = [{
   id: 14,
   label: "数据展示",
   href: '/exhibition/index',
-  icon: 'icon-quanxian',
+  icon: 'icon-shujuzhanshi2',
   meta: {
     roles: ['admin'],
   },

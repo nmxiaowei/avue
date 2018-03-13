@@ -40,7 +40,6 @@ export default {
   position: relative;
   margin: 15px;
   padding: 12px;
-  min-width: 260px;
   height: 144px;
   border-radius: 4px;
   box-sizing: border-box;
