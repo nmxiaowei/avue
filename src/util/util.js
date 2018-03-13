@@ -7,7 +7,7 @@ import { validatenull } from './validate'
  */
 export const encryption = (params) => {
     let { data, type, param, key } = params;
-    let result = data;
+    let result = JSON.parse(JSON.stringify(data));
     if (type == 'Base64') {
         param.forEach(ele => {
             result[ele] = btoa(result[ele]);
