@@ -3,7 +3,7 @@
 欢迎加入QQ交流群，互相学习  
 一键加群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5zWEvg5"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png"></a><br />
 
-演示地址:[http://122.4.205.228:7777](http://122.4.205.228:7777)<br />
+演示地址:[http://122.4.205.228:7777](http://122.4.205.228:7777)——jenkins+docker+git钩子自动部署<br />
 
 码云地址:[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)<br />
 
