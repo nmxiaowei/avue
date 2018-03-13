@@ -18,6 +18,15 @@ export const menu = [{
   },
   children: [],
 }, {
+  id: 14,
+  label: "数据展示",
+  href: '/exhibition/index',
+  icon: 'icon-quanxian',
+  meta: {
+    roles: ['admin'],
+  },
+  children: [],
+}, {
   id: 2,
   label: "第三方网站",
   href: '',

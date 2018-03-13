@@ -89,6 +89,17 @@ export const asyncRouterMap = [
 			}
 		]
 	}, {
+		path: '/exhibition',
+		component: INDEX,
+		redirect: '/exhibition/index',
+		children: [
+			{
+				path: 'index',
+				name: '数据展示',
+				component: _import('exhibition/index')
+			}
+		]
+	}, {
 		path: '/form',
 		component: INDEX,
 		redirect: '/form/index',
