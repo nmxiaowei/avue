@@ -59,7 +59,7 @@ export default {
   line-height: 25px;
   & > span {
     color: #999;
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 .item--easy {

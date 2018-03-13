@@ -58,7 +58,7 @@ export default {
     top: 0px;
     padding: 2px 8px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 12px;
     background: rgba(255, 255, 255, 0.3);
   }
 }
@@ -76,7 +76,7 @@ export default {
   }
   & > p {
     margin: 0px;
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 .item-tip {
