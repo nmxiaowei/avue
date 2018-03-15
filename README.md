@@ -1,7 +1,8 @@
 ## <font>avue1.0发布了！！！欢迎点击演示地址体验</font>
 简体中文
-欢迎加入QQ交流群，互相学习  
-一键加群：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5zWEvg5"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png"></a><br />
+欢迎加入QQ交流群，互相学习
+前端avue交流群：606410437
+后台微服务群：23754102
 
 演示地址:[http://122.4.205.228:7777](http://122.4.205.228:7777)——jenkins+docker+git钩子自动部署<br />
 
