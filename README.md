@@ -180,9 +180,12 @@ const userInfo = encryption({
 </template>
 js自动配置crud<br />
 {
-  border: true,//表格是否显示边框
-  index: true,///表格是否显示序号
-  selection: true,//表格是否显示可选select
+  border: true,//表格是否显示边框 default:false
+  index: true,///表格是否显示序号 default:false
+  selection: true,//表格是否显示可选select default:false
+  menu:true,//表格是否显示操作栏, default:true
+  editBtn:false,//是否显示编辑按钮 default:true
+  delBtn:false,//是否显示删除按钮 default:true
   dic:['GRADE','SEX'],//传入需要获取字典的变量，看vuex中的getDic方法
   column: [
     {
