@@ -186,6 +186,8 @@ js自动配置crud<br />
   menu:true,//表格是否显示操作栏, default:true
   editBtn:false,//是否显示编辑按钮 default:true
   delBtn:false,//是否显示删除按钮 default:true
+  page:false,//是否显示分页 default:true
+  height:'500'//表格的高度 default:auto
   dic:['GRADE','SEX'],//传入需要获取字典的变量，看vuex中的getDic方法
   column: [
     {

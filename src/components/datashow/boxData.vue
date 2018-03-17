@@ -1,41 +1,47 @@
 <template>
-    <div class="pull-auto datashow-contailer">
-        <div class="item" :style="{background:data.color}">
+  <div class="pull-auto">
+    <el-row :span="24">
+      <template v-for="item in data">
+        <el-col :span="span">
+          <div class="item" :style="{background:item.color}">
             <div class="item-header">
-                <p>{{data.title}}</p>
-                <span>{{data.subtitle}}</span>
+              <p>{{item.title}}</p>
+              <span>{{item.subtitle}}</span>
             </div>
             <div class="item-body">
-                <h2>{{data.count}}</h2>
+              <h2>{{item.count}}</h2>
             </div>
             <div class="item-footer">
-                <span>{{data.allcount}}</span>
-                <p>{{data.text}}</p>
+              <span>{{item.allcount}}</span>
+              <p>{{item.text}}</p>
             </div>
-            <p class="item-tip">{{data.key}}</p>
-        </div>
-    </div>
+            <p class="item-tip">{{item.key}}</p>
+          </div>
+        </el-col>
+      </template>
+    </el-row>
+  </div>
 </template>
 
 <script>
 export default {
   name: "datashow",
+  data() {
+    return {
+      span: this.option.span || 6,
+      data: this.option.data || []
+    };
+  },
   props: {
-    data: {
+    option: {
       type: Object,
       default: {}
-    },
-    span: {
-      type: Number,
-      default: 6
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.datashow-contailer {
-}
 .item {
   position: relative;
   margin: 15px;

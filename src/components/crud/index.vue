@@ -5,7 +5,7 @@
         <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
         <el-button @click="toggleSelection()" size="small">取消选择</el-button>
       </div> -->
-    <el-table :data="tableData" ref="table" style="width:99.5%;min-height:430px;margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
+    <el-table :data="tableData" :height="tableOption.height" ref="table" style="width:99.5%;margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
       <!-- 选择框 -->
       <template v-if="tableOption.selection">
         <el-table-column type="selection" width="55">
@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="handleCurrentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <el-pagination v-if="tableOption.page==undefined?true:tableOption.page" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="handleCurrentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
     <el-dialog :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
         <el-row :gutter="20" :span="24">
