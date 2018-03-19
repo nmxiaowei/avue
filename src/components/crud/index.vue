@@ -20,7 +20,8 @@
       <template v-for="(column,index) in tableOption.column">
         <el-table-column :width="column.width" :label="column.label" :fixed="column.fixed" :sortable="column.sortable" v-if="!column.hide">
           <template slot-scope="scope">
-            <span v-if="!column.overHidden" v-html="handleDetail(scope.row,column)"></span>
+            <slot :row="scope.row" :dic="DIC[column.dicData]" :name="column.prop" v-if="column.solt"></slot>
+            <span v-else-if="!column.overHidden" v-html="handleDetail(scope.row,column)"></span>
             <el-popover v-else trigger="hover" placement="top">
               <p>{{column.label}}: {{ scope.row[column.prop]}}</p>
               <div slot="reference" class="name-wrapper">
@@ -36,7 +37,7 @@
             <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.meeditBtnnu">编 辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)" v-if="tableOption.delBtn==undefined?true:tableOption.delBtn">删 除</el-button>
           </template>
-          <slot :row="scope.row"></slot>
+          <slot :row="scope.row" name="menu"></slot>
         </template>
       </el-table-column>
     </el-table>
@@ -114,11 +115,13 @@ export default {
     beforeOpen: Function,
     page: {
       type: Object,
-      default: {
-        total: 0, //总页数
-        currentPage: 0, //当前页数
-        pageSize: 10, //每页显示多少条
-        background: true //背景颜色
+      default() {
+        return {
+          total: 0, //总页数
+          currentPage: 0, //当前页数
+          pageSize: 10, //每页显示多少条
+          background: true //背景颜色
+        };
       }
     },
     tableLoading: {
@@ -172,6 +175,9 @@ export default {
     handleCurrentChange(val) {
       this.$emit("handleCurrentChange", val);
     },
+    findByvalue(dic, val) {
+      return findByvalue(dic, val);
+    },
     // 选中实例
     toggleSelection(rows) {
       if (rows) {
@@ -190,13 +196,19 @@ export default {
     //处理数据
     handleDetail(row, column) {
       let result = "";
-      if (column.type) {
-        result = findByvalue(this.DIC[column.dicData], row[column.prop]);
-      } else {
-        result = row[column.prop];
-      }
       if (column.dataDetail) {
-        result = column.dataDetail(result);
+        if (column.type) {
+          result = findByvalue(this.DIC[column.dicData], row[column.prop]);
+        } else {
+          result = row[column.prop];
+        }
+        result = column.dataDetail(row);
+      } else {
+        if (column.type) {
+          result = findByvalue(this.DIC[column.dicData], row[column.prop]);
+        } else {
+          result = row[column.prop];
+        }
       }
       return result;
     },

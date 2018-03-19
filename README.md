@@ -174,10 +174,15 @@ const userInfo = encryption({
 ### CRUD和FORM使用说明————根据配置json文件自动生成CRUD和FORM，并且配置字典接口，自动匹配字典
 详细demo请看./src/page/table/index.vue和./src/page/form/index.vue实例实例
 ```bash
-子定义操作按钮<br />
-<template slot-scope="scope">
-    <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+
+支持vue的solt卡槽分发添加dom内容<br />
+<template slot-scope="scope" slot="username">
+  <el-tag>{{scope.row.username}}</el-tag>
 </template>
+<template slot-scope="scope">
+  <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+</template>
+slot的名字为字段的名字，当为menu时为菜单添加dom内容<br />
 js自动配置crud<br />
 {
   border: true,//表格是否显示边框 default:false
@@ -197,13 +202,14 @@ js自动配置crud<br />
       fixed: true,//是否冻结列
       hide:true,//是否隐藏
       span:12,//表单格栅显示的列
-      type:'select', //select | radio | checkbox | date 默认为text
+      type:'select', //select | radio | checkbox | date defaulttext
       visdiplay:true,//表单不显示
+      solt:true,//支持自定义dom default:false,
       overHidden: true,//超出省略号显示
       dicData: 'GRADE', //传入需要引用的字典
       ],//type的数据字典,当type为：select | radio | checkbox 加载
-      dataDetail: val => {
-        return `<span class="el-tag">${val}</span>`;;//是否对列表数据处理
+      dataDetail: row => {
+        return row.username+user.name;//是否对列表数据处理
       },
       rules: [{ required: true, message: "请输入用户名", trigger: "blur" }] //表单校验规则
     }

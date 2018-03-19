@@ -1,54 +1,32 @@
 <template>
- <div class="table-container pull-chheight">
-  <div class="table-header">
+  <div class="table-container pull-chheight">
+    <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
-      <el-button type="success" @click="handleExport" size="small"  v-if="permission.sys_crud_btn_export">导出excel</el-button>
+      <el-button type="success" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
       <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
-  <Crud 
-  :tableOption="tableOption"
-  :tableData="tableData"
-  :tableLoading="tableLoading"
-  :before-open="boxhandleOpen"
-  :before-close="boxhandleClose" 
-  :page="page"
-  ref="crud" 
-  width="290" 
-  @handleSave="handleSave"
-  @handleUpdate="handleUpdate"
-  @handleDel="handleDel"
-  @handleCurrentChange="handleCurrentChange"
-  @handleSelectionChange="handleSelectionChange"
-  :menu="true">
-    <template slot-scope="scope">
+    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange" :menu="true">
+      <template slot-scope="scope" slot="username">
+        <el-tag>{{scope.row.username}}</el-tag>
+      </template>
+      <slot name="username"></slot>
+      <template slot-scope="scope" slot="menu">
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
-    </template>
-  </Crud>
-  <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
-    <el-input
-    type="textarea"
-    :autosize="{ minRows: 2, maxRows: 15}"
-    placeholder="请输入内容"
-    v-model="formJson">
-  </el-input>
-  <el-dialog
-  title="菜单"
-  :visible.sync="grade.box"
-  width="40%">
-<el-tree
-  :data="menuAll"
-  :default-checked-keys="grade.check"
-  :default-expanded-keys="grade.check"
-  show-checkbox
-  node-key="id">
-</el-tree>
-  <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="handleGradeUpdate">更新</el-button>
-  </span>
-</el-dialog>
+      </template>
+    </Crud>
+    <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
+    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 15}" placeholder="请输入内容" v-model="formJson">
+    </el-input>
+    <el-dialog title="菜单" :visible.sync="grade.box" width="40%">
+      <el-tree :data="menuAll" :default-checked-keys="grade.check" :default-expanded-keys="grade.check" show-checkbox node-key="id">
+      </el-tree>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleGradeUpdate">更新</el-button>
+      </span>
+    </el-dialog>
 
- </div>
+  </div>
 </template>
 
 <script>

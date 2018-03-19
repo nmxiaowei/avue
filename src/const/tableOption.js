@@ -8,8 +8,9 @@ export default {
             label: "用户名",
             prop: "username",
             width: "150",
-            dataDetail: val => {
-                return `<span class="el-tag el-tag--success">${val}</span>`;
+            solt: true,
+            dataDetail: row => {
+                return row.username + '自定义函数';
             },
             rules: [{ required: true, message: "请输入用户名", trigger: "blur" }]
         },
@@ -20,9 +21,6 @@ export default {
         {
             label: "类型",
             prop: "type",
-            dataDetail: val => {
-                return `<span class="el-tag">${val}</span>`;
-            },
             type: "select",
             dicData: 'GRADE'
         },

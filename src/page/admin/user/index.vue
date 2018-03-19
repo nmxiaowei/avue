@@ -1,23 +1,15 @@
 <template>
- <div class="table-container pull-height">
+  <div class="table-container pull-height">
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
     </div>
-  <Crud 
-  :tableOption="tableOption"
-  :tableData="tableData"
-  :tableLoading="tableLoading"
-  :page="page"
-  ref="crud" 
-  width="290" 
-  @handleSave="handleSave"
-  @handleUpdate="handleUpdate"
-  @handleDel="handleDel"
-  menu>
+    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" menu>
+      <template slot-scope="scope" slot="state">
+        <el-tag :type="scope.row.state==0?'success':'danger'">{{findByvalue(scope.dic,scope.row.state)}}</el-tag>
+      </template>
+    </Crud>
 
-  </Crud>
-
- </div>
+  </div>
 </template>
 
 <script>
@@ -56,6 +48,14 @@ export default {
   },
   props: [],
   methods: {
+    /**
+     * @title 获取字典
+     * @detail 调用crud的findByvalue方法即可
+     *
+     **/
+    findByvalue(dic, value) {
+      return this.$refs.crud.findByvalue(dic, value);
+    },
     /**
      * @title 打开新增窗口
      * @detail 调用crud的handleadd方法即可

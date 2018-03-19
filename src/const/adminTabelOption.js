@@ -25,9 +25,7 @@ export const userOption = {
         {
             label: "状态",
             prop: "state",
-            dataDetail: val => {
-                return `<span class="el-tag ${val == '有效' ? 'el-tag--success' : 'el-tag--danger'}">${val}</span>`;
-            },
+            solt: true,
             type: "radio",
             dicData: 'STATE'
         }
