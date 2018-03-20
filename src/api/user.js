@@ -13,14 +13,15 @@ export const getUserInfo = () => {
         resolve({ data: userInfo });
     })
 }
-export const getMenu = () => {
+export const getMenu = (parentId) => {
     return new Promise((resolve, reject) => {
-        resolve({ data: menu });
+        if (!parentId) parentId = 0;
+        resolve({ data: menu[parentId] });
     })
 }
 export const getMenuAll = () => {
     return new Promise((resolve, reject) => {
-        resolve({ data: menu });
+        resolve({ data: menu[0] });
     })
 }
 

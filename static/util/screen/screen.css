@@ -1,0 +1,32 @@
+.el-tip {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 500px;
+    padding: 8px 16px;
+    margin: 0;
+    margin-left: -250px;
+    margin-top: -60px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    position: relative;
+    background-color: #fff;
+    overflow: hidden;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    transition: opacity .2s;
+}
+
+.el-tip--warning {
+    background-color: #fdf6ec;
+    color: #e6a23c;
+}
+
+.el-tip__title {
+    line-height: 18px;
+}
+.el-tip_img img{
+    width: 80px;
+    height: 80px;
+}

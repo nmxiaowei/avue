@@ -1,0 +1,36 @@
+<template>
+  <div class="pull-auto">
+    <div class="logo">
+      <span class="logo_title is-bold">Avue </span>
+      <span>通用管理系统快速开发框架</span>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "top-logo",
+  data() {
+    return {};
+  },
+  created() {},
+  computed: {},
+  methods: {}
+};
+</script>
+
+<style scoped="scoped" lang="scss">
+.logo {
+  display: flex;
+  align-items: flex-end;
+}
+.logo_title {
+  padding: 0 8px 0 0;
+  color: #409eff;
+  font-size: 28px;
+  font-style: italic;
+  &.is-bold {
+    font-weight: 700;
+  }
+}
+</style>

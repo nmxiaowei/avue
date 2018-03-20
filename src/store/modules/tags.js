@@ -25,7 +25,7 @@ const navs = {
             label: "首页",
             value: "/wel/index"
         },
-        tagCurrent: [{
+        tagCurrent: getStore({ name: 'tagCurrent' }) || [{
             label: "首页",
             value: "/wel/index"
         }],

@@ -1,23 +1,7 @@
 import {
   baseUrl
 } from '@/config/env'
-export const menu = [{
-  id: 1,
-  label: "首页",
-  href: '/wel/index',
-  icon: 'icon-huanyingye',
-  meta: {},
-  children: [],
-}, {
-  id: 13,
-  label: "权限测试页",
-  href: '/role/index',
-  icon: 'icon-quanxian',
-  meta: {
-    roles: ['admin'],
-  },
-  children: [],
-}, {
+const first = [{
   id: 14,
   label: "数据展示",
   href: '/exhibition/index',
@@ -123,4 +107,17 @@ export const menu = [{
   ]
 }
 ]
+const second = [
+  {
+    id: 13,
+    label: "权限测试页",
+    href: '/role/index',
+    icon: 'icon-quanxian',
+    meta: {
+      roles: ['admin'],
+    },
+    children: [],
+  }
+]
+export const menu = [first, second];
 

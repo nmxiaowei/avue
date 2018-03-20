@@ -90,9 +90,10 @@ const user = {
             })
         },
         //获取系统菜单
-        GetMenu({ commit }) {
+        GetMenu({ commit }, parentId) {
+            parentId
             return new Promise(resolve => {
-                getMenu().then((res) => {
+                getMenu(parentId).then((res) => {
                     const data = res.data;
                     commit('SET_MENU', data);
                     resolve(data);
