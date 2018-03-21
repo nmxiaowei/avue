@@ -54,7 +54,6 @@ const navs = {
                 if (ele.value === value) {
                     state.tag = state.tagList[num];
                     setStore({ name: 'tag', content: state.tag })
-                    break
                 }
             });
         },
