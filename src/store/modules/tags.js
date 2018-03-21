@@ -50,13 +50,13 @@ const navs = {
             setStore({ name: 'tagCurrent', content: state.tagCurrent })
         },
         SET_TAG: (state, value) => {
-            for (const [i, v] of state.tagList.entries()) {
-                if (v.value === value) {
-                    state.tag = state.tagList[i];
+            state.tagList.forEach((ele, num) => {
+                if (ele.value === value) {
+                    state.tag = state.tagList[num];
                     setStore({ name: 'tag', content: state.tag })
                     break
                 }
-            }
+            });
         },
         DEL_ALL_TAG: (state, action) => {
             state.tag = tagObj;
