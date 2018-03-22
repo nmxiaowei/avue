@@ -6,6 +6,7 @@
 
 <script>
 import MENU from "@/mock/menu";
+import { setUrlPath } from "@/util/util";
 import { mapGetters } from "vuex";
 import SidebarItem from "./sidebarItem";
 
@@ -16,7 +17,12 @@ export default {
   created() {
     this.$store.dispatch("GetMenu").then(data => {});
   },
-  computed: mapGetters(["menu", "tag", "isCollapse"]),
+  computed:{
+    ...mapGetters(["menu", "tag", "isCollapse"]),
+    nowTagValue: function() {
+      return setUrlPath(this.$route);
+    }
+  },
   mounted() {},
   methods: {},
   components: { SidebarItem }

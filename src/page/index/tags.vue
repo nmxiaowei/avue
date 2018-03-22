@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { resolveUrlPath } from "@/util/util";
+import { resolveUrlPath, setUrlPath } from "@/util/util";
 import { mapState, mapGetters } from "vuex";
 import Breadcrumb from "./breadcrumb";
 export default {
@@ -77,11 +77,7 @@ export default {
   computed: {
     ...mapGetters(["tagWel", "tagList", "isCollapse", "tag"]),
     nowTagValue: function() {
-      const value = this.$route.query.src
-        ? this.$route.query.src
-        : this.$route.path;
-      this.$store.commit("SET_TAG", value);
-      return value;
+      return setUrlPath(this.$route);
     },
     tagListNum: function() {
       return this.tagList.length != 0;

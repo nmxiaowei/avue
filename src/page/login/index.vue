@@ -1,11 +1,14 @@
 <template>
-	<div class="login-container pull-height pull-overflow" @keyup.enter.native="handleLogin">
+  <div class="login-container pull-height" @keyup.enter.native="handleLogin">
     <div class="login-info text-white animated fadeInLeft">
-      <h2>Avue 通用管理系统快速开发框架</h2>
-      <ul>
-        <li><i class="el-icon-check"></i> Avue 是一个基于vue+vuex+vue-router快速后台管理模板，采用token交互验证方式。</li>
-        <li><i class="el-icon-check"></i> 您可以 Avue 为基础，不只限制于vue的页面，你可以嵌入任意第三方网站，基于iframe框架。</li>
-        <li><i class="el-icon-check"></i> Avue 构建简单上手快，最大程度上帮助企业节省时间成本和费用开支。 </li>
+      <h2 class="login-info-title">Avue 通用管理系统快速开发框架</h2>
+      <ul class="login-info-list">
+        <li class="login-info-item">
+          <i class="el-icon-check"></i> Avue 是一个基于vue+vuex+vue-router快速后台管理模板，采用token交互验证方式。</li>
+        <li class="login-info-item">
+          <i class="el-icon-check"></i> 您可以 Avue 为基础，不只限制于vue的页面，你可以嵌入任意第三方网站，基于iframe框架。</li>
+        <li class="login-info-item">
+          <i class="el-icon-check"></i> Avue 构建简单上手快，最大程度上帮助企业节省时间成本和费用开支。 </li>
       </ul>
     </div>
     <div class="login-border pull-height">
@@ -17,16 +20,16 @@
             <userLogin></userLogin>
           </el-tab-pane>
           <el-tab-pane label="短信验证码" name="code">
-             <codeLogin></codeLogin>
+            <codeLogin></codeLogin>
           </el-tab-pane>
           <el-tab-pane label="第三方授权登录" name="third">
             <thirdLogin></thirdLogin>
           </el-tab-pane>
-        </el-tabs> 
+        </el-tabs>
       </div>
     </div>
-		
-	</div>
+
+  </div>
 </template>
 <script>
 import userLogin from "./userlogin";
@@ -76,10 +79,10 @@ export default {
 .login-info {
   padding-left: 60px;
 }
-.login-info > ul {
-  padding: 20px 0;
+.login-info-title {
+  line-height: 90px;
 }
-.login-info > ul > li {
+.login-info-item {
   font-size: 14px;
 }
 .login-border {

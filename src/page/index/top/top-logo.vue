@@ -2,7 +2,7 @@
   <div class="pull-auto">
     <div class="logo">
       <span class="logo_title is-bold">Avue </span>
-      <span>通用管理系统快速开发框架</span>
+      <span class="logo_subtitle">通用管理系统快速开发框架</span>
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
 <style scoped="scoped" lang="scss">
 .logo {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 }
 .logo_title {
   padding: 0 8px 0 0;
@@ -32,5 +32,8 @@ export default {
   &.is-bold {
     font-weight: 700;
   }
+}
+.logo_subtitle {
+  padding-top: 5px;
 }
 </style>

@@ -222,10 +222,10 @@ js自动配置crud<br />
 # 克隆项目
 git clone https://gitee.com/smallweigit/avue.git
 
+# 进入项目
+cd avue
+
 # 安装依赖
-npm install
-   
-# 建议不要用cnpm安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
 npm install --registry=https://registry.npm.taobao.org
 
 # 启动服务
