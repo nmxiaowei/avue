@@ -85,7 +85,6 @@ router.afterEach((to, from) => {
     setTimeout(() => {
         const tag = store.getters.tag;
         setTitle(tag.label);
-        alert(findMenuParent(tag));
         store.commit('SET_TAG_CURRENT', findMenuParent(tag));
     }, 0);
 })
