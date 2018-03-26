@@ -12,16 +12,20 @@ function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
-const whiteList = ['/login', '/404', '/401']
+const whiteList = ['/login', '/404', '/401', '/lock']
 const lockPage = '/lock'
 router.addRoutes(asyncRouterMap); // 动态添加可访问路由表
 router.beforeEach((to, from, next) => {
     NProgress.start() // start progress bar
-    store.commit('ADD_TAG', {
-        label: to.query.name ? to.query.name : to.name,
-        value: to.query.src ? to.query.src : to.path,
-        query: to.query
-    });
+    const value = to.query.src ? to.query.src : to.path;
+    const label = to.query.name ? to.query.name : to.name;
+    if (whiteList.indexOf(value) == -1) {
+        store.commit('ADD_TAG', {
+            label: label,
+            value: value,
+            query: to.query
+        });
+    }
     if (store.getters.token) { // determine if there has token
         /* has token*/
         if (store.getters.isLock && to.path != lockPage) {
