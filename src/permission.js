@@ -1,10 +1,13 @@
 import router from './router/router'
 import store from './store'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css'// progress bar style
 import { getToken } from '@/util/auth'
 import { vaildUtil } from '@/util/yun';
 import { setTitle } from '@/util/util';
 import { validatenull } from '@/util/validate';
 import { asyncRouterMap } from '@/router/router'
+NProgress.configure({ showSpinner: false })// NProgress Configuration
 function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
@@ -13,13 +16,20 @@ const whiteList = ['/login', '/404', '/401']
 const lockPage = '/lock'
 router.addRoutes(asyncRouterMap); // 动态添加可访问路由表
 router.beforeEach((to, from, next) => {
-    store.commit('SET_TAG', to.query.src ? to.query.src : to.path);
+    NProgress.start() // start progress bar
+    store.commit('ADD_TAG', {
+        label: to.query.name ? to.query.name : to.name,
+        value: to.query.src ? to.query.src : to.path,
+        query: to.query
+    });
     if (store.getters.token) { // determine if there has token
         /* has token*/
         if (store.getters.isLock && to.path != lockPage) {
             next({ path: lockPage })
+            NProgress.done();
         } else if (to.path === '/login') {
             next({ path: '/' })
+            NProgress.done();
         } else {
             if (store.getters.roles.length === 0) {
                 store.dispatch('GetUserInfo').then(res => {
@@ -28,6 +38,7 @@ router.beforeEach((to, from, next) => {
                 }).catch(() => {
                     store.dispatch('FedLogOut').then(() => {
                         next({ path: '/login' })
+                        NProgress.done();
                     })
                 })
             } else {
@@ -40,6 +51,7 @@ router.beforeEach((to, from, next) => {
             next()
         } else {
             next('/login')
+            NProgress.done();
         }
     }
 })
@@ -48,40 +60,43 @@ router.beforeEach((to, from, next) => {
 function findMenuParent(tag) {
     let tagCurrent = [];
     const menu = store.getters.menu;
-    //如果是一级菜单直接返回
-    for (let i = 0, j = menu.length; i < j; i++) {
-        if (menu[i].href == tag.value) {
-            tagCurrent.push(tag);
-            return tagCurrent;
-        }
-    }
-
-    let currentPathObj = menu.filter(item => {
-        if (item.children.length == 1) {
-            return item.children[0].href === tag.value;
-        } else {
-            let i = 0;
-            let childArr = item.children;
-            let len = childArr.length;
-            while (i < len) {
-                if (childArr[i].href === tag.value) {
-                    return true;
-                    break;
-                }
-                i++;
-            }
-            return false;
-        }
-    })[0];
-    tagCurrent.push({
-        label: currentPathObj.label,
-        value: currentPathObj.href
-    });
     tagCurrent.push(tag);
     return tagCurrent;
+    // //如果是一级菜单直接返回
+    // for (let i = 0, j = menu.length; i < j; i++) {
+    //     if (menu[i].href == tag.value) {
+    //         tagCurrent.push(tag);
+    //         return tagCurrent;
+    //     }
+    // }
+
+    // let currentPathObj = menu.filter(item => {
+    //     if (item.children.length == 1) {
+    //         return item.children[0].href === tag.value;
+    //     } else {
+    //         let i = 0;
+    //         let childArr = item.children;
+    //         let len = childArr.length;
+    //         while (i < len) {
+    //             if (childArr[i].href === tag.value) {
+    //                 return true;
+    //                 break;
+    //             }
+    //             i++;
+    //         }
+    //         return false;
+    //     }
+    // })[0];
+    // tagCurrent.push({
+    //     label: currentPathObj.label,
+    //     value: currentPathObj.href
+    // });
+    // tagCurrent.push(tag);
+    // return tagCurrent;
 
 }
 router.afterEach((to, from) => {
+    NProgress.done();
     setTimeout(() => {
         const tag = store.getters.tag;
         setTitle(tag.label);

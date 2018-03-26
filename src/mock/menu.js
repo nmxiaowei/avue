@@ -47,6 +47,9 @@ const first = [{
   id: 9,
   label: "表单CRUD",
   href: '/form/index',
+  query: {
+    a: 1
+  },
   icon: 'icon-biaodan',
   meta: {},
   children: []

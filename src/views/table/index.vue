@@ -2,6 +2,11 @@
   <div class="table-container pull-chheight">
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
+      <el-button type="primary" size="small" v-if="permission.sys_crud_btn_add">
+        <router-link :to="{path:'/form/index',query:{b:1}}">
+          表单CRUD
+        </router-link>
+      </el-button>
       <el-button type="success" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
       <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>

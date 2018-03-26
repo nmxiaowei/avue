@@ -38,7 +38,26 @@ export const fullscreenToggel = () => {
         reqFullScreen();
     }
 }
-
+/**
+ * esc监听全屏
+ */
+export const listenfullscreen = (callback) => {
+    function listen() {
+        callback()
+    }
+    document.addEventListener("fullscreenchange", function (e) {
+        listen();
+    });
+    document.addEventListener("mozfullscreenchange", function (e) {
+        listen();
+    });
+    document.addEventListener("webkitfullscreenchange", function (e) {
+        listen();
+    });
+    document.addEventListener("msfullscreenchange", function (e) {
+        listen();
+    });
+}
 /**
  * 浏览器判断是否全屏
  */
@@ -97,17 +116,11 @@ export const findParent = (menu, id) => {
 /**
  * 总体路由处理器
  */
-/**
- * 总体路由处理器
- */
-export const resolveUrlPath = (url) => {
+export const resolveUrlPath = (url, name) => {
 
     let reqUrl = url;
-    if (url.indexOf("#") != -1 && url.indexOf("http") == -1) {
-        const port = reqUrl.substr(reqUrl.indexOf(':'));
-        reqUrl = `/myiframe/urlPath?src=${baseUrl}${port}${reqUrl.replace('#', '').replace(port, '')}`;
-    } else if (url.indexOf("http") != -1) {
-        reqUrl = `/myiframe/urlPath?src=${reqUrl}`;
+    if (url.indexOf("http") != -1 || url.indexOf("https") != -1) {
+        reqUrl = `/myiframe/urlPath?src=${reqUrl}&name=${name}`;
     } else {
         reqUrl = `${reqUrl}`;
     }

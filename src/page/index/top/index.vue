@@ -27,6 +27,9 @@
             <router-link to="/">首页</router-link>
           </el-dropdown-item>
           <el-dropdown-item>
+            <router-link to="/info/index">个人信息</router-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
             <a href="https://gitee.com/smallweigit/avue" target="_blank">码云地址</a>
           </el-dropdown-item>
           <el-dropdown-item>
@@ -41,10 +44,9 @@
     </div>
   </div>
 </template>
-
 <script>
 import { mapState, mapGetters } from "vuex";
-import { fullscreenToggel } from "@/util/util";
+import { fullscreenToggel, listenfullscreen } from "@/util/util";
 import topLogo from "./top-logo";
 import topLock from "./top-lock";
 import topMenu from "./top-menu";
@@ -56,6 +58,9 @@ export default {
   },
   filters: {},
   created() {},
+  mounted() {
+    listenfullscreen(this.setScreen);
+  },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
@@ -64,8 +69,10 @@ export default {
   },
   methods: {
     handleScreen() {
-      this.$store.commit("SET_FULLSCREN");
       fullscreenToggel();
+    },
+    setScreen() {
+      this.$store.commit("SET_FULLSCREN");
     },
     logout() {
       this.$confirm("是否退出系统, 是否继续?", "提示", {

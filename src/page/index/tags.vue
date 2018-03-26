@@ -8,7 +8,7 @@
     <!-- tag盒子 -->
     <div class="tags-box" ref="tagBox">
       <div class="tags-list" ref="tagsList" @mousewheel="hadelMousewheel" @mouseup="hadelMouseUp" @mousemove="hadelMouse" @mousedown="hadelMousestart" @touchup="hadelMouseUp" @touchmove="hadelMouse" @touchstart="hadelMousestart">
-        <div ref="tagsPageOpened" class="tag-item" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item.value,item.label,item.num)">
+        <div ref="tagsPageOpened" class="tag-item" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
           <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span>
           <span class="tag-text">{{item.label}}</span>
           <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
@@ -170,8 +170,6 @@ export default {
     },
     closeAllTags() {
       this.$store.commit("DEL_ALL_TAG");
-      this.$store.commit("ADD_TAG", this.tagWel);
-      this.$router.push({ path: resolveUrlPath(this.tagWel.value) });
     },
     moveToView(tag) {
       if (tag.offsetLeft < -this.tagBodyLeft) {
@@ -192,12 +190,11 @@ export default {
         );
       }
     },
-    openUrl(url, name, num) {
-      this.$store.commit("ADD_TAG", {
-        label: name,
-        value: url
+    openUrl(item) {
+      this.$router.push({
+        path: resolveUrlPath(item.value, item.label),
+        query: item.query
       });
-      this.$router.push({ path: resolveUrlPath(url) });
     },
     eachTag(tag) {
       for (var key in this.tagList) {
@@ -213,7 +210,7 @@ export default {
       this.$store.commit("DEL_TAG", item);
       if (item.value == this.tag.value) {
         tag = this.tagList[key == 0 ? key : key - 1];
-        this.openUrl(tag.value, tag.label, tag.num);
+        this.openUrl(tag);
       }
     }
   }
