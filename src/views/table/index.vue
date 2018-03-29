@@ -2,13 +2,14 @@
   <div class="table-container pull-chheight">
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
-      <el-button type="primary" size="small" v-if="permission.sys_crud_btn_add">
+      <el-button type="success" size="small" v-if="permission.sys_crud_btn_add">
         <router-link :to="{path:'/forms/index'}">
           表单CRUD
         </router-link>
       </el-button>
-      <el-button type="success" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
-      <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
+      <el-button type="info" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
+      <el-button type="warning" @click="handleJpeg" size="small">导出图片</el-button>
+      <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
     <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
@@ -36,6 +37,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import html2canvas from "html2canvas";
 import Crud from "@/components/crud/";
 import tableOption from "@/const/tableOption";
 export default {
@@ -137,6 +139,23 @@ export default {
         const list = this.tableData;
         const data = this.formatJson(filterVal, list);
         excel.export_json_to_excel(tHeader, data, this.filename);
+      });
+    },
+    /**
+     * @title 导出图片
+     *
+     **/
+    handleJpeg() {
+      let vm = this;
+      let table = this.$refs.crud.$el;
+      html2canvas(table).then(canvas => {
+        var url = canvas.toDataURL();
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "未命名";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       });
     },
     formatJson(filterVal, jsonData) {
