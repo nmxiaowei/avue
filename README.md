@@ -180,7 +180,7 @@ const userInfo = encryption({
 <template slot-scope="scope" slot="username">
   <el-tag>{{scope.row.username}}</el-tag>
 </template>
-<template slot-scope="scope">
+<template slot-scope="scope" slot="menu">
   <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
 </template>
 slot的名字为字段的名字，当为menu时为菜单添加dom内容<br />
@@ -190,6 +190,7 @@ js自动配置crud<br />
   index: true,///表格是否显示序号 default:false
   selection: true,//表格是否显示可选select default:false
   menu:true,//表格是否显示操作栏, default:true
+  menuWidth:250,//操作菜单的宽度
   editBtn:false,//是否显示编辑按钮 default:true
   delBtn:false,//是否显示删除按钮 default:true
   page:false,//是否显示分页 default:true

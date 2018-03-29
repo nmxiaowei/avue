@@ -122,15 +122,13 @@ const user = {
         },
         SET_MENU: (state, menu) => {
             const list = menu.filter(ele => {
-                if (validatenull(ele.meta.roles)) {
-                    return true;
-                }
+                if (validatenull(ele.meta)) return true;
+                if (validatenull(ele.meta.roles)) return true;
                 if (ele.meta.roles.indexOf(state.roles[0]) != -1) {
                     return true;
                 } else {
                     return false;
                 }
-
             });
             state.menu = list;
             setStore({ name: 'menu', content: state.menu, type: 'session' })

@@ -3,7 +3,7 @@
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
       <el-button type="primary" size="small" v-if="permission.sys_crud_btn_add">
-        <router-link :to="{path:'/form/index',query:{b:1}}">
+        <router-link :to="{path:'/forms/index'}">
           表单CRUD
         </router-link>
       </el-button>
@@ -11,7 +11,7 @@
       <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
-    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange" :menu="true">
+    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
@@ -40,6 +40,9 @@ import Crud from "@/components/crud/";
 import tableOption from "@/const/tableOption";
 export default {
   name: "table",
+  components: {
+    Crud
+  },
   data() {
     return {
       tableOption: tableOption, //表格设置属性
@@ -278,9 +281,6 @@ export default {
       });
       show();
     }
-  },
-  components: {
-    Crud
   }
 };
 </script>

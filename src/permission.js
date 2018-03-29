@@ -7,12 +7,12 @@ import { vaildUtil } from '@/util/yun';
 import { setTitle } from '@/util/util';
 import { validatenull } from '@/util/validate';
 import { asyncRouterMap } from '@/router/router'
+import whiteList from '@/const/whiteList'
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
-const whiteList = ['/login', '/404', '/401', '/lock']
 const lockPage = '/lock'
 router.addRoutes(asyncRouterMap); // 动态添加可访问路由表
 router.beforeEach((to, from, next) => {

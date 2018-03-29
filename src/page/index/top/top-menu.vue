@@ -36,19 +36,21 @@ export default {
   methods: {
     openMenu(item) {
       this.$store.dispatch("GetMenu", item.parentId).then(data => {
+        let itemActive,
+          childItemActive = 0;
         this.$store.commit("DEL_ALL_TAG");
-        let tagCurrent = Object.assign([], this.tagCurrent);
-        tagCurrent[0] = {
-          label: item.label,
-          value: item.href
-        };
-        this.$store.commit("SET_TAG_CURRENT", tagCurrent);
+        if (item.href) {
+          itemActive = item;
+        } else {
+          if (this.menu[childItemActive].length == 0) {
+            itemActive = this.menu[childItemActive];
+          } else {
+            itemActive = this.menu[childItemActive].children[childItemActive];
+          }
+        }
+
         this.$router.push({
-          path: resolveUrlPath(item.href ? item.href : this.menu[0].href)
-        });
-        this.$store.commit("ADD_TAG", {
-          label: item.label ? item.label : this.menu[0].label,
-          value: item.href ? item.href : this.menu[0].href
+          path: resolveUrlPath(itemActive.href)
         });
       });
     }

@@ -35,6 +35,7 @@ export const roleOption = {
     border: true,
     index: true,
     selection: false,
+    menuWidth: 300,
     column: [
         {
             label: "角色名称",

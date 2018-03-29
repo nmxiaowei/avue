@@ -111,14 +111,14 @@ export const asyncRouterMap = [
 			}
 		]
 	}, {
-		path: '/form',
+		path: '/forms',
 		component: Layout,
-		redirect: '/form/index',
+		redirect: '/forms/index',
 		children: [
 			{
 				path: 'index',
 				name: '表单CRUD',
-				component: _import('form/index', 'views')
+				component: _import('forms/index', 'views')
 			}
 		]
 	}, {
@@ -145,6 +145,28 @@ export const asyncRouterMap = [
 				path: 'page',
 				name: '错误页面',
 				component: _import('errlog/errorPage')
+			}
+		]
+	}, {
+		path: '/advanced-router',
+		component: Layout,
+		children: [
+			{
+				path: 'mutative-router',
+				name: '动态路由',
+				component: _import('advanced-router/mutative-router', 'views'),
+			}, {
+				path: 'argument-page',
+				name: '参数路由',
+				component: _import('advanced-router/argument-page', 'views')
+			}, {
+				path: 'mutative-detail/:id',
+				name: '动态路由详情页',
+				component: _import('advanced-router/mutative-detail', 'views'),
+			}, {
+				path: 'argument-detail',
+				name: '参数路由详情页',
+				component: _import('advanced-router/argument-detail', 'views')
 			}
 		]
 	}, {

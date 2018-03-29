@@ -12,7 +12,7 @@
 
 
 let baseUrl = '';
-let iconfontVersion = ['567566_lgiis24af44bcsor'];
+let iconfontVersion = ['567566_sch40o867ogk3xr'];
 let iconfontUrl = `//at.alicdn.com/t/font_$key.css`;
 let codeUrl = `${baseUrl}/code`
 if (process.env.NODE_ENV == 'development') {
@@ -21,4 +21,4 @@ if (process.env.NODE_ENV == 'development') {
 	baseUrl = `http://localhost`;
 }
 
-export { baseUrl, iconfontUrl,iconfontVersion, codeUrl }
+export { baseUrl, iconfontUrl, iconfontVersion, codeUrl }

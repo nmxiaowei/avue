@@ -96,6 +96,7 @@ export default {
       this.code.type == "text"
         ? (this.code.value = randomLenNum(this.code.len))
         : (this.code.src = `${this.codeUrl}/${this.loginForm.redomStr}`);
+      this.loginForm.code = this.code.value;
     },
     showPassword() {
       this.passwordType == ""

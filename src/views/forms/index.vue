@@ -1,6 +1,6 @@
 <template>
   <div class="from-container pull-chheight">
-    <Form :formOption="formOption" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit"></Form>
+    <Forms :formOption="formOption" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit"></Forms>
     <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
     <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 15}" placeholder="请输入内容" v-model="formJson">
     </el-input>
@@ -9,10 +9,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Form from "@/components/form/";
+import Forms from "@/components/forms/";
 import formOption from "@/const/formOption";
 export default {
-  name: "from",
+  name: "froms",
   data() {
     return {
       formJson: "",
@@ -23,10 +23,6 @@ export default {
   },
   created() {
     this.formJson = JSON.stringify(formOption, null, 2);
-    this.$message({
-      dangerouslyUseHTMLString: true,
-      message: JSON.stringify(this.$route.query)
-    });
   },
   watch: {},
   mounted() {},
@@ -69,7 +65,7 @@ export default {
     }
   },
   components: {
-    Form
+    Forms
   }
 };
 </script>

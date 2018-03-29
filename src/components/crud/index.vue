@@ -31,9 +31,9 @@
           </template>
         </el-table-column>
       </template>
-      <el-table-column label="操作" :width="width" v-if="tableOption.menu==undefined?true:tableOption.menu">
+      <el-table-column label="操作" :width="tableOption.menuWidth?tableOption.menuWidth:240" v-if="tableOption.menu==undefined?true:tableOption.menu">
         <template slot-scope="scope">
-          <template v-if="menu">
+          <template v-if="tableOption.menu?tableOption.menu:true">
             <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.meeditBtnnu">编 辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)" v-if="tableOption.delBtn==undefined?true:tableOption.delBtn">删 除</el-button>
           </template>
@@ -127,13 +127,6 @@ export default {
     tableLoading: {
       type: Boolean,
       default: false
-    },
-    menu: {
-      type: Boolean,
-      default: true
-    },
-    width: {
-      type: String
     },
     tableData: {
       type: Array,
