@@ -1,0 +1,41 @@
+<template>
+  <el-date-picker v-model="text" type="date" :placeholder="'请输入'+placeholder" @change="handleChange"> </el-date-picker>
+</template>
+
+<script>
+export default {
+  name: "crud-date",
+  data() {
+    return {
+      text: ""
+    };
+  },
+  props: {
+    value: {
+      default: ""
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    value: function(n, o) {
+      this.text = this.value;
+    }
+  },
+  created() {
+    this.text = this.value;
+  },
+  mounted() {},
+  methods: {
+    handleChange(value) {
+      this.$emit("input", value);
+    }
+  }
+};
+</script>
+
+<style>
+
+</style>

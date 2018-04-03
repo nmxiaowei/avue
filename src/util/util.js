@@ -3,6 +3,22 @@ import { baseUrl } from '@/config/env'
 
 
 /**
+ * 动态获取组件
+ */
+export const getComponent = (type) => {
+    if (type == "select") {
+        return "crudSelect";
+    } else if (type == "radio") {
+        return "crudRadio";
+    } else if (type == "checkbox") {
+        return "crudCheckbox";
+    } else if (type == "date") {
+        return "crudDate";
+    } else {
+        return "crudInput";
+    }
+};
+/**
  * 加密处理
  */
 export const encryption = (params) => {

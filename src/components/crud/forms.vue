@@ -1,51 +1,41 @@
 <template>
- <div class="from-container pull-auto">
-    <el-form  ref="form" :model="form" label-width="80px" :rules="formRules">
+  <div class="from-container pull-auto">
+    <el-form ref="form" :model="form" label-width="80px" :rules="formRules">
       <el-row :gutter="20" :span="24">
         <template v-for="(column,index) in formOption.column">
           <el-col :span="column.span||12">
             <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
-              <template v-if="column.type == 'select'">
-                  <el-select v-model="form[column.prop]" :placeholder="'请选择'+column.label" :disabled="column.disabled">
-                  <el-option
-                    v-for="(item,index) in DIC[column.dicData]"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </template>
-              <template v-if="column.type == 'radio'">
-                    <el-radio  v-for="(item,index) in DIC[column.dicData]" v-model="form[column.prop]" :disabled="column.disabled" :label="item.value" :key="index">{{item.label}}</el-radio>
-              </template>
-              <template v-if="column.type == 'date'">
-                    <el-date-picker v-model="form[column.prop]" type="date" :placeholder="'请输入'+column.label" :disabled="column.disabled"> </el-date-picker>
-              </template>
-              <template v-if="column.type == 'checkbox'">
-                <el-checkbox-group  v-model="form[column.prop]">
-                    <el-checkbox  v-for="(item,index) in DIC[column.dicData]" :label="item.value" :key="index" :disabled="column.disabled">{{item.label}}</el-checkbox>
-                </el-checkbox-group>
-              </template>
-              <template v-if="!column.type">
-                  <el-input v-model="form[column.prop]" :placeholder="'请输入'+column.label" :disabled="column.disabled"></el-input>  
-              </template>
+              <component :is="getComponent(column.type)" v-model="form[column.prop]" :placeholder="column.label" :dic="DIC[column.dicData]"></component>
             </el-form-item>
           </el-col>
-         </template>
-          <el-col :span="24">
+        </template>
+        <el-col :span="24">
           <el-form-item>
-              <el-button type="primary" @click="handleSubmit">{{formSubmitText}}</el-button>
+            <el-button type="primary" @click="handleSubmit">{{formSubmitText}}</el-button>
           </el-form-item>
-          </el-col>
+        </el-col>
       </el-row>
-      </el-form>
- </div>
+    </el-form>
+  </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import { getComponent } from "@/util/util";
+import crudInput from "./crud-input";
+import crudSelect from "./crud-select";
+import crudRadio from "./crud-radio";
+import crudCheckbox from "./crud-checkbox";
+import crudDate from "./crud-date";
 export default {
   name: "from",
+  components: {
+    crudInput,
+    crudSelect,
+    crudRadio,
+    crudCheckbox,
+    crudDate
+  },
   data() {
     return {
       form: {},
@@ -92,6 +82,9 @@ export default {
         this.DIC = data;
       });
     },
+    getComponent(type) {
+      return getComponent(type);
+    },
     formInit() {
       const list = this.formOption.column;
       let form = {};
@@ -113,8 +106,7 @@ export default {
         }
       });
     }
-  },
-  components: {}
+  }
 };
 </script>
 

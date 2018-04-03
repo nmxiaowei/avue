@@ -9,7 +9,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Forms from "@/components/forms/";
+import Forms from "@/components/crud/forms";
 import formOption from "@/const/formOption";
 export default {
   name: "froms",

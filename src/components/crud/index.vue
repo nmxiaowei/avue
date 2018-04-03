@@ -48,27 +48,7 @@
           <template v-for="(column,index) in tableOption.column">
             <el-col :span="column.span||12">
               <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
-                <template v-if="column.type == 'select'">
-                  <el-select v-model="tableForm[column.prop]" :placeholder="'请选择'+column.label">
-                    <el-option v-for="(item,index) in DIC[column.dicData]" :key="index" :label="item.label" :value="item.value">
-                    </el-option>
-                  </el-select>
-                </template>
-                <template v-if="column.type == 'radio'">
-                  <el-radio v-for="(item,index) in DIC[column.dicData]" v-model="tableForm[column.prop]" :label="item.value" :key="index">{{item.label}}</el-radio>
-                </template>
-                <template v-if="column.type == 'date'">
-                  <el-date-picker v-model="tableForm[column.prop]" type="date" :placeholder="'请输入'+column.label"> </el-date-picker>
-                </template>
-                <template v-if="column.type == 'checkbox'">
-                  <el-checkbox-group v-model="tableForm[column.prop]">
-                    <el-checkbox v-for="(item,index) in DIC[column.dicData]" :label="item.value" :key="index">{{item.label}}</el-checkbox>
-                  </el-checkbox-group>
-                </template>
-                <template v-if="!column.type">
-                  <el-input v-model="tableForm[column.prop]" :placeholder="'请输入'+column.label"></el-input>
-                </template>
-
+                <component :is="getComponent(column.type)" v-model="tableForm[column.prop]" :placeholder="column.label" :dic="DIC[column.dicData]"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -83,10 +63,22 @@
   </div>
 </template>
 <script>
-import { findByvalue } from "@/util/util";
+import { findByvalue, getComponent } from "@/util/util";
 import { mapActions } from "vuex";
+import crudInput from "./crud-input";
+import crudSelect from "./crud-select";
+import crudRadio from "./crud-radio";
+import crudCheckbox from "./crud-checkbox";
+import crudDate from "./crud-date";
 export default {
   name: "crud",
+  components: {
+    crudInput,
+    crudSelect,
+    crudRadio,
+    crudCheckbox,
+    crudDate
+  },
   data() {
     return {
       boxVisible: false,
@@ -131,12 +123,16 @@ export default {
     tableData: {
       type: Array,
       required: true,
-      default: []
+      default: () => {
+        return [];
+      }
     },
     tableOption: {
       type: Object,
       required: true,
-      default: {}
+      default: () => {
+        return [];
+      }
     }
   },
   methods: {
@@ -170,6 +166,9 @@ export default {
     },
     findByvalue(dic, val) {
       return findByvalue(dic, val);
+    },
+    getComponent(type) {
+      return getComponent(type);
     },
     // 选中实例
     toggleSelection(rows) {
@@ -261,8 +260,7 @@ export default {
       if (typeof this.beforeClose === "function") this.beforeClose(this.hide);
       else this.hide();
     }
-  },
-  components: {}
+  }
 };
 </script>
 
