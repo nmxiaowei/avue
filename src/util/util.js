@@ -149,13 +149,6 @@ export const setUrlPath = ($route) => {
     let value = "";
     if ($route.query.src) {
         value = $route.query.src;
-        if (value.indexOf(baseUrl) != -1) {
-            const port = value
-                .substr(value.lastIndexOf(":"))
-                .replace(value.substr(value.lastIndexOf("/")), "");
-            const path = value.replace(baseUrl + port, "");
-            value = "#" + path + port;
-        }
     } else {
         value = $route.path;
     }

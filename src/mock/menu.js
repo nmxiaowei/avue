@@ -45,21 +45,38 @@ const first = [
     }]
   }, {
     id: 6,
-    label: "表格CRUD",
-    href: '/table/index',
+    label: "表格&表单",
+    href: '',
     icon: 'icon-biaoge',
     meta: {},
-    children: []
-  }, {
-    id: 9,
-    label: "表单CRUD",
-    href: '/forms/index',
-    query: {
-      a: 1
-    },
-    icon: 'icon-biaodan',
-    meta: {},
-    children: []
+    children: [{
+      id: 16,
+      label: "表格",
+      href: '/table/index',
+      query: {
+        a: 1
+      },
+      icon: 'icon-biaoge',
+      meta: {},
+      children: []
+    }, {
+      id: 9,
+      label: "表单",
+      href: '/forms/index',
+      query: {
+        a: 1
+      },
+      icon: 'icon-biaodan',
+      meta: {},
+      children: []
+    }, {
+      id: 9,
+      label: "文档",
+      href: `${window.location.origin}/static/wiki/index.html`,
+      icon: 'icon-huanyingye',
+      meta: {},
+      children: []
+    }]
   }, {
     id: 7,
     label: "阿里图标",
