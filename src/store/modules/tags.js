@@ -79,8 +79,8 @@ const navs = {
                 if (ele.value === action.value) {
                     state.tagList.splice(num, 1)
                     state.tagList = setFistTag(state.tagList);
-                    setStore({ name: 'tag', content: state.tagList, type: 'session' })
-                    setStore({ name: 'tagList', content: state.tagList, type: 'session' })
+                    setStore({ name: 'tag', content: state.tag })
+                    setStore({ name: 'tagList', content: state.tagList })
                 }
             })
         },

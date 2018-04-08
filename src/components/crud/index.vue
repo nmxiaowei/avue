@@ -5,7 +5,7 @@
         <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
         <el-button @click="toggleSelection()" size="small">取消选择</el-button>
       </div> -->
-    <el-table :data="tableData" :height="tableOption.height" ref="table" style="width:99.5%;margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
+    <el-table :data="tableData" :height="tableOption.height" ref="table" :style="{width:tableOption.width?tableOption.width+'px':'99.5%'}" style="margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
       <!-- 选择框 -->
       <template v-if="tableOption.selection">
         <el-table-column type="selection" width="55">
@@ -48,7 +48,7 @@
           <template v-for="(column,index) in tableOption.column">
             <el-col :span="column.span||12">
               <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
-                <component :is="getComponent(column.type)" v-model="tableForm[column.prop]" :placeholder="column.label" :dic="DIC[column.dicData]"></component>
+                <component :is="getComponent(column.type)" v-model="tableForm[column.prop]" :placeholder="column.label" :dic="(typeof(column.dicData)== 'string')? DIC[column.dicData]:column.dicData"></component>
               </el-form-item>
             </el-col>
           </template>

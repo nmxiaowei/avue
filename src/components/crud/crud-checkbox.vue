@@ -17,7 +17,6 @@ export default {
       default: ""
     },
     dic: {
-      type: Array,
       default: () => {
         return [];
       }

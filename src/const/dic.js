@@ -1,3 +1,4 @@
+
 export const DIC = {
     SEX: [{
         label: '男',
@@ -26,11 +27,11 @@ export const DIC = {
     ],
     VAILDATA: [
         {
-            label: "显示",
+            label: "激活",
             value: true
         },
         {
-            label: "隐藏",
+            label: "禁用",
             value: false
         }
     ],
@@ -38,6 +39,14 @@ export const DIC = {
         {
             label: "选择框",
             value: 'select'
+        },
+        {
+            label: "文本框",
+            value: 'text'
+        },
+        {
+            label: "多行文本框",
+            value: 'textarea'
         },
         {
             label: "单选框",
@@ -51,5 +60,15 @@ export const DIC = {
             label: "日期框",
             value: 'date'
         }
-    ]
+    ],
+    DATALIST: [{
+        label: 'SEX',
+        value: 'SEX',
+    }, {
+        label: 'STATE',
+        value: 'STATE',
+    }, {
+        label: 'GRADE',
+        value: 'GRADE',
+    }]
 }

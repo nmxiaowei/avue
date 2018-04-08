@@ -1,21 +1,22 @@
 export default {
-    dic: ["CRUDTYPE", 'VAILDATA'],
     page: false,
     column: [
         {
             label: "列名称",
-            prop: "label"
+            prop: "label",
+            rules: [{ required: true, message: "请输入列名称", trigger: "blur" }]
         },
         {
             label: "json字段",
-            prop: "prop"
+            prop: "prop",
+            rules: [{ required: true, message: "请输入json字段", trigger: "blur" }]
         },
-
         {
-            label: "单格类型",
+            label: "表单类型",
             prop: "type",
             type: "select",
             dicData: 'CRUDTYPE',
+            rules: [{ required: true, message: "请选择表单类型", trigger: "blur" }]
         },
         {
             label: "列宽度",
@@ -65,7 +66,8 @@ export default {
         {
             label: "字典",
             prop: "dicData",
-            hide: true
+            type: 'select',
+            dicData: '',
         }
     ]
 }
