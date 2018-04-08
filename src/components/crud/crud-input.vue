@@ -1,5 +1,5 @@
 <template>
-  <el-input v-model="text" :placeholder="'请输入'+placeholder" @change="handleChange"></el-input>
+  <el-input v-model="text" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"></el-input>
 </template>
 
 <script>
@@ -14,6 +14,10 @@ export default {
     value: {
       type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     placeholder: {
       type: String,

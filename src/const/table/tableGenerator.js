@@ -1,5 +1,7 @@
 export default {
     page: false,
+    index: true,
+    height: 300,
     column: [
         {
             label: "列名称",

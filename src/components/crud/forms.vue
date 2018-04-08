@@ -1,15 +1,16 @@
 <template>
   <div class="from-container pull-auto">
-    <el-form ref="form" :model="form" label-width="80px" :rules="formRules">
+    <el-form ref="form" :model="form" :label-width="formOption.labelWidth?formOption.labelWidth+'px' : '80px'" :rules="formRules">
       <el-row :gutter="20" :span="24">
         <template v-for="(column,index) in formOption.column">
           <el-col :span="column.span||12">
-            <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
-              <component :is="getComponent(column.type)" v-model="form[column.prop]" :placeholder="column.label" :dic="DIC[column.dicData]"></component>
+            <el-form-item :label="column.label" :prop="column.prop" :label-width="column.labelWidth?column.labelWidth+'px': formOption.labelWidth+'px'||'80px'">
+              <slot :value="form[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.formsolt"></slot>
+              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
             </el-form-item>
           </el-col>
         </template>
-        <el-col :span="24">
+        <el-col :span="24" v-if="formOption.submitBtn!=undefined?formOption.submitBtn:true">
           <el-form-item>
             <el-button type="primary" @click="handleSubmit">{{formSubmitText}}</el-button>
           </el-form-item>
@@ -21,7 +22,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { getComponent } from "@/util/util";
+import { getComponent, setDic } from "@/util/util";
 import crudInput from "./crud-input";
 import crudSelect from "./crud-select";
 import crudRadio from "./crud-radio";
@@ -54,12 +55,20 @@ export default {
   watch: {
     formOption: function(n, o) {
       this.rulesInit();
+    },
+    formData: function(n, o) {
+      this.rulesInit();
     }
   },
   mounted() {},
   computed: {},
   props: {
     formOption: {
+      type: Object,
+      required: true,
+      default: {}
+    },
+    formData: {
       type: Object,
       required: true,
       default: {}
@@ -85,6 +94,9 @@ export default {
     getComponent(type) {
       return getComponent(type);
     },
+    setDic(dicData, DIC) {
+      return setDic(dicData, DIC);
+    },
     formInit() {
       const list = this.formOption.column;
       let form = {};
@@ -96,6 +108,9 @@ export default {
         }
       });
       this.form = Object.assign({}, form);
+      for (let o in this.formData) {
+        this.form[o] = this.formData[o];
+      }
     },
     handleSubmit() {
       this.$refs["form"].validate(valid => {

@@ -16,7 +16,9 @@
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
-      <slot name="username"></slot>
+      <template slot-scope="scope" slot="nameForm">
+        <crud-input @click.native="tip" v-model="scope.value"></crud-input>
+      </template>
       <template slot-scope="scope" slot="menu">
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
       </template>
@@ -37,13 +39,23 @@
 
 <script>
 import { mapGetters } from "vuex";
+import crudInput from "@/components/crud/crud-input";
+import crudSelect from "@/components/crud/crud-select";
+import crudRadio from "@/components/crud/crud-radio";
+import crudCheckbox from "@/components/crud/crud-checkbox";
+import crudDate from "@/components/crud/crud-date";
 import html2canvas from "html2canvas";
 import Crud from "@/components/crud/";
-import tableOption from "@/const/tableOption";
+import tableOption from "@/const/table/tableOption";
 export default {
   name: "table",
   components: {
-    Crud
+    Crud,
+    crudInput,
+    crudSelect,
+    crudRadio,
+    crudCheckbox,
+    crudDate
   },
   data() {
     return {
@@ -75,6 +87,11 @@ export default {
   },
   props: [],
   methods: {
+    tip() {
+      this.$message({
+        message: "点击事件"
+      });
+    },
     formate() {
       let p = new Promise((resolve, reject) => {
         resolve(JSON.parse(this.formJson));

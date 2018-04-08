@@ -20,7 +20,7 @@
       <template v-for="(column,index) in tableOption.column">
         <el-table-column :width="column.width" :label="column.label" :fixed="column.fixed" :sortable="column.sortable" v-if="!column.hide">
           <template slot-scope="scope">
-            <slot :row="scope.row" :dic="DIC[column.dicData]" :name="column.prop" v-if="column.solt"></slot>
+            <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
             <span v-else-if="!column.overHidden" v-html="handleDetail(scope.row,column)"></span>
             <el-popover v-else trigger="hover" placement="top">
               <p>{{column.label}}: {{ scope.row[column.prop]}}</p>
@@ -33,7 +33,7 @@
       </template>
       <el-table-column label="操作" :width="tableOption.menuWidth?tableOption.menuWidth:240" v-if="tableOption.menu==undefined?true:tableOption.menu">
         <template slot-scope="scope">
-          <template v-if="tableOption.menu?tableOption.menu:true">
+          <template v-if="tableOption.menu!=undefined?tableOption.menu:true">
             <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.meeditBtnnu">编 辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)" v-if="tableOption.delBtn==undefined?true:tableOption.delBtn">删 除</el-button>
           </template>
@@ -41,14 +41,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="tableOption.page==undefined?true:tableOption.page" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="handleCurrentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <el-pagination v-if="tableOption.page!=undefined?tableOption.page:true" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="handleCurrentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
     <el-dialog :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
         <el-row :gutter="20" :span="24">
           <template v-for="(column,index) in tableOption.column">
             <el-col :span="column.span||12">
               <el-form-item :label="column.label" :prop="column.prop" v-if="!column.visdiplay">
-                <component :is="getComponent(column.type)" v-model="tableForm[column.prop]" :placeholder="column.label" :dic="(typeof(column.dicData)== 'string')? DIC[column.dicData]:column.dicData"></component>
+                <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?(column.addDisabled!=undefined?column.addDisabled:column.disabled):column.disabled"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -60,16 +61,18 @@
         <el-button @click="boxVisible = false">取 消</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 <script>
-import { findByvalue, getComponent } from "@/util/util";
+import { findByvalue, getComponent, setDic } from "@/util/util";
 import { mapActions } from "vuex";
 import crudInput from "./crud-input";
 import crudSelect from "./crud-select";
 import crudRadio from "./crud-radio";
 import crudCheckbox from "./crud-checkbox";
 import crudDate from "./crud-date";
+import Forms from "./forms";
 export default {
   name: "crud",
   components: {
@@ -77,7 +80,8 @@ export default {
     crudSelect,
     crudRadio,
     crudCheckbox,
-    crudDate
+    crudDate,
+    Forms
   },
   data() {
     return {
@@ -166,6 +170,9 @@ export default {
     },
     findByvalue(dic, val) {
       return findByvalue(dic, val);
+    },
+    setDic(dicData, DIC) {
+      return setDic(dicData, DIC);
     },
     getComponent(type) {
       return getComponent(type);

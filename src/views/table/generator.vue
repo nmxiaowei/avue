@@ -1,87 +1,34 @@
 <template>
-    <div class="generator-container  pull-chheight">
-        <el-form ref="form" :model="form" label-width="90px">
-            <el-row :gutter="20">
-                <el-col :span="6">
-                    <el-form-item label="表格宽度">
-                        <crud-input v-model="form.width"></crud-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="表格高度">
-                        <crud-input v-model.number="form.height"></crud-input>
-                    </el-form-item>
-                </el-col>
+  <div class="generator-container  pull-chheight">
+    <Forms :formOption="formOption" :formData="form" @handleSubmit="handleSubmit">
+      <template slot-scope="scope" slot="dic">
+        <crud-input @click.native="dicData.box=true" v-model=" scope.value "></crud-input>
+      </template>
+    </Forms>
+    <el-button type="primary " @click="handleAddColumn " size="small ">新增</el-button>
+    <Crud ref="crud " :tableOption="tableOption " :tableData="form.column " @handleUpdate="handleUpdate " @handleDel="handleDel " @handleSave="handleSave "></Crud>
+    <el-input type="textarea " v-model="result " :autosize="{ minRows: 10} "></el-input>
+    <el-dialog title="字典选择 " :visible.sync="dicData.box ">
+      <crud-checkbox v-model="dicData.check " :dic="DIC.DATALIST "></crud-checkbox>
+      <span slot="footer " class="dialog-footer ">
+        <el-button type="primary " @click="handleDicSbumit ">确 定</el-button>
+      </span>
+    </el-dialog>
 
-                <el-col :span="6">
-                    <el-form-item label="表格字典">
-                        <crud-input v-model="form.dic" @click.native="dicData.box=true"></crud-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="操作栏宽度">
-                        <crud-input v-model.number="form.menuWidth"></crud-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="表格边框">
-                        <crud-radio v-model="form.border" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="表格序号">
-                        <crud-radio v-model="form.index" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="表格勾选框">
-                        <crud-radio v-model="form.selection" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="表格操作栏">
-                        <crud-radio v-model="form.menu" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="行删除按钮">
-                        <crud-radio v-model="form.editBtn" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="行编辑按钮">
-                        <crud-radio v-model="form.delBtn" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="表格分页">
-                        <crud-radio v-model="form.page" :dic="DIC.VAILDATA"></crud-radio>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-        <el-button type="primary" @click="handleAddColumn">新增</el-button>
-        <Crud ref="crud" :tableOption="tableOption" :tableData="form.column" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleSave="handleSave"></Crud>
-        <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
-        <el-dialog title="字典选择" :visible.sync="dicData.box">
-            <crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></crud-checkbox>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="handleDicSbumit">确 定</el-button>
-            </span>
-        </el-dialog>
-
-    </div>
+  </div>
 </template>
 
 <script>
 import { DIC } from "@/const/dic";
-import tableOption from "@/const/generator";
+import tableOption from "@/const/table/tableGenerator";
+import formOption from "@/const/table/formGenerator";
 import crudSelect from "@/components/crud/crud-select";
 import crudInput from "@/components/crud/crud-input";
 import crudRadio from "@/components/crud/crud-radio";
 import crudCheckbox from "@/components/crud/crud-checkbox";
 import crudDate from "@/components/crud/crud-date";
 import Crud from "@/components/crud/";
+import Forms from "@/components/crud/forms";
 export default {
   name: "table-generator",
   components: {
@@ -90,11 +37,13 @@ export default {
     crudRadio,
     crudCheckbox,
     crudDate,
-    Crud
+    Crud,
+    Forms
   },
   data() {
     return {
       tableOption: tableOption,
+      formOption: formOption,
       DIC: DIC,
       form: {
         column: []
@@ -113,9 +62,7 @@ export default {
   watch: {
     form: {
       handler(n, o) {
-        let form = this.form;
-        const result = JSON.stringify(form, null, 2);
-        this.result = result;
+        this.handleResult();
       },
       deep: true
     }
@@ -126,6 +73,19 @@ export default {
   methods: {
     init() {
       this.tableOption.dic = ["CRUDTYPE", "VAILDATA"];
+    },
+    handleSubmit(form) {
+      if (form) {
+        for (let o in form) {
+          this.form[o] = form[o];
+        }
+        this.handleResult();
+      }
+    },
+    handleResult() {
+      let form = this.form;
+      const result = JSON.stringify(form, null, 2);
+      this.result = result;
     },
     handleDicSbumit() {
       this.form.dic = ["CRUDTYPE", "VAILDATA"].concat(this.dicData.check);

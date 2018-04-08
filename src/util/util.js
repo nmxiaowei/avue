@@ -1,7 +1,12 @@
 import { validatenull } from './validate'
 import { baseUrl } from '@/config/env'
 
-
+/**
+ * 获取字典
+ */
+export const setDic = (dicData, DIC) => {
+    return (typeof (dicData) == 'string') ? DIC : dicData
+}
 /**
  * 动态获取组件
  */

@@ -1,5 +1,5 @@
 <template>
-  <el-radio-group v-model="text" @change="handleChange">
+  <el-radio-group v-model="text" @change="handleChange" :disabled="disabled">
     <el-radio v-for="(item,index) in dic" :label="item.value" :key="index">{{item.label}}</el-radio>
   </el-radio-group>
 </template>
@@ -15,6 +15,10 @@ export default {
   props: {
     value: {
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     dic: {
       default: () => {

@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="text" :placeholder="'请选择'+placeholder" @change="handleChange">
+  <el-select v-model="text" :placeholder="'请选择'+placeholder" @change="handleChange" :disabled="disabled">
     <el-option v-for="(item,index) in dic" :key="index" :label="item.label" :value="item.value">
     </el-option>
   </el-select>
@@ -20,6 +20,10 @@ export default {
     placeholder: {
       type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     dic: {
       default: () => {

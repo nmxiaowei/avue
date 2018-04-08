@@ -1,14 +1,17 @@
 export default {
     dic: ['GRADE', 'SEX'],
+    labelWidth: 100,
     column: [
         {
             label: "用户名",
             prop: "username",
-            rules: [{ required: true, message: "请输入用户名", trigger: "blur" }]
+            rules: [{ required: true, message: "请输入用户名", trigger: "blur" }],
         },
         {
             label: "姓名",
-            prop: "name"
+            prop: "name",
+            disabled: true,
+            formsolt: true,
         },
         {
             label: "类型",
@@ -31,7 +34,6 @@ export default {
         },
         {
             label: "地址",
-            disabled: true,
             span: 24,
             prop: "address",
         }

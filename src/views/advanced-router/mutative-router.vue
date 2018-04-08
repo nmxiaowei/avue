@@ -18,8 +18,8 @@
 <script>
 import { mapGetters } from "vuex";
 import Crud from "@/components/crud/";
-import tableOption from "@/const/routerOption";
-import tableData from "@/const/routerData";
+import tableOption from "@/const/router/routerOption";
+import tableData from "@/const/router/routerData";
 export default {
   name: "mutative-router",
   components: {

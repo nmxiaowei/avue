@@ -17,7 +17,10 @@ export default {
         },
         {
             label: "姓名",
-            prop: "name"
+            prop: "name",
+            disabled: true,
+            addDisabled: false,
+            formsolt: true,
         },
         {
             label: "类型",
@@ -36,6 +39,8 @@ export default {
             prop: "address",
             width: "300",
             span: 24,
+            disabled: true,
+            addDisabled: false,
             overHidden: true
         }
     ]

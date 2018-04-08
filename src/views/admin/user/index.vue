@@ -15,7 +15,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Crud from "@/components/crud/";
-import { userOption } from "@/const/adminTabelOption.js";
+import { userOption } from "@/const/admin/adminTabelOption.js";
 export default {
   name: "user",
   data() {

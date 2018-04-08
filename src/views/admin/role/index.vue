@@ -22,7 +22,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Crud from "@/components/crud/";
-import { roleOption } from "@/const/adminTabelOption.js";
+import { roleOption } from "@/const/admin/adminTabelOption.js";
 export default {
   name: "role",
   data() {
