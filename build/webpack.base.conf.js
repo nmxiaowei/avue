@@ -24,6 +24,7 @@ module.exports = {
 	entry: {
 		app: './src/entry-client.js'
 	},
+	devtool: '#cheap-module-eval-source-map',
 	output: {
 		path: config.build.assetsRoot,
 		filename: '[name].js',

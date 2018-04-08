@@ -97,6 +97,11 @@ export const asyncRouterMap = [
 				path: 'index',
 				name: '表格CRUD',
 				component: _import('table/index', 'views')
+			},
+			{
+				path: 'generator',
+				name: '表格生成器',
+				component: _import('table/generator', 'views')
 			}
 		]
 	}, {

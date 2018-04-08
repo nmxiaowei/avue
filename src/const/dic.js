@@ -23,5 +23,33 @@ export const DIC = {
             label: "二级管理员",
             value: 1
         }
+    ],
+    VAILDATA: [
+        {
+            label: "显示",
+            value: true
+        },
+        {
+            label: "隐藏",
+            value: false
+        }
+    ],
+    CRUDTYPE: [
+        {
+            label: "选择框",
+            value: 'select'
+        },
+        {
+            label: "单选框",
+            value: 'radio'
+        },
+        {
+            label: "多选框",
+            value: 'checkbox'
+        },
+        {
+            label: "日期框",
+            value: 'date'
+        }
     ]
 }

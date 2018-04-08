@@ -61,6 +61,13 @@ const first = [
       children: []
     }, {
       id: 9,
+      label: "表格生成器",
+      href: `/table/generator`,
+      icon: 'icon-huanyingye',
+      meta: {},
+      children: []
+    }, {
+      id: 9,
       label: "表单",
       href: '/forms/index',
       query: {
