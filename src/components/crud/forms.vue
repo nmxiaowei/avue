@@ -51,13 +51,21 @@ export default {
     this.dicInit();
     //初始化form表单
     this.formInit();
+    //初始化值
+    this.formVal();
   },
   watch: {
-    formOption: function(n, o) {
-      this.rulesInit();
+    formOption: {
+      handler(n, o) {
+        this.rulesInit();
+      },
+      deep: true
     },
-    formData: function(n, o) {
-      this.rulesInit();
+    value: {
+      handler(n, o) {
+        this.formVal();
+      },
+      deep: true
     }
   },
   mounted() {},
@@ -68,7 +76,7 @@ export default {
       required: true,
       default: {}
     },
-    formData: {
+    value: {
       type: Object,
       required: true,
       default: {}
@@ -108,9 +116,12 @@ export default {
         }
       });
       this.form = Object.assign({}, form);
-      for (let o in this.formData) {
-        this.form[o] = this.formData[o];
+    },
+    formVal() {
+      for (let o in this.value) {
+        this.form[o] = this.value[o];
       }
+      this.$emit("input", this.form);
     },
     handleSubmit() {
       this.$refs["form"].validate(valid => {

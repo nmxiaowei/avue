@@ -13,6 +13,7 @@ export default {
         }, {
             label: "表格字典",
             prop: "dic",
+            type: 'select',
             formsolt: true,
             span: 6,
         }, {

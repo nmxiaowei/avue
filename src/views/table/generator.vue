@@ -1,17 +1,19 @@
 <template>
   <div class="generator-container  pull-chheight">
-    <Forms :formOption="formOption" :formData="form" @handleSubmit="handleSubmit">
+    <Forms :formOption="formOption" v-model="tableForm">
       <template slot-scope="scope" slot="dic">
-        <crud-input @click.native="dicData.box=true" v-model=" scope.value "></crud-input>
+        <el-button @click.native="dicData.box=true">
+          字典选择
+        </el-button>
       </template>
     </Forms>
-    <el-button type="primary " @click="handleAddColumn " size="small ">新增</el-button>
-    <Crud ref="crud " :tableOption="tableOption " :tableData="form.column " @handleUpdate="handleUpdate " @handleDel="handleDel " @handleSave="handleSave "></Crud>
-    <el-input type="textarea " v-model="result " :autosize="{ minRows: 10} "></el-input>
-    <el-dialog title="字典选择 " :visible.sync="dicData.box ">
-      <crud-checkbox v-model="dicData.check " :dic="DIC.DATALIST "></crud-checkbox>
-      <span slot="footer " class="dialog-footer ">
-        <el-button type="primary " @click="handleDicSbumit ">确 定</el-button>
+    <el-button type="primary" @click="handleAddColumn" size="small">新增</el-button>
+    <Crud ref="crud" :tableOption="tableOption" :tableData="form.column" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleSave="handleSave"></Crud>
+    <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
+    <el-dialog title="字典选择" :visible.sync="dicData.box">
+      <crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></crud-checkbox>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleDicSbumit">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -45,6 +47,10 @@ export default {
       tableOption: tableOption,
       formOption: formOption,
       DIC: DIC,
+      tableForm: {
+        width: "100",
+        dic: []
+      },
       form: {
         column: []
       },
@@ -65,6 +71,15 @@ export default {
         this.handleResult();
       },
       deep: true
+    },
+    tableForm: {
+      handler(n, o) {
+        for (let o in this.tableForm) {
+          this.form[o] = this.tableForm[o];
+        }
+        this.handleResult();
+      },
+      deep: true
     }
   },
   mounted() {},
@@ -74,22 +89,14 @@ export default {
     init() {
       this.tableOption.dic = ["CRUDTYPE", "VAILDATA"];
     },
-    handleSubmit(form) {
-      if (form) {
-        for (let o in form) {
-          this.form[o] = form[o];
-        }
-        this.handleResult();
-      }
-    },
     handleResult() {
       let form = this.form;
       const result = JSON.stringify(form, null, 2);
       this.result = result;
     },
     handleDicSbumit() {
-      this.form.dic = ["CRUDTYPE", "VAILDATA"].concat(this.dicData.check);
-      this.tableOption.dic = this.form.dic;
+      this.tableForm.dic = ["CRUDTYPE", "VAILDATA"].concat(this.dicData.check);
+      this.tableOption.dic = this.tableForm.dic;
       this.dicData.list = [];
       this.tableOption.dic.forEach(ele => {
         this.dicData.list.push({

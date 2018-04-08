@@ -101,8 +101,11 @@ export default {
     this.dicInit();
   },
   wathch: {
-    tableOption: function(n, o) {
-      this.rulesInit();
+    tableOption: {
+      handler(n, o) {
+        this.rulesInit();
+      },
+      deep: true
     }
   },
   mounted() {},

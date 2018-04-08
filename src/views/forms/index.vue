@@ -1,6 +1,6 @@
 <template>
   <div class="from-container pull-chheight">
-    <Forms :formOption="formOption" :formData="formData" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit">
+    <Forms :formOption="formOption" v-model="formData" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit">
       <template slot-scope="scope" slot="name">
         <crud-input @click.native="tip" :disabled="scope.column.disabled" v-model="scope.value"></crud-input>
       </template>
