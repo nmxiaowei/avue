@@ -8,6 +8,18 @@ export const setDic = (dicData, DIC) => {
     return (typeof (dicData) == 'string') ? DIC : dicData
 }
 /**
+ * 设置px
+ */
+export const setPx = (val, defval) => {
+    if (validatenull(val)) {
+        val = defval;
+    }
+    if (val.indexOf('%') == -1) {
+        val = val + 'px';
+    }
+    return val;
+}
+/**
  * 动态获取组件
  */
 export const getComponent = (type) => {

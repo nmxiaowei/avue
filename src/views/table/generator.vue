@@ -22,6 +22,7 @@
 
 <script>
 import { DIC } from "@/const/dic";
+import { validatenull } from "@/util/validate";
 import tableOption from "@/const/table/tableGenerator";
 import formOption from "@/const/table/formGenerator";
 import crudSelect from "@/components/crud/crud-select";
@@ -48,7 +49,7 @@ export default {
       formOption: formOption,
       DIC: DIC,
       tableForm: {
-        width: "100",
+        width: "100%",
         dic: []
       },
       form: {
@@ -90,7 +91,21 @@ export default {
       this.tableOption.dic = ["CRUDTYPE", "VAILDATA"];
     },
     handleResult() {
-      let form = this.form;
+      let form = JSON.parse(JSON.stringify(this.form));
+      //删除列没有填写的字段
+      form.column.forEach(ele => {
+        for (let o in ele) {
+          if (validatenull(ele[o])) {
+            delete ele[o];
+          }
+        }
+      });
+      //删除表格没有填写的字段
+      for (let o in form) {
+        if (validatenull(form[o])) {
+          delete form[o];
+        }
+      }
       const result = JSON.stringify(form, null, 2);
       this.result = result;
     },
