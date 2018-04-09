@@ -5,6 +5,8 @@
 后台微服务群：23754102   
 服务端解决方案：https://gitee.com/log4j/pig
 
+[avue技术文档](https://www.kancloud.cn/smallwei/avue/)<br />
+
 演示地址:[http://122.4.247.156:7777](http://122.4.247.156:7777)——jenkins+docker+git钩子自动部署<br />
 
 码云地址:[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)<br />
