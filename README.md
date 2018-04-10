@@ -42,7 +42,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 
 **crud组件快速生成器**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-generator.png">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-generator.png">
 </p>
 
 

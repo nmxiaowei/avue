@@ -76,13 +76,6 @@ const first = [
       icon: 'icon-biaodan',
       meta: {},
       children: []
-    }, {
-      id: 9,
-      label: "文档",
-      href: `${window.location.origin}/static/wiki/index.html`,
-      icon: 'icon-huanyingye',
-      meta: {},
-      children: []
     }]
   }, {
     id: 7,
