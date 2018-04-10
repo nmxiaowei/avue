@@ -100,7 +100,7 @@ export default {
     //初始化字典
     this.dicInit();
   },
-  wathch: {
+  watch: {
     tableOption: {
       handler(n, o) {
         this.rulesInit();

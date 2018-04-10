@@ -25,7 +25,8 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `7.支持多种登录方式,本地验证码校验和服务端验证码校验`<br /><br />
 `8.全局错误日志记录`<br /><br />
 `9.scss模块化开发`<br /><br />
-`10.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
+`10.crud组件快速生成器`<br /><br />
+`11.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
 `11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
 
 
@@ -39,9 +40,9 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/role.gif">
 </p>
 
-**实例**
+**crud组件快速生成器**
 <p align="center">
-  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/form.gif">
+  <img width="900" src="http://oetrwxnhv.bkt.clouddn.com/avue-generator.png">
 </p>
 
 
