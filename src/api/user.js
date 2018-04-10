@@ -15,7 +15,7 @@ export const getUserInfo = () => {
 }
 export const getMenu = (parentId) => {
     return new Promise((resolve, reject) => {
-        if (!parentId) parentId = 0;
+        if (parentId != 1) parentId = 0;
         resolve({ data: menu[parentId] });
     })
 }

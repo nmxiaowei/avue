@@ -25,6 +25,11 @@ export default {
         {
           label: "设置",
           parentId: 1
+        },
+        {
+          label: "文档",
+          href: "https://www.kancloud.cn/smallwei/avue/",
+          parentId: 3
         }
       ]
     };
@@ -48,9 +53,8 @@ export default {
             itemActive = this.menu[childItemActive].children[childItemActive];
           }
         }
-
         this.$router.push({
-          path: resolveUrlPath(itemActive.href)
+          path: resolveUrlPath(itemActive.href, itemActive.label)
         });
       });
     }
