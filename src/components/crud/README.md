@@ -158,8 +158,15 @@
     <td>一</td>
   </tr>
 <tr>
-    <td height="50">hide</td>
+    <td height="50">visdiplay</td>
     <td>表单隐藏</td>
+    <td>Boolean</td>
+    <td>true / false</td>
+    <td>false</td>
+  </tr>
+<tr>
+    <td height="50">hide</td>
+    <td>表格列隐藏</td>
     <td>Boolean</td>
     <td>true / false</td>
     <td>false</td>
