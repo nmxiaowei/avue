@@ -1,10 +1,12 @@
 <template>
-  <el-date-picker v-model="text" type="date" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
+  <el-radio-group v-model="text" @change="handleChange" :disabled="disabled">
+    <el-radio v-for="(item,index) in dic" :label="item.value" :key="index">{{item.label}}</el-radio>
+  </el-radio-group>
 </template>
 
 <script>
 export default {
-  name: "crud-date",
+  name: "AvueCrudRadio",
   data() {
     return {
       text: ""
@@ -18,9 +20,10 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholder: {
-      type: String,
-      default: ""
+    dic: {
+      default: () => {
+        return [];
+      }
     }
   },
   watch: {

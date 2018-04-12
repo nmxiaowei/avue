@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "crud-input",
+  name: "AvueCrudInput",
   data() {
     return {
       text: ""

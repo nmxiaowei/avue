@@ -1,13 +1,10 @@
 <template>
-  <el-select v-model="text" :placeholder="'请选择'+placeholder" @change="handleChange" :disabled="disabled">
-    <el-option v-for="(item,index) in dic" :key="index" :label="item.label" :value="item.value">
-    </el-option>
-  </el-select>
+  <el-date-picker v-model="text" type="date" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
 </template>
 
 <script>
 export default {
-  name: "crud-select",
+  name: "AvueCrudDate",
   data() {
     return {
       text: ""
@@ -17,18 +14,13 @@ export default {
     value: {
       default: ""
     },
-    placeholder: {
-      type: String,
-      default: ""
-    },
     disabled: {
       type: Boolean,
       default: false
     },
-    dic: {
-      default: () => {
-        return [];
-      }
+    placeholder: {
+      type: String,
+      default: ""
     }
   },
   watch: {

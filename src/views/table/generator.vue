@@ -1,14 +1,14 @@
 <template>
   <div class="generator-container  pull-chheight">
-    <Forms :formOption="formOption" v-model="tableForm">
+    <avue-form :formOption="formOption" v-model="tableForm">
       <template slot-scope="scope" slot="dic">
         <el-button @click.native="dicData.box=true">
           字典选择
         </el-button>
       </template>
-    </Forms>
+    </avue-form>
     <el-button type="primary" @click="handleAddColumn" size="small">新增</el-button>
-    <Crud ref="crud" :tableOption="tableOption" :tableData="form.column" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleSave="handleSave"></Crud>
+    <avue-crud ref="crud" :tableOption="tableOption" :tableData="form.column" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleSave="handleSave"></avue-crud>
     <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
     <el-dialog title="字典选择" :visible.sync="dicData.box">
       <crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></crud-checkbox>
@@ -25,24 +25,9 @@ import { DIC } from "@/const/dic";
 import { validatenull } from "@/util/validate";
 import tableOption from "@/const/table/tableGenerator";
 import formOption from "@/const/table/formGenerator";
-import crudSelect from "@/components/crud/crud-select";
-import crudInput from "@/components/crud/crud-input";
-import crudRadio from "@/components/crud/crud-radio";
-import crudCheckbox from "@/components/crud/crud-checkbox";
-import crudDate from "@/components/crud/crud-date";
-import Crud from "@/components/crud/";
-import Forms from "@/components/crud/forms";
 export default {
   name: "table-generator",
-  components: {
-    crudSelect,
-    crudInput,
-    crudRadio,
-    crudCheckbox,
-    crudDate,
-    Crud,
-    Forms
-  },
+  components: {},
   data() {
     return {
       tableOption: tableOption,

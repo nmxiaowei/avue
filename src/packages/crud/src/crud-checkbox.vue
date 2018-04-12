@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "crud-checkbox",
+  name: "AvueCrudCheckbox",
   data() {
     return {
       text: ""

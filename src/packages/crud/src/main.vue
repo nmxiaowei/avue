@@ -72,16 +72,14 @@ import crudSelect from "./crud-select";
 import crudRadio from "./crud-radio";
 import crudCheckbox from "./crud-checkbox";
 import crudDate from "./crud-date";
-import Forms from "./forms";
 export default {
-  name: "crud",
+  name: "AvueCrud",
   components: {
     crudInput,
     crudSelect,
     crudRadio,
     crudCheckbox,
-    crudDate,
-    Forms
+    crudDate
   },
   data() {
     return {

@@ -1,6 +1,6 @@
 <template>
   <div class="pull-chheight">
-    <Crud :tableOption="tableOption" :tableData="tableData">
+    <avue-crud :tableOption="tableOption" :tableData="tableData">
       <template slot-scope="scope" slot="git">
         <a :href="scope.row.git" target="_blank">{{scope.row.git}}</a>
       </template>
@@ -11,20 +11,17 @@
           </el-button>
         </router-link>
       </template>
-    </Crud>
+    </avue-crud>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import Crud from "@/components/crud/";
 import tableOption from "@/const/router/routerOption";
 import tableData from "@/const/router/routerData";
 export default {
   name: "argument-page",
-  components: {
-    Crud
-  },
+  components: {},
   data() {
     return {
       tableData: tableData,

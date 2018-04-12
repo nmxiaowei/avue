@@ -12,18 +12,19 @@
       <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
-    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
+    <avue-crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
       <template slot-scope="scope" slot="nameForm">
-        <crud-input @click.native="tip" v-model="scope.value"></crud-input>
+        <avue-crud-input @click.native="tip" v-model="scope.value">
+        </avue-crud-input>
       </template>
       <template slot-scope="scope" slot="menu">
         <el-button type="primary" icon="el-icon-check" size="small" plain @click="handleEdit(scope.row,scope.index)">编辑</el-button>
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.index)">权限</el-button>
       </template>
-    </Crud>
+    </avue-crud>
     <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
     <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 15}" placeholder="请输入内容" v-model="formJson">
     </el-input>
@@ -40,24 +41,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import crudInput from "@/components/crud/crud-input";
-import crudSelect from "@/components/crud/crud-select";
-import crudRadio from "@/components/crud/crud-radio";
-import crudCheckbox from "@/components/crud/crud-checkbox";
-import crudDate from "@/components/crud/crud-date";
 import html2canvas from "html2canvas";
-import Crud from "@/components/crud/";
 import tableOption from "@/const/table/tableOption";
 export default {
   name: "table",
-  components: {
-    Crud,
-    crudInput,
-    crudSelect,
-    crudRadio,
-    crudCheckbox,
-    crudDate
-  },
   data() {
     return {
       tableOption: tableOption, //表格设置属性

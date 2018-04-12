@@ -1,10 +1,11 @@
 <template>
   <div class="from-container pull-chheight">
-    <Forms :formOption="formOption" v-model="formData" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit">
+    <avue-form :formOption="formOption" v-model="formData" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit">
       <template slot-scope="scope" slot="name">
-        <crud-input @click.native="tip" :disabled="scope.column.disabled" v-model="scope.value"></crud-input>
+        <avue-crud-input @click.native="tip" :disabled="scope.column.disabled" v-model="scope.value">
+        </avue-crud-input>
       </template>
-    </Forms>
+    </avue-form>
     <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
     <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 15}" placeholder="请输入内容" v-model="formJson">
     </el-input>
@@ -13,23 +14,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import crudInput from "@/components/crud/crud-input";
-import crudSelect from "@/components/crud/crud-select";
-import crudRadio from "@/components/crud/crud-radio";
-import crudCheckbox from "@/components/crud/crud-checkbox";
-import crudDate from "@/components/crud/crud-date";
-import Forms from "@/components/crud/forms";
 import formOption from "@/const/forms/formOption";
 export default {
   name: "froms",
-  components: {
-    Forms,
-    crudInput,
-    crudSelect,
-    crudRadio,
-    crudCheckbox,
-    crudDate
-  },
   data() {
     return {
       formJson: "",

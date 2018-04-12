@@ -9,10 +9,11 @@ import store from './store';
 import ELEMENT from 'element-ui';
 import { loadStyle } from './util/util'
 import * as urls from '@/config/env';
-import { iconfontUrl,iconfontVersion } from '@/config/env';
+import { iconfontUrl, iconfontVersion } from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
-Vue.use(ELEMENT)
+import AVUE from '@/packages/index.js';
+
 Vue.use(VueAxios, axios)
 
 Object.keys(urls).forEach(key => {

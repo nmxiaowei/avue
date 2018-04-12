@@ -23,13 +23,13 @@
 <script>
 import { mapActions } from "vuex";
 import { getComponent, setDic } from "@/util/util";
-import crudInput from "./crud-input";
-import crudSelect from "./crud-select";
-import crudRadio from "./crud-radio";
-import crudCheckbox from "./crud-checkbox";
-import crudDate from "./crud-date";
+import crudInput from "../../crud/src/crud-input";
+import crudSelect from "../../crud/src/crud-select";
+import crudRadio from "../../crud/src/crud-radio";
+import crudCheckbox from "../../crud/src/crud-checkbox";
+import crudDate from "../../crud/src/crud-date";
 export default {
-  name: "from",
+  name: "AvueForm",
   components: {
     crudInput,
     crudSelect,

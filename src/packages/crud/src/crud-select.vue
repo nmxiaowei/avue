@@ -1,12 +1,13 @@
 <template>
-  <el-radio-group v-model="text" @change="handleChange" :disabled="disabled">
-    <el-radio v-for="(item,index) in dic" :label="item.value" :key="index">{{item.label}}</el-radio>
-  </el-radio-group>
+  <el-select v-model="text" :placeholder="'请选择'+placeholder" @change="handleChange" :disabled="disabled">
+    <el-option v-for="(item,index) in dic" :key="index" :label="item.label" :value="item.value">
+    </el-option>
+  </el-select>
 </template>
 
 <script>
 export default {
-  name: "crud-radio",
+  name: "AvueCrudSelect",
   data() {
     return {
       text: ""
@@ -14,6 +15,10 @@ export default {
   },
   props: {
     value: {
+      default: ""
+    },
+    placeholder: {
+      type: String,
       default: ""
     },
     disabled: {

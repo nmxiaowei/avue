@@ -3,21 +3,21 @@
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
     </div>
-    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" menu>
+    <avue-crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" menu>
       <template slot-scope="scope" slot="state">
         <el-tag :type="scope.row.state==0?'success':'danger'">{{findByvalue(scope.dic,scope.row.state)}}</el-tag>
       </template>
-    </Crud>
+    </avue-crud>
 
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import Crud from "@/components/crud/";
 import { userOption } from "@/const/admin/adminTabelOption.js";
 export default {
   name: "user",
+  components: {},
   data() {
     return {
       tableOption: {}, //表格设置属性
@@ -137,9 +137,6 @@ export default {
       });
       done();
     }
-  },
-  components: {
-    Crud
   }
 };
 </script>

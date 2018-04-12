@@ -3,11 +3,11 @@
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
     </div>
-    <Crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" menu>
+    <avue-crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :page="page" ref="crud" width="290" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" menu>
       <template slot-scope="scope" slot="menu">
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
       </template>
-    </Crud>
+    </avue-crud>
     <el-dialog title="菜单" :visible.sync="grade.box" width="40%">
       <el-tree :data="menuAll" :default-checked-keys="grade.check" :default-expanded-keys="grade.check" show-checkbox node-key="id" @check-change="handleGradeCheckChange">
       </el-tree>
@@ -21,10 +21,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Crud from "@/components/crud/";
 import { roleOption } from "@/const/admin/adminTabelOption.js";
 export default {
   name: "role",
+  components: {},
   data() {
     return {
       tableOption: {}, //表格设置属性
@@ -167,9 +167,6 @@ export default {
       });
       done();
     }
-  },
-  components: {
-    Crud
   }
 };
 </script>
