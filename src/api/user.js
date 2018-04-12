@@ -1,4 +1,3 @@
-import { baseUrl, khglUrl, dicUrl } from '@/config/env'
 import request from '@/router/axios'
 import { userInfo, tableData } from '@/mock/user'
 import { menu, menuAll } from '@/mock/menu'
