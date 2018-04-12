@@ -15,10 +15,13 @@ let baseUrl = '';
 let iconfontVersion = ['567566_sch40o867ogk3xr'];
 let iconfontUrl = `//at.alicdn.com/t/font_$key.css`;
 let codeUrl = `${baseUrl}/code`
+
 if (process.env.NODE_ENV == 'development') {
-	baseUrl = `http://localhost`;
+	baseUrl = `http://localhost`;// 开发环境地址
 } else if (process.env.NODE_ENV == 'production') {
-	baseUrl = `http://localhost`;
+	baseUrl = `http://localhost`;//生产环境地址
+} else if (process.env.NODE_ENV == 'test') {
+	baseUrl = `http://localhost`;//测试环境地址
 }
 
 export { baseUrl, iconfontUrl, iconfontVersion, codeUrl }

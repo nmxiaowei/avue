@@ -1,4 +1,5 @@
 import { userTableData, roleTableData } from '@/mock/admin'
+import { baseUrl } from '@/config/env'
 import { DIC } from '@/const/dic'
 export const getUserData = (page) => {
     return new Promise((resolve, reject) => {
