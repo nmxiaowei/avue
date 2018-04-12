@@ -26,7 +26,7 @@ module.exports = {
     port: 8000,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
-    host: 'localhost',
+    host: '0.0.0.0',
     assetsPublicPath: '/',
     proxyTable: {},
     // CSS Sourcemaps off by default because relative paths are "buggy"

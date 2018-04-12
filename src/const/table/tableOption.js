@@ -3,6 +3,7 @@ export default {
     index: true,
     selection: true,
     menuWidth: 300,
+    editBtn: false,
     dic: ['GRADE', 'SEX'],
     column: [
         {

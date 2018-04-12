@@ -20,7 +20,8 @@
         <crud-input @click.native="tip" v-model="scope.value"></crud-input>
       </template>
       <template slot-scope="scope" slot="menu">
-        <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+        <el-button type="primary" icon="el-icon-check" size="small" plain @click="handleEdit(scope.row,scope.index)">编辑</el-button>
+        <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.index)">权限</el-button>
       </template>
     </Crud>
     <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
@@ -134,6 +135,9 @@ export default {
       } else {
         this.grade.check.splice(this.grade.check.indexOf(data.id), 1);
       }
+    },
+    handleEdit(row, index) {
+      this.$refs.crud.handleEdit(row, index);
     },
     /**
      * @title 打开权限

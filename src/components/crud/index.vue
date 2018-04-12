@@ -37,7 +37,7 @@
             <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.meeditBtnnu">编 辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)" v-if="tableOption.delBtn==undefined?true:tableOption.delBtn">删 除</el-button>
           </template>
-          <slot :row="scope.row" name="menu"></slot>
+          <slot :row="scope.row" name="menu" :index="scope.$index"></slot>
         </template>
       </el-table-column>
     </el-table>
