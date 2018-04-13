@@ -1,6 +1,7 @@
 
 const getters = {
     tag: state => state.tags.tag,
+    userInfo: state => state.user.userInfo,
     isCollapse: state => state.common.isCollapse,
     isLock: state => state.common.isLock,
     isFullScren: state => state.common.isFullScren,

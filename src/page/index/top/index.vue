@@ -2,6 +2,11 @@
   <div class="header">
     <div class="header-button is-left">
       <top-logo></top-logo>
+      <!-- breadcrumb按钮和面包屑 -->
+      <div class="tags-breadcrumb">
+        <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
+        <!-- <top-breadcrumb class="tags-breadcrumb-list"></top-breadcrumb> -->
+      </div>
     </div>
     <h1 class="header-title">
       <topMenu></topMenu>
@@ -45,13 +50,14 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import { fullscreenToggel, listenfullscreen } from "@/util/util";
 import topLogo from "./top-logo";
 import topLock from "./top-lock";
 import topMenu from "./top-menu";
+import topBreadcrumb from "./top-breadcrumb";
 export default {
-  components: { topLock, topLogo, topMenu },
+  components: { topLock, topLogo, topMenu, topBreadcrumb },
   name: "top",
   data() {
     return {};
@@ -62,14 +68,21 @@ export default {
     listenfullscreen(this.setScreen);
   },
   computed: {
-    ...mapState({
-      userInfo: state => state.user.userInfo
-    }),
-    ...mapGetters(["isFullScren"])
+    ...mapGetters([
+      "userInfo",
+      "isFullScren",
+      "tagWel",
+      "tagList",
+      "isCollapse",
+      "tag"
+    ])
   },
   methods: {
     handleScreen() {
       fullscreenToggel();
+    },
+    showCollapse() {
+      this.$store.commit("SET_COLLAPSE");
     },
     setScreen() {
       this.$store.commit("SET_FULLSCREN");

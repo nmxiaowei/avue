@@ -1,6 +1,6 @@
 <template>
   <div class="from-container pull-chheight">
-    <avue-form :formOption="formOption" v-model="formData" :formSubmitText="formSubmitText" @handleSubmit="handleSubmit">
+    <avue-form :formOption="formOption" v-model="formData" @handleSubmit="handleSubmit">
       <template slot-scope="scope" slot="name">
         <avue-crud-input @click.native="tip" :disabled="scope.column.disabled" v-model="scope.value">
         </avue-crud-input>
@@ -28,7 +28,6 @@ export default {
         type: 0,
         grade: [0, 1]
       },
-      formSubmitText: "确定",
       form: {}
     };
   },

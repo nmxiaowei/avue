@@ -1,10 +1,10 @@
 <template>
   <div class="from-container pull-auto">
-    <el-form ref="form" :model="form" :label-width="formOption.labelWidth?formOption.labelWidth+'px' : '80px'" :rules="formRules">
+    <el-form ref="form" :model="form" :label-width="setPx(formOption.labelWidth,80)" :rules="formRules">
       <el-row :gutter="20" :span="24">
         <template v-for="(column,index) in formOption.column">
           <el-col :span="column.span||12">
-            <el-form-item :label="column.label" :prop="column.prop" :label-width="column.labelWidth?column.labelWidth+'px': formOption.labelWidth+'px'||'80px'">
+            <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,80)">
               <slot :value="form[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.formsolt"></slot>
               <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
             </el-form-item>
@@ -12,7 +12,9 @@
         </template>
         <el-col :span="24" v-if="formOption.submitBtn!=undefined?formOption.submitBtn:true">
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit">{{formSubmitText}}</el-button>
+            <div class="form-menu" :class="menuPostion">
+              <el-button type="primary" @click="handleSubmit">{{formOption.submitText?formOption.submitText:'提交'}}</el-button>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -22,7 +24,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { getComponent, setDic } from "@/util/util";
+import { getComponent, setDic, setPx } from "../../utils/util";
 import crudInput from "../../crud/src/crud-input";
 import crudSelect from "../../crud/src/crud-select";
 import crudRadio from "../../crud/src/crud-radio";
@@ -69,7 +71,15 @@ export default {
     }
   },
   mounted() {},
-  computed: {},
+  computed: {
+    menuPostion: function() {
+      if (this.formOption.submitPostion) {
+        return "is-" + this.formOption.submitPostion;
+      } else {
+        return "is-center";
+      }
+    }
+  },
   props: {
     formOption: {
       type: Object,
@@ -80,10 +90,6 @@ export default {
       type: Object,
       required: true,
       default: {}
-    },
-    formSubmitText: {
-      type: String,
-      default: "提交"
     }
   },
   methods: {
@@ -104,6 +110,9 @@ export default {
     },
     setDic(dicData, DIC) {
       return setDic(dicData, DIC);
+    },
+    setPx(val, defval) {
+      return setPx(val, defval);
     },
     formInit() {
       const list = this.formOption.column;
@@ -139,5 +148,17 @@ export default {
 <style lang="scss" scoped>
 .from-container {
   padding: 8px 10px;
+}
+.form-menu {
+  width: 100%;
+  &.is-center {
+    text-align: center;
+  }
+  &.is-left {
+    text-align: left;
+  }
+  &.is-right {
+    text-align: right;
+  }
 }
 </style>

@@ -1,10 +1,5 @@
 <template>
   <div class="crud-container pull-auto">
-    <!-- <div class="crud-header">
-        <el-button type="primary" @click="handleAdd" size="small">新 增</el-button>
-        <el-button @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
-        <el-button @click="toggleSelection()" size="small">取消选择</el-button>
-      </div> -->
     <el-table :data="tableData" :height="tableOption.height" ref="table" :style="{width:setPx(tableOption.width,'99.5%')}" style="margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
       <!-- 选择框 -->
       <template v-if="tableOption.selection">
@@ -34,7 +29,7 @@
       <el-table-column label="操作" :width="tableOption.menuWidth?tableOption.menuWidth:240" v-if="tableOption.menu==undefined?true:tableOption.menu">
         <template slot-scope="scope">
           <template v-if="tableOption.menu!=undefined?tableOption.menu:true">
-            <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.meeditBtnnu">编 辑</el-button>
+            <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.editBtn">编 辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.row,scope.$index)" v-if="tableOption.delBtn==undefined?true:tableOption.delBtn">删 除</el-button>
           </template>
           <slot :row="scope.row" name="menu" :index="scope.$index"></slot>
@@ -65,7 +60,7 @@
   </div>
 </template>
 <script>
-import { findByvalue, getComponent, setDic, setPx } from "@/util/util";
+import { findByvalue, getComponent, setDic, setPx } from "../../utils/util";
 import { mapActions } from "vuex";
 import crudInput from "./crud-input";
 import crudSelect from "./crud-select";

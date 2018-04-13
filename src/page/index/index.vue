@@ -48,7 +48,7 @@ export default {
     overflow-y: auto;
   }
   .right {
-    padding-top: 90px;
+    padding-top: 42px;
     position: relative;
     flex: 1;
     box-sizing: border-box;

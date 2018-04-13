@@ -14,6 +14,7 @@ export const setPx = (val, defval) => {
     if (validatenull(val)) {
         val = defval;
     }
+    val = val + '';
     if (val.indexOf('%') == -1) {
         val = val + 'px';
     }

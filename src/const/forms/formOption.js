@@ -1,6 +1,7 @@
 export default {
     dic: ['GRADE', 'SEX'],
     labelWidth: 100,
+    submitText: '完成',
     column: [
         {
             label: "用户名",

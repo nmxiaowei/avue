@@ -216,6 +216,7 @@ export default {
             this.tableData = data.tableData;
             this.page = {
               total: data.total,
+              currentPage: this.tablePage,
               pageSize: data.pageSize
             };
             this.tableLoading = false;
