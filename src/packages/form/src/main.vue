@@ -4,14 +4,14 @@
       <el-row :gutter="20" :span="24">
         <template v-for="(column,index) in formOption.column">
           <el-col :span="column.span||12">
-            <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,80)">
+            <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,formOption.labelWidth || 80)">
               <slot :value="form[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.formsolt"></slot>
               <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
             </el-form-item>
           </el-col>
         </template>
         <el-col :span="24" v-if="formOption.submitBtn!=undefined?formOption.submitBtn:true">
-          <el-form-item>
+          <el-form-item label-width="0">
             <div class="form-menu" :class="menuPostion">
               <el-button type="primary" @click="handleSubmit">{{formOption.submitText?formOption.submitText:'提交'}}</el-button>
             </div>
