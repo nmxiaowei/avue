@@ -1,6 +1,6 @@
 <template>
   <div class="crud-container pull-auto">
-    <el-table :data="tableData" :height="tableOption.height" ref="table" :style="{width:setPx(tableOption.width,'99.5%')}" style="margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
+    <el-table :data="tableData" @row-click="handleRowClick" @row-dblclick="handleRowDBLClick" :height="tableOption.height" ref="table" :style="{width:setPx(tableOption.width,'99.5%')}" style="margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="handleSelectionChange">
       <!-- 选择框 -->
       <template v-if="tableOption.selection">
         <el-table-column type="selection" width="55">
@@ -60,22 +60,12 @@
   </div>
 </template>
 <script>
-import { findByvalue, getComponent, setDic, setPx } from "../../utils/util";
 import { mapActions } from "vuex";
-import crudInput from "./crud-input";
-import crudSelect from "./crud-select";
-import crudRadio from "./crud-radio";
-import crudCheckbox from "./crud-checkbox";
-import crudDate from "./crud-date";
+import crud from "avue/mixins/crud.js";
 export default {
   name: "AvueCrud",
-  components: {
-    crudInput,
-    crudSelect,
-    crudRadio,
-    crudCheckbox,
-    crudDate
-  },
+  mixins: [crud()],
+  components: {},
   data() {
     return {
       boxVisible: false,
@@ -164,18 +154,7 @@ export default {
     handleCurrentChange(val) {
       this.$emit("handleCurrentChange", val);
     },
-    findByvalue(dic, val) {
-      return findByvalue(dic, val);
-    },
-    setDic(dicData, DIC) {
-      return setDic(dicData, DIC);
-    },
-    setPx(val, defval) {
-      return setPx(val, defval);
-    },
-    getComponent(type) {
-      return getComponent(type);
-    },
+
     // 选中实例
     toggleSelection(rows) {
       if (rows) {
@@ -191,19 +170,28 @@ export default {
       this.tableSelect = val;
       this.$emit("handleSelectionChange", val);
     },
+    //行双击
+    handleRowDBLClick(row, event) {
+      this.$emit("handleRowDBLClick", row, event);
+    },
+
+    //行单机
+    handleRowClick(row, event, column) {
+      this.$emit("handleRowClick", row, event, column);
+    },
     //处理数据
     handleDetail(row, column) {
       let result = "";
       if (column.dataDetail) {
         if (column.type) {
-          result = findByvalue(this.DIC[column.dicData], row[column.prop]);
+          result = this.findByvalue(this.DIC[column.dicData], row[column.prop]);
         } else {
           result = row[column.prop];
         }
         result = column.dataDetail(row);
       } else {
         if (column.type) {
-          result = findByvalue(this.DIC[column.dicData], row[column.prop]);
+          result = this.findByvalue(this.DIC[column.dicData], row[column.prop]);
         } else {
           result = row[column.prop];
         }

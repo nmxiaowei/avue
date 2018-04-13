@@ -1,5 +1,5 @@
 
-import CrudData from '../crud/src/crud-date';
+import CrudData from 'avue/crud/src/crud-date';
 
 /* istanbul ignore next */
 CrudData.install = function (Vue) {

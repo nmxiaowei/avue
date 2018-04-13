@@ -12,7 +12,7 @@
       <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
-    <avue-crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
+    <avue-crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @handleRowDBLClick="handleRowDBLClick" @handleRowClick="handleRowClick" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
@@ -249,6 +249,34 @@ export default {
         type: "success"
       });
       done();
+    },
+    /**
+     * @title 行双击
+     * @param row 为当前的数据
+     * @param event 事件
+     *
+     **/
+    handleRowDBLClick(row, event) {
+      this.$message({
+        showClose: true,
+        message: "双击",
+        type: "success"
+      });
+    },
+
+    /**
+     * @title 行单机
+     * @param row 为当前的数据
+     * @param event 事件
+     * @param column 列
+     *
+     **/
+    handleRowClick(row, event, column) {
+      this.$message({
+        showClose: true,
+        message: "单机",
+        type: "success"
+      });
     },
     /**
      * @title 数据删除

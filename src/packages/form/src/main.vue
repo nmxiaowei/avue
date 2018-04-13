@@ -10,7 +10,7 @@
             </el-form-item>
           </el-col>
         </template>
-        <el-col :span="24" v-if="formOption.submitBtn!=undefined?formOption.submitBtn:true">
+        <el-col :span="24" v-if="formOption.submitBtn?formOption.submitBtn:true">
           <el-form-item label-width="0">
             <div class="form-menu" :class="menuPostion">
               <el-button type="primary" @click="handleSubmit">{{formOption.submitText?formOption.submitText:'提交'}}</el-button>
@@ -24,21 +24,11 @@
 
 <script>
 import { mapActions } from "vuex";
-import { getComponent, setDic, setPx } from "../../utils/util";
-import crudInput from "../../crud/src/crud-input";
-import crudSelect from "../../crud/src/crud-select";
-import crudRadio from "../../crud/src/crud-radio";
-import crudCheckbox from "../../crud/src/crud-checkbox";
-import crudDate from "../../crud/src/crud-date";
+import crud from "avue/mixins/crud";
 export default {
   name: "AvueForm",
-  components: {
-    crudInput,
-    crudSelect,
-    crudRadio,
-    crudCheckbox,
-    crudDate
-  },
+  mixins: [crud()],
+  components: {},
   data() {
     return {
       form: {},
@@ -104,15 +94,6 @@ export default {
       this.GetDic(this.formOption.dic).then(data => {
         this.DIC = data;
       });
-    },
-    getComponent(type) {
-      return getComponent(type);
-    },
-    setDic(dicData, DIC) {
-      return setDic(dicData, DIC);
-    },
-    setPx(val, defval) {
-      return setPx(val, defval);
     },
     formInit() {
       const list = this.formOption.column;
