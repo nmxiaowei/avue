@@ -1,5 +1,5 @@
 <template>
-  <el-input v-model="text" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"></el-input>
+  <el-input v-model="text" :type="type=='textarea'?'textarea':'text'" :autosize="{ minRows: minRows, maxRows: maxRows}" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"></el-input>
 </template>
 
 <script>
@@ -22,6 +22,18 @@ export default {
     placeholder: {
       type: String,
       default: ""
+    },
+    type: {
+      type: String,
+      default: ""
+    },
+    minRows: {
+      type: String,
+      default: "3"
+    },
+    maxRows: {
+      type: String,
+      default: "4"
     }
   },
   watch: {

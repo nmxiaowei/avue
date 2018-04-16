@@ -4,6 +4,7 @@ import CrudDate from './crud-date/index.js'
 import CrudInput from './crud-input/index.js'
 import crudRadio from './crud-radio/index.js'
 import crudSelect from './crud-select/index.js'
+import crudCascader from './crud-cascader/index.js'
 import Form from './form/index.js'
 const components = [
     Crud,
@@ -12,7 +13,8 @@ const components = [
     CrudDate,
     CrudInput,
     crudRadio,
-    crudSelect
+    crudSelect,
+    crudCascader
 ]
 const install = function (Vue, opts = {}) {
     const AVUE = {};
@@ -35,5 +37,6 @@ export default {
     CrudDate,
     CrudInput,
     crudRadio,
-    crudSelect
+    crudSelect,
+    crudCascader
 }

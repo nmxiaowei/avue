@@ -6,7 +6,7 @@
           <el-col :span="column.span||12">
             <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,formOption.labelWidth || 80)">
               <slot :value="form[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.formsolt"></slot>
-              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
+              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
             </el-form-item>
           </el-col>
         </template>
@@ -99,7 +99,11 @@ export default {
       const list = this.formOption.column;
       let form = {};
       list.forEach(ele => {
-        if (ele.type == "checkbox" || ele.type == "radio") {
+        if (
+          ele.type == "checkbox" ||
+          ele.type == "radio" ||
+          ele.type == "cascader"
+        ) {
           form[ele.prop] = [];
         } else {
           form[ele.prop] = "";

@@ -13,6 +13,19 @@ export const findByvalue = (dic, value) => {
         } else {
             result = value;
         }
+    } else if (value instanceof Array && dic[0].children) {
+        let index = 0;
+        let count = 0
+        while (count < value.length) {
+            index = findArray(dic, value[count]);
+            if (!validatenull(dic[index])) {
+                result = result + dic[index].label + '/';
+                dic = dic[index].children;
+            }
+            count++;
+        }
+        result = result.substr(0, result.length - 1);
+
     } else if (value instanceof Array) {
         result = [];
         let index = 0;
@@ -71,6 +84,8 @@ export const getComponent = (type) => {
         return "crudCheckbox";
     } else if (type == "date") {
         return "crudDate";
+    } else if (type == 'cascader') {
+        return "crudCascader";
     } else {
         return "crudInput";
     }

@@ -37,14 +37,14 @@
       </el-table-column>
     </el-table>
     <el-pagination v-if="tableOption.page!=undefined?tableOption.page:true" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="handleCurrentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
-    <el-dialog :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
+    <el-dialog :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
         <el-row :gutter="20" :span="24">
           <template v-for="(column,index) in tableOption.column">
             <el-col :span="column.span||12" v-if="!column.visdiplay">
               <el-form-item :label="column.label" :prop="column.prop">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?(column.addDisabled!=undefined?column.addDisabled:column.disabled):column.disabled"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?(column.addDisabled!=undefined?column.addDisabled:column.disabled):column.disabled"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -142,7 +142,11 @@ export default {
       const list = this.tableOption.column;
       let from = {};
       list.forEach(ele => {
-        if (ele.type == "checkbox" || ele.type == "radio") {
+        if (
+          ele.type == "checkbox" ||
+          ele.type == "radio" ||
+          ele.type == "cascader"
+        ) {
           from[ele.prop] = [];
         } else {
           from[ele.prop] = "";

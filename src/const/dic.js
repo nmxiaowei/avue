@@ -7,7 +7,28 @@ export const DIC = {
         label: '女',
         value: 1
     }],
+    TYPE: [
+        {
+            label: '一级1',
+            value: 0,
+            children: [
+                {
+                    label: '一级1二级1',
+                    value: 2,
+                }
+            ]
+        }, {
+            label: '一级2',
+            value: 1,
+            children: [
+                {
+                    label: '一级2二级1',
+                    value: 2,
+                }
+            ]
+        }
 
+    ],
     STATE: [{
         label: '有效',
         value: 0

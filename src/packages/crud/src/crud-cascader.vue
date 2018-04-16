@@ -1,12 +1,11 @@
 <template>
-  <el-checkbox-group v-model="text" @change="handleChange">
-    <el-checkbox v-for="(item,index) in dic" :label="item.value" :key="index">{{item.label}}</el-checkbox>
-  </el-checkbox-group>
+  <el-cascader :options="dic" v-model="text" :placeholder="'请选择'+placeholder" :disabled="disabled" @change="handleChange">
+  </el-cascader>
 </template>
 
 <script>
 export default {
-  name: "AvueCrudCheckbox",
+  name: "AvueCrudCascader",
   data() {
     return {
       text: []
@@ -14,7 +13,15 @@ export default {
   },
   props: {
     value: {
+      default: []
+    },
+    placeholder: {
+      type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     dic: {
       default: () => {

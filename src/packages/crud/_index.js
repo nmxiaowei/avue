@@ -3,6 +3,7 @@ import AvueCurdDate from './src/crud-date';
 import AvueCurdInput from './src/crud-input';
 import AvueCurdRadio from './src/crud-radio';
 import AvueCurdSelect from './src/crud-secect';
+import AvueCurdCascader from './src/crud-cascader';
 import AvueCrud from './src/main';
 const components = [
     AvueCrud,
@@ -11,6 +12,7 @@ const components = [
     AvueCurdInput,
     AvueCurdRadio,
     AvueCurdSelect,
+    AvueCurdCascader
 ]
 
 /* istanbul ignore next */

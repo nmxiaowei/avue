@@ -26,7 +26,7 @@ for (let i = 0; i < 5; i++) {
         id: '@increment',
         name: Mock.mock('@cname'),
         username: Mock.mock('@last'),
-        'type|0-1': 0,
+        type: [0, 2],
         'sex|0-1': 0,
         grade: [0, 1],
         address: Mock.mock('@cparagraph(1, 3)'),
