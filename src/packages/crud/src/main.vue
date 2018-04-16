@@ -89,10 +89,21 @@ export default {
         this.rulesInit();
       },
       deep: true
+    },
+    tableForm: {
+      handler(n, o) {
+        this.formVal();
+      },
+      deep: true
     }
   },
   mounted() {},
   props: {
+    value: {
+      type: Object,
+      required: true,
+      default: {}
+    },
     beforeClose: Function,
     beforeOpen: Function,
     page: {
@@ -137,6 +148,9 @@ export default {
       this.GetDic(this.tableOption.dic).then(data => {
         this.DIC = data;
       });
+    },
+    formVal() {
+      this.$emit("input", this.tableForm);
     },
     formInit() {
       const list = this.tableOption.column;

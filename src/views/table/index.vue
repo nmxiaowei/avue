@@ -12,12 +12,12 @@
       <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
-    <avue-crud :tableOption="tableOption" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @handleRowDBLClick="handleRowDBLClick" @handleRowClick="handleRowClick" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
+    <avue-crud :tableOption="tableOption" v-model="user" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @handleRowDBLClick="handleRowDBLClick" @handleRowClick="handleRowClick" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
       <template slot-scope="scope" slot="nameForm">
-        <avue-crud-input @click.native="tip" v-model="scope.value">
+        <avue-crud-input @click.native="tip" v-model="user.name">
         </avue-crud-input>
       </template>
       <template slot-scope="scope" slot="menu">
@@ -53,6 +53,7 @@ export default {
       tableLoading: false,
       tabelObj: {},
       formJson: "",
+      user: {},
       page: {
         total: 0, //总页数
         currentPage: 1, //当前页数
