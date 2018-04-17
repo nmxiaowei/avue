@@ -112,9 +112,7 @@ export default {
       this.form = Object.assign({}, form);
     },
     formVal() {
-      for (let o in this.value) {
-        this.form[o] = this.value[o];
-      }
+      this.form= this.value;
       this.$emit("input", this.form);
     },
     handleSubmit() {

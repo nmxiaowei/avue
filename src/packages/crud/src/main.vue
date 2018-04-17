@@ -101,8 +101,9 @@ export default {
   props: {
     value: {
       type: Object,
-      required: true,
-      default: {}
+       default: () => {
+        return {};
+      }
     },
     beforeClose: Function,
     beforeOpen: Function,
@@ -202,14 +203,14 @@ export default {
       let result = "";
       if (column.dataDetail) {
         if (column.type) {
-          result = this.findByvalue(this.DIC[column.dicData], row[column.prop]);
+          result = this.findByvalue(typeof (column.dicData) == 'string'?this.DIC[column.dicData]:column.dicData, row[column.prop]);
         } else {
           result = row[column.prop];
         }
         result = column.dataDetail(row);
       } else {
         if (column.type) {
-          result = this.findByvalue(this.DIC[column.dicData], row[column.prop]);
+          result = this.findByvalue(typeof (column.dicData) == 'string'?this.DIC[column.dicData]:column.dicData, row[column.prop]);
         } else {
           result = row[column.prop];
         }
