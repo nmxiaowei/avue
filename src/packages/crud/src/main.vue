@@ -60,7 +60,6 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
 import crud from "avue/mixins/crud.js";
 export default {
   name: "AvueCrud",
@@ -138,7 +137,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetDic"]),
     rulesInit() {
       this.tableFormRules = {};
       this.tableOption.column.forEach(ele => {

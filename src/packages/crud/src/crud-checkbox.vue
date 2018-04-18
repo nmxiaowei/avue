@@ -14,7 +14,9 @@ export default {
   },
   props: {
     value: {
-      default: ""
+      default: () => {
+        return [];
+      }
     },
     dic: {
       default: () => {

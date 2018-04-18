@@ -17,7 +17,9 @@ const components = [
     crudSelect,
     crudCascader
 ]
-const install = function (Vue, opts = {}) {
+const install = function (Vue, axios, opts = {}) {
+    //注入axios;
+    Vue.prototype.$http = axios;
     const AVUE = {};
     components.map(component => {
         Vue.component(component.name, component);
@@ -27,8 +29,8 @@ const install = function (Vue, opts = {}) {
     Vue.prototype.$AVUE = AVUE;
 }
 
-if (typeof window !== 'undefined' && window.Vue) {
-    install(window.Vue);
+if (typeof window !== 'undefined' && window.Vue && window.axios) {
+    install(window.Vue, window.axios);
 }
 export default {
     version: '1.1.0',
