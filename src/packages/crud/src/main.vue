@@ -44,7 +44,7 @@
             <el-col :span="column.span||12" v-if="!column.visdiplay">
               <el-form-item :label="column.label" :prop="column.prop">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?(column.addDisabled!=undefined?column.addDisabled:column.disabled):column.disabled"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?(column.addDisabled!=undefined?column.addDisabled:column.disabled):column.disabled"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -101,7 +101,7 @@ export default {
   props: {
     value: {
       type: Object,
-       default: () => {
+      default: () => {
         return {};
       }
     },
@@ -203,14 +203,24 @@ export default {
       let result = "";
       if (column.dataDetail) {
         if (column.type) {
-          result = this.findByvalue(typeof (column.dicData) == 'string'?this.DIC[column.dicData]:column.dicData, row[column.prop]);
+          result = this.findByvalue(
+            typeof column.dicData == "string"
+              ? this.DIC[column.dicData]
+              : column.dicData,
+            row[column.prop]
+          );
         } else {
           result = row[column.prop];
         }
         result = column.dataDetail(row);
       } else {
         if (column.type) {
-          result = this.findByvalue(typeof (column.dicData) == 'string'?this.DIC[column.dicData]:column.dicData, row[column.prop]);
+          result = this.findByvalue(
+            typeof column.dicData == "string"
+              ? this.DIC[column.dicData]
+              : column.dicData,
+            row[column.prop]
+          );
         } else {
           result = row[column.prop];
         }

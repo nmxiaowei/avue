@@ -5,6 +5,7 @@ import CrudInput from './crud-input/index.js'
 import crudRadio from './crud-radio/index.js'
 import crudSelect from './crud-select/index.js'
 import crudCascader from './crud-cascader/index.js'
+import crudNumberInput from './crud-input-number/index.js'
 import Form from './form/index.js'
 const components = [
     Crud,

@@ -86,6 +86,8 @@ export const getComponent = (type) => {
         return "crudDate";
     } else if (type == 'cascader') {
         return "crudCascader";
+    } else if (type == 'number') {
+        return "crudInputNumber";
     } else {
         return "crudInput";
     }

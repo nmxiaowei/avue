@@ -13,7 +13,9 @@ export default {
   },
   props: {
     value: {
-      default: []
+      default: () => {
+        return [];
+      }
     },
     placeholder: {
       type: String,

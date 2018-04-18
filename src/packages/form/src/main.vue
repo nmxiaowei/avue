@@ -6,7 +6,7 @@
           <el-col :span="column.span||12">
             <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,formOption.labelWidth || 80)">
               <slot :value="form[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.formsolt"></slot>
-              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
+              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :placeholder="column.label" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled"></component>
             </el-form-item>
           </el-col>
         </template>
@@ -112,7 +112,7 @@ export default {
       this.form = Object.assign({}, form);
     },
     formVal() {
-      this.form= this.value;
+      this.form = this.value;
       this.$emit("input", this.form);
     },
     handleSubmit() {

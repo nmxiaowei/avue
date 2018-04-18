@@ -5,6 +5,7 @@ import crudRadio from "avue/crud/src/crud-radio";
 import crudCheckbox from "avue/crud/src/crud-checkbox";
 import crudCascader from "avue/crud/src/crud-cascader";
 import crudDate from "avue/crud/src/crud-date";
+import crudInputNumber from 'avue/crud/src/crud-input-number'
 export default function () {
     return {
         components: {
@@ -13,7 +14,8 @@ export default function () {
             crudRadio,
             crudCheckbox,
             crudDate,
-            crudCascader
+            crudCascader,
+            crudInputNumber
         },
         methods: {
             getComponent: function (type) {

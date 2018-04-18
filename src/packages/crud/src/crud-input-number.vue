@@ -1,10 +1,10 @@
 <template>
-  <el-input :size="size" :clearable="clearable" v-model="text" :type="type=='textarea'?'textarea':'text'" :autosize="{ minRows: minRows, maxRows: maxRows}" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"></el-input>
+  <el-input-number v-model="text" @change="handleChange" :min="minRows" :max="maxRows" :label="'请输入'+placeholder" :disabled="disabled"></el-input-number>
 </template>
 
 <script>
 export default {
-  name: "AvueCrudInput",
+  name: "AvueCrudInputNumber",
   data() {
     return {
       text: ""
@@ -12,12 +12,7 @@ export default {
   },
   props: {
     value: {
-      type: String,
-      default: ""
-    },
-    clearable: {
-      type: Boolean,
-      default: true
+      type: Number
     },
     disabled: {
       type: Boolean,
@@ -27,21 +22,17 @@ export default {
       type: String,
       default: ""
     },
-    size: {
-      type: String,
-      default: ""
-    },
     type: {
       type: String,
       default: ""
     },
     minRows: {
-      type: String,
-      default: "3"
+      type: Number,
+      default: -Infinity
     },
     maxRows: {
-      type: String,
-      default: "4"
+      type: Number,
+      default: Infinity
     }
   },
   watch: {

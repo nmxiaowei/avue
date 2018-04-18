@@ -24,6 +24,12 @@ export default {
             formsolt: true,
         },
         {
+            label: "数字",
+            prop: "number",
+            type: 'number',
+            hide: true,
+        },
+        {
             label: "类型",
             prop: "type",
             type: "cascader",
