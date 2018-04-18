@@ -11,7 +11,7 @@
     <avue-crud ref="crud" :tableOption="tableOption" :tableData="form.column" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleSave="handleSave"></avue-crud>
     <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
     <el-dialog title="字典选择" :visible.sync="dicData.box">
-      <crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></crud-checkbox>
+      <avue-crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></avue-crud-checkbox>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleDicSbumit">确 定</el-button>
       </span>

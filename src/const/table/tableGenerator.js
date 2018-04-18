@@ -2,6 +2,7 @@ export default {
     page: false,
     index: true,
     height: 300,
+    labelWidth: 100,
     column: [
         {
             label: "列名称",
@@ -45,6 +46,27 @@ export default {
             hide: true
         },
         {
+            label: "表单禁止",
+            prop: "disabled",
+            hide: true,
+            type: "select",
+            dicData: 'VAILDATA',
+        },
+        {
+            label: "表单新增禁止",
+            prop: "addDisabled",
+            hide: true,
+            type: "select",
+            dicData: 'VAILDATA',
+        },
+        {
+            label: "表单可清空",
+            prop: "clearable",
+            hide: true,
+            type: "select",
+            dicData: 'VAILDATA',
+        },
+        {
             label: "表单隐藏",
             prop: "visdiplay",
             hide: true,
@@ -52,8 +74,15 @@ export default {
             dicData: 'VAILDATA',
         },
         {
-            label: "自定义",
+            label: "表单自定义",
             prop: "solt",
+            hide: true,
+            type: "select",
+            dicData: 'VAILDATA',
+        },
+        {
+            label: "列自定义",
+            prop: "formsolt",
             hide: true,
             type: "select",
             dicData: 'VAILDATA',

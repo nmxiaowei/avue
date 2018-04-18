@@ -11,14 +11,18 @@ export default {
             prop: "height",
             span: 6,
         }, {
-            label: "表格字典",
-            prop: "dic",
-            type: 'select',
-            formsolt: true,
+            label: "表单标题宽度",
+            prop: "labelWidth",
             span: 6,
         }, {
             label: "操作栏宽度",
             prop: "menuWidth",
+            span: 6,
+        }, {
+            label: "表格字典",
+            prop: "dic",
+            type: 'select',
+            formsolt: true,
             span: 6,
         }, {
             label: "表格边框",
@@ -62,7 +66,7 @@ export default {
             type: 'radio',
             dicData: 'VAILDATA',
             span: 6,
-        }
+        },
 
     ]
 };

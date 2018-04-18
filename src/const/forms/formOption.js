@@ -21,21 +21,23 @@ export default {
             dicData: 'GRADE'
         },
         {
-            label: "性别",
-            prop: "sex",
-            type: "radio",
-            dicData: 'SEX'
-        },
-        {
             label: "权限",
             prop: "grade",
-            span: 24,
+            span: 6,
             type: "checkbox",
             dicData: 'GRADE'
         },
         {
+            label: "性别",
+            prop: "sex",
+            span: 6,
+            type: "radio",
+            dicData: 'SEX'
+        },
+        {
             label: "地址",
             span: 24,
+            type: "textarea",
             prop: "address",
         }
     ]

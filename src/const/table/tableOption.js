@@ -1,4 +1,5 @@
 export default {
+    height: 400,
     border: true,
     index: true,
     selection: true,
