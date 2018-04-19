@@ -31,6 +31,7 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `11.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
 `11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
 
+## avue依赖vue+element-ui+axios
 
 **支持路由改变单例页面title**
 <p align="center">

@@ -7,6 +7,7 @@ import crudSelect from './crud-select/index.js'
 import crudCascader from './crud-cascader/index.js'
 import crudNumberInput from './crud-input-number/index.js'
 import Form from './form/index.js'
+import './theme-chalk/src/common.scss'
 const components = [
     Crud,
     Form,
