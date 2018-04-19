@@ -1,6 +1,6 @@
 <template>
   <div class="generator-container  pull-chheight">
-    <avue-form :formOption="formOption" v-model="tableForm">
+    <avue-form :form-option="formOption" v-model="tableForm">
       <template slot-scope="scope" slot="dic">
         <el-button @click.native="dicData.box=true">
           字典选择
@@ -8,7 +8,7 @@
       </template>
     </avue-form>
     <el-button type="primary" @click="handleAddColumn" size="small">新增</el-button>
-    <avue-crud ref="crud" :tableOption="tableOption" :tableData="form.column" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleSave="handleSave"></avue-crud>
+    <avue-crud ref="crud" :table-option="tableOption" :table-data="form.column" @row-update="handleUpdate" @row-del="handleDel" @row-save="handleSave"></avue-crud>
     <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
     <el-dialog title="字典选择" :visible.sync="dicData.box">
       <avue-crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></avue-crud-checkbox>
@@ -85,12 +85,6 @@ export default {
           }
         }
       });
-      //删除表格没有填写的字段
-      for (let o in form) {
-        if (validatenull(form[o])) {
-          delete form[o];
-        }
-      }
       const result = JSON.stringify(form, null, 2);
       this.result = result;
     },
@@ -110,7 +104,7 @@ export default {
       this.dicData.box = false;
     },
     handleAddColumn() {
-      this.$refs.crud.handleAdd();
+      this.$refs.crud.rowAdd();
     },
     handleSave(row, done) {
       this.form.column.push(row);

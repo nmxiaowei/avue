@@ -1,6 +1,6 @@
 <template>
   <div class="from-container pull-chheight">
-    <avue-form :formOption="formOption" v-model="formData" @handleSubmit="handleSubmit">
+    <avue-form :form-option="formOption" v-model="formData" @submit="handleSubmit">
       <template slot-scope="scope" slot="name">
         <avue-crud-input @click.native="tip" :disabled="scope.column.disabled" v-model="scope.value">
         </avue-crud-input>

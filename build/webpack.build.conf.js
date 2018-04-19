@@ -6,7 +6,7 @@ const baseWebpackConfig = require('./webpack.base.conf')
 module.exports = {
     //入口文件的配置项
     entry: {
-        entry: './src/packages/index.js'
+        entry: './packages/index.js'
     },
     //出口文件的配置项
     output: {
@@ -18,7 +18,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {
-            'avue': path.resolve('src/packages'),
+            'avue': path.resolve('packages'),
         }
     },
     //模块：例如解读CSS,图片如何转换，压缩

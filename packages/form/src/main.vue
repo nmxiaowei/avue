@@ -10,10 +10,10 @@
             </el-form-item>
           </el-col>
         </template>
-        <el-col :span="24" v-if="formOption.submitBtn?formOption.submitBtn:true">
+        <el-col :span="24" v-if="formOption.submitBtn!=undefined?formOption.submitBtn:true">
           <el-form-item label-width="0">
             <div class="form-menu" :class="menuPostion">
-              <el-button type="primary" @click="handleSubmit">{{formOption.submitText?formOption.submitText:'提交'}}</el-button>
+              <el-button type="primary" @click="submit">{{formOption.submitText?formOption.submitText:'提交'}}</el-button>
             </div>
           </el-form-item>
         </el-col>
@@ -113,12 +113,12 @@ export default {
       this.form = this.value;
       this.$emit("input", this.form);
     },
-    handleSubmit() {
+    submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.$emit("handleSubmit", this.form);
+          this.$emit("submit", this.form);
         } else {
-          this.$emit("handleSubmit");
+          this.$emit("submit");
         }
       });
     }

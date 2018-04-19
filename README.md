@@ -15,6 +15,12 @@
 
 github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)<br />
 
+#### avue依赖vue+element-ui+axios
+
+#### [avue-cdn](http://oetrwxnhv.bkt.clouddn.com/avue.min.js)
+
+#### [html-demo](http://sandbox.runjs.cn/show/xjjyj1cj)
+
 ## 简介
 
 `avue` 是一个类似easyui那种去写vue的方案支持SSR(服务端渲染)和SPA(单例页面),全部基于json可配置化去开发界面，节约开发成本和提高开发效率，基本构成由 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待<br /><br />
@@ -31,7 +37,6 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `11.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
 `11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
 
-## avue依赖vue+element-ui+axios
 
 **支持路由改变单例页面title**
 <p align="center">

@@ -1,6 +1,5 @@
 export default {
     dic: ['GRADE', 'SEX'],
-    labelWidth: 100,
     submitText: '完成',
     column: [
         {
@@ -23,14 +22,12 @@ export default {
         {
             label: "权限",
             prop: "grade",
-            span: 6,
             type: "checkbox",
             dicData: 'GRADE'
         },
         {
             label: "性别",
             prop: "sex",
-            span: 6,
             type: "radio",
             dicData: 'SEX'
         },

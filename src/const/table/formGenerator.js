@@ -1,6 +1,7 @@
 export default {
-    labelWidth: 130,
+    labelWidth: 120,
     dic: ['VAILDATA'],
+    submitBtn: false,
     column: [
         {
             label: "表格宽度",

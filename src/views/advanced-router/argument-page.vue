@@ -1,6 +1,6 @@
 <template>
   <div class="pull-chheight">
-    <avue-crud :tableOption="tableOption" :tableData="tableData">
+    <avue-crud :table-option="tableOption" :table-data="tableData">
       <template slot-scope="scope" slot="git">
         <a :href="scope.row.git" target="_blank">{{scope.row.git}}</a>
       </template>

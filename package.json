@@ -9,7 +9,7 @@
     "build": "set NODE_ENV=production && node build/build.js",
     "build:test": "set NODE_ENV=test && node build/build.js",
     "start": "npm run build:client && npm run build:server && node server",
-    "build:build": "webpack --config build/webpack.build.conf.js --progress --hide-modules",
+    "avue": "webpack --config build/webpack.build.conf.js --progress --hide-modules",
     "build:client": "webpack --config build/webpack.client.conf.js --progress --hide-modules",
     "build:server": "webpack --config build/webpack.server.conf.js --progress --hide-modules",
     "lint": "eslint --ext .js,.vue src",

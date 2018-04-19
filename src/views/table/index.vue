@@ -12,7 +12,7 @@
       <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
-    <avue-crud :tableOption="tableOption" v-model="user" :tableData="tableData" :tableLoading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @handleRowDBLClick="handleRowDBLClick" @handleRowClick="handleRowClick" :page="page" ref="crud" @handleSave="handleSave" @handleUpdate="handleUpdate" @handleDel="handleDel" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange">
+    <avue-crud :table-option="tableOption" v-model="user" :table-data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblClick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
@@ -125,7 +125,7 @@ export default {
       }
     },
     handleEdit(row, index) {
-      this.$refs.crud.handleEdit(row, index);
+      this.$refs.crud.rowEdit(row, index);
     },
     /**
      * @title 打开权限
@@ -192,7 +192,7 @@ export default {
      *
      **/
     handleAdd() {
-      this.$refs.crud.handleAdd();
+      this.$refs.crud.rowAdd();
     },
     /**
      * @title 选中第几行
