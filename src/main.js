@@ -12,7 +12,7 @@ import * as urls from '@/config/env';
 import { iconfontUrl, iconfontVersion } from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
-import AVUE from '../lib/avue.js';
+import AVUE from '../packages/index.js';
 
 Vue.use(VueAxios, axios)
 

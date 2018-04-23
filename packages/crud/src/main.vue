@@ -268,6 +268,7 @@ export default {
     show(cancel) {
       if (cancel !== true) {
         this.boxVisible = true;
+        this.$refs["tableForm"].resetFields();
       }
     },
     //隐藏表单
