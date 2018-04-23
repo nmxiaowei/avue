@@ -1,8 +1,8 @@
 <template>
   <div class="pull-auto top-menu">
     <el-menu :default-active="activeIndex" mode="horizontal">
-      <template v-for="item in items">
-        <el-menu-item :index="item.parentId+''" @click.native="openMenu(item)">{{item.label}}</el-menu-item>
+      <template v-for="(item,index) in items">
+        <el-menu-item :index="item.parentId+''" @click.native="openMenu(item)" :key="index">{{item.label}}</el-menu-item>
       </template>
     </el-menu>
   </div>

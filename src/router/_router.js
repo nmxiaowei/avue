@@ -15,6 +15,9 @@ export default [{ path: '/login', name: '登录页', component: _import('login/i
     path: '/myiframe',
     component: Layout,
     redirect: '/myiframe',
+    meta: {
+        keepAlive: false,
+    },
     children: [
         {
             path: ":routerPath",
