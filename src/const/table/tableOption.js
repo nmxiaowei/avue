@@ -2,14 +2,18 @@ export default {
     height: 400,
     border: true,
     index: true,
+    expand: true,
     selection: true,
     menuWidth: 300,
+    menuAlign: 'center',
     editBtn: false,
+    align: 'center',
     dic: ['GRADE', 'SEX', 'TYPE'],
     column: [
         {
             label: "用户名",
             prop: "username",
+            align: 'left',
             width: "150",
             solt: true,
             dataDetail: row => {
@@ -34,13 +38,14 @@ export default {
             label: "类型",
             prop: "type",
             type: "cascader",
-            dicData: 'TYPE'
+            dicData: 'TYPE',
+            hide: true,
         },
         {
             label: "权限",
             prop: "grade",
             type: "checkbox",
-            dicData: 'GRADE'
+            dicData: 'GRADE',
         },
         {
             label: "地址",

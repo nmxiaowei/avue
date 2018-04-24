@@ -13,6 +13,25 @@
       <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
     <avue-crud :table-option="tableOption" v-model="user" :table-data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblClick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
+      <template slot-scope="props" slot="expand">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="姓名">
+            <span>{{ props.row.name }}</span>
+          </el-form-item>
+          <el-form-item label="数字">
+            <span>{{ props.row.number }}</span>
+          </el-form-item>
+          <el-form-item label="类型">
+            <span>{{ props.row.type }}</span>
+          </el-form-item>
+          <el-form-item label="权限">
+            <span>{{ props.row.grade }}</span>
+          </el-form-item>
+          <el-form-item label="地址">
+            <span>{{ props.row.address }}</span>
+          </el-form-item>
+        </el-form>
+      </template>
       <template slot-scope="scope" slot="username">
         <el-tag>{{scope.row.username}}</el-tag>
       </template>
@@ -351,5 +370,17 @@ export default {
   & > .el-button {
     padding: 12px 25px;
   }
+}
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
 }
 </style>

@@ -3,17 +3,25 @@
     <el-table :data="tableData" @row-click="rowClick" @row-dblclick="rowDblclick" :height="tableOption.height" ref="table" :style="{width:setPx(tableOption.width,'99.5%')}" style="margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="selectionChange">
       <!-- 选择框 -->
       <template v-if="tableOption.selection">
-        <el-table-column type="selection" width="55">
+        <el-table-column type="selection" width="55" fixed="left">
         </el-table-column>
       </template>
       <!-- 序号 -->
       <template v-if="tableOption.index">
-        <el-table-column type="index" width="50">
+        <el-table-column type="index" width="50" fixed="left">
+        </el-table-column>
+      </template>
+      <!-- 下拉弹出框  -->
+      <template v-if="tableOption.expand">
+        <el-table-column type="expand" width="55" fixed="left">
+          <template slot-scope="props">
+            <slot :row="props.row" name="expand"></slot>
+          </template>
         </el-table-column>
       </template>
       <!-- 循环列 -->
       <template v-for="(column,index) in tableOption.column">
-        <el-table-column :width="column.width" :label="column.label" :fixed="column.fixed" :sortable="column.sortable" v-if="!column.hide">
+        <el-table-column :min-width="column.minWidth" :align="column.align?column.align:tableOption.align" :header-align="column.headerAlign?column.headerAlign:tableOption.headerAlign" :width="column.width" :label="column.label" :fixed="column.fixed" :sortable="column.sortable" v-if="!column.hide">
           <template slot-scope="scope">
             <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
             <span v-else-if="!column.overHidden" v-html="detail(scope.row,column)"></span>
@@ -26,7 +34,7 @@
           </template>
         </el-table-column>
       </template>
-      <el-table-column label="操作" :width="tableOption.menuWidth?tableOption.menuWidth:240" v-if="tableOption.menu==undefined?true:tableOption.menu">
+      <el-table-column label="操作" :align="tableOption.menuAlign" :header-align="tableOption.menuHeaderAlign" :width="tableOption.menuWidth?tableOption.menuWidth:240" v-if="tableOption.menu==undefined?true:tableOption.menu">
         <template slot-scope="scope">
           <template v-if="tableOption.menu!=undefined?tableOption.menu:true">
             <el-button type="primary" icon="el-icon-edit" size="small" @click="rowEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.editBtn">编 辑</el-button>
