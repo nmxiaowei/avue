@@ -12,6 +12,11 @@
       <topMenu></topMenu>
     </h1>
     <div class="header-button is-right">
+      <el-tooltip class="item" effect="dark" content="换肤" placement="bottom">
+        <span class="header-item">
+          <top-theme></top-theme>
+        </span>
+      </el-tooltip>
       <el-tooltip class="item" effect="dark" content="锁屏" placement="bottom">
         <span class="header-item">
           <top-lock></top-lock>
@@ -56,8 +61,9 @@ import topLogo from "./top-logo";
 import topLock from "./top-lock";
 import topMenu from "./top-menu";
 import topBreadcrumb from "./top-breadcrumb";
+import topTheme from "./top-theme";
 export default {
-  components: { topLock, topLogo, topMenu, topBreadcrumb },
+  components: { topLock, topLogo, topMenu, topBreadcrumb, topTheme },
   name: "top",
   data() {
     return {};
