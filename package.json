@@ -1,9 +1,10 @@
 {
-  "name": "avue",
-  "version": "0.0.1",
+  "name": "avue-cli",
+  "version": "1.2.1",
+  "main": "lib/avue.js",
   "description": "A Vue.js project",
   "author": "smallwei <1634566606@qq.com>",
-  "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "set NODE_ENV=development && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build": "set NODE_ENV=production && node build/build.js",

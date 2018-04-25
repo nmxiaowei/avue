@@ -1,28 +1,40 @@
-## <font>avue1.1.0发布了,curd组件和form组件独立出来，其他项目可以单独引用了</font>
-简体中文
+### avue1.2.1发布
 欢迎加入QQ交流群，互相学习   
 前端avue交流群：606410437  
 后台微服务群：23754102   
 服务端解决方案：https://gitee.com/log4j/pig
 
-[avue技术文档](https://www.kancloud.cn/smallwei/avue/)<br />
+#### 技术文档
+- [avue技术文档](https://www.kancloud.cn/smallwei/avue/)<br />
 
-演示地址:[http://avue.2bugs.cn](http://avue.2bugs.cn)
-演示地址:[http://122.4.247.156:7777](http://122.4.247.156:7777)——jenkins+docker+git钩子自动部署<br />
+#### 源码地址
+- [码云地址:https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)
+- [github地址：https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)
 
+#### 在线demo
+- [crud和form组件(html-demo)](http://sandbox.runjs.cn/show/xjjyj1cj)
+- [演示地址1:http://avue.2bugs.cn](http://avue.2bugs.cn)
+- [演示地址2:http://122.4.247.156:7777](http://122.4.247.156:7777)——jenkins+docker+git钩子自动部署
 
-码云地址:[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)<br />
+#### 使用方式
+1.html引入
+```
+axios、vue、element-ui相关依赖也要引入
+[avue-cdn:](https://gitee.com/smallweigit/avue/raw/master/lib/avue.js)
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/element-ui/2.3.4/index.js"></script>
+<script type="text/javascript" src="https://gitee.com/smallweigit/avue/raw/master/lib/avue.js"></script>
+```
+2.npm引入
+```
+npm install avue-cli
 
-github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)<br />
+import Avue form 'avue-cli/packages/index.js';
 
-#### avue依赖vue+element-ui+axios
+```
 
-#### [avue-cdn](http://oetrwxnhv.bkt.clouddn.com/avue.min.js)
-
-#### [html-demo](http://sandbox.runjs.cn/show/xjjyj1cj)
-
-## 简介
-
+#### 简介
 `avue` 是一个类似easyui那种去写vue的方案支持SSR(服务端渲染)和SPA(单例页面),全部基于json可配置化去开发界面，节约开发成本和提高开发效率，基本构成由 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待<br /><br />
 `1.vuex本地持久化存储,封装h5的sessionStorage和localStorage`<br /><br />
 `2.加入了本地离线的包引入方法去引入vue，vue-router等第三方包` [详细介绍](https://my.oschina.net/sunshineS/blog/1583563)<br /><br />
@@ -35,25 +47,12 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
 `9.scss模块化开发`<br /><br />
 `10.crud组件快速生成器`<br /><br />
 `11.增加系统管理模板(用户管理,角色管理,菜单管理——基于本框架的crud组件自动生成)`<br /><br />
-`11.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`
+`12.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`<br /><br />
+`13.支持路由改变单例页面title`<br /><br />
+`14.crud组件快速生成器`<br /><br />
 
 
-**支持路由改变单例页面title**
-<p align="center">
-  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/title.gif">
-</p>
-
-**权限动态切换**
-<p align="center">
-  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/role.gif">
-</p>
-
-**crud组件快速生成器**
-<p align="center">
-  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-generator.png">
-</p>
-
-
+#### 页面展示
 **登录**
 <p align="center">
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-login.png">
@@ -125,10 +124,11 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-iframe.png">
 </p>
 
-## 功能
+#### 功能结构
 ```
 - 全局错误日志记录
 - vuex持久化存储
+- 主题色切换
 - 锁屏
 - SSR渲染页面
 - 数据展示
@@ -145,16 +145,19 @@ github地址：[https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/
  - 用户管理
  - 角色管理
  - 菜单管理
+- 高级路由
+ - 动态路由
+ - 参数路由
 - 更多功能开在开发
 ```
 
-### 按钮的显隐控制
+##### 按钮的显隐控制
 返回的vuex对象中额permission数组包括按钮的权限 例如: ['sys_crud_add', 'sys_crud_export'], crud的增加按钮和导出按钮
 
-### 全局错误日志记录
+##### 全局错误日志记录
 放开./src/page/errlog/index.vue中的errorA的组件即可测试他是存储在本地，可以自己回掉方法上传服务器，调用CLEAR_ALL_ERR方法清空本地
 
-### vuex持久化存demo请看
+##### vuex持久化存demo请看
 详细demo请看./src/store/modules/tgs.js实例
 ```bash
 ...
@@ -169,7 +172,7 @@ state:{
   ...
  }
 ```
-### 数据加密工具类——在./src/util/util.js中encryption
+##### 数据加密工具类——在./src/util/util.js中encryption
 支持Base64和Aes加密
 ```bash
 const data ={
@@ -183,7 +186,7 @@ const userInfo = encryption({
     param: ['useranme', 'password'] //要加密的字段
 });
 ```
-### CRUD和FORM使用说明————根据配置json文件自动生成CRUD和FORM，并且配置字典接口，自动匹配字典
+##### CRUD和FORM使用说明————根据配置json文件自动生成CRUD和FORM，并且配置字典接口，自动匹配字典
 详细demo请看./src/page/table/index.vue和./src/page/form/index.vue实例实例
 ```bash
 
@@ -229,7 +232,7 @@ js自动配置crud<br />
 }
 ```
 
-## 开发
+#### 开发
 ```bash
 # 克隆项目
 git clone https://gitee.com/smallweigit/avue.git
@@ -244,7 +247,7 @@ npm install --registry=https://registry.npm.taobao.org
 npm run dev
 ```
 
-## 调试与发布
+#### 调试与发布
 ```bash
 # 构建测试环境
 npm run dev
@@ -258,7 +261,7 @@ npm run start
 ```
 
 
-## 其它
+#### 其它
 ```bash
 # 代码检测
 npm run lint
@@ -275,8 +278,7 @@ npm run build:server
 
 
 
-## License
-
+#### License
 [MIT](https://gitee.com/smallweigit/avue/blob/master/LICENSE)
 
 Copyright (c) 2017-present Smallwei QQ:1634566606
