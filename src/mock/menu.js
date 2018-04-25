@@ -136,20 +136,20 @@ const second = [
     },
     children: [
       {
-        id: 10,
+        id: 20,
         label: "用户管理",
         href: '/admin/user',
         icon: 'icon-yonghuguanli',
         children: []
       }, {
-        id: 11,
+        id: 21,
         label: "角色管理",
         href: '/admin/role',
         icon: 'icon-jiaoseguanli',
         children: []
       },
       {
-        id: 12,
+        id: 22,
         label: "菜单管理",
         href: '/admin/menu',
         icon: 'icon-caidanguanli',

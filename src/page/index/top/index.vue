@@ -1,6 +1,6 @@
 <template>
-  <div class="header">
-    <div class="header-button is-left">
+  <div class="top">
+    <div class="top-button is-left">
       <top-logo></top-logo>
       <!-- breadcrumb按钮和面包屑 -->
       <div class="tags-breadcrumb">
@@ -8,22 +8,22 @@
         <!-- <top-breadcrumb class="tags-breadcrumb-list"></top-breadcrumb> -->
       </div>
     </div>
-    <h1 class="header-title">
+    <h1 class="top-title">
       <topMenu></topMenu>
     </h1>
-    <div class="header-button is-right">
+    <div class="top-button is-right">
       <el-tooltip class="item" effect="dark" content="换肤" placement="bottom">
-        <span class="header-item">
+        <span class="top-item">
           <top-theme></top-theme>
         </span>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="锁屏" placement="bottom">
-        <span class="header-item">
+        <span class="top-item">
           <top-lock></top-lock>
         </span>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" :content="isFullScren?'退出全屏':'全屏'" placement="bottom">
-        <span class="header-item">
+        <span class="top-item">
           <i :class="isFullScren?'icon-tuichuquanping':'icon-quanping'" @click="handleScreen"></i>
         </span>
       </el-tooltip>
@@ -49,7 +49,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-tooltip class="item" effect="dark" content="用户头像" placement="bottom">
-        <img class="header-userImg" :src="userInfo.avatar">
+        <img class="top-userImg" :src="userInfo.avatar">
       </el-tooltip>
     </div>
   </div>

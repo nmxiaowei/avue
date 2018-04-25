@@ -29,6 +29,9 @@ export default function () {
             GetDic: function (list) {
                 return new Promise((resolve, reject) => {
                     let result = [];
+                    if (validatenull(list)) {
+                        return;
+                    }
                     list.forEach(ele => {
                         result.push(new Promise((resolve, reject) => {
                             if (validatenull(this.dicUrl)) {

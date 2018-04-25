@@ -2,14 +2,17 @@
 欢迎加入QQ交流群，互相学习   
 前端avue交流群：606410437  
 后台微服务群：23754102   
-服务端解决方案：https://gitee.com/log4j/pig
+服务端解决方案：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
 
 #### 技术文档
-- [avue技术文档](https://www.kancloud.cn/smallwei/avue/)<br />
+- [avue技术文档](https://www.kancloud.cn/smallwei/avue/)
 
 #### 源码地址
 - [码云地址:https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)
 - [github地址：https://github.com/nmxiaowei/avue](https://github.com/nmxiaowei/avue)
+
+#### 更新日志
+- [更新日志](./UPDATE.md)
 
 #### 在线demo
 - [crud和form组件(html-demo)](http://sandbox.runjs.cn/show/xjjyj1cj)

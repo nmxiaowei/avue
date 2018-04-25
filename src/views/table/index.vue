@@ -2,15 +2,17 @@
   <div class="table-container pull-chheight">
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
+      <el-button type="primary" @click="handleRowEdit" size="small">编 辑</el-button>
+      <el-button type="primary" @click="handleRowDel" size="small">删 除</el-button>
+      <el-button type="info" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
+      <el-button type="warning" @click="handleJpeg" size="small">导出图片</el-button>
+      <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
+      <el-button @click="toggleSelection()" size="small">取消选择</el-button>
       <el-button type="success" size="small" v-if="permission.sys_crud_btn_add">
         <router-link :to="{path:'/forms/index'}">
           表单CRUD
         </router-link>
       </el-button>
-      <el-button type="info" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
-      <el-button type="warning" @click="handleJpeg" size="small">导出图片</el-button>
-      <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
-      <el-button @click="toggleSelection()" size="small">取消选择</el-button>
     </div>
     <avue-crud :table-option="tableOption" v-model="user" :table-data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblClick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
       <template slot-scope="props" slot="expand">
@@ -68,6 +70,7 @@ export default {
     return {
       tableOption: tableOption, //表格设置属性
       tableData: [], //表格的数据
+      tableRow: {},
       tablePage: 1,
       tableLoading: false,
       tabelObj: {},
@@ -142,6 +145,9 @@ export default {
       } else {
         this.grade.check.splice(this.grade.check.indexOf(data.id), 1);
       }
+    },
+    handleRowEdit() {
+      this.$refs.crud.rowEdit(this.tableRow, -1);
     },
     handleEdit(row, index) {
       this.$refs.crud.rowEdit(row, index);
@@ -249,6 +255,7 @@ export default {
      *
      **/
     handleSelectionChange(val) {
+      this.tableRow = val[0];
       this.$message({
         showClose: true,
         message: JSON.stringify(val),
@@ -295,6 +302,13 @@ export default {
       this.$message({
         showClose: true,
         message: "单机",
+        type: "success"
+      });
+    },
+    handleRowDel() {
+      this.$message({
+        showClose: true,
+        message: this.tableRow,
         type: "success"
       });
     },

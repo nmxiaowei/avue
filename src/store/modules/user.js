@@ -8,7 +8,7 @@ const user = {
         userInfo: {},
         permission: {},
         roles: [],
-        menu: getStore({ name: 'menu' }) || [],
+        menu: [],
         menuAll: [],
         token: getStore({ name: 'token' }) || '',
     },
@@ -131,7 +131,6 @@ const user = {
                 }
             });
             state.menu = list;
-            setStore({ name: 'menu', content: state.menu, type: 'session' })
         },
         SET_MENU_ALL: (state, menuAll) => {
             state.menuAll = menuAll;

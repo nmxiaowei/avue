@@ -6,9 +6,9 @@
       <div class="right">
         <tags ref="nav" class="nav"></tags>
         <keep-alive>
-          <router-view v-if="!$route.meta.keepAlive" class="main"></router-view>
+          <router-view v-if="$route.meta.keepAlive" class="main"></router-view>
         </keep-alive>
-        <router-view v-if="$route.meta.keepAlive" class="main"></router-view>
+        <router-view v-if="!$route.meta.keepAlive" class="main"></router-view>
       </div>
     </div>
   </div>

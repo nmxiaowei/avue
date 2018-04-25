@@ -1,58 +1,56 @@
 <template>
   <div class="crud-container pull-auto">
-    <el-table :data="tableData" @row-click="rowClick" @row-dblclick="rowDblclick" :height="tableOption.height" ref="table" :style="{width:setPx(tableOption.width,'99.5%')}" style="margin:0 auto;box-sizing:border-box;" :border="tableOption.border" v-loading="tableLoading" @selection-change="selectionChange">
-      <!-- 选择框 -->
-      <template v-if="tableOption.selection">
-        <el-table-column type="selection" width="55" fixed="left">
-        </el-table-column>
-      </template>
-      <!-- 序号 -->
-      <template v-if="tableOption.index">
-        <el-table-column type="index" width="50" fixed="left">
-        </el-table-column>
-      </template>
+    <el-table :data="tableData" :stripe="tableOption.stripe" :show-header="tableOption.showHeader" :default-sort="tableOption.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="tableOption.maxHeight" :height="tableOption.height" ref="table" :width="setPx(tableOption.width,'100%')" :border="tableOption.border" v-loading="tableLoading" @selection-change="selectionChange">
       <!-- 下拉弹出框  -->
       <template v-if="tableOption.expand">
-        <el-table-column type="expand" width="55" fixed="left">
+        <el-table-column type="expand" width="50" fixed="left" align="center">
           <template slot-scope="props">
             <slot :row="props.row" name="expand"></slot>
           </template>
         </el-table-column>
       </template>
-      <!-- 循环列 -->
-      <template v-for="(column,index) in tableOption.column">
-        <el-table-column :min-width="column.minWidth" :align="column.align?column.align:tableOption.align" :header-align="column.headerAlign?column.headerAlign:tableOption.headerAlign" :width="column.width" :label="column.label" :fixed="column.fixed" :sortable="column.sortable" v-if="!column.hide">
-          <template slot-scope="scope">
-            <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
-            <span v-else-if="!column.overHidden" v-html="detail(scope.row,column)"></span>
-            <el-popover v-else trigger="hover" placement="top">
-              <p>{{column.label}}: {{ scope.row[column.prop]}}</p>
-              <div slot="reference" class="name-wrapper">
-                <span v-html="detail(scope.row,column)" class="crud--overflow"></span>
-              </div>
-            </el-popover>
-          </template>
+      <!-- 选择框 -->
+      <template v-if="tableOption.selection">
+        <el-table-column type="selection" width="50" fixed="left" align="center">
         </el-table-column>
       </template>
-      <el-table-column label="操作" :align="tableOption.menuAlign" :header-align="tableOption.menuHeaderAlign" :width="tableOption.menuWidth?tableOption.menuWidth:240" v-if="tableOption.menu==undefined?true:tableOption.menu">
+
+      <!-- 序号 -->
+      <template v-if="tableOption.index">
+        <el-table-column type="index" width="50" fixed="left" align="center">
+        </el-table-column>
+      </template>
+      <!-- 循环列 -->
+      <el-table-column v-for="(column,index) in tableOption.column" :prop="column.prop" :key="column.prop" v-if="!column.hide" :show-overflow-tooltip="column.overHidden" :formatter="column.formatter" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,tableOption.align)" :header-align="vaildData(column.headerAlign,tableOption.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
         <template slot-scope="scope">
-          <template v-if="tableOption.menu!=undefined?tableOption.menu:true">
-            <el-button type="primary" icon="el-icon-edit" size="small" @click="rowEdit(scope.row,scope.$index)" v-if="tableOption.editBtn==undefined?true:tableOption.editBtn">编 辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" size="small" @click="rowDel(scope.row,scope.$index)" v-if="tableOption.delBtn==undefined?true:tableOption.delBtn">删 除</el-button>
+          <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
+          <template v-else>
+            <span v-html="detail(scope.row,column)" v-if="column.type"></span>
+            <span v-else>{{scope.row[column.prop]}}</span>
+          </template>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" v-if="vaildData(tableOption.menu,true)" label="操作" :align="tableOption.menuAlign" :header-align="tableOption.menuHeaderAlign" :width="vaildData(tableOption.menuWidth,240)">
+        <template slot-scope="scope">
+          <template v-if="vaildData(tableOption.menu,true)">
+            <el-button type="primary" icon="el-icon-edit" size="small" @click="rowEdit(scope.row,scope.$index)" v-if="vaildData(tableOption.editBtn,true)">编 辑</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="rowDel(scope.row,scope.$index)" v-if="vaildData(tableOption.delBtn,true)">删 除</el-button>
           </template>
           <slot :row="scope.row" name="menu" :index="scope.$index"></slot>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="tableOption.page!=undefined?tableOption.page:true" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <!-- 分页 -->
+    <el-pagination v-if="vaildData(tableOption.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <!-- 表单 -->
     <el-dialog :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
         <el-row :gutter="20" :span="24">
           <template v-for="(column,index) in tableOption.column">
-            <el-col :span="column.span||12" v-if="!column.visdiplay">
+            <el-col :span="column.span || 12" v-if="boxType==0?vaildData(column.addVisdiplay,true):vaildData(column.editVisdiplay,true)">
               <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?(column.addDisabled!=undefined?column.addDisabled:column.disabled):column.disabled"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -69,6 +67,7 @@
 </template>
 <script>
 import crud from "avue/mixins/crud.js";
+import { validatenull } from "avue/utils/validate.js";
 export default {
   name: "AvueCrud",
   mixins: [crud()],
@@ -104,6 +103,7 @@ export default {
       deep: true
     }
   },
+  computed: {},
   mounted() {},
   props: {
     value: {
@@ -145,6 +145,12 @@ export default {
     }
   },
   methods: {
+    vaildData(val, dafult) {
+      if (typeof val == "boolean") {
+        return val;
+      }
+      return !validatenull(val) ? val : dafult;
+    },
     rulesInit() {
       this.tableFormRules = {};
       this.tableOption.column.forEach(ele => {
@@ -209,29 +215,15 @@ export default {
     //处理数据
     detail(row, column) {
       let result = "";
-      if (column.dataDetail) {
-        if (column.type) {
-          result = this.findByvalue(
-            typeof column.dicData == "string"
-              ? this.DIC[column.dicData]
-              : column.dicData,
-            row[column.prop]
-          );
-        } else {
-          result = row[column.prop];
-        }
-        result = column.dataDetail(row);
+      if (column.type) {
+        result = this.findByvalue(
+          typeof column.dicData == "string"
+            ? this.DIC[column.dicData]
+            : column.dicData,
+          row[column.prop]
+        );
       } else {
-        if (column.type) {
-          result = this.findByvalue(
-            typeof column.dicData == "string"
-              ? this.DIC[column.dicData]
-              : column.dicData,
-            row[column.prop]
-          );
-        } else {
-          result = row[column.prop];
-        }
+        result = row[column.prop];
       }
       return result;
     },
@@ -298,7 +290,8 @@ export default {
 
 <style lang="scss" scoped>
 .crud-container {
-  // padding: 8px 10px;
+  margin: 0 auto;
+  width: 99%;
 }
 .crud-pagination {
   margin-top: 15px;
