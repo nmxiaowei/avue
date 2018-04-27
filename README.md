@@ -54,8 +54,12 @@ import Avue form 'avue-cli/packages/index.js';
 `13.支持路由改变单例页面title`<br /><br />
 `14.crud组件快速生成器`<br /><br />
 
-
 #### 页面展示
+**主题色**
+<p align="center">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-theme.png">
+</p>
+
 **登录**
 <p align="center">
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-login.png">

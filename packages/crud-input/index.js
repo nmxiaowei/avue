@@ -1,5 +1,5 @@
 
-import CrudInput from 'avue/crud/src/crud-input';
+import CrudInput from '../crud/src/crud-input';
 
 /* istanbul ignore next */
 CrudInput.install = function (Vue) {

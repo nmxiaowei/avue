@@ -66,8 +66,8 @@
   </div>
 </template>
 <script>
-import crud from "avue/mixins/crud.js";
-import { validatenull } from "avue/utils/validate.js";
+import crud from "../../mixins/crud.js";
+import { validatenull } from "../../utils/validate.js";
 export default {
   name: "AvueCrud",
   mixins: [crud()],

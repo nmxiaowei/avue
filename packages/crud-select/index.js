@@ -1,5 +1,5 @@
 
-import CrudSelect from 'avue/crud/src/crud-select';
+import CrudSelect from '../crud/src/crud-select';
 
 /* istanbul ignore next */
 CrudSelect.install = function (Vue) {

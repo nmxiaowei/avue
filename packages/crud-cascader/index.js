@@ -1,5 +1,5 @@
 
-import CrudCascader from 'avue/crud/src/crud-cascader';
+import CrudCascader from '../crud/src/crud-cascader';
 
 /* istanbul ignore next */
 CrudCascader.install = function (Vue) {

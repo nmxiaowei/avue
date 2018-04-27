@@ -1,22 +1,19 @@
 <template>
-	<div class="pull-chheight wel-contailer">
-      <img :src="BG" alt="" class="banner-img" />
-			<div class="banner-text">
-				<h2>Avue 通用管理系统快速开发框架</h2>
-				<span :class="['actor',{typeing:isText}]">{{text}}</span>
-			</div>
-	</div>
+  <div class="pull-chheight wel-contailer">
+    <div class="banner-text">
+      <h2>Avue 通用管理系统快速开发框架</h2>
+      <span :class="['actor',{typeing:isText}]">{{text}}</span>
+    </div>
+  </div>
 </template>
 
 <script>
 import DATA from "@/const/wel";
-import BG from "@/assets/img/bg/bg4.jpg";
 export default {
   name: "wel",
   data() {
     return {
       DATA: DATA,
-      BG:BG,
       text: "",
       actor: "",
       count: 0,
@@ -83,7 +80,7 @@ export default {
 </script>
 
 <style scoped="scoped" lang="scss">
-.wel-contailer{
+.wel-contailer {
   position: relative;
 }
 .banner-text {
@@ -93,9 +90,9 @@ export default {
   text-align: center;
   color: #333;
 }
-.banner-img{
+.banner-img {
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;

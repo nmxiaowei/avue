@@ -1,13 +1,13 @@
-import { findByvalue, getComponent, setDic, setPx } from "avue/utils/util.js";
-import { validatenull } from 'avue/utils/validate.js'
-import crudInput from "avue/crud/src/crud-input";
-import crudSelect from "avue/crud/src/crud-select";
-import crudRadio from "avue/crud/src/crud-radio";
-import crudCheckbox from "avue/crud/src/crud-checkbox";
-import crudCascader from "avue/crud/src/crud-cascader";
-import crudDate from "avue/crud/src/crud-date";
-import crudInputNumber from 'avue/crud/src/crud-input-number'
-import { DIC } from 'avue/const/dic'
+import { findByvalue, getComponent, setDic, setPx } from "../utils/util.js";
+import { validatenull } from '../utils/validate.js'
+import crudInput from "../crud/src/crud-input";
+import crudSelect from "../crud/src/crud-select";
+import crudRadio from "../crud/src/crud-radio";
+import crudCheckbox from "../crud/src/crud-checkbox";
+import crudCascader from "../crud/src/crud-cascader";
+import crudDate from "../crud/src/crud-date";
+import crudInputNumber from '../crud/src/crud-input-number'
+import { DIC } from '../const/dic'
 export default function () {
     return {
         props: {

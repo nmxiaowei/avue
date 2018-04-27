@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import crud from "avue/mixins/crud";
+import crud from "../../mixins/crud";
 export default {
   name: "AvueForm",
   mixins: [crud()],
