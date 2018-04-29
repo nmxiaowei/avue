@@ -63,10 +63,10 @@ export default {
             originalCluster,
             themeCluster
           );
-          let styleTag = document.getElementById(index);
+          let styleTag = document.getElementById(i);
           if (!styleTag) {
             styleTag = document.createElement("style");
-            styleTag.id = index;
+            styleTag.id = i;
             styleTag.innerText = newStyle;
             head.appendChild(styleTag);
           }
