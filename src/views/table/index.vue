@@ -269,7 +269,7 @@ export default {
      *
      **/
     handleSave(row, done) {
-      this.tableData.push(row);
+      this.tableData.push(Object.assign({}, row));
       this.$message({
         showClose: true,
         message: "添加成功",
@@ -342,7 +342,7 @@ export default {
      *
      **/
     handleUpdate(row, index, done) {
-      this.tableData.splice(index, 1, row);
+      this.tableData.splice(index, 1, Object.assign({}, row));
       this.$message({
         showClose: true,
         message: "修改成功",

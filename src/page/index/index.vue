@@ -7,10 +7,12 @@
           <top class="top"></top>
           <tags></tags>
         </div>
-        <keep-alive>
-          <router-view v-if="$route.meta.keepAlive" class="main"></router-view>
-        </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive" class="main"></router-view>
+        <div class="main">
+          <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
+          <router-view v-if="!$route.meta.keepAlive"></router-view>
+        </div>
       </div>
     </div>
   </div>
@@ -42,9 +44,8 @@ export default {
 <style lang="scss" scoped>
 .index {
   display: flex;
-  padding: 0 0 20px 0;
   position: relative;
-  min-height: 100%;
+  height: 100%;
   background: #fff;
   overflow: hidden;
   .left {
@@ -52,12 +53,12 @@ export default {
     overflow-y: auto;
   }
   .right {
-    padding-top: 109px;
+    padding-top: 107px;
     position: relative;
     flex: 1;
-    box-sizing: border-box;
   }
   .main {
+    height: 100%;
     overflow-y: scroll;
   }
   .nav {
