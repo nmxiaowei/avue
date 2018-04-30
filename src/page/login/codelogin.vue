@@ -1,17 +1,22 @@
 <template>
-   <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0" >
-        <el-form-item prop="phone">
-        <el-input @keyup.enter.native="handleLogin" v-model="loginForm.phone" auto-complete="off" placeholder="请输入手机号码"></el-input>
-        </el-form-item>
-        <el-form-item prop="code">
-        <el-input @keyup.enter.native="handleLogin"  v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码">
-          <template slot="append"><span  @click="handleSend" class="msg-text" :class="[{display:msgKey}]">{{msgText}}</span></template>
-        </el-input>
-        </el-form-item>
-        <el-form-item>
-        <el-button type="primary" @click.native.prevent="handleLogin"  class="login-submit">登录</el-button>
-        </el-form-item>
-    </el-form>
+  <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+    <el-form-item prop="phone">
+      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.phone" auto-complete="off" placeholder="请输入手机号码">
+        <i slot="prefix" class="icon-shouji"></i>
+      </el-input>
+    </el-form-item>
+    <el-form-item prop="code">
+      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码">
+        <i slot="prefix" class="icon-yanzhengma" style="margin-top:6px;"></i>
+        <template slot="append">
+          <span @click="handleSend" class="msg-text" :class="[{display:msgKey}]">{{msgText}}</span>
+        </template>
+      </el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button size="small" type="primary" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
