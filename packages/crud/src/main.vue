@@ -251,7 +251,7 @@ export default {
     rowSave() {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
-          this.$emit("row-save", this.tableForm, this.hide);
+          this.$emit("row-save", Object.assign({}, this.tableForm), this.hide);
         }
       });
     },
@@ -260,7 +260,7 @@ export default {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
           const index = this.tableIndex;
-          this.$emit("row-update", this.tableForm, index, this.hide);
+          this.$emit("row-update", Object.assign({}, this.tableForm), index, this.hide);
         }
       });
     },
