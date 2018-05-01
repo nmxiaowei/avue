@@ -1,6 +1,6 @@
 <template>
   <div class="crud-container pull-auto">
-    <el-table :data="tableData" :stripe="tableOption.stripe" :show-header="tableOption.showHeader" :default-sort="tableOption.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="tableOption.maxHeight" :height="tableOption.height" ref="table" :width="setPx(tableOption.width,'100%')" :border="tableOption.border" v-loading="tableLoading" @selection-change="selectionChange">
+    <el-table :data="tableData" :stripe="tableOption.stripe" :show-header="tableOption.showHeader" :default-sort="tableOption.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="tableOption.maxHeight" :height="tableOption.height" ref="table" :width="setPx(tableOption.width,'100%')" :border="tableOption.border" v-loading="tableLoading" @selection-change="selectionChange" @sort-change="sortChange">
       <!-- 下拉弹出框  -->
       <template v-if="tableOption.expand">
         <el-table-column type="expand" width="50" fixed="left" align="center">
@@ -205,6 +205,10 @@ export default {
     selectionChange(val) {
       this.tableSelect = val;
       this.$emit("selection-change", val);
+    },
+    //排序回调
+    sortChange(val) {
+      this.$emit("sort-change", val);
     },
     //行双击
     rowDblclick(row, event) {
