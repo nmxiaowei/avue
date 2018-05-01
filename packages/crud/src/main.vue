@@ -41,7 +41,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <el-pagination v-if="vaildData(tableOption.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <el-pagination v-if="vaildData(tableOption.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @size-change="sizeChange" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
     <!-- 表单 -->
     <el-dialog :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
@@ -183,11 +183,14 @@ export default {
       });
       this.tableForm = Object.assign({}, from);
     },
-    //页码回掉
+    // 页大小回调
+    sizeChange(val) {
+      this.$emit("size-change", val);
+    },
+    // 页码回调
     currentChange(val) {
       this.$emit("current-change", val);
     },
-
     // 选中实例
     toggleSelection(rows) {
       if (rows) {
