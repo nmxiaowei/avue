@@ -1,4 +1,4 @@
-### avue1.2.1发布
+### avue1.3.2发布
 欢迎加入QQ交流群，互相学习   
 前端avue交流群：606410437  
 后台微服务群：23754102   
@@ -23,7 +23,7 @@
 1.html引入
 ```
 axios、vue、element-ui相关依赖也要引入
-[avue-cdn:](https://gitee.com/smallweigit/avue/raw/master/lib/avue.js)
+avue-cdn:https://gitee.com/smallweigit/avue/raw/master/lib/avue.js
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/element-ui/2.3.4/index.js"></script>
@@ -33,7 +33,7 @@ axios、vue、element-ui相关依赖也要引入
 ```
 npm install avue-cli
 
-import Avue form 'avue-cli/packages/index.js';
+import Avue from 'avue-cli/packages/index.js';
 
 ```
 

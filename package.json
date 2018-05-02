@@ -1,6 +1,6 @@
 {
   "name": "avue-cli",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "main": "lib/avue.js",
   "description": "A Vue.js project",
   "author": "smallwei <1634566606@qq.com>",
