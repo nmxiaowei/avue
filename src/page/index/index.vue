@@ -8,10 +8,12 @@
           <tags></tags>
         </div>
         <div class="main">
-          <keep-alive>
-            <router-view v-if="$route.meta.keepAlive"></router-view>
-          </keep-alive>
-          <router-view v-if="!$route.meta.keepAlive"></router-view>
+          <div class="router">
+            <keep-alive>
+              <router-view v-if="$route.meta.keepAlive"></router-view>
+            </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
+          </div>
         </div>
       </div>
     </div>
@@ -59,7 +61,17 @@ export default {
   }
   .main {
     height: 100%;
+    background: #f1f4f5;
+    padding: 15px;
+    box-sizing: border-box;
     overflow-y: scroll;
+    .router {
+      padding: 15px 8px;
+      background: #fff;
+      height: auto;
+      overflow: hidden;
+      border-radius: 5px;
+    }
   }
   .nav {
     position: absolute;
