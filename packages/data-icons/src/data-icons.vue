@@ -1,5 +1,5 @@
 <template>
-  <div class="pull-auto easyData-contailer">
+  <div class="data-icons">
     <el-row :span="24">
       <template v-for="item in data">
         <el-col :span="span">
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "easyData",
+  name: "AvueDataIcons",
   data() {
     return {
       span: this.option.span || 6,
@@ -39,39 +39,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.easyData-contailer {
-}
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 80px;
-  margin: 0 auto;
-}
-.item-icon {
-  margin-top: 3px;
-  margin-right: 8px;
-  & > i {
-    font-size: 46px !important;
-  }
-}
-.item-info {
-  line-height: 25px;
-  & > span {
-    color: #999;
-    font-size: 12px;
-  }
-}
-.item--easy {
-  flex-direction: column;
-  & > .item-icon {
-    margin: 0;
-  }
-  & > .item-info {
-    margin-top: -15px;
-    & > span {
-      font-size: 14px;
-    }
-  }
-}
+
 </style>

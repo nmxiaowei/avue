@@ -7,6 +7,9 @@ import crudSelect from './crud-select/index.js'
 import crudCascader from './crud-cascader/index.js'
 import crudNumberInput from './crud-input-number/index.js'
 import DataDisplay from './data-display/index.js'
+import DataCard from './data-card/index.js'
+import DataTabs from './data-tabs/index.js'
+import DataIcons from './data-icons/index.js'
 import Form from './form/index.js'
 import './theme-chalk/src/common.scss'
 const components = [
@@ -18,7 +21,10 @@ const components = [
     crudRadio,
     crudSelect,
     crudCascader,
-    DataDisplay
+    DataDisplay,
+    DataCard,
+    DataIcons,
+    DataTabs,
 ]
 const install = function (Vue, axios, opts = {}) {
     //注入axios;
@@ -45,5 +51,8 @@ export default {
     crudRadio,
     crudSelect,
     crudCascader,
-    DataDisplay
+    DataDisplay,
+    DataCard,
+    DataIcons,
+    DataTabs
 }

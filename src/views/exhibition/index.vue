@@ -7,33 +7,27 @@
     </div>
     <div class="pull-auto" style="margin-top:20px;">
       <h4>选项卡展示</h4>
-      <boxData :option="easyDataOption"></boxData>
+      <avue-data-tabs :option="easyDataOption"></avue-data-tabs>
     </div>
     <div class="pull-auto" style="margin-top:20px;">
       <h4>卡片的展示</h4>
-      <cardData :option="easyDataOption0"></cardData>
+      <avue-data-card :option="easyDataOption0"></avue-data-card>
     </div>
     <div class="pull-auto" style="margin-top:20px;">
       <h4>带数字的展示</h4>
-      <easyData :option="easyDataOption1"></easyData>
+      <avue-data-icons :option="easyDataOption1"></avue-data-icons>
     </div>
     <div class="pull-auto" style="margin-top:20px;">
       <h4>简易展示</h4>
-      <easyData :option="easyDataOption2"></easyData>
+      <avue-data-icons :option="easyDataOption2"></avue-data-icons>
     </div>
   </div>
 </template>
 
 <script>
-import boxData from "@/components/datashow/boxData";
-import easyData from "@/components/datashow/easyData";
-import cardData from "@/components/datashow/cardData";
 export default {
   name: "exhibition",
   components: {
-    boxData,
-    easyData,
-    cardData
   },
   data() {
     return {
