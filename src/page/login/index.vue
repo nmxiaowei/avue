@@ -16,7 +16,7 @@
         <h4 class="login-title">登录Avue
           <top-theme></top-theme>
         </h4>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName">
           <el-tab-pane label="用户密码" name="user">
             <userLogin></userLogin>
           </el-tab-pane>

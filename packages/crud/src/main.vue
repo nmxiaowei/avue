@@ -33,15 +33,15 @@
       <el-table-column fixed="right" v-if="vaildData(tableOption.menu,true)" label="操作" :align="tableOption.menuAlign" :header-align="tableOption.menuHeaderAlign" :width="vaildData(tableOption.menuWidth,240)">
         <template slot-scope="scope">
           <template v-if="vaildData(tableOption.menu,true)">
-            <el-button type="primary" icon="el-icon-edit" size="small" @click="rowEdit(scope.row,scope.$index)" v-if="vaildData(tableOption.editBtn,true)">编 辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" size="small" @click="rowDel(scope.row,scope.$index)" v-if="vaildData(tableOption.delBtn,true)">删 除</el-button>
+            <el-button type="primary" icon="el-icon-edit" size="small" @click.stop.safe="rowEdit(scope.row,scope.$index)" v-if="vaildData(tableOption.editBtn,true)">编 辑</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="small" @click.stop.safe="rowDel(scope.row,scope.$index)" v-if="vaildData(tableOption.delBtn,true)">删 除</el-button>
           </template>
           <slot :row="scope.row" name="menu" :index="scope.$index"></slot>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <el-pagination v-if="vaildData(tableOption.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="page.background?page.background:true" :page-size="page.pageSize" @size-change="sizeChange" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <el-pagination v-if="vaildData(tableOption.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="vaildData(tableOption.pageBackground,true)" :page-size="page.pageSize" @size-change="sizeChange" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
     <!-- 表单 -->
     <el-dialog :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="boxhandleClose">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
@@ -239,7 +239,7 @@ export default {
       //form表单初始化
       this.formInit();
       this.boxType = 0;
-      if (typeof this.beforeClose === "function") this.beforeOpen(this.show);
+      if (typeof this.beforeOpen === "function") this.beforeOpen(this.show);
       else this.show();
     },
     // 编辑
@@ -247,7 +247,7 @@ export default {
       this.tableForm = Object.assign({}, row);
       this.tableIndex = index;
       this.boxType = 1;
-      if (typeof this.beforeClose === "function") this.beforeOpen(this.show);
+      if (typeof this.beforeOpen === "function") this.beforeOpen(this.show);
       else this.show();
     },
     // 删除
@@ -267,7 +267,12 @@ export default {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
           const index = this.tableIndex;
-          this.$emit("row-update", Object.assign({}, this.tableForm), index, this.hide);
+          this.$emit(
+            "row-update",
+            Object.assign({}, this.tableForm),
+            index,
+            this.hide
+          );
         }
       });
     },
@@ -275,6 +280,7 @@ export default {
     show(cancel) {
       if (cancel !== true) {
         this.boxVisible = true;
+        this.$nextTick(() => {});
         this.$refs["tableForm"].resetFields();
       }
     },

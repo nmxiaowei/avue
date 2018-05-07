@@ -14,7 +14,7 @@
         </router-link>
       </el-button>
     </div>
-    <avue-crud :table-option="tableOption" v-model="user" :table-data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblClick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
+    <avue-crud :table-option="tableOption" v-model="user" :table-data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
       <template slot-scope="props" slot="expand">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="姓名">
@@ -42,8 +42,8 @@
         </avue-crud-input>
       </template>
       <template slot-scope="scope" slot="menu">
-        <el-button type="primary" icon="el-icon-check" size="small" plain @click="handleEdit(scope.row,scope.index)">编辑</el-button>
-        <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.index)">权限</el-button>
+        <el-button type="primary" icon="el-icon-check" size="small" plain @click.stop.safe="handleEdit(scope.row,scope.index)">编辑</el-button>
+        <el-button icon="el-icon-check" size="small" @click.stop.safe="handleGrade(scope.row,scope.index)">权限</el-button>
       </template>
     </avue-crud>
     <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
@@ -99,7 +99,7 @@ export default {
   props: [],
   methods: {
     tip() {
-      this.$message({
+      this.$notify({
         message: "点击事件"
       });
     },
@@ -111,13 +111,13 @@ export default {
         .then(data => {
           this.tableOption = data;
           this.formJson = JSON.stringify(data, null, 2);
-          this.$message({
+          this.$notify({
             message: "数据加载成功",
             type: "success"
           });
         })
         .catch(err => {
-          this.$message({
+          this.$notify({
             center: true,
             dangerouslyUseHTMLString: true,
             message: `JSON格式错误<br \>\n${err}`,
@@ -256,7 +256,7 @@ export default {
      **/
     handleSelectionChange(val) {
       this.tableRow = val[0];
-      this.$message({
+      this.$notify({
         showClose: true,
         message: JSON.stringify(val),
         type: "success"
@@ -270,7 +270,7 @@ export default {
      **/
     handleSave(row, done) {
       this.tableData.push(Object.assign({}, row));
-      this.$message({
+      this.$notify({
         showClose: true,
         message: "添加成功",
         type: "success"
@@ -284,7 +284,7 @@ export default {
      *
      **/
     handleRowDBLClick(row, event) {
-      this.$message({
+      this.$notify({
         showClose: true,
         message: "双击",
         type: "success"
@@ -299,14 +299,14 @@ export default {
      *
      **/
     handleRowClick(row, event, column) {
-      this.$message({
+      this.$notify({
         showClose: true,
         message: "单机",
         type: "success"
       });
     },
     handleRowDel() {
-      this.$message({
+      this.$notify({
         showClose: true,
         message: this.tableRow,
         type: "success"
@@ -326,7 +326,7 @@ export default {
       })
         .then(() => {
           this.tableData.splice(index, 1);
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "删除成功",
             type: "success"
@@ -343,7 +343,7 @@ export default {
      **/
     handleUpdate(row, index, done) {
       this.tableData.splice(index, 1, Object.assign({}, row));
-      this.$message({
+      this.$notify({
         showClose: true,
         message: "修改成功",
         type: "success"
@@ -356,7 +356,7 @@ export default {
      *
      **/
     boxhandleClose(done) {
-      this.$message({
+      this.$notify({
         showClose: true,
         message: "表单关闭前处理事件",
         type: "success"
@@ -364,7 +364,7 @@ export default {
       done();
     },
     boxhandleOpen(show) {
-      this.$message({
+      this.$notify({
         showClose: true,
         message: "表单打开前处理事件",
         type: "success"

@@ -7,9 +7,14 @@ import './errorLog' // 错误日志
 import router from './router/router';
 import store from './store';
 import ELEMENT from 'element-ui';
-import { loadStyle } from './util/util'
+import {
+  loadStyle
+} from './util/util'
 import * as urls from '@/config/env';
-import { iconfontUrl, iconfontVersion } from '@/config/env';
+import {
+  iconfontUrl,
+  iconfontVersion
+} from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
 import AVUE from '../packages/index.js';
@@ -37,5 +42,9 @@ export function createApp() {
     store,
     render: h => h(App)
   })
-  return { app, router, store }
+  return {
+    app,
+    router,
+    store
+  }
 }
