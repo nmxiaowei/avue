@@ -5,8 +5,6 @@ import BaseRouter from './_router'
 const _import = require('./_import');
 Vue.use(VueRouter);
 export default new VueRouter({
-	// mode: 'history',
-	strict: process.env.NODE_ENV !== 'production',
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition

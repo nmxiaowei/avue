@@ -20,18 +20,16 @@ export default {
     return {
       span: this.option.span || 8,
       data: this.option.data,
-      color:this.option.color || 'rgb(63, 161, 255)'
-    };
+      color: this.option.color || 'rgb(63, 161, 255)'
+    }
   },
   props: {
     option: {
       type: Object,
-      default: () => {
-        return {};
-      },
-    },
+      default: () => {}
+    }
   },
   created() {},
-  methods() {},
-};
+  methods: {}
+}
 </script>

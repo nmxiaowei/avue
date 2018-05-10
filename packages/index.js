@@ -42,7 +42,7 @@ if (typeof window !== 'undefined' && window.Vue && window.axios) {
     install(window.Vue, window.axios);
 }
 export default {
-    version: '1.3.4',
+    version: '1.3.5',
     Crud,
     Form,
     CrudCheckbox,

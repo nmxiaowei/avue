@@ -18,16 +18,5 @@
   "plugins": [
     "transform-runtime",
     "transform-vue-jsx"
-  ],
-  "env": {
-    "test": {
-      "presets": [
-        "env",
-        "stage-2"
-      ],
-      "plugins": [
-        "istanbul"
-      ]
-    }
-  }
+  ]
 }

@@ -23,20 +23,20 @@
 
 <script>
 export default {
-  name: "AvueDataTabs",
+  name: 'AvueDataTabs',
   data() {
     return {
       span: this.option.span || 6,
       data: this.option.data || []
-    };
+    }
   },
   props: {
     option: {
       type: Object,
-      default: {}
+      default: () => {}
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

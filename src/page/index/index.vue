@@ -21,26 +21,26 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import tags from "./tags";
-import top from "./top/";
-import sidebar from "./sidebar/";
+import { mapGetters } from 'vuex'
+import tags from './tags'
+import top from './top/'
+import sidebar from './sidebar/'
 export default {
   components: {
     top,
     tags,
     sidebar
   },
-  name: "index",
+  name: 'index',
   data() {
-    return {};
+    return {}
   },
   created() {},
   mounted() {},
-  computed: mapGetters(["isLock"]),
+  computed: mapGetters(['isLock']),
   props: [],
   methods: {}
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -68,9 +68,11 @@ export default {
     .router {
       padding: 15px 8px;
       background: #fff;
+      min-height: 100%;
       height: auto;
       overflow: hidden;
       border-radius: 5px;
+      box-sizing: border-box;
     }
   }
   .nav {

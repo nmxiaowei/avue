@@ -20,22 +20,22 @@
 
 <script>
 export default {
-  name: "AvueDataIcons",
+  name: 'AvueDataIcons',
   data() {
     return {
       span: this.option.span || 6,
       data: this.option.data,
-      color: this.option.color || "rgb(63, 161, 255)",
+      color: this.option.color || 'rgb(63, 161, 255)',
       discount: this.option.discount || false
-    };
+    }
   },
   props: {
     option: {
       type: Object,
-      default: {}
+      default: () => {}
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
