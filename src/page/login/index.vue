@@ -1,19 +1,16 @@
 <template>
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
     <div class="login-info text-white animated fadeInLeft">
-      <h2 class="login-info-title">Avue 通用管理系统快速开发框架</h2>
+      <h2 class="login-info-title">{{website.info.title}}</h2>
       <ul class="login-info-list">
-        <li class="login-info-item">
-          <i class="el-icon-check"></i> Avue 是一个基于vue+vuex+vue-router快速后台管理模板，采用token交互验证方式。</li>
-        <li class="login-info-item">
-          <i class="el-icon-check"></i> 您可以 Avue 为基础，不只限制于vue的页面，你可以嵌入任意第三方网站，基于iframe框架。</li>
-        <li class="login-info-item">
-          <i class="el-icon-check"></i> Avue 构建简单上手快，最大程度上帮助企业节省时间成本和费用开支。 </li>
+        <li class="login-info-item" v-for="item in website.info.list">
+          <i class="el-icon-check"></i>&nbsp;{{item}}
+        </li>
       </ul>
     </div>
     <div class="login-border  animated fadeInRight">
       <div class="login-main">
-        <h4 class="login-title">登录Avue
+        <h4 class="login-title">登录{{website.title}}
           <top-theme></top-theme>
         </h4>
         <el-tabs v-model="activeName">
@@ -38,6 +35,7 @@ import codeLogin from "./codelogin";
 import thirdLogin from "./thirdlogin";
 import topTheme from "../index/top/top-theme";
 import theme from "@/mixins/theme";
+import { mapGetters } from "vuex";
 export default {
   name: "login",
   mixins: [theme()],
@@ -54,7 +52,9 @@ export default {
   },
   created() {},
   mounted() {},
-  computed: {},
+  computed: {
+    ...mapGetters(["website"])
+  },
   props: [],
   methods: {}
 };
@@ -92,7 +92,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 30px 40px 25px 40px;
+  padding: 30px 50px 25px 50px;
   background-color: #fff;
   border-radius: 6px;
   box-shadow: 1px 1px 2px #eee;

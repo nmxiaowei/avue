@@ -7,7 +7,6 @@ import { vaildUtil } from '@/util/yun';
 import { setTitle } from '@/util/util';
 import { validatenull } from '@/util/validate';
 import { asyncRouterMap } from '@/router/router'
-import whiteList from '@/const/whiteList'
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
@@ -19,7 +18,7 @@ router.beforeEach((to, from, next) => {
     NProgress.start() // start progress bar
     const value = to.query.src ? to.query.src : to.path;
     const label = to.query.name ? to.query.name : to.name;
-    if (whiteList.indexOf(value) == -1) {
+    if (store.getters.website.whiteList.indexOf(value) == -1) {
         store.commit('ADD_TAG', {
             label: label,
             value: value,
@@ -51,7 +50,7 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         /* has no token*/
-        if (whiteList.indexOf(to.path) !== -1) {
+        if (store.getters.website.whiteList.indexOf(to.path) !== -1) {
             next()
         } else {
             next('/login')

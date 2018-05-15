@@ -12,6 +12,7 @@ import {
 import {
   baseUrl
 } from '@/config/env';
+import website from '@/const/website'
 const common = {
 
   state: {
@@ -26,6 +27,7 @@ const common = {
     lockPasswd: getStore({
       name: 'lockPasswd'
     }) || '',
+    website:website,
   },
   actions: {
     //获取字典公用类

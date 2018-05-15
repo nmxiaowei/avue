@@ -9,10 +9,10 @@ export default {
   menuAlign: 'center',
   editBtn: false,
   align: 'center',
-  defaultSort: {
-    prop: 'name',
-    order: 'descending'
-  },
+  // defaultSort: {
+  //   prop: 'name',
+  //   order: 'descending'
+  // },
   dic: ['GRADE', 'SEX', 'TYPE'],
   column: [{
       label: "用户名",

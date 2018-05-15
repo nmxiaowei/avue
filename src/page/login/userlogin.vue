@@ -28,6 +28,7 @@
       </el-row>
 
     </el-form-item>
+    <el-checkbox v-model="checked">记住账号</el-checkbox>
     <el-form-item>
       <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
     </el-form-item>
@@ -64,6 +65,7 @@ export default {
         code: "",
         redomStr: ""
       },
+      checked: false,
       code: {
         src: "",
         value: "",
@@ -122,5 +124,4 @@ export default {
 </script>
 
 <style>
-
 </style>
