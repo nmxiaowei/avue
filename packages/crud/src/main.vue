@@ -68,6 +68,7 @@
 <script>
 import crud from '../../mixins/crud.js'
 import { validatenull } from '../../utils/validate.js'
+import moment from 'moment'
 export default {
   name: 'AvueCrud',
   mixins: [crud()],
@@ -221,15 +222,22 @@ export default {
     },
     //处理数据
     detail(row, column) {
+      console.log(column.type);
       let result = ''
-      if (column.type) {
+      if (column.type == 'date') {
+        if(column.format){          
+          result = moment( row[column.prop]).format(column.format);
+        }else{
+          result = row[column.prop]
+        }
+      }else if (column.type) {
         result = this.findByvalue(
           typeof column.dicData == 'string'
             ? this.DIC[column.dicData]
             : column.dicData,
           row[column.prop]
         )
-      } else {
+      }  else {
         result = row[column.prop]
       }
       return result

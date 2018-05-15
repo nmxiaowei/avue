@@ -20,6 +20,7 @@ export const userOption = {
             label: "创建时间",
             prop: "date",
             type: "date",
+            format: "YYYY-MM-DD HH:mm",
             visdiplay: true,
         },
         {
