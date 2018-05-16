@@ -21,7 +21,7 @@
         </el-table-column>
       </template>
       <!-- 循环列 -->
-      <el-table-column v-for="(column,index) in tableOption.column" :prop="column.prop" :key="column.prop" v-if="!column.hide" :show-overflow-tooltip="column.overHidden" :formatter="column.formatter" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,tableOption.align)" :header-align="vaildData(column.headerAlign,tableOption.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
+      <el-table-column v-for="(column,index) in tableOption.column" :prop="column.prop" :key="column.prop" v-if="!column.hide" :show-overflow-tooltip="column.overHidden" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,tableOption.align)" :header-align="vaildData(column.headerAlign,tableOption.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
         <template slot-scope="scope">
           <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
           <template v-else>
@@ -50,7 +50,7 @@
             <el-col :span="column.span || 12" v-if="boxType==0?vaildData(column.addVisdiplay,true):vaildData(column.editVisdiplay,true)">
               <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -66,11 +66,11 @@
   </div>
 </template>
 <script>
-import crud from '../../mixins/crud.js'
-import { validatenull } from '../../utils/validate.js'
-import moment from 'moment'
+import crud from "../../mixins/crud.js";
+import { validatenull } from "../../utils/validate.js";
+import moment from "moment";
 export default {
-  name: 'AvueCrud',
+  name: "AvueCrud",
   mixins: [crud()],
   components: {},
   data() {
@@ -82,24 +82,24 @@ export default {
       tableFormRules: {},
       tableIndex: -1,
       tableSelect: []
-    }
+    };
   },
   created() {
     //规则初始化
-    this.rulesInit()
+    this.rulesInit();
     //初始化字典
-    this.dicInit()
+    this.dicInit();
   },
   watch: {
     tableOption: {
       handler(n, o) {
-        this.rulesInit()
+        this.rulesInit();
       },
       deep: true
     },
     tableForm: {
       handler(n, o) {
-        this.formVal()
+        this.formVal();
       },
       deep: true
     }
@@ -110,7 +110,7 @@ export default {
     value: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       }
     },
     beforeClose: Function,
@@ -123,7 +123,7 @@ export default {
           currentPage: 0, //当前页数
           pageSize: 10, //每页显示多少条
           background: true //背景颜色
-        }
+        };
       }
     },
     tableLoading: {
@@ -134,180 +134,179 @@ export default {
       type: Array,
       required: true,
       default: () => {
-        return []
+        return [];
       }
     },
     tableOption: {
       type: Object,
       required: true,
       default: () => {
-        return []
+        return [];
       }
     }
   },
   methods: {
     vaildData(val, dafult) {
-      if (typeof val == 'boolean') {
-        return val
+      if (typeof val == "boolean") {
+        return val;
       }
-      return !validatenull(val) ? val : dafult
+      return !validatenull(val) ? val : dafult;
     },
     rulesInit() {
-      this.tableFormRules = {}
+      this.tableFormRules = {};
       this.tableOption.column.forEach(ele => {
-        if (ele.rules) this.tableFormRules[ele.prop] = ele.rules
-      })
+        if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
+      });
     },
     dicInit() {
       this.GetDic(this.tableOption.dic).then(data => {
-        this.DIC = data
-      })
+        this.DIC = data;
+      });
     },
     formVal() {
-      this.$emit('input', this.tableForm)
+      this.$emit("input", this.tableForm);
     },
     formInit() {
-      const list = this.tableOption.column
-      let from = {}
+      const list = this.tableOption.column;
+      let from = {};
       list.forEach(ele => {
         if (
-          ele.type == 'checkbox' ||
-          ele.type == 'radio' ||
-          ele.type == 'cascader'
+          ele.type == "checkbox" ||
+          ele.type == "radio" ||
+          ele.type == "cascader"
         ) {
-          from[ele.prop] = []
-        } else if (ele.type == 'number') {
-          from[ele.prop] = 0
+          from[ele.prop] = [];
+        } else if (ele.type == "number") {
+          from[ele.prop] = 0;
         } else {
-          from[ele.prop] = ''
+          from[ele.prop] = "";
         }
-      })
-      this.tableForm = Object.assign({}, from)
+      });
+      this.tableForm = Object.assign({}, from);
     },
     // 页大小回调
     sizeChange(val) {
-      this.$emit('size-change', val)
+      this.$emit("size-change", val);
     },
     // 页码回调
     currentChange(val) {
-      this.$emit('current-change', val)
+      this.$emit("current-change", val);
     },
     // 选中实例
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.table.toggleRowSelection(row)
-        })
+          this.$refs.table.toggleRowSelection(row);
+        });
       } else {
-        this.$refs.table.clearSelection()
+        this.$refs.table.clearSelection();
       }
     },
     //选择回调
     selectionChange(val) {
-      this.tableSelect = val
-      this.$emit('selection-change', val)
+      this.tableSelect = val;
+      this.$emit("selection-change", val);
     },
     //排序回调
     sortChange(val) {
-      this.$emit('sort-change', val)
+      this.$emit("sort-change", val);
     },
     //行双击
     rowDblclick(row, event) {
-      this.$emit('row-dblclick', row, event)
+      this.$emit("row-dblclick", row, event);
     },
 
     //行单机
     rowClick(row, event, column) {
-      this.$emit('row-click', row, event, column)
+      this.$emit("row-click", row, event, column);
     },
     //处理数据
     detail(row, column) {
-      console.log(column.type);
-      let result = ''
-      if (column.type == 'date') {
-        if(column.format){          
-          result = moment( row[column.prop]).format(column.format);
-        }else{
-          result = row[column.prop]
+      let result = "";
+      if (column.formatter && typeof column.formatter === "function") {
+        result = column.formatter(row);
+      } else {
+        result = row[column.prop];
+      }
+      if (column.type) {
+        if (column.type == "date" && column.format) {
+          result = moment(result).format(column.format);
         }
-      }else if (column.type) {
         result = this.findByvalue(
-          typeof column.dicData == 'string'
+          typeof column.dicData == "string"
             ? this.DIC[column.dicData]
             : column.dicData,
-          row[column.prop]
-        )
-      }  else {
-        result = row[column.prop]
+          result
+        );
       }
-      return result
+      return result;
     },
     // 新增
     rowAdd() {
-      this.formInit()
-      this.boxType = 0
-      this.show()
+      this.formInit();
+      this.boxType = 0;
+      this.show();
     },
     // 编辑
     rowEdit(row, index) {
-      this.tableForm = Object.assign({}, row)
-      this.tableIndex = index
-      this.boxType = 1
-      this.show()
+      this.tableForm = Object.assign({}, row);
+      this.tableIndex = index;
+      this.boxType = 1;
+      this.show();
     },
     // 删除
     rowDel(row, index) {
-      this.$emit('row-del', row, index)
+      this.$emit("row-del", row, index);
     },
     //保存
     rowSave() {
-      this.$refs['tableForm'].validate(valid => {
+      this.$refs["tableForm"].validate(valid => {
         if (valid) {
-          this.$emit('row-save', Object.assign({}, this.tableForm), this.hide)
+          this.$emit("row-save", Object.assign({}, this.tableForm), this.hide);
         }
-      })
+      });
     },
     //更新
     rowUpdate() {
-      this.$refs['tableForm'].validate(valid => {
+      this.$refs["tableForm"].validate(valid => {
         if (valid) {
-          const index = this.tableIndex
+          const index = this.tableIndex;
           this.$emit(
-            'row-update',
+            "row-update",
             Object.assign({}, this.tableForm),
             index,
             this.hide
-          )
+          );
         }
-      })
+      });
     },
     //显示表单
     show(cancel) {
       const callack = () => {
         if (cancel !== true) {
-          this.boxVisible = true
+          this.boxVisible = true;
         }
-      }
-      if (typeof this.beforeOpen === 'function') this.beforeOpen(callack)
-      else callack()
+      };
+      if (typeof this.beforeOpen === "function") this.beforeOpen(callack);
+      else callack();
     },
     //隐藏表单
     hide(cancel) {
       const callack = () => {
         if (cancel !== false) {
           //释放form表单
-          this.tableForm = {}
+          this.tableForm = {};
           this.$nextTick(() => {
-            this.$refs['tableForm'].resetFields()
-          })
-          this.boxVisible = false
+            this.$refs["tableForm"].resetFields();
+          });
+          this.boxVisible = false;
         }
-      }
-      if (typeof this.beforeClose === 'function') this.beforeClose(callack)
-      else callack()
+      };
+      if (typeof this.beforeClose === "function") this.beforeClose(callack);
+      else callack();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

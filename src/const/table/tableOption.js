@@ -13,7 +13,7 @@ export default {
   //   prop: 'name',
   //   order: 'descending'
   // },
-  dic: ['GRADE', 'SEX', 'TYPE'],
+  dic: ['VAILDATA', 'SEX', 'TYPE'],
   column: [{
       label: "用户名",
       prop: "username",
@@ -31,9 +31,6 @@ export default {
       prop: "name",
       sortable: true,
       addDisabled: false,
-      formatter: (row, column) => {
-        return row.name + '1';
-      },
       formsolt: true,
     },
     {
@@ -55,8 +52,11 @@ export default {
     {
       label: "权限",
       prop: "grade",
-      type: "checkbox",
-      dicData: 'GRADE',
+      type: "radio",
+      dicData: 'VAILDATA',
+      formatter: (row) => {
+        return row.grade
+      },
     },
     {
       label: "地址",

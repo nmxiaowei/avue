@@ -1,5 +1,5 @@
 <template>
-  <el-date-picker v-model="text" type="date" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
+  <el-date-picker v-model="text" type="date" :format="format" :value-format="valueFormat" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
 </template>
 
 <script>
@@ -12,6 +12,12 @@ export default {
   },
   props: {
     value: {
+      default: ""
+    },
+    valueFormat: {
+      default: ""
+    },
+    format: {
       default: ""
     },
     disabled: {
@@ -41,5 +47,4 @@ export default {
 </script>
 
 <style>
-
 </style>
