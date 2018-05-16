@@ -1,7 +1,7 @@
 /**
  * 判断是否为空
  */
-export function validatenull(val) {
+module.exports.validatenull = (val) => {
   if (typeof val == 'boolean') {
     return false;
   }

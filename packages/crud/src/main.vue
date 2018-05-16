@@ -181,6 +181,7 @@ export default {
         } else {
           from[ele.prop] = "";
         }
+        if(!validatenull(ele.valueDefault))  from[ele.prop] =ele.valueDefault;
       });
       this.tableForm = Object.assign({}, from);
     },

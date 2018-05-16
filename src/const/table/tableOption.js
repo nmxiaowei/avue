@@ -54,6 +54,7 @@ export default {
       prop: "grade",
       type: "radio",
       dicData: 'VAILDATA',
+      valueDefault: true,
       formatter: (row) => {
         return row.grade
       },

@@ -24,6 +24,7 @@
 
 <script>
 import crud from "../../mixins/crud";
+import { validatenull } from "../../utils/validate.js";
 export default {
   name: "AvueForm",
   mixins: [crud()],
@@ -106,6 +107,7 @@ export default {
         } else {
           form[ele.prop] = "";
         }
+        if(!validatenull(ele.valueDefault))  from[ele.prop] =ele.valueDefault;
       });
       this.form = Object.assign({}, form);
     },
