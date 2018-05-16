@@ -45,15 +45,7 @@ const release = async () => {
   } = await inquirer.prompt([{
     name: 'dic',
     message: `请输入字典集合(用,隔开)?`,
-    type: 'input',
-    validate: function (input) {
-      var done = this.async();
-      if (validate.validatenull(input)) {
-        done('字典集合不能为空');
-        return;
-      }
-      done(null, true);
-    }
+    type: 'input'
   }])
 
   const {
@@ -94,7 +86,7 @@ const release = async () => {
       ele.value = ele.value.replace(`{{${param}}}`, eval(param));
     })
     fs.createWriteStream(`${mkdirPath}/${ele.title}`);
-    fs.writeFile(`${mkdirPath}/${ele.title}`, ele.value, (err) => {});
+    fs.writeFileSync(`${mkdirPath}/${ele.title}`, ele.value);
   })
 
   console.log('模板生成完成');
