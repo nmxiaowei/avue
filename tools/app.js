@@ -83,7 +83,7 @@ const release = async () => {
   content.forEach(ele => {
     ele.value = fs.readFileSync(`${tempPath}/${ele.title}`, "utf-8");
     ele.list.forEach(param => {
-      ele.value = ele.value.replace(`{{${param}}}`, eval(param));
+      ele.value = ele.value.replace(new RegExp(`{{${param}}}`, "ig"), eval(param));
     })
     fs.createWriteStream(`${mkdirPath}/${ele.title}`);
     fs.writeFileSync(`${mkdirPath}/${ele.title}`, ele.value);

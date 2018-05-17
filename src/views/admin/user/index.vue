@@ -3,7 +3,7 @@
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
     </div>
-    <avue-crud :table-option="tableOption" :table-data="tableData" :table-loading="tableLoading" :page="page" ref="crud" width="290" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel">
+    <avue-crud :option="tableOption" :data="tableData" :table-loading="tableLoading" :page="page" ref="crud" width="290" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel">
       <template slot-scope="scope" slot="state">
         <el-tag :type="scope.row.state==0?'success':'danger'">{{findByvalue(scope.dic,scope.row.state)}}</el-tag>
       </template>

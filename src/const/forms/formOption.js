@@ -1,4 +1,8 @@
+import {
+  DIC
+} from '@/const/dic'
 export default {
+  dicData: DIC,
   dic: ['GRADE', 'SEX'],
   submitText: '完成',
   column: [{

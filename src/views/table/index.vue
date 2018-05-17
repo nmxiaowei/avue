@@ -14,7 +14,7 @@
         </router-link>
       </el-button>
     </div>
-    <avue-crud :table-option="tableOption" v-model="user" :table-data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
+    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
       <template slot-scope="props" slot="expand">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="姓名">

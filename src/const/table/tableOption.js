@@ -1,3 +1,6 @@
+import {
+  DIC
+} from '@/const/dic'
 export default {
   maxHeight: 400,
   index: true,
@@ -14,6 +17,7 @@ export default {
   //   order: 'descending'
   // },
   dic: ['VAILDATA', 'SEX', 'TYPE'],
+  dicData: DIC,
   column: [{
       label: "用户名",
       prop: "username",

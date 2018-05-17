@@ -1,8 +1,8 @@
 <template>
   <div class="crud-container pull-auto">
-    <el-table :data="tableData" :stripe="tableOption.stripe" :show-header="tableOption.showHeader" :default-sort="tableOption.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="tableOption.maxHeight" :height="tableOption.height" ref="table" :width="setPx(tableOption.width,'100%')" :border="tableOption.border" v-loading="tableLoading" @selection-change="selectionChange" @sort-change="sortChange">
+    <el-table :data="data" :stripe="option.stripe" :show-header="option.showHeader" :default-sort="option.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="option.maxHeight" :height="option.height" ref="table" :width="setPx(option.width,'100%')" :border="option.border" v-loading="tableLoading" @selection-change="selectionChange" @sort-change="sortChange">
       <!-- 下拉弹出框  -->
-      <template v-if="tableOption.expand">
+      <template v-if="option.expand">
         <el-table-column type="expand" width="50" fixed="left" align="center">
           <template slot-scope="props">
             <slot :row="props.row" name="expand"></slot>
@@ -10,18 +10,18 @@
         </el-table-column>
       </template>
       <!-- 选择框 -->
-      <template v-if="tableOption.selection">
+      <template v-if="option.selection">
         <el-table-column type="selection" width="50" fixed="left" align="center">
         </el-table-column>
       </template>
 
       <!-- 序号 -->
-      <template v-if="tableOption.index">
+      <template v-if="option.index">
         <el-table-column type="index" width="50" fixed="left" align="center">
         </el-table-column>
       </template>
       <!-- 循环列 -->
-      <el-table-column v-for="(column,index) in tableOption.column" :prop="column.prop" :key="column.prop" v-if="!column.hide" :show-overflow-tooltip="column.overHidden" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,tableOption.align)" :header-align="vaildData(column.headerAlign,tableOption.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
+      <el-table-column v-for="(column,index) in option.column" :prop="column.prop" :key="column.prop" v-if="!column.hide" :show-overflow-tooltip="column.overHidden" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,option.align)" :header-align="vaildData(column.headerAlign,option.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
         <template slot-scope="scope">
           <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
           <template v-else>
@@ -30,25 +30,25 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" v-if="vaildData(tableOption.menu,true)" label="操作" :align="tableOption.menuAlign" :header-align="tableOption.menuHeaderAlign" :width="vaildData(tableOption.menuWidth,240)">
+      <el-table-column fixed="right" v-if="vaildData(option.menu,true)" label="操作" :align="option.menuAlign" :header-align="option.menuHeaderAlign" :width="vaildData(option.menuWidth,240)">
         <template slot-scope="scope">
-          <template v-if="vaildData(tableOption.menu,true)">
-            <el-button type="primary" icon="el-icon-edit" size="small" @click.stop.safe="rowEdit(scope.row,scope.$index)" v-if="vaildData(tableOption.editBtn,true)">编 辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" size="small" @click.stop.safe="rowDel(scope.row,scope.$index)" v-if="vaildData(tableOption.delBtn,true)">删 除</el-button>
+          <template v-if="vaildData(option.menu,true)">
+            <el-button type="primary" icon="el-icon-edit" size="small" @click.stop.safe="rowEdit(scope.row,scope.$index)" v-if="vaildData(option.editBtn,true)">编 辑</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="small" @click.stop.safe="rowDel(scope.row,scope.$index)" v-if="vaildData(option.delBtn,true)">删 除</el-button>
           </template>
           <slot :row="scope.row" name="menu" :index="scope.$index"></slot>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <el-pagination v-if="vaildData(tableOption.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="vaildData(tableOption.pageBackground,true)" :page-size="page.pageSize" @size-change="sizeChange" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
+    <el-pagination v-if="vaildData(option.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="vaildData(option.pageBackground,true)" :page-size="page.pageSize" @size-change="sizeChange" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
     <!-- 表单 -->
     <el-dialog :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" width="50%" :before-close="hide">
       <el-form ref="tableForm" :model="tableForm" label-width="80px" :rules="tableFormRules">
         <el-row :gutter="20" :span="24">
-          <template v-for="(column,index) in tableOption.column">
+          <template v-for="(column,index) in option.column">
             <el-col :span="column.span || 12" v-if="boxType==0?vaildData(column.addVisdiplay,true):vaildData(column.editVisdiplay,true)">
-              <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)">
+              <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
                 <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
               </el-form-item>
@@ -91,7 +91,7 @@ export default {
     this.dicInit();
   },
   watch: {
-    tableOption: {
+    option: {
       handler(n, o) {
         this.rulesInit();
       },
@@ -130,14 +130,14 @@ export default {
       type: Boolean,
       default: false
     },
-    tableData: {
+    data: {
       type: Array,
       required: true,
       default: () => {
         return [];
       }
     },
-    tableOption: {
+    option: {
       type: Object,
       required: true,
       default: () => {
@@ -154,12 +154,12 @@ export default {
     },
     rulesInit() {
       this.tableFormRules = {};
-      this.tableOption.column.forEach(ele => {
+      this.option.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
     dicInit() {
-      this.GetDic(this.tableOption.dic).then(data => {
+      this.GetDic(this.option.dic).then(data => {
         this.DIC = data;
       });
     },
@@ -167,7 +167,7 @@ export default {
       this.$emit("input", this.tableForm);
     },
     formInit() {
-      const list = this.tableOption.column;
+      const list = this.option.column;
       let from = {};
       list.forEach(ele => {
         if (
@@ -181,7 +181,7 @@ export default {
         } else {
           from[ele.prop] = "";
         }
-        if(!validatenull(ele.valueDefault))  from[ele.prop] =ele.valueDefault;
+        if (!validatenull(ele.valueDefault)) from[ele.prop] = ele.valueDefault;
       });
       this.tableForm = Object.assign({}, from);
     },
@@ -230,8 +230,11 @@ export default {
         result = row[column.prop];
       }
       if (column.type) {
-        if (column.type == "date" && column.format) {
-          result = moment(result).format(column.format);
+        if ((column.type == "date" || column.type == "time") && column.format) {
+          const format = column.format;
+          result = moment(result).format(
+            format.substr(0, 4).toUpperCase() + format.substr(4, format.length)
+          );
         }
         result = this.findByvalue(
           typeof column.dicData == "string"

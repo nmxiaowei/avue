@@ -1,6 +1,6 @@
 <template>
   <div class="generator-container  pull-chheight">
-    <avue-form :form-option="formOption" v-model="tableForm">
+    <avue-form :option="formOption" v-model="tableForm">
       <template slot-scope="scope" slot="dic">
         <el-button @click.native="dicData.box=true">
           字典选择
@@ -8,7 +8,7 @@
       </template>
     </avue-form>
     <el-button type="primary" @click="handleAddColumn" size="small">新增</el-button>
-    <avue-crud ref="crud" :table-option="tableOption" :table-data="form.column" @row-update="handleUpdate" @row-del="handleDel" @row-save="handleSave"></avue-crud>
+    <avue-crud ref="crud" :option="tableOption" :data="form.column" @row-update="handleUpdate" @row-del="handleDel" @row-save="handleSave"></avue-crud>
     <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
     <el-dialog title="字典选择" :visible.sync="dicData.box">
       <avue-crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></avue-crud-checkbox>

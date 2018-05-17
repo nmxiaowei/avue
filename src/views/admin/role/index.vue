@@ -3,7 +3,7 @@
     <div class="table-header">
       <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
     </div>
-    <avue-crud :table-option="tableOption" :table-data="tableData" :table-loading="tableLoading" :page="page" ref="crud" width="290" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel">
+    <avue-crud :option="tableOption" :data="tableData" :table-loading="tableLoading" :page="page" ref="crud" width="290" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel">
       <template slot-scope="scope" slot="menu">
         <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
       </template>

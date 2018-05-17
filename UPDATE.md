@@ -1,3 +1,33 @@
+#### 1.3.7
+
+
+ **crud**
+- 新增：dicUrl字段服务器地址
+- 新增：dicData模拟字典的数据
+- 新增：formatter格式化函数
+- 新增：valueDefault默认值
+- 新增：valueFormat时间值格式化
+- 新增：format时间格式化
+- 新增：time控件（type字段）
+- 说明：具体例子看demo和文档
+- 优化：字典匹配器
+
+ **form**
+- 新增：dicUrl字段服务器地址
+- 新增：dicData模拟字典的数据
+- 新增：formatter格式化函数
+- 新增：valueDefault默认值
+- 新增：valueFormat时间值格式化
+- 新增：format时间格式化
+- 新增：time控件（type字段）
+- 说明：具体例子看demo和文档
+- 优化：字典匹配器
+
+ **其他**
+- 新增：temp模板生成器 npm run temp
+- 说明：新增加的动态路由和模板已详情看pig-ui
+
+
 #### 1.3.6
 
  **其他**
@@ -6,6 +36,7 @@
 - 修复：小屏幕下左侧导航栏遮挡问题
 - 修改：登陆页样式微调
 - 优化：crud演示页面
+
 #### 1.3.5
 
  **crud**

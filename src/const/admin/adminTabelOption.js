@@ -1,7 +1,11 @@
+import {
+  DIC
+} from '@/const/dic'
 export const userOption = {
   border: true,
   index: true,
   selection: false,
+  dicData: DIC,
   dic: ['GRADE', 'STATE'],
   column: [{
       label: "用户名",
@@ -23,8 +27,8 @@ export const userOption = {
       label: "创建时间",
       prop: "date",
       type: "date",
-      format: "YYYY-MM-DD HH:mm",
-      valueFormat: "YYYY-MM-DD HH:mm",
+      format: "yyyy-MM-DD HH:mm",
+      valueFormat: "yyyy-MM-DD HH:mm",
       visdiplay: true,
     },
     {

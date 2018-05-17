@@ -84,6 +84,8 @@ export const getComponent = (type) => {
     return "crudRadio";
   } else if (type == "checkbox") {
     return "crudCheckbox";
+  } else if (type == "time") {
+    return "crudTime";
   } else if (type == "date") {
     return "crudDate";
   } else if (type == 'cascader') {
