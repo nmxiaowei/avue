@@ -43,14 +43,14 @@
     <!-- 分页 -->
     <el-pagination v-if="vaildData(option.page,true)" class="crud-pagination pull-right" :current-page.sync="page.currentPage" :background="vaildData(option.pageBackground,true)" :page-size="page.pageSize" @size-change="sizeChange" @current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :total="page.total"></el-pagination>
     <!-- 表单 -->
-    <el-dialog  lock-scroll :fullscreen="vaildData(option.formFullscreen,false)" :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" :width="vaildData(option.formWidth,'50%')"   :before-close="hide">
-      <el-form ref="tableForm" class="crud-form":model="tableForm" :label-width="setPx(option.labelWidth,80)" :rules="tableFormRules">
+    <el-dialog lock-scroll :fullscreen="vaildData(option.formFullscreen,false)" :modal-append-to-body="false" :append-to-body="true" :title="boxType==0?'新增':'编辑'" :visible.sync="boxVisible" :width="vaildData(option.formWidth,'50%')" :before-close="hide">
+      <el-form ref="tableForm" class="crud-form" :model="tableForm" :label-width="setPx(option.labelWidth,80)" :rules="tableFormRules">
         <el-row :gutter="20" :span="24">
           <template v-for="(column,index) in option.column">
             <el-col :span="column.span || 12" v-if="boxType==0?vaildData(column.addVisdiplay,true):vaildData(column.editVisdiplay,true)">
               <el-form-item :style="{height:setPx(column.formHeight,'auto')}" :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :height="setPx(column.formHeight,'auto')" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -316,8 +316,8 @@ export default {
   margin-top: 15px;
   padding: 10px 20px;
 }
-.crud-form{
-  padding:0 8px;
+.crud-form {
+  padding: 0 8px;
 }
 .crud-header {
   margin-bottom: 10px;

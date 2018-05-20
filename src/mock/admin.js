@@ -8,6 +8,7 @@ for (let i = 0; i < 2; i++) {
     id: '@increment',
     name: Mock.mock('@cname'),
     username: Mock.mock('@last'),
+    ueditor: `<h3>${Mock.mock('@cname')}<h3>`,
     grade: [0, 1],
     state: 0,
     date: dateFormat(new Date()),

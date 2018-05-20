@@ -4,12 +4,12 @@ import {
 export const userOption = {
   border: true,
   index: true,
-  height:'auto',
-  indexLabel:'序号',
+  height: 'auto',
+  indexLabel: '序号',
   selection: false,
   dicData: DIC,
   dic: ['GRADE', 'STATE'],
-  formWidth:'60%',
+  formWidth: '60%',
   column: [{
       label: "用户名",
       prop: "username",
@@ -37,9 +37,9 @@ export const userOption = {
       label: "内容",
       prop: "ueditor",
       type: "ueditor",
-      hide:true,
-      formHeight:180,
-      span:24,
+      hide: true,
+      formHeight: 180,
+      span: 24,
     },
     {
       label: "状态",

@@ -1,6 +1,8 @@
 <template>
-  <quill-editor v-model="text" ref="myQuillEditor" :options="options">
-  </quill-editor>
+  <div>
+    <quill-editor v-model="text" @change="handleChange" ref="myQuillEditor" :options="options" :style="{height:`calc(${height} - 80px)`}">
+    </quill-editor>
+  </div>
 </template>
 <script>
 import 'quill/dist/quill.core.css'
@@ -22,8 +24,11 @@ export default {
     value: {
       default: ''
     },
-    options:{
-      default:()=>{},
+    height: {
+      default: ''
+    },
+    options: {
+      default: () => {}
     },
     clearable: {
       type: Boolean,
@@ -65,7 +70,7 @@ export default {
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit('input', value)
+      this.$emit('input', value.html)
     }
   }
 }
