@@ -3,10 +3,11 @@ import CrudCheckbox from './crud-checkbox/index.js'
 import CrudDate from './crud-date/index.js'
 import CrudTime from './crud-time/index.js'
 import CrudInput from './crud-input/index.js'
-import crudRadio from './crud-radio/index.js'
-import crudSelect from './crud-select/index.js'
-import crudCascader from './crud-cascader/index.js'
-import crudNumberInput from './crud-input-number/index.js'
+import CrudRadio from './crud-radio/index.js'
+import CrudSelect from './crud-select/index.js'
+import CrudCascader from './crud-cascader/index.js'
+import CrudNumberInput from './crud-input-number/index.js'
+import CrudUeditor from './crud-ueditor/index.js'
 import DataDisplay from './data-display/index.js'
 import DataCard from './data-card/index.js'
 import DataTabs from './data-tabs/index.js'
@@ -20,9 +21,9 @@ const components = [
   CrudDate,
   CrudTime,
   CrudInput,
-  crudRadio,
-  crudSelect,
-  crudCascader,
+  CrudRadio,
+  CrudSelect,
+  CrudCascader,
   DataDisplay,
   DataCard,
   DataIcons,
@@ -31,7 +32,9 @@ const components = [
 const install = function (Vue, axios, opts = {}) {
   //注入axios;
   Vue.prototype.$http = axios;
-  const AVUE = {};
+  const AVUE = {
+    clientHeight:document.documentElement.clientHeight
+  };
   components.map(component => {
     Vue.component(component.name, component);
   });
@@ -51,11 +54,12 @@ export default {
   CrudDate,
   CrudTime,
   CrudInput,
-  crudRadio,
-  crudSelect,
-  crudCascader,
+  CrudRadio,
+  CrudSelect,
+  CrudCascader,
+  CrudUeditor,
   DataDisplay,
   DataCard,
   DataIcons,
-  DataTabs
+  DataTabs,
 }

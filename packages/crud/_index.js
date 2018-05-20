@@ -6,6 +6,7 @@ import AvueCurdRadio from './src/crud-radio';
 import AvueCurdSelect from './src/crud-secect';
 import AvueCurdCascader from './src/crud-cascader';
 import AvueCurdInputNumber from './src/crud-input-number';
+import AvueCurdUeditor from './src/crud-ueditor';
 import AvueCrud from './src/main';
 const components = [
   AvueCrud,
@@ -16,7 +17,8 @@ const components = [
   AvueCurdRadio,
   AvueCurdSelect,
   AvueCurdCascader,
-  AvueCurdInputNumber
+  AvueCurdInputNumber,
+  AvueCurdUeditor
 ]
 
 /* istanbul ignore next */
@@ -34,5 +36,6 @@ export {
   AvueCurdInput,
   AvueCurdRadio,
   AvueCurdSelect,
-  AvueCurdInputNumber
+  AvueCurdInputNumber,
+  AvueCurdUeditor
 };

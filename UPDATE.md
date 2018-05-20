@@ -1,5 +1,25 @@
-#### 1.3.7
+#### 1.3.8
 
+ **crud**
+- 新增：type=datetime的时间日期组件
+- 新增：type=ueditor富文本变价组件
+- 新增：height:auto,自适应属性
+- 新增：calcHeight表格高度差值属性
+- 新增：formWidth表单弹出框宽度自定义
+- 新增：indexLabel自定义序号的标题默认#
+- 新增：formHeight表单中每一行的高度
+- 说明：具体例子看demo和文档
+- 优化：优化部分底层组建
+
+ **form**
+- 新增：type=datetime的时间日期组件
+- 新增：type=ueditor富文本变价组件
+
+
+ **其他**
+- 优化：优化temp生成器模板
+
+#### 1.3.7
 
  **crud**
 - 新增：dicUrl字段服务器地址

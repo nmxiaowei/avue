@@ -53,6 +53,7 @@ import Avue from 'avue-cli/packages/index.js';
 `12.打包后docker一键部署脚本基于nginx镜像（具体的可以修改./src/docker/Dockerfile）`<br /><br />
 `13.支持路由改变单例页面title`<br /><br />
 `14.crud组件快速生成器`<br /><br />
+`15.富文本编辑器`<br /><br />
 
 #### 页面展示
 **主题色**

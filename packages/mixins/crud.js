@@ -14,7 +14,8 @@ import crudCheckbox from "../crud/src/crud-checkbox";
 import crudCascader from "../crud/src/crud-cascader";
 import crudDate from "../crud/src/crud-date";
 import crudTime from "../crud/src/crud-time";
-import crudInputNumber from '../crud/src/crud-input-number'
+import crudInputNumber from '../crud/src/crud-input-number';
+import crudUeditor from '../crud/src/crud-ueditor';
 export default function () {
   return {
     props: {
@@ -32,7 +33,8 @@ export default function () {
       crudDate,
       crudTime,
       crudCascader,
-      crudInputNumber
+      crudInputNumber,
+      crudUeditor
     },
     methods: {
       GetDic: function (list) {

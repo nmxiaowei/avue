@@ -86,12 +86,14 @@ export const getComponent = (type) => {
     return "crudCheckbox";
   } else if (type == "time") {
     return "crudTime";
-  } else if (type == "date") {
+  } else if (type == "date" || type == "datetime") {
     return "crudDate";
   } else if (type == 'cascader') {
     return "crudCascader";
   } else if (type == 'number') {
     return "crudInputNumber";
+  } else if (type == 'ueditor') {
+    return "crudUeditor";
   } else {
     return "crudInput";
   }

@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import crud from "../../mixins/crud";
-import { validatenull } from "../../utils/validate.js";
+import crud from '../../mixins/crud'
+import { validatenull } from '../../utils/validate.js'
 export default {
-  name: "AvueForm",
+  name: 'AvueForm',
   mixins: [crud()],
   components: {},
   data() {
@@ -34,28 +34,28 @@ export default {
       form: {},
       formRules: {},
       DIC: {}
-    };
+    }
   },
   created() {
     //规则初始化
-    this.rulesInit();
+    this.rulesInit()
     //初始化dic字典
-    this.dicInit();
+    this.dicInit()
     //初始化form表单
-    this.formInit();
+    this.formInit()
     //初始化值
-    this.formVal();
+    this.formVal()
   },
   watch: {
     option: {
       handler(n, o) {
-        this.rulesInit();
+        this.rulesInit()
       },
       deep: true
     },
     value: {
       handler(n, o) {
-        this.formVal();
+        this.formVal()
       },
       deep: true
     }
@@ -64,9 +64,9 @@ export default {
   computed: {
     menuPostion: function() {
       if (this.option.submitPostion) {
-        return "is-" + this.option.submitPostion;
+        return 'is-' + this.option.submitPostion
       } else {
-        return "is-center";
+        return 'is-center'
       }
     }
   },
@@ -79,48 +79,48 @@ export default {
   },
   methods: {
     rulesInit() {
-      this.formRules = {};
+      this.formRules = {}
       this.option.column.forEach(ele => {
-        if (ele.rules) this.formRules[ele.prop] = ele.rules;
-      });
+        if (ele.rules) this.formRules[ele.prop] = ele.rules
+      })
     },
     dicInit() {
       this.GetDic(this.option.dic).then(data => {
-        this.DIC = data;
-      });
+        this.DIC = data
+      })
     },
     formInit() {
-      const list = this.option.column;
-      let form = {};
+      const list = this.option.column
+      let form = {}
       list.forEach(ele => {
         if (
-          ele.type == "checkbox" ||
-          ele.type == "radio" ||
-          ele.type == "cascader"
+          ele.type == 'checkbox' ||
+          ele.type == 'radio' ||
+          ele.type == 'cascader'
         ) {
-          form[ele.prop] = [];
+          form[ele.prop] = []
         } else {
-          form[ele.prop] = "";
+          form[ele.prop] = ''
         }
-        if(!validatenull(ele.valueDefault))  from[ele.prop] =ele.valueDefault;
-      });
-      this.form = Object.assign({}, form);
+        if (!validatenull(ele.valueDefault)) from[ele.prop] = ele.valueDefault
+      })
+      this.form = Object.assign({}, form)
     },
     formVal() {
-      this.form = this.value;
-      this.$emit("input", this.form);
+      this.form = this.value
+      this.$emit('input', this.form)
     },
     submit() {
-      this.$refs["form"].validate(valid => {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          this.$emit("submit", this.form);
+          this.$emit('submit', this.form)
         } else {
-          this.$emit("submit");
+          this.$emit('submit')
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

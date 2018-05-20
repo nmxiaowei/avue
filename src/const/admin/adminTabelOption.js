@@ -4,9 +4,12 @@ import {
 export const userOption = {
   border: true,
   index: true,
+  height:'auto',
+  indexLabel:'序号',
   selection: false,
   dicData: DIC,
   dic: ['GRADE', 'STATE'],
+  formWidth:'60%',
   column: [{
       label: "用户名",
       prop: "username",
@@ -26,10 +29,17 @@ export const userOption = {
     {
       label: "创建时间",
       prop: "date",
-      type: "date",
-      format: "yyyy-MM-DD HH:mm",
-      valueFormat: "yyyy-MM-DD HH:mm",
-      visdiplay: true,
+      type: "datetime",
+      format: "yyyy-MM-dd HH:mm:ss",
+      valueFormat: "yyyy-MM-dd HH:mm:ss",
+    },
+    {
+      label: "内容",
+      prop: "ueditor",
+      type: "ueditor",
+      hide:true,
+      formHeight:180,
+      span:24,
     },
     {
       label: "状态",
@@ -58,7 +68,8 @@ export const roleOption = {
     {
       label: "创建时间",
       prop: "date",
-      visdiplay: true,
+      format: "yyyy-MM-dd HH:mm:ss",
+      valueFormat: "yyyy-MM-dd HH:mm:ss",
       type: "date",
     }
   ]

@@ -1,24 +1,27 @@
 <template>
-  <el-date-picker v-model="text" type="date" :format="format" :value-format="valueFormat" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
+  <el-date-picker :type="type" v-model="text" :format="format" :value-format="valueFormat" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
 </template>
 
 <script>
 export default {
-  name: "AvueCrudDate",
+  name: 'AvueCrudDate',
   data() {
     return {
-      text: ""
-    };
+      text: ''
+    }
   },
   props: {
     value: {
-      default: ""
+      default: ''
+    },
+    type: {
+      default: 'date'
     },
     valueFormat: {
-      default: ""
+      default: ''
     },
     format: {
-      default: ""
+      default: ''
     },
     disabled: {
       type: Boolean,
@@ -26,24 +29,24 @@ export default {
     },
     placeholder: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   watch: {
     value: function(n, o) {
-      this.text = this.value;
+      this.text = this.value
     }
   },
   created() {
-    this.text = this.value;
+    this.text = this.value
   },
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit("input", value);
+      this.$emit('input', value)
     }
   }
-};
+}
 </script>
 
 <style>
