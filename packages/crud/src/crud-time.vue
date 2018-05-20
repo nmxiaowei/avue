@@ -4,21 +4,21 @@
 
 <script>
 export default {
-  name: "AvueCrudTime",
+  name: 'AvueCrudTime',
   data() {
     return {
-      text: ""
-    };
+      text: ''
+    }
   },
   props: {
     value: {
-      default: ""
+      default: ''
     },
     valueFormat: {
-      default: ""
+      default: ''
     },
     format: {
-      default: ""
+      default: ''
     },
     disabled: {
       type: Boolean,
@@ -26,25 +26,26 @@ export default {
     },
     placeholder: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   watch: {
     value: function(n, o) {
-      this.text = this.value;
+      this.text = this.value
     }
   },
   created() {
-    this.text = this.value;
+    this.text = this.value
   },
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit("input", value);
+      this.$emit('input', value)
     }
   }
-};
+}
 </script>
 
-<style>
+<style scoped>
 </style>
+
