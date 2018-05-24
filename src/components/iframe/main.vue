@@ -55,9 +55,21 @@ export default {
     // 加载组件
     load() {
       this.show();
-      this.$route.query.src = this.$route.query.src
-        ? this.$route.query.src.replace("$", "#")
-        : "";
+      var flag = true;  //URL是否包含问号
+      if(this.$route.query.src.indexOf("?")==-1){
+        flag = false;
+      }
+      var list = "";
+      for (var key in this.$route.query){
+        if(key != "src"){
+          list += key+'='+ this.$route.query[key]+'&';
+        }        
+      }
+      if(flag){
+        this.$route.query.src = this.$route.query.src + "&" + list;
+      }else{
+        this.$route.query.src = this.$route.query.src + "?" + list;
+      }
       //超时3s自动隐藏等待狂，加强用户体验
       let time = 3;
       const timeFunc = setInterval(() => {
