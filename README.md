@@ -36,7 +36,10 @@ npm install avue-cli
 import Avue from 'avue-cli/packages/index.js';
 
 ```
-
+#### avue-crud组件课程
+最近很多人反应不太会用crud快速开发组件，因此下周将免费推出crud系列的讲解课程，详情请加QQ群
+<img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class1.png">
+<img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class2.png">
 #### 简介
 `avue` 是一个类似easyui那种去写vue的方案支持SSR(服务端渲染)和SPA(单例页面),全部基于json可配置化去开发界面，节约开发成本和提高开发效率，基本构成由 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，权限验证，第三方网站嵌套等功能，很多功能还在开发，敬请期待<br /><br />
 `1.vuex本地持久化存储,封装h5的sessionStorage和localStorage`<br /><br />
