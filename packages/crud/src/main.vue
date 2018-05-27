@@ -1,5 +1,19 @@
 <template>
   <div class="crud-container pull-auto">
+    <div class="crud-header">
+      <slot name="headerBefore"></slot>
+      <el-form :model="searchForm" :inline="true" ref="searchForm" v-if="searchFlag">
+        <!-- 循环列搜索框 -->
+        <el-form-item :label="column.label" :prop="column.prop" v-for="(column,index) in option.column" :key="index" v-if="column.search">
+          <component :size="option.searchSize" :is="getSearchType(column.type)" v-model="searchForm[column.prop]"   clearable:type="column.type"  :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" ></component>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="searchChnage" icon="el-icon-search" :size="option.searchSize">搜索</el-button>
+          <el-button @click="searchReset" icon="el-icon-delete"  :size="option.searchSize">清空</el-button>
+        </el-form-item>
+      </el-form>
+      <slot name="headerAfter"></slot>
+    </div>
     <el-table :data="data" :stripe="option.stripe" :show-header="option.showHeader" :default-sort="option.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="option.maxHeight" :height="option.height=='auto'?($AVUE.clientHeight - vaildData(option.calcHeight,275)):option.height" ref="table" :width="setPx(option.width,'100%')" :border="option.border" v-loading="tableLoading" @selection-change="selectionChange" @sort-change="sortChange">
       <!-- 下拉弹出框  -->
       <template v-if="option.expand">
@@ -66,15 +80,16 @@
   </div>
 </template>
 <script>
-import crud from "../../mixins/crud.js";
-import { validatenull } from "../../utils/validate.js";
-import moment from "moment";
+import crud from '../../mixins/crud.js'
+import { validatenull } from '../../utils/validate.js'
+import moment from 'moment'
 export default {
-  name: "AvueCrud",
+  name: 'AvueCrud',
   mixins: [crud()],
   components: {},
   data() {
     return {
+      searchForm: {},
       boxVisible: false,
       boxType: 0,
       DIC: {},
@@ -82,35 +97,41 @@ export default {
       tableFormRules: {},
       tableIndex: -1,
       tableSelect: []
-    };
+    }
   },
   created() {
     //规则初始化
-    this.rulesInit();
+    this.rulesInit()
     //初始化字典
-    this.dicInit();
+    this.dicInit()
+    //初始化表单
+    this.formInit()
   },
   watch: {
     option: {
       handler(n, o) {
-        this.rulesInit();
+        this.rulesInit()
       },
       deep: true
     },
     tableForm: {
       handler(n, o) {
-        this.formVal();
+        this.formVal()
       },
       deep: true
     }
   },
-  computed: {},
+  computed: {
+    searchFlag:function(){
+      return validatenull(this.searchForm)?false:true
+    }
+  },
   mounted() {},
   props: {
     value: {
       type: Object,
       default: () => {
-        return {};
+        return {}
       }
     },
     beforeClose: Function,
@@ -123,7 +144,7 @@ export default {
           currentPage: 0, //当前页数
           pageSize: 10, //每页显示多少条
           background: true //背景颜色
-        };
+        }
       }
     },
     tableLoading: {
@@ -134,188 +155,206 @@ export default {
       type: Array,
       required: true,
       default: () => {
-        return [];
+        return []
       }
     },
     option: {
       type: Object,
       required: true,
       default: () => {
-        return [];
+        return []
       }
     }
   },
   methods: {
     vaildData(val, dafult) {
-      if (typeof val == "boolean") {
-        return val;
+      if (typeof val == 'boolean') {
+        return val
       }
-      return !validatenull(val) ? val : dafult;
+      return !validatenull(val) ? val : dafult
     },
     rulesInit() {
-      this.tableFormRules = {};
+      this.tableFormRules = {}
       this.option.column.forEach(ele => {
-        if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
-      });
+        if (ele.rules) this.tableFormRules[ele.prop] = ele.rules
+      })
     },
     dicInit() {
       this.GetDic(this.option.dic).then(data => {
-        this.DIC = data;
-      });
+        this.DIC = data
+      })
     },
     formVal() {
-      this.$emit("input", this.tableForm);
+      this.$emit('input', this.tableForm)
     },
     formInit() {
-      const list = this.option.column;
-      let from = {};
+      const list = this.option.column
+      let form = {}
+      let searchForm = {}
       list.forEach(ele => {
         if (
-          ele.type == "checkbox" ||
-          ele.type == "radio" ||
-          ele.type == "cascader"
+          ele.type == 'checkbox' ||
+          ele.type == 'radio' ||
+          ele.type == 'cascader'
         ) {
-          from[ele.prop] = [];
-        } else if (ele.type == "number") {
-          from[ele.prop] = 0;
+          form[ele.prop] = []
+          if (ele.search) {
+            searchForm[ele.prop] = []
+          }
+        } else if (ele.type == 'number') {
+          form[ele.prop] = 0
+          if (ele.search) {
+            searchForm[ele.prop] = 0
+          }
         } else {
-          from[ele.prop] = "";
+          form[ele.prop] = ''
+          if (ele.search) {
+           searchForm[ele.prop] = ''
+          }
         }
-        if (!validatenull(ele.valueDefault)) from[ele.prop] = ele.valueDefault;
-      });
-      this.tableForm = Object.assign({}, from);
+        if (!validatenull(ele.valueDefault)) form[ele.prop] = ele.valueDefault
+      })
+      this.tableForm = Object.assign({}, form)
+      this.searchForm = Object.assign({}, searchForm)
+    },
+    //搜索清空
+    searchReset() {
+      this.$refs['searchForm'].resetFields()
     },
     // 页大小回调
     sizeChange(val) {
-      this.$emit("size-change", val);
+      this.$emit('size-change', val)
     },
     // 页码回调
     currentChange(val) {
-      this.$emit("current-change", val);
+      this.$emit('current-change', val)
     },
     // 选中实例
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.table.toggleRowSelection(row);
-        });
+          this.$refs.table.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.table.clearSelection();
+        this.$refs.table.clearSelection()
       }
     },
     //选择回调
     selectionChange(val) {
-      this.tableSelect = val;
-      this.$emit("selection-change", val);
+      this.tableSelect = val
+      this.$emit('selection-change', val)
     },
     //排序回调
     sortChange(val) {
-      this.$emit("sort-change", val);
+      this.$emit('sort-change', val)
+    },
+    //搜索回调
+    searchChnage() {
+      this.$emit('search-change', this.searchForm)
     },
     //行双击
     rowDblclick(row, event) {
-      this.$emit("row-dblclick", row, event);
+      this.$emit('row-dblclick', row, event)
     },
 
     //行单机
     rowClick(row, event, column) {
-      this.$emit("row-click", row, event, column);
+      this.$emit('row-click', row, event, column)
     },
     //处理数据
     detail(row, column) {
-      let result = "";
-      if (column.formatter && typeof column.formatter === "function") {
-        result = column.formatter(row);
+      let result = ''
+      if (column.formatter && typeof column.formatter === 'function') {
+        result = column.formatter(row)
       } else {
-        result = row[column.prop];
+        result = row[column.prop]
       }
       if (column.type) {
         if (
-          (column.type == "date" ||
-            column.type == "time" ||
-            column.type == "datetime") &&
+          (column.type == 'date' ||
+            column.type == 'time' ||
+            column.type == 'datetime') &&
           column.format
         ) {
           const format = column.format
-            .replace("dd", "DD")
-            .replace("yyyy", "YYYY");
-          result = moment(result).format(format);
+            .replace('dd', 'DD')
+            .replace('yyyy', 'YYYY')
+          result = moment(result).format(format)
         }
         result = this.findByvalue(
-          typeof column.dicData == "string"
+          typeof column.dicData == 'string'
             ? this.DIC[column.dicData]
             : column.dicData,
           result
-        );
+        )
       }
-      return result;
+      return result
     },
     // 新增
     rowAdd() {
-      this.formInit();
-      this.boxType = 0;
-      this.show();
+      this.boxType = 0
+      this.show()
     },
     // 编辑
     rowEdit(row, index) {
-      this.tableForm = Object.assign({}, row);
-      this.tableIndex = index;
-      this.boxType = 1;
-      this.show();
+      this.tableForm = Object.assign({}, row)
+      this.tableIndex = index
+      this.boxType = 1
+      this.show()
     },
     // 删除
     rowDel(row, index) {
-      this.$emit("row-del", row, index);
+      this.$emit('row-del', row, index)
     },
     //保存
     rowSave() {
-      this.$refs["tableForm"].validate(valid => {
+      this.$refs['tableForm'].validate(valid => {
         if (valid) {
-          this.$emit("row-save", Object.assign({}, this.tableForm), this.hide);
+          this.$emit('row-save', Object.assign({}, this.tableForm), this.hide)
         }
-      });
+      })
     },
     //更新
     rowUpdate() {
-      this.$refs["tableForm"].validate(valid => {
+      this.$refs['tableForm'].validate(valid => {
         if (valid) {
-          const index = this.tableIndex;
+          const index = this.tableIndex
           this.$emit(
-            "row-update",
+            'row-update',
             Object.assign({}, this.tableForm),
             index,
             this.hide
-          );
+          )
         }
-      });
+      })
     },
     //显示表单
     show(cancel) {
       const callack = () => {
         if (cancel !== true) {
-          this.boxVisible = true;
+          this.boxVisible = true
         }
-      };
-      if (typeof this.beforeOpen === "function") this.beforeOpen(callack);
-      else callack();
+      }
+      if (typeof this.beforeOpen === 'function') this.beforeOpen(callack)
+      else callack()
     },
     //隐藏表单
     hide(cancel) {
       const callack = () => {
         if (cancel !== false) {
           //释放form表单
-          this.tableForm = {};
+          this.tableForm = {}
           this.$nextTick(() => {
-            this.$refs["tableForm"].resetFields();
-          });
-          this.boxVisible = false;
+            this.$refs['tableForm'].resetFields()
+          })
+          this.boxVisible = false
         }
-      };
-      if (typeof this.beforeClose === "function") this.beforeClose(callack);
-      else callack();
+      }
+      if (typeof this.beforeClose === 'function') this.beforeClose(callack)
+      else callack()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

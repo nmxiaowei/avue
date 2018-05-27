@@ -1,20 +1,21 @@
 <template>
   <div class="table-container pull-chheight">
-    <div class="table-header">
-      <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
-      <el-button type="primary" @click="handleRowEdit" size="small">编 辑</el-button>
-      <el-button type="primary" @click="handleRowDel" size="small">删 除</el-button>
-      <el-button type="info" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
-      <el-button type="warning" @click="handleJpeg" size="small">导出图片</el-button>
-      <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
-      <el-button @click="toggleSelection()" size="small">取消选择</el-button>
-      <el-button type="success" size="small" v-if="permission.sys_crud_btn_add">
-        <router-link :to="{path:'/forms/index'}">
-          表单CRUD
-        </router-link>
-      </el-button>
-    </div>
-    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @selection-change="handleSelectionChange">
+    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @search-change="hanldeSearchChange" @selection-change="handleSelectionChange">
+      <div class="table-header" slot="headerAfter">
+        <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
+        <el-button type="primary" @click="handleRefresh" size="small" >刷新</el-button>
+        <el-button type="primary" @click="handleRowEdit" size="small">编 辑</el-button>
+        <el-button type="primary" @click="handleRowDel" size="small">删 除</el-button>
+        <el-button type="info" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
+        <el-button type="warning" @click="handleJpeg" size="small">导出图片</el-button>
+        <el-button type="danger" @click="toggleSelection([tableData[1]])" size="small">切换第二选中状态</el-button>
+        <el-button @click="toggleSelection()" size="small">取消选择</el-button>
+        <el-button type="success" size="small" v-if="permission.sys_crud_btn_add">
+          <router-link :to="{path:'/forms/index'}">
+            表单CRUD
+          </router-link>
+        </el-button>
+      </div>
       <template slot-scope="props" slot="expand">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="姓名">
@@ -68,6 +69,7 @@ export default {
   name: "table",
   data() {
     return {
+      tableSearch:{},
       tableOption: tableOption, //表格设置属性
       tableData: [], //表格的数据
       tableRow: {},
@@ -124,6 +126,13 @@ export default {
             type: "error"
           });
         });
+    },
+     /**
+     * @title 刷新数据
+     *
+     **/
+    handleRefresh(){
+      this.handleList(this.tableSearch);
     },
     /**
      * @title 权限更新
@@ -211,6 +220,19 @@ export default {
       this.tablePage = val;
       this.handleList();
     },
+     /**
+     * @title 搜索按钮回掉
+     *
+     **/
+    hanldeSearchChange(form){
+      this.tableSearch = form;
+      this.$notify({
+        showClose: true,
+        message: JSON.stringify(this.tableSearch),
+        type: "success"
+      });
+       this.handleList(this.tableSearch);
+    },
     /**
      * @title 打开新增窗口
      * @detail 调用crud的handleadd方法即可
@@ -233,10 +255,10 @@ export default {
      * @detail 赋值为tableData表格即可
      *
      **/
-    handleList() {
+    handleList(form) {
       this.tableLoading = true;
       this.$store
-        .dispatch("GetTableData", { page: `${this.tablePage}` })
+        .dispatch("GetTableData", Object.assign({}, form, { page: `${this.tablePage}` }))
         .then(data => {
           setTimeout(() => {
             this.tableData = data.tableData;

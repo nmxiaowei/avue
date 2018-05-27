@@ -74,6 +74,26 @@ export const setPx = (val, defval) => {
   }
   return val;
 }
+
+/**
+ * 搜索框获取动态组件
+ */
+export const getSearchType = (type) => {
+  if (type == "select" || type=='radio' || type =='checkbox') {
+    return "crudSelect";
+  } else if (type == "time") {
+    return "crudTime";
+  } else if (type == "date" || type == "datetime") {
+    return "crudDate";
+  } else if (type == 'cascader') {
+    return "crudCascader";
+  } else if (type == 'number') {
+    return "crudInputNumber";
+  } else {
+    return "crudInput";
+  }
+};
+
 /**
  * 动态获取组件
  */
@@ -94,6 +114,8 @@ export const getComponent = (type) => {
     return "crudInputNumber";
   } else if (type == 'ueditor') {
     return "crudUeditor";
+  } else if (type == 'password') {
+    return "crudInput";
   } else {
     return "crudInput";
   }

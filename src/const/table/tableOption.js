@@ -12,6 +12,7 @@ export default {
   menuAlign: 'center',
   editBtn: false,
   align: 'center',
+  searchSize:'small',
   // defaultSort: {
   //   prop: 'name',
   //   order: 'descending'
@@ -23,6 +24,7 @@ export default {
       prop: "username",
       width: 120,
       sortable: true,
+      search: true,
       solt: true,
       rules: [{
         required: true,
@@ -58,10 +60,17 @@ export default {
       prop: "grade",
       type: "radio",
       dicData: 'VAILDATA',
+      search: true,
       valueDefault: true,
       formatter: (row) => {
         return row.grade
       },
+    },
+    {
+      label: "密码",
+      prop: "password",
+      type: "password",
+      hide: true
     },
     {
       label: "地址",

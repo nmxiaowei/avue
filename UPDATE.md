@@ -1,3 +1,18 @@
+#### 1.4.0
+
+ **crud**
+- 新增：search属性是否有搜索框 默认false,
+- 新增：searchChange搜索回调函数，返回搜索的参数
+- 新增：type等于password密码属性
+- 新增：searchSize 搜索控件的大小
+
+ **form**
+- 新增：type等于password密码属性
+
+ **其他**
+ - 优化：部分组件逻辑
+ - 新增：crud系列视频
+
 #### 1.3.8
 
  **crud**

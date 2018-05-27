@@ -1,18 +1,18 @@
 <template>
-  <el-input :size="size" :clearable="clearable" v-model="text" :type="type=='textarea'?'textarea':'text'" :autosize="{ minRows: minRows, maxRows: maxRows}" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"></el-input>
+  <el-input :size="size" :clearable="clearable" v-model="text" :type="typeParam" :autosize="{ minRows: minRows, maxRows: maxRows}" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"></el-input>
 </template>
 
 <script>
 export default {
-  name: "AvueCrudInput",
+  name: 'AvueCrudInput',
   data() {
     return {
-      text: ""
-    };
+      text: ''
+    }
   },
   props: {
     value: {
-      default: ""
+      default: ''
     },
     clearable: {
       type: Boolean,
@@ -24,42 +24,52 @@ export default {
     },
     placeholder: {
       type: String,
-      default: ""
+      default: ''
     },
     size: {
       type: String,
-      default: ""
+      default: ''
     },
     type: {
       type: String,
-      default: ""
+      default: ''
     },
     minRows: {
       type: String,
-      default: "3"
+      default: '3'
     },
     maxRows: {
       type: String,
-      default: "4"
+      default: '4'
     }
   },
   watch: {
     value: function(n, o) {
-      this.text = this.value;
+      this.text = this.value
+    }
+  },
+  computed: {
+    typeParam: function() {
+      if (this.type == 'textarea') {
+        return 'textarea'
+      } else if (this.type == 'password') {
+        return 'password'
+      } else {
+        return 'text'
+      }
     }
   },
   created() {
-    this.text = this.value;
+    this.text = this.value
   },
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit("input", value);
+      this.$emit('input', value)
     }
   }
-};
+}
 </script>
 
 <style>
-
 </style>
