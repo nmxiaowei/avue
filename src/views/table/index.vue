@@ -1,6 +1,6 @@
 <template>
   <div class="table-container pull-chheight">
-    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @search-change="hanldeSearchChange" @selection-change="handleSelectionChange">
+    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @search-change="handleSearchChange" @selection-change="handleSelectionChange">
       <div class="table-header" slot="headerAfter">
         <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
         <el-button type="primary" @click="handleRefresh" size="small" >刷新</el-button>
@@ -224,7 +224,7 @@ export default {
      * @title 搜索按钮回掉
      *
      **/
-    hanldeSearchChange(form){
+    handleSearchChange(form){
       this.tableSearch = form;
       this.$notify({
         showClose: true,
