@@ -104,5 +104,15 @@ router.afterEach((to, from) => {
         const tag = store.getters.tag;
         setTitle(tag.label);
         store.commit('SET_TAG_CURRENT', findMenuParent(tag));
+        var _hmt = _hmt || [];
+        (function() {
+            //每次执行前，先移除上次插入的代码
+            document.getElementById('baidu_tj') && document.getElementById('baidu_tj').remove();
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?23c7f40fa073fadc2a7f8bfe079fd17f";
+            hm.id = "baidu_tj"
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
     }, 0);
 })
