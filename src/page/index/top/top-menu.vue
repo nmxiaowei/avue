@@ -24,6 +24,7 @@ export default {
         },
         {
           label: "设置",
+          href: '/dev/index',
           parentId: 1
         },
         {
