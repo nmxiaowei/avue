@@ -19,6 +19,9 @@ import {
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
 import AVUE from '../packages/index.js';
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
 
 Vue.use(VueAxios, axios)
 

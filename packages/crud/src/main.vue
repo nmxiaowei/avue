@@ -5,11 +5,11 @@
       <el-form :model="searchForm" :inline="true" ref="searchForm" v-if="searchFlag">
         <!-- 循环列搜索框 -->
         <el-form-item :label="column.label" :prop="column.prop" v-for="(column,index) in option.column" :key="index" v-if="column.search">
-          <component :size="option.searchSize" :is="getSearchType(column.type)" v-model="searchForm[column.prop]"   clearable:type="column.type"  :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" ></component>
+          <component :size="option.searchSize" :is="getSearchType(column.type)" v-model="searchForm[column.prop]" clearable:type="column.type" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])"></component>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchChnage" icon="el-icon-search" :size="option.searchSize">搜索</el-button>
-          <el-button @click="searchReset" icon="el-icon-delete"  :size="option.searchSize">清空</el-button>
+          <el-button @click="searchReset" icon="el-icon-delete" :size="option.searchSize">清空</el-button>
         </el-form-item>
       </el-form>
       <slot name="headerAfter"></slot>
@@ -64,7 +64,7 @@
             <el-col :span="column.span || 12" v-if="boxType==0?vaildData(column.addVisdiplay,true):vaildData(column.editVisdiplay,true)">
               <el-form-item :style="{height:setPx(column.formHeight,'auto')}" :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :height="setPx(column.formHeight,'auto')" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :precision="column.precision" :height="setPx(column.formHeight,'auto')" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -122,8 +122,8 @@ export default {
     }
   },
   computed: {
-    searchFlag:function(){
-      return validatenull(this.searchForm)?false:true
+    searchFlag: function() {
+      return validatenull(this.searchForm) ? false : true
     }
   },
   mounted() {},
@@ -187,6 +187,17 @@ export default {
     formVal() {
       this.$emit('input', this.tableForm)
     },
+    formReset() {
+      for (let o in this.tableForm) {
+        if (this.tableForm[o] instanceof Array) {
+          this.tableForm[o] = []
+        } else if (typeof this.tableForm[o] === 'number') {
+          this.tableForm[o] = 0
+        } else {
+          this.tableForm[o] = ''
+        }
+      }
+    },
     formInit() {
       const list = this.option.column
       let form = {}
@@ -209,7 +220,7 @@ export default {
         } else {
           form[ele.prop] = ''
           if (ele.search) {
-           searchForm[ele.prop] = ''
+            searchForm[ele.prop] = ''
           }
         }
         if (!validatenull(ele.valueDefault)) form[ele.prop] = ele.valueDefault
@@ -343,7 +354,7 @@ export default {
       const callack = () => {
         if (cancel !== false) {
           //释放form表单
-          this.tableForm = {}
+          this.formReset()
           this.$nextTick(() => {
             this.$refs['tableForm'].resetFields()
           })

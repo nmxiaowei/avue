@@ -33,7 +33,7 @@ const install = function (Vue, axios, opts = {}) {
   //注入axios;
   Vue.prototype.$http = axios;
   const AVUE = {
-    clientHeight:document.documentElement.clientHeight
+    clientHeight: document.documentElement.clientHeight
   };
   components.map(component => {
     Vue.component(component.name, component);
@@ -47,7 +47,7 @@ if (typeof window !== 'undefined' && window.Vue && window.axios) {
   install(window.Vue, window.axios);
 }
 export default {
-  version: '1.3.5',
+  version: '1.4.1',
   Crud,
   Form,
   CrudCheckbox,

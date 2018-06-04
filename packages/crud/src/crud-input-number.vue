@@ -1,14 +1,14 @@
 <template>
-  <el-input-number v-model="text" @change="handleChange" :min="minRows" :max="maxRows" :label="'请输入'+placeholder" :disabled="disabled"></el-input-number>
+  <el-input-number v-model="text" @change="handleChange" :precision="precision" :size="size" :min="minRows" :max="maxRows" :label="'请输入'+placeholder" :disabled="disabled"></el-input-number>
 </template>
 
 <script>
 export default {
-  name: "AvueCrudInputNumber",
+  name: 'AvueCrudInputNumber',
   data() {
     return {
-      text: ""
-    };
+      text: ''
+    }
   },
   props: {
     value: {
@@ -18,13 +18,21 @@ export default {
       type: Boolean,
       default: false
     },
+    precision: {
+      type: Number,
+      default: 0
+    },
     placeholder: {
       type: String,
-      default: ""
+      default: ''
     },
     type: {
       type: String,
-      default: ""
+      default: ''
+    },
+    size: {
+      type: String,
+      default: ''
     },
     minRows: {
       type: Number,
@@ -37,21 +45,20 @@ export default {
   },
   watch: {
     value: function(n, o) {
-      this.text = this.value;
+      this.text = this.value
     }
   },
   created() {
-    this.text = this.value;
+    this.text = this.value
   },
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit("input", value);
+      this.$emit('input', value)
     }
   }
-};
+}
 </script>
 
 <style>
-
 </style>

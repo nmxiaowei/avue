@@ -1,3 +1,22 @@
+#### 1.4.1
+
+ **crud**
+- 新增：precision数字输入框精度设置
+- 修复：crud表单关闭数据初始化
+
+ **form**
+- 新增：precision数字输入框精度设置
+
+ **其他**
+- 新增：whiteList不加入tag标签白名单
+- 升级：UI组件element-ui——2.4.0
+- 优化：路由正则匹配表达式
+- 优化：iframe组件的自适应高度
+- 新增：路由分模块
+- 新增：环境变量展示页面/dev/index
+- 新增：本地持久化数据操作/stote/index
+- 新增：剪切板实例/clipboard/index
+
 #### 1.4.0
 
  **crud**
