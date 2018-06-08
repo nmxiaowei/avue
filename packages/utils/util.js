@@ -36,7 +36,7 @@ export const findByvalue = (dic, value) => {
       if (index != -1) {
         result.push(dic[index].label);
       } else {
-        result.push(value);
+        result.push(ele);
       }
     });
     result = result.toString();
