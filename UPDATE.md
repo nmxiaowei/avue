@@ -1,3 +1,14 @@
+#### 1.4.2
+
+ **crud**
+- 修复：先编辑，再点新增数据没清除，[#12](https://github.com/nmxiaowei/avue/issues/12)
+- 修复：checkbox在表格循环中，如果字典里不存在重复出现整个数组，[#14](https://github.com/nmxiaowei/avue/pull/14)
+
+ **其他**
+- 修复：锁屏解锁无法跳转问题，[#13](https://github.com/nmxiaowei/avue/issues/13)
+- 修复：左侧菜单最小化，左侧最下面出现滚动条，[#11](https://github.com/nmxiaowei/avue/issues/11)
+- 修复：左侧菜单第一次点击，部分菜单字体样式没有激活状态，[#10](https://github.com/nmxiaowei/avue/issues/10)
+
 #### 1.4.1
 
  **crud**

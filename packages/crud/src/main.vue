@@ -353,10 +353,10 @@ export default {
     hide(cancel) {
       const callack = () => {
         if (cancel !== false) {
-          //释放form表单
-          this.formReset()
           this.$nextTick(() => {
             this.$refs['tableForm'].resetFields()
+            //释放form表单
+            this.formReset()
           })
           this.boxVisible = false
         }

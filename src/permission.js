@@ -57,13 +57,23 @@ router.beforeEach((to, from, next) => {
           })
         })
       } else {
-        const value = to.query.src ? to.query.src : to.path;
-        const label = to.query.name ? to.query.name : to.name;
-        store.commit('ADD_TAG', {
-          label: label,
-          value: value,
-          query: to.query
-        });
+        let flag = true;
+        const whiteList = store.getters.website.whiteList
+        for (let i = 0; i < whiteList.length; i++) {
+          if (new RegExp("^" + whiteList[i].toString() + ".*", "g").test(to.path)) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          const value = to.query.src ? to.query.src : to.path;
+          const label = to.query.name ? to.query.name : to.name;
+          store.commit('ADD_TAG', {
+            label: label,
+            value: value,
+            query: to.query
+          });
+        }
         next()
       }
     }

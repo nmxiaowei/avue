@@ -11,7 +11,7 @@
           <span slot="title" :class="{'el-menu--display':isCollapse}">{{item.label}}</span>
         </template>
         <template v-for="(child,cindex) in item.children">
-          <el-menu-item :index="filterPath(child.href,cindex)" @click="open(child)" v-if="child.children.length==0" :key="cindex">
+          <el-menu-item :class="{'siderbar-active':nowTagValue==child.href}" :index="filterPath(child.href,cindex)" @click="open(child)" v-if="child.children.length==0" :key="cindex">
             <i :class="child.icon"></i>
             <span slot="title">{{child.label}}</span>
           </el-menu-item>
@@ -22,11 +22,11 @@
   </div>
 </template>
 <script>
-import { resolveUrlPath } from "@/util/util";
+import { resolveUrlPath, setUrlPath } from '@/util/util'
 export default {
-  name: "SidebarItem",
+  name: 'SidebarItem',
   data() {
-    return {};
+    return {}
   },
   props: {
     menu: {
@@ -38,21 +38,31 @@ export default {
   },
   created() {},
   mounted() {},
-  computed: {},
+  computed: {
+    nowTagValue: function() {
+      return setUrlPath(this.$route)
+    }
+  },
   methods: {
     filterPath(path, index) {
-      return path == null ? index + "" : path;
+      return path == null ? index + '' : path
     },
     open(item) {
       this.$router.push({
         path: resolveUrlPath(item.href, item.label),
         query: item.query
-      });
+      })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-
+//刷新激活状态
+.siderbar-active {
+  i,
+  span {
+    color: #409eff;
+  }
+}
 </style>
 
