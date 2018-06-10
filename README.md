@@ -3,6 +3,10 @@
 
 Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.com/ElemeFE/element)的快速开发框架 它的核心是数据驱动UI的思想，让我们从繁琐的crud开发中解脱出来，它的写法类似easyUI，但是写起来比easyui更容易，因为它是基础数据双向绑定以及其他vue的特性。同时不知局限于crud，它还有我们经常用的一些组件例如，表单，数据展示卡，人物展示卡等，更多的组件还在开发
 
+#### 百度云课程
+- [1.Avue修仙系列之基础环境的准备和课程介绍](https://pan.baidu.com/s/1ZBgYby4K8yQC3U4mevuk8A)
+- 未完待续
+
 #### avue相关地址
 欢迎加入QQ交流群，互相学习   
 前端avue交流群：606410437  
@@ -10,6 +14,7 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
 服务端解决方案：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
 
 最近很多人反应不太会用crud快速开发组件，因此下周将免费推出crud系列的讲解课程，详情请加QQ群
+
 <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class1.png">
 <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class2.png">
 
