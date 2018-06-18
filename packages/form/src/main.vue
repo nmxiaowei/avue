@@ -6,7 +6,7 @@
           <el-col :span="column.span||12">
             <el-form-item :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
               <slot :value="form[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.formsolt"></slot>
-              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :precision="column.precision" :placeholder="column.label" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled" :format="column.format" :value-format="column.valueFormat"></component>
+              <component :is="getComponent(column.type)" v-else v-model="form[column.prop]" :precision="column.precision" :multiple="column.multiple" :placeholder="column.placeholder" :label="column.label" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="column.disabled" :format="column.format" :value-format="column.valueFormat"></component>
             </el-form-item>
           </el-col>
         </template>
@@ -96,7 +96,8 @@ export default {
         if (
           ele.type == 'checkbox' ||
           ele.type == 'radio' ||
-          ele.type == 'cascader'
+          ele.type == 'cascader' ||
+          (ele.type == 'select' && ele.multiple)
         ) {
           form[ele.prop] = []
         } else {

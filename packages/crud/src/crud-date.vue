@@ -1,5 +1,5 @@
 <template>
-  <el-date-picker :type="type" v-model="text" :format="format" :value-format="valueFormat" :placeholder="'请输入'+placeholder" @change="handleChange" :disabled="disabled"> </el-date-picker>
+  <el-date-picker :type="type" v-model="text" :size="size" :format="format" :value-format="valueFormat" :placeholder="placeholder?placeholder:`请输入${label}`" @change="handleChange" :disabled="disabled"> </el-date-picker>
 </template>
 
 <script>
@@ -20,7 +20,15 @@ export default {
     valueFormat: {
       default: ''
     },
+    label: {
+      type: String,
+      default: ''
+    },
     format: {
+      default: ''
+    },
+    size: {
+      type: String,
       default: ''
     },
     disabled: {

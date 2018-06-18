@@ -34,6 +34,10 @@ export default {
       type: Boolean,
       default: false
     },
+    label: {
+      type: String,
+      default: ''
+    },
     placeholder: {
       type: String,
       default: ''

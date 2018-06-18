@@ -1,5 +1,5 @@
 <template>
-  <el-input-number v-model="text" @change="handleChange" :precision="precision" :size="size" :min="minRows" :max="maxRows" :label="'请输入'+placeholder" :disabled="disabled"></el-input-number>
+  <el-input-number v-model="text" @change="handleChange" :precision="precision" :size="size" :min="minRows" :max="maxRows" :label="placeholder?placeholder:`请输入${label}`" :disabled="disabled"></el-input-number>
 </template>
 
 <script>
@@ -23,6 +23,10 @@ export default {
       default: 0
     },
     placeholder: {
+      type: String,
+      default: ''
+    },
+    label: {
       type: String,
       default: ''
     },

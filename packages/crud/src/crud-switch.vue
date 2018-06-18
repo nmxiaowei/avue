@@ -1,13 +1,11 @@
 <template>
-  <el-select v-model="text" :size="size" :multiple="multiple" :placeholder="placeholder?placeholder:`请选择${label}`" @change="handleChange" :disabled="disabled">
-    <el-option v-for="(item,index) in dic" :key="index" :label="item.label" :value="item.value">
-    </el-option>
-  </el-select>
+  <el-switch v-model="text" :active-text="getDic(0).label" :active-value="getDic(0).value" :inactive-value="getDic(1).value" :inactive-text="getDic(1).label" :disabled="disabled" :size="size">
+  </el-switch>
 </template>
 
 <script>
 export default {
-  name: 'AvueCrudSelect',
+  name: 'AvueCrudSwitch',
   data() {
     return {
       text: ''
@@ -15,19 +13,9 @@ export default {
   },
   props: {
     value: {
-      default() {
-        return this.multiple ? [] : ''
-      }
-    },
-    multiple: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: {
-      type: String,
       default: ''
     },
-    label: {
+    placeholder: {
       type: String,
       default: ''
     },
@@ -57,6 +45,9 @@ export default {
   methods: {
     handleChange(value) {
       this.$emit('input', value)
+    },
+    getDic(index) {
+      return this.dic[index] ? this.dic[index] : {}
     }
   }
 }

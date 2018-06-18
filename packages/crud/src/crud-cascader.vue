@@ -1,53 +1,56 @@
 <template>
-  <el-cascader :options="dic" v-model="text" :placeholder="'请选择'+placeholder" :disabled="disabled" @change="handleChange">
+  <el-cascader :options="dic" v-model="text" :placeholder="placeholder?placeholder:`请选择${label}`" :disabled="disabled" @change="handleChange">
   </el-cascader>
 </template>
 
 <script>
 export default {
-  name: "AvueCrudCascader",
+  name: 'AvueCrudCascader',
   data() {
     return {
       text: []
-    };
+    }
   },
   props: {
     value: {
       default: () => {
-        return [];
+        return []
       }
     },
     placeholder: {
       type: String,
-      default: ""
+      default: ''
     },
     disabled: {
       type: Boolean,
       default: false
     },
+    label: {
+      type: String,
+      default: ''
+    },
     dic: {
       default: () => {
-        return [];
+        return []
       }
     }
   },
   watch: {
     value: function(n, o) {
-      this.text = this.value;
+      this.text = this.value
     }
   },
   created() {
-    this.text = this.value;
+    this.text = this.value
   },
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit("input", value);
+      this.$emit('input', value)
     }
   }
-};
+}
 </script>
 
 <style>
-
 </style>

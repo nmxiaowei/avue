@@ -1,3 +1,16 @@
+#### 1.4.3
+
+ **crud and from**
+- 优化：组件新增了placeholder属性，默认为label，[#IKJ6L](https://gitee.com/smallweigit/avue/issues/IKJ6L)
+- 优化：type属性设置为date、datetime、time的时候size的属性无效 type属性设置time时无法选择时间，[#IKHI9](https://gitee.com/smallweigit/avue/issues/IKHI9)
+- 新增：type的属性switch开关控件
+- 新增：type属性为select时multiple为true支持多选
+- 新增：refreshChange刷新表格数据回调函数
+- 新增：refreshBtn开关刷新按钮显隐属性，默认true
+- 新增：showClomnuBtn动态列显隐属性，默认true
+- 新增：表格功能自定义com slot为headerMenu
+- 优化：部分组件代码
+
 #### 1.4.2
 
  **crud**

@@ -14,6 +14,12 @@
       </el-form>
       <slot name="headerAfter"></slot>
     </div>
+    <!-- 表格功能列 -->
+    <div class="crud-menu">
+      <slot name="headerMenu"></slot>
+      <el-button icon="el-icon-refresh" circle size="small" @click="refreshChange" v-if="vaildData(option.refreshBtn,true)"></el-button>
+      <el-button icon="el-icon-menu" circle size="small" @click="showClomnuBox=true" v-if="vaildData(option.showClomnuBtn,true)"></el-button>
+    </div>
     <el-table :data="data" :stripe="option.stripe" :show-header="option.showHeader" :default-sort="option.defaultSort" @row-click="rowClick" @row-dblclick="rowDblclick" max-height="option.maxHeight" :height="option.height=='auto'?($AVUE.clientHeight - vaildData(option.calcHeight,275)):option.height" ref="table" :width="setPx(option.width,'100%')" :border="option.border" v-loading="tableLoading" @selection-change="selectionChange" @sort-change="sortChange">
       <!-- 下拉弹出框  -->
       <template v-if="option.expand">
@@ -35,7 +41,7 @@
         </el-table-column>
       </template>
       <!-- 循环列 -->
-      <el-table-column v-for="(column,index) in option.column" :prop="column.prop" :key="column.prop" v-if="!column.hide" :show-overflow-tooltip="column.overHidden" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,option.align)" :header-align="vaildData(column.headerAlign,option.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
+      <el-table-column v-if="showClomnuIndex.indexOf(index)!=-1" v-for="(column,index) in option.column" :prop="column.prop" :key="column.prop" :show-overflow-tooltip="column.overHidden" :min-width="column.minWidth" :sortable="column.sortable" :align="vaildData(column.align,option.align)" :header-align="vaildData(column.headerAlign,option.headerAlign)" :width="column.width" :label="column.label" :fixed="column.fixed">
         <template slot-scope="scope">
           <slot :row="scope.row" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop" v-if="column.solt"></slot>
           <template v-else>
@@ -64,7 +70,7 @@
             <el-col :span="column.span || 12" v-if="boxType==0?vaildData(column.addVisdiplay,true):vaildData(column.editVisdiplay,true)">
               <el-form-item :style="{height:setPx(column.formHeight,'auto')}" :label="column.label" :prop="column.prop" :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
                 <slot :value="tableForm[column.prop]" :column="column" :dic="setDic(column.dicData,DIC[column.dicData])" :name="column.prop+'Form'" v-if="column.formsolt"></slot>
-                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :precision="column.precision" :height="setPx(column.formHeight,'auto')" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :placeholder="column.label" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
+                <component :is="getComponent(column.type)" v-else v-model="tableForm[column.prop]" :precision="column.precision" :multiple="column.multiple" :height="setPx(column.formHeight,'auto')" :size="column.size" :clearable="column.clearable" :type="column.type" :minRows="column.minRows" :maxRows="column.maxRows" :label="column.label" :placeholder="column.placeholder" :dic="setDic(column.dicData,DIC[column.dicData])" :disabled="boxType==0?vaildData(column.addDisabled,false):vaildData(column.editDisabled,false)" :format="column.format" :value-format="column.valueFormat"></component>
               </el-form-item>
             </el-col>
           </template>
@@ -75,6 +81,15 @@
         <el-button type="primary" @click="rowSave" v-else>新 增</el-button>
         <el-button @click="hide">取 消</el-button>
       </span>
+    </el-dialog>
+    <el-dialog lock-scroll :modal-append-to-body="false" :append-to-body="true" title="多选" :visible.sync="showClomnuBox">
+      <el-checkbox-group v-model="showClomnuIndex">
+        <el-row :span="24">
+          <el-col :span="6" v-for="(item,index) in showClomnuList" :key="index">
+            <el-checkbox :label="item.index">{{item.label}}</el-checkbox>
+          </el-col>
+        </el-row>
+      </el-checkbox-group>
     </el-dialog>
 
   </div>
@@ -92,6 +107,9 @@ export default {
       searchForm: {},
       boxVisible: false,
       boxType: 0,
+      showClomnuIndex: [],
+      showClomnuBox: false,
+      showClomnuList: [],
       DIC: {},
       tableForm: {},
       tableFormRules: {},
@@ -106,6 +124,8 @@ export default {
     this.dicInit()
     //初始化表单
     this.formInit()
+    //初始化动态列
+    this.showClomnuInit()
   },
   watch: {
     option: {
@@ -167,6 +187,10 @@ export default {
     }
   },
   methods: {
+    showClomnu() {},
+    refreshChange() {
+      this.$emit('refresh-change', this.page)
+    },
     vaildData(val, dafult) {
       if (typeof val == 'boolean') {
         return val
@@ -177,6 +201,18 @@ export default {
       this.tableFormRules = {}
       this.option.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules
+      })
+    },
+    showClomnuInit: function() {
+      this.option.column.forEach((ele, index) => {
+        let obj = {
+          label: ele.label,
+          index: index
+        }
+        if (validatenull(ele.hide)) {
+          this.showClomnuIndex.push(index)
+        }
+        this.showClomnuList.push(Object.assign({}, obj))
       })
     },
     dicInit() {
@@ -206,7 +242,8 @@ export default {
         if (
           ele.type == 'checkbox' ||
           ele.type == 'radio' ||
-          ele.type == 'cascader'
+          ele.type == 'cascader' ||
+          (ele.type == 'select' && ele.multiple)
         ) {
           form[ele.prop] = []
           if (ele.search) {
@@ -384,6 +421,15 @@ export default {
   margin-bottom: 10px;
   & > .el-button {
     padding: 12px 25px;
+  }
+}
+.crud-menu {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  .el-button {
+    margin-left: 5px;
   }
 }
 .crud--overflow {

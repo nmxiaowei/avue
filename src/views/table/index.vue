@@ -1,9 +1,8 @@
 <template>
   <div class="table-container pull-chheight">
-    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @current-change="handleCurrentChange" @search-change="handleSearchChange" @selection-change="handleSelectionChange">
+    <avue-crud :option="tableOption" v-model="user" :data="tableData" :table-loading="tableLoading" :before-open="boxhandleOpen" :before-close="boxhandleClose" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" :page="page" ref="crud" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel" @refresh-change="handlerefreshChange" @current-change="handleCurrentChange" @search-change="handleSearchChange" @selection-change="handleSelectionChange">
       <div class="table-header" slot="headerAfter">
         <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
-        <el-button type="primary" @click="handleRefresh" size="small" >刷新</el-button>
         <el-button type="primary" @click="handleRowEdit" size="small">编 辑</el-button>
         <el-button type="primary" @click="handleRowDel" size="small">删 除</el-button>
         <el-button type="info" @click="handleExport" size="small" v-if="permission.sys_crud_btn_export">导出excel</el-button>
@@ -16,6 +15,10 @@
           </router-link>
         </el-button>
       </div>
+      <template slot="headerMenu">
+        <el-button type="primary" icon="el-icon-edit" @click="handleRowEdit" circle size="small"></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle size="small" @click="handleRowDel"></el-button>
+      </template>
       <template slot-scope="props" slot="expand">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="姓名">
@@ -62,21 +65,22 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import html2canvas from "html2canvas";
-import tableOption from "@/const/table/tableOption";
+import { mapGetters } from 'vuex'
+import html2canvas from 'html2canvas'
+import tableOption from '@/const/table/tableOption'
+import { validatenull } from '../../../packages/utils/validate'
 export default {
-  name: "table",
+  name: 'table',
   data() {
     return {
-      tableSearch:{},
+      tableSearch: {},
       tableOption: tableOption, //表格设置属性
       tableData: [], //表格的数据
       tableRow: {},
       tablePage: 1,
       tableLoading: false,
       tabelObj: {},
-      formJson: "",
+      formJson: '',
       user: {},
       page: {
         total: 0, //总页数
@@ -87,62 +91,66 @@ export default {
         box: false,
         check: []
       }
-    };
+    }
   },
   created() {
-    this.formJson = JSON.stringify(tableOption, null, 2);
-    this.handleList();
+    this.formJson = JSON.stringify(tableOption, null, 2)
+    this.handleList()
   },
   watch: {},
   mounted() {},
   computed: {
-    ...mapGetters(["permission", "menuAll"])
+    ...mapGetters(['permission', 'menuAll'])
   },
   props: [],
   methods: {
     tip() {
       this.$notify({
-        message: "点击事件"
-      });
+        message: '点击事件'
+      })
     },
     formate() {
       let p = new Promise((resolve, reject) => {
-        resolve(JSON.parse(this.formJson));
-      });
+        resolve(JSON.parse(this.formJson))
+      })
       p
         .then(data => {
-          this.tableOption = data;
-          this.formJson = JSON.stringify(data, null, 2);
+          this.tableOption = data
+          this.formJson = JSON.stringify(data, null, 2)
           this.$notify({
-            message: "数据加载成功",
-            type: "success"
-          });
+            message: '数据加载成功',
+            type: 'success'
+          })
         })
         .catch(err => {
           this.$notify({
             center: true,
             dangerouslyUseHTMLString: true,
             message: `JSON格式错误<br \>\n${err}`,
-            type: "error"
-          });
-        });
+            type: 'error'
+          })
+        })
     },
-     /**
+    /**
      * @title 刷新数据
      *
      **/
-    handleRefresh(){
-      this.handleList(this.tableSearch);
+    handlerefreshChange(page) {
+      this.handleList(this.tableSearch)
+      this.$notify({
+        message: `刷新数据成功${JSON.stringify(page)}`,
+        type: 'success'
+      })
     },
     /**
      * @title 权限更新
      *
      **/
     handleGradeUpdate() {
-      this.tabelObj.check = [].concat(this.grade.check);
-      this.tabelObj = {};
-      this.grade.check = [];
-      this.grade.box = false;
+      this.tabelObj.check = [].concat(this.grade.check)
+      this.tabelObj = {}
+      this.grade.check = []
+      this.grade.box = false
     },
     /**
      * @title 权限选择
@@ -150,88 +158,103 @@ export default {
      **/
     handleGradeCheckChange(data, checked, indeterminate) {
       if (checked) {
-        this.grade.check.push(data.id);
+        this.grade.check.push(data.id)
       } else {
-        this.grade.check.splice(this.grade.check.indexOf(data.id), 1);
+        this.grade.check.splice(this.grade.check.indexOf(data.id), 1)
       }
     },
     handleRowEdit() {
-      this.$refs.crud.rowEdit(this.tableRow, -1);
+      if (validatenull(this.tableRow)) {
+        this.$notify({
+          showClose: true,
+          message: '请选择一行要编辑的数据',
+          type: 'error'
+        })
+        return false
+      } else if (this.tableRow.length > 1) {
+        this.$notify({
+          showClose: true,
+          message: '请选择一行数据，不要选择多行',
+          type: 'error'
+        })
+        return false
+      }
+      this.handleEdit(this.tableRow[0], -1)
     },
     handleEdit(row, index) {
-      this.$refs.crud.rowEdit(row, index);
+      this.$refs.crud.rowEdit(row, index)
     },
     /**
      * @title 打开权限
      */
     handleGrade(row, index) {
-      this.$store.dispatch("GetMenuAll").then(data => {
-        this.grade.box = true;
-        this.tabelObj = row;
-        this.grade.check = this.tabelObj.check;
-      });
+      this.$store.dispatch('GetMenuAll').then(data => {
+        this.grade.box = true
+        this.tabelObj = row
+        this.grade.check = this.tabelObj.check
+      })
     },
     /**
      * @title 导出excel
      *
      **/
     handleExport() {
-      import("@/vendor/Export2Excel").then(excel => {
-        const tHeader = ["username", "name"];
-        const filterVal = ["username", "name"];
-        const list = this.tableData;
-        const data = this.formatJson(filterVal, list);
-        excel.export_json_to_excel(tHeader, data, this.filename);
-      });
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['username', 'name']
+        const filterVal = ['username', 'name']
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel(tHeader, data, this.filename)
+      })
     },
     /**
      * @title 导出图片
      *
      **/
     handleJpeg() {
-      let vm = this;
-      let table = this.$refs.crud.$el;
+      let vm = this
+      let table = this.$refs.crud.$el
       html2canvas(table).then(canvas => {
-        var url = canvas.toDataURL();
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "未命名";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      });
+        var url = canvas.toDataURL()
+        let a = document.createElement('a')
+        a.href = url
+        a.download = '未命名'
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+      })
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
+          if (j === 'timestamp') {
+            return parseTime(v[j])
           } else {
-            return v[j];
+            return v[j]
           }
         })
-      );
+      )
     },
     /**
      * @title 页面改变值
      *
      **/
     handleCurrentChange(val) {
-      this.tablePage = val;
-      this.handleList();
+      this.tablePage = val
+      this.handleList()
     },
-     /**
+    /**
      * @title 搜索按钮回掉
      *
      **/
-    handleSearchChange(form){
-      this.tableSearch = form;
+    handleSearchChange(form) {
+      this.tableSearch = form
       this.$notify({
         showClose: true,
         message: JSON.stringify(this.tableSearch),
-        type: "success"
-      });
-       this.handleList(this.tableSearch);
+        type: 'success'
+      })
+      this.handleList(this.tableSearch)
     },
     /**
      * @title 打开新增窗口
@@ -239,7 +262,7 @@ export default {
      *
      **/
     handleAdd() {
-      this.$refs.crud.rowAdd();
+      this.$refs.crud.rowAdd()
     },
     /**
      * @title 选中第几行
@@ -248,7 +271,7 @@ export default {
      *
      **/
     toggleSelection(row) {
-      this.$refs.crud.toggleSelection(row);
+      this.$refs.crud.toggleSelection(row)
     },
     /**
      * @title 获取数据
@@ -256,20 +279,23 @@ export default {
      *
      **/
     handleList(form) {
-      this.tableLoading = true;
+      this.tableLoading = true
       this.$store
-        .dispatch("GetTableData", Object.assign({}, form, { page: `${this.tablePage}` }))
+        .dispatch(
+          'GetTableData',
+          Object.assign({}, form, { page: `${this.tablePage}` })
+        )
         .then(data => {
           setTimeout(() => {
-            this.tableData = data.tableData;
+            this.tableData = data.tableData
             this.page = {
               total: data.total,
               currentPage: this.tablePage,
               pageSize: data.pageSize
-            };
-            this.tableLoading = false;
-          }, 1000);
-        });
+            }
+            this.tableLoading = false
+          }, 1000)
+        })
     },
     /**
      * @title 当前选中的数据
@@ -277,12 +303,12 @@ export default {
      *
      **/
     handleSelectionChange(val) {
-      this.tableRow = val[0];
+      this.tableRow = val
       this.$notify({
         showClose: true,
         message: JSON.stringify(val),
-        type: "success"
-      });
+        type: 'success'
+      })
     },
     /**
      * @title 数据添加
@@ -291,15 +317,15 @@ export default {
      *
      **/
     handleSave(row, done) {
-      this.tableData.push(Object.assign({}, row));
-      done();
+      this.tableData.push(Object.assign({}, row))
+      done()
       setTimeout(() => {
         this.$notify({
           showClose: true,
-          message: "添加成功",
-          type: "success"
-        });
-      });
+          message: '添加成功',
+          type: 'success'
+        })
+      })
     },
     /**
      * @title 行双击
@@ -310,9 +336,9 @@ export default {
     handleRowDBLClick(row, event) {
       this.$notify({
         showClose: true,
-        message: "双击",
-        type: "success"
-      });
+        message: '双击',
+        type: 'success'
+      })
     },
 
     /**
@@ -325,16 +351,27 @@ export default {
     handleRowClick(row, event, column) {
       this.$notify({
         showClose: true,
-        message: "单机",
-        type: "success"
-      });
+        message: '单机',
+        type: 'success'
+      })
     },
     handleRowDel() {
-      this.$notify({
-        showClose: true,
-        message: this.tableRow,
-        type: "success"
-      });
+      if (validatenull(this.tableRow)) {
+        this.$notify({
+          showClose: true,
+          message: '请选择一行要删除的数据',
+          type: 'error'
+        })
+        return false
+      } else if (this.tableRow.length > 1) {
+        this.$notify({
+          showClose: true,
+          message: '请选择一行数据，不要选择多行',
+          type: 'error'
+        })
+        return false
+      }
+      this.handleDel(this.tableRow[0], -1)
     },
     /**
      * @title 数据删除
@@ -343,20 +380,20 @@ export default {
      *
      **/
     handleDel(row, index) {
-      this.$confirm(`是否确认删除序号为${row.name}`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm(`是否确认删除序号为${row.name}`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.tableData.splice(index, 1);
+          this.tableData.splice(index, 1)
           this.$notify({
             showClose: true,
-            message: "删除成功",
-            type: "success"
-          });
+            message: '删除成功',
+            type: 'success'
+          })
         })
-        .catch(err => {});
+        .catch(err => {})
     },
     /**
      * @title 数据更新
@@ -366,15 +403,15 @@ export default {
      *
      **/
     handleUpdate(row, index, done) {
-      this.tableData.splice(index, 1, Object.assign({}, row));
-      done();
+      this.tableData.splice(index, 1, Object.assign({}, row))
+      done()
       setTimeout(() => {
         this.$notify({
           showClose: true,
-          message: "修改成功",
-          type: "success"
-        });
-      });
+          message: '修改成功',
+          type: 'success'
+        })
+      })
     },
     /**
      * @title 表单关闭前处理
@@ -384,21 +421,21 @@ export default {
     boxhandleClose(done) {
       this.$notify({
         showClose: true,
-        message: "表单关闭前处理事件",
-        type: "success"
-      });
-      done();
+        message: '表单关闭前处理事件',
+        type: 'success'
+      })
+      done()
     },
     boxhandleOpen(show) {
       this.$notify({
         showClose: true,
-        message: "表单打开前处理事件",
-        type: "success"
-      });
-      show();
+        message: '表单打开前处理事件',
+        type: 'success'
+      })
+      show()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
