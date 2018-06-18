@@ -16,6 +16,7 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
 前端avue交流群：606410437  
 后台微服务群：23754102   
 服务端解决方案：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
+刚入门的前端小师妹博客:[https://my.oschina.net/u/3883702/](https://my.oschina.net/u/3883702/)
 
 最近很多人反应不太会用crud快速开发组件，因此下周将免费推出crud系列的讲解课程，详情请加QQ群
 
