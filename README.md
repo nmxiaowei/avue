@@ -8,7 +8,9 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
   <img width="600" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-bg.png">
 </p>
 
+- [B站视频](https://www.bilibili.com/video/av24644922)
 - [1.Avue修仙系列之基础环境的准备和课程介绍](https://pan.baidu.com/s/1ZBgYby4K8yQC3U4mevuk8A)
+- [2.Avue修仙系列之avue-crud组件type属性介绍](https://pan.baidu.com/s/1jo1yx128sSJgnRnECtvEEw#list/path=%2F)
 - 未完待续
 
 #### avue相关地址
@@ -18,7 +20,7 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
 服务端解决方案：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
 刚入门的前端小师妹博客:[https://my.oschina.net/u/3883702/](https://my.oschina.net/u/3883702/)
 
-最近很多人反应不太会用crud快速开发组件，因此下周将免费推出crud系列的讲解课程，详情请加QQ群
+最近很多人反应不太会用crud快速开发组件，因此免费推出crud系列的讲解课程，详情请加QQ群
 
 <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class1.png">
 <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class2.png">
