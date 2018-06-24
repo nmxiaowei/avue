@@ -14,6 +14,7 @@ import DataCard from './data-card/index.js'
 import DataTabs from './data-tabs/index.js'
 import DataIcons from './data-icons/index.js'
 import Form from './form/index.js'
+import TableTree from './table-tree';
 import './theme-chalk/src/common.scss'
 const components = [
     Crud,
@@ -32,6 +33,7 @@ const components = [
     DataCard,
     DataIcons,
     DataTabs,
+    TableTree,
 ]
 const install = function(Vue, axios, opts = {}) {
     //注入axios;
@@ -51,7 +53,7 @@ if (typeof window !== 'undefined' && window.Vue && window.axios) {
     install(window.Vue, window.axios);
 }
 export default {
-    version: '1.4.3',
+    version: '1.4.4',
     Crud,
     Form,
     CrudCheckbox,
@@ -68,4 +70,5 @@ export default {
     DataCard,
     DataIcons,
     DataTabs,
+    TableTree
 }

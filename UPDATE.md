@@ -1,3 +1,20 @@
+#### 1.4.4
+
+ **crud and from**
+- 优化：字典不用在option中申明合集，自动匹配clumons中的字典值
+- 优化：部分组件代码优化
+- 优化：dicData和dicUrl，本地字典和网络字典的合并
+
+ **table-tree**
+- 新增：支持自定义dom和点击事件
+- 新增：avue-table-tree全局表格树组件
+- 新增：表格树演示demo
+
+ **其他**
+- 新增：引导页demo使用例子
+- 新增：视屏同步更新
+- 说明：感谢vue-element-admin提供table-tree组件思路
+
 #### 1.4.3
 
  **crud and from**

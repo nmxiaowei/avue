@@ -75,6 +75,8 @@ import Avue from 'avue-cli/packages/index.js';
 - FORM(动态生成)
 - 阿里巴巴图标库(在线调用)
 - 环境变量
+- 表格树
+- 引导页
 - 数据持久化
 - 剪切板
 - 系统管理
@@ -101,6 +103,11 @@ import Avue from 'avue-cli/packages/index.js';
 **环境变量**
 <p align="center">
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-dev.png">
+</p>
+
+**表格树**
+<p align="center">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-table-tree.png">
 </p>
 
 **登录**

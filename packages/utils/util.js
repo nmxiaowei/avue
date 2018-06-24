@@ -76,6 +76,43 @@ export const setPx = (val, defval) => {
 }
 
 /**
+ * 表格初始化值
+ */
+
+export const formInitVal = (list) => {
+    let form = {}
+    let searchForm = {}
+    list.forEach(ele => {
+        if (
+            ele.type == 'checkbox' ||
+            ele.type == 'radio' ||
+            ele.type == 'cascader' ||
+            (ele.type == 'select' && ele.multiple)
+        ) {
+            form[ele.prop] = []
+            if (ele.search) {
+                searchForm[ele.prop] = []
+            }
+        } else if (ele.type == 'number') {
+            form[ele.prop] = 0
+            if (ele.search) {
+                searchForm[ele.prop] = 0
+            }
+        } else {
+            form[ele.prop] = ''
+            if (ele.search) {
+                searchForm[ele.prop] = ''
+            }
+        }
+        if (!validatenull(ele.valueDefault)) form[ele.prop] = ele.valueDefault
+    })
+    return {
+        form,
+        searchForm
+    }
+}
+
+/**
  * 搜索框获取动态组件
  */
 export const getSearchType = (type) => {

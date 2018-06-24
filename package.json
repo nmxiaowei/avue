@@ -1,6 +1,6 @@
 {
     "name": "avue-cli",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "main": "lib/avue.js",
     "description": "快速crud构建脚手架",
     "author": "smallwei <1634566606@qq.com>",
@@ -20,6 +20,7 @@
     "dependencies": {
         "axios": "^0.16.2",
         "compression": "^1.6.2",
+        "driver.js": "^0.5.2",
         "element-ui": "^2.3.6",
         "es6-promise": "^4.1.1",
         "express": "^4.14.1",

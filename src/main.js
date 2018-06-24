@@ -9,12 +9,12 @@ import router from './router/router';
 import store from './store';
 import ELEMENT from 'element-ui';
 import {
-  loadStyle
+    loadStyle
 } from './util/util'
 import * as urls from '@/config/env';
 import {
-  iconfontUrl,
-  iconfontVersion
+    iconfontUrl,
+    iconfontVersion
 } from '@/config/env';
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
@@ -26,29 +26,29 @@ Vue.use(VueClipboard)
 Vue.use(VueAxios, axios)
 
 Object.keys(urls).forEach(key => {
-  Vue.prototype[key] = urls[key];
+    Vue.prototype[key] = urls[key];
 })
 
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+    Vue.filter(key, filters[key])
 })
 
 iconfontVersion.forEach(ele => {
-  loadStyle(iconfontUrl.replace('$key', ele));
+    loadStyle(iconfontUrl.replace('$key', ele));
 })
 
 Vue.config.productionTip = false;
 
 
 export function createApp() {
-  const app = new Vue({
-    router,
-    store,
-    render: h => h(App)
-  })
-  return {
-    app,
-    router,
-    store
-  }
+    const app = new Vue({
+        router,
+        store,
+        render: h => h(App)
+    })
+    return {
+        app,
+        router,
+        store
+    }
 }

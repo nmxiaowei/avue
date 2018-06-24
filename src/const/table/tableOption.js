@@ -17,7 +17,6 @@ export default {
     //   prop: 'name',
     //   order: 'descending'
     // },
-    dic: ['VAILDATA', 'SEX', 'TYPE'],
     dicData: DIC,
     column: [{
             label: "用户名",

@@ -33,7 +33,8 @@ export default {
     return {
       form: {},
       formRules: {},
-      DIC: {}
+      DIC: {},
+      dicList: []
     }
   },
   created() {
@@ -84,28 +85,10 @@ export default {
         if (ele.rules) this.formRules[ele.prop] = ele.rules
       })
     },
-    dicInit() {
-      this.GetDic(this.option.dic).then(data => {
-        this.DIC = data
-      })
-    },
+
     formInit() {
-      const list = this.option.column
-      let form = {}
-      list.forEach(ele => {
-        if (
-          ele.type == 'checkbox' ||
-          ele.type == 'radio' ||
-          ele.type == 'cascader' ||
-          (ele.type == 'select' && ele.multiple)
-        ) {
-          form[ele.prop] = []
-        } else {
-          form[ele.prop] = ''
-        }
-        if (!validatenull(ele.valueDefault)) from[ele.prop] = ele.valueDefault
-      })
-      this.form = Object.assign({}, form)
+      const formObj = this.formInitVal(this.option.column)
+      this.form = Object.assign({}, formObj.form)
     },
     formVal() {
       this.form = this.value

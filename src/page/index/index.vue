@@ -21,26 +21,26 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import tags from "./tags";
-import top from "./top/";
-import sidebar from "./sidebar/";
+import { mapGetters } from 'vuex'
+import tags from './tags'
+import top from './top/'
+import sidebar from './sidebar/'
 export default {
   components: {
     top,
     tags,
     sidebar
   },
-  name: "index",
+  name: 'index',
   data() {
-    return {};
+    return {}
   },
   created() {},
   mounted() {},
-  computed: mapGetters(["isLock"]),
+  computed: mapGetters(['isLock']),
   props: [],
   methods: {}
-};
+}
 </script>
 
 <style lang="scss" scoped>

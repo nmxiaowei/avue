@@ -3,7 +3,6 @@ import {
 } from '@/const/dic'
 export default {
     dicData: DIC,
-    dic: ['GRADE', 'SEX'],
     submitText: '完成',
     column: [{
             label: "用户名",
@@ -49,7 +48,8 @@ export default {
         {
             label: "地址",
             span: 24,
-            type: "textarea",
+            formHeight: 180,
+            type: "ueditor",
             prop: "address",
         }
     ]

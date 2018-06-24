@@ -3,7 +3,8 @@ import {
     getComponent,
     getSearchType,
     setDic,
-    setPx
+    setPx,
+    formInitVal
 } from "../utils/util.js";
 import {
     validatenull
@@ -40,16 +41,29 @@ export default function() {
             crudSwitch
         },
         methods: {
-            GetDic: function(list) {
+            dicInit() {
+                this.option.column.forEach(ele => {
+                    if (ele.dicData && typeof ele.dicData == 'string') {
+                        this.dicList.push(ele.dicData)
+                    }
+                })
+                this.GetDic().then(data => {
+                    this.DIC = data
+                })
+            },
+            GetDic: function() {
                 return new Promise((resolve, reject) => {
-                    let result = [];
+                    let result = [],
+                        dicData = {},
+                        locaDic = this.option.dicData,
+                        list = this.dicList;
                     if (validatenull(list)) {
                         return;
                     }
                     list.forEach(ele => {
                         result.push(new Promise((resolve, reject) => {
                             if (validatenull(this.option.dicUrl)) {
-                                resolve(this.option.dicData[ele]);
+                                resolve(locaDic[ele]);
                             } else {
                                 this.$http.get(`${this.option.dicUrl}/${ele}`).then(function(response) {
                                     resolve(validatenull(response.data.data) ? [] : response.data.data);
@@ -57,12 +71,14 @@ export default function() {
                             }
                         }))
                     })
-                    let value = {};
                     Promise.all(result).then(data => {
                         list.forEach((ele, index) => {
-                            value[ele] = data[index];
+                            dicData[ele] = data[index];
                         })
-                        resolve(value);
+                        if (validatenull(this.option.dicUrl)) {
+                            dicData = Object.assign({}, dicData, locaDic)
+                        }
+                        resolve(dicData);
                     })
                 });
 
@@ -75,6 +91,9 @@ export default function() {
             },
             findByvalue: function(dic, val) {
                 return findByvalue(dic, val);
+            },
+            formInitVal: function(list) {
+                return formInitVal(list);
             },
             setDic: function(dicData, DIC) {
                 return setDic(dicData, DIC);

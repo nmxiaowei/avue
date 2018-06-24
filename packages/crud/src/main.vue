@@ -111,6 +111,7 @@ export default {
       showClomnuBox: false,
       showClomnuList: [],
       DIC: {},
+      dicList: [],
       tableForm: {},
       tableFormRules: {},
       tableIndex: -1,
@@ -215,11 +216,6 @@ export default {
         this.showClomnuList.push(Object.assign({}, obj))
       })
     },
-    dicInit() {
-      this.GetDic(this.option.dic).then(data => {
-        this.DIC = data
-      })
-    },
     formVal() {
       this.$emit('input', this.tableForm)
     },
@@ -235,35 +231,9 @@ export default {
       }
     },
     formInit() {
-      const list = this.option.column
-      let form = {}
-      let searchForm = {}
-      list.forEach(ele => {
-        if (
-          ele.type == 'checkbox' ||
-          ele.type == 'radio' ||
-          ele.type == 'cascader' ||
-          (ele.type == 'select' && ele.multiple)
-        ) {
-          form[ele.prop] = []
-          if (ele.search) {
-            searchForm[ele.prop] = []
-          }
-        } else if (ele.type == 'number') {
-          form[ele.prop] = 0
-          if (ele.search) {
-            searchForm[ele.prop] = 0
-          }
-        } else {
-          form[ele.prop] = ''
-          if (ele.search) {
-            searchForm[ele.prop] = ''
-          }
-        }
-        if (!validatenull(ele.valueDefault)) form[ele.prop] = ele.valueDefault
-      })
-      this.tableForm = Object.assign({}, form)
-      this.searchForm = Object.assign({}, searchForm)
+      const formObj = this.formInitVal(this.option.column)
+      this.tableForm = Object.assign({}, formObj.form)
+      this.searchForm = Object.assign({}, formObj.searchForm)
     },
     //搜索清空
     searchReset() {
