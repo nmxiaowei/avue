@@ -44,7 +44,7 @@
           </router-link>
         </el-button>
       </template>
-      <template slot="headerMenu">
+      <template slot="menuRight">
         <el-button type="primary"
                    icon="el-icon-edit"
                    @click="handleRowEdit"
