@@ -1,18 +1,35 @@
 <template>
   <div class="table-container pull-height">
-    <div class="table-header">
-      <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
-    </div>
-    <avue-crud :option="tableOption" :data="tableData" :table-loading="tableLoading" :page="page" ref="crud" width="290" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel">
-      <template slot-scope="scope" slot="menu">
-        <el-button icon="el-icon-check" size="small" @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+    <avue-crud :option="tableOption"
+               :data="tableData"
+               :table-loading="tableLoading"
+               :page="page"
+               ref="crud"
+               width="290"
+               @row-save="handleSave"
+               @row-update="handleUpdate"
+               @row-del="handleDel">
+      <template slot-scope="scope"
+                slot="menu">
+        <el-button icon="el-icon-check"
+                   size="small"
+                   @click="handleGrade(scope.row,scope.$index)">权限</el-button>
       </template>
     </avue-crud>
-    <el-dialog title="菜单" :visible.sync="grade.box" width="40%">
-      <el-tree :data="menuAll" :default-checked-keys="grade.check" :default-expanded-keys="grade.check" show-checkbox node-key="id" @check-change="handleGradeCheckChange">
+    <el-dialog title="菜单"
+               :visible.sync="grade.box"
+               width="40%">
+      <el-tree :data="menuAll"
+               :default-checked-keys="grade.check"
+               :default-expanded-keys="grade.check"
+               show-checkbox
+               node-key="id"
+               @check-change="handleGradeCheckChange">
       </el-tree>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleGradeUpdate">更新</el-button>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="handleGradeUpdate">更新</el-button>
       </span>
     </el-dialog>
 
@@ -174,11 +191,5 @@ export default {
 <style lang="scss" scoped>
 .table-container {
   padding: 8px 10px;
-}
-.table-header {
-  margin-bottom: 10px;
-  & > .el-button {
-    padding: 12px 25px;
-  }
 }
 </style>

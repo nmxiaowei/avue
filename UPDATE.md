@@ -1,3 +1,19 @@
+#### 1.4.5
+
+ **crud and from**
+- 修复：控件中高度写死，不固定问题
+- 优化：dicUrl接口中字典 多层data的处理问题，降级处理
+
+ **crud**
+- 新增：addBtn属性控制crud中新增按钮默认为true
+- 新增：menuLeft和menuRight自定义crud表头左右菜单卡槽
+- 新增：row-class-name自定义class名事件
+
+ **table-tree**
+- 新增：stripe表格条纹
+- 新增：row-class-name自定义class名事件
+
+
 #### 1.4.4
 
  **crud and from**

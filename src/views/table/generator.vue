@@ -1,19 +1,31 @@
 <template>
   <div class="generator-container  pull-chheight">
-    <avue-form :option="formOption" v-model="tableForm">
-      <template slot-scope="scope" slot="dic">
+    <avue-form :option="formOption"
+               v-model="tableForm">
+      <template slot-scope="scope"
+                slot="dic">
         <el-button @click.native="dicData.box=true">
           字典选择
         </el-button>
       </template>
     </avue-form>
-    <el-button type="primary" @click="handleAddColumn" size="small">新增</el-button>
-    <avue-crud ref="crud" :option="tableOption" :data="form.column" @row-update="handleUpdate" @row-del="handleDel" @row-save="handleSave"></avue-crud>
-    <el-input type="textarea" v-model="result" :autosize="{ minRows: 10}"></el-input>
-    <el-dialog title="字典选择" :visible.sync="dicData.box">
-      <avue-crud-checkbox v-model="dicData.check" :dic="DIC.DATALIST"></avue-crud-checkbox>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleDicSbumit">确 定</el-button>
+    <avue-crud ref="crud"
+               :option="tableOption"
+               :data="form.column"
+               @row-update="handleUpdate"
+               @row-del="handleDel"
+               @row-save="handleSave"></avue-crud>
+    <el-input type="textarea"
+              v-model="result"
+              :autosize="{ minRows: 10}"></el-input>
+    <el-dialog title="字典选择"
+               :visible.sync="dicData.box">
+      <avue-crud-checkbox v-model="dicData.check"
+                          :dic="DIC.DATALIST"></avue-crud-checkbox>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="handleDicSbumit">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -102,9 +114,6 @@ export default {
         this.tableOption.column.length - 1
       ].dicData = this.dicData.list;
       this.dicData.box = false;
-    },
-    handleAddColumn() {
-      this.$refs.crud.rowAdd();
     },
     handleSave(row, done) {
       this.form.column.push(row);

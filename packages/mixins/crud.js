@@ -65,8 +65,15 @@ export default function() {
                             if (validatenull(this.option.dicUrl)) {
                                 resolve(locaDic[ele]);
                             } else {
+                                //降级处理data层级关系
                                 this.$http.get(`${this.option.dicUrl}/${ele}`).then(function(response) {
-                                    resolve(validatenull(response.data.data) ? [] : response.data.data);
+                                    if (!validatenull(response.data.data)) {
+                                        resolve(response.data.data);
+                                    } else if (!validatenull(response.data)) {
+                                        resolve(response.data);
+                                    } else {
+                                        resolve([]);
+                                    }
                                 })
                             }
                         }))

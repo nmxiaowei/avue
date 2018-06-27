@@ -1,10 +1,16 @@
 <template>
   <div class="table-container pull-height">
-    <div class="table-header">
-      <el-button type="primary" @click="handleAdd" size="small" v-if="permission.sys_crud_btn_add">新 增</el-button>
-    </div>
-    <avue-crud :option="tableOption" :data="tableData" :table-loading="tableLoading" :page="page" ref="crud" width="290" @row-save="handleSave" @row-update="handleUpdate" @row-del="handleDel">
-      <template slot-scope="scope" slot="state">
+    <avue-crud :option="tableOption"
+               :data="tableData"
+               :table-loading="tableLoading"
+               :page="page"
+               ref="crud"
+               width="290"
+               @row-save="handleSave"
+               @row-update="handleUpdate"
+               @row-del="handleDel">
+      <template slot-scope="scope"
+                slot="state">
         <el-tag :type="scope.row.state==0?'success':'danger'">{{findByvalue(scope.dic,scope.row.state)}}</el-tag>
       </template>
     </avue-crud>
@@ -144,11 +150,5 @@ export default {
 <style lang="scss" scoped>
 .table-container {
   padding: 8px 10px;
-}
-.table-header {
-  margin-bottom: 10px;
-  & > .el-button {
-    padding: 12px 25px;
-  }
 }
 </style>
