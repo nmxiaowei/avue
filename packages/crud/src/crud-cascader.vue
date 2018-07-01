@@ -1,55 +1,53 @@
 <template>
-  <el-cascader :options="dic" v-model="text" :placeholder="placeholder?placeholder:`请选择${label}`" :disabled="disabled" @change="handleChange">
+  <el-cascader :options="dic"
+               v-model="text"
+               :placeholder="placeholder?placeholder:`请选择${label}`"
+               :props="props"
+               :clearable="clearable"
+               :expand-trigger="expandTrigger"
+               :show-all-levels="showAllLevels"
+               :filterable="filterable"
+               :separator="separator"
+               :disabled="disabled"
+               @change="handleChange">
   </el-cascader>
 </template>
 
 <script>
+import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
-  name: 'AvueCrudCascader',
-  data() {
-    return {
-      text: []
-    }
-  },
+  name: "AvueCrudCascader",
+  mixins: [crudCompoents()],
   props: {
-    value: {
-      default: () => {
-        return []
-      }
-    },
-    placeholder: {
+    expandTrigger: {
       type: String,
-      default: ''
+      default: "hover"
     },
-    disabled: {
+    showAllLevels: {
       type: Boolean,
-      default: false
+      default: true
     },
-    label: {
+    filterable: {
+      type: Boolean,
+      default: true
+    },
+    separator: {
       type: String,
-      default: ''
-    },
-    dic: {
-      default: () => {
-        return []
-      }
+      default: "/"
     }
   },
-  watch: {
-    value: function(n, o) {
-      this.text = this.value
-    }
+  data() {
+    return {};
   },
-  created() {
-    this.text = this.value
-  },
+  watch: {},
+  created() {},
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit('input', value)
+      this.$emit("input", value);
     }
   }
-}
+};
 </script>
 
 <style>

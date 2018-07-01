@@ -1,3 +1,20 @@
+#### 1.4.6
+
+ **crud and from**
+- 新增：props（select，radio，checkbox，cascader,switch）配置选项，对象可以制定字典中key-value的值，详情见文档
+- 新增：type=number时step步长设置，默认为1
+- 新增：type=number时controlsPosition 按钮的位置，默认为上下，可选值:right,top，
+- 新增：type=switch时的宽度，width属性
+- 新增：type=cascader时clearable是否支持清空选项
+- 新增：type=cascader时ecxpandTrigger,次级菜单的展开方式,默认为hover，可选值click，hover
+- 新增：type=cascader时showAllLevels,输入框中是否显示选中值的完整路径，默认为true
+- 新增：type=cascader时filterable,是否可搜索选项	，默认为false
+- 新增：type=cascader时separator,选项分隔符	，默认为斜杠
+- 新增：type=chckbox时min和max可被勾选的 checkbox 的最小和最大数量
+- 新增：type=checkbox || radio 时border是否显示边框，默认为false
+- 优化：优化多种函数合并处理，mixins公用
+
+
 #### 1.4.5
 
  **crud and from**

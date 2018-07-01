@@ -1,42 +1,35 @@
 <template>
-  <el-input-number v-model="text" @change="handleChange" :precision="precision" :size="size" :min="minRows" :max="maxRows" :label="placeholder?placeholder:`请输入${label}`" :disabled="disabled"></el-input-number>
+  <el-input-number v-model="text"
+                   @change="handleChange"
+                   :precision="precision"
+                   :size="size"
+                   :min="minRows"
+                   :max="maxRows"
+                   :controls-position="controlsPosition"
+                   :label="placeholder?placeholder:`请输入${label}`"
+                   :disabled="disabled"></el-input-number>
 </template>
 
 <script>
+import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
-  name: 'AvueCrudInputNumber',
+  name: "AvueCrudInputNumber",
+  mixins: [crudCompoents()],
   data() {
-    return {
-      text: ''
-    }
+    return {};
   },
   props: {
-    value: {
-      type: Number
+    step: {
+      type: Number,
+      default: 1
     },
-    disabled: {
-      type: Boolean,
-      default: false
+    controlsPosition: {
+      type: String,
+      default: "right"
     },
     precision: {
       type: Number,
       default: 0
-    },
-    placeholder: {
-      type: String,
-      default: ''
-    },
-    label: {
-      type: String,
-      default: ''
-    },
-    type: {
-      type: String,
-      default: ''
-    },
-    size: {
-      type: String,
-      default: ''
     },
     minRows: {
       type: Number,
@@ -47,21 +40,15 @@ export default {
       default: Infinity
     }
   },
-  watch: {
-    value: function(n, o) {
-      this.text = this.value
-    }
-  },
-  created() {
-    this.text = this.value
-  },
+  watch: {},
+  created() {},
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit('input', value)
+      this.$emit("input", value);
     }
   }
-}
+};
 </script>
 
 <style>

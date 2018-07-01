@@ -1,57 +1,39 @@
 <template>
-  <el-time-picker v-model="text" type="date" :size="size" :format="format" :value-format="valueFormat" :placeholder="placeholder?placeholder:`请输入${label}`" @change="handleChange" :disabled="disabled"> </el-time-picker>
+  <el-time-picker v-model="text"
+                  type="date"
+                  :size="size"
+                  :format="format"
+                  :value-format="valueFormat"
+                  :placeholder="placeholder?placeholder:`请输入${label}`"
+                  @change="handleChange"
+                  :disabled="disabled"> </el-time-picker>
 </template>
 
 <script>
+import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
-  name: 'AvueCrudTime',
+  name: "AvueCrudTime",
+  mixins: [crudCompoents()],
   data() {
-    return {
-      text: ''
-    }
+    return {};
   },
   props: {
-    value: {
-      default: ''
-    },
     valueFormat: {
-      default: ''
+      default: ""
     },
     format: {
-      default: ''
-    },
-    size: {
-      type: String,
-      default: ''
-    },
-    label: {
-      type: String,
-      default: ''
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: {
-      type: String,
-      default: ''
+      default: ""
     }
   },
-  watch: {
-    value: function(n, o) {
-      this.text = this.value
-    }
-  },
-  created() {
-    this.text = this.value
-  },
+  watch: {},
+  created() {},
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit('input', value)
+      this.$emit("input", value);
     }
   }
-}
+};
 </script>
 
 <style scoped>

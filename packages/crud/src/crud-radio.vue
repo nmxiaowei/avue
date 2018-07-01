@@ -1,39 +1,25 @@
 <template>
-  <el-radio-group v-model="text" @change="handleChange" :disabled="disabled">
-    <el-radio v-for="(item,index) in dic" :label="item.value" :key="index">{{item.label}}</el-radio>
+  <el-radio-group v-model="text"
+                  @change="handleChange"
+                  :disabled="disabled">
+    <el-radio v-for="(item,index) in dic"
+              :label="item[valueKey]"
+              :border="border"
+              :key="index">{{item[labelKey]}}</el-radio>
   </el-radio-group>
 </template>
 
 <script>
+import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudRadio",
+  mixins: [crudCompoents()],
   data() {
-    return {
-      text: ""
-    };
+    return {};
   },
-  props: {
-    value: {
-      default: ""
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    dic: {
-      default: () => {
-        return [];
-      }
-    }
-  },
-  watch: {
-    value: function(n, o) {
-      this.text = this.value;
-    }
-  },
-  created() {
-    this.text = this.value;
-  },
+  props: {},
+  watch: {},
+  created() {},
   mounted() {},
   methods: {
     handleChange(value) {
@@ -44,5 +30,4 @@ export default {
 </script>
 
 <style>
-
 </style>

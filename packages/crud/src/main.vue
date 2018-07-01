@@ -188,6 +188,7 @@
                 <component :is="getComponent(column.type)"
                            v-else
                            v-model="tableForm[column.prop]"
+                           :props="option.props"
                            :precision="column.precision"
                            :multiple="column.multiple"
                            :height="setPx(column.formHeight,'auto')"
@@ -196,6 +197,16 @@
                            :type="column.type"
                            :minRows="column.minRows"
                            :maxRows="column.maxRows"
+                           :step="column.step"
+                           :controls-position="column.controlsPosition"
+                           :expand-trigger="column.expandTrigger"
+                           :show-all-levels="column.showAllLevels"
+                           :filterable="column.filterable"
+                           :separator="column.separator"
+                           :border="column.border"
+                           :min="column.min"
+                           :max="column.max"
+                           :width="column.width"
                            :label="column.label"
                            :placeholder="column.placeholder"
                            :dic="setDic(column.dicData,DIC[column.dicData])"
@@ -252,8 +263,6 @@ export default {
       showClomnuIndex: [],
       showClomnuBox: false,
       showClomnuList: [],
-      DIC: {},
-      dicList: [],
       tableForm: {},
       tableFormRules: {},
       tableIndex: -1,
@@ -261,28 +270,8 @@ export default {
     };
   },
   created() {
-    //规则初始化
-    this.rulesInit();
-    //初始化字典
-    this.dicInit();
-    //初始化表单
-    this.formInit();
     //初始化动态列
     this.showClomnuInit();
-  },
-  watch: {
-    option: {
-      handler(n, o) {
-        this.rulesInit();
-      },
-      deep: true
-    },
-    tableForm: {
-      handler(n, o) {
-        this.formVal();
-      },
-      deep: true
-    }
   },
   computed: {
     searchFlag: function() {

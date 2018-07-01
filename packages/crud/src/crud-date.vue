@@ -1,60 +1,44 @@
 <template>
-  <el-date-picker :type="type" v-model="text" :size="size" :format="format" :value-format="valueFormat" :placeholder="placeholder?placeholder:`请输入${label}`" @change="handleChange" :disabled="disabled"> </el-date-picker>
+  <el-date-picker :type="type"
+                  v-model="text"
+                  :size="size"
+                  :format="format"
+                  :value-format="valueFormat"
+                  :placeholder="placeholder?placeholder:`请输入${label}`"
+                  @change="handleChange"
+                  :disabled="disabled"> </el-date-picker>
 </template>
 
 <script>
+import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
-  name: 'AvueCrudDate',
+  name: "AvueCrudDate",
+  mixins: [crudCompoents()],
   data() {
     return {
-      text: ''
-    }
+      text: ""
+    };
   },
   props: {
-    value: {
-      default: ''
-    },
     type: {
-      default: 'date'
+      default: "date"
     },
     valueFormat: {
-      default: ''
-    },
-    label: {
-      type: String,
-      default: ''
+      default: ""
     },
     format: {
-      default: ''
-    },
-    size: {
-      type: String,
-      default: ''
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: {
-      type: String,
-      default: ''
+      default: ""
     }
   },
-  watch: {
-    value: function(n, o) {
-      this.text = this.value
-    }
-  },
-  created() {
-    this.text = this.value
-  },
+  watch: {},
+  created() {},
   mounted() {},
   methods: {
     handleChange(value) {
-      this.$emit('input', value)
+      this.$emit("input", value);
     }
   }
-}
+};
 </script>
 
 <style>

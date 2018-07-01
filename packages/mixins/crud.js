@@ -1,11 +1,4 @@
-import {
-    findByvalue,
-    getComponent,
-    getSearchType,
-    setDic,
-    setPx,
-    formInitVal
-} from "../utils/util.js";
+import * as utils from "../utils/util.js";
 import {
     validatenull
 } from '../utils/validate.js'
@@ -25,7 +18,7 @@ export default function() {
             option: {
                 type: Object,
                 required: true,
-                default: {}
+                default: () => {}
             },
         },
         components: {
@@ -40,6 +33,38 @@ export default function() {
             crudUeditor,
             crudSwitch
         },
+        watch: {
+            watch: {
+                option: {
+                    handler(n, o) {
+                        this.rulesInit();
+                    },
+                    deep: true
+                },
+                value: {
+                    handler(n, o) {
+                        this.formVal();
+                    },
+                    deep: true
+                }
+            },
+        },
+        data() {
+            return {
+                DIC: {},
+                dicList: [],
+            }
+        },
+        created() {
+            //初始化工具
+            this.initFun();
+            //规则初始化
+            this.rulesInit();
+            //初始化字典
+            this.dicInit();
+            //初始化表单
+            this.formInit();
+        },
         methods: {
             dicInit() {
                 this.option.column.forEach(ele => {
@@ -51,7 +76,7 @@ export default function() {
                     this.DIC = data
                 })
             },
-            GetDic: function() {
+            GetDic() {
                 return new Promise((resolve, reject) => {
                     let result = [],
                         dicData = {},
@@ -90,23 +115,10 @@ export default function() {
                 });
 
             },
-            getComponent: function(type) {
-                return getComponent(type);
-            },
-            getSearchType: function(type) {
-                return getSearchType(type);
-            },
-            findByvalue: function(dic, val) {
-                return findByvalue(dic, val);
-            },
-            formInitVal: function(list) {
-                return formInitVal(list);
-            },
-            setDic: function(dicData, DIC) {
-                return setDic(dicData, DIC);
-            },
-            setPx: function(val, defval) {
-                return setPx(val, defval);
+            initFun() {
+                Object.keys(utils).forEach(key => {
+                    this[key] = utils[key];
+                })
             },
         }
     };
