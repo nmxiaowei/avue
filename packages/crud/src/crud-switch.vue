@@ -5,7 +5,6 @@
              :inactive-value="getDic(1)[valueKey]"
              :inactive-text="getDic(1)[labelKey]"
              :disabled="disabled"
-             :width="width"
              :size="size">
   </el-switch>
 </template>
@@ -15,17 +14,17 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudSwitch",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     },
-    getDic(index) {
+    getDic (index) {
       return this.dic[index] ? this.dic[index] : {};
     }
   }

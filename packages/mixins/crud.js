@@ -34,20 +34,24 @@ export default function() {
             crudSwitch
         },
         watch: {
-            watch: {
-                option: {
-                    handler(n, o) {
-                        this.rulesInit();
-                    },
-                    deep: true
+            option: {
+                handler(n, o) {
+                    this.init();
                 },
-                value: {
-                    handler(n, o) {
-                        this.formVal();
-                    },
-                    deep: true
-                }
+                deep: true
             },
+            tableForm: {
+                handler(n, o) {
+                    this.formVal();
+                },
+                deep: true
+            },
+            form: {
+                handler(n, o) {
+                    this.formVal();
+                },
+                deep: true
+            }
         },
         data() {
             return {
@@ -56,16 +60,19 @@ export default function() {
             }
         },
         created() {
-            //初始化工具
-            this.initFun();
-            //规则初始化
-            this.rulesInit();
-            //初始化字典
-            this.dicInit();
-            //初始化表单
-            this.formInit();
+            this.init();
         },
         methods: {
+            init() {
+                //初始化工具
+                this.initFun();
+                //规则初始化
+                this.rulesInit();
+                //初始化字典
+                this.dicInit();
+                //初始化表单
+                this.formInit();
+            },
             dicInit() {
                 this.option.column.forEach(ele => {
                     if (ele.dicData && typeof ele.dicData == 'string') {
@@ -75,6 +82,12 @@ export default function() {
                 this.GetDic().then(data => {
                     this.DIC = data
                 })
+            },
+            vaildData(val, dafult) {
+                if (typeof val == "boolean") {
+                    return val;
+                }
+                return !validatenull(val) ? val : dafult;
             },
             GetDic() {
                 return new Promise((resolve, reject) => {

@@ -1,0 +1,84 @@
+.theme-star {
+    .avue-contail {
+        background-image: url("/static/img/bg/star-squashed.jpg");
+        background-size: 100% 100%;
+    }
+    .el-card {
+        opacity: .9;
+    }
+    .top {
+        .el-dropdown {
+            color: #fff;
+            i {
+                color: #fff;
+            }
+        }
+        .top-item {
+            i {
+                color: #fff;
+            }
+        }
+    }
+    .avue-tabs {
+        padding: 0 20px !important;
+    }
+    .sidebar-container,
+    .logo,
+    .el-menu-item,
+    .el-submenu__title,
+    .el-menu {
+        background-color: transparent !important
+    }
+    .logo_title,
+    .tags-breadcrumb,
+    {
+        color: #fff !important;
+        i {
+            color: #fff;
+        }
+    }
+    .el-menu--horizontal>.el-menu-item.is-active {
+        border-bottom: none;
+    }
+    .top {
+        border-bottom: none;
+    }
+    .tags-menu {
+        background-color: rgba(0, 0, 0, .6) !important;
+    }
+    .tag-item {
+        color: #fff !important;
+        border: none !important;
+        background-color: rgba(255, 255, 255, .5);
+        &.is-active {
+            color: #fff !important;
+            background-color: rgba(0, 0, 0, .4);
+            .tag-item-icon {
+                color: #fff !important;
+            }
+        }
+    }
+    .nest-menu .el-submenu>.el-submenu__title:hover,
+    .el-submenu .el-menu-item:hover {
+        background-color: rgba(0, 0, 0, .4) !important;
+    }
+    .el-menu-item {
+        &.is-active,
+        &.siderbar-active {
+            background-color: rgba(0, 0, 0, .4) !important;
+            span {
+                color: #fff !important;
+            }
+        }
+        color: #fff !important;
+        i {
+            color: #fff !important;
+        }
+    }
+    .el-submenu__title {
+        color: #fff !important;
+        i {
+            color: #fff !important;
+        }
+    }
+}

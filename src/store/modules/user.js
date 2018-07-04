@@ -2,7 +2,7 @@ import { getToken, setToken, removeToken } from '@/util/auth'
 import { setStore, getStore, removeStore } from '@/util/store'
 import { validatenull } from '@/util/validate'
 import { encryption } from '@/util/util'
-import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll } from '@/api/user'
+import { loginByUsername, getUserInfo, getTableData, getMenu, logout, getMenuAll, RefeshToken } from '@/api/user'
 const user = {
     state: {
         userInfo: {},
@@ -64,6 +64,18 @@ const user = {
                 })
             })
         },
+        //刷新token
+        RefeshToken({ commit, state }) {
+            return new Promise((resolve, reject) => {
+                logout().then(() => {
+                    commit('SET_TOKEN', data);
+                    setToken(data);
+                    resolve();
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
         // 登出
         LogOut({ commit, state }) {
             return new Promise((resolve, reject) => {
@@ -83,6 +95,7 @@ const user = {
         FedLogOut({ commit }) {
             return new Promise(resolve => {
                 commit('SET_TOKEN', '')
+                commit('SET_ROLES', [])
                 commit('DEL_ALL_TAG');
                 commit('CLEAR_LOCK');
                 removeToken()

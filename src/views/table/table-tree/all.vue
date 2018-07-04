@@ -1,31 +1,38 @@
 <template>
-  <div class="app-container">
-    <avue-tree-table :option="option">
-      <el-table-column label="事件">
-        <template slot-scope="scope">
-          <span style="color:sandybrown">{{scope.row.event}}</span>
-          <el-tag>{{scope.row.timeLine+'ms'}}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="时间线">
-        <template slot-scope="scope">
-          <el-tooltip effect="dark" :content="scope.row.timeLine+'ms'" placement="left">
-            <div class="processContainer">
-              <div class="process" :style="{ width:scope.row._width * 500+'px',
+  <div>
+    <basic-container>
+      <avue-tree-table :option="option">
+        <el-table-column label="事件">
+          <template slot-scope="scope">
+            <span style="color:sandybrown">{{scope.row.event}}</span>
+            <el-tag>{{scope.row.timeLine+'ms'}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="时间线">
+          <template slot-scope="scope">
+            <el-tooltip effect="dark"
+                        :content="scope.row.timeLine+'ms'"
+                        placement="left">
+              <div class="processContainer">
+                <div class="process"
+                     :style="{ width:scope.row._width * 500+'px',
               background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
               marginLeft:scope.row._marginLeft * 500+'px' }">
-                <span style="display:inline-block"></span>
+                  <span style="display:inline-block"></span>
+                </div>
               </div>
-            </div>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="200">
-        <template slot-scope="scope">
-          <el-button type="text" @click="message(scope.row)">点击</el-button>
-        </template>
-      </el-table-column>
-    </avue-tree-table>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作"
+                         width="200">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       @click="message(scope.row)">点击</el-button>
+          </template>
+        </el-table-column>
+      </avue-tree-table>
+    </basic-container>
   </div>
 </template>
 
@@ -33,7 +40,7 @@
 export default {
   name: 'tableAllTree',
   components: {},
-  data() {
+  data () {
     return {
       option: {
         data: {
@@ -114,7 +121,7 @@ export default {
     }
   },
   methods: {
-    message(row) {
+    message (row) {
       this.$message.info(row.event)
     }
   }

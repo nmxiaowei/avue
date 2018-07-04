@@ -1,21 +1,19 @@
+// 全局变量
 @import './variables.scss';
+// ele样式覆盖
 @import './element-ui.scss';
+// 顶部右侧显示
 @import './top.scss';
-@import './btn.scss';
+// 导航标签
 @import './tags.scss';
+// 工具类函数
 @import './mixin.scss';
+// 侧面导航栏
 @import './sidebar.scss';
-/*禁止复制
-{
-	webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	outline: none;
-}*/
-
+// 动画
+@import './animate/vue-transition.scss';
+//主题
+@import './theme/star.scss';
 .h1,
 .h2,
 .h3,
@@ -28,7 +26,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 @include scrollBar();
@@ -54,63 +52,64 @@ p,
 blockquote,
 th,
 td {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei";
-  line-height: 2;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei";
+    line-height: 2;
 }
 
 html,
 body {
-  height: 100%;
+    height: 100%;
 }
 
 fieldset,
 img {
-  border: 0;
+    border: 0;
 }
 
 ol,
 ul {
-  list-style: none;
+    list-style: none;
 }
 
 em {
-  font-style: normal;
+    font-style: normal;
 }
 
 input,
 button,
 select,
 textarea {
-  outline: none;
+    outline: none;
 }
 
 textarea {
-  resize: none;
+    resize: none;
 }
 
 //禁用了文本的拖拉，尤其在谷歌下
 p {
-  text-align: justify;
-  text-justify: distribute;
+    text-align: justify;
+    text-justify: distribute;
 }
 
 //为了使文本段落左右两边对齐
 p {
-  word-wrap: break-word
+    word-wrap: break-word
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 i {
-  display: inline-block;
+    display: inline-block;
 }
+
 
 /*a:hover { color: #f60; text-decoration:none; }*/
 
@@ -119,80 +118,82 @@ cite,
 code,
 em,
 th {
-  font-weight: normal;
-  font-style: normal;
+    font-weight: normal;
+    font-style: normal;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
-  display: inline-block;
+    color: inherit;
+    text-decoration: none;
+    display: inline-block;
 }
 
+
 /*a:link{color:#009;}*/
+
 
 /*a:visited{color:#800080;}*/
 
 a:hover,
 a:active,
 a:focus {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 .padding {
-  padding: 0 !important;
+    padding: 0 !important;
 }
 
 .margin {
-  margin: 0 !important;
+    margin: 0 !important;
 }
 
 .pull-right {
-  float: right !important;
-  ;
+    float: right !important;
+    ;
 }
 
 .pull-left {
-  float: left !important;
+    float: left !important;
 }
 
 .pull-center {
-  text-align: center;
+    text-align: center;
 }
 
 .pull-flex {
-  display: flex;
+    display: flex;
 }
 
 .pull-overflow {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .pull-auto {
-  height: auto;
-  overflow: hidden;
+    height: auto;
+    overflow: hidden;
 }
 
 .pull-height {
-  height: 100%;
-  overflow: hidden;
+    height: 100%;
+    overflow: hidden;
 }
 
 .pull-fixed {
-  position: fixed;
-  left: 0;
-  top: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
 }
 
 .text-white {
-  color: #fff;
+    color: #fff;
 }

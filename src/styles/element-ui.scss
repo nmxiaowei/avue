@@ -1,17 +1,25 @@
 .el-dropdown-menu__item {
-  font-size: 12px;
-  line-height: 28px;
+    font-size: 12px;
+    line-height: 28px;
 }
 
 .el-menu--horizontal {
-  border-bottom: none !important;
+    border-bottom: none !important;
 }
 
 .el-menu {
-  border-right: none !important;
+    border-right: none !important;
 }
 
 .el-menu--display,
 .el-menu--display+.el-submenu__icon-arrow {
-  display: none;
+    display: none;
+}
+
+.el-dropdown-menu__item--divided:before,
+.el-menu,
+.el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+.el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+    background-color: transparent;
 }

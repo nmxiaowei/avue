@@ -1,7 +1,9 @@
 <template>
   <div>
-    <el-tag>具体配置build/webpack.base.conf.js配置环境变量的地方</el-tag>
-    <h4>{{envText}}</h4>
+    <basic-container>
+      <el-tag>具体配置build/webpack.base.conf.js配置环境变量的地方</el-tag>
+      <h4>{{envText}}</h4>
+    </basic-container>
   </div>
 </template>
 

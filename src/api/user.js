@@ -13,6 +13,12 @@ export const getUserInfo = () => {
         resolve({ data: userInfo });
     })
 }
+export const RefeshToken = () => {
+    return new Promise((resolve, reject) => {
+        resolve({ data: new Date().getTime() });
+    })
+}
+
 export const getMenu = (parentId) => {
     return new Promise((resolve, reject) => {
         if (parentId != 1) parentId = 0;
@@ -35,6 +41,3 @@ export const logout = () => {
         resolve();
     })
 }
-
-
-

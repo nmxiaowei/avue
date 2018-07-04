@@ -1,27 +1,37 @@
 <template>
-  <el-form :inline="true" class="demo-form-inline">
-    <el-form-item label="复制内容">
-      <el-input v-model="message" placeholder="复制内容"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" v-clipboard:copy="message" v-clipboard:success="onCopy" v-clipboard:error="onError">复制</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <basic-container>
+      <el-form :inline="true"
+               class="demo-form-inline">
+        <el-form-item label="复制内容">
+          <el-input v-model="message"
+                    placeholder="复制内容"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary"
+                     v-clipboard:copy="message"
+                     v-clipboard:success="onCopy"
+                     v-clipboard:error="onError">复制</el-button>
+        </el-form-item>
+      </el-form>
+    </basic-container>
+  </div>
+
 </template>
 
 <script>
 export default {
   name: 'store',
-  data() {
+  data () {
     return {
       message: 'Hello Avue!!'
     }
   },
   methods: {
-    onCopy(e) {
+    onCopy (e) {
       this.$message(`复制成功${e.text}`)
     },
-    onError(e) {
+    onError (e) {
       this.$message.error(`复制失败`)
     }
   }

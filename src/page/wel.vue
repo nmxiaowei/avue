@@ -1,9 +1,11 @@
 <template>
-  <div class="wel-contailer">
-    <div class="banner-text">
-      <h2>{{website.wel.title}}</h2>
-      <span :class="['actor',{typeing:isText}]">{{text}}</span>
-    </div>
+  <div>
+    <basic-container>
+      <div class="banner-text">
+        <h2>{{website.wel.title}}</h2>
+        <span :class="['actor',{typeing:isText}]">{{text}}</span>
+      </div>
+    </basic-container>
   </div>
 </template>
 
@@ -11,7 +13,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "wel",
-  data() {
+  data () {
     return {
       DATA: [],
       text: "",
@@ -23,7 +25,7 @@ export default {
   computed: {
     ...mapGetters(["website"])
   },
-  created() {
+  created () {
     this.DATA = this.website.wel.list;
     this.actor = this.DATA[this.count] || "";
     setTimeout(() => {
@@ -32,7 +34,7 @@ export default {
     }, 2000);
   },
   methods: {
-    getData() {
+    getData () {
       if (this.count < this.DATA.length - 1) {
         this.count++;
       } else {
@@ -41,7 +43,7 @@ export default {
       this.isText = true;
       this.actor = this.DATA[this.count];
     },
-    setData() {
+    setData () {
       let num = 0;
       let count = 0;
       let active = false;
@@ -111,7 +113,7 @@ export default {
 }
 
 .actor:after {
-  content: "";
+  content: '';
   width: 3px;
   height: 25px;
   vertical-align: -5px;

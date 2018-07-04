@@ -39,6 +39,13 @@ export default {
             valueDefault: 0,
         },
         {
+            label: "数字",
+            prop: "number",
+            type: 'number',
+            minRows: 0,
+            maxRows: 3,
+        },
+        {
             label: "开关",
             prop: "switch",
             type: "switch",

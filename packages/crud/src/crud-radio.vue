@@ -14,15 +14,15 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudRadio",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {},
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

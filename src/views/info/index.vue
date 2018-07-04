@@ -1,6 +1,8 @@
 <template>
-    <div class="pull-auto">
-        个人信息
+    <div>
+        <basic-container>
+            个人信息
+        </basic-container>
     </div>
 </template>
 
@@ -9,5 +11,4 @@ export default {};
 </script>
 
 <style>
-
 </style>

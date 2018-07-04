@@ -90,6 +90,12 @@ import Avue from 'avue-cli/packages/index.js';
 ```
 
 #### 页面展示
+**炫彩主题**
+<p align="center">
+  <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-color.png">
+</p>
+
+
 **主题色**
 <p align="center">
   <img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/avue-theme.png">
@@ -224,6 +230,9 @@ npm run build:client
 # 构建SSR服务端端代码
 npm run build:server
 ```
+
+#### 友情链接
+- [d2-admin](https://github.com/FairyEver/d2-admin)
 
 #### License
 [MIT](https://gitee.com/smallweigit/avue/blob/master/LICENSE)

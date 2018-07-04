@@ -1,8 +1,10 @@
 <template>
-  <div class="guide-container">
-    <el-button icon='el-icon-question'
-               type="primary"
-               @click="guide">运行引导页</el-button>
+  <div>
+    <basic-container>
+      <el-button icon='el-icon-question'
+                 type="primary"
+                 @click="guide">运行引导页</el-button>
+    </basic-container>
   </div>
 </template>
 
@@ -13,7 +15,7 @@ import steps from "./defineSteps";
 
 export default {
   name: "guide",
-  data() {
+  data () {
     return {
       option: {
         cloumns: [
@@ -142,15 +144,15 @@ export default {
       driver: null
     };
   },
-  mounted() {
+  mounted () {
     this.driver = new Driver();
   },
   methods: {
-    guide() {
+    guide () {
       this.driver.defineSteps(steps);
       this.driver.start();
     },
-    getQuery(params) {
+    getQuery (params) {
       console.log(prarms);
     }
   }

@@ -29,7 +29,7 @@ export default {
     },
     filterable: {
       type: Boolean,
-      default: true
+      default: false
     },
     separator: {
       type: String,

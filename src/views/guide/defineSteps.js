@@ -3,7 +3,7 @@ const steps = [{
     popover: {
         title: 'Title on Popover',
         description: 'Body of the popover',
-        position: 'left'
+        position: 'bottom'
     }
 }]
 

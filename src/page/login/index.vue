@@ -1,9 +1,11 @@
 <template>
-  <div class="login-container pull-height" @keyup.enter.native="handleLogin">
+  <div class="login-container pull-height"
+       @keyup.enter.native="handleLogin">
     <div class="login-info text-white animated fadeInLeft">
       <h2 class="login-info-title">{{website.info.title}}</h2>
       <ul class="login-info-list">
-        <li class="login-info-item" v-for="item in website.info.list">
+        <li class="login-info-item"
+            v-for="item in website.info.list">
           <i class="el-icon-check"></i>&nbsp;{{item}}
         </li>
       </ul>
@@ -11,13 +13,15 @@
     <div class="login-border  animated fadeInRight">
       <div class="login-main">
         <h4 class="login-title">登录{{website.title}}
-          <top-theme></top-theme>
+          <top-color></top-color>
         </h4>
         <el-tabs v-model="activeName">
-          <el-tab-pane label="用户密码" name="user">
+          <el-tab-pane label="用户密码"
+                       name="user">
             <userLogin></userLogin>
           </el-tab-pane>
-          <el-tab-pane label="短信验证码" name="code">
+          <el-tab-pane label="短信验证码"
+                       name="code">
             <codeLogin></codeLogin>
           </el-tab-pane>
           <!-- <el-tab-pane label="第三方授权登录" name="third">
@@ -33,25 +37,25 @@
 import userLogin from "./userlogin";
 import codeLogin from "./codelogin";
 import thirdLogin from "./thirdlogin";
-import topTheme from "../index/top/top-theme";
-import theme from "@/mixins/theme";
+import topColor from "../index/top/top-color";
+import color from "@/mixins/color";
 import { mapGetters } from "vuex";
 export default {
   name: "login",
-  mixins: [theme()],
+  mixins: [color()],
   components: {
-    topTheme,
+    topColor,
     userLogin,
     codeLogin,
     thirdLogin
   },
-  data() {
+  data () {
     return {
       activeName: "user"
     };
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   computed: {
     ...mapGetters(["website"])
   },
@@ -70,13 +74,13 @@ export default {
 }
 .login-container::before {
   z-index: -999;
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../../assets/img/login.png");
+  background-image: url('/static/img/login.png');
   background-size: cover;
 }
 .login-info {

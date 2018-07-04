@@ -1,23 +1,25 @@
 <template>
-  <div class="generator-container  pull-chheight">
-    <avue-form :option="formOption"
-               v-model="tableForm">
-      <template slot-scope="scope"
-                slot="dic">
-        <el-button @click.native="dicData.box=true">
-          字典选择
-        </el-button>
-      </template>
-    </avue-form>
-    <avue-crud ref="crud"
-               :option="tableOption"
-               :data="form.column"
-               @row-update="handleUpdate"
-               @row-del="handleDel"
-               @row-save="handleSave"></avue-crud>
-    <el-input type="textarea"
-              v-model="result"
-              :autosize="{ minRows: 10}"></el-input>
+  <div>
+    <basic-container>
+      <avue-form :option="formOption"
+                 v-model="tableForm">
+        <template slot-scope="scope"
+                  slot="dic">
+          <el-button @click.native="dicData.box=true">
+            字典选择
+          </el-button>
+        </template>
+      </avue-form>
+      <avue-crud ref="crud"
+                 :option="tableOption"
+                 :data="form.column"
+                 @row-update="handleUpdate"
+                 @row-del="handleDel"
+                 @row-save="handleSave"></avue-crud>
+      <el-input type="textarea"
+                v-model="result"
+                :autosize="{ minRows: 10}"></el-input>
+    </basic-container>
     <el-dialog title="字典选择"
                :visible.sync="dicData.box">
       <avue-crud-checkbox v-model="dicData.check"
@@ -28,7 +30,6 @@
                    @click="handleDicSbumit">确 定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -40,7 +41,7 @@ import formOption from "@/const/table/formGenerator";
 export default {
   name: "table-generator",
   components: {},
-  data() {
+  data () {
     return {
       tableOption: tableOption,
       formOption: formOption,
@@ -60,18 +61,18 @@ export default {
       }
     };
   },
-  created() {
+  created () {
     this.init();
   },
   watch: {
     form: {
-      handler(n, o) {
+      handler (n, o) {
         this.handleResult();
       },
       deep: true
     },
     tableForm: {
-      handler(n, o) {
+      handler (n, o) {
         for (let o in this.tableForm) {
           this.form[o] = this.tableForm[o];
         }
@@ -80,14 +81,14 @@ export default {
       deep: true
     }
   },
-  mounted() {},
+  mounted () { },
   computed: {},
   props: [],
   methods: {
-    init() {
+    init () {
       this.tableOption.dic = ["CRUDTYPE", "VAILDATA"];
     },
-    handleResult() {
+    handleResult () {
       let form = JSON.parse(JSON.stringify(this.form));
       //删除列没有填写的字段
       form.column.forEach(ele => {
@@ -100,7 +101,7 @@ export default {
       const result = JSON.stringify(form, null, 2);
       this.result = result;
     },
-    handleDicSbumit() {
+    handleDicSbumit () {
       this.tableForm.dic = ["CRUDTYPE", "VAILDATA"].concat(this.dicData.check);
       this.tableOption.dic = this.tableForm.dic;
       this.dicData.list = [];
@@ -115,7 +116,7 @@ export default {
       ].dicData = this.dicData.list;
       this.dicData.box = false;
     },
-    handleSave(row, done) {
+    handleSave (row, done) {
       this.form.column.push(row);
       this.$message({
         showClose: true,
@@ -124,7 +125,7 @@ export default {
       });
       done();
     },
-    handleUpdate(row, index, done) {
+    handleUpdate (row, index, done) {
       this.form.column.splice(index, 1, row);
       this.$message({
         showClose: true,
@@ -133,7 +134,7 @@ export default {
       });
       done();
     },
-    handleDel(row, index) {
+    handleDel (row, index) {
       this.$confirm(`是否确认删除`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -147,7 +148,7 @@ export default {
             type: "success"
           });
         })
-        .catch(err => {});
+        .catch(err => { });
     }
   }
 };

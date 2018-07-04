@@ -44,9 +44,6 @@ export default function() {
                 type: Boolean,
                 default: false
             },
-            width: {
-                type: String || Number,
-            },
             props: {
                 type: Object,
                 default () {

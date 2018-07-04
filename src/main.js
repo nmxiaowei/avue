@@ -19,11 +19,14 @@ import {
 import * as filters from './filters' // 全局filter
 import './styles/common.scss';
 import AVUE from '../packages/index.js';
+import basicContainer from './components/basic-container/main'
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
 
 Vue.use(VueAxios, axios)
+
+Vue.component('basicContainer', basicContainer)
 
 Object.keys(urls).forEach(key => {
     Vue.prototype[key] = urls[key];

@@ -1,38 +1,39 @@
 <template>
-  <div class="table-container pull-height">
-    <avue-crud :option="tableOption"
-               :data="tableData"
-               :table-loading="tableLoading"
-               :page="page"
-               ref="crud"
-               width="290"
-               @row-save="handleSave"
-               @row-update="handleUpdate"
-               @row-del="handleDel">
-      <template slot-scope="scope"
-                slot="menu">
-        <el-button icon="el-icon-check"
-                   size="small"
-                   @click="handleGrade(scope.row,scope.$index)">权限</el-button>
-      </template>
-    </avue-crud>
-    <el-dialog title="菜单"
-               :visible.sync="grade.box"
-               width="40%">
-      <el-tree :data="menuAll"
-               :default-checked-keys="grade.check"
-               :default-expanded-keys="grade.check"
-               show-checkbox
-               node-key="id"
-               @check-change="handleGradeCheckChange">
-      </el-tree>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   @click="handleGradeUpdate">更新</el-button>
-      </span>
-    </el-dialog>
-
+  <div>
+    <basic-container>
+      <avue-crud :option="tableOption"
+                 :data="tableData"
+                 :table-loading="tableLoading"
+                 :page="page"
+                 ref="crud"
+                 width="290"
+                 @row-save="handleSave"
+                 @row-update="handleUpdate"
+                 @row-del="handleDel">
+        <template slot-scope="scope"
+                  slot="menu">
+          <el-button icon="el-icon-check"
+                     size="small"
+                     @click="handleGrade(scope.row,scope.$index)">权限</el-button>
+        </template>
+      </avue-crud>
+      <el-dialog title="菜单"
+                 :visible.sync="grade.box"
+                 width="40%">
+        <el-tree :data="menuAll"
+                 :default-checked-keys="grade.check"
+                 :default-expanded-keys="grade.check"
+                 show-checkbox
+                 node-key="id"
+                 @check-change="handleGradeCheckChange">
+        </el-tree>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button type="primary"
+                     @click="handleGradeUpdate">更新</el-button>
+        </span>
+      </el-dialog>
+    </basic-container>
   </div>
 </template>
 
@@ -42,7 +43,7 @@ import { roleOption } from "@/const/admin/adminTabelOption.js";
 export default {
   name: "role",
   components: {},
-  data() {
+  data () {
     return {
       tableOption: {}, //表格设置属性
       tableData: [], //表格的数据
@@ -60,13 +61,13 @@ export default {
       }
     };
   },
-  created() {
+  created () {
     //初始化数据格式
     this.tableOption = roleOption;
     this.handleList();
   },
   watch: {},
-  mounted() {},
+  mounted () { },
   computed: {
     ...mapGetters(["permission", "menuAll"])
   },
@@ -76,7 +77,7 @@ export default {
      * @title 权限更新
      *
      **/
-    handleGradeUpdate() {
+    handleGradeUpdate () {
       this.tabelObj.check = [].concat(this.grade.check);
       this.tabelObj = {};
       this.grade.check = [];
@@ -86,7 +87,7 @@ export default {
      * @title 权限选择
      *
      **/
-    handleGradeCheckChange(data, checked, indeterminate) {
+    handleGradeCheckChange (data, checked, indeterminate) {
       if (checked) {
         this.grade.check.push(data.id);
       } else {
@@ -96,7 +97,7 @@ export default {
     /**
      * @title 打开权限
      */
-    handleGrade(row, index) {
+    handleGrade (row, index) {
       this.$store.dispatch("GetMenuAll").then(data => {
         this.grade.box = true;
         this.tabelObj = row;
@@ -108,7 +109,7 @@ export default {
      * @detail 调用crud的handleadd方法即可
      *
      **/
-    handleAdd() {
+    handleAdd () {
       this.$refs.crud.rowAdd();
     },
     /**
@@ -116,7 +117,7 @@ export default {
      * @detail 赋值为tableData表格即可
      *
      **/
-    handleList() {
+    handleList () {
       this.tableLoading = true;
       this.$store
         .dispatch("GetRoleData", { page: `${this.tablePage}` })
@@ -137,7 +138,7 @@ export default {
      * @param done 为表单关闭函数
      *
      **/
-    handleSave(row, done) {
+    handleSave (row, done) {
       this.tableData.push(row);
       this.$message({
         showClose: true,
@@ -152,7 +153,7 @@ export default {
      * @param index 为当前更新数据的行数
      *
      **/
-    handleDel(row, index) {
+    handleDel (row, index) {
       this.$confirm(`是否确认删除序号为${row.name}`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -166,7 +167,7 @@ export default {
             type: "success"
           });
         })
-        .catch(err => {});
+        .catch(err => { });
     },
     /**
      * @title 数据更新
@@ -175,7 +176,7 @@ export default {
      * @param done 为表单关闭函数
      *
      **/
-    handleUpdate(row, index, done) {
+    handleUpdate (row, index, done) {
       this.tableData.splice(index, 1, row);
       this.$message({
         showClose: true,

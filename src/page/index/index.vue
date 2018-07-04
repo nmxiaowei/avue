@@ -1,23 +1,32 @@
 <template>
-  <div class="pull-height animated" :class="{'zoomOutUp': isLock}">
-    <div class="index">
-      <sidebar class="left"></sidebar>
-      <div class="right">
-        <div class="nav">
-          <top class="top"></top>
-          <tags></tags>
-        </div>
-        <div class="main">
-          <div class="router">
-            <keep-alive>
-              <router-view v-if="$route.meta.keepAlive"></router-view>
-            </keep-alive>
-            <router-view v-if="!$route.meta.keepAlive"></router-view>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <el-container class="avue-contail">
+    <el-aside :style="{width: isCollapse ? asideWidthCollapse : asideWidth}">
+      <!-- 左侧导航栏 -->
+      <sidebar class="avue-sidebar"></sidebar>
+    </el-aside>
+    <el-container>
+      <el-header height="auto"
+                 class="avue-tabs">
+        <!-- 顶部导航栏 -->
+        <top />
+        <!-- 顶部标签卡 -->
+        <tags />
+      </el-header>
+      <el-main class="avue-main">
+        <!-- 主体视图层 -->
+        <keep-alive>
+          <transition name="fade-transverse">
+            <router-view class="avue-view"
+                         v-if="$route.meta.keepAlive" />
+          </transition>
+        </keep-alive>
+        <transition name="fade-transverse">
+          <router-view class="avue-view"
+                       v-if="!$route.meta.keepAlive" />
+        </transition>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -25,6 +34,9 @@ import { mapGetters } from 'vuex'
 import tags from './tags'
 import top from './top/'
 import sidebar from './sidebar/'
+import { validatenull } from '@/util/validate';
+import { calcDate } from '@/util/date.js';
+import { setStore, getStore } from '@/util/store.js';
 export default {
   components: {
     top,
@@ -32,61 +44,70 @@ export default {
     sidebar
   },
   name: 'index',
-  data() {
-    return {}
+  data () {
+    return {
+      // [侧边栏宽度] 正常状态
+      asideWidth: '230px',
+      // [侧边栏宽度] 折叠状态
+      asideWidthCollapse: '65px',
+      //刷新token锁
+      refreshLock: false,
+      //刷新token的时间
+      refreshTime: '',
+    }
   },
-  created() {},
-  mounted() {},
-  computed: mapGetters(['isLock']),
+  created () {
+    //实时检测刷新token
+    this.refreshToken();
+  },
+  mounted () { },
+  computed: mapGetters(['isLock', 'isCollapse', 'website']),
   props: [],
-  methods: {}
+  methods: {
+    // 实时检测刷新token
+    refreshToken () {
+      this.refreshTime = setInterval(() => {
+        const token = getStore({
+          name: 'token',
+          debug: true,
+        });
+        const date = calcDate(token.datetime, new Date().getTime());
+        if (validatenull(date)) return;
+        if (!(date.seconds >= this.website.tokenTime) && !this.refreshLock) {
+          this.refreshLock = true;
+          this.$store
+            .dispatch('RefeshToken')
+            .then((res) => {
+              clearInterval(this.refreshTime);
+            })
+            .catch((err) => {
+              this.refreshLock = false;
+            });
+        }
+      }, 3000);
+    },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.index {
-  display: flex;
-  position: relative;
+.avue-contail {
   height: 100%;
-  background: #fff;
-  overflow: hidden;
-  .left {
-    width: 230px;
-    overflow-y: auto;
-  }
-  .right {
-    padding-top: 107px;
-    position: relative;
-    height: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    flex: 1;
-  }
-  .main {
-    height: 100%;
-    background: #f1f4f5;
-    padding: 15px;
-    box-sizing: border-box;
-    overflow-y: scroll;
-    .router {
-      padding: 15px 8px;
-      background: #fff;
-      min-height: 100%;
-      height: auto;
-      overflow: hidden;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-  }
-  .nav {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-  }
-  .top {
-    margin-bottom: 2px;
-  }
+}
+.avue-sidebar {
+  height: 100%;
+}
+.avue-tabs {
+  padding: 0;
+}
+.avue-main {
+  position: relative;
+  padding: 0;
+}
+.avue-view {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

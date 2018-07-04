@@ -15,7 +15,7 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudInputNumber",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -41,10 +41,10 @@ export default {
     }
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

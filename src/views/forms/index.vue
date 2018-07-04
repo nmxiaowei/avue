@@ -1,14 +1,27 @@
 <template>
-  <div class="from-container pull-chheight">
-    <avue-form :option="formOption" v-model="formData" @submit="handleSubmit">
-      <template slot-scope="scope" slot="name">
-        <avue-crud-input @click.native="tip" :disabled="scope.column.disabled" v-model="scope.value">
-        </avue-crud-input>
-      </template>
-    </avue-form>
-    <el-button @click.native="formate" style="margin: 8px 0">格式化</el-button>
-    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 15}" placeholder="请输入内容" v-model="formJson">
-    </el-input>
+  <div>
+    <basic-container>
+      <avue-form :option="formOption"
+                 v-model="formData"
+                 @submit="handleSubmit">
+        <template slot-scope="scope"
+                  slot="name">
+          <avue-crud-input @click.native="tip"
+                           :disabled="scope.column.disabled"
+                           v-model="scope.value">
+          </avue-crud-input>
+        </template>
+      </avue-form>
+    </basic-container>
+    <basic-container>
+      <el-button @click.native="formate"
+                 style="margin: 8px 0">格式化</el-button>
+      <el-input type="textarea"
+                :autosize="{ minRows: 2, maxRows: 15}"
+                placeholder="请输入内容"
+                v-model="formJson">
+      </el-input>
+    </basic-container>
   </div>
 </template>
 
@@ -17,7 +30,7 @@ import { mapGetters } from "vuex";
 import formOption from "@/const/forms/formOption";
 export default {
   name: "froms",
-  data() {
+  data () {
     return {
       formJson: "",
       formOption: formOption,
@@ -31,22 +44,22 @@ export default {
       form: {}
     };
   },
-  created() {
+  created () {
     this.formJson = JSON.stringify(formOption, null, 2);
   },
   watch: {},
-  mounted() {},
+  mounted () { },
   computed: {
     ...mapGetters(["permission"])
   },
   props: [],
   methods: {
-    tip() {
+    tip () {
       this.$message({
         message: "点击事件"
       });
     },
-    formate() {
+    formate () {
       let p = new Promise((resolve, reject) => {
         resolve(JSON.parse(this.formJson));
       });
@@ -68,15 +81,12 @@ export default {
           });
         });
     },
-    handleSubmit(form) {
-      if (form) {
-        this.form = form;
-        this.$message({
-          message: form,
-          type: "success"
-        });
-      } else {
-      }
+    handleSubmit (form) {
+      this.form = form;
+      this.$message({
+        message: form,
+        type: "success"
+      });
     }
   }
 };

@@ -1,11 +1,20 @@
 <template>
   <div class="lock-container pull-height">
     <div class="lock-form animated bounceInDown">
-      <div class="animated" :class="{'shake':passwdError,'bounceOut':pass}">
+      <div class="animated"
+           :class="{'shake':passwdError,'bounceOut':pass}">
         <h3 class="text-white">{{userInfo.username}}</h3>
-        <el-input placeholder="请输入登录密码" type="password" class="input-with-select animated" v-model="passwd" @keyup.enter.native="handleLogin">
-          <el-button slot="append" icon="icon-bofangqi-suoping" @click="handleLogin"></el-button>
-          <el-button slot="append" icon="icon-tuichu" @click="handleLogout"></el-button>
+        <el-input placeholder="请输入登录密码"
+                  type="password"
+                  class="input-with-select animated"
+                  v-model="passwd"
+                  @keyup.enter.native="handleLogin">
+          <el-button slot="append"
+                     icon="icon-bofangqi-suoping"
+                     @click="handleLogin"></el-button>
+          <el-button slot="append"
+                     icon="icon-tuichu"
+                     @click="handleLogout"></el-button>
         </el-input>
       </div>
 
@@ -17,15 +26,15 @@ import { mapGetters, mapState } from "vuex";
 import { resolveUrlPath } from "@/util/util";
 export default {
   name: "lock",
-  data() {
+  data () {
     return {
       passwd: "",
       passwdError: false,
       pass: false
     };
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
@@ -34,7 +43,7 @@ export default {
   },
   props: [],
   methods: {
-    handleLogout() {
+    handleLogout () {
       this.$confirm("是否退出系统, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -45,7 +54,7 @@ export default {
         });
       });
     },
-    handleLogin() {
+    handleLogin () {
       if (this.passwd != this.lockPasswd) {
         this.passwd = "";
         this.$message({
@@ -79,13 +88,13 @@ export default {
 }
 .lock-container::before {
   z-index: -999;
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../../assets/img/login.png");
+  background-image: url('/static//img/login.png');
   background-size: cover;
 }
 .lock-form {

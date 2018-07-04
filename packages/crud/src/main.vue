@@ -206,7 +206,6 @@
                            :border="column.border"
                            :min="column.min"
                            :max="column.max"
-                           :width="column.width"
                            :label="column.label"
                            :placeholder="column.placeholder"
                            :dic="setDic(column.dicData,DIC[column.dicData])"
@@ -255,7 +254,7 @@ export default {
   name: "AvueCrud",
   mixins: [crud()],
   components: {},
-  data() {
+  data () {
     return {
       searchForm: {},
       boxVisible: false,
@@ -269,29 +268,27 @@ export default {
       tableSelect: []
     };
   },
-  created() {
+  created () {
     //初始化动态列
     this.showClomnuInit();
   },
   computed: {
-    searchFlag: function() {
+    searchFlag: function () {
       return validatenull(this.searchForm) ? false : true;
     }
   },
-  mounted() {},
+  mounted () { },
   props: {
     value: {
       type: Object,
-      default: () => {
-        return {};
-      }
+      default: () => { }
     },
     beforeClose: Function,
     beforeOpen: Function,
     rowClassName: Function,
     page: {
       type: Object,
-      default() {
+      default () {
         return {
           total: 0, //总页数
           currentPage: 0, //当前页数
@@ -320,23 +317,17 @@ export default {
     }
   },
   methods: {
-    showClomnu() {},
-    refreshChange() {
+    showClomnu () { },
+    refreshChange () {
       this.$emit("refresh-change", this.page);
     },
-    vaildData(val, dafult) {
-      if (typeof val == "boolean") {
-        return val;
-      }
-      return !validatenull(val) ? val : dafult;
-    },
-    rulesInit() {
+    rulesInit () {
       this.tableFormRules = {};
       this.option.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
-    showClomnuInit: function() {
+    showClomnuInit: function () {
       this.option.column.forEach((ele, index) => {
         let obj = {
           label: ele.label,
@@ -348,10 +339,10 @@ export default {
         this.showClomnuList.push(Object.assign({}, obj));
       });
     },
-    formVal() {
+    formVal () {
       this.$emit("input", this.tableForm);
     },
-    formReset() {
+    formReset () {
       for (let o in this.tableForm) {
         if (this.tableForm[o] instanceof Array) {
           this.tableForm[o] = [];
@@ -362,25 +353,25 @@ export default {
         }
       }
     },
-    formInit() {
+    formInit () {
       const formObj = this.formInitVal(this.option.column);
       this.tableForm = Object.assign({}, formObj.form);
       this.searchForm = Object.assign({}, formObj.searchForm);
     },
     //搜索清空
-    searchReset() {
+    searchReset () {
       this.$refs["searchForm"].resetFields();
     },
     // 页大小回调
-    sizeChange(val) {
+    sizeChange (val) {
       this.$emit("size-change", val);
     },
     // 页码回调
-    currentChange(val) {
+    currentChange (val) {
       this.$emit("current-change", val);
     },
     // 选中实例
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.table.toggleRowSelection(row);
@@ -390,29 +381,29 @@ export default {
       }
     },
     //选择回调
-    selectionChange(val) {
+    selectionChange (val) {
       this.tableSelect = val;
       this.$emit("selection-change", val);
     },
     //排序回调
-    sortChange(val) {
+    sortChange (val) {
       this.$emit("sort-change", val);
     },
     //搜索回调
-    searchChnage() {
+    searchChnage () {
       this.$emit("search-change", this.searchForm);
     },
     //行双击
-    rowDblclick(row, event) {
+    rowDblclick (row, event) {
       this.$emit("row-dblclick", row, event);
     },
 
     //行单机
-    rowClick(row, event, column) {
+    rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
     //处理数据
-    detail(row, column) {
+    detail (row, column) {
       let result = "";
       if (column.formatter && typeof column.formatter === "function") {
         result = column.formatter(row);
@@ -441,23 +432,23 @@ export default {
       return result;
     },
     // 新增
-    rowAdd() {
+    rowAdd () {
       this.boxType = 0;
       this.show();
     },
     // 编辑
-    rowEdit(row, index) {
+    rowEdit (row, index) {
       this.tableForm = Object.assign({}, row);
       this.tableIndex = index;
       this.boxType = 1;
       this.show();
     },
     // 删除
-    rowDel(row, index) {
+    rowDel (row, index) {
       this.$emit("row-del", row, index);
     },
     //保存
-    rowSave() {
+    rowSave () {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
           this.$emit("row-save", Object.assign({}, this.tableForm), this.hide);
@@ -465,7 +456,7 @@ export default {
       });
     },
     //更新
-    rowUpdate() {
+    rowUpdate () {
       this.$refs["tableForm"].validate(valid => {
         if (valid) {
           const index = this.tableIndex;
@@ -479,7 +470,7 @@ export default {
       });
     },
     //显示表单
-    show(cancel) {
+    show (cancel) {
       const callack = () => {
         if (cancel !== true) {
           this.boxVisible = true;
@@ -489,7 +480,7 @@ export default {
       else callack();
     },
     //隐藏表单
-    hide(cancel) {
+    hide (cancel) {
       const callack = () => {
         if (cancel !== false) {
           this.$nextTick(() => {

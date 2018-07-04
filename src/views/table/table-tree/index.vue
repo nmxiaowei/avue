@@ -1,6 +1,8 @@
 <template>
-  <div class="app-container">
-    <avue-tree-table :option="option"></avue-tree-table>
+  <div>
+    <basic-container>
+      <avue-tree-table :option="option"></avue-tree-table>
+    </basic-container>
   </div>
 </template>
 
@@ -8,7 +10,7 @@
 export default {
   name: 'tableTree',
   components: {},
-  data() {
+  data () {
     return {
       option: {
         expandAll: true,
