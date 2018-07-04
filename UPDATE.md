@@ -3,14 +3,17 @@
  **crud and from**
  - 优化：更换了更加稳定的富文本编辑器
  - 修复：用户管理 ueditor属性共用，[#IKWT2](https://gitee.com/smallweigit/avue/issues/IKWT2)
- - 修复：点击搜索栏的 清除按钮，[#IKWSY](https://gitee.com/smallweigit/avue/issues/IKJ6L)
+ - 修复：点击搜索栏的 清除按钮，[#IKWSY](https://gitee.com/smallweigit/avue/issues/IKWSY)
 
  **其他**
  - 新增：加入炫彩皮肤主题
  - 新增：card容器组件
  - 优化：整体架构调整和优化
  - 优化：加入token超时自动刷新token机制
-
+ 
+ **说明**
+ 准备推出2.0大版本，升级crud和form组件
+ 
 #### 1.4.6
 
  **crud and from**
