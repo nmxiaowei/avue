@@ -11,6 +11,7 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
 - [B站视频](https://www.bilibili.com/video/av24644922)
 - [1.Avue修仙系列之基础环境的准备和课程介绍](https://pan.baidu.com/s/1ZBgYby4K8yQC3U4mevuk8A)
 - [2.Avue修仙系列之avue-crud组件type属性介绍](https://pan.baidu.com/s/1jo1yx128sSJgnRnECtvEEw#list/path=%2F)
+- [3.Avue修仙系列之avue-crud本地字典的使用方法](https://pan.baidu.com/s/1i193Ced5d65_i1wXdVSchQ)
 - 未完待续
 
 #### avue相关地址
