@@ -21,13 +21,14 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
 欢迎加入QQ交流群，互相学习   
 前端avue交流群：606410437  
 后台微服务群：23754102   
-服务端解决方案：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
-刚入门的前端小师妹博客:[https://my.oschina.net/u/3883702/](https://my.oschina.net/u/3883702/)
-
+服务端解决方案：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)   
+刚入门的前端小师妹博客:[https://my.oschina.net/u/3883702/](https://my.oschina.net/u/3883702/)   
 最近很多人反应不太会用crud快速开发组件，因此免费推出crud系列的讲解课程，详情请加QQ群
 
-<img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class1.png">
-<img width="900" src="https://gitee.com/smallweigit/avue/raw/master/static/cdn/images/class2.png">
+#### avue综合实际实例
+- [crud综合例子](http://sandbox.runjs.cn/show/xjjyj1cj)
+- [crud流程例子](https://sandbox.runjs.cn/show/hnhjz9wn)
+- 未完待续
 
 #### 技术文档
 - [avue技术文档](https://www.kancloud.cn/smallwei/avue/)
@@ -40,7 +41,6 @@ Avue是基于[Vue.js](https://github.com/vuejs/vue)和[element](https://github.c
 - [更新日志](./UPDATE.md)
 
 #### 在线demo
-- [crud和form组件(html-demo)](http://sandbox.runjs.cn/show/xjjyj1cj)
 - [演示地址1:http://avue.2bugs.cn](http://avue.2bugs.cn)
 - [演示地址2:http://122.4.247.156:7777](http://122.4.247.156:7777)——jenkins+docker+git钩子自动部署
 
