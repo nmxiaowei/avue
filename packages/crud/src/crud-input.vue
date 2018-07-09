@@ -14,10 +14,14 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudInput",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
+    value: {
+      type: String,
+      default: ""
+    },
     minRows: {
       type: String,
       default: "3"
@@ -29,7 +33,7 @@ export default {
   },
   watch: {},
   computed: {
-    typeParam: function() {
+    typeParam: function () {
       if (this.type == "textarea") {
         return "textarea";
       } else if (this.type == "password") {
@@ -39,10 +43,10 @@ export default {
       }
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

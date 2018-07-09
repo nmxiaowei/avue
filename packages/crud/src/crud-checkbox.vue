@@ -15,15 +15,20 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudCheckbox",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
-  props: {},
+  props: {
+    value: {
+      type: Array,
+      default: () => []
+    },
+  },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

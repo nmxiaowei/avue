@@ -1,3 +1,11 @@
+#### 1.4.8
+
+ **crud and from**
+ - 修复：v-model 双向model数据绑定问题
+ - 修复：用户管理 编辑器光标位置BUG，始终在第一行，[#IL2N1](https://gitee.com/smallweigit/avue/issues/IL2N1)
+ - 修复：ueditor控件超出行数没有滚动条，[#IKZAR](https://gitee.com/smallweigit/avue/issues/IKZAR)
+ - 修复：点击搜索栏的 清除按钮数据类型报错，[#IKWSY](https://gitee.com/smallweigit/avue/issues/IKWSY)
+
 #### 1.4.7
 
  **crud and from**

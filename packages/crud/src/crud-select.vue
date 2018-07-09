@@ -18,20 +18,23 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudSelect",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
+    value: {
+
+    },
     multiple: {
       type: Boolean,
       default: false
     }
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

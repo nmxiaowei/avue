@@ -34,6 +34,12 @@ export default function() {
             crudSwitch
         },
         watch: {
+            value: {
+                handler(n, o) {
+                    this.formVal();
+                },
+                deep: true
+            },
             option: {
                 handler(n, o) {
                     this.init();

@@ -14,10 +14,13 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudTime",
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
+    value: {
+      required: true
+    },
     valueFormat: {
       default: ""
     },
@@ -26,10 +29,10 @@ export default {
     }
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

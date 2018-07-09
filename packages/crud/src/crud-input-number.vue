@@ -19,6 +19,9 @@ export default {
     return {};
   },
   props: {
+    value: {
+      type: Number,
+    },
     step: {
       type: Number,
       default: 1

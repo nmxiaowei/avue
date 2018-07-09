@@ -1,11 +1,6 @@
 export default function() {
     return {
         props: {
-            value: {
-                default () {
-                    return this.multiple ? [] : "";
-                }
-            },
             label: {
                 type: String,
                 default: ''

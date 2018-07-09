@@ -5,7 +5,6 @@ export const userOption = {
     border: true,
     index: true,
     height: 'auto',
-    calcHeight: 320,
     indexLabel: '序号',
     selection: false,
     dicData: DIC,
@@ -38,8 +37,8 @@ export const userOption = {
             label: "内容",
             prop: "ueditor",
             type: "ueditor",
+            formHeight: 'auto',
             hide: true,
-            formHeight: 180,
             span: 24,
         },
         {

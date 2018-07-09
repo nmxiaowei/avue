@@ -85,7 +85,6 @@ export const formInitVal = (list) => {
     list.forEach(ele => {
         if (
             ele.type == 'checkbox' ||
-            ele.type == 'radio' ||
             ele.type == 'cascader' ||
             (ele.type == 'select' && ele.multiple)
         ) {

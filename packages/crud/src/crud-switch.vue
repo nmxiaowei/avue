@@ -14,6 +14,11 @@ import crudCompoents from "../../mixins/crud-compoents.js";
 export default {
   name: "AvueCrudSwitch",
   mixins: [crudCompoents()],
+  props: {
+    value: {
+
+    },
+  },
   data () {
     return {};
   },

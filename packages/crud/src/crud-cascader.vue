@@ -19,6 +19,10 @@ export default {
   name: "AvueCrudCascader",
   mixins: [crudCompoents()],
   props: {
+    value: {
+      type: Array,
+      default: () => []
+    },
     expandTrigger: {
       type: String,
       default: "hover"
@@ -36,14 +40,14 @@ export default {
       default: "/"
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit("input", value);
     }
   }

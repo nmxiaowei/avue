@@ -60,7 +60,7 @@
               @row-dblclick="rowDblclick"
               :row-class-name="rowClassName"
               max-height="option.maxHeight"
-              :height="option.height=='auto'?($AVUE.clientHeight - vaildData(option.calcHeight,275)):option.height"
+              :height="option.height=='auto'?($AVUE.clientHeight - vaildData(option.calcHeight,320)):option.height"
               ref="table"
               :width="setPx(option.width,'100%')"
               :border="option.border"
