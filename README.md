@@ -7,6 +7,7 @@
 
 #### 引入方式
 ```
+npm i git+https://smallwei:123456@gitee.wang/avue/avue.git#master
 import avue/lib/index.js
 import avue/lib/theme-chalk/index.css
 ```
