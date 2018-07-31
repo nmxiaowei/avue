@@ -1,8 +1,8 @@
 {
-    "name": "avue",
+    "name": "@avue/avue",
     "version": "2.0.0",
     "main": "lib/index.js",
-    "description": "快速crud构建脚手架",
+    "description": "基于数据驱动视图的思想，根据json数据快速构建crud和form等组件",
     "author": "smallwei <1634566606@qq.com>",
     "license": "MIT",
     "scripts": {
