@@ -1,0 +1,24 @@
+{
+    "name": "avue-theme-chalk",
+    "version": "2.0.0",
+    "main": "lib/index.css",
+    "style": "lib/index.css",
+    "files": [
+        "lib",
+        "src"
+    ],
+    "scripts": {
+        "build": "gulp build"
+    },
+    "keywords": [],
+    "license": "MIT",
+    "bugs": {
+        "devDependencies": {
+            "gulp": "^3.9.1",
+            "gulp-cssmin": "^0.1.7",
+            "gulp-sass": "^3.1.0",
+            "gulp-autoprefixer": "^4.0.0"
+        },
+        "dependencies": {}
+    }
+}

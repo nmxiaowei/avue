@@ -1,0 +1,82 @@
+.crud-container {
+    margin: 0 auto;
+    width: 99%;
+    .el-table__header th {
+        word-break: break-word;
+        color: rgba(0, 0, 0, 0.85);
+        background: #fafafa;
+    }
+}
+
+.crud-pagination {
+    margin-top: 15px;
+    padding: 10px 20px;
+}
+
+.crud-form {
+    padding: 0 8px;
+}
+
+.crud-header {
+    margin-bottom: 10px;
+    &>.el-button {
+        padding: 12px 25px;
+    }
+}
+
+.crud-menu {
+    position: relative;
+    width: 100%;
+    min-height: 40px;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 12px;
+    .crud-menu_left,
+    .crud-menu_right {
+        position: absolute;
+        height: auto;
+        overflow: hidden;
+    }
+    .crud-menu_left {
+        left: 0;
+        .el-button {}
+    }
+    .crud-menu_right {
+        right: 0;
+        .el-button {
+            margin-left: 5px;
+        }
+    }
+}
+
+.crud-dialog {
+    border-radius: 5px;
+    box-shadow: 10px 10px 15px #666;
+    .el-dialog__header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 12px 20px;
+        background-color: #409eff;
+    }
+    .el-dialog__close {
+        color: #fff;
+        font-size: 18px;
+        &:hover {
+            color: #ffddff;
+        }
+    }
+    .el-dialog__title {
+        color: #fff;
+        font-size: 18px;
+    }
+    .el-dialog__headerbtn {
+        top: 18px;
+    }
+}
+
+.crud--overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}

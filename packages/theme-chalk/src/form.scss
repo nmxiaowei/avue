@@ -1,0 +1,22 @@
+.from {
+    padding: 8px 10px;
+}
+
+.from {
+    .el-checkbox+.el-checkbox {
+        margin-left: 20px;
+    }
+}
+
+.form-menu {
+    width: 100%;
+    &.is-center {
+        text-align: center;
+    }
+    &.is-left {
+        text-align: left;
+    }
+    &.is-right {
+        text-align: right;
+    }
+}

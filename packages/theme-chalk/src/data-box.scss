@@ -1,0 +1,45 @@
+.data-box {
+    $height: 100px;
+    $radius: 5px;
+    .item {
+        display: flex;
+        position: relative;
+        margin: 0 auto;
+        width: 96%;
+        height: $height;
+        overflow: hidden;
+        border-radius: $radius;
+        box-sizing: border-box;
+        &:hover .item-text {
+            top: 0;
+        }
+    }
+    .item-icon {
+        width: 100px;
+        height: 100%;
+        color: #fff;
+        text-align: center;
+        i {
+            font-size: 48px !important;
+        }
+    }
+    .item-info {
+        border: 1px solid #eee;
+        border-left: none;
+        background-color: #fff;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        h3 {
+            font-size: 28px;
+            text-align: center;
+            line-height: 30px;
+        }
+        p {
+            color: #999;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+}

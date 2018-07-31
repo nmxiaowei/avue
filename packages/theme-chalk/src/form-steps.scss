@@ -1,0 +1,14 @@
+.form-steps--vertical {
+    width: 100%;
+    display: flex;
+    .form-steps_steps {
+        width: 230px;
+    }
+    .form-steps_contail {
+        flex: 1;
+    }
+}
+
+.form-steps_form {
+    margin: 0 auto;
+}

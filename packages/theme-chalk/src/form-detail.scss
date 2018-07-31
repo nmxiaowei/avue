@@ -1,0 +1,46 @@
+.form-detail {
+    .item {
+        padding: 20px 0 20px 0;
+        border-bottom: 1px solid #eee;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    .item_icon {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+    .item_header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .item_title {
+        font-size: 16px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .item_box {
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .item_label {
+        margin-right: 8px;
+        line-height: 20px;
+        color: rgba(0, 0, 0, 0.85);
+        &.is-center {
+            text-align: center;
+        }
+        &.is-left {
+            text-align: left;
+        }
+        &.is-right {
+            text-align: right;
+        }
+    }
+    .item_content {
+        line-height: 22px;
+        width: 100%;
+        color: rgba(0, 0, 0, 0.65);
+    }
+}
