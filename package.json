@@ -13,10 +13,16 @@
         "karma": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"
     },
     "dependencies": {
+        "async-validator": "~1.8.1",
         "axios": "^0.16.2",
+        "babel-helper-vue-jsx-merge-props": "^2.0.0",
+        "deepmerge": "^1.2.0",
         "element-ui": "^2.3.6",
         "moment": "^2.22.1",
-        "vue": "2.5.2",
+        "normalize-wheel": "^1.0.1",
+        "resize-observer-polyfill": "^1.5.0",
+        "throttle-debounce": "^1.0.1",
+        "vue": "^2.5.2",
         "vue-quill-editor": "^3.0.6"
     },
     "devDependencies": {

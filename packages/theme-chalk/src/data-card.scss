@@ -1,4 +1,4 @@
-.data-card{
+.data-card {
     $height: 340px;
     .item {
         position: relative;
@@ -20,7 +20,7 @@
         background: red;
         border-radius: 5px;
         border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;  
+        border-bottom-right-radius: 0;
     }
     .item-text {
         position: absolute;
@@ -35,7 +35,7 @@
         border-top-right-radius: 0;
         opacity: 0.9;
         transition: top 0.4s;
-        & > p {
+        &>p {
             font-size: 12px;
             line-height: 25px;
             text-indent: 2em;
