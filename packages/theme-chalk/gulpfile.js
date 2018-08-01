@@ -6,7 +6,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
 
 gulp.task('compile', function() {
-  return gulp.src('./src/*.scss')
+  return gulp.src('./src/**')
     .pipe(sass.sync())
     .pipe(autoprefixer({
       browsers: ['ie > 9', 'last 2 versions'],
