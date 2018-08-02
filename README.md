@@ -7,18 +7,28 @@
 
 #### 引入方式
 ```
-#### 安装
-npm i @smallwei/avue
+#### CDN
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/theme-chalk/index.css"></link>
 
-#### 导入
+<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/index.min.js"></script>
+
+#### npm
+npm i @smallwei/avue --save
+
+#### yarn
+yarn add @samallwei/avue --save
+
+```
+
+#### 使用方式
 import Element from 'element-ui'
 import axios from 'axios'
 import Avue from @smallwei/avue/lib/index.js
 import @smallwei/avue/lib/theme-chalk/index.css
 
-#### 使用
 Vue.use(Element);
 Vue.use(Avue,axios)
+
 ```
 
 #### 打包部署
