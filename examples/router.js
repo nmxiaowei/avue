@@ -1,17 +1,12 @@
 import Vue from 'vue';
-import Router from 'vue-router';
-import Home from './views/Home.vue';
-import selectDate from './views/SelectDate.vue';
-Vue.use(Router);
+import VueRouter from 'vue-router';
+import routes from './route.config';
+Vue.use(VueRouter);
 
-export default new Router({
-  routes: [{
-    path: '/',
-    name: 'home',
-    component: Home
-  }, {
-    path: '/selectDate',
-    name: 'selectDate',
-    component: selectDate
-  }]
+const router = new VueRouter({
+  mode: 'hash',
+  base: __dirname,
+  routes
 });
+
+export default router;

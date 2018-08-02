@@ -1,0 +1,10 @@
+[{
+    "name": "组件",
+    "groups": [{
+        "groupName": "Basic",
+        "list": [{
+            "path": "/crud",
+            "title": "Crud"
+        }]
+    }]
+}]
