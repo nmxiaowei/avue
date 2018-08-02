@@ -1,0 +1,19 @@
+.select-date {
+    display: flex;
+    align-items: center;
+    .radio {
+        .el-radio-button:last-child .el-radio-button__inner {
+            border-radius: 0;
+            border-right: 0;
+        }
+    }
+    .date {
+        width: 300px;
+        .el-date-editor {
+            padding: 0 10px;
+            height: 36px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+    }
+}

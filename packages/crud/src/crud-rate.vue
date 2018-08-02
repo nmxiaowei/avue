@@ -11,46 +11,46 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudRate",
+  name: 'AvueCrudRate',
   mixins: [crudCompoents()],
   props: {
     value: {
       type: Number,
-      default: 0,
+      default: 0
     },
     colors: {
-      type: Array,
+      type: Array
     },
     max: {
       type: Number,
-      default: 5,
+      default: 5
     },
     iconClasses: {
-      type: Array,
+      type: Array
     },
     texts: {
-      type: Array,
+      type: Array
     },
     showText: {
       type: Boolean,
-      default: false,
+      default: false
     },
     voidIconClass: {
-      type: String,
+      type: String
     }
   },
-  data () {
+  data() {
     return {};
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     }
   }
 };

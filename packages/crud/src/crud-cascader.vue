@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudCascader",
+  name: 'AvueCrudCascader',
   mixins: [crudCompoents()],
   props: {
     value: {
@@ -26,11 +26,11 @@ export default {
     },
     changeoOnSelect: {
       type: Boolean,
-      default: false,
+      default: false
     },
     expandTrigger: {
       type: String,
-      default: "hover"
+      default: 'hover'
     },
     showAllLevels: {
       type: Boolean,
@@ -42,19 +42,19 @@ export default {
     },
     separator: {
       type: String,
-      default: "/"
+      default: '/'
     }
   },
-  data () {
+  data() {
     return {};
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     }
   }
 };

@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import { formInitVal } from '../../utils/util'
+import { formInitVal } from '../../utils/util';
 export default {
-  name: "AvueFormSteps",
+  name: 'AvueFormSteps',
   props: {
     value: {
       type: Object,
@@ -55,22 +55,22 @@ export default {
     option: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
-    columnOption () {
-      return this.option.column || []
+    columnOption() {
+      return this.option.column || [];
     },
-    columnLen () {
+    columnLen() {
       return this.columnOption.length;
     },
-    formOption () {
+    formOption() {
       return this.objectOption.option;
     },
-    objectOption () {
-      return this.columnOption[this.formIndex - 1]
+    objectOption() {
+      return this.columnOption[this.formIndex - 1];
     },
-    status () {
+    status() {
       let status = [];
       const leng = this.step - 1;
       for (let i = 0; i < leng; i++) {
@@ -81,12 +81,12 @@ export default {
 
   },
   watch: {
-    formOption () {
+    formOption() {
       this.formInit();
       this.$emit('change', this.objectOption);
     },
     text: {
-      handler () {
+      handler() {
         for (let o in this.tableForm) {
           this.tableForm[o] = this.text[o];
         }
@@ -94,47 +94,46 @@ export default {
       deep: true
     },
     value: {
-      handler () {
+      handler() {
         this.formVal();
       },
       deep: true
-    },
+    }
   },
-  data () {
+  data() {
     return {
       step: 1,
       tableForm: {},
       text: {},
-      formIndex: 1,
-    }
+      formIndex: 1
+    };
   },
-  created () {
+  created() {
     this.formInit();
   },
   methods: {
-    reset () {
+    reset() {
       this.formIndex = 1;
       this.step = 1;
     },
-    switchs (index) {
-      if (index < this.step)
-        this.formIndex = index + 1;
+    switchs(index) {
+      if (index < this.step) { this.formIndex = index + 1; }
     },
-    next () {
+    next() {
       if (this.step <= this.formIndex) {
         this.step++;
       }
       this.formIndex++;
     },
-    breaks () {
+    breaks() {
       this.formIndex--;
     },
-    formInit () {
-      const column = this.formOption.column
+    formInit() {
+      const column = this.formOption.column;
       this.tableForm = formInitVal(column).tableForm;
       this.formVal();
     },
-    formVal () {
+    formVal() {
       for (let o in this.value) {
         this.text[o] = this.value[o];
       }
@@ -143,10 +142,10 @@ export default {
       }
       this.$emit('input', this.tableForm);
     },
-    submit () {
+    submit() {
       this.$emit('submit', this.tableForm, this.next);
     }
   }
-}
+};
 </script>
 

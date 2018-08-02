@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: "AvueFormDetail",
+  name: 'AvueFormDetail',
   props: {
     option: {
       type: Object,
@@ -45,36 +45,36 @@ export default {
     value: {}
   },
   computed: {
-    labelPostion: function () {
+    labelPostion: function() {
       if (this.option.labelPostion) {
-        return "is-" + this.option.labelPostion;
+        return 'is-' + this.option.labelPostion;
       }
-      return 'is-left'
+      return 'is-left';
     },
-    columnOption () {
-      return this.option.option || []
+    columnOption() {
+      return this.option.option || [];
     }
   },
   watch: {
     value: {
-      handler (n) {
+      handler(n) {
         this.form = n;
       },
       deep: true
-    },
-  },
-  data () {
-    return {
-      form: {}
     }
   },
-  created () {
+  data() {
+    return {
+      form: {}
+    };
+  },
+  created() {
     this.formInit();
   },
   methods: {
-    formInit () {
+    formInit() {
       this.form = this.value;
     }
   }
-}
+};
 </script>

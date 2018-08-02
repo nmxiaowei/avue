@@ -19,20 +19,20 @@
 <script>
 export default {
   name: 'AvueDataDisplay',
-  data () {
+  data() {
     return {
 
-    }
+    };
   },
   computed: {
-    span () {
-      return this.option.span || 8
+    span() {
+      return this.option.span || 8;
     },
-    data () {
-      return this.option.data || []
+    data() {
+      return this.option.data || [];
     },
-    color () {
-      return this.option.color || 'rgb(63, 161, 255)'
+    color() {
+      return this.option.color || 'rgb(63, 161, 255)';
     }
   },
   props: {
@@ -41,7 +41,7 @@ export default {
       default: () => { }
     }
   },
-  created () { },
+  created() { },
   methods: {}
-}
+};
 </script>

@@ -1,11 +1,12 @@
 {
     "name": "@smallwei/avue",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "main": "lib/index.js",
     "description": "基于数据驱动视图的思想，根据json数据快速构建crud和form等组件",
     "author": "smallwei <1634566606@qq.com>",
     "license": "MIT",
     "scripts": {
+        "dev": "cross-env NODE_ENV=development PLAY_ENV=true webpack-dev-server --config build/webpack.demo.js",
         "build": "webpack --config build/webpack.build.conf.js",
         "build:theme": "gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
         "dist": "npm run lint && npm run build && npm run build:theme",
@@ -34,7 +35,7 @@
         "babel-plugin-module-resolver": "^2.2.0",
         "babel-plugin-syntax-jsx": "^6.8.0",
         "babel-plugin-transform-vue-jsx": "^3.3.0",
-        "babel-preset-es2015": "^6.14.0",
+        "babel-preset-es2015": "^6.24.1",
         "chai": "^3.5.0",
         "cheerio": "^0.18.0",
         "chokidar": "^1.7.0",

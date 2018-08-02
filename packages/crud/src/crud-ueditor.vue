@@ -10,26 +10,26 @@
 
 </template>
 <script>
-import { quillEditor } from 'vue-quill-editor'
-import crudCompoents from "../../mixins/crud-compoents.js";
+import { quillEditor } from 'vue-quill-editor';
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudUeditor",
+  name: 'AvueCrudUeditor',
   mixins: [crudCompoents()],
   components: {
     quillEditor
   },
-  data () {
+  data() {
     return {
 
-    }
+    };
   },
   props: {
     value: {
       type: String,
-      default: ""
+      default: ''
     },
     height: {
-      default: ""
+      default: ''
     },
     options: {
       default: () => { }
@@ -45,15 +45,15 @@ export default {
   },
   watch: {
   },
-  mounted () {
+  mounted() {
 
   },
   methods: {
-    handleChange (value) {
-      this.$emit('input', value.html)
-      this.$emit("change", value.html);
+    handleChange(value) {
+      this.$emit('input', value.html);
+      this.$emit('change', value.html);
     }
-  },
+  }
 };
 </script>
 

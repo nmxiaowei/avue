@@ -11,26 +11,26 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudCheckbox",
+  name: 'AvueCrudCheckbox',
   mixins: [crudCompoents()],
-  data () {
+  data() {
     return {};
   },
   props: {
     value: {
       type: Array,
       default: () => []
-    },
+    }
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     }
   }
 };

@@ -21,10 +21,10 @@
 <script>
 export default {
   name: 'AvueDataCard',
-  data () {
+  data() {
     return {
 
-    }
+    };
   },
   props: {
     option: {
@@ -33,25 +33,25 @@ export default {
     }
   },
   computed: {
-    span () {
-      return this.option.span || 6
+    span() {
+      return this.option.span || 6;
     },
-    data () {
-      return this.option.data || []
+    data() {
+      return this.option.data || [];
     },
-    colorText () {
-      return this.option.colorText || '#fff'
+    colorText() {
+      return this.option.colorText || '#fff';
     },
-    bgText () {
+    bgText() {
       return this.option.bgText || '#2e323f';
     },
-    borderColor () {
+    borderColor() {
       return this.option.borderColor || '#2e323f';
     }
   },
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   watch: {},
   methods: {}
-}
+};
 </script>

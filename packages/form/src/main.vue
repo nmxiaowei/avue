@@ -94,39 +94,39 @@
 </template>
 
 <script>
-import crud from "../../mixins/crud";
-import { validatenull } from "../../utils/validate.js";
+import crud from '../../mixins/crud';
+import { validatenull } from '../../utils/validate.js';
 export default {
-  name: "AvueForm",
+  name: 'AvueForm',
   mixins: [crud()],
   components: {},
-  data () {
+  data() {
     return {
       first: true,
       form: {},
       formRules: {}
     };
   },
-  created () {
+  created() {
 
   },
-  mounted () { },
+  mounted() { },
   computed: {
-    menuWidth: function () {
+    menuWidth: function() {
       if (this.option.submitPostion === 'left') {
         return '';
       } else {
-        return '0'
+        return '0';
       }
     },
-    menuPostion: function () {
+    menuPostion: function() {
       if (this.option.submitPostion) {
-        return "is-" + this.option.submitPostion;
+        return 'is-' + this.option.submitPostion;
       } else {
-        return "is-center";
+        return 'is-center';
       }
     },
-    boxType: function () {
+    boxType: function() {
       return this.option.boxType;
     }
   },
@@ -141,33 +141,33 @@ export default {
   },
   methods: {
     // 验证表单是否禁止
-    vaildDisabled (column) {
+    vaildDisabled(column) {
       if (!(this.boxType)) {
         return this.vaildData(column.disabled, false);
-      } else if (this.boxType == 'add') {
-        return this.vaildData(column.addDisabled, false)
-      } else if (this.boxType == 'edit') {
-        return this.vaildData(column.editDisabled, false)
+      } else if (this.boxType === 'add') {
+        return this.vaildData(column.addDisabled, false);
+      } else if (this.boxType === 'edit') {
+        return this.vaildData(column.editDisabled, false);
       }
     },
-    //验证表单是否显隐
-    vaildVisdiplay (column) {
+    // 验证表单是否显隐
+    vaildVisdiplay(column) {
       if (!(this.boxType)) {
         return this.vaildData(column.visdiplay, true);
-      } else if (this.boxType == 'add') {
-        return this.vaildData(column.addVisdiplay, true)
-      } else if (this.boxType == 'edit') {
-        return this.vaildData(column.editVisdiplay, true)
+      } else if (this.boxType === 'add') {
+        return this.vaildData(column.addVisdiplay, true);
+      } else if (this.boxType === 'edit') {
+        return this.vaildData(column.editVisdiplay, true);
       }
 
     },
-    rulesInit () {
+    rulesInit() {
       this.formRules = {};
       this.option.column.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },
-    change (index) {
+    change(index) {
       const column = this.option.column;
       const list = column[index].cascader;
       const prop = column[index].prop;
@@ -177,7 +177,7 @@ export default {
         list.forEach((ele) => {
           this.form[ele] = '';
           this.DIC[ele] = [];
-        })
+        });
       }
       this.GetDicByType(url.replace('{{key}}', this.form[prop])).then(res => {
         let data = res;
@@ -185,14 +185,14 @@ export default {
         this.DIC = Object.assign({}, this.DIC);
       });
     },
-    formInit () {
-      const column = this.option.column
+    formInit() {
+      const column = this.option.column;
       this.form = this.formInitVal(column).tableForm;
       this.formVal();
       for (let i = 0; i < this.option.column.length; i++) {
         const ele = this.option.column[i];
         if (ele.cascaderFirst) {
-          const cascader = [].concat(ele.cascader)
+          const cascader = [].concat(ele.cascader);
           const cascaderLen = ele.cascader.length - 1;
           if (!validatenull(this.form[ele.prop])) this.change(i);
           for (let j = 0; j < cascaderLen; j++) {
@@ -205,16 +205,16 @@ export default {
       }
       this.first = false;
     },
-    formVal () {
+    formVal() {
       for (let o in this.value) {
         this.form[o] = this.value[o];
       }
-      this.$emit("input", this.form);
+      this.$emit('input', this.form);
     },
-    clearValidate () {
-      this.$refs["form"].clearValidate();
+    clearValidate() {
+      this.$refs['form'].clearValidate();
     },
-    validate () {
+    validate() {
       return new Promise((resolve, reject) => {
         this.$refs.form.validate(valid => {
           if (valid) {
@@ -223,15 +223,15 @@ export default {
             reject();
           }
         });
-      })
+      });
     },
-    resetForm () {
+    resetForm() {
       this.$refs.form.resetFields();
     },
-    submit () {
-      this.$refs["form"].validate(valid => {
+    submit() {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          this.$emit("submit", this.form);
+          this.$emit('submit', this.form);
         }
       });
     }

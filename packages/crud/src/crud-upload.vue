@@ -50,17 +50,17 @@
 
 <script>
 
-import { validatenull } from '../../utils/validate.js'
-import crudCompoents from "../../mixins/crud-compoents.js";
+import { validatenull } from '../../utils/validate.js';
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCurdUpload",
+  name: 'AvueCurdUpload',
   mixins: [crudCompoents()],
-  data () {
+  data() {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
       text: this.status ? '' : [],
-      fileList: [],
+      fileList: []
     };
   },
   props: {
@@ -69,22 +69,22 @@ export default {
     },
     showFileList: {
       type: Boolean,
-      default: true,
+      default: true
     },
     limit: {
       type: Number,
-      default: 3,
+      default: 3
     },
     listType: {
       type: String
     },
     drag: {
       type: Boolean,
-      default: false,
+      default: false
     },
     multiple: {
       type: Boolean,
-      default: true,
+      default: true
     },
     action: {
       type: String
@@ -92,26 +92,26 @@ export default {
   },
   watch: {},
   computed: {
-    status () {
-      return this.listType === 'picture-img'
+    status() {
+      return this.listType === 'picture-img';
     },
-    imageUrl () {
-      return this.status ? this.text : ''
+    imageUrl() {
+      return this.status ? this.text : '';
     }
   },
-  created () {
+  created() {
     this.init();
   },
-  mounted () { },
+  mounted() { },
   methods: {
-    init () {
+    init() {
       if (!(validatenull(this.text))) {
         if (!this.status) {
           this.fileList = this.text;
         }
       }
     },
-    handleSuccess (response, file, fileList) {
+    handleSuccess(response, file, fileList) {
       this.fileList = fileList;
       if (this.status) {
         this.text = response.data;
@@ -119,24 +119,23 @@ export default {
         this.fileList.push({
           name: file.name,
           url: ''
-        })
-        this.$message.success('上传成功')
+        });
+        this.$message.success('上传成功');
         this.setVal();
       }
 
     },
-    handleError (err, file, fileList) {
+    handleRemove(file, fileList) {
       this.fileList = fileList;
-      this.$message.error('上传失败')
-      this.setVal();
-
-    },
-    handleRemove (file, fileList) {
-      this.fileList = fileList;
-      this.$message.error('删除成功')
+      this.$message.error('删除成功');
       this.setVal();
     },
-    setVal () {
+    handleError(erro, file, fileList) {
+      this.fileList = fileList;
+      this.$message.error('上传失败');
+      this.setVal();
+    },
+    setVal() {
       let value;
       if (this.status) {
         value = this.text;
@@ -146,14 +145,14 @@ export default {
       this.$emit('input', value);
       this.$emit('change', value);
     },
-    handleExceed (files, fileList) {
+    handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
-    handlePictureCardPreview (file) {
+    handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    beforeRemove (file) {
+    beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }
   }

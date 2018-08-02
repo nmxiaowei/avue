@@ -238,14 +238,14 @@
   </div>
 </template>
 <script>
-import crud from "../../mixins/crud.js";
-import { validatenull } from "../../utils/validate.js";
-import moment from "moment";
+import crud from '../../mixins/crud.js';
+import { validatenull } from '../../utils/validate.js';
+import moment from 'moment';
 export default {
-  name: "AvueCrud",
+  name: 'AvueCrud',
   mixins: [crud()],
   components: {},
-  data () {
+  data() {
     return {
       defaultForm: {
         tableForm: {},
@@ -264,18 +264,18 @@ export default {
       tableSelect: []
     };
   },
-  created () {
-    //初始化动态列
+  created() {
+    // 初始化动态列
     this.showClomnuInit();
   },
   computed: {
-    selectLen () {
+    selectLen() {
       return this.tableSelect ? this.tableSelect.length : 0;
     },
-    searchFlag () {
+    searchFlag() {
       return !validatenull(this.searchForm);
     },
-    formOption () {
+    formOption() {
       let option = Object.assign({}, this.option);
       option.submitBtn = false;
       option.submitPostion = 'right';
@@ -283,12 +283,12 @@ export default {
       return option;
     }
   },
-  mounted () { },
+  mounted() { },
   props: {
     value: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       }
     },
     beforeClose: Function,
@@ -296,13 +296,13 @@ export default {
     rowClassName: Function,
     page: {
       type: Object,
-      default () {
+      default() {
         return {
-          total: 0, //总页数
-          currentPage: 0, //当前页数
-          pageSize: 10, //每页显示多少条
+          total: 0, // 总页数
+          currentPage: 0, // 当前页数
+          pageSize: 10, // 每页显示多少条
           pageSizes: [10, 20, 30, 40, 50, 100],
-          background: true //背景颜色
+          background: true // 背景颜色
         };
       }
     },
@@ -326,31 +326,31 @@ export default {
     }
   },
   methods: {
-    closeDialog () {
-      this.boxVisible = false
+    closeDialog() {
+      this.boxVisible = false;
     },
-    selectClear () {
+    selectClear() {
       this.$refs.table.clearSelection();
     },
-    indexMethod (index) {
-      return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10))
+    indexMethod(index) {
+      return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
     },
-    showClomnu () { },
-    refreshChange () {
-      this.$emit("refresh-change", this.page);
+    showClomnu() { },
+    refreshChange() {
+      this.$emit('refresh-change', this.page);
     },
-    rulesInit () {
+    rulesInit() {
       this.tableFormRules = {};
       this.option.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
-    showClomnuInit: function () {
+    showClomnuInit: function() {
       this.option.column.forEach((ele, index) => {
         if (validatenull(ele.hide)) {
           this.showClomnuIndex.push(index);
         }
-        if (ele.showClomnu != false) {
+        if (ele.showClomnu !== false) {
           let obj = {
             label: ele.label,
             index: index
@@ -359,32 +359,32 @@ export default {
         }
       });
     },
-    formVal () {
+    formVal() {
       for (let o in this.value) {
         this.tableForm[o] = this.value[o];
       }
-      this.$emit("input", this.tableForm);
+      this.$emit('input', this.tableForm);
     },
-    formInit () {
+    formInit() {
       this.defaultForm = this.formInitVal(this.option.column);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
       this.formVal();
     },
-    //搜索清空
-    searchReset () {
-      this.$refs["searchForm"].resetFields();
+    // 搜索清空
+    searchReset() {
+      this.$refs['searchForm'].resetFields();
     },
     // 页大小回调
-    sizeChange (val) {
-      this.$emit("size-change", val);
+    sizeChange(val) {
+      this.$emit('size-change', val);
     },
     // 页码回调
-    currentChange (val) {
-      this.$emit("current-change", val);
+    currentChange(val) {
+      this.$emit('current-change', val);
     },
     // 选中实例
-    toggleSelection (rows) {
+    toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.table.toggleRowSelection(row);
@@ -393,46 +393,46 @@ export default {
         this.$refs.table.clearSelection();
       }
     },
-    //选择回调
-    selectionChange (val) {
+    // 选择回调
+    selectionChange(val) {
       this.tableSelect = val;
-      this.$emit("selection-change", val);
+      this.$emit('selection-change', val);
     },
-    //排序回调
-    sortChange (val) {
-      this.$emit("sort-change", val);
+    // 排序回调
+    sortChange(val) {
+      this.$emit('sort-change', val);
     },
-    //搜索回调
-    searchChnage () {
-      this.$emit("search-change", this.searchForm);
+    // 搜索回调
+    searchChnage() {
+      this.$emit('search-change', this.searchForm);
     },
-    //行双击
-    rowDblclick (row, event) {
-      this.$emit("row-dblclick", row, event);
+    // 行双击
+    rowDblclick(row, event) {
+      this.$emit('row-dblclick', row, event);
     },
 
-    //行单机
-    rowClick (row, event, column) {
-      this.$emit("row-click", row, event, column);
+    // 行单机
+    rowClick(row, event, column) {
+      this.$emit('row-click', row, event, column);
     },
-    //处理数据
-    detail (row, column) {
-      let result = row[column.prop] || "";
+    // 处理数据
+    detail(row, column) {
+      let result = row[column.prop] || '';
       if (column.type) {
         if (
-          (column.type == "date" ||
-            column.type == "time" ||
-            column.type == "datetime") &&
+          (column.type === 'date' ||
+            column.type === 'time' ||
+            column.type === 'datetime') &&
           column.format
         ) {
           const format = column.format
-            .replace("dd", "DD")
-            .replace("yyyy", "YYYY");
+            .replace('dd', 'DD')
+            .replace('yyyy', 'YYYY');
           result = moment(result).format(format);
         }
         if (column.dicData) {
           result = this.findByvalue(
-            typeof column.dicData == "string"
+            typeof column.dicData === 'string'
               ? this.DIC[column.dicData]
               : column.dicData,
             result,
@@ -440,72 +440,72 @@ export default {
           );
         }
       }
-      if (column.formatter && typeof column.formatter === "function") {
+      if (column.formatter && typeof column.formatter === 'function') {
         result = column.formatter(row, result);
       }
       return result;
     },
     // 新增
-    rowAdd () {
+    rowAdd() {
       this.boxType = 'add';
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
-      this.$emit("input", this.tableForm);
+      this.$emit('input', this.tableForm);
       this.show();
     },
     // 编辑
-    rowEdit (row, index) {
+    rowEdit(row, index) {
       this.tableForm = Object.assign({}, row);
-      this.$emit("input", this.tableForm);
+      this.$emit('input', this.tableForm);
       this.tableIndex = index;
       this.boxType = 'edit';
       this.show();
     },
     // 删除
-    rowDel (row, index) {
-      this.$emit("row-del", row, index);
+    rowDel(row, index) {
+      this.$emit('row-del', row, index);
     },
-    //保存
-    rowSave () {
-      this.$refs["tableForm"].validate().then(() => {
-        this.$emit("row-save", Object.assign({}, this.tableForm), this.closeDialog);
+    // 保存
+    rowSave() {
+      this.$refs['tableForm'].validate().then(() => {
+        this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog);
       });
     },
-    //更新
-    rowUpdate () {
-      this.$refs["tableForm"].validate().then(() => {
+    // 更新
+    rowUpdate() {
+      this.$refs['tableForm'].validate().then(() => {
         const index = this.tableIndex;
         this.$emit(
-          "row-update",
+          'row-update',
           Object.assign({}, this.tableForm),
           index,
           this.closeDialog
         );
-      })
+      });
     },
-    //显示表单
-    show (cancel) {
+    // 显示表单
+    show(cancel) {
       const callack = () => {
         if (cancel !== true) {
           this.$nextTick(() => {
-            this.$refs["tableForm"].clearValidate();
+            this.$refs['tableForm'].clearValidate();
           });
           this.boxVisible = true;
         }
       };
-      if (typeof this.beforeOpen === "function") this.beforeOpen(callack);
+      if (typeof this.beforeOpen === 'function') this.beforeOpen(callack);
       else callack();
     },
-    //隐藏表单
-    hide (cancel) {
+    // 隐藏表单
+    hide(cancel) {
       const callack = () => {
         if (cancel !== false) {
           this.$nextTick(() => {
-            this.$refs["tableForm"].resetForm();
-            this.$emit("input", this.tableForm);
+            this.$refs['tableForm'].resetForm();
+            this.$emit('input', this.tableForm);
           });
         }
       };
-      if (typeof this.beforeClose === "function") this.beforeClose(callack);
+      if (typeof this.beforeClose === 'function') this.beforeClose(callack);
       else callack();
     }
   }

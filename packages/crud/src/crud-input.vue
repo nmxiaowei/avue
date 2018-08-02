@@ -45,15 +45,15 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 import { validatenull } from '../../utils/validate';
 export default {
-  name: "AvueCrudInput",
+  name: 'AvueCrudInput',
   mixins: [crudCompoents()],
-  data () {
+  data() {
     return {
       box: false,
-      labelText: this.multiple ? [] : '',
+      labelText: this.multiple ? [] : ''
     };
   },
   props: {
@@ -61,23 +61,23 @@ export default {
     },
     multiple: {
       type: Boolean,
-      default: false,
+      default: false
     },
     parentCheck: {
       type: Boolean,
-      default: false,
+      default: false
     },
     prefixIcon: {
-      type: String,
+      type: String
     },
     suffixIcon: {
-      type: String,
+      type: String
     },
     minlength: {
-      type: Number,
+      type: Number
     },
     maxlength: {
-      type: Number,
+      type: Number
     },
     minRows: {
       type: Number,
@@ -89,51 +89,51 @@ export default {
     }
   },
   watch: {
-    value () {
+    value() {
       this.init();
     }
   },
   computed: {
-    labelShow () {
-      return this.multiple ? this.labelText.join('/').toString() : this.labelText
+    labelShow() {
+      return this.multiple ? this.labelText.join('/').toString() : this.labelText;
     },
-    typeParam: function () {
-      if (this.type == "textarea") {
-        return "textarea";
-      } else if (this.type == "password") {
-        return "password";
+    typeParam: function() {
+      if (this.type === 'textarea') {
+        return 'textarea';
+      } else if (this.type === 'password') {
+        return 'password';
       } else {
-        return "text";
+        return 'text';
       }
     }
   },
-  created () { },
-  mounted () {
+  created() { },
+  mounted() {
     this.init();
   },
   methods: {
-    checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
+    checkChange(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       console.log(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
       this.text = [];
       this.labelText = [];
       checkedKeys.checkedNodes.forEach(node => {
         if (validatenull(node[this.childrenKey])) {
           this.text.push(node[this.valueKey]);
-          this.labelText.push(node[this.labelKey])
+          this.labelText.push(node[this.labelKey]);
         }
-      })
-      this.$emit("input", this.text);
-      this.$emit("change", this.text);
+      });
+      this.$emit('input', this.text);
+      this.$emit('change', this.text);
     },
-    open () {
+    open() {
       this.box = true;
     },
-    init () {
+    init() {
       if (this.type === 'tree') {
         if (this.multiple) {
-          this.labelText = ['获取字典中...']
+          this.labelText = ['获取字典中...'];
         } else {
-          this.labelText = '获取字典中...'
+          this.labelText = '获取字典中...';
         }
         const check = setInterval(() => {
           if (!validatenull(this.dic)) {
@@ -141,32 +141,32 @@ export default {
               this.labelText = [];
               this.text.forEach(ele => {
                 this.findLabelNode(this.dic, ele, this.props);
-              })
+              });
             } else {
               this.labelText = this.text;
-              this.findLabelNode(this.dic, this.text, this.props)
+              this.findLabelNode(this.dic, this.text, this.props);
             }
             // this.disabledParentNode(this.dic);
             clearInterval(check);
           }
-        }, 500)
+        }, 500);
       }
     },
-    findLabelNode (dic, value, props) {
+    findLabelNode(dic, value, props) {
       const labelKey = props.label || 'label';
       const valueKey = props.value || 'value';
       const childrenKey = props.children || 'children';
       dic.forEach(ele => {
         const children = ele[childrenKey];
         if (ele[valueKey] === value) {
-          const label = ele[labelKey]
+          const label = ele[labelKey];
           this.multiple ? this.labelText.push(label) : this.labelText = label;
         } else if (!validatenull(children)) {
           this.findLabelNode(children, value, props);
         }
-      })
+      });
     },
-    disabledParentNode (dic) {
+    disabledParentNode(dic) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
         if (!validatenull(children)) {
@@ -175,21 +175,21 @@ export default {
         }
       });
     },
-    handleNodeClick (data) {
+    handleNodeClick(data) {
       if (validatenull(data[this.childrenKey]) && !this.multiple || this.parentCheck) {
         this.box = false;
         const value = data[this.valueKey];
         const label = data[this.labelKey];
         this.text = value;
         this.labelText = label;
-        this.$emit("input", value);
-        this.$emit("change", value);
+        this.$emit('input', value);
+        this.$emit('change', value);
       }
 
     },
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     }
   }
 };

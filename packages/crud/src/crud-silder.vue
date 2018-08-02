@@ -12,49 +12,49 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudSilder",
+  name: 'AvueCrudSilder',
   mixins: [crudCompoents()],
   props: {
     value: {
 
     },
     step: {
-      type: Number,
+      type: Number
     },
     min: {
-      type: Number,
+      type: Number
     },
     max: {
       type: Number
     },
     range: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showInput: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showStops: {
       type: Boolean,
-      default: false,
+      default: false
     },
     formatTooltip: Function
   },
-  data () {
+  data() {
     return {};
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     },
-    getDic (index) {
+    getDic(index) {
       return this.dic[index] ? this.dic[index] : {};
     }
   }

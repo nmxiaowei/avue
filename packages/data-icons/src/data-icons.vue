@@ -24,16 +24,16 @@
 <script>
 export default {
   name: 'AvueDataIcons',
-  data () {
+  data() {
     return {
 
-    }
+    };
   },
   computed: {
-    span () { return this.option.span || 4 },
-    data () { return this.option.data },
-    color () { return this.option.color || 'rgb(63, 161, 255)' },
-    discount () { return this.option.discount || false }
+    span() { return this.option.span || 4; },
+    data() { return this.option.data; },
+    color() { return this.option.color || 'rgb(63, 161, 255)'; },
+    discount() { return this.option.discount || false; }
   },
   props: {
     option: {
@@ -41,5 +41,5 @@ export default {
       default: () => { }
     }
   }
-}
+};
 </script>

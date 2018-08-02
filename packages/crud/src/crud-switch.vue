@@ -11,27 +11,27 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudSwitch",
+  name: 'AvueCrudSwitch',
   mixins: [crudCompoents()],
   props: {
     value: {
 
-    },
+    }
   },
-  data () {
+  data() {
     return {};
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     },
-    getDic (index) {
+    getDic(index) {
       return this.dic[index] ? this.dic[index] : {};
     }
   }

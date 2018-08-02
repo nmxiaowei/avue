@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { formInitVal } from '../../utils/util'
+import { formInitVal } from '../../utils/util';
 export default {
-  name: "AvueFormTabs",
+  name: 'AvueFormTabs',
   props: {
     value: {
       type: Object,
@@ -46,32 +46,32 @@ export default {
     option: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
-    columnOption () {
-      return this.option.column || []
+    columnOption() {
+      return this.option.column || [];
     },
-    columnLen () {
+    columnLen() {
       return this.columnOption.length;
     },
-    formOption () {
+    formOption() {
       return this.objectOption.option;
     },
-    formColumnOption () {
-      return this.formOption.column || []
+    formColumnOption() {
+      return this.formOption.column || [];
     },
-    objectOption () {
-      return this.columnOption[this.formIndex]
-    },
+    objectOption() {
+      return this.columnOption[this.formIndex];
+    }
   },
   watch: {
-    formOption () {
+    formOption() {
       this.formInit();
       this.$emit('change', this.columnOption[this.formIndex]);
     },
     text: {
-      handler () {
+      handler() {
         for (let o in this.tableForm) {
           this.tableForm[o] = this.text[o];
         }
@@ -79,29 +79,29 @@ export default {
       deep: true
     },
     value: {
-      handler () {
+      handler() {
         this.formVal();
       },
       deep: true
-    },
+    }
   },
-  data () {
+  data() {
     return {
       tableForm: {},
       text: {},
-      formIndex: '0',
-    }
+      formIndex: '0'
+    };
   },
-  created () {
+  created() {
     this.formInit();
   },
   methods: {
-    formInit () {
-      const column = this.formOption.column
+    formInit() {
+      const column = this.formOption.column;
       this.tableForm = formInitVal(column).tableForm;
       this.formVal();
     },
-    formVal () {
+    formVal() {
       for (let o in this.value) {
         this.text[o] = this.value[o];
       }
@@ -110,9 +110,9 @@ export default {
       }
       this.$emit('input', this.tableForm);
     },
-    submit () {
+    submit() {
       this.$emit('submit', this.tableForm);
     }
   }
-}
+};
 </script>

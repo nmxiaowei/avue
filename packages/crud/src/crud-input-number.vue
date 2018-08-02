@@ -12,16 +12,16 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudInputNumber",
+  name: 'AvueCrudInputNumber',
   mixins: [crudCompoents()],
-  data () {
+  data() {
     return {};
   },
   props: {
     value: {
-      type: Number,
+      type: Number
     },
     step: {
       type: Number,
@@ -29,7 +29,7 @@ export default {
     },
     controlsPosition: {
       type: String,
-      default: "right"
+      default: 'right'
     },
     precision: {
       type: Number,
@@ -45,12 +45,12 @@ export default {
     }
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     }
   }
 };

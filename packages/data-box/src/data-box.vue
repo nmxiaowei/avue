@@ -22,10 +22,10 @@
 <script>
 export default {
   name: 'AvueDataBox',
-  data () {
+  data() {
     return {
 
-    }
+    };
   },
   props: {
     option: {
@@ -34,12 +34,12 @@ export default {
     }
   },
   computed: {
-    span () { return this.option.span || 8 },
-    data () { return this.option.data || [] }
+    span() { return this.option.span || 8; },
+    data() { return this.option.data || []; }
   },
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   watch: {},
   methods: {}
-}
+};
 </script>

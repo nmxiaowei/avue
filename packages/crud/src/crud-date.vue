@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import crudCompoents from "../../mixins/crud-compoents.js";
+import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
-  name: "AvueCrudDate",
+  name: 'AvueCrudDate',
   mixins: [crudCompoents()],
-  data () {
+  data() {
     return {
-      text: ""
+      text: ''
     };
   },
   props: {
@@ -33,17 +33,17 @@ export default {
     },
     endPlaceholder: {
       type: String,
-      default: '结束日期',
+      default: '结束日期'
     },
     defaultTime: {
-      type: String,
+      type: String
     },
     pickerOptions: {
       type: Object,
       default: () => { }
     },
     type: {
-      default: "date"
+      default: 'date'
     },
     valueFormat: {
     },
@@ -51,12 +51,12 @@ export default {
     }
   },
   watch: {},
-  created () { },
-  mounted () { },
+  created() { },
+  mounted() { },
   methods: {
-    handleChange (value) {
-      this.$emit("input", value);
-      this.$emit("change", value);
+    handleChange(value) {
+      this.$emit('input', value);
+      this.$emit('change', value);
     }
   }
 };
