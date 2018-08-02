@@ -8,7 +8,7 @@
 #### 引入方式
 ```
 #### CDN
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/theme-chalk/index.css"></link>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/theme-chalk/index.css" />
 
 <script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/index.min.js"></script>
 
@@ -21,6 +21,7 @@ yarn add @samallwei/avue --save
 ```
 
 #### 使用方式
+```
 import Element from 'element-ui'
 import axios from 'axios'
 import Avue from @smallwei/avue/lib/index.js
