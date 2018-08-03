@@ -5,6 +5,9 @@
         "list": [{
             "path": "/crud",
             "title": "Crud"
+        }, {
+            "path": "/form-select",
+            "title": "form-select"
         }]
     }]
 }]

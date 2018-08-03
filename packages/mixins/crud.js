@@ -83,13 +83,15 @@ export default function() {
       },
       dicInit() {
         this.option.column.forEach(ele => {
-          if (!validatenull(ele.dicUrl) && this.vaildData(ele.dicFlag, true)) {
-            this.dicCascaderList.push({
-              dicUrl: ele.dicUrl,
-              dicData: ele.dicData
-            });
-          } else if (!validatenull(ele.dicData) && typeof ele.dicData === 'string') {
-            this.dicList.push(ele.dicData);
+          if (ele.dicFlag !== false) {
+            if (!validatenull(ele.dicUrl)) {
+              this.dicCascaderList.push({
+                dicUrl: ele.dicUrl,
+                dicData: ele.dicData
+              });
+            } else if (!validatenull(ele.dicData) && typeof ele.dicData === 'string') {
+              this.dicList.push(ele.dicData);
+            }
           }
         });
         this.GetDic().then(data => {

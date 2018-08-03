@@ -169,16 +169,18 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <el-pagination v-if="vaildData(option.page,true)"
-                   class="crud-pagination pull-right"
-                   :current-page.sync="page.currentPage"
-                   :background="vaildData(option.pageBackground,true)"
-                   :page-size="page.pageSize"
-                   :page-sizes="page.pageSizes"
-                   @size-change="sizeChange"
-                   @current-change="currentChange"
-                   layout="total, sizes, prev, pager, next, jumper"
-                   :total="page.total"></el-pagination>
+    <div class="crud-pagination"
+         v-if="vaildData(option.page,true)">
+      <el-pagination :current-page.sync="page.currentPage"
+                     :background="vaildData(option.pageBackground,true)"
+                     :page-size="page.pageSize"
+                     :page-sizes="page.pageSizes"
+                     @size-change="sizeChange"
+                     @current-change="currentChange"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="page.total"></el-pagination>
+    </div>
+
     <!-- 表单 -->
     <el-dialog lock-scroll
                :custom-class="vaildData(option.customClass,'')"

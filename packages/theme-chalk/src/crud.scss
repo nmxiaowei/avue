@@ -9,8 +9,14 @@
 }
 
 .crud-pagination {
+    position: relative;
     margin-top: 15px;
+    margin-bottom: 10px;
     padding: 10px 20px;
+    .el-pagination {
+        position: absolute;
+        right: 0;
+    }
 }
 
 .crud-form {
