@@ -1,8 +1,62 @@
 <script>
-  export default {
+export default {
     data() {
       return {
-        obj:{},
+        data: [
+          {
+            name:'张三',
+            sex:'男'
+          }, {
+            name:'李四',
+            sex:'女'
+          }
+        ],
+        option:{
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            }, {
+              label:'性别',
+              prop:'sex'
+            }
+          ]
+        },
+      };
+    },
+    methods: {
+        handleRowClick (row, event, column) {
+          this.$notify({
+            showClose: true,
+            message: '单机'+JSON.stringify(row),
+            type: 'success',
+          });
+        },
+    }
+}
+</script>
+
+<style>
+
+</style>
+
+## Crud 模块
+
+
+
+### 行单机
+
+:::demo  
+```html
+<avue-crud :data="data" :option="option" @row-click="handleRowClick"></avue-crud>
+
+<script>
+export default {
+    data() {
+      return {
         data: [
           {
             name:'张三',
@@ -26,58 +80,18 @@
             }
           ]
         }
-      }
+      };
+    },
+    methods: {
+        handleRowClick (row, event, column) {
+          this.$notify({
+            showClose: true,
+            message: '单机'+JSON.stringify(row),
+            type: 'success',
+          });
+        },
     }
-  }
-</script>
-
-<style>
-
-</style>
-
-## Crud 模块
-
-通过json快速生成crud表格
-
-### 基础
-
-:::demo  当`avue-table`组件属性中，`data`数据的对象数组，`option`为表格要配置的数据列，`v-model`为当前编辑或者新增的表单对象，自动根据option中的cloumn配置去加载对象注入进去
-```html
-<avue-crud :data="data" :option="option" v-model="obj"></avue-crud>
-
-<script>
-export default {
- data() {
-      return {
-        obj:{},
-        data: [
-          {
-            name:'张三',
-            sex:'男'
-          }, {
-            name:'李四',
-            sex:'女'
-          }
-        ],
-        option:{
-          page:false,
-          align:'center',
-          menuAlign:'center',
-          column:[
-             {
-              label:'姓名',
-              prop:'name'
-            },
-            {
-              label:'性别',
-              prop:'sex'
-            }
-          ]
-        }
-      }
-    }
-  }
+}
 </script>
 ```
 :::
-

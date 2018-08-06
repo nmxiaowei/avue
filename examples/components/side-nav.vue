@@ -1,4 +1,4 @@
-<style>
+<style lang="scss">
 .side-nav {
   width: 100%;
   box-sizing: border-box;
@@ -182,7 +182,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       highlights: [],
       navState: [],
@@ -191,12 +191,12 @@ export default {
     };
   },
   watch: {
-    '$route.path'() {
+    '$route.path' () {
       this.handlePathChange();
     }
   },
   computed: {
-    navStyle() {
+    navStyle () {
       const style = {};
       if (this.isSmallScreen) {
         style.paddingBottom = '60px';
@@ -204,21 +204,21 @@ export default {
       style.opacity = this.isFade ? '0.5' : '1';
       return style;
     },
-    lang() {
+    lang () {
       return this.$route.meta.lang;
     },
-    langConfig() {
+    langConfig () {
       return {
         'dropdown': '版本：'
       };
     }
   },
   methods: {
-    handleResize() {
+    handleResize () {
       this.isSmallScreen = document.documentElement.clientWidth < 768;
       this.handlePathChange();
     },
-    handlePathChange() {
+    handlePathChange () {
       if (!this.isSmallScreen) {
         this.expandAllMenu();
         return;
@@ -233,17 +233,17 @@ export default {
         ul.style.height = 'auto';
       });
     },
-    hideAllMenu() {
+    hideAllMenu () {
       [].forEach.call(this.$el.querySelectorAll('.pure-menu-list'), ul => {
         ul.style.height = '0';
       });
     },
-    expandAllMenu() {
+    expandAllMenu () {
       [].forEach.call(this.$el.querySelectorAll('.pure-menu-list'), ul => {
         ul.style.height = 'auto';
       });
     },
-    expandMenu(event) {
+    expandMenu (event) {
       if (!this.isSmallScreen) return;
       let target = event.currentTarget;
       if (!target.nextElementSibling || target.nextElementSibling.tagName !== 'UL') return;
@@ -251,13 +251,13 @@ export default {
       event.currentTarget.nextElementSibling.style.height = 'auto';
     }
   },
-  created() {
+  created () {
   },
-  mounted() {
+  mounted () {
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('resize', this.handleResize);
   }
 };

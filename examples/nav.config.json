@@ -1,13 +1,111 @@
 [{
-    "name": "组件",
+    "name": "表格表单",
     "groups": [{
-        "groupName": "Basic",
+        "groupName": "Crud",
         "list": [{
             "path": "/crud",
-            "title": "Crud"
+            "title": "crud"
         }, {
-            "path": "/form-select",
-            "title": "form-select"
+            "path": "/crud-page",
+            "title": "crud分页"
+        }, {
+            "path": "/crud-expand",
+            "title": "crud面板"
+        }, {
+            "path": "/crud-rules",
+            "title": "crud验证"
+        }, {
+            "path": "/crud-selection",
+            "title": "crud多选"
+        }, {
+            "path": "/crud-fun",
+            "title": "crud方法"
+        }, {
+            "path": "/crud-index",
+            "title": "crud序号"
+        }, {
+            "path": "/crud-border",
+            "title": "crud边框"
+        }, {
+            "path": "/crud-search",
+            "title": "crud搜索"
+        }, {
+            "path": "/crud-loading",
+            "title": "crud等待"
+        }, {
+            "path": "/crud-click",
+            "title": "crud行单选"
+        }, {
+            "path": "/crud-dbclick",
+            "title": "crud行双选"
+        }, {
+            "path": "/crud-refresh",
+            "title": "crud刷新"
+        }, {
+            "path": "/crud-solt",
+            "title": "crud自定义列"
+        }, {
+            "path": "/crud-formsolt",
+            "title": "crud自定义表单"
+        }, {
+            "path": "/crud-head",
+            "title": "crud自定义菜单"
+        }, {
+            "path": "/crud-menu",
+            "title": "crud自定义操作栏"
+        }, {
+            "path": "/crud-btn",
+            "title": "crud自定义按钮"
+        }]
+    }, {
+        "groupName": "Form",
+        "list": [{
+                "path": "/form",
+                "title": "form表单"
+            }, {
+                "path": "/form-date",
+                "title": "form日期"
+            }, {
+                "path": "/form-rate",
+                "title": "form评价"
+            }, {
+                "path": "/form-silder",
+                "title": "form滑块"
+            }, {
+                "path": "/form-select",
+                "title": "form多级联动"
+            },
+            {
+                "path": "/form-tabs",
+                "title": "form选项卡"
+            }, {
+                "path": "/form-steps",
+                "title": "form步骤条"
+            }, {
+                "path": "/form-detail",
+                "title": "form详情"
+            }
+        ]
+    }]
+}, {
+    "name": "数据展示",
+    "groups": [{
+        "groupName": "数据",
+        "list": [{
+            "path": "/data-display",
+            "title": "数据展示1"
+        }, {
+            "path": "/data-box",
+            "title": "数据展示2"
+        }, {
+            "path": "/data-tabs",
+            "title": "数据展示3"
+        }, {
+            "path": "/data-card",
+            "title": "数据展示4"
+        }, {
+            "path": "/data-icons",
+            "title": "数据展示5"
         }]
     }]
 }]

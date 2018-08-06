@@ -1,18 +1,15 @@
 <script>
 const baseUrl = `http://51aizhiyuan.com/select`;
-  export default {
-    data() {
+export default {
+ data() {
       return {
-        data:{},
-        option:{
+         data:{},
+         option:{
             props: {
                 label: 'name',
                 value: 'code'
             },
-            column: [{
-                label: '姓名',
-                prop: 'name',
-            }, {
+            column: [ {
                 label: '省份',
                 prop: 'province',
                 type: 'select',
@@ -54,25 +51,29 @@ const baseUrl = `http://51aizhiyuan.com/select`;
       }
     },
     methods: {
+     submit(){
+       this.$message.success('当前数据'+JSON.stringify(this.form))
+     }
     }
-  };
+}
 </script>
 
 <style>
 
 </style>
 
-## Crud 表格
+## Form 模块
 
-通过json快速生成crud表格
 
-### 基础用法
 
-:::demo 要设置cloumn列的数据
+### 多级联动
+
+:::demo 
 ```html
-<avue-form v-model="data" :option="option"></avue-form>
+<avue-form v-model="data" :option="option" @submit="submit"></avue-form>
 
 <script>
+const baseUrl = `http://51aizhiyuan.com/select`;
 export default {
  data() {
       return {
@@ -82,10 +83,7 @@ export default {
                 label: 'name',
                 value: 'code'
             },
-            column: [{
-                label: '姓名',
-                prop: 'name',
-            }, {
+            column: [ {
                 label: '省份',
                 prop: 'province',
                 type: 'select',
@@ -125,6 +123,11 @@ export default {
             }]
         }
       }
+    },
+    methods: {
+     submit(){
+       this.$message.success('当前数据'+JSON.stringify(this.form))
+     }
     }
 }
 </script>

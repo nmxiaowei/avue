@@ -27,16 +27,16 @@
 <script>
 export default {
   name: 'AvueDataTabs',
-  data() {
+  data () {
     return {
 
     };
   },
   computed: {
-    span() {
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },

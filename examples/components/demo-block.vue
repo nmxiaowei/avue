@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .demo-block {
   border: solid 1px #ebebeb;
   border-radius: 3px;
@@ -168,7 +168,7 @@
 <script type="text/babel">
 
 export default {
-  data() {
+  data () {
     return {
       hovering: false,
       isExpanded: false,
@@ -178,53 +178,53 @@ export default {
   },
 
   props: {
-    default() {
+    default () {
       return {};
     }
   },
 
   methods: {
-    scrollHandler() {
+    scrollHandler () {
       const { top, bottom, left } = this.$refs.meta.getBoundingClientRect();
       this.fixedControl = bottom > document.documentElement.clientHeight &&
         top + 44 <= document.documentElement.clientHeight;
       this.$refs.control.style.left = this.fixedControl ? `${left}px` : '0';
     },
 
-    removeScrollHandler() {
+    removeScrollHandler () {
       this.scrollParent && this.scrollParent.removeEventListener('scroll', this.scrollHandler);
     }
   },
 
   computed: {
-    lang() {
+    lang () {
       return this.$route.path.split('/')[1];
     },
 
-    langConfig() {
+    langConfig () {
       return {
         'hide-text': '隐藏代码',
         'show-text': '显示代码'
       };
     },
 
-    blockClass() {
+    blockClass () {
       return `demo-${this.lang} demo-${this.$router.currentRoute.path.split('/').pop()}`;
     },
 
-    iconClass() {
+    iconClass () {
       return this.isExpanded ? 'el-icon-caret-top' : 'el-icon-caret-bottom';
     },
 
-    controlText() {
+    controlText () {
       return this.isExpanded ? this.langConfig['hide-text'] : this.langConfig['show-text'];
     },
 
-    codeArea() {
+    codeArea () {
       return this.$el.getElementsByClassName('meta')[0];
     },
 
-    codeAreaHeight() {
+    codeAreaHeight () {
       if (this.$el.getElementsByClassName('description').length > 0) {
         return this.$el.getElementsByClassName('description')[0].clientHeight +
           this.$el.getElementsByClassName('highlight')[0].clientHeight + 20;
@@ -234,7 +234,7 @@ export default {
   },
 
   watch: {
-    isExpanded(val) {
+    isExpanded (val) {
       this.codeArea.style.height = val ? `${this.codeAreaHeight + 1}px` : '0';
       if (!val) {
         this.fixedControl = false;
@@ -250,7 +250,7 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       let highlight = this.$el.getElementsByClassName('highlight')[0];
       if (this.$el.getElementsByClassName('description').length === 0) {
@@ -260,7 +260,7 @@ export default {
     });
   },
 
-  beforeDestroy() {
+  beforeDestroy () {
     this.removeScrollHandler();
   }
 };

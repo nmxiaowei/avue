@@ -12,7 +12,7 @@
                         v-for="(column,index) in option.column"
                         :key="index"
                         v-if="column.search">
-            <component :size="option.searchSize"
+            <component size="small"
                        :is="getSearchType(column.type)"
                        v-model="searchForm[column.prop]"
                        :type="column.type"
@@ -24,10 +24,10 @@
             <el-button type="primary"
                        @click="searchChnage"
                        icon="el-icon-search"
-                       :size="option.searchSize">搜索</el-button>
+                       size="small">搜索</el-button>
             <el-button @click="searchReset"
                        icon="el-icon-delete"
-                       :size="option.searchSize">清空</el-button>
+                       size="small">清空</el-button>
           </el-form-item>
         </el-form>
       </el-collapse-transition>
@@ -53,12 +53,12 @@
                    circle
                    size="small"
                    @click="showClomnuBox=true"
-                   v-if="vaildData(option.showClomnuBtn,true)"></el-button>
+                   v-if="vaildData(option.cloumnBtn,true)"></el-button>
         <el-button icon="el-icon-search"
                    circle
                    size="small"
                    @click="searchShow=!searchShow"
-                   v-if="vaildData(option.showSearchBtn,true)"></el-button>
+                   v-if="searchFlag && vaildData(option.showSearchBtn,true)"></el-button>
       </div>
     </div>
     <el-tag class="avue-tip"
@@ -247,7 +247,7 @@ export default {
   name: 'AvueCrud',
   mixins: [crud()],
   components: {},
-  data() {
+  data () {
     return {
       defaultForm: {
         tableForm: {},
@@ -266,18 +266,18 @@ export default {
       tableSelect: []
     };
   },
-  created() {
+  created () {
     // 初始化动态列
     this.showClomnuInit();
   },
   computed: {
-    selectLen() {
+    selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
     },
-    searchFlag() {
+    searchFlag () {
       return !validatenull(this.searchForm);
     },
-    formOption() {
+    formOption () {
       let option = Object.assign({}, this.option);
       option.submitBtn = false;
       option.submitPostion = 'right';
@@ -285,7 +285,7 @@ export default {
       return option;
     }
   },
-  mounted() { },
+  mounted () { },
   props: {
     value: {
       type: Object,
@@ -298,7 +298,7 @@ export default {
     rowClassName: Function,
     page: {
       type: Object,
-      default() {
+      default () {
         return {
           total: 0, // 总页数
           currentPage: 0, // 当前页数
@@ -328,26 +328,26 @@ export default {
     }
   },
   methods: {
-    closeDialog() {
+    closeDialog () {
       this.boxVisible = false;
     },
-    selectClear() {
+    selectClear () {
       this.$refs.table.clearSelection();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
     },
-    showClomnu() { },
-    refreshChange() {
+    showClomnu () { },
+    refreshChange () {
       this.$emit('refresh-change', this.page);
     },
-    rulesInit() {
+    rulesInit () {
       this.tableFormRules = {};
       this.option.column.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
-    showClomnuInit: function() {
+    showClomnuInit: function () {
       this.option.column.forEach((ele, index) => {
         if (validatenull(ele.hide)) {
           this.showClomnuIndex.push(index);
@@ -361,32 +361,32 @@ export default {
         }
       });
     },
-    formVal() {
+    formVal () {
       for (let o in this.value) {
         this.tableForm[o] = this.value[o];
       }
       this.$emit('input', this.tableForm);
     },
-    formInit() {
+    formInit () {
       this.defaultForm = this.formInitVal(this.option.column);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
       this.formVal();
     },
     // 搜索清空
-    searchReset() {
+    searchReset () {
       this.$refs['searchForm'].resetFields();
     },
     // 页大小回调
-    sizeChange(val) {
+    sizeChange (val) {
       this.$emit('size-change', val);
     },
     // 页码回调
-    currentChange(val) {
+    currentChange (val) {
       this.$emit('current-change', val);
     },
     // 选中实例
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.table.toggleRowSelection(row);
@@ -396,29 +396,29 @@ export default {
       }
     },
     // 选择回调
-    selectionChange(val) {
+    selectionChange (val) {
       this.tableSelect = val;
       this.$emit('selection-change', val);
     },
     // 排序回调
-    sortChange(val) {
+    sortChange (val) {
       this.$emit('sort-change', val);
     },
     // 搜索回调
-    searchChnage() {
+    searchChnage () {
       this.$emit('search-change', this.searchForm);
     },
     // 行双击
-    rowDblclick(row, event) {
+    rowDblclick (row, event) {
       this.$emit('row-dblclick', row, event);
     },
 
     // 行单机
-    rowClick(row, event, column) {
+    rowClick (row, event, column) {
       this.$emit('row-click', row, event, column);
     },
     // 处理数据
-    detail(row, column) {
+    detail (row, column) {
       let result = row[column.prop] || '';
       if (column.type) {
         if (
@@ -448,14 +448,14 @@ export default {
       return result;
     },
     // 新增
-    rowAdd() {
+    rowAdd () {
       this.boxType = 'add';
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.$emit('input', this.tableForm);
       this.show();
     },
     // 编辑
-    rowEdit(row, index) {
+    rowEdit (row, index) {
       this.tableForm = Object.assign({}, row);
       this.$emit('input', this.tableForm);
       this.tableIndex = index;
@@ -463,17 +463,17 @@ export default {
       this.show();
     },
     // 删除
-    rowDel(row, index) {
+    rowDel (row, index) {
       this.$emit('row-del', row, index);
     },
     // 保存
-    rowSave() {
+    rowSave () {
       this.$refs['tableForm'].validate().then(() => {
         this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog);
       });
     },
     // 更新
-    rowUpdate() {
+    rowUpdate () {
       this.$refs['tableForm'].validate().then(() => {
         const index = this.tableIndex;
         this.$emit(
@@ -485,7 +485,7 @@ export default {
       });
     },
     // 显示表单
-    show(cancel) {
+    show (cancel) {
       const callack = () => {
         if (cancel !== true) {
           this.$nextTick(() => {
@@ -498,7 +498,7 @@ export default {
       else callack();
     },
     // 隐藏表单
-    hide(cancel) {
+    hide (cancel) {
       const callack = () => {
         if (cancel !== false) {
           this.$nextTick(() => {

@@ -8,9 +8,9 @@
           <img :src="item.src"
                class="item-img" />
           <div class="item-text"
-               :style="{color:colorText,backgroundColor:bgText}">
-            <h3>{{item.name}}</h3>
-            <p>{{item.text}}</p>
+               :style="{backgroundColor:bgText}">
+            <h3 :style="{color:colorText}">{{item.name}}</h3>
+            <p :style="{color:colorText}">{{item.text}}</p>
           </div>
         </div>
       </el-col>

@@ -1,8 +1,7 @@
 <script>
-  export default {
+export default {
     data() {
       return {
-        obj:{},
         data: [
           {
             name:'张三',
@@ -13,6 +12,7 @@
           }
         ],
         option:{
+          expand:true,
           page:false,
           align:'center',
           menuAlign:'center',
@@ -25,10 +25,13 @@
               prop:'sex'
             }
           ]
-        }
-      }
+        },
+      };
+    },
+    methods: {
+      
     }
-  }
+}
 </script>
 
 <style>
@@ -37,19 +40,22 @@
 
 ## Crud 模块
 
-通过json快速生成crud表格
 
-### 基础
 
-:::demo  当`avue-table`组件属性中，`data`数据的对象数组，`option`为表格要配置的数据列，`v-model`为当前编辑或者新增的表单对象，自动根据option中的cloumn配置去加载对象注入进去
+### 面板
+
+:::demo  设置`expand`为`true`时即可，`solt`卡槽的名称为`expand`时即可，`props`为返回需要的数据，具体看文档
 ```html
-<avue-crud :data="data" :option="option" v-model="obj"></avue-crud>
+<avue-crud :data="data" :option="option">
+  <template slot-scope="props" slot="expand">
+    {{props}}
+  </template>
+</avue-crud>
 
 <script>
 export default {
- data() {
+    data() {
       return {
-        obj:{},
         data: [
           {
             name:'张三',
@@ -60,6 +66,7 @@ export default {
           }
         ],
         option:{
+          expand:true,
           page:false,
           align:'center',
           menuAlign:'center',
@@ -67,17 +74,18 @@ export default {
              {
               label:'姓名',
               prop:'name'
-            },
-            {
+            }, {
               label:'性别',
               prop:'sex'
             }
           ]
-        }
-      }
+        },
+      };
+    },
+    methods: {
+      
     }
-  }
+}
 </script>
 ```
 :::
-

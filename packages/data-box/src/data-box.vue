@@ -10,8 +10,9 @@
             <i :class="item.icon"></i>
           </div>
           <div class="item-info">
-            <h3 :style="{color:item.color}">{{item.count}}</h3>
-            <p>{{item.title}}</p>
+            <div :style="{color:item.color}"
+                 class="title">{{item.count}}</div>
+            <div class="info">{{item.title}}</div>
           </div>
         </div>
       </el-col>
@@ -22,7 +23,7 @@
 <script>
 export default {
   name: 'AvueDataBox',
-  data() {
+  data () {
     return {
 
     };
@@ -34,11 +35,11 @@ export default {
     }
   },
   computed: {
-    span() { return this.option.span || 8; },
-    data() { return this.option.data || []; }
+    span () { return this.option.span || 8; },
+    data () { return this.option.data || []; }
   },
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   watch: {},
   methods: {}
 };

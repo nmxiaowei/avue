@@ -1,8 +1,7 @@
 <script>
-  export default {
+export default {
     data() {
       return {
-        obj:{},
         data: [
           {
             name:'张三',
@@ -13,6 +12,8 @@
           }
         ],
         option:{
+          index:true,
+          indexLabel:'序号',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -25,10 +26,12 @@
               prop:'sex'
             }
           ]
-        }
-      }
+        },
+      };
+    },
+    methods: {
     }
-  }
+}
 </script>
 
 <style>
@@ -37,19 +40,18 @@
 
 ## Crud 模块
 
-通过json快速生成crud表格
 
-### 基础
 
-:::demo  当`avue-table`组件属性中，`data`数据的对象数组，`option`为表格要配置的数据列，`v-model`为当前编辑或者新增的表单对象，自动根据option中的cloumn配置去加载对象注入进去
+### 序号
+
+:::demo  设`index`属性为`true`即可，`indexLabel`设置表格的序号的标题,默认为`#`
 ```html
-<avue-crud :data="data" :option="option" v-model="obj"></avue-crud>
+<avue-crud :data="data" :option="option" ></avue-crud>
 
 <script>
 export default {
- data() {
+    data() {
       return {
-        obj:{},
         data: [
           {
             name:'张三',
@@ -60,6 +62,8 @@ export default {
           }
         ],
         option:{
+          index:true,
+          indexLabel:'序号',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -67,17 +71,17 @@ export default {
              {
               label:'姓名',
               prop:'name'
-            },
-            {
+            }, {
               label:'性别',
               prop:'sex'
             }
           ]
-        }
-      }
+        },
+      };
+    },
+    methods: {
     }
-  }
+}
 </script>
 ```
 :::
-

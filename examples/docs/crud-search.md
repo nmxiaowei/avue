@@ -1,8 +1,7 @@
 <script>
-  export default {
+export default {
     data() {
       return {
-        obj:{},
         data: [
           {
             name:'张三',
@@ -19,16 +18,24 @@
           column:[
              {
               label:'姓名',
-              prop:'name'
-            }, {
+              prop:'name',
+              search:true,
+            },
+            {
               label:'性别',
-              prop:'sex'
+              prop:'sex',
+              search:true,
             }
           ]
-        }
-      }
+        },
+      };
+    },
+    methods: {
+      searchChange(params){
+        this.$message.success('搜索数据'+ JSON.stringify(params));
+      },
     }
-  }
+}
 </script>
 
 <style>
@@ -37,19 +44,18 @@
 
 ## Crud 模块
 
-通过json快速生成crud表格
 
-### 基础
 
-:::demo  当`avue-table`组件属性中，`data`数据的对象数组，`option`为表格要配置的数据列，`v-model`为当前编辑或者新增的表单对象，自动根据option中的cloumn配置去加载对象注入进去
+### 搜索
+
+:::demo  配置`cloumn`数组对象中的`search`属性为`true`时，即可激活该字段的搜索功能，点击搜索功能回调`search-change`方法，返回搜索的参数`
 ```html
-<avue-crud :data="data" :option="option" v-model="obj"></avue-crud>
+<avue-crud :data="data" :option="option"  @search-change="searchChange"></avue-crud>
 
 <script>
 export default {
- data() {
+    data() {
       return {
-        obj:{},
         data: [
           {
             name:'张三',
@@ -66,18 +72,24 @@ export default {
           column:[
              {
               label:'姓名',
-              prop:'name'
+              prop:'name',
+              search:true,
             },
             {
               label:'性别',
-              prop:'sex'
+              prop:'sex',
+              search:true,
             }
           ]
-        }
-      }
+        },
+      };
+    },
+    methods: {
+      searchChange(params){
+        this.$message.success('搜索数据'+ JSON.stringify(params));
+      },
     }
-  }
+}
 </script>
 ```
 :::
-

@@ -1,4 +1,4 @@
-<style>
+<style lang="scss">
 .page-component__scroll {
   height: calc(100% - 80px);
   margin-top: 80px;
@@ -17,7 +17,7 @@
   }
 
   .page-component__nav {
-    width: 240px;
+    width: 180px;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -45,7 +45,7 @@
   }
 
   .page-component__content {
-    padding-left: 270px;
+    padding-left: 210px;
     padding-bottom: 100px;
     box-sizing: border-box;
   }
@@ -190,7 +190,7 @@
 <script>
 import navsData from '../nav.config.json';
 export default {
-  data() {
+  data () {
     return {
       hover: false,
       navsData,
@@ -202,7 +202,7 @@ export default {
     };
   },
   watch: {
-    '$route.path'() {
+    '$route.path' () {
       // 触发伪滚动条更新
       this.componentScrollBox.scrollTop = 0;
       this.$nextTick(() => {
@@ -211,7 +211,7 @@ export default {
     }
   },
   methods: {
-    renderAnchorHref() {
+    renderAnchorHref () {
       if (/changelog/g.test(location.href)) return;
       const anchors = document.querySelectorAll('h2 a,h3 a');
       const basePath = location.href.split('#').splice(0, 2).join('#');
@@ -222,7 +222,7 @@ export default {
       });
     },
 
-    goAnchor() {
+    goAnchor () {
       if (location.href.match(/#/g).length > 1) {
         const anchor = location.href.match(/#[^#]+$/g);
         if (!anchor) return;
@@ -234,13 +234,13 @@ export default {
         }, 50);
       }
     },
-    toTop() {
+    toTop () {
       this.hover = false;
       this.showBackToTop = false;
       this.componentScrollBox.scrollTop = 0;
     },
 
-    handleScroll() {
+    handleScroll () {
       const scrollTop = this.componentScrollBox.scrollTop;
       this.showBackToTop = scrollTop >= 0.5 * document.body.clientHeight;
       if (this.showHeader !== this.scrollTop > scrollTop) {
@@ -252,7 +252,7 @@ export default {
       this.scrollTop = scrollTop;
     }
   },
-  created() {
+  created () {
     window.addEventListener('hashchange', () => {
       if (location.href.match(/#/g).length < 2) {
         document.documentElement.scrollTop = document.body.scrollTop = 0;
@@ -262,7 +262,7 @@ export default {
       }
     });
   },
-  mounted() {
+  mounted () {
     this.componentScrollBar = this.$refs.componentScrollBar;
     this.componentScrollBox = this.componentScrollBar.$el.querySelector('.el-scrollbar__wrap');
     this.componentScrollBox.addEventListener('scroll', this.throttledScrollHandler);
@@ -270,10 +270,10 @@ export default {
     this.goAnchor();
     document.body.classList.add('is-component');
   },
-  destroyed() {
+  destroyed () {
     document.body.classList.remove('is-component');
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.componentScrollBox.removeEventListener('scroll', this.throttledScrollHandler);
   }
 };

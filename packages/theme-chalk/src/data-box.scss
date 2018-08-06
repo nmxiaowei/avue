@@ -19,6 +19,7 @@
         height: 100%;
         color: #fff;
         text-align: center;
+        line-height: 120px;
         i {
             font-size: 48px !important;
         }
@@ -31,14 +32,14 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        h3 {
-            font-size: 28px;
+        .title {
+            margin-bottom: 5px;
+            font-size: 30px;
             text-align: center;
-            line-height: 30px;
         }
-        p {
+        .info {
             color: #999;
-            font-size: 12px;
+            font-size: 14px;
             text-align: center;
         }
     }
