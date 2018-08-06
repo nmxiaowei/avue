@@ -32,6 +32,16 @@ Vue.use(Avue,axios)
 
 ```
 
+#### 运行例子
+```
+npm run dev
+```
+
+#### 打包例子
+```
+npm run dev:build
+```
+
 #### 打包部署
 ```
 npm run dist
