@@ -6,6 +6,7 @@
     "author": "smallwei <1634566606@qq.com>",
     "license": "MIT",
     "scripts": {
+        "dev:build": "cross-env NODE_ENV=production webpack --config build/webpack.demo.js",
         "dev": "cross-env NODE_ENV=development PLAY_ENV=true webpack-dev-server --config build/webpack.demo.js",
         "build": "webpack --config build/webpack.build.conf.js",
         "build:theme": "gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
