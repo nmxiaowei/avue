@@ -79,7 +79,7 @@
               @row-dblclick="rowDblclick"
               :row-class-name="rowClassName"
               max-height="option.maxHeight"
-              :height="option.height=='auto'?($AVUE.clientHeight - vaildData(option.calcHeight,320)):option.height"
+              :height="option.height=='auto'?(clientHeight - vaildData(option.calcHeight,320)):option.height"
               ref="table"
               :width="setPx(option.width,'100%')"
               :border="option.border"
@@ -249,6 +249,7 @@ export default {
   components: {},
   data () {
     return {
+      clientHeight: document.documentElement.clientHeight,
       defaultForm: {
         tableForm: {},
         searchForm: {}
