@@ -33,6 +33,9 @@
             "path": "/crud-loading",
             "title": "crud等待"
         }, {
+            "path": "/crud-dic",
+            "title": "crud字典"
+        }, {
             "path": "/crud-click",
             "title": "crud行单选"
         }, {

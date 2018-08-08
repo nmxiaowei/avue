@@ -8,12 +8,12 @@
 #### 引入方式
 ```
 #### CDN
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/theme-chalk/index.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.5/lib/theme-chalk/index.css" />
 
-<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.1/lib/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.5/lib/index.min.js"></script>
 
 #### npm
-npm i @smallwei/avue --save
+npm install @smallwei/avue --save
 
 #### yarn
 yarn add @samallwei/avue --save
@@ -21,11 +21,12 @@ yarn add @samallwei/avue --save
 ```
 
 #### 使用方式
+
 ```
 import Element from 'element-ui'
 import axios from 'axios'
-import Avue from @smallwei/avue/lib/index.js
-import @smallwei/avue/lib/theme-chalk/index.css
+import Avue from '@smallwei/avue/lib/index.js'
+import '@smallwei/avue/lib/theme-chalk/index.css'
 
 Vue.use(Element);
 Vue.use(Avue,axios)
@@ -33,14 +34,15 @@ Vue.use(Avue,axios)
 ```
 
 #### 如何在pigx-ui中升级avue
+
 ```
 1.第一步  
-删除packages里面的avue-cli  
+删除packages.json里面的avue-cli  
 2.第二步  
-npm i @smallwei/avue —save  
+npm install @smallwei/avue —save  
 3.第三步  
-import Avue from @smallwei/avue/lib/index.js  
-import @smallwei/avue/lib/theme-chalk/index.css  
+import Avue from '@smallwei/avue/lib/index.js'  
+import '@smallwei/avue/lib/theme-chalk/index.css'  
 
 ```
 

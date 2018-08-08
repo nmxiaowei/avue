@@ -15,14 +15,15 @@
             <component size="small"
                        :is="getSearchType(column.type)"
                        v-model="searchForm[column.prop]"
-                       :type="column.type"
+                       :type="getType(column)"
                        clearable:type="column.type"
                        :placeholder="column.label"
                        :dic="setDic(column.dicData,DIC[column.dicData])"></component>
           </el-form-item>
+          <slot name="search"></slot>
           <el-form-item>
             <el-button type="primary"
-                       @click="searchChnage"
+                       @click="searchChange"
                        icon="el-icon-search"
                        size="small">搜索</el-button>
             <el-button @click="searchReset"
@@ -377,6 +378,7 @@ export default {
     // 搜索清空
     searchReset () {
       this.$refs['searchForm'].resetFields();
+      this.$emit('search-reset');
     },
     // 页大小回调
     sizeChange (val) {
@@ -406,7 +408,7 @@ export default {
       this.$emit('sort-change', val);
     },
     // 搜索回调
-    searchChnage () {
+    searchChange () {
       this.$emit('search-change', this.searchForm);
     },
     // 行双击
