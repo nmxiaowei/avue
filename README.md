@@ -32,6 +32,19 @@ Vue.use(Avue,axios)
 
 ```
 
+#### 如何在pigx-ui中升级avue
+```
+1.第一步  
+删除packages里面的avue-cli  
+2.第二步  
+npm i @smallwei/avue —save  
+3.第三步  
+import Avue from @smallwei/avue/lib/index.js  
+import @smallwei/avue/lib/theme-chalk/index.css  
+
+```
+
+
 #### 运行例子
 ```
 npm run dev
