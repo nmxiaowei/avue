@@ -28,13 +28,20 @@ export default {
       };
     },
     methods: {
-       handleRowDBLClick (row, event) {
+      handleRowDBLClick (row, event) {
         this.$notify({
           showClose: true,
           message: '双击'+JSON.stringify(row),
           type: 'success',
-        });
+        })
       },
+      handleRowClick (row, event, column) {
+          this.$notify({
+            showClose: true,
+            message: '单机'+JSON.stringify(row),
+            type: 'success',
+          });
+        }
     }
 }
 </script>
@@ -47,9 +54,58 @@ export default {
 
 
 
+### 行单机
+
+:::demo 单机一行数据时回调`row-click`方法,同时返回当前行的`row`数据,`event`当前的操作对象,`column`当前列的属性
+```html
+<avue-crud :data="data" :option="option" @row-click="handleRowClick"></avue-crud>
+
+<script>
+export default {
+    data() {
+      return {
+        data: [
+          {
+            name:'张三',
+            sex:'男'
+          }, {
+            name:'李四',
+            sex:'女'
+          }
+        ],
+        option:{
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            }, {
+              label:'性别',
+              prop:'sex'
+            }
+          ]
+        }
+      };
+    },
+    methods: {
+        handleRowClick (row, event, column) {
+          this.$notify({
+            showClose: true,
+            message: '单机'+JSON.stringify(row),
+            type: 'success',
+          });
+        },
+    }
+}
+</script>
+```
+:::
+
 ### 行双击
 
-:::demo  
+:::demo 双击一行数据时回调`row-dblclick`方法,同时返回当前行的`row`数据,`event`当前的操作对象,`column`当前列的属性 
 ```html
 <avue-crud :data="data" :option="option" @row-dblclick="handleRowDBLClick"></avue-crud>
 

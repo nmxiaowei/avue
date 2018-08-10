@@ -44,7 +44,7 @@
 
 ### Crud自定义列
 
-:::demo  
+:::demo 设置列的属性`solt`为`true`时即可开启自定义模式，在卡槽中指定列的名字即可
 ```html
 <avue-crud :data="data" :option="option" v-model="user">
   <template slot-scope="scope" slot="name">

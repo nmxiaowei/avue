@@ -43,9 +43,6 @@ export default {
         this.$message.success('新增数据'+ JSON.stringify(form));
         done();
       },
-      rowDel(form,index){
-        this.$message.success('删除数据'+ JSON.stringify(form));
-      },
       rowUpdate(form,index,done){
         this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
         done();
@@ -64,9 +61,9 @@ export default {
 
 ### 验证
 
-:::demo  配置验证字段的`rules`的数据对象即可，具体参考`element`官方规则
+:::demo  配置验证字段的`rules`的数据对象即可，具体参考`element`中`form`表单校验的配置规则官方规则
 ```html
-<avue-crud :data="data" :option="option"></avue-crud>
+<avue-crud :data="data" :option="option" @row-save="rowSave" @row-update="rowUpdate"></avue-crud>
 
 <script>
 export default {
@@ -112,10 +109,7 @@ export default {
       rowSave(form,done){
         this.$message.success('新增数据'+ JSON.stringify(form));
         done();
-      },
-      rowDel(form,index){
-        this.$message.success('删除数据'+ JSON.stringify(form));
-      },
+      }
       rowUpdate(form,index,done){
         this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
         done();

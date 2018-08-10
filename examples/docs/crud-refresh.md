@@ -48,7 +48,7 @@ export default {
 
 ### 刷新
 
-:::demo  
+:::demo 点击刷新按钮回调`refresh-change`方法返回当前分页`对象`
 ```html
 <avue-crud :data="data" :option="option" @refresh-change="refreshChange"></avue-crud>
 

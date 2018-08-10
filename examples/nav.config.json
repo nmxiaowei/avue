@@ -4,7 +4,7 @@
         "groupName": "Crud",
         "list": [{
             "path": "/crud",
-            "title": "crud"
+            "title": "crud基础"
         }, {
             "path": "/crud-page",
             "title": "crud分页"
@@ -21,6 +21,9 @@
             "path": "/crud-fun",
             "title": "crud方法"
         }, {
+            "path": "/crud-sort",
+            "title": "crud排序"
+        }, {
             "path": "/crud-index",
             "title": "crud序号"
         }, {
@@ -36,11 +39,8 @@
             "path": "/crud-dic",
             "title": "crud字典"
         }, {
-            "path": "/crud-click",
-            "title": "crud行单选"
-        }, {
-            "path": "/crud-dbclick",
-            "title": "crud行双选"
+            "path": "/crud-row",
+            "title": "crud行操作"
         }, {
             "path": "/crud-refresh",
             "title": "crud刷新"

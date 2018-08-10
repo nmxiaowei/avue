@@ -46,7 +46,7 @@ export default {
 
 ### 等待
 
-:::demo  
+:::demo 组件中`loading`接受一个`Boolean`的属性，来控制组件的等待框显隐藏
 ```html
 <avue-crud :data="data" :option="option" :table-loading="loading"></avue-crud>
 

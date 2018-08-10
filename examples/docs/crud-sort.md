@@ -12,12 +12,13 @@ export default {
           }
         ],
         option:{
-          menuWidth:380,
+          border:true,
           page:false,
           align:'center',
           menuAlign:'center',
           column:[
              {
+              sortable:true,
               label:'姓名',
               prop:'name'
             }, {
@@ -27,12 +28,17 @@ export default {
           ]
         },
         option1:{
-          menu:false,
+          defaultSort:{
+            prop: 'name',
+            order: 'descending'
+          },
+          border:true,
           page:false,
           align:'center',
           menuAlign:'center',
           column:[
              {
+              sortable:true,
               label:'姓名',
               prop:'name'
             }, {
@@ -40,11 +46,17 @@ export default {
               prop:'sex'
             }
           ]
-        },
+        }
       };
+    },
+    methods: {
+      sortChange(val){
+         this.$message.success('排序'+ JSON.stringify(val));
+      }
     }
 }
 </script>
+
 <style>
 
 </style>
@@ -53,15 +65,11 @@ export default {
 
 
 
-### 自定义操作栏
+### 排序
 
-:::demo  有时候我们自定义按钮，操作栏宽度不够，它是不能自适应的,需要设置`menuWidth`属性去改变宽度，同时在`menu`名字的卡槽接受我们自定义的`dom`，返回的`scope`中返回了当前行`row`以及其他我们需要的数据
+:::demo 表格中可显示的列字段进行排序，设置属性`sortable`接受一个`Boolean`的属性，设置为`true`即可开启排序，回调`sort-change`方法返回排序后的数据
 ```html
-<avue-crud :data="data" :option="option">
-  <template slot-scope="scope" slot="menu">
-     <el-button icon="el-icon-check" size="small">自定义菜单按钮</el-button>
-  </template>
-</avue-crud>
+<avue-crud :data="data" :option="option" @sort-change="sortChange"></avue-crud>
 
 <script>
 export default {
@@ -69,6 +77,7 @@ export default {
       return {
         data: [
           {
+            sortable:true,
             name:'张三',
             sex:'男'
           }, {
@@ -77,7 +86,7 @@ export default {
           }
         ],
         option:{
-          menuWidth:380,
+          border:true,
           page:false,
           align:'center',
           menuAlign:'center',
@@ -92,15 +101,21 @@ export default {
           ]
         },
       };
+    },
+    methods: {
+      sortChange(val){
+         this.$message.success('排序'+ JSON.stringify(val));
+      }
     }
 }
 </script>
 ```
 :::
 
-### 隐藏
 
-:::demo `menu`属性接受一个`Boolean`的属性达到隐藏的效果，默认为`false`
+### 默认排序
+
+:::demo 设置`defaultSort`一个属性接受`prop`排序的字段和`order`排序的方式俩个属性，初始化的时候根据设置默认排序,`order`中接受  `ascending` 表示升序，`descending` 表示降序，回调`sort-change`方法返回排序后的数据
 ```html
 <avue-crud :data="data" :option="option1"></avue-crud>
 
@@ -118,12 +133,17 @@ export default {
           }
         ],
         option1:{
-          menu:false,
+          defaultSort:{
+            prop: 'name',
+            order: 'descending'
+          },
+          border:true,
           page:false,
           align:'center',
           menuAlign:'center',
           column:[
              {
+              sortable:true,
               label:'姓名',
               prop:'name'
             }, {
@@ -131,10 +151,11 @@ export default {
               prop:'sex'
             }
           ]
-        },
+        }
       };
     }
 }
 </script>
 ```
 :::
+

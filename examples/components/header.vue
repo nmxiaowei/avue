@@ -76,7 +76,11 @@
 
   .nav-logo,
   .nav-logo-small {
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei';
     vertical-align: sub;
+    margin: 10px 0;
+    background-color: #fff;
+    color: #409eff;
   }
 
   .nav-logo-small {
@@ -257,9 +261,9 @@
         <h1>
           <!-- logo -->
           <slot>
-            <img src="../assets/images/element-logo.svg"
-                 alt="element-logo"
-                 class="nav-logo">
+            <h4 class="nav-logo">
+              Avue在线文档(Beta)
+            </h4>
           </slot>
         </h1>
 
@@ -270,7 +274,7 @@
 <script>
 
 export default {
-  data() {
+  data () {
     return {
 
     };
@@ -282,7 +286,7 @@ export default {
   methods: {
   },
 
-  created() {
+  created () {
 
   }
 };

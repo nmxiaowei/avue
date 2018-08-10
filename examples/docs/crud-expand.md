@@ -44,11 +44,11 @@ export default {
 
 ### 面板
 
-:::demo  设置`expand`为`true`时即可，`solt`卡槽的名称为`expand`时即可，`props`为返回需要的数据，具体看文档
+:::demo  设置`expand`为`true`时即可，`solt`卡槽的名称为`expand`时即可，`props`为返回需要的数据，里面包括了当前行的相关数据
 ```html
 <avue-crud :data="data" :option="option">
   <template slot-scope="props" slot="expand">
-    {{props}}
+    <el-tag>当前行的{{props}}</el-tag>
   </template>
 </avue-crud>
 
