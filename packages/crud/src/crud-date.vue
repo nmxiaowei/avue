@@ -2,6 +2,7 @@
   <el-date-picker :type="type"
                   v-model="text"
                   :size="size"
+                  :readonly="readonly"
                   range-separator="至"
                   :start-placeholder="startPlaceholder"
                   :end-placeholder="endPlaceholder"
@@ -19,7 +20,7 @@ import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
   name: 'AvueCrudDate',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {
       text: ''
     };
@@ -51,10 +52,10 @@ export default {
     }
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

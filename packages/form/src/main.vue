@@ -7,11 +7,23 @@
              :rules="formRules">
       <el-row :gutter="20"
               :span="24">
-        <template v-for="(column,index) in option.column">
-          <div :class="{'avue-row':column.row}"
+        <draggable :list="columnOption"
+                   :options="dragOptions">
+          <div class="row"
+               :class="{'is-block':column.row,'is-cursor':draggableStart}"
+               v-for="(column,index) in columnOption"
                v-if="vaildVisdiplay(column)"
                :key="index">
-            <el-col :span="column.span||12">
+            <el-col :span="column.span||12"
+                    @mouseover.native="draggableMenu?mouseover(index):''"
+                    @mouseout.native="draggableMenu?mouseout(index):''">
+              <div class="menu"
+                   v-if="optionIndex[index]">
+                <i class="el-icon-menu"
+                   @click="optionMenu(column,index)"></i>
+                <i class="el-icon-delete"
+                   @click="optionDelete(column,index)"></i>
+              </div>
               <el-form-item :label="column.label"
                             :prop="column.prop"
                             :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
@@ -26,6 +38,7 @@
                            v-model="form[column.prop]"
                            :precision="column.precision"
                            :multiple="column.multiple"
+                           :readonly="vaildData(draggableStart,column.readonly)"
                            :placeholder="column.placeholder"
                            :step="column.step"
                            :range="column.range"
@@ -75,7 +88,7 @@
               </el-form-item>
             </el-col>
           </div>
-        </template>
+        </draggable>
         <el-col :span="24"
                 v-if="vaildData(option.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
@@ -94,39 +107,85 @@
 </template>
 
 <script>
+
+import draggable from "vuedraggable";
 import crud from '../../mixins/crud';
 import { validatenull } from '../../utils/validate.js';
 export default {
   name: 'AvueForm',
   mixins: [crud()],
-  components: {},
-  data() {
+  components: {
+    draggable
+  },
+  data () {
     return {
       first: true,
+      optionIndex: [],
+      optionBox: false,
       form: {},
       formRules: {}
     };
   },
-  created() {
-
+  created () {
   },
-  mounted() { },
+  mounted () { },
   computed: {
-    menuWidth: function() {
+    draggable () {
+      return this.option.draggable || {};
+    },
+    draggableMenu () {
+      return this.draggable.menu || false;
+    },
+    draggableStart () {
+      return this.draggable.start || false;
+    },
+    draggableFlag () {
+      return this.vaildData(this.draggable.clone, true)
+    },
+    dragOptions () {
+      if (!this.draggableStart) {
+        return {
+          disabled: true,
+        }
+      }
+      let pull = (() => {
+        if (this.draggableFlag) {
+          return {
+            pull: 'clone',
+            revertClone: false
+          }
+        }
+        return {
+
+        }
+      })();
+      return {
+        animation: 0,
+        ghostClass: "avue-ghost",
+        group: (function () {
+          return Object.assign({ name: "avue" }, pull);
+        })(),
+        sort: this.vaildData(this.draggable.sort, false),
+      };
+    },
+    columnOption () {
+      return this.option.column || [];
+    },
+    menuWidth: function () {
       if (this.option.submitPostion === 'left') {
         return '';
       } else {
         return '0';
       }
     },
-    menuPostion: function() {
+    menuPostion: function () {
       if (this.option.submitPostion) {
         return 'is-' + this.option.submitPostion;
       } else {
         return 'is-center';
       }
     },
-    boxType: function() {
+    boxType: function () {
       return this.option.boxType;
     }
   },
@@ -140,8 +199,22 @@ export default {
     }
   },
   methods: {
+    optionDelete (column, index) {
+      this.$emit('option-delete', { column, index })
+    },
+    optionMenu (column, index) {
+      this.$emit('option-menu', { column, index })
+    },
+    mouseover (index) {
+      this.optionIndex[index] = true;
+      this.optionIndex.splice(0, 0);
+    },
+    mouseout (index) {
+      this.optionIndex[index] = false;
+      this.optionIndex.splice(0, 0);
+    },
     // 验证表单是否禁止
-    vaildDisabled(column) {
+    vaildDisabled (column) {
       if (!(this.boxType)) {
         return this.vaildData(column.disabled, false);
       } else if (this.boxType === 'add') {
@@ -151,7 +224,7 @@ export default {
       }
     },
     // 验证表单是否显隐
-    vaildVisdiplay(column) {
+    vaildVisdiplay (column) {
       if (!(this.boxType)) {
         return this.vaildData(column.visdiplay, true);
       } else if (this.boxType === 'add') {
@@ -161,14 +234,14 @@ export default {
       }
 
     },
-    rulesInit() {
+    rulesInit () {
       this.formRules = {};
-      this.option.column.forEach(ele => {
+      this.columnOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },
-    change(index) {
-      const column = this.option.column;
+    change (index) {
+      const column = this.columnOption;
       const list = column[index].cascader;
       const prop = column[index].prop;
       const url = column[index + 1].dicUrl;
@@ -185,19 +258,19 @@ export default {
         this.DIC = Object.assign({}, this.DIC);
       });
     },
-    formInit() {
-      const column = this.option.column;
+    formInit () {
+      const column = this.columnOption;
       this.form = this.formInitVal(column).tableForm;
       this.formVal();
-      for (let i = 0; i < this.option.column.length; i++) {
-        const ele = this.option.column[i];
+      for (let i = 0; i < this.columnOption.length; i++) {
+        const ele = this.columnOption[i];
         if (ele.cascaderFirst) {
           const cascader = [].concat(ele.cascader);
           const cascaderLen = ele.cascader.length - 1;
           if (!validatenull(this.form[ele.prop])) this.change(i);
           for (let j = 0; j < cascaderLen; j++) {
             const cindex = i + (j + 1);
-            const cele = this.option.column[cindex];
+            const cele = this.columnOption[cindex];
             cele.cascader = cascader.slice(cindex);
             if (!validatenull(this.form[cele.prop])) this.change(cindex);
           }
@@ -205,16 +278,16 @@ export default {
       }
       this.first = false;
     },
-    formVal() {
+    formVal () {
       for (let o in this.value) {
         this.form[o] = this.value[o];
       }
       this.$emit('input', this.form);
     },
-    clearValidate() {
+    clearValidate () {
       this.$refs['form'].clearValidate();
     },
-    validate() {
+    validate () {
       return new Promise((resolve, reject) => {
         this.$refs.form.validate(valid => {
           if (valid) {
@@ -225,10 +298,10 @@ export default {
         });
       });
     },
-    resetForm() {
+    resetForm () {
       this.$refs.form.resetFields();
     },
-    submit() {
+    submit () {
       this.$refs['form'].validate(valid => {
         if (valid) {
           this.$emit('submit', this.form);

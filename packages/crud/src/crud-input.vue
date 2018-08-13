@@ -9,6 +9,7 @@
               :autosize="{ minRows: minRows, maxRows: maxRows}"
               :prefix-icon="prefixIcon"
               :suffix-icon="suffixIcon"
+              :readonly="readonly"
               :placeholder="placeholder?placeholder:`请输入${label}`"
               @change="handleChange"
               :disabled="disabled"
@@ -50,7 +51,7 @@ import { validatenull } from '../../utils/validate';
 export default {
   name: 'AvueCrudInput',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {
       box: false,
       labelText: this.multiple ? [] : ''
@@ -89,15 +90,15 @@ export default {
     }
   },
   watch: {
-    value() {
+    value () {
       this.init();
     }
   },
   computed: {
-    labelShow() {
+    labelShow () {
       return this.multiple ? this.labelText.join('/').toString() : this.labelText;
     },
-    typeParam: function() {
+    typeParam: function () {
       if (this.type === 'textarea') {
         return 'textarea';
       } else if (this.type === 'password') {
@@ -107,12 +108,12 @@ export default {
       }
     }
   },
-  created() { },
-  mounted() {
+  created () { },
+  mounted () {
     this.init();
   },
   methods: {
-    checkChange(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
+    checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       console.log(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
       this.text = [];
       this.labelText = [];
@@ -125,10 +126,10 @@ export default {
       this.$emit('input', this.text);
       this.$emit('change', this.text);
     },
-    open() {
+    open () {
       this.box = true;
     },
-    init() {
+    init () {
       if (this.type === 'tree') {
         if (this.multiple) {
           this.labelText = ['获取字典中...'];
@@ -152,7 +153,7 @@ export default {
         }, 500);
       }
     },
-    findLabelNode(dic, value, props) {
+    findLabelNode (dic, value, props) {
       const labelKey = props.label || 'label';
       const valueKey = props.value || 'value';
       const childrenKey = props.children || 'children';
@@ -166,7 +167,7 @@ export default {
         }
       });
     },
-    disabledParentNode(dic) {
+    disabledParentNode (dic) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
         if (!validatenull(children)) {
@@ -175,7 +176,7 @@ export default {
         }
       });
     },
-    handleNodeClick(data) {
+    handleNodeClick (data) {
       if (validatenull(data[this.childrenKey]) && !this.multiple || this.parentCheck) {
         this.box = false;
         const value = data[this.valueKey];
@@ -187,7 +188,7 @@ export default {
       }
 
     },
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

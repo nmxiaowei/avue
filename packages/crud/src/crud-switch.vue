@@ -6,6 +6,7 @@
              :inactive-value="getDic(1)[valueKey]"
              :inactive-text="getDic(1)[labelKey]"
              :disabled="disabled"
+             :readonly="readonly"
              :size="size">
   </el-switch>
 </template>
@@ -20,18 +21,18 @@ export default {
 
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     },
-    getDic(index) {
+    getDic (index) {
       return this.dic[index] ? this.dic[index] : {};
     }
   }

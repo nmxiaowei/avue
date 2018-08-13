@@ -9,7 +9,7 @@
           <!-- 循环列搜索框 -->
           <el-form-item :label="column.label"
                         :prop="column.prop"
-                        v-for="(column,index) in option.column"
+                        v-for="(column,index) in columnOption"
                         :key="index"
                         v-if="column.search">
             <component size="small"
@@ -120,7 +120,7 @@
       </template>
       <!-- 循环列 -->
       <el-table-column v-if="showClomnuIndex.indexOf(index)!=-1"
-                       v-for="(column,index) in option.column"
+                       v-for="(column,index) in columnOption"
                        :prop="column.prop"
                        :key="column.prop"
                        :show-overflow-tooltip="column.overHidden"
@@ -197,7 +197,7 @@
                    ref="tableForm"
                    :option="formOption">
           <template slot-scope="scope"
-                    v-for="item in option.column"
+                    v-for="item in columnOption"
                     :slot="item.prop">
             <slot :value="scope.value"
                   :column="scope.column"
@@ -273,6 +273,9 @@ export default {
     this.showClomnuInit();
   },
   computed: {
+    columnOption () {
+      return this.option.column || []
+    },
     selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
     },
@@ -345,12 +348,12 @@ export default {
     },
     rulesInit () {
       this.tableFormRules = {};
-      this.option.column.forEach(ele => {
+      this.columnOption.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
     showClomnuInit: function () {
-      this.option.column.forEach((ele, index) => {
+      this.columnOption.forEach((ele, index) => {
         if (validatenull(ele.hide)) {
           this.showClomnuIndex.push(index);
         }
@@ -370,7 +373,7 @@ export default {
       this.$emit('input', this.tableForm);
     },
     formInit () {
-      this.defaultForm = this.formInitVal(this.option.column);
+      this.defaultForm = this.formInitVal(this.columnOption);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
       this.formVal();

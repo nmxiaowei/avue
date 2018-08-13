@@ -2,6 +2,7 @@
   <el-select v-model="text"
              :size="size"
              :multiple="multiple"
+             :readonly="readonly"
              :clearable="clearable"
              :placeholder="placeholder?placeholder:`请选择${label}`"
              @change="handleChange"
@@ -19,7 +20,7 @@ import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
   name: 'AvueCrudSelect',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -31,10 +32,10 @@ export default {
     }
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

@@ -1,12 +1,11 @@
-.avue-row {
-    width: 100%;
-    height: auto;
-    overflow: hidden
-}
-
 .avue-dialog {
     max-height: 400px;
     overflow-y: auto;
+}
+
+.avue-ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
 }
 
 .avue-tip {

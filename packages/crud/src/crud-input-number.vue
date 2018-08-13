@@ -6,6 +6,7 @@
                    :size="size"
                    :min="minRows"
                    :max="maxRows"
+                   :readonly="readonly"
                    :controls-position="controlsPosition"
                    :label="placeholder?placeholder:`请输入${label}`"
                    :disabled="disabled"></el-input-number>
@@ -16,7 +17,7 @@ import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
   name: 'AvueCrudInputNumber',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -45,10 +46,10 @@ export default {
     }
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

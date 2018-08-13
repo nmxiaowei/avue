@@ -8,6 +8,7 @@
                :on-preview="handlePictureCardPreview"
                :limit="limit"
                :drag="drag"
+               :readonly="readonly"
                :show-file-list="showFileList"
                :list-type="listType"
                :on-exceed="handleExceed"
@@ -55,7 +56,7 @@ import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
   name: 'AvueCurdUpload',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
@@ -92,26 +93,26 @@ export default {
   },
   watch: {},
   computed: {
-    status() {
+    status () {
       return this.listType === 'picture-img';
     },
-    imageUrl() {
+    imageUrl () {
       return this.status ? this.text : '';
     }
   },
-  created() {
+  created () {
     this.init();
   },
-  mounted() { },
+  mounted () { },
   methods: {
-    init() {
+    init () {
       if (!(validatenull(this.text))) {
         if (!this.status) {
           this.fileList = this.text;
         }
       }
     },
-    handleSuccess(response, file, fileList) {
+    handleSuccess (response, file, fileList) {
       this.fileList = fileList;
       if (this.status) {
         this.text = response.data;
@@ -125,17 +126,17 @@ export default {
       }
 
     },
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
       this.fileList = fileList;
       this.$message.error('删除成功');
       this.setVal();
     },
-    handleError(erro, file, fileList) {
+    handleError (erro, file, fileList) {
       this.fileList = fileList;
       this.$message.error('上传失败');
       this.setVal();
     },
-    setVal() {
+    setVal () {
       let value;
       if (this.status) {
         value = this.text;
@@ -145,14 +146,14 @@ export default {
       this.$emit('input', value);
       this.$emit('change', value);
     },
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
-    handlePictureCardPreview(file) {
+    handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    beforeRemove(file) {
+    beforeRemove (file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }
   }

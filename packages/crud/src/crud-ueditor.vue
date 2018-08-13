@@ -5,6 +5,7 @@
                 :placeholder="placeholder ? placeholder : `请输入${label}`"
                 @change="handleChange"
                 ref="myQuillEditor"
+                :readonly="readonly"
                 :options="options">
   </quill-editor>
 
@@ -18,7 +19,7 @@ export default {
   components: {
     quillEditor
   },
-  data() {
+  data () {
     return {
 
     };
@@ -45,11 +46,11 @@ export default {
   },
   watch: {
   },
-  mounted() {
+  mounted () {
 
   },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value.html);
       this.$emit('change', value.html);
     }

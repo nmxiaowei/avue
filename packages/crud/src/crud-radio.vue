@@ -5,6 +5,7 @@
     <el-radio v-for="(item,index) in dic"
               :label="item[valueKey]"
               :border="border"
+              :readonly="readonly"
               :key="index">{{item[labelKey]}}</el-radio>
   </el-radio-group>
 </template>
@@ -14,17 +15,17 @@ import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
   name: 'AvueCrudRadio',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
     value: {}
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

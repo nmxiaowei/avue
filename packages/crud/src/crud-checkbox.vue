@@ -5,6 +5,7 @@
                  :label="item[valueKey]"
                  :border="border"
                  :min="min"
+                 :readonly="readonly"
                  :max="max"
                  :key="index">{{item[labelKey]}}</el-checkbox>
   </el-checkbox-group>
@@ -15,7 +16,7 @@ import crudCompoents from '../../mixins/crud-compoents.js';
 export default {
   name: 'AvueCrudCheckbox',
   mixins: [crudCompoents()],
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -25,10 +26,10 @@ export default {
     }
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

@@ -1,5 +1,28 @@
 .from {
     padding: 8px 10px;
+    .row {
+        &.is-block {
+            height: auto;
+        }
+        &.is-cursor {
+            cursor: pointer;
+        }
+    }
+    .el-col {
+        position: relative;
+    }
+    .menu {
+        position: absolute;
+        right: 0;
+        top: -10px;
+        z-index: 999;
+        i {
+            color: #666;
+        }
+        i+i {
+            margin-left: 10px;
+        }
+    }
 }
 
 .from {

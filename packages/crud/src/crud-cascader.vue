@@ -3,6 +3,7 @@
                v-model="text"
                :placeholder="placeholder?placeholder:`请选择${label}`"
                :props="props"
+               :readonly="readonly"
                :change-on-select="changeoOnSelect"
                :clearable="clearable"
                :expand-trigger="expandTrigger"
@@ -45,14 +46,14 @@ export default {
       default: '/'
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }

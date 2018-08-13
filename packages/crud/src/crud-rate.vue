@@ -3,6 +3,7 @@
            style="margin-top:10px"
            @change="handleChange"
            :max="max"
+           :readonly="readonly"
            :show-text="showText"
            :icon-classes="iconClasses"
            :void-icon-class="voidIconClass"
@@ -41,14 +42,14 @@ export default {
       type: String
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value);
       this.$emit('change', value);
     }
