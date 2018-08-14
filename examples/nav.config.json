@@ -75,6 +75,9 @@
                 "path": "/form-silder",
                 "title": "form滑块"
             }, {
+                "path": "/form-upload",
+                "title": "form上传"
+            }, {
                 "path": "/form-select",
                 "title": "form多级联动"
             },

@@ -52,6 +52,7 @@
                            :action="column.action"
                            :limit="column.limit"
                            :tip="column.tip"
+                           :loadText="column.loadText"
                            :listType="column.listType"
                            :drag="column.drag"
                            :showFileList="column.showFileList"

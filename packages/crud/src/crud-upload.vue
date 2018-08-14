@@ -7,14 +7,14 @@
                :multiple="multiple"
                :on-preview="handlePictureCardPreview"
                :limit="limit"
+               :http-request="httpRequest"
                :drag="drag"
                :readonly="readonly"
                :show-file-list="showFileList"
                :list-type="listType"
+               :on-change="handleChange"
                :on-exceed="handleExceed"
-               :on-error="handleError"
                :disabled="disabled"
-               :on-success="handleSuccess"
                :file-list="fileList">
       <template v-if="listType=='picture-card'">
         <i class="el-icon-plus"></i>
@@ -58,6 +58,7 @@ export default {
   mixins: [crudCompoents()],
   data () {
     return {
+      loading: false,
       dialogImageUrl: '',
       dialogVisible: false,
       text: this.status ? '' : [],
@@ -87,6 +88,10 @@ export default {
       type: Boolean,
       default: true
     },
+    loadText: {
+      type: String,
+      default: '文件上传中,请稍等'
+    },
     action: {
       type: String
     }
@@ -112,14 +117,20 @@ export default {
         }
       }
     },
-    handleSuccess (response, file, fileList) {
-      this.fileList = fileList;
-      if (this.status) {
-        this.text = response.data;
-      } else {
+    handleChange (file, fileList) {
+      this.loading = this.$loading({
+        lock: true,
+        text: this.loadText,
+        spinner: 'el-icon-loading',
+      });
+      const len = fileList.length;
+      this.fileList = this.fileList.splice(len, 1);
+    },
+    handleSuccess (file) {
+      {
         this.fileList.push({
-          name: file.name,
-          url: ''
+          name: file.label,
+          url: file.value
         });
         this.$message.success('上传成功');
         this.setVal();
@@ -128,13 +139,28 @@ export default {
     },
     handleRemove (file, fileList) {
       this.fileList = fileList;
-      this.$message.error('删除成功');
+      this.$message.success('删除成功');
       this.setVal();
     },
-    handleError (erro, file, fileList) {
-      this.fileList = fileList;
+    handleError () {
       this.$message.error('上传失败');
-      this.setVal();
+    },
+    httpRequest (config) {
+      const file = config.file;
+      const headers = { 'Content-Type': 'multipart/form-data' }
+      let param = new FormData()
+      param.append('file', file, file.name)
+      this.$http.post(this.action, param, { headers }).then(res => {
+        const data = res.data;
+        this.loading.close();
+        this.handleSuccess({
+          label: data[labelKey],
+          value: data[valueKey]
+        });
+      }).catch(err => {
+        this.loading.close();
+        this.handleError();
+      });
     },
     setVal () {
       let value;
