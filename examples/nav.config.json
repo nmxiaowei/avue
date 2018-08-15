@@ -45,6 +45,9 @@
             "path": "/crud-refresh",
             "title": "crud刷新"
         }, {
+            "path": "/crud-edit",
+            "title": "crud编辑"
+        }, {
             "path": "/crud-solt",
             "title": "crud自定义列"
         }, {

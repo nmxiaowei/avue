@@ -72,7 +72,7 @@
               v-if="vaildData(option.selectClearBtn,true) && option.selection">清空</span>
       </span>
     </el-tag>
-    <el-table :data="data"
+    <el-table :data="list"
               :stripe="option.stripe"
               :show-header="option.showHeader"
               :default-sort="option.defaultSort"
@@ -132,11 +132,20 @@
                        :label="column.label"
                        :fixed="column.fixed">
         <template slot-scope="scope">
+          <template v-if="scope.row.cellEdit && [undefined,'select','input'].includes(column.type) && column.solt!==true">
+            <component size="small"
+                       :is="getSearchType(column.type)"
+                       v-model="tableForm[column.prop]"
+                       :type="getType(column)"
+                       clearable
+                       :placeholder="column.label"
+                       :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+          </template>
           <slot :row="scope.row"
                 :dic="setDic(column.dicData,DIC[column.dicData])"
                 :label="detail(scope.row,column)"
                 :name="column.prop"
-                v-if="column.solt"></slot>
+                v-else-if="column.solt"></slot>
           <template v-else>
             <span v-html="detail(scope.row,column)"
                   v-if="column.type"></span>
@@ -152,6 +161,11 @@
                        :width="vaildData(option.menuWidth,240)">
         <template slot-scope="scope">
           <template v-if="vaildData(option.menu,true)">
+            <el-button type="primary"
+                       :icon="scope.row.cellEdit?'el-icon-check':'el-icon-edit'"
+                       size="small"
+                       @click.stop="scope.row.cellEdit?rowCellUpdate(scope.row,scope.$index):rowCell(scope.row,scope.$index)"
+                       v-if="vaildData(option.cellBtn ,false)">{{scope.row.cellEdit?'保存':'编辑'}}</el-button>
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
@@ -255,6 +269,7 @@ export default {
         tableForm: {},
         searchForm: {}
       },
+      list: [],
       searchShow: true,
       searchForm: {},
       boxVisible: false,
@@ -271,6 +286,8 @@ export default {
   created () {
     // 初始化动态列
     this.showClomnuInit();
+    //初始化数据
+    this.dataInit();
   },
   computed: {
     columnOption () {
@@ -334,6 +351,8 @@ export default {
   },
   methods: {
     closeDialog () {
+      this.tableIndex = -1;
+      this.tableForm = {};
       this.boxVisible = false;
     },
     selectClear () {
@@ -342,7 +361,6 @@ export default {
     indexMethod (index) {
       return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
     },
-    showClomnu () { },
     refreshChange () {
       this.$emit('refresh-change', this.page);
     },
@@ -371,6 +389,9 @@ export default {
         this.tableForm[o] = this.value[o];
       }
       this.$emit('input', this.tableForm);
+    },
+    dataInit () {
+      this.list = Object.assign([], this.data);
     },
     formInit () {
       this.defaultForm = this.formInitVal(this.columnOption);
@@ -418,7 +439,6 @@ export default {
     rowDblclick (row, event) {
       this.$emit('row-dblclick', row, event);
     },
-
     // 行单机
     rowClick (row, event, column) {
       this.$emit('row-click', row, event, column);
@@ -460,6 +480,18 @@ export default {
       this.$emit('input', this.tableForm);
       this.show();
     },
+    //单元格编辑
+    rowCell (row, index) {
+      if (this.tableIndex != -1) {
+        this.$message.error('先保存当前编辑的数据');
+        return;
+      }
+      this.tableIndex = index;
+      this.tableForm = Object.assign({}, row);
+      this.$emit('input', this.tableForm);
+      row.cellEdit = !row.cellEdit;
+      this.$set(this.list, index, row);
+    },
     // 编辑
     rowEdit (row, index) {
       this.tableForm = Object.assign({}, row);
@@ -467,6 +499,21 @@ export default {
       this.tableIndex = index;
       this.boxType = 'edit';
       this.show();
+    },
+    rowCellUpdate (row, index) {
+      const form = Object.assign({}, this.tableForm);
+      this.$emit('input', form);
+      this.$emit(
+        'row-update',
+        form,
+        index,
+        () => {
+          row.cellEdit = !row.cellEdit;
+          this.tableForm = {};
+          this.tableIndex = -1;
+          this.$set(this.list, index, form);
+        }
+      );
     },
     // 删除
     rowDel (row, index) {

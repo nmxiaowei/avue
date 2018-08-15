@@ -154,8 +154,8 @@ export default {
         const data = res.data;
         this.loading.close();
         this.handleSuccess({
-          label: data[labelKey],
-          value: data[valueKey]
+          label: data[this.labelKey],
+          value: data[this.valueKey]
         });
       }).catch(err => {
         this.loading.close();
