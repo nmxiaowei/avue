@@ -307,6 +307,11 @@ export default {
       return option;
     }
   },
+  watch: {
+    data () {
+      this.dataInit();
+    }
+  },
   mounted () { },
   props: {
     value: {
