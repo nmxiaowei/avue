@@ -132,24 +132,23 @@ export const getType = (column) => {
         } else {
             return type;
         }
-    } else {
-        return type;
     }
+    return type;
 };
 
 /**
  * 搜索框获取动态组件
  */
 export const getSearchType = (type) => {
-    if (type === 'select' || type === 'radio' || type === 'checkbox') {
+    if (['select', 'radio', 'checkbox'].includes(type)) {
         return 'crudSelect';
-    } else if (type === 'time') {
+    } else if (['time', 'timerange'].includes(type)) {
         return 'crudTime';
-    } else if (type === 'dates' || type === 'date' || type === 'datetime' || type === 'datetimerange' || type === 'daterange' || type === 'week' || type === 'month' || type === 'year') {
+    } else if (['dates', 'date', 'datetime', 'datetimerange', 'daterange', 'week', 'month', 'year'].includes(type)) {
         return 'crudDate';
-    } else if (type === 'cascader') {
+    } else if (['cascader'].includes(type)) {
         return 'crudCascader';
-    } else if (type === 'number') {
+    } else if (['number'].includes(type)) {
         return 'crudInputNumber';
     } else {
         return 'crudInput';
@@ -166,9 +165,9 @@ export const getComponent = (type) => {
         return 'crudRadio';
     } else if (type === 'checkbox') {
         return 'crudCheckbox';
-    } else if (type === 'time') {
+    } else if (['time', 'timerange'].includes(type)) {
         return 'crudTime';
-    } else if (type === 'dates' || type === 'date' || type === 'datetime' || type === 'datetimerange' || type === 'daterange' || type === 'week' || type === 'month' || type === 'year') {
+    } else if (['dates', 'date', 'datetime', 'datetimerange', 'daterange', 'week', 'month', 'year'].includes(type)) {
         return 'crudDate';
     } else if (type === 'cascader') {
         return 'crudCascader';

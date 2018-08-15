@@ -8,7 +8,8 @@
       <el-row :gutter="20"
               :span="24">
         <draggable :list="columnOption"
-                   :options="dragOptions">
+                   :options="dragOptions"
+                   class="group">
           <div class="row"
                :class="{'is-block':column.row,'is-cursor':draggableStart}"
                v-for="(column,index) in columnOption"

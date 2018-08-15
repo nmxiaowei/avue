@@ -4,6 +4,7 @@ export default {
       return {
         form:{},
         option:{
+          labelWidth:110,
           column: [{
               label: "日期范围",
               prop: "daterange",
@@ -12,16 +13,28 @@ export default {
               endPlaceholder: '日期结束范围自定义',
           }, {
               label: "时间范围",
-              value: 'datetimerange',
-              type: 'datetimerange',
+              value: 'timerange',
+              type: 'timerange',
               startPlaceholder: '时间开始范围自定义',
               endPlaceholder: '时间结束范围自定义',
+          }, {
+              label: "时间日期范围",
+              value: 'datetimerange',
+              type: 'datetimerange',
+              span:24,
+              row:true,
+              startPlaceholder: '时间日期开始范围自定义',
+              endPlaceholder: '时间日期结束范围自定义',
           }, {
               label: "日期",
               prop: "date",
               type: "date"
           }, {
               label: "时间",
+              prop: "time",
+              type: "time",
+          }, {
+              label: "日期时间",
               prop: "datetime",
               type: "datetime",
           }, {
@@ -74,26 +87,37 @@ export default {
       return {
         form:{},
         option:{
+          labelWidth:110,
           column: [{
               label: "日期范围",
               prop: "daterange",
               type: "daterange",
               startPlaceholder: '日期开始范围自定义',
               endPlaceholder: '日期结束范围自定义',
-              pickerOptions: getPickerOptions()
           }, {
               label: "时间范围",
-              value: 'datetimerange',
-              type: 'datetimerange',
+              value: 'timerange',
+              type: 'timerange',
               startPlaceholder: '时间开始范围自定义',
               endPlaceholder: '时间结束范围自定义',
-              pickerOptions: getPickerOptions()
+          }, {
+              label: "时间日期范围",
+              value: 'datetimerange',
+              type: 'datetimerange',
+              span:24,
+              row:true,
+              startPlaceholder: '时间日期开始范围自定义',
+              endPlaceholder: '时间日期结束范围自定义',
           }, {
               label: "日期",
               prop: "date",
               type: "date"
           }, {
               label: "时间",
+              prop: "time",
+              type: "time",
+          }, {
+              label: "日期时间",
               prop: "datetime",
               type: "datetime",
           }, {

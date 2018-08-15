@@ -88,6 +88,10 @@ export default {
               prop: 'imgUrl',
               type: 'upload',
               span: 24,
+              //   props:{
+              //       label:''//返回的图片名称字段
+              //       value:''//返回图片地址的字段
+              //   },
               tip: '只能上传jpg/png文件，且不超过500kb',
               action: 'https://jsonplaceholder.typicode.com/posts/',
           }, {

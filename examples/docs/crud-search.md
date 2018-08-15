@@ -9,11 +9,13 @@ export default {
           {
             name:'张三',
             sex:'男',
+            grade:'0',
             date:'2018-08-08',
             time:'13:00:00'
           }, {
             name:'李四',
             sex:'女',
+            grade:'1',
             date:'2018-08-09',
             time:'13:00:00'
           }
@@ -31,7 +33,37 @@ export default {
             {
               label:'性别',
               prop:'sex',
+            }
+          ]
+        },
+        option0:{
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name',
               search:true,
+            },
+            {
+              label:'性别',
+              prop:'sex'
+            },
+            {
+              label:'权限',
+              prop:'grade',
+              search:true,
+              type:'select',
+              dicData:[
+                {
+                  label:'会员',
+                  value:'0'
+                },{
+                  label:'普通',
+                  value:'1'
+                }
+              ]
             }
           ]
         },
@@ -43,6 +75,7 @@ export default {
              {
               label:'姓名',
               prop:'name',
+              search:true,
             },
             {
               label:'性别',
@@ -58,9 +91,7 @@ export default {
             {
               label:'时间',
               prop:'time',
-              type:'time',
-              more:true,
-              search:true,
+              type:'time'
             },
           ]
         },
@@ -93,7 +124,7 @@ export default {
 
 :::demo  配置`cloumn`数组对象中的`search`属性为`true`时，即可激活该字段的搜索功能，点击搜索功能回调`search-change`方法，返回搜索的参数`
 ```html
-<avue-crud :data="data" :option="option"  @search-change="searchChange"></avue-crud>
+<avue-crud :data="data" :option="option0"  @search-change="searchChange"></avue-crud>
 
 <script>
 export default {
@@ -103,16 +134,18 @@ export default {
           {
             name:'张三',
             sex:'男',
+            grade:'0',
             date:'2018-08-08',
             time:'13:00:00'
           }, {
             name:'李四',
             sex:'女',
+            grade:'1',
             date:'2018-08-09',
             time:'13:00:00'
           }
         ],
-        option:{
+       option0:{
           page:false,
           align:'center',
           menuAlign:'center',
@@ -124,11 +157,25 @@ export default {
             },
             {
               label:'性别',
-              prop:'sex',
+              prop:'sex'
+            },
+            {
+              label:'权限',
+              prop:'grade',
+              type:'select',
               search:true,
+              dicData:[
+                {
+                  label:'会员',
+                  value:'0'
+                },{
+                  label:'普通',
+                  value:'1'
+                }
+              ]
             }
           ]
-        },
+        }
       };
     },
     methods: {
@@ -173,6 +220,7 @@ export default {
              {
               label:'姓名',
               prop:'name',
+              search:true,
             },
             {
               label:'性别',
@@ -188,9 +236,7 @@ export default {
             {
               label:'时间',
               prop:'time',
-              type:'time',
-              more:true,
-              search:true,
+              type:'time'
             },
           ]
         },

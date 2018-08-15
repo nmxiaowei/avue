@@ -1,8 +1,14 @@
 .from {
     padding: 8px 10px;
+    .group {
+        height: auto;
+        overflow: hidden;
+    }
     .row {
         &.is-block {
+            width: 100%;
             height: auto;
+            overflow: hidden;
         }
         &.is-cursor {
             cursor: pointer;

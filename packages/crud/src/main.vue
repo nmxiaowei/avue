@@ -16,7 +16,7 @@
                        :is="getSearchType(column.type)"
                        v-model="searchForm[column.prop]"
                        :type="getType(column)"
-                       clearable:type="column.type"
+                       clearable
                        :placeholder="column.label"
                        :dic="setDic(column.dicData,DIC[column.dicData])"></component>
           </el-form-item>
