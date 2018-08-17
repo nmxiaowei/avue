@@ -22,7 +22,8 @@
           column:[
              {
               label:'姓名',
-              prop:'name'
+              prop:'name',
+              cell:true
             }, {
               label:'性别',
               prop:'sex'
@@ -50,7 +51,7 @@
 
 ### 基础
 
-:::demo  
+:::demo  配置属性`cellBtn`为true时即可显示单元格编辑按钮，要编辑的列属性配置`cell`为`true`即可编辑
 ```html
 <avue-crud :data="data" :option="option" v-model="obj" @row-update="rowUpdate"></avue-crud>
 
@@ -76,7 +77,8 @@ export default {
           column:[
              {
               label:'姓名',
-              prop:'name'
+              prop:'name',
+              cell:true
             },
             {
               label:'性别',

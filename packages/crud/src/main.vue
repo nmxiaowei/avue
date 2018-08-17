@@ -132,7 +132,7 @@
                        :label="column.label"
                        :fixed="column.fixed">
         <template slot-scope="scope">
-          <template v-if="scope.row.cellEdit && [undefined,'select','input'].includes(column.type) && column.solt!==true">
+          <template v-if="cellEditFlag(scope.row,column)">
             <component size="small"
                        :is="getSearchType(column.type)"
                        v-model="tableForm[column.prop]"
@@ -355,6 +355,9 @@ export default {
     }
   },
   methods: {
+    cellEditFlag (row, column) {
+      return row.cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell
+    },
     closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};
@@ -402,6 +405,7 @@ export default {
       this.defaultForm = this.formInitVal(this.columnOption);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
+      this.searchShow = this.vaildData(this.option.search, true);
       this.formVal();
     },
     // 搜索清空
