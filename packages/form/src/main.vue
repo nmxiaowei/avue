@@ -132,6 +132,9 @@ export default {
   },
   mounted () { },
   computed: {
+    columnOption () {
+      return this.option.column || [];
+    },
     draggable () {
       return this.option.draggable || {};
     },
@@ -169,9 +172,6 @@ export default {
         })(),
         sort: this.vaildData(this.draggable.sort, false),
       };
-    },
-    columnOption () {
-      return this.option.column || [];
     },
     menuWidth: function () {
       if (this.option.submitPostion === 'left') {

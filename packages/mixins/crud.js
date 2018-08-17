@@ -82,7 +82,7 @@ export default function() {
 
             },
             dicInit() {
-                this.option.column.forEach(ele => {
+                this.columnOption.forEach(ele => {
                     if (ele.dicFlag !== false) {
                         if (!validatenull(ele.dicUrl)) {
                             this.dicCascaderList.push({

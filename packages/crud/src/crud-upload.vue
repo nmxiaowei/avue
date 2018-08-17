@@ -96,7 +96,6 @@ export default {
       type: String
     }
   },
-  watch: {},
   computed: {
     status () {
       return this.listType === 'picture-img';
@@ -107,6 +106,11 @@ export default {
   },
   created () {
     this.init();
+  },
+  watch: {
+    text () {
+      this.init();
+    }
   },
   mounted () { },
   methods: {
@@ -157,7 +161,7 @@ export default {
           label: data[this.labelKey],
           value: data[this.valueKey]
         });
-      }).catch(err => {
+      }).catch(() => {
         this.loading.close();
         this.handleError();
       });

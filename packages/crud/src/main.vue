@@ -284,14 +284,14 @@ export default {
     };
   },
   created () {
-    // 初始化动态列
-    this.showClomnuInit();
     //初始化数据
     this.dataInit();
+    //初始化列
+    this.showClomnuInit();
   },
   computed: {
     columnOption () {
-      return this.option.column || []
+      return this.option.column || [];
     },
     selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
@@ -308,6 +308,9 @@ export default {
     }
   },
   watch: {
+    columnOption () {
+      this.showClomnuInit();
+    },
     data () {
       this.dataInit();
     }
