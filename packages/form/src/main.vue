@@ -33,6 +33,7 @@
                       :dic="setDic(column.dicData,DIC[column.dicData])"
                       :name="column.prop"
                       v-if="column.formsolt"></slot>
+
                 <component :is="getComponent(column.type)"
                            v-else
                            :props="column.props || tableOption.props"
@@ -262,9 +263,12 @@ export default {
       });
     },
     formInit () {
-      const column = this.columnOption;
-      this.form = this.formInitVal(column).tableForm;
+      this.form = this.formInitVal(this.columnOption).tableForm;
       this.formVal();
+      this.cascadeInit();
+    },
+    cascadeInit () {
+      this.first = true;
       for (let i = 0; i < this.columnOption.length; i++) {
         const ele = this.columnOption[i];
         if (ele.cascaderFirst) {

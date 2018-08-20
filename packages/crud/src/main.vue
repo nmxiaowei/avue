@@ -551,6 +551,7 @@ export default {
         if (cancel !== true) {
           this.$nextTick(() => {
             this.$refs['tableForm'].clearValidate();
+            this.$refs['tableForm'].cascadeInit();
           });
           this.boxVisible = true;
         }

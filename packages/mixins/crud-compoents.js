@@ -65,7 +65,7 @@ export default function() {
             };
         },
         watch: {
-            value: function() {
+            value() {
                 this.text = this.value;
             }
         },

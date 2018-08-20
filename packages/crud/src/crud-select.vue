@@ -31,7 +31,8 @@ export default {
       default: false
     }
   },
-  watch: {},
+  watch: {
+  },
   created () { },
   mounted () { },
   methods: {
