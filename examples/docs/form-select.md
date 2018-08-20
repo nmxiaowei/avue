@@ -3,7 +3,9 @@ const baseUrl = `http://51aizhiyuan.com/select`;
 export default {
  data() {
       return {
-         data:{},
+         data:{
+             
+         },
          option:{
             props: {
                 label: 'name',

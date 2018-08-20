@@ -93,7 +93,8 @@ export default {
       default: '文件上传中,请稍等'
     },
     action: {
-      type: String
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -109,18 +110,11 @@ export default {
   },
   watch: {
     text () {
-      this.init();
+      this.fileList = this.text;
     }
   },
   mounted () { },
   methods: {
-    init () {
-      if (!(validatenull(this.text))) {
-        if (!this.status) {
-          this.fileList = this.text;
-        }
-      }
-    },
     handleChange (file, fileList) {
       this.loading = this.$loading({
         lock: true,

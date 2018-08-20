@@ -76,12 +76,9 @@ export default function() {
                 this.initFun();
                 // 规则初始化
                 this.rulesInit();
-
-
                 // 初始化字典
                 if (this.vaildData(this.tableOption.dicFlag, true)) this.dicInit();
                 else this.DIC = this.tableOption.dicData;
-
 
                 // 初始化表单formInitVal
                 this.formInit();
@@ -101,7 +98,7 @@ export default function() {
                     }
                 });
                 this.GetDic().then(data => {
-                    this.DIC = data;
+                    this.DIC = Object.assign({}, this.DIC, data);
                 });
             },
             vaildData(val, dafult) {
@@ -148,6 +145,7 @@ export default function() {
                     });
                     cascaderList.forEach(ele => {
                         result.push(new Promise((resolve) => {
+                            list.push(ele.dicData);
                             this.GetDicByType(`${ele.dicUrl.replace('{{key}}', ele.dicData)}`).then(function(res) {
                                 list.push(ele.dicData);
                                 resolve(res);

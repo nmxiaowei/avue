@@ -563,7 +563,6 @@ export default {
       const callack = () => {
         if (cancel !== false) {
           this.$nextTick(() => {
-            debugger;
             this.resetForm();
           });
         }
