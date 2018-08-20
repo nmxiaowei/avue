@@ -85,7 +85,7 @@ export default {
               label: 'name',
               value: 'code'
           },
-          dicUrl:'https://avue.2bugs.cn/test/select/{{key}}',
+          dicUrl:'http://122.4.247.156:5555/area/{{key}}',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -123,7 +123,7 @@ export default {
                   label: 'name',
                   value: 'code'
               },
-              dicUrl:'https://avue.2bugs.cn/test/select/{{key}}',
+              dicUrl:'http://122.4.247.156:5555/area/{{key}}',
               dicData:'getProvince'
             }
           ]
@@ -284,7 +284,7 @@ export default {
               label: 'name',
               value: 'code'
           },
-          dicUrl:'https://avue.2bugs.cn/test/select/{{key}}',
+          dicUrl:'http://122.4.247.156:5555/area/{{key}}',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -351,7 +351,7 @@ export default {
                   label: 'name',
                   value: 'code'
               },
-              dicUrl:'https://avue.2bugs.cn/test/select/{{key}}',
+              dicUrl:'http://122.4.247.156:5555/area/{{key}}',
               dicData:'getProvince'
             }
           ]
