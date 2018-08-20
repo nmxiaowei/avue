@@ -2,8 +2,8 @@
   <div class="from">
     <el-form ref="form"
              :model="form"
-             :label-position="option.labelPosition"
-             :label-width="setPx(option.labelWidth,80)"
+             :label-position="tableOption.labelPosition"
+             :label-width="setPx(tableOption.labelWidth,80)"
              :rules="formRules">
       <el-row :gutter="20"
               :span="24">
@@ -27,7 +27,7 @@
               </div>
               <el-form-item :label="column.label"
                             :prop="column.prop"
-                            :label-width="setPx(column.labelWidth,option.labelWidth || 80)">
+                            :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)">
                 <slot :value="form[column.prop]"
                       :column="column"
                       :dic="setDic(column.dicData,DIC[column.dicData])"
@@ -35,7 +35,7 @@
                       v-if="column.formsolt"></slot>
                 <component :is="getComponent(column.type)"
                            v-else
-                           :props="column.props || option.props"
+                           :props="column.props || tableOption.props"
                            v-model="form[column.prop]"
                            :precision="column.precision"
                            :multiple="column.multiple"
@@ -92,13 +92,13 @@
           </div>
         </draggable>
         <el-col :span="24"
-                v-if="vaildData(option.menuBtn,true)">
+                v-if="vaildData(tableOption.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
             <div class="form-menu"
                  :class="menuPostion">
               <el-button type="primary"
                          @click="submit"
-                         v-if="vaildData(option.submitBtn,true)">{{vaildData(option.submitText,'提交')}}</el-button>
+                         v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提交')}}</el-button>
               <slot name="menuForm"></slot>
             </div>
           </el-form-item>
@@ -124,6 +124,7 @@ export default {
       first: true,
       optionIndex: [],
       optionBox: false,
+      tableOption: {},
       form: {},
       formRules: {}
     };
@@ -133,10 +134,10 @@ export default {
   mounted () { },
   computed: {
     columnOption () {
-      return this.option.column || [];
+      return this.tableOption.column || [];
     },
     draggable () {
-      return this.option.draggable || {};
+      return this.tableOption.draggable || {};
     },
     draggableMenu () {
       return this.draggable.menu || false;
@@ -174,21 +175,21 @@ export default {
       };
     },
     menuWidth: function () {
-      if (this.option.submitPostion === 'left') {
+      if (this.tableOption.submitPostion === 'left') {
         return '';
       } else {
         return '0';
       }
     },
     menuPostion: function () {
-      if (this.option.submitPostion) {
-        return 'is-' + this.option.submitPostion;
+      if (this.tableOption.submitPostion) {
+        return 'is-' + this.tableOption.submitPostion;
       } else {
         return 'is-center';
       }
     },
     boxType: function () {
-      return this.option.boxType;
+      return this.tableOption.boxType;
     }
   },
   props: {
@@ -302,6 +303,7 @@ export default {
     },
     resetForm () {
       this.$refs.form.resetFields();
+      this.$emit('input', this.form);
     },
     submit () {
       this.$refs['form'].validate(valid => {

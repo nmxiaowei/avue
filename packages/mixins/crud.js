@@ -1,7 +1,5 @@
 import * as utils from '../utils/util.js';
-import {
-    validatenull
-} from '../utils/validate.js';
+import { validatenull } from '../utils/validate.js';
 import crudInput from '../crud/src/crud-input';
 import crudSelect from '../crud/src/crud-select';
 import crudRadio from '../crud/src/crud-radio';
@@ -21,7 +19,9 @@ export default function() {
             option: {
                 type: Object,
                 required: true,
-                default: () => {}
+                default: () => {
+                    return {};
+                }
             }
         },
         components: {
@@ -71,19 +71,25 @@ export default function() {
         },
         methods: {
             init() {
+                this.tableOption = Object.assign({}, this.option);
                 // 初始化工具
                 this.initFun();
                 // 规则初始化
                 this.rulesInit();
+
+
                 // 初始化字典
-                this.dicInit();
+                if (this.vaildData(this.tableOption.dicFlag, true)) this.dicInit();
+                else this.DIC = this.tableOption.dicData;
+
+
                 // 初始化表单formInitVal
                 this.formInit();
 
             },
             dicInit() {
                 this.columnOption.forEach(ele => {
-                    if (ele.dicFlag !== false) {
+                    if (this.vaildData(ele.dicFlag, true)) {
                         if (!validatenull(ele.dicUrl)) {
                             this.dicCascaderList.push({
                                 dicUrl: ele.dicUrl,

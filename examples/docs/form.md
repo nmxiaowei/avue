@@ -95,9 +95,12 @@ export default {
             }
         }
     },
+    created(){
+        this.obj.username = 'smallwei'
+    },
     methods:{
         submit () {
-        this.$message.success('当前数据'+JSON.stringify(this.form));
+        this.$message.success('当前数据'+JSON.stringify(this.obj));
         },
     }
   }
@@ -214,9 +217,12 @@ export default {
             }
         }
     },
+    created(){
+        this.obj.username = 'smallwei';
+    },
     methods:{
         submit () {
-        this.$message.success('当前数据'+JSON.stringify(this.form));
+        this.$message.success('当前数据'+JSON.stringify(this.obj));
         },
     }
   }

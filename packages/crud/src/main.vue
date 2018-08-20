@@ -39,7 +39,7 @@
         <el-button type="primary"
                    @click="rowAdd"
                    icon="el-icon-plus"
-                   v-if="vaildData(option.addBtn,true)"
+                   v-if="vaildData(tableOption.addBtn,true)"
                    size="small">新 增</el-button>
         <slot name="menuLeft"></slot>
       </div>
@@ -49,46 +49,46 @@
                    circle
                    size="small"
                    @click="refreshChange"
-                   v-if="vaildData(option.refreshBtn,true)"></el-button>
+                   v-if="vaildData(tableOption.refreshBtn,true)"></el-button>
         <el-button icon="el-icon-menu"
                    circle
                    size="small"
                    @click="showClomnuBox=true"
-                   v-if="vaildData(option.cloumnBtn,true)"></el-button>
+                   v-if="vaildData(tableOption.cloumnBtn,true)"></el-button>
         <el-button icon="el-icon-search"
                    circle
                    size="small"
                    @click="searchShow=!searchShow"
-                   v-if="searchFlag && vaildData(option.showSearchBtn,true)"></el-button>
+                   v-if="searchFlag && vaildData(tableOption.showSearchBtn,true)"></el-button>
       </div>
     </div>
     <el-tag class="avue-tip"
-            v-if="vaildData(option.tip,true) && option.selection">
+            v-if="vaildData(tableOption.tip,true) && tableOption.selection">
       <i class="el-icon-info">&nbsp;</i>
       <span class="name">当前表格已选择
         <span class="count">{{selectLen}}</span> 项</span>
       <span class="menu">
         <span @click="selectClear"
-              v-if="vaildData(option.selectClearBtn,true) && option.selection">清空</span>
+              v-if="vaildData(tableOption.selectClearBtn,true) && tableOption.selection">清空</span>
       </span>
     </el-tag>
     <el-table :data="list"
-              :stripe="option.stripe"
-              :show-header="option.showHeader"
-              :default-sort="option.defaultSort"
+              :stripe="tableOption.stripe"
+              :show-header="tableOption.showHeader"
+              :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
               :row-class-name="rowClassName"
-              max-height="option.maxHeight"
-              :height="option.height=='auto'?(clientHeight - vaildData(option.calcHeight,320)):option.height"
+              :max-height="tableOption.maxHeight"
+              :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,300)):tableOption.height"
               ref="table"
-              :width="setPx(option.width,'100%')"
-              :border="option.border"
+              :width="setPx(tableOption.width,'100%')"
+              :border="tableOption.border"
               v-loading="tableLoading"
               @selection-change="selectionChange"
               @sort-change="sortChange">
       <!-- 下拉弹出框  -->
-      <template v-if="option.expand">
+      <template v-if="tableOption.expand">
         <el-table-column type="expand"
                          width="50"
                          fixed="left"
@@ -100,7 +100,7 @@
         </el-table-column>
       </template>
       <!-- 选择框 -->
-      <template v-if="option.selection">
+      <template v-if="tableOption.selection">
         <el-table-column type="selection"
                          width="50"
                          fixed="left"
@@ -109,8 +109,8 @@
       </template>
 
       <!-- 序号 -->
-      <template v-if="option.index">
-        <el-table-column :label="vaildData(option.indexLabel,'#')"
+      <template v-if="tableOption.index">
+        <el-table-column :label="vaildData(tableOption.indexLabel,'#')"
                          type="index"
                          width="50"
                          :index="indexMethod"
@@ -126,8 +126,8 @@
                        :show-overflow-tooltip="column.overHidden"
                        :min-width="column.minWidth"
                        :sortable="column.sortable"
-                       :align="vaildData(column.align,option.align)"
-                       :header-align="vaildData(column.headerAlign,option.headerAlign)"
+                       :align="vaildData(column.align,tableOption.align)"
+                       :header-align="vaildData(column.headerAlign,tableOption.headerAlign)"
                        :width="column.width"
                        :label="column.label"
                        :fixed="column.fixed">
@@ -154,28 +154,28 @@
         </template>
       </el-table-column>
       <el-table-column fixed="right"
-                       v-if="vaildData(option.menu,true)"
+                       v-if="vaildData(tableOption.menu,true)"
                        label="操作"
-                       :align="option.menuAlign"
-                       :header-align="option.menuHeaderAlign"
-                       :width="vaildData(option.menuWidth,240)">
+                       :align="tableOption.menuAlign"
+                       :header-align="tableOption.menuHeaderAlign"
+                       :width="vaildData(tableOption.menuWidth,240)">
         <template slot-scope="scope">
-          <template v-if="vaildData(option.menu,true)">
+          <template v-if="vaildData(tableOption.menu,true)">
             <el-button type="primary"
                        :icon="scope.row.cellEdit?'el-icon-check':'el-icon-edit'"
                        size="small"
                        @click.stop="scope.row.cellEdit?rowCellUpdate(scope.row,scope.$index):rowCell(scope.row,scope.$index)"
-                       v-if="vaildData(option.cellBtn ,false)">{{scope.row.cellEdit?'保存':'编辑'}}</el-button>
+                       v-if="vaildData(tableOption.cellBtn ,false)">{{scope.row.cellEdit?'保存':'编辑'}}</el-button>
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
                        @click.stop="rowEdit(scope.row,scope.$index)"
-                       v-if="vaildData(option.editBtn,true)">编 辑</el-button>
+                       v-if="vaildData(tableOption.editBtn,true)">编 辑</el-button>
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="small"
                        @click.stop="rowDel(scope.row,scope.$index)"
-                       v-if="vaildData(option.delBtn,true)">删 除</el-button>
+                       v-if="vaildData(tableOption.delBtn,true)">删 除</el-button>
           </template>
           <slot :row="scope.row"
                 name="menu"
@@ -185,9 +185,9 @@
     </el-table>
     <!-- 分页 -->
     <div class="crud-pagination"
-         v-if="vaildData(option.page,true)">
+         v-if="vaildData(tableOption.page,true)">
       <el-pagination :current-page.sync="page.currentPage"
-                     :background="vaildData(option.pageBackground,true)"
+                     :background="vaildData(tableOption.pageBackground,true)"
                      :page-size="page.pageSize"
                      :page-sizes="page.pageSizes"
                      @size-change="sizeChange"
@@ -198,13 +198,13 @@
 
     <!-- 表单 -->
     <el-dialog lock-scroll
-               :custom-class="vaildData(option.customClass,'')"
-               :fullscreen="vaildData(option.formFullscreen,false)"
+               :custom-class="vaildData(tableOption.customClass,'')"
+               :fullscreen="vaildData(tableOption.formFullscreen,false)"
                :modal-append-to-body="false"
                :append-to-body="true"
                :title="boxType=='add'?'新增':'编辑'"
                :visible.sync="boxVisible"
-               :width="vaildData(option.formWidth,'50%')"
+               :width="vaildData(tableOption.formWidth,'50%')"
                @close="hide">
       <div class="avue-dialog">
         <avue-form v-model="tableForm"
@@ -278,20 +278,21 @@ export default {
       showClomnuBox: false,
       showClomnuList: [],
       tableForm: {},
+      tableOption: {},
       tableFormRules: {},
       tableIndex: -1,
       tableSelect: []
     };
   },
   created () {
-    //初始化数据
+    // 初始化数据
     this.dataInit();
-    //初始化列
+    // 初始化列
     this.showClomnuInit();
   },
   computed: {
     columnOption () {
-      return this.option.column || [];
+      return this.tableOption.column || [];
     },
     selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
@@ -300,10 +301,12 @@ export default {
       return !validatenull(this.searchForm);
     },
     formOption () {
-      let option = Object.assign({}, this.option);
+      let option = Object.assign({}, this.tableOption);
       option.submitBtn = false;
       option.submitPostion = 'right';
       option.boxType = this.boxType;
+      option.dicFlag = false;
+      option.dicData = this.DIC;
       return option;
     }
   },
@@ -348,18 +351,11 @@ export default {
       default: () => {
         return [];
       }
-    },
-    option: {
-      type: Object,
-      required: true,
-      default: () => {
-        return {};
-      }
     }
   },
   methods: {
     cellEditFlag (row, column) {
-      return row.cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell
+      return row.cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell;
     },
     closeDialog () {
       this.tableIndex = -1;
@@ -408,7 +404,7 @@ export default {
       this.defaultForm = this.formInitVal(this.columnOption);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
-      this.searchShow = this.vaildData(this.option.search, true);
+      this.searchShow = this.vaildData(this.tableOption.search, true);
       this.formVal();
     },
     // 搜索清空
@@ -476,7 +472,7 @@ export default {
               ? this.DIC[column.dicData]
               : column.dicData,
             result,
-            (column.props || this.option.props)
+            (column.props || this.tableOption.props)
           );
         }
       }
@@ -492,7 +488,7 @@ export default {
       this.$emit('input', this.tableForm);
       this.show();
     },
-    //单元格编辑
+    // 单元格编辑
     rowCell (row, index) {
       if (this.tableIndex != -1) {
         this.$message.error('先保存当前编辑的数据');
@@ -567,14 +563,20 @@ export default {
       const callack = () => {
         if (cancel !== false) {
           this.$nextTick(() => {
-            this.$refs['tableForm'].resetForm();
-            this.$emit('input', this.tableForm);
+            debugger;
+            this.resetForm();
           });
         }
       };
       if (typeof this.beforeClose === 'function') this.beforeClose(callack);
       else callack();
-    }
+    },
+    resetForm () {
+      for (let o in this.tableForm) {
+        this.tableForm[o] = undefined;
+      }
+      this.$emit('input', this.tableForm);
+    },
   }
 };
 </script>
