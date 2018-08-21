@@ -134,9 +134,6 @@ export default {
   },
   mounted () { },
   computed: {
-    dicFlag () {
-      return this.vaildData(this.tableOption.dicFlag, true);
-    },
     columnOption () {
       return this.tableOption.column || [];
     },
@@ -268,7 +265,6 @@ export default {
     formInit () {
       this.form = this.formInitVal(this.columnOption).tableForm;
       this.formVal();
-      if (this.dicFlag) this.cascadeInit();
     },
     cascadeInit () {
       this.first = true;

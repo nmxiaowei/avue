@@ -72,17 +72,21 @@ export default function() {
         methods: {
             init() {
                 this.tableOption = Object.assign({}, this.option);
+                const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
                 // 初始化工具
                 this.initFun();
                 // 规则初始化
                 this.rulesInit();
 
                 // 初始化字典
-                if (this.dicFlag) this.dicInit();
+                if (dicFlag) this.dicInit();
                 else this.DIC = this.tableOption.dicData;
 
                 // 初始化表单formInitVal
                 this.formInit();
+
+                //初始化联动
+                if (dicFlag) this.cascadeInit();
 
             },
             dicInit() {
