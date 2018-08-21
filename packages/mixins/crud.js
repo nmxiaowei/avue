@@ -85,8 +85,6 @@ export default function() {
                 // 初始化表单formInitVal
                 this.formInit();
 
-                //初始化联动
-                if (dicFlag) this.cascadeInit();
 
             },
             dicInit() {

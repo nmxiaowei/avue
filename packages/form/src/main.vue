@@ -266,6 +266,9 @@ export default {
     formInit () {
       this.form = this.formInitVal(this.columnOption).tableForm;
       this.formVal();
+      const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
+      //初始化联动
+      if (dicFlag) this.cascadeInit();
     },
     cascadeInit () {
       this.first = true;
