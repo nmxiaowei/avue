@@ -378,6 +378,8 @@ export default {
       });
     },
     showClomnuInit: function () {
+      this.showClomnuIndex = [];
+      this.showClomnuList = [];
       this.columnOption.forEach((ele, index) => {
         if (validatenull(ele.hide)) {
           this.showClomnuIndex.push(index);

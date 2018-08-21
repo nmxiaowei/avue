@@ -254,6 +254,7 @@ export default {
         list.forEach((ele) => {
           this.form[ele] = '';
           this.DIC[ele] = [];
+          this.DIC = Object.assign({}, this.DIC);
         });
       }
       this.GetDicByType(url.replace('{{key}}', this.form[prop])).then(res => {
@@ -273,6 +274,10 @@ export default {
         if (ele.cascaderFirst) {
           const cascader = [].concat(ele.cascader);
           const cascaderLen = ele.cascader.length - 1;
+          cascader.forEach((ele) => {
+            this.DIC[ele] = [];
+            this.DIC = Object.assign({}, this.DIC);
+          });
           if (!validatenull(this.form[ele.prop])) this.change(i);
           for (let j = 0; j < cascaderLen; j++) {
             const cindex = i + (j + 1);
