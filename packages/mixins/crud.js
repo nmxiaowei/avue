@@ -78,11 +78,8 @@ export default function() {
                 this.rulesInit();
 
                 // 初始化字典
-                if (this.vaildData(this.tableOption.dicFlag, true)) {
-                    this.dicInit();
-                } else {
-                    this.DIC = this.tableOption.dicData;
-                }
+                if (this.dicFlag) this.dicInit();
+                else this.DIC = this.tableOption.dicData;
 
                 // 初始化表单formInitVal
                 this.formInit();
