@@ -56,9 +56,19 @@ export default {
       };
     },
     methods: {
-     submit(){
-       this.$message.success('当前数据'+JSON.stringify(this.form))
-     }
+        uploadBefore(file,done){
+            console.log(file);
+            done();
+            this.$message.success('上传前的方法')
+        },
+        uploadAfter(error,done){
+            console.log(error);
+            done();
+            this.$message.success('上传后的方法')
+        },
+        submit(){
+            this.$message.success('当前数据'+JSON.stringify(this.form))
+        }
     }
 }
 </script>
@@ -72,9 +82,9 @@ export default {
 
 ### 上传
 
-:::demo  
+:::demo  有`upload-after`和`upload-before`方法来拦截请求的，返回数据和done方法
 ```html
-<avue-form v-model="form" :option="option" @submit="submit"></avue-form>
+<avue-form v-model="form" :option="option" @submit="submit" :upload-before="uploadBefore" :upload-after="uploadAfter"></avue-form>
 
 <script>
 export default {
@@ -133,9 +143,19 @@ export default {
       };
     },
     methods: {
-     submit(){
-       this.$message.success('当前数据'+JSON.stringify(this.form))
-     }
+        uploadBefore(file,done){
+            console.log(file);
+            done();
+            this.$message.success('上传前的方法')
+        },
+        uploadAfter(error,done){
+            console.log(error);
+            done();
+            this.$message.success('上传后的方法')
+        },
+        submit(){
+        this.$message.success('当前数据'+JSON.stringify(this.form))
+        }
     }
 }
 </script>

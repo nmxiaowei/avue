@@ -100,7 +100,7 @@ export const formInitVal = (list) => {
         ) {
             tableForm[ele.prop] = [];
             if (ele.search) searchForm[ele.prop] = [];
-        } else if (ele.type === 'number' || ele.type === 'rate' || ele.type === 'silder') {
+        } else if (['number', 'rate', 'silder'].includes(ele.type)) {
             tableForm[ele.prop] = 0;
             if (ele.search) {
                 searchForm[ele.prop] = 0;

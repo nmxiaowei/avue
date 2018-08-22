@@ -16,6 +16,7 @@
                        :is="getSearchType(column.type)"
                        v-model="searchForm[column.prop]"
                        :type="getType(column)"
+                       :multiple="['checkbox','tree'].includes(column.type)"
                        clearable
                        :placeholder="column.label"
                        :dic="setDic(column.dicData,DIC[column.dicData])"></component>
@@ -209,6 +210,8 @@
       <div class="avue-dialog">
         <avue-form v-model="tableForm"
                    ref="tableForm"
+                   :uploadBefore="uploadBefore"
+                   :uploadAfter="uploadAfter"
                    :option="formOption">
           <template slot-scope="scope"
                     v-for="item in columnOption"
@@ -329,6 +332,8 @@ export default {
     beforeClose: Function,
     beforeOpen: Function,
     rowClassName: Function,
+    uploadBefore: Function,
+    uploadAfter: Function,
     page: {
       type: Object,
       default () {

@@ -62,7 +62,8 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       text: this.status ? '' : [],
-      fileList: []
+      fileList: [],
+      file: {}
     };
   },
   props: {
@@ -95,7 +96,9 @@ export default {
     action: {
       type: String,
       default: ''
-    }
+    },
+    uploadBefore: Function,
+    uploadAfter: Function
   },
   computed: {
     status () {
@@ -106,11 +109,11 @@ export default {
     }
   },
   created () {
-    this.init();
+
   },
   watch: {
     text () {
-      this.fileList = this.text;
+      this.fileList = this.text || [];
     }
   },
   mounted () { },
@@ -143,22 +146,43 @@ export default {
     handleError () {
       this.$message.error('上传失败');
     },
+    show (res) {
+      const data = res.data;
+      this.loading.close();
+      this.handleSuccess({
+        label: data[this.labelKey],
+        value: data[this.valueKey]
+      });
+    },
+    hide () {
+      this.loading.close();
+      this.handleError();
+    },
     httpRequest (config) {
       const file = config.file;
+      this.file = config.file;
       const headers = { 'Content-Type': 'multipart/form-data' }
       let param = new FormData()
       param.append('file', file, file.name)
-      this.$http.post(this.action, param, { headers }).then(res => {
-        const data = res.data;
-        this.loading.close();
-        this.handleSuccess({
-          label: data[this.labelKey],
-          value: data[this.valueKey]
+
+
+      const callack = () => {
+        this.$http.post(this.action, param, { headers }).then(res => {
+          if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {
+            this.show(res)
+          })
+          else this.show(res);
+        }).catch((error) => {
+          if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide);
+          else this.hide(error);
         });
-      }).catch(() => {
-        this.loading.close();
-        this.handleError();
-      });
+      };
+
+
+      if (typeof this.uploadBefore === 'function') this.uploadBefore(this.file, callack);
+      else callack();
+
+
     },
     setVal () {
       let value;

@@ -86,6 +86,8 @@
                            :value-format="column.valueFormat"
                            :dic="setDic(column.dicData,DIC[column.dicData])"
                            :disabled="vaildDisabled(column)"
+                           :upload-before="uploadBefore"
+                           :upload-after="uploadAfter"
                            @change="column.cascader?change(index):''"></component>
                 <!-- <p class="avue-tip">{{column.tip}}</p> -->
               </el-form-item>
@@ -194,6 +196,8 @@ export default {
     }
   },
   props: {
+    uploadBefore: Function,
+    uploadAfter: Function,
     value: {
       type: Object,
       required: true,

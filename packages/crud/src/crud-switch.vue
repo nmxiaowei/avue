@@ -1,14 +1,16 @@
 <template>
-  <el-switch v-model="text"
-             @change="handleChange"
-             :active-text="getDic(0)[labelKey]"
-             :active-value="getDic(0)[valueKey]"
-             :inactive-value="getDic(1)[valueKey]"
-             :inactive-text="getDic(1)[labelKey]"
-             :disabled="disabled"
-             :readonly="readonly"
-             :size="size">
-  </el-switch>
+  <div>
+    <el-switch v-model="text"
+               @change="handleChange"
+               :active-text="getDic(0)[labelKey]"
+               :active-value="getDic(0)[valueKey] || ''"
+               :inactive-value="getDic(1)[valueKey] || ''"
+               :inactive-text="getDic(1)[labelKey]"
+               :disabled="disabled"
+               :readonly="readonly"
+               :size="size">
+    </el-switch>
+  </div>
 </template>
 
 <script>

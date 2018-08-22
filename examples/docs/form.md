@@ -97,6 +97,7 @@ export default {
     },
     created(){
         this.obj.username = 'smallwei'
+        this.obj.switch = 0
     },
     methods:{
         submit () {

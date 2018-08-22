@@ -9,13 +9,13 @@ export default {
           {
             name:'张三',
             sex:'男',
-            grade:'0',
+            grade:[1],
             date:'2018-08-08',
             time:'13:00:00'
           }, {
             name:'李四',
             sex:'女',
-            grade:'1',
+            grade:[0],
             date:'2018-08-09',
             time:'13:00:00'
           }
@@ -54,7 +54,7 @@ export default {
               label:'权限',
               prop:'grade',
               search:true,
-              type:'select',
+              type:'checkbox',
               dicData:[
                 {
                   label:'会员',
