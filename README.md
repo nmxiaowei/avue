@@ -8,9 +8,9 @@
 #### 引入方式
 ```
 #### CDN
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.5/lib/theme-chalk/index.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@smallwei/avue/lib/theme-chalk/index.css" />
 
-<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.0.5/lib/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue/lib/index.js"></script>
 
 #### npm
 npm install @smallwei/avue --save
