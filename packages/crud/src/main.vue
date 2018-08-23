@@ -74,6 +74,8 @@
       </span>
     </el-tag>
     <el-table :data="list"
+              :highlight-current-row="tableOption.highlightCurrentRow"
+              @current-change="currentRowChange"
               :stripe="tableOption.stripe"
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
@@ -163,10 +165,10 @@
         <template slot-scope="scope">
           <template v-if="vaildData(tableOption.menu,true)">
             <el-button type="primary"
-                       :icon="scope.row.cellEdit?'el-icon-check':'el-icon-edit'"
+                       :icon="scope.row.$cellEdit?'el-icon-check':'el-icon-edit'"
                        size="small"
-                       @click.stop="scope.row.cellEdit?rowCellUpdate(scope.row,scope.$index):rowCell(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.cellBtn ,false)">{{scope.row.cellEdit?'保存':'编辑'}}</el-button>
+                       @click.stop="rowCell(scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.cellBtn ,false)">{{scope.row.$cellEdit?'保存':'修改'}}</el-button>
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
@@ -364,7 +366,7 @@ export default {
   },
   methods: {
     cellEditFlag (row, column) {
-      return row.cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell;
+      return row.$cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell;
     },
     closeDialog () {
       this.tableIndex = -1;
@@ -403,9 +405,7 @@ export default {
       });
     },
     formVal () {
-      for (let o in this.value) {
-        this.tableForm[o] = this.value[o];
-      }
+      this.tableForm = this.value;
       this.$emit('input', this.tableForm);
     },
     dataInit () {
@@ -433,6 +433,14 @@ export default {
     // 页码回调
     currentChange (val) {
       this.$emit('current-change', val);
+    },
+    //设置单选
+    currentRowChange (val) {
+      this.$emit('current-row-change', val);
+    },
+    //设置多选选中
+    setCurrentRow (row) {
+      this.$refs.table.setCurrentRow(row);
     },
     // 选中实例
     toggleSelection (rows) {
@@ -502,8 +510,12 @@ export default {
       this.$emit('input', this.tableForm);
       this.show();
     },
-    // 单元格编辑
     rowCell (row, index) {
+      if (row.$cellEdit) this.rowCellUpdate(row, index)
+      else this.rowCellEdit(row, index)
+    },
+    // 单元格编辑
+    rowCellEdit (row, index) {
       if (this.tableIndex != -1) {
         this.$message.error('先保存当前编辑的数据');
         return;
@@ -511,7 +523,7 @@ export default {
       this.tableIndex = index;
       this.tableForm = Object.assign({}, row);
       this.$emit('input', this.tableForm);
-      row.cellEdit = !row.cellEdit;
+      row.$cellEdit = !row.$cellEdit;
       this.$set(this.list, index, row);
     },
     // 编辑
@@ -530,7 +542,7 @@ export default {
         form,
         index,
         () => {
-          row.cellEdit = !row.cellEdit;
+          row.$cellEdit = !row.$cellEdit;
           this.tableForm = {};
           this.tableIndex = -1;
           this.$set(this.list, index, form);
@@ -578,7 +590,7 @@ export default {
       const callack = () => {
         if (cancel !== false) {
           this.$nextTick(() => {
-            this.resetForm();
+            this.$refs['tableForm'].resetForm();
           });
         }
       };
@@ -586,7 +598,7 @@ export default {
       else callack();
     },
     resetForm () {
-      this.tableForm = Object.assign({}, this.defaultForm.tableForm);
+      this.$refs['tableForm'].resetForm();
       this.$emit('input', this.tableForm);
     },
   }

@@ -31,6 +31,9 @@ export default {
     methods: {
       selectionChange(list){
         this.$message.success('选中的数据'+ JSON.stringify(list));
+      },
+      toggleSelection(val){
+        this.$refs.crud.toggleSelection(val);
       }
     }
 }
@@ -46,10 +49,14 @@ export default {
 
 ### 多选
 
-:::demo  设`selection`属性为`true`即可；勾选的同时会回调`selectionChange`方法返回当前选中的数据
+:::demo  设`selection`属性为`true`即可；勾选的同时会回调`selectionChange`方法返回当前选中的数据,`setCurrent`方法设置选中的行
 ```html
-<avue-crud :data="data" :option="option4" @selection-change="selectionChange"></avue-crud>
 
+<avue-crud ref="crud" :data="data" :option="option4" @selection-change="selectionChange"></avue-crud>
+<div style="margin-top: 20px">
+  <el-button @click="toggleSelection([data[1]])">选中第二行</el-button>
+  <el-button @click="toggleSelection()">取消选择</el-button>
+</div>
 <script>
 export default {
     data() {
@@ -83,6 +90,9 @@ export default {
     methods: {
       selectionChange(list){
         this.$message.success('选中的数据'+ JSON.stringify(list));
+      },
+      toggleSelection(val){
+        this.$refs.crud.toggleSelection(val);
       }
     }
 }

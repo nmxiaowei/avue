@@ -297,9 +297,7 @@ export default {
       this.first = false;
     },
     formVal () {
-      for (let o in this.value) {
-        this.form[o] = this.value[o];
-      }
+      this.form = this.value;
       this.$emit('input', this.form);
     },
     clearValidate () {
