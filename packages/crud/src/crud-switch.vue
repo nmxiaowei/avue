@@ -2,6 +2,7 @@
   <div>
     <el-switch v-model="text"
                @change="handleChange"
+               @click.native="handleClick"
                :active-text="getDic(0)[labelKey]"
                :active-value="getDic(0)[valueKey] || ''"
                :inactive-value="getDic(1)[valueKey] || ''"
@@ -30,7 +31,11 @@ export default {
   created () { },
   mounted () { },
   methods: {
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
     handleChange (value) {
+      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
       this.$emit('input', value);
       this.$emit('change', value);
     },

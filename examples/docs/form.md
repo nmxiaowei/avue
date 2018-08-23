@@ -41,6 +41,12 @@ export default {
                         message: "请输入用户名",
                         trigger: "blur"
                     }],
+                    change:function({value,column}){
+                        this.$message.success('change')
+                    },
+                    click:function({value,column}){
+                        this.$message.success('click')
+                    }
                 },
                 {
                     label: "姓名",
@@ -75,6 +81,12 @@ export default {
                     type: "radio",
                     dicData: 'SEX',
                     valueDefault: 0,
+                    change:function({value,column}){
+                        this.$message.success('change')
+                    },
+                    click:function({value,column}){
+                        this.$message.success('click')
+                    }
                 },
                 {
                     label: "数字",
@@ -121,7 +133,7 @@ export default {
 
 ### 基础
 
-:::demo  
+:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`
 ```html
 <avue-form v-model="obj" :option="option" @submit="submit"></avue-crud>
 
@@ -168,6 +180,12 @@ export default {
                         message: "请输入用户名",
                         trigger: "blur"
                     }],
+                    change:function({value,column}){
+                        this.$message.success('change')
+                    },
+                    click:function({value,column}){
+                        this.$message.success('click')
+                    }
                 },
                 {
                     label: "姓名",
@@ -202,6 +220,12 @@ export default {
                     type: "radio",
                     dicData: 'SEX',
                     valueDefault: 0,
+                    change:function({value,column}){
+                        this.$message.success('change')
+                    },
+                    click:function({value,column}){
+                        this.$message.success('click')
+                    }
                 },
                 {
                     label: "数字",

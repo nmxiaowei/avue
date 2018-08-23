@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-upload :class="{'avatar-uploader':listType=='picture-img'}"
+               @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
                :before-remove="beforeRemove"
@@ -118,7 +119,11 @@ export default {
   },
   mounted () { },
   methods: {
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
     handleChange (file, fileList) {
+      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
       this.loading = this.$loading({
         lock: true,
         text: this.loadText,

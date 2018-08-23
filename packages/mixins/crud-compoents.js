@@ -1,6 +1,12 @@
 export default function() {
     return {
         props: {
+            change: Function,
+            click: Function,
+            column: {
+                type: Object,
+                default: () => {}
+            },
             label: {
                 type: String,
                 default: ''

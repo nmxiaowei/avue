@@ -3,6 +3,7 @@
     <el-input :size="size"
               :clearable="clearable"
               v-model="text"
+              @click.native="handleClick"
               :type="typeParam"
               :maxlength="maxlength"
               :minlength="minlength"
@@ -128,6 +129,7 @@ export default {
     },
     open () {
       this.box = true;
+      this.handleClick();
     },
     init () {
       if (this.type === 'tree') {
@@ -188,7 +190,11 @@ export default {
       }
 
     },
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
     handleChange (value) {
+      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
       this.$emit('input', value);
       this.$emit('change', value);
     }

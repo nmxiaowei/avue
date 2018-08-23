@@ -12,6 +12,7 @@
                   :default-time="defaultTime"
                   :placeholder="placeholder?placeholder:`请输入${label}`"
                   @change="handleChange"
+                  @click.native="handleClick"
                   :disabled="disabled"> </el-date-picker>
 </template>
 
@@ -55,7 +56,11 @@ export default {
   created () { },
   mounted () { },
   methods: {
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
     handleChange (value) {
+      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
       this.$emit('input', value);
       this.$emit('change', value);
     }

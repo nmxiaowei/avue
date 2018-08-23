@@ -38,6 +38,9 @@
                            v-else
                            :props="column.props || tableOption.props"
                            v-model="form[column.prop]"
+                           :change="column.change"
+                           :click="column.click"
+                           :column="column"
                            :precision="column.precision"
                            :multiple="column.multiple"
                            :readonly="vaildData(draggableStart,column.readonly)"
@@ -297,7 +300,9 @@ export default {
       this.first = false;
     },
     formVal () {
-      this.form = this.value;
+      Object.keys(this.value).forEach(ele => {
+        this.form[ele] = this.value[ele];
+      })
       this.$emit('input', this.form);
     },
     clearValidate () {

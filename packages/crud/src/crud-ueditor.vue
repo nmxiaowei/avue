@@ -3,6 +3,7 @@
                 v-model="text"
                 class="avue-editor"
                 @change="handleChange"
+                @click.native="handleClick"
                 ref="myQuillEditor"
                 :options="options">
   </quill-editor>
@@ -55,7 +56,11 @@ export default {
       this.options.placeholder = this.placeholder ? this.placeholder : `请输入${this.label}`;
       this.options.readonly = this.readonly
     },
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
     handleChange (value) {
+      if (typeof this.change === 'function') this.change({ value: value.html, column: this.column });
       this.$emit('input', value.html);
       this.$emit('change', value.html);
     }

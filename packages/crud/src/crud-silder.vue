@@ -8,6 +8,7 @@
              :show-stops="showStops"
              :show-input="showInput"
              :format-tooltip="formatTooltip"
+             @click.native="handleClick"
              @change="handleChange"></el-slider>
 </template>
 
@@ -43,18 +44,22 @@ export default {
     },
     formatTooltip: Function
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   methods: {
-    handleChange(value) {
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
+    handleChange (value) {
+      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
       this.$emit('input', value);
       this.$emit('change', value);
     },
-    getDic(index) {
+    getDic (index) {
       return this.dic[index] ? this.dic[index] : {};
     }
   }

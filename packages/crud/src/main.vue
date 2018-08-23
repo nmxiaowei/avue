@@ -405,7 +405,9 @@ export default {
       });
     },
     formVal () {
-      this.tableForm = this.value;
+      Object.keys(this.value).forEach(ele => {
+        this.tableForm[ele] = this.value[ele];
+      })
       this.$emit('input', this.tableForm);
     },
     dataInit () {
@@ -589,9 +591,9 @@ export default {
     hide (cancel) {
       const callack = () => {
         if (cancel !== false) {
-          this.$nextTick(() => {
-            this.$refs['tableForm'].resetForm();
-          });
+          this.$refs['tableForm'].resetForm();
+          this.tableForm = Object.assign({}, this.defaultForm.tableForm);
+          this.$emit('input', this.tableForm);
         }
       };
       if (typeof this.beforeClose === 'function') this.beforeClose(callack);

@@ -1,6 +1,7 @@
 <template>
   <el-checkbox-group v-model="text"
-                     @change="handleChange">
+                     @change="handleChange"
+                     @click.native="handleClick">
     <el-checkbox v-for="(item,index) in dic"
                  :label="item[valueKey]"
                  :border="border"
@@ -29,7 +30,11 @@ export default {
   created () { },
   mounted () { },
   methods: {
+    handleClick () {
+      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+    },
     handleChange (value) {
+      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
       this.$emit('input', value);
       this.$emit('change', value);
     }
