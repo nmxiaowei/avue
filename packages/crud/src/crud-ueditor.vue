@@ -2,10 +2,8 @@
   <quill-editor :style="{height:`${minRows*40+100}px`,maxHeight:`${maxRows*40+100}px`}"
                 v-model="text"
                 class="avue-editor"
-                :placeholder="placeholder ? placeholder : `请输入${label}`"
                 @change="handleChange"
                 ref="myQuillEditor"
-                :readonly="readonly"
                 :options="options">
   </quill-editor>
 
@@ -21,7 +19,10 @@ export default {
   },
   data () {
     return {
-
+      options: {
+        placeholder: '请输入',
+        readonly: false,
+      }
     };
   },
   props: {
@@ -31,9 +32,6 @@ export default {
     },
     height: {
       default: ''
-    },
-    options: {
-      default: () => { }
     },
     minRows: {
       type: Number,
@@ -46,10 +44,17 @@ export default {
   },
   watch: {
   },
+  created () {
+    this.init();
+  },
   mounted () {
 
   },
   methods: {
+    init () {
+      this.options.placeholder = this.placeholder ? this.placeholder : `请输入${this.label}`;
+      this.options.readonly = this.readonly
+    },
     handleChange (value) {
       this.$emit('input', value.html);
       this.$emit('change', value.html);

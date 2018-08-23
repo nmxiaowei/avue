@@ -24,15 +24,15 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          searchsolt:true,
           column:[
              {
               label:'姓名',
-              prop:'name',
-              search:true,
+              prop:'name'
             },
             {
               label:'性别',
-              prop:'sex',
+              prop:'sex'
             }
           ]
         },
@@ -289,11 +289,11 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          searchsolt:true,
           column:[
              {
               label:'姓名',
-              prop:'name',
-              search:true,
+              prop:'name'
             },
             {
               label:'性别',

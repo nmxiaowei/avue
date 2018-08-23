@@ -91,6 +91,10 @@ export default {
                     minRows: 10,
                     type: "ueditor",
                     prop: "address",
+                },{
+                    label: "建议",
+                    span: 24,
+                    prop: "adit",
                 }]
             }
         }
@@ -214,6 +218,10 @@ export default {
                     minRows: 10,
                     type: "ueditor",
                     prop: "address",
+                },{
+                    label: "建议",
+                    span: 24,
+                    prop: "adit",
                 }]
             }
         }

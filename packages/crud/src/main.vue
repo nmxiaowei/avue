@@ -300,8 +300,12 @@ export default {
     selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
     },
+    searchSolt () {
+      return this.vaildData(this.tableOption.searchsolt, false);
+    },
     searchFlag () {
-      return !validatenull(this.searchForm);
+      if (this.searchSolt) return true;
+      else return !validatenull(this.searchForm);
     },
     formOption () {
       let option = Object.assign({}, this.tableOption);
@@ -406,6 +410,9 @@ export default {
     },
     dataInit () {
       this.list = Object.assign([], this.data);
+      this.list.forEach((ele, index) => {
+        ele.$index = index;
+      })
     },
     formInit () {
       this.defaultForm = this.formInitVal(this.columnOption);
@@ -440,7 +447,7 @@ export default {
     // 选择回调
     selectionChange (val) {
       this.tableSelect = val;
-      this.$emit('selection-change', val);
+      this.$emit('selection-change', this.tableSelect);
     },
     // 排序回调
     sortChange (val) {
@@ -579,9 +586,7 @@ export default {
       else callack();
     },
     resetForm () {
-      for (let o in this.tableForm) {
-        this.tableForm[o] = undefined;
-      }
+      this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.$emit('input', this.tableForm);
     },
   }

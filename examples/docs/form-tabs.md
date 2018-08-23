@@ -76,7 +76,7 @@ export default {
     },  
     methods: {
      submit(){
-       this.$message.success('当前数据'+JSON.stringify(this.form))
+       this.$message.success('当前数据'+JSON.stringify(this.data))
      },
      change (item) {
          this.$message.success('当前选项卡对象'+JSON.stringify(item.prop))
@@ -176,7 +176,7 @@ export default {
     },  
     methods: {
      submit(){
-       this.$message.success('当前数据'+JSON.stringify(this.form))
+       this.$message.success('当前数据'+JSON.stringify(this.data))
      },
      change (item) {
         this.$message.success('当前选项卡对象'+JSON.stringify(item.prop))
