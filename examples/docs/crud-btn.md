@@ -12,7 +12,7 @@ export default {
           }
         ],
         option:{
-          cloumnBtn:false,
+          columnBtn:false,
           refreshBtn:false,
           addBtn:false,
           delBtn:false,
@@ -52,7 +52,7 @@ export default {
 
 ### 按钮
 
-:::demo  按钮的显隐全部接受`Boolean`类型的值;`cloumnBtn`为列动态显隐按钮;`refreshBtn`刷新按钮;`addBtn`表格新增按钮;`editBtn`行编辑按钮;`delBtn`行删除按钮;自定义按钮调用组件中对应方法即可,例如编辑方法`rowEdit`
+:::demo  按钮的显隐全部接受`Boolean`类型的值;`columnBtn`为列动态显隐按钮;`refreshBtn`刷新按钮;`addBtn`表格新增按钮;`editBtn`行编辑按钮;`delBtn`行删除按钮;自定义按钮调用组件中对应方法即可,例如编辑方法`rowEdit`
 ```html
 <avue-crud :data="data" :option="option" ref="crud">
   <template slot-scope="scope" slot="menuLeft">
@@ -85,7 +85,7 @@ export default {
           }
         ],
         option:{
-          cloumnBtn:false,
+          columnBtn:false,
           refreshBtn:false,
           addBtn:false,
           delBtn:false,
