@@ -3,6 +3,9 @@
     "groups": [{
         "groupName": "Crud",
         "list": [{
+            "path": "/crud-doc",
+            "title": "crud文档"
+        }, {
             "path": "/crud",
             "title": "crud基础"
         }, {
@@ -66,6 +69,9 @@
     }, {
         "groupName": "Form",
         "list": [{
+                "path": "/form-doc",
+                "title": "form文档"
+            }, {
                 "path": "/form",
                 "title": "form表单"
             }, {

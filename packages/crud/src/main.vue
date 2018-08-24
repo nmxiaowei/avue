@@ -187,7 +187,7 @@
     </el-table>
     <!-- 分页 -->
     <div class="crud-pagination"
-         v-if="vaildData(tableOption.page,true)">
+         v-if="vaildData(tableOption.page,true) && listLen">
       <el-pagination :current-page.sync="page.currentPage"
                      :background="vaildData(tableOption.pageBackground,true)"
                      :page-size="page.pageSize"
@@ -266,7 +266,7 @@ export default {
   name: 'AvueCrud',
   mixins: [crud()],
   components: {},
-  data() {
+  data () {
     return {
       clientHeight: document.documentElement.clientHeight,
       defaultForm: {
@@ -288,27 +288,30 @@ export default {
       tableSelect: []
     };
   },
-  created() {
+  created () {
     // 初始化数据
     this.dataInit();
     // 初始化列
     this.showClomnuInit();
   },
   computed: {
-    columnOption() {
+    listLen () {
+      return this.list.length !== 0
+    },
+    columnOption () {
       return this.tableOption.column || [];
     },
-    selectLen() {
+    selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
     },
-    searchSolt() {
+    searchSolt () {
       return this.vaildData(this.tableOption.searchsolt, false);
     },
-    searchFlag() {
+    searchFlag () {
       if (this.searchSolt) return true;
       else return !validatenull(this.searchForm);
     },
-    formOption() {
+    formOption () {
       let option = Object.assign({}, this.tableOption);
       option.submitBtn = false;
       option.submitPostion = 'right';
@@ -319,14 +322,14 @@ export default {
     }
   },
   watch: {
-    columnOption() {
+    columnOption () {
       this.showClomnuInit();
     },
-    data() {
+    data () {
       this.dataInit();
     }
   },
-  mounted() {},
+  mounted () { },
   props: {
     value: {
       type: Object,
@@ -364,30 +367,30 @@ export default {
     }
   },
   methods: {
-    cellEditFlag(row, column) {
+    cellEditFlag (row, column) {
       return row.$cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell;
     },
-    closeDialog() {
+    closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};
       this.boxVisible = false;
     },
-    selectClear() {
+    selectClear () {
       this.$refs.table.clearSelection();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
     },
-    refreshChange() {
+    refreshChange () {
       this.$emit('refresh-change', this.page);
     },
-    rulesInit() {
+    rulesInit () {
       this.tableFormRules = {};
       this.columnOption.forEach(ele => {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
-    showClomnuInit: function() {
+    showClomnuInit: function () {
       this.showClomnuIndex = [];
       this.showClomnuList = [];
       this.columnOption.forEach((ele, index) => {
@@ -403,19 +406,20 @@ export default {
         }
       });
     },
-    formVal() {
+    formVal () {
       Object.keys(this.value).forEach(ele => {
         this.tableForm[ele] = this.value[ele];
       })
       this.$emit('input', this.tableForm);
     },
-    dataInit() {
+    dataInit () {
       this.list = Object.assign([], this.data);
+      //初始化序号
       this.list.forEach((ele, index) => {
         ele.$index = index;
       })
     },
-    formInit() {
+    formInit () {
       this.defaultForm = this.formInitVal(this.columnOption);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
@@ -423,28 +427,28 @@ export default {
       this.formVal();
     },
     // 搜索清空
-    searchReset() {
+    searchReset () {
       this.$refs['searchForm'].resetFields();
       this.$emit('search-reset');
     },
     // 页大小回调
-    sizeChange(val) {
+    sizeChange (val) {
       this.$emit('size-change', val);
     },
     // 页码回调
-    currentChange(val) {
+    currentChange (val) {
       this.$emit('current-change', val);
     },
     //设置单选
-    currentRowChange(val) {
-      this.$emit('current-row-change', val);
+    currentRowChange (currentRow, oldCurrentRow) {
+      this.$emit('current-row-change', currentRow, oldCurrentRow);
     },
     //设置多选选中
-    setCurrentRow(row) {
+    setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
     },
     // 选中实例
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.table.toggleRowSelection(row);
@@ -454,28 +458,28 @@ export default {
       }
     },
     // 选择回调
-    selectionChange(val) {
+    selectionChange (val) {
       this.tableSelect = val;
       this.$emit('selection-change', this.tableSelect);
     },
     // 排序回调
-    sortChange(val) {
+    sortChange (val) {
       this.$emit('sort-change', val);
     },
     // 搜索回调
-    searchChange() {
+    searchChange () {
       this.$emit('search-change', this.searchForm);
     },
     // 行双击
-    rowDblclick(row, event) {
+    rowDblclick (row, event) {
       this.$emit('row-dblclick', row, event);
     },
     // 行单机
-    rowClick(row, event, column) {
+    rowClick (row, event, column) {
       this.$emit('row-click', row, event, column);
     },
     // 处理数据
-    detail(row, column) {
+    detail (row, column) {
       let result = row[column.prop] || '';
       if (column.type) {
         if (
@@ -492,8 +496,8 @@ export default {
         if (column.dicData) {
           result = this.findByvalue(
             typeof column.dicData === 'string' ?
-            this.DIC[column.dicData] :
-            column.dicData,
+              this.DIC[column.dicData] :
+              column.dicData,
             result,
             (column.props || this.tableOption.props)
           );
@@ -505,18 +509,18 @@ export default {
       return result;
     },
     // 新增
-    rowAdd() {
+    rowAdd () {
       this.boxType = 'add';
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.$emit('input', this.tableForm);
       this.show();
     },
-    rowCell(row, index) {
+    rowCell (row, index) {
       if (row.$cellEdit) this.rowCellUpdate(row, index)
       else this.rowCellEdit(row, index)
     },
     // 单元格编辑
-    rowCellEdit(row, index) {
+    rowCellEdit (row, index) {
       if (this.tableIndex != -1) {
         this.$message.error('先保存当前编辑的数据');
         return;
@@ -528,14 +532,14 @@ export default {
       this.$set(this.list, index, row);
     },
     // 编辑
-    rowEdit(row, index) {
+    rowEdit (row, index) {
       this.tableForm = Object.assign({}, row);
       this.$emit('input', this.tableForm);
       this.tableIndex = index;
       this.boxType = 'edit';
       this.show();
     },
-    rowCellUpdate(row, index) {
+    rowCellUpdate (row, index) {
       const form = Object.assign({}, this.tableForm);
       this.$emit('input', form);
       this.$emit(
@@ -551,17 +555,17 @@ export default {
       );
     },
     // 删除
-    rowDel(row, index) {
+    rowDel (row, index) {
       this.$emit('row-del', row, index);
     },
     // 保存
-    rowSave() {
+    rowSave () {
       this.$refs['tableForm'].validate().then(() => {
         this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog);
       });
     },
     // 更新
-    rowUpdate() {
+    rowUpdate () {
       this.$refs['tableForm'].validate().then(() => {
         const index = this.tableIndex;
         this.$emit(
@@ -573,7 +577,7 @@ export default {
       });
     },
     // 显示表单
-    show(cancel) {
+    show (cancel) {
       const callack = () => {
         if (cancel !== true) {
           this.$nextTick(() => {
@@ -587,7 +591,7 @@ export default {
       else callack();
     },
     // 隐藏表单
-    hide(cancel) {
+    hide (cancel) {
       const callack = () => {
         if (cancel !== false) {
           this.$refs['tableForm'].resetForm();
@@ -598,7 +602,7 @@ export default {
       if (typeof this.beforeClose === 'function') this.beforeClose(callack);
       else callack();
     },
-    resetForm() {
+    resetForm () {
       this.$refs['tableForm'].resetForm();
       this.$emit('input', this.tableForm);
     },
