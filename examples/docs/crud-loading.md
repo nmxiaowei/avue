@@ -29,9 +29,7 @@ export default {
       };
     },
     created(){
-      setTimeout(()=>{
-        this.loading=false;
-      },5000);
+     
     }
 }
 </script>
@@ -49,7 +47,9 @@ export default {
 :::demo 组件中`loading`接受一个`Boolean`的属性，来控制组件的等待框显隐藏
 ```html
 <avue-crud :data="data" :option="option" :table-loading="loading"></avue-crud>
-
+<div style="margin-top:20px;">
+切换 Loading 状态<el-switch size="small" v-model="loading"> </el-switch>
+</div>
 <script>
 export default {
     data() {
@@ -81,9 +81,7 @@ export default {
       };
     },
     created(){
-      setTimeout(()=>{
-        this.loading=false;
-      },5000);
+      
     }
 }
 </script>

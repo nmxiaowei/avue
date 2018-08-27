@@ -27,6 +27,9 @@
             "path": "/crud-sort",
             "title": "crud排序"
         }, {
+            "path": "/crud-filter",
+            "title": "crud筛选"
+        }, {
             "path": "/crud-index",
             "title": "crud序号"
         }, {

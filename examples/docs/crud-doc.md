@@ -104,6 +104,10 @@
 | clearable | 表单清空 | Boolean | true / false | false |
 | size | 表单大小 | String | small / mini | small |
 | rules | 表单规则,参考ele表单规则配置 | Object | - | - |
+| formatter |  用来格式化内容  | Function(row, value , label, column) | - | - |
+| filterMultiple | 数据过滤的选项是否多选	 | Boolean | true / false | true |
+| filters | 数据过滤的选项，数组格式，数组中的元素需要有 text 和 value 属性。 | Array[{ text, value }] | - | - |
+| filterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | - | - |
 
 ### Avue-crud Events
 | 事件名 | 说明 | 参数 |
