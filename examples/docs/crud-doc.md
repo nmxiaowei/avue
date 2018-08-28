@@ -103,6 +103,7 @@
 | formHeight | 表单行高度 | Number | - | auto |
 | clearable | 表单清空 | Boolean | true / false | false |
 | size | 表单大小 | String | small / mini | small |
+| showClomnu | 是否加入动态现隐列 | Boolean | true / false | true |
 | rules | 表单规则,参考ele表单规则配置 | Object | - | - |
 | formatter |  用来格式化内容  | Function(row, value , label, column) | - | - |
 | filterMultiple | 数据过滤的选项是否多选	 | Boolean | true / false | true |

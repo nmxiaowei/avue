@@ -121,42 +121,9 @@
         </el-table-column>
       </template>
       <!-- 循环列 -->
-      <el-table-column v-if="showClomnuIndex.indexOf(index)!=-1"
-                       v-for="(column,index) in columnOption"
-                       :prop="column.prop"
-                       :key="column.prop"
-                       filter-placement="bottom-end"
-                       :filters="column.filters"
-                       :filter-method="column.filterMethod"
-                       :filter-multiple="vaildData(column.filterMultiple,true)"
-                       :show-overflow-tooltip="column.overHidden"
-                       :min-width="column.minWidth"
-                       :sortable="column.sortable"
-                       :align="vaildData(column.align,tableOption.align)"
-                       :header-align="vaildData(column.headerAlign,tableOption.headerAlign)"
-                       :width="column.width"
-                       :label="column.label"
-                       :fixed="column.fixed">
-        <template slot-scope="scope">
-          <template v-if="cellEditFlag(scope.row,column)">
-            <component size="small"
-                       :is="getSearchType(column.type)"
-                       v-model="tableForm[column.prop]"
-                       :type="getType(column)"
-                       clearable
-                       :placeholder="column.label"
-                       :dic="setDic(column.dicData,DIC[column.dicData])"></component>
-          </template>
-          <slot :row="scope.row"
-                :dic="setDic(column.dicData,DIC[column.dicData])"
-                :label="detail(scope.row,column)"
-                :name="column.prop"
-                v-else-if="column.solt"></slot>
-          <template v-else>
-            <span v-html="detail(scope.row,column)"></span>
-          </template>
-        </template>
-      </el-table-column>
+      <crud-components :columnOption="columnOption"
+                       :tableOption="tableOption"
+                       :showClomnuIndex="showClomnuIndex"></crud-components>
       <el-table-column fixed="right"
                        v-if="vaildData(tableOption.menu,true)"
                        label="操作"
@@ -251,7 +218,7 @@
           <el-col :span="6"
                   v-for="(item,index) in showClomnuList"
                   :key="index">
-            <el-checkbox :label="item.index">{{item.label}}</el-checkbox>
+            <el-checkbox :label="item.prop">{{item.label}}</el-checkbox>
           </el-col>
         </el-row>
       </el-checkbox-group>
@@ -260,6 +227,7 @@
 </template>
 <script>
 import crud from '../../mixins/crud.js';
+import crudComponents from './crud-components';
 import {
   validatenull
 } from '../../utils/validate.js';
@@ -267,7 +235,7 @@ import moment from 'moment';
 export default {
   name: 'AvueCrud',
   mixins: [crud()],
-  components: {},
+  components: { crudComponents },
   data () {
     return {
       clientHeight: document.documentElement.clientHeight,
@@ -369,9 +337,6 @@ export default {
     }
   },
   methods: {
-    cellEditFlag (row, column) {
-      return row.$cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell;
-    },
     closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};
@@ -393,20 +358,28 @@ export default {
       });
     },
     showClomnuInit: function () {
+      const safe = this;
       this.showClomnuIndex = [];
       this.showClomnuList = [];
-      this.columnOption.forEach((ele, index) => {
-        if (validatenull(ele.hide)) {
-          this.showClomnuIndex.push(index);
-        }
-        if (ele.showClomnu !== false) {
-          let obj = {
-            label: ele.label,
-            index: index
-          };
-          this.showClomnuList.push(Object.assign({}, obj));
-        }
-      });
+      function addChild (list) {
+        list.forEach((ele, index) => {
+          const children = ele.children;
+          if (!validatenull(children)) {
+            safe.tableOption.columnBtn = false;
+            addChild(children);
+          }
+          if (validatenull(ele.hide)) safe.showClomnuIndex.push(ele.prop);
+          if (ele.showClomnu !== false) {
+            let obj = {
+              label: ele.label,
+              prop: ele.prop,
+              index: index
+            };
+            safe.showClomnuList.push(Object.assign({}, obj));
+          }
+        });
+      }
+      addChild(this.columnOption)
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {
@@ -479,36 +452,6 @@ export default {
     // 行单机
     rowClick (row, event, column) {
       this.$emit('row-click', row, event, column);
-    },
-    // 处理数据
-    detail (row, column) {
-      let result = row[column.prop] || '';
-      if (column.type) {
-        if (
-          (column.type === 'date' ||
-            column.type === 'time' ||
-            column.type === 'datetime') &&
-          column.format
-        ) {
-          const format = column.format
-            .replace('dd', 'DD')
-            .replace('yyyy', 'YYYY');
-          result = moment(result).format(format);
-        }
-        if (column.dicData) {
-          result = this.findByvalue(
-            typeof column.dicData === 'string' ?
-              this.DIC[column.dicData] :
-              column.dicData,
-            result,
-            (column.props || this.tableOption.props)
-          );
-        }
-      }
-      if (column.formatter && typeof column.formatter === 'function') {
-        result = column.formatter(row, row[column.prop], result, column);
-      }
-      return result;
     },
     // 新增
     rowAdd () {

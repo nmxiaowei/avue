@@ -9,6 +9,9 @@
             "path": "/crud",
             "title": "crud基础"
         }, {
+            "path": "/crud-header",
+            "title": "crud复杂表头"
+        }, {
             "path": "/crud-page",
             "title": "crud分页"
         }, {
