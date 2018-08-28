@@ -19,7 +19,19 @@
       <crud-components v-if="column.children"
                        :columnOption="column.children"
                        :tableOption="tableOption"
-                       :showClomnuIndex="showClomnuIndex"></crud-components>
+                       :tableForm="tableForm"
+                       :showClomnuIndex="showClomnuIndex"
+                       :DIC="DIC">
+        <template slot-scope="scope"
+                  v-for="item in column.children"
+                  :slot="item.prop">
+          <slot :row="scope.row"
+                :dic="scope.dic"
+                :label="scope.label"
+                :name="item.prop"
+                v-if="item.solt"></slot>
+        </template>
+      </crud-components>
       <template slot-scope="scope">
         <template v-if="cellEditFlag(scope.row,column)">
           <component size="small"
@@ -44,55 +56,28 @@
 </template>
 
 <script>
-import * as utils from '../../utils/util.js';
+import column from '../../mixins/column'
+import crudInput from './crud-input';
+import crudSelect from './crud-select';
+import { validatenull } from '../../utils/validate.js';
 export default {
   name: 'crudComponents',
+  mixins: [column()],
   props: [
     'showClomnuIndex',
     'columnOption',
-    'tableOption'
+    'tableOption',
+    'DIC',
+    'tableForm'
   ],
+  components: {
+    crudInput,
+    crudSelect,
+  },
   created () {
     this.initFun();
   },
   methods: {
-    cellEditFlag (row, column) {
-      return row.$cellEdit && [undefined, 'select', 'input'].includes(column.type) && column.solt !== true && column.cell;
-    },
-    initFun () {
-      Object.keys(utils).forEach(key => {
-        this[key] = utils[key];
-      });
-    },// 处理数据
-    detail (row, column) {
-      let result = row[column.prop] || '';
-      if (column.type) {
-        if (
-          (column.type === 'date' ||
-            column.type === 'time' ||
-            column.type === 'datetime') &&
-          column.format
-        ) {
-          const format = column.format
-            .replace('dd', 'DD')
-            .replace('yyyy', 'YYYY');
-          result = moment(result).format(format);
-        }
-        if (column.dicData) {
-          result = this.findByvalue(
-            typeof column.dicData === 'string' ?
-              this.DIC[column.dicData] :
-              column.dicData,
-            result,
-            (column.props || this.tableOption.props)
-          );
-        }
-      }
-      if (column.formatter && typeof column.formatter === 'function') {
-        result = column.formatter(row, row[column.prop], result, column);
-      }
-      return result;
-    },
   }
 }
 </script>

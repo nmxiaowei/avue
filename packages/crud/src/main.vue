@@ -90,40 +90,86 @@
               v-loading="tableLoading"
               @selection-change="selectionChange"
               @sort-change="sortChange">
-      <!-- 下拉弹出框  -->
-      <template v-if="tableOption.expand">
-        <el-table-column type="expand"
-                         width="50"
-                         fixed="left"
-                         align="center">
-          <template slot-scope="props">
-            <slot :row="props.row"
-                  name="expand"></slot>
-          </template>
-        </el-table-column>
-      </template>
+      <!-- 折叠面板  -->
+      <el-table-column type="expand"
+                       width="50"
+                       fixed="left"
+                       align="center"
+                       v-if="tableOption.expand">
+        <template slot-scope="props">
+          <slot :row="props.row"
+                name="expand"></slot>
+        </template>
+      </el-table-column>
       <!-- 选择框 -->
-      <template v-if="tableOption.selection">
-        <el-table-column type="selection"
-                         width="50"
-                         fixed="left"
-                         align="center">
-        </el-table-column>
-      </template>
+      <el-table-column v-if="tableOption.selection"
+                       type="selection"
+                       width="50"
+                       fixed="left"
+                       align="center">
+      </el-table-column>
       <!-- 序号 -->
-      <template v-if="tableOption.index">
-        <el-table-column :label="vaildData(tableOption.indexLabel,'#')"
-                         type="index"
-                         width="50"
-                         :index="indexMethod"
-                         fixed="left"
-                         align="center">
-        </el-table-column>
-      </template>
+      <el-table-column v-if="tableOption.index"
+                       :label="vaildData(tableOption.indexLabel,'#')"
+                       type="index"
+                       width="50"
+                       :index="indexMethod"
+                       fixed="left"
+                       align="center">
+      </el-table-column>
       <!-- 循环列 -->
-      <crud-components :columnOption="columnOption"
-                       :tableOption="tableOption"
-                       :showClomnuIndex="showClomnuIndex"></crud-components>
+      <el-table-column v-if="showClomnuIndex.indexOf(column.prop)!=-1"
+                       v-for="(column,index) in columnOption"
+                       :prop="column.prop"
+                       :key="column.prop"
+                       filter-placement="bottom-end"
+                       :filters="column.filters"
+                       :filter-method="column.filterMethod"
+                       :filter-multiple="vaildData(column.filterMultiple,true)"
+                       :show-overflow-tooltip="column.overHidden"
+                       :min-width="column.minWidth"
+                       :sortable="column.sortable"
+                       :align="vaildData(column.align,tableOption.align)"
+                       :header-align="vaildData(column.headerAlign,tableOption.headerAlign)"
+                       :width="column.width"
+                       :label="column.label"
+                       :fixed="column.fixed">
+        <crud-components v-if="column.children"
+                         :columnOption="column.children"
+                         :tableOption="tableOption"
+                         :tableForm="tableForm"
+                         :showClomnuIndex="showClomnuIndex"
+                         :DIC="DIC">
+          <template slot-scope="scope"
+                    v-for="item in column.children"
+                    :slot="item.prop">
+            <slot :row="scope.row"
+                  :dic="scope.dic"
+                  :label="scope.label"
+                  :name="item.prop"
+                  v-if="item.solt"></slot>
+          </template>
+        </crud-components>
+        <template slot-scope="scope">
+          <template v-if="cellEditFlag(scope.row,column)">
+            <component size="small"
+                       :is="getSearchType(column.type)"
+                       v-model="tableForm[column.prop]"
+                       :type="getType(column)"
+                       clearable
+                       :placeholder="column.label"
+                       :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+          </template>
+          <slot :row="scope.row"
+                :dic="setDic(column.dicData,DIC[column.dicData])"
+                :label="detail(scope.row,column)"
+                :name="column.prop"
+                v-else-if="column.solt"></slot>
+          <template v-else>
+            <span v-html="detail(scope.row,column)"></span>
+          </template>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right"
                        v-if="vaildData(tableOption.menu,true)"
                        label="操作"
@@ -227,6 +273,7 @@
 </template>
 <script>
 import crud from '../../mixins/crud.js';
+import column from '../../mixins/column.js';
 import crudComponents from './crud-components';
 import {
   validatenull
@@ -234,7 +281,7 @@ import {
 import moment from 'moment';
 export default {
   name: 'AvueCrud',
-  mixins: [crud()],
+  mixins: [crud(), column()],
   components: { crudComponents },
   data () {
     return {
