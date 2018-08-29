@@ -278,7 +278,6 @@ import crudComponents from './crud-components';
 import {
   validatenull
 } from '../../utils/validate.js';
-import moment from 'moment';
 export default {
   name: 'AvueCrud',
   mixins: [crud(), column()],

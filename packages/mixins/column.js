@@ -1,4 +1,5 @@
 import * as utils from '../utils/util.js';
+import moment from 'moment';
 export default function() {
     return {
         methods: {
