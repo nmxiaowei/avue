@@ -62,7 +62,6 @@ export default function() {
         data() {
             return {
                 DIC: {},
-                dicList: [],
                 dicCascaderList: []
             };
         },
@@ -88,6 +87,7 @@ export default function() {
 
             },
             dicInit() {
+                let locaDic = this.tableOption.dicData || {};
                 this.columnOption.forEach(ele => {
                     if (this.vaildData(ele.dicFlag, true)) {
                         if (!validatenull(ele.dicUrl)) {
@@ -95,13 +95,16 @@ export default function() {
                                 dicUrl: ele.dicUrl,
                                 dicData: ele.dicData
                             });
-                        } else if (!validatenull(ele.dicData) && typeof ele.dicData === 'string') {
-                            this.dicList.push(ele.dicData);
+                        } else if (!validatenull(this.tableOption.dicUrl) && typeof ele.dicData === 'string') {
+                            this.dicCascaderList.push({
+                                dicUrl: this.tableOption.dicUrl,
+                                dicData: ele.dicData
+                            });
                         }
                     }
                 });
                 this.GetDic().then(data => {
-                    this.DIC = Object.assign({}, data);
+                    this.DIC = Object.assign({}, locaDic, data);
                 });
             },
             vaildData(val, dafult) {
@@ -129,38 +132,19 @@ export default function() {
                 return new Promise((resolve) => {
                     let result = [];
                     let dicData = {};
-                    let locaDic = this.option.dicData || [];
-                    let list = this.dicList;
-                    let cascaderList = this.dicCascaderList;
-                    if (validatenull(list) && validatenull(cascaderList)) {
-                        return;
-                    }
-                    list.forEach(ele => {
-                        result.push(new Promise((resolve) => {
-                            if (validatenull(this.option.dicUrl)) {
-                                resolve(locaDic[ele]);
-                            } else {
-                                this.GetDicByType(`${this.option.dicUrl.replace('{{key}}', ele)}`).then(function(res) {
-                                    resolve(res);
-                                });
-                            }
-                        }));
-                    });
+                    let cascaderList = Object.assign([], this.dicCascaderList);
+                    if (validatenull(cascaderList)) resolve({});
                     cascaderList.forEach(ele => {
                         result.push(new Promise((resolve) => {
                             this.GetDicByType(`${ele.dicUrl.replace('{{key}}', ele.dicData)}`).then(function(res) {
-                                list.push(ele.dicData);
                                 resolve(res);
                             });
                         }));
                     });
                     Promise.all(result).then(data => {
-                        list.forEach((ele, index) => {
-                            dicData[ele] = data[index];
+                        cascaderList.forEach((ele, index) => {
+                            dicData[ele.dicData] = data[index];
                         });
-                        if (validatenull(this.option.dicUrl)) {
-                            dicData = Object.assign({}, dicData, locaDic);
-                        }
                         resolve(dicData);
                     });
                 });

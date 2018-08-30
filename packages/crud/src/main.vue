@@ -225,6 +225,7 @@
       <div class="avue-dialog">
         <avue-form v-model="tableForm"
                    ref="tableForm"
+                   :disabled="keyBtn"
                    :uploadBefore="uploadBefore"
                    :uploadAfter="uploadAfter"
                    :option="formOption">
@@ -246,9 +247,11 @@
               :type="boxType"></slot>
         <el-button type="primary"
                    @click="rowUpdate"
-                   v-if="boxType=='edit'">修 改</el-button>
+                   v-if="boxType=='edit'"
+                   :loading="keyBtn">修 改</el-button>
         <el-button type="primary"
                    @click="rowSave"
+                   :loading="keyBtn"
                    v-else-if="boxType=='add'">新 增</el-button>
         <el-button @click="closeDialog">取 消</el-button>
       </span>
@@ -289,6 +292,7 @@ export default {
         tableForm: {},
         searchForm: {}
       },
+      keyBtn: false,
       list: [],
       searchShow: true,
       searchForm: {},
@@ -387,6 +391,7 @@ export default {
       this.tableIndex = -1;
       this.tableForm = {};
       this.boxVisible = false;
+      this.keyBtn = false;
     },
     selectClear () {
       this.$refs.table.clearSelection();
@@ -552,12 +557,14 @@ export default {
     // 保存
     rowSave () {
       this.$refs['tableForm'].validate().then(() => {
+        this.keyBtn = true;
         this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog);
       });
     },
     // 更新
     rowUpdate () {
       this.$refs['tableForm'].validate().then(() => {
+        this.keyBtn = true;
         const index = this.tableIndex;
         this.$emit(
           'row-update',

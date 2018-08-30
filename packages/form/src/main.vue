@@ -199,6 +199,10 @@ export default {
     }
   },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     uploadBefore: Function,
     uploadAfter: Function,
     value: {
@@ -226,6 +230,7 @@ export default {
     },
     // 验证表单是否禁止
     vaildDisabled (column) {
+      if (this.disabled) return true;
       if (!(this.boxType)) {
         return this.vaildData(column.disabled, false);
       } else if (this.boxType === 'add') {
