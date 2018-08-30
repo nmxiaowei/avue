@@ -101,7 +101,7 @@ export default function() {
                     }
                 });
                 this.GetDic().then(data => {
-                    this.DIC = Object.assign({}, this.DIC, data);
+                    this.DIC = Object.assign({}, data);
                 });
             },
             vaildData(val, dafult) {
