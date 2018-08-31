@@ -96,11 +96,11 @@ export const formInitVal = (list) => {
             ele.type === 'dates' ||
             (ele.type === 'upload' && ele.listType !== 'picture-img') ||
             ele.multiple ||
-            ele.range
+            ele.range || ele.dataType === 'array'
         ) {
             tableForm[ele.prop] = [];
             if (ele.search) searchForm[ele.prop] = [];
-        } else if (['number', 'rate', 'silder'].includes(ele.type)) {
+        } else if (['number', 'rate', 'silder'].includes(ele.type) || ele.dataType === 'number') {
             tableForm[ele.prop] = 0;
             if (ele.search) {
                 searchForm[ele.prop] = 0;
