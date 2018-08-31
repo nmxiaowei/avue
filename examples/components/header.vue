@@ -262,7 +262,7 @@
           <!-- logo -->
           <slot>
             <h4 class="nav-logo">
-              Avue在线文档(Beta)
+              Avue在线文档
             </h4>
           </slot>
         </h1>

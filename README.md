@@ -38,9 +38,13 @@ Vue.use(Avue,axios)
 ```
 1.第一步  
 删除packages.json里面的avue-cli  
+删除main.js中的avue-cli的引入
 2.第二步  
-npm install @smallwei/avue —save  
+npm install @smallwei/avue —-save  
+or
+yarn add @smallwei/avue —-save 
 3.第三步  
+在main.js中引入下面的包
 import Avue from '@smallwei/avue/lib/index.js'  
 import '@smallwei/avue/lib/theme-chalk/index.css'  
 

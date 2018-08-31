@@ -158,8 +158,10 @@ export const getSearchType = (type) => {
 /**
  * 动态获取组件
  */
-export const getComponent = (type) => {
-    if (type === 'select') {
+export const getComponent = ({ type, component }) => {
+    if (!validatenull(component)) {
+        return component;
+    } else if (type === 'select') {
         return 'crudSelect';
     } else if (type === 'radio') {
         return 'crudRadio';

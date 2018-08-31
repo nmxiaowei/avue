@@ -71,6 +71,9 @@
         }, {
             "path": "/crud-btn",
             "title": "crud自定义按钮"
+        }, {
+            "path": "/crud-component",
+            "title": "crud自定义组件"
         }]
     }, {
         "groupName": "Form",

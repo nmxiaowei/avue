@@ -45,34 +45,34 @@ export default {
     value: {}
   },
   computed: {
-    labelPostion: function() {
+    labelPostion: function () {
       if (this.option.labelPostion) {
         return 'is-' + this.option.labelPostion;
       }
       return 'is-left';
     },
-    columnOption() {
+    columnOption () {
       return this.option.option || [];
     }
   },
   watch: {
     value: {
-      handler(n) {
+      handler (n) {
         this.form = n;
       },
       deep: true
     }
   },
-  data() {
+  data () {
     return {
       form: {}
     };
   },
-  created() {
+  created () {
     this.formInit();
   },
   methods: {
-    formInit() {
+    formInit () {
       this.form = this.value;
     }
   }

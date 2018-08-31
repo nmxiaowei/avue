@@ -34,7 +34,7 @@
                       :name="column.prop"
                       v-if="column.formsolt"></slot>
 
-                <component :is="getComponent(column.type)"
+                <component :is="getComponent({type:column.type,component:column.component})"
                            v-else
                            :props="column.props || tableOption.props"
                            v-model="form[column.prop]"
