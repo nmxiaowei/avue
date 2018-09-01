@@ -1,4 +1,4 @@
-.from {
+.form {
     padding: 8px 10px;
     .group {
         height: auto;
@@ -28,15 +28,6 @@
         i+i {
             margin-left: 10px;
         }
-    }
-}
-
-.from {
-    .el-checkbox+.el-checkbox {
-        margin-left: 20px;
-    }
-    .el-radio+.el-radio {
-        margin-left: 20px;
     }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="from">
+  <div class="form">
     <el-form ref="form"
              :model="form"
              :label-position="tableOption.labelPosition"
