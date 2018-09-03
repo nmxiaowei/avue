@@ -15,6 +15,8 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          menuWidth:400,
+          viewBtn:true,
           column:[
              {
               label:'姓名',
@@ -81,6 +83,8 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          menuWidth:400,
+          viewBtn:true,
           column:[
              {
               label:'姓名',

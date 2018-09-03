@@ -237,6 +237,8 @@ export default {
         return this.vaildData(column.addDisabled, false);
       } else if (this.boxType === 'edit') {
         return this.vaildData(column.editDisabled, false);
+      } else if (this.boxType === 'view') {
+        return true;
       }
     },
     // 验证表单是否显隐
@@ -247,6 +249,8 @@ export default {
         return this.vaildData(column.addVisdiplay, true);
       } else if (this.boxType === 'edit') {
         return this.vaildData(column.editVisdiplay, true);
+      } else if (this.boxType === 'view') {
+        return this.vaildData(column.viewVisdiplay, true);
       }
 
     },

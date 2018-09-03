@@ -40,6 +40,7 @@
 | addBtn | 添加按钮 | Boolean | true / false  | true |
 | delBtn | 删除按钮 | Boolean | true / false  | true |
 | editBtn | 删除按钮 | Boolean | true / false  | true |
+| viewBtn | 查看按钮 | Boolean | true / false  | false |
 | serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
 | columnBtn | 列显隐按钮 | Boolean | true / false  | true |
 | refreshBtn | 刷新按钮 | Boolean | true / false  | true |
@@ -92,6 +93,7 @@
 | editDisabled | 表单编辑时是否禁止 | Boolean | true / false | false |
 | addVisdiplay | 表单新增时是否可见 | Boolean | true / false | true |
 | editVisdiplay | 表单编辑是否可见 | Boolean | true / false | true |
+| viewVisdiplay | 表单查看是否可见 | Boolean | true / false | true |
 | multiple | 多选（当type为select / tree 时） | Boolean | true / false | false |
 | formsolt | 表单自定义 | Boolean | true / false | false |
 | formWidth | 表单行高度 | Number / String | - | 50% |

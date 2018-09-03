@@ -183,6 +183,11 @@
                        size="small"
                        @click.stop="rowCell(scope.row,scope.$index)"
                        v-if="vaildData(tableOption.cellBtn ,false)">{{scope.row.$cellEdit?'保存':'修改'}}</el-button>
+            <el-button type="success"
+                       icon="el-icon-view"
+                       size="small"
+                       @click.stop="rowView(scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.viewBtn,false)">查看</el-button>
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="small"
@@ -533,6 +538,16 @@ export default {
       this.$emit('input', this.tableForm);
       this.tableIndex = index;
       this.boxType = 'edit';
+      this.show();
+    },
+
+    //查看
+    rowView (row, index) {
+      this.tableForm = Object.assign({}, row);
+      this.$emit('input', this.tableForm);
+      this.tableIndex = index;
+      this.boxType = 'view';
+      this.keyBtn = true;
       this.show();
     },
     rowCellUpdate (row, index) {
