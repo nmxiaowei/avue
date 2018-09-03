@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table-column v-if="showClomnuIndex.indexOf(column.prop)!=-1"
+    <el-table-column v-if="columnIndex.indexOf(column.prop)!=-1"
                      v-for="(column,index) in columnOption"
                      :prop="column.prop"
                      :key="column.prop"
@@ -20,7 +20,7 @@
                        :columnOption="column.children"
                        :tableOption="tableOption"
                        :tableForm="tableForm"
-                       :showClomnuIndex="showClomnuIndex"
+                       :columnIndex="columnIndex"
                        :DIC="DIC">
         <template slot-scope="scope"
                   v-for="item in column.children"
@@ -64,7 +64,7 @@ export default {
   name: 'crudComponents',
   mixins: [column()],
   props: [
-    'showClomnuIndex',
+    'columnIndex',
     'columnOption',
     'tableOption',
     'DIC',

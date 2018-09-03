@@ -12,11 +12,13 @@
                         v-for="(column,index) in columnOption"
                         :key="index"
                         v-if="column.search">
-            <component size="small"
+            <component :size="config.searchComponentSize"
                        :is="getSearchType(column.type)"
                        v-model="searchForm[column.prop]"
                        :type="getType(column)"
-                       :multiple="['checkbox','tree'].includes(column.type)"
+                       :format="column.format"
+                       :value-format="column.valueFormat"
+                       :multiple="config.searchMultiple.includes(column.type)"
                        clearable
                        :placeholder="column.label"
                        :dic="setDic(column.dicData,DIC[column.dicData])"></component>
@@ -25,11 +27,11 @@
           <el-form-item>
             <el-button type="primary"
                        @click="searchChange"
-                       icon="el-icon-search"
-                       size="small">搜索</el-button>
+                       :icon="config.searchBtnIcon"
+                       :size="config.searchBtnSize">{{config.searchBtnTitle}}</el-button>
             <el-button @click="searchReset"
-                       icon="el-icon-delete"
-                       size="small">清空</el-button>
+                       :icon="config.emptyBtnIcon"
+                       :size="config.emptyBtnSize">{{config.emptyBtnTitle}}</el-button>
           </el-form-item>
         </el-form>
       </el-collapse-transition>
@@ -39,38 +41,38 @@
       <div class="crud-menu_left">
         <el-button type="primary"
                    @click="rowAdd"
-                   icon="el-icon-plus"
-                   v-if="vaildData(tableOption.addBtn,true)"
-                   size="small">新 增</el-button>
+                   :icon="config.addBtnIcon"
+                   :size="config.addBtnSize"
+                   v-if="vaildData(tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
         <slot name="menuLeft"></slot>
       </div>
       <div class="crud-menu_right">
         <slot name="menuRight"></slot>
-        <el-button icon="el-icon-refresh"
+        <el-button :icon="config.refreshBtnIcon"
                    circle
-                   size="small"
+                   :size="config.refreshBtnSize"
                    @click="refreshChange"
-                   v-if="vaildData(tableOption.refreshBtn,true)"></el-button>
-        <el-button icon="el-icon-menu"
+                   v-if="vaildData(tableOption.refreshBtn,config.refreshBtn)"></el-button>
+        <el-button :icon="config.columnBtnIcon"
                    circle
-                   size="small"
-                   @click="showClomnuBox=true"
-                   v-if="vaildData(tableOption.columnBtn,true)"></el-button>
-        <el-button icon="el-icon-search"
+                   :size="config.columnBtnSize"
+                   @click="columnBox=true"
+                   v-if="vaildData(tableOption.columnBtn,config.columnBtn)"></el-button>
+        <el-button :icon="config.searchboxBtnIcon"
                    circle
-                   size="small"
+                   :size="config.searchboxBtnSize"
                    @click="searchShow=!searchShow"
-                   v-if="searchFlag && vaildData(tableOption.searchBtn,true)"></el-button>
+                   v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchboxBtn)"></el-button>
       </div>
     </div>
     <el-tag class="avue-tip"
-            v-if="vaildData(tableOption.tip,true) && tableOption.selection">
+            v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
       <i class="el-icon-info">&nbsp;</i>
-      <span class="name">当前表格已选择
-        <span class="count">{{selectLen}}</span> 项</span>
+      <span class="name">{{config.tipStartTitle}}
+        <span class="count">{{selectLen}}</span> {{config.tipEndTitle}}</span>
       <span class="menu">
         <span @click="selectClear"
-              v-if="vaildData(tableOption.selectClearBtn,true) && tableOption.selection">清空</span>
+              v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</span>
       </span>
     </el-tag>
     <el-table :data="list"
@@ -83,9 +85,9 @@
               @row-dblclick="rowDblclick"
               :row-class-name="rowClassName"
               :max-height="tableOption.maxHeight"
-              :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,300)):tableOption.height"
+              :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,config.calcHeight)):tableOption.height"
               ref="table"
-              :width="setPx(tableOption.width,'100%')"
+              :width="setPx(tableOption.width,config.width)"
               :border="tableOption.border"
               v-loading="tableLoading"
               @selection-change="selectionChange"
@@ -110,7 +112,7 @@
       </el-table-column>
       <!-- 序号 -->
       <el-table-column v-if="tableOption.index"
-                       :label="vaildData(tableOption.indexLabel,'#')"
+                       :label="vaildData(tableOption.indexLabel,config.indexLabel)"
                        type="index"
                        width="50"
                        :index="indexMethod"
@@ -118,14 +120,14 @@
                        align="center">
       </el-table-column>
       <!-- 循环列 -->
-      <el-table-column v-if="showClomnuIndex.indexOf(column.prop)!=-1"
+      <el-table-column v-if="columnIndex.indexOf(column.prop)!=-1"
                        v-for="(column,index) in columnOption"
                        :prop="column.prop"
                        :key="column.prop"
                        filter-placement="bottom-end"
                        :filters="column.filters"
                        :filter-method="column.filterMethod"
-                       :filter-multiple="vaildData(column.filterMultiple,true)"
+                       :filter-multiple="vaildData(column.filterMultiple,config.filterMultiple)"
                        :show-overflow-tooltip="column.overHidden"
                        :min-width="column.minWidth"
                        :sortable="column.sortable"
@@ -138,7 +140,7 @@
                          :columnOption="column.children"
                          :tableOption="tableOption"
                          :tableForm="tableForm"
-                         :showClomnuIndex="showClomnuIndex"
+                         :columnIndex="columnIndex"
                          :DIC="DIC">
           <template slot-scope="scope"
                     v-for="item in column.children"
@@ -171,34 +173,32 @@
         </template>
       </el-table-column>
       <el-table-column fixed="right"
-                       v-if="vaildData(tableOption.menu,true)"
-                       label="操作"
+                       v-if="vaildData(tableOption.menu,config.menu)"
+                       :label="config.menuTitle"
                        :align="tableOption.menuAlign"
                        :header-align="tableOption.menuHeaderAlign"
-                       :width="vaildData(tableOption.menuWidth,240)">
+                       :width="vaildData(tableOption.menuWidth,config.menuWidth)">
         <template slot-scope="scope">
-          <template v-if="vaildData(tableOption.menu,true)">
-            <el-button type="primary"
-                       :icon="scope.row.$cellEdit?'el-icon-check':'el-icon-edit'"
-                       size="small"
-                       @click.stop="rowCell(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.cellBtn ,false)">{{scope.row.$cellEdit?'保存':'修改'}}</el-button>
-            <el-button type="success"
-                       icon="el-icon-view"
-                       size="small"
-                       @click.stop="rowView(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.viewBtn,false)">查看</el-button>
-            <el-button type="primary"
-                       icon="el-icon-edit"
-                       size="small"
-                       @click.stop="rowEdit(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.editBtn,true)">编 辑</el-button>
-            <el-button type="danger"
-                       icon="el-icon-delete"
-                       size="small"
-                       @click.stop="rowDel(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.delBtn,true)">删 除</el-button>
-          </template>
+          <el-button type="primary"
+                     :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
+                     :size="config.cellBtnSize"
+                     @click.stop="rowCell(scope.row,scope.$index)"
+                     v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle}}</el-button>
+          <el-button type="success"
+                     :icon="config.viewBtnIcon"
+                     :size="config.viewBtnSize"
+                     @click.stop="rowView(scope.row,scope.$index)"
+                     v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{config.viewBtnTitle}}</el-button>
+          <el-button type="primary"
+                     :icon="config.editBtnIcon"
+                     :size="config.editBtnSize"
+                     @click.stop="rowEdit(scope.row,scope.$index)"
+                     v-if="vaildData(tableOption.editBtn,config.editBtn)">{{config.editBtnTitle}}</el-button>
+          <el-button type="danger"
+                     :icon="config.delBtnIcon"
+                     :size="config.delBtnSize"
+                     @click.stop="rowDel(scope.row,scope.$index)"
+                     v-if="vaildData(tableOption.delBtn,config.delBtn)">{{config.delBtnTitle}}</el-button>
           <slot :row="scope.row"
                 name="menu"
                 :index="scope.$index"></slot>
@@ -207,9 +207,9 @@
     </el-table>
     <!-- 分页 -->
     <div class="crud-pagination"
-         v-if="vaildData(tableOption.page,true) && listLen">
+         v-if="vaildData(tableOption.page,config.page) && listLen">
       <el-pagination :current-page.sync="page.currentPage"
-                     :background="vaildData(tableOption.pageBackground,true)"
+                     :background="vaildData(tableOption.pageBackground,config.pageBackground)"
                      :page-size="page.pageSize"
                      :page-sizes="page.pageSizes"
                      @size-change="sizeChange"
@@ -219,13 +219,13 @@
     </div>
     <!-- 表单 -->
     <el-dialog lock-scroll
-               :custom-class="vaildData(tableOption.customClass,'')"
-               :fullscreen="vaildData(tableOption.formFullscreen,false)"
+               :custom-class="vaildData(tableOption.customClass,config.customClass)"
+               :fullscreen="vaildData(tableOption.formFullscreen,config.formFullscreen)"
                :modal-append-to-body="false"
                :append-to-body="true"
-               :title="boxType=='add'?'新增':'编辑'"
+               :title="dialogTitle"
                :visible.sync="boxVisible"
-               :width="vaildData(tableOption.formWidth,'50%')"
+               :width="vaildData(tableOption.formWidth,config.formWidth)"
                @close="hide">
       <div class="avue-dialog">
         <avue-form v-model="tableForm"
@@ -253,24 +253,24 @@
         <el-button type="primary"
                    @click="rowUpdate"
                    v-if="boxType=='edit'"
-                   :loading="keyBtn">修 改</el-button>
+                   :loading="keyBtn">{{config.updateBtnTitle}}</el-button>
         <el-button type="primary"
                    @click="rowSave"
                    :loading="keyBtn"
-                   v-else-if="boxType=='add'">新 增</el-button>
-        <el-button @click="closeDialog">取 消</el-button>
+                   v-else-if="boxType=='add'">{{config.saveBtnTitle}}</el-button>
+        <el-button @click="closeDialog">{{config.cancelBtnTitle}}</el-button>
       </span>
     </el-dialog>
     <!-- 动态列 -->
     <el-dialog lock-scroll
                :modal-append-to-body="false"
                :append-to-body="true"
-               title="多选"
-               :visible.sync="showClomnuBox">
-      <el-checkbox-group v-model="showClomnuIndex">
+               :title="config.columnBtnTitle"
+               :visible.sync="columnBox">
+      <el-checkbox-group v-model="columnIndex">
         <el-row :span="24">
           <el-col :span="6"
-                  v-for="(item,index) in showClomnuList"
+                  v-for="(item,index) in columnList"
                   :key="index">
             <el-checkbox :label="item.prop">{{item.label}}</el-checkbox>
           </el-col>
@@ -283,6 +283,7 @@
 import crud from '../../mixins/crud.js';
 import column from '../../mixins/column.js';
 import crudComponents from './crud-components';
+import config from './config.js';
 import {
   validatenull
 } from '../../utils/validate.js';
@@ -298,14 +299,15 @@ export default {
         searchForm: {}
       },
       keyBtn: false,
+      config: config,
       list: [],
       searchShow: true,
       searchForm: {},
       boxVisible: false,
       boxType: 'add',
-      showClomnuIndex: [],
-      showClomnuBox: false,
-      showClomnuList: [],
+      columnIndex: [],
+      columnBox: false,
+      columnList: [],
       tableForm: {},
       tableOption: {},
       tableFormRules: {},
@@ -317,9 +319,13 @@ export default {
     // 初始化数据
     this.dataInit();
     // 初始化列
-    this.showClomnuInit();
+    this.columnInit();
   },
   computed: {
+    dialogTitle () {
+      const key = `${this.boxType}Title`;
+      return this.tableOption[key] || this.config[key];
+    },
     listLen () {
       return this.list.length !== 0
     },
@@ -348,7 +354,7 @@ export default {
   },
   watch: {
     columnOption () {
-      this.showClomnuInit();
+      this.columnInit();
     },
     data () {
       this.dataInit();
@@ -413,10 +419,10 @@ export default {
         if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
       });
     },
-    showClomnuInit: function () {
+    columnInit: function () {
       const safe = this;
-      this.showClomnuIndex = [];
-      this.showClomnuList = [];
+      this.columnIndex = [];
+      this.columnList = [];
       function addChild (list) {
         list.forEach((ele, index) => {
           const children = ele.children;
@@ -424,14 +430,14 @@ export default {
             safe.tableOption.columnBtn = false;
             addChild(children);
           }
-          if (validatenull(ele.hide)) safe.showClomnuIndex.push(ele.prop);
+          if (validatenull(ele.hide)) safe.columnIndex.push(ele.prop);
           if (ele.showClomnu !== false) {
             let obj = {
               label: ele.label,
               prop: ele.prop,
               index: index
             };
-            safe.showClomnuList.push(Object.assign({}, obj));
+            safe.columnList.push(Object.assign({}, obj));
           }
         });
       }
@@ -454,7 +460,7 @@ export default {
       this.defaultForm = this.formInitVal(this.columnOption);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
-      this.searchShow = this.vaildData(this.tableOption.search, true);
+      this.searchShow = this.vaildData(this.tableOption.search, this.config.search);
       this.formVal();
     },
     // 搜索清空
