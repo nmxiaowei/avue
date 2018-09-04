@@ -85,6 +85,9 @@ export default function() {
             childrenKey: function() {
                 return this.props.children || 'children';
             },
+            disabledKey: function() {
+                return this.props.disabled || 'disabled';
+            },
             idKey: function() {
                 return this.props.id || 'id';
             }

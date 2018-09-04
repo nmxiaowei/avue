@@ -2,6 +2,7 @@
   <el-select v-model="text"
              :size="size"
              :multiple="multiple"
+             :filterable="filterable"
              :readonly="readonly"
              :clearable="clearable"
              :placeholder="placeholder?placeholder:`请选择${label}`"
@@ -10,6 +11,7 @@
              :disabled="disabled">
     <el-option v-for="(item,index) in dic"
                :key="index"
+               :disabled="item[disabledKey]"
                :label="item[labelKey]"
                :value="item[valueKey]">
     </el-option>
@@ -30,7 +32,11 @@ export default {
     multiple: {
       type: Boolean,
       default: false
-    }
+    },
+    filterable: {
+      type: Boolean,
+      default: false
+    },
   },
   watch: {
   },

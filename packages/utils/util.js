@@ -111,7 +111,10 @@ export const formInitVal = (list) => {
                 searchForm[ele.prop] = '';
             }
         }
+        //表单默认值设置
         if (!validatenull(ele.valueDefault)) tableForm[ele.prop] = ele.valueDefault;
+        //搜索表单默认值设置
+        if (!validatenull(ele.searchDefault)) searchForm[ele.prop] = ele.searchDefault;
     });
     return {
         tableForm,

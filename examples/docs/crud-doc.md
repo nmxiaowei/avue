@@ -87,7 +87,6 @@
 | fixed | 冻结列 | Boolean | true / false | false |
 | hide | 隐藏列 | Boolean | true / false | true |
 | span | 表单栅列 | Number | - | 12 |
-| search | 搜索 | Boolean | true / false | true |
 | type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / ueditor  / password / switch / tree | input | - |
 | addDisabled | 表单新增时是否禁止 | Boolean | true / false | false |
 | editDisabled | 表单编辑时是否禁止 | Boolean | true / false | false |
@@ -99,6 +98,13 @@
 | formWidth | 表单行高度 | Number / String | - | 50% |
 | minRows | 最小行（当type为 ueditor / textarea） | Number | - | 2 |
 | maxRows | 最大行（当type为 ueditor / textarea） | Number | - | 4 |
+| valueDefault | 表单的默认值 | Number / String | - | - |
+| searchSize | 搜索框的大小 | String | small / mini  | small |
+| searchShow | 首次加载是否显示搜索 | Boolean | true / false | true |
+| searchDefault | 搜索表单的默认值 | Number / String | - | - |
+| searchMmultiple | 搜索表单的是否多选 | Boolean | true / false | false |
+| searchFilterable | 是否可以输入搜索。 | Boolean | true / false | false |
+| searchFilterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | - | - |
 | format | 显示值时间格式（当type为 date / time / datetime / daterange timerange / datetimerange / week / month / year / dates  | - | - | - |
 | valueFormat | 真实值的时间格式（当type为 date / time / datetime / daterange timerange / datetimerange / week / month / year / dates） | - | - | - |
 | precision | 数字框输入精度（当type为 number 时） | Number | - | 2 |

@@ -7,6 +7,7 @@
               :label="item[valueKey]"
               :border="border"
               :readonly="readonly"
+              :disabled="item[disabledKey]"
               :key="index">{{item[labelKey]}}</el-radio>
   </el-radio-group>
 </template>

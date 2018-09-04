@@ -12,13 +12,16 @@
                         v-for="(column,index) in columnOption"
                         :key="index"
                         v-if="column.search">
-            <component :size="config.searchComponentSize"
+            <component :size="vaildData(tableOption.searchSize,config.searchComponentSize)"
                        :is="getSearchType(column.type)"
                        v-model="searchForm[column.prop]"
                        :type="getType(column)"
+                       :props="column.props || tableOption.props"
                        :format="column.format"
+                       :filterable="column.searchFilterable"
+                       :filter-method="column.searchFilterMethod"
                        :value-format="column.valueFormat"
-                       :multiple="config.searchMultiple.includes(column.type)"
+                       :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
                        clearable
                        :placeholder="column.label"
                        :dic="setDic(column.dicData,DIC[column.dicData])"></component>
@@ -28,10 +31,10 @@
             <el-button type="primary"
                        @click="searchChange"
                        :icon="config.searchBtnIcon"
-                       :size="config.searchBtnSize">{{config.searchBtnTitle}}</el-button>
+                       :size="vaildData(tableOption.searchSize,config.searchBtnSize)">{{config.searchBtnTitle}}</el-button>
             <el-button @click="searchReset"
                        :icon="config.emptyBtnIcon"
-                       :size="config.emptyBtnSize">{{config.emptyBtnTitle}}</el-button>
+                       :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
           </el-form-item>
         </el-form>
       </el-collapse-transition>
@@ -460,7 +463,7 @@ export default {
       this.defaultForm = this.formInitVal(this.columnOption);
       this.tableForm = Object.assign({}, this.defaultForm.tableForm);
       this.searchForm = Object.assign({}, this.defaultForm.searchForm);
-      this.searchShow = this.vaildData(this.tableOption.search, this.config.search);
+      this.searchShow = this.vaildData(this.tableOption.searchShow, this.config.searchShow);
       this.formVal();
     },
     // 搜索清空

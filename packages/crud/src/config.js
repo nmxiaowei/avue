@@ -57,7 +57,7 @@ export default {
     searchBtn: true,
     selectClearBtn: true,
     searchboxBtn: true,
-    search: true,
+    searchShow: true,
     tip: true,
     formWidth: '50%',
     formFullscreen: false,
@@ -70,5 +70,5 @@ export default {
     calcHeight: 300,
     width: '100%',
     //搜索参数
-    searchMultiple: ['checkbox', 'tree']
+    searchMultiple: ['checkbox', 'tree', 'select']
 }

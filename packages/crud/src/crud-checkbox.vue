@@ -8,6 +8,7 @@
                  :min="min"
                  :readonly="readonly"
                  :max="max"
+                 :disabled="item[disabledKey]"
                  :key="index">{{item[labelKey]}}</el-checkbox>
   </el-checkbox-group>
 </template>
