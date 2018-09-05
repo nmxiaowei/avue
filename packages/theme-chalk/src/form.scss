@@ -1,23 +1,35 @@
-.form {
+.avue-form {
     padding: 8px 10px;
-    .group {
+    &__menu {
+        width: 100%;
+        &--center {
+            text-align: center;
+        }
+        &--left {
+            text-align: left;
+        }
+        &--right {
+            text-align: right;
+        }
+    }
+    &__group {
         height: auto;
         overflow: hidden;
+        .el-col {
+            position: relative;
+        }
     }
-    .row {
-        &.is-block {
+    &__row {
+        &--block {
             width: 100%;
             height: auto;
             overflow: hidden;
         }
-        &.is-cursor {
+        &--cursor {
             cursor: pointer;
         }
     }
-    .el-col {
-        position: relative;
-    }
-    .menu {
+    &__option {
         position: absolute;
         right: 0;
         top: -10px;
@@ -28,18 +40,5 @@
         i+i {
             margin-left: 10px;
         }
-    }
-}
-
-.form-menu {
-    width: 100%;
-    &.is-center {
-        text-align: center;
-    }
-    &.is-left {
-        text-align: left;
-    }
-    &.is-right {
-        text-align: right;
     }
 }

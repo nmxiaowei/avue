@@ -25,8 +25,9 @@
 </template>
 
 <script>
-export default {
-  name: 'AvueDataTabs',
+import create from '../../utils/create';
+export default create({
+  name: 'data-tabs',
   data () {
     return {
 
@@ -46,5 +47,5 @@ export default {
       default: () => { }
     }
   }
-};
+});
 </script>

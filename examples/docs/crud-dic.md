@@ -5,6 +5,7 @@
         value:1
       },{
         label:'无权限',
+        disabled:true,
         value:0
       }]
   }
@@ -29,8 +30,7 @@ export default {
             grade:1
           }, {
             name:'李四',
-            sex:'女',
-            grade:0
+            sex:'女'
           }
         ],
         option:{
@@ -54,6 +54,7 @@ export default {
                   value:1
                 },{
                   label:'无权限',
+                  disabled:true,
                   value:0
                 }
               ]
@@ -160,8 +161,7 @@ export default {
             grade:1
           }, {
             name:'李四',
-            sex:'女',
-            grade:0
+            sex:'女'
           }
         ],
         option:{
@@ -185,6 +185,7 @@ export default {
                   value:1
                 },{
                   label:'无权限',
+                  disabled:true,
                   value:0
                 }
               ]
@@ -212,6 +213,7 @@ export default {
         value:1
       },{
         label:'无权限',
+        disabled:true,
         value:0
       }]
   }

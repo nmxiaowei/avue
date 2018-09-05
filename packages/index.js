@@ -25,46 +25,46 @@ import TableTree from './table-tree/index.js';
 import SelectDate from './select-date/index.js';
 import { vaildData } from './utils/util';
 const components = [
-  Crud,
-  Form,
-  FormTabs,
-  FormSteps,
-  FormDetail,
-  CrudCheckbox,
-  CrudDate,
-  CrudTime,
-  CrudInput,
-  CrudRadio,
-  CrudSelect,
-  CrudCascader,
-  CrudNumberInput,
-  CrudUeditor,
-  CrudSwitch,
-  CrudRate,
-  CrudUpload,
-  CrudSilder,
-  DataDisplay,
-  DataCard,
-  DataIcons,
-  DataTabs,
-  DataBox,
-  TableTree,
-  SelectDate
+    Crud,
+    Form,
+    FormTabs,
+    FormSteps,
+    FormDetail,
+    CrudCheckbox,
+    CrudDate,
+    CrudTime,
+    CrudInput,
+    CrudRadio,
+    CrudSelect,
+    CrudCascader,
+    CrudNumberInput,
+    CrudUeditor,
+    CrudSwitch,
+    CrudRate,
+    CrudUpload,
+    CrudSilder,
+    DataDisplay,
+    DataCard,
+    DataIcons,
+    DataTabs,
+    DataBox,
+    TableTree,
+    SelectDate
 ];
 
 function install(Vue, axios) {
-  Vue.prototype.$http = axios;
-  Vue.prototype.vaildData = vaildData;
-  const AVUE = {};
-  components.map(component => {
-    Vue.component(component.name, component);
-  });
+    Vue.prototype.$http = axios;
+    Vue.prototype.vaildData = vaildData;
+    const AVUE = {};
+    components.map(component => {
+        Vue.component(component.name, component);
+    });
 
-  Vue.prototype.$AVUE = AVUE;
+    Vue.prototype.$AVUE = AVUE;
 }
 
 if (window.Vue && window.axios) {
-  install(window.Vue, window.axios);
+    install(window.Vue, window.axios);
 }
 
 export default install;

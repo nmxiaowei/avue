@@ -14,9 +14,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCrudCheckbox',
+export default create({
+  name: 'crud-checkbox',
   mixins: [crudCompoents()],
   data () {
     return {};
@@ -40,6 +41,6 @@ export default {
       this.$emit('change', value);
     }
   }
-};
+});
 </script>
 

@@ -1,6 +1,33 @@
 <template>
   <div>
-    <el-input :size="size"
+    <el-input v-if="type==='tree'"
+              :size="size"
+              v-model="labelShow"
+              :type="typeParam"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :placeholder="placeholder?placeholder:`请选择${label}`"
+              @change="handleChange"
+              :disabled="disabled"
+              :readonly="true"
+              @click.native="disabled?'':open()" />
+    <el-input v-else-if="type==='phone'"
+              :size="size"
+              :clearable="clearable"
+              v-model="text"
+              @click.native="handleClick"
+              :type="typeParam"
+              :maxlength="maxlength"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :readonly="readonly"
+              :placeholder="placeholder?placeholder:`请输入${label}`"
+              @change="handleChange"
+              :disabled="disabled" />
+    <el-input v-else
+              :size="size"
               :clearable="clearable"
               v-model="text"
               @click.native="handleClick"
@@ -13,20 +40,7 @@
               :readonly="readonly"
               :placeholder="placeholder?placeholder:`请输入${label}`"
               @change="handleChange"
-              :disabled="disabled"
-              v-if="type!=='tree'" />
-    <el-input v-else
-              :size="size"
-              v-model="labelShow"
-              :type="typeParam"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :placeholder="placeholder?placeholder:`请选择${label}`"
-              @change="handleChange"
-              :disabled="disabled"
-              :readonly="true"
-              @click.native="disabled?'':open()" />
+              :disabled="disabled" />
     <el-dialog :visible.sync="box"
                append-to-body
                :title="`请选择${label}`"
@@ -47,10 +61,11 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
 import { validatenull } from '../../utils/validate';
-export default {
-  name: 'AvueCrudInput',
+export default create({
+  name: 'crud-input',
   mixins: [crudCompoents()],
   data () {
     return {
@@ -65,9 +80,9 @@ export default {
       type: Boolean,
       default: false
     },
-    parentCheck: {
+    parent: {
       type: Boolean,
-      default: false
+      default: true
     },
     prefixIcon: {
       type: String
@@ -79,7 +94,10 @@ export default {
       type: Number
     },
     maxlength: {
-      type: Number
+      type: Number,
+      default: function () {
+        if (this.type === 'phone') return 11;
+      }
     },
     minRows: {
       type: Number,
@@ -98,6 +116,13 @@ export default {
   computed: {
     labelShow () {
       return this.multiple ? this.labelText.join('/').toString() : this.labelText;
+    },
+    textShow () {
+      if (this.textLen === 11) return `${this.text.substr(0, 3)} ${this.text.substr(3, 4)} ${this.text.substr(7, 4)}`
+      return this.text;
+    },
+    textLen () {
+      return this.text.length;
     },
     typeParam: function () {
       if (this.type === 'textarea') {
@@ -149,10 +174,16 @@ export default {
               this.labelText = this.text;
               this.findLabelNode(this.dic, this.text, this.props);
             }
-            // this.disabledParentNode(this.dic);
+            if (!this.parent) this.disabledParentNode(this.dic);
             clearInterval(check);
+          } else {
+            this.labelText = '';
           }
         }, 500);
+      } else if (this.type === 'phone') {
+        if (!validatenull(this.text) && this.textLen == 11) {
+          this.text = this.textShow;
+        }
       }
     },
     findLabelNode (dic, value, props) {
@@ -179,7 +210,7 @@ export default {
       });
     },
     handleNodeClick (data) {
-      if (validatenull(data[this.childrenKey]) && !this.multiple || this.parentCheck) {
+      if (validatenull(data[this.childrenKey]) && !this.multiple || this.parent) {
         this.box = false;
         const value = data[this.valueKey];
         const label = data[this.labelKey];
@@ -195,10 +226,14 @@ export default {
     },
     handleChange (value) {
       if (typeof this.change === 'function') this.change({ value: value, column: this.column });
-      this.$emit('input', value);
-      this.$emit('change', value);
+      if (this.type = 'phone') {
+        this.text = this.text.replace(/[^0-9.]/g, '');
+        this.text = this.textShow;
+      }
+      this.$emit('input', this.text.replace(/\s/g, ""));
+      this.$emit('change', this.text.replace(/\s/g, ""));
     }
   }
-};
+});
 </script>
 

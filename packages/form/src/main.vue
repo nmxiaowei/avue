@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div :class="b()">
     <el-form ref="form"
              :model="form"
              :label-position="tableOption.labelPosition"
@@ -9,16 +9,15 @@
               :span="24">
         <draggable :list="columnOption"
                    :options="dragOptions"
-                   class="group">
-          <div class="row"
-               :class="{'is-block':column.row,'is-cursor':draggableStart}"
+                   :class="b('group')">
+          <div :class="b('row',{'block':column.row,'cursor':draggableStart})"
                v-for="(column,index) in columnOption"
                v-if="vaildVisdiplay(column)"
                :key="index">
             <el-col :span="column.span||12"
                     @mouseover.native="draggableMenu?mouseover(index):''"
                     @mouseout.native="draggableMenu?mouseout(index):''">
-              <div class="menu"
+              <div :class="b('option')"
                    v-if="optionIndex[index]">
                 <i class="el-icon-menu"
                    @click="optionMenu(column,index)"></i>
@@ -100,11 +99,11 @@
         <el-col :span="24"
                 v-if="vaildData(tableOption.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
-            <div class="form-menu"
-                 :class="menuPostion">
+            <div :class="b('menu',[menuPostion])">
               <el-button type="primary"
                          @click="submit"
-                         v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提交')}}</el-button>
+                         icon="el-icon-check"
+                         v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提 交')}}</el-button>
               <slot name="menuForm"></slot>
             </div>
           </el-form-item>
@@ -116,11 +115,12 @@
 
 <script>
 
+import create from '../../utils/create';
 import draggable from "vuedraggable";
 import crud from '../../mixins/crud';
 import { validatenull } from '../../utils/validate.js';
-export default {
-  name: 'AvueForm',
+export default create({
+  name: 'form',
   mixins: [crud()],
   components: {
     draggable
@@ -189,9 +189,9 @@ export default {
     },
     menuPostion: function () {
       if (this.tableOption.submitPostion) {
-        return 'is-' + this.tableOption.submitPostion;
+        return this.tableOption.submitPostion;
       } else {
-        return 'is-center';
+        return 'center';
       }
     },
     boxType: function () {
@@ -340,6 +340,6 @@ export default {
       });
     }
   }
-};
+});
 </script>
 

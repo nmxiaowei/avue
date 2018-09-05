@@ -17,21 +17,22 @@
 </template>
 
 <script>
-export default {
-  name: 'AvueDataDisplay',
-  data() {
+import create from '../../utils/create';
+export default create({
+  name: 'data-display',
+  data () {
     return {
 
     };
   },
   computed: {
-    span() {
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     },
-    color() {
+    color () {
       return this.option.color || 'rgb(63, 161, 255)';
     }
   },
@@ -41,7 +42,7 @@ export default {
       default: () => { }
     }
   },
-  created() { },
+  created () { },
   methods: {}
-};
+});
 </script>

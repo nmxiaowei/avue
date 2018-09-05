@@ -1,13 +1,13 @@
-.select-date {
+.avue-select-date {
     display: flex;
     align-items: center;
-    .radio {
+    &__radio {
         .el-radio-button:last-child .el-radio-button__inner {
             border-radius: 0;
             border-right: 0;
         }
     }
-    .date {
+    &__date {
         width: 300px;
         .el-date-editor {
             padding: 0 10px;

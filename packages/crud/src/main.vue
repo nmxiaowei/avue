@@ -1,6 +1,6 @@
 <template>
-  <div class="crud-container pull-auto">
-    <div class="crud-header">
+  <div :class="b()">
+    <div :class="b('header')">
       <el-collapse-transition>
         <el-form :model="searchForm"
                  :inline="true"
@@ -40,8 +40,8 @@
       </el-collapse-transition>
     </div>
     <!-- 表格功能列 -->
-    <div class="crud-menu">
-      <div class="crud-menu_left">
+    <div :class="b('menu')">
+      <div :class="b('left')">
         <el-button type="primary"
                    @click="rowAdd"
                    :icon="config.addBtnIcon"
@@ -49,7 +49,7 @@
                    v-if="vaildData(tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
         <slot name="menuLeft"></slot>
       </div>
-      <div class="crud-menu_right">
+      <div :class="b('right')">
         <slot name="menuRight"></slot>
         <el-button :icon="config.refreshBtnIcon"
                    circle
@@ -70,12 +70,16 @@
     </div>
     <el-tag class="avue-tip"
             v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-      <i class="el-icon-info">&nbsp;</i>
-      <span class="name">{{config.tipStartTitle}}
-        <span class="count">{{selectLen}}</span> {{config.tipEndTitle}}</span>
-      <span class="menu">
-        <span @click="selectClear"
-              v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</span>
+      <i class="el-icon-info avue-tip__icon">&nbsp;</i>
+      <span class="avue-tip__name">
+        {{config.tipStartTitle}}
+        <span class="avue-tip__name--bold">{{selectLen}}</span>
+        {{config.tipEndTitle}}
+      </span>
+      <span class="avue-tip__btn"
+            @click="selectClear"
+            v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">
+        {{config.tipBtnTitle}}
       </span>
     </el-tag>
     <el-table :data="list"
@@ -209,7 +213,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <div class="crud-pagination"
+    <div :class="b('pagination')"
          v-if="vaildData(tableOption.page,config.page) && listLen">
       <el-pagination :current-page.sync="page.currentPage"
                      :background="vaildData(tableOption.pageBackground,config.pageBackground)"
@@ -230,7 +234,7 @@
                :visible.sync="boxVisible"
                :width="vaildData(tableOption.formWidth,config.formWidth)"
                @close="hide">
-      <div class="avue-dialog">
+      <div :class="b('dialog', ['overflow'])">
         <avue-form v-model="tableForm"
                    ref="tableForm"
                    :disabled="keyBtn"
@@ -283,6 +287,8 @@
   </div>
 </template>
 <script>
+
+import create from '../../utils/create';
 import crud from '../../mixins/crud.js';
 import column from '../../mixins/column.js';
 import crudComponents from './crud-components';
@@ -290,8 +296,8 @@ import config from './config.js';
 import {
   validatenull
 } from '../../utils/validate.js';
-export default {
-  name: 'AvueCrud',
+export default create({
+  name: 'crud',
   mixins: [crud(), column()],
   components: { crudComponents },
   data () {
@@ -629,5 +635,5 @@ export default {
       this.$emit('input', this.tableForm);
     },
   }
-};
+});
 </script>

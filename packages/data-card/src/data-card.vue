@@ -19,9 +19,10 @@
 </template>
 
 <script>
-export default {
-  name: 'AvueDataCard',
-  data() {
+import create from '../../utils/create';
+export default create({
+  name: 'data-card',
+  data () {
     return {
 
     };
@@ -33,25 +34,25 @@ export default {
     }
   },
   computed: {
-    span() {
+    span () {
       return this.option.span || 6;
     },
-    data() {
+    data () {
       return this.option.data || [];
     },
-    colorText() {
+    colorText () {
       return this.option.colorText || '#fff';
     },
-    bgText() {
+    bgText () {
       return this.option.bgText || '#2e323f';
     },
-    borderColor() {
+    borderColor () {
       return this.option.borderColor || '#2e323f';
     }
   },
-  created() { },
-  mounted() { },
+  created () { },
+  mounted () { },
   watch: {},
   methods: {}
-};
+});
 </script>

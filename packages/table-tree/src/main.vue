@@ -1,5 +1,6 @@
 <template>
   <el-table :data="formatData"
+            :class="b()"
             :stripe="option.stripe"
             :row-style="showRow"
             :row-class-name="rowClassName"
@@ -48,9 +49,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import treeToArray from './eval';
-export default {
-  name: 'AvueTreeTable',
+export default create({
+  name: 'tree-table',
   props: {
     option: {
       type: Object,
@@ -60,25 +62,25 @@ export default {
     evalFunc: Function,
     evalArgs: Array
   },
-  data() {
+  data () {
     return {};
   },
-  created() { },
+  created () { },
   computed: {
-    data: function() {
+    data: function () {
       return this.option.data || [];
     },
-    columns: function() {
+    columns: function () {
       return this.option.columns || [];
     },
-    expandAll: function() {
+    expandAll: function () {
       return this.option.expandAll;
     },
-    border: function() {
+    border: function () {
       return this.option.border || true;
     },
     // 格式化数据源
-    formatData: function() {
+    formatData: function () {
       let tmp;
       if (!Array.isArray(this.data)) {
         tmp = [this.data];
@@ -93,7 +95,7 @@ export default {
     }
   },
   methods: {
-    showRow: function(row) {
+    showRow: function (row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
         : true;
@@ -103,14 +105,14 @@ export default {
         : 'display:none;';
     },
     // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
+    toggleExpanded: function (trIndex) {
       const record = this.formatData[trIndex];
       record._expanded = !record._expanded;
     },
     // 图标显示
-    iconShow(index, record) {
+    iconShow (index, record) {
       return index === 0 && record.children && record.children.length > 0;
     }
   }
-};
+});
 </script>

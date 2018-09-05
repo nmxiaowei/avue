@@ -29,9 +29,9 @@
 | menu | 是否显示操作菜单栏 | Boolean | true / false  | true |
 | menuWidth | 操作菜单栏的宽度 | Number | -  | 240 |
 | menuAlign | 菜单栏对齐方式 | String | left / center /right  | left |
-| searchSize | 搜索控件大小 | String | small / mini  | small |
 | searchsolt | 开启自定义搜索定义 | Boolean | true / false  | false |
-| search | 首次打开是否展开搜索栏目 | Boolean | true / false  | true |
+| searchSize | 搜索框的大小 | String | small / mini  | small |
+| searchShow | 首次加载是否显示搜索 | Boolean | true / false | true |
 | page | 是否显示分页 | Boolean | true / false  | true |
 | labelWidth | 弹出表单标题宽度 | Number | - | 110 |
 | formWidth | 弹出表单宽度 | String / Number | - | 50% |
@@ -44,8 +44,9 @@
 | serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
 | columnBtn | 列显隐按钮 | Boolean | true / false  | true |
 | refreshBtn | 刷新按钮 | Boolean | true / false  | true |
-| selectClearBtn | 清空选中按钮（当selection为true起作用） | Boolean | true / false  | true |
 | cellBtn | 表格单元格可编辑（当column中有搜索的属性中有cell为true的属性启用，只对type为select和input有作用) | Boolean | true / false  | true |
+| selectClearBtn | 清空选中按钮（当selection为true起作用） | Boolean | true / false  | true |
+
 
 
 ### Avue-crud Type Attributes
@@ -54,6 +55,7 @@
 | input | 输入框 |
 | select | 选择框 |
 | radio | 单选框 |
+| phone | 手机号输入框 |
 | checkbox | 多选框 |
 | textarea | 文本框 |
 | cascader | 级联框 |
@@ -87,7 +89,7 @@
 | fixed | 冻结列 | Boolean | true / false | false |
 | hide | 隐藏列 | Boolean | true / false | true |
 | span | 表单栅列 | Number | - | 12 |
-| type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / ueditor  / password / switch / tree | input | - |
+| type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / ueditor  / password / switch / tree / phone | input | - |
 | addDisabled | 表单新增时是否禁止 | Boolean | true / false | false |
 | editDisabled | 表单编辑时是否禁止 | Boolean | true / false | false |
 | addVisdiplay | 表单新增时是否可见 | Boolean | true / false | true |
@@ -99,8 +101,6 @@
 | minRows | 最小行（当type为 ueditor / textarea） | Number | - | 2 |
 | maxRows | 最大行（当type为 ueditor / textarea） | Number | - | 4 |
 | valueDefault | 表单的默认值 | Number / String | - | - |
-| searchSize | 搜索框的大小 | String | small / mini  | small |
-| searchShow | 首次加载是否显示搜索 | Boolean | true / false | true |
 | searchDefault | 搜索表单的默认值 | Number / String | - | - |
 | searchMmultiple | 搜索表单的是否多选 | Boolean | true / false | false |
 | searchFilterable | 是否可以输入搜索。 | Boolean | true / false | false |

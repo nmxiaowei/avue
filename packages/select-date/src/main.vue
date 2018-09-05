@@ -1,6 +1,6 @@
 <template>
-  <div class="select-date">
-    <div class="radio">
+  <div :class="b()">
+    <div :class="b('radio')">
       <el-radio-group size="medium"
                       v-model="text">
         <el-radio-button :label="item.value"
@@ -8,7 +8,7 @@
                          :key="index">{{item.label}}</el-radio-button>
       </el-radio-group>
     </div>
-    <div class="date">
+    <div :class="b('date')">
       <el-date-picker v-model="datetime"
                       type="daterange"
                       format="yyyy-MM-dd"
@@ -22,10 +22,11 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import { GetDateStr } from '../../utils/dateUtil.js';
-export default {
-  name: 'AvueSelectDate',
-  data() {
+export default create({
+  name: 'select-date',
+  data () {
     return {
       menu: [],
       text: GetDateStr(0),
@@ -33,11 +34,11 @@ export default {
     };
   },
   watch: {
-    datetime(n) {
+    datetime (n) {
       this.text = '';
       this.$emit('input', n);
     },
-    text(n) {
+    text (n) {
       this.$emit('input', [n]);
     }
   },
@@ -47,11 +48,11 @@ export default {
   props: {
 
   },
-  created() {
+  created () {
     this.init();
   },
   methods: {
-    init() {
+    init () {
       this.menu = [
         {
           label: '今天',
@@ -70,5 +71,5 @@ export default {
 
     }
   }
-};
+});
 </script>

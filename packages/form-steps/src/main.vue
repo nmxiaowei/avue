@@ -1,13 +1,12 @@
 <template>
-  <div class="form-steps"
-       :class="{'form-steps--vertical':option.direction}">
+  <div :class="b()">
     <el-steps :active="formIndex"
               :space="option.space"
               :simple="option.simple"
               :process-status="option.processStatus"
               :align-center='vaildData(option.alignCenter,true)'
               :direction="option.direction"
-              class="form-steps_steps">
+              :class="b({'steps':option.direction})">
       <el-step :title="item.label"
                :icon="item.icon"
                :status="vaildData(item.status,status[index])"
@@ -16,10 +15,10 @@
                :key="index"
                @click.native="option.switchBtn?switchs(index):''"></el-step>
     </el-steps>
-    <div class="form-steps_contail">
+    <div :class="b('contail')">
       <slot name="before"></slot>
       <avue-form :option="formOption"
-                 class="form-steps_form"
+                 :class="b('form')"
                  :style="{width:vaildData(formOption.width,'40%')}"
                  @submit="submit"
                  v-model="text">
@@ -44,9 +43,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import { formInitVal } from '../../utils/util';
-export default {
-  name: 'AvueFormSteps',
+export default create({
+  name: 'form-steps',
   props: {
     value: {
       type: Object,
@@ -58,19 +58,19 @@ export default {
     }
   },
   computed: {
-    columnOption() {
+    columnOption () {
       return this.option.column || [];
     },
-    columnLen() {
+    columnLen () {
       return this.columnOption.length;
     },
-    formOption() {
+    formOption () {
       return this.objectOption.option;
     },
-    objectOption() {
+    objectOption () {
       return this.columnOption[this.formIndex - 1];
     },
-    status() {
+    status () {
       let status = [];
       const leng = this.step - 1;
       for (let i = 0; i < leng; i++) {
@@ -81,12 +81,12 @@ export default {
 
   },
   watch: {
-    formOption() {
+    formOption () {
       this.formInit();
       this.$emit('change', this.objectOption);
     },
     text: {
-      handler() {
+      handler () {
         for (let o in this.tableForm) {
           this.tableForm[o] = this.text[o];
         }
@@ -94,13 +94,13 @@ export default {
       deep: true
     },
     value: {
-      handler() {
+      handler () {
         this.formVal();
       },
       deep: true
     }
   },
-  data() {
+  data () {
     return {
       step: 1,
       tableForm: {},
@@ -108,32 +108,32 @@ export default {
       formIndex: 1
     };
   },
-  created() {
+  created () {
     this.formInit();
   },
   methods: {
-    reset() {
+    reset () {
       this.formIndex = 1;
       this.step = 1;
     },
-    switchs(index) {
+    switchs (index) {
       if (index < this.step) { this.formIndex = index + 1; }
     },
-    next() {
+    next () {
       if (this.step <= this.formIndex) {
         this.step++;
       }
       this.formIndex++;
     },
-    breaks() {
+    breaks () {
       this.formIndex--;
     },
-    formInit() {
+    formInit () {
       const column = this.formOption.column;
       this.tableForm = formInitVal(column).tableForm;
       this.formVal();
     },
-    formVal() {
+    formVal () {
       for (let o in this.value) {
         this.text[o] = this.value[o];
       }
@@ -142,10 +142,10 @@ export default {
       }
       this.$emit('input', this.tableForm);
     },
-    submit() {
+    submit () {
       this.$emit('submit', this.tableForm, this.next);
     }
   }
-};
+});
 </script>
 

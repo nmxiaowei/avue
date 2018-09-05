@@ -19,9 +19,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCrudSelect',
+export default create({
+  name: 'crud-select',
   mixins: [crudCompoents()],
   data () {
     return {};
@@ -52,5 +53,5 @@ export default {
       this.$emit('change', value);
     }
   }
-};
+});
 </script>

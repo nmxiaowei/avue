@@ -56,7 +56,7 @@ export const findByvalue = (dic, value, props) => {
 export const findArray = (dic, value, valueKey) => {
     valueKey = valueKey || 'value';
     for (let i = 0; i < dic.length; i++) {
-        if (dic[i][valueKey] == value) {
+        if (dic[i][valueKey] === value) {
             return i;
         }
     }

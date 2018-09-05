@@ -1,44 +1,44 @@
-.form-detail {
-    .item {
+.avue-form-detail {
+    &__item {
         padding: 20px 0 20px 0;
         border-bottom: 1px solid #eee;
         &:last-child {
             border-bottom: none;
         }
     }
-    .item_icon {
+    &__icon {
         margin-right: 10px;
         font-size: 20px;
     }
-    .item_header {
+    &__header {
         display: flex;
         align-items: center;
         margin-bottom: 15px;
     }
-    .item_title {
+    &__title {
         font-size: 16px;
         font-weight: 500;
         color: rgba(0, 0, 0, 0.85);
     }
-    .item_box {
+    &__box {
         margin-bottom: 20px;
         font-size: 14px;
     }
-    .item_label {
-        margin-right: 8px;
+    &__label {
+        margin-right: 10px;
         line-height: 20px;
         color: rgba(0, 0, 0, 0.85);
-        &.is-center {
+        &--center {
             text-align: center;
         }
-        &.is-left {
+        &--left {
             text-align: left;
         }
-        &.is-right {
+        &--right {
             text-align: right;
         }
     }
-    .item_content {
+    &__content {
         line-height: 22px;
         width: 100%;
         color: rgba(0, 0, 0, 0.65);

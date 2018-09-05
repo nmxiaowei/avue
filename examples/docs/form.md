@@ -107,13 +107,19 @@ export default {
                     label: "建议",
                     span: 24,
                     prop: "adit",
+                },{
+                    label: "手机号",
+                    span: 12,
+                    prop: "phone",
+                    type:'phone'
                 }]
             }
         }
     },
     created(){
         this.obj.username = 'smallwei'
-        this.obj.switch = 0
+        this.obj.switch = 0;
+        this.obj.phone='17547400800';
     },
     methods:{
         submit () {
@@ -246,13 +252,19 @@ export default {
                     label: "建议",
                     span: 24,
                     prop: "adit",
+                },{
+                    label: "手机号",
+                    span: 12,
+                    prop: "phone",
+                    type:'phone'
                 }]
             }
         }
     },
     created(){
         this.obj.username = 'smallwei';
-        this.obj.switch = 0
+        this.obj.switch = 0;
+        this.obj.phone='17547400800';
     },
     methods:{
         submit () {

@@ -61,7 +61,7 @@ import crudInput from './crud-input';
 import crudSelect from './crud-select';
 import { validatenull } from '../../utils/validate.js';
 export default {
-  name: 'crudComponents',
+  name: 'crud-components',
   mixins: [column()],
   props: [
     'columnIndex',

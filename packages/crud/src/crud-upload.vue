@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-upload :class="{'avatar-uploader':listType=='picture-img'}"
+  <div :class="b()">
+    <el-upload :class="b({'list':listType=='picture-img'})"
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
@@ -23,9 +23,10 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imageUrl"
              :src="imageUrl"
-             class="avatar">
+             :class="b('avatar')">
         <i v-else
-           class="el-icon-plus avatar-uploader-icon"></i>
+           class="el-icon-plus"
+           :class="b('icon')"></i>
       </template>
       <template v-else-if="drag">
         <i class="el-icon-upload"></i>
@@ -52,10 +53,11 @@
 
 <script>
 
+import create from '../../utils/create';
 import { validatenull } from '../../utils/validate.js';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCurdUpload',
+export default create({
+  name: 'crud-upload',
   mixins: [crudCompoents()],
   data () {
     return {
@@ -210,5 +212,5 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     }
   }
-};
+});
 </script>

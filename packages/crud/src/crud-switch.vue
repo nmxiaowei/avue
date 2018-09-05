@@ -15,9 +15,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCrudSwitch',
+export default create({
+  name: 'crud-switch',
   mixins: [crudCompoents()],
   props: {
     value: {
@@ -43,6 +44,6 @@ export default {
       return this.dic[index] ? this.dic[index] : {};
     }
   }
-};
+});
 </script>
 

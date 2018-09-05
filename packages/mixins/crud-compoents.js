@@ -1,5 +1,19 @@
 export default function() {
+    //props配置
+    const propsDefault = {
+        id: 'id',
+        label: 'label',
+        value: 'value',
+        children: 'children',
+        disabled: 'disabled'
+    }
     return {
+        data() {
+            return {
+                text: undefined,
+                propsDefault: propsDefault
+            }
+        },
         props: {
             change: Function,
             click: Function,
@@ -55,20 +69,8 @@ export default function() {
             },
             props: {
                 type: Object,
-                default () {
-                    return {
-                        id: 'id',
-                        label: 'label',
-                        value: 'value',
-                        children: 'children'
-                    };
-                }
+                default: () => propsDefault
             }
-        },
-        data() {
-            return {
-                text: undefined
-            };
         },
         watch: {
             value() {
@@ -77,19 +79,19 @@ export default function() {
         },
         computed: {
             valueKey: function() {
-                return this.props.value || 'value';
+                return this.props.value || this.propsDefault.value;
             },
             labelKey: function() {
-                return this.props.label || 'label';
+                return this.props.label || this.propsDefault.label;
             },
             childrenKey: function() {
-                return this.props.children || 'children';
+                return this.props.children || this.propsDefault.children;
             },
             disabledKey: function() {
-                return this.props.disabled || 'disabled';
+                return this.props.disabled || this.propsDefault.disabled;
             },
             idKey: function() {
-                return this.props.id || 'id';
+                return this.props.id || this.propsDefault.id;
             }
         },
         created() {

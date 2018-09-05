@@ -1,7 +1,7 @@
 <template>
   <quill-editor :style="{height:`${minRows*40+100}px`,maxHeight:`${maxRows*40+100}px`}"
                 v-model="text"
-                class="avue-editor"
+                :class="b()"
                 @change="handleChange"
                 @click.native="handleClick"
                 ref="myQuillEditor"
@@ -10,10 +10,11 @@
 
 </template>
 <script>
+import create from '../../utils/create';
 import { quillEditor } from 'vue-quill-editor';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCrudUeditor',
+export default create({
+  name: 'crud-ueditor',
   mixins: [crudCompoents()],
   components: {
     quillEditor
@@ -65,6 +66,6 @@ export default {
       this.$emit('change', value.html);
     }
   }
-};
+});
 </script>
 

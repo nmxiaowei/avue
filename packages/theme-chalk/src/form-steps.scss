@@ -1,14 +1,15 @@
-.form-steps--vertical {
-    width: 100%;
-    display: flex;
-    .form-steps_steps {
+.avue-form-steps {
+    &--vertical {
+        width: 100%;
+        display: flex;
+    }
+    &__steps {
         width: 230px;
     }
-    .form-steps_contail {
+    &__contail {
         flex: 1;
     }
-}
-
-.form-steps_form {
-    margin: 0 auto;
+    &__form {
+        margin: 0 auto;
+    }
 }

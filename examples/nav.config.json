@@ -108,8 +108,23 @@
             }, {
                 "path": "/form-detail",
                 "title": "form详情"
+            }, {
+                "path": "/form-tree",
+                "title": "form树型"
             }
         ]
+    }]
+}, {
+    "name": "工具组件",
+    "groups": [{
+        "groupName": "工具",
+        "list": [{
+            "path": "/form-selectdate",
+            "title": "多功能日期选择器"
+        }, {
+            "path": "/crud-tree",
+            "title": "多功能表格树"
+        }]
     }]
 }, {
     "name": "数据展示",

@@ -13,9 +13,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCrudRadio',
+export default create({
+  name: 'crud-radio',
   mixins: [crudCompoents()],
   data () {
     return {};
@@ -36,5 +37,5 @@ export default {
       this.$emit('change', value);
     }
   }
-};
+});
 </script>

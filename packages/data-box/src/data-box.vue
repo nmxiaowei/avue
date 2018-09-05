@@ -21,8 +21,9 @@
 </template>
 
 <script>
-export default {
-  name: 'AvueDataBox',
+import create from '../../utils/create';
+export default create({
+  name: 'data-box',
   data () {
     return {
 
@@ -42,5 +43,5 @@ export default {
   mounted () { },
   watch: {},
   methods: {}
-};
+});
 </script>

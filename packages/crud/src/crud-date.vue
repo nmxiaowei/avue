@@ -17,9 +17,10 @@
 </template>
 
 <script>
+import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
-export default {
-  name: 'AvueCrudDate',
+export default create({
+  name: 'crud-date',
   mixins: [crudCompoents()],
   data () {
     return {
@@ -65,6 +66,6 @@ export default {
       this.$emit('change', value);
     }
   }
-};
+});
 </script>
 

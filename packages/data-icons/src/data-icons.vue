@@ -23,8 +23,9 @@
 </template>
 
 <script>
-export default {
-  name: 'AvueDataIcons',
+import create from '../../utils/create';
+export default create({
+  name: 'data-icons',
   data () {
     return {
 
@@ -42,5 +43,5 @@ export default {
       default: () => { }
     }
   }
-};
+});
 </script>

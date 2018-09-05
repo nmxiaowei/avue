@@ -10,24 +10,28 @@
 
 .avue-tip {
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     width: 100%;
     display: flex;
     align-items: center;
-    i {
-        font-size: 16px;
+    &__icon {
+        margin-top: 3px;
+        margin-right: 5px;
+        font-size: 14px;
     }
-    .name {
-        margin-right: 10px;
-        color: #333;
+    &__name {
+        font-size: 12px;
+        margin-right: 15px;
+        color: #515a6e;
+        &--bold {
+            padding: 0 6px;
+            color: #409eff;
+            font-weight: bold;
+            font-size: 18px;
+        }
     }
-    .count {
-        padding: 0 6px;
-        color: #409eff;
-        font-weight: bold;
-        font-size: 16px;
-    }
-    .menu {
+    &__btn {
+        margin-top: 3px;
         cursor: pointer;
     }
 }
