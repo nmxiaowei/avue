@@ -1,6 +1,12 @@
 <template>
   <div :class="b()">
     <div :class="b('header')">
+      <div :class="b('date')"
+           v-if="vaildData(tableOption.dateBtn,config.dateBtn)">
+        <date-select @change="dateChange"
+                     :default="vaildData(tableOption.dateDefault,config.dateDefault)"
+                     :size="vaildData(tableOption.dateSize,config.dateBtnSize)"></date-select>
+      </div>
       <el-collapse-transition>
         <el-form :model="searchForm"
                  :inline="true"
@@ -288,6 +294,7 @@
 </template>
 <script>
 
+import dateSelect from '../../date-select'
 import create from '../../utils/create';
 import crud from '../../mixins/crud.js';
 import column from '../../mixins/column.js';
@@ -299,7 +306,7 @@ import {
 export default create({
   name: 'crud',
   mixins: [crud(), column()],
-  components: { crudComponents },
+  components: { crudComponents, dateSelect },
   data () {
     return {
       clientHeight: document.documentElement.clientHeight,
@@ -480,6 +487,10 @@ export default create({
     // 页大小回调
     sizeChange (val) {
       this.$emit('size-change', val);
+    },
+    //日期组件回调
+    dateChange (val) {
+      this.$emit('date-change', val);
     },
     // 页码回调
     currentChange (val) {

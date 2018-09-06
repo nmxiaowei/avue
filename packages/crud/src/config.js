@@ -20,6 +20,7 @@ export default {
     columnBtnSize: 'small',
     refreshBtnSize: 'small',
     searchboxBtnSize: 'small',
+    dateBtnSize: 'small',
     //文字
     viewBtnTitle: '查 看',
     editBtnTitle: '编 辑',
@@ -52,6 +53,7 @@ export default {
     addBtn: true,
     delBtn: true,
     cellBtn: false,
+    dateBtn: false,
     refreshBtn: true,
     columnBtn: true,
     searchBtn: true,
@@ -69,6 +71,7 @@ export default {
     filterMultiple: true,
     calcHeight: 300,
     width: '100%',
+    dateDefault: false,
     //搜索参数
     searchMultiple: ['checkbox', 'tree', 'select']
 }

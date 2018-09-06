@@ -29,6 +29,12 @@
             padding: 12px 25px;
         }
     }
+    &__date {
+        width: 100%;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: flex-end;
+    }
     &__menu {
         position: relative;
         width: 100%;

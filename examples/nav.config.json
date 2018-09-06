@@ -33,6 +33,9 @@
             "path": "/crud-filter",
             "title": "crud筛选"
         }, {
+            "path": "/crud-date",
+            "title": "crud日期"
+        }, {
             "path": "/crud-index",
             "title": "crud序号"
         }, {
@@ -119,10 +122,10 @@
     "groups": [{
         "groupName": "工具",
         "list": [{
-            "path": "/form-selectdate",
+            "path": "/date-select",
             "title": "多功能日期选择器"
         }, {
-            "path": "/crud-tree",
+            "path": "/tree",
             "title": "多功能表格树"
         }]
     }]

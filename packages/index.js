@@ -22,7 +22,7 @@ import FormTabs from './form-tabs/index.js';
 import FormSteps from './form-steps/index.js';
 import FormDetail from './form-detail/index.js';
 import TableTree from './table-tree/index.js';
-import SelectDate from './select-date/index.js';
+import DateSelect from './date-select/index.js';
 import { vaildData } from './utils/util';
 const components = [
     Crud,
@@ -49,7 +49,7 @@ const components = [
     DataTabs,
     DataBox,
     TableTree,
-    SelectDate
+    DateSelect
 ];
 
 function install(Vue, axios) {

@@ -1,7 +1,8 @@
 <template>
   <div :class="b()">
     <div :class="b('radio')">
-      <el-radio-group size="medium"
+      <el-radio-group :size="size"
+                      @change="handleChange"
                       v-model="text">
         <el-radio-button :label="item.value"
                          v-for="(item,index) in menu"
@@ -11,6 +12,7 @@
     <div :class="b('date')">
       <el-date-picker v-model="datetime"
                       type="daterange"
+                      :size="size"
                       format="yyyy-MM-dd"
                       value-format="yyyy-MM-dd"
                       range-separator="至"
@@ -25,33 +27,44 @@
 import create from '../../utils/create';
 import { GetDateStr } from '../../utils/dateUtil.js';
 export default create({
-  name: 'select-date',
+  name: 'date-select',
   data () {
     return {
       menu: [],
-      text: GetDateStr(0),
+      text: '',
       datetime: [GetDateStr(0), GetDateStr(30)]
     };
   },
   watch: {
-    datetime (n) {
+    datetime () {
       this.text = '';
-      this.$emit('input', n);
+      this.setCurrent(this.datetime.join(','));
     },
-    text (n) {
-      this.$emit('input', [n]);
-    }
   },
   computed: {
 
   },
   props: {
-
+    default: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      type: String,
+      default: 'medium'
+    }
   },
   created () {
     this.init();
   },
   methods: {
+    handleChange (val) {
+      this.setCurrent(val);
+    },
+    setCurrent (val) {
+      this.$emit('input', val);
+      this.$emit('change', val);
+    },
     init () {
       this.menu = [
         {
@@ -68,7 +81,10 @@ export default create({
           value: '-1'
         }
       ];
-
+      if (this.default) {
+        this.text = GetDateStr(0);
+        this.setCurrent(this.text);
+      }
     }
   }
 });

@@ -1,4 +1,4 @@
-.avue-select-date {
+.avue-date-select {
     display: flex;
     align-items: center;
     &__radio {
@@ -10,8 +10,6 @@
     &__date {
         width: 300px;
         .el-date-editor {
-            padding: 0 10px;
-            height: 36px;
             border-top-left-radius: 0px;
             border-bottom-left-radius: 0px;
         }
