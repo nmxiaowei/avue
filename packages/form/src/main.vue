@@ -40,6 +40,7 @@
                            :change="column.change"
                            :click="column.click"
                            :column="column"
+                           :filter="column.filter"
                            :precision="column.precision"
                            :multiple="column.multiple"
                            :readonly="vaildData(draggableStart,column.readonly)"

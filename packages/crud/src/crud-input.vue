@@ -45,12 +45,19 @@
                append-to-body
                :title="`请选择${label}`"
                width="50%">
+      <el-input style="margin-bottom:15px;"
+                placeholder="输入关键字进行过滤"
+                v-model="filterText"
+                v-if="filter">
+      </el-input>
       <div class="avue-dialog">
         <el-tree :data="dic"
                  :node-key="valueKey"
                  :show-checkbox="multiple"
                  :props="props"
+                 ref="tree"
                  @check="checkChange"
+                 :filter-node-method="filterNode"
                  :default-expanded-keys="multiple?text:[]"
                  :default-checked-keys="multiple?text:[]"
                  @node-click="handleNodeClick"></el-tree>
@@ -69,12 +76,17 @@ export default create({
   mixins: [crudCompoents()],
   data () {
     return {
+      filterText: '',
       box: false,
       labelText: this.multiple ? [] : ''
     };
   },
   props: {
     value: {
+    },
+    filter: {
+      type: Boolean,
+      default: true
     },
     multiple: {
       type: Boolean,
@@ -111,6 +123,9 @@ export default create({
   watch: {
     value () {
       this.init();
+    },
+    filterText (val) {
+      this.$refs.tree.filter(val);
     }
   },
   computed: {
@@ -139,6 +154,10 @@ export default create({
     this.init();
   },
   methods: {
+    filterNode (value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       console.log(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
       this.text = [];
