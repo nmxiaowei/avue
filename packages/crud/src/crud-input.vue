@@ -225,13 +225,15 @@ export default create({
       if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
     },
     handleChange (value) {
+      let text = this.text;
       if (typeof this.change === 'function') this.change({ value: value, column: this.column });
-      if (this.type = 'phone') {
-        this.text = this.text.replace(/[^0-9.]/g, '');
+      if (this.type === 'phone') {
+        this.text = text.replace(/[^0-9.]/g, '');
         this.text = this.textShow;
+        text = this.text.replace(/\s/g, "");
       }
-      this.$emit('input', this.text.replace(/\s/g, ""));
-      this.$emit('change', this.text.replace(/\s/g, ""));
+      this.$emit('input', text);
+      this.$emit('change', text);
     }
   }
 });
