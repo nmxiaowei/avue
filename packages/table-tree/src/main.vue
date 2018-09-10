@@ -41,7 +41,7 @@
           <i v-else
              class="el-icon-minus"></i>
         </span>
-        {{scope.row[column.value]}}
+        {{detail(scope.row,column)}}
       </template>
     </el-table-column>
     <slot></slot>
@@ -51,8 +51,11 @@
 <script>
 import create from '../../utils/create';
 import treeToArray from './eval';
+import crud from '../../mixins/crud.js';
+import column from '../../mixins/column.js';
 export default create({
   name: 'tree-table',
+  mixins: [crud(), column()],
   props: {
     option: {
       type: Object,
@@ -67,6 +70,9 @@ export default create({
   },
   created () { },
   computed: {
+    columnOption () {
+      return this.option.columns || [];
+    },
     data: function () {
       return this.option.data || [];
     },
@@ -95,6 +101,12 @@ export default create({
     }
   },
   methods: {
+    rulesInit () {
+
+    },
+    formInit () {
+
+    },
     showRow: function (row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show

@@ -13,14 +13,9 @@ export default function() {
             },
             // 处理数据
             detail(row, column) {
-                let result = row[column.prop] || '';
+                let result = row[column.prop || column.value] || '';
                 if (column.type) {
-                    if (
-                        (column.type === 'date' ||
-                            column.type === 'time' ||
-                            column.type === 'datetime') &&
-                        column.format
-                    ) {
+                    if (['date', 'time', 'datetime'].includes(column.type) && column.format) {
                         const format = column.format
                             .replace('dd', 'DD')
                             .replace('yyyy', 'YYYY');
@@ -28,9 +23,7 @@ export default function() {
                     }
                     if (column.dicData) {
                         result = this.findByvalue(
-                            typeof column.dicData === 'string' ?
-                            this.DIC[column.dicData] :
-                            column.dicData,
+                            typeof column.dicData === 'string' ? this.DIC[column.dicData] : column.dicData,
                             result,
                             (column.props || this.tableOption.props)
                         );
