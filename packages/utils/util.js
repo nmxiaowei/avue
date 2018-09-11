@@ -178,8 +178,6 @@ export const getComponent = ({ type, component }) => {
         return 'crudCascader';
     } else if (type === 'number') {
         return 'crudInputNumber';
-    } else if (type === 'ueditor') {
-        return 'crudUeditor';
     } else if (type === 'password') {
         return 'crudInput';
     } else if (type === 'switch') {

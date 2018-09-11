@@ -100,8 +100,6 @@ export default {
                 {
                     label: "地址",
                     span: 24,
-                    minRows: 10,
-                    type: "ueditor",
                     prop: "address",
                 },{
                     label: "建议",
@@ -245,8 +243,6 @@ export default {
                 {
                     label: "地址",
                     span: 24,
-                    minRows: 10,
-                    type: "ueditor",
                     prop: "address",
                 },{
                     label: "建议",

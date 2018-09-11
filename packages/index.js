@@ -7,7 +7,6 @@ import CrudRadio from './crud-radio/index.js';
 import CrudSelect from './crud-select/index.js';
 import CrudCascader from './crud-cascader/index.js';
 import CrudNumberInput from './crud-input-number/index.js';
-import CrudUeditor from './crud-ueditor/index.js';
 import CrudSwitch from './crud-switch/index.js';
 import CrudRate from './crud-rate/index.js';
 import CrudUpload from './crud-upload/index.js';
@@ -38,7 +37,6 @@ const components = [
     CrudSelect,
     CrudCascader,
     CrudNumberInput,
-    CrudUeditor,
     CrudSwitch,
     CrudRate,
     CrudUpload,

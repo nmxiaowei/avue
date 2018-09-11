@@ -149,7 +149,18 @@ export default {
           },
           {
             text: 'ID',
-            value: 'id'
+            value: 'id',
+            type:'dic',
+            dicData:[{
+              label:'零',
+              value:0
+            },{
+              label:'一',
+              value:1
+            },{
+              label:'二',
+              value:2,
+            }]
           },
           {
             text: '时间线',

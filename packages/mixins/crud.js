@@ -8,7 +8,6 @@ import crudCascader from '../crud/src/crud-cascader';
 import crudDate from '../crud/src/crud-date';
 import crudTime from '../crud/src/crud-time';
 import crudInputNumber from '../crud/src/crud-input-number';
-import crudUeditor from '../crud/src/crud-ueditor';
 import crudSwitch from '../crud/src/crud-switch';
 import crudRate from '../crud/src/crud-rate';
 import crudUpload from '../crud/src/crud-upload';
@@ -33,7 +32,6 @@ export default function() {
             crudTime,
             crudCascader,
             crudInputNumber,
-            crudUeditor,
             crudSwitch,
             crudRate,
             crudUpload,
