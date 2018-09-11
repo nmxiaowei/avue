@@ -28,9 +28,9 @@ export default {
       };
     },
     methods: {
-     refreshChange(page){
+     refreshChange({page,searchForm}){
         this.$message({
-          message: `当前的页吗对象${JSON.stringify(page)}`,
+          message: `当前的返回的分页对象${JSON.stringify(page)} 搜索表单对象${JSON.stringify(searchForm)}`,
           type: 'success',
         });
      }
@@ -48,7 +48,7 @@ export default {
 
 ### 刷新
 
-:::demo 点击刷新按钮回调`refresh-change`方法返回当前分页`对象`
+:::demo 点击刷新按钮回调`refresh-change`方法返回当前分页`page`和搜索的表单`searchForm`
 ```html
 <avue-crud :data="data" :option="option" @refresh-change="refreshChange"></avue-crud>
 
@@ -82,9 +82,9 @@ export default {
       };
     },
     methods: {
-     refreshChange(page){
+     refreshChange({page,searchForm}){
         this.$message({
-          message: `当前的页吗对象${JSON.stringify(page)}`,
+          message: `当前的返回的分页对象${JSON.stringify(page)} 搜索表单对象${JSON.stringify(searchForm)}`,
           type: 'success',
         });
      }

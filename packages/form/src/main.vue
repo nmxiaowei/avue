@@ -150,7 +150,7 @@ export default create({
       return this.draggable.menu || false;
     },
     draggableStart () {
-      return this.draggable.start || false;
+      return this.draggable.start;
     },
     draggableFlag () {
       return this.vaildData(this.draggable.clone, true)
@@ -232,7 +232,7 @@ export default create({
     // 验证表单是否禁止
     vaildDisabled (column) {
       if (this.disabled) return true;
-      if (!(this.boxType)) {
+      if (!validatenull(column.disabled)) {
         return this.vaildData(column.disabled, false);
       } else if (this.boxType === 'add') {
         return this.vaildData(column.addDisabled, false);
@@ -244,7 +244,7 @@ export default create({
     },
     // 验证表单是否显隐
     vaildVisdiplay (column) {
-      if (!(this.boxType)) {
+      if (!validatenull(column.visdiplay)) {
         return this.vaildData(column.visdiplay, true);
       } else if (this.boxType === 'add') {
         return this.vaildData(column.addVisdiplay, true);

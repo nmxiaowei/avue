@@ -13,35 +13,43 @@
                  ref="searchForm"
                  v-if="searchShow && searchFlag">
           <!-- 循环列搜索框 -->
-          <el-form-item :label="column.label"
-                        :prop="column.prop"
-                        v-for="(column,index) in columnOption"
-                        :key="index"
-                        v-if="column.search">
-            <component :size="vaildData(tableOption.searchSize,config.searchComponentSize)"
-                       :is="getSearchType(column.type)"
-                       v-model="searchForm[column.prop]"
-                       :type="getType(column)"
-                       :props="column.props || tableOption.props"
-                       :format="column.format"
-                       :filterable="column.searchFilterable"
-                       :filter-method="column.searchFilterMethod"
-                       :value-format="column.valueFormat"
-                       :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-                       clearable
-                       :placeholder="column.label"
-                       :dic="setDic(column.dicData,DIC[column.dicData])"></component>
-          </el-form-item>
-          <slot name="search"></slot>
-          <el-form-item>
-            <el-button type="primary"
-                       @click="searchChange"
-                       :icon="config.searchBtnIcon"
-                       :size="vaildData(tableOption.searchSize,config.searchBtnSize)">{{config.searchBtnTitle}}</el-button>
-            <el-button @click="searchReset"
-                       :icon="config.emptyBtnIcon"
-                       :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
-          </el-form-item>
+          <el-row :span="24">
+            <el-col :span="vaildData(column.searchSpan,config.searchSpan)"
+                    v-for="(column,index) in columnOption"
+                    :key="index"
+                    v-if="column.search">
+              <el-form-item :prop="column.prop"
+                            :label="column.label">
+                <component :size="vaildData(tableOption.searchSize,config.searchComponentSize)"
+                           :is="getSearchType(column.type)"
+                           v-model="searchForm[column.prop]"
+                           :type="getType(column)"
+                           :props="column.props || tableOption.props"
+                           :format="column.format"
+                           :filterable="column.searchFilterable"
+                           :filter-method="column.searchFilterMethod"
+                           :value-format="column.valueFormat"
+                           :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
+                           clearable
+                           :placeholder="column.label"
+                           :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+              </el-form-item>
+            </el-col>
+            <slot name="search"></slot>
+            <el-col :span="vaildData(tableOption.searchMenuSpan,config.searchMenuSpan)">
+              <el-form-item>
+                <el-button type="primary"
+                           @click="searchChange"
+                           :icon="config.searchBtnIcon"
+                           :size="vaildData(tableOption.searchSize,config.searchBtnSize)">{{config.searchBtnTitle}}</el-button>
+                <el-button @click="searchReset"
+                           :icon="config.emptyBtnIcon"
+                           :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
+                <slot name="searchMenu"></slot>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
         </el-form>
       </el-collapse-transition>
     </div>
@@ -71,7 +79,7 @@
                    circle
                    :size="config.searchboxBtnSize"
                    @click="searchShow=!searchShow"
-                   v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchboxBtn)"></el-button>
+                   v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchBtn)"></el-button>
       </div>
     </div>
     <el-tag class="avue-tip"
@@ -427,7 +435,7 @@ export default create({
       return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
     },
     refreshChange () {
-      this.$emit('refresh-change', this.page);
+      this.$emit('refresh-change', { page: this.page, searchForm: this.searchForm });
     },
     rulesInit () {
       this.tableFormRules = {};
@@ -599,7 +607,10 @@ export default create({
     rowSave () {
       this.$refs['tableForm'].validate().then(() => {
         this.keyBtn = true;
-        this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog);
+        this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog,
+          () => {
+            this.keyBtn = false;
+          });
       });
     },
     // 更新
@@ -611,7 +622,10 @@ export default create({
           'row-update',
           Object.assign({}, this.tableForm),
           index,
-          this.closeDialog
+          this.closeDialog,
+          () => {
+            this.keyBtn = false;
+          }
         );
       });
     },

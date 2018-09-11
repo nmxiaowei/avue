@@ -6,16 +6,20 @@
         data: [
           {
             name:'张三',
-            sex:'男'
+            sex:'男',
+            date:'1994-02-23 00:00:00'
           }, {
             name:'李四',
-            sex:'女'
+            sex:'女',
+            date:'1994-02-23 00:00:00'
           }, {
             name:'王五',
-            sex:'女'
+            sex:'女',
+            date:'1994-02-23 00:00:00'
           }, {
             name:'赵六',
-            sex:'男'
+            sex:'男',
+            date:'1994-02-23 00:00:00'
           }
         ],
         option:{
@@ -25,10 +29,16 @@
           column:[
              {
               label:'姓名',
-              prop:'name'
+              prop:'name',
             }, {
               label:'性别',
               prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
             }
           ]
         },
@@ -91,16 +101,20 @@ export default {
         data: [
           {
             name:'张三',
-            sex:'男'
+            sex:'男',
+            date:'1994-02-23 00:00:00'
           }, {
             name:'李四',
-            sex:'女'
+            sex:'女',
+            date:'1994-02-23 00:00:00'
           }, {
             name:'王五',
-            sex:'女'
+            sex:'女',
+            date:'1994-02-23 00:00:00'
           }, {
             name:'赵六',
-            sex:'男'
+            sex:'男',
+            date:'1994-02-23 00:00:00'
           }
         ],
         option:{
@@ -115,6 +129,12 @@ export default {
             {
               label:'性别',
               prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
             }
           ]
         }

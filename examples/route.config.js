@@ -15,7 +15,7 @@ const registerRoute = (navConfig) => {
     let navs = navConfig;
     route.push({
         path: '/component',
-        redirect: '/component/crud',
+        redirect: '/component/installation',
         component: load('component'),
         children: []
     });

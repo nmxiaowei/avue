@@ -30,9 +30,16 @@ export default {
       };
     },
     methods: {
-      rowSave(form,done){
-        this.$message.success('新增数据'+ JSON.stringify(form));
-        done();
+      rowSave(form,done,loading){
+        this.$message.success('模拟网络请求')
+        setTimeout(()=>{
+          this.$message.success('关闭按钮等待');
+          loading();
+        },1000)
+        setTimeout(()=>{
+          this.$message.success('新增数据'+ JSON.stringify(form));
+          done();
+        },2000)
       },
       refresh(val){
         this.$message.success('刷新回调,当前分页对象'+ JSON.stringify(val));
@@ -40,9 +47,16 @@ export default {
       rowDel(form,index){
         this.$message.success('删除数据'+ JSON.stringify(form));
       },
-      rowUpdate(form,index,done){
-        this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
-        done();
+      rowUpdate(form,index,done,loading){
+        this.$message.success('模拟网络请求')
+        setTimeout(()=>{
+          this.$message.success('关闭按钮等待');
+          loading();
+        },1000)
+        setTimeout(()=>{
+          this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
+          done();
+        },2000)
       },
     }
 }
@@ -98,19 +112,33 @@ export default {
       };
     },
     methods: {
-      rowSave(form,done){
-        this.$message.success('新增数据'+ JSON.stringify(form));
-        done();
-      },
-      rowDel(form,index){
-        this.$message.success('删除数据'+ JSON.stringify(form));
+     rowSave(form,done,loading){
+        this.$message.success('模拟网络请求')
+        setTimeout(()=>{
+          this.$message.success('关闭按钮等待');
+          loading();
+        },1000)
+        setTimeout(()=>{
+          this.$message.success('新增数据'+ JSON.stringify(form));
+          done();
+        },2000)
       },
       refresh(val){
         this.$message.success('刷新回调,当前分页对象'+ JSON.stringify(val));
       },
-      rowUpdate(form,index,done){
-        this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
-        done();
+      rowDel(form,index){
+        this.$message.success('删除数据'+ JSON.stringify(form));
+      },
+      rowUpdate(form,index,done,loading){
+        this.$message.success('模拟网络请求')
+        setTimeout(()=>{
+          this.$message.success('关闭按钮等待');
+          loading();
+        },1000)
+        setTimeout(()=>{
+          this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
+          done();
+        },2000)
       },
     }
 }

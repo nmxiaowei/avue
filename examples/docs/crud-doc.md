@@ -89,9 +89,13 @@
 | fixed | 冻结列 | Boolean | true / false | false |
 | hide | 隐藏列 | Boolean | true / false | true |
 | span | 表单栅列 | Number | - | 12 |
+| searchSpan | 表单栅列 | Number | - | 6 |
+| readonly | 只读 | Boolean | true / false | false |
 | type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / ueditor  / password / switch / tree / phone | input | - |
+| disabled | 全部是否禁止 | Boolean | true / false | false |
 | addDisabled | 表单新增时是否禁止 | Boolean | true / false | false |
 | editDisabled | 表单编辑时是否禁止 | Boolean | true / false | false |
+| visdiplay | 全部是否可见 | Boolean | true / false | true |
 | addVisdiplay | 表单新增时是否可见 | Boolean | true / false | true |
 | editVisdiplay | 表单编辑是否可见 | Boolean | true / false | true |
 | viewVisdiplay | 表单查看是否可见 | Boolean | true / false | true |
@@ -130,8 +134,8 @@
 | current-row-change | 当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlightCurrentRow 属性为true | currentRow, oldCurrentRow |
 | sort-change | 调用排序后触发该事件 | list |
 | search-change | 点击搜索后触发该事件 | params |
-| row-update | 编辑数据后确定触发该事件 | row, index, done |
-| row-save | 新增数据后点击确定触发该事件 | row, done |
+| row-update | 编辑数据后确定触发该事件 | row, index, done, loading |
+| row-save | 新增数据后点击确定触发该事件 | row, done, loading  |
 | row-del | 行数据删除时触发该事件 | row, index |
 
 ### Avue-crud Methods
@@ -157,3 +161,4 @@
 | menuLeft | 表格头部左侧内容 |
 | menuRight | 表格头部右侧内容 | 
 | search | 搜索栏目自定义内容 |
+| searchMenu 搜索栏目菜单自定义内容 |

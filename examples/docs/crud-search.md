@@ -25,6 +25,7 @@ export default {
           align:'center',
           menuAlign:'center',
           searchsolt:true,
+          searchMenuSpan:6,
           column:[
              {
               label:'姓名',
@@ -40,11 +41,13 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          searchMenuSpan:6,
           column:[
              {
               label:'姓名',
               prop:'name',
               search:true,
+              searchSpan:7
             },
             {
               label:'性别',
@@ -54,6 +57,7 @@ export default {
               label:'权限',
               prop:'grade',
               search:true,
+              searchSpan:7,
               searchDefault:[0],
               searchMmultiple:true,
               type:'select',
@@ -73,11 +77,11 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          searchMenuSpan:6,
           column:[
              {
               label:'姓名',
               prop:'name',
-              search:true,
             },
             {
               label:'性别',
@@ -89,6 +93,7 @@ export default {
               type:'date',
               more:true,
               search:true,
+              searchSpan:12,
             },
             {
               label:'时间',
@@ -151,11 +156,13 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          searchMenuSpan:6,
           column:[
              {
               label:'姓名',
               prop:'name',
               search:true,
+              searchSpan:7
             },
             {
               label:'性别',
@@ -166,6 +173,7 @@ export default {
               prop:'grade',
               type:'select',
               searchShow:true,
+              searchSpan:7,
               searchDefault:[0],
               searchMmultiple:true,
               dicData:[
@@ -220,11 +228,11 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
+          searchMenuSpan:6,
           column:[
              {
               label:'姓名',
-              prop:'name',
-              search:true,
+              prop:'name'
             },
             {
               label:'性别',
@@ -235,6 +243,7 @@ export default {
               prop:'date',
               type:'date',
               more:true,
+              searchSpan:8,
               search:true,
             },
             {
@@ -263,9 +272,11 @@ export default {
 ```html
 <avue-crud :data="data" :option="option" @search-reset="searchReset1" @search-change="searchChange1">
   <template slot="search">
-    <el-form-item label="自定义">
-      <el-input v-model="search.slot" placeholder="自定义搜索" size="small"/>
-    </el-form-item>
+    <el-col :span="7">
+      <el-form-item label="自定义">
+        <el-input v-model="search.slot" placeholder="自定义搜索" size="small"/>
+      </el-form-item>
+    </el-col>
   </template>
 </avue-crud>
 
@@ -294,6 +305,7 @@ export default {
           align:'center',
           menuAlign:'center',
           searchsolt:true,
+          searchMenuSpan:6,
           column:[
              {
               label:'姓名',

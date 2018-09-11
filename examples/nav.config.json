@@ -1,4 +1,27 @@
 [{
+    "name": "更新日志",
+    "path": "/changelog"
+}, {
+    "name": "Avue2.x源码获取",
+    "path": "/avue2.x"
+}, {
+    "name": "开发指南",
+    "groups": [{
+        "list": [{
+            "path": "/installation",
+            "title": "安装"
+        }, {
+            "path": "/quickstart",
+            "title": "快速上手"
+        }, {
+            "path": "/plugin",
+            "title": "第三方插件"
+        }, {
+            "path": "/project",
+            "title": "项目相关"
+        }]
+    }]
+}, {
     "name": "表格表单",
     "groups": [{
         "groupName": "Crud",

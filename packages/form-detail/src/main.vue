@@ -24,7 +24,7 @@
                 :form="form"
                 v-if="column.slot"></slot>
           <span v-else
-                :class="b('content')">{{form[column.prop]}}</span>
+                :class="b('content')">{{detail(form,column)}}</span>
         </div>
       </el-col>
     </el-row>
@@ -34,8 +34,12 @@
 <script>
 
 import create from '../../utils/create';
+import crud from '../../mixins/crud.js';
+import column from '../../mixins/column.js';
+import { validatenull } from '../../utils/validate.js';
 export default create({
   name: 'form-detail',
+  mixins: [crud(), column()],
   props: {
     option: {
       type: Object,
@@ -64,6 +68,7 @@ export default create({
   },
   data () {
     return {
+      tableOption: {},
       form: {}
     };
   },
@@ -71,6 +76,32 @@ export default create({
     this.formInit();
   },
   methods: {
+    dicInit () {
+      let locaDic = this.tableOption.dicData || {};
+      this.columnOption.forEach(child => {
+        child.column.forEach(ele => {
+          if (this.vaildData(ele.dicFlag, true)) {
+            if (!validatenull(ele.dicUrl)) {
+              this.dicCascaderList.push({
+                dicUrl: ele.dicUrl,
+                dicData: ele.dicData
+              });
+            } else if (!validatenull(this.tableOption.dicUrl) && typeof ele.dicData === 'string') {
+              this.dicCascaderList.push({
+                dicUrl: this.tableOption.dicUrl,
+                dicData: ele.dicData
+              });
+            }
+          }
+        })
+      });
+      this.GetDic().then(data => {
+        this.DIC = Object.assign({}, locaDic, data);
+      });
+    },
+    rulesInit () {
+
+    },
     formInit () {
       this.form = this.value;
     }

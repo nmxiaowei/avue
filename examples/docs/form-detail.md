@@ -4,7 +4,7 @@ export default {
       return {
         form:{
           qhdh: '1000000000',
-          zt: '	已取货',
+          zt: '110000',
           xsdh: '1234123421',
           zdd: '3214321432',
           yhxm: '付小小',
@@ -22,9 +22,15 @@ export default {
                   label: '取货单号',
                   prop: 'qhdh'
               }, {
-                  label: '状态',
+                  label: '地区',
                   prop: 'zt',
-                  slot: true,
+                 type:'dic',
+                  props: {
+                    label: 'name',
+                    value: 'code'
+                  },
+                  dicUrl:'https://avue.top/api/area/{{key}}',
+                  dicData:'getProvince'
               }, {
                   label: '销售单号',
                   prop: 'xsdh'
@@ -69,7 +75,7 @@ export default {
 
 ### 详情
 
-:::demo  
+:::demo 支持`本地字典`和`网络字典`以及`solt`卡槽自定义
 ```html
 <avue-form-detail  v-model="form" :option="option" ></avue-form-detail>
 
@@ -79,7 +85,7 @@ export default {
       return {
         form:{
           qhdh: '1000000000',
-          zt: '	已取货',
+          zt: '110000',
           xsdh: '1234123421',
           zdd: '3214321432',
           yhxm: '付小小',
@@ -97,9 +103,15 @@ export default {
                   label: '取货单号',
                   prop: 'qhdh'
               }, {
-                  label: '状态',
+                  label: '地区',
                   prop: 'zt',
-                  slot: true,
+                  props: {
+                    label: 'name',
+                    value: 'code'
+                  },
+                  type:'dic',
+                  dicUrl:'https://avue.top/api/area/{{key}}',
+                  dicData:'getProvince'
               }, {
                   label: '销售单号',
                   prop: 'xsdh'

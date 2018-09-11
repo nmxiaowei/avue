@@ -1,5 +1,5 @@
 import * as utils from '../utils/util.js';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export default function() {
     return {
         methods: {
@@ -19,7 +19,7 @@ export default function() {
                         const format = column.format
                             .replace('dd', 'DD')
                             .replace('yyyy', 'YYYY');
-                        result = moment(result).format(format);
+                        result = dayjs(result).format(format);
                     }
                     if (column.dicData) {
                         result = this.findByvalue(

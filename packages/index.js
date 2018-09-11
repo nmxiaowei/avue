@@ -61,7 +61,7 @@ function install(Vue, axios) {
     Vue.prototype.$AVUE = AVUE;
 }
 
-if (window.Vue && window.axios) {
+if (window.Vue) {
     install(window.Vue, window.axios);
 }
 
