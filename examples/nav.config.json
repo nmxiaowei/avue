@@ -19,6 +19,9 @@
         }, {
             "path": "/project",
             "title": "项目相关"
+        }, {
+            "path": "/transition",
+            "title": "ele内置过渡动画"
         }]
     }]
 }, {

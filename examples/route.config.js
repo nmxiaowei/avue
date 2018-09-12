@@ -57,7 +57,7 @@ let route = registerRoute(navConfig);
 
 route = route.concat([{
     path: '/',
-    redirect: '/component/crud',
+    redirect: '/component/installation',
     children: []
 }]);
 

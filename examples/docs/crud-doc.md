@@ -1,4 +1,5 @@
 ### Avue-crud Attributes
+
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | data | 显示的数据 | Array | — | — |
@@ -11,10 +12,12 @@
 | row-class-name | 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className,function({row, rowIndex}) | Function | - | - |
 
 ### Avue-crud Option Attributes
+
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | width | 表格宽度 | Number | — | 100% |
 | height | 表格高度 | Number | — | auto |
+| title | 表格标题 | String | — | 表格标题 |
 | maxHeight | 表格最大高度 | Number | — | auto |
 | calcHeight | 表格高度差（主要用于减去其他部分让表格高度自适应） | Number | — | auto |selection
 | border | 表格边框 | Boolean | true / false  | false |
@@ -41,6 +44,7 @@
 | delBtn | 删除按钮 | Boolean | true / false  | true |
 | editBtn | 删除按钮 | Boolean | true / false  | true |
 | viewBtn | 查看按钮 | Boolean | true / false  | false |
+| menuBtn | 菜单按钮 | Boolean | true / false  | false |
 | serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
 | columnBtn | 列显隐按钮 | Boolean | true / false  | true |
 | refreshBtn | 刷新按钮 | Boolean | true / false  | true |
@@ -50,6 +54,11 @@
 
 
 ### Avue-crud Type Attributes
+
+:::tip
+这是type属性可以配置的组件，当然你也可以自定义，参考第三方组件导入
+:::
+
 | 参数      | 类型          |
 |---------- |-------------- |
 | input | 输入框 |
@@ -74,7 +83,39 @@
 | switch | 开关框 |
 | tree | 树框 |
 
+###  Avue-crud format and valueFormat Attributes
+
+使用`format`指定输入框的格式；使用`valueFormat`指定绑定值的格式。
+
+默认情况下，组件接受并返回`Date`对象。以下为可用的格式化字串，以 UTC 2017年1月2日 03:04:05 为例：
+
+:::warning
+请注意大小写
+:::
+
+| 格式 | 含义 | 备注 | 举例 |
+|------|------|------|------|------|
+| `yyyy` | 年 | | 2017 |
+| `M`  | 月 | 不补0 | 1 |
+| `MM` | 月 | | 01 |
+| `W`  | 周 | 仅周选择器的 `format` 可用；不补0 | 1 |
+| `WW` | 周 | 仅周选择器的 `format` 可用 | 01 |
+| `d`  | 日 | 不补0 | 2 |
+| `dd` | 日 | | 02 |
+| `H`  | 小时 | 24小时制；不补0 | 3 |
+| `HH` | 小时 | 24小时制 | 03 |
+| `h`  | 小时 | 12小时制，须和 `A` 或 `a` 使用；不补0 | 3 |
+| `hh` | 小时 | 12小时制，须和 `A` 或 `a` 使用 | 03 |
+| `m`  | 分钟 | 不补0 | 4 |
+| `mm` | 分钟 | | 04 |
+| `s`  | 秒 | 不补0 | 5 |
+| `ss` | 秒 | | 05 |
+| `A`  | AM/PM | 仅 `format` 可用，大写 | AM |
+| `a`  | am/pm | 仅 `format` 可用，小写 | am |
+| `timestamp` | JS时间戳 | 仅 `value-format` 可用；组件绑定值为`number`类型 | 1483326245000 |
+
 ### Avue-crud Column Attributes
+
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | label | 列名称 | String | — | - |
@@ -89,7 +130,6 @@
 | fixed | 冻结列 | Boolean | true / false | false |
 | hide | 隐藏列 | Boolean | true / false | true |
 | span | 表单栅列 | Number | - | 12 |
-| searchSpan | 表单栅列 | Number | - | 6 |
 | readonly | 只读 | Boolean | true / false | false |
 | type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / ueditor  / password / switch / tree / phone | input | - |
 | disabled | 全部是否禁止 | Boolean | true / false | false |
@@ -123,6 +163,7 @@
 | filterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | - | - |
 
 ### Avue-crud Events
+
 | 事件名 | 说明 | 参数 |
 | ---- | ---- | ---- |
 | row-click | 当某一行被点击时会触发该事件 | row, event, column |
@@ -139,6 +180,7 @@
 | row-del | 行数据删除时触发该事件 | row, index |
 
 ### Avue-crud Methods
+
 | 方法名 | 说明 | 参数 |
 | ---- | ---- | ---- |
 | setCurrentRow | 用于单选表格，设定某一行为选中行，如果调用时不加参数，则会取消目前高亮行的选中状态。 | row |
@@ -151,6 +193,7 @@
 | resetForm | 清空表单数据 |  |
 
 ### Avue-crud Scoped Slot
+
 | name | 说明 |
 |------|--------|
 | 列的名称 | 列自定义列的内容，参数为 { row, label, dic, $index } |
@@ -161,4 +204,4 @@
 | menuLeft | 表格头部左侧内容 |
 | menuRight | 表格头部右侧内容 | 
 | search | 搜索栏目自定义内容 |
-| searchMenu 搜索栏目菜单自定义内容 |
+| searchMenu | 搜索栏目菜单自定义内容 |

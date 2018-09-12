@@ -29,9 +29,18 @@
             padding: 12px 25px;
         }
     }
-    &__date {
-        width: 100%;
-        margin-bottom: 30px;
+    &__box {
+        box-shadow: none !important;
+        border: none;
+        .el-card__body,
+        .el-card__header {
+            padding: 18px 0;
+        }
+    }
+    &__title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     &__menu {
         position: relative;

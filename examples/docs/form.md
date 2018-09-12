@@ -83,9 +83,6 @@ export default {
                     valueDefault: 0,
                     change:function({value,column}){
                         this.$message.success('change')
-                    },
-                    click:function({value,column}){
-                        this.$message.success('click')
                     }
                 },
                 {
@@ -226,9 +223,6 @@ export default {
                     valueDefault: 0,
                     change:function({value,column}){
                         this.$message.success('change')
-                    },
-                    click:function({value,column}){
-                        this.$message.success('click')
                     }
                 },
                 {

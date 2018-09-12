@@ -1,8 +1,23 @@
 ## 更新日志
 
+### 1.1.16
+
+* 新增自定义表单规则演示代码[实例代码](https://avue.top/#/component/crud-rules)
+* 新增时间戳如何配置演示代码[实例代码](https://avue.top/#/component/form-date)
+* 新增时间格式化参考文档[参考文档](https://avue.top/#/component/crud-doc)
+* 调整了crud日期组件的位置
+* 调整了组件的change和click事件
+* 废除了搜索的栅列searchSpan和searchMenuSpan属性
+* 新增labelPosition表单标题文字位置属性 
+* 新增表单全局size(medium / small / mini)和disabled(true / false)属性
+* 新增title属性表格的标题
+* 新增menuBtn表格合并菜单按钮默认为false
+
+
 ### 1.1.15
 
 * 修复form组件的visdiplay和disabled紧急bug
+
 
 ### 1.1.14
 

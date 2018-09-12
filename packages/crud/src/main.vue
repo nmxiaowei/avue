@@ -1,243 +1,261 @@
 <template>
   <div :class="b()">
-    <div :class="b('header')">
-      <div :class="b('date')"
-           v-if="vaildData(tableOption.dateBtn,config.dateBtn)">
+    <el-card :class="b('box')">
+      <div slot="header"
+           :class="b('title')"
+           v-if="vaildData(tableOption.title,false) || vaildData(tableOption.dateBtn,config.dateBtn)">
+        <span>{{tableOption.title}}</span>
         <date-select @change="dateChange"
+                     v-if="vaildData(tableOption.dateBtn,config.dateBtn)"
                      :default="vaildData(tableOption.dateDefault,config.dateDefault)"
-                     :size="vaildData(tableOption.dateSize,config.dateBtnSize)"></date-select>
+                     :size="vaildData(tableOption.dateSize,config.dateBtnSize)">
+        </date-select>
       </div>
-      <el-collapse-transition>
-        <el-form :model="searchForm"
-                 :inline="true"
-                 ref="searchForm"
-                 v-if="searchShow && searchFlag">
-          <!-- 循环列搜索框 -->
-          <el-row :span="24">
-            <el-col :span="vaildData(column.searchSpan,config.searchSpan)"
-                    v-for="(column,index) in columnOption"
-                    :key="index"
-                    v-if="column.search">
-              <el-form-item :prop="column.prop"
-                            :label="column.label">
-                <component :size="vaildData(tableOption.searchSize,config.searchComponentSize)"
-                           :is="getSearchType(column.type)"
-                           v-model="searchForm[column.prop]"
-                           :type="getType(column)"
-                           :props="column.props || tableOption.props"
-                           :format="column.format"
-                           :filterable="column.searchFilterable"
-                           :filter-method="column.searchFilterMethod"
-                           :value-format="column.valueFormat"
-                           :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-                           clearable
-                           :placeholder="column.label"
-                           :dic="setDic(column.dicData,DIC[column.dicData])"></component>
-              </el-form-item>
-            </el-col>
-            <slot name="search"></slot>
-            <el-col :span="vaildData(tableOption.searchMenuSpan,config.searchMenuSpan)">
-              <el-form-item>
-                <el-button type="primary"
-                           @click="searchChange"
-                           :icon="config.searchBtnIcon"
-                           :size="vaildData(tableOption.searchSize,config.searchBtnSize)">{{config.searchBtnTitle}}</el-button>
-                <el-button @click="searchReset"
-                           :icon="config.emptyBtnIcon"
-                           :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
-                <slot name="searchMenu"></slot>
-              </el-form-item>
-            </el-col>
-          </el-row>
+      <div :class="b('header')">
 
-        </el-form>
-      </el-collapse-transition>
-    </div>
-    <!-- 表格功能列 -->
-    <div :class="b('menu')">
-      <div :class="b('left')">
-        <el-button type="primary"
-                   @click="rowAdd"
-                   :icon="config.addBtnIcon"
-                   :size="config.addBtnSize"
-                   v-if="vaildData(tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
-        <slot name="menuLeft"></slot>
+        <el-collapse-transition>
+          <el-form :model="searchForm"
+                   :inline="true"
+                   ref="searchForm"
+                   v-if="searchShow && searchFlag">
+            <!-- 循环列搜索框 -->
+            <el-form-item :prop="column.prop"
+                          :label="column.label"
+                          v-for="(column,index) in columnOption"
+                          :key="index"
+                          v-if="column.search">
+              <component :size="vaildData(tableOption.searchSize,config.searchComponentSize)"
+                         :is="getSearchType(column.type)"
+                         v-model="searchForm[column.prop]"
+                         :type="getType(column)"
+                         :props="column.props || tableOption.props"
+                         :format="column.format"
+                         :filterable="column.searchFilterable"
+                         :filter-method="column.searchFilterMethod"
+                         :value-format="column.valueFormat"
+                         :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
+                         clearable
+                         :placeholder="column.label"
+                         :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+            </el-form-item>
+            <slot name="search"></slot>
+            <el-form-item>
+              <el-button type="primary"
+                         @click="searchChange"
+                         :icon="config.searchBtnIcon"
+                         :size="vaildData(tableOption.searchSize,config.searchBtnSize)">{{config.searchBtnTitle}}</el-button>
+              <el-button @click="searchReset"
+                         :icon="config.emptyBtnIcon"
+                         :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
+              <slot name="searchMenu"></slot>
+            </el-form-item>
+
+          </el-form>
+        </el-collapse-transition>
       </div>
-      <div :class="b('right')">
-        <slot name="menuRight"></slot>
-        <el-button :icon="config.refreshBtnIcon"
-                   circle
-                   :size="config.refreshBtnSize"
-                   @click="refreshChange"
-                   v-if="vaildData(tableOption.refreshBtn,config.refreshBtn)"></el-button>
-        <el-button :icon="config.columnBtnIcon"
-                   circle
-                   :size="config.columnBtnSize"
-                   @click="columnBox=true"
-                   v-if="vaildData(tableOption.columnBtn,config.columnBtn)"></el-button>
-        <el-button :icon="config.searchboxBtnIcon"
-                   circle
-                   :size="config.searchboxBtnSize"
-                   @click="searchShow=!searchShow"
-                   v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchBtn)"></el-button>
+      <!-- 表格功能列 -->
+      <div :class="b('menu')">
+        <div :class="b('left')">
+          <el-button type="primary"
+                     @click="rowAdd"
+                     :icon="config.addBtnIcon"
+                     :size="config.addBtnSize"
+                     v-if="vaildData(tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
+          <slot name="menuLeft"></slot>
+        </div>
+        <div :class="b('right')">
+          <slot name="menuRight"></slot>
+          <el-button :icon="config.refreshBtnIcon"
+                     circle
+                     :size="config.refreshBtnSize"
+                     @click="refreshChange"
+                     v-if="vaildData(tableOption.refreshBtn,config.refreshBtn)"></el-button>
+          <el-button :icon="config.columnBtnIcon"
+                     circle
+                     :size="config.columnBtnSize"
+                     @click="columnBox=true"
+                     v-if="vaildData(tableOption.columnBtn,config.columnBtn)"></el-button>
+          <el-button :icon="config.searchboxBtnIcon"
+                     circle
+                     :size="config.searchboxBtnSize"
+                     @click="searchShow=!searchShow"
+                     v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchBtn)"></el-button>
+        </div>
       </div>
-    </div>
-    <el-tag class="avue-tip"
-            v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-      <i class="el-icon-info avue-tip__icon">&nbsp;</i>
-      <span class="avue-tip__name">
-        {{config.tipStartTitle}}
-        <span class="avue-tip__name--bold">{{selectLen}}</span>
-        {{config.tipEndTitle}}
-      </span>
-      <span class="avue-tip__btn"
-            @click="selectClear"
-            v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">
-        {{config.tipBtnTitle}}
-      </span>
-    </el-tag>
-    <el-table :data="list"
-              :highlight-current-row="tableOption.highlightCurrentRow"
-              @current-change="currentRowChange"
-              :stripe="tableOption.stripe"
-              :show-header="tableOption.showHeader"
-              :default-sort="tableOption.defaultSort"
-              @row-click="rowClick"
-              @row-dblclick="rowDblclick"
-              :row-class-name="rowClassName"
-              :max-height="tableOption.maxHeight"
-              :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,config.calcHeight)):tableOption.height"
-              ref="table"
-              :width="setPx(tableOption.width,config.width)"
-              :border="tableOption.border"
-              v-loading="tableLoading"
-              @selection-change="selectionChange"
-              @sort-change="sortChange">
-      <!-- 折叠面板  -->
-      <el-table-column type="expand"
-                       width="50"
-                       fixed="left"
-                       align="center"
-                       v-if="tableOption.expand">
-        <template slot-scope="props">
-          <slot :row="props.row"
-                name="expand"></slot>
-        </template>
-      </el-table-column>
-      <!-- 选择框 -->
-      <el-table-column v-if="tableOption.selection"
-                       type="selection"
-                       width="50"
-                       fixed="left"
-                       align="center">
-      </el-table-column>
-      <!-- 序号 -->
-      <el-table-column v-if="tableOption.index"
-                       :label="vaildData(tableOption.indexLabel,config.indexLabel)"
-                       type="index"
-                       width="50"
-                       :index="indexMethod"
-                       fixed="left"
-                       align="center">
-      </el-table-column>
-      <!-- 循环列 -->
-      <el-table-column v-if="columnIndex.indexOf(column.prop)!=-1"
-                       v-for="(column,index) in columnOption"
-                       :prop="column.prop"
-                       :key="column.prop"
-                       filter-placement="bottom-end"
-                       :filters="column.filters"
-                       :filter-method="column.filterMethod"
-                       :filter-multiple="vaildData(column.filterMultiple,config.filterMultiple)"
-                       :show-overflow-tooltip="column.overHidden"
-                       :min-width="column.minWidth"
-                       :sortable="column.sortable"
-                       :align="vaildData(column.align,tableOption.align)"
-                       :header-align="vaildData(column.headerAlign,tableOption.headerAlign)"
-                       :width="column.width"
-                       :label="column.label"
-                       :fixed="column.fixed">
-        <crud-components v-if="column.children"
-                         :columnOption="column.children"
-                         :tableOption="tableOption"
-                         :tableForm="tableForm"
-                         :columnIndex="columnIndex"
-                         :DIC="DIC">
-          <template slot-scope="scope"
-                    v-for="item in column.children"
-                    :slot="item.prop">
+      <el-tag class="avue-tip"
+              v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
+        <i class="el-icon-info avue-tip__icon">&nbsp;</i>
+        <span class="avue-tip__name">
+          {{config.tipStartTitle}}
+          <span class="avue-tip__name--bold">{{selectLen}}</span>
+          {{config.tipEndTitle}}
+        </span>
+        <span class="avue-tip__btn"
+              @click="selectClear"
+              v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">
+          {{config.tipBtnTitle}}
+        </span>
+      </el-tag>
+      <el-table :data="list"
+                :highlight-current-row="tableOption.highlightCurrentRow"
+                @current-change="currentRowChange"
+                :stripe="tableOption.stripe"
+                :show-header="tableOption.showHeader"
+                :default-sort="tableOption.defaultSort"
+                @row-click="rowClick"
+                @row-dblclick="rowDblclick"
+                :row-class-name="rowClassName"
+                :max-height="tableOption.maxHeight"
+                :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,config.calcHeight)):tableOption.height"
+                ref="table"
+                :width="setPx(tableOption.width,config.width)"
+                :border="tableOption.border"
+                v-loading="tableLoading"
+                @selection-change="selectionChange"
+                @sort-change="sortChange">
+        <!-- 折叠面板  -->
+        <el-table-column type="expand"
+                         width="50"
+                         fixed="left"
+                         align="center"
+                         v-if="tableOption.expand">
+          <template slot-scope="props">
+            <slot :row="props.row"
+                  name="expand"></slot>
+          </template>
+        </el-table-column>
+        <!-- 选择框 -->
+        <el-table-column v-if="tableOption.selection"
+                         type="selection"
+                         width="50"
+                         fixed="left"
+                         align="center">
+        </el-table-column>
+        <!-- 序号 -->
+        <el-table-column v-if="tableOption.index"
+                         :label="vaildData(tableOption.indexLabel,config.indexLabel)"
+                         type="index"
+                         width="50"
+                         :index="indexMethod"
+                         fixed="left"
+                         align="center">
+        </el-table-column>
+        <!-- 循环列 -->
+        <el-table-column v-if="columnIndex.indexOf(column.prop)!=-1"
+                         v-for="(column,index) in columnOption"
+                         :prop="column.prop"
+                         :key="column.prop"
+                         filter-placement="bottom-end"
+                         :filters="column.filters"
+                         :filter-method="column.filterMethod"
+                         :filter-multiple="vaildData(column.filterMultiple,config.filterMultiple)"
+                         :show-overflow-tooltip="column.overHidden"
+                         :min-width="column.minWidth"
+                         :sortable="column.sortable"
+                         :align="vaildData(column.align,tableOption.align)"
+                         :header-align="vaildData(column.headerAlign,tableOption.headerAlign)"
+                         :width="column.width"
+                         :label="column.label"
+                         :fixed="column.fixed">
+          <crud-components v-if="column.children"
+                           :columnOption="column.children"
+                           :tableOption="tableOption"
+                           :tableForm="tableForm"
+                           :columnIndex="columnIndex"
+                           :DIC="DIC">
+            <template slot-scope="scope"
+                      v-for="item in column.children"
+                      :slot="item.prop">
+              <slot :row="scope.row"
+                    :dic="scope.dic"
+                    :label="scope.label"
+                    :name="item.prop"
+                    v-if="item.solt"></slot>
+            </template>
+          </crud-components>
+          <template slot-scope="scope">
+            <template v-if="cellEditFlag(scope.row,column)">
+              <component size="small"
+                         :is="getSearchType(column.type)"
+                         v-model="tableForm[column.prop]"
+                         :type="getType(column)"
+                         clearable
+                         :placeholder="column.label"
+                         :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+            </template>
             <slot :row="scope.row"
-                  :dic="scope.dic"
-                  :label="scope.label"
-                  :name="item.prop"
-                  v-if="item.solt"></slot>
+                  :dic="setDic(column.dicData,DIC[column.dicData])"
+                  :label="detail(scope.row,column)"
+                  :name="column.prop"
+                  v-else-if="column.solt"></slot>
+            <template v-else>
+              <span v-html="detail(scope.row,column)"></span>
+            </template>
           </template>
-        </crud-components>
-        <template slot-scope="scope">
-          <template v-if="cellEditFlag(scope.row,column)">
-            <component size="small"
-                       :is="getSearchType(column.type)"
-                       v-model="tableForm[column.prop]"
-                       :type="getType(column)"
-                       clearable
-                       :placeholder="column.label"
-                       :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+        </el-table-column>
+        <el-table-column fixed="right"
+                         v-if="vaildData(tableOption.menu,config.menu)"
+                         :label="config.menuTitle"
+                         :align="tableOption.menuAlign"
+                         :header-align="tableOption.menuHeaderAlign"
+                         :width="vaildData(tableOption.menuWidth,config.menuWidth)">
+          <template slot-scope="scope">
+            <el-dropdown split-button
+                         icon="el-icon-menu"
+                         type="primary"
+                         v-if="vaildData(tableOption.menuBtn,config.menuBtn)"
+                         :size="config.menuBtnSize">
+              {{config.menuBtnTitle}}
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
+                                  @click.native="rowView(scope.row,scope.$index)">{{config.viewBtnTitle}}</el-dropdown-item>
+                <el-dropdown-item divided
+                                  v-if="vaildData(tableOption.editBtn,true)"
+                                  @click.native="rowEdit(scope.row,scope.$index)">{{config.editBtnTitle}}</el-dropdown-item>
+                <el-dropdown-item divided
+                                  v-if="vaildData(tableOption.delBtn,true)"
+                                  @click.native="rowDel(scope.row,scope.$index)">{{config.delBtnTitle}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <el-button type="primary"
+                       :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
+                       :size="config.cellBtnSize"
+                       @click.stop="rowCell(scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle}}</el-button>
+            <el-button type="success"
+                       :icon="config.viewBtnIcon"
+                       :size="config.viewBtnSize"
+                       @click.stop="rowView(scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.viewBtn,tableOption.menuBtn?false:config.viewBtn)">{{config.viewBtnTitle}}</el-button>
+            <el-button type="primary"
+                       :icon="config.editBtnIcon"
+                       :size="config.editBtnSize"
+                       @click.stop="rowEdit(scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.editBtn,tableOption.menuBtn?false:config.editBtn)">{{config.editBtnTitle}}</el-button>
+            <el-button type="danger"
+                       :icon="config.delBtnIcon"
+                       :size="config.delBtnSize"
+                       @click.stop="rowDel(scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.delBtn,tableOption.menuBtn?false:config.delBtn)">{{config.delBtnTitle}}</el-button>
+            <slot :row="scope.row"
+                  name="menu"
+                  :index="scope.$index"></slot>
           </template>
-          <slot :row="scope.row"
-                :dic="setDic(column.dicData,DIC[column.dicData])"
-                :label="detail(scope.row,column)"
-                :name="column.prop"
-                v-else-if="column.solt"></slot>
-          <template v-else>
-            <span v-html="detail(scope.row,column)"></span>
-          </template>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right"
-                       v-if="vaildData(tableOption.menu,config.menu)"
-                       :label="config.menuTitle"
-                       :align="tableOption.menuAlign"
-                       :header-align="tableOption.menuHeaderAlign"
-                       :width="vaildData(tableOption.menuWidth,config.menuWidth)">
-        <template slot-scope="scope">
-          <el-button type="primary"
-                     :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
-                     :size="config.cellBtnSize"
-                     @click.stop="rowCell(scope.row,scope.$index)"
-                     v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle}}</el-button>
-          <el-button type="success"
-                     :icon="config.viewBtnIcon"
-                     :size="config.viewBtnSize"
-                     @click.stop="rowView(scope.row,scope.$index)"
-                     v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{config.viewBtnTitle}}</el-button>
-          <el-button type="primary"
-                     :icon="config.editBtnIcon"
-                     :size="config.editBtnSize"
-                     @click.stop="rowEdit(scope.row,scope.$index)"
-                     v-if="vaildData(tableOption.editBtn,config.editBtn)">{{config.editBtnTitle}}</el-button>
-          <el-button type="danger"
-                     :icon="config.delBtnIcon"
-                     :size="config.delBtnSize"
-                     @click.stop="rowDel(scope.row,scope.$index)"
-                     v-if="vaildData(tableOption.delBtn,config.delBtn)">{{config.delBtnTitle}}</el-button>
-          <slot :row="scope.row"
-                name="menu"
-                :index="scope.$index"></slot>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <div :class="b('pagination')"
-         v-if="vaildData(tableOption.page,config.page) && listLen">
-      <el-pagination :current-page.sync="page.currentPage"
-                     :background="vaildData(tableOption.pageBackground,config.pageBackground)"
-                     :page-size="page.pageSize"
-                     :page-sizes="page.pageSizes"
-                     @size-change="sizeChange"
-                     @current-change="currentChange"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="page.total"></el-pagination>
-    </div>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <div :class="b('pagination')"
+           v-if="vaildData(tableOption.page,config.page) && listLen">
+        <el-pagination :current-page.sync="page.currentPage"
+                       :background="vaildData(tableOption.pageBackground,config.pageBackground)"
+                       :page-size="page.pageSize"
+                       :page-sizes="page.pageSizes"
+                       @size-change="sizeChange"
+                       @current-change="currentChange"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="page.total"></el-pagination>
+      </div>
+    </el-card>
     <!-- 表单 -->
     <el-dialog lock-scroll
                :custom-class="vaildData(tableOption.customClass,config.customClass)"

@@ -20,6 +20,7 @@ export default {
     columnBtnSize: 'small',
     refreshBtnSize: 'small',
     searchboxBtnSize: 'small',
+    menuBtnSize: 'small',
     dateBtnSize: 'small',
     //文字
     viewBtnTitle: '查 看',
@@ -33,6 +34,7 @@ export default {
     searchBtnTitle: '搜 索',
     emptyBtnTitle: '清 空',
     tipBtnTitle: '清空',
+    menuBtnTitle: '菜 单',
     cellEditBtnTitle: '修改',
     cellSaveBtnTitle: '保存',
     //图标
@@ -57,10 +59,9 @@ export default {
     refreshBtn: true,
     columnBtn: true,
     searchBtn: true,
+    menuBtn: false,
     selectClearBtn: true,
     searchShow: true,
-    searchSpan: 6,
-    searchMenuSpan: 4,
     tip: true,
     formWidth: '50%',
     formFullscreen: false,
@@ -71,6 +72,7 @@ export default {
     indexLabel: '#',
     filterMultiple: true,
     calcHeight: 300,
+    title: '表格标题',
     width: '100%',
     dateDefault: false,
     //搜索参数

@@ -23,6 +23,29 @@
           }
         ],
         option:{
+          title:'表格的标题',
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name',
+            }, {
+              label:'性别',
+              prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
+            }
+          ]
+        },
+        option1:{
+          title:'表格的标题',
+          menuBtn:true,
           page:false,
           align:'center',
           menuAlign:'center',
@@ -53,6 +76,7 @@
      computed: {
        option0(){
          return{
+            title:'表格的标题',
             border:this.showBorder,
             stripe:this.showStripe,
             showHeader:this.showHeader,
@@ -118,6 +142,7 @@ export default {
           }
         ],
         option:{
+          title:'表格的标题',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -192,6 +217,7 @@ export default {
      computed: {
        option0(){
          return{
+            title:'表格的标题',
             border:this.showBorder,
             stripe:this.showStripe,
             showHeader:this.showHeader,
@@ -218,3 +244,62 @@ export default {
 ```
 :::
 
+### 合并菜单
+
+:::demo  配置`menuBtn`为`true`表格的操作栏目菜单合并，`delBtn`和`editBtn`会消失
+```html
+<avue-crud :data="data" :option="option1" v-model="obj"></avue-crud>
+
+<script>
+export default {
+ data() {
+      return {
+        obj:{},
+        data: [
+          {
+            name:'张三',
+            sex:'男',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'李四',
+            sex:'女',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'王五',
+            sex:'女',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'赵六',
+            sex:'男',
+            date:'1994-02-23 00:00:00'
+          }
+        ],
+        option1:{
+          title:'表格的标题',
+          menuBtn:true,
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            },
+            {
+              label:'性别',
+              prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
+            }
+          ]
+        }
+      }
+    }
+  }
+</script>
+``` 
+:::

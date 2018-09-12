@@ -3,6 +3,7 @@
     <el-form ref="form"
              :model="form"
              :label-position="tableOption.labelPosition"
+             :size="tableOption.size"
              :label-width="setPx(tableOption.labelWidth,80)"
              :rules="formRules">
       <el-row :gutter="20"

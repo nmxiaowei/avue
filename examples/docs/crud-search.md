@@ -46,8 +46,7 @@ export default {
              {
               label:'姓名',
               prop:'name',
-              search:true,
-              searchSpan:7
+              search:true
             },
             {
               label:'性别',
@@ -57,7 +56,6 @@ export default {
               label:'权限',
               prop:'grade',
               search:true,
-              searchSpan:7,
               searchDefault:[0],
               searchMmultiple:true,
               type:'select',
@@ -92,8 +90,7 @@ export default {
               prop:'date',
               type:'date',
               more:true,
-              search:true,
-              searchSpan:12,
+              search:true
             },
             {
               label:'时间',
@@ -161,8 +158,7 @@ export default {
              {
               label:'姓名',
               prop:'name',
-              search:true,
-              searchSpan:7
+              search:true
             },
             {
               label:'性别',
@@ -172,8 +168,6 @@ export default {
               label:'权限',
               prop:'grade',
               type:'select',
-              searchShow:true,
-              searchSpan:7,
               searchDefault:[0],
               searchMmultiple:true,
               dicData:[
@@ -243,7 +237,6 @@ export default {
               prop:'date',
               type:'date',
               more:true,
-              searchSpan:8,
               search:true,
             },
             {

@@ -2,7 +2,9 @@
 export default {
     data() {
       return {
-        form:{},
+        form:{
+            datetime:'1398250549123'
+        },
         option:{
           labelWidth:110,
           column: [{
@@ -37,6 +39,8 @@ export default {
               label: "日期时间",
               prop: "datetime",
               type: "datetime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "timestamp",//时间戳例子
           }, {
               label: "周",
               prop: "week",
@@ -85,7 +89,9 @@ export default {
 export default {
     data() {
       return {
-        form:{},
+        form:{
+            datetime:'1398250549123'//时间戳例子
+        },
         option:{
           labelWidth:110,
           column: [{
@@ -120,6 +126,8 @@ export default {
               label: "日期时间",
               prop: "datetime",
               type: "datetime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "timestamp",
           }, {
               label: "周",
               prop: "week",
