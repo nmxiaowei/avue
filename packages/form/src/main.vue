@@ -240,6 +240,8 @@ export default create({
         return this.vaildData(column.editDisabled, false);
       } else if (this.boxType === 'view') {
         return true;
+      } else {
+        return false;
       }
     },
     // 验证表单是否显隐
@@ -252,6 +254,8 @@ export default create({
         return this.vaildData(column.editVisdiplay, true);
       } else if (this.boxType === 'view') {
         return this.vaildData(column.viewVisdiplay, true);
+      } else {
+        return true;
       }
 
     },

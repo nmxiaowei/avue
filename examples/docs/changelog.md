@@ -1,5 +1,8 @@
 ## 更新日志
 
+### 1.1.15
+
+* 修复form组件的visdiplay和disabled紧急bug
 
 ### 1.1.14
 
