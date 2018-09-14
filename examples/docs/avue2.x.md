@@ -20,7 +20,8 @@ avue2.x重磅来袭！与1.x版本截然不同！
 * 6.解放手写大量重复crud和form表单功能，只要维护一个json就好
 * 7.让你轻松完成工作，有更多的时间去泡妹子
 * 8.重点在底层的form表单和crud表格和其他大量组件的使用
-[2.x cli演示地址](https://cli2.avue.top)
+* <b>9.完美兼容ie9+浏览器</b>  
+* 2.x cli演示地址[https://cli2.avue.top](https://cli2.avue.top)  
 
 #### 适合人群
 
@@ -36,14 +37,29 @@ avue2.x重磅来袭！与1.x版本截然不同！
 * 3.加入知识星球干货分享
 * 4.邀请加入vip开发群
 * 5.可远程协助解决问题
-* 费用:299元
+
+#### 费用<b>299元</b>
+
+#### 付款码
 
 <p align="center">
   <img width="600" src="https://images.gitee.com/uploads/images/2018/0706/090804_9e9f02fd_632261.png">
 </p>
+
+#### IE9+效果图
+
+<img src="https://images.gitee.com/uploads/images/2018/0914/100129_54ff898f_632261.png" width="600" align=center />
+
+<img src="https://images.gitee.com/uploads/images/2018/0914/100137_814d5ea2_632261.png" width="600" align=center />
+
+#### 项目截图
+
 <p align="center">
   <img width="600" src="https://images.gitee.com/uploads/images/2018/0820/171455_ec2382b5_632261.png">
 </p>
+
+#### 知识星球
+
 <p align="center">
   <img width="600" src="https://images.gitee.com/uploads/images/2018/0726/141522_54d2d92b_632261.png">
 </p>
