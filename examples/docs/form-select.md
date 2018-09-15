@@ -1,5 +1,5 @@
 <script>
-const baseUrl = `http://122.4.247.156:5555/area`;
+const baseUrl = `https://avue.top/api`;
 export default {
  data() {
       return {
@@ -136,7 +136,7 @@ export default {
 <avue-form v-model="data" :option="option" @submit="submit"></avue-form>
 
 <script>
-const baseUrl = `http://122.4.247.156:5555/area`;
+const baseUrl = `https://avue.top/api`;
 export default {
  data() {
       return {
