@@ -144,7 +144,7 @@
         <el-table-column v-if="columnIndex.indexOf(column.prop)!=-1"
                          v-for="(column,index) in columnOption"
                          :prop="column.prop"
-                         :key="column.prop"
+                         :key="index"
                          filter-placement="bottom-end"
                          :filters="column.filters"
                          :filter-method="column.filterMethod"

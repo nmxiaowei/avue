@@ -12,7 +12,8 @@
             :form="form"
             :column="item"
             v-if="item.slot"></slot>
-      <el-col :span="column.span || 8"
+      <el-col :md="column.span||8"
+              :xs="24"
               v-else
               v-for="(column,cindex) in item.column"
               :key="cindex">

@@ -2,7 +2,9 @@
   <div class="data-icons">
     <el-row :span="24">
       <template v-for="(item,index) in data">
-        <el-col :span="span"
+        <el-col :xs="12"
+                :sm="6"
+                :md="span"
                 :key="index">
           <div class="item"
                :class="[{'item--easy':discount}]">

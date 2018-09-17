@@ -54,7 +54,6 @@
 <script>
 
 import create from '../../utils/create';
-import { validatenull } from '../../utils/validate.js';
 import crudCompoents from '../../mixins/crud-compoents.js';
 export default create({
   name: 'crud-upload',
@@ -125,7 +124,7 @@ export default create({
       if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
     },
     handleChange (file, fileList) {
-      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
+      if (typeof this.change === 'function') this.change({ value: this.value, column: this.column });
       this.loading = this.$loading({
         lock: true,
         text: this.loadText,

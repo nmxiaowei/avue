@@ -1,7 +1,9 @@
 <template>
   <div class="data-tabs">
     <el-row :span="24">
-      <el-col :span="span"
+      <el-col :md="span"
+              :xs="24"
+              :sm="12"
               v-for="(item,index) in data"
               :key="index">
         <div class="item"

@@ -15,7 +15,8 @@
                v-for="(column,index) in columnOption"
                v-if="vaildVisdiplay(column)"
                :key="index">
-            <el-col :span="column.span||12"
+            <el-col :md="column.span||12"
+                    :xs="24"
                     @mouseover.native="draggableMenu?mouseover(index):''"
                     @mouseout.native="draggableMenu?mouseout(index):''">
               <div :class="b('option')"

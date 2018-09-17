@@ -4,7 +4,7 @@
     .item {
         display: flex;
         position: relative;
-        margin: 0 auto;
+        margin: 0 auto 10px auto;
         width: 96%;
         height: $height;
         overflow: hidden;
@@ -19,7 +19,7 @@
         height: 100%;
         color: #fff;
         text-align: center;
-        line-height: 120px;
+        line-height: 100px;
         i {
             font-size: 48px !important;
         }
@@ -33,8 +33,8 @@
         justify-content: center;
         flex-direction: column;
         .title {
-            margin-bottom: 5px;
             font-size: 30px;
+            line-height: 40px;
             text-align: center;
         }
         .info {

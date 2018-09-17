@@ -13,4 +13,4 @@ export default function(sfc) {
     sfc.mixins = sfc.mixins || [];
     sfc.mixins.push(bem);
     return sfc;
-};
+}

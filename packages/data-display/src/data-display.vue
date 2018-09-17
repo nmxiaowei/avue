@@ -3,7 +3,9 @@
     <el-row :span="24">
       <el-col v-for="(item,index) in data"
               :key="index"
-              :span="span">
+              :md="span"
+              :xs="12"
+              :sm="12">
         <div class="item"
              :style="{color:color}">
           <h5 class="count">{{item.count}}</h5>
@@ -27,7 +29,7 @@ export default create({
   },
   computed: {
     span () {
-      return this.option.span || 8;
+      return this.option.span || 6;
     },
     data () {
       return this.option.data || [];
