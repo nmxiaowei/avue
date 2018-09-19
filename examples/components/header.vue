@@ -26,7 +26,7 @@
   h1 {
     margin: 0;
     float: left;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: normal;
 
     a {
@@ -50,9 +50,9 @@
   }
 
   .nav {
-    float: right;
-    height: 100%;
-    line-height: 80px;
+    position: fixed;
+    top: 5px;
+    right: 20px;
     background: transparent;
     padding: 0;
     margin: 0;
@@ -65,7 +65,7 @@
     padding: 0 20px;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: calc(50% - 8px);
       width: 1px;
@@ -73,10 +73,12 @@
       background: #ebebeb;
     }
   }
-
+  .nav-logo {
+    font-size: 30px;
+  }
   .nav-logo,
   .nav-logo-small {
-    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei';
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei";
     vertical-align: sub;
     margin: 10px 0;
     background-color: #fff;
@@ -101,7 +103,6 @@
     &.lang-item,
     &:last-child {
       cursor: default;
-      margin-left: 34px;
 
       span {
         opacity: 0.8;
@@ -135,7 +136,7 @@
       }
 
       &.active::after {
-        content: '';
+        content: "";
         display: inline-block;
         position: absolute;
         bottom: 15px;
@@ -258,16 +259,26 @@
     <header class="header"
             ref="header">
       <div class="container">
-        <h1>
-          <!-- logo -->
-          <slot>
-            <h4 class="nav-logo">
-              Avue在线文档
-            </h4>
-          </slot>
-        </h1>
-
+        <p class="nav-logo">
+          Avue 官方网站
+        </p>
+        <!-- nav -->
+        <ul class="nav">
+          <li class="nav-item">
+            <router-link :to="{path:'/'}">主页
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{path:'/component'}">文档
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a href="https://github.com/nmxiaowei/avue"
+               target="_blank">代码</a>
+          </li>
+        </ul>
       </div>
+
     </header>
   </div>
 </template>

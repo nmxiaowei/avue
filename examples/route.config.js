@@ -18,6 +18,10 @@ const registerRoute = (navConfig) => {
         redirect: '/component/installation',
         component: load('component'),
         children: []
+    }, {
+        path: '/pay',
+        component: load('pay'),
+        children: []
     });
     navs.forEach(nav => {
         if (nav.href) return;
@@ -57,7 +61,7 @@ let route = registerRoute(navConfig);
 
 route = route.concat([{
     path: '/',
-    redirect: '/component/installation',
+    redirect: '/pay',
     children: []
 }]);
 

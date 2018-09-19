@@ -74,6 +74,7 @@
                            :maxlength="column.maxlength"
                            :prefixIcon="column.prefixIcon"
                            :suffixIcon="column.suffixIcon"
+                           :options="column.options"
                            :pickerOptions="column.pickerOptions"
                            :defaultTime="column.defaultTime"
                            :min="column.min"

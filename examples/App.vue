@@ -1,15 +1,15 @@
 <style lang="css">
-@import 'highlight.js/styles/color-brewer.css';
-@import 'assets/styles/common.css';
-@import 'assets/styles/fonts/style.css';
+@import "highlight.js/styles/color-brewer.css";
+@import "assets/styles/common.css";
+@import "assets/styles/fonts/style.css";
 
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', SimSun, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", SimSun, sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 
