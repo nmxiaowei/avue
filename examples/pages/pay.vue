@@ -33,7 +33,7 @@
                     :key="cindex"
                     :class="{'pay__content-text--bold':citem.bold}">{{citem.title}}</li>
               </ul>
-              <h2 class="pay__content-money">$&nbsp;{{item.money}}</h2>
+              <h2 class="pay__content-money">￥&nbsp;{{item.money}}</h2>
             </el-card>
           </el-col>
         </el-row>
