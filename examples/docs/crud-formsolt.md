@@ -44,7 +44,7 @@
 
 ### 自定义表单
 
-:::demo 设置列的属性`formsolt`为`true`时即可开启自定义模式，在卡槽中指定列的名字加上Form即可 
+:::demo 设置列的属性`formsolt`为`true`时即可开启表单自定义模式，在卡槽中指定列的名字加上Form即可 
 ```html
 <avue-crud :data="data" :option="option" v-model="user">
   <template slot-scope="scope" slot="nameForm">

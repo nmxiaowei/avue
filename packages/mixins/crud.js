@@ -39,8 +39,14 @@ export default function() {
         },
         watch: {
             tableForm: {
-                handler(n) {
-                    this.$emit('input', n);
+                handler() {
+                    this.$emit('input', this.tableForm);
+                },
+                deep: true
+            },
+            form: {
+                handler() {
+                    this.$emit('input', this.form);
                 },
                 deep: true
             },
@@ -68,10 +74,10 @@ export default function() {
         },
         methods: {
             init() {
-                this.tableOption = Object.assign({}, this.option);
-                const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
                 // 初始化工具
                 this.initFun();
+                this.tableOption = this.deepClone(this.option);
+                const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
                 // 规则初始化
                 this.rulesInit();
 

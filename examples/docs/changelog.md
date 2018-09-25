@@ -1,5 +1,21 @@
 ## 更新日志
 
+### 1.1.18
+
+* 日期范围占位符startPlaceholder和endPlaceholder
+* 新增search-reset清空搜索回调方法
+* 新增crud组件和form组件的clearValidate清空表格钟表单验证
+* 新增菜单按钮dropMenu操作栏卡槽
+* 同步ele的resetForm清空表单和clearValidate清空验证规则的方法
+* 表单的清空按钮emptytBtn显隐和emptyText清空按钮的文字resetChange清空回调方法
+* 新增手机type为phone属性为输入手机号准备的组件
+* 新增emptySize和submitSize表单按钮控制大小属性
+* 去掉crud组件中中多余的字段数据
+
+### 1.1.17
+
+* 新增options字段进行第三方插件字段扩展
+
 ### 1.1.16
 
 * 新增自定义表单规则演示代码[实例代码](https://avue.top/#/component/crud-rules)

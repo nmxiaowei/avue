@@ -215,6 +215,11 @@
                 <el-dropdown-item divided
                                   v-if="vaildData(tableOption.delBtn,true)"
                                   @click.native="rowDel(scope.row,scope.$index)">{{config.delBtnTitle}}</el-dropdown-item>
+                <slot name="dropMenu"
+                      :row="scope.row"
+                      :dic="scope.dic"
+                      :label="scope.label"
+                      :index="scope.$index"></slot>
               </el-dropdown-menu>
             </el-dropdown>
             <el-button type="primary"
@@ -237,8 +242,10 @@
                        :size="config.delBtnSize"
                        @click.stop="rowDel(scope.row,scope.$index)"
                        v-if="vaildData(tableOption.delBtn,tableOption.menuBtn?false:config.delBtn)">{{config.delBtnTitle}}</el-button>
-            <slot :row="scope.row"
-                  name="menu"
+            <slot name="menu"
+                  :row="scope.row"
+                  :dic="scope.dic"
+                  :label="scope.label"
                   :index="scope.$index"></slot>
           </template>
         </el-table-column>
@@ -329,6 +336,7 @@ import config from './config.js';
 import {
   validatenull
 } from '../../utils/validate.js';
+import { setTimeout } from 'timers';
 export default create({
   name: 'crud',
   mixins: [crud(), column()],
@@ -340,6 +348,7 @@ export default create({
         tableForm: {},
         searchForm: {}
       },
+      defaultParam: ['$index'],
       keyBtn: false,
       config: config,
       list: [],
@@ -385,12 +394,13 @@ export default create({
       else return !validatenull(this.searchForm);
     },
     formOption () {
-      let option = Object.assign({}, this.tableOption);
+      let option = this.deepClone(this.tableOption);
       option.submitBtn = false;
       option.submitPostion = 'right';
       option.boxType = this.boxType;
       option.dicFlag = false;
       option.dicData = this.DIC;
+      option.emptytBtn = false;
       return option;
     }
   },
@@ -479,7 +489,7 @@ export default create({
               prop: ele.prop,
               index: index
             };
-            safe.columnList.push(Object.assign({}, obj));
+            safe.columnList.push(safe.deepClone(obj));
           }
         });
       }
@@ -492,7 +502,7 @@ export default create({
       this.$emit('input', this.tableForm);
     },
     dataInit () {
-      this.list = Object.assign([], this.data);
+      this.list = [].concat(this.data);
       //初始化序号
       this.list.forEach((ele, index) => {
         ele.$index = index;
@@ -500,8 +510,8 @@ export default create({
     },
     formInit () {
       this.defaultForm = this.formInitVal(this.columnOption);
-      this.tableForm = Object.assign({}, this.defaultForm.tableForm);
-      this.searchForm = Object.assign({}, this.defaultForm.searchForm);
+      this.tableForm = this.deepClone(this.defaultForm.tableForm);
+      this.searchForm = this.deepClone(this.defaultForm.searchForm);
       this.searchShow = this.vaildData(this.tableOption.searchShow, this.config.searchShow);
       this.formVal();
     },
@@ -564,7 +574,8 @@ export default create({
     // 新增
     rowAdd () {
       this.boxType = 'add';
-      this.tableForm = Object.assign({}, this.defaultForm.tableForm);
+      this.tableForm = this.deepClone(this.defaultForm.tableForm);
+      this.clearDefaultParam();
       this.$emit('input', this.tableForm);
       this.show();
     },
@@ -579,14 +590,15 @@ export default create({
         return;
       }
       this.tableIndex = index;
-      this.tableForm = Object.assign({}, row);
+      this.tableForm = this.deepClone(row);
       this.$emit('input', this.tableForm);
       row.$cellEdit = !row.$cellEdit;
       this.$set(this.list, index, row);
     },
     // 编辑
     rowEdit (row, index) {
-      this.tableForm = Object.assign({}, row);
+      this.tableForm = this.deepClone(row);
+      this.clearDefaultParam();
       this.$emit('input', this.tableForm);
       this.tableIndex = index;
       this.boxType = 'edit';
@@ -595,7 +607,8 @@ export default create({
 
     //查看
     rowView (row, index) {
-      this.tableForm = Object.assign({}, row);
+      this.tableForm = this.deepClone(row);
+      this.clearDefaultParam();
       this.$emit('input', this.tableForm);
       this.tableIndex = index;
       this.boxType = 'view';
@@ -603,7 +616,7 @@ export default create({
       this.show();
     },
     rowCellUpdate (row, index) {
-      const form = Object.assign({}, this.tableForm);
+      const form = this.deepClone(this.tableForm);
       this.$emit('input', form);
       this.$emit(
         'row-update',
@@ -625,7 +638,7 @@ export default create({
     rowSave () {
       this.$refs['tableForm'].validate().then(() => {
         this.keyBtn = true;
-        this.$emit('row-save', Object.assign({}, this.tableForm), this.closeDialog,
+        this.$emit('row-save', this.deepClone(this.tableForm), this.closeDialog,
           () => {
             this.keyBtn = false;
           });
@@ -638,7 +651,7 @@ export default create({
         const index = this.tableIndex;
         this.$emit(
           'row-update',
-          Object.assign({}, this.tableForm),
+          this.deepClone(this.tableForm),
           index,
           this.closeDialog,
           () => {
@@ -666,17 +679,23 @@ export default create({
       const callack = () => {
         if (cancel !== false) {
           this.$refs['tableForm'].resetForm();
-          this.tableForm = Object.assign({}, this.defaultForm.tableForm);
-          this.$emit('input', this.tableForm);
+          this.$refs['tableForm'].clearValidate();
         }
       };
       if (typeof this.beforeClose === 'function') this.beforeClose(callack);
       else callack();
     },
+    //清空多余字段
+    clearDefaultParam () {
+      this.defaultParam.forEach(ele => {
+        delete this.tableForm[ele];
+      })
+    },
     resetForm () {
       this.$refs['tableForm'].resetForm();
       this.$emit('input', this.tableForm);
-    },
+    }
+
   }
 });
 </script>

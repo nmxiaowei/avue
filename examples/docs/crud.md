@@ -97,7 +97,12 @@
             ]
          }
        }
-     }
+     },
+    methods: {
+      tip(){
+        this.$message.success('自定义按钮');
+      }
+    }
   }
 </script>
 
@@ -246,9 +251,13 @@ export default {
 
 ### 合并菜单
 
-:::demo  配置`menuBtn`为`true`表格的操作栏目菜单合并，`delBtn`和`editBtn`会消失
+:::demo  配置`menuBtn`为`true`表格的操作栏目菜单合并，`dropMenu`卡槽为自定义卡槽,`delBtn`和`editBtn`会消失
 ```html
-<avue-crud :data="data" :option="option1" v-model="obj"></avue-crud>
+<avue-crud :data="data" :option="option1" v-model="obj">
+  <template slot-scope="scope" slot="dropMenu">
+     <el-dropdown-item divided @click.native="tip">自定义按钮</el-dropdown-item>
+  </template>
+</avue-crud>
 
 <script>
 export default {
@@ -297,6 +306,11 @@ export default {
             }
           ]
         }
+      }
+    },
+    methods: {
+      tip(){
+        this.$message.success('自定义按钮');
       }
     }
   }

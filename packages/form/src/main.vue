@@ -106,8 +106,13 @@
             <div :class="b('menu',[menuPostion])">
               <el-button type="primary"
                          @click="submit"
+                         :size="tableOption.submitSize"
                          icon="el-icon-check"
                          v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提 交')}}</el-button>
+              <el-button icon="el-icon-delete"
+                         :size="tableOption.emptySize"
+                         v-if="vaildData(tableOption.emptytBtn,true)"
+                         @click="resetForm">{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
               <slot name="menuForm"></slot>
             </div>
           </el-form-item>
@@ -136,6 +141,7 @@ export default create({
       optionBox: false,
       tableOption: {},
       form: {},
+      formDefault: {},
       formRules: {}
     };
   },
@@ -288,7 +294,8 @@ export default create({
       });
     },
     formInit () {
-      this.form = this.formInitVal(this.columnOption).tableForm;
+      this.formDefault = this.formInitVal(this.columnOption);
+      this.form = this.deepClone(this.formDefault).tableForm;
       this.formVal();
       const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
       //初始化联动
@@ -337,8 +344,9 @@ export default create({
       });
     },
     resetForm () {
-      this.$refs.form.resetFields();
+      this.form = this.deepClone(this.formDefault).tableForm;
       this.$emit('input', this.form);
+      this.$emit('reset-change');
     },
     submit () {
       this.$refs['form'].validate(valid => {

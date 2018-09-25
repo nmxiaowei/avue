@@ -117,8 +117,11 @@ export default {
         this.obj.phone='17547400800';
     },
     methods:{
+        emptytChange(){
+          this.$message.success('清空方法回调');
+        },
         submit () {
-        this.$message.success('当前数据'+JSON.stringify(this.obj));
+          this.$message.success('当前数据'+JSON.stringify(this.obj));
         },
     }
   }
@@ -134,9 +137,9 @@ export default {
 
 ### 基础
 
-:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`
+:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`,`resetForm`清空表单内容，但是默认值不会被清空,`resetChange`为清空方法的回调
 ```html
-<avue-form v-model="obj" :option="option" @submit="submit"></avue-crud>
+<avue-form ref="form" v-model="obj" :option="option" @reset-change="emptytChange" @submit="submit"></avue-crud>
 
 <script>
 const DIC = {
@@ -254,11 +257,14 @@ export default {
     created(){
         this.obj.username = 'smallwei';
         this.obj.switch = 0;
-        this.obj.phone='17547400800';
+        // this.obj.phone='17547400800';
     },
     methods:{
         submit () {
-        this.$message.success('当前数据'+JSON.stringify(this.obj));
+          this.$message.success('当前数据'+JSON.stringify(this.obj));
+        },
+        resetChange(){
+          this.$message.success('清空方法回调');
         },
     }
   }

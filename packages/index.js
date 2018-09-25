@@ -22,7 +22,6 @@ import FormSteps from './form-steps/index.js';
 import FormDetail from './form-detail/index.js';
 import TableTree from './table-tree/index.js';
 import DateSelect from './date-select/index.js';
-import { vaildData } from './utils/util';
 const components = [
     Crud,
     Form,
@@ -52,7 +51,6 @@ const components = [
 
 function install(Vue, axios) {
     Vue.prototype.$http = axios;
-    Vue.prototype.vaildData = vaildData;
     const AVUE = {};
     components.map(component => {
         Vue.component(component.name, component);

@@ -20,7 +20,9 @@
       <div class="pay__content-list">
         <el-row :span="24"
                 :gutter="30">
-          <el-col :span="8"
+          <el-col :md="8"
+                  :sm="24"
+                  :xs="24"
                   v-for="(item,index) in config"
                   :key="index">
             <el-card>
@@ -99,7 +101,7 @@ export default {
       padding-top: 60px;
       padding-bottom: 10px;
       line-height: 32px;
-      font-size: 30px;
+      font-size: 36px;
       font-weight: 300;
     }
     p {
@@ -111,6 +113,7 @@ export default {
     text-align: center;
     &-btn {
       margin-right: 20px;
+      margin-bottom: 10px;
       width: 206px;
       height: 60px;
       font-size: 26px;

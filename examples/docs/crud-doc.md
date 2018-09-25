@@ -152,6 +152,8 @@
 | format | 显示值时间格式（当type为 date / time / datetime / daterange timerange / datetimerange / week / month / year / dates  | - | - | - |
 | valueFormat | 真实值的时间格式（当type为 date / time / datetime / daterange timerange / datetimerange / week / month / year / dates） | - | - | - |
 | precision | 数字框输入精度（当type为 number 时） | Number | - | 2 |
+| startPlaceholder | 日期范围开始占位符 | String | - | - |
+| endPlaceholder | 日期范围结束占位符 | String | - | - |
 | formHeight | 表单行高度 | Number | - | auto |
 | clearable | 表单清空 | Boolean | true / false | false |
 | size | 表单大小 | String | small / mini | small |
@@ -175,6 +177,7 @@
 | current-row-change | 当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlightCurrentRow 属性为true | currentRow, oldCurrentRow |
 | sort-change | 调用排序后触发该事件 | list |
 | search-change | 点击搜索后触发该事件 | params |
+| search-reset | 清空搜索回调方法 | - |
 | row-update | 编辑数据后确定触发该事件 | row, index, done, loading |
 | row-save | 新增数据后点击确定触发该事件 | row, done, loading  |
 | row-del | 行数据删除时触发该事件 | row, index |
@@ -185,6 +188,7 @@
 | ---- | ---- | ---- |
 | setCurrentRow | 用于单选表格，设定某一行为选中行，如果调用时不加参数，则会取消目前高亮行的选中状态。 | row |
 | toggleSelection | 用于多选表格，切换所有行的选中状态。 |  |
+| clearValidate | 清空表格钟表单验证。 |  |
 | selectClear | 用于多选表格，清空用户的选择。 |  |
 | searchReset | 清空搜索栏目的值 |  |
 | rowAdd | 打开表单新增窗口 |  |
@@ -203,5 +207,6 @@
 | menuForm | 表单操作按钮的自定义内容,参数为 { row, label, dic, $index } |
 | menuLeft | 表格头部左侧内容 |
 | menuRight | 表格头部右侧内容 | 
+| dropMenu | 操作栏目下拉菜单自定义(要用el-dropdown-item组件包裹起来),参数为 { row, label, dic, $index }  |
 | search | 搜索栏目自定义内容 |
 | searchMenu | 搜索栏目菜单自定义内容 |
