@@ -70,6 +70,14 @@ export default [{
         title: '可附赠avue系列全家桶源码学习',
         bold: true
     }, {
+        title: '全家桶包含avue2.x和avue-cli2.x源码'
+    }, {
+        title: '全家桶包含avue-form表单拖拽工具源码'
+    }, {
+        title: '全家桶包含avue-cli2html版本的的源码'
+    }, {
+        title: '全家桶包含avue-api接口管理工具源码'
+    }, {
         title: '可远程协助解决问题'
     }]
 }]

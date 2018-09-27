@@ -34,7 +34,7 @@ export default {
     searchBtnTitle: '搜 索',
     emptyBtnTitle: '清 空',
     tipBtnTitle: '清空',
-    menuBtnTitle: '菜 单',
+    menuBtnTitle: '功 能',
     cellEditBtnTitle: '修改',
     cellSaveBtnTitle: '保存',
     //图标

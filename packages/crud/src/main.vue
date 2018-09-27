@@ -12,7 +12,6 @@
         </date-select>
       </div>
       <div :class="b('header')">
-
         <el-collapse-transition>
           <el-form :model="searchForm"
                    :inline="true"
@@ -49,7 +48,6 @@
                          :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
               <slot name="searchMenu"></slot>
             </el-form-item>
-
           </el-form>
         </el-collapse-transition>
       </div>
@@ -87,8 +85,7 @@
         <i class="el-icon-info avue-tip__icon">&nbsp;</i>
         <span class="avue-tip__name">
           {{config.tipStartTitle}}
-          <span class="avue-tip__name--bold">{{selectLen}}</span>
-          {{config.tipEndTitle}}
+          <span class="avue-tip__name--bold">{{selectLen}}</span> {{config.tipEndTitle}}
         </span>
         <span class="avue-tip__btn"
               @click="selectClear"
@@ -200,12 +197,12 @@
                          :header-align="tableOption.menuHeaderAlign"
                          :width="vaildData(tableOption.menuWidth,config.menuWidth)">
           <template slot-scope="scope">
-            <el-dropdown split-button
-                         icon="el-icon-menu"
-                         type="primary"
-                         v-if="vaildData(tableOption.menuBtn,config.menuBtn)"
+            <el-dropdown v-if="vaildData(tableOption.menuBtn,config.menuBtn)">
+
+              <el-button type="primary"
                          :size="config.menuBtnSize">
-              {{config.menuBtnTitle}}
+                {{config.menuBtnTitle}}<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
                                   @click.native="rowView(scope.row,scope.$index)">{{config.viewBtnTitle}}</el-dropdown-item>
@@ -326,7 +323,6 @@
   </div>
 </template>
 <script>
-
 import dateSelect from '../../date-select'
 import create from '../../utils/create';
 import crud from '../../mixins/crud.js';
@@ -336,11 +332,16 @@ import config from './config.js';
 import {
   validatenull
 } from '../../utils/validate.js';
-import { setTimeout } from 'timers';
+import {
+  setTimeout
+} from 'timers';
 export default create({
   name: 'crud',
   mixins: [crud(), column()],
-  components: { crudComponents, dateSelect },
+  components: {
+    crudComponents,
+    dateSelect
+  },
   data () {
     return {
       clientHeight: document.documentElement.clientHeight,
@@ -463,7 +464,10 @@ export default create({
       return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
     },
     refreshChange () {
-      this.$emit('refresh-change', { page: this.page, searchForm: this.searchForm });
+      this.$emit('refresh-change', {
+        page: this.page,
+        searchForm: this.searchForm
+      });
     },
     rulesInit () {
       this.tableFormRules = {};
@@ -475,6 +479,7 @@ export default create({
       const safe = this;
       this.columnIndex = [];
       this.columnList = [];
+
       function addChild (list) {
         list.forEach((ele, index) => {
           const children = ele.children;
@@ -671,7 +676,7 @@ export default create({
           this.boxVisible = true;
         }
       };
-      if (typeof this.beforeOpen === 'function') this.beforeOpen(callack);
+      if (typeof this.beforeOpen === 'function') this.beforeOpen(callack, this.boxType);
       else callack();
     },
     // 隐藏表单
@@ -682,7 +687,7 @@ export default create({
           this.$refs['tableForm'].clearValidate();
         }
       };
-      if (typeof this.beforeClose === 'function') this.beforeClose(callack);
+      if (typeof this.beforeClose === 'function') this.beforeClose(callack, this.boxType);
       else callack();
     },
     //清空多余字段

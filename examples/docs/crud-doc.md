@@ -5,8 +5,8 @@
 | data | 显示的数据 | Array | — | — |
 | option | 组件配置属性，详情见下面Option属性 | Object | — | — |
 | table-loading | 表格等待框的控制 | Boolean | true / false  | false |
-| before-open |  打开前的回调，会暂停 Dialog 的打开	function(done)，done 用于关闭 Dialog|	Function | — | — |
-| before-close |  关闭前的回调，会暂停 Dialog 的关闭	function(done)，done 用于关闭 Dialog|	Function | — | — |
+| before-open |  打开前的回调，会暂停 Dialog 的打开	function(done,type)，done 用于关闭 Dialog,type为当前窗口的类型 |	Function | — | — |
+| before-close |  关闭前的回调，会暂停 Dialog 的关闭	function(done,type)，done 用于关闭 Dialog,type为当前窗口的类型|	Function | — | — |
 | upload-before |  图片上传前的回调,会暂停图片上传 function(file,done)，done 用于继续图片上传|	Function | — | — |
 | upload-after |  图片上传后的回调, function(res,done)，done 用于结束操作|	Function | — | — |
 | row-class-name | 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className,function({row, rowIndex}) | Function | - | - |
@@ -45,6 +45,7 @@
 | editBtn | 删除按钮 | Boolean | true / false  | true |
 | viewBtn | 查看按钮 | Boolean | true / false  | false |
 | menuBtn | 菜单按钮 | Boolean | true / false  | false |
+| menuBtnTitle | 菜单按钮的文字 | String | -  | 功能 |
 | serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
 | columnBtn | 列显隐按钮 | Boolean | true / false  | true |
 | refreshBtn | 刷新按钮 | Boolean | true / false  | true |

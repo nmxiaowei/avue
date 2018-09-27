@@ -217,6 +217,7 @@ export default {
             label: '单选',
             prop: 'shenfeng1',
             type: 'tree',
+            parent:false,
             dicData: DIC,
             rules: [{
                 required: true,
@@ -467,6 +468,7 @@ export default {
             label: '单选',
             prop: 'shenfeng1',
             type: 'tree',
+            parent:false,
             dicData: DIC,
             rules: [{
                 required: true,

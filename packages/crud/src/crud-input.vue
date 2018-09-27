@@ -60,6 +60,7 @@
                  :filter-node-method="filterNode"
                  :default-expanded-keys="multiple?text:[]"
                  :default-checked-keys="multiple?text:[]"
+                 :default-expand-all="defaultExpandAll"
                  @node-click="handleNodeClick"></el-tree>
       </div>
 
@@ -82,6 +83,7 @@ export default create({
     };
   },
   props: {
+    nodeClick: Function,
     value: {
     },
     filter: {
@@ -93,6 +95,10 @@ export default create({
       default: false
     },
     parent: {
+      type: Boolean,
+      default: true
+    },
+    defaultExpandAll: {
       type: Boolean,
       default: true
     },
@@ -229,14 +235,18 @@ export default create({
       });
     },
     handleNodeClick (data) {
-      if (validatenull(data[this.childrenKey]) && !this.multiple || this.parent) {
+      const callback = () => {
         this.box = false;
+      }
+      if (validatenull(data[this.childrenKey]) && !this.multiple || this.parent) {
         const value = data[this.valueKey];
         const label = data[this.labelKey];
         this.text = value;
         this.labelText = label;
         this.$emit('input', value);
         this.$emit('change', value);
+        if (typeof this.nodeClick === 'function') this.nodeClick(data, callback);
+        else callback();
       }
 
     },

@@ -1,5 +1,15 @@
 ## 更新日志
 
+### 1.1.19
+
+* 修复type为tree是parent属性的控制
+* 新增type为tree时defaultExpandAll展开全部节点属性,默认为true
+* 新增avue-crud-input组件type为tree时的node-click方法返回当前点击的data和done关闭窗口
+* 新增beforeClose和beforeOpen方法中返回的窗口类型function(done,type)
+* 新增menuBtnTitle属性当menuBtn为true时，按钮显示的文字提示，默认为功能
+* 修复弹出框中样式的问题和调整menuBtn的样式
+
+
 ### 1.1.18
 
 * 日期范围占位符startPlaceholder和endPlaceholder
