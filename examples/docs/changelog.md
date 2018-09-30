@@ -1,5 +1,16 @@
 ## 更新日志
 
+### 1.1.20
+
+* crud组件中form自定义slot返回row和index扩展
+* 修复form组件中emptyBtn属性的单词拼写错误
+* 修复crud中搜索为tree时parent属性失效问题
+* submitPostion属性改为menuPostion
+* 新增dateBtn表格的日期控件
+* 新增date-change日期控件回调的日期值，单个日期是字符串，范围日期为数组
+* 新增dateDefault表格日期组件的默认值
+* 更新了form组件文档
+
 ### 1.1.19
 
 * 修复type为tree是parent属性的控制
@@ -22,9 +33,11 @@
 * 新增emptySize和submitSize表单按钮控制大小属性
 * 去掉crud组件中中多余的字段数据
 
+
 ### 1.1.17
 
 * 新增options字段进行第三方插件字段扩展
+
 
 ### 1.1.16
 

@@ -46,6 +46,8 @@
         option1:{
           title:'表格的标题',
           menuBtn:true,
+          dateBtn:true,
+          dateDefault:true,
           page:false,
           align:'center',
           menuAlign:'center',
@@ -99,6 +101,9 @@
        }
      },
     methods: {
+      dateChange(date){
+        this.$message.success(date);
+      },
       tip(){
         this.$message.success('自定义按钮');
       }
@@ -251,9 +256,9 @@ export default {
 
 ### 合并菜单
 
-:::demo  配置`menuBtn`为`true`表格的操作栏目菜单合并，`dropMenu`卡槽为自定义卡槽,`delBtn`和`editBtn`会消失
+:::demo  配置`menuBtn`为`true`表格的操作栏目菜单合并，`dropMenu`卡槽为自定义卡槽,`delBtn`和`editBtn`会消失,`dateBtn`控件的`dateDefault`为`true`时首次进来会加载回调方法
 ```html
-<avue-crud :data="data" :option="option1" v-model="obj">
+<avue-crud :data="data" :option="option1" v-model="obj" @date-change="dateChange">
   <template slot-scope="scope" slot="dropMenu">
      <el-dropdown-item divided @click.native="tip">自定义按钮</el-dropdown-item>
   </template>
@@ -288,6 +293,8 @@ export default {
           menuBtn:true,
           page:false,
           align:'center',
+          dateBtn:true,
+          dateDefault:true,
           menuAlign:'center',
           column:[
              {
@@ -309,6 +316,9 @@ export default {
       }
     },
     methods: {
+      dateChange(date){
+        this.$message.success(date);
+      },
       tip(){
         this.$message.success('自定义按钮');
       }

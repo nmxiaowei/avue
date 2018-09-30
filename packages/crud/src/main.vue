@@ -29,6 +29,7 @@
                          :type="getType(column)"
                          :props="column.props || tableOption.props"
                          :format="column.format"
+                         :parent="column.parent"
                          :filterable="column.searchFilterable"
                          :filter-method="column.searchFilterMethod"
                          :value-format="column.valueFormat"
@@ -283,6 +284,8 @@
             <slot :value="scope.value"
                   :column="scope.column"
                   :dic="scope.dic"
+                  :row="tableForm"
+                  :index="tableIndex"
                   :name="item.prop+'Form'"
                   v-if="item.formsolt"></slot>
           </template>
@@ -401,7 +404,7 @@ export default create({
       option.boxType = this.boxType;
       option.dicFlag = false;
       option.dicData = this.DIC;
-      option.emptytBtn = false;
+      option.emptyBtn = false;
       return option;
     }
   },

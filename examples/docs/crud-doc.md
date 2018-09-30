@@ -1,3 +1,5 @@
+## CRUD 文档
+
 ### Avue-crud Attributes
 
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
@@ -44,6 +46,8 @@
 | delBtn | 删除按钮 | Boolean | true / false  | true |
 | editBtn | 删除按钮 | Boolean | true / false  | true |
 | viewBtn | 查看按钮 | Boolean | true / false  | false |
+| dateBtn | 日期组件按钮 | Boolean | true / false  | false |
+| dateDefault | 日期控件默认的值 | Boolean | true / false  | false |
 | menuBtn | 菜单按钮 | Boolean | true / false  | false |
 | menuBtnTitle | 菜单按钮的文字 | String | -  | 功能 |
 | serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
@@ -179,6 +183,7 @@
 | sort-change | 调用排序后触发该事件 | list |
 | search-change | 点击搜索后触发该事件 | params |
 | search-reset | 清空搜索回调方法 | - |
+| date-change | 表格日期回调方法 | date |
 | row-update | 编辑数据后确定触发该事件 | row, index, done, loading |
 | row-save | 新增数据后点击确定触发该事件 | row, done, loading  |
 | row-del | 行数据删除时触发该事件 | row, index |

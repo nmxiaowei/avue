@@ -23,6 +23,7 @@
           <el-col :md="8"
                   :sm="24"
                   :xs="24"
+                  class="pay__content-item"
                   v-for="(item,index) in config"
                   :key="index">
             <el-card>
@@ -51,21 +52,21 @@
                src="../assets/images/avue3.png"
                alt="">
         </el-carousel-item>
-        <el-carousel-item>
-          <h2 class="pay__silder-title">电脑页</h2>
-          <img class="pay__silder-img"
+          <el-carousel-item>
+            <h2 class="pay__silder-title">电脑页</h2>
+            <img class="pay__silder-img"
                src="../assets/images/avue1.png"
                alt="">
         </el-carousel-item>
-        <el-carousel-item>
-          <h2 class="pay__silder-title">手机页</h2>
-          <img class="pay__silder-img"
+            <el-carousel-item>
+              <h2 class="pay__silder-title">手机页</h2>
+              <img class="pay__silder-img"
                src="../assets/images/avue2.png"
                alt="">
         </el-carousel-item>
-        <el-carousel-item>
-          <h2 class="pay__silder-title">炫彩主题</h2>
-          <img class="pay__silder-img"
+              <el-carousel-item>
+                <h2 class="pay__silder-title">炫彩主题</h2>
+                <img class="pay__silder-img"
                src="../assets/images/avue4.png"
                alt="">
         </el-carousel-item>
@@ -137,6 +138,9 @@ export default {
     &-list {
       width: 1200px;
       margin: 30px auto;
+    }
+    &-item {
+      margin-bottom: 20px;
     }
     &-title {
       text-align: center;

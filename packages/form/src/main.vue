@@ -112,7 +112,7 @@
                          v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
                          :size="tableOption.emptySize"
-                         v-if="vaildData(tableOption.emptytBtn,true)"
+                         v-if="vaildData(tableOption.emptyBtn,true)"
                          @click="resetForm">{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
               <slot name="menuForm"></slot>
             </div>
@@ -192,15 +192,15 @@ export default create({
       };
     },
     menuWidth: function () {
-      if (this.tableOption.submitPostion === 'left') {
+      if (this.tableOption.menuPostion === 'left') {
         return '';
       } else {
         return '0';
       }
     },
     menuPostion: function () {
-      if (this.tableOption.submitPostion) {
-        return this.tableOption.submitPostion;
+      if (this.tableOption.menuPostion) {
+        return this.tableOption.menuPostion;
       } else {
         return 'center';
       }
