@@ -1,5 +1,16 @@
 ## 更新日志
 
+### 1.1.21
+
+* 新增showSummary显示表格合计
+* 新增sumColumnList表格合计需要配置的字段（目前有3中可以为sum相加|avg平均值|count计数）
+* 新增自定义合集方法逻辑summaryMethod返回Function({ columns, data })
+* 新增spanMethod行和列合并方法返回Function({ row, column, rowIndex, columnIndex })
+* 合计和行列合并例子[实例代码](https://avue.top/#/component/crud-sum)
+* 新增emptyText空数据时显示的文本内容
+* 新增表格无数据展示内容empty卡槽
+
+
 ### 1.1.20
 
 * crud组件中form自定义slot返回row和index扩展

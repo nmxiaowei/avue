@@ -89,6 +89,9 @@
             "path": "/crud-edit",
             "title": "crud编辑"
         }, {
+            "path": "/crud-sum",
+            "title": "crud合计"
+        }, {
             "path": "/crud-solt",
             "title": "crud自定义列"
         }, {

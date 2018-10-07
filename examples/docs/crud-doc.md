@@ -12,6 +12,9 @@
 | upload-before |  图片上传前的回调,会暂停图片上传 function(file,done)，done 用于继续图片上传|	Function | — | — |
 | upload-after |  图片上传后的回调, function(res,done)，done 用于结束操作|	Function | — | — |
 | row-class-name | 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className,function({row, rowIndex}) | Function | - | - |
+| span-method | 合并行或列的计算方法Function({ row, column, rowIndex, columnIndex }) | Function | - | - |
+| summary-method | 自定义的合计计算方法Function({ columns, data }) | Function | - | - |
+
 
 ### Avue-crud Option Attributes
 
@@ -25,10 +28,13 @@
 | border | 表格边框 | Boolean | true / false  | false |
 | selection | 行可勾选 | Boolean | true / false  | false |
 | expand | 是否展开折叠行 | Boolean | true / false  | false |
+| empty-text | 空数据时显示的文本内容，也可以通过 slot="empty" 设置 | String | -  | 暂无数据 |
 | index | 是否显示表格序号（根据分页会自动计算，比如每页10行，到了第二页就会从11开始记数） | Boolean | true / false  | false |
 | indexLabel | 序号的标题 | String | — | # |
 | stripe | 是否显示表格的斑马条纹 | Boolean | true / false | false |
 | showHeader | 是否显示表格的表头 | Boolean | true / false  | true |
+| showSummary | 是否在表尾显示合计行 | Boolean | true / false  | false |
+| sumColumnList | 表格合计需要配置的字段 | Array | -  | - |
 | defaultSort | 表格的排序字段{prop: 'date', order: 'descending'}prop默认排序字段，order排序方式 | Object | — | - |
 | align | 表格列齐方式 | String | left / center /right  | left |
 | menu | 是否显示操作菜单栏 | Boolean | true / false  | true |
@@ -215,4 +221,5 @@
 | menuRight | 表格头部右侧内容 | 
 | dropMenu | 操作栏目下拉菜单自定义(要用el-dropdown-item组件包裹起来),参数为 { row, label, dic, $index }  |
 | search | 搜索栏目自定义内容 |
+| empty | 暂无数据的自定义卡槽 |
 | searchMenu | 搜索栏目菜单自定义内容 |

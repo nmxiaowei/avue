@@ -1,4 +1,5 @@
 import * as utils from '../utils/util.js';
+import { validatenull } from '../utils/validate.js';
 import dayjs from 'dayjs';
 export default function() {
     return {
@@ -13,7 +14,8 @@ export default function() {
             },
             // 处理数据
             detail(row, column) {
-                let result = row[column.prop || column.value] || '';
+                let result = row[column.prop || column.value];
+                if (validatenull(result)) result = '';
                 if (column.type) {
                     if (['date', 'time', 'datetime'].includes(column.type) && column.format) {
                         const format = column.format

@@ -97,6 +97,11 @@
       <el-table :data="list"
                 :highlight-current-row="tableOption.highlightCurrentRow"
                 @current-change="currentRowChange"
+                :show-summary="tableOption.showSummary"
+                :summary-method="tableSummaryMethod"
+                :sum-text="tableOption.sumText"
+                :empty-text="tableOption.emptyText"
+                :span-method="tableSpanMethod"
                 :stripe="tableOption.stripe"
                 :show-header="tableOption.showHeader"
                 :default-sort="tableOption.defaultSort"
@@ -111,6 +116,15 @@
                 v-loading="tableLoading"
                 @selection-change="selectionChange"
                 @sort-change="sortChange">
+        <!-- 暂无数据提醒 -->
+        <template slot="empty">
+          <slot name="empty"
+                v-if="$slots.empty"></slot>
+          <span @click="refreshChange"
+                v-else
+                style="cursor:pointer">暂无数据，点击刷新</span>
+        </template>
+
         <!-- 折叠面板  -->
         <el-table-column type="expand"
                          width="50"
@@ -367,7 +381,7 @@ export default create({
       tableOption: {},
       tableFormRules: {},
       tableIndex: -1,
-      tableSelect: []
+      tableSelect: [],
     };
   },
   created () {
@@ -386,6 +400,9 @@ export default create({
     },
     columnOption () {
       return this.tableOption.column || [];
+    },
+    sumColumnList () {
+      return this.tableOption.sumColumnList || [];
     },
     selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
@@ -424,6 +441,8 @@ export default create({
         return {};
       }
     },
+    spanMethod: Function,
+    summaryMethod: Function,
     beforeClose: Function,
     beforeOpen: Function,
     rowClassName: Function,
@@ -699,9 +718,63 @@ export default create({
         delete this.tableForm[ele];
       })
     },
+    //清空表单
     resetForm () {
       this.$refs['tableForm'].resetForm();
       this.$emit('input', this.tableForm);
+    },
+    //合并行
+    tableSpanMethod (param) {
+      if (typeof this.spanMethod === 'function') return this.spanMethod(param);
+    },
+    //合集统计逻辑
+    tableSummaryMethod (param) {
+      //如果自己写逻辑则调用summaryMethod方法
+      if (typeof this.summaryMethod === 'function') return this.summaryMethod(param);
+      const {
+        columns,
+        data
+      } = param;
+      const sums = [];
+      if (columns.length > 0) {
+        columns.forEach((column, index) => {
+          let currItem = this.sumColumnList.find((item => item.name === column.property));
+          if (currItem) {
+            switch (currItem.type) {
+              case "count":
+                sums[index] = '计数:' + data.length;
+                break;
+              case "avg":
+                let avgValues = data.map(item => Number(item[column.property]));
+                let nowindex = 1;
+                sums[index] = avgValues.reduce((perv, curr) => {
+                  let value = Number(curr);
+                  if (!isNaN(value)) {
+                    return (perv + curr) / nowindex++;
+                  } else {
+                    return perv;
+                  }
+                }, 0);
+                sums[index] = '平均:' + sums[index];
+                break;
+              case "sum":
+                let values = data.map(item => Number(item[column.property]));
+                sums[index] = values.reduce((perv, curr) => {
+                  let value = Number(curr);
+                  if (!isNaN(value)) {
+                    return perv + curr;
+                  } else {
+                    return perv;
+                  }
+                }, 0);
+                sums[index] = '合计:' + sums[index];
+                break;
+            }
+          }
+
+        })
+      }
+      return sums;
     }
 
   }

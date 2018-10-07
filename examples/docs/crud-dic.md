@@ -5,8 +5,11 @@
         value:1
       },{
         label:'无权限',
-        disabled:true,
         value:0
+      },{
+        label:'禁止项',
+        disabled:true,
+        value:-1
       }]
   }
 export default {
@@ -30,7 +33,8 @@ export default {
             grade:1
           }, {
             name:'李四',
-            sex:'女'
+            sex:'女',
+            grade:0
           }
         ],
         option:{
@@ -49,13 +53,16 @@ export default {
               prop:'grade',
               type:'select',
               dicData:[
-                {
+               {
                   label:'有权限',
                   value:1
                 },{
                   label:'无权限',
-                  disabled:true,
                   value:0
+                },{
+                  label:'禁止项',
+                  disabled:true,
+                  value:-1
                 }
               ]
             }
@@ -161,7 +168,8 @@ export default {
             grade:1
           }, {
             name:'李四',
-            sex:'女'
+            sex:'女',
+            grade:0
           }
         ],
         option:{
@@ -185,8 +193,11 @@ export default {
                   value:1
                 },{
                   label:'无权限',
-                  disabled:true,
                   value:0
+                },{
+                  label:'禁止项',
+                  disabled:true,
+                  value:-1
                 }
               ]
             }
@@ -213,8 +224,11 @@ export default {
         value:1
       },{
         label:'无权限',
-        disabled:true,
         value:0
+      },{
+        label:'禁止项',
+        disabled:true,
+        value:-1
       }]
   }
 export default {
