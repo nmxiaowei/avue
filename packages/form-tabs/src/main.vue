@@ -15,6 +15,7 @@
       <slot name="before"></slot>
       <avue-form :option="formOption"
                  @submit="submit"
+                 ref="form"
                  v-model="text">
         <template slot-scope="scope"
                   v-for="item in formColumnOption"
@@ -68,6 +69,7 @@ export default create({
   },
   watch: {
     formOption () {
+      this.$refs.form.clearValidate();
       this.formInit();
       this.$emit('change', this.columnOption[this.formIndex]);
     },

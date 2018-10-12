@@ -284,7 +284,7 @@
                :title="dialogTitle"
                :visible.sync="boxVisible"
                :width="vaildData(tableOption.formWidth,config.formWidth)"
-               @close="hide">
+               @close="closeDialog">
       <div :class="b('dialog', ['overflow'])">
         <avue-form v-model="tableForm"
                    ref="tableForm"

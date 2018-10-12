@@ -44,7 +44,7 @@
 
 <script>
 import create from '../../utils/create';
-import { formInitVal } from '../../utils/util';
+import { formInitVal, vaildData } from '../../utils/util';
 export default create({
   name: 'form-steps',
   props: {
@@ -127,6 +127,9 @@ export default create({
     },
     breaks () {
       this.formIndex--;
+    },
+    vaildData (val, dafult) {
+      return vaildData(val, dafult)
     },
     formInit () {
       const column = this.formOption.column;

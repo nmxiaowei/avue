@@ -7,7 +7,8 @@
         <a href="https://cli2.avue.top"
            target="_blank">
           <el-button class="pay__menu-btn pay__menu-btn--download"
-                     type="primary">在线体验</el-button>
+                     type="primary"
+                     @click.prevent="custormAnchor('list')">在线体验</el-button>
         </a>
         <a href="https://avue.top/#/component/avue2.x"
            target="_blank">
@@ -16,11 +17,13 @@
       </div>
     </div>
 
-    <div class="pay__content">
+    <div class="pay__content"
+         id="list"
+         name="list">
       <div class="pay__content-list">
         <el-row :span="24"
                 :gutter="30">
-          <el-col :md="8"
+          <el-col :md="item.span || 8"
                   :sm="24"
                   :xs="24"
                   class="pay__content-item"
@@ -34,7 +37,8 @@
               <ul class="pay__content-text">
                 <li v-for="(citem,cindex) in item.list"
                     :key="cindex"
-                    :class="{'pay__content-text--bold':citem.bold}">{{citem.title}}</li>
+                    :class="{'pay__content-text--bold':citem.bold}"
+                    v-html="citem.title"></li>
               </ul>
               <h2 class="pay__content-money">￥&nbsp;{{item.money}}</h2>
             </el-card>
@@ -52,21 +56,21 @@
                src="../assets/images/avue3.png"
                alt="">
         </el-carousel-item>
-          <el-carousel-item>
-            <h2 class="pay__silder-title">电脑页</h2>
-            <img class="pay__silder-img"
+        <el-carousel-item>
+          <h2 class="pay__silder-title">电脑页</h2>
+          <img class="pay__silder-img"
                src="../assets/images/avue1.png"
                alt="">
         </el-carousel-item>
-            <el-carousel-item>
-              <h2 class="pay__silder-title">手机页</h2>
-              <img class="pay__silder-img"
+        <el-carousel-item>
+          <h2 class="pay__silder-title">手机页</h2>
+          <img class="pay__silder-img"
                src="../assets/images/avue2.png"
                alt="">
         </el-carousel-item>
-              <el-carousel-item>
-                <h2 class="pay__silder-title">炫彩主题</h2>
-                <img class="pay__silder-img"
+        <el-carousel-item>
+          <h2 class="pay__silder-title">炫彩主题</h2>
+          <img class="pay__silder-img"
                src="../assets/images/avue4.png"
                alt="">
         </el-carousel-item>
@@ -82,6 +86,14 @@ export default {
   data () {
     return {
       config: config,
+    }
+  },
+  methods: {
+    custormAnchor (anchorName) {
+      // 找到锚点
+      let anchorElement = document.getElementById(anchorName);
+      // 如果对应id的锚点存在，就跳转到锚点
+      if (anchorElement) { anchorElement.scrollIntoView(); }
     }
   }
 }

@@ -27,6 +27,23 @@ export default {
             }
           ]
         },
+        option2:{
+          border:true,
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name',
+              sort:2,
+            },{
+              label:'性别',
+              prop:'sex',
+              sort:1,
+            }
+          ]
+        },
         option1:{
           defaultSort:{
             prop: 'name',
@@ -159,3 +176,46 @@ export default {
 ```
 :::
 
+
+### 字段排序
+
+:::demo 设置属性的`sort`字段大小即可排列显示顺序
+```html
+<avue-crud :data="data" :option="option2"></avue-crud>
+
+<script>
+export default {
+    data() {
+      return {
+        data: [
+          {
+            name:'张三',
+            sex:'男'
+          }, {
+            name:'李四',
+            sex:'女'
+          }
+        ],
+        option2:{
+          border:true,
+          page:false,
+          align:'center',
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name',
+              sort:2,
+             },{
+              label:'性别',
+              prop:'sex',
+              sort:1,
+            }
+          ]
+        }
+      };
+    }
+}
+</script>
+```
+:::

@@ -22,7 +22,7 @@ export default [{
     title: 'avue2.x源码',
     money: '299',
     list: [{
-        title: 'avue核心源码解读',
+        title: 'avue核心源码解读<a href="https://www.npmjs.com/package/@smallwei/avue" target="_blank">https://cli2.avue.top</a>',
         bold: true
     }, {
         title: '大量的可配置组件源码解读',
@@ -43,11 +43,16 @@ export default [{
         title: '私人交流学习群'
     }, {
         title: '前端最新干货分享'
+    }, {
+        title: '免费的私人git私服<a href="https://git.avue.top" target="_blank">https://git.avue.top</a>'
     }]
 }, {
     title: 'avue-cli 2.x源码',
     money: '299',
     list: [{
+        title: '在线demo<a href="https://cli2.avue.top" target="_blank">https://cli2.avue.top</a>',
+        bold: true
+    }, {
         title: '面向全屏幕尺寸的响应式适配能力',
         bold: true
     }, {
@@ -69,7 +74,7 @@ export default [{
     }, {
         title: '模块的可拆卸化,达到开箱即用'
     }, {
-        title: '免费的私人git私服'
+        title: '免费的私人git私服<a href="https://git.avue.top" target="_blank">https://git.avue.top</a>'
     }, {
         title: '解放重复crud和form的枯燥劳动'
     }, {
@@ -78,6 +83,7 @@ export default [{
         title: '前端最新干货分享'
     }]
 }, {
+    span: 16,
     title: 'avue+avue-cli 2.x 源码',
     money: '399',
     list: [{
@@ -92,9 +98,9 @@ export default [{
     }, {
         title: '全家桶包含avue2.x和avue-cli2.x源码'
     }, {
-        title: '全家桶包含avue-form表单拖拽工具源码'
+        title: '全家桶包含avue-form表单拖拽工具源码<a href="https://form.avue.top" target="_blank">https://form.avue.top</a>'
     }, {
-        title: '全家桶包含avue-cli2html版本的的源码'
+        title: '全家桶包含avue-cli2html版本的的源码<a href="https://temp.avue.top" target="_blank">https://temp.avue.top</a>'
     }, {
         title: '全家桶包含avue-api接口管理工具源码'
     }, {
