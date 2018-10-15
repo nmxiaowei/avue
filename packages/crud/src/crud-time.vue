@@ -7,6 +7,7 @@
                   :end-placeholder="endPlaceholder"
                   :format="format"
                   :readonly="readonly"
+                  :clearable="disabled?false:clearable"
                   :value-format="valueFormat"
                   :placeholder="placeholder?placeholder:`请输入${label}`"
                   @change="handleChange"

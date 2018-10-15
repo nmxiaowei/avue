@@ -38,9 +38,12 @@
                 <component :is="getComponent({type:column.type,component:column.component})"
                            v-else
                            :props="column.props || tableOption.props"
+                           :propsHttp="column.propsHttp || tableOption.propsHttp"
                            v-model="form[column.prop]"
                            :change="column.change"
                            :click="column.click"
+                           :prepend="column.prepend"
+                           :append="column.append"
                            :column="column"
                            :filter="column.filter"
                            :precision="column.precision"

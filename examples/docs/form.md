@@ -95,6 +95,13 @@ export default {
                     maxRows: 3,
                 },
                 {
+                    label: "网站",
+                    span: 24,
+                    prop: "url",
+                    prepend:'http://',
+                    append:'com',
+                },
+                {
                     label: "地址",
                     span: 24,
                     prop: "address",
@@ -236,6 +243,13 @@ export default {
                     valueDefault: 3,
                     minRows: 0,
                     maxRows: 3,
+                },
+                {
+                    label: "网站",
+                    span: 24,
+                    prop: "url",
+                    prepend:'http',
+                    append:'com',
                 },
                 {
                     label: "地址",

@@ -64,7 +64,6 @@ export default create({
       dialogImageUrl: '',
       dialogVisible: false,
       text: this.status ? '' : [],
-      fileList: [],
       file: {}
     };
   },
@@ -108,15 +107,24 @@ export default create({
     },
     imageUrl () {
       return this.status ? this.text : '';
+    },
+    fileList () {
+      let list = [];
+      if (!this.status) {
+        this.text.forEach(ele => {
+          list.push({
+            name: ele[this.labelKey],
+            url: ele[this.valueKey],
+          })
+        })
+      }
+      return list;
     }
   },
   created () {
 
   },
   watch: {
-    text () {
-      this.fileList = this.text || [];
-    }
   },
   mounted () { },
   methods: {
@@ -124,84 +132,80 @@ export default create({
       if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
     },
     handleChange (file, fileList) {
-      if (typeof this.change === 'function') this.change({ value: this.value, column: this.column });
-      this.loading = this.$loading({
-        lock: true,
-        text: this.loadText,
-        spinner: 'el-icon-loading',
-      });
-      const len = fileList.length;
-      this.fileList = this.fileList.splice(len, 1);
+      if (typeof this.change === 'function') this.change({ value: this.text, column: this.column });
     },
     handleSuccess (file) {
-      {
-        this.fileList.push({
-          name: file.label,
-          url: file.value
-        });
-        this.$message.success('上传成功');
-        this.setVal();
+      if (!this.status) {
+        let obj = {};
+        obj[this.labelKey] = file[this.nameKey];
+        obj[this.valueKey] = file[this.urlKey];
+        this.text.push(obj);
+      } else {
+        this.text = file[this.urlKey];
       }
+      this.$message.success('上传成功');
+      this.setVal();
 
     },
     handleRemove (file, fileList) {
-      this.fileList = fileList;
+      this.delete(file);
       this.$message.success('删除成功');
       this.setVal();
     },
     handleError () {
       this.$message.error('上传失败');
     },
+    delete (file) {
+      this.text.forEach((ele, index) => {
+        if (ele[this.valueKey] === file.url) this.text.splice(index, 1);
+      })
+    },
     show (res) {
-      const data = res.data;
       this.loading.close();
-      this.handleSuccess({
-        label: data[this.labelKey],
-        value: data[this.valueKey]
-      });
+      this.handleSuccess(res.data);
     },
     hide () {
       this.loading.close();
       this.handleError();
     },
     httpRequest (config) {
+      this.loading = this.$loading({
+        lock: true,
+        text: this.loadText,
+        spinner: 'el-icon-loading',
+      });
       const file = config.file;
       this.file = config.file;
       const headers = { 'Content-Type': 'multipart/form-data' }
       let param = new FormData()
       param.append('file', file, file.name)
 
-
       const callack = () => {
-        this.$http.post(this.action, param, { headers }).then(res => {
-          if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {
-            this.show(res)
-          })
-          else this.show(res);
-        }).catch((error) => {
-          if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide);
-          else this.hide(error);
-        });
+        this.show({
+          data: {
+            label: '上传图片',
+            value: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=3'
+          }
+        })
+        // this.$http.post(this.action, param, { headers }).then(res => {
+        //   if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {
+        //     this.show(res)
+        //   })
+        //   else this.show(res);
+        // }).catch((error) => {
+        //   if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide);
+        //   else this.hide(error);
+        // });
       };
-
-
       if (typeof this.uploadBefore === 'function') this.uploadBefore(this.file, callack);
       else callack();
-
-
     },
     setVal () {
-      let value;
-      if (this.status) {
-        value = this.text;
-      } else {
-        value = this.fileList;
-      }
-      this.$emit('input', value);
-      this.$emit('change', value);
+      this.$emit('input', this.text);
+      this.$emit('change', this.text);
     },
     handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共上传了 ${files.length + fileList.length} 个文件`);
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url;

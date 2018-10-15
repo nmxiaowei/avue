@@ -89,7 +89,6 @@
 | month | 月 |
 | year | 年 |
 | dates | 多个日期 |
-| ueditor | 富文本编辑器 |
 | password | 密码框 |
 | switch | 开关框 |
 | tree | 树框 |
@@ -142,7 +141,7 @@
 | hide | 隐藏列 | Boolean | true / false | true |
 | span | 表单栅列 | Number | - | 12 |
 | readonly | 只读 | Boolean | true / false | false |
-| type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / ueditor  / password / switch / tree / phone | input | - |
+| type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / password / switch / tree / phone | input | - |
 | disabled | 全部是否禁止 | Boolean | true / false | false |
 | addDisabled | 表单新增时是否禁止 | Boolean | true / false | false |
 | editDisabled | 表单编辑时是否禁止 | Boolean | true / false | false |
@@ -153,8 +152,10 @@
 | multiple | 多选（当type为select / tree 时） | Boolean | true / false | false |
 | formsolt | 表单自定义 | Boolean | true / false | false |
 | formWidth | 表单行高度 | Number / String | - | 50% |
-| minRows | 最小行（当type为 ueditor / textarea） | Number | - | 2 |
-| maxRows | 最大行（当type为 ueditor / textarea） | Number | - | 4 |
+| minRows | 最小行（当type为 textarea） | Number | - | 2 |
+| maxRows | 最大行（当type为 textarea） | Number | - | 4 |
+| prepend | 前面的辅助文字（当type为input） | String / Number | - | - |
+| append | 后面的辅助文字（当type为input）） | String / Number | - | - |
 | valueDefault | 表单的默认值 | Number / String | - | - |
 | searchDefault | 搜索表单的默认值 | Number / String | - | - |
 | searchMmultiple | 搜索表单的是否多选 | Boolean | true / false | false |

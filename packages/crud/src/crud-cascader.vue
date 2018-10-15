@@ -5,7 +5,7 @@
                :props="props"
                :readonly="readonly"
                :change-on-select="changeoOnSelect"
-               :clearable="clearable"
+               :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
                :show-all-levels="showAllLevels"
                :filterable="filterable"

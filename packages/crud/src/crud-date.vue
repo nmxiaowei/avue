@@ -7,6 +7,7 @@
                   :start-placeholder="startPlaceholder"
                   :end-placeholder="endPlaceholder"
                   :format="format"
+                  :clearable="disabled?false:clearable"
                   :picker-options="pickerOptions"
                   :value-format="valueFormat"
                   :default-time="defaultTime"

@@ -4,6 +4,7 @@
               :size="size"
               v-model="labelShow"
               :type="typeParam"
+              :clearable="disabled?false:clearable"
               :autosize="{ minRows: minRows, maxRows: maxRows}"
               :prefix-icon="prefixIcon"
               :suffix-icon="suffixIcon"
@@ -14,7 +15,7 @@
               @click.native="disabled?'':open()" />
     <el-input v-else-if="type==='phone'"
               :size="size"
-              :clearable="clearable"
+              :clearable="disabled?false:clearable"
               v-model="text"
               @click.native="handleClick"
               :type="typeParam"
@@ -28,7 +29,7 @@
               :disabled="disabled" />
     <el-input v-else
               :size="size"
-              :clearable="clearable"
+              :clearable="disabled?false:clearable"
               v-model="text"
               @click.native="handleClick"
               :type="typeParam"
@@ -40,7 +41,12 @@
               :readonly="readonly"
               :placeholder="placeholder?placeholder:`请输入${label}`"
               @change="handleChange"
-              :disabled="disabled" />
+              :disabled="disabled">
+      <template slot="prepend"
+                v-if="prepend">{{prepend}}</template>
+      <template slot="append"
+                v-if="append">{{append}}</template>
+    </el-input>
     <el-dialog :visible.sync="box"
                append-to-body
                :title="`请选择${label}`"
@@ -106,6 +112,12 @@ export default create({
       type: String
     },
     suffixIcon: {
+      type: String
+    },
+    prepend: {
+      type: String
+    },
+    append: {
       type: String
     },
     minlength: {

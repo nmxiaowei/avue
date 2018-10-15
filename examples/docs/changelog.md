@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.2.0
+
+* 新增type为input组件prepend和append前后辅助文字框
+* 重构了type为upload上传组件的整体逻辑
+* 新增type为upload时propsHttp属性配置服务器返回数据的name和url属性
+* 去掉了sort字段排序属性
+
 ### 1.1.22
 
 * 新增crud组件sort字段排序显示

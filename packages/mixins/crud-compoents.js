@@ -1,16 +1,22 @@
 export default function() {
     //props配置
     const propsDefault = {
-        id: 'id',
-        label: 'label',
-        value: 'value',
-        children: 'children',
-        disabled: 'disabled'
+            id: 'id',
+            label: 'label',
+            value: 'value',
+            children: 'children',
+            disabled: 'disabled'
+        }
+        //httpProps配置
+    const propsHttpDefault = {
+        name: 'name',
+        url: 'url',
     }
     return {
         data() {
             return {
                 text: undefined,
+                propsHttpDefault: propsHttpDefault,
                 propsDefault: propsDefault
             }
         },
@@ -67,6 +73,10 @@ export default function() {
                 type: Boolean,
                 default: false
             },
+            propsHttp: {
+                type: Object,
+                default: () => propsHttpDefault
+            },
             props: {
                 type: Object,
                 default: () => propsDefault
@@ -78,6 +88,12 @@ export default function() {
             }
         },
         computed: {
+            nameKey: function() {
+                return this.propsHttp.name || this.propsHttpDefault.name;
+            },
+            urlKey: function() {
+                return this.propsHttp.url || this.propsHttpDefault.url;
+            },
             valueKey: function() {
                 return this.props.value || this.propsDefault.value;
             },

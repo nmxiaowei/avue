@@ -2,7 +2,16 @@
 export default {
     data() {
       return {
-        form:{},
+        form:{
+          imgUrl:[{
+            label:'图片名称',
+            value:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1'
+          },{
+            label:'图片名称',
+            value:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2'
+          }],
+          imgUrl3:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=3'
+        },
         option:{
           labelWidth: 120,
           column: [{
@@ -11,10 +20,14 @@ export default {
               type: 'upload',
               loadText:'附件上传中，请稍等',
               span: 24,
-            //   props:{
-            //       label:''//返回的图片名称字段
-            //       value:''//返回图片地址的字段
-            //   },
+              propsHttp:{
+                  name:'label',
+                  url:'value'
+              },
+              props:{
+                  label:'label',
+                  value:'value'
+              },
               tip: '只能上传jpg/png文件，且不超过500kb',
               action: 'https://jsonplaceholder.typicode.com/posts/',
           }, {
@@ -90,7 +103,16 @@ export default {
 export default {
     data() {
       return {
-        form:{},
+        form:{
+          imgUrl:[{
+            label:'图片名称',
+            value:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'
+          },{
+            label:'图片名称',
+            value:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'
+          }],
+          imgUrl3:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'
+        },
         option:{
           labelWidth: 120,
           column: [{
@@ -98,10 +120,10 @@ export default {
               prop: 'imgUrl',
               type: 'upload',
               span: 24,
-              //   props:{
-              //       label:''//返回的图片名称字段
-              //       value:''//返回图片地址的字段
-              //   },
+              props:{
+                label:'label',
+                value:'value'
+              },
               tip: '只能上传jpg/png文件，且不超过500kb',
               action: 'https://jsonplaceholder.typicode.com/posts/',
           }, {

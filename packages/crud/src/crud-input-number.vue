@@ -7,6 +7,7 @@
                    :size="size"
                    :min="minRows"
                    :max="maxRows"
+                   :clearable="disabled?false:clearable"
                    :readonly="readonly"
                    :controls-position="controlsPosition"
                    :label="placeholder?placeholder:`请输入${label}`"

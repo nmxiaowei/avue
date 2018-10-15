@@ -4,7 +4,7 @@
              :multiple="multiple"
              :filterable="filterable"
              :readonly="readonly"
-             :clearable="clearable"
+             :clearable="disabled?false:clearable"
              :placeholder="placeholder?placeholder:`请选择${label}`"
              @change="handleChange"
              @click.native="handleClick"
