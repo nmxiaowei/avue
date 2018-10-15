@@ -181,21 +181,15 @@ export default create({
       param.append('file', file, file.name)
 
       const callack = () => {
-        this.show({
-          data: {
-            label: '上传图片',
-            value: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=3'
-          }
-        })
-        // this.$http.post(this.action, param, { headers }).then(res => {
-        //   if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {
-        //     this.show(res)
-        //   })
-        //   else this.show(res);
-        // }).catch((error) => {
-        //   if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide);
-        //   else this.hide(error);
-        // });
+        this.$http.post(this.action, param, { headers }).then(res => {
+          if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {
+            this.show(res)
+          })
+          else this.show(res);
+        }).catch((error) => {
+          if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide);
+          else this.hide(error);
+        });
       };
       if (typeof this.uploadBefore === 'function') this.uploadBefore(this.file, callack);
       else callack();
