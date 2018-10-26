@@ -95,7 +95,7 @@ export default {
 
 ### 上传
 
-:::demo  有`upload-after`和`upload-before`方法来拦截请求的，返回数据和done方法
+:::demo  有`upload-after`和`upload-before`方法来拦截请求的，返回数据和done方法,其中propsHttp配置图片服务器返回的url图片地址和name图片名称属性，props配置存到数据库的label图片名称和value图片地址
 ```html
 <avue-form v-model="form" :option="option" @submit="submit" :upload-before="uploadBefore" :upload-after="uploadAfter"></avue-form>
 
@@ -120,6 +120,10 @@ export default {
               prop: 'imgUrl',
               type: 'upload',
               span: 24,
+              propsHttp:{
+                  name:'label',
+                  url:'value'
+              },
               props:{
                 label:'label',
                 value:'value'

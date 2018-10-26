@@ -11,7 +11,8 @@
                      :size="vaildData(tableOption.dateSize,config.dateBtnSize)">
         </date-select>
       </div>
-      <div :class="b('header')">
+      <div :class="b('header')"
+           v-if="vaildData(tableOption.header,true)">
         <el-collapse-transition>
           <el-form :model="searchForm"
                    :inline="true"
@@ -53,7 +54,8 @@
         </el-collapse-transition>
       </div>
       <!-- 表格功能列 -->
-      <div :class="b('menu')">
+      <div :class="b('menu')"
+           v-if="vaildData(tableOption.header,true)">
         <div :class="b('left')">
           <el-button type="primary"
                      @click="rowAdd"
@@ -212,7 +214,8 @@
                          :header-align="tableOption.menuHeaderAlign"
                          :width="vaildData(tableOption.menuWidth,config.menuWidth)">
           <template slot-scope="scope">
-            <el-dropdown v-if="vaildData(tableOption.menuBtn,config.menuBtn)">
+            <el-dropdown v-if="menuType==='menu'"
+                         style="margin-right:9px;">
 
               <el-button type="primary"
                          :size="config.menuBtnSize">
@@ -227,33 +230,35 @@
                 <el-dropdown-item divided
                                   v-if="vaildData(tableOption.delBtn,true)"
                                   @click.native="rowDel(scope.row,scope.$index)">{{config.delBtnTitle}}</el-dropdown-item>
-                <slot name="dropMenu"
+                <slot name="menuBtn"
                       :row="scope.row"
                       :dic="scope.dic"
                       :label="scope.label"
                       :index="scope.$index"></slot>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button type="primary"
-                       :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
-                       :size="config.cellBtnSize"
-                       @click.stop="rowCell(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle}}</el-button>
-            <el-button type="success"
-                       :icon="config.viewBtnIcon"
-                       :size="config.viewBtnSize"
-                       @click.stop="rowView(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.viewBtn,tableOption.menuBtn?false:config.viewBtn)">{{config.viewBtnTitle}}</el-button>
-            <el-button type="primary"
-                       :icon="config.editBtnIcon"
-                       :size="config.editBtnSize"
-                       @click.stop="rowEdit(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.editBtn,tableOption.menuBtn?false:config.editBtn)">{{config.editBtnTitle}}</el-button>
-            <el-button type="danger"
-                       :icon="config.delBtnIcon"
-                       :size="config.delBtnSize"
-                       @click.stop="rowDel(scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.delBtn,tableOption.menuBtn?false:config.delBtn)">{{config.delBtnTitle}}</el-button>
+            <template v-else-if="['button','text','icon'].includes(menuType)">
+              <el-button :type="menuText('primary')"
+                         :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
+                         :size="config.cellBtnSize"
+                         @click.stop="rowCell(scope.row,scope.$index)"
+                         v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle)}}</el-button>
+              <el-button :type="menuText('success')"
+                         :icon="config.viewBtnIcon"
+                         :size="config.viewBtnSize"
+                         @click.stop="rowView(scope.row,scope.$index)"
+                         v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon(config.viewBtnTitle)}}</el-button>
+              <el-button :type="menuText('primary')"
+                         :icon="config.editBtnIcon"
+                         :size="config.editBtnSize"
+                         @click.stop="rowEdit(scope.row,scope.$index)"
+                         v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon(config.editBtnTitle)}}</el-button>
+              <el-button :type="menuText('danger')"
+                         :icon="config.delBtnIcon"
+                         :size="config.delBtnSize"
+                         @click.stop="rowDel(scope.row,scope.$index)"
+                         v-if="vaildData(tableOption.delBtn,config.delBtn)">{{menuIcon(config.delBtnTitle)}}</el-button>
+            </template>
             <slot name="menu"
                   :row="scope.row"
                   :dic="scope.dic"
@@ -395,6 +400,9 @@ export default create({
       const key = `${this.boxType}Title`;
       return this.tableOption[key] || this.config[key];
     },
+    menuType () {
+      return this.tableOption.menuType || 'button'
+    },
     listLen () {
       return this.list.length !== 0
     },
@@ -473,6 +481,12 @@ export default create({
     }
   },
   methods: {
+    menuIcon (value) {
+      return this.menuType === 'icon' ? '' : value
+    },
+    menuText (value) {
+      return this.menuType === 'text' ? 'text' : value
+    },
     closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};

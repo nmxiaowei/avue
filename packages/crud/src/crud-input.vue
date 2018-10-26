@@ -90,6 +90,7 @@ export default create({
   },
   props: {
     nodeClick: Function,
+    checked: Function,
     value: {
     },
     filter: {
@@ -174,7 +175,7 @@ export default create({
   methods: {
     filterNode (value, data) {
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data[this.labelKey].indexOf(value) !== -1;
     },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       console.log(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
@@ -186,6 +187,7 @@ export default create({
           this.labelText.push(node[this.labelKey]);
         }
       });
+      if (typeof this.checked === 'function') this.checked(checkedNodes);
       this.$emit('input', this.text);
       this.$emit('change', this.text);
     },
@@ -250,6 +252,8 @@ export default create({
       const callback = () => {
         this.box = false;
       }
+      if (typeof this.nodeClick === 'function') this.nodeClick(data);
+      if (this.multiple) return;
       if (validatenull(data[this.childrenKey]) && !this.multiple || this.parent) {
         const value = data[this.valueKey];
         const label = data[this.labelKey];
@@ -257,8 +261,7 @@ export default create({
         this.labelText = label;
         this.$emit('input', value);
         this.$emit('change', value);
-        if (typeof this.nodeClick === 'function') this.nodeClick(data, callback);
-        else callback();
+        callback();
       }
 
     },

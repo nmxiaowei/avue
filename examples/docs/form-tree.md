@@ -1,197 +1,197 @@
 <script>
     const DIC = [{
         value: 'zhinan',
-        label: '指南',
+        name: '指南',
         children: [{
             value: 'shejiyuanze',
-            label: '设计原则',
+            name: '设计原则',
             children: [{
                 value: 'yizhi',
-                label: '一致'
+                name: '一致'
             }, {
                 value: 'fankui',
-                label: '反馈'
+                name: '反馈'
             }, {
                 value: 'xiaolv',
-                label: '效率'
+                name: '效率'
             }, {
                 value: 'kekong',
-                label: '可控'
+                name: '可控'
             }]
         }, {
             value: 'daohang',
-            label: '导航',
+            name: '导航',
             children: [{
                 value: 'cexiangdaohang',
-                label: '侧向导航'
+                name: '侧向导航'
             }, {
                 value: 'dingbudaohang',
-                label: '顶部导航'
+                name: '顶部导航'
             }]
         }]
     }, {
         value: 'zujian',
-        label: '组件',
+        name: '组件',
         children: [{
             value: 'basic',
-            label: 'Basic',
+            name: 'Basic',
             children: [{
                 value: 'layout',
-                label: 'Layout 布局'
+                name: 'Layout 布局'
             }, {
                 value: 'color',
-                label: 'Color 色彩'
+                name: 'Color 色彩'
             }, {
                 value: 'typography',
-                label: 'Typography 字体'
+                name: 'Typography 字体'
             }, {
                 value: 'icon',
-                label: 'Icon 图标'
+                name: 'Icon 图标'
             }, {
                 value: 'button',
-                label: 'Button 按钮'
+                name: 'Button 按钮'
             }]
         }, {
             value: 'form',
-            label: 'Form',
+            name: 'Form',
             children: [{
                 value: 'radio',
-                label: 'Radio 单选框'
+                name: 'Radio 单选框'
             }, {
                 value: 'checkbox',
-                label: 'Checkbox 多选框'
+                name: 'Checkbox 多选框'
             }, {
                 value: 'input',
-                label: 'Input 输入框'
+                name: 'Input 输入框'
             }, {
                 value: 'input-number',
-                label: 'InputNumber 计数器'
+                name: 'InputNumber 计数器'
             }, {
                 value: 'select',
-                label: 'Select 选择器'
+                name: 'Select 选择器'
             }, {
                 value: 'cascader',
-                label: 'Cascader 级联选择器'
+                name: 'Cascader 级联选择器'
             }, {
                 value: 'switch',
-                label: 'Switch 开关'
+                name: 'Switch 开关'
             }, {
                 value: 'slider',
-                label: 'Slider 滑块'
+                name: 'Slider 滑块'
             }, {
                 value: 'time-picker',
-                label: 'TimePicker 时间选择器'
+                name: 'TimePicker 时间选择器'
             }, {
                 value: 'date-picker',
-                label: 'DatePicker 日期选择器'
+                name: 'DatePicker 日期选择器'
             }, {
                 value: 'datetime-picker',
-                label: 'DateTimePicker 日期时间选择器'
+                name: 'DateTimePicker 日期时间选择器'
             }, {
                 value: 'upload',
-                label: 'Upload 上传'
+                name: 'Upload 上传'
             }, {
                 value: 'rate',
-                label: 'Rate 评分'
+                name: 'Rate 评分'
             }, {
                 value: 'form',
-                label: 'Form 表单'
+                name: 'Form 表单'
             }]
         }, {
             value: 'data',
-            label: 'Data',
+            name: 'Data',
             children: [{
                 value: 'table',
-                label: 'Table 表格'
+                name: 'Table 表格'
             }, {
                 value: 'tag',
-                label: 'Tag 标签'
+                name: 'Tag 标签'
             }, {
                 value: 'progress',
-                label: 'Progress 进度条'
+                name: 'Progress 进度条'
             }, {
                 value: 'tree',
-                label: 'Tree 树形控件'
+                name: 'Tree 树形控件'
             }, {
                 value: 'pagination',
-                label: 'Pagination 分页'
+                name: 'Pagination 分页'
             }, {
                 value: 'badge',
-                label: 'Badge 标记'
+                name: 'Badge 标记'
             }]
         }, {
             value: 'notice',
-            label: 'Notice',
+            name: 'Notice',
             children: [{
                 value: 'alert',
-                label: 'Alert 警告'
+                name: 'Alert 警告'
             }, {
                 value: 'loading',
-                label: 'Loading 加载'
+                name: 'Loading 加载'
             }, {
                 value: 'message',
-                label: 'Message 消息提示'
+                name: 'Message 消息提示'
             }, {
                 value: 'message-box',
-                label: 'MessageBox 弹框'
+                name: 'MessageBox 弹框'
             }, {
                 value: 'notification',
-                label: 'Notification 通知'
+                name: 'Notification 通知'
             }]
         }, {
             value: 'navigation',
-            label: 'Navigation',
+            name: 'Navigation',
             children: [{
                 value: 'menu',
-                label: 'NavMenu 导航菜单'
+                name: 'NavMenu 导航菜单'
             }, {
                 value: 'tabs',
-                label: 'Tabs 标签页'
+                name: 'Tabs 标签页'
             }, {
                 value: 'breadcrumb',
-                label: 'Breadcrumb 面包屑'
+                name: 'Breadcrumb 面包屑'
             }, {
                 value: 'dropdown',
-                label: 'Dropdown 下拉菜单'
+                name: 'Dropdown 下拉菜单'
             }, {
                 value: 'steps',
-                label: 'Steps 步骤条'
+                name: 'Steps 步骤条'
             }]
         }, {
             value: 'others',
-            label: 'Others',
+            name: 'Others',
             children: [{
                 value: 'dialog',
-                label: 'Dialog 对话框'
+                name: 'Dialog 对话框'
             }, {
                 value: 'tooltip',
-                label: 'Tooltip 文字提示'
+                name: 'Tooltip 文字提示'
             }, {
                 value: 'popover',
-                label: 'Popover 弹出框'
+                name: 'Popover 弹出框'
             }, {
                 value: 'card',
-                label: 'Card 卡片'
+                name: 'Card 卡片'
             }, {
                 value: 'carousel',
-                label: 'Carousel 走马灯'
+                name: 'Carousel 走马灯'
             }, {
                 value: 'collapse',
-                label: 'Collapse 折叠面板'
+                name: 'Collapse 折叠面板'
             }]
         }]
     }, {
         value: 'ziyuan',
-        label: '资源',
+        name: '资源',
         children: [{
             value: 'axure',
-            label: 'Axure Components'
+            name: 'Axure Components'
         }, {
             value: 'sketch',
-            label: 'Sketch Templates'
+            name: 'Sketch Templates'
         }, {
             value: 'jiaohu',
-            label: '组件交互文档'
+            name: '组件交互文档'
         }]
     }];
 export default {
@@ -203,22 +203,34 @@ export default {
         },
         option:{
           column: [{
-            label: '多选',
+            name: '多选',
             prop: 'shenfeng',
             type: 'tree',
             multiple: true,
             dicData: DIC,
+            props:{
+              label:'name',
+            },
+            nodeClick:(data)=>{
+              this.$message.success(JSON.stringify(data))
+            },
+            checked:(data)=>{
+              this.$message.success(JSON.stringify(data))
+            },
             rules: [{
                 required: true,
                 message: "请选择多选",
                 trigger: "change"
             }]
           }, {
-            label: '单选',
+            name: '单选',
             prop: 'shenfeng1',
             type: 'tree',
             parent:false,
             dicData: DIC,
+            props:{
+              label:'name',
+            },
             rules: [{
                 required: true,
                 message: "请选择单选",
@@ -245,204 +257,204 @@ export default {
 
 ### 树型
 
-:::demo 可以设置`parent`属性来控制父类是否可以勾选，默认为`true`
+:::demo 可以设置`parent`属性来控制父类是否可以勾选，默认为`true`,`multiple`设置是否为多选
 ```html
 <avue-form v-model="form" :option="option" @submit="submit"></avue-form>
 
 <script>
     const DIC = [{
         value: 'zhinan',
-        label: '指南',
+        name: '指南',
         children: [{
             value: 'shejiyuanze',
-            label: '设计原则',
+            name: '设计原则',
             children: [{
                 value: 'yizhi',
-                label: '一致'
+                name: '一致'
             }, {
                 value: 'fankui',
-                label: '反馈'
+                name: '反馈'
             }, {
                 value: 'xiaolv',
-                label: '效率'
+                name: '效率'
             }, {
                 value: 'kekong',
-                label: '可控'
+                name: '可控'
             }]
         }, {
             value: 'daohang',
-            label: '导航',
+            name: '导航',
             children: [{
                 value: 'cexiangdaohang',
-                label: '侧向导航'
+                name: '侧向导航'
             }, {
                 value: 'dingbudaohang',
-                label: '顶部导航'
+                name: '顶部导航'
             }]
         }]
     }, {
         value: 'zujian',
-        label: '组件',
+        name: '组件',
         children: [{
             value: 'basic',
-            label: 'Basic',
+            name: 'Basic',
             children: [{
                 value: 'layout',
-                label: 'Layout 布局'
+                name: 'Layout 布局'
             }, {
                 value: 'color',
-                label: 'Color 色彩'
+                name: 'Color 色彩'
             }, {
                 value: 'typography',
-                label: 'Typography 字体'
+                name: 'Typography 字体'
             }, {
                 value: 'icon',
-                label: 'Icon 图标'
+                name: 'Icon 图标'
             }, {
                 value: 'button',
-                label: 'Button 按钮'
+                name: 'Button 按钮'
             }]
         }, {
             value: 'form',
-            label: 'Form',
+            name: 'Form',
             children: [{
                 value: 'radio',
-                label: 'Radio 单选框'
+                name: 'Radio 单选框'
             }, {
                 value: 'checkbox',
-                label: 'Checkbox 多选框'
+                name: 'Checkbox 多选框'
             }, {
                 value: 'input',
-                label: 'Input 输入框'
+                name: 'Input 输入框'
             }, {
                 value: 'input-number',
-                label: 'InputNumber 计数器'
+                name: 'InputNumber 计数器'
             }, {
                 value: 'select',
-                label: 'Select 选择器'
+                name: 'Select 选择器'
             }, {
                 value: 'cascader',
-                label: 'Cascader 级联选择器'
+                name: 'Cascader 级联选择器'
             }, {
                 value: 'switch',
-                label: 'Switch 开关'
+                name: 'Switch 开关'
             }, {
                 value: 'slider',
-                label: 'Slider 滑块'
+                name: 'Slider 滑块'
             }, {
                 value: 'time-picker',
-                label: 'TimePicker 时间选择器'
+                name: 'TimePicker 时间选择器'
             }, {
                 value: 'date-picker',
-                label: 'DatePicker 日期选择器'
+                name: 'DatePicker 日期选择器'
             }, {
                 value: 'datetime-picker',
-                label: 'DateTimePicker 日期时间选择器'
+                name: 'DateTimePicker 日期时间选择器'
             }, {
                 value: 'upload',
-                label: 'Upload 上传'
+                name: 'Upload 上传'
             }, {
                 value: 'rate',
-                label: 'Rate 评分'
+                name: 'Rate 评分'
             }, {
                 value: 'form',
-                label: 'Form 表单'
+                name: 'Form 表单'
             }]
         }, {
             value: 'data',
-            label: 'Data',
+            name: 'Data',
             children: [{
                 value: 'table',
-                label: 'Table 表格'
+                name: 'Table 表格'
             }, {
                 value: 'tag',
-                label: 'Tag 标签'
+                name: 'Tag 标签'
             }, {
                 value: 'progress',
-                label: 'Progress 进度条'
+                name: 'Progress 进度条'
             }, {
                 value: 'tree',
-                label: 'Tree 树形控件'
+                name: 'Tree 树形控件'
             }, {
                 value: 'pagination',
-                label: 'Pagination 分页'
+                name: 'Pagination 分页'
             }, {
                 value: 'badge',
-                label: 'Badge 标记'
+                name: 'Badge 标记'
             }]
         }, {
             value: 'notice',
-            label: 'Notice',
+            name: 'Notice',
             children: [{
                 value: 'alert',
-                label: 'Alert 警告'
+                name: 'Alert 警告'
             }, {
                 value: 'loading',
-                label: 'Loading 加载'
+                name: 'Loading 加载'
             }, {
                 value: 'message',
-                label: 'Message 消息提示'
+                name: 'Message 消息提示'
             }, {
                 value: 'message-box',
-                label: 'MessageBox 弹框'
+                name: 'MessageBox 弹框'
             }, {
                 value: 'notification',
-                label: 'Notification 通知'
+                name: 'Notification 通知'
             }]
         }, {
             value: 'navigation',
-            label: 'Navigation',
+            name: 'Navigation',
             children: [{
                 value: 'menu',
-                label: 'NavMenu 导航菜单'
+                name: 'NavMenu 导航菜单'
             }, {
                 value: 'tabs',
-                label: 'Tabs 标签页'
+                name: 'Tabs 标签页'
             }, {
                 value: 'breadcrumb',
-                label: 'Breadcrumb 面包屑'
+                name: 'Breadcrumb 面包屑'
             }, {
                 value: 'dropdown',
-                label: 'Dropdown 下拉菜单'
+                name: 'Dropdown 下拉菜单'
             }, {
                 value: 'steps',
-                label: 'Steps 步骤条'
+                name: 'Steps 步骤条'
             }]
         }, {
             value: 'others',
-            label: 'Others',
+            name: 'Others',
             children: [{
                 value: 'dialog',
-                label: 'Dialog 对话框'
+                name: 'Dialog 对话框'
             }, {
                 value: 'tooltip',
-                label: 'Tooltip 文字提示'
+                name: 'Tooltip 文字提示'
             }, {
                 value: 'popover',
-                label: 'Popover 弹出框'
+                name: 'Popover 弹出框'
             }, {
                 value: 'card',
-                label: 'Card 卡片'
+                name: 'Card 卡片'
             }, {
                 value: 'carousel',
-                label: 'Carousel 走马灯'
+                name: 'Carousel 走马灯'
             }, {
                 value: 'collapse',
-                label: 'Collapse 折叠面板'
+                name: 'Collapse 折叠面板'
             }]
         }]
     }, {
         value: 'ziyuan',
-        label: '资源',
+        name: '资源',
         children: [{
             value: 'axure',
-            label: 'Axure Components'
+            name: 'Axure Components'
         }, {
             value: 'sketch',
-            label: 'Sketch Templates'
+            name: 'Sketch Templates'
         }, {
             value: 'jiaohu',
-            label: '组件交互文档'
+            name: '组件交互文档'
         }]
     }];
 export default {
@@ -454,22 +466,34 @@ export default {
         },
         option:{
           column: [{
-            label: '多选',
+            name: '多选',
             prop: 'shenfeng',
             type: 'tree',
             multiple: true,
             dicData: DIC,
+            props:{
+              label:'name',
+            },
             rules: [{
                 required: true,
                 message: "请选择多选",
                 trigger: "change"
-            }]
+            }],
+            nodeClick:(data)=>{
+              this.$message.success(JSON.stringify(data))
+            },
+            checked:(data)=>{
+              this.$message.success(JSON.stringify(data))
+            }
           }, {
-            label: '单选',
+            name: '单选',
             prop: 'shenfeng1',
             type: 'tree',
             parent:false,
             dicData: DIC,
+            props:{
+              label:'name',
+            },
             rules: [{
                 required: true,
                 message: "请选择单选",

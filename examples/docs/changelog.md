@@ -1,5 +1,15 @@
 ## 更新日志
 
+### 1.2.2
+
+* crud去掉menuBtn属性和dropMenu卡槽
+* 新增menuType操作栏按钮类型，默认为button（button / icon / menu / text），共四种类型
+* 新增menuBtn卡槽，可以为menuType为menu时合并菜单扩展按钮
+* 修复type为tree时props字典时的搜索问题
+* 修复type为tree时多选点击闪退问题
+* 新增crud组件表格头部header属性头部显隐，默认为true
+* 新增type为tree时nodeClick节点点击事件和checked勾选事件，都返回当前节点对象
+
 ### 1.2.1
 
 * 版本打包错误

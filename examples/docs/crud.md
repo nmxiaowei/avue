@@ -45,7 +45,7 @@
         },
         option1:{
           title:'表格的标题',
-          menuBtn:true,
+          menuType:'menu',
           dateBtn:true,
           dateDefault:true,
           page:false,
@@ -56,6 +56,56 @@
               label:'姓名',
               prop:'name',
             }, {
+              label:'性别',
+              prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
+            }
+          ]
+        },
+        option2:{
+          title:'表格的标题',
+          menuType:'text',
+          page:false,
+          align:'center',
+          dateBtn:true,
+          dateDefault:true,
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            },
+            {
+              label:'性别',
+              prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
+            }
+          ]
+        },
+        option3:{
+          title:'表格的标题',
+          menuType:'icon',
+          page:false,
+          align:'center',
+          dateBtn:true,
+          dateDefault:true,
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            },
+            {
               label:'性别',
               prop:'sex'
             },{
@@ -256,11 +306,14 @@ export default {
 
 ### 合并菜单
 
-:::demo  配置`menuBtn`为`true`表格的操作栏目菜单合并，`dropMenu`卡槽为自定义卡槽,`delBtn`和`editBtn`会消失,`dateBtn`控件的`dateDefault`为`true`时首次进来会加载回调方法
+:::demo  配置`menuType`为`menu`表格的操作栏目菜单合并，`menuBtn`卡槽为自定义卡槽,`delBtn`和`editBtn`会消失,`dateBtn`控件的`dateDefault`为`true`时首次进来会加载回调方法,
 ```html
 <avue-crud :data="data" :option="option1" v-model="obj" @date-change="dateChange">
-  <template slot-scope="scope" slot="dropMenu">
+  <template slot-scope="scope" slot="menuBtn">
      <el-dropdown-item divided @click.native="tip">自定义按钮</el-dropdown-item>
+  </template>
+  <template slot-scope="scope" slot="menu">
+     <el-button size="small" @click.native="tip">自定义按钮</el-button>
   </template>
 </avue-crud>
 
@@ -290,7 +343,155 @@ export default {
         ],
         option1:{
           title:'表格的标题',
-          menuBtn:true,
+          menuType:'menu',
+          page:false,
+          align:'center',
+          dateBtn:true,
+          dateDefault:true,
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            },
+            {
+              label:'性别',
+              prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      dateChange(date){
+        this.$message.success(date);
+      },
+      tip(){
+        this.$message.success('自定义按钮');
+      }
+    }
+  }
+</script>
+``` 
+:::
+
+### 文本菜单
+
+:::demo  配置`menuType`为`text`时表格操作栏为文本按钮
+```html
+<avue-crud :data="data" :option="option2" v-model="obj" @date-change="dateChange">
+  <template slot-scope="scope" slot="menu">
+     <el-button type="text" size="small" @click.native="tip">自定义按钮</el-button>
+  </template>
+</avue-crud>
+
+<script>
+export default {
+ data() {
+      return {
+        obj:{},
+        data: [
+          {
+            name:'张三',
+            sex:'男',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'李四',
+            sex:'女',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'王五',
+            sex:'女',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'赵六',
+            sex:'男',
+            date:'1994-02-23 00:00:00'
+          }
+        ],
+        option2:{
+          title:'表格的标题',
+          menuType:'text',
+          page:false,
+          align:'center',
+          dateBtn:true,
+          dateDefault:true,
+          menuAlign:'center',
+          column:[
+             {
+              label:'姓名',
+              prop:'name'
+            },
+            {
+              label:'性别',
+              prop:'sex'
+            },{
+              label: "日期",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "yyyy-MM-dd hh:mm:ss",
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      dateChange(date){
+        this.$message.success(date);
+      },
+      tip(){
+        this.$message.success('自定义按钮');
+      }
+    }
+  }
+</script>
+``` 
+:::
+
+### 图标菜单
+
+:::demo  配置`menuType`为`icon`时表格操作栏为图标按钮
+```html
+<avue-crud :data="data" :option="option3" v-model="obj" @date-change="dateChange">
+  <template slot-scope="scope" slot="menu">
+     <el-button size="small" @click.native="tip" icon="el-icon-share"></el-button>
+  </template>
+</avue-crud>
+
+<script>
+export default {
+ data() {
+      return {
+        obj:{},
+        data: [
+          {
+            name:'张三',
+            sex:'男',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'李四',
+            sex:'女',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'王五',
+            sex:'女',
+            date:'1994-02-23 00:00:00'
+          }, {
+            name:'赵六',
+            sex:'男',
+            date:'1994-02-23 00:00:00'
+          }
+        ],
+        option3:{
+          title:'表格的标题',
+          menuType:'icon',
           page:false,
           align:'center',
           dateBtn:true,

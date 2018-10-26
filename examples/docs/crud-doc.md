@@ -22,6 +22,7 @@
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | width | 表格宽度 | Number | — | 100% |
 | height | 表格高度 | Number | — | auto |
+| header | 头部显隐 | Boolean | true / false | true |
 | title | 表格标题 | String | — | 表格标题 |
 | maxHeight | 表格最大高度 | Number | — | auto |
 | calcHeight | 表格高度差（主要用于减去其他部分让表格高度自适应） | Number | — | auto |selection
@@ -54,7 +55,7 @@
 | viewBtn | 查看按钮 | Boolean | true / false  | false |
 | dateBtn | 日期组件按钮 | Boolean | true / false  | false |
 | dateDefault | 日期控件默认的值 | Boolean | true / false  | false |
-| menuBtn | 菜单按钮 | Boolean | true / false  | false |
+| menuType | 操作栏菜单按钮类型 | String | button / icon / text / menu | button |
 | menuBtnTitle | 菜单按钮的文字 | String | -  | 功能 |
 | serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
 | columnBtn | 列显隐按钮 | Boolean | true / false  | true |
@@ -220,7 +221,7 @@
 | menuForm | 表单操作按钮的自定义内容,参数为 { row, label, dic, $index } |
 | menuLeft | 表格头部左侧内容 |
 | menuRight | 表格头部右侧内容 | 
-| dropMenu | 操作栏目下拉菜单自定义(要用el-dropdown-item组件包裹起来),参数为 { row, label, dic, $index }  |
+| menuBtn | 操作栏目下拉菜单自定义(要用el-dropdown-item组件包裹起来),参数为 { row, label, dic, $index }  |
 | search | 搜索栏目自定义内容 |
 | empty | 暂无数据的自定义卡槽 |
 | searchMenu | 搜索栏目菜单自定义内容 |

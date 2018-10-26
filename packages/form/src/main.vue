@@ -42,6 +42,8 @@
                            v-model="form[column.prop]"
                            :change="column.change"
                            :click="column.click"
+                           :nodeClick="column.nodeClick"
+                           :checked="column.checked"
                            :prepend="column.prepend"
                            :append="column.append"
                            :column="column"
@@ -349,6 +351,7 @@ export default create({
     },
     resetForm () {
       this.form = this.deepClone(this.formDefault).tableForm;
+      this.clearValidate();
       this.$emit('input', this.form);
       this.$emit('reset-change');
     },

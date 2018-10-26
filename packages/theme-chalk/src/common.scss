@@ -3,6 +3,12 @@
     background: #c8ebfb;
 }
 
+.avue-dialog {
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
 .avue-tip {
     position: relative;
     margin-bottom: 12px;

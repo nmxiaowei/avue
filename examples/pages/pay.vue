@@ -7,8 +7,7 @@
         <a href="https://cli2.avue.top"
            target="_blank">
           <el-button class="pay__menu-btn pay__menu-btn--download"
-                     type="primary"
-                     @click.prevent="custormAnchor('list')">在线体验</el-button>
+                     type="primary">在线体验</el-button>
         </a>
         <a href="https://avue.top/#/component/avue2.x"
            target="_blank">
