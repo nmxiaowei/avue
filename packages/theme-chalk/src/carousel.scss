@@ -1,0 +1,24 @@
+.carousel {
+    .item {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        &-img {
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+        }
+        &-title {
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
+            text-align: center;
+            color: #fff;
+            background-color: rgba(0, 0, 0, .6);
+        }
+    }
+}

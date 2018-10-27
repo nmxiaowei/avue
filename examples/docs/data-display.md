@@ -16,6 +16,10 @@ export default {
             {
               count: '20,000',
               title: '年活跃数'
+            },
+            {
+              count: '40,000',
+              title: '周活跃数'
             }
           ]
         },
@@ -56,6 +60,10 @@ export default {
             {
               count: '20,000',
               title: '年活跃数'
+            },
+            {
+              count: '40,000',
+              title: '周活跃数'
             }
           ]
         },

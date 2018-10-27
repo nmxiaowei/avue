@@ -1,10 +1,20 @@
 ## 更新日志
 
+### 1.2.3
+
+* 新增type为tree时defaultExpandAll属性是否展开树形结构，默认为true
+* 优化type为password时crud明文显示的问题
+* 修复type为tree时搜索props配置问题
+* 修复核心方法是字典匹配对象方法问题
+* 去掉avue-form-tabs组件更改为avue-tabs组件，可以配置form和crud的选项卡[实例代码](https://avue.top/#/component/tabs)
+* 新增data-progress进度条数据展示组件[实例代码](https://avue.top/#/component/data-progress)
+* 新增carousel跑马灯工具类组件[实例代码](https://avue.top/#/component/carousel)
+
 ### 1.2.2
 
 * crud去掉menuBtn属性和dropMenu卡槽
 * 新增menuType操作栏按钮类型，默认为button（button / icon / menu / text），共四种类型
-* 新增menuBtn卡槽，可以为menuType为menu时合并菜单扩展按钮
+* 新增menuBtn卡槽，当menuType为menu时合并菜单扩展按钮
 * 修复type为tree时props字典时的搜索问题
 * 修复type为tree时多选点击闪退问题
 * 新增crud组件表格头部header属性头部显隐，默认为true

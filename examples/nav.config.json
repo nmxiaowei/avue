@@ -113,41 +113,36 @@
     }, {
         "groupName": "Form",
         "list": [{
-                "path": "/form-doc",
-                "title": "form文档"
-            }, {
-                "path": "/form",
-                "title": "form表单"
-            }, {
-                "path": "/form-date",
-                "title": "form日期"
-            }, {
-                "path": "/form-rate",
-                "title": "form评价"
-            }, {
-                "path": "/form-silder",
-                "title": "form滑块"
-            }, {
-                "path": "/form-upload",
-                "title": "form上传"
-            }, {
-                "path": "/form-select",
-                "title": "form多级联动"
-            },
-            {
-                "path": "/form-tabs",
-                "title": "form选项卡"
-            }, {
-                "path": "/form-steps",
-                "title": "form步骤条"
-            }, {
-                "path": "/form-detail",
-                "title": "form详情"
-            }, {
-                "path": "/form-tree",
-                "title": "form树型"
-            }
-        ]
+            "path": "/form-doc",
+            "title": "form文档"
+        }, {
+            "path": "/form",
+            "title": "form表单"
+        }, {
+            "path": "/form-date",
+            "title": "form日期"
+        }, {
+            "path": "/form-rate",
+            "title": "form评价"
+        }, {
+            "path": "/form-silder",
+            "title": "form滑块"
+        }, {
+            "path": "/form-upload",
+            "title": "form上传"
+        }, {
+            "path": "/form-select",
+            "title": "form多级联动"
+        }, {
+            "path": "/form-steps",
+            "title": "form步骤条"
+        }, {
+            "path": "/form-detail",
+            "title": "form详情"
+        }, {
+            "path": "/form-tree",
+            "title": "form树型"
+        }]
     }]
 }, {
     "name": "工具组件",
@@ -159,6 +154,12 @@
         }, {
             "path": "/tree",
             "title": "多功能表格树"
+        }, {
+            "path": "/tabs",
+            "title": "多功能选项卡"
+        }, {
+            "path": "/carousel",
+            "title": "多功能跑马灯"
         }]
     }]
 }, {
@@ -180,6 +181,9 @@
         }, {
             "path": "/data-icons",
             "title": "数据展示5"
+        }, {
+            "path": "/data-progress",
+            "title": "数据展示6"
         }]
     }]
 }]

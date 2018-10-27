@@ -14,15 +14,22 @@ export default function() {
             },
             // 处理数据
             detail(row, column) {
-                let result = row[column.prop || column.value];
+                let result = row[column.prop || column.value],
+                    type = column.type;
                 if (validatenull(result)) result = '';
-                if (column.type) {
-                    if (['date', 'time', 'datetime'].includes(column.type) && column.format) {
+                if (type) {
+                    //日期处理
+                    if (['date', 'time', 'datetime'].includes(type) && column.format) {
                         const format = column.format
                             .replace('dd', 'DD')
                             .replace('yyyy', 'YYYY');
                         result = dayjs(result).format(format);
                     }
+                    // 密码处理
+                    if (['password'].includes(type)) {
+                        return this.getPasswordChar(result.toString().length, '*');
+                    }
+                    //字典处理
                     if (column.dicData) {
                         result = this.findByvalue(
                             typeof column.dicData === 'string' ? this.DIC[column.dicData] : column.dicData,

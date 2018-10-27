@@ -118,19 +118,6 @@
        :class="{ 'is-fade': isFade }"
        :style="navStyle">
     <ul>
-      <li class="nav-item sponsors">
-        <a>阿里云年中大促</a>
-        <ul class="pure-menu-list sub-nav">
-          <li class="nav-item">
-            <a class="sponsor"
-               href="http://t.cn/RscchPN"
-               target="_blank">
-              <img src="../assets/images/aliyun.jpg"
-                   alt="aliyun">
-            </a>
-          </li>
-        </ul>
-      </li>
       <li class="nav-item"
           v-for="(item,index) in data"
           :key="index">

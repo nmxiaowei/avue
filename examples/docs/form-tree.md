@@ -257,7 +257,7 @@ export default {
 
 ### 树型
 
-:::demo 可以设置`parent`属性来控制父类是否可以勾选，默认为`true`,`multiple`设置是否为多选
+:::demo 可以设置`parent`属性来控制父类是否可以勾选，默认为`true`,`multiple`设置是否为多选，`defaultExpandAll`属性是否展开全部树形结构，默认`true`
 ```html
 <avue-form v-model="form" :option="option" @submit="submit"></avue-form>
 

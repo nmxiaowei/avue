@@ -1,31 +1,34 @@
-import Crud from './crud/index.js';
-import CrudCheckbox from './crud-checkbox/index.js';
-import CrudDate from './crud-date/index.js';
-import CrudTime from './crud-time/index.js';
-import CrudInput from './crud-input/index.js';
-import CrudRadio from './crud-radio/index.js';
-import CrudSelect from './crud-select/index.js';
-import CrudCascader from './crud-cascader/index.js';
-import CrudNumberInput from './crud-input-number/index.js';
-import CrudSwitch from './crud-switch/index.js';
-import CrudRate from './crud-rate/index.js';
-import CrudUpload from './crud-upload/index.js';
-import CrudSilder from './crud-silder/index.js';
-import DataDisplay from './data-display/index.js';
-import DataCard from './data-card/index.js';
-import DataTabs from './data-tabs/index.js';
-import DataIcons from './data-icons/index.js';
-import DataBox from './data-box/index.js';
-import Form from './form/index.js';
-import FormTabs from './form-tabs/index.js';
-import FormSteps from './form-steps/index.js';
-import FormDetail from './form-detail/index.js';
-import TableTree from './table-tree/index.js';
-import DateSelect from './date-select/index.js';
+import Carousel from './carousel/';
+import Crud from './crud/';
+import CrudCheckbox from './crud-checkbox/';
+import CrudDate from './crud-date/';
+import CrudTime from './crud-time/';
+import CrudInput from './crud-input/';
+import CrudRadio from './crud-radio/';
+import CrudSelect from './crud-select/';
+import CrudCascader from './crud-cascader/';
+import CrudNumberInput from './crud-input-number/';
+import CrudSwitch from './crud-switch/';
+import CrudRate from './crud-rate/';
+import CrudUpload from './crud-upload/';
+import CrudSilder from './crud-silder/';
+import DataDisplay from './data-display/';
+import DataCard from './data-card/';
+import DataTabs from './data-tabs/';
+import DataProgress from './data-progress/';
+import DataIcons from './data-icons/';
+import DataBox from './data-box/';
+import Form from './form/';
+import Tabs from './tabs/';
+import FormSteps from './form-steps/';
+import FormDetail from './form-detail/';
+import TableTree from './table-tree/';
+import DateSelect from './date-select/';
 const components = [
     Crud,
     Form,
-    FormTabs,
+    Tabs,
+    Carousel,
     FormSteps,
     FormDetail,
     CrudCheckbox,
@@ -40,6 +43,7 @@ const components = [
     CrudRate,
     CrudUpload,
     CrudSilder,
+    DataProgress,
     DataDisplay,
     DataCard,
     DataIcons,

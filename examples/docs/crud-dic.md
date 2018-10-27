@@ -30,11 +30,13 @@ export default {
           {
             name:'张三',
             sex:'男',
-            grade:1
+            grade:1,
+            cascader:[0,1]
           }, {
             name:'李四',
             sex:'女',
-            grade:0
+            grade:0,
+            cascader:[0,2]
           }
         ],
         option:{
@@ -65,6 +67,24 @@ export default {
                   value:-1
                 }
               ]
+            },
+            {
+              label:'级别',
+              prop:'cascader',
+              type:'cascader',
+              dicData:[{
+                label:'一级',
+                value:0,
+                children:[
+                  {
+                    label:'一级1',
+                    value:1,
+                  },{
+                    label:'一级2',
+                    value:2,
+                  }
+                ]
+              }]
             }
           ]
         },
@@ -165,11 +185,13 @@ export default {
           {
             name:'张三',
             sex:'男',
-            grade:1
+            grade:1,
+            cascader:[0,1]
           }, {
             name:'李四',
             sex:'女',
-            grade:0
+            grade:0,
+            cascader:[0,2]
           }
         ],
         option:{
@@ -200,6 +222,23 @@ export default {
                   value:-1
                 }
               ]
+            }, {
+              label:'级别',
+              prop:'cascader',
+              type:'cascader',
+              dicData:[{
+                label:'一级',
+                value:0,
+                children:[
+                  {
+                    label:'一级1',
+                    value:1,
+                  },{
+                    label:'一级2',
+                    value:2,
+                  }
+                ]
+              }]
             }
           ]
         }

@@ -125,11 +125,11 @@ export default {
 
 </style>
 
-## Crud 模块
+## 表格树
 
 
+### 例子
 
-### 表格树
 
 :::demo 传入`option`配置属性即可,`expandAll`是否全部展开,`columns`数据列,`data`为数据,同时还支持自定义列,具体看`avue-cli`的`demo`
 ```html

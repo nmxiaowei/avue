@@ -51,25 +51,28 @@ export const deepClone = data => {
 /**
  * 根据字典的value显示label
  */
-
+let result = '';
 export const findByvalue = (dic, value, props) => {
     props = props || {};
     const labelKey = props.label || 'label';
     const valueKey = props.value || 'value';
     const childrenKey = props.children || 'children';
-    let result = '';
-    if (validatenull(dic)) return value;
+    let result = value;
+    if (validatenull(dic)) return result;
     if (typeof(value) === 'string' || typeof(value) === 'number' || typeof(value) === 'boolean') {
-        let index = 0;
-        index = findArray(dic, value, valueKey);
-        if (index !== -1) {
-            result = (dic[index][labelKey]);
-        } else {
-            result = value;
+        for (let i = 0; i < dic.length; i++) {
+            if (dic[i][valueKey] === value) {
+                result = dic[i][labelKey];
+                break;
+            } else {
+                findByvalue(dic[i][childrenKey], value, props);
+            }
         }
+        return result;
     } else if (value instanceof Array && dic[0][childrenKey]) {
         let index = 0;
         let count = 0;
+        result = '';
         while (count < value.length) {
             index = findArray(dic, value[count]);
             if (!validatenull(dic[index])) {
@@ -81,18 +84,6 @@ export const findByvalue = (dic, value, props) => {
         if (result.length > 0) {
             result = result.substr(0, result.length - 1);
         }
-    } else if (value instanceof Array) {
-        result = [];
-        let index = 0;
-        value.forEach(ele => {
-            index = findArray(dic, ele);
-            if (index !== -1) {
-                result.push(dic[index][labelKey]);
-            } else {
-                result.push(ele);
-            }
-        });
-        result = result.toString();
     }
     return result;
 };
@@ -238,7 +229,13 @@ export const getComponent = ({ type, component }) => {
         return 'crudInput';
     }
 };
-
+export const getPasswordChar = (len, char) => {
+    let result = '';
+    for (let i = 0; i < len; i++) {
+        result = result + char;
+    }
+    return result;
+}
 export const vaildData = (val, dafult) => {
     if (typeof val === 'boolean') {
         return val;
