@@ -40,6 +40,25 @@
                  @row-save="rowSave"
                  @row-update="rowUpdate"
                  v-model="text">
+        <!-- 自定义搜索 -->
+        <template slot="search">
+          <slot name="search"></slot>
+        </template>
+        <!-- 自定义搜索按钮 -->
+        <template slot="searchMenu">
+          <slot name="searchMenu"></slot>
+        </template>
+        <!-- 自定义表单列 -->
+        <template slot-scope="scope"
+                  v-for="item in formColumnOption"
+                  :slot="item.prop">
+          <slot :value="scope.value"
+                :column="scope.column"
+                :dic="scope.dic"
+                :name="item.prop+'Form'"
+                v-if="item.formsolt"></slot>
+        </template>
+        <!-- 自定义表格列 -->
         <template slot-scope="scope"
                   v-for="item in formColumnOption"
                   :slot="item.prop">
@@ -47,8 +66,45 @@
                 :column="scope.column"
                 :dic="scope.dic"
                 :name="item.prop"
-                v-if="item.formsolt"></slot>
+                v-if="item.solt"></slot>
         </template>
+        <!-- 表格左侧卡槽 -->
+        <template slot="menuLeft">
+          <slot name="menuLeft"></slot>
+        </template>
+        <!-- 表格右测卡槽 -->
+        <template slot="menuRight">
+          <slot name="menuRight"></slot>
+        </template>
+        <!-- 清空卡槽 -->
+        <template slot="empty">
+          <slot name="empty"
+                v-if="$slots.empty"></slot>
+        </template>
+        <!-- 折叠面板卡槽 -->
+        <template slot-scope="props"
+                  slot="expand">
+          <slot :row="props.row"
+                name="expand"></slot>
+        </template>
+        <!-- 菜单栏按钮卡槽 -->
+        <template slot-scope="scope"
+                  slot="menuBtn">
+          <slot name="menuBtn"
+                :row="scope.row"
+                :dic="scope.dic"
+                :label="scope.label"
+                :index="scope.$index"></slot>
+        </template>
+        <!-- 菜单栏 -->
+        <template slot-scope="scope"
+                  slot="menu">
+          <slot name="menu"
+                :value="scope.value"
+                :column="scope.column"
+                :dic="scope.dic"></slot>
+        </template>
+        <!-- 弹出框按钮 -->
         <template slot="menuForm">
           <slot name="menuForm"></slot>
         </template>

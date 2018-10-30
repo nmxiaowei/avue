@@ -10,7 +10,20 @@
         label:'禁止项',
         disabled:true,
         value:-1
-      }]
+      }],
+    CASCADER:[{
+      label:'一级',
+      value:0,
+      children:[
+        {
+          label:'一级1',
+          value:1,
+        },{
+          label:'一级2',
+          value:2,
+        }
+      ]
+    }]
   }
 export default {
     data() {
@@ -31,12 +44,14 @@ export default {
             name:'张三',
             sex:'男',
             grade:1,
-            cascader:[0,1]
+            cascader:[0,1],
+            tree:0,
           }, {
             name:'李四',
             sex:'女',
             grade:0,
-            cascader:[0,2]
+            cascader:[0,2],
+            tree:1,
           }
         ],
         option:{
@@ -72,19 +87,13 @@ export default {
               label:'级别',
               prop:'cascader',
               type:'cascader',
-              dicData:[{
-                label:'一级',
-                value:0,
-                children:[
-                  {
-                    label:'一级1',
-                    value:1,
-                  },{
-                    label:'一级2',
-                    value:2,
-                  }
-                ]
-              }]
+              dicData:DIC.CASCADER
+            },
+            {
+              label:'树型',
+              prop:'tree',
+              type:'tree',
+              dicData:DIC.CASCADER
             }
           ]
         },
@@ -178,6 +187,32 @@ export default {
 <avue-crud :data="data" :option="option" ></avue-crud>
 
 <script>
+ const DIC={
+    GRADE:[{
+        label:'有权限',
+        value:1
+      },{
+        label:'无权限',
+        value:0
+      },{
+        label:'禁止项',
+        disabled:true,
+        value:-1
+      }],
+    CASCADER:[{
+      label:'一级',
+      value:0,
+      children:[
+        {
+          label:'一级1',
+          value:1,
+        },{
+          label:'一级2',
+          value:2,
+        }
+      ]
+    }]
+  }
 export default {
     data() {
       return {
@@ -186,12 +221,14 @@ export default {
             name:'张三',
             sex:'男',
             grade:1,
-            cascader:[0,1]
+            cascader:[0,1],
+            tree:0,
           }, {
             name:'李四',
             sex:'女',
             grade:0,
-            cascader:[0,2]
+            cascader:[0,2],
+            tree:1
           }
         ],
         option:{
@@ -222,23 +259,17 @@ export default {
                   value:-1
                 }
               ]
-            }, {
+            },{
               label:'级别',
               prop:'cascader',
               type:'cascader',
-              dicData:[{
-                label:'一级',
-                value:0,
-                children:[
-                  {
-                    label:'一级1',
-                    value:1,
-                  },{
-                    label:'一级2',
-                    value:2,
-                  }
-                ]
-              }]
+              dicData:DIC.CASCADER
+            },
+            {
+              label:'树型',
+              prop:'tree',
+              type:'tree',
+              dicData:DIC.CASCADER
             }
           ]
         }
@@ -268,7 +299,20 @@ export default {
         label:'禁止项',
         disabled:true,
         value:-1
-      }]
+      }],
+    CASCADER:[{
+      label:'一级',
+      value:0,
+      children:[
+        {
+          label:'一级1',
+          value:1,
+        },{
+          label:'一级2',
+          value:2,
+        }
+      ]
+    }]
   }
 export default {
     data() {

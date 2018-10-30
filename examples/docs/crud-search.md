@@ -261,15 +261,16 @@ export default {
 
 ### 自定义内容
 
-:::demo  设置卡槽名字为`search`即可，一定要加`el-form-item`否则格式排版会出问题，目前的排版为一次追加，不够的排到下一行，如果要清空数据，需要在`search-reset`回调中手动清空你自定义的数据,设置`filterable`为`true`是可以输入搜索字典数据
+:::demo  设置`searchMenu`为搜索按钮的卡槽自定义,设置卡槽名字为`search`即可，一定要加`el-form-item`否则格式排版会出问题，目前的排版为一次追加，不够的排到下一行，如果要清空数据，需要在`search-reset`回调中手动清空你自定义的数据,设置`filterable`为`true`是可以输入搜索字典数据
 ```html
 <avue-crud :data="data" :option="option" @search-reset="searchReset1" @search-change="searchChange1">
   <template slot="search">
-    <el-col :span="7">
-      <el-form-item label="自定义">
-        <el-input v-model="search.slot" placeholder="自定义搜索" size="small"/>
-      </el-form-item>
-    </el-col>
+    <el-form-item label="自定义">
+      <el-input v-model="search.slot" placeholder="自定义搜索" size="small"/>
+    </el-form-item>
+  </template>
+  <template slot="searchMenu">
+      <el-button size="small">自定义按钮</el-button>
   </template>
 </avue-crud>
 

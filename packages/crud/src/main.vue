@@ -31,6 +31,7 @@
                          :props="column.props || tableOption.props"
                          :format="column.format"
                          :parent="column.parent"
+                         :defaultExpandAll="column.defaultExpandAll"
                          :filterable="column.searchFilterable"
                          :filter-method="column.searchFilterMethod"
                          :value-format="column.valueFormat"

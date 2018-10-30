@@ -57,7 +57,6 @@ export const findByvalue = (dic, value, props) => {
     const labelKey = props.label || 'label';
     const valueKey = props.value || 'value';
     const childrenKey = props.children || 'children';
-    let result = value;
     if (validatenull(dic)) return result;
     if (typeof(value) === 'string' || typeof(value) === 'number' || typeof(value) === 'boolean') {
         for (let i = 0; i < dic.length; i++) {
@@ -68,7 +67,6 @@ export const findByvalue = (dic, value, props) => {
                 findByvalue(dic[i][childrenKey], value, props);
             }
         }
-        return result;
     } else if (value instanceof Array && dic[0][childrenKey]) {
         let index = 0;
         let count = 0;
