@@ -19,7 +19,7 @@ export default function() {
                 if (validatenull(result)) result = '';
                 if (type) {
                     //日期处理
-                    if (['date', 'time', 'datetime'].includes(type) && column.format) {
+                    if (['date', 'time', 'datetime'].includes(type) && column.format && !validatenull(result)) {
                         const format = column.format
                             .replace('dd', 'DD')
                             .replace('yyyy', 'YYYY');

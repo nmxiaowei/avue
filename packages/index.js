@@ -1,4 +1,5 @@
 import Carousel from './carousel/';
+import Json from './json/'
 import Crud from './crud/';
 import CrudCheckbox from './crud-checkbox/';
 import CrudDate from './crud-date/';
@@ -25,6 +26,7 @@ import FormDetail from './form-detail/';
 import TableTree from './table-tree/';
 import DateSelect from './date-select/';
 const components = [
+    Json,
     Crud,
     Form,
     Tabs,

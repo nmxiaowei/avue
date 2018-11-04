@@ -45,12 +45,14 @@ export default {
             sex:'男',
             grade:1,
             cascader:[0,1],
+            checkbox:[0,1],
             tree:0,
           }, {
             name:'李四',
             sex:'女',
             grade:0,
             cascader:[0,2],
+            checkbox:[0,1],
             tree:1,
           }
         ],
@@ -88,6 +90,14 @@ export default {
               prop:'cascader',
               type:'cascader',
               dicData:DIC.CASCADER
+            },
+            {
+              width:120,
+              label:'多选',
+              span:24,
+              prop:'checkbox',
+              type:'checkbox',
+              dicData:DIC.GRADE
             },
             {
               label:'树型',
@@ -187,32 +197,6 @@ export default {
 <avue-crud :data="data" :option="option" ></avue-crud>
 
 <script>
- const DIC={
-    GRADE:[{
-        label:'有权限',
-        value:1
-      },{
-        label:'无权限',
-        value:0
-      },{
-        label:'禁止项',
-        disabled:true,
-        value:-1
-      }],
-    CASCADER:[{
-      label:'一级',
-      value:0,
-      children:[
-        {
-          label:'一级1',
-          value:1,
-        },{
-          label:'一级2',
-          value:2,
-        }
-      ]
-    }]
-  }
 export default {
     data() {
       return {
@@ -222,12 +206,14 @@ export default {
             sex:'男',
             grade:1,
             cascader:[0,1],
+            checkbox:[0,1],
             tree:0,
           }, {
             name:'李四',
             sex:'女',
             grade:0,
             cascader:[0,2],
+            checkbox:[0,1],
             tree:1
           }
         ],
@@ -263,13 +249,55 @@ export default {
               label:'级别',
               prop:'cascader',
               type:'cascader',
-              dicData:DIC.CASCADER
+              dicData:[{
+                label:'一级',
+                value:0,
+                children:[
+                  {
+                    label:'一级1',
+                    value:1,
+                  },{
+                    label:'一级2',
+                    value:2,
+                  }
+                ]
+              }],
+            },
+            {
+              width:120,
+              label:'多选',
+              prop:'checkbox',
+              type:'checkbox',
+              span:24,
+              dicData:[{
+                label:'有权限',
+                value:1
+              },{
+                label:'无权限',
+                value:0
+              },{
+                label:'禁止项',
+                disabled:true,
+                value:-1
+              }]
             },
             {
               label:'树型',
               prop:'tree',
               type:'tree',
-              dicData:DIC.CASCADER
+              dicData:[{
+                label:'一级',
+                value:0,
+                children:[
+                  {
+                    label:'一级1',
+                    value:1,
+                  },{
+                    label:'一级2',
+                    value:2,
+                  }
+                ]
+              }]
             }
           ]
         }

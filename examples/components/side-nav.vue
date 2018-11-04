@@ -118,6 +118,12 @@
        :class="{ 'is-fade': isFade }"
        :style="navStyle">
     <ul>
+      <a href="https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
+         target="_blank">
+        <img src="../assets/images/aliyun.jpg"
+             width="90%"
+             style="margin-bottom:10px" />
+      </a>
       <li class="nav-item"
           v-for="(item,index) in data"
           :key="index">

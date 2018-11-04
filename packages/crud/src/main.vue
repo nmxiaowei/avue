@@ -493,6 +493,7 @@ export default create({
       this.tableForm = {};
       this.boxVisible = false;
       this.keyBtn = false;
+      this.hide();
     },
     selectClear () {
       this.$refs.table.clearSelection();

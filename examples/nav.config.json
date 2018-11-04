@@ -1,4 +1,7 @@
 [{
+    "name": "阿里云双十一大促销",
+    "href": "https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
+}, {
     "name": "更新日志",
     "path": "/changelog"
 }, {
@@ -157,6 +160,9 @@
         }, {
             "path": "/tabs",
             "title": "多功能选项卡"
+        }, {
+            "path": "/json",
+            "title": "多功能JSON"
         }, {
             "path": "/carousel",
             "title": "多功能跑马灯"

@@ -3,6 +3,7 @@ export default {
     data() {
       return {
         option:{
+          height:300,
           data:[
             {
               title: '这是跑马灯的标题1',
@@ -68,6 +69,7 @@ export default {
     data() {
       return {
         option:{
+          height:300,
           data:[
             {
               title: '这是跑马灯的标题1',

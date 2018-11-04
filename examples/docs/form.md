@@ -41,10 +41,11 @@ export default {
                         message: "请输入用户名",
                         trigger: "blur"
                     }],
-                    change:function({value,column}){
-                        this.$message.success('change')
+                    change:({value,column})=>{
+                        this.obj.address=value;
+                        this.$message.success('address change')
                     },
-                    click:function({value,column}){
+                    click:({value,column})=>{
                         this.$message.success('click')
                     }
                 },
@@ -81,7 +82,7 @@ export default {
                     type: "radio",
                     dicData: 'SEX',
                     valueDefault: 0,
-                    change:function({value,column}){
+                    change:({value,column})=>{
                         this.$message.success('change')
                     }
                 },
@@ -191,10 +192,11 @@ export default {
                         message: "请输入用户名",
                         trigger: "blur"
                     }],
-                    change:function({value,column}){
-                        this.$message.success('change')
+                    change:({value,column})=>{
+                        this.obj.address=value;
+                        this.$message.success('address change')
                     },
-                    click:function({value,column}){
+                    click:({value,column})=>{
                         this.$message.success('click')
                     }
                 },
@@ -231,7 +233,7 @@ export default {
                     type: "radio",
                     dicData: 'SEX',
                     valueDefault: 0,
-                    change:function({value,column}){
+                    change:({value,column})=>{
                         this.$message.success('change')
                     }
                 },

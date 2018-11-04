@@ -20,7 +20,7 @@ export const getObjType = obj => {
     if (obj instanceof Element) {
         return 'element';
     }
-    return map[toString.call(obj)];
+    return map[toString.call(obj + '')];
 };
 /**
  * 对象深拷贝
@@ -52,36 +52,56 @@ export const deepClone = data => {
  * 根据字典的value显示label
  */
 let result = '';
-export const findByvalue = (dic, value, props) => {
+export const findByvalue = (dic, value, props, first) => {
     props = props || {};
     const labelKey = props.label || 'label';
     const valueKey = props.value || 'value';
     const childrenKey = props.children || 'children';
+    if (validatenull(first)) result = value;
     if (validatenull(dic)) return result;
+    //正常字典
     if (typeof(value) === 'string' || typeof(value) === 'number' || typeof(value) === 'boolean') {
         for (let i = 0; i < dic.length; i++) {
             if (dic[i][valueKey] === value) {
                 result = dic[i][labelKey];
                 break;
             } else {
-                findByvalue(dic[i][childrenKey], value, props);
+                findByvalue(dic[i][childrenKey], value, props, true);
             }
         }
+        //父子集字典
     } else if (value instanceof Array && dic[0][childrenKey]) {
         let index = 0;
         let count = 0;
-        result = '';
+        result = [];
         while (count < value.length) {
-            index = findArray(dic, value[count]);
-            if (!validatenull(dic[index])) {
-                result = result + dic[index][labelKey] + '/';
-                dic = dic[index][childrenKey];
+            index = findArray(dic, value[count], valueKey);
+            if (index !== -1) {
+                result.push(dic[index][labelKey]);
+            } else {
+                result.push(value[count]);
+            }
+            if (!validatenull(dic[index][childrenKey])) {
+                dic = dic[index][childrenKey] || [];
             }
             count++;
         }
-        if (result.length > 0) {
-            result = result.substr(0, result.length - 1);
+        result = result.join('/').toString();
+        //多选字典
+    } else if (value instanceof Array) {
+        let index = 0;
+        let count = 0;
+        result = [];
+        while (count < value.length) {
+            index = findArray(dic, value[count], valueKey);
+            if (index !== -1) {
+                result.push(dic[index][labelKey]);
+            } else {
+                result.push(value[count]);
+            }
+            count++;
         }
+        result = result.join(',').toString();
     }
     return result;
 };

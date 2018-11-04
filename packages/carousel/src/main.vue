@@ -1,7 +1,7 @@
 <template>
   <div class="carousel">
     <el-carousel :type="option.type"
-                 :height="option.height"
+                 :height="option.height+'px'"
                  :autoplay="option.autoplay"
                  :interval="option.interval"
                  indicator-position="outside">
