@@ -1,0 +1,36 @@
+.avue-tip {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ced6ce;
+    border-left-width: 5px;
+    border-radius: 3px;
+    border-left-color: #83c182;
+    box-sizing: border-box;
+    line-height: 30px;
+    &__title {
+        font-weight: 300;
+    }
+}
+
+legend {
+    color: #252731;
+    display: unset;
+    width: unset;
+    padding: 0 15px;
+    margin-bottom: 40px;
+    line-height: inherit;
+    border: unset;
+    border-bottom: unset;
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+fieldset {
+    border: 0;
+    border-top: 1px solid #e6e6e6 !important;
+    width: 300px;
+    height: 20px;
+    margin: 0 auto 5px;
+    text-align: center;
+}

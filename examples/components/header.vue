@@ -1,286 +1,44 @@
-<style  lang="scss" scoped>
-.headerWrapper {
-  height: 80px;
-}
-
-.header {
-  height: 80px;
-  background-color: #fff;
-  color: #fff;
-  top: 0;
-  left: 0;
-  width: 100%;
-  line-height: 80px;
-  z-index: 100;
-  position: relative;
-
-  .container {
-    height: 100%;
-    box-sizing: border-box;
-  }
-
-  .nav-lang-spe {
-    color: #888;
-  }
-
-  h1 {
-    margin: 0;
-    float: left;
-    font-size: 26px;
-    font-weight: normal;
-
-    a {
-      color: #333;
-      text-decoration: none;
-      display: block;
-    }
-
-    span {
-      font-size: 12px;
-      display: inline-block;
-      width: 34px;
-      height: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      text-align: center;
-      line-height: 18px;
-      vertical-align: middle;
-      margin-left: 10px;
-      border-radius: 3px;
-    }
-  }
-
-  .nav {
-    position: fixed;
-    top: 5px;
-    right: 20px;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-  }
-
-  .nav-gap {
-    position: relative;
-    width: 1px;
-    height: 80px;
-    padding: 0 20px;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: calc(50% - 8px);
-      width: 1px;
-      height: 16px;
-      background: #ebebeb;
-    }
-  }
-  .nav-logo {
-    font-size: 30px;
-  }
-  .nav-logo,
-  .nav-logo-small {
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei";
-    vertical-align: sub;
-    margin: 10px 0;
-    background-color: #fff;
-    color: #409eff;
-  }
-
-  .nav-logo-small {
-    display: none;
-  }
-
-  .nav-item {
-    margin: 0;
-    float: left;
-    list-style: none;
-    position: relative;
-    cursor: pointer;
-
-    &.nav-algolia-search {
-      cursor: default;
-    }
-
-    &.lang-item,
-    &:last-child {
-      cursor: default;
-
-      span {
-        opacity: 0.8;
-      }
-
-      .nav-lang {
-        cursor: pointer;
-        display: inline-block;
-        height: 100%;
-        color: #888;
-
-        &:hover {
-          color: #409eff;
-        }
-        &.active {
-          font-weight: bold;
-          color: #409eff;
-        }
-      }
-    }
-
-    a {
-      text-decoration: none;
-      color: #888;
-      display: block;
-      padding: 0 22px;
-
-      &.active,
-      &:hover {
-        color: #333;
-      }
-
-      &.active::after {
-        content: "";
-        display: inline-block;
-        position: absolute;
-        bottom: 15px;
-        left: calc(50% - 7px);
-        width: 14px;
-        height: 4px;
-        background: #409eff;
-      }
-    }
-  }
-}
-
-.nav-dropdown {
-  margin-bottom: 6px;
-  padding-left: 18px;
-  width: 100%;
-
-  span {
-    display: block;
-    width: 100%;
-    font-size: 16px;
-    color: #888;
-    line-height: 40px;
-    transition: 0.2s;
-    padding-bottom: 6px;
-    user-select: none;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  i {
-    transition: 0.2s;
-    font-size: 12px;
-    color: #979797;
-    transform: translateY(-2px);
-  }
-
-  &:hover {
-    span,
-    i {
-      color: #409eff;
-    }
-  }
-}
-
-.nav-dropdown-list {
-  width: auto;
-}
-
-@media (max-width: 850px) {
-  .header {
-    .nav-logo {
-      display: none;
-    }
-    .nav-logo-small {
-      display: inline-block;
-    }
-    .nav-item {
-      margin-left: 6px;
-
-      &.lang-item,
-      &:last-child {
-        margin-left: 10px;
-      }
-
-      a {
-        padding: 0 5px;
-      }
-    }
-    .nav-theme-switch,
-    .nav-algolia-search {
-      display: none;
-    }
-  }
-}
-
-@media (max-width: 700px) {
-  .header {
-    .container {
-      padding: 0 12px;
-    }
-    .nav-item {
-      a {
-        font-size: 12px;
-        vertical-align: top;
-      }
-
-      &.lang-item {
-        height: 100%;
-
-        .nav-lang {
-          display: flex;
-          align-items: center;
-
-          span {
-            padding-bottom: 0;
-          }
-        }
-      }
-    }
-    .nav-dropdown {
-      padding: 0;
-      span {
-        font-size: 12px;
-      }
-    }
-    .nav-gap {
-      padding: 0 8px;
-    }
-    .nav-versions {
-      display: none;
-    }
-  }
-}
-</style>
 <template>
-  <div class="headerWrapper">
-    <header class="header"
-            ref="header">
-      <div class="container">
-        <p class="nav-logo">
-          Avue 官方网站
-        </p>
-        <!-- nav -->
-        <ul class="nav">
-          <li class="nav-item">
-            <router-link :to="{path:'/'}">主页
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{path:'/component'}">文档
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <a href="https://github.com/nmxiaowei/avue"
-               target="_blank">代码</a>
-          </li>
-        </ul>
+  <header class="header">
+    <div class="header__container">
+      <p class="header__logo">
+        Avue 官方网站
+      </p>
+      <!-- nav -->
+      <ul class="header__nav">
+        <li class="header__nav-item">
+          <router-link :to="{path:'/'}">主页
+          </router-link>
+        </li>
+        <li class="header__nav-item">
+          <router-link :to="{path:'/component'}">文档
+          </router-link>
+        </li>
+        <li class="header__nav-item">
+          <router-link :to="{path:'/about'}">联系我们
+          </router-link>
+        </li>
+        <li class="header__nav-item">
+          <a href="https://github.com/nmxiaowei/avue"
+             target="_blank">github</a>
+        </li>
+        <li class="header__nav-item">
+          <a href="https://gitee.com/smallweigit/avue"
+             target="_blank">码云</a>
+        </li>
+        <li class="header__nav-item">
+          <a href="https://www.kancloud.cn/smallwei/avue"
+             target="_blank">看云文档</a>
+        </li>
+      </ul>
+    </div>
+    <!-- <div class="header__main">
+      <div class="haeder__main-box">
+        <div class="header__main-title">微服务</div>
+        <div class="header__main-subtitle">RENREN-CLOUD</div>
       </div>
-
-    </header>
-  </div>
+    </div> -->
+  </header>
 </template>
 <script>
 
@@ -302,3 +60,73 @@ export default {
   }
 };
 </script>
+<style  lang="scss">
+.header {
+  $width: 1000px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: #47aca1;
+  color: #fff;
+  z-index: 1024;
+  & + div {
+    padding-top: 50px;
+  }
+  &__container {
+    margin: 0 auto;
+    width: $width;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  &__logo {
+    margin-right: 50px;
+    font-size: 22px;
+  }
+  &__nav {
+    list-style: none;
+    display: flex;
+    &-item {
+      padding: 10px 15px;
+      margin: 0 5px;
+      font-size: 14px;
+      color: #fff;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+      a {
+        color: #fff;
+      }
+    }
+  }
+  &__main {
+    background-color: #47aca1;
+    &-box {
+      position: relative;
+      margin: 0 auto;
+      width: $width;
+      height: 220px;
+    }
+    &-info {
+      position: absolute;
+      bottom: 60px;
+      left: 30px;
+    }
+    &-title {
+      color: #ffffff;
+      font-weight: 400;
+      font-size: 28px;
+      letter-spacing: 3px;
+      line-height: 1.6;
+    }
+    &-subtitle {
+      color: #ffffff;
+      font-weight: 400;
+      font-size: 20px;
+      letter-spacing: 3px;
+      line-height: 1.6;
+    }
+  }
+}
+</style>

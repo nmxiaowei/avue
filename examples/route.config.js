@@ -19,8 +19,12 @@ const registerRoute = (navConfig) => {
         component: load('component'),
         children: []
     }, {
-        path: '/pay',
-        component: load('pay'),
+        path: '/about',
+        component: load('about'),
+        children: []
+    }, {
+        path: '/',
+        component: load('index'),
         children: []
     });
     navs.forEach(nav => {
@@ -59,10 +63,6 @@ const registerRoute = (navConfig) => {
 
 let route = registerRoute(navConfig);
 
-route = route.concat([{
-    path: '/',
-    redirect: '/pay',
-    children: []
-}]);
+
 
 export default route;

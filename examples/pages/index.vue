@@ -15,7 +15,15 @@
         </a>
       </div>
     </div>
-
+    <div class="pay__title">
+      <h2>为用户定制的前端脚手架框架，搬砖神器，接私私货利器，拯救后台开发不开心</h2>
+      <p>Avue可以省去大量编写重复crud和form的工具，复用性高（瞬间完成表单与表格的相互转换）并且含有基于json驱动的UI的大量丰富组件，前端界的搬砖神器，具体demo可以
+        <a href="/#/component/installation">查看文档</a>
+      </p>
+    </div>
+    <fieldset>
+      <legend align="center">获取授权</legend>
+    </fieldset>
     <div class="pay__content"
          id="list"
          name="list">
@@ -26,12 +34,30 @@
                   :sm="24"
                   :xs="24"
                   class="pay__content-item"
+                  :class="{'pay__content-v':item.v}"
                   v-for="(item,index) in config"
                   :key="index">
             <el-card>
               <div slot="header"
-                   class="pay__content-title">
-                {{item.title}}
+                   class="pay__content-header">
+                <img v-if="item.v"
+                     src="../assets/images/vip.png"
+                     class="pay__content-vip" />
+                <p class="pay__content-title">
+                  <img v-if="item.vip===1"
+                       class="pay__content-tip"
+                       src="../assets/images/vip1.png"
+                       alt="">
+                  <img v-else
+                       class="pay__content-tip"
+                       src="../assets/images/vip2.png"
+                       alt="">
+                  {{item.title}}
+                  <span class="pay__content-money">￥&nbsp;{{item.money}}</span>
+                </p>
+                <p class="pay__content-subtitle">
+                  {{item.subtitle}}
+                </p>
               </div>
               <ul class="pay__content-text">
                 <li v-for="(citem,cindex) in item.list"
@@ -39,11 +65,16 @@
                     :class="{'pay__content-text--bold':citem.bold}"
                     v-html="citem.title"></li>
               </ul>
-              <h2 class="pay__content-money">￥&nbsp;{{item.money}}</h2>
             </el-card>
           </el-col>
         </el-row>
       </div>
+    </div>
+    <div class="avue-tip pay__tip">
+      <h4 class="avue-tip__title">
+        如果购买过程中或者使用过程中，如有疑问？请咨询
+        作者，发送邮件，在交流群里提问或者点击<a href="/#/about">联系我们</a>
+      </h4>
     </div>
     <div class="pay__silder">
       <el-carousel height="500px"
@@ -103,21 +134,42 @@ export default {
   padding: 0;
 }
 .pay {
-  padding-top: 100px;
+  .el-card__header {
+    padding: 0;
+  }
   &__banner {
-    padding: 20px 0 50px 0;
-    background-color: #24262f;
+    padding: 20px 0 40px 0;
+    margin-bottom: 60px;
+    background-color: #47aca1;
     text-align: center;
     color: #fff;
     h1 {
       padding-top: 60px;
       padding-bottom: 10px;
-      line-height: 32px;
+      line-height: 34px;
       font-size: 36px;
       font-weight: 300;
     }
     p {
       color: rgba(255, 255, 255, 0.8);
+    }
+  }
+  &__tip {
+    width: 1100px;
+    margin: 10px auto 40px auto;
+  }
+  &__title {
+    width: 1000px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    h2 {
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+      font-weight: 300;
+      text-indent: 35px;
+      line-height: 30px;
     }
   }
   &__menu {
@@ -131,6 +183,18 @@ export default {
       font-size: 26px;
       font-weight: 300;
       border-radius: 3px;
+      &--download {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-color: #fff;
+        color: #fff;
+        &:hover,
+        &:focus,
+        &:active {
+          color: #fff;
+          border-color: #fff;
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+      }
       &--get {
         background-color: transparent;
         color: #fff;
@@ -146,23 +210,65 @@ export default {
   }
   &__content {
     margin-bottom: 30px;
+    &-vip {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    &-v {
+      .el-card {
+        border-color: #f2ddaf;
+        background-color: #fffaeb;
+        border-width: 2px;
+      }
+    }
+    &-tip {
+      margin-right: 5px;
+      width: 25px;
+      height: 25px;
+    }
     &-list {
-      width: 1200px;
+      width: 1100px;
       margin: 30px auto;
     }
     &-item {
       margin-bottom: 20px;
     }
-    &-title {
+    &-header {
+      position: relative;
+      padding: 40px 0 20px 0;
       text-align: center;
-      font-weight: 500;
+      background-color: #49a0f5;
+    }
+    &-title {
+      margin: 0;
+      margin-bottom: 10px;
       font-size: 24px;
+      word-wrap: break-word;
+      letter-spacing: 2px;
+      font-weight: 400;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    &-subtitle {
+      position: relative;
+      display: inline-block;
+      border: 1px solid #e4d5d5;
+      line-height: 28px;
+      padding: 0 15px;
+      border-radius: 5px;
+      margin-top: 5px;
+      color: #ddd;
+      font-weight: 300;
+      font-size: 14px;
     }
     &-money {
       text-align: center;
-      font-size: 52px;
-      color: #409eff;
-      font-weight: 300;
+      font-size: 16px;
+      color: #fff;
+      font-weight: 400;
     }
     &-text {
       height: 350px;

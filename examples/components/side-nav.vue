@@ -113,66 +113,68 @@
 }
 </style>
 <template>
-  <div class="side-nav"
-       @mouseenter="isFade = false"
-       :class="{ 'is-fade': isFade }"
-       :style="navStyle">
-    <ul>
-      <a href="https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
-         target="_blank">
-        <img src="../assets/images/aliyun.jpg"
-             width="90%"
-             style="margin-bottom:10px" />
-      </a>
-      <li class="nav-item"
-          v-for="(item,index) in data"
-          :key="index">
-        <a v-if="!item.path && !item.href"
-           @click="expandMenu">{{item.name}}</a>
-        <a v-if="item.href"
-           :href="item.href"
-           target="_blank">{{item.name}}</a>
-        <router-link v-if="item.path"
-                     active-class="active"
-                     :to="base + item.path"
-                     exact
-                     v-text="item.title || item.name">
-        </router-link>
-        <ul class="pure-menu-list sub-nav"
-            v-if="item.children">
-          <li class="nav-item"
-              v-for="(navItem,index) in item.children"
-              :key="index">
-            <router-link class=""
-                         active-class="active"
-                         :to="base + navItem.path"
-                         exact
-                         v-text="navItem.title || navItem.name">
-            </router-link>
-          </li>
-        </ul>
-        <template v-if="item.groups">
-          <div class="nav-group"
-               v-for="(group,index) in item.groups"
-               :key="index">
-            <div class="nav-group__title"
-                 @click="expandMenu">{{group.groupName}}</div>
-            <ul class="pure-menu-list">
-              <li class="nav-item"
-                  v-for="(navItem,index) in group.list"
-                  v-if="!navItem.disabled"
-                  :key="index">
-                <router-link active-class="active"
-                             :to="base + navItem.path"
-                             exact
-                             v-text="navItem.title"></router-link>
-              </li>
-            </ul>
-          </div>
-        </template>
-      </li>
-    </ul>
-    <!--<div id="code-sponsor-widget"></div>-->
+  <div class="doc">
+    <div class="side-nav"
+         @mouseenter="isFade = false"
+         :class="{ 'is-fade': isFade }"
+         :style="navStyle">
+      <ul>
+        <a href="https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
+           target="_blank">
+          <img src="../assets/images/aliyun.jpg"
+               width="90%"
+               style="margin-bottom:10px" />
+        </a>
+        <li class="nav-item"
+            v-for="(item,index) in data"
+            :key="index">
+          <a v-if="!item.path && !item.href"
+             @click="expandMenu">{{item.name}}</a>
+          <a v-if="item.href"
+             :href="item.href"
+             target="_blank">{{item.name}}</a>
+          <router-link v-if="item.path"
+                       active-class="active"
+                       :to="base + item.path"
+                       exact
+                       v-text="item.title || item.name">
+          </router-link>
+          <ul class="pure-menu-list sub-nav"
+              v-if="item.children">
+            <li class="nav-item"
+                v-for="(navItem,index) in item.children"
+                :key="index">
+              <router-link class=""
+                           active-class="active"
+                           :to="base + navItem.path"
+                           exact
+                           v-text="navItem.title || navItem.name">
+              </router-link>
+            </li>
+          </ul>
+          <template v-if="item.groups">
+            <div class="nav-group"
+                 v-for="(group,index) in item.groups"
+                 :key="index">
+              <div class="nav-group__title"
+                   @click="expandMenu">{{group.groupName}}</div>
+              <ul class="pure-menu-list">
+                <li class="nav-item"
+                    v-for="(navItem,index) in group.list"
+                    v-if="!navItem.disabled"
+                    :key="index">
+                  <router-link active-class="active"
+                               :to="base + navItem.path"
+                               exact
+                               v-text="navItem.title"></router-link>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </li>
+      </ul>
+      <!--<div id="code-sponsor-widget"></div>-->
+    </div>
   </div>
 </template>
 <script>

@@ -1,6 +1,5 @@
 <style lang="css">
 @import "highlight.js/styles/color-brewer.css";
-@import "assets/styles/common.css";
 @import "assets/styles/fonts/style.css";
 
 html,
@@ -25,8 +24,6 @@ body {
     overflow-y: hidden;
 
     .main-cnt {
-      padding: 0;
-      margin-top: 0;
       height: 100%;
       min-height: auto;
     }
@@ -80,8 +77,6 @@ textarea {
 }
 
 .main-cnt {
-  margin-top: -80px;
-  padding: 80px 0 340px;
   box-sizing: border-box;
   min-height: 100%;
 }
@@ -188,6 +183,7 @@ textarea {
     <div class="main-cnt">
       <router-view></router-view>
     </div>
+    <main-footer></main-footer>
   </div>
 </template>
 

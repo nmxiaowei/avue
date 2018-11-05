@@ -1,5 +1,7 @@
 export default [{
-    title: 'avue2.x源码',
+    title: '核心源码',
+    subtitle: 'avue的核心源码',
+    vip: 2,
     money: '299.9',
     list: [{
         title: 'avue核心源码解读',
@@ -27,7 +29,9 @@ export default [{
         title: '免费的私人git私服'
     }]
 }, {
-    title: 'avue-cli 2.x源码',
+    title: '模版源码',
+    subtitle: 'avue-cli的核心源码',
+    vip: 2,
     money: '299.9',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
@@ -60,7 +64,10 @@ export default [{
         title: '前端最新干货分享'
     }]
 }, {
-    title: 'avue+avue-cli 2.x 源码',
+    title: '全家桶',
+    subtitle: 'avue系列的全部源码',
+    v: true,
+    vip: 1,
     money: '399.9',
     list: [{
         title: '同时拥有“avue2.x”和“avue-cli2.x”的授权',
@@ -72,15 +79,15 @@ export default [{
         title: '可附赠avue系列全家桶源码学习',
         bold: true
     }, {
-        title: '全家桶包含avue2.x和avue-cli2.x源码'
+        title: '包含avue2.x和avue-cli2.x源码'
     }, {
-        title: '全家桶包含avue-form表单拖拽工具源码'
+        title: '包含avue-form表单拖拽工具源码'
     }, {
-        title: '全家桶包含avue-pig最新avue-cli对接pigx和pig前台'
+        title: '包含avue-pig最新avue-cli对接pigx和pig'
     }, {
-        title: '全家桶包含avue-cli2html版本的的源码'
+        title: '包含avue-cli2html版本的的源码'
     }, {
-        title: '全家桶包含avue-api接口管理工具源码'
+        title: '包含avue-api接口管理工具源码'
     }, {
         title: '可远程协助解决问题'
     }]
