@@ -50,9 +50,9 @@
       <el-col :span="12">
         <p class="about__title">avue 会员说明</p>
         <p class="about__item">
-          git私服
           <a href="https://git.avue.top"
-             target="_blank">账号：你的QQ号，密码：123456，进去后看到avue组织 </a>
+             target="_blank">git私服</a>
+          账号：你的QQ号，密码：123456，进去后看到avue组织(有pigx账号可直接登录)
         </p>
         <p class="about__item">
           avue——核心代码

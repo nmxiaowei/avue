@@ -30,12 +30,11 @@ export default {
                     label: "用户名",
                     prop: "username",
                     tip: '这是信息提示',
-                    span: 24,
+                    span: 8,
                     maxlength: 3,
                     suffixIcon: 'el-icon-tickets',
                     prefixIcon: 'el-icon-tickets',
                     minlength: 2,
-                    row: true,
                     rules: [{
                         required: true,
                         message: "请输入用户名",
@@ -52,12 +51,14 @@ export default {
                 {
                     label: "姓名",
                     prop: "name",
+                    span:8,
                 },
                 {
                     label: "类型",
                     prop: "type",
                     type: "select",
-                    dicData: 'VAILD'
+                    dicData: 'VAILD',
+                    span:6,
                 },
                 {
                     label: "权限",
@@ -74,6 +75,7 @@ export default {
                     type: "switch",
                     dicData: 'SEX',
                     hide: true,
+                    row:true,
                 },
                 {
                     label: "性别",
@@ -94,10 +96,11 @@ export default {
                     valueDefault: 3,
                     minRows: 0,
                     maxRows: 3,
+                    row:true,
                 },
                 {
                     label: "网站",
-                    span: 24,
+                    span: 12,
                     prop: "url",
                     prepend:'http://',
                     append:'com',
@@ -145,7 +148,7 @@ export default {
 
 ### 基础
 
-:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`,`resetForm`清空表单内容，但是默认值不会被清空,`resetChange`为清空方法的回调
+:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`,`resetForm`清空表单内容，但是默认值不会被清空,`resetChange`为清空方法的回调,如果想阻止依次排列，在组织属性后面加入row为true即可，具体看如下例子
 ```html
 <avue-form ref="form" v-model="obj" :option="option" @reset-change="emptytChange" @submit="submit"></avue-crud>
 
@@ -181,12 +184,11 @@ export default {
                     label: "用户名",
                     prop: "username",
                     tip: '这是信息提示',
-                    span: 24,
+                    span: 8,
                     maxlength: 3,
                     suffixIcon: 'el-icon-tickets',
                     prefixIcon: 'el-icon-tickets',
                     minlength: 2,
-                    row: true,
                     rules: [{
                         required: true,
                         message: "请输入用户名",
@@ -203,12 +205,14 @@ export default {
                 {
                     label: "姓名",
                     prop: "name",
+                    span:8,
                 },
                 {
                     label: "类型",
                     prop: "type",
                     type: "select",
-                    dicData: 'VAILD'
+                    dicData: 'VAILD',
+                    span:6,
                 },
                 {
                     label: "权限",
@@ -225,6 +229,7 @@ export default {
                     type: "switch",
                     dicData: 'SEX',
                     hide: true,
+                    row:true,
                 },
                 {
                     label: "性别",
@@ -245,12 +250,13 @@ export default {
                     valueDefault: 3,
                     minRows: 0,
                     maxRows: 3,
+                    row:true,
                 },
                 {
                     label: "网站",
-                    span: 24,
+                    span: 12,
                     prop: "url",
-                    prepend:'http',
+                    prepend:'http://',
                     append:'com',
                 },
                 {

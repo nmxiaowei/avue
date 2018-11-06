@@ -14,9 +14,9 @@ npm i @smallwei/avue -S
 
 ```html
 <!-- 引入样式 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.1.21/lib/theme-chalk/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.3.0/lib/theme-chalk/index.css">
 <!-- 引入组件库 -->
-<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.1.21/lib/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@smallwei/avue@1.3.0/lib/index.js"></script>
 ```
 
 :::tip

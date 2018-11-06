@@ -13,17 +13,22 @@
         }
     }
     &__group {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
         height: auto;
         overflow: hidden;
         .el-col {
             position: relative;
         }
     }
+    &__line {
+        height: 30px;
+    }
     &__row {
         &--block {
             width: 100%;
-            height: auto;
-            overflow: hidden;
+            display: block;
         }
         &--cursor {
             cursor: pointer;

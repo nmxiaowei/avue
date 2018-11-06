@@ -11,12 +11,12 @@
         <draggable :list="columnOption"
                    :options="dragOptions"
                    :class="b('group')">
-          <div :class="b('row',{'block':column.row,'cursor':draggableStart})"
-               v-for="(column,index) in columnOption"
-               v-if="vaildVisdiplay(column)"
-               :key="index">
-            <el-col :md="column.span||12"
+          <template v-if="vaildVisdiplay(column)"
+                    v-for="(column,index) in columnOption">
+            <el-col :key="index"
+                    :md="column.span||12"
                     :xs="24"
+                    :class="b('row',{'cursor':draggableStart})"
                     @mouseover.native="draggableMenu?mouseover(index):''"
                     @mouseout.native="draggableMenu?mouseout(index):''">
               <div :class="b('option')"
@@ -104,7 +104,10 @@
                 <!-- <p class="avue-tip">{{column.tip}}</p> -->
               </el-form-item>
             </el-col>
-          </div>
+            <div :class="b('line')"
+                 :style="{width:(column.count/24*100)+'%'}"
+                 v-if="column.row && column.span!==24"></div>
+          </template>
         </draggable>
         <el-col :span="24"
                 v-if="vaildData(tableOption.menuBtn,true)">
@@ -156,7 +159,18 @@ export default create({
   mounted () { },
   computed: {
     columnOption () {
-      return this.tableOption.column || [];
+      let list = this.tableOption.column || [];
+      let count = 0;
+      list.forEach(ele => {
+        count = count + (ele.span || 12);
+        if (count >= 24) {
+          count = 0 + (ele.span || 12);
+        } else if (ele.row && count !== 24) {
+          ele.count = 24 - count;
+          count = 0
+        }
+      })
+      return list;
     },
     draggable () {
       return this.tableOption.draggable || {};

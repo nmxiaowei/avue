@@ -707,11 +707,11 @@ export default create({
     show (cancel) {
       const callack = () => {
         if (cancel !== true) {
+          this.boxVisible = true;
           this.$nextTick(() => {
             this.$refs['tableForm'].clearValidate();
             this.$refs['tableForm'].cascadeInit();
           });
-          this.boxVisible = true;
         }
       };
       if (typeof this.beforeOpen === 'function') this.beforeOpen(callack, this.boxType);

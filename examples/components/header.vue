@@ -19,6 +19,10 @@
           </router-link>
         </li>
         <li class="header__nav-item">
+          <a href="https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
+             target="_blank">阿里云双十一大促销</a>
+        </li>
+        <li class="header__nav-item">
           <a href="https://github.com/nmxiaowei/avue"
              target="_blank">github</a>
         </li>
@@ -88,7 +92,6 @@ export default {
     list-style: none;
     display: flex;
     &-item {
-      padding: 10px 15px;
       margin: 0 5px;
       font-size: 14px;
       color: #fff;
@@ -96,6 +99,8 @@ export default {
         background-color: rgba(255, 255, 255, 0.4);
       }
       a {
+        padding: 10px 12px;
+        display: block;
         color: #fff;
       }
     }
