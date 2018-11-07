@@ -53,11 +53,11 @@ export default {
 
 </style>
 
-## 工具类
+## 走马灯
 
 
 
-### 跑马灯
+### 例子
 
 
 :::demo  
@@ -136,3 +136,16 @@ export default {
 </script>
 ```
 :::
+
+### Avue-carousel Option Attributes
+
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| height | 高度 | String / Number | -  | 300 |
+| autoplay | 是否自动轮播 | Boolean | true / false  | true |
+| interval | 自动轮播的时间 | String / Number | -  | 3000|
+| title | 标题 | String | -  | - |
+| href | 点击跳转的链接 | String | -  | - |
+| src | 图片地址 | String | -  | - |
+| type | 类型 | String | card / box | box |
+

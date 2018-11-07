@@ -30,7 +30,7 @@
           column:[
              {
               label:'姓名',
-              prop:'name',
+              prop:'name'
             }, {
               label:'性别',
               prop:'sex'

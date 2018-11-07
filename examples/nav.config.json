@@ -137,9 +137,6 @@
             "path": "/form-select",
             "title": "form多级联动"
         }, {
-            "path": "/form-steps",
-            "title": "form步骤条"
-        }, {
             "path": "/form-detail",
             "title": "form详情"
         }, {
@@ -152,20 +149,23 @@
     "groups": [{
         "groupName": "工具",
         "list": [{
-            "path": "/date-select",
-            "title": "多功能日期选择器"
+            "path": "/date-group",
+            "title": "日期选择器"
         }, {
             "path": "/tree",
-            "title": "多功能表格树"
+            "title": "表格树"
         }, {
             "path": "/tabs",
-            "title": "多功能选项卡"
+            "title": "选项卡"
+        }, {
+            "path": "/steps",
+            "title": "步骤条"
         }, {
             "path": "/json",
-            "title": "多功能JSON"
+            "title": "JSON展示"
         }, {
             "path": "/carousel",
-            "title": "多功能跑马灯"
+            "title": "走马灯"
         }]
     }]
 }, {

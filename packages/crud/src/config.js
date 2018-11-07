@@ -63,7 +63,7 @@ export default {
     selectClearBtn: true,
     searchShow: true,
     tip: true,
-    formWidth: '50%',
+    dialogWidth: '50%',
     formFullscreen: false,
     customClass: '',
     pageBackground: true,

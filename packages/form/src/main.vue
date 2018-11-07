@@ -1,5 +1,6 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       :style="{width:setPx(tableOption.formWidth,'100%')}">
     <el-form ref="form"
              :model="form"
              :label-position="tableOption.labelPosition"
@@ -315,7 +316,7 @@ export default create({
     },
     formInit () {
       this.formDefault = this.formInitVal(this.columnOption);
-      this.form = this.deepClone(this.formDefault).tableForm;
+      this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
       const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
       //初始化联动
@@ -364,7 +365,7 @@ export default create({
       });
     },
     resetForm () {
-      this.form = this.deepClone(this.formDefault).tableForm;
+      this.form = this.deepClone(this.formDefault.tableForm);
       this.clearValidate();
       this.$emit('input', this.form);
       this.$emit('reset-change');

@@ -21,17 +21,17 @@ import DataIcons from './data-icons/';
 import DataBox from './data-box/';
 import Form from './form/';
 import Tabs from './tabs/';
-import FormSteps from './form-steps/';
+import Steps from './steps/';
 import FormDetail from './form-detail/';
 import TableTree from './table-tree/';
-import DateSelect from './date-select/';
+import DateGroup from './date-group/';
 const components = [
     Json,
     Crud,
     Form,
     Tabs,
     Carousel,
-    FormSteps,
+    Steps,
     FormDetail,
     CrudCheckbox,
     CrudDate,
@@ -52,7 +52,7 @@ const components = [
     DataTabs,
     DataBox,
     TableTree,
-    DateSelect
+    DateGroup
 ];
 
 function install(Vue, axios) {

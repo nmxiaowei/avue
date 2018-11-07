@@ -37,11 +37,11 @@ export default {
 
 </style>
 
-## 工具类
+## JSON展示
 
 
 
-### JSON展示
+### 例子
 
 
 :::demo  data放json对象，level为展开到第几节点
@@ -85,3 +85,10 @@ export default {
 </script>
 ```
 :::
+
+### Avue-json Option Attributes
+
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| data | json对象 | JSON | -  | - |
+| raw | json字符串 | String | -  | - |

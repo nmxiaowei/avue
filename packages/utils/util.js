@@ -2,50 +2,28 @@ import {
     validatenull
 } from './validate';
 
-
-export const getObjType = obj => {
-    var toString = Object.prototype.toString;
-    var map = {
-        '[object Boolean]': 'boolean',
-        '[object Number]': 'number',
-        '[object String]': 'string',
-        '[object Function]': 'function',
-        '[object Array]': 'array',
-        '[object Date]': 'date',
-        '[object RegExp]': 'regExp',
-        '[object Undefined]': 'undefined',
-        '[object Null]': 'null',
-        '[object Object]': 'object'
-    };
-    if (obj instanceof Element) {
-        return 'element';
-    }
-    return map[toString.call(obj + '')];
-};
 /**
  * 对象深拷贝
  */
-export const deepClone = data => {
-    var type = getObjType(data);
-    var obj;
-    if (type === 'array') {
-        obj = [];
-    } else if (type === 'object') {
-        obj = {};
+export const deepClone = o => {
+    if (o instanceof Array) {
+        var n = [];
+        for (var i = 0; i < o.length; ++i) {
+            n[i] = deepClone(o[i]);
+        }
+        return n;
+    } else if (o instanceof Function) {
+        var n = new Function("return " + o.toString())();
+        return n
+    } else if (o instanceof Object) {
+        var n = {}
+        for (var i in o) {
+            n[i] = deepClone(o[i]);
+        }
+        return n;
     } else {
-        //不再具有下一层次
-        return data;
+        return o;
     }
-    if (type === 'array') {
-        for (var i = 0, len = data.length; i < len; i++) {
-            obj.push(deepClone(data[i]));
-        }
-    } else if (type === 'object') {
-        for (var key in data) {
-            obj[key] = deepClone(data[key]);
-        }
-    }
-    return obj;
 };
 
 /**

@@ -5,11 +5,11 @@
            :class="b('title')"
            v-if="vaildData(tableOption.title,false) || vaildData(tableOption.dateBtn,config.dateBtn)">
         <span>{{tableOption.title}}</span>
-        <date-select @change="dateChange"
-                     v-if="vaildData(tableOption.dateBtn,config.dateBtn)"
-                     :default="vaildData(tableOption.dateDefault,config.dateDefault)"
-                     :size="vaildData(tableOption.dateSize,config.dateBtnSize)">
-        </date-select>
+        <date-group @change="dateChange"
+                    v-if="vaildData(tableOption.dateBtn,config.dateBtn)"
+                    :default="vaildData(tableOption.dateDefault,config.dateDefault)"
+                    :size="vaildData(tableOption.dateSize,config.dateBtnSize)">
+        </date-group>
       </div>
       <div :class="b('header')"
            v-if="vaildData(tableOption.header,true)">
@@ -289,7 +289,7 @@
                :append-to-body="true"
                :title="dialogTitle"
                :visible.sync="boxVisible"
-               :width="vaildData(tableOption.formWidth,config.formWidth)"
+               :width="vaildData(tableOption.dialogWidth,config.dialogWidth)"
                @close="closeDialog">
       <div :class="b('dialog', ['overflow'])">
         <avue-form v-model="tableForm"
@@ -346,7 +346,7 @@
   </div>
 </template>
 <script>
-import dateSelect from '../../date-select'
+import dateGroup from '../../date-group'
 import create from '../../utils/create';
 import crud from '../../mixins/crud.js';
 import column from '../../mixins/column.js';
@@ -363,7 +363,7 @@ export default create({
   mixins: [crud(), column()],
   components: {
     crudComponents,
-    dateSelect
+    dateGroup
   },
   data () {
     return {

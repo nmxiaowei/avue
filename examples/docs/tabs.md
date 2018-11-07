@@ -251,3 +251,29 @@ export default {
 :::
 
 
+### Avue-tabs Option Attributes
+
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| label | 选项卡显示名称 | String | -  | - |
+| prop | 选项卡别名 | String | -  | - |
+| description | 选项卡描述 | String | -  | - |
+| icon | 选项卡图标 | String | -  | - |
+| type | 选项卡内容类型 | String | form / crud  | form |
+| 说明 | crud和form的配置都可以使用，要配置在每一个选项卡option里面 |
+
+### Avue-tabs Events
+
+| 事件名 | 说明 | 参数 |
+| ---- | ---- | ---- |
+| change | 返回当前选项卡的整体对象 | form |
+| 说明 | crud和form的方法都可以使用 |
+
+### Avue-tabs Scoped Slot
+
+| name | 说明 |
+|------|--------|
+| after | 内容之前的卡槽 |
+| brfore | 内容之后的卡槽 |
+| 说明 | crud和form的卡槽都可以使用 |
+

@@ -12,7 +12,8 @@
              target="_blank">
             <div class="item-img"
                  :style="{backgroundImage:'url('+item.src+')'}"></div>
-            <p class="item-title">{{ item.title }}</p>
+            <p class="item-title"
+               v-if="item.title">{{ item.title }}</p>
           </a>
         </div>
       </el-carousel-item>

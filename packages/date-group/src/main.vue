@@ -27,7 +27,7 @@
 import create from '../../utils/create';
 import { GetDateStr } from '../../utils/dateUtil.js';
 export default create({
-  name: 'date-select',
+  name: 'date-group',
   data () {
     return {
       menu: [],

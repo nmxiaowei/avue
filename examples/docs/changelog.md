@@ -1,5 +1,15 @@
 ## 更新日志
 
+### 1.3.1
+
+* 去掉avue-form-steps组件更改为avue-steps组件，同时支持form和crud的选项卡[实例代码](https://avue.top/#/component/steps)
+* 修复form表单清空方法无效问题
+* 修复crud弹出框时clearValidate方法调用问题
+* 修改核心深拷贝方法
+* 新增avue-steps和avue-tabs文档(在他们demo的当前页最下边)
+* 优化carousel组件不写title自动隐藏
+* date-select组件更改为date-group组件
+
 ### 1.3.0
 
 * [重大更新] 根据row属性控制form表单可以任意排列组合,独占一行 [实例代码](https://avue.top/#/component/form)
