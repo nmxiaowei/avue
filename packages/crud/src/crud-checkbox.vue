@@ -1,6 +1,7 @@
 <template>
   <el-checkbox-group v-model="text"
                      @change="handleChange"
+                     :disabled="disabled"
                      @click.native="handleClick">
     <el-checkbox v-for="(item,index) in dic"
                  :label="item[valueKey]"
