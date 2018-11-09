@@ -199,7 +199,15 @@ export default {
     }
   },
 
-
+  created () {
+    this.$notify({
+      title: '双十一特惠',
+      dangerouslyUseHTMLString: true,
+      message: '双十一限时特惠，套餐全部五折，截止到11月12日<a href="https://avue.top">点击查看</a>',
+      duration: 0,
+      type: 'success'
+    });
+  },
   methods: {
 
   }

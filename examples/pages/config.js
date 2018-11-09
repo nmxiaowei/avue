@@ -2,6 +2,7 @@ export default [{
     title: '核心源码',
     subtitle: 'avue的核心源码',
     vip: 2,
+    nowmoney: '149.9',
     money: '299.9',
     list: [{
         title: 'avue核心源码解读',
@@ -32,6 +33,7 @@ export default [{
     title: '模版源码',
     subtitle: 'avue-cli的核心源码',
     vip: 2,
+    nowmoney: '149.9',
     money: '299.9',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
@@ -68,9 +70,10 @@ export default [{
     subtitle: 'avue系列的全部源码',
     v: true,
     vip: 1,
+    nowmoney: '199.9',
     money: '399.9',
     list: [{
-        title: '同时拥有“avue2.x”和“avue-cli2.x”的授权',
+        title: '同时拥有“核心源码”和“模版源码”的授权',
         bold: true,
     }, {
         title: '获得avue中全部的vip特权',
@@ -86,6 +89,8 @@ export default [{
         title: '包含avue-pig最新avue-cli对接pigx和pig'
     }, {
         title: '包含avue-cli2html版本的的源码'
+    }, {
+        title: '包含avue-house一个房屋采集系统案例'
     }, {
         title: '包含avue-api接口管理工具源码'
     }, {

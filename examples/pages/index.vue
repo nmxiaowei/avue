@@ -53,11 +53,14 @@
                        src="../assets/images/vip2.png"
                        alt="">
                   {{item.title}}
-                  <span class="pay__content-money">￥&nbsp;{{item.money}}</span>
+                  <span class="pay__content-money pay__content-money--line">￥&nbsp;{{item.money}}</span>
                 </p>
-                <p class="pay__content-subtitle">
-                  {{item.subtitle}}
-                </p>
+                <div>
+                  <p class="pay__content-subtitle">
+                    {{item.subtitle}}
+                  </p>
+                </div>
+                <span class="pay__content-money"><span class="pay__content-money--zhe"> ￥{{item.nowmoney}}</span>（双11限时特惠）</span>
               </div>
               <ul class="pay__content-text">
                 <li v-for="(citem,cindex) in item.list"
@@ -119,12 +122,6 @@ export default {
     }
   },
   methods: {
-    custormAnchor (anchorName) {
-      // 找到锚点
-      let anchorElement = document.getElementById(anchorName);
-      // 如果对应id的锚点存在，就跳转到锚点
-      if (anchorElement) { anchorElement.scrollIntoView(); }
-    }
   }
 }
 </script>
@@ -269,6 +266,14 @@ export default {
       font-size: 16px;
       color: #fff;
       font-weight: 400;
+      &--line {
+        text-decoration: line-through;
+      }
+      &--zhe {
+        color: #fe1e53;
+        font-weight: 700;
+        font-size: 32px;
+      }
     }
     &-text {
       height: 350px;
