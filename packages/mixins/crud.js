@@ -76,7 +76,7 @@ export default function() {
             init() {
                 // 初始化工具
                 this.initFun();
-                this.tableOption = this.deepClone(this.option);
+                this.tableOption = this.option;
                 const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
                 // 规则初始化
                 this.rulesInit();

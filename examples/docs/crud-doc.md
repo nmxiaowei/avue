@@ -6,6 +6,7 @@
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | data | 显示的数据 | Array | — | — |
 | option | 组件配置属性，详情见下面Option属性 | Object | — | — |
+| page | 分页配置选项，具体看下表 | Object | — | — |
 | table-loading | 表格等待框的控制 | Boolean | true / false  | false |
 | before-open |  打开前的回调，会暂停 Dialog 的打开	function(done,type)，done 用于关闭 Dialog,type为当前窗口的类型 |	Function | — | — |
 | before-close |  关闭前的回调，会暂停 Dialog 的关闭	function(done,type)，done 用于关闭 Dialog,type为当前窗口的类型|	Function | — | — |
@@ -64,7 +65,23 @@
 | cellBtn | 表格单元格可编辑（当column中有搜索的属性中有cell为true的属性启用，只对type为select和input有作用) | Boolean | true / false  | true |
 | selectClearBtn | 清空选中按钮（当selection为true起作用） | Boolean | true / false  | true |
 
+### Avue-tree page Attributes
 
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| currentPage | 当前的页码 | String | — | — |
+| pageSize | 每页显示多少条 | String | — | — |
+| total | 总条数 | String | — | — |
+| pageSizes | 分页的数组分段 | Array | — | [10,20,30,50,100] |
+
+
+### Avue-tree props Attributes
+
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| label | 字典的名称属性值 | String | — | — |
+| value | 字典的值属性值 | String | — | —
+| children | 字典的子类的属性值 | String | — | - |
 
 ### Avue-crud Type Attributes
 

@@ -152,8 +152,11 @@
             "path": "/date-group",
             "title": "日期选择器"
         }, {
-            "path": "/tree",
+            "path": "/table-tree",
             "title": "表格树"
+        }, {
+            "path": "/tree",
+            "title": "树型"
         }, {
             "path": "/tabs",
             "title": "选项卡"

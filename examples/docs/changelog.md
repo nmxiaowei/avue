@@ -1,5 +1,11 @@
 ## 更新日志
 
+### 1.3.2
+
+* 新增tree多功能组件，menuBtn为按钮菜单的卡槽返回node和data，具体看[实例代码](https://avue.top/#/component/tree)
+* 修复若干测试版本中的bug
+* 更新和完善了文档
+
 ### 1.3.1
 
 * 去掉avue-form-steps组件更改为avue-steps组件，同时支持form和crud的选项卡[实例代码](https://avue.top/#/component/steps)

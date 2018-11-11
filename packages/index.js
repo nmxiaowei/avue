@@ -22,6 +22,7 @@ import DataBox from './data-box/';
 import Form from './form/';
 import Tabs from './tabs/';
 import Steps from './steps/';
+import Tree from './tree/';
 import FormDetail from './form-detail/';
 import TableTree from './table-tree/';
 import DateGroup from './date-group/';
@@ -30,6 +31,7 @@ const components = [
     Crud,
     Form,
     Tabs,
+    Tree,
     Carousel,
     Steps,
     FormDetail,

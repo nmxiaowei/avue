@@ -73,6 +73,9 @@ export default [{
     nowmoney: '199.9',
     money: '399.9',
     list: [{
+        title: '可完全用于商用',
+        bold: true,
+    }, {
         title: '同时拥有“核心源码”和“模版源码”的授权',
         bold: true,
     }, {
@@ -93,7 +96,5 @@ export default [{
         title: '包含avue-house一个房屋采集系统案例'
     }, {
         title: '包含avue-api接口管理工具源码'
-    }, {
-        title: '可远程协助解决问题'
     }]
 }]
