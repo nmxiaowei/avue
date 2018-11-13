@@ -109,9 +109,6 @@
         }, {
             "path": "/crud-btn",
             "title": "crud自定义按钮"
-        }, {
-            "path": "/crud-component",
-            "title": "crud自定义组件"
         }]
     }, {
         "groupName": "Form",
@@ -169,6 +166,9 @@
         }, {
             "path": "/carousel",
             "title": "走马灯"
+        }, {
+            "path": "/component",
+            "title": "自定义组件"
         }]
     }]
 }, {

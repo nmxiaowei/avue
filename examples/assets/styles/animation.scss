@@ -1,0 +1,111 @@
+.animation {
+    position: absolute;
+    top: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    transform: scaleX(0.5);
+    z-index: -1;
+    &::before {
+        content: "";
+        height: 16px;
+        opacity: 1;
+        border-right: 4px solid #fff;
+        position: absolute;
+        left: -2px;
+        transform: translate3d(0, -100%, 0);
+    }
+}
+
+.animation1 {
+    left: 15%;
+    height: 500px;
+    &::before {
+        animation: fallingStar1 1.3s infinite ease-in-out;
+    }
+}
+
+.animation2 {
+    left: 35%;
+    height: 375px;
+    &::before {
+        animation: fallingStar2 1.5s infinite ease-in-out;
+    }
+}
+
+.animation3 {
+    left: 52%;
+    height: 248px;
+    &::before {
+        animation: fallingStar3 2s infinite ease-in-out;
+    }
+}
+
+.animation4 {
+    left: 65%;
+    height: 570px;
+    &::before {
+        animation: fallingStar4 1.5s infinite ease-in-out;
+    }
+}
+
+.animation5 {
+    left: 85%;
+    height: 460px;
+    &::before {
+        animation: fallingStar5 1.3s infinite ease-in-out;
+    }
+}
+
+@keyframes fallingStar1 {
+    0% {
+        transform: translate3d(0, -100%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 500px, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes fallingStar2 {
+    0% {
+        transform: translate3d(0, -100%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 375px, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes fallingStar3 {
+    0% {
+        transform: translate3d(0, -100%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 248px, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes fallingStar4 {
+    0% {
+        transform: translate3d(0, -100%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 570px, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes fallingStar5 {
+    0% {
+        transform: translate3d(0, -100%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 460px, 0);
+        opacity: 0;
+    }
+}

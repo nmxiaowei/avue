@@ -1,26 +1,27 @@
 <template>
-  <header class="header">
+  <header class="header"
+          :class="{'header--index':$route.path==='/'}">
     <div class="header__container">
       <p class="header__logo">
-        Avue 官方网站
+        <router-link :to="{path:'/'}">Avue</router-link>
       </p>
       <!-- nav -->
       <ul class="header__nav">
-        <li class="header__nav-item">
-          <router-link :to="{path:'/'}">主页
-          </router-link>
-        </li>
         <li class="header__nav-item">
           <router-link :to="{path:'/component'}">文档
           </router-link>
         </li>
         <li class="header__nav-item">
-          <router-link :to="{path:'/about'}">联系我们
+          <router-link :to="{path:'/pay'}">企业版
           </router-link>
         </li>
         <li class="header__nav-item">
-          <a href="https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
-             target="_blank">阿里云双十一大促销</a>
+          <router-link :to="{path:'/extend'}">第三方扩展
+          </router-link>
+        </li>
+        <li class="header__nav-item">
+          <router-link :to="{path:'/about'}">联系我们
+          </router-link>
         </li>
         <li class="header__nav-item">
           <a href="https://github.com/nmxiaowei/avue"
@@ -71,11 +72,23 @@ export default {
   width: 100%;
   top: 0;
   left: 0;
-  background-color: #47aca1;
+  background-image: linear-gradient(
+    -90deg,
+    #03dde4 0%,
+    #30afed 51%,
+    #8755ff 100%
+  );
   color: #fff;
   z-index: 1024;
   & + div {
-    padding-top: 50px;
+    padding-top: 80px;
+  }
+  &--index {
+    position: relative;
+    background-image: none;
+    & + div {
+      padding-top: 0;
+    }
   }
   &__container {
     margin: 0 auto;
@@ -85,8 +98,12 @@ export default {
     align-items: center;
   }
   &__logo {
-    margin-right: 50px;
-    font-size: 22px;
+    margin-right: 100px;
+    font-weight: 300;
+    font-size: 32px;
+    a {
+      color: #fff;
+    }
   }
   &__nav {
     list-style: none;
@@ -106,17 +123,27 @@ export default {
     }
   }
   &__main {
-    background-color: #47aca1;
+    margin-bottom: 40px;
+    height: auto;
+    overflow: hidden;
+    background-image: linear-gradient(
+      -90deg,
+      #03dde4 0%,
+      #30afed 51%,
+      #8755ff 100%
+    );
     &-box {
       position: relative;
       margin: 0 auto;
       width: $width;
-      height: 220px;
+      min-height: 100px;
+      height: auto;
+      overflow: hidden;
     }
     &-info {
-      position: absolute;
-      bottom: 60px;
-      left: 30px;
+      padding: 40px 0 50px 0;
+      height: auto;
+      overflow: hidden;
     }
     &-title {
       color: #ffffff;
@@ -126,11 +153,18 @@ export default {
       line-height: 1.6;
     }
     &-subtitle {
+      margin-bottom: 30px;
       color: #ffffff;
       font-weight: 400;
       font-size: 20px;
       letter-spacing: 3px;
       line-height: 1.6;
+    }
+    &-detail {
+      color: #eee;
+      font-size: 14px;
+      line-height: 25px;
+      text-indent: 2em;
     }
   }
 }

@@ -1,124 +1,85 @@
 <template>
-  <div class="pay">
-    <div class="pay__banner">
-      <h1>Avue 一款神奇的vue组件框架</h1>
-      <p>完全由数据驱动视图，基于可配置化方式完成大量重复的curd和form等功能</p>
-      <div class="pay__menu">
-        <a href="https://cli2.avue.top"
-           target="_blank">
-          <el-button class="pay__menu-btn pay__menu-btn--download"
-                     type="primary">在线体验</el-button>
-        </a>
-        <a href="https://avue.top/#/component/avue2.x"
-           target="_blank">
-          <el-button class="pay__menu-btn pay__menu-btn--get">获取授权</el-button>
-        </a>
-      </div>
+  <div class="index">
+    <div class="index__bg"></div>
+    <div class="animation animation1"></div>
+    <div class="animation animation2"></div>
+    <div class="animation animation3"></div>
+    <div class="animation animation4"></div>
+    <div class="animation animation5"></div>
+    <div class="index__banner">
+      <p class="index__banner-title">一款神奇的配置化前端框架</h1>
+        <p class="index__banner-subtitle">完全由数据驱动视图，基于可配置化完成大量重复的curd和form等功能</p>
+        <div class="index__menu">
+          <router-link :to="{path:'/component'}">
+            <el-button class="index__menu-btn index__menu-btn--get">开始学习</el-button>
+          </router-link>
+        </div>
+        <div class="index__banner-version">
+          <span>当前版本：<cite>{{version}}</cite></span>
+          <span>
+            <router-link :to="{path:'/component/changelog'}">更新日志</router-link>
+          </span>
+          <span>授权客户：<em>200+</em></span>
+        </div>
+        <div class="index__banner-other">
+          <a href="#"
+             target="_blank">Star 1830</a>
+          <a href="https://gitee.com/smallweigit/avue"
+             target="_blank">码云</a>
+          <a href="https://github.com/nmxiaowei/avue"
+             target="_blank">github</a>
+        </div>
+
     </div>
-    <div class="pay__title">
-      <h2>为用户定制的前端脚手架框架，搬砖神器，接私私货利器，拯救后台开发不开心</h2>
+    <div class="index__title">
+      <h2>为用户定制的前端脚手架框架，搬砖神器，接私活利器，拯救后台开发不开心</h2>
       <p>Avue可以省去大量编写重复crud和form的工具，复用性高（瞬间完成表单与表格的相互转换）并且含有基于json驱动的UI的大量丰富组件，前端界的搬砖神器，具体demo可以
         <a href="/#/component/installation">查看文档</a>
       </p>
     </div>
     <fieldset>
-      <legend align="center">获取授权</legend>
+      <legend align="center">avue的神奇</legend>
     </fieldset>
-    <div class="pay__content"
-         id="list"
-         name="list">
-      <div class="pay__content-list">
-        <el-row :span="24"
-                :gutter="30">
-          <el-col :md="item.span || 8"
-                  :sm="24"
-                  :xs="24"
-                  class="pay__content-item"
-                  :class="{'pay__content-v':item.v}"
-                  v-for="(item,index) in config"
-                  :key="index">
-            <el-card>
-              <div slot="header"
-                   class="pay__content-header">
-                <img v-if="item.v"
-                     src="../assets/images/vip.png"
-                     class="pay__content-vip" />
-                <p class="pay__content-title">
-                  <img v-if="item.vip===1"
-                       class="pay__content-tip"
-                       src="../assets/images/vip1.png"
-                       alt="">
-                  <img v-else
-                       class="pay__content-tip"
-                       src="../assets/images/vip2.png"
-                       alt="">
-                  {{item.title}}
-                  <span class="pay__content-money pay__content-money--line">￥&nbsp;{{item.money}}</span>
-                </p>
-                <div>
-                  <p class="pay__content-subtitle">
-                    {{item.subtitle}}
-                  </p>
-                </div>
-                <span class="pay__content-money"><span class="pay__content-money--zhe"> ￥{{item.nowmoney}}</span>（双11限时特惠）</span>
-              </div>
-              <ul class="pay__content-text">
-                <li v-for="(citem,cindex) in item.list"
-                    :key="cindex"
-                    :class="{'pay__content-text--bold':citem.bold}"
-                    v-html="citem.title"></li>
-              </ul>
-            </el-card>
-          </el-col>
-        </el-row>
+    <div class="index__ys">
+      <div class="index__ys-item">
+        <img class="index__ys-img"
+             src="/static/images/icon1.png"
+             alt="">
+        <p class="index__ys-title">快速开发</p>
+        <p class="index__ys-info">只要根据文档属性，即可配置开发快速打造出表格，表单等其他数据展示交互页面</p>
       </div>
-    </div>
-    <div class="avue-tip pay__tip">
-      <h4 class="avue-tip__title">
-        如果购买过程中或者使用过程中，如有疑问？请咨询
-        作者，发送邮件，在交流群里提问或者点击<a href="/#/about">联系我们</a>
-      </h4>
-    </div>
-    <div class="pay__silder">
-      <el-carousel height="500px"
-                   :interval="3000"
-                   type="card">
-        <el-carousel-item>
-          <h2 class="pay__silder-title">登录页</h2>
-          <img class="pay__silder-img"
-               src="../assets/images/avue3.png"
-               alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <h2 class="pay__silder-title">电脑页</h2>
-          <img class="pay__silder-img"
-               src="../assets/images/avue1.png"
-               alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <h2 class="pay__silder-title">手机页</h2>
-          <img class="pay__silder-img"
-               src="../assets/images/avue2.png"
-               alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <h2 class="pay__silder-title">炫彩主题</h2>
-          <img class="pay__silder-img"
-               src="../assets/images/avue4.png"
-               alt="">
-        </el-carousel-item>
-
-      </el-carousel>
+      <div class="index__ys-item">
+        <img class="index__ys-img"
+             src="/static/images/icon2.png"
+             alt="">
+        <p class="index__ys-title">兼容性</p>
+        <p class="index__ys-info">完美的兼容各大支流浏览器（包括ie8+以上），并且底层做了跨屏终端适配，完美实现一套代码多终端显示</p>
+      </div>
+      <div class="index__ys-item">
+        <img class="index__ys-img"
+             src="/static/images/icon3.png"
+             alt="">
+        <p class="index__ys-title">复用性高</p>
+        <p class="index__ys-info">基于配置化驱动视图，一套配置即可完成表格和表单的全部操作，同时支持表格和表单的相互转换</p>
+      </div>
+      <div class="index__ys-item">
+        <img class="index__ys-img"
+             src="/static/images/icon4.png"
+             alt="">
+        <p class="index__ys-title">版本更新</p>
+        <p class="index__ys-info">产品将不断根据需求和参考issuse反馈的意见迭代更新，同时提供了全面的文档学习研究，上手更加容易</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import config from './config';
+
+import packages from '../../package.json'
 export default {
   data () {
     return {
-      config: config,
+      version: packages.version
     }
   },
   methods: {
@@ -127,28 +88,83 @@ export default {
 </script>
 
 <style lang="scss">
+@import url("../assets/styles/animation.scss");
 .main-cnt {
   padding: 0;
 }
-.pay {
+.index {
   .el-card__header {
     padding: 0;
   }
+  &__bg {
+    background-image: linear-gradient(
+      0deg,
+      #03dde4 0%,
+      #30afed 51%,
+      #8755ff 100%
+    );
+    background-size: cover;
+    background-position: center 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 530px;
+    z-index: -2;
+  }
   &__banner {
-    padding: 20px 0 40px 0;
+    padding: 80px 0 40px 0;
     margin-bottom: 60px;
-    background-color: #47aca1;
     text-align: center;
     color: #fff;
-    h1 {
-      padding-top: 60px;
-      padding-bottom: 10px;
-      line-height: 34px;
-      font-size: 36px;
+    &-title {
+      margin: 0;
+      padding: 0;
+      font-size: 52px;
       font-weight: 300;
     }
-    p {
+    &-subtitle {
       color: rgba(255, 255, 255, 0.8);
+    }
+
+    &-version {
+      margin-bottom: 30px;
+      font-size: 12px;
+      span {
+        margin: 0 5px;
+      }
+      cite,
+      em {
+        font-style: normal;
+      }
+      a {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+    &-other {
+      text-align: center;
+      a {
+        display: inline-block;
+        vertical-align: middle;
+        height: 28px;
+        line-height: 28px;
+        margin: 0 5px;
+        padding: 0 8px;
+        border-radius: 2px;
+        color: rgba(255, 255, 255, 0.8);
+        border: 1px solid #c2c2c2;
+        border-color: rgba(255, 255, 255, 0.2);
+        font-size: 14px;
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        &:hover,
+        &:focus,
+        &:active {
+          border-color: rgba(255, 255, 255, 0.3);
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+      }
     }
   }
   &__tip {
@@ -158,7 +174,7 @@ export default {
   &__title {
     width: 1000px;
     margin: 0 auto;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
     h2 {
       margin-bottom: 20px;
     }
@@ -170,139 +186,66 @@ export default {
     }
   }
   &__menu {
-    margin-top: 50px;
+    margin-top: 60px;
+    margin-bottom: 5px;
     text-align: center;
     &-btn {
       margin-right: 20px;
       margin-bottom: 10px;
-      width: 206px;
-      height: 60px;
-      font-size: 26px;
-      font-weight: 300;
+      width: 233px;
+      height: 62px;
+      font-size: 24px;
+      font-weight: 400;
       border-radius: 3px;
-      &--download {
-        background-color: rgba(255, 255, 255, 0.5);
+      transition: all 0.5s;
+      &--get {
+        background-color: transparent;
         border-color: #fff;
         color: #fff;
         &:hover,
         &:focus,
         &:active {
+          border-color: rgba(255, 255, 255, 0.3);
           color: #fff;
-          border-color: #fff;
-          background-color: rgba(255, 255, 255, 0.5);
-        }
-      }
-      &--get {
-        background-color: transparent;
-        color: #fff;
-        &:hover,
-        &:focus,
-        &:active {
-          color: #fff;
-          border-color: #fff;
-          background-color: transparent;
+          background-color: rgba(255, 255, 255, 0.05);
+          border-radius: 30px;
         }
       }
     }
   }
-  &__content {
-    margin-bottom: 30px;
-    &-vip {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    &-v {
-      .el-card {
-        border-color: #f2ddaf;
-        background-color: #fffaeb;
-        border-width: 2px;
-      }
-    }
-    &-tip {
-      margin-right: 5px;
-      width: 25px;
-      height: 25px;
-    }
-    &-list {
-      width: 1100px;
-      margin: 30px auto;
-    }
+  &__ys {
+    margin: 50px auto 0 auto;
+    width: 1100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
     &-item {
-      margin-bottom: 20px;
-    }
-    &-header {
-      position: relative;
-      padding: 40px 0 20px 0;
-      text-align: center;
-      background-color: #49a0f5;
-    }
-    &-title {
-      margin: 0;
-      margin-bottom: 10px;
-      font-size: 24px;
-      word-wrap: break-word;
-      letter-spacing: 2px;
-      font-weight: 400;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    &-subtitle {
-      position: relative;
-      display: inline-block;
-      border: 1px solid #e4d5d5;
-      line-height: 28px;
-      padding: 0 15px;
-      border-radius: 5px;
-      margin-top: 5px;
-      color: #ddd;
-      font-weight: 300;
-      font-size: 14px;
-    }
-    &-money {
-      text-align: center;
-      font-size: 16px;
-      color: #fff;
-      font-weight: 400;
-      &--line {
-        text-decoration: line-through;
+      padding: 40px 30px 10px 30px;
+      width: 220px;
+      min-height: 330px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background-color: #fff;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      &:hover {
+        box-shadow: 0 0 80px rgba(0, 0, 0, 0.1);
       }
-      &--zhe {
-        color: #fe1e53;
-        font-weight: 700;
-        font-size: 32px;
-      }
-    }
-    &-text {
-      height: 350px;
-      margin-top: 15px;
-      margin-left: 20px;
-      text-align: left;
-      padding: 5px 0 5px 15px;
-      &--bold {
-        color: #ff5722;
-      }
-      li {
-        height: 30px;
-        line-height: 30px;
-        font-size: 14px;
-      }
-    }
-  }
-  &__silder {
-    padding: 30px 0;
-    background-color: #24262f;
-    &-title {
-      margin-bottom: 10px;
-      color: #fff;
-      text-align: center;
-      font-weight: 300;
     }
     &-img {
-      padding: 5px;
-      width: 100%;
+      width: 80px;
+    }
+    &-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    &-info {
+      color: #666;
+      font-size: 13px;
+      line-height: 25px;
+      text-align: left;
+      text-indent: 2em;
     }
   }
 }

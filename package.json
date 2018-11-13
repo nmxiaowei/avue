@@ -17,6 +17,9 @@
     },
     "dependencies": {
         "async-validator": "~1.8.1",
+        "avue-plugin-dynamicquery": "^0.0.4",
+        "avue-plugin-transfer": "^0.0.3",
+        "avue-plugin-ueditor": "^0.0.2",
         "axios": "^0.16.2",
         "babel-helper-vue-jsx-merge-props": "^2.0.0",
         "dayjs": "^1.7.5",

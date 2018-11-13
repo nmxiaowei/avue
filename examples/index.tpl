@@ -15,7 +15,12 @@
         }
         
         .avue-home {
-            background-color: #47aca1;
+            background-image: linear-gradient(
+              -90deg,
+              #03dde4 0%,
+              #30afed 51%,
+              #8755ff 100%
+            );
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -40,7 +45,7 @@
         
         .avue-home__footer>a {
             font-size: 12px;
-            color: #ABABAB;
+            color: #fff;
             text-decoration: none;
         }
         

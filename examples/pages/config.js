@@ -1,9 +1,9 @@
-export default [{
+export const pay = [{
     title: '核心源码',
     subtitle: 'avue的核心源码',
     vip: 2,
-    nowmoney: '149.9',
-    money: '299.9',
+    nowmoney: '299.9',
+    money: '',
     list: [{
         title: 'avue核心源码解读',
         bold: true
@@ -19,7 +19,7 @@ export default [{
     }, {
         title: '专属的开发者文档，助你快速掌握'
     }, {
-        title: '支持IE9+等系列浏览器'
+        title: '支持IE8+等系列浏览器'
     }, {
         title: '学习开发基于vue第三方组件的学习'
     }, {
@@ -33,13 +33,13 @@ export default [{
     title: '模版源码',
     subtitle: 'avue-cli的核心源码',
     vip: 2,
-    nowmoney: '149.9',
-    money: '299.9',
+    nowmoney: '299.9',
+    money: '',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
         bold: true
     }, {
-        title: '支持IE9+等系列浏览器',
+        title: '支持IE8+等系列浏览器',
         bold: true
     }, {
         title: '全新的前端错误日志监控机制',
@@ -70,8 +70,8 @@ export default [{
     subtitle: 'avue系列的全部源码',
     v: true,
     vip: 1,
-    nowmoney: '199.9',
-    money: '399.9',
+    nowmoney: '399.9',
+    money: '',
     list: [{
         title: '可完全用于商用',
         bold: true,
@@ -97,4 +97,38 @@ export default [{
     }, {
         title: '包含avue-api接口管理工具源码'
     }]
+}]
+
+
+export const extend = [{
+    title: '富文本编辑框',
+    tags: 'ueditor',
+    author: 'smallwei',
+    info: '基于vue-quill-editor插件的第三方的富文本编辑框',
+    git: 'https://gitee.com/smallweigit/avue-plugin-ueditor',
+    npm: 'https://www.npmjs.com/package/avue-plugin-ueditor',
+    demo: 'ueditor'
+}, {
+    title: '穿梭框',
+    tags: 'transfer',
+    author: 'smallwei',
+    info: '基于element-ui中的transfer插件的穿梭框',
+    git: 'https://gitee.com/smallweigit/avue-plugin-transfer',
+    npm: 'https://www.npmjs.com/package/avue-plugin-transfer',
+    demo: 'transfer',
+}, {
+    title: '下拉树',
+    tags: 'treeselect',
+    author: 'liyuchuan',
+    info: '基于@riophae/ vue-treeselect封装的下拉树形选择',
+    git: 'https://gitee.com/yuchuanli/avue-plugin-tresselect.git',
+    npm: 'https://www.npmjs.com/package/avue-plugin-treeselect'
+}, {
+    title: '表格查询框',
+    tags: 'dynamicquery',
+    author: 'liyuchuan',
+    info: '基于elementui 表格封装的弹出表格选择',
+    git: 'https://gitee.com/yuchuanli/avue-plugin-dynamicquery.git',
+    npm: 'https://www.npmjs.com/package/avue-plugin-dynamicquery',
+    demo: 'dynamicquery'
 }]

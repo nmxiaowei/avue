@@ -4,7 +4,12 @@ const loadDocs = function(path) {
         r(require(`./docs${path}.md`)),
         'group');
 };
-const load = function(name) {
+const load = function(name, path) {
+    if (path) {
+        return r => require.ensure([], () =>
+            r(require(`./${path}/${name}.vue`)),
+            'group');
+    }
     return r => require.ensure([], () =>
         r(require(`./pages/${name}.vue`)),
         'group');
@@ -21,6 +26,14 @@ const registerRoute = (navConfig) => {
     }, {
         path: '/about',
         component: load('about'),
+        children: []
+    }, {
+        path: '/extend',
+        component: load('extend'),
+        children: []
+    }, {
+        path: '/pay',
+        component: load('pay'),
         children: []
     }, {
         path: '/',

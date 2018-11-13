@@ -1,8 +1,7 @@
 <style lang="scss">
 .page-component__scroll {
-  height: calc(100% - 80px);
-  margin-top: 80px;
-
+  background-color: #fff;
+  height: 100%;
   .el-scrollbar__wrap {
     overflow-x: auto;
   }

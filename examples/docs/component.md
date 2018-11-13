@@ -49,7 +49,7 @@
 
 ### 自定义组件
 
-:::demo 自定义组件，将组件注册为全局组件，完后在`component`属性中写属性名字即可，相关数据用`props`接受,在组件里就可以天马星空了,自定义组件例子看`examples/components/solt-component`代码
+:::demo 自定义组件的使用方法，请看扩展页面
 ```html
 <avue-crud :data="data" :option="option" v-model="obj"></avue-crud>
 <script>
@@ -79,7 +79,9 @@ export default {
           column:[
              {
               label:'姓名',
-              prop:'name'
+              prop:'name',
+              span:24,
+              component:'soltComponent'
             },
             {
               label:'性别',

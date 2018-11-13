@@ -1,7 +1,12 @@
+body {
+    background-color: #eee;
+}
+
 .avue-tip {
     padding: 20px;
     margin: 20px 0;
     border: 1px solid #ced6ce;
+    background-color: #fff;
     border-left-width: 5px;
     border-radius: 3px;
     border-left-color: #83c182;
@@ -9,6 +14,24 @@
     line-height: 30px;
     &__title {
         font-weight: 300;
+    }
+}
+
+.avue-content {
+    width: 1200px;
+    margin: 30px auto;
+    padding: 10px 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    &__title {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+    &__data {
+        min-height: 80px;
+    }
+    &__item {
+        margin-bottom: 40px;
     }
 }
 
@@ -31,6 +54,6 @@ fieldset {
     border-top: 1px solid #e6e6e6 !important;
     width: 300px;
     height: 20px;
-    margin: 0 auto 5px;
+    margin: 0 auto 30px;
     text-align: center;
 }
