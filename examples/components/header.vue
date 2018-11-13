@@ -165,6 +165,11 @@ export default {
       font-size: 14px;
       line-height: 25px;
       text-indent: 2em;
+      a {
+        margin: 0 5px;
+        color: #eee;
+        text-decoration: underline;
+      }
     }
   }
 }

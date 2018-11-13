@@ -32,7 +32,7 @@ export default function() {
                     //字典处理
                     if (column.dicData) {
                         result = this.findByvalue(
-                            typeof column.dicData === 'string' ? this.DIC[column.dicData] : column.dicData,
+                            (typeof column.dicData === 'string' ? this.DIC[column.dicData] : column.dicData) || [],
                             result,
                             (column.props || this.tableOption.props)
                         );

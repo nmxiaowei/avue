@@ -1,3 +1,5 @@
+import Vue from 'vue';
+import axios from 'axios';
 import Carousel from './carousel/';
 import Json from './json/'
 import Crud from './crud/';
@@ -67,8 +69,8 @@ function install(Vue, axios) {
     Vue.prototype.$AVUE = AVUE;
 }
 
-if (window.Vue) {
-    install(window.Vue, window.axios);
+if (window.Vue || Vue) {
+    install((window.Vue || Vue), (window.axios || axios));
 }
 
 export default install;

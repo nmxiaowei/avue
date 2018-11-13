@@ -7,7 +7,9 @@
           <div class="header__main-subtitle">RENREN-SECURITY</div>
           <div class="header__main-detail">
             为企业源码完全开放，自由修改核心随心所欲，完善的企业级后台模版，兼容所有主流浏览器（包括ie8+），响应式布局
-            跨多终端适配，释放大量表单表格等其他组件的重复劳动，提供远程技术支持，授权后完后可以商用，无任何限制
+            跨多终端适配，释放大量表单表格等其他组件的重复劳动，提供远程技术支持，授权后完后可以商用，无任何限制。
+            <a href="https://cli2.avue.top"
+               target="_blank">点击体验avue-cli</a>
           </div>
         </div>
       </div>
@@ -60,6 +62,11 @@
                     :class="{'pay__content-text--bold':citem.bold}"
                     v-html="citem.title"></li>
               </ul>
+              <div class="pay__content-submit">
+                <router-link :to="{path:'/component/avue2.x'}">
+                  <el-button type="primary">获取授权</el-button>
+                </router-link>
+              </div>
             </el-card>
           </el-col>
         </el-row>
@@ -199,6 +206,13 @@ export default {
   }
   &__content {
     margin-bottom: 30px;
+    &-submit {
+      margin-top: 30px;
+      text-align: center;
+      .el-button {
+        width: 98%;
+      }
+    }
     &-vip {
       position: absolute;
       left: 0;

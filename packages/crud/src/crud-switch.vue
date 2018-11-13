@@ -4,8 +4,8 @@
                @change="handleChange"
                @click.native="handleClick"
                :active-text="getDic(0)[labelKey]"
-               :active-value="getDic(0)[valueKey] || ''"
-               :inactive-value="getDic(1)[valueKey] || ''"
+               :active-value="getDic(0)[valueKey]"
+               :inactive-value="getDic(1)[valueKey]"
                :inactive-text="getDic(1)[labelKey]"
                :disabled="disabled"
                :readonly="readonly"
@@ -41,6 +41,7 @@ export default create({
       this.$emit('change', value);
     },
     getDic (index) {
+      console.log(this.dic);
       return this.dic[index] ? this.dic[index] : {};
     }
   }

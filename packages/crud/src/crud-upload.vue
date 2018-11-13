@@ -7,7 +7,7 @@
                :before-remove="beforeRemove"
                :multiple="multiple"
                :on-preview="handlePictureCardPreview"
-               :limit="limit"
+               :limit="status?99:limit"
                :http-request="httpRequest"
                :drag="drag"
                :readonly="readonly"

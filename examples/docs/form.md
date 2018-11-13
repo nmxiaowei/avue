@@ -3,20 +3,16 @@ const DIC = {
     VAILD: [{
         label: '真',
         value: 'true',
-        color: 'green'
     }, {
         label: '假',
         value: 'false',
-        color: 'red'
     }],
     SEX: [{
         label: '男',
         value: 0,
-        color: 'green'
     }, {
         label: '女',
         value: 1,
-        color: 'red'
     }]
 }
 export default {
@@ -24,6 +20,7 @@ export default {
       return {
         obj:{},
         option:{
+            mock:true,
             dicData:DIC,
             submitText: '完成',
             column: [{
@@ -35,6 +32,10 @@ export default {
                     suffixIcon: 'el-icon-tickets',
                     prefixIcon: 'el-icon-tickets',
                     minlength: 2,
+                     mock:{
+                      type:'name',
+                      en:true,
+                    },
                     rules: [{
                         required: true,
                         message: "请输入用户名",
@@ -51,7 +52,10 @@ export default {
                 {
                     label: "姓名",
                     prop: "name",
-                    span:8,
+                    mock:{
+                      type:'name'
+                    },
+                    span:8
                 },
                 {
                     label: "类型",
@@ -59,21 +63,29 @@ export default {
                     type: "select",
                     dicData: 'VAILD',
                     span:6,
+                    mock:{
+                      type:'dic',
+                    },
                 },
                 {
                     label: "权限",
                     prop: "grade",
                     span: 6,
                     type: "checkbox",
-                    dicData: 'VAILD'
+                    dicData: 'VAILD',
+                    mock:{
+                      type:'dic',
+                    },
                 },
-
                 {
                     label: "开关",
                     prop: "switch",
                     span: 6,
                     type: "switch",
                     dicData: 'SEX',
+                    mock:{
+                      type:'dic'
+                    },
                     hide: true,
                     row:true,
                 },
@@ -83,6 +95,9 @@ export default {
                     span: 6,
                     type: "radio",
                     dicData: 'SEX',
+                    mock:{
+                      type:'dic'
+                    },
                     valueDefault: 0,
                     change:({value,column})=>{
                         this.$message.success('change')
@@ -93,6 +108,13 @@ export default {
                     prop: "number",
                     type: 'number',
                     span: 6,
+                    precision:2,
+                    mock:{
+                      type:'number',
+                      max:1,
+                      min:2,
+                      precision:2
+                    },
                     valueDefault: 3,
                     minRows: 0,
                     maxRows: 3,
@@ -103,18 +125,71 @@ export default {
                     span: 12,
                     prop: "url",
                     prepend:'http://',
+                    mock:{
+                      type:'url',
+                      header:false,
+                    },
                     append:'com',
+                    row:true,
+                },
+                {
+                    label: "日期",
+                    prop: "date",
+                    type: "date",
+                    span:8,
+                    format:'yyyy-MM-dd',
+                    valueFormat:'yyyy-MM-dd',
+                    mock:{
+                      type:'datetime',
+                      format:'yyyy-MM-dd'
+                    },
+                },
+                {
+                    label: "日期时间",
+                    prop: "datetime",
+                    type: "datetime",
+                    span:8,
+                    format:'yyyy-MM-dd hh:mm:ss',
+                    valueFormat:'yyyy-MM-dd hh:mm:ss',
+                    mock:{
+                      type:'datetime',
+                      format:'yyyy-MM-dd hh:mm:ss',
+                      now:true,
+                    },
+                },
+                 {
+                    label: "时间",
+                    prop: "time",
+                    type: "time",
+                    span:8,
+                    format:'hh:mm:ss',
+                    valueFormat:'hh:mm:ss',
+                    mock:{
+                      type:'datetime',
+                      format:'hh:mm:ss'
+                    },
                 },
                 {
                     label: "地址",
                     span: 24,
                     prop: "address",
+                    mock:{
+                      type:'county'
+                    },
                 },{
                     label: "建议",
                     span: 24,
                     prop: "adit",
+                    mock:{
+                      type:'word',
+                      min:10,
+                      max:30
+                    },
                 },{
                     label: "手机号",
+                    mock:{
+                      type:'phone'
+                    },
                     span: 12,
                     prop: "phone",
                     type:'phone'
@@ -134,6 +209,9 @@ export default {
         submit () {
           this.$message.success('当前数据'+JSON.stringify(this.obj));
         },
+        tip(){
+          this.$message.success('自定义按钮');
+        }
     }
   }
 </script>
@@ -148,29 +226,29 @@ export default {
 
 ### 基础
 
-:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`,`resetForm`清空表单内容，但是默认值不会被清空,`resetChange`为清空方法的回调,如果想阻止依次排列，在组织属性后面加入row为true即可，具体看如下例子
+:::demo  里面主要包含了`change`和`click`俩个回调方法，返回当前的值`value`和列的属性`column`,`resetForm`清空表单内容，但是默认值不会被清空,`resetChange`为清空方法的回调,如果想阻止依次排列，在组织属性后面加入row为true即可，配置`mock`为`true`，在对应的`column`配置`mock`,配置即可开启数据填充,具体看如下例子
 ```html
-<avue-form ref="form" v-model="obj" :option="option" @reset-change="emptytChange" @submit="submit"></avue-crud>
+<avue-form ref="form" v-model="obj" :option="option" @reset-change="emptytChange" @submit="submit">
+   <template slot-scope="scope" slot="menuForm">
+      <el-button @click="tip">自定义按钮</el-button>
+  </template>
+</avue-crud>
 
 <script>
 const DIC = {
     VAILD: [{
         label: '真',
-        value: 'true',
-        color: 'green'
+        value: 'true'
     }, {
         label: '假',
-        value: 'false',
-        color: 'red'
+        value: 'false'
     }],
     SEX: [{
         label: '男',
-        value: 0,
-        color: 'green'
+        value: 0
     }, {
         label: '女',
-        value: 1,
-        color: 'red'
+        value: 1
     }]
 }
 export default {
@@ -178,6 +256,7 @@ export default {
       return {
         obj:{},
         option:{
+            mock:true,
             dicData:DIC,
             submitText: '完成',
             column: [{
@@ -189,6 +268,10 @@ export default {
                     suffixIcon: 'el-icon-tickets',
                     prefixIcon: 'el-icon-tickets',
                     minlength: 2,
+                     mock:{
+                      type:'name',
+                      en:true,
+                    },
                     rules: [{
                         required: true,
                         message: "请输入用户名",
@@ -205,7 +288,10 @@ export default {
                 {
                     label: "姓名",
                     prop: "name",
-                    span:8,
+                    mock:{
+                      type:'name'
+                    },
+                    span:8
                 },
                 {
                     label: "类型",
@@ -213,21 +299,29 @@ export default {
                     type: "select",
                     dicData: 'VAILD',
                     span:6,
+                    mock:{
+                      type:'dic',
+                    },
                 },
                 {
                     label: "权限",
                     prop: "grade",
                     span: 6,
                     type: "checkbox",
-                    dicData: 'VAILD'
+                    dicData: 'VAILD',
+                    mock:{
+                      type:'dic',
+                    },
                 },
-
                 {
                     label: "开关",
                     prop: "switch",
                     span: 6,
                     type: "switch",
                     dicData: 'SEX',
+                    mock:{
+                      type:'dic'
+                    },
                     hide: true,
                     row:true,
                 },
@@ -237,6 +331,9 @@ export default {
                     span: 6,
                     type: "radio",
                     dicData: 'SEX',
+                    mock:{
+                      type:'dic'
+                    },
                     valueDefault: 0,
                     change:({value,column})=>{
                         this.$message.success('change')
@@ -247,6 +344,13 @@ export default {
                     prop: "number",
                     type: 'number',
                     span: 6,
+                    precision:2,
+                    mock:{
+                      type:'number',
+                      max:1,
+                      min:2,
+                      precision:2
+                    },
                     valueDefault: 3,
                     minRows: 0,
                     maxRows: 3,
@@ -257,18 +361,71 @@ export default {
                     span: 12,
                     prop: "url",
                     prepend:'http://',
+                    mock:{
+                      type:'url',
+                      header:false,
+                    },
                     append:'com',
+                    row:true,
+                },
+                {
+                    label: "日期",
+                    prop: "date",
+                    type: "date",
+                    span:8,
+                    format:'yyyy-MM-dd',
+                    valueFormat:'yyyy-MM-dd',
+                    mock:{
+                      type:'datetime',
+                      format:'yyyy-MM-dd'
+                    },
+                },
+                {
+                    label: "日期时间",
+                    prop: "datetime",
+                    type: "datetime",
+                    span:8,
+                    format:'yyyy-MM-dd hh:mm:ss',
+                    valueFormat:'yyyy-MM-dd hh:mm:ss',
+                    mock:{
+                      type:'datetime',
+                      format:'yyyy-MM-dd hh:mm:ss',
+                      now:true,
+                    },
+                },
+                 {
+                    label: "时间",
+                    prop: "time",
+                    type: "time",
+                    span:8,
+                    format:'hh:mm:ss',
+                    valueFormat:'hh:mm:ss',
+                    mock:{
+                      type:'datetime',
+                      format:'hh:mm:ss'
+                    },
                 },
                 {
                     label: "地址",
                     span: 24,
                     prop: "address",
+                    mock:{
+                      type:'county'
+                    },
                 },{
                     label: "建议",
                     span: 24,
                     prop: "adit",
+                    mock:{
+                      type:'word',
+                      min:10,
+                      max:30
+                    },
                 },{
                     label: "手机号",
+                    mock:{
+                      type:'phone'
+                    },
                     span: 12,
                     prop: "phone",
                     type:'phone'
@@ -277,17 +434,20 @@ export default {
         }
     },
     created(){
-        this.obj.username = 'smallwei';
+        this.obj.username = 'smallwei'
         this.obj.switch = 0;
-        // this.obj.phone='17547400800';
+        this.obj.phone='17547400800';
     },
     methods:{
+        emptytChange(){
+          this.$message.success('清空方法回调');
+        },
         submit () {
           this.$message.success('当前数据'+JSON.stringify(this.obj));
         },
-        resetChange(){
-          this.$message.success('清空方法回调');
-        },
+        tip(){
+          this.$message.success('自定义按钮');
+        }
     }
   }
 </script>

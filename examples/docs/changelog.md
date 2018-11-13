@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.3.3
+
+* [重大更新] 新增一件填充模拟数据功能，方便测试，后期补充文档，具体看[实例代码](https://avue.top/#/component/form)
+* 修复upload组件上传时图片累加限制问题
+* 修复switch组件赋值‘||’引发得到问题
+* 修复若干已知问题
+
 ### 1.3.2
 
 * 新增tree多功能组件，menuBtn为按钮菜单的卡槽返回node和data，具体看[实例代码](https://avue.top/#/component/tree)

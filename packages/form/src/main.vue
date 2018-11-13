@@ -115,6 +115,10 @@
           <el-form-item :label-width="menuWidth">
             <div :class="b('menu',[menuPostion])">
               <el-button type="primary"
+                         @click="handleMock"
+                         icon="el-icon-edit-outline"
+                         v-if="vaildData(tableOption.mock,false)">一键填充数据</el-button>
+              <el-button type="primary"
                          @click="submit"
                          :size="tableOption.submitSize"
                          icon="el-icon-check"
@@ -137,6 +141,8 @@
 import create from '../../utils/create';
 import draggable from "vuedraggable";
 import crud from '../../mixins/crud';
+import { deepClone } from '../../utils/util';
+import mock from '../../utils/mock';
 import { validatenull } from '../../utils/validate.js';
 export default create({
   name: 'form',
@@ -245,6 +251,14 @@ export default create({
     }
   },
   methods: {
+    handleMock () {
+      const form = mock(this.columnOption, this.DIC);
+      Object.keys(form).forEach(ele => {
+        this.form[ele] = form[ele];
+      })
+      this.clearValidate();
+      this.$message.success('模拟数据填充成功');
+    },
     optionDelete (column, index) {
       this.$emit('option-delete', { column, index })
     },
