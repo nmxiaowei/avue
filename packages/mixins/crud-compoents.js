@@ -47,6 +47,9 @@ export default function() {
                 type: Boolean,
                 default: false
             },
+            dataType: {
+                type: String
+            },
             clearable: {
                 type: Boolean,
                 default: true

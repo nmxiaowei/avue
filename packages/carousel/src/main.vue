@@ -1,5 +1,5 @@
 <template>
-  <div class="carousel">
+  <div :class="b()">
     <el-carousel :type="option.type"
                  :height="option.height+'px'"
                  :autoplay="option.autoplay"
@@ -7,13 +7,13 @@
                  indicator-position="outside">
       <el-carousel-item v-for="(item,index) in data"
                         :key="index">
-        <div class="item">
-          <a :href="item.href?item.href:''"
+        <div :class="b('item')">
+          <a :href="item.href?item.href:'javascript:void(0);'"
              target="_blank">
-            <div class="item-img"
+            <div :class="b('img')"
                  :style="{backgroundImage:'url('+item.src+')'}"></div>
-            <p class="item-title"
-               v-if="item.title">{{ item.title }}</p>
+            <div :class="b('title')"
+                 v-if="item.title">{{ item.title }}</div>
           </a>
         </div>
       </el-carousel-item>

@@ -271,14 +271,14 @@
       <!-- 分页 -->
       <div :class="b('pagination')"
            v-if="vaildData(tableOption.page,config.page) && listLen">
-        <el-pagination :current-page.sync="page.currentPage"
-                       :background="vaildData(tableOption.pageBackground,config.pageBackground)"
-                       :page-size="page.pageSize"
-                       :page-sizes="page.pageSizes"
+        <el-pagination :current-page.sync="defaultPage.currentPage"
+                       :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
+                       :page-size="defaultPage.pageSize"
+                       :page-sizes="defaultPage.pageSizes"
                        @size-change="sizeChange"
                        @current-change="currentChange"
                        layout="total, sizes, prev, pager, next, jumper"
-                       :total="page.total"></el-pagination>
+                       :total="defaultPage.total"></el-pagination>
       </div>
     </el-card>
     <!-- 表单 -->
@@ -319,12 +319,12 @@
         <el-button type="primary"
                    @click="rowUpdate"
                    v-if="boxType=='edit'"
-                   :loading="keyBtn">{{config.updateBtnTitle}}</el-button>
+                   :loading="keyBtn">{{vaildData(tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
         <el-button type="primary"
                    @click="rowSave"
                    :loading="keyBtn"
-                   v-else-if="boxType=='add'">{{config.saveBtnTitle}}</el-button>
-        <el-button @click="closeDialog">{{config.cancelBtnTitle}}</el-button>
+                   v-else-if="boxType=='add'">{{vaildData(tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
+        <el-button @click="closeDialog">{{vaildData(tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
       </span>
     </el-dialog>
     <!-- 动态列 -->
@@ -372,6 +372,13 @@ export default create({
         tableForm: {},
         searchForm: {}
       },
+      defaultPage: {
+        total: 0, // 总页数
+        currentPage: 1, // 当前页数
+        pageSize: 10, // 每页显示多少条
+        pageSizes: [10, 20, 30, 40, 50, 100],
+        background: true // 背景颜色
+      },
       defaultParam: ['$index'],
       keyBtn: false,
       config: config,
@@ -395,6 +402,9 @@ export default create({
     this.dataInit();
     // 初始化列
     this.columnInit();
+    //初始化分页
+    this.$emit('on-load', this.defaultPage);
+    this.pageInit();
   },
   computed: {
     dialogTitle () {
@@ -435,6 +445,9 @@ export default create({
     }
   },
   watch: {
+    page () {
+      this.pageInit();
+    },
     columnOption () {
       this.columnInit();
     },
@@ -460,13 +473,7 @@ export default create({
     page: {
       type: Object,
       default () {
-        return {
-          total: 0, // 总页数
-          currentPage: 0, // 当前页数
-          pageSize: 10, // 每页显示多少条
-          pageSizes: [10, 20, 30, 40, 50, 100],
-          background: true // 背景颜色
-        };
+        return {};
       }
     },
     tableLoading: {
@@ -499,13 +506,20 @@ export default create({
       this.$refs.table.clearSelection();
     },
     indexMethod (index) {
-      return (index + 1) + (((this.page.currentPage || 1) - 1) * (this.page.pageSize || 10));
+      return (index + 1) + (((this.defaultPage.currentPage || 1) - 1) * (this.defaultPage.pageSize || 10));
     },
     refreshChange () {
       this.$emit('refresh-change', {
-        page: this.page,
+        page: this.defaultPage,
         searchForm: this.searchForm
       });
+    },
+    pageInit (onload) {
+      this.page.total ? this.defaultPage.total = this.page.total : '';
+      this.page.currentPage ? this.defaultPage.currentPage = this.page.currentPage : ''
+      this.page.pageSize ? this.defaultPage.pageSize = this.page.pageSize : ''
+      this.page.pageSizes ? this.defaultPage.pageSizes = this.page.pageSizes : ''
+      this.page.background ? this.defaultPage.background = this.page.background : ''
     },
     rulesInit () {
       this.tableFormRules = {};
@@ -565,6 +579,9 @@ export default create({
     },
     // 页大小回调
     sizeChange (val) {
+      this.defaultPage.currentPage = 1;
+      this.defaultPage.pageSize = val
+      this.$emit('on-load', this.defaultPage);
       this.$emit('size-change', val);
     },
     //日期组件回调
@@ -573,6 +590,7 @@ export default create({
     },
     // 页码回调
     currentChange (val) {
+      this.$emit('on-load', this.defaultPage);
       this.$emit('current-change', val);
     },
     //设置单选

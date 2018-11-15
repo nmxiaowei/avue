@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.3.4
+
+* [重大更新] 简化crud分页的逻辑，新增on-load接口[实例代码](https://avue.top/#/component/crud-page)
+* 新增upload组件dataType数据的格式，和优化内部逻辑[实例代码](https://avue.top/#/component/form-upload)
+* 修复carousel组件的样式问题导致不显示
+* 修复carousel组件title配置问题，无title时不显示标题
+
 ### 1.3.3
 
 * [重大更新] 新增一件填充模拟数据功能，方便测试，后期补充文档，具体看[实例代码](https://avue.top/#/component/form)

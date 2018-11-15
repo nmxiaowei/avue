@@ -105,17 +105,30 @@ export default create({
     status () {
       return this.listType === 'picture-img';
     },
+    isArray () {
+      return this.dataType === 'array';
+    },
     imageUrl () {
       return this.status ? this.text : '';
     },
     fileList () {
       let list = [];
+      if (!Array.isArray(this.text) && !this.status) this.text = (this.text || '').split(',');
       if (!this.status) {
-        this.text.forEach(ele => {
-          list.push({
-            name: ele[this.labelKey],
-            url: ele[this.valueKey],
-          })
+        this.text.forEach((ele, index) => {
+          let obj;
+          if (this.isArray) {
+            obj = {
+              name: index,
+              url: ele,
+            }
+          } else {
+            obj = {
+              name: ele[this.labelKey],
+              url: ele[this.valueKey],
+            }
+          }
+          list.push(obj)
         })
       }
       return list;
@@ -136,10 +149,14 @@ export default create({
     },
     handleSuccess (file) {
       if (!this.status) {
-        let obj = {};
-        obj[this.labelKey] = file[this.nameKey];
-        obj[this.valueKey] = file[this.urlKey];
-        this.text.push(obj);
+        if (this.isArray) {
+          this.text.push(file[this.nameKey]);
+        } else {
+          let obj = {};
+          obj[this.labelKey] = file[this.nameKey];
+          obj[this.valueKey] = file[this.urlKey];
+          this.text.push(obj);
+        }
       } else {
         this.text = file[this.urlKey];
       }

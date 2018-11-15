@@ -41,7 +41,6 @@ export default create({
       this.$emit('change', value);
     },
     getDic (index) {
-      console.log(this.dic);
       return this.dic[index] ? this.dic[index] : {};
     }
   }

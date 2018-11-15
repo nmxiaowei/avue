@@ -203,7 +203,7 @@ export default {
     this.$notify({
       title: '拉票！拉票！',
       dangerouslyUseHTMLString: true,
-      message: '2018年度最受欢迎中国开源软件评选 支持一下avue呗，<a target="_blank" href="https://www.oschina.net/project/top_cn_2018">点击查看</a>',
+      message: '2018年度最受欢迎中国开源软件评选 支持一下avue和pig呗，<a target="_blank" href="https://www.oschina.net/project/top_cn_2018">点击查看</a>',
       duration: 0,
       type: 'success'
     });

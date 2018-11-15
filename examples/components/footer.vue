@@ -35,8 +35,8 @@
               class="footer__item">
         <p class="footer__title">更新日志</p>
         <p class="footer__product"></p>
-        <p class="footer__product">avue(v1.3.2) 更新日期：2018-11-12</p>
-        <p class="footer__product">avue-cli 更新日期：2018-11-03</p>
+        <p class="footer__product">avue(v1.3.4) 更新日期：2018-11-15</p>
+        <p class="footer__product">avue-cli 更新日期：2018-11-11</p>
       </el-col>
     </el-row>
     <div class="footer__copyright">

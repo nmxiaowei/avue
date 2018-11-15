@@ -23,7 +23,7 @@
         </div>
         <div class="index__banner-other">
           <a href="#"
-             target="_blank">Star 1830</a>
+             target="_blank">Star 1860</a>
           <a href="https://gitee.com/smallweigit/avue"
              target="_blank">码云</a>
           <a href="https://github.com/nmxiaowei/avue"
