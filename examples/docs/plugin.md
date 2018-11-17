@@ -1,21 +1,7 @@
-## 第三方插件
+## 插件
 
-本节将介绍如何在项目中使用 Avue的第三方插件，avue支持的组件毕竟不是很全，当不能满足业务需求时可以引入avue第三方开发插件来解决问题
+随着业务各行各业的需求不同，avue很难满足各种多样化的需求，很多avue开发者提供了很好的插件，但是都加入到avue底层包 中会增大代码的冗余，因此开放了avue插件平台，将更多好的插件收集起来，代码规范参考ueditor和transfer为准
 
-### 插件使用
+### 第三方扩展平台
 
-以富文本编辑器为例子如何引入项目
-avue-plugin-ueditor[插件地址](https://gitee.com/smallweigit/avue-plugin-ueditor)
-
-引入步骤
-
-* 1.npm install avue-plugin-ueditor --save
-* 2.main.js导入import 'avue-plugin-ueditor/packages'
-* 3.列的属性配置"component": "AvueUeditor" 你插件的全局名字即可
-
-### 插件列表
-
-* [穿梭框](https://gitee.com/smallweigit/avue-plugin-transfer)
-* [富文本编辑器](https://gitee.com/smallweigit/avue-plugin-ueditor)
-
-你也可以为avue贡献更多的第三方插件,你可以参考以上插件规范进行开发。
+[点击查看](https://avue.top/#/extend)第三方扩展平台使用详情

@@ -24,6 +24,7 @@
 | width | 表格宽度 | Number | — | 100% |
 | height | 表格高度 | Number | — | auto |
 | header | 头部显隐 | Boolean | true / false | true |
+| size | 控件大小 | String | — | - |
 | title | 表格标题 | String | — | 表格标题 |
 | maxHeight | 表格最大高度 | Number | — | auto |
 | calcHeight | 表格高度差（主要用于减去其他部分让表格高度自适应） | Number | — | auto |selection

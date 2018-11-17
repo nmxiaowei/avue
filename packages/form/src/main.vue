@@ -4,7 +4,7 @@
     <el-form ref="form"
              :model="form"
              :label-position="tableOption.labelPosition"
-             :size="tableOption.size"
+             :size="controlSize"
              :label-width="setPx(tableOption.labelWidth,80)"
              :rules="formRules">
       <el-row :gutter="20"
@@ -59,7 +59,7 @@
                            :showInput="column.showInput"
                            :controls-position="column.controlsPosition"
                            :expand-trigger="column.expandTrigger"
-                           :size="column.size"
+                           :size="column.size || controlSize"
                            :parent="column.parent"
                            :colors="column.colors"
                            :action="column.action"
@@ -96,7 +96,6 @@
                            :minRows="column.minRows"
                            :maxRows="column.maxRows"
                            :format="column.format"
-                           :array="array"
                            :formatTooltip="column.formatTooltip"
                            :value-format="column.valueFormat"
                            :dic="setDic(column.dicData,DIC[column.dicData])"
@@ -115,18 +114,20 @@
         <el-col :span="24"
                 v-if="vaildData(tableOption.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
+            <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPostion])">
               <el-button type="primary"
                          @click="handleMock"
+                         :size="controlSize"
                          icon="el-icon-edit-outline"
                          v-if="vaildData(tableOption.mock,false)">一键填充数据</el-button>
               <el-button type="primary"
                          @click="submit"
-                         :size="tableOption.submitSize"
+                         :size="controlSize"
                          icon="el-icon-check"
                          v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
-                         :size="tableOption.emptySize"
+                         :size="controlSize"
                          v-if="vaildData(tableOption.emptyBtn,true)"
                          @click="resetForm">{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
               <slot name="menuForm"></slot>
@@ -164,6 +165,14 @@ export default create({
     };
   },
   created () {
+  },
+  watch: {
+    value: {
+      handler () {
+        this.formVal();
+      },
+      deep: true
+    }
   },
   mounted () { },
   computed: {

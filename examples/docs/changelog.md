@@ -1,5 +1,13 @@
 ## 更新日志
 
+### 1.4.0
+
+* 新增全局控制属性，目前只有size属性，可控制全部有size属性的组件[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)，[formDemo](https://avue.top/#/component/form)
+* 优化加载avue的逻辑
+* 新增所有组件可独立使用[详情](https://avue.top/#/component/quickstart)
+* 修复form-detail组件中value监听问题
+* 修复若干bug
+
 ### 1.3.4
 
 * [重大更新] 简化crud分页的逻辑，新增on-load接口[实例代码](https://avue.top/#/component/crud-page)

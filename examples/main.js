@@ -17,7 +17,9 @@ import 'avue-plugin-transfer/packages';
 import 'avue-plugin-dynamicquery/packages';
 import 'avue-plugin-ueditor/packages';
 Vue.use(Element);
-Vue.use(Avue, axios);
+Vue.use(Avue, {
+    //size: 'small' //small / mini
+});
 
 Vue.component('demo-block', demoBlock);
 Vue.component('main-header', MainHeader);

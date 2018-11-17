@@ -50,12 +50,6 @@ export default function() {
                 },
                 deep: true
             },
-            value: {
-                handler() {
-                    this.formVal();
-                },
-                deep: true
-            },
             option: {
                 handler() {
                     this.init();
@@ -71,6 +65,14 @@ export default function() {
         },
         created() {
             this.init();
+        },
+        computed: {
+            isMediumSize() {
+                return this.controlSize === 'medium' ? 'small' : this.controlSize;
+            },
+            controlSize() {
+                return this.tableOption.size || (this.$AVUE || {}).size || 'medium';
+            }
         },
         methods: {
             init() {

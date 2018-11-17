@@ -110,7 +110,7 @@ export default {
                     value: 'code'
                   },
                   type:'dic',
-                  dicUrl:'https://avue.top/api/area/{{key}}',
+                  dicUrl:'https://avue.top/api/area/getArea/{{key}}',
                   dicData:'getProvince'
               }, {
                   label: '销售单号',

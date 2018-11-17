@@ -1,5 +1,3 @@
-import Vue from 'vue';
-import axios from 'axios';
 import Carousel from './carousel/';
 import Json from './json/'
 import Crud from './crud/';
@@ -28,6 +26,7 @@ import Tree from './tree/';
 import FormDetail from './form-detail/';
 import TableTree from './table-tree/';
 import DateGroup from './date-group/';
+import axios from 'axios';
 const components = [
     Json,
     Crud,
@@ -59,18 +58,47 @@ const components = [
     DateGroup
 ];
 
-function install(Vue, axios) {
-    Vue.prototype.$http = axios;
-    const AVUE = {};
+function install(Vue, opts = {}) {
+    if (axios || window.axios) Vue.prototype.$http = axios || window.axios;
     components.map(component => {
         Vue.component(component.name, component);
     });
-
-    Vue.prototype.$AVUE = AVUE;
+    Vue.prototype.$AVUE = {
+        size: opts.size || 'medium',
+    };
 }
 
-if (window.Vue || Vue) {
-    install((window.Vue || Vue), (window.axios || axios));
+if (window.Vue) {
+    install(window.Vue, window.axios);
 }
-
-export default install;
+export default {
+    install,
+    Json,
+    Crud,
+    Form,
+    Tabs,
+    Tree,
+    Carousel,
+    Steps,
+    FormDetail,
+    CrudCheckbox,
+    CrudDate,
+    CrudTime,
+    CrudInput,
+    CrudRadio,
+    CrudSelect,
+    CrudCascader,
+    CrudNumberInput,
+    CrudSwitch,
+    CrudRate,
+    CrudUpload,
+    CrudSilder,
+    DataProgress,
+    DataDisplay,
+    DataCard,
+    DataIcons,
+    DataTabs,
+    DataBox,
+    TableTree,
+    DateGroup
+};

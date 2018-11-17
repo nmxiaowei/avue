@@ -122,7 +122,8 @@
         showHeader: true,
         showIndex: true,
         showCheckbox: false,
-        showPage:false
+        showPage:false,
+        sizeValue:'',
       }
     },
      computed: {
@@ -132,6 +133,7 @@
             border:this.showBorder,
             stripe:this.showStripe,
             showHeader:this.showHeader,
+            size:this.sizeValue,
             index:this.showIndex,
             selection:this.showCheckbox,
             page:this.showPage,
@@ -247,6 +249,13 @@ export default {
   <el-col :span="4">显示表头: <el-switch size="small" v-model="showHeader"> </el-switch></el-col>
   <el-col :span="4">显示分页: <el-switch size="small" v-model="showPage"> </el-switch></el-col>
 </el-row>
+<el-row style="margin-bottom:20px">
+   <el-radio-group v-model="sizeValue">
+    <el-radio label="">默认</el-radio>
+    <el-radio label="small">small</el-radio>
+    <el-radio label="mini">mini</el-radio>
+  </el-radio-group>
+</el-row>
 <avue-crud :data="data" :option="option0"></avue-crud>
 
 <script>
@@ -274,7 +283,8 @@ export default {
         showHeader: true,
         showIndex: true,
         showCheckbox: false,
-        showPage:falsem
+        showPage:false,
+        sizeValue:''
       }
     },
      computed: {
@@ -285,6 +295,7 @@ export default {
             stripe:this.showStripe,
             showHeader:this.showHeader,
             index:this.showIndex,
+            size:this.sizeValue,
             selection:this.showCheckbox,
             page:this.showPage,
             align:'center',

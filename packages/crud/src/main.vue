@@ -8,7 +8,7 @@
         <date-group @change="dateChange"
                     v-if="vaildData(tableOption.dateBtn,config.dateBtn)"
                     :default="vaildData(tableOption.dateDefault,config.dateDefault)"
-                    :size="vaildData(tableOption.dateSize,config.dateBtnSize)">
+                    :size="isMediumSize">
         </date-group>
       </div>
       <div :class="b('header')"
@@ -24,8 +24,8 @@
                           v-for="(column,index) in columnOption"
                           :key="index"
                           v-if="column.search">
-              <component :size="vaildData(tableOption.searchSize,config.searchComponentSize)"
-                         :is="getSearchType(column.type)"
+              <component :is="getSearchType(column.type)"
+                         :size="isMediumSize"
                          v-model="searchForm[column.prop]"
                          :type="getType(column)"
                          :props="column.props || tableOption.props"
@@ -45,10 +45,10 @@
               <el-button type="primary"
                          @click="searchChange"
                          :icon="config.searchBtnIcon"
-                         :size="vaildData(tableOption.searchSize,config.searchBtnSize)">{{config.searchBtnTitle}}</el-button>
+                         :size="isMediumSize">{{config.searchBtnTitle}}</el-button>
               <el-button @click="searchReset"
                          :icon="config.emptyBtnIcon"
-                         :size="vaildData(tableOption.searchSize,config.emptyBtnSize)">{{config.emptyBtnTitle}}</el-button>
+                         :size="isMediumSize">{{config.emptyBtnTitle}}</el-button>
               <slot name="searchMenu"></slot>
             </el-form-item>
           </el-form>
@@ -61,7 +61,7 @@
           <el-button type="primary"
                      @click="rowAdd"
                      :icon="config.addBtnIcon"
-                     :size="config.addBtnSize"
+                     :size="isMediumSize"
                      v-if="vaildData(tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
           <slot name="menuLeft"></slot>
         </div>
@@ -69,17 +69,17 @@
           <slot name="menuRight"></slot>
           <el-button :icon="config.refreshBtnIcon"
                      circle
-                     :size="config.refreshBtnSize"
+                     :size="isMediumSize"
                      @click="refreshChange"
                      v-if="vaildData(tableOption.refreshBtn,config.refreshBtn)"></el-button>
           <el-button :icon="config.columnBtnIcon"
                      circle
-                     :size="config.columnBtnSize"
+                     :size="isMediumSize"
                      @click="columnBox=true"
                      v-if="vaildData(tableOption.columnBtn,config.columnBtn)"></el-button>
           <el-button :icon="config.searchboxBtnIcon"
                      circle
-                     :size="config.searchboxBtnSize"
+                     :size="isMediumSize"
                      @click="searchShow=!searchShow"
                      v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchBtn)"></el-button>
         </div>
@@ -98,6 +98,7 @@
         </span>
       </el-tag>
       <el-table :data="list"
+                :size="controlSize"
                 :highlight-current-row="tableOption.highlightCurrentRow"
                 @current-change="currentRowChange"
                 :show-summary="tableOption.showSummary"
@@ -190,7 +191,7 @@
           </crud-components>
           <template slot-scope="scope">
             <template v-if="cellEditFlag(scope.row,column)">
-              <component size="small"
+              <component :size="controlSize"
                          :is="getSearchType(column.type)"
                          v-model="tableForm[column.prop]"
                          :type="getType(column)"
@@ -219,7 +220,7 @@
                          style="margin-right:9px;">
 
               <el-button type="primary"
-                         :size="config.menuBtnSize">
+                         :size="controlSize">
                 {{config.menuBtnTitle}}<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
@@ -241,22 +242,22 @@
             <template v-else-if="['button','text','icon'].includes(menuType)">
               <el-button :type="menuText('primary')"
                          :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
-                         :size="config.cellBtnSize"
+                         :size="isMediumSize"
                          @click.stop="rowCell(scope.row,scope.$index)"
                          v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle)}}</el-button>
               <el-button :type="menuText('success')"
                          :icon="config.viewBtnIcon"
-                         :size="config.viewBtnSize"
+                         :size="isMediumSize"
                          @click.stop="rowView(scope.row,scope.$index)"
                          v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon(config.viewBtnTitle)}}</el-button>
               <el-button :type="menuText('primary')"
                          :icon="config.editBtnIcon"
-                         :size="config.editBtnSize"
+                         :size="isMediumSize"
                          @click.stop="rowEdit(scope.row,scope.$index)"
                          v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon(config.editBtnTitle)}}</el-button>
               <el-button :type="menuText('danger')"
                          :icon="config.delBtnIcon"
-                         :size="config.delBtnSize"
+                         :size="isMediumSize"
                          @click.stop="rowDel(scope.row,scope.$index)"
                          v-if="vaildData(tableOption.delBtn,config.delBtn)">{{menuIcon(config.delBtnTitle)}}</el-button>
             </template>
@@ -313,18 +314,22 @@
       </div>
       <span slot="footer"
             class="dialog-footer">
+        <!-- 弹出框按钮组 -->
         <slot name="menuForm"
               :row="tableForm"
               :type="boxType"></slot>
         <el-button type="primary"
                    @click="rowUpdate"
+                   :size="controlSize"
                    v-if="boxType=='edit'"
                    :loading="keyBtn">{{vaildData(tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
         <el-button type="primary"
                    @click="rowSave"
+                   :size="controlSize"
                    :loading="keyBtn"
                    v-else-if="boxType=='add'">{{vaildData(tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
-        <el-button @click="closeDialog">{{vaildData(tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
+        <el-button :size="controlSize"
+                   @click="closeDialog">{{vaildData(tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
       </span>
     </el-dialog>
     <!-- 动态列 -->
@@ -445,8 +450,17 @@ export default create({
     }
   },
   watch: {
-    page () {
-      this.pageInit();
+    value: {
+      handler () {
+        this.formVal();
+      },
+      deep: true
+    },
+    page: {
+      handler () {
+        this.pageInit();
+      },
+      deep: true
     },
     columnOption () {
       this.columnInit();
