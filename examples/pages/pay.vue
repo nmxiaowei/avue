@@ -63,6 +63,11 @@
                     v-html="citem.title"></li>
               </ul>
               <div class="pay__content-submit">
+                <a :href="item.lz[1]"
+                   target="_blank"
+                   v-if="item.lz">
+                  <el-button>{{item.lz[0]}}</el-button>
+                </a>
                 <router-link :to="{path:'/component/avue2.x'}">
                   <el-button type="primary">获取授权</el-button>
                 </router-link>
@@ -211,6 +216,7 @@ export default {
       text-align: center;
       .el-button {
         width: 98%;
+        margin-bottom: 10px;
       }
     }
     &-vip {

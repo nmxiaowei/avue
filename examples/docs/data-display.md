@@ -7,19 +7,27 @@ export default {
           data:[
             {
               count: 100,
-              title: '日活跃数'
+              title: '日活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               count: '3,000',
-              title: '月活跃数'
+              title: '月活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               count: '20,000',
-              title: '年活跃数'
+              title: '年活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               count: '40,000',
-              title: '周活跃数'
+              title: '周活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },
@@ -51,19 +59,27 @@ export default {
           data:[
             {
               count: 100,
-              title: '日活跃数'
+              title: '日活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               count: '3,000',
-              title: '月活跃数'
+              title: '月活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               count: '20,000',
-              title: '年活跃数'
+              title: '年活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               count: '40,000',
-              title: '周活跃数'
+              title: '周活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },

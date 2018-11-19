@@ -24,6 +24,10 @@
           </router-link>
         </li>
         <li class="header__nav-item">
+          <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=vqed4m0j"
+             target="_blank">阿里云服务器1折起</a>
+        </li>
+        <li class="header__nav-item">
           <a href="https://github.com/nmxiaowei/avue"
              target="_blank">github</a>
         </li>

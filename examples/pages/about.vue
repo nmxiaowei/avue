@@ -82,6 +82,9 @@
           avue-plugin-tranzsfer——自定义第三方插件
         </p>
         <p class="about__item">
+          <a href="https://www.kancloud.cn/smallwei/avue/844090">avue-cli1.x -> 2.x升级教程</a>
+        </p>
+        <p class="about__item">
           官网 https://avue.top有属性文档
           群文件有crud系列视频和框架原理讲解文档
         </p>

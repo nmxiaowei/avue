@@ -8,9 +8,12 @@
               :sm="12">
         <div class="item"
              :style="{color:color}">
-          <h5 class="count">{{item.count}}</h5>
-          <span class="splitLine" />
-          <p class="title">{{item.title}}</p>
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             :target="item.target">
+            <h5 class="count">{{item.count}}</h5>
+            <span class="splitLine" />
+            <p class="title">{{item.title}}</p>
+          </a>
         </div>
       </el-col>
     </el-row>

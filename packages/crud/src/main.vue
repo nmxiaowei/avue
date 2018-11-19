@@ -220,7 +220,7 @@
                          style="margin-right:9px;">
 
               <el-button type="primary"
-                         :size="controlSize">
+                         :size="isMediumSize">
                 {{config.menuBtnTitle}}<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
@@ -285,10 +285,14 @@
     <!-- 表单 -->
     <el-dialog lock-scroll
                :custom-class="vaildData(tableOption.customClass,config.customClass)"
-               :fullscreen="vaildData(tableOption.formFullscreen,config.formFullscreen)"
+               :fullscreen="tableOption.dialogFullscreen"
                :modal-append-to-body="false"
                :append-to-body="true"
                :title="dialogTitle"
+               :close-on-press-escape="tableOption.dialogEscape"
+               :close-on-click-modal="tableOption.dialogClickModal"
+               :modal="tableOption.dialogModal"
+               :show-close="tableOption.dialogCloseBtn"
                :visible.sync="boxVisible"
                :width="vaildData(tableOption.dialogWidth,config.dialogWidth)"
                @close="closeDialog">

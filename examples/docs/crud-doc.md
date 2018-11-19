@@ -26,6 +26,12 @@
 | header | 头部显隐 | Boolean | true / false | true |
 | size | 控件大小 | String | — | - |
 | title | 表格标题 | String | — | 表格标题 |
+| dialogFullscreen | 是否为全屏 Dialog | Boolean | true / false | false |
+| dialogEscape | 是否可以通过按下 ESC 关闭 Dialog | Boolean | true / false | true |
+| dialogClickModal | 是否可以通过点击 modal 关闭 Dialog | Boolean | true / false | true |
+| dialogCloseBtn | 是否显示关闭按钮 | Boolean | true / false | true |
+| dialogModal | 是否需要遮罩层 | Boolean | true / false | true |
+| dialogWidth | 弹出表单的弹窗宽度 | String / Number | - | 50% |
 | maxHeight | 表格最大高度 | Number | — | auto |
 | calcHeight | 表格高度差（主要用于减去其他部分让表格高度自适应） | Number | — | auto |selection
 | border | 表格边框 | Boolean | true / false  | false |
@@ -47,9 +53,8 @@
 | searchSize | 搜索框的大小 | String | small / mini  | small |
 | searchShow | 首次加载是否显示搜索 | Boolean | true / false | true |
 | page | 是否显示分页 | Boolean | true / false  | true |
-| labelWidth | 弹出表单标题宽度 | Number | - | 110 |
-| dialogWidth | 弹出表单的弹窗宽度 | String / Number | - | 50% |
-| formWidth | 弹出表单宽度 | String / Number | - | 100% |
+| labelWidth | 弹出表单的label宽度 | Number | - | 110 |
+| formWidth | 表单的宽度 | String / Number | - | 100% |
 | dicData | 传入本次需要的静态字典（在column中dicData写对象key值即可加载） | Object | - | - |
 | dicUrl | 字典的网络请求接口（例如配置/xxx/xx/{{key}},这样的格式，在column中dicData写加载的字典，自动替换key挂载请求） | String | - | - |
 | addBtn | 添加按钮 | Boolean | true / false  | true |

@@ -83,7 +83,11 @@
 export default {
     data() {
       return {
-        page: {},
+        page: {
+          currentPage:1,
+          total:0,
+          pageSize:10
+        },
         data: [],
         option:{
           align:'center',
@@ -137,8 +141,9 @@ export default {
       return {
         page: {
           //pageSizes: [10, 20, 30, 40],默认
-          currentPage: 1,
-          pageSize: 10,
+          currentPage:1,
+          total:0,
+          pageSize:10
         },
         data: [
           {

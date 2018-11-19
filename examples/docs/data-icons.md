@@ -8,32 +8,44 @@ export default {
             {
               title: '今日注册',
               count: 12678,
-              icon: 'icon-cuowu'
+              icon: 'icon-cuowu',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日登录',
               count: 22139,
-              icon: 'icon-shujuzhanshi2'
+              icon: 'icon-shujuzhanshi2',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日订阅',
               count: 35623,
-              icon: 'icon-jiaoseguanli'
+              icon: 'icon-jiaoseguanli',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日评论',
               count: 16826,
-              icon: 'icon-caidanguanli'
+              icon: 'icon-caidanguanli',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日评论',
               count: 16826,
-              icon: 'icon-caidanguanli'
+              icon: 'icon-caidanguanli',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日评论',
               count: 16826,
-              icon: 'icon-caidanguanli'
+              icon: 'icon-caidanguanli',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },
@@ -66,32 +78,44 @@ export default {
             {
               title: '今日注册',
               count: 12678,
-              icon: 'icon-cuowu'
+              icon: 'icon-cuowu',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日登录',
               count: 22139,
-              icon: 'icon-shujuzhanshi2'
+              icon: 'icon-shujuzhanshi2',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日订阅',
               count: 35623,
-              icon: 'icon-jiaoseguanli'
+              icon: 'icon-jiaoseguanli',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日评论',
               count: 16826,
-              icon: 'icon-caidanguanli'
+              icon: 'icon-caidanguanli',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日评论',
               count: 16826,
-              icon: 'icon-caidanguanli'
+              icon: 'icon-caidanguanli',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               title: '今日评论',
               count: 16826,
-              icon: 'icon-caidanguanli'
+              icon: 'icon-caidanguanli',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },

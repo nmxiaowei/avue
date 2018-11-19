@@ -8,15 +8,18 @@
                 :key="index">
           <div class="item"
                :class="[{'item--easy':discount}]">
-            <div class="item-icon"
-                 :style="{color:color}">
-              <i :class="item.icon"></i>
-            </div>
-            <div class="item-info">
-              <span>{{item.title}}</span>
-              <div class="count"
-                   :style="{color:color}">{{item.count}}</div>
-            </div>
+            <a :href="item.href?item.href:'javascript:void(0);'"
+               :target="item.target">
+              <div class="item-icon"
+                   :style="{color:color}">
+                <i :class="item.icon"></i>
+              </div>
+              <div class="item-info">
+                <span>{{item.title}}</span>
+                <div class="count"
+                     :style="{color:color}">{{item.count}}</div>
+              </div>
+            </a>
           </div>
         </el-col>
       </template>

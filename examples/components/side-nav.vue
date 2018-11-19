@@ -119,7 +119,7 @@
          :class="{ 'is-fade': isFade }"
          :style="navStyle">
       <ul>
-        <a href="https://m.aliyun.com/act/team1111/#/share?params=N.EN2hxhpNQG.vqed4m0j"
+        <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=vqed4m0j"
            target="_blank">
           <img src="../assets/images/aliyun.jpg"
                width="90%"

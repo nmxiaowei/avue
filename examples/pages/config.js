@@ -4,6 +4,7 @@ export const pay = [{
     vip: 2,
     nowmoney: '299.9',
     money: '',
+    lz: ['在线文档', 'https://avue.top/#/component/installation'],
     list: [{
         title: 'avue核心源码解读',
         bold: true
@@ -34,6 +35,7 @@ export const pay = [{
     subtitle: 'avue-cli的核心源码',
     vip: 2,
     nowmoney: '299.9',
+    lz: ['实战例子', 'https://pig.avue.top'],
     money: '',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
@@ -71,6 +73,7 @@ export const pay = [{
     v: true,
     vip: 1,
     nowmoney: '399.9',
+    lz: ['模版例子', 'https://cli2.avue.top'],
     money: '',
     list: [{
         title: '可完全用于商用',

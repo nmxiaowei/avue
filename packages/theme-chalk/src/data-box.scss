@@ -2,7 +2,6 @@
     $height: 100px;
     $radius: 5px;
     .item {
-        display: flex;
         position: relative;
         margin: 0 auto 10px auto;
         width: 96%;
@@ -13,13 +12,19 @@
         &:hover .item-text {
             top: 0;
         }
+        a {
+            display: flex;
+        }
     }
     .item-icon {
         width: 100px;
-        height: 100%;
+        height: $height;
         color: #fff;
         text-align: center;
-        line-height: 120px;
+        line-height: $height;
+        align-items: center;
+        justify-content: center;
+        display: flex;
         i {
             font-size: 48px !important;
         }

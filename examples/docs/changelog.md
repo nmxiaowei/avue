@@ -1,5 +1,15 @@
 ## 更新日志
 
+### 1.4.1
+
+* 修复crud下菜单为menu时的大小问题
+* 数据组件全部扩展添加href属性
+* 新增crud的dialogEscape属性，是否可以通过点击 modal 关闭 Dialog默认为true
+* 新增crud的dialogClickModal属性，是否可以通过按下 ESC 关闭 Dialog默认为true
+* 新增crud的dialogCloseBtn属性，是否显示关闭按钮默认为true
+* 新增crud的dialogModal属性，是否需要遮罩层默认为true
+* 删除crud中弹窗全屏属性formFullscreen，变更为dialogFullscreen
+
 ### 1.4.0
 
 * 新增全局控制属性，目前只有size属性，可控制全部有size属性的组件[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)，[formDemo](https://avue.top/#/component/form)

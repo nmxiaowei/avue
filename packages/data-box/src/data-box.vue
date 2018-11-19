@@ -7,15 +7,18 @@
               v-for="(item,index) in data"
               :key="index">
         <div class="item">
-          <div class="item-icon"
-               :style="{backgroundColor:item.color}">
-            <i :class="item.icon"></i>
-          </div>
-          <div class="item-info">
-            <div :style="{color:item.color}"
-                 class="title">{{item.count}}</div>
-            <div class="info">{{item.title}}</div>
-          </div>
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             :target="item.target">
+            <div class="item-icon"
+                 :style="{backgroundColor:item.color}">
+              <i :class="item.icon"></i>
+            </div>
+            <div class="item-info">
+              <div :style="{color:item.color}"
+                   class="title">{{item.count}}</div>
+              <div class="info">{{item.title}}</div>
+            </div>
+          </a>
         </div>
       </el-col>
     </el-row>

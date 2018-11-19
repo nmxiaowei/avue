@@ -12,7 +12,9 @@ export default {
                 allcount: 10222,
                 text: '当前分类总记录数',
                 color: 'rgb(27, 201, 142)',
-                key: '类'
+                key: '类',
+                href:'https://avue.top',
+                target:'_blank'
             },
             {
                 title: '附件统计',
@@ -21,7 +23,9 @@ export default {
                 allcount: 10222,
                 text: '当前上传的附件数',
                 color: 'rgb(230, 71, 88)',
-                key: '附'
+                key: '附',
+                href:'https://avue.top',
+                target:'_blank'
             },
             {
                 title: '文章统计',
@@ -30,7 +34,9 @@ export default {
                 allcount: 10222,
                 text: '评论次数',
                 color: 'rgb(178, 159, 255)',
-                key: '评'
+                key: '评',
+                href:'https://avue.top',
+                target:'_blank'
             }
             ]
         },
@@ -67,7 +73,9 @@ export default {
                 allcount: 10222,
                 text: '当前分类总记录数',
                 color: 'rgb(27, 201, 142)',
-                key: '类'
+                key: '类',
+                href:'https://avue.top',
+                target:'_blank'
             },
             {
                 title: '附件统计',
@@ -76,7 +84,9 @@ export default {
                 allcount: 10222,
                 text: '当前上传的附件数',
                 color: 'rgb(230, 71, 88)',
-                key: '附'
+                key: '附',
+                href:'https://avue.top',
+                target:'_blank'
             },
             {
                 title: '文章统计',
@@ -85,7 +95,9 @@ export default {
                 allcount: 10222,
                 text: '评论次数',
                 color: 'rgb(178, 159, 255)',
-                key: '评'
+                key: '评',
+                href:'https://avue.top',
+                target:'_blank'
             }
             ]
         },

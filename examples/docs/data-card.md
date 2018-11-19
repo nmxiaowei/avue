@@ -9,17 +9,23 @@ export default {
             {
               name: '姓名1',
               src: '/static/images/card-1.jpg',
-              text: '介绍1'
+              text: '介绍1',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               name: '姓名2',
               src: '/static/images/card-2.jpg',
-              text: '介绍2'
+              text: '介绍2',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               name: '姓名3',
               src: '/static/images/card-3.jpg',
-              text: '介绍3'
+              text: '介绍3',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },
@@ -52,17 +58,23 @@ export default {
             {
               name: '姓名1',
               src: '/static/images/card-1.jpg',
-              text: '介绍1'
+              text: '介绍1',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               name: '姓名2',
               src: '/static/images/card-2.jpg',
-              text: '介绍2'
+              text: '介绍2',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
               name: '姓名3',
               src: '/static/images/card-3.jpg',
-              text: '介绍3'
+              text: '介绍3',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },

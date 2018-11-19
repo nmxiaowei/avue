@@ -9,7 +9,7 @@
                         :key="index">
         <div :class="b('item')">
           <a :href="item.href?item.href:'javascript:void(0);'"
-             target="_blank">
+             :target="item.target">
             <div :class="b('img')"
                  :style="{backgroundImage:'url('+item.src+')'}"></div>
             <div :class="b('title')"

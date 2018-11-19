@@ -8,18 +8,21 @@
               :key="index">
         <div class="item"
              :style="{background:item.color}">
-          <div class="item-header">
-            <p>{{item.title}}</p>
-            <span>{{item.subtitle}}</span>
-          </div>
-          <div class="item-body">
-            <h2>{{item.count}}</h2>
-          </div>
-          <div class="item-footer">
-            <span>{{item.allcount}}</span>
-            <p>{{item.text}}</p>
-          </div>
-          <p class="item-tip">{{item.key}}</p>
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             :target="item.target">
+            <div class="item-header">
+              <p>{{item.title}}</p>
+              <span>{{item.subtitle}}</span>
+            </div>
+            <div class="item-body">
+              <h2>{{item.count}}</h2>
+            </div>
+            <div class="item-footer">
+              <span>{{item.allcount}}</span>
+              <p>{{item.text}}</p>
+            </div>
+            <p class="item-tip">{{item.key}}</p>
+          </a>
         </div>
       </el-col>
     </el-row>

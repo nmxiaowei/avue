@@ -22,10 +22,13 @@
           <span>授权客户：<em>200+</em></span>
         </div>
         <div class="index__banner-other">
-          <a href="#"
-             target="_blank">Star 1860</a>
           <a href="https://gitee.com/smallweigit/avue"
-             target="_blank">码云</a>
+             target="_blank"
+             style="border:none;">
+            <img src='https://gitee.com/smallweigit/avue/badge/star.svg?theme=white'
+                 alt='star'
+                 height="28px"></img>
+          </a>
           <a href="https://github.com/nmxiaowei/avue"
              target="_blank">github</a>
         </div>
