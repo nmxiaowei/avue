@@ -55,6 +55,9 @@
           账号：你的QQ号，密码：123456，进去后看到avue组织(有pigx账号可直接登录)
         </p>
         <p class="about__item">
+          avue-doc——后台模版的框架讲解文档
+        </p>
+        <p class="about__item">
           avue——核心代码
         </p>
         <p class="about__item">
@@ -82,11 +85,7 @@
           avue-plugin-tranzsfer——自定义第三方插件
         </p>
         <p class="about__item">
-          <a href="https://www.kancloud.cn/smallwei/avue/844090">avue-cli1.x -> 2.x升级教程</a>
-        </p>
-        <p class="about__item">
-          官网 https://avue.top有属性文档
-          群文件有crud系列视频和框架原理讲解文档
+          <a href="https://www.kancloud.cn/smallwei/avue/844683">avue-cli1.x -> 2.x升级教程</a>
         </p>
       </el-col>
     </el-row>

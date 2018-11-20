@@ -2,50 +2,56 @@
   <div :class="b()">
     <div :class="b('filter')">
       <el-input placeholder="输入关键字进行过滤"
+                size="small"
                 v-model="filterText">
         <el-button slot="append"
+                   size="small"
                    @click="parentAdd"
                    icon="el-icon-plus"></el-button>
       </el-input>
     </div>
 
     <el-tree ref="tree"
-             :data="columnOption"
+             :data="list"
              :node-key="nodeKey"
              :filter-node-method="filterNode"
              :expand-on-click-node="false"
              :default-expand-all="defaultExpandAll">
       <div slot-scope="{ node,data }"
            :class="b('item')">
-        <span :class="b('title')">{{ node[labelKey]}}</span>
-        <div :class="b('menu')">
-          <el-dropdown trigger="click">
-            <i class="el-icon-more"
-               :class="b('icon')"></i>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="append(snode,data)">新增</el-dropdown-item>
-              <el-dropdown-item @click.native="edit(node,data)">修改</el-dropdown-item>
-              <el-dropdown-item @click.native="remove(node,data)">删除</el-dropdown-item>
-              <slot name="menuBtn"
-                    :node="node"
-                    :data="data"></slot>
-            </el-dropdown-menu>
-          </el-dropdown>
+        <div :class="b('title')"
+             @click.stop="nodeClick(data)"
+             @mouseenter="data.is_show=true"
+             @mouseleave="data.is_show=false">{{ data[labelKey]}}
+          <div :class="b('menu')"
+               v-show="data.is_show && vaildData(option.menu,true)">
+            <el-dropdown>
+              <i class="el-icon-more"
+                 :class="b('icon')"></i>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-if="vaildData(option.addBtn,true)"
+                                  @click.native="append(node,data)">新增</el-dropdown-item>
+                <el-dropdown-item v-if="vaildData(option.editBtn,true)"
+                                  @click.native="edit(node,data)">修改</el-dropdown-item>
+                <el-dropdown-item v-if="vaildData(option.delBtn,true)"
+                                  @click.native="remove(node,data)">删除</el-dropdown-item>
+                <slot name="menuBtn"
+                      :node="node"
+                      :data="data"></slot>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
       </div>
     </el-tree>
-    <el-dialog :title="addFlag?'新增':'修改'"
+    <el-dialog :title="obj[labelKey]"
                :visible.sync="box"
-               width="50%">
-      <el-input v-model="form[labelKey]" />
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button @click="save"
-                   v-if="addFlag">新 增</el-button>
-        <el-button type="primary"
-                   v-else
-                   @click="update">修 改</el-button>
-      </span>
+               @close="hide"
+               :width="vaildData(option.dialogWidth,'50%')">
+      <avue-form v-model="form"
+                 :option="formOption"
+                 ref="form"
+                 @submit="addFlag?save():update()"></avue-form>
     </el-dialog>
 
   </div>
@@ -56,9 +62,10 @@ const propsDefault = {
   nodeKey: 'id',
   label: 'label',
   value: 'value',
-  children: 'children'
+  children: 'children',
+  labelText: '名称'
 }
-import { deepClone } from '../../utils/util';
+import { deepClone, vaildData } from '../../utils/util';
 import create from '../../utils/create'
 export default create({
   name: 'tree',
@@ -69,6 +76,12 @@ export default create({
         return {};
       }
     },
+    data: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
     value: {
       type: Object,
       default: () => {
@@ -77,6 +90,9 @@ export default create({
     }
   },
   computed: {
+    addText () {
+      return this.addFlag ? '新增' : '修改';
+    },
     addFlag () {
       return this.type === 'add' || this.type === 'parentAdd'
     },
@@ -84,19 +100,47 @@ export default create({
       return this.option.props || {}
     },
     valueKey () {
-      return this.props.value || this.propsDefault.value;
+      return this.props.value || propsDefault.value;
+    },
+    labelText () {
+      return this.props.labelText || propsDefault.labelText;
     },
     labelKey () {
-      return this.props.label || this.propsDefault.label;
+      return this.props.label || propsDefault.label;
     },
     childrenKey () {
-      return this.props.children || this.propsDefault.children;
+      return this.props.children || propsDefault.children;
     },
     defaultExpandAll () {
       return this.option.defaultExpandAll || true;
     },
     nodeKey () {
-      return this.option.nodeKey || this.propsDefault.nodeKey;
+      return this.option.nodeKey || propsDefault.nodeKey;
+    },
+    columnOption () {
+      return this.appednKey(deepClone(this.data || []));
+    },
+    formColumnOption () {
+      return (this.option.formOption || {}).column || [];
+    },
+    formOption () {
+      return Object.assign({
+        submitText: this.addText,
+        column: [
+          {
+            label: this.labelText,
+            prop: this.labelKey,
+            rules: [{
+              required: true,
+              message: "请输入" + this.labelText,
+              trigger: "blur"
+            }]
+          }, ...this.formColumnOption]
+      }, (() => {
+        let option = this.option.formOption || {};
+        delete option.column;
+        return option
+      })())
     }
   },
   data () {
@@ -107,11 +151,12 @@ export default create({
       node: {},
       obj: {},
       form: {},
-      columnOption: [],
+      list: [],
     }
   },
   created () {
-    this.init();
+    this.vaildData = vaildData;
+    this.list = deepClone(this.columnOption);
   },
   watch: {
     option () {
@@ -129,29 +174,39 @@ export default create({
   },
 
   methods: {
-    init () {
-      this.columnOption = deepClone(this.option.column || []);
+    appednKey (list) {
+      list.forEach(ele => {
+        ele.is_show = false;
+        if (ele[this.childrenKey]) {
+          this.appednKey(ele[this.childrenKey]);
+        }
+      })
+      return list;
+    },
+    nodeClick (data) {
+      this.$emit('node-click', data);
     },
     filterNode (value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
     hide () {
+      this.$refs.form.clearValidate();
+      this.$refs.form.resetForm();
       this.box = false;
-      this.form = {};
       this.node = {};
       this.obj = {};
     },
     save () {
-
       const callback = () => {
+        const form = deepClone(Object.assign(this.form, { is_show: false }));
         if (this.type === 'add') {
           if (!this.obj[this.childrenKey]) {
             this.$set(this.obj, 'children', []);
           }
-          this.obj.children.push(deepClone(this.form));
+          this.obj.children.push(form);
         }
-        else if (this.type === 'parentAdd') this.obj.push(deepClone(this.form));
+        else if (this.type === 'parentAdd') this.obj.push(form);
         this.hide();
       }
       this.$emit('save', this.obj, this.node, callback);
@@ -176,15 +231,13 @@ export default create({
     },
     parentAdd (data) {
       this.type = 'parentAdd';
-      this.obj = this.columnOption;
-      this.form = {};
+      this.obj = this.list;
       this.box = true;
     },
     append (node, data) {
       this.type = 'add';
       this.obj = data;
       this.node = node;
-      this.form = {};
       this.box = true;
     },
 

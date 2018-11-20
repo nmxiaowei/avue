@@ -1,6 +1,8 @@
 .avue-form {
     position: relative;
     margin: 0 auto;
+    box-sizing: border-box;
+    padding-right: 20px;
     &__menu {
         width: 100%;
         &--center {

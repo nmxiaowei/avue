@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.4.2
+#### 2018-11-20
+
+* 优化了tree组件，支持form自定义以及更多灵活配置[demo](https://avue.top/#/component/tree)
+* 调整了form组件的细微样式
+* 调整crud组件中弹出框的宽度又formWidth变成dialogWidth属性，formWidth为表单宽度
+
 ### 1.4.1
 
 * 修复crud下菜单为menu时的大小问题

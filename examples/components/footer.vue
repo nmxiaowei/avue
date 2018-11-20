@@ -34,9 +34,8 @@
       <el-col :span="6"
               class="footer__item">
         <p class="footer__title">更新日志</p>
-        <p class="footer__product"></p>
-        <p class="footer__product">avue(v1.4.0) 更新日期：2018-11-16</p>
-        <p class="footer__product">avue-cli 更新日期：2018-11-11</p>
+        <p class="footer__product"><a href="https://avue.top/#/component/changelog"
+             target="_blank">avue</a></p>
       </el-col>
     </el-row>
     <div class="footer__copyright">
