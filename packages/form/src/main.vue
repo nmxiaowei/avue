@@ -107,8 +107,10 @@
               </el-form-item>
             </el-col>
             <div :class="b('line')"
+                 :key="index"
                  :style="{width:(column.count/24*100)+'%'}"
-                 v-if="column.row && column.span!==24"></div>
+                 v-if="column.row && column.span!==24">
+            </div>
           </template>
         </draggable>
         <el-col :span="24"
@@ -391,9 +393,9 @@ export default create({
     },
     resetForm () {
       this.form = this.deepClone(this.formDefault.tableForm);
-      this.clearValidate();
       this.$emit('input', this.form);
       this.$emit('reset-change');
+      this.clearValidate();
     },
     submit () {
       this.$refs['form'].validate(valid => {

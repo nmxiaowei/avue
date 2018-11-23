@@ -7,7 +7,11 @@
         <el-button slot="append"
                    size="small"
                    @click="parentAdd"
-                   icon="el-icon-plus"></el-button>
+                   icon="el-icon-plus"
+                   v-if="vaildData(option.addBtn,true)"></el-button>
+        <template slot="append">
+          <slot name="addBtn"></slot>
+        </template>
       </el-input>
     </div>
 
@@ -25,7 +29,7 @@
              @mouseleave="data.is_show=false">{{ data[labelKey]}}
           <div :class="b('menu')"
                v-show="data.is_show && vaildData(option.menu,true)">
-            <el-dropdown>
+            <el-dropdown trigger="click">
               <i class="el-icon-more"
                  :class="b('icon')"></i>
               <el-dropdown-menu slot="dropdown">
@@ -159,6 +163,9 @@ export default create({
     this.list = deepClone(this.columnOption);
   },
   watch: {
+    columnOption () {
+      this.list = deepClone(this.columnOption);
+    },
     option () {
       this.init();
     },
@@ -191,11 +198,11 @@ export default create({
       return data[this.labelKey].indexOf(value) !== -1;
     },
     hide () {
-      this.$refs.form.clearValidate();
-      this.$refs.form.resetForm();
       this.box = false;
       this.node = {};
       this.obj = {};
+      this.$refs.form.resetForm();
+      this.$refs.form.clearValidate();
     },
     save () {
       const callback = () => {
@@ -227,20 +234,25 @@ export default create({
       this.node = node;
       this.obj = data;
       this.form = deepClone(this.obj);
-      this.box = true;
+      this.show();
     },
     parentAdd (data) {
       this.type = 'parentAdd';
       this.obj = this.list;
-      this.box = true;
+      this.show();
     },
     append (node, data) {
       this.type = 'add';
       this.obj = data;
       this.node = node;
-      this.box = true;
+      this.show();
     },
-
+    show () {
+      this.box = true;
+      setTimeout(() => {
+        this.$refs.form.clearValidate();
+      }, 0);
+    },
     remove (node, data) {
       this.obj = data;
       this.node = node;

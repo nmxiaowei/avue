@@ -36,8 +36,8 @@
                          :filter-method="column.searchFilterMethod"
                          :value-format="column.valueFormat"
                          :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-                         clearable
-                         :placeholder="column.label"
+                         :clearable="column.searchClearable"
+                         :placeholder="column.searchPlaceholder || column.label"
                          :dic="setDic(column.dicData,DIC[column.dicData])"></component>
             </el-form-item>
             <slot name="search"></slot>
@@ -112,6 +112,8 @@
                 @row-click="rowClick"
                 @row-dblclick="rowDblclick"
                 :row-class-name="rowClassName"
+                :cell-class-name="cellClassName"
+                :header-cell-class-name="headerCellClassName"
                 :max-height="tableOption.maxHeight"
                 :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,config.calcHeight)):tableOption.height"
                 ref="table"
@@ -191,11 +193,11 @@
           </crud-components>
           <template slot-scope="scope">
             <template v-if="cellEditFlag(scope.row,column)">
-              <component :size="controlSize"
-                         :is="getSearchType(column.type)"
+              <component :is="getSearchType(column.type)"
                          v-model="tableForm[column.prop]"
                          :type="getType(column)"
-                         clearable
+                         :clearable="column.clearable"
+                         :size="isMediumSize"
                          :placeholder="column.label"
                          :dic="setDic(column.dicData,DIC[column.dicData])"></component>
             </template>
@@ -486,6 +488,8 @@ export default create({
     beforeClose: Function,
     beforeOpen: Function,
     rowClassName: Function,
+    cellClassName: Function,
+    headerCellClassName: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     page: {

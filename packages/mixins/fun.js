@@ -5,11 +5,19 @@ export default function() {
                 type: Boolean,
                 default: false,
             },
+            page: {
+                type: Object,
+                default: () => {
+                    return {}
+                }
+            },
             beforeOpen: Function,
             beforeClose: Function,
             uploadBefore: Function,
             uploadAfter: Function,
             rowClassName: Function,
+            cellClassName: Function,
+            headerCellClassName: Function,
             spanMethod: Function,
             summaryMethod: Function,
             data: {
@@ -18,6 +26,9 @@ export default function() {
             },
         },
         methods: {
+            onLoad(page) {
+                this.$emit('on-load', page);
+            },
             refreshChange(params) {
                 this.$emit('refresh-change', params);
             },

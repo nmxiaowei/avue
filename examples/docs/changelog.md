@@ -1,5 +1,17 @@
 ## 更新日志
 
+### 1.4.3
+#### 2018-11-23
+
+* 新增upload组件upload-before和upload-after中回调loading（终止操作的方法）
+* 修复tree组件新增和编辑时表单自动激活验证问题
+* 新增tree的addBtn搜索栏旁边的卡槽
+* 修复crud组件clearable和size问题
+* 新增searchPlaceholder和searchClearable的搜索属性
+* 新增crud组件saveBtnTitle，updateBtnTitle，cancelBtnTitle按钮属性
+* 新增crud组件cell-class-name，header-cell-class-name变量，具体参考文档
+* 修复upload组件dataType为array时的无法删除问题
+
 ### 1.4.2
 #### 2018-11-20
 

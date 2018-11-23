@@ -145,6 +145,7 @@ export default create({
       if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
     },
     handleChange (file, fileList) {
+      fileList.splice(fileList.length - 1, 1);
       if (typeof this.change === 'function') this.change({ value: this.text, column: this.column });
     },
     handleSuccess (file) {
@@ -173,9 +174,16 @@ export default create({
       this.$message.error('上传失败');
     },
     delete (file) {
-      this.text.forEach((ele, index) => {
-        if (ele[this.valueKey] === file.url) this.text.splice(index, 1);
-      })
+      if (this.isArray) {
+        this.text.forEach((ele, index) => {
+          if (ele === file.url) this.text.splice(index, 1);
+        })
+      } else {
+        this.text.forEach((ele, index) => {
+          if (ele[this.valueKey] === file.url) this.text.splice(index, 1);
+        })
+      }
+
     },
     show (res) {
       this.loading.close();
@@ -201,14 +209,20 @@ export default create({
         this.$http.post(this.action, param, { headers }).then(res => {
           if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {
             this.show(res)
+          }, () => {
+            this.loading.close();
           })
           else this.show(res);
         }).catch((error) => {
-          if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide);
+          if (typeof this.uploadAfter === 'function') this.uploadAfter(error, this.hide, () => {
+            this.loading.close();
+          });
           else this.hide(error);
         });
       };
-      if (typeof this.uploadBefore === 'function') this.uploadBefore(this.file, callack);
+      if (typeof this.uploadBefore === 'function') this.uploadBefore(this.file, callack, () => {
+        this.loading.close();
+      });
       else callack();
     },
     setVal () {

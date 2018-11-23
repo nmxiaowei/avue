@@ -10,9 +10,11 @@
 | table-loading | 表格等待框的控制 | Boolean | true / false  | false |
 | before-open |  打开前的回调，会暂停 Dialog 的打开	function(done,type)，done 用于关闭 Dialog,type为当前窗口的类型 |	Function | — | — |
 | before-close |  关闭前的回调，会暂停 Dialog 的关闭	function(done,type)，done 用于关闭 Dialog,type为当前窗口的类型|	Function | — | — |
-| upload-before |  图片上传前的回调,会暂停图片上传 function(file,done)，done 用于继续图片上传|	Function | — | — |
-| upload-after |  图片上传后的回调, function(res,done)，done 用于结束操作|	Function | — | — |
+| upload-before |  图片上传前的回调,会暂停图片上传 function(file,done)，done 用于继续图片上传，loading用于中断操作 |	Function | — | — |
+| upload-after |  图片上传后的回调, function(res,done)，done 用于结束操作，loading用于中断操作 |	Function | — | — |
 | row-class-name | 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className,function({row, rowIndex}) | Function | - | - |
+| cell-class-name | 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className,function({row, column, rowIndex, columnIndex})/String | Function | - | - |
+| header-cell-class-name | header-cell-class-name	表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className,function({row, column, rowIndex, columnIndex})/String | Function | - | - |
 | span-method | 合并行或列的计算方法Function({ row, column, rowIndex, columnIndex }) | Function | - | - |
 | summary-method | 自定义的合计计算方法Function({ columns, data }) | Function | - | - |
 
@@ -26,6 +28,9 @@
 | header | 头部显隐 | Boolean | true / false | true |
 | size | 控件大小 | String | — | - |
 | title | 表格标题 | String | — | 表格标题 |
+| saveBtnTitle | 弹出新增按钮标题 | String | — | 新增 |
+| updateBtnTitle | 弹出框更新按钮标题 | String | — | 修改 |
+| cancelBtnTitle | 弹出框取消按钮标题 | String | — | 取消 |
 | dialogFullscreen | 是否为全屏 Dialog | Boolean | true / false | false |
 | dialogEscape | 是否可以通过按下 ESC 关闭 Dialog | Boolean | true / false | true |
 | dialogClickModal | 是否可以通过点击 modal 关闭 Dialog | Boolean | true / false | true |
@@ -49,9 +54,6 @@
 | menu | 是否显示操作菜单栏 | Boolean | true / false  | true |
 | menuWidth | 操作菜单栏的宽度 | Number | -  | 240 |
 | menuAlign | 菜单栏对齐方式 | String | left / center /right  | left |
-| searchsolt | 开启自定义搜索定义 | Boolean | true / false  | false |
-| searchSize | 搜索框的大小 | String | small / mini  | small |
-| searchShow | 首次加载是否显示搜索 | Boolean | true / false | true |
 | page | 是否显示分页 | Boolean | true / false  | true |
 | labelWidth | 弹出表单的label宽度 | Number | - | 110 |
 | formWidth | 表单的宽度 | String / Number | - | 100% |
@@ -65,7 +67,7 @@
 | dateDefault | 日期控件默认的值 | Boolean | true / false  | false |
 | menuType | 操作栏菜单按钮类型 | String | button / icon / text / menu | button |
 | menuBtnTitle | 菜单按钮的文字 | String | -  | 功能 |
-| serchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
+| searchBtn | 搜索显隐按钮（当column中有搜索的属性，或则searchsolt为true时自定义搜索启动起作用） | Boolean | true / false  | true |
 | columnBtn | 列显隐按钮 | Boolean | true / false  | true |
 | refreshBtn | 刷新按钮 | Boolean | true / false  | true |
 | cellBtn | 表格单元格可编辑（当column中有搜索的属性中有cell为true的属性启用，只对type为select和input有作用) | Boolean | true / false  | true |
@@ -165,6 +167,7 @@
 | fixed | 冻结列 | Boolean | true / false | false |
 | hide | 隐藏列 | Boolean | true / false | true |
 | span | 表单栅列 | Number | - | 12 |
+| filterable | 是否可以输入搜索。 | Boolean | true / false | false |
 | readonly | 只读 | Boolean | true / false | false |
 | type | 类型 | String | input / select / radio / checkbox  / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / password / switch / tree / phone | input | - |
 | disabled | 全部是否禁止 | Boolean | true / false | false |
@@ -182,10 +185,6 @@
 | prepend | 前面的辅助文字（当type为input） | String / Number | - | - |
 | append | 后面的辅助文字（当type为input）） | String / Number | - | - |
 | valueDefault | 表单的默认值 | Number / String | - | - |
-| searchDefault | 搜索表单的默认值 | Number / String | - | - |
-| searchMmultiple | 搜索表单的是否多选 | Boolean | true / false | false |
-| searchFilterable | 是否可以输入搜索。 | Boolean | true / false | false |
-| searchFilterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | - | - |
 | format | 显示值时间格式（当type为 date / time / datetime / daterange timerange / datetimerange / week / month / year / dates  | - | - | - |
 | valueFormat | 真实值的时间格式（当type为 date / time / datetime / daterange timerange / datetimerange / week / month / year / dates） | - | - | - |
 | precision | 数字框输入精度（当type为 number 时） | Number | - | 2 |
@@ -200,6 +199,20 @@
 | filterMultiple | 数据过滤的选项是否多选	 | Boolean | true / false | true |
 | filters | 数据过滤的选项，数组格式，数组中的元素需要有 text 和 value 属性。 | Array[{ text, value }] | - | - |
 | filterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | - | - |
+
+### Avue-crud Search Attributes
+
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| searchDefault | 搜索表单的默认值 | Number / String | - | - |
+| searchPlaceholder | 搜索框的辅助文字 | String | - | label |
+| searchClearable | 搜索框的清除按钮 | Boolean | true / false  | false |
+| searchMmultiple | 搜索表单的是否多选 | Boolean | true / false | false |
+| searchFilterable | 是否可以输入搜索。 | Boolean | true / false | false |
+| searchFilterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | - | - |
+| searchsolt | 开启自定义搜索定义 | Boolean | true / false  | false |
+| searchSize | 搜索框的大小 | String | small / mini  | small |
+| searchShow | 首次加载是否显示搜索 | Boolean | true / false | true |
 
 ### Avue-crud Events
 

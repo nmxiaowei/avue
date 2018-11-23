@@ -41,6 +41,9 @@
             "path": "/crud",
             "title": "crud基础"
         }, {
+            "path": "/crud-tree",
+            "title": "crud树型"
+        }, {
             "path": "/crud-header",
             "title": "crud复杂表头"
         }, {

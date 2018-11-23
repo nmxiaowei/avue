@@ -192,7 +192,7 @@ export default {
 
 ### 单独列本地字典
 
-:::demo 本地字典只要配置`dicData`为一个`Array`数组即可，便会自动加载字典到对应的组件中
+:::demo 本地字典只要配置`dicData`为一个`Array`数组即可，便会自动加载字典到对应的组件中，注意返回的字典中value类型和数据的类型必须要对应，比如都是字符串或则都是数字。
 ```html
 <avue-crud :data="data" :option="option" ></avue-crud>
 
@@ -386,7 +386,7 @@ export default {
 
 ### 后台接口列字典
 
-:::demo 配置属性中的`dicUrl`属性，其中的`key`为字典要替换的关键字位置,列的dicData配置字典的名称即可,默认的返回key-value为`label`和`value`，如果后台返返回字典不是默认字段，你也可以配置`props`属性去改变它的指定,列字典和本地字典以及接口字典可以同时使用！！！
+:::demo 配置属性中的`dicUrl`属性，其中的`key`为字典要替换的关键字位置,列的`dicData`配置字典独一无二的，用来存放后台字典数据的变量名（配置为本地字典时，dicData为本地字典的key或者是一个array）。默认的返回key-value为`label`和`value`，如果后台返返回字典不是默认字段，你也可以配置`props`属性去改变它的指定,列字典和本地字典以及接口字典可以同时使用！！！
 
 ```html
 <avue-crud :data="data2" :option="option2" ></avue-crud>

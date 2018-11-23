@@ -82,12 +82,12 @@ export default {
       };
     },
     methods: {
-        uploadBefore(file,done){
+        uploadBefore(file,done,loading){
             console.log(file);
             done();
             this.$message.success('上传前的方法')
         },
-        uploadAfter(res,done){
+        uploadAfter(res,done,loading){
             console.log(res);
             done();
             this.$message.success('上传后的方法')
@@ -196,12 +196,12 @@ export default {
       };
     },
     methods: {
-        uploadBefore(file,done){
+        uploadBefore(file,done,loading){
             console.log(file);
             done();
             this.$message.success('上传前的方法')
         },
-        uploadAfter(res,done){
+        uploadAfter(res,done,loading){
             console.log(res);
             done();
             this.$message.success('上传后的方法')
@@ -248,6 +248,6 @@ export default {
 
 | 事件名 | 说明 | 参数 |
 | ---- | ---- | ---- |
-| upload-before | 上传前的回调 | file,done |
-| upload-after | 上传后的回调 | res,done |
+| upload-before | 上传前的回调 | file,done（继续下面的操作）,loading（关闭等待框，终止下面的操作） |
+| upload-after | 上传后的回调 | res,done（继续下面的操作）,loading（关闭等待框，终止下面的操作） |
 

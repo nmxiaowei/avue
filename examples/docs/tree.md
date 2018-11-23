@@ -233,3 +233,4 @@ export default {
 | name | 说明 |
 |------|--------|
 | menuBtn | 按钮的卡槽 |
+| addBtn | 新增按钮卡槽 |
