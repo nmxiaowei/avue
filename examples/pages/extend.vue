@@ -80,9 +80,10 @@ import { extend } from './config';
 import transfer from '../extend/transfer'
 import dynamicquery from '../extend/dynamicquery'
 import ueditor from '../extend/ueditor'
+import maps from '../extend/map'
 export default {
   components: {
-    transfer, dynamicquery, ueditor
+    transfer, dynamicquery, ueditor, maps
   },
   data () {
     return {

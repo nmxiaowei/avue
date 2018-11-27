@@ -2,9 +2,8 @@ export const pay = [{
     title: '核心源码',
     subtitle: 'avue的核心源码',
     vip: 2,
-    nowmoney: '299.9',
-    money: '',
-    lz: ['在线文档', 'https://avue.top/#/component/installation'],
+    nowmoney: '266.66',
+    money: '299.99',
     list: [{
         title: 'avue核心源码解读',
         bold: true
@@ -34,9 +33,8 @@ export const pay = [{
     title: '模版源码',
     subtitle: 'avue-cli的核心源码',
     vip: 2,
-    nowmoney: '299.9',
-    lz: ['实战例子', 'https://pig.avue.top'],
-    money: '',
+    nowmoney: '266.66',
+    money: '299.99',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
         bold: true
@@ -72,11 +70,13 @@ export const pay = [{
     subtitle: 'avue系列的全部源码',
     v: true,
     vip: 1,
-    nowmoney: '399.9',
-    lz: ['模版例子', 'https://cli2.avue.top'],
-    money: '',
+    nowmoney: '366.66',
+    money: '399.99',
     list: [{
         title: '可完全用于商用',
+        bold: true,
+    }, {
+        title: '后期升级全部免费',
         bold: true,
     }, {
         title: '同时拥有“核心源码”和“模版源码”的授权',
@@ -112,6 +112,14 @@ export const extend = [{
     npm: 'https://www.npmjs.com/package/avue-plugin-ueditor',
     demo: 'ueditor'
 }, {
+    title: '地图插件',
+    tags: 'map',
+    author: 'smallwei',
+    info: '基于高德地图插件坐标选取插件',
+    git: 'https://gitee.com/smallweigit/avue-plugin-map',
+    npm: 'https://www.npmjs.com/package/avue-plugin-map',
+    demo: 'maps'
+}, {
     title: '穿梭框',
     tags: 'transfer',
     author: 'smallwei',
@@ -134,4 +142,102 @@ export const extend = [{
     git: 'https://gitee.com/yuchuanli/avue-plugin-dynamicquery.git',
     npm: 'https://www.npmjs.com/package/avue-plugin-dynamicquery',
     demo: 'dynamicquery'
+}]
+
+export const list = [{
+    title: '支持各种主流浏览器',
+    first: true,
+    second: true,
+}, {
+    title: '第三方登录（微信，QQ）',
+    first: true,
+    second: true,
+}, {
+    title: '炫彩主题（换色，换肤）',
+    first: true,
+    second: true,
+}, {
+    title: '短信登录',
+    first: true,
+    second: true,
+}, {
+    title: '菜单搜索',
+    first: true,
+    second: true,
+}, {
+    title: '标签导航',
+    first: true,
+    second: true,
+}, {
+    title: '错误日志监控',
+    first: true,
+    second: true,
+}, {
+    title: '动态加载图标',
+    first: true,
+    second: true,
+}, {
+    title: '锁屏功能',
+    first: true,
+    second: true,
+}, {
+    title: 'iframe支持',
+    first: true,
+    second: true,
+}, {
+    title: '路由权限',
+    first: true,
+    second: true,
+}, {
+    title: '菜单权限',
+    first: true,
+    second: true,
+}, {
+    title: '页面缓冲',
+    first: false,
+    second: true,
+}, {
+    title: '服务端动态路由',
+    first: false,
+    second: true,
+}, {
+    title: '高级嵌套路由',
+    first: false,
+    second: true,
+}, {
+    title: '无限级菜单',
+    first: false,
+    second: true,
+}, {
+    title: '多终端适配',
+    first: false,
+    second: true,
+}, {
+    title: 'IE9+支持',
+    first: false,
+    second: true,
+}, {
+    title: '源码讲解文档',
+    first: false,
+    second: true,
+}, {
+    title: 'Avue核心源码',
+    first: false,
+    second: true,
+}, {
+    title: '新功能优先体验',
+    first: false,
+    second: true,
+}, {
+    title: '技术支持',
+    first: false,
+    second: true,
+}, {
+    title: 'git私服',
+    first: false,
+    second: true,
+}, {
+    title: '加入内部吹B群',
+    first: false,
+    second: true,
 }]

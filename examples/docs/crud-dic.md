@@ -132,7 +132,7 @@ export default {
               label: 'name',
               value: 'code'
           },
-          dicUrl:'https://avue.top/api/area/{{key}}',
+          dicUrl:'https://cli2.avue.top/api/area/{{key}}',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -170,7 +170,7 @@ export default {
                   label: 'name',
                   value: 'code'
               },
-              dicUrl:'https://avue.top/api/area/{{key}}',
+              dicUrl:'https://cli2.avue.top/api/area/{{key}}',
               dicData:'getProvince'
             }
           ]
@@ -411,7 +411,7 @@ export default {
               label: 'name',
               value: 'code'
           },
-          dicUrl:'https://avue.top/api/area/{{key}}',
+          dicUrl:'https://cli2.avue.top/api/area/{{key}}',
           page:false,
           align:'center',
           menuAlign:'center',
@@ -478,7 +478,7 @@ export default {
                   label: 'name',
                   value: 'code'
               },
-              dicUrl:'https://avue.top/api/area/{{key}}',
+              dicUrl:'https://cli2.avue.top/api/area/{{key}}',
               dicData:'getProvince'
             }
           ]

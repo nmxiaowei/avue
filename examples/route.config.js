@@ -2,7 +2,7 @@ import navConfig from './nav.config.json';
 const loadDocs = function(path) {
     return r => require.ensure([], () =>
         r(require(`./docs${path}.md`)),
-        'group');
+        'roles');
 };
 const load = function(name, path) {
     if (path) {

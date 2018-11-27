@@ -46,8 +46,7 @@
                        src="../assets/images/vip2.png"
                        alt="">
                   {{item.title}}
-                  <span class="pay__content-money pay__content-money--line"
-                        v-if="false">￥&nbsp;{{item.money}}</span>
+                  <span class="pay__content-money pay__content-money--line">￥&nbsp;{{item.money}}</span>
                 </p>
                 <div>
                   <p class="pay__content-subtitle">
@@ -75,6 +74,49 @@
             </el-card>
           </el-col>
         </el-row>
+      </div>
+    </div>
+    <fieldset>
+      <legend align="center">avue-cli后台模版</legend>
+    </fieldset>
+    <div class="pay__detail">
+      <div class="pay__detail-item">
+        <div class="pay__detail-header">
+          <span class="pay__detail-title">功能特权</span>
+        </div>
+        <div class="pay__detail-list">
+          <div class="pay__detail-li"
+               v-for="(item,index) in list"
+               :key="index">
+            {{item.title}}
+          </div>
+        </div>
+      </div>
+      <div class="pay__detail-item">
+        <div class="pay__detail-header">
+          <span class="pay__detail-title">开源版</span>
+        </div>
+        <div class="pay__detail-list">
+          <div class="pay__detail-li"
+               v-for="(item,index) in list"
+               :key="index">
+            <i class="pay__detail-icon"
+               :class="item.first?'pay__detail-icon--pass':'pay__detail-icon--error'"></i>
+          </div>
+        </div>
+      </div>
+      <div class="pay__detail-item">
+        <div class="pay__detail-header">
+          <span class="pay__detail-title">企业版</span>
+        </div>
+        <div class="pay__detail-list">
+          <div class="pay__detail-li"
+               v-for="(item,index) in list"
+               :key="index">
+            <i class="pay__detail-icon"
+               :class="item.second?'pay__detail-icon--pass':'pay__detail-icon--error'"></i>
+          </div>
+        </div>
       </div>
     </div>
     <div class="avue-tip pay__tip">
@@ -118,10 +160,11 @@
 </template>
 
 <script>
-import { pay } from './config';
+import { pay, list } from './config';
 export default {
   data () {
     return {
+      list: list,
       config: pay,
     }
   },
@@ -135,6 +178,60 @@ export default {
   padding: 0;
 }
 .pay {
+  &__detail {
+    display: flex;
+    align-items: flex-start;
+    margin: 0 auto 50px auto;
+    padding: 10px 20px;
+    width: 1100px;
+    &-header {
+      padding-top: 20px;
+      height: 80px;
+      text-align: center;
+      background-color: #fff;
+    }
+    &-title {
+      color: #666;
+      font-size: 22px;
+    }
+    &-item {
+      width: 33.33%;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      &:nth-child(1) {
+        border-right: none;
+      }
+      &:nth-child(3) {
+        border-left: none;
+      }
+    }
+    &-li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      color: #666;
+      text-align: center;
+      background-color: #fff;
+      &:nth-child(odd) {
+        background-color: #fbf9f8;
+      }
+    }
+    &-icon {
+      display: block;
+      margin: 0 auto;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+      &--pass {
+        background-image: url("https://wangpan.bdstatic.com/n/box-static/pan-center-cdn/widget/components/privilegeCompare/images/right_6472607.png");
+      }
+      &--error {
+        background-image: url("https://wangpan.bdstatic.com/n/box-static/pan-center-cdn/widget/components/privilegeCompare/images/error_f2a16b2.png");
+      }
+    }
+  }
   .el-card__header {
     padding: 0;
   }
@@ -247,7 +344,7 @@ export default {
       position: relative;
       padding: 40px 0 20px 0;
       text-align: center;
-      background-color: #49a0f5;
+      background-color: #fbf9f8;
     }
     &-title {
       margin: 0;
@@ -256,7 +353,7 @@ export default {
       word-wrap: break-word;
       letter-spacing: 2px;
       font-weight: 400;
-      color: #ffffff;
+      color: #333;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -264,19 +361,19 @@ export default {
     &-subtitle {
       position: relative;
       display: inline-block;
-      border: 1px solid #e4d5d5;
+      border: 1px solid #ccc;
       line-height: 28px;
       padding: 0 15px;
       border-radius: 5px;
       margin-top: 5px;
-      color: #ddd;
+      color: #666;
       font-weight: 300;
       font-size: 14px;
     }
     &-money {
       text-align: center;
       font-size: 16px;
-      color: #fff;
+      color: #ff5722;
       font-weight: 400;
       &--line {
         text-decoration: line-through;

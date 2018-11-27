@@ -155,6 +155,7 @@
     methods: {
       beforeOpen(done,type){
           this.$message.success(type);
+          done();
       },
       dateChange(date){
         this.$message.success(date);

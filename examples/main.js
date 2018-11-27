@@ -16,6 +16,8 @@ import "./assets/styles/common.scss";
 import 'avue-plugin-transfer/packages';
 import 'avue-plugin-dynamicquery/packages';
 import 'avue-plugin-ueditor/packages';
+import 'avue-plugin-map/packages';
+
 Vue.use(Element);
 Vue.use(Avue, {
     //size: 'small' //small / mini

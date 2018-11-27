@@ -18,6 +18,7 @@
     "dependencies": {
         "async-validator": "~1.8.1",
         "avue-plugin-dynamicquery": "^0.0.4",
+        "avue-plugin-map": "^0.0.2",
         "avue-plugin-transfer": "^0.0.3",
         "avue-plugin-ueditor": "^0.0.2",
         "axios": "^0.16.2",

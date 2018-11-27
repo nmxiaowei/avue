@@ -8,6 +8,9 @@
     "name": "套餐付款码",
     "path": "/avue2.x"
 }, {
+    "name": "脚手架文档",
+    "href": "https://www.kancloud.cn/smallwei/avue"
+}, {
     "name": "开发指南",
     "groups": [{
         "list": [{
