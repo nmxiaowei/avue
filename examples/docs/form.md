@@ -19,7 +19,21 @@ export default {
     data() {
       return {
         obj:{},
-        sizeValue:''
+        sizeValue:'',
+        obj0:{},
+        option0:{
+          emptyBtn:false,
+          submitBtn:false,
+          column: [{
+            label: "用户名",
+            prop: "username",
+            rules: [{
+                required: true,
+                message: "请输入用户名",
+                trigger: "blur"
+            }]
+          }]
+        }
       }
     },
     computed: {
@@ -209,6 +223,16 @@ export default {
         this.obj.phone='17547400800';
     },
     methods:{
+        handleEmpty(){
+          this.$refs.form.resetForm();
+        },
+        handleSubmit(){
+          this.$refs.form.validate(vaild=>{
+            if(vaild){
+              this.$message.success(JSON.stringify(this.obj0));
+            }
+          })
+        },
         emptytChange(){
           this.$message.success('清空方法回调');
         },
@@ -467,6 +491,54 @@ export default {
         tip(){
           this.$message.success('自定义按钮');
         }
+    }
+  }
+</script>
+```
+:::
+
+### 自定义按钮
+
+:::demo  
+```html
+<avue-form ref="form" v-model="obj0" :option="option0">
+  <template slot="menuForm">
+    <el-button type="primary" @click="handleSubmit">提 交</el-button>
+    <el-button  @click="handleEmpty">清 空</el-button>
+  </template>
+</avue-form>
+
+<script>
+export default {
+    data() {
+      return {
+        obj0:{},
+        option0:{
+          emptyBtn:false,
+          submitBtn:false,
+          column: [{
+            label: "用户名",
+            prop: "username",
+            rules: [{
+                required: true,
+                message: "请输入用户名",
+                trigger: "blur"
+            }]
+          }]
+        }
+      }
+    },
+    methods:{
+      handleEmpty(){
+        this.$refs.form.resetForm();
+      },
+      handleSubmit(){
+        this.$refs.form.validate(vaild=>{
+          if(vaild){
+            this.$message.success(JSON.stringify(this.obj0));
+          }
+        })
+      }
     }
   }
 </script>

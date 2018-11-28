@@ -20,7 +20,8 @@ import 'avue-plugin-map/packages';
 
 Vue.use(Element);
 Vue.use(Avue, {
-    //size: 'small' //small / mini
+    //size: 'small', //small / mini
+    //menuType: 'text' //button / text / icon / menu
 });
 
 Vue.component('demo-block', demoBlock);

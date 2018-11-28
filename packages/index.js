@@ -65,6 +65,7 @@ function install(Vue, opts = {}) {
     });
     Vue.prototype.$AVUE = {
         size: opts.size || 'medium',
+        menuType: opts.menuType || 'button'
     };
 }
 

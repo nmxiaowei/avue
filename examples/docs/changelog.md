@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.4.4
+#### 2018-11-28
+
+* 新增全局控制属性menuType，可控制crud组件操作栏的按钮类型[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)
+* 新增form组件的validate方法，可以像常规一样$refs['form'].validate操作[demo](https://avue.top/#/component/form)
+* 新增form组件的验证辅助图标
+
 ### 1.4.3
 #### 2018-11-23
 

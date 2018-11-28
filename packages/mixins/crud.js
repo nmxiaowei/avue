@@ -67,6 +67,9 @@ export default function() {
             this.init();
         },
         computed: {
+            menuType() {
+                return this.tableOption.menuType || this.$AVUE.menuType || 'button'
+            },
             isMediumSize() {
                 return this.controlSize === 'medium' ? 'small' : this.controlSize;
             },

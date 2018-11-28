@@ -422,9 +422,6 @@ export default create({
       const key = `${this.boxType}Title`;
       return this.tableOption[key] || this.config[key];
     },
-    menuType () {
-      return this.tableOption.menuType || 'button'
-    },
     listLen () {
       return this.list.length !== 0
     },

@@ -26,7 +26,7 @@
 | width | 表格宽度 | Number | — | 100% |
 | height | 表格高度 | Number | — | auto |
 | header | 头部显隐 | Boolean | true / false | true |
-| size | 控件大小 | String | — | - |
+| size | 控件大小 | String | medium / small / mini | medium |
 | title | 表格标题 | String | — | 表格标题 |
 | saveBtnTitle | 弹出新增按钮标题 | String | — | 新增 |
 | updateBtnTitle | 弹出框更新按钮标题 | String | — | 修改 |
@@ -192,7 +192,7 @@
 | endPlaceholder | 日期范围结束占位符 | String | - | - |
 | formHeight | 表单行高度 | Number | - | auto |
 | clearable | 表单清空 | Boolean | true / false | false |
-| size | 表单大小 | String | small / mini | small |
+| size | 表单大小 | String | medium / small / mini | medium |
 | showClomnu | 是否加入动态现隐列 | Boolean | true / false | true |
 | rules | 表单规则,参考ele表单规则配置 | Object | - | - |
 | formatter |  用来格式化内容  | Function(row, value , label, column) | - | - |

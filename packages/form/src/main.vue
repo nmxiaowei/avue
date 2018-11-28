@@ -2,6 +2,7 @@
   <div :class="b()"
        :style="{width:setPx(tableOption.formWidth,'100%')}">
     <el-form ref="form"
+             status-icon
              :model="form"
              :label-position="tableOption.labelPosition"
              :size="controlSize"
@@ -397,12 +398,15 @@ export default create({
       this.$emit('reset-change');
       this.clearValidate();
     },
+    validate (callback) {
+      this.$refs['form'].validate(valid => callback(valid));
+    },
     submit () {
-      this.$refs['form'].validate(valid => {
+      this.validate(valid => {
         if (valid) {
           this.$emit('submit', this.form);
         }
-      });
+      })
     }
   }
 });

@@ -17,7 +17,7 @@ import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Avue from '@smallwei/avue';
-import @smallwei/avue/lib/theme-chalk/index.css';
+import '@smallwei/avue/lib/theme-chalk/index.css';
 import App from './App.vue';
 
 Vue.use(Avue);
@@ -38,6 +38,7 @@ new Vue({
 ```javascript
 
 import Vue from 'vue';
+import '@smallwei/avue/lib/theme-chalk/index.css';
 import { Carousel } from '@smallwei/avue';
 import App from './App.vue';
 
@@ -92,15 +93,16 @@ Vue.use(Pagination);
 
 ### 全局配置
 
-在引入 Avue 时，可以传入一个全局配置对象。该对象目前支持 `size`字段。`size` 用于改变组件的默认尺寸。按照引入 Avue 的方式，具体操作如下：
+在引入 Avue 时，可以传入一个全局配置对象。该对象目前支持 `size`和`menuType`字段。`size`用于改变组件的默认尺寸;`menuType`用于改变操作栏菜单按钮类型，按照引入 Avue 的方式，具体操作如下：
 
 完整引入 Avue
 
 ```js
 import Vue from 'vue';
 import Element from 'element-ui';
-import Avue from '@smallwei/avue
-Vue.use(Avue, { size: 'small'});
+import '@smallwei/avue/lib/theme-chalk/index.css';
+import Avue from '@smallwei/avue';
+Vue.use(Avue, { size: 'small', menuType : 'menu'});
 ```
 
 按需引入 Avue
@@ -109,12 +111,13 @@ Vue.use(Avue, { size: 'small'});
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import { Carousel } from '@smallwei/avue';
-
-Vue.prototype.$AVUE = { size: 'small'};
+Vue.use(Avue, { size: 'small', menuType : 'menu'});
 Vue.use(Carousel);
 ```
 
-按照以上设置，项目中所有拥有 `size` 属性的组件的默认尺寸均为 'small'。可选值 small / mini / medium
+按照以上设置，项目中所有
+拥有 `size` 属性的组件的默认尺寸均为 'small'。可选值 small / mini / medium;
+拥有 `menuType` 属性的组件的默认尺寸均为 'menu'。可选值 button / icon / text / menu
 
 ### 开始使用
 
