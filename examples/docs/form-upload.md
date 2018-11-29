@@ -7,6 +7,7 @@ export default {
             'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1',
             'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2'
           ],
+          string:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1,https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2',
           imgUrl:[{
             label:'图片名称',
             value:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1'
@@ -55,6 +56,15 @@ export default {
               label: '数组图片组',
               prop: 'img',
               dataType:'array',
+              type: 'upload',
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://jsonplaceholder.typicode.com/posts/',
+          }, {
+              label: '字符串图片组',
+              prop: 'string',
+              dataType:'string',
               type: 'upload',
               span: 24,
               listType: 'picture-card',
@@ -121,6 +131,7 @@ export default {
             'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1',
             'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2'
           ],
+          string:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1,https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2',
           imgUrl:[{
             label:'图片名称',
             value:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1'
@@ -175,6 +186,15 @@ export default {
               tip: '只能上传jpg/png文件，且不超过500kb',
               action: 'https://jsonplaceholder.typicode.com/posts/',
           }, {
+              label: '字符串图片组',
+              prop: 'string',
+              dataType:'string',
+              type: 'upload',
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://jsonplaceholder.typicode.com/posts/',
+          }, {
               label: '拖拽上传',
               prop: 'imgUrl',
               type: 'upload',
@@ -219,9 +239,9 @@ export default {
 
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| propsHttp | 上传后返回名称和路径的配置属性，详情见下面propsHttp属性 | Object | -  | - |
+| propsHttp | 上传后返ajax回名称和路径的配置属性，详情见下面propsHttp属性 | Object | -  | - |
 | props | 回显的名称和路径配置属性，详情见下面props属性 | Object | -  | - |
-| dataType | 图片格式的类型，默认为json | String | array / json | json |
+| dataType | 图片格式的类型，默认为json | String | array / json / string | json |
 | listType | 上传框的类型 | String | picture-img / picture-card / picture / file  | file |
 | action | 上传图片的地址 | String | - | - |
 | tip | 上传控件的提示语 | String | - | 文件上传中,请稍等 |
@@ -240,8 +260,8 @@ export default {
 
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| label | 回显图片的名称 | string| — | — |
-| value | 图片的地址 | string | — | — |
+| name | 回显图片的名称 | string| — | — |
+| url | 图片的地址 | string | — | — |
 
 
 ### Avue-upload Events

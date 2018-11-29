@@ -1,13 +1,13 @@
 export default function() {
     //props配置
     const propsDefault = {
-            id: 'id',
-            label: 'label',
-            value: 'value',
-            children: 'children',
-            disabled: 'disabled'
-        }
-        //httpProps配置
+        id: 'id',
+        label: 'label',
+        value: 'value',
+        children: 'children',
+        disabled: 'disabled'
+    };
+    //httpProps配置
     const propsHttpDefault = {
         name: 'name',
         url: 'url',
@@ -72,6 +72,14 @@ export default function() {
             max: {
                 type: Number
             },
+            multiple: {
+                type: Boolean,
+                default: false
+            },
+            prop: {
+                type: String,
+                default: ''
+            },
             border: {
                 type: Boolean,
                 default: false
@@ -87,10 +95,16 @@ export default function() {
         },
         watch: {
             value() {
-                this.text = this.value;
+                this.initVal();
             }
         },
         computed: {
+            isArray() {
+                return this.dataType === 'array';
+            },
+            isString() {
+                return this.dataType === 'string';
+            },
             nameKey: function() {
                 return this.propsHttp.name || this.propsHttpDefault.name;
             },
@@ -114,7 +128,17 @@ export default function() {
             }
         },
         created() {
-            this.text = this.value;
+            this.initVal();
+        },
+        methods: {
+            initVal() {
+                if ((['select', 'tree'].includes(this.type) && this.multiple) || ['checkbox', 'cascader'].includes(this.type) || ['upload'].includes(this.type) && this.listType !== 'picture-img') {
+                    if (!Array.isArray(this.value)) this.text = (this.value || '').split(',');
+                    else this.text = this.value;
+                } else {
+                    this.text = this.value;
+                }
+            }
         }
     };
 }

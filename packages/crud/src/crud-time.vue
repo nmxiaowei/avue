@@ -18,9 +18,10 @@
 <script>
 import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
+import crudFun from '../../mixins/crud-fun.js';
 export default create({
   name: 'crud-time',
-  mixins: [crudCompoents()],
+  mixins: [crudCompoents(), crudFun()],
   data () {
     return {};
   },
@@ -54,15 +55,6 @@ export default create({
       return this.type === 'timerange'
     }
   },
-  methods: {
-    handleClick () {
-      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
-    },
-    handleChange (value) {
-      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
-      this.$emit('input', value);
-      this.$emit('change', value);
-    }
-  }
+  methods: {}
 });
 </script>

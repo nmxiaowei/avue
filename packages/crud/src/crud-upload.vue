@@ -105,19 +105,15 @@ export default create({
     status () {
       return this.listType === 'picture-img';
     },
-    isArray () {
-      return this.dataType === 'array';
-    },
     imageUrl () {
       return this.status ? this.text : '';
     },
     fileList () {
       let list = [];
-      if (!Array.isArray(this.text) && !this.status) this.text = (this.text || '').split(',');
       if (!this.status) {
         this.text.forEach((ele, index) => {
           let obj;
-          if (this.isArray) {
+          if (this.isArray || this.isString) {
             obj = {
               name: index,
               url: ele,
@@ -226,8 +222,9 @@ export default create({
       else callack();
     },
     setVal () {
-      this.$emit('input', this.text);
-      this.$emit('change', this.text);
+      const result = this.isString ? this.text.join(',') : this.text;
+      this.$emit('input', result);
+      this.$emit('change', result);
     },
     handleExceed (files, fileList) {
       this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共上传了 ${files.length + fileList.length} 个文件`);

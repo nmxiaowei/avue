@@ -97,10 +97,6 @@ export default create({
       type: Boolean,
       default: true
     },
-    multiple: {
-      type: Boolean,
-      default: false
-    },
     parent: {
       type: Boolean,
       default: true
@@ -141,6 +137,7 @@ export default create({
   },
   watch: {
     value () {
+      this.initVal();
       this.init();
     },
     filterText (val) {
@@ -148,6 +145,9 @@ export default create({
     }
   },
   computed: {
+    isTree () {
+      return this.type === 'tree';
+    },
     labelShow () {
       return this.multiple ? this.labelText.join('/').toString() : this.labelText;
     },
@@ -178,7 +178,6 @@ export default create({
       return data[this.labelKey].indexOf(value) !== -1;
     },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
-      console.log(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
       this.text = [];
       this.labelText = [];
       checkedKeys.checkedNodes.forEach(node => {
@@ -188,15 +187,16 @@ export default create({
         }
       });
       if (typeof this.checked === 'function') this.checked(checkedNodes);
-      this.$emit('input', this.text);
-      this.$emit('change', this.text);
+      const result = (this.isString && this.multiple) ? this.text.join(',') : this.text;
+      this.$emit('input', result);
+      this.$emit('change', result);
     },
     open () {
       this.box = true;
       this.handleClick();
     },
     init () {
-      if (this.type === 'tree') {
+      if (this.isTree) {
         if (this.multiple) {
           this.labelText = ['获取字典中...'];
         } else {
@@ -257,27 +257,30 @@ export default create({
       if (validatenull(data[this.childrenKey]) && !this.multiple || this.parent) {
         const value = data[this.valueKey];
         const label = data[this.labelKey];
+        const result = (this.isString && this.multiple) ? value.join(',') : value;
         this.text = value;
         this.labelText = label;
-        this.$emit('input', value);
-        this.$emit('change', value);
+        this.$emit('input', result);
+        this.$emit('change', result);
         callback();
       }
 
     },
     handleClick () {
-      if (typeof this.click === 'function') this.click({ value: this.text, column: this.column });
+      const result = (this.isString && this.multiple) ? this.text.join(',') : this.text;
+      if (typeof this.click === 'function') this.click({ value: result, column: this.column });
     },
     handleChange (value) {
       let text = this.text;
-      if (typeof this.change === 'function') this.change({ value: value, column: this.column });
+      const result = (this.isString && this.multiple) ? value.join(',') : value;
+      if (typeof this.change === 'function') this.change({ value: result, column: this.column });
       if (this.type === 'phone') {
         this.text = text.replace(/[^0-9.]/g, '');
         this.text = this.textShow;
         text = this.text.replace(/\s/g, "");
       }
-      this.$emit('input', text);
-      this.$emit('change', text);
+      this.$emit('input', result);
+      this.$emit('change', result);
     }
   }
 });

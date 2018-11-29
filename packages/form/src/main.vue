@@ -15,7 +15,7 @@
                    :class="b('group')">
           <template v-if="vaildVisdiplay(column)"
                     v-for="(column,index) in columnOption">
-            <el-col :key="index"
+            <el-col :key="column.prop"
                     :md="column.span||12"
                     :xs="24"
                     :class="b('row',{'cursor':draggableStart})"
@@ -39,6 +39,7 @@
 
                 <component :is="getComponent({type:column.type,component:column.component})"
                            v-else
+                           :prop="column.prop"
                            :props="column.props || tableOption.props"
                            :propsHttp="column.propsHttp || tableOption.propsHttp"
                            v-model="form[column.prop]"
@@ -173,6 +174,7 @@ export default create({
     value: {
       handler () {
         this.formVal();
+        this.cascadeInit();
       },
       deep: true
     }
@@ -346,9 +348,7 @@ export default create({
       this.formDefault = this.formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
-      const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
-      //初始化联动
-      if (dicFlag) this.cascadeInit();
+      this.cascadeInit();
     },
     cascadeInit () {
       this.first = true;

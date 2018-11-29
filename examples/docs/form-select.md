@@ -3,11 +3,7 @@ const baseUrl = `https://cli2.avue.top/api/area`;
 export default {
  data() {
       return {
-         data:{
-            province:"110000",
-            city:"110100",
-            area:"110101"
-         },
+        data:{},
         data1:[
             {
                 province:"110000",
@@ -113,6 +109,11 @@ export default {
         }
       }
     },
+    mounted(){
+       this.data.province = "110000";
+       this.data.city = "110100";
+       this.data.area = "110101"
+    },
     methods: {
      submit(){
        this.$message.success('当前数据'+JSON.stringify(this.data))
@@ -140,11 +141,7 @@ const baseUrl = `https://cli2.avue.top/api/area`;
 export default {
  data() {
       return {
-         data:{
-            province:"110000",
-            city:"110100",
-            area:"110101"
-         },
+         data:{},
          option:{
             props: {
                 label: 'name',
@@ -190,6 +187,11 @@ export default {
             }]
         }
       }
+    },
+    mounted(){
+       this.data.province = "110000";
+       this.data.city = "110100";
+       this.data.area = "110101"
     },
     methods: {
      submit(){
