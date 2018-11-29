@@ -2,6 +2,8 @@
 .vscode
 node_modules/
 dist/
+lib/
+examples/avue
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
