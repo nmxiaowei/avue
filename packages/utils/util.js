@@ -123,12 +123,23 @@ export const setDic = (dicData, DIC) => {
     return (typeof(dicData) === 'string') ? DIC : dicData;
 };
 /**
+ * 初始化数据格式
+ */
+export const initVal = ({ type, multiple, value, listType }) => {
+    if ((['select', 'tree'].includes(type) && multiple) || ['checkbox', 'cascader'].includes(type) || ['upload'].includes(type) && listType !== 'picture-img') {
+        if (!Array.isArray(value)) return (value || '').split(',');
+        else return value;
+    } else {
+        return value
+    }
+}
+
+/**
  * 设置px
  */
-export const setPx = (val, defval) => {
-    if (validatenull(val)) {
-        val = defval;
-    }
+export const setPx = (val, defval = '') => {
+    if (validatenull(val)) val = defval;
+    if (validatenull(val)) return ''
     val = val + '';
     if (val.indexOf('%') === -1) {
         val = val + 'px';

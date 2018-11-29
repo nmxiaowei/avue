@@ -1,3 +1,5 @@
+import { initVal } from '../utils/util'
+import { list } from 'tcomb';
 export default function() {
     //props配置
     const propsDefault = {
@@ -60,7 +62,9 @@ export default function() {
             },
             dic: {
                 type: Array,
-                default: () => []
+                default: () => {
+                    return []
+                }
             },
             placeholder: {
                 type: String,
@@ -128,17 +132,12 @@ export default function() {
             }
         },
         created() {
-            this.initVal();
+            this.text = initVal({
+                type: this.type,
+                multiple: this.multiple,
+                value: this.value,
+                listType: list.listType
+            });
         },
-        methods: {
-            initVal() {
-                if ((['select', 'tree'].includes(this.type) && this.multiple) || ['checkbox', 'cascader'].includes(this.type) || ['upload'].includes(this.type) && this.listType !== 'picture-img') {
-                    if (!Array.isArray(this.value)) this.text = (this.value || '').split(',');
-                    else this.text = this.value;
-                } else {
-                    this.text = this.value;
-                }
-            }
-        }
     };
 }

@@ -18,7 +18,8 @@ export default function() {
                     type = column.type;
                 if (validatenull(result)) result = '';
                 if (type) {
-                    //日期处理
+                    if (column.dataType === 'string') result = result.split(',')
+                        //日期处理
                     if (['date', 'time', 'datetime'].includes(type) && column.format && !validatenull(result)) {
                         const format = column.format
                             .replace('dd', 'DD')

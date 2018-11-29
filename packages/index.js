@@ -12,6 +12,7 @@ import CrudNumberInput from './crud-input-number/';
 import CrudSwitch from './crud-switch/';
 import CrudRate from './crud-rate/';
 import CrudUpload from './crud-upload/';
+import CrudImg from './crud-img/';
 import CrudSilder from './crud-silder/';
 import DataDisplay from './data-display/';
 import DataCard from './data-card/';
@@ -48,6 +49,7 @@ const components = [
     CrudRate,
     CrudUpload,
     CrudSilder,
+    CrudImg,
     DataProgress,
     DataDisplay,
     DataCard,
@@ -94,6 +96,7 @@ export default {
     CrudRate,
     CrudUpload,
     CrudSilder,
+    CrudImg,
     DataProgress,
     DataDisplay,
     DataCard,

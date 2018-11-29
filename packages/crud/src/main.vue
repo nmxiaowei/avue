@@ -206,6 +206,16 @@
                   :label="detail(scope.row,column)"
                   :name="column.prop"
                   v-else-if="column.solt"></slot>
+            <template v-else-if="column.type==='upload'">
+              <avue-crud-img :listType="column.listType"
+                             :imgWidth="column.imgWidth"
+                             :fullscreen="column.imgFullscreen"
+                             :imgHeight="column.imgHeight"
+                             :type="column.imgType"
+                             :dataType="column.dataType"
+                             :size="isMediumSize"
+                             :value="scope.row[column.prop]"></avue-crud-img>
+            </template>
             <template v-else>
               <span v-html="detail(scope.row,column)"></span>
             </template>
@@ -716,17 +726,19 @@ export default create({
     },
     // 保存
     rowSave () {
-      this.$refs['tableForm'].validate().then(() => {
-        this.keyBtn = true;
-        this.$emit('row-save', this.deepClone(this.tableForm), this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          });
-      });
+      this.$refs['tableForm'].validate(vaild => {
+        if (vaild) {
+          this.keyBtn = true;
+          this.$emit('row-save', this.deepClone(this.tableForm), this.closeDialog,
+            () => {
+              this.keyBtn = false;
+            });
+        }
+      })
     },
     // 更新
     rowUpdate () {
-      this.$refs['tableForm'].validate().then(() => {
+      this.$refs['tableForm'].validate(vaild => {
         this.keyBtn = true;
         const index = this.tableIndex;
         this.$emit(
@@ -738,7 +750,7 @@ export default create({
             this.keyBtn = false;
           }
         );
-      });
+      })
     },
     // 显示表单
     show (cancel) {

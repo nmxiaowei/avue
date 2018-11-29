@@ -8,9 +8,6 @@
     "name": "套餐付款码",
     "path": "/avue2.x"
 }, {
-    "name": "脚手架文档",
-    "href": "https://www.kancloud.cn/smallwei/avue"
-}, {
     "name": "开发指南",
     "groups": [{
         "list": [{
@@ -28,9 +25,6 @@
         }, {
             "path": "/project",
             "title": "项目相关"
-        }, {
-            "path": "/transition",
-            "title": "ele内置过渡动画"
         }]
     }]
 }, {
@@ -39,112 +33,115 @@
         "groupName": "Crud",
         "list": [{
             "path": "/crud-doc",
-            "title": "crud文档"
+            "title": "文档"
         }, {
             "path": "/crud",
-            "title": "crud基础"
+            "title": "基础"
         }, {
             "path": "/crud-tree",
-            "title": "crud树型"
+            "title": "树型"
         }, {
             "path": "/crud-header",
-            "title": "crud复杂表头"
+            "title": "复杂表头"
         }, {
             "path": "/crud-page",
-            "title": "crud分页"
+            "title": "分页"
         }, {
             "path": "/crud-expand",
-            "title": "crud面板"
+            "title": "面板"
         }, {
             "path": "/crud-rules",
-            "title": "crud验证"
+            "title": "验证"
         }, {
             "path": "/crud-selection",
-            "title": "crud多选"
+            "title": "多选"
         }, {
             "path": "/crud-fun",
-            "title": "crud方法"
+            "title": "方法"
         }, {
             "path": "/crud-sort",
-            "title": "crud排序"
+            "title": "排序"
         }, {
             "path": "/crud-filter",
-            "title": "crud筛选"
+            "title": "筛选"
         }, {
             "path": "/crud-date",
-            "title": "crud日期"
+            "title": "日期"
         }, {
             "path": "/crud-index",
-            "title": "crud序号"
+            "title": "序号"
         }, {
             "path": "/crud-border",
-            "title": "crud边框"
+            "title": "边框"
         }, {
             "path": "/crud-search",
-            "title": "crud搜索"
+            "title": "搜索"
         }, {
             "path": "/crud-loading",
-            "title": "crud等待"
+            "title": "等待"
         }, {
             "path": "/crud-dic",
-            "title": "crud字典"
+            "title": "字典"
+        }, {
+            "path": "/crud-img",
+            "title": "图片"
         }, {
             "path": "/crud-row",
-            "title": "crud行操作"
+            "title": "行操作"
         }, {
             "path": "/crud-refresh",
-            "title": "crud刷新"
+            "title": "刷新"
         }, {
             "path": "/crud-edit",
-            "title": "crud编辑"
+            "title": "编辑"
         }, {
             "path": "/crud-sum",
-            "title": "crud合计"
+            "title": "合计"
         }, {
             "path": "/crud-solt",
-            "title": "crud自定义列"
+            "title": "自定义列"
         }, {
             "path": "/crud-formsolt",
-            "title": "crud自定义表单"
+            "title": "自定义表单"
         }, {
             "path": "/crud-head",
-            "title": "crud自定义菜单"
+            "title": "自定义菜单"
         }, {
             "path": "/crud-menu",
-            "title": "crud自定义操作栏"
+            "title": "自定义操作栏"
         }, {
             "path": "/crud-btn",
-            "title": "crud自定义按钮"
+            "title": "自定义按钮"
         }]
     }, {
         "groupName": "Form",
         "list": [{
             "path": "/form-doc",
-            "title": "form文档"
+            "title": "文档"
         }, {
             "path": "/form",
-            "title": "form表单"
+            "title": "基础"
         }, {
             "path": "/form-date",
-            "title": "form日期"
+            "title": "日期"
         }, {
             "path": "/form-rate",
-            "title": "form评价"
+            "title": "评价"
         }, {
             "path": "/form-silder",
-            "title": "form滑块"
+            "title": "滑块"
         }, {
             "path": "/form-upload",
-            "title": "form上传"
+            "title": "附件上传"
         }, {
             "path": "/form-select",
-            "title": "form多级联动"
+            "title": "多级联动"
         }, {
             "path": "/form-detail",
-            "title": "form详情"
+            "title": "详情展示"
         }, {
             "path": "/form-tree",
-            "title": "form树型"
+            "title": "树型"
         }]
     }]
 }, {

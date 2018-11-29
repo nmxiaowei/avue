@@ -2,8 +2,7 @@ export const pay = [{
     title: '核心源码',
     subtitle: 'avue的核心源码',
     vip: 2,
-    nowmoney: '266.66',
-    money: '299.99',
+    nowmoney: '299.99',
     list: [{
         title: 'avue核心源码解读',
         bold: true
@@ -33,8 +32,7 @@ export const pay = [{
     title: '模版源码',
     subtitle: 'avue-cli的核心源码',
     vip: 2,
-    nowmoney: '266.66',
-    money: '299.99',
+    nowmoney: '299.99',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
         bold: true
@@ -70,8 +68,7 @@ export const pay = [{
     subtitle: 'avue系列的全部源码',
     v: true,
     vip: 1,
-    nowmoney: '366.66',
-    money: '399.99',
+    nowmoney: '399.99',
     list: [{
         title: '可完全用于商用',
         bold: true,

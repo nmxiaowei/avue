@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()">
+  <div :class="[b(),{'avue-carousel--fullscreen':option.fullscreen}]">
     <el-carousel :type="option.type"
                  :height="option.height+'px'"
                  :autoplay="option.autoplay"

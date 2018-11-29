@@ -1,4 +1,11 @@
 .avue-carousel {
+    &--fullscreen {
+        height: 100%;
+        .el-carousel,
+        .el-carousel__container {
+            height: 90%;
+        }
+    }
     &__item {
         position: relative;
         width: 100%;

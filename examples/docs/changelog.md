@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.4.6-beta1
+#### 2018-11-30
+
+* 修复crud组件中validate方法问题
+* 修复crud组件新增dataType属性导致翻译失效的问题
+* 新增upload组件crud表格图片展示[demo](https://avue.top/#/component/crud-img)
+
 ### 1.4.5
 #### 2018-11-29
 

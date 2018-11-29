@@ -46,7 +46,8 @@
                        src="../assets/images/vip2.png"
                        alt="">
                   {{item.title}}
-                  <span class="pay__content-money pay__content-money--line">￥&nbsp;{{item.money}}</span>
+                  <span v-if="item.money"
+                        class="pay__content-money pay__content-money--line">￥&nbsp;{{item.money}}</span>
                 </p>
                 <div>
                   <p class="pay__content-subtitle">
