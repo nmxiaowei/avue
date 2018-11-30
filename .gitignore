@@ -3,6 +3,7 @@
 node_modules/
 dist/
 lib/
+packages/theme-chalk/lib
 examples/avue
 npm-debug.log*
 yarn-debug.log*

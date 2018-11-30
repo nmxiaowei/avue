@@ -15,6 +15,23 @@
       </div>
     </div>
     <fieldset>
+      <legend align="center">AvueX开发计划</legend>
+    </fieldset>
+    <div class="pay__x">
+      <h3>为了追求更好的极简化配置思想，来降低企业开发的周期和开发成本，让系统变得易维护，高效率开发的宗旨</h3>
+      <p class="pay__x-list">
+        1.底层代码将全部重构,顶级API进行重大的修整,但依然会保持与现有版本的兼容</br>
+        2.增添mobile版本（pc版本采用element-ui作为UI组件底层，mobile采用vant作为UI组件底层）</br>
+        3.主-子表的crud配置升级</br>
+        4.内部功能分解为单独的包，方便企业二次开发和维护</br>
+        5.多种扁平化风格随意切换更加符合企业风格</br>
+        6.加入工作流、多租户、系统管理等多款后台常用的前端模版</br>
+        7.更多组件。。。
+      </p>
+      <p>发布时间：2019年1月1号发布</p>
+      <p>售价：699（现购企业版全家桶套餐，avuex将免费升级），avue开源版将持续更新维护。</p>
+    </div>
+    <fieldset>
       <legend align="center">获取授权</legend>
     </fieldset>
     <div class="pay__content"
@@ -179,6 +196,20 @@ export default {
   padding: 0;
 }
 .pay {
+  &__x {
+    padding: 10px 30px;
+    margin: 0 auto 20px auto;
+    box-sizing: border-box;
+    width: 1100px;
+    line-height: 30px;
+    color: #333;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 1px 2px 10px #ccc;
+    &-list {
+      font-size: 14px;
+    }
+  }
   &__detail {
     display: flex;
     align-items: flex-start;

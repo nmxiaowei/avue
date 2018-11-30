@@ -132,12 +132,18 @@ export default function() {
             }
         },
         created() {
-            this.text = initVal({
-                type: this.type,
-                multiple: this.multiple,
-                value: this.value,
-                listType: list.listType
-            });
+            this.initVal();
         },
+        methods: {
+
+            initVal() {
+                this.text = initVal({
+                    type: this.type,
+                    multiple: this.multiple,
+                    value: this.value,
+                    listType: list.listType
+                });
+            }
+        }
     };
 }
