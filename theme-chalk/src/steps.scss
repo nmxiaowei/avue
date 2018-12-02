@@ -1,0 +1,22 @@
+.avue-steps {
+    &__menu {
+        text-align: center;
+    }
+    &--vertical {
+        width: 100%;
+        display: flex;
+    }
+    &__tabs {
+        cursor: pointer;
+    }
+    &__steps {
+        width: 230px;
+    }
+    &__contail {
+        padding: 20px 0;
+        flex: 1;
+    }
+    &__form {
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,10 @@
+.avue-crud-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &--fullscreen {
+    .el-dialog__body {
+      height: 100%;
+    }
+  }
+}

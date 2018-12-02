@@ -1,0 +1,38 @@
+.el-select,
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner,
+.el-cascader,
+.avue-input-number {
+    width: 100% !important;
+}
+
+.el-input__inner {
+    height: 38px;
+    line-height: 38px;
+}
+
+.el-input--small {
+    input {
+        height: 32px !important;
+        line-height: 32px !important;
+    }
+}
+
+.el-input--mini {
+    input {
+        height: 28px !important;
+        line-height: 28px !important;
+    }
+}
+
+.el-table--medium td {
+    padding: 7px 0 !important;
+}
+
+.el-tooltip__popper {
+    max-width: 60%;
+}
+
+.el-dropdown-menu__item {
+    line-height: 25px;
+}

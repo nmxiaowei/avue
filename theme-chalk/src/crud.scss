@@ -1,0 +1,95 @@
+.avue-crud {
+    margin: 0 auto;
+    width: 99%;
+    .el-table th {
+        word-break: break-word;
+        color: rgba(0, 0, 0, 0.85);
+        background-color: #fafafa;
+    }
+    &__pagination {
+        position: relative;
+        height: 25px;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        padding: 10px 20px;
+        .el-pagination {
+            position: absolute;
+            right: 0;
+        }
+    }
+    &__form {
+        padding: 0 8px;
+    }
+    &__header {
+        margin-bottom: 10px;
+        &>.el-button {
+            padding: 12px 25px;
+        }
+    }
+    &__box {
+        box-shadow: none !important;
+        border: none;
+        .el-card__body,
+        .el-card__header {
+            padding: 18px 0;
+        }
+    }
+    &__title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__menu {
+        position: relative;
+        width: 100%;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+    &__left,
+    &__right {
+        position: absolute;
+        height: auto;
+        overflow: hidden;
+    }
+    &__left {
+        left: 0;
+        .el-button {
+            margin-right: 5px;
+        }
+    }
+    &__right {
+        right: 0;
+        .el-button {
+            margin-left: 5px;
+        }
+    }
+    &__dialog {
+        .el-dialog__header {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            padding: 12px 20px;
+            background-color: #409eff;
+        }
+        .el-dialog__close {
+            color: #fff;
+            font-size: 18px;
+            &:hover {
+                color: #ffddff;
+            }
+        }
+        .el-dialog__title {
+            color: #fff;
+            font-size: 18px;
+        }
+        .el-dialog__headerbtn {
+            top: 18px;
+        }
+        &--overflow {
+            max-height: 400px;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+    }
+}
