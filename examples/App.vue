@@ -177,8 +177,7 @@ textarea {
 </style>
 
 <template>
-  <div id="app"
-       :class="{ 'is-component': isComponent }">
+  <div id="app" :class="{ 'is-component': isComponent }">
     <main-header></main-header>
     <div class="main-cnt">
       <router-view></router-view>
@@ -188,28 +187,24 @@ textarea {
 </template>
 
 <script>
-
-
 export default {
-  name: 'app',
+  name: "app",
 
   computed: {
-    isComponent () {
-      return /^component-/.test(this.$route.name || '');
+    isComponent() {
+      return /^component-/.test(this.$route.name || "");
     }
   },
 
-  created () {
+  created() {
     this.$notify({
-      title: '拉票！拉票！',
+      title: "Avuex发布计划",
       dangerouslyUseHTMLString: true,
-      message: '2018年度最受欢迎中国开源软件评选 支持一下avue和pig呗，<a target="_blank" href="https://www.oschina.net/project/top_cn_2018">点击查看</a>',
+      message: '<a target="_blank" href="https://avue.top/#/pay">点击查看</a>',
       duration: 0,
-      type: 'success'
+      type: "success"
     });
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
