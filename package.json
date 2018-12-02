@@ -7,8 +7,7 @@
   "jsdelivr": "lib/index.js",
   "scripts": {
     "dev": "cross-env TARGET=dev gulp watch",
-    "build": "cross-env TARGET=prod gulp watch",
-    "build:theme": "gulp compile"
+    "build": "cross-env TARGET=prod gulp build"
   },
   "keywords": [
     "element-ui",

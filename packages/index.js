@@ -1,5 +1,3 @@
-import Vue from 'vue';
-import axios from 'axios';
 import Carousel from './carousel/index';
 import Json from './json/index';
 import Crud from './crud/index';
@@ -29,6 +27,7 @@ import Tree from './tree/index';
 import FormDetail from './form-detail/index';
 import TableTree from './table-tree/index';
 import DateGroup from './date-group/index';
+
 const components = [
   Json,
   Crud,
@@ -62,7 +61,7 @@ const components = [
 ];
 
 function install(Vue, opts = {}) {
-  if (axios) Vue.prototype.$http = axios;
+  if (window.axios) Vue.prototype.$http = window.axios;
   components.map(component => {
     Vue.component(component.name, component);
   });
@@ -72,8 +71,8 @@ function install(Vue, opts = {}) {
   };
 }
 
-if (Vue) {
-  install(Vue);
+if (window.Vue) {
+  install(window.Vue);
 }
 export default {
   install,
