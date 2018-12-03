@@ -2,7 +2,12 @@ const path = require('path');
 
 const resolve = p => path.resolve(__dirname, '../', p);
 
+const uiname = process.env.UINAME;
 module.exports = {
   src: resolve('src'),
+  core: resolve('src/core'),
+  components: resolve('packages/' + uiname),
+  utils: resolve('src/utils'),
+  mixins: resolve('packages/mixins'),
   packages: resolve('packages')
 };

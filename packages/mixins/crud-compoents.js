@@ -1,4 +1,4 @@
-import { initVal } from '../utils/util';
+import { initVal } from 'utils/util';
 export default function() {
   // props配置
   const propsDefault = {

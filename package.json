@@ -6,8 +6,8 @@
   "unpkg": "lib/index.js",
   "jsdelivr": "lib/index.js",
   "scripts": {
-    "dev": "cross-env TARGET=dev gulp watch",
-    "build": "cross-env TARGET=prod gulp build"
+    "dev": "cross-env TARGET=dev UINAME=element-ui gulp watch",
+    "build": "cross-env TARGET=prod UINAME=element-ui gulp build"
   },
   "keywords": [
     "element-ui",
@@ -59,6 +59,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.11",
     "mockjs": "^1.0.1-beta3",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vuedraggable": "^2.17.0"
   }
 }
