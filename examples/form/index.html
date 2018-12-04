@@ -18,13 +18,16 @@
     <script src="../../lib/avue.js"></script>
   </head>
   <body>
-    <div id="app"><avue-form :option="option"></avue-form></div>
+    <div id="app"><avue-form :option="option" v-model="obj"></avue-form></div>
   </body>
   <script>
     new Vue({
       el: '#app',
       data() {
         return {
+          obj: {
+            name: 'smallwei'
+          },
           option: {
             column: [
               {

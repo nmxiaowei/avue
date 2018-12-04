@@ -11,13 +11,13 @@ export const loadDic = option => {
   ajaxdic = [];
   return new Promise((resolve, reject) => {
     // 本地字典赋值
-    locationdic = option.dicData || [];
+    locationdic = option.dicData || {};
 
     createdDic(option.dicUrl, option.column);
 
     handeDic()
       .then(res => {
-        resolve(res);
+        resolve(Object.assign(locationdic, networkdic));
       })
       .catch(err => {
         reject(err);
@@ -27,17 +27,17 @@ export const loadDic = option => {
 
 // 创建字典区分本地字典和网络字典
 function createdDic(url = '', column = []) {
-  let prop = column.prop;
   column.forEach(ele => {
     let dicData = ele.dicData;
     let dicUrl = ele.dicUrl;
+    let prop = ele.prop;
     if (ele.dicFlag === false) return;
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     } else if (!validatenull(dicUrl)) {
       ajaxdic.push({
         url: dicUrl || url,
-        name: dicData
+        name: dicData || prop
       });
     }
   });
@@ -50,7 +50,7 @@ function handeDic() {
     ajaxdic.forEach(ele => {
       result.push(
         new Promise(resolve => {
-          sendDic(`${ele.dicUrl.replace('{{key}}', ele.dicData)}`).then(res => {
+          sendDic(`${ele.url.replace('{{key}}', ele.name)}`).then(res => {
             resolve(res);
           });
         })
@@ -58,9 +58,9 @@ function handeDic() {
     });
     Promise.all(result).then(data => {
       ajaxdic.forEach((ele, index) => {
-        networkdic[ele.dicData] = data[index];
+        networkdic[ele.name] = data[index];
       });
-      resolve(Object.assign(locationdic, networkdic));
+      resolve(networkdic);
     });
   });
 }

@@ -48,10 +48,11 @@
 
 <script>
 import create from "core/create";
-import crudCompoents from "mixins/crud-compoents.js";
+import props from "../../core/common/props.js";
+import event from "../../core/common/event.js";
 export default create({
   name: "upload",
-  mixins: [crudCompoents()],
+  mixins: [props(), event()],
   data() {
     return {
       loading: false,

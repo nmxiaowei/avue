@@ -1,3 +1,4 @@
+import Carousel from 'components/carousel';
 import Crud from 'components/crud';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
@@ -14,6 +15,7 @@ import Upload from 'components/upload';
 import Silder from 'components/silder';
 import Img from 'components/img';
 export default [
+  Carousel,
   Crud,
   Form,
   Checkbox,

@@ -79,11 +79,12 @@
 
 <script>
 import create from "core/create";
-import crudCompoents from "mixins/crud-compoents.js";
+import props from "../../core/common/props.js";
+import event from "../../core/common/event.js";
 import { validatenull } from "utils/validate";
 export default create({
   name: "input",
-  mixins: [crudCompoents()],
+  mixins: [props(), event()],
   data() {
     return {
       filterText: "",

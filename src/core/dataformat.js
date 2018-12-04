@@ -32,6 +32,7 @@ export const getSearchType = type => {
       'datetime',
       'datetimerange',
       'daterange',
+      'dategrpup',
       'week',
       'month',
       'year'
@@ -42,6 +43,8 @@ export const getSearchType = type => {
     result = 'cascader';
   } else if (['number'].includes(type)) {
     result = 'inputNumber';
+  } else if (['switch'].includes(type)) {
+    result = 'switch';
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -70,6 +73,7 @@ export const getComponent = ({ type, component }) => {
       'daterange',
       'week',
       'month',
+      'dategrpup',
       'year'
     ].includes(type)
   ) {
@@ -96,7 +100,7 @@ export const getComponent = ({ type, component }) => {
  * 表格初始化值
  */
 
-export const formInitVal = list => {
+export const formInitVal = (list = []) => {
   let tableForm = {};
   let searchForm = {};
   list.forEach(ele => {

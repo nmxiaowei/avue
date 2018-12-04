@@ -56,6 +56,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "async-validator": "^1.10.0",
     "axios": "^0.18.0",
     "element-ui": "^2.4.11",
     "mockjs": "^1.0.1-beta3",

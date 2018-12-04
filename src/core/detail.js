@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { getPasswordChar, findByvalue } from 'utils/util';
+import { getPasswordChar, findByValue } from 'utils/util';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop || column.value];
@@ -21,9 +21,9 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       return getPasswordChar(result.toString().length, '*');
     }
     // 字典处理
-    if (column.dicData) {
-      result = findByvalue(
-        dic[column.dicData || column.prop],
+    if (column.dicData || column.dicUrl) {
+      result = findByValue(
+        dic[column.prop],
         result,
         column.props || option.props
       );

@@ -7,30 +7,73 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
 
     <link rel="stylesheet" href="../../lib/index.css" />
     <script src="../../lib/avue.js"></script>
   </head>
   <body>
-    <div id="app"><avue-crud :option="option" :data="data"></avue-crud></div>
+    <div id="app">
+      <avue-crud
+        :option="option"
+        :data="data"
+        :page="page"
+        v-model="obj"
+        @on-load="onLoad"
+        @date-change="dateChange"
+        @row-save="rowSave"
+        @refresh-change="refresh"
+        @row-update="rowUpdate"
+        @row-del="rowDel"
+        @search-change="searchChange"
+        @search-reset="searchReset"
+      >
+        <template slot-scope="props" slot="expand">
+          <el-tag>当前行的{{ props }}</el-tag>
+        </template>
+      </avue-crud>
+    </div>
   </body>
   <script>
     new Vue({
       el: '#app',
       data() {
         return {
+          page: {
+            total: 40
+          },
+          obj: {},
           option: {
+            title: 'crud Demo',
+            expand: true,
+            border: true,
+            dateBtn: true,
+            viewBtn: false,
+            editBtn: false,
+            delBtn: false,
+            cellBtn: true,
+            menuWidth: 300,
+            index: true,
+            selection: true,
             column: [
               {
                 label: '姓名',
                 prop: 'name',
                 type: 'select',
+                cell: true,
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入姓名',
+                    trigger: 'blur'
+                  }
+                ],
                 dicData: [
                   {
                     label: 'test',
@@ -38,14 +81,112 @@
                   }
                 ],
                 search: true
+              },
+              {
+                label: '网络字典',
+                prop: 'dic',
+                type: 'select',
+                props: {
+                  label: 'name',
+                  value: 'code'
+                },
+                dicUrl: 'https://cli2.avue.top/api/area/getProvince',
+                search: true,
+                searchDefault: ['110000'],
+                searchMmultiple: true
+              },
+              {
+                label: '图片',
+                prop: 'img',
+                type: 'upload',
+                imgWidth: 100,
+                listType: 'picture-img'
+              },
+              {
+                label: 'JSON图片',
+                prop: 'img1',
+                type: 'upload',
+                imgFullscreen: true,
+                imgType: 'card',
+                listType: 'picture-card',
+                span: 24
               }
             ]
           },
           data: [
             {
-              name: 'smallwei'
+              img:
+                'https://gitee.com/smallweigit/avue/badge/star.svg?theme=white',
+              img1: [
+                {
+                  label: 'test',
+                  value:
+                    'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+                },
+                {
+                  label: 'test',
+                  value:
+                    'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+                },
+                {
+                  label: 'test',
+                  value:
+                    'http://pic.soutu123.com/back_pic/18/09/18/0ca02eb9c35f095481196354a1f455c8.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+                }
+              ],
+              name: 'smallwei',
+              dic: '110000'
+            },
+            {
+              name: 'smallwei',
+              dic: '110000'
             }
           ]
+        }
+      },
+      methods: {
+        dateChange(val) {
+          this.$message.success('日期回调' + JSON.stringify(val))
+        },
+        rowSave(form, done, loading) {
+          this.$message.success('模拟网络请求')
+          setTimeout(() => {
+            this.$message.success('关闭按钮等待')
+            loading()
+          }, 1000)
+          setTimeout(() => {
+            this.$message.success('新增数据' + JSON.stringify(form))
+            done()
+          }, 2000)
+        },
+        refresh(val) {
+          this.$message.success('刷新回调,当前分页对象' + JSON.stringify(val))
+        },
+        rowDel(form, index) {
+          this.$message.success('删除数据' + JSON.stringify(form))
+        },
+        rowUpdate(form, index, done, loading) {
+          this.$message.success('模拟网络请求')
+          setTimeout(() => {
+            this.$message.success('关闭按钮等待')
+            loading()
+          }, 1000)
+          setTimeout(() => {
+            this.$message.success(
+              '编辑数据' + JSON.stringify(form) + '数据序号' + index
+            )
+            done()
+          }, 2000)
+        },
+        onLoad(page, params) {
+          this.page = page
+          this.$message.success('page' + JSON.stringify(page))
+        },
+        searchChange(params) {
+          this.$message.success('search callback' + JSON.stringify(params))
+        },
+        searchReset() {
+          this.$message.success('search reset callback')
         }
       }
     })

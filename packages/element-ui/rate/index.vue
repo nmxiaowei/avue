@@ -16,11 +16,11 @@
 
 <script>
 import create from "core/create";
-import crudCompoents from "mixins/crud-compoents.js";
-import crudFun from "mixins/crud-fun.js";
+import props from "../../core/common/props.js";
+import event from "../../core/common/event.js";
 export default create({
   name: "rate",
-  mixins: [crudCompoents(), crudFun()],
+  mixins: [props(), event()],
   props: {
     value: {
       type: Number,

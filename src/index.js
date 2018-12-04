@@ -1,5 +1,5 @@
-import components from './components/';
-import { validatenull } from 'utils/validate.js';
+import components from 'ui/index';
+import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone } from 'utils/util';
 function install(Vue, opts = {}) {
   components.map(component => {
@@ -7,6 +7,7 @@ function install(Vue, opts = {}) {
   });
   Vue.prototype.deepClone = deepClone;
   Vue.prototype.validatenull = validatenull;
+  Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
     size: opts.size || 'medium',
     menuType: opts.menuType || 'button'

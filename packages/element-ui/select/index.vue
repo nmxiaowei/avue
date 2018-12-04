@@ -5,6 +5,7 @@
     :multiple="multiple"
     :filterable="filterable"
     :readonly="readonly"
+    collapse-tags
     :clearable="disabled?false:clearable"
     :placeholder="placeholder?placeholder:`请选择${label}`"
     @change="handleChange"
@@ -23,11 +24,11 @@
 
 <script>
 import create from "core/create";
-import crudCompoents from "mixins/crud-compoents.js";
-import crudFun from "mixins/crud-fun.js";
+import props from "../../core/common/props.js";
+import event from "../../core/common/event.js";
 export default create({
   name: "select",
-  mixins: [crudCompoents(), crudFun()],
+  mixins: [props(), event()],
   data() {
     return {};
   },

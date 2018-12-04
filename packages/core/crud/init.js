@@ -34,7 +34,8 @@ export default function() {
     },
     data() {
       return {
-        DIC: {}
+        DIC: {},
+        tableOption: {}
       };
     },
     created() {
@@ -59,13 +60,14 @@ export default function() {
         this.getComponent = getComponent;
         this.tableOption = this.option;
         const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
-        // 规则初始化
-        this.rulesInit();
         // 初始化字典
         if (dicFlag) {
           loadDic(this.tableOption).then(res => {
-            this.DIC = res;
+            this.DIC = this.deepClone(res);
           });
+        } else {
+          const dicData = this.tableOption.dicData || [];
+          this.DIC = this.deepClone(dicData);
         }
         // 初始化表单
         this.dataformat();

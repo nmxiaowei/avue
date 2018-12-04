@@ -1,102 +1,26 @@
 <template>
   <div :class="b()">
     <el-card :class="b('box')">
-      <div
-        slot="header"
-        :class="b('title')"
-        v-if="vaildData(tableOption.title,false) || vaildData(tableOption.dateBtn,config.dateBtn)"
-      >
-        <span>{{tableOption.title}}</span>
-      </div>
-      <div :class="b('header')" v-if="vaildData(tableOption.header,true)">
-        <el-collapse-transition>
-          <el-form
-            :model="searchForm"
-            :inline="true"
-            ref="searchForm"
-            v-if="searchShow && searchFlag"
-          >
-            <!-- 循环列搜索框 -->
-            <el-form-item
-              :prop="column.prop"
-              :label="column.label"
-              v-for="(column,index) in columnOption"
-              :key="index"
-              v-if="column.search"
-            >
-              <component
-                :is="getSearchType(column.type)"
-                :size="isMediumSize"
-                v-model="searchForm[column.prop]"
-                :type="getType(column)"
-                :props="column.props || tableOption.props"
-                :format="column.format"
-                :parent="column.parent"
-                :defaultExpandAll="column.defaultExpandAll"
-                :filterable="column.searchFilterable"
-                :filter-method="column.searchFilterMethod"
-                :value-format="column.valueFormat"
-                :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-                :clearable="column.searchClearable"
-                :placeholder="column.searchPlaceholder || column.label"
-                :dic="DIC[column.dicData || column.prop]"
-              ></component>
-            </el-form-item>
-            <slot name="search"></slot>
-            <el-form-item>
-              <el-button
-                type="primary"
-                @click="searchChange"
-                :icon="config.searchBtnIcon"
-                :size="isMediumSize"
-              >{{config.searchBtnTitle}}</el-button>
-              <el-button
-                @click="searchReset"
-                :icon="config.emptyBtnIcon"
-                :size="isMediumSize"
-              >{{config.emptyBtnTitle}}</el-button>
-              <slot name="searchMenu"></slot>
-            </el-form-item>
-          </el-form>
-        </el-collapse-transition>
-      </div>
+      <!-- 头部组件 -->
+      <header-title ref="headerTitle" v-show="printKey"></header-title>
+      <!-- 搜索组件 -->
+      <header-search v-model="searchForm" ref="tableSearch" v-show="printKey">
+        <template slot="search">
+          <slot name="search"></slot>
+        </template>
+        <template slot="searchMenu">
+          <slot name="searchMenu"></slot>
+        </template>
+      </header-search>
       <!-- 表格功能列 -->
-      <div :class="b('menu')" v-if="vaildData(tableOption.header,true)">
-        <div :class="b('left')">
-          <el-button
-            type="primary"
-            @click="rowAdd"
-            :icon="config.addBtnIcon"
-            :size="isMediumSize"
-            v-if="vaildData(tableOption.addBtn,config.addBtn)"
-          >{{config.addBtnTitle}}</el-button>
+      <header-menu ref="headerMenu" v-show="printKey">
+        <template slot="menuLeft">
           <slot name="menuLeft"></slot>
-        </div>
-        <div :class="b('right')">
+        </template>
+        <template slot="menuRight">
           <slot name="menuRight"></slot>
-          <el-button
-            :icon="config.refreshBtnIcon"
-            circle
-            :size="isMediumSize"
-            @click="refreshChange"
-            v-if="vaildData(tableOption.refreshBtn,config.refreshBtn)"
-          ></el-button>
-          <el-button
-            :icon="config.columnBtnIcon"
-            circle
-            :size="isMediumSize"
-            @click="columnBox=true"
-            v-if="vaildData(tableOption.columnBtn,config.columnBtn)"
-          ></el-button>
-          <el-button
-            :icon="config.searchboxBtnIcon"
-            circle
-            :size="isMediumSize"
-            @click="searchShow=!searchShow"
-            v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchBtn)"
-          ></el-button>
-        </div>
-      </div>
+        </template>
+      </header-menu>
       <el-tag
         class="avue-tip"
         v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection"
@@ -169,27 +93,85 @@
         <!-- 序号 -->
         <el-table-column
           v-if="tableOption.index"
-          :label="vaildData(tableOption.indexLabel,config.indexLabel)"
+          :label="tableOption.indexLabel || config.indexLabel"
           type="index"
           width="50"
           :index="indexMethod"
           fixed="left"
           align="center"
         ></el-table-column>
-        <column
-          :columnOption="columnOption"
-          :tableOption="tableOption"
-          :tableForm="tableForm"
-          :columnIndex="columnIndex"
-          :DIC="DIC"
-        ></column>
+
+        <el-table-column
+          v-for="(column,index) in columnOption"
+          :prop="column.prop"
+          :key="index"
+          filter-placement="bottom-end"
+          :filters="column.filters"
+          :filter-method="column.filterMethod"
+          :filter-multiple="vaildData(column.filterMultiple,true)"
+          :show-overflow-tooltip="column.overHidden"
+          :min-width="column.minWidth"
+          :sortable="column.sortable"
+          :align="column.align || tableOption.align"
+          :header-align="column.headerAlign || tableOption.headerAlign"
+          :width="column.width"
+          :label="column.label"
+          :fixed="column.fixed"
+        >
+          <template slot-scope="scope">
+            <template v-if="cellEditFlag(scope.row,column)">
+              <component
+                :is="getSearchType(column.type)"
+                :size="isMediumSize"
+                v-model="scope.row[column.prop]"
+                :type="getType(column)"
+                :disabled="$refs.dialogForm.keyBtn && tableOption.cellBtn"
+                :props="column.props || tableOption.props"
+                :format="column.format"
+                :parent="column.parent"
+                :defaultExpandAll="column.defaultExpandAll"
+                :filterable="column.searchFilterable"
+                :filter-method="column.searchFilterMethod"
+                :value-format="column.valueFormat"
+                :multiple="column.multiple"
+                :clearable="column.clearable"
+                :placeholder="column.searchPlaceholder || column.label"
+                :dic="DIC[column.prop]"
+              ></component>
+            </template>
+            <slot
+              :row="scope.row"
+              :dic="DIC[column.prop]"
+              :label="detail(scope.row,column,tableOption,DIC)"
+              :name="column.prop"
+              v-else-if="column.solt"
+            ></slot>
+            <template v-else-if="column.type==='upload'">
+              <avue-img
+                :align="column.align"
+                :listType="column.listType"
+                :imgWidth="column.imgWidth"
+                :fullscreen="column.imgFullscreen"
+                :imgHeight="column.imgHeight"
+                :type="column.imgType"
+                :dataType="column.dataType"
+                :size="isMediumSize"
+                :value="scope.row[column.prop]"
+                v-if="scope.row[column.prop]"
+              ></avue-img>
+            </template>
+            <template v-else>
+              <span v-html="detail(scope.row,column,tableOption,DIC)"></span>
+            </template>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed="right"
-          v-if="vaildData(tableOption.menu,config.menu)"
+          v-if="vaildData(tableOption.menu,config.menu) && printKey"
           :label="config.menuTitle"
-          :align="tableOption.menuAlign"
-          :header-align="tableOption.menuHeaderAlign"
-          :width="vaildData(tableOption.menuWidth,config.menuWidth)"
+          :align="tableOption.menuAlign || config.menuAlign"
+          :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
+          :width="tableOption.menuWidth || config.menuWidth"
         >
           <template slot-scope="scope">
             <el-dropdown v-if="menuType==='menu'" style="margin-right:9px;">
@@ -226,9 +208,11 @@
                 :type="menuText('primary')"
                 :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
                 :size="isMediumSize"
+                :disabled="$refs.dialogForm.keyBtn && tableOption.cellBtn"
                 @click.stop="rowCell(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.cellBtn ,config.cellBtn)"
               >{{menuIcon(scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle)}}</el-button>
+
               <el-button
                 :type="menuText('success')"
                 :icon="config.viewBtnIcon"
@@ -262,162 +246,84 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <div :class="b('pagination')" v-if="pageFlag">
-        <el-pagination
-          :current-page.sync="defaultPage.currentPage"
-          :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
-          :page-size="defaultPage.pageSize"
-          :page-sizes="defaultPage.pageSizes"
-          @size-change="sizeChange"
-          @current-change="currentChange"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="defaultPage.total"
-        ></el-pagination>
-      </div>
+      <table-page ref="tablePage" v-show="printKey"></table-page>
     </el-card>
     <!-- 表单 -->
-    <el-dialog
-      lock-scroll
-      :custom-class="vaildData(tableOption.customClass,config.customClass)"
-      :fullscreen="tableOption.dialogFullscreen"
-      :modal-append-to-body="false"
-      :append-to-body="true"
-      :title="dialogTitle"
-      :close-on-press-escape="tableOption.dialogEscape"
-      :close-on-click-modal="tableOption.dialogClickModal"
-      :modal="tableOption.dialogModal"
-      :show-close="tableOption.dialogCloseBtn"
-      :visible.sync="boxVisible"
-      :width="vaildData(tableOption.dialogWidth,config.dialogWidth)"
-      @close="closeDialog"
-    >
-      <div :class="b('dialog', ['overflow'])">
-        <avue-form
-          v-model="tableForm"
-          ref="tableForm"
-          :disabled="keyBtn"
-          :uploadBefore="uploadBefore"
-          :uploadAfter="uploadAfter"
-          :option="formOption"
-        >
-          <template slot-scope="scope" v-for="item in columnOption" :slot="item.prop">
-            <slot
-              :value="scope.value"
-              :column="scope.column"
-              :dic="scope.dic"
-              :row="tableForm"
-              :index="tableIndex"
-              :name="item.prop+'Form'"
-              v-if="item.formsolt"
-            ></slot>
-          </template>
-        </avue-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <!-- 弹出框按钮组 -->
+    <dialog-form ref="dialogForm" v-model="tableForm">
+      <template slot-scope="scope" v-for="item in columnOption" :slot="item.prop">
+        <slot
+          :value="scope.value"
+          :column="scope.column"
+          :dic="scope.dic"
+          :row="tableForm"
+          :index="tableIndex"
+          :name="item.prop+'Form'"
+          v-if="item.formsolt"
+        ></slot>
+      </template>
+      <template slot-scope="{tableForm,boxType}" slot="menuForm">
         <slot name="menuForm" :row="tableForm" :type="boxType"></slot>
-        <el-button
-          type="primary"
-          @click="rowUpdate"
-          :size="controlSize"
-          v-if="boxType=='edit'"
-          :loading="keyBtn"
-        >{{vaildData(tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
-        <el-button
-          type="primary"
-          @click="rowSave"
-          :size="controlSize"
-          :loading="keyBtn"
-          v-else-if="boxType=='add'"
-        >{{vaildData(tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
-        <el-button
-          :size="controlSize"
-          @click="closeDialog"
-        >{{vaildData(tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
-      </span>
-    </el-dialog>
+      </template>
+    </dialog-form>
     <!-- 动态列 -->
-    <el-dialog
-      lock-scroll
-      :modal-append-to-body="false"
-      :append-to-body="true"
-      :title="config.columnBtnTitle"
-      :visible.sync="columnBox"
-    >
-      <el-checkbox-group v-model="columnIndex">
-        <el-row :span="24">
-          <el-col :span="6" v-for="(item,index) in columnList" :key="index">
-            <el-checkbox :label="item.prop">{{item.label}}</el-checkbox>
-          </el-col>
-        </el-row>
-      </el-checkbox-group>
-    </el-dialog>
+    <dialog-column ref="dialogColumn"></dialog-column>
   </div>
 </template>
 <script>
 import create from "core/create";
-import crud from "mixins/crud.js";
-import column from "./column";
+import init from "../../core/crud/init.js";
+import tablePage from "./table-page";
+import headerSearch from "./header-search";
+import headerMenu from "./header-menu";
+import headerTitle from "./header-title";
+import dialogColumn from "./dialog-column";
+import dialogForm from "./dialog-form";
 import config from "./config.js";
+import { detail } from "core/detail";
 import { formInitVal, getSearchType, getType } from "core/dataformat";
 
 export default create({
   name: "crud",
-  mixins: [crud()],
+  mixins: [init()],
   components: {
-    column
+    tablePage, //分页
+    headerSearch, //搜索
+    headerMenu, //菜单头部
+    headerTitle, //头部功能
+    dialogColumn, //显隐列
+    dialogForm //分页,
   },
   data() {
     return {
       clientHeight: document.documentElement.clientHeight,
       defaultForm: {
-        tableForm: {},
-        searchForm: {}
+        tableForm: {}
       },
-      defaultPage: {
-        total: 0, // 总页数
-        currentPage: 1, // 当前页数
-        pageSize: 10, // 每页显示多少条
-        pageSizes: [10, 20, 30, 40, 50, 100],
-        background: true // 背景颜色
-      },
-      defaultParam: ["$index"],
-      keyBtn: false,
+      searchForm: {},
       config: config,
       list: [],
-      searchShow: true,
-      searchForm: {},
-      boxVisible: false,
-      boxType: "add",
-      columnIndex: [],
-      columnBox: false,
-      columnList: [],
       tableForm: {},
-      tableOption: {},
-      tableFormRules: {},
       tableIndex: -1,
-      tableSelect: []
+      tableSelect: [],
+      formRules: {},
+      printKey: true
     };
   },
   created() {
-    this.getSearchType = getSearchType;
+    //初始化全局方法
     this.getType = getType;
     // 初始化数据
     this.dataInit();
+    // 规则初始化
+    this.rulesInit();
+  },
+  mounted() {
+    this.detail = detail;
+    this.getSearchType = getSearchType;
     // 初始化列
-    this.columnInit();
-    //初始化分页
-    this.$emit("on-load", this.defaultPage);
-    this.pageInit();
+    this.$refs.dialogColumn.columnInit();
   },
   computed: {
-    dialogTitle() {
-      const key = `${this.boxType}Title`;
-      return this.tableOption[key] || this.config[key];
-    },
-    pageFlag() {
-      return this.page.total === 0;
-    },
     columnOption() {
       return this.tableOption.column || [];
     },
@@ -426,23 +332,6 @@ export default create({
     },
     selectLen() {
       return this.tableSelect ? this.tableSelect.length : 0;
-    },
-    searchSolt() {
-      return this.vaildData(this.tableOption.searchsolt, false);
-    },
-    searchFlag() {
-      if (this.searchSolt) return true;
-      else return !this.validatenull(this.searchForm);
-    },
-    formOption() {
-      let option = this.deepClone(this.tableOption);
-      option.submitBtn = false;
-      option.submitPostion = "right";
-      option.boxType = this.boxType;
-      option.dicFlag = false;
-      option.dicData = this.DIC;
-      option.emptyBtn = false;
-      return option;
     }
   },
   watch: {
@@ -454,18 +343,17 @@ export default create({
     },
     page: {
       handler() {
-        this.pageInit();
+        this.$refs.tablePage.pageInit();
       },
       deep: true
     },
     columnOption() {
-      this.columnInit();
+      this.$refs.dialogColumn.columnInit();
     },
     data() {
       this.dataInit();
     }
   },
-  mounted() {},
   props: {
     value: {
       type: Object,
@@ -501,18 +389,41 @@ export default create({
     }
   },
   methods: {
+    rulesInit() {
+      this.formRules = {};
+      this.columnOption.forEach(ele => {
+        if (ele.rules) this.formRules[ele.prop] = ele.rules;
+      });
+    },
+    cellEditFlag(row, column) {
+      return (
+        row.$cellEdit &&
+        [
+          undefined,
+          "select",
+          "radio",
+          "checkbox",
+          "cascader",
+          "number",
+          "switch",
+          "input",
+          "tree",
+          "dates",
+          "date",
+          "datetime",
+          "week",
+          "month",
+          "year"
+        ].includes(column.type) &&
+        column.solt !== true &&
+        column.cell
+      );
+    },
     menuIcon(value) {
       return this.menuType === "icon" ? "" : value;
     },
     menuText(value) {
       return this.menuType === "text" ? "text" : value;
-    },
-    closeDialog() {
-      this.tableIndex = -1;
-      this.tableForm = {};
-      this.boxVisible = false;
-      this.keyBtn = false;
-      this.hide();
     },
     selectClear() {
       this.$refs.table.clearSelection();
@@ -521,61 +432,9 @@ export default create({
       return (
         index +
         1 +
-        ((this.defaultPage.currentPage || 1) - 1) *
-          (this.defaultPage.pageSize || 10)
+        ((this.$refs.tablePage.defaultPage.currentPage || 1) - 1) *
+          (this.$refs.tablePage.defaultPage.pageSize || 10)
       );
-    },
-    refreshChange() {
-      this.$emit("refresh-change", {
-        page: this.defaultPage,
-        searchForm: this.searchForm
-      });
-    },
-    pageInit(onload) {
-      this.page.total ? (this.defaultPage.total = this.page.total) : "";
-      this.page.currentPage
-        ? (this.defaultPage.currentPage = this.page.currentPage)
-        : "";
-      this.page.pageSize
-        ? (this.defaultPage.pageSize = this.page.pageSize)
-        : "";
-      this.page.pageSizes
-        ? (this.defaultPage.pageSizes = this.page.pageSizes)
-        : "";
-      this.page.background
-        ? (this.defaultPage.background = this.page.background)
-        : "";
-    },
-    rulesInit() {
-      this.tableFormRules = {};
-      this.columnOption.forEach(ele => {
-        if (ele.rules) this.tableFormRules[ele.prop] = ele.rules;
-      });
-    },
-    columnInit: function() {
-      const safe = this;
-      this.columnIndex = [];
-      this.columnList = [];
-
-      function addChild(list) {
-        list.forEach((ele, index) => {
-          const children = ele.children;
-          if (!safe.validatenull(children)) {
-            safe.tableOption.columnBtn = false;
-            addChild(children);
-          }
-          if (safe.validatenull(ele.hide)) safe.columnIndex.push(ele.prop);
-          if (ele.showClomnu !== false) {
-            let obj = {
-              label: ele.label,
-              prop: ele.prop,
-              index: index
-            };
-            safe.columnList.push(safe.deepClone(obj));
-          }
-        });
-      }
-      addChild(this.columnOption);
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {
@@ -584,7 +443,7 @@ export default create({
       this.$emit("input", this.tableForm);
     },
     dataInit() {
-      this.list = [].concat(this.data);
+      this.list = [...this.data];
       //初始化序号
       this.list.forEach((ele, index) => {
         ele.$index = index;
@@ -593,37 +452,18 @@ export default create({
     dataformat() {
       this.defaultForm = formInitVal(this.columnOption);
       this.tableForm = this.deepClone(this.defaultForm.tableForm);
-      this.searchForm = this.deepClone(this.defaultForm.searchForm);
-      this.searchShow = this.vaildData(
-        this.tableOption.searchShow,
-        this.config.searchShow
-      );
       this.formVal();
-    },
-    // 搜索清空
-    searchReset() {
-      this.$refs["searchForm"].resetFields();
-      this.$emit("search-reset");
-    },
-    // 页大小回调
-    sizeChange(val) {
-      this.defaultPage.currentPage = 1;
-      this.defaultPage.pageSize = val;
-      this.$emit("on-load", this.defaultPage);
-      this.$emit("size-change", val);
-    },
-    //日期组件回调
-    dateChange(val) {
-      this.$emit("date-change", val);
-    },
-    // 页码回调
-    currentChange(val) {
-      this.$emit("on-load", this.defaultPage);
-      this.$emit("current-change", val);
     },
     //设置单选
     currentRowChange(currentRow, oldCurrentRow) {
       this.$emit("current-row-change", currentRow, oldCurrentRow);
+    },
+    //刷新事件
+    refreshChange() {
+      this.$emit("refresh-change", {
+        page: this.defaultPage,
+        searchForm: this.searchForm
+      });
     },
     //设置多选选中
     setCurrentRow(row) {
@@ -648,10 +488,6 @@ export default create({
     sortChange(val) {
       this.$emit("sort-change", val);
     },
-    // 搜索回调
-    searchChange() {
-      this.$emit("search-change", this.searchForm);
-    },
     // 行双击
     rowDblclick(row, event) {
       this.$emit("row-dblclick", row, event);
@@ -660,132 +496,63 @@ export default create({
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
-    // 新增
-    rowAdd() {
-      this.boxType = "add";
-      this.tableForm = this.deepClone(this.defaultForm.tableForm);
-      this.clearDefaultParam();
-      this.$emit("input", this.tableForm);
-      this.show();
-    },
+    //行编辑点击
     rowCell(row, index) {
       if (row.$cellEdit) this.rowCellUpdate(row, index);
       else this.rowCellEdit(row, index);
     },
     // 单元格编辑
     rowCellEdit(row, index) {
-      if (this.tableIndex != -1) {
-        this.$message.error("先保存当前编辑的数据");
-        return;
-      }
-      this.tableIndex = index;
-      this.tableForm = this.deepClone(row);
-      this.$emit("input", this.tableForm);
       row.$cellEdit = !row.$cellEdit;
       this.$set(this.list, index, row);
+    },
+    //单元格更新
+    rowCellUpdate(row, index) {
+      this.asyncValidator(this.formRules, row)
+        .then(res => {
+          this.$refs.dialogForm.keyBtn = true;
+          this.$emit(
+            "row-update",
+            row,
+            index,
+            () => {
+              row.$cellEdit = !row.$cellEdit;
+              this.$set(this.list, index, row);
+            },
+            () => {
+              this.$refs.dialogForm.keyBtn = false;
+            }
+          );
+        })
+        .catch(errors => {
+          this.$message.warning(errors[0]);
+        });
+    },
+    rowAdd(row) {
+      this.$refs.headerTitle.rowAdd(row);
     },
     // 编辑
     rowEdit(row, index) {
       this.tableForm = this.deepClone(row);
-      this.clearDefaultParam();
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
-      this.boxType = "edit";
-      this.show();
+      this.$refs.dialogForm.show("edit");
     },
 
     //查看
     rowView(row, index) {
       this.tableForm = this.deepClone(row);
-      this.clearDefaultParam();
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
-      this.boxType = "view";
-      this.keyBtn = true;
-      this.show();
-    },
-    rowCellUpdate(row, index) {
-      const form = this.deepClone(this.tableForm);
-      this.$emit("input", form);
-      this.$emit("row-update", form, index, () => {
-        row.$cellEdit = !row.$cellEdit;
-        this.tableForm = {};
-        this.tableIndex = -1;
-        this.$set(this.list, index, form);
-      });
+      this.$refs.dialogForm.show("view");
     },
     // 删除
     rowDel(row, index) {
       this.$emit("row-del", row, index);
     },
-    // 保存
-    rowSave() {
-      this.$refs["tableForm"].validate(vaild => {
-        if (vaild) {
-          this.keyBtn = true;
-          this.$emit(
-            "row-save",
-            this.deepClone(this.tableForm),
-            this.closeDialog,
-            () => {
-              this.keyBtn = false;
-            }
-          );
-        }
-      });
-    },
-    // 更新
-    rowUpdate() {
-      this.$refs["tableForm"].validate(vaild => {
-        this.keyBtn = true;
-        const index = this.tableIndex;
-        this.$emit(
-          "row-update",
-          this.deepClone(this.tableForm),
-          index,
-          this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          }
-        );
-      });
-    },
-    // 显示表单
-    show(cancel) {
-      const callack = () => {
-        if (cancel !== true) {
-          this.boxVisible = true;
-          this.$nextTick(() => {
-            this.$refs["tableForm"].clearValidate();
-            this.$refs["tableForm"].cascadeInit();
-          });
-        }
-      };
-      if (typeof this.beforeOpen === "function")
-        this.beforeOpen(callack, this.boxType);
-      else callack();
-    },
-    // 隐藏表单
-    hide(cancel) {
-      const callack = () => {
-        if (cancel !== false) {
-          this.$refs["tableForm"].resetForm();
-          this.$refs["tableForm"].clearValidate();
-        }
-      };
-      if (typeof this.beforeClose === "function")
-        this.beforeClose(callack, this.boxType);
-      else callack();
-    },
-    //清空多余字段
-    clearDefaultParam() {
-      this.defaultParam.forEach(ele => {
-        delete this.tableForm[ele];
-      });
-    },
     //清空表单
     resetForm() {
-      this.$refs["tableForm"].resetForm();
+      this.$refs.dialogForm.resetForm();
       this.$emit("input", this.tableForm);
     },
     //合并行

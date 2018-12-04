@@ -62,7 +62,7 @@ export const setPx = (val, defval = '') => {
  * 根据字典的value显示label
  */
 let result = '';
-export const findByvalue = (dic, value, props, first) => {
+export const findByValue = (dic, value, props, first) => {
   props = props || {};
   const labelKey = props.label || 'label';
   const valueKey = props.value || 'value';
@@ -80,7 +80,7 @@ export const findByvalue = (dic, value, props, first) => {
         result = dic[i][labelKey];
         break;
       } else {
-        findByvalue(dic[i][childrenKey], value, props, true);
+        findByValue(dic[i][childrenKey], value, props, true);
       }
     }
     // 父子集字典

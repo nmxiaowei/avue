@@ -32,7 +32,7 @@
                 <slot
                   :value="form[column.prop]"
                   :column="column"
-                  :dic="DIC[column.dicData || column.prop]"
+                  :dic="DIC[column.prop]"
                   :name="column.prop"
                   v-if="column.formsolt"
                 ></slot>
@@ -101,7 +101,7 @@
                   :format="column.format"
                   :formatTooltip="column.formatTooltip"
                   :value-format="column.valueFormat"
-                  :dic="DIC[column.dicData || column.prop]"
+                  :dic="DIC[column.prop]"
                   :disabled="vaildDisabled(column)"
                   :upload-before="uploadBefore"
                   :upload-after="uploadAfter"
@@ -154,12 +154,12 @@
 <script>
 import create from "core/create";
 import draggable from "vuedraggable";
-import crud from "mixins/crud";
+import init from "../../core/crud/init";
 import { formInitVal } from "core/dataformat";
 import mock from "utils/mock";
 export default create({
   name: "form",
-  mixins: [crud()],
+  mixins: [init()],
   components: {
     draggable
   },
@@ -174,7 +174,10 @@ export default create({
       formRules: {}
     };
   },
-  created() {},
+  created() {
+    // 规则初始化
+    this.rulesInit();
+  },
   watch: {
     value: {
       handler() {

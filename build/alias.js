@@ -8,6 +8,7 @@ module.exports = {
   core: resolve('src/core'),
   global: resolve('src/global'),
   components: resolve('packages/' + uiname),
+  ui: resolve('src/ui/' + uiname),
   utils: resolve('src/utils'),
   mixins: resolve('packages/mixins'),
   packages: resolve('packages')
