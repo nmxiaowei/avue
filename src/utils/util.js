@@ -46,13 +46,6 @@ export const deepClone = data => {
 };
 
 /**
- * 获取字典
- */
-export const setDic = (dicData, DIC) => {
-  return typeof dicData === 'string' ? DIC : dicData;
-};
-
-/**
  * 设置px
  */
 export const setPx = (val, defval = '') => {

@@ -1,18 +1,6 @@
-import * as utils from 'utils/util.js';
-import { validatenull } from 'utils/validate.js';
-import Input from 'components/input/';
-import Select from 'components/select/';
-import Radio from 'components/radio/';
-import Checkbox from 'components/checkbox/';
-import Cascader from 'components/cascader/';
-import Date from 'components/date/';
-import Time from 'components/time/';
-import InputNumber from 'components/input-number/';
-import Switch from 'components/switch/';
-import Rate from 'components/rate/';
-import Upload from 'components/upload/';
-import Silder from 'components/silder/';
-import Img from 'components/crud-img/';
+import { vaildData, setPx } from 'utils/util.js';
+import { getComponent } from 'core/dataformat';
+import { loadDic } from 'core/dic';
 export default function() {
   return {
     props: {
@@ -23,21 +11,6 @@ export default function() {
           return {};
         }
       }
-    },
-    components: {
-      Input,
-      Select,
-      Radio,
-      Checkbox,
-      Date,
-      Time,
-      Cascader,
-      InputNumber,
-      Switch,
-      Rate,
-      Upload,
-      Silder,
-      Img
     },
     watch: {
       tableForm: {
@@ -61,8 +34,7 @@ export default function() {
     },
     data() {
       return {
-        DIC: {},
-        dicCascaderList: []
+        DIC: {}
       };
     },
     created() {
@@ -81,29 +53,22 @@ export default function() {
     },
     methods: {
       init() {
-        // 初始化工具
-        this.initFun();
+        // 工具初始化
+        this.vaildData = vaildData;
+        this.setPx = setPx;
+        this.getComponent = getComponent;
         this.tableOption = this.option;
         const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
         // 规则初始化
         this.rulesInit();
-
         // 初始化字典
-        if (dicFlag) this.dicInit();
-        else this.DIC = this.tableOption.dicData;
-        // 初始化表单formInitVal
-        this.formInit();
-      },
-      vaildData(val, dafult) {
-        if (typeof val === 'boolean') {
-          return val;
+        if (dicFlag) {
+          loadDic(this.tableOption).then(res => {
+            this.DIC = res;
+          });
         }
-        return !validatenull(val) ? val : dafult;
-      },
-      initFun() {
-        Object.keys(utils).forEach(key => {
-          this[key] = utils[key];
-        });
+        // 初始化表单
+        this.dataformat();
       }
     }
   };

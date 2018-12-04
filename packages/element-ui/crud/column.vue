@@ -33,12 +33,12 @@
         <slot
           :row="scope.row"
           :dic="setDic(column.dicData,DIC[column.dicData])"
-          :label="detail(scope.row,column)"
+          :label="detail(scope.row,column,tableOption,DIC)"
           :name="column.prop"
           v-else-if="column.solt"
         ></slot>
         <template v-else>
-          <span v-html="detail(scope.row,column)"></span>
+          <span v-html="detail(scope.row,column,tableOption,DIC)"></span>
         </template>
       </template>
     </el-table-column>
@@ -48,11 +48,10 @@
 <script>
 import { detail } from "src/core/detail";
 import { setDic, vaildData } from "utils/util";
-import crudInput from "./crud-input";
-import crudSelect from "./crud-select";
+import crudInput from "components/input/";
+import crudSelect from "components/select/";
 import { getSearchType, getType } from "src/core/dataformat";
 export default {
-  name: "crud-components",
   props: ["columnIndex", "columnOption", "tableOption", "DIC", "tableForm"],
   components: {
     crudInput,

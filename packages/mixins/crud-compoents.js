@@ -1,4 +1,4 @@
-import { initVal } from 'utils/util';
+import { initVal } from 'core/dataformat';
 export default function() {
   // props配置
   const propsDefault = {
@@ -139,7 +139,7 @@ export default function() {
           type: this.type,
           multiple: this.multiple,
           value: this.value,
-          listType: list.listType
+          listType: this.listType
         });
       }
     }

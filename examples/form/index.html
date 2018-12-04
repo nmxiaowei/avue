@@ -18,7 +18,7 @@
     <script src="../../lib/avue.js"></script>
   </head>
   <body>
-    <div id="app"><avue-crud :option="option" :data="data"></avue-crud></div>
+    <div id="app"><avue-form :option="option"></avue-form></div>
   </body>
   <script>
     new Vue({
@@ -29,23 +29,10 @@
             column: [
               {
                 label: '姓名',
-                prop: 'name',
-                type: 'select',
-                dicData: [
-                  {
-                    label: 'test',
-                    value: '1'
-                  }
-                ],
-                search: true
+                prop: 'name'
               }
             ]
-          },
-          data: [
-            {
-              name: 'smallwei'
-            }
-          ]
+          }
         }
       }
     })

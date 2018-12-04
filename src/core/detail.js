@@ -1,7 +1,7 @@
 import { validatenull } from 'utils/validate';
-import { getPasswordChar, findByvalue } from 'utils/utils';
+import { getPasswordChar, findByvalue } from 'utils/util';
 import dayjs from 'dayjs';
-export const detail = (row, column) => {
+export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop || column.value];
   let type = column.type;
   if (validatenull(result)) result = '';
@@ -23,11 +23,9 @@ export const detail = (row, column) => {
     // 字典处理
     if (column.dicData) {
       result = findByvalue(
-        (typeof column.dicData === 'string'
-          ? this.DIC[column.dicData]
-          : column.dicData) || [],
+        dic[column.dicData || column.prop],
         result,
-        column.props || this.tableOption.props
+        column.props || option.props
       );
     }
   }

@@ -32,7 +32,7 @@
                 <slot
                   :value="form[column.prop]"
                   :column="column"
-                  :dic="setDic(column.dicData,DIC[column.dicData])"
+                  :dic="DIC[column.dicData || column.prop]"
                   :name="column.prop"
                   v-if="column.formsolt"
                 ></slot>
@@ -101,7 +101,7 @@
                   :format="column.format"
                   :formatTooltip="column.formatTooltip"
                   :value-format="column.valueFormat"
-                  :dic="setDic(column.dicData,DIC[column.dicData])"
+                  :dic="DIC[column.dicData || column.prop]"
                   :disabled="vaildDisabled(column)"
                   :upload-before="uploadBefore"
                   :upload-after="uploadAfter"
@@ -155,9 +155,8 @@
 import create from "core/create";
 import draggable from "vuedraggable";
 import crud from "mixins/crud";
-import { deepClone } from "utils/util";
+import { formInitVal } from "core/dataformat";
 import mock from "utils/mock";
-import { validatenull } from "utils/validate.js";
 export default create({
   name: "form",
   mixins: [crud()],
@@ -296,7 +295,7 @@ export default create({
     // 验证表单是否禁止
     vaildDisabled(column) {
       if (this.disabled) return true;
-      if (!validatenull(column.disabled)) {
+      if (!this.validatenull(column.disabled)) {
         return this.vaildData(column.disabled, false);
       } else if (this.boxType === "add") {
         return this.vaildData(column.addDisabled, false);
@@ -310,7 +309,7 @@ export default create({
     },
     // 验证表单是否显隐
     vaildVisdiplay(column) {
-      if (!validatenull(column.visdiplay)) {
+      if (!this.validatenull(column.visdiplay)) {
         return this.vaildData(column.visdiplay, true);
       } else if (this.boxType === "add") {
         return this.vaildData(column.addVisdiplay, true);
@@ -347,8 +346,8 @@ export default create({
         this.DIC = Object.assign({}, this.DIC);
       });
     },
-    formInit() {
-      this.formDefault = this.formInitVal(this.columnOption);
+    dataformat() {
+      this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
       this.cascadeInit();
@@ -364,12 +363,12 @@ export default create({
             this.DIC[ele] = [];
             this.DIC = Object.assign({}, this.DIC);
           });
-          if (!validatenull(this.form[ele.prop])) this.change(i);
+          if (!this.validatenull(this.form[ele.prop])) this.change(i);
           for (let j = 0; j < cascaderLen; j++) {
             const cindex = i + (j + 1);
             const cele = this.columnOption[cindex];
             cele.cascader = cascader.slice(cindex);
-            if (!validatenull(this.form[cele.prop])) this.change(cindex);
+            if (!this.validatenull(this.form[cele.prop])) this.change(cindex);
           }
         }
       }

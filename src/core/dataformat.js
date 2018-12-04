@@ -1,4 +1,5 @@
 import { validatenull } from 'utils/validate';
+import { KEY_COMPONENT_NAME } from 'global/variable';
 /**
  * 初始化数据格式
  */
@@ -19,10 +20,11 @@ export const initVal = ({ type, multiple, value, listType }) => {
  * 搜索框获取动态组件
  */
 export const getSearchType = type => {
+  let result = 'input';
   if (['select', 'radio', 'checkbox'].includes(type)) {
-    return 'crudSelect';
+    result = 'select';
   } else if (['time', 'timerange'].includes(type)) {
-    return 'crudTime';
+    result = 'time';
   } else if (
     [
       'dates',
@@ -35,30 +37,30 @@ export const getSearchType = type => {
       'year'
     ].includes(type)
   ) {
-    return 'crudDate';
+    result = 'date';
   } else if (['cascader'].includes(type)) {
-    return 'crudCascader';
+    result = 'cascader';
   } else if (['number'].includes(type)) {
-    return 'crudInputNumber';
-  } else {
-    return 'crudInput';
+    result = 'inputNumber';
   }
+  return KEY_COMPONENT_NAME + result;
 };
 
 /**
  * 动态获取组件
  */
 export const getComponent = ({ type, component }) => {
+  let result = 'input';
   if (!validatenull(component)) {
-    return component;
+    result = component;
   } else if (type === 'select') {
-    return 'crudSelect';
+    result = 'select';
   } else if (type === 'radio') {
-    return 'crudRadio';
+    result = 'radio';
   } else if (type === 'checkbox') {
-    return 'crudCheckbox';
+    result = 'checkbox';
   } else if (['time', 'timerange'].includes(type)) {
-    return 'crudTime';
+    result = 'time';
   } else if (
     [
       'dates',
@@ -71,24 +73,23 @@ export const getComponent = ({ type, component }) => {
       'year'
     ].includes(type)
   ) {
-    return 'crudDate';
+    result = 'date';
   } else if (type === 'cascader') {
-    return 'crudCascader';
+    result = 'cascader';
   } else if (type === 'number') {
-    return 'crudInputNumber';
+    result = 'inputNumber';
   } else if (type === 'password') {
-    return 'crudInput';
+    result = 'input';
   } else if (type === 'switch') {
-    return 'crudSwitch';
+    result = 'switch';
   } else if (type === 'rate') {
-    return 'crudRate';
+    result = 'rate';
   } else if (type === 'upload') {
-    return 'crudUpload';
+    result = 'upload';
   } else if (type === 'silder') {
-    return 'crudSilder';
-  } else {
-    return 'crudInput';
+    result = 'silder';
   }
+  return KEY_COMPONENT_NAME + result;
 };
 
 /**

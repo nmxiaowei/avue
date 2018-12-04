@@ -6,6 +6,7 @@ const uiname = process.env.UINAME;
 module.exports = {
   src: resolve('src'),
   core: resolve('src/core'),
+  global: resolve('src/global'),
   components: resolve('packages/' + uiname),
   utils: resolve('src/utils'),
   mixins: resolve('packages/mixins'),

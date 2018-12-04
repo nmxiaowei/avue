@@ -39,7 +39,7 @@
                 :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
                 :clearable="column.searchClearable"
                 :placeholder="column.searchPlaceholder || column.label"
-                :dic="setDic(column.dicData,DIC[column.dicData])"
+                :dic="DIC[column.dicData || column.prop]"
               ></component>
             </el-form-item>
             <slot name="search"></slot>
@@ -177,7 +177,7 @@
           align="center"
         ></el-table-column>
         <column
-          :columnOption="column"
+          :columnOption="columnOption"
           :tableOption="tableOption"
           :tableForm="tableForm"
           :columnIndex="columnIndex"
@@ -262,7 +262,7 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <div :class="b('pagination')" v-if="vaildData(tableOption.page,config.page) && listLen">
+      <div :class="b('pagination')" v-if="pageFlag">
         <el-pagination
           :current-page.sync="defaultPage.currentPage"
           :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
@@ -359,7 +359,8 @@ import create from "core/create";
 import crud from "mixins/crud.js";
 import column from "./column";
 import config from "./config.js";
-import { validatenull } from "utils/validate.js";
+import { formInitVal, getSearchType, getType } from "core/dataformat";
+
 export default create({
   name: "crud",
   mixins: [crud()],
@@ -399,6 +400,8 @@ export default create({
     };
   },
   created() {
+    this.getSearchType = getSearchType;
+    this.getType = getType;
     // 初始化数据
     this.dataInit();
     // 初始化列
@@ -412,8 +415,8 @@ export default create({
       const key = `${this.boxType}Title`;
       return this.tableOption[key] || this.config[key];
     },
-    listLen() {
-      return this.list.length !== 0;
+    pageFlag() {
+      return this.page.total === 0;
     },
     columnOption() {
       return this.tableOption.column || [];
@@ -429,7 +432,7 @@ export default create({
     },
     searchFlag() {
       if (this.searchSolt) return true;
-      else return !validatenull(this.searchForm);
+      else return !this.validatenull(this.searchForm);
     },
     formOption() {
       let option = this.deepClone(this.tableOption);
@@ -557,11 +560,11 @@ export default create({
       function addChild(list) {
         list.forEach((ele, index) => {
           const children = ele.children;
-          if (!validatenull(children)) {
+          if (!safe.validatenull(children)) {
             safe.tableOption.columnBtn = false;
             addChild(children);
           }
-          if (validatenull(ele.hide)) safe.columnIndex.push(ele.prop);
+          if (safe.validatenull(ele.hide)) safe.columnIndex.push(ele.prop);
           if (ele.showClomnu !== false) {
             let obj = {
               label: ele.label,
@@ -587,8 +590,8 @@ export default create({
         ele.$index = index;
       });
     },
-    formInit() {
-      this.defaultForm = this.formInitVal(this.columnOption);
+    dataformat() {
+      this.defaultForm = formInitVal(this.columnOption);
       this.tableForm = this.deepClone(this.defaultForm.tableForm);
       this.searchForm = this.deepClone(this.defaultForm.searchForm);
       this.searchShow = this.vaildData(

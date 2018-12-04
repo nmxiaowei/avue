@@ -7,13 +7,13 @@ import Input from 'components/input';
 import Radio from 'components/radio';
 import Select from 'components/select';
 import Cascader from 'components/cascader';
-import NumberInput from 'components/number-input';
-import Switch from 'components/switch';
+import InputNumber from 'components/input-number';
+import Switchs from 'components/switch';
 import Rate from 'components/rate';
 import Upload from 'components/upload';
 import Silder from 'components/silder';
 import Img from 'components/img';
-export default {
+export default [
   Crud,
   Form,
   Checkbox,
@@ -23,10 +23,10 @@ export default {
   Radio,
   Select,
   Cascader,
-  NumberInput,
-  Switch,
+  InputNumber,
+  Switchs,
   Rate,
   Upload,
   Silder,
   Img
-};
+];
