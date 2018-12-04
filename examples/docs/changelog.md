@@ -1,232 +1,238 @@
 ## 更新日志
 
+### 1.4.7
+
+#### 2018-12-4
+
+- 优化了 crud 中 page 分页
+- 修复调用 initVal 报错问题
+
 ### 1.4.6-beta1
+
 #### 2018-11-30
 
-* 修复crud组件中validate方法问题
-* 修复crud组件新增dataType属性导致翻译失效的问题
-* 新增upload组件crud表格图片展示[demo](https://avue.top/#/component/crud-img)
+- 修复 crud 组件中 validate 方法问题
+- 修复 crud 组件新增 dataType 属性导致翻译失效的问题
+- 新增 upload 组件 crud 表格图片展示[demo](https://avue.top/#/component/crud-img)
 
 ### 1.4.5
+
 #### 2018-11-29
 
-* 全部数组类型的组件可以设置dataType为string专成字符串数据类型（checkbox / tree / cascader / select 多选）
-* 全模块数据转换功能（传入错误的数据类型，自动专成正确的类型）
-* 修复了tree组件重新打开后不清空问题
-* 修复form组件的级联赋值数据不刷新问题
+- 全部数组类型的组件可以设置 dataType 为 string 专成字符串数据类型（checkbox / tree / cascader / select 多选）
+- 全模块数据转换功能（传入错误的数据类型，自动专成正确的类型）
+- 修复了 tree 组件重新打开后不清空问题
+- 修复 form 组件的级联赋值数据不刷新问题
 
 ### 1.4.4
+
 #### 2018-11-28
 
-* 新增全局控制属性menuType，可控制crud组件操作栏的按钮类型[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)
-* 新增form组件的validate方法，可以像常规一样$refs['form'].validate操作[demo](https://avue.top/#/component/form)
-* 新增form组件的验证辅助图标
+- 新增全局控制属性 menuType，可控制 crud 组件操作栏的按钮类型[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)
+- 新增 form 组件的 validate 方法，可以像常规一样\$refs['form'].validate 操作[demo](https://avue.top/#/component/form)
+- 新增 form 组件的验证辅助图标
 
 ### 1.4.3
+
 #### 2018-11-23
 
-* 新增upload组件upload-before和upload-after中回调loading（终止操作的方法）
-* 修复tree组件新增和编辑时表单自动激活验证问题
-* 新增tree的addBtn搜索栏旁边的卡槽
-* 修复crud组件clearable和size问题
-* 新增searchPlaceholder和searchClearable的搜索属性
-* 新增crud组件saveBtnTitle，updateBtnTitle，cancelBtnTitle按钮属性
-* 新增crud组件cell-class-name，header-cell-class-name变量，具体参考文档
-* 修复upload组件dataType为array时的无法删除问题
+- 新增 upload 组件 upload-before 和 upload-after 中回调 loading（终止操作的方法）
+- 修复 tree 组件新增和编辑时表单自动激活验证问题
+- 新增 tree 的 addBtn 搜索栏旁边的卡槽
+- 修复 crud 组件 clearable 和 size 问题
+- 新增 searchPlaceholder 和 searchClearable 的搜索属性
+- 新增 crud 组件 saveBtnTitle，updateBtnTitle，cancelBtnTitle 按钮属性
+- 新增 crud 组件 cell-class-name，header-cell-class-name 变量，具体参考文档
+- 修复 upload 组件 dataType 为 array 时的无法删除问题
 
 ### 1.4.2
+
 #### 2018-11-20
 
-* 优化了tree组件，支持form自定义以及更多灵活配置[demo](https://avue.top/#/component/tree)
-* 调整了form组件的细微样式
-* 调整crud组件中弹出框的宽度又formWidth变成dialogWidth属性，formWidth为表单宽度
+- 优化了 tree 组件，支持 form 自定义以及更多灵活配置[demo](https://avue.top/#/component/tree)
+- 调整了 form 组件的细微样式
+- 调整 crud 组件中弹出框的宽度又 formWidth 变成 dialogWidth 属性，formWidth 为表单宽度
 
 ### 1.4.1
 
-* 修复crud下菜单为menu时的大小问题
-* 数据组件全部扩展添加href属性
-* 新增crud的dialogEscape属性，是否可以通过点击 modal 关闭 Dialog默认为true
-* 新增crud的dialogClickModal属性，是否可以通过按下 ESC 关闭 Dialog默认为true
-* 新增crud的dialogCloseBtn属性，是否显示关闭按钮默认为true
-* 新增crud的dialogModal属性，是否需要遮罩层默认为true
-* 删除crud中弹窗全屏属性formFullscreen，变更为dialogFullscreen
+- 修复 crud 下菜单为 menu 时的大小问题
+- 数据组件全部扩展添加 href 属性
+- 新增 crud 的 dialogEscape 属性，是否可以通过点击 modal 关闭 Dialog 默认为 true
+- 新增 crud 的 dialogClickModal 属性，是否可以通过按下 ESC 关闭 Dialog 默认为 true
+- 新增 crud 的 dialogCloseBtn 属性，是否显示关闭按钮默认为 true
+- 新增 crud 的 dialogModal 属性，是否需要遮罩层默认为 true
+- 删除 crud 中弹窗全屏属性 formFullscreen，变更为 dialogFullscreen
 
 ### 1.4.0
 
-* 新增全局控制属性，目前只有size属性，可控制全部有size属性的组件[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)，[formDemo](https://avue.top/#/component/form)
-* 优化加载avue的逻辑
-* 新增所有组件可独立使用[详情](https://avue.top/#/component/quickstart)
-* 修复form-detail组件中value监听问题
-* 修复若干bug
+- 新增全局控制属性，目前只有 size 属性，可控制全部有 size 属性的组件[详情](https://avue.top/#/component/quickstart)和[crudDemo](https://avue.top/#/component/crud)，[formDemo](https://avue.top/#/component/form)
+- 优化加载 avue 的逻辑
+- 新增所有组件可独立使用[详情](https://avue.top/#/component/quickstart)
+- 修复 form-detail 组件中 value 监听问题
+- 修复若干 bug
 
 ### 1.3.4
 
-* [重大更新] 简化crud分页的逻辑，新增on-load接口[实例代码](https://avue.top/#/component/crud-page)
-* 新增upload组件dataType数据的格式，和优化内部逻辑[实例代码](https://avue.top/#/component/form-upload)
-* 修复carousel组件的样式问题导致不显示
-* 修复carousel组件title配置问题，无title时不显示标题
+- [重大更新] 简化 crud 分页的逻辑，新增 on-load 接口[实例代码](https://avue.top/#/component/crud-page)
+- 新增 upload 组件 dataType 数据的格式，和优化内部逻辑[实例代码](https://avue.top/#/component/form-upload)
+- 修复 carousel 组件的样式问题导致不显示
+- 修复 carousel 组件 title 配置问题，无 title 时不显示标题
 
 ### 1.3.3
 
-* [重大更新] 新增一件填充模拟数据功能，方便测试，后期补充文档，具体看[实例代码](https://avue.top/#/component/form)
-* 修复upload组件上传时图片累加限制问题
-* 修复switch组件赋值‘||’引发得到问题
-* 修复若干已知问题
+- [重大更新] 新增一件填充模拟数据功能，方便测试，后期补充文档，具体看[实例代码](https://avue.top/#/component/form)
+- 修复 upload 组件上传时图片累加限制问题
+- 修复 switch 组件赋值‘||’引发得到问题
+- 修复若干已知问题
 
 ### 1.3.2
 
-* 新增tree多功能组件，menuBtn为按钮菜单的卡槽返回node和data，具体看[实例代码](https://avue.top/#/component/tree)
-* 修复若干测试版本中的bug
-* 更新和完善了文档
+- 新增 tree 多功能组件，menuBtn 为按钮菜单的卡槽返回 node 和 data，具体看[实例代码](https://avue.top/#/component/tree)
+- 修复若干测试版本中的 bug
+- 更新和完善了文档
 
 ### 1.3.1
 
-* 去掉avue-form-steps组件更改为avue-steps组件，同时支持form和crud的选项卡[实例代码](https://avue.top/#/component/steps)
-* 修复form表单清空方法无效问题
-* 修复crud弹出框时clearValidate方法调用问题
-* 修改核心深拷贝方法
-* 新增avue-steps和avue-tabs文档(在他们demo的当前页最下边)
-* 优化carousel组件不写title自动隐藏
-* date-select组件更改为date-group组件
+- 去掉 avue-form-steps 组件更改为 avue-steps 组件，同时支持 form 和 crud 的选项卡[实例代码](https://avue.top/#/component/steps)
+- 修复 form 表单清空方法无效问题
+- 修复 crud 弹出框时 clearValidate 方法调用问题
+- 修改核心深拷贝方法
+- 新增 avue-steps 和 avue-tabs 文档(在他们 demo 的当前页最下边)
+- 优化 carousel 组件不写 title 自动隐藏
+- date-select 组件更改为 date-group 组件
 
 ### 1.3.0
 
-* [重大更新] 根据row属性控制form表单可以任意排列组合,独占一行 [实例代码](https://avue.top/#/component/form)
-* 修复了crud打开时清除表单验证的错误
+- [重大更新] 根据 row 属性控制 form 表单可以任意排列组合,独占一行 [实例代码](https://avue.top/#/component/form)
+- 修复了 crud 打开时清除表单验证的错误
 
 ### 1.2.7
 
-* 修复字典方法其他问题
-* 修复日期组件为空非正常显示问题
-* 新增json展示组件[实例代码](https://avue.top/#/component/json)
-* 修复跑马灯图片不显示问题和属性无效问题
-* 修复table-tree死循环问题
+- 修复字典方法其他问题
+- 修复日期组件为空非正常显示问题
+- 新增 json 展示组件[实例代码](https://avue.top/#/component/json)
+- 修复跑马灯图片不显示问题和属性无效问题
+- 修复 table-tree 死循环问题
 
 ### 1.2.4
 
-* 同步了tabs组件中crud的各种卡槽
-* 修复了核心方法字典多级深层级不查找问题
-* 同步了crud中搜索组件的参数的问题
-* 修复若干已知问题和缺陷
+- 同步了 tabs 组件中 crud 的各种卡槽
+- 修复了核心方法字典多级深层级不查找问题
+- 同步了 crud 中搜索组件的参数的问题
+- 修复若干已知问题和缺陷
 
 ### 1.2.3
 
-* 新增type为tree时defaultExpandAll属性是否展开树形结构，默认为true
-* 优化type为password时crud明文显示的问题
-* 修复type为tree时搜索props配置问题
-* 修复核心方法是字典匹配对象方法问题
-* 去掉avue-form-tabs组件更改为avue-tabs组件，可以配置form和crud的选项卡[实例代码](https://avue.top/#/component/tabs)
-* 新增data-progress进度条数据展示组件[实例代码](https://avue.top/#/component/data-progress)
-* 新增carousel跑马灯工具类组件[实例代码](https://avue.top/#/component/carousel)
+- 新增 type 为 tree 时 defaultExpandAll 属性是否展开树形结构，默认为 true
+- 优化 type 为 password 时 crud 明文显示的问题
+- 修复 type 为 tree 时搜索 props 配置问题
+- 修复核心方法是字典匹配对象方法问题
+- 去掉 avue-form-tabs 组件更改为 avue-tabs 组件，可以配置 form 和 crud 的选项卡[实例代码](https://avue.top/#/component/tabs)
+- 新增 data-progress 进度条数据展示组件[实例代码](https://avue.top/#/component/data-progress)
+- 新增 carousel 跑马灯工具类组件[实例代码](https://avue.top/#/component/carousel)
 
 ### 1.2.2
 
-* crud去掉menuBtn属性和dropMenu卡槽
-* 新增menuType操作栏按钮类型，默认为button（button / icon / menu / text），共四种类型
-* 新增menuBtn卡槽，当menuType为menu时合并菜单扩展按钮
-* 修复type为tree时props字典时的搜索问题
-* 修复type为tree时多选点击闪退问题
-* 新增crud组件表格头部header属性头部显隐，默认为true
-* 新增type为tree时nodeClick节点点击事件和checked勾选事件，都返回当前节点对象
+- crud 去掉 menuBtn 属性和 dropMenu 卡槽
+- 新增 menuType 操作栏按钮类型，默认为 button（button / icon / menu / text），共四种类型
+- 新增 menuBtn 卡槽，当 menuType 为 menu 时合并菜单扩展按钮
+- 修复 type 为 tree 时 props 字典时的搜索问题
+- 修复 type 为 tree 时多选点击闪退问题
+- 新增 crud 组件表格头部 header 属性头部显隐，默认为 true
+- 新增 type 为 tree 时 nodeClick 节点点击事件和 checked 勾选事件，都返回当前节点对象
 
 ### 1.2.1
 
-* 版本打包错误
+- 版本打包错误
 
 ### 1.2.0
 
-* 新增type为input组件prepend和append前后辅助文字框
-* 重构了type为upload上传组件的整体逻辑
-* 新增type为upload时propsHttp属性配置服务器返回数据的name和url属性
-* 去掉了sort字段排序属性
+- 新增 type 为 input 组件 prepend 和 append 前后辅助文字框
+- 重构了 type 为 upload 上传组件的整体逻辑
+- 新增 type 为 upload 时 propsHttp 属性配置服务器返回数据的 name 和 url 属性
+- 去掉了 sort 字段排序属性
 
 ### 1.1.22
 
-* 新增crud组件sort字段排序显示
-* 修复form-steps组件的不显示问题
-* 修复crud弹窗背景层执行逻辑问题
-* 修复form-tabs组件切换时不移除表单验证问题
+- 新增 crud 组件 sort 字段排序显示
+- 修复 form-steps 组件的不显示问题
+- 修复 crud 弹窗背景层执行逻辑问题
+- 修复 form-tabs 组件切换时不移除表单验证问题
 
 ### 1.1.21
 
-* 新增showSummary显示表格合计
-* 新增sumColumnList表格合计需要配置的字段（目前有3中可以为sum相加|avg平均值|count计数）
-* 新增自定义合集方法逻辑summaryMethod返回Function({ columns, data })
-* 新增spanMethod行和列合并方法返回Function({ row, column, rowIndex, columnIndex })
-* 合计和行列合并例子[实例代码](https://avue.top/#/component/crud-sum)
-* 新增emptyText空数据时显示的文本内容
-* 新增表格无数据展示内容empty卡槽
-
+- 新增 showSummary 显示表格合计
+- 新增 sumColumnList 表格合计需要配置的字段（目前有 3 中可以为 sum 相加|avg 平均值|count 计数）
+- 新增自定义合集方法逻辑 summaryMethod 返回 Function({ columns, data })
+- 新增 spanMethod 行和列合并方法返回 Function({ row, column, rowIndex, columnIndex })
+- 合计和行列合并例子[实例代码](https://avue.top/#/component/crud-sum)
+- 新增 emptyText 空数据时显示的文本内容
+- 新增表格无数据展示内容 empty 卡槽
 
 ### 1.1.20
 
-* crud组件中form自定义slot返回row和index扩展
-* 修复form组件中emptyBtn属性的单词拼写错误
-* 修复crud中搜索为tree时parent属性失效问题
-* submitPostion属性改为menuPostion
-* 新增dateBtn表格的日期控件
-* 新增date-change日期控件回调的日期值，单个日期是字符串，范围日期为数组
-* 新增dateDefault表格日期组件的默认值
-* 更新了form组件文档
+- crud 组件中 form 自定义 slot 返回 row 和 index 扩展
+- 修复 form 组件中 emptyBtn 属性的单词拼写错误
+- 修复 crud 中搜索为 tree 时 parent 属性失效问题
+- submitPostion 属性改为 menuPostion
+- 新增 dateBtn 表格的日期控件
+- 新增 date-change 日期控件回调的日期值，单个日期是字符串，范围日期为数组
+- 新增 dateDefault 表格日期组件的默认值
+- 更新了 form 组件文档
 
 ### 1.1.19
 
-* 修复type为tree是parent属性的控制
-* 新增type为tree时defaultExpandAll展开全部节点属性,默认为true
-* 新增avue-crud-input组件type为tree时的node-click方法返回当前点击的data和done关闭窗口
-* 新增beforeClose和beforeOpen方法中返回的窗口类型function(done,type)
-* 新增menuBtnTitle属性当menuBtn为true时，按钮显示的文字提示，默认为功能
-* 修复弹出框中样式的问题和调整menuBtn的样式
-
+- 修复 type 为 tree 是 parent 属性的控制
+- 新增 type 为 tree 时 defaultExpandAll 展开全部节点属性,默认为 true
+- 新增 avue-crud-input 组件 type 为 tree 时的 node-click 方法返回当前点击的 data 和 done 关闭窗口
+- 新增 beforeClose 和 beforeOpen 方法中返回的窗口类型 function(done,type)
+- 新增 menuBtnTitle 属性当 menuBtn 为 true 时，按钮显示的文字提示，默认为功能
+- 修复弹出框中样式的问题和调整 menuBtn 的样式
 
 ### 1.1.18
 
-* 日期范围占位符startPlaceholder和endPlaceholder
-* 新增search-reset清空搜索回调方法
-* 新增crud组件和form组件的clearValidate清空表格钟表单验证
-* 新增菜单按钮dropMenu操作栏卡槽
-* 同步ele的resetForm清空表单和clearValidate清空验证规则的方法
-* 表单的清空按钮emptytBtn显隐和emptyText清空按钮的文字resetChange清空回调方法
-* 新增手机type为phone属性为输入手机号准备的组件
-* 新增emptySize和submitSize表单按钮控制大小属性
-* 去掉crud组件中中多余的字段数据
-
+- 日期范围占位符 startPlaceholder 和 endPlaceholder
+- 新增 search-reset 清空搜索回调方法
+- 新增 crud 组件和 form 组件的 clearValidate 清空表格钟表单验证
+- 新增菜单按钮 dropMenu 操作栏卡槽
+- 同步 ele 的 resetForm 清空表单和 clearValidate 清空验证规则的方法
+- 表单的清空按钮 emptytBtn 显隐和 emptyText 清空按钮的文字 resetChange 清空回调方法
+- 新增手机 type 为 phone 属性为输入手机号准备的组件
+- 新增 emptySize 和 submitSize 表单按钮控制大小属性
+- 去掉 crud 组件中中多余的字段数据
 
 ### 1.1.17
 
-* 新增options字段进行第三方插件字段扩展
-
+- 新增 options 字段进行第三方插件字段扩展
 
 ### 1.1.16
 
-* 新增自定义表单规则演示代码[实例代码](https://avue.top/#/component/crud-rules)
-* 新增时间戳如何配置演示代码[实例代码](https://avue.top/#/component/form-date)
-* 新增时间格式化参考文档[参考文档](https://avue.top/#/component/crud-doc)
-* 调整了crud日期组件的位置
-* 调整了组件的change和click事件
-* 废除了搜索的栅列searchSpan和searchMenuSpan属性
-* 新增labelPosition表单标题文字位置属性 
-* 新增表单全局size(medium / small / mini)和disabled(true / false)属性
-* 新增title属性表格的标题
-* 新增menuBtn表格合并菜单按钮默认为false
-
+- 新增自定义表单规则演示代码[实例代码](https://avue.top/#/component/crud-rules)
+- 新增时间戳如何配置演示代码[实例代码](https://avue.top/#/component/form-date)
+- 新增时间格式化参考文档[参考文档](https://avue.top/#/component/crud-doc)
+- 调整了 crud 日期组件的位置
+- 调整了组件的 change 和 click 事件
+- 废除了搜索的栅列 searchSpan 和 searchMenuSpan 属性
+- 新增 labelPosition 表单标题文字位置属性
+- 新增表单全局 size(medium / small / mini)和 disabled(true / false)属性
+- 新增 title 属性表格的标题
+- 新增 menuBtn 表格合并菜单按钮默认为 false
 
 ### 1.1.15
 
-* 修复form组件的visdiplay和disabled紧急bug
-
+- 修复 form 组件的 visdiplay 和 disabled 紧急 bug
 
 ### 1.1.14
 
-* 新增组件readonly只读属性配置
-* 新增crud中view,edit,add时打开表单是否可见全局控制显隐visdiplay属性和disabled禁止编辑属性
-* 去掉了ueditor富文本编辑器组件，改为第三方插件[avue-plugin-ueditor](https://gitee.com/smallweigit/avue-plugin-ueditor)
-* 修复了avue-tree-table子节点树的样式显示问题
-* 新增searchSpan控制搜索表单的栅列,默认为6
-* 新增searchMenuSpan搜索按钮的栅列,默认为4
-* 新增searchMenu自定义菜单搜索卡槽
-* form-detail组件支持本地字典和网络字典配置，详情参考form和crud组件配置
-* 完善了avue第三方插件开发规范
-* 移除moment包换成轻量级的dayjs插件包
-* crud新增编辑和新增独立控制按钮等待的事件loading 和关闭表单的事件done (form,index,done,loading)
-* avue-cli快速开发脚手架支持ie10+浏览器,ie9css部分暂不支持，后期添加[avue-cli1.x](https://gitee.com/smallweigit/avue) /         [avue-cli2.x](https://git.avue.top/avue/avue-cli)
+- 新增组件 readonly 只读属性配置
+- 新增 crud 中 view,edit,add 时打开表单是否可见全局控制显隐 visdiplay 属性和 disabled 禁止编辑属性
+- 去掉了 ueditor 富文本编辑器组件，改为第三方插件[avue-plugin-ueditor](https://gitee.com/smallweigit/avue-plugin-ueditor)
+- 修复了 avue-tree-table 子节点树的样式显示问题
+- 新增 searchSpan 控制搜索表单的栅列,默认为 6
+- 新增 searchMenuSpan 搜索按钮的栅列,默认为 4
+- 新增 searchMenu 自定义菜单搜索卡槽
+- form-detail 组件支持本地字典和网络字典配置，详情参考 form 和 crud 组件配置
+- 完善了 avue 第三方插件开发规范
+- 移除 moment 包换成轻量级的 dayjs 插件包
+- crud 新增编辑和新增独立控制按钮等待的事件 loading 和关闭表单的事件 done (form,index,done,loading)
+- avue-cli 快速开发脚手架支持 ie10+浏览器,ie9css 部分暂不支持，后期添加[avue-cli1.x](https://gitee.com/smallweigit/avue) / [avue-cli2.x](https://git.avue.top/avue/avue-cli)
