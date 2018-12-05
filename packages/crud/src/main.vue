@@ -126,7 +126,6 @@
         @current-change="currentRowChange"
         :show-summary="tableOption.showSummary"
         :summary-method="tableSummaryMethod"
-        :sum-text="tableOption.sumText"
         :empty-text="tableOption.emptyText"
         :span-method="tableSpanMethod"
         :stripe="tableOption.stripe"
@@ -213,6 +212,8 @@
               <slot
                 :row="scope.row"
                 :dic="scope.dic"
+                :type="getType(column)"
+                :size="isMediumSize"
                 :label="scope.label"
                 :name="item.prop"
                 v-if="item.solt"
@@ -223,10 +224,17 @@
             <template v-if="cellEditFlag(scope.row,column)">
               <component
                 :is="getSearchType(column.type)"
-                v-model="tableForm[column.prop]"
+                size="mini"
+                v-model="scope.row[column.prop]"
                 :type="getType(column)"
-                :clearable="column.clearable"
-                :size="isMediumSize"
+                :disabled="btnDisabled"
+                :props="column.props || tableOption.props"
+                :format="column.format"
+                :parent="column.parent"
+                :defaultExpandAll="column.defaultExpandAll"
+                :value-format="column.valueFormat"
+                :multiple="column.multiple"
+                :clearable="vaildData(column.clearable,false)"
                 :placeholder="column.label"
                 :dic="setDic(column.dicData,DIC[column.dicData])"
               ></component>
@@ -287,7 +295,9 @@
                 <slot
                   name="menuBtn"
                   :row="scope.row"
+                  :type="menuText()"
                   :dic="scope.dic"
+                  :size="isMediumSize"
                   :label="scope.label"
                   :index="scope.$index"
                 ></slot>
@@ -298,6 +308,7 @@
                 :type="menuText('primary')"
                 :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowCell(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.cellBtn ,config.cellBtn)"
               >{{menuIcon(scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle)}}</el-button>
@@ -305,6 +316,7 @@
                 :type="menuText('success')"
                 :icon="config.viewBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowView(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.viewBtn,config.viewBtn)"
               >{{menuIcon(config.viewBtnTitle)}}</el-button>
@@ -312,6 +324,7 @@
                 :type="menuText('primary')"
                 :icon="config.editBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowEdit(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.editBtn,config.editBtn)"
               >{{menuIcon(config.editBtnTitle)}}</el-button>
@@ -319,6 +332,7 @@
                 :type="menuText('danger')"
                 :icon="config.delBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowDel(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.delBtn,config.delBtn)"
               >{{menuIcon(config.delBtnTitle)}}</el-button>
@@ -326,7 +340,10 @@
             <slot
               name="menu"
               :row="scope.row"
+              :type="menuText()"
               :dic="scope.dic"
+              :disabled="btnDisabled"
+              :size="isMediumSize"
               :label="scope.label"
               :index="scope.$index"
             ></slot>
@@ -334,7 +351,7 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <div :class="b('pagination')" v-if="vaildData(tableOption.page,config.page) && listLen">
+      <div :class="b('pagination')" v-if="pageFlag">
         <el-pagination
           :current-page.sync="defaultPage.currentPage"
           :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
@@ -377,6 +394,8 @@
               :value="scope.value"
               :column="scope.column"
               :dic="scope.dic"
+              :disabled="scope.disabled"
+              :size="scope.size"
               :row="tableForm"
               :index="tableIndex"
               :name="item.prop+'Form'"
@@ -433,7 +452,7 @@ import crud from "../../mixins/crud.js";
 import column from "../../mixins/column.js";
 import crudComponents from "./crud-components";
 import config from "./config.js";
-import { validatenull } from "../../utils/validate.js";
+import { validatenull, asyncValidator } from "../../utils/validate.js";
 import { setTimeout } from "timers";
 export default create({
   name: "crud",
@@ -485,12 +504,15 @@ export default create({
     this.$emit("on-load", this.defaultPage);
   },
   computed: {
+    btnDisabled() {
+      return this.keyBtn && this.tableOption.cellBtn;
+    },
+    pageFlag() {
+      return !validatenull(this.page.total);
+    },
     dialogTitle() {
       const key = `${this.boxType}Title`;
       return this.tableOption[key] || this.config[key];
-    },
-    listLen() {
-      return this.list.length !== 0;
     },
     columnOption() {
       return this.tableOption.column || [];
@@ -606,19 +628,18 @@ export default create({
       });
     },
     pageInit() {
-      this.page.total ? (this.defaultPage.total = this.page.total) : "";
-      this.page.currentPage
-        ? (this.defaultPage.currentPage = this.page.currentPage)
-        : "";
-      this.page.pageSize
-        ? (this.defaultPage.pageSize = this.page.pageSize)
-        : "";
-      this.page.pageSizes
-        ? (this.defaultPage.pageSizes = this.page.pageSizes)
-        : "";
-      this.page.background
-        ? (this.defaultPage.background = this.page.background)
-        : "";
+      this.defaultPage.total = this.page.total || 0;
+      this.defaultPage.currentPage = this.page.currentPage || 1;
+      this.defaultPage.pageSize = this.page.pageSize || 10;
+      this.defaultPage.pageSizes = this.page.pageSizes || [
+        10,
+        20,
+        30,
+        40,
+        50,
+        100
+      ];
+      this.defaultPage.background = this.page.background || true;
     },
     rulesInit() {
       this.tableFormRules = {};
@@ -746,18 +767,6 @@ export default create({
       if (row.$cellEdit) this.rowCellUpdate(row, index);
       else this.rowCellEdit(row, index);
     },
-    // 单元格编辑
-    rowCellEdit(row, index) {
-      if (this.tableIndex != -1) {
-        this.$message.error("先保存当前编辑的数据");
-        return;
-      }
-      this.tableIndex = index;
-      this.tableForm = this.deepClone(row);
-      this.$emit("input", this.tableForm);
-      row.$cellEdit = !row.$cellEdit;
-      this.$set(this.list, index, row);
-    },
     // 编辑
     rowEdit(row, index) {
       this.tableForm = this.deepClone(row);
@@ -767,7 +776,33 @@ export default create({
       this.boxType = "edit";
       this.show();
     },
-
+    // 单元格编辑
+    rowCellEdit(row, index) {
+      row.$cellEdit = !row.$cellEdit;
+      this.$set(this.list, index, row);
+    },
+    //单元格更新
+    rowCellUpdate(row, index) {
+      asyncValidator(this.tableFormRules, row)
+        .then(res => {
+          this.keyBtn = true;
+          this.$emit(
+            "row-update",
+            row,
+            index,
+            () => {
+              row.$cellEdit = !row.$cellEdit;
+              this.$set(this.list, index, row);
+            },
+            () => {
+              this.keyBtn = false;
+            }
+          );
+        })
+        .catch(errors => {
+          this.$message.warning(errors[0]);
+        });
+    },
     //查看
     rowView(row, index) {
       this.tableForm = this.deepClone(row);
@@ -777,16 +812,6 @@ export default create({
       this.boxType = "view";
       this.keyBtn = true;
       this.show();
-    },
-    rowCellUpdate(row, index) {
-      const form = this.deepClone(this.tableForm);
-      this.$emit("input", form);
-      this.$emit("row-update", form, index, () => {
-        row.$cellEdit = !row.$cellEdit;
-        this.tableForm = {};
-        this.tableIndex = -1;
-        this.$set(this.list, index, form);
-      });
     },
     // 删除
     rowDel(row, index) {
@@ -811,17 +836,19 @@ export default create({
     // 更新
     rowUpdate() {
       this.$refs["tableForm"].validate(vaild => {
-        this.keyBtn = true;
-        const index = this.tableIndex;
-        this.$emit(
-          "row-update",
-          this.deepClone(this.tableForm),
-          index,
-          this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          }
-        );
+        if (vaild) {
+          this.keyBtn = true;
+          const index = this.tableIndex;
+          this.$emit(
+            "row-update",
+            this.deepClone(this.tableForm),
+            index,
+            this.closeDialog,
+            () => {
+              this.keyBtn = false;
+            }
+          );
+        }
       });
     },
     // 显示表单
@@ -878,7 +905,9 @@ export default create({
           let currItem = this.sumColumnList.find(
             item => item.name === column.property
           );
-          if (currItem) {
+          if (index === 0) {
+            sums[index] = this.tableOption.sumText || config.sumText;
+          } else if (currItem) {
             switch (currItem.type) {
               case "count":
                 sums[index] = "计数:" + data.length;
@@ -894,7 +923,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "平均:" + sums[index];
+                sums[index] = "平均:" + sums[index].toFixed(2);
                 break;
               case "sum":
                 let values = data.map(item => Number(item[column.property]));
@@ -906,9 +935,11 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "合计:" + sums[index];
+                sums[index] = "合计:" + sums[index].toFixed(2);
                 break;
             }
+          } else {
+            sums[index] = "-";
           }
         });
       }

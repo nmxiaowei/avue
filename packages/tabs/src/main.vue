@@ -1,49 +1,53 @@
 <template>
   <div class="b()">
-    <el-tabs v-model="formIndex"
-             :type="option.type"
-             :tab-position="option.tabPosition">
-      <el-tab-pane v-for="(item,index) in columnOption"
-                   :key="index"
-                   :disabled="item.disabled"
-                   :name="index+''">
+    <el-tabs v-model="formIndex" :type="option.type" :tab-position="option.tabPosition">
+      <el-tab-pane
+        v-for="(item,index) in columnOption"
+        :key="index"
+        :disabled="item.disabled"
+        :name="index+''"
+      >
         <span slot="label">
-          <i :class="item.icon"></i> {{item.label}}</span>
+          <i :class="item.icon"></i>
+          {{item.label}}
+        </span>
       </el-tab-pane>
     </el-tabs>
     <div>
       <slot name="before"></slot>
-      <avue-crud v-if="crudFlag"
-                 ref="crud"
-                 :option="formOption"
-                 :data="data"
-                 :page="page"
-                 :table-loading="tableLoading"
-                 :before-open="beforeOpen"
-                 :before-close="beforeClose"
-                 :upload-before="uploadBefore"
-                 :upload-after="uploadAfter"
-                 :row-class-name="rowClassName"
-                 :cell-class-name="cellClassName"
-                 :header-cell-class-name="headerCellClassName"
-                 :span-method="spanMethod"
-                 :summary-method="summaryMethod"
-                 @on-load="onLoad"
-                 @refresh-change="refreshChange"
-                 @search-reset="searchReset"
-                 @size-change="size-change"
-                 @date-change="date-change"
-                 @current-change="currentChange"
-                 @current-row-change="currentRowChange"
-                 @selection-change="selectionChange"
-                 @sort-change="sortChange"
-                 @search-change="searchChange"
-                 @row-dblclick="rowDblclick"
-                 @row-click="rowClick"
-                 @row-del="rowDel"
-                 @row-save="rowSave"
-                 @row-update="rowUpdate"
-                 v-model="text">
+      <avue-crud
+        v-if="crudFlag"
+        ref="crud"
+        :option="formOption"
+        :data="data"
+        :page="page"
+        :table-loading="tableLoading"
+        :before-open="beforeOpen"
+        :before-close="beforeClose"
+        :upload-before="uploadBefore"
+        :upload-after="uploadAfter"
+        :row-class-name="rowClassName"
+        :cell-class-name="cellClassName"
+        :header-cell-class-name="headerCellClassName"
+        :span-method="spanMethod"
+        :summary-method="summaryMethod"
+        @on-load="onLoad"
+        @refresh-change="refreshChange"
+        @search-reset="searchReset"
+        @size-change="size-change"
+        @date-change="date-change"
+        @current-change="currentChange"
+        @current-row-change="currentRowChange"
+        @selection-change="selectionChange"
+        @sort-change="sortChange"
+        @search-change="searchChange"
+        @row-dblclick="rowDblclick"
+        @row-click="rowClick"
+        @row-del="rowDel"
+        @row-save="rowSave"
+        @row-update="rowUpdate"
+        v-model="text"
+      >
         <!-- 自定义搜索 -->
         <template slot="search">
           <slot name="search"></slot>
@@ -53,24 +57,28 @@
           <slot name="searchMenu"></slot>
         </template>
         <!-- 自定义表单列 -->
-        <template slot-scope="scope"
-                  v-for="item in formColumnOption"
-                  :slot="item.prop">
-          <slot :value="scope.value"
-                :column="scope.column"
-                :dic="scope.dic"
-                :name="item.prop+'Form'"
-                v-if="item.formsolt"></slot>
+        <template slot-scope="scope" v-for="item in formColumnOption" :slot="item.prop+'Form'">
+          <slot
+            :value="scope.value"
+            :column="scope.column"
+            :dic="scope.dic"
+            :size="scope.size"
+            :type="scope.type"
+            :name="item.prop+'Form'"
+            v-if="item.formsolt"
+          ></slot>
         </template>
         <!-- 自定义表格列 -->
-        <template slot-scope="scope"
-                  v-for="item in formColumnOption"
-                  :slot="item.prop">
-          <slot :value="scope.value"
-                :column="scope.column"
-                :dic="scope.dic"
-                :name="item.prop"
-                v-if="item.solt"></slot>
+        <template slot-scope="scope" v-for="item in formColumnOption" :slot="item.prop">
+          <slot
+            :row="scope.row"
+            :column="scope.column"
+            :size="scope.size"
+            :type="scope.type"
+            :dic="scope.dic"
+            :name="item.prop"
+            v-if="item.solt"
+          ></slot>
         </template>
         <!-- 表格左侧卡槽 -->
         <template slot="menuLeft">
@@ -82,52 +90,60 @@
         </template>
         <!-- 清空卡槽 -->
         <template slot="empty">
-          <slot name="empty"
-                v-if="$slots.empty"></slot>
+          <slot name="empty" v-if="$slots.empty"></slot>
         </template>
         <!-- 折叠面板卡槽 -->
-        <template slot-scope="props"
-                  slot="expand">
-          <slot :row="props.row"
-                name="expand"></slot>
+        <template slot-scope="props" slot="expand">
+          <slot :row="props.row" name="expand"></slot>
         </template>
         <!-- 菜单栏按钮卡槽 -->
-        <template slot-scope="scope"
-                  slot="menuBtn">
-          <slot name="menuBtn"
-                :row="scope.row"
-                :dic="scope.dic"
-                :label="scope.label"
-                :index="scope.$index"></slot>
+        <template slot-scope="scope" slot="menuBtn">
+          <slot
+            name="menuBtn"
+            :row="scope.row"
+            :dic="scope.dic"
+            :size="scope.size"
+            :type="scope.type"
+            :label="scope.label"
+            :index="scope.$index"
+          ></slot>
         </template>
         <!-- 菜单栏 -->
-        <template slot-scope="scope"
-                  slot="menu">
-          <slot name="menu"
-                :value="scope.value"
-                :column="scope.column"
-                :dic="scope.dic"></slot>
+        <template slot-scope="scope" slot="menu">
+          <slot
+            name="menu"
+            :value="scope.value"
+            :row="scope.row"
+            :size="scope.size"
+            :type="scope.type"
+            :column="scope.column"
+            :dic="scope.dic"
+          ></slot>
         </template>
         <!-- 弹出框按钮 -->
         <template slot="menuForm">
           <slot name="menuForm"></slot>
         </template>
       </avue-crud>
-      <avue-form v-else
-                 :option="formOption"
-                 :upload-before="uploadBefore"
-                 :upload-after="uploadAfter"
-                 @submit="submit"
-                 ref="form"
-                 v-model="text">
-        <template slot-scope="scope"
-                  v-for="item in formColumnOption"
-                  :slot="item.prop">
-          <slot :value="scope.value"
-                :column="scope.column"
-                :dic="scope.dic"
-                :name="item.prop"
-                v-if="item.formsolt"></slot>
+      <avue-form
+        v-else
+        :option="formOption"
+        :upload-before="uploadBefore"
+        :upload-after="uploadAfter"
+        @submit="submit"
+        ref="form"
+        v-model="text"
+      >
+        <template slot-scope="scope" v-for="item in formColumnOption" :slot="item.prop">
+          <slot
+            :value="scope.value"
+            :column="scope.column"
+            :dic="scope.dic"
+            :size="scope.size"
+            :type="scope.type"
+            :name="item.prop"
+            v-if="item.formsolt"
+          ></slot>
         </template>
         <template slot="menuForm">
           <slot name="menuForm"></slot>
@@ -139,17 +155,17 @@
 </template>
 
 <script>
-import create from '../../utils/create';
-import { formInitVal } from '../../utils/util';
-import fun from '../../mixins/fun'
-import { setTimeout } from 'timers';
+import create from "../../utils/create";
+import { formInitVal } from "../../utils/util";
+import fun from "../../mixins/fun";
+import { setTimeout } from "timers";
 export default create({
-  name: 'tabs',
+  name: "tabs",
   mixins: [fun()],
   props: {
     value: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     option: {
       type: Object,
@@ -157,37 +173,37 @@ export default create({
     }
   },
   computed: {
-    crudFlag () {
-      return this.objectOption.type === 'crud'
+    crudFlag() {
+      return this.objectOption.type === "crud";
     },
-    columnOption () {
+    columnOption() {
       return this.option.column || [];
     },
-    columnLen () {
+    columnLen() {
       return this.columnOption.length;
     },
-    formOption () {
+    formOption() {
       return this.objectOption.option;
     },
-    formColumnOption () {
+    formColumnOption() {
       return this.formOption.column || [];
     },
-    objectOption () {
+    objectOption() {
       return this.columnOption[this.formIndex];
     }
   },
   watch: {
-    formIndex () {
+    formIndex() {
       if (!this.crudFlag) {
         setTimeout(() => {
           this.$refs.form.clearValidate();
-        }, 0)
+        }, 0);
       }
       this.formInit();
-      this.$emit('change', this.columnOption[this.formIndex]);
+      this.$emit("change", this.columnOption[this.formIndex]);
     },
     text: {
-      handler () {
+      handler() {
         for (let o in this.tableForm) {
           this.tableForm[o] = this.text[o];
         }
@@ -195,41 +211,41 @@ export default create({
       deep: true
     },
     value: {
-      handler () {
+      handler() {
         this.formVal();
       },
       deep: true
     }
   },
-  data () {
+  data() {
     return {
       tableForm: {},
       text: {},
-      formIndex: '0'
+      formIndex: "0"
     };
   },
-  created () {
+  created() {
     this.formInit();
-    this.$emit('change', this.columnOption[this.formIndex]);
+    this.$emit("change", this.columnOption[this.formIndex]);
   },
   methods: {
-    formInit () {
+    formInit() {
       const column = this.formOption.column;
       this.tableForm = formInitVal(column).tableForm;
       this.formVal();
     },
-    formVal () {
+    formVal() {
       for (let o in this.value) {
         this.text[o] = this.value[o];
       }
       for (let o in this.tableForm) {
         this.tableForm[o] = this.text[o];
       }
-      this.$emit('input', this.tableForm);
+      this.$emit("input", this.tableForm);
     },
-    submit () {
-      this.$emit('submit', this.tableForm);
-    },
+    submit() {
+      this.$emit("submit", this.tableForm);
+    }
   }
 });
 </script>

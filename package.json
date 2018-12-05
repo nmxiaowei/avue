@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "main": "lib/index.js",
   "description": "基于数据驱动视图的思想，根据json数据快速构建crud和form等组件",
   "author": "smallwei <1634566606@qq.com>",
@@ -16,7 +16,7 @@
     "karma": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"
   },
   "dependencies": {
-    "async-validator": "~1.8.1",
+    "async-validator": "^1.10.0",
     "avue-plugin-dynamicquery": "^0.0.4",
     "avue-plugin-map": "^0.0.2",
     "avue-plugin-transfer": "^0.0.3",
