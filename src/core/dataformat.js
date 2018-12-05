@@ -21,7 +21,7 @@ export const initVal = ({ type, multiple, value, listType }) => {
  */
 export const getSearchType = type => {
   let result = 'input';
-  if (['select', 'radio', 'checkbox'].includes(type)) {
+  if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (['time', 'timerange'].includes(type)) {
     result = 'time';
@@ -43,8 +43,6 @@ export const getSearchType = type => {
     result = 'cascader';
   } else if (['number'].includes(type)) {
     result = 'inputNumber';
-  } else if (['switch'].includes(type)) {
-    result = 'switch';
   }
   return KEY_COMPONENT_NAME + result;
 };

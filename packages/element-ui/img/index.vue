@@ -1,7 +1,7 @@
 <template>
   <div :class="[b(),'avue-img--'+align]">
     <img v-if="status" :src="text" :width="setPx(imgWidth,'100%')" :height="setPx(imgHeight)" alt>
-    <el-button v-else :size="size" @click="handleViews">查 看</el-button>
+    <el-button v-else :size="size" :type="type" @click="handleViews">查 看</el-button>
     <el-dialog
       :visible.sync="box"
       width="60%"
@@ -30,6 +30,10 @@ export default create({
   },
   props: {
     align: {
+      type: String,
+      default: ""
+    },
+    imgType: {
       type: String,
       default: ""
     },
@@ -75,7 +79,7 @@ export default create({
       });
       return {
         autoplay: true,
-        type: this.type,
+        type: this.imgType,
         fullscreen: this.fullscreen,
         interval: 3000,
         data: list

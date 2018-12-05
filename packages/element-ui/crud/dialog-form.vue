@@ -43,7 +43,7 @@
         type="primary"
         @click="rowUpdate"
         :size="$parent.controlSize"
-        v-if="boxType=='edit'"
+        v-if="boxType==='edit'"
         :loading="keyBtn"
       >{{vaildData($parent.tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
       <el-button
@@ -51,10 +51,11 @@
         @click="rowSave"
         :size="$parent.controlSize"
         :loading="keyBtn"
-        v-else-if="boxType=='add'"
+        v-else-if="boxType==='add'"
       >{{vaildData($parent.tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
       <el-button
         :size="$parent.controlSize"
+        v-if="boxType!=='view'"
         @click="closeDialog"
       >{{vaildData($parent.tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
     </span>

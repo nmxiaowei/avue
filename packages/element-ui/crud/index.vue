@@ -44,7 +44,6 @@
         @current-change="currentRowChange"
         :show-summary="tableOption.showSummary"
         :summary-method="tableSummaryMethod"
-        :sum-text="tableOption.sumText"
         :empty-text="tableOption.emptyText"
         :span-method="tableSpanMethod"
         :stripe="tableOption.stripe"
@@ -73,7 +72,7 @@
         <!-- 折叠面板  -->
         <el-table-column
           type="expand"
-          width="50"
+          width="60"
           fixed="left"
           align="center"
           v-if="tableOption.expand"
@@ -106,8 +105,8 @@
           :prop="column.prop"
           :key="index"
           filter-placement="bottom-end"
-          :filters="column.filters"
-          :filter-method="column.filterMethod"
+          :filters="handleFilters(column)"
+          :filter-method="column.filter? handleFiltersMethod : undefined"
           :filter-multiple="vaildData(column.filterMultiple,true)"
           :show-overflow-tooltip="column.overHidden"
           :min-width="column.minWidth"
@@ -122,10 +121,10 @@
             <template v-if="cellEditFlag(scope.row,column)">
               <component
                 :is="getSearchType(column.type)"
-                :size="isMediumSize"
+                size="mini"
                 v-model="scope.row[column.prop]"
                 :type="getType(column)"
-                :disabled="$refs.dialogForm.keyBtn && tableOption.cellBtn"
+                :disabled="btnDisabled"
                 :props="column.props || tableOption.props"
                 :format="column.format"
                 :parent="column.parent"
@@ -134,7 +133,7 @@
                 :filter-method="column.searchFilterMethod"
                 :value-format="column.valueFormat"
                 :multiple="column.multiple"
-                :clearable="column.clearable"
+                :clearable="vaildData(column.clearable,false)"
                 :placeholder="column.searchPlaceholder || column.label"
                 :dic="DIC[column.prop]"
               ></component>
@@ -142,9 +141,10 @@
             <slot
               :row="scope.row"
               :dic="DIC[column.prop]"
+              :size="isMediumSize"
               :label="detail(scope.row,column,tableOption,DIC)"
               :name="column.prop"
-              v-else-if="column.solt"
+              v-else-if="column.slot"
             ></slot>
             <template v-else-if="column.type==='upload'">
               <avue-img
@@ -153,7 +153,8 @@
                 :imgWidth="column.imgWidth"
                 :fullscreen="column.imgFullscreen"
                 :imgHeight="column.imgHeight"
-                :type="column.imgType"
+                :imgType="column.imgType"
+                :type="menuText()"
                 :dataType="column.dataType"
                 :size="isMediumSize"
                 :value="scope.row[column.prop]"
@@ -208,7 +209,7 @@
                 :type="menuText('primary')"
                 :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
                 :size="isMediumSize"
-                :disabled="$refs.dialogForm.keyBtn && tableOption.cellBtn"
+                :disabled="btnDisabled"
                 @click.stop="rowCell(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.cellBtn ,config.cellBtn)"
               >{{menuIcon(scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle)}}</el-button>
@@ -217,6 +218,7 @@
                 :type="menuText('success')"
                 :icon="config.viewBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowView(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.viewBtn,config.viewBtn)"
               >{{menuIcon(config.viewBtnTitle)}}</el-button>
@@ -224,6 +226,7 @@
                 :type="menuText('primary')"
                 :icon="config.editBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowEdit(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.editBtn,config.editBtn)"
               >{{menuIcon(config.editBtnTitle)}}</el-button>
@@ -231,6 +234,7 @@
                 :type="menuText('danger')"
                 :icon="config.delBtnIcon"
                 :size="isMediumSize"
+                :disabled="btnDisabled"
                 @click.stop="rowDel(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.delBtn,config.delBtn)"
               >{{menuIcon(config.delBtnTitle)}}</el-button>
@@ -239,6 +243,9 @@
               name="menu"
               :row="scope.row"
               :dic="scope.dic"
+              :type="menuText('primary')"
+              :disabled="btnDisabled"
+              :size="isMediumSize"
               :label="scope.label"
               :index="scope.$index"
             ></slot>
@@ -324,6 +331,9 @@ export default create({
     this.$refs.dialogColumn.columnInit();
   },
   computed: {
+    btnDisabled() {
+      return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
+    },
     columnOption() {
       return this.tableOption.column || [];
     },
@@ -465,6 +475,33 @@ export default create({
         searchForm: this.searchForm
       });
     },
+    //表格筛选逻辑
+    handleFiltersMethod(value, row, column) {
+      const columnNew = this.columnOption.filter(
+        ele => ele.prop === column.property
+      )[0];
+      if (typeof columnNew.filtersMethod === "function") {
+        return columnNew.filtersMethod(value, row, columnNew);
+      } else {
+        return row[columnNew.prop] === value;
+      }
+    },
+    //表格筛选字典
+    handleFilters(column) {
+      if (column.filter !== true) return undefined;
+      if (this.validatenull(column.dicFilters)) {
+        let list = [];
+        (this.DIC[column.prop] || []).forEach(ele => {
+          const props = column.props || this.tableOption.props || {};
+          list.push({
+            text: ele[props.label || "label"],
+            value: ele[props.value || "value"]
+          });
+        });
+        return list;
+      }
+      return column.dicFilters;
+    },
     //设置多选选中
     setCurrentRow(row) {
       this.$refs.table.setCurrentRow(row);
@@ -571,7 +608,9 @@ export default create({
           let currItem = this.sumColumnList.find(
             item => item.name === column.property
           );
-          if (currItem) {
+          if (index === 0) {
+            sums[index] = this.tableOption.sumText || config.sumText;
+          } else if (currItem) {
             switch (currItem.type) {
               case "count":
                 sums[index] = "计数:" + data.length;
@@ -587,7 +626,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "平均:" + sums[index];
+                sums[index] = "平均:" + sums[index].toFixed(2);
                 break;
               case "sum":
                 let values = data.map(item => Number(item[column.property]));
@@ -599,9 +638,11 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "合计:" + sums[index];
+                sums[index] = "合计:" + sums[index].toFixed(2);
                 break;
             }
+          } else {
+            sums[index] = "-";
           }
         });
       }

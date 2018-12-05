@@ -21,11 +21,16 @@
   <body>
     <div id="app">
       <avue-crud
+        ref="crud"
         :option="option"
         :data="data"
         :page="page"
+        :table-loading="loading"
         v-model="obj"
         @on-load="onLoad"
+        @row-dblclick="handleRowDBLClick"
+        @row-click="handleRowClick"
+        @current-row-change=" "
         @date-change="dateChange"
         @row-save="rowSave"
         @refresh-change="refresh"
@@ -34,8 +39,26 @@
         @search-change="searchChange"
         @search-reset="searchReset"
       >
+        <template slot-scope="scope" slot="name">
+          <el-tag :size="scope.size">{{ scope.label }}</el-tag>
+        </template>
+        <template slot-scope="props" slot="menuLeft">
+          <el-button size="small" @click="setCurrent(data[1])"
+            >选中第二行</el-button
+          >
+          <el-button size="small" @click="setCurrent()">取消选择</el-button>
+        </template>
         <template slot-scope="props" slot="expand">
           <el-tag>当前行的{{ props }}</el-tag>
+        </template>
+        <template slot-scope="scope" slot="menu">
+          <el-button
+            :size="scope.size"
+            :disabled="scope.disabled"
+            :type="scope.type"
+            icon="el-icon-plus"
+            >自定义</el-button
+          >
         </template>
       </avue-crud>
     </div>
@@ -45,20 +68,38 @@
       el: '#app',
       data() {
         return {
+          loading: true,
           page: {
             total: 40
           },
           obj: {},
           option: {
             title: 'crud Demo',
+            highlightCurrentRow: true,
             expand: true,
             border: true,
+            showSummary: true,
+            // tip:false,
+            sumColumnList: [
+              {
+                name: 'sum',
+                type: 'sum'
+              },
+              {
+                name: 'avg',
+                type: 'avg'
+              },
+              {
+                name: 'count',
+                type: 'count'
+              }
+            ],
             dateBtn: true,
-            viewBtn: false,
-            editBtn: false,
-            delBtn: false,
+            align: 'center',
+            viewBtn: true,
             cellBtn: true,
-            menuWidth: 300,
+            menuWidth: 340,
+            menuType: 'text',
             index: true,
             selection: true,
             column: [
@@ -66,6 +107,8 @@
                 label: '姓名',
                 prop: 'name',
                 type: 'select',
+                fixed: 'left',
+                slot: true,
                 cell: true,
                 rules: [
                   {
@@ -76,7 +119,11 @@
                 ],
                 dicData: [
                   {
-                    label: 'test',
+                    label: 'smallwei',
+                    value: '0'
+                  },
+                  {
+                    label: 'lengleng',
                     value: '1'
                   }
                 ],
@@ -86,6 +133,7 @@
                 label: '网络字典',
                 prop: 'dic',
                 type: 'select',
+                cell: true,
                 props: {
                   label: 'name',
                   value: 'code'
@@ -93,9 +141,15 @@
                 dicUrl: 'https://cli2.avue.top/api/area/getProvince',
                 search: true,
                 searchDefault: ['110000'],
-                searchMmultiple: true
+                searchMmultiple: true,
+                filter: true
+                // filtersMethod: function(value, row, column) {
+                //   return row.dic === '110000'
+                // }
+                // filterMultiple: false
               },
               {
+                width: 140,
                 label: '图片',
                 prop: 'img',
                 type: 'upload',
@@ -110,6 +164,38 @@
                 imgType: 'card',
                 listType: 'picture-card',
                 span: 24
+              },
+              {
+                width: 120,
+                label: '开关',
+                prop: 'switch',
+                type: 'switch',
+                cell: true,
+                dicData: [
+                  {
+                    label: '开启',
+                    value: 0
+                  },
+                  {
+                    label: '关闭',
+                    value: 1
+                  }
+                ]
+              },
+              {
+                label: '相加',
+                prop: 'sum',
+                cell: true
+              },
+              {
+                label: '平均值',
+                prop: 'avg',
+                cell: true
+              },
+              {
+                label: '统计',
+                prop: 'count',
+                cell: true
               }
             ]
           },
@@ -134,19 +220,53 @@
                     'http://pic.soutu123.com/back_pic/18/09/18/0ca02eb9c35f095481196354a1f455c8.jpg!/fw/700/quality/90/unsharp/true/compress/true'
                 }
               ],
-              name: 'smallwei',
-              dic: '110000'
+              name: '0',
+              dic: '110000',
+              switch: 0,
+              sum: 5,
+              avg: 10,
+              count: 2
             },
             {
-              name: 'smallwei',
-              dic: '110000'
+              name: '1',
+              dic: '120000',
+              img: 'https://gitee.com/log4j/pig/badge/star.svg?theme=white',
+              switch: 1,
+              sum: 15,
+              avg: 20,
+              count: 1
+            },
+            {
+              name: '1',
+              dic: '110000',
+              switch: 0,
+              sum: 15,
+              avg: 20,
+              count: 1
             }
           ]
         }
       },
+      created() {
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+      },
       methods: {
+        setCurrent(row) {
+          this.$refs.crud.setCurrentRow(row)
+        },
         dateChange(val) {
           this.$message.success('日期回调' + JSON.stringify(val))
+        },
+        handleCurrentRowChange(val) {
+          this.$message.success('单选' + JSON.stringify(val))
+        },
+        handleRowClick(row, event, column) {
+          this.$message.success('单机' + JSON.stringify(row))
+        },
+        handleRowDBLClick(row, event) {
+          this.$message.success('双击' + JSON.stringify(row))
         },
         rowSave(form, done, loading) {
           this.$message.success('模拟网络请求')

@@ -9,8 +9,8 @@ function install(Vue, opts = {}) {
   Vue.prototype.validatenull = validatenull;
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
-    size: opts.size || 'medium',
-    menuType: opts.menuType || 'button'
+    size: opts.size || 'small',
+    menuType: opts.menuType || 'text'
   };
 }
 

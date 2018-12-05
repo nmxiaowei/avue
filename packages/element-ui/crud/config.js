@@ -4,12 +4,14 @@ export default {
   editTitle: '编 辑',
   addTitle: '新 增',
   viewTitle: '查 看',
-  menuTitle: '操作',
+  menuTitle: '操 作',
   tipStartTitle: '当前表格已选择',
   tipEndTitle: '项',
+  sumText: '合 计',
   // 尺寸
   menuWidth: 240,
   menuAlign: 'center',
+  headerAlign: 'left',
   // 文字
   viewBtnTitle: '查 看',
   editBtnTitle: '编 辑',
@@ -24,8 +26,8 @@ export default {
   emptyBtnTitle: '清 空',
   tipBtnTitle: '清空',
   menuBtnTitle: '功 能',
-  cellEditBtnTitle: '修改',
-  cellSaveBtnTitle: '保存',
+  cellEditBtnTitle: '修 改',
+  cellSaveBtnTitle: '保 存',
   // 图标
   viewBtnIcon: 'el-icon-view',
   editBtnIcon: 'el-icon-edit',
