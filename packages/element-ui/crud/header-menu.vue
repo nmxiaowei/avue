@@ -48,7 +48,6 @@
 import create from "core/create";
 import config from "./config";
 import { vaildData } from "utils/util";
-import { setTimeout } from "timers";
 export default create({
   name: "crud",
   data() {

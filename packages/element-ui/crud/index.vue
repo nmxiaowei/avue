@@ -243,10 +243,10 @@
               name="menu"
               :row="scope.row"
               :dic="scope.dic"
+              :label="scope.label"
               :type="menuText('primary')"
               :disabled="btnDisabled"
               :size="isMediumSize"
-              :label="scope.label"
               :index="scope.$index"
             ></slot>
           </template>
@@ -262,10 +262,13 @@
           :value="scope.value"
           :column="scope.column"
           :dic="scope.dic"
+          :size="scope.size"
+          :label="scope.label"
+          :disabled="scope.disabled"
           :row="tableForm"
           :index="tableIndex"
           :name="item.prop+'Form'"
-          v-if="item.formsolt"
+          v-if="item.formslot"
         ></slot>
       </template>
       <template slot-scope="{tableForm,boxType}" slot="menuForm">
@@ -286,7 +289,6 @@ import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
-import { detail } from "core/detail";
 import { formInitVal, getSearchType, getType } from "core/dataformat";
 
 export default create({
@@ -325,7 +327,6 @@ export default create({
     this.rulesInit();
   },
   mounted() {
-    this.detail = detail;
     this.getSearchType = getSearchType;
     // 初始化列
     this.$refs.dialogColumn.columnInit();

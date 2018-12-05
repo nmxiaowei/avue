@@ -66,7 +66,7 @@ function handeDic() {
 }
 
 // ajax获取字典
-function sendDic(path) {
+export const sendDic = path => {
   return new Promise(resolve => {
     axios.get(path).then(function(res) {
       // 降级处理
@@ -80,4 +80,4 @@ function sendDic(path) {
       }
     });
   });
-}
+};

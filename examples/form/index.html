@@ -7,6 +7,7 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
     <link
       rel="stylesheet"
@@ -18,9 +19,20 @@
     <script src="../../lib/avue.js"></script>
   </head>
   <body>
-    <div id="app"><avue-form :option="option" v-model="obj"></avue-form></div>
+    <div id="app">
+      <avue-form :option="option" v-model="obj">
+        <template slot-scope="scope" slot="name">
+          <el-input
+            :size="scope.size"
+            :disabled="scope.disabled"
+            v-model="obj.name"
+          ></el-input>
+        </template>
+      </avue-form>
+    </div>
   </body>
   <script>
+    let baseUrl = 'https://cli2.avue.top/api/area'
     new Vue({
       el: '#app',
       data() {
@@ -29,14 +41,68 @@
             name: 'smallwei'
           },
           option: {
+            props: {
+              label: 'name',
+              value: 'code'
+            },
             column: [
               {
                 label: '姓名',
-                prop: 'name'
+                prop: 'name',
+                formslot: true
+              },
+              {
+                label: '省份',
+                prop: 'province',
+                type: 'select',
+                cascader: ['city', 'area'],
+                cascaderFirst: true,
+                dicUrl: `${baseUrl}/getProvince`,
+                dicData: 'province',
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择省份',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                label: '城市',
+                prop: 'city',
+                type: 'select',
+                dicFlag: false,
+                dicUrl: `${baseUrl}/getCity/{{key}}`,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择城市',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                label: '地区',
+                prop: 'area',
+                dicFlag: false,
+                type: 'select',
+                dicUrl: `${baseUrl}/getArea/{{key}}`,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择地区',
+                    trigger: 'blur'
+                  }
+                ]
               }
             ]
           }
         }
+      },
+      mounted() {
+        this.obj.province = '110000'
+        this.obj.city = '110100'
+        this.obj.area = '110101'
       }
     })
   </script>

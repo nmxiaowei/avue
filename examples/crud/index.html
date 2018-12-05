@@ -27,6 +27,8 @@
         :page="page"
         :table-loading="loading"
         v-model="obj"
+        :before-open="handleBeforeOpen"
+        :before-close="handleBeforeClose"
         @on-load="onLoad"
         @row-dblclick="handleRowDBLClick"
         @row-click="handleRowClick"
@@ -40,6 +42,9 @@
         @search-reset="searchReset"
       >
         <template slot-scope="scope" slot="name">
+          <el-tag :size="scope.size">{{ scope.label }}</el-tag>
+        </template>
+        <template slot-scope="scope" slot="nameForm">
           <el-tag :size="scope.size">{{ scope.label }}</el-tag>
         </template>
         <template slot-scope="props" slot="menuLeft">
@@ -109,6 +114,7 @@
                 type: 'select',
                 fixed: 'left',
                 slot: true,
+                formslot: true,
                 cell: true,
                 rules: [
                   {
@@ -253,6 +259,14 @@
         }, 1000)
       },
       methods: {
+        handleBeforeOpen(done, type) {
+          this.$message.success('打开前的回调')
+          done()
+        },
+        handleBeforeClose(done, type) {
+          this.$message.success('关闭前的回调')
+          done()
+        },
         setCurrent(row) {
           this.$refs.crud.setCurrentRow(row)
         },

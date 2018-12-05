@@ -28,10 +28,13 @@
             :value="scope.value"
             :column="scope.column"
             :dic="scope.dic"
+            :size="scope.size"
+            :label="scope.label"
+            :disabled="scope.disabled"
             :row="tableForm"
             :index="tableIndex"
-            :name="item.prop+'Form'"
-            v-if="item.formsolt"
+            :name="item.prop"
+            v-if="item.formslot"
           ></slot>
         </template>
       </avue-form>

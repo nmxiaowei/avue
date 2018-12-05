@@ -32,9 +32,12 @@
                 <slot
                   :value="form[column.prop]"
                   :column="column"
+                  :label="detail(form,column,tableOption,DIC)"
+                  :size="column.size || controlSize"
+                  :disabled="vaildDisabled(column)"
                   :dic="DIC[column.prop]"
                   :name="column.prop"
-                  v-if="column.formsolt"
+                  v-if="column.formslot"
                 ></slot>
 
                 <component
@@ -105,7 +108,7 @@
                   :disabled="vaildDisabled(column)"
                   :upload-before="uploadBefore"
                   :upload-after="uploadAfter"
-                  @change="column.cascader?change(index):''"
+                  @change="column.cascader?handleChange(index):''"
                 ></component>
                 <!-- <p class="avue-tip">{{column.tip}}</p> -->
               </el-form-item>
@@ -156,6 +159,7 @@ import create from "core/create";
 import draggable from "vuedraggable";
 import init from "../../core/crud/init";
 import { formInitVal } from "core/dataformat";
+import { sendDic } from "core/dic";
 import mock from "utils/mock";
 export default create({
   name: "form",
@@ -182,7 +186,9 @@ export default create({
     value: {
       handler() {
         this.formVal();
-        this.cascadeInit();
+        if (this.first) {
+          this.cascadeInit();
+        }
       },
       deep: true
     }
@@ -330,48 +336,48 @@ export default create({
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },
-    change(index) {
-      const column = this.columnOption;
-      const list = column[index].cascader;
-      const prop = column[index].prop;
-      const url = column[index + 1].dicUrl;
-      const type = column[index + 1].dicData;
+    handleChange(index) {
+      const columnOption = this.columnOption;
+      const column = columnOption[index];
+      const columnNext = columnOption[index + 1];
+      const list = column.cascader;
       if (!this.first) {
         list.forEach(ele => {
           this.form[ele] = "";
-          this.DIC[ele] = [];
-          this.DIC = Object.assign({}, this.DIC);
+          this.$set(this.DIC, ele, []);
         });
       }
-      this.GetDicByType(url.replace("{{key}}", this.form[prop])).then(res => {
-        let data = res;
-        this.DIC[type] = data;
-        this.DIC = Object.assign({}, this.DIC);
-      });
+      const value = this.form[column.prop];
+      if (!this.validatenull(value)) {
+        sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
+          setTimeout(() => {
+            this.$set(this.DIC, columnNext.prop, res);
+          }, 10);
+        });
+      }
     },
     dataformat() {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
-      this.cascadeInit();
+      this.$nextTick(() => {
+        this.clearValidate();
+      });
     },
+    //级联初始化
     cascadeInit() {
-      this.first = true;
       for (let i = 0; i < this.columnOption.length; i++) {
         const ele = this.columnOption[i];
         if (ele.cascaderFirst) {
-          const cascader = [].concat(ele.cascader);
-          const cascaderLen = ele.cascader.length - 1;
-          cascader.forEach(ele => {
-            this.DIC[ele] = [];
-            this.DIC = Object.assign({}, this.DIC);
-          });
-          if (!this.validatenull(this.form[ele.prop])) this.change(i);
-          for (let j = 0; j < cascaderLen; j++) {
+          let cascader = [...ele.cascader];
+          const cascaderLen = cascader.length - 1;
+          if (!this.validatenull(this.form[ele.prop])) this.handleChange(i);
+          for (let j = 0; j < ele.cascader.length - 1; j++) {
             const cindex = i + (j + 1);
-            const cele = this.columnOption[cindex];
-            cele.cascader = cascader.slice(cindex);
-            if (!this.validatenull(this.form[cele.prop])) this.change(cindex);
+            let cele = this.columnOption[cindex];
+            cele.cascader = cascader.slice(1);
+            if (!this.validatenull(this.form[cele.prop]))
+              this.handleChange(cindex);
           }
         }
       }
@@ -384,7 +390,7 @@ export default create({
       this.$emit("input", this.form);
     },
     clearValidate() {
-      this.$refs["form"].clearValidate();
+      this.$refs.form.clearValidate();
     },
     validate() {
       return new Promise((resolve, reject) => {

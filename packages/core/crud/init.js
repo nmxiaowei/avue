@@ -1,6 +1,7 @@
 import { vaildData, setPx } from 'utils/util.js';
 import { getComponent } from 'core/dataformat';
 import { loadDic } from 'core/dic';
+import { detail } from 'core/detail';
 export default function() {
   return {
     props: {
@@ -58,6 +59,7 @@ export default function() {
         this.vaildData = vaildData;
         this.setPx = setPx;
         this.getComponent = getComponent;
+        this.detail = detail;
         this.tableOption = this.option;
         const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
         // 初始化字典
