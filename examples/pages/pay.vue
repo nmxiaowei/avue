@@ -4,7 +4,7 @@
       <div class="header__main-box">
         <div class="header__main-info">
           <div class="header__main-title">企业版</div>
-          <div class="header__main-subtitle">RENREN-SECURITY</div>
+          <div class="header__main-subtitle">AVUE-SECURITY</div>
           <div class="header__main-detail">
             为企业源码完全开放，自由修改核心随心所欲，完善的企业级后台模版，兼容所有主流浏览器（包括ie8+），响应式布局
             跨多终端适配，释放大量表单表格等其他组件的重复劳动，提供远程技术支持，授权后完后可以商用，无任何限制。
