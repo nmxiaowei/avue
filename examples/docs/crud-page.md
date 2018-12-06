@@ -26,7 +26,7 @@
     },
     methods: {
       getList(){
-        this.page.total=20;
+        this.page.total=40;
         if(this.page.currentPage===1){
           this.data=[{
             name:'张三',
@@ -114,7 +114,7 @@
     methods: {
       onLoad(page) {
         this.$message.success('分页信息:' + JSON.stringify(page))
-        this.page.total = 20
+        this.page.total = 40
         //模拟分页
         if (page.currentPage === 1) {
           this.data = [

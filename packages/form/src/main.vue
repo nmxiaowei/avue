@@ -160,6 +160,7 @@ import crud from "../../mixins/crud";
 import { deepClone } from "../../utils/util";
 import mock from "../../utils/mock";
 import { validatenull } from "../../utils/validate.js";
+import { setTimeout } from "timers";
 export default create({
   name: "form",
   mixins: [crud()],
@@ -177,19 +178,15 @@ export default create({
       formRules: {}
     };
   },
-  created() {},
   watch: {
     value: {
       handler() {
         this.formVal();
-        if (this.first) {
-          this.cascadeInit();
-        }
+        this.cascadeInit();
       },
       deep: true
     }
   },
-  mounted() {},
   computed: {
     columnOption() {
       let list = this.tableOption.column || [];
@@ -333,43 +330,50 @@ export default create({
       });
     },
     change(index) {
-      const columnOption = this.columnOption;
-      const column = columnOption[index];
-      const columnNext = columnOption[index + 1];
-      const list = column.cascader;
+      const column = this.columnOption;
+      const list = column[index].cascader;
+      const prop = column[index].prop;
+      const url = column[index + 1].dicUrl;
+      const type = column[index + 1].dicData;
       if (!this.first) {
         list.forEach(ele => {
           this.form[ele] = "";
-          this.$set(this.DIC, ele, []);
+          setTimeout(() => {
+            this.DIC[ele] = [];
+            this.DIC = Object.assign({}, this.DIC);
+          }, 10);
         });
       }
-      const value = this.form[column.prop];
-      if (!validatenull(value)) {
-        this.GetDicByType(columnNext.dicUrl.replace("{{key}}", value)).then(
-          res => {
-            setTimeout(() => {
-              this.$set(this.DIC, columnNext.prop, res);
-            }, 10);
-          }
-        );
-      }
+      this.GetDicByType(url.replace("{{key}}", this.form[prop])).then(res => {
+        let data = res;
+        setTimeout(() => {
+          this.DIC[type] = data;
+          this.DIC = Object.assign({}, this.DIC);
+        }, 10);
+      });
     },
     formInit() {
       this.formDefault = this.formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
+      this.cascadeInit();
     },
     cascadeInit() {
+      this.first = true;
       for (let i = 0; i < this.columnOption.length; i++) {
         const ele = this.columnOption[i];
         if (ele.cascaderFirst) {
-          let cascader = [...ele.cascader];
-          const cascaderLen = cascader.length - 1;
+          const cascader = [].concat(ele.cascader);
+          const cascaderLen = ele.cascader.length - 1;
+          cascader.forEach(ele => {
+            this.DIC[ele] = [];
+            this.DIC = Object.assign({}, this.DIC);
+          });
           if (!validatenull(this.form[ele.prop])) this.change(i);
-          for (let j = 0; j < ele.cascader.length - 1; j++) {
+          for (let j = 0; j < cascaderLen; j++) {
             const cindex = i + (j + 1);
-            let cele = this.columnOption[cindex];
-            cele.cascader = cascader.slice(1);
+            const cele = this.columnOption[cindex];
+            cele.cascader = cascader.slice(cindex);
             if (!validatenull(this.form[cele.prop])) this.change(cindex);
           }
         }
@@ -381,6 +385,9 @@ export default create({
         this.form[ele] = this.value[ele];
       });
       this.$emit("input", this.form);
+      this.$nextTick(() => {
+        this.clearValidate();
+      });
     },
     clearValidate() {
       this.$refs["form"].clearValidate();

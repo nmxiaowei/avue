@@ -857,8 +857,8 @@ export default create({
         if (cancel !== true) {
           this.boxVisible = true;
           this.$nextTick(() => {
-            this.$refs["tableForm"].clearValidate();
             this.$refs["tableForm"].cascadeInit();
+            this.$refs["tableForm"].clearValidate();
           });
         }
       };
