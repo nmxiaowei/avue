@@ -1,7 +1,9 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone } from 'utils/util';
+import _export from 'plugin/export/';
 function install(Vue, opts = {}) {
+  Vue.use(_export);
   components.map(component => {
     Vue.component(component.name, component);
   });

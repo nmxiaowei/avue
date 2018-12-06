@@ -3,11 +3,19 @@
     <div :class="b('left')">
       <el-button
         type="primary"
-        @click="rowAdd"
+        @click="$parent.rowAdd"
         :icon="config.addBtnIcon"
         :size="$parent.isMediumSize"
         v-if="vaildData($parent.tableOption.addBtn,config.addBtn)"
       >{{config.addBtnTitle}}</el-button>
+      <el-button
+        type="primary"
+        @click="$parent.rowCellAdd"
+        :icon="config.addBtnIcon"
+        :size="$parent.isMediumSize"
+        v-if="vaildData($parent.tableOption.addBtn,config.addBtn)"
+      >{{config.addBtnTitle}}</el-button>
+
       <el-button
         type="primary"
         @click="rowPrint"
@@ -15,6 +23,13 @@
         :size="$parent.isMediumSize"
         v-if="vaildData($parent.tableOption.printBtn,config.printBtn)"
       >{{config.printBtnTitle}}</el-button>
+      <el-button
+        type="primary"
+        @click="rowExcel"
+        :icon="config.excelBtnIcon"
+        :size="$parent.isMediumSize"
+        v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)"
+      >{{config.excelBtnTitle}}</el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div :class="b('right')">
@@ -37,8 +52,8 @@
         :icon="config.searchboxBtnIcon"
         circle
         :size="$parent.isMediumSize"
-        @click="$parent.$refs.search.handleSearchShow()"
-        v-if="($parent.$refs.search || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"
+        @click="$parent.$refs.headerSearch.handleSearchShow()"
+        v-show="($parent.$refs.headerSearch || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"
       ></el-button>
     </div>
   </div>
@@ -60,6 +75,45 @@ export default create({
     this.$parent = this.$parent.$parent;
   },
   methods: {
+    //下载excel
+    rowExcel() {
+      if (!window.saveAs && !window.XLSX) {
+        this.$message.warning("导出数据需要相关的JS包.请看控制台");
+        console.log(
+          "https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"
+        );
+        console.log("https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js");
+        return;
+      }
+      let data = this.deepClone(this.$parent.tableSelect);
+
+      if (this.validatenull(data)) {
+        this.$message.warning("请勾选要导出的数据");
+        return;
+      }
+      this.$export.excel({
+        title: this.$parent.tableOption.title || new Date().getTime(),
+        columns: (() => {
+          let list = [];
+          this.$parent.columnOption.forEach(ele => {
+            if (!this.validatenull(this.$parent.DIC[ele.prop])) {
+              list.push({
+                label: ele.label,
+                prop: "$" + ele.prop
+              });
+            } else {
+              list.push({
+                label: ele.label,
+                prop: ele.prop
+              });
+            }
+          });
+          return list;
+        })(),
+        data: data
+      });
+      this.$parent.setCurrentRow();
+    },
     //打印
     rowPrint() {
       this.$parent.printKey = false;
@@ -67,13 +121,6 @@ export default create({
         window.print();
         this.$parent.printKey = true;
       });
-    },
-    // 新增
-    rowAdd() {
-      this.$parent.tableForm = this.deepClone(
-        this.$parent.defaultForm.tableForm
-      );
-      this.$parent.$refs.dialogForm.show("add");
     }
   }
 });

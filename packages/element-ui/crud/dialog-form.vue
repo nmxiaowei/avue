@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     lock-scroll
+    :class="b('dialog')"
     :custom-class="vaildData($parent.tableOption.customClass,config.customClass)"
     :fullscreen="$parent.tableOption.dialogFullscreen"
     :modal-append-to-body="false"
@@ -41,7 +42,7 @@
     </div>
     <span slot="footer" class="dialog-footer">
       <!-- 弹出框按钮组 -->
-      <slot name="menuForm" :row="tableForm" :type="boxType"></slot>
+      <slot name="menuForm" :type="boxType" :size="$parent.controlSize"></slot>
       <el-button
         type="primary"
         @click="rowUpdate"
@@ -176,7 +177,6 @@ export default create({
     hide() {
       const callack = () => {
         this.$refs["tableForm"].resetForm();
-        this.$refs["tableForm"].clearValidate();
       };
       if (typeof this.$parent.beforeClose === "function")
         this.$parent.beforeClose(callack, this.boxType);
@@ -187,10 +187,6 @@ export default create({
       this.boxType = type;
       const callack = () => {
         this.boxVisible = true;
-        this.$nextTick(() => {
-          this.$refs["tableForm"].clearValidate();
-          this.$refs["tableForm"].cascadeInit();
-        });
       };
       if (typeof this.$parent.beforeOpen === "function")
         this.$parent.beforeOpen(callack, this.boxType);

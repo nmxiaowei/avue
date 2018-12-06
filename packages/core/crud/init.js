@@ -14,18 +14,6 @@ export default function() {
       }
     },
     watch: {
-      tableForm: {
-        handler() {
-          this.$emit('input', this.tableForm);
-        },
-        deep: true
-      },
-      form: {
-        handler() {
-          this.$emit('input', this.form);
-        },
-        deep: true
-      },
       option: {
         handler() {
           this.init();
@@ -67,12 +55,11 @@ export default function() {
           loadDic(this.tableOption).then(res => {
             this.DIC = this.deepClone(res);
           });
+          // 加载传进来的字典
         } else {
           const dicData = this.tableOption.dicData || [];
           this.DIC = this.deepClone(dicData);
         }
-        // 初始化表单
-        this.dataformat();
       }
     }
   };

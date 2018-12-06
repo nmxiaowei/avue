@@ -59,8 +59,10 @@
     "async-validator": "^1.10.0",
     "axios": "^0.18.0",
     "element-ui": "^2.4.11",
+    "file-saver": "^2.0.0",
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.17",
-    "vuedraggable": "^2.17.0"
+    "vuedraggable": "^2.17.0",
+    "xlsx": "^0.14.1"
   }
 }

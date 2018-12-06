@@ -20,6 +20,22 @@ export const getObjType = obj => {
   return map[toString.call(obj)];
 };
 /**
+ *判断是否为json对象
+ */
+
+export const isJson = str => {
+  if (Array.isArray(str)) {
+    if (str[0] instanceof Object) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (str instanceof Object) {
+    return true;
+  }
+  return false;
+};
+/**
  * 对象深拷贝
  */
 export const deepClone = data => {

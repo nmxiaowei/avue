@@ -4,7 +4,7 @@
       <!-- 头部组件 -->
       <header-title ref="headerTitle" v-show="printKey"></header-title>
       <!-- 搜索组件 -->
-      <header-search v-model="searchForm" ref="tableSearch" v-show="printKey">
+      <header-search v-model="searchForm" ref="headerSearch" v-show="printKey">
         <template slot="search">
           <slot name="search"></slot>
         </template>
@@ -21,22 +21,18 @@
           <slot name="menuRight"></slot>
         </template>
       </header-menu>
-      <el-tag
-        class="avue-tip"
-        v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection"
-      >
-        <i class="el-icon-info avue-tip__icon">&nbsp;</i>
+      <div class="avue-tip" v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
         <span class="avue-tip__name">
           {{config.tipStartTitle}}
           <span class="avue-tip__name--bold">{{selectLen}}</span>
           {{config.tipEndTitle}}
         </span>
-        <span
+        <small
           class="avue-tip__btn"
           @click="selectClear"
           v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection"
-        >{{config.tipBtnTitle}}</span>
-      </el-tag>
+        >{{config.tipBtnTitle}}</small>
+      </div>
       <el-table
         :data="list"
         :size="controlSize"
@@ -55,7 +51,7 @@
         :cell-class-name="cellClassName"
         :header-cell-class-name="headerCellClassName"
         :max-height="tableOption.maxHeight"
-        :height="tableOption.height=='auto'?(clientHeight - vaildData(tableOption.calcHeight,config.calcHeight)):tableOption.height"
+        :height="tableHeight"
         ref="table"
         :width="setPx(tableOption.width,config.width)"
         :border="tableOption.border"
@@ -75,7 +71,7 @@
           width="60"
           fixed="left"
           align="center"
-          v-if="tableOption.expand"
+          v-if="tableOption.expand "
         >
           <template slot-scope="props">
             <slot :row="props.row" name="expand"></slot>
@@ -83,7 +79,7 @@
         </el-table-column>
         <!-- 选择框 -->
         <el-table-column
-          v-if="tableOption.selection"
+          v-if="tableOption.selection "
           type="selection"
           width="50"
           fixed="left"
@@ -142,7 +138,7 @@
               :row="scope.row"
               :dic="DIC[column.prop]"
               :size="isMediumSize"
-              :label="detail(scope.row,column,tableOption,DIC)"
+              :label="scope.row['$'+prop]"
               :name="column.prop"
               v-else-if="column.slot"
             ></slot>
@@ -162,7 +158,7 @@
               ></avue-img>
             </template>
             <template v-else>
-              <span v-html="detail(scope.row,column,tableOption,DIC)"></span>
+              <span v-html="handleDetail(scope.row,column)"></span>
             </template>
           </template>
         </el-table-column>
@@ -207,13 +203,20 @@
             <template v-else-if="['button','text','icon'].includes(menuType)">
               <el-button
                 :type="menuText('primary')"
-                :icon="scope.row.$cellEdit?config.cellSaveBtnIcon:config.cellEditBtnIcon"
+                :icon="scope.row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
                 :size="isMediumSize"
                 :disabled="btnDisabled"
                 @click.stop="rowCell(scope.row,scope.$index)"
                 v-if="vaildData(tableOption.cellBtn ,config.cellBtn)"
-              >{{menuIcon(scope.row.$cellEdit?config.cellSaveBtnTitle:config.cellEditBtnTitle)}}</el-button>
-
+              >{{menuIcon(scope.row.$cellEdit?config.saveBtnTitle:config.editBtnTitle)}}</el-button>
+              <el-button
+                :type="menuText('danger')"
+                :icon="config.canelBtnIcon"
+                :size="isMediumSize"
+                :disabled="btnDisabled"
+                @click.stop="rowCanel(scope.row,scope.$index)"
+                v-if="scope.row.$cellEdit"
+              >{{menuIcon(config.canelBtnTitle)}}</el-button>
               <el-button
                 :type="menuText('success')"
                 :icon="config.viewBtnIcon"
@@ -236,7 +239,7 @@
                 :size="isMediumSize"
                 :disabled="btnDisabled"
                 @click.stop="rowDel(scope.row,scope.$index)"
-                v-if="vaildData(tableOption.delBtn,config.delBtn)"
+                v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit"
               >{{menuIcon(config.delBtnTitle)}}</el-button>
             </template>
             <slot
@@ -257,22 +260,26 @@
     </el-card>
     <!-- 表单 -->
     <dialog-form ref="dialogForm" v-model="tableForm">
-      <template slot-scope="scope" v-for="item in columnOption" :slot="item.prop">
+      <template
+        slot-scope="{value,column,dic,size,label,disabled}"
+        v-for="item in columnOption"
+        :slot="item.prop"
+      >
         <slot
-          :value="scope.value"
-          :column="scope.column"
-          :dic="scope.dic"
-          :size="scope.size"
-          :label="scope.label"
-          :disabled="scope.disabled"
+          :value="value"
+          :column="column"
+          :dic="dic"
+          :size="size"
+          :label="label"
+          :disabled="disabled"
           :row="tableForm"
           :index="tableIndex"
           :name="item.prop+'Form'"
           v-if="item.formslot"
         ></slot>
       </template>
-      <template slot-scope="{tableForm,boxType}" slot="menuForm">
-        <slot name="menuForm" :row="tableForm" :type="boxType"></slot>
+      <template slot-scope="{tableForm,boxType,size}" slot="menuForm">
+        <slot name="menuForm" :size="size" :type="boxType"></slot>
       </template>
     </dialog-form>
     <!-- 动态列 -->
@@ -289,7 +296,7 @@ import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
-import { formInitVal, getSearchType, getType } from "core/dataformat";
+import { getSearchType, getType } from "core/dataformat";
 
 export default create({
   name: "crud",
@@ -304,10 +311,6 @@ export default create({
   },
   data() {
     return {
-      clientHeight: document.documentElement.clientHeight,
-      defaultForm: {
-        tableForm: {}
-      },
       searchForm: {},
       config: config,
       list: [],
@@ -315,6 +318,7 @@ export default create({
       tableIndex: -1,
       tableSelect: [],
       formRules: {},
+      formCellRules: {},
       printKey: true
     };
   },
@@ -332,6 +336,18 @@ export default create({
     this.$refs.dialogColumn.columnInit();
   },
   computed: {
+    keyId() {
+      return this.tableOption.keyId || "id";
+    },
+    tableHeight() {
+      const clientHeight = document.documentElement.clientHeight;
+      const height =
+        this.tableOption.height == "auto"
+          ? clientHeight -
+            this.vaildData(this.tableOption.calcHeight, config.calcHeight)
+          : this.tableOption.height;
+      return height <= 300 ? 300 : height;
+    },
     btnDisabled() {
       return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
@@ -346,6 +362,12 @@ export default create({
     }
   },
   watch: {
+    tableForm: {
+      handler() {
+        this.$emit("input", this.tableForm);
+      },
+      deep: true
+    },
     value: {
       handler() {
         this.formVal();
@@ -400,10 +422,19 @@ export default create({
     }
   },
   methods: {
+    handleDetail(row, column) {
+      if (!this.validatenull(this.DIC[column.prop])) {
+        const result = this.detail(row, column, this.tableOption, this.DIC);
+        row["$" + column.prop] = result;
+        return result;
+      }
+      return row[column.prop];
+    },
     rulesInit() {
       this.formRules = {};
       this.columnOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
+        if (ele.rules && ele.cell) this.formCellRules[ele.prop] = ele.rules;
       });
     },
     cellEditFlag(row, column) {
@@ -451,7 +482,6 @@ export default create({
       Object.keys(this.value).forEach(ele => {
         this.tableForm[ele] = this.value[ele];
       });
-      this.$emit("input", this.tableForm);
     },
     dataInit() {
       this.list = [...this.data];
@@ -459,11 +489,6 @@ export default create({
       this.list.forEach((ele, index) => {
         ele.$index = index;
       });
-    },
-    dataformat() {
-      this.defaultForm = formInitVal(this.columnOption);
-      this.tableForm = this.deepClone(this.defaultForm.tableForm);
-      this.formVal();
     },
     //设置单选
     currentRowChange(currentRow, oldCurrentRow) {
@@ -539,6 +564,25 @@ export default create({
       if (row.$cellEdit) this.rowCellUpdate(row, index);
       else this.rowCellEdit(row, index);
     },
+    //单元格新增
+    rowCellAdd() {
+      this.list.push(
+        this.deepClone(
+          Object.assign(this.tableForm, {
+            $cellEdit: true
+          })
+        )
+      );
+    },
+    //行取消
+    rowCanel(row, index) {
+      if (this.validatenull(row[this.keyId])) {
+        this.list.splice(index, 1);
+        return;
+      }
+      row.$cellEdit = false;
+      this.$set(this.list, index, row);
+    },
     // 单元格编辑
     rowCellEdit(row, index) {
       row.$cellEdit = !row.$cellEdit;
@@ -546,7 +590,7 @@ export default create({
     },
     //单元格更新
     rowCellUpdate(row, index) {
-      this.asyncValidator(this.formRules, row)
+      this.asyncValidator(this.formCellRules, row)
         .then(res => {
           this.$refs.dialogForm.keyBtn = true;
           this.$emit(
@@ -566,8 +610,8 @@ export default create({
           this.$message.warning(errors[0]);
         });
     },
-    rowAdd(row) {
-      this.$refs.headerTitle.rowAdd(row);
+    rowAdd() {
+      this.$refs.dialogForm.show("add");
     },
     // 编辑
     rowEdit(row, index) {

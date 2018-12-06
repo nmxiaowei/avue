@@ -20,13 +20,13 @@
   </head>
   <body>
     <div id="app">
-      <avue-form :option="option" v-model="obj">
+      <avue-form :option="option" v-model="obj" @submit="submit">
         <template slot-scope="scope" slot="name">
-          <el-input
-            :size="scope.size"
+          <avue-input
             :disabled="scope.disabled"
+            :label="scope.column.label"
             v-model="obj.name"
-          ></el-input>
+          ></avue-input>
         </template>
       </avue-form>
     </div>
@@ -38,7 +38,7 @@
       data() {
         return {
           obj: {
-            name: 'smallwei'
+            name: '11'
           },
           option: {
             props: {
@@ -100,9 +100,16 @@
         }
       },
       mounted() {
-        this.obj.province = '110000'
-        this.obj.city = '110100'
-        this.obj.area = '110101'
+        this.obj = {
+          province: '110000',
+          city: '110100',
+          area: '110101'
+        }
+      },
+      methods: {
+        submit() {
+          this.$message.success(JSON.stringify(this.obj))
+        }
       }
     })
   </script>

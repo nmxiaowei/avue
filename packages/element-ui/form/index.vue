@@ -43,6 +43,7 @@
                 <component
                   :is="getComponent({type:column.type,component:column.component})"
                   v-else
+                  :column="column"
                   :prop="column.prop"
                   :props="column.props || tableOption.props"
                   :propsHttp="column.propsHttp || tableOption.propsHttp"
@@ -53,7 +54,6 @@
                   :checked="column.checked"
                   :prepend="column.prepend"
                   :append="column.append"
-                  :column="column"
                   :filter="column.filter"
                   :precision="column.precision"
                   :multiple="column.multiple"
@@ -145,7 +145,7 @@
                 v-if="vaildData(tableOption.emptyBtn,true)"
                 @click="resetForm"
               >{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
-              <slot name="menuForm"></slot>
+              <slot name="menuForm" :size="controlSize"></slot>
             </div>
           </el-form-item>
         </el-col>
@@ -169,32 +169,40 @@ export default create({
   },
   data() {
     return {
-      first: true,
       optionIndex: [],
       optionBox: false,
       tableOption: {},
       form: {},
+      formCreate: true,
       formDefault: {},
-      formRules: {}
+      formRules: {},
+      cascadeCreate: true
     };
   },
-  created() {
-    // 规则初始化
-    this.rulesInit();
-  },
   watch: {
+    form: {
+      handler() {
+        if (!this.formCreate) {
+          this.$emit("input", this.form);
+        } else {
+          this.cascadeInit();
+          this.formCreate = false;
+        }
+      },
+      deep: true
+    },
     value: {
       handler() {
-        this.formVal();
-        if (this.first) {
+        if (!this.formCreate) {
+          this.formVal();
           this.cascadeInit();
         }
       },
       deep: true
     }
   },
-  mounted() {},
   computed: {
+    //动态计算列的位置
     columnOption() {
       let list = this.tableOption.column || [];
       let count = 0;
@@ -278,7 +286,43 @@ export default create({
       }
     }
   },
+  created() {
+    // 规则初始化
+    this.rulesInit();
+    // 初始化表单
+    this.dataformat();
+  },
   methods: {
+    dataformat() {
+      this.formDefault = formInitVal(this.columnOption);
+      this.form = this.deepClone(this.formDefault.tableForm);
+      this.formVal(false);
+    },
+    //级联初始化
+    cascadeInit() {
+      for (let i = 0; i < this.columnOption.length; i++) {
+        const ele = this.columnOption[i];
+        if (ele.cascaderFirst) {
+          let cascader = [...ele.cascader];
+          const cascaderLen = cascader.length - 1;
+          if (!this.validatenull(this.form[ele.prop]))
+            this.handleChange(i, true);
+          for (let j = 0; j < ele.cascader.length - 1; j++) {
+            const cindex = i + (j + 1);
+            let cele = this.columnOption[cindex];
+            cele.cascader = cascader.slice(1);
+            if (!this.validatenull(this.form[cele.prop]))
+              this.handleChange(cindex, true);
+          }
+        }
+      }
+    },
+    formVal(callback) {
+      Object.keys(this.value).forEach(ele => {
+        this.form[ele] = this.value[ele];
+      });
+      if (callback !== false) this.$emit("input", this.form);
+    },
     handleMock() {
       const form = mock(this.columnOption, this.DIC);
       Object.keys(form).forEach(ele => {
@@ -336,12 +380,12 @@ export default create({
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },
-    handleChange(index) {
+    handleChange(index, clear) {
       const columnOption = this.columnOption;
       const column = columnOption[index];
       const columnNext = columnOption[index + 1];
       const list = column.cascader;
-      if (!this.first) {
+      if (clear !== true) {
         list.forEach(ele => {
           this.form[ele] = "";
           this.$set(this.DIC, ele, []);
@@ -355,39 +399,6 @@ export default create({
           }, 10);
         });
       }
-    },
-    dataformat() {
-      this.formDefault = formInitVal(this.columnOption);
-      this.form = this.deepClone(this.formDefault.tableForm);
-      this.formVal();
-      this.$nextTick(() => {
-        this.clearValidate();
-      });
-    },
-    //级联初始化
-    cascadeInit() {
-      for (let i = 0; i < this.columnOption.length; i++) {
-        const ele = this.columnOption[i];
-        if (ele.cascaderFirst) {
-          let cascader = [...ele.cascader];
-          const cascaderLen = cascader.length - 1;
-          if (!this.validatenull(this.form[ele.prop])) this.handleChange(i);
-          for (let j = 0; j < ele.cascader.length - 1; j++) {
-            const cindex = i + (j + 1);
-            let cele = this.columnOption[cindex];
-            cele.cascader = cascader.slice(1);
-            if (!this.validatenull(this.form[cele.prop]))
-              this.handleChange(cindex);
-          }
-        }
-      }
-      this.first = false;
-    },
-    formVal() {
-      Object.keys(this.value).forEach(ele => {
-        this.form[ele] = this.value[ele];
-      });
-      this.$emit("input", this.form);
     },
     clearValidate() {
       this.$refs.form.clearValidate();

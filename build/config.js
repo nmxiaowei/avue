@@ -29,14 +29,14 @@ const builds = {
     dest: resolve('lib'),
     filename: 'avue.min.js',
     env: 'production',
-    externals: ['vue', 'axios', 'element-ui', 'mockjs']
+    externals: ['vue', 'axios', 'element-ui', 'mockjs', 'xlsx', 'file-saver']
   },
   dev: {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue.js',
     env: 'development',
-    externals: ['vue', 'axios', 'element-ui', 'mockjs']
+    externals: ['vue', 'axios', 'element-ui', 'mockjs', 'xlsx', 'file-saver']
   }
 };
 function genConfig(name) {

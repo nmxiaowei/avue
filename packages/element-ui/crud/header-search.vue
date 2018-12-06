@@ -1,6 +1,12 @@
 <template>
   <el-collapse-transition>
-    <el-form :model="searchForm" :inline="true" ref="searchForm" v-if="searchShow && searchFlag">
+    <el-form
+      :class="b('search')"
+      :model="searchForm"
+      :inline="true"
+      ref="searchForm"
+      v-if="searchShow && searchFlag"
+    >
       <!-- 循环列搜索框 -->
       <el-form-item
         :prop="column.prop"
@@ -47,11 +53,13 @@
 </template>
 
 <script>
+import cteate from "core/create";
 import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
 import { formInitVal, getSearchType, getType } from "core/dataformat";
 import config from "./config";
-export default {
+export default cteate({
+  name: "crud",
   data() {
     return {
       config: config,
@@ -116,6 +124,6 @@ export default {
       );
     }
   }
-};
+});
 </script>
 
