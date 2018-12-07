@@ -77,12 +77,24 @@ export default create({
   methods: {
     //下载excel
     rowExcel() {
-      if (!window.saveAs && !window.XLSX) {
-        this.$message.warning("导出数据需要相关的JS包.请看控制台");
-        console.log(
-          "https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"
-        );
-        console.log("https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js");
+      if (!window.saveAs || !window.XLSX) {
+        if (__ENV__ === "development") {
+          this.$log.warning("导出excel需要引入以下包");
+          if (!window.saveAs) {
+            this.$log.capsule(
+              "file-saver：",
+              "https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js",
+              "warning"
+            );
+          }
+          if (!window.XLSX) {
+            this.$log.capsule(
+              "xlsx",
+              "https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js",
+              "warning"
+            );
+          }
+        }
         return;
       }
       let data = this.deepClone(this.$parent.tableSelect);

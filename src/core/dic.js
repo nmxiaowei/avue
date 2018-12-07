@@ -1,4 +1,5 @@
 import axios from 'axios';
+import $log from 'plugin/logs/util';
 import { validatenull } from 'utils/validate';
 let locationdic = {}; // 本地字典
 let networkdic = {}; // 网络字典
@@ -15,13 +16,28 @@ export const loadDic = option => {
 
     createdDic(option.dicUrl, option.column);
 
-    handeDic()
-      .then(res => {
-        resolve(Object.assign(locationdic, networkdic));
-      })
-      .catch(err => {
-        reject(err);
-      });
+    if (!validatenull(ajaxdic)) {
+      if (axios) {
+        handeDic()
+          .then(res => {
+            resolve(Object.assign(locationdic, networkdic));
+          })
+          .catch(err => {
+            reject(err);
+          });
+      } else {
+        if (__ENV__ === 'development') {
+          $log.warning('使用网络字典需要引入以下包');
+          $log.capsule(
+            'axios：',
+            'https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js',
+            'warning'
+          );
+        }
+      }
+    } else {
+      resolve(locationdic);
+    }
   });
 };
 

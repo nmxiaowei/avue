@@ -140,6 +140,27 @@ export const formInitVal = (list = []) => {
   };
 };
 
+export const getPlaceholder = (column, type) => {
+  const placeholder = column.placeholder;
+  const label = column.label;
+  if (type === 'search') {
+    const searchPlaceholder = column.searchPlaceholder;
+    if (!validatenull(searchPlaceholder)) {
+      return searchPlaceholder;
+    } else {
+      return label;
+    }
+  } else if (validatenull(placeholder)) {
+    if (['select', 'checkbox', 'radio', 'tree'].includes(column.type)) {
+      return `请选择${label}`;
+    } else {
+      return `请输入${label}`;
+    }
+  }
+
+  return placeholder;
+};
+
 export const getType = column => {
   const type = column.type;
   const more = column.more || false;

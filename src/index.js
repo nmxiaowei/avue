@@ -1,9 +1,21 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone } from 'utils/util';
+import $log from 'plugin/logs/util';
 import _export from 'plugin/export/';
+import _logs from 'plugin/logs/';
 function install(Vue, opts = {}) {
+  if (!window.ELEMENT) {
+    $log.warning('需要引入UI框架包');
+    $log.capsule(
+      'element-ui',
+      'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js',
+      'warning'
+    );
+    return;
+  }
   Vue.use(_export);
+  Vue.use(_logs);
   components.map(component => {
     Vue.component(component.name, component);
   });

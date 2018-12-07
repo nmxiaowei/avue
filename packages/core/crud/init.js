@@ -1,5 +1,5 @@
 import { vaildData, setPx } from 'utils/util.js';
-import { getComponent } from 'core/dataformat';
+import { getComponent, getPlaceholder } from 'core/dataformat';
 import { loadDic } from 'core/dic';
 import { detail } from 'core/detail';
 export default function() {
@@ -48,6 +48,7 @@ export default function() {
         this.setPx = setPx;
         this.getComponent = getComponent;
         this.detail = detail;
+        this.getPlaceholder = getPlaceholder;
         this.tableOption = this.option;
         const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
         // 初始化字典

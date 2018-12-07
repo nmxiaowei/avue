@@ -37,7 +37,7 @@
       :picker-options="pickerOptions"
       :value-format="valueFormat"
       :default-time="defaultTime"
-      :placeholder="placeholder?placeholder:`请输入${label}`"
+      :placeholder="placeholder"
       @change="handleChange"
       @click.native="handleClick"
       :disabled="disabled"

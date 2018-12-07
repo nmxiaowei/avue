@@ -15,23 +15,29 @@
         :key="index"
         v-if="column.search"
       >
-        <component
-          :is="getSearchType(column.type)"
-          :size="$parent.isMediumSize"
-          v-model="searchForm[column.prop]"
-          :type="getType(column)"
-          :props="column.props || $parent.tableOption.props"
-          :format="column.format"
-          :parent="column.parent"
-          :defaultExpandAll="column.defaultExpandAll"
-          :filterable="column.searchFilterable"
-          :filter-method="column.searchFilterMethod"
-          :value-format="column.valueFormat"
-          :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-          :clearable="column.searchClearable"
-          :placeholder="column.searchPlaceholder || column.label"
-          :dic="$parent.DIC[column.prop]"
-        ></component>
+        <el-tooltip
+          :disabled="!column.searchTip"
+          :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"
+          :placement="column.searchTipPlacement"
+        >
+          <component
+            :is="getSearchType(column.type)"
+            :size="$parent.isMediumSize"
+            v-model="searchForm[column.prop]"
+            :type="getType(column)"
+            :props="column.props || $parent.tableOption.props"
+            :format="column.format"
+            :parent="column.parent"
+            :defaultExpandAll="column.defaultExpandAll"
+            :filterable="column.searchFilterable"
+            :filter-method="column.searchFilterMethod"
+            :value-format="column.valueFormat"
+            :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
+            :clearable="column.searchClearable"
+            :placeholder="getPlaceholder(column,'search')"
+            :dic="$parent.DIC[column.prop]"
+          ></component>
+        </el-tooltip>
       </el-form-item>
       <slot name="search"></slot>
       <el-form-item>
@@ -56,7 +62,12 @@
 import cteate from "core/create";
 import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
-import { formInitVal, getSearchType, getType } from "core/dataformat";
+import {
+  formInitVal,
+  getSearchType,
+  getType,
+  getPlaceholder
+} from "core/dataformat";
 import config from "./config";
 export default cteate({
   name: "crud",
@@ -89,6 +100,7 @@ export default cteate({
   created() {
     this.$parent = this.$parent.$parent;
     this.getSearchType = getSearchType;
+    this.getPlaceholder = getPlaceholder;
     this.getType = getType;
     this.vaildData = vaildData;
     this.dataformat();

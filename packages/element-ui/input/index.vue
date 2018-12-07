@@ -9,7 +9,7 @@
       :autosize="{ minRows: minRows, maxRows: maxRows}"
       :prefix-icon="prefixIcon"
       :suffix-icon="suffixIcon"
-      :placeholder="placeholder?placeholder:`请选择${label}`"
+      :placeholder="placeholder"
       @change="handleChange"
       :disabled="disabled"
       :readonly="true"
@@ -27,7 +27,7 @@
       :prefix-icon="prefixIcon"
       :suffix-icon="suffixIcon"
       :readonly="readonly"
-      :placeholder="placeholder?placeholder:`请输入${label}`"
+      :placeholder="placeholder"
       @change="handleChange"
       :disabled="disabled"
     />
@@ -44,7 +44,7 @@
       :prefix-icon="prefixIcon"
       :suffix-icon="suffixIcon"
       :readonly="readonly"
-      :placeholder="placeholder?placeholder:`请输入${label}`"
+      :placeholder="placeholder"
       @change="handleChange"
       :disabled="disabled"
     >

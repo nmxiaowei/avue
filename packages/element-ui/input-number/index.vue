@@ -11,7 +11,7 @@
     :clearable="disabled?false:clearable"
     :readonly="readonly"
     :controls-position="controlsPosition"
-    :label="placeholder?placeholder:`请输入${label}`"
+    :label="placeholder"
     :disabled="disabled"
   ></el-input-number>
 </template>

@@ -57,7 +57,7 @@ function genConfig(name) {
   if (opts.env) {
     config.plugins.push(
       new webpack.DefinePlugin({
-        ENV: opts.env || 'production'
+        __ENV__: JSON.stringify(opts.env || 'production')
       })
     );
   }

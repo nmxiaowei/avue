@@ -2,7 +2,7 @@
   <el-cascader
     :options="dic"
     v-model="text"
-    :placeholder="placeholder?placeholder:`请选择${label}`"
+    :placeholder="placeholder"
     :props="props"
     :readonly="readonly"
     :change-on-select="changeoOnSelect"

@@ -7,7 +7,7 @@
     :readonly="readonly"
     collapse-tags
     :clearable="disabled?false:clearable"
-    :placeholder="placeholder?placeholder:`请选择${label}`"
+    :placeholder="placeholder"
     @change="handleChange"
     @click.native="handleClick"
     :disabled="disabled"
