@@ -2,7 +2,7 @@
   <div :class="b()">
     <el-card :class="b('box')">
       <!-- 头部组件 -->
-      <header-title ref="headerTitle" v-show="printKey"></header-title>
+      <header-title ref="headerTitle" v-show="printKey && vaildData(tableOption.header,true)"></header-title>
       <!-- 搜索组件 -->
       <header-search v-model="searchForm" ref="headerSearch" v-show="printKey">
         <template slot="search">
@@ -112,6 +112,7 @@
           :width="column.width"
           :label="column.label"
           :fixed="column.fixed"
+          v-if="(($refs.dialogColumn || []).columnIndex || []).includes(column.prop)"
         >
           <template slot-scope="scope">
             <template v-if="cellEditFlag(scope.row,column)">

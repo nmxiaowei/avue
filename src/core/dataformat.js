@@ -50,7 +50,7 @@ export const getSearchType = type => {
 /**
  * 动态获取组件
  */
-export const getComponent = ({ type, component }) => {
+export const getComponent = (type, component) => {
   let result = 'input';
   if (!validatenull(component)) {
     result = component;

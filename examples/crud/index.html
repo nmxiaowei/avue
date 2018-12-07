@@ -13,10 +13,8 @@
     <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
     <!-- 导入表格需要的包 -->
 
-    <!--
-      <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
-      <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
-    -->
+    <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+    <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
 
     <link
       rel="stylesheet"
@@ -88,7 +86,8 @@
           },
           obj: {},
           option: {
-            title: 'crud Demo',
+            title: '某某某科技有限公司财务报表2018-2020年第一季度',
+            // header: false,
             height: 'auto',
             calcHeight: 330,
             highlightCurrentRow: true,
@@ -235,7 +234,6 @@
                 cascader: ['city', 'area'],
                 cascaderFirst: true,
                 dicUrl: `${baseUrl}/getProvince`,
-                dicData: 'province',
                 rules: [
                   {
                     required: true,
@@ -279,6 +277,17 @@
                     trigger: 'blur'
                   }
                 ]
+              },
+              {
+                label: '多选',
+                prop: 'checkbox',
+                type: 'checkbox',
+                props: {
+                  label: 'name',
+                  value: 'code'
+                },
+                span: 24,
+                dicUrl: `${baseUrl}/getProvince`
               }
             ]
           },

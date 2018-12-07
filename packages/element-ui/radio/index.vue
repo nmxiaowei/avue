@@ -1,19 +1,21 @@
 <template>
-  <el-radio-group
-    v-model="text"
-    @change="handleChange"
-    @click.native="handleClick"
-    :disabled="disabled"
-  >
-    <el-radio
-      v-for="(item,index) in dic"
-      :label="item[valueKey]"
-      :border="border"
-      :readonly="readonly"
-      :disabled="item[disabledKey]"
-      :key="index"
-    >{{item[labelKey]}}</el-radio>
-  </el-radio-group>
+  <div :class="b()">
+    <el-radio-group
+      v-model="text"
+      @change="handleChange"
+      @click.native="handleClick"
+      :disabled="disabled"
+    >
+      <el-radio
+        v-for="(item,index) in dic"
+        :label="item[valueKey]"
+        :border="border"
+        :readonly="readonly"
+        :disabled="item[disabledKey]"
+        :key="index"
+      >{{item[labelKey]}}</el-radio>
+    </el-radio-group>
+  </div>
 </template>
 
 <script>

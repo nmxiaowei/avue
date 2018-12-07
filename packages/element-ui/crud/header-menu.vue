@@ -1,5 +1,5 @@
 <template>
-  <div :class="b('menu')" v-if="vaildData($parent.tableOption.header,true)">
+  <div :class="b('menu')">
     <div :class="b('left')">
       <el-button
         type="primary"
@@ -45,7 +45,7 @@
         :icon="config.columnBtnIcon"
         circle
         :size="$parent.isMediumSize"
-        @click="$parent.$refs.showColumn.columnBox=true"
+        @click="$parent.$refs.dialogColumn.columnBox=true"
         v-if="vaildData($parent.tableOption.columnBtn,config.columnBtn)"
       ></el-button>
       <el-button
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import tableTemp from "../../util/tableTemp";
 import create from "core/create";
 import config from "./config";
 import { vaildData } from "utils/util";
@@ -73,6 +74,18 @@ export default create({
   created() {
     this.vaildData = vaildData;
     this.$parent = this.$parent.$parent;
+  },
+  computed: {
+    data() {
+      if (this.$parent.tableOption.selection) {
+        return this.$parent.tableSelect;
+      } else {
+        return this.$parent.list;
+      }
+    },
+    columnIndex() {
+      return this.$parent.$refs.dialogColumn.columnIndex;
+    }
   },
   methods: {
     //下载excel
@@ -97,9 +110,7 @@ export default create({
         }
         return;
       }
-      let data = this.deepClone(this.$parent.tableSelect);
-
-      if (this.validatenull(data)) {
+      if (this.validatenull(this.data)) {
         this.$message.warning("请勾选要导出的数据");
         return;
       }
@@ -108,30 +119,47 @@ export default create({
         columns: (() => {
           let list = [];
           this.$parent.columnOption.forEach(ele => {
-            if (!this.validatenull(this.$parent.DIC[ele.prop])) {
-              list.push({
-                label: ele.label,
-                prop: "$" + ele.prop
-              });
-            } else {
-              list.push({
-                label: ele.label,
-                prop: ele.prop
-              });
+            if (this.columnIndex.includes(ele.prop)) {
+              if (!this.validatenull(this.$parent.DIC[ele.prop])) {
+                list.push({
+                  label: ele.label,
+                  prop: "$" + ele.prop
+                });
+              } else {
+                list.push({
+                  label: ele.label,
+                  prop: ele.prop
+                });
+              }
             }
           });
           return list;
         })(),
-        data: data
+        data: this.data
       });
       this.$parent.setCurrentRow();
     },
     //打印
     rowPrint() {
-      this.$parent.printKey = false;
+      if (this.validatenull(this.data)) {
+        this.$message.warning("请勾选要打印的数据");
+        return;
+      }
+      let headerOption = [];
+      const getTemplate = () => {
+        headerOption = this.$parent.columnOption.filter(ele => {
+          return this.columnIndex.includes(ele.prop) && ele.type !== "upload";
+        });
+        return tableTemp(headerOption, this.data, this.$parent.tableOption);
+      };
+
       this.$nextTick(() => {
-        window.print();
-        this.$parent.printKey = true;
+        var newstr = getTemplate();
+        var tab = window.open("", "打印");
+        tab.document.open();
+        tab.document.write(newstr);
+        tab.window.print();
+        tab.close();
       });
     }
   }

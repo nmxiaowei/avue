@@ -6,13 +6,7 @@
     :title="config.columnBtnTitle"
     :visible.sync="columnBox"
   >
-    <el-checkbox-group v-model="columnIndex">
-      <el-row :span="24">
-        <el-col :span="6" v-for="(item,index) in columnList" :key="index">
-          <el-checkbox :label="item.prop">{{item.label}}</el-checkbox>
-        </el-col>
-      </el-row>
-    </el-checkbox-group>
+    <avue-checkbox v-model="columnIndex" :dic="columnList" :props="defaultProps"></avue-checkbox>
   </el-dialog>
 </template>
 <script>
@@ -23,6 +17,9 @@ export default {
     return {
       config: config,
       columnBox: false,
+      defaultProps: {
+        value: "prop"
+      },
       columnList: [],
       columnIndex: []
     };

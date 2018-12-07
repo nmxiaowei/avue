@@ -1,21 +1,23 @@
 <template>
-  <el-checkbox-group
-    v-model="text"
-    @change="handleChange"
-    :disabled="disabled"
-    @click.native="handleClick"
-  >
-    <el-checkbox
-      v-for="(item,index) in dic"
-      :label="item[valueKey]"
-      :border="border"
-      :min="min"
-      :readonly="readonly"
-      :max="max"
-      :disabled="item[disabledKey]"
-      :key="index"
-    >{{item[labelKey]}}</el-checkbox>
-  </el-checkbox-group>
+  <div :class="b()">
+    <el-checkbox-group
+      v-model="text"
+      @change="handleChange"
+      :disabled="disabled"
+      @click.native="handleClick"
+    >
+      <el-checkbox
+        v-for="(item,index) in dic"
+        :label="item[valueKey]"
+        :border="border"
+        :min="min"
+        :readonly="readonly"
+        :max="max"
+        :disabled="item[disabledKey]"
+        :key="index"
+      >{{item[labelKey]}}</el-checkbox>
+    </el-checkbox-group>
+  </div>
 </template>
 
 <script>
