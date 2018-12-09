@@ -8,7 +8,6 @@
     collapse-tags
     :clearable="disabled?false:clearable"
     :placeholder="placeholder"
-    @change="handleChange"
     @click.native="handleClick"
     :disabled="disabled"
   >
@@ -39,7 +38,11 @@ export default create({
       default: false
     }
   },
-  watch: {},
+  watch: {
+    text() {
+      this.handleChange(this.text);
+    }
+  },
   created() {},
   mounted() {},
   methods: {}

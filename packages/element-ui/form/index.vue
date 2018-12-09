@@ -166,6 +166,7 @@ import init from "../../core/crud/init";
 import { formInitVal } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
+import { setTimeout } from "timers";
 export default create({
   name: "form",
   mixins: [init()],
@@ -177,7 +178,9 @@ export default create({
       optionIndex: [],
       optionBox: false,
       tableOption: {},
+      formOld: {},
       form: {},
+      formList: [],
       formCreate: true,
       formDefault: {},
       formRules: {},
@@ -190,7 +193,6 @@ export default create({
         if (!this.formCreate) {
           this.$emit("input", this.form);
         } else {
-          this.cascadeInit();
           this.formCreate = false;
         }
       },
@@ -198,9 +200,9 @@ export default create({
     },
     value: {
       handler() {
+        this.formOld = this.deepClone(this.value);
         if (!this.formCreate) {
           this.formVal();
-          this.cascadeInit();
         }
       },
       deep: true
@@ -209,15 +211,25 @@ export default create({
   computed: {
     //动态计算列的位置
     columnOption() {
-      let list = this.tableOption.column || [];
+      let list = [...this.tableOption.column] || [];
       let count = 0;
-      list.forEach(ele => {
+      list.forEach((ele, index) => {
         count = count + (ele.span || 12);
         if (count >= 24) {
           count = 0 + (ele.span || 12);
         } else if (ele.row && count !== 24) {
           ele.count = 24 - count;
           count = 0;
+        }
+        //处理级联地址
+        if (!this.validatenull(ele.cascaderItem)) {
+          let cascader = [...ele.cascaderItem];
+          list[index].cascader = [...cascader];
+          cascader.forEach((item, cindex) => {
+            const columnIndex = index + cindex + 1;
+            list[columnIndex].cascaderChange = ele.cascaderChange;
+            list[columnIndex].cascader = cascader.splice(1);
+          });
         }
       });
       return list;
@@ -301,32 +313,63 @@ export default create({
     dataformat() {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
-      this.formVal(false);
+      this.formVal();
     },
-    //级联初始化
-    cascadeInit() {
-      for (let i = 0; i < this.columnOption.length; i++) {
-        const ele = this.columnOption[i];
-        if (ele.cascaderFirst) {
-          let cascader = [...ele.cascader];
-          const cascaderLen = cascader.length - 1;
-          if (!this.validatenull(this.form[ele.prop]))
-            this.handleChange(i, true);
-          for (let j = 0; j < ele.cascader.length - 1; j++) {
-            const cindex = i + (j + 1);
-            let cele = this.columnOption[cindex];
-            cele.cascader = cascader.slice(1);
-            if (!this.validatenull(this.form[cele.prop]))
-              this.handleChange(cindex, true);
+
+    handleChange(index) {
+      const columnOption = [...this.columnOption];
+      const column = columnOption[index];
+      const columnNext = columnOption[index + 1];
+      const columnNextProp = columnNext.prop;
+      const list = column.cascader;
+      const value = this.form[column.prop];
+      //最后一级
+      if (this.validatenull(list) || this.validatenull(this.form[column.prop]))
+        return;
+      else if (this.validatenull(value)) return;
+      //清空子类字典
+      list.forEach(ele => {
+        this.$set(this.DIC, ele, []);
+      });
+      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
+        this.$nextTick(() => {
+          // 修改字典
+          this.$set(this.DIC, columnNextProp, res || []);
+          const dic = this.DIC[columnNextProp];
+          /**
+           * 1.是change联动
+           * 2.字典不为空
+           * 3.非首次加载
+           */
+          if (
+            column.cascaderChange &&
+            !this.validatenull(dic) &&
+            this.formList.includes(list)
+          ) {
+            //取字典的指定项或则第一项
+            const dicvalue = dic[columnNext.defaultIndex] || dic[0];
+            this.form[columnNext.prop] =
+              dicvalue[(columnNext.props || {}).value || "value"];
           }
-        }
-      }
+          //首次不清空数据
+          const len = list.length;
+          //首次加载的放入队列记录
+          if (!this.formList.includes(list)) {
+            this.formList.push(list);
+            // 如果非change联动或者字典为空，清空子类数据
+          } else if (!column.cascaderChange || this.validatenull(dic)) {
+            list.forEach(ele => {
+              this.form[ele] = "";
+            });
+          }
+        });
+      });
     },
-    formVal(callback) {
+    formVal() {
       Object.keys(this.value).forEach(ele => {
         this.form[ele] = this.value[ele];
       });
-      if (callback !== false) this.$emit("input", this.form);
+      this.$emit("input", this.form);
     },
     handleMock() {
       const form = mock(this.columnOption, this.DIC);
@@ -384,26 +427,6 @@ export default create({
       this.columnOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
-    },
-    handleChange(index, clear) {
-      const columnOption = this.columnOption;
-      const column = columnOption[index];
-      const columnNext = columnOption[index + 1];
-      const list = column.cascader;
-      if (clear !== true) {
-        list.forEach(ele => {
-          this.form[ele] = "";
-          this.$set(this.DIC, ele, []);
-        });
-      }
-      const value = this.form[column.prop];
-      if (!this.validatenull(value)) {
-        sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
-          setTimeout(() => {
-            this.$set(this.DIC, columnNext.prop, res);
-          }, 10);
-        });
-      }
     },
     clearValidate() {
       this.$refs.form.clearValidate();

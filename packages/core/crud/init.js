@@ -50,6 +50,10 @@ export default function() {
         this.detail = detail;
         this.getPlaceholder = getPlaceholder;
         this.tableOption = this.option;
+        this.handleLoadDic();
+      },
+      // 加载字典
+      handleLoadDic() {
         const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
         // 初始化字典
         if (dicFlag) {

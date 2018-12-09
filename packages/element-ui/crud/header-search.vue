@@ -21,21 +21,21 @@
           :placement="column.searchTipPlacement"
         >
           <component
-            :is="getSearchType(column.type)"
-            :size="$parent.isMediumSize"
             v-model="searchForm[column.prop]"
-            :type="getType(column)"
-            :props="column.props || $parent.tableOption.props"
-            :format="column.format"
-            :parent="column.parent"
+            :clearable="column.searchClearable"
             :defaultExpandAll="column.defaultExpandAll"
+            :dic="$parent.DIC[column.prop]"
             :filterable="column.searchFilterable"
             :filter-method="column.searchFilterMethod"
-            :value-format="column.valueFormat"
+            :format="column.format"
+            :is="getSearchType(column.type)"
             :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-            :clearable="column.searchClearable"
+            :parent="column.parent"
             :placeholder="getPlaceholder(column,'search')"
-            :dic="$parent.DIC[column.prop]"
+            :props="column.props || $parent.tableOption.props"
+            :size="$parent.isMediumSize"
+            :type="getType(column)"
+            :value-format="column.valueFormat"
           ></component>
         </el-tooltip>
       </el-form-item>
