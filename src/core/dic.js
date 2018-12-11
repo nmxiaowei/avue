@@ -5,6 +5,46 @@ let locationdic = {}; // 本地字典
 let networkdic = {}; // 网络字典
 let ajaxdic = []; // 发送ajax的字典
 
+export const loadCascaderDic = (columnOption, list) => {
+  return new Promise((resolve, reject) => {
+    let columnList = [];
+    let result = [];
+    let networkdic = {};
+    columnOption.forEach(ele => {
+      if (ele.parentProp) columnList.push(ele);
+    });
+    list.forEach(ele => {
+      columnList.forEach(column => {
+        result.push(
+          new Promise(resolve => {
+            if (validatenull(ele[column.parentProp])) {
+              resolve({
+                prop: column.prop,
+                data: []
+              });
+            } else {
+              sendDic(
+                `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
+              ).then(res => {
+                resolve({
+                  prop: column.prop,
+                  data: res
+                });
+              });
+            }
+          })
+        );
+      });
+    });
+    Promise.all(result).then(data => {
+      data.forEach(ele => {
+        if (validatenull(networkdic[ele.prop])) networkdic[ele.prop] = [];
+        networkdic[ele.prop].push(ele.data);
+      });
+      resolve(networkdic);
+    });
+  });
+};
 // 初始化方法
 export const loadDic = option => {
   locationdic = {};

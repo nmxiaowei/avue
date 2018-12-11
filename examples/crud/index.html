@@ -44,12 +44,22 @@
         @refresh-change="refresh"
         @row-update="rowUpdate"
         @row-del="rowDel"
+        @expand-change="expandChange"
         @search-change="searchChange"
         @search-reset="searchReset"
       >
+      <template slot="search">
+          <el-form-item label="自定义">
+            <el-input placeholder="自定义搜索" size="small"/>
+          </el-form-item>
+        </template>
+        <template slot="searchMenu">
+            <el-button size="small">自定义按钮</el-button>
+        </template>
         <template slot-scope="scope" slot="nameForm">
           <el-tag :size="scope.size">{{ scope.label }}</el-tag>
         </template>
+        
         <template slot-scope="props" slot="menuLeft">
           <el-button size="small" @click="setCurrent(data[1])"
             >选中第二行</el-button
@@ -113,7 +123,7 @@
             align: 'center',
             viewBtn: false,
             cellBtn: true,
-            editBtn: false,
+            editBtn: true,
             menuWidth: 280,
             menuType: 'text',
             keyId: 'id', //行编辑的主键，默认为id
@@ -150,6 +160,67 @@
                 search: true,
                 searchTipPlacement: 'top',
                 searchTip: '自定义搜索内容'
+              },
+              {
+                width: 100,
+                label: '省份',
+                prop: 'province',
+                type: 'select',
+                props: {
+                  label: 'name',
+                  value: 'code'
+                },
+                cell: true,
+                cascaderItem: ['city', 'area'],
+                cascaderChange: true,
+                dicUrl: `${baseUrl}/getProvince`,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择省份',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                width: 100,
+                label: '城市',
+                prop: 'city',
+                type: 'select',
+                cell: true,
+                props: {
+                  label: 'name',
+                  value: 'code'
+                },
+                dicFlag: false,
+                dicUrl: `${baseUrl}/getCity/{{key}}`,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择城市',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                width: 100,
+                label: '地区',
+                prop: 'area',
+                dicFlag: false,
+                cell: true,
+                props: {
+                  label: 'name',
+                  value: 'code'
+                },
+                type: 'select',
+                dicUrl: `${baseUrl}/getArea/{{key}}`,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择地区',
+                    trigger: 'blur'
+                  }
+                ]
               },
               {
                 label: '网络字典',
@@ -224,61 +295,6 @@
                 cell: true
               },
               {
-                label: '省份',
-                prop: 'province',
-                type: 'select',
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                cascader: ['city', 'area'],
-                cascaderFirst: true,
-                dicUrl: `${baseUrl}/getProvince`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择省份',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '城市',
-                prop: 'city',
-                type: 'select',
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                dicFlag: false,
-                dicUrl: `${baseUrl}/getCity/{{key}}`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择城市',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '地区',
-                prop: 'area',
-                dicFlag: false,
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                type: 'select',
-                dicUrl: `${baseUrl}/getArea/{{key}}`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择地区',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
                 label: '多选',
                 prop: 'checkbox',
                 type: 'checkbox',
@@ -300,6 +316,9 @@
         }, 1000)
       },
       methods: {
+        expandChange(row, expendList) {
+          this.$message.success('展开回调')
+        },
         handleBeforeOpen(done, type) {
           this.$message.success('打开前的回调')
           done()
@@ -395,7 +414,10 @@
               switch: 1,
               sum: 15,
               avg: 20,
-              count: 1
+              count: 1,
+              province: '130000',
+              city: '130200',
+              area: '130202'
             },
             {
               id: '2',

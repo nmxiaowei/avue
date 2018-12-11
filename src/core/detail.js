@@ -22,11 +22,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     }
     // 字典处理
     if (column.dicData || column.dicUrl) {
-      result = findByValue(
-        dic[column.prop],
-        result,
-        column.props || option.props
-      );
+      result = findByValue(dic, result, column.props || option.props);
     }
   }
   // 自定义格式化

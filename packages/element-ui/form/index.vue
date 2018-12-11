@@ -37,7 +37,7 @@
                   <slot
                     :value="form[column.prop]"
                     :column="column"
-                    :label="detail(form,column,tableOption,DIC)"
+                    :label="detail(form,column,tableOption,DIC[column.prop])"
                     :size="column.size || controlSize"
                     :disabled="vaildDisabled(column)"
                     :dic="DIC[column.prop]"
@@ -166,7 +166,6 @@ import init from "../../core/crud/init";
 import { formInitVal } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
-import { setTimeout } from "timers";
 export default create({
   name: "form",
   mixins: [init()],
@@ -181,6 +180,7 @@ export default create({
       formOld: {},
       form: {},
       formList: [],
+      formCascader: false,
       formCreate: true,
       formDefault: {},
       formRules: {},
@@ -228,7 +228,7 @@ export default create({
           cascader.forEach((item, cindex) => {
             const columnIndex = index + cindex + 1;
             list[columnIndex].cascaderChange = ele.cascaderChange;
-            list[columnIndex].cascader = cascader.splice(1);
+            list[columnIndex].cascader = [...cascader].splice(cindex + 1);
           });
         }
       });
@@ -308,6 +308,8 @@ export default create({
     this.rulesInit();
     // 初始化表单
     this.dataformat();
+    //初始化字典
+    this.handleLoadDic();
   },
   methods: {
     dataformat() {
@@ -319,14 +321,19 @@ export default create({
     handleChange(index) {
       const columnOption = [...this.columnOption];
       const column = columnOption[index];
-      const columnNext = columnOption[index + 1];
+      const columnNext = columnOption[index + 1] || {};
       const columnNextProp = columnNext.prop;
       const list = column.cascader;
+      const str = list.join(",");
       const value = this.form[column.prop];
       //最后一级
-      if (this.validatenull(list) || this.validatenull(this.form[column.prop]))
+      if (
+        this.validatenull(list) ||
+        this.validatenull(value) ||
+        this.validatenull(columnNext) ||
+        this.validatenull(this.form[column.prop])
+      )
         return;
-      else if (this.validatenull(value)) return;
       //清空子类字典
       list.forEach(ele => {
         this.$set(this.DIC, ele, []);
@@ -344,7 +351,7 @@ export default create({
           if (
             column.cascaderChange &&
             !this.validatenull(dic) &&
-            this.formList.includes(list)
+            this.formList.includes(str)
           ) {
             //取字典的指定项或则第一项
             const dicvalue = dic[columnNext.defaultIndex] || dic[0];
@@ -354,8 +361,8 @@ export default create({
           //首次不清空数据
           const len = list.length;
           //首次加载的放入队列记录
-          if (!this.formList.includes(list)) {
-            this.formList.push(list);
+          if (!this.formList.includes(str)) {
+            this.formList.push(str);
             // 如果非change联动或者字典为空，清空子类数据
           } else if (!column.cascaderChange || this.validatenull(dic)) {
             list.forEach(ele => {

@@ -75,7 +75,7 @@
                   label: 'name',
                   value: 'code'
                 },
-                defaultIndex: 2,
+                defaultIndex: 1,
                 dicFlag: false,
                 dicUrl: `${baseUrl}/getCity/{{key}}`,
                 rules: [
@@ -94,7 +94,7 @@
                   label: 'name',
                   value: 'code'
                 },
-                defaultIndex: 2,
+                defaultIndex: 1,
                 dicFlag: false,
                 dicUrl: `${baseUrl}/getArea/{{key}}`,
                 rules: [
@@ -104,6 +104,17 @@
                     trigger: 'blur'
                   }
                 ]
+              },
+              {
+                label: '多选',
+                prop: 'checkbox',
+                type: 'checkbox',
+                props: {
+                  label: 'name',
+                  value: 'code'
+                },
+                span: 24,
+                dicUrl: `${baseUrl}/getProvince`
               }
             ]
           }

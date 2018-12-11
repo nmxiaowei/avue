@@ -1,6 +1,6 @@
 import { vaildData, setPx } from 'utils/util.js';
 import { getComponent, getPlaceholder } from 'core/dataformat';
-import { loadDic } from 'core/dic';
+import { loadDic, loadCascaderDic } from 'core/dic';
 import { detail } from 'core/detail';
 export default function() {
   return {
@@ -24,6 +24,7 @@ export default function() {
     data() {
       return {
         DIC: {},
+        cascaderDIC: {},
         tableOption: {}
       };
     },
@@ -50,7 +51,6 @@ export default function() {
         this.detail = detail;
         this.getPlaceholder = getPlaceholder;
         this.tableOption = this.option;
-        this.handleLoadDic();
       },
       // 加载字典
       handleLoadDic() {
@@ -65,6 +65,11 @@ export default function() {
           const dicData = this.tableOption.dicData || [];
           this.DIC = this.deepClone(dicData);
         }
+      },
+      handleLoadCascaderDic() {
+        loadCascaderDic(this.columnOption, this.data).then(res => {
+          this.cascaderDIC = this.deepClone(res);
+        });
       }
     }
   };

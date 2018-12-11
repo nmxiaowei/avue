@@ -120,17 +120,18 @@ export default create({
           let list = [];
           this.$parent.columnOption.forEach(ele => {
             if (this.columnIndex.includes(ele.prop)) {
-              if (!this.validatenull(this.$parent.DIC[ele.prop])) {
-                list.push({
-                  label: ele.label,
-                  prop: "$" + ele.prop
-                });
-              } else {
-                list.push({
-                  label: ele.label,
-                  prop: ele.prop
-                });
-              }
+              list.push({
+                label: ele.label,
+                prop: (() => {
+                  if (
+                    !this.validatenull(this.$parent.DIC[ele.prop]) ||
+                    !this.validatenull(this.$parent.cascaderDIC[ele.prop])
+                  ) {
+                    return "$" + ele.prop;
+                  }
+                  return ele.prop;
+                })()
+              });
             }
           });
           return list;

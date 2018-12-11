@@ -15,7 +15,7 @@
     :width="vaildData($parent.tableOption.dialogWidth,config.dialogWidth)"
     @close="closeDialog"
   >
-    <div :class="b('dialog', ['overflow'])">
+    <div :class="b('dialog', ['overflow'])" v-if="boxVisible">
       <avue-form
         v-model="tableForm"
         ref="tableForm"

@@ -38,6 +38,7 @@
         :size="controlSize"
         :highlight-current-row="tableOption.highlightCurrentRow"
         @current-change="currentRowChange"
+        @expand-change="expandChange"
         :show-summary="tableOption.showSummary"
         :summary-method="tableSummaryMethod"
         :empty-text="tableOption.emptyText"
@@ -71,7 +72,7 @@
           width="60"
           fixed="left"
           align="center"
-          v-if="tableOption.expand "
+          v-if="tableOption.expand"
         >
           <template slot-scope="props">
             <slot :row="props.row" name="expand"></slot>
@@ -79,7 +80,7 @@
         </el-table-column>
         <!-- 选择框 -->
         <el-table-column
-          v-if="tableOption.selection "
+          v-if="tableOption.selection"
           type="selection"
           width="50"
           fixed="left"
@@ -132,14 +133,15 @@
                 :multiple="column.multiple"
                 :clearable="vaildData(column.clearable,false)"
                 :placeholder="column.searchPlaceholder || column.label"
-                :dic="DIC[column.prop]"
+                @change="column.cascader?handleChange(index,scope.row):''"
+                :dic="(cascaderDIC[column.prop] || [])[scope.row.$index] || DIC[column.prop]"
               ></component>
             </template>
             <slot
               :row="scope.row"
               :dic="DIC[column.prop]"
               :size="isMediumSize"
-              :label="scope.row['$'+prop]"
+              :label="scope.row['$'+column.prop]"
               :name="column.prop"
               v-else-if="column.slot"
             ></slot>
@@ -159,7 +161,10 @@
               ></avue-img>
             </template>
             <template v-else>
-              <span v-html="handleDetail(scope.row,column)"></span>
+              <span
+                v-if="column.parentProp"
+              >{{handleDetail(scope.row,column,(cascaderDIC[column.prop] || [])[scope.row.$index])}}</span>
+              <span v-else v-html="handleDetail(scope.row,column,DIC[column.prop])"></span>
             </template>
           </template>
         </el-table-column>
@@ -297,7 +302,9 @@ import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
+import { sendDic } from "core/dic";
 import { getSearchType, getType } from "core/dataformat";
+import { setTimeout } from "timers";
 
 export default create({
   name: "crud",
@@ -315,9 +322,11 @@ export default create({
       searchForm: {},
       config: config,
       list: [],
+      expandList: [],
       tableForm: {},
       tableIndex: -1,
       tableSelect: [],
+      formIndexList: [],
       formRules: {},
       formCellRules: {},
       printKey: true
@@ -330,15 +339,15 @@ export default create({
     this.dataInit();
     // 规则初始化
     this.rulesInit();
+    //初始化字典
+    this.handleLoadDic();
   },
   mounted() {
     this.getSearchType = getSearchType;
-    // 初始化列
-    this.$refs.dialogColumn.columnInit();
   },
   computed: {
-    keyId() {
-      return this.tableOption.keyId || "id";
+    idKey() {
+      return this.tableOption.idKey || "id";
     },
     tableHeight() {
       const clientHeight = document.documentElement.clientHeight;
@@ -353,7 +362,23 @@ export default create({
       return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
     columnOption() {
-      return this.tableOption.column || [];
+      const list = this.tableOption.column || [];
+      list.forEach((ele, index) => {
+        //处理级联地址
+        if (!this.validatenull(ele.cascaderItem)) {
+          let cascader = [...ele.cascaderItem];
+          let parentProp = ele.prop;
+          list[index].cascader = [...cascader];
+          cascader.forEach((item, cindex) => {
+            const columnIndex = index + cindex + 1;
+            list[columnIndex].parentProp = parentProp;
+            list[columnIndex].cascaderChange = ele.cascaderChange;
+            list[columnIndex].cascader = [...cascader].splice(cindex + 1);
+            parentProp = list[columnIndex].prop;
+          });
+        }
+      });
+      return list;
     },
     sumColumnList() {
       return this.tableOption.sumColumnList || [];
@@ -386,6 +411,8 @@ export default create({
     },
     data() {
       this.dataInit();
+      //初始化级联字典
+      this.handleLoadCascaderDic();
     }
   },
   props: {
@@ -423,9 +450,70 @@ export default create({
     }
   },
   methods: {
-    handleDetail(row, column) {
-      if (!this.validatenull(this.DIC[column.prop])) {
-        const result = this.detail(row, column, this.tableOption, this.DIC);
+    handleChange(index, row) {
+      const columnOption = [...this.columnOption];
+      const column = columnOption[index];
+      const columnNext = columnOption[index + 1];
+      const columnNextProp = columnNext.prop;
+      const list = column.cascader;
+      const rowIndex = row.$index;
+      const value = row[column.prop];
+      //最后一级
+      if (
+        this.validatenull(list) ||
+        this.validatenull(value) ||
+        this.validatenull(columnNext) ||
+        this.validatenull(row[column.prop])
+      ) {
+        return;
+      }
+
+      if (this.formIndexList.includes(row.$index)) {
+        //清空子类字典
+        list.forEach(ele => {
+          if (this.validatenull(this.cascaderDIC[ele.prop])) {
+            this.cascaderDIC[ele.prop] = [];
+          }
+          this.$set(this.cascaderDIC[ele.prop], rowIndex, []);
+        });
+      }
+
+      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
+        this.$nextTick(() => {
+          // 修改字典
+          this.$set(this.cascaderDIC[columnNextProp], rowIndex, res || []);
+          const dic = this.cascaderDIC[columnNextProp][rowIndex];
+          /**
+           * 1.是change联动
+           * 2.字典不为空
+           * 3.非首次加载
+           */
+          if (
+            column.cascaderChange &&
+            !this.validatenull(dic) &&
+            this.formIndexList.includes(row.$index)
+          ) {
+            //取字典的指定项或则第一项
+            const dicvalue = dic[columnNext.defaultIndex] || dic[0];
+            row[columnNext.prop] =
+              dicvalue[(columnNext.props || {}).value || "value"];
+          }
+
+          //首次不清空数据
+          if (
+            (!column.cascaderChange || this.validatenull(dic)) &&
+            this.formIndexList.includes(row.$index)
+          ) {
+            list.forEach(ele => {
+              row[ele] = "";
+            });
+          }
+        });
+      });
+    },
+    handleDetail(row, column, DIC) {
+      if (!this.validatenull(DIC)) {
+        const result = this.detail(row, column, this.tableOption, DIC);
         row["$" + column.prop] = result;
         return result;
       }
@@ -486,10 +574,15 @@ export default create({
     },
     dataInit() {
       this.list = [...this.data];
-      //初始化序号
+      //初始化序列的参数
       this.list.forEach((ele, index) => {
         ele.$index = index;
       });
+    },
+    //展开或则关闭
+    expandChange(row, expand) {
+      this.expandList = [...expand];
+      this.$emit("expand-change", row, expand);
     },
     //设置单选
     currentRowChange(currentRow, oldCurrentRow) {
@@ -562,8 +655,11 @@ export default create({
     },
     //行编辑点击
     rowCell(row, index) {
-      if (row.$cellEdit) this.rowCellUpdate(row, index);
-      else this.rowCellEdit(row, index);
+      if (row.$cellEdit) {
+        this.rowCellUpdate(row, index);
+      } else {
+        this.rowCellEdit(row, index);
+      }
     },
     //单元格新增
     rowCellAdd() {
@@ -577,17 +673,25 @@ export default create({
     },
     //行取消
     rowCanel(row, index) {
-      if (this.validatenull(row[this.keyId])) {
+      if (this.validatenull(row[this.idKey])) {
         this.list.splice(index, 1);
         return;
       }
+      this.rowCellDone(row, index);
+    },
+    // 单元格结束
+    rowCellDone(row, index) {
       row.$cellEdit = false;
       this.$set(this.list, index, row);
+      this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
     },
     // 单元格编辑
     rowCellEdit(row, index) {
-      row.$cellEdit = !row.$cellEdit;
+      row.$cellEdit = true;
       this.$set(this.list, index, row);
+      setTimeout(() => {
+        this.formIndexList.push(index);
+      }, 1000);
     },
     //单元格更新
     rowCellUpdate(row, index) {
@@ -599,8 +703,7 @@ export default create({
             row,
             index,
             () => {
-              row.$cellEdit = !row.$cellEdit;
-              this.$set(this.list, index, row);
+              this.rowCellDone(row, index);
             },
             () => {
               this.$refs.dialogForm.keyBtn = false;
