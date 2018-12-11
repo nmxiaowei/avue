@@ -124,6 +124,9 @@
             viewBtn: false,
             cellBtn: true,
             editBtn: true,
+            addRowBtn:true,
+            printBtn:true,
+            excelBtn:true,
             menuWidth: 280,
             menuType: 'text',
             keyId: 'id', //行编辑的主键，默认为id
@@ -162,7 +165,7 @@
                 searchTip: '自定义搜索内容'
               },
               {
-                width: 100,
+                width: 120,
                 label: '省份',
                 prop: 'province',
                 type: 'select',
@@ -183,7 +186,7 @@
                 ]
               },
               {
-                width: 100,
+                width: 120,
                 label: '城市',
                 prop: 'city',
                 type: 'select',
@@ -203,7 +206,7 @@
                 ]
               },
               {
-                width: 100,
+                width: 120,
                 label: '地区',
                 prop: 'area',
                 dicFlag: false,
@@ -295,6 +298,7 @@
                 cell: true
               },
               {
+                width:100,
                 label: '多选',
                 prop: 'checkbox',
                 type: 'checkbox',

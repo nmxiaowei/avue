@@ -166,6 +166,7 @@ import init from "../../core/crud/init";
 import { formInitVal } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
+import { setTimeout } from "timers";
 export default create({
   name: "form",
   mixins: [init()],
@@ -183,8 +184,7 @@ export default create({
       formCascader: false,
       formCreate: true,
       formDefault: {},
-      formRules: {},
-      cascadeCreate: true
+      formRules: {}
     };
   },
   watch: {
@@ -312,6 +312,34 @@ export default create({
     this.handleLoadDic();
   },
   methods: {
+    cascaderInit() {
+      this.columnOption.forEach((ele, index) => {
+        const list = this.columnOption;
+        if (!this.validatenull(ele.cascaderItem)) {
+          let cascader = [...ele.cascaderItem];
+          const str = list[index].cascader.join(",");
+          //处理级联地址
+          if (
+            this.validatenull(this.form[ele.prop]) &&
+            !this.validatenull(list[index].cascader) &&
+            !this.formList.includes(str)
+          ) {
+            this.formList.push(str);
+          }
+          cascader.forEach((item, cindex) => {
+            const columnIndex = index + cindex + 1;
+            const str = list[columnIndex].cascader.join(",");
+            if (
+              this.validatenull(this.form[list[columnIndex].prop]) &&
+              !this.validatenull(list[columnIndex].cascader) &&
+              !this.formList.includes(str)
+            ) {
+              this.formList.push(str);
+            }
+          });
+        }
+      });
+    },
     dataformat() {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
@@ -334,48 +362,47 @@ export default create({
         this.validatenull(this.form[column.prop])
       )
         return;
-      //清空子类字典
-      list.forEach(ele => {
-        this.$set(this.DIC, ele, []);
-      });
-      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
-        this.$nextTick(() => {
-          // 修改字典
-          this.$set(this.DIC, columnNextProp, res || []);
-          const dic = this.DIC[columnNextProp];
-          /**
-           * 1.是change联动
-           * 2.字典不为空
-           * 3.非首次加载
-           */
-          if (
-            column.cascaderChange &&
-            !this.validatenull(dic) &&
-            this.formList.includes(str)
-          ) {
-            //取字典的指定项或则第一项
-            const dicvalue = dic[columnNext.defaultIndex] || dic[0];
-            this.form[columnNext.prop] =
-              dicvalue[(columnNext.props || {}).value || "value"];
-          }
-          //首次不清空数据
-          const len = list.length;
-          //首次加载的放入队列记录
-          if (!this.formList.includes(str)) {
-            this.formList.push(str);
-            // 如果非change联动或者字典为空，清空子类数据
-          } else if (!column.cascaderChange || this.validatenull(dic)) {
-            list.forEach(ele => {
-              this.form[ele] = "";
-            });
-          }
+      if (this.formList.includes(str)) {
+        //清空子类字典
+        list.forEach(ele => {
+          this.$set(this.DIC, ele, []);
         });
+      }
+      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
+        // 修改字典
+        this.$set(this.DIC, columnNextProp, res || []);
+        const dic = res || [];
+        /**
+         * 1.是change联动
+         * 2.字典不为空
+         * 3.非首次加载
+         */
+        if (
+          column.cascaderChange &&
+          !this.validatenull(dic) &&
+          this.formList.includes(str)
+        ) {
+          //取字典的指定项或则第一项
+          const dicvalue = dic[columnNext.defaultIndex] || dic[0];
+          this.form[columnNext.prop] =
+            dicvalue[(columnNext.props || {}).value || "value"];
+        }
+        //首次加载的放入队列记录
+        if (!this.formList.includes(str)) {
+          this.formList.push(str);
+          // 如果非change联动或者字典为空，清空子类数据
+        } else if (!column.cascaderChange || this.validatenull(dic)) {
+          list.forEach(ele => {
+            this.form[ele] = "";
+          });
+        }
       });
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {
         this.form[ele] = this.value[ele];
       });
+      this.cascaderInit();
       this.$emit("input", this.form);
     },
     handleMock() {

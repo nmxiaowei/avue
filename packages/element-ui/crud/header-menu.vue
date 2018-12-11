@@ -13,7 +13,7 @@
         @click="$parent.rowCellAdd"
         :icon="config.addBtnIcon"
         :size="$parent.isMediumSize"
-        v-if="vaildData($parent.tableOption.addBtn,config.addBtn)"
+        v-if="vaildData($parent.tableOption.addRowBtn,config.addRowBtn)"
       >{{config.addBtnTitle}}</el-button>
 
       <el-button
@@ -136,9 +136,30 @@ export default create({
           });
           return list;
         })(),
-        data: this.data
+        data: this.handleSum()
       });
       this.$parent.setCurrentRow();
+    },
+    //计算统计
+    handleSum() {
+      const option = this.$parent.tableOption;
+      const columnOption = this.$parent.columnOption;
+      let count = 0;
+      let data = [...this.data];
+      let sumsList = [...this.$parent.sumsList];
+      if (option.index) count++;
+      if (option.selection) count++;
+      if (option.expand) count++;
+      sumsList.splice(0, count);
+      sumsList.splice(sumsList.length - 1, 1);
+      if (option.showSummary) {
+        let sumsObj = {};
+        sumsList.forEach((ele, index) => {
+          sumsObj[columnOption[index].prop] = ele;
+        });
+        data.push(sumsObj);
+      }
+      return data;
     },
     //打印
     rowPrint() {
@@ -151,7 +172,11 @@ export default create({
         headerOption = this.$parent.columnOption.filter(ele => {
           return this.columnIndex.includes(ele.prop) && ele.type !== "upload";
         });
-        return tableTemp(headerOption, this.data, this.$parent.tableOption);
+        return tableTemp(
+          headerOption,
+          this.handleSum(),
+          this.$parent.tableOption
+        );
       };
 
       this.$nextTick(() => {

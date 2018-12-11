@@ -327,6 +327,8 @@ export default create({
       tableIndex: -1,
       tableSelect: [],
       formIndexList: [],
+      sumsList: [],
+      formCascaderList: {},
       formRules: {},
       formCellRules: {},
       printKey: true
@@ -479,36 +481,34 @@ export default create({
       }
 
       sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
-        this.$nextTick(() => {
-          // 修改字典
-          this.$set(this.cascaderDIC[columnNextProp], rowIndex, res || []);
-          const dic = this.cascaderDIC[columnNextProp][rowIndex];
-          /**
-           * 1.是change联动
-           * 2.字典不为空
-           * 3.非首次加载
-           */
-          if (
-            column.cascaderChange &&
-            !this.validatenull(dic) &&
-            this.formIndexList.includes(row.$index)
-          ) {
-            //取字典的指定项或则第一项
-            const dicvalue = dic[columnNext.defaultIndex] || dic[0];
-            row[columnNext.prop] =
-              dicvalue[(columnNext.props || {}).value || "value"];
-          }
+        // 修改字典
+        this.$set(this.cascaderDIC[columnNextProp], rowIndex, res || []);
+        const dic = res || [];
+        /**
+         * 1.是change联动
+         * 2.字典不为空
+         * 3.非首次加载
+         */
+        if (
+          column.cascaderChange &&
+          !this.validatenull(dic) &&
+          this.formIndexList.includes(row.$index)
+        ) {
+          //取字典的指定项或则第一项
+          const dicvalue = dic[columnNext.defaultIndex] || dic[0];
+          row[columnNext.prop] =
+            dicvalue[(columnNext.props || {}).value || "value"];
+        }
 
-          //首次不清空数据
-          if (
-            (!column.cascaderChange || this.validatenull(dic)) &&
-            this.formIndexList.includes(row.$index)
-          ) {
-            list.forEach(ele => {
-              row[ele] = "";
-            });
-          }
-        });
+        //首次不清空数据
+        if (
+          (!column.cascaderChange || this.validatenull(dic)) &&
+          this.formIndexList.includes(row.$index)
+        ) {
+          list.forEach(ele => {
+            row[ele] = "";
+          });
+        }
       });
     },
     handleDetail(row, column, DIC) {
@@ -677,18 +677,15 @@ export default create({
         this.list.splice(index, 1);
         return;
       }
-      this.rowCellDone(row, index);
-    },
-    // 单元格结束
-    rowCellDone(row, index) {
-      row.$cellEdit = false;
-      this.$set(this.list, index, row);
+      this.formCascaderList[index].$cellEdit = false;
+      this.$set(this.list, index, this.formCascaderList[index]);
       this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
     },
     // 单元格编辑
     rowCellEdit(row, index) {
       row.$cellEdit = true;
       this.$set(this.list, index, row);
+      this.formCascaderList[index] = this.deepClone(row);
       setTimeout(() => {
         this.formIndexList.push(index);
       }, 1000);
@@ -703,7 +700,8 @@ export default create({
             row,
             index,
             () => {
-              this.rowCellDone(row, index);
+              row.$cellEdit = false;
+              this.$set(this.list, index, row);
             },
             () => {
               this.$refs.dialogForm.keyBtn = false;
@@ -795,6 +793,7 @@ export default create({
           }
         });
       }
+      this.sumsList = sums;
       return sums;
     }
   }
