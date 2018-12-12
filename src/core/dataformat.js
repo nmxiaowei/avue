@@ -1,5 +1,17 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME } from 'global/variable';
+
+export const dateList = [
+  'dates',
+  'date',
+  'datetime',
+  'datetimerange',
+  'daterange',
+  'week',
+  'month',
+  'dategrpup',
+  'year'
+];
 /**
  * 初始化数据格式
  */
@@ -9,8 +21,12 @@ export const initVal = ({ type, multiple, value, listType }) => {
     ['checkbox', 'cascader'].includes(type) ||
     (['upload'].includes(type) && listType !== 'picture-img')
   ) {
-    if (!Array.isArray(value)) return (value || '').split(',');
-    else return value;
+    if (!Array.isArray(value)) {
+      if (validatenull(value)) {
+        return [];
+      }
+      return (value || '').split(',');
+    } else return value;
   } else {
     return value;
   }
@@ -25,19 +41,7 @@ export const getSearchType = type => {
     result = 'select';
   } else if (['time', 'timerange'].includes(type)) {
     result = 'time';
-  } else if (
-    [
-      'dates',
-      'date',
-      'datetime',
-      'datetimerange',
-      'daterange',
-      'dategrpup',
-      'week',
-      'month',
-      'year'
-    ].includes(type)
-  ) {
+  } else if (dateList.includes(type)) {
     result = 'date';
   } else if (['cascader'].includes(type)) {
     result = 'cascader';

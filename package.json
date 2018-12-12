@@ -1,6 +1,6 @@
 {
   "name": "avuex",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
   "unpkg": "lib/index.js",
@@ -64,5 +64,10 @@
     "vue": "^2.5.17",
     "vuedraggable": "^2.17.0",
     "xlsx": "^0.14.1"
-  }
+  },
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE"
+  ]
 }

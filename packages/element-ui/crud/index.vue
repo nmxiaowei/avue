@@ -134,7 +134,7 @@
                 :clearable="vaildData(column.clearable,false)"
                 :placeholder="column.searchPlaceholder || column.label"
                 @change="column.cascader?handleChange(index,scope.row):''"
-                :dic="(cascaderDIC[column.prop] || [])[scope.row.$index] || DIC[column.prop]"
+                :dic="(cascaderDIC[scope.row.$index] || {})[column.prop] || DIC[column.prop]"
               ></component>
             </template>
             <slot
@@ -163,7 +163,7 @@
             <template v-else>
               <span
                 v-if="column.parentProp"
-              >{{handleDetail(scope.row,column,(cascaderDIC[column.prop] || [])[scope.row.$index])}}</span>
+              >{{handleDetail(scope.row,column,(cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
               <span v-else v-html="handleDetail(scope.row,column,DIC[column.prop])"></span>
             </template>
           </template>
@@ -290,6 +290,10 @@
     </dialog-form>
     <!-- 动态列 -->
     <dialog-column ref="dialogColumn"></dialog-column>
+    <!-- 过滤器 -->
+    <keep-alive>
+      <dialog-filter ref="dialogFilter"></dialog-filter>
+    </keep-alive>
   </div>
 </template>
 <script>
@@ -300,6 +304,7 @@ import headerSearch from "./header-search";
 import headerMenu from "./header-menu";
 import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
+import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
 import { sendDic } from "core/dic";
@@ -315,6 +320,7 @@ export default create({
     headerMenu, //菜单头部
     headerTitle, //头部功能
     dialogColumn, //显隐列
+    dialogFilter, //过滤器
     dialogForm //分页,
   },
   data() {
@@ -328,6 +334,7 @@ export default create({
       tableSelect: [],
       formIndexList: [],
       sumsList: [],
+      cascaderDicList: {},
       formCascaderList: {},
       formRules: {},
       formCellRules: {},
@@ -473,17 +480,18 @@ export default create({
       if (this.formIndexList.includes(row.$index)) {
         //清空子类字典
         list.forEach(ele => {
-          if (this.validatenull(this.cascaderDIC[ele.prop])) {
-            this.cascaderDIC[ele.prop] = [];
+          if (this.validatenull(this.cascaderDIC[rowIndex][ele.prop])) {
+            this.cascaderDIC[rowIndex][ele.prop] = [];
           }
-          this.$set(this.cascaderDIC[ele.prop], rowIndex, []);
+          this.$set(this.cascaderDIC[rowIndex][ele.prop], rowIndex, []);
         });
       }
 
       sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
         // 修改字典
-        this.$set(this.cascaderDIC[columnNextProp], rowIndex, res || []);
-        const dic = res || [];
+        const data = res || [];
+        this.$set(this.cascaderDIC[rowIndex], columnNextProp, data);
+        const dic = data;
         /**
          * 1.是change联动
          * 2.字典不为空
@@ -678,14 +686,20 @@ export default create({
         return;
       }
       this.formCascaderList[index].$cellEdit = false;
+      //设置行数据
       this.$set(this.list, index, this.formCascaderList[index]);
+      //设置级联字典
+      this.$set(this.cascaderDIC, index, this.cascaderDicList[index]);
       this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
     },
     // 单元格编辑
     rowCellEdit(row, index) {
       row.$cellEdit = true;
       this.$set(this.list, index, row);
+      //缓冲行数据
       this.formCascaderList[index] = this.deepClone(row);
+      //缓冲级联字典
+      this.cascaderDicList[index] = this.deepClone(this.cascaderDIC[index]);
       setTimeout(() => {
         this.formIndexList.push(index);
       }, 1000);

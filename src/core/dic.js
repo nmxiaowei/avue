@@ -13,14 +13,15 @@ export const loadCascaderDic = (columnOption, list) => {
     columnOption.forEach(ele => {
       if (ele.parentProp) columnList.push(ele);
     });
-    list.forEach(ele => {
+    list.forEach((ele, index) => {
       columnList.forEach(column => {
         result.push(
           new Promise(resolve => {
             if (validatenull(ele[column.parentProp])) {
               resolve({
                 prop: column.prop,
-                data: []
+                data: [],
+                index: index
               });
             } else {
               sendDic(
@@ -28,7 +29,8 @@ export const loadCascaderDic = (columnOption, list) => {
               ).then(res => {
                 resolve({
                   prop: column.prop,
-                  data: res
+                  data: res,
+                  index: index
                 });
               });
             }
@@ -38,8 +40,8 @@ export const loadCascaderDic = (columnOption, list) => {
     });
     Promise.all(result).then(data => {
       data.forEach(ele => {
-        if (validatenull(networkdic[ele.prop])) networkdic[ele.prop] = [];
-        networkdic[ele.prop].push(ele.data);
+        if (validatenull(networkdic[ele.index])) networkdic[ele.index] = {};
+        networkdic[ele.index][ele.prop] = ele.data;
       });
       resolve(networkdic);
     });

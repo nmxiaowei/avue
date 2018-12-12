@@ -41,6 +41,7 @@ export default {
   emptyBtnIcon: 'el-icon-delete',
   saveBtnIcon: 'el-icon-check',
   columnBtnIcon: 'el-icon-menu',
+  filtetBtnIcon: 'el-icon-tickets',
   refreshBtnIcon: 'el-icon-refresh',
   searchboxBtnIcon: 'el-icon-search',
   // 显隐
@@ -55,6 +56,7 @@ export default {
   dateBtn: false,
   refreshBtn: true,
   columnBtn: true,
+  filtetBtn: true,
   searchBtn: true,
   menuBtn: false,
   selectClearBtn: true,

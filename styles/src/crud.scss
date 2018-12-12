@@ -71,6 +71,33 @@
       margin-left: 5px;
     }
   }
+  &__filter {
+    &-item {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    &-menu {
+      padding: 0 38px;
+      margin-bottom: 20px;
+    }
+    &-label {
+      margin: 0 5px;
+      width: 120px !important;
+    }
+    &-symbol {
+      margin: 0 5px;
+      width: 80px !important;
+    }
+    &-value {
+      margin: 0 5px;
+      width: 150px !important;
+    }
+    &-icon {
+      margin-left: 10px;
+    }
+  }
   &__dialog {
     .el-dialog {
       border-radius: 5px;

@@ -44,6 +44,7 @@
         @refresh-change="refresh"
         @row-update="rowUpdate"
         @row-del="rowDel"
+        @filter-change="filterChange"
         @expand-change="expandChange"
         @search-change="searchChange"
         @search-reset="searchReset"
@@ -298,6 +299,15 @@
                 cell: true
               },
               {
+                width:150,
+                label: '日期',
+                prop: 'datetime',
+                type:"datetime",
+                format: "yyyy-MM-dd hh:mm:ss",
+                valueFormat: "timestamp",
+                cell:true
+              },
+              {
                 width:100,
                 label: '多选',
                 prop: 'checkbox',
@@ -322,6 +332,9 @@
       methods: {
         expandChange(row, expendList) {
           this.$message.success('展开回调')
+        },
+        filterChange(result){
+          this.$message.success('过滤器'+JSON.stringify(result))
         },
         handleBeforeOpen(done, type) {
           this.$message.success('打开前的回调')
@@ -408,7 +421,8 @@
               count: 2,
               province: '110000',
               city: '110100',
-              area: '110101'
+              area: '110101',
+              datetime:'2019-01-01 00:00:00'
             },
             {
               id: '1',
@@ -421,7 +435,8 @@
               count: 1,
               province: '130000',
               city: '130200',
-              area: '130202'
+              area: '130202',
+              datetime:'2019-01-01 00:00:00'
             },
             {
               id: '2',
@@ -430,7 +445,8 @@
               switch: 0,
               sum: 15,
               avg: 20,
-              count: 1
+              count: 1,
+              datetime:'2019-01-01 00:00:00'
             }
           ]
           this.data = data
