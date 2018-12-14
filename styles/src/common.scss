@@ -32,3 +32,22 @@
     cursor: pointer;
   }
 }
+.avue-cell {
+  &__title {
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #323233;
+    line-height: 24px;
+    &--required {
+      position: relative;
+      &::before {
+        content: '*';
+        position: absolute;
+        left: 7px;
+        font-size: 14px;
+        color: #f44;
+      }
+    }
+  }
+}

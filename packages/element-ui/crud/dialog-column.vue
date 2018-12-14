@@ -38,7 +38,7 @@ export default {
             addChild(children);
           }
           if (validatenull(ele.hide)) safe.columnIndex.push(ele.prop);
-          if (ele.showClomnu !== false) {
+          if (ele.showColumn !== false) {
             let obj = {
               label: ele.label,
               prop: ele.prop,

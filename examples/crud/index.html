@@ -51,11 +51,11 @@
       >
       <template slot="search">
           <el-form-item label="自定义">
-            <el-input placeholder="自定义搜索" size="small"/>
+            <el-input placeholder="自定义搜索" size="small" v-model="searchForm.solt"/>
           </el-form-item>
         </template>
         <template slot="searchMenu">
-            <el-button size="small">自定义按钮</el-button>
+            <el-button size="small" >自定义按钮</el-button>
         </template>
         <template slot-scope="scope" slot="nameForm">
           <el-tag :size="scope.size">{{ scope.label }}</el-tag>
@@ -95,6 +95,7 @@
           page: {
             total: 40
           },
+          searchForm:{},
           obj: {},
           option: {
             title: '某某某科技有限公司财务报表2018-2020年第一季度',
@@ -374,7 +375,12 @@
           this.$message.success('刷新回调,当前分页对象' + JSON.stringify(val))
         },
         rowDel(form, index) {
-          this.$message.success('删除数据' + JSON.stringify(form))
+          this.$confirm(`此操作将永久删除序号${index+1}, 是否继续?`, '提示', {
+            type: 'warning'
+          }).then(() => {
+            this.data.splice(index,1);
+            this.$message.success('删除数据' + JSON.stringify(form))
+          })
         },
         rowUpdate(form, index, done, loading) {
           this.$message.success('模拟网络请求')
@@ -453,9 +459,10 @@
           this.$message.success('page' + JSON.stringify(page))
         },
         searchChange(params) {
-          this.$message.success('search callback' + JSON.stringify(params))
+          this.$message.success('search callback' + JSON.stringify(Object.assign(params,this.searchForm)))
         },
         searchReset() {
+          this.searchForm = {};
           this.$message.success('search reset callback')
         }
       }

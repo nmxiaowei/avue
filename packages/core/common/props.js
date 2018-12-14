@@ -24,6 +24,7 @@ export default function() {
     props: {
       change: Function,
       click: Function,
+      value: {},
       column: {
         type: Object,
         default: () => {}
@@ -69,6 +70,9 @@ export default function() {
         type: String,
         default: ''
       },
+      rules: {
+        type: Array
+      },
       min: {
         type: Number
       },
@@ -97,11 +101,17 @@ export default function() {
       }
     },
     watch: {
-      value() {
-        this.initVal();
+      value: {
+        handler() {
+          this.initVal();
+        },
+        immediate: true
       }
     },
     computed: {
+      required() {
+        return !this.validatenull(this.rules);
+      },
       isArray() {
         return this.dataType === 'array';
       },
@@ -130,9 +140,7 @@ export default function() {
         return this.props.id || this.propsDefault.id;
       }
     },
-    created() {
-      this.initVal();
-    },
+    created() {},
     methods: {
       initVal() {
         this.text = initVal({

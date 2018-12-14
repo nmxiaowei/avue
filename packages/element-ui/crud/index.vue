@@ -476,14 +476,14 @@ export default create({
       ) {
         return;
       }
+      if (this.validatenull(this.cascaderDIC[rowIndex])) {
+        this.$set(this.cascaderDIC, rowIndex, []);
+      }
 
-      if (this.formIndexList.includes(row.$index)) {
+      if (this.formIndexList.includes(rowIndex)) {
         //清空子类字典
         list.forEach(ele => {
-          if (this.validatenull(this.cascaderDIC[rowIndex][ele.prop])) {
-            this.cascaderDIC[rowIndex][ele.prop] = [];
-          }
-          this.$set(this.cascaderDIC[rowIndex][ele.prop], rowIndex, []);
+          this.$set(this.cascaderDIC[rowIndex], ele.prop, []);
         });
       }
 
@@ -500,7 +500,7 @@ export default create({
         if (
           column.cascaderChange &&
           !this.validatenull(dic) &&
-          this.formIndexList.includes(row.$index)
+          this.formIndexList.includes(rowIndex)
         ) {
           //取字典的指定项或则第一项
           const dicvalue = dic[columnNext.defaultIndex] || dic[0];
@@ -511,7 +511,7 @@ export default create({
         //首次不清空数据
         if (
           (!column.cascaderChange || this.validatenull(dic)) &&
-          this.formIndexList.includes(row.$index)
+          this.formIndexList.includes(rowIndex)
         ) {
           list.forEach(ele => {
             row[ele] = "";
@@ -671,13 +671,16 @@ export default create({
     },
     //单元格新增
     rowCellAdd() {
+      const len = this.list.length;
       this.list.push(
         this.deepClone(
           Object.assign(this.tableForm, {
-            $cellEdit: true
+            $cellEdit: true,
+            $index: len
           })
         )
       );
+      this.formIndexList.push(len);
     },
     //行取消
     rowCanel(row, index) {

@@ -37,6 +37,20 @@ const builds = {
     filename: 'avue.js',
     env: 'development',
     externals: ['vue', 'axios', 'element-ui', 'mockjs', 'xlsx', 'file-saver']
+  },
+  'prod-vant': {
+    entry: resolve('src/index.js'),
+    dest: resolve('lib'),
+    filename: 'avue-mobile.min.js',
+    env: 'production',
+    externals: ['vue', 'axios', 'vant', 'mockjs', 'xlsx', 'file-saver']
+  },
+  'dev-vant': {
+    entry: resolve('src/index.js'),
+    dest: resolve('lib'),
+    filename: 'avue-mobile.js',
+    env: 'development',
+    externals: ['vue', 'axios', 'vant', 'mockjs', 'xlsx', 'file-saver']
   }
 };
 function genConfig(name) {
@@ -57,7 +71,8 @@ function genConfig(name) {
   if (opts.env) {
     config.plugins.push(
       new webpack.DefinePlugin({
-        __ENV__: JSON.stringify(opts.env || 'production')
+        __ENV__: JSON.stringify(opts.env || 'production'),
+        __UINAME__: JSON.stringify(process.env.UINAME || 'element-ui')
       })
     );
   }
