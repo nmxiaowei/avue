@@ -40,7 +40,7 @@
         </el-tooltip>
       </el-form-item>
       <slot name="search"></slot>
-      <el-form-item>
+      <el-form-item :class="b('searchMenu')">
         <el-button
           type="primary"
           @click="searchChange"

@@ -25,11 +25,16 @@ export default function() {
       return {
         DIC: {},
         cascaderDIC: {},
-        tableOption: {}
+        tableOption: {},
+        isMobile: ''
       };
     },
     created() {
       this.init();
+      this.getIsMobile();
+      window.onresize = () => {
+        this.getIsMobile();
+      };
     },
     computed: {
       menuType() {
@@ -43,6 +48,9 @@ export default function() {
       }
     },
     methods: {
+      getIsMobile() {
+        this.isMobile = window.document.body.clientWidth <= 768;
+      },
       init() {
         // 工具初始化
         this.vaildData = vaildData;

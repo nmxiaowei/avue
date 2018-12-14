@@ -40,6 +40,7 @@
     }
   }
   &__title {
+    font-weight: bold;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -53,23 +54,9 @@
     overflow: hidden;
     margin-bottom: 5px;
   }
-  &__left,
   &__right {
-    position: absolute;
-    height: auto;
-    overflow: hidden;
-  }
-  &__left {
-    left: 0;
-    .el-button {
-      margin-right: 5px;
-    }
-  }
-  &__right {
-    right: 0;
-    .el-button {
-      margin-left: 5px;
-    }
+    display: flex;
+    justify-content: flex-end;
   }
   &__filter {
     &-item {

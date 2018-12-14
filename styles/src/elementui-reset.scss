@@ -6,6 +6,13 @@
   width: 100% !important;
 }
 
+.el-button + .el-button {
+  margin-left: 0;
+}
+.el-button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
 .el-input__inner {
   height: 38px;
   line-height: 38px;

@@ -4,7 +4,7 @@
     :class="b('title')"
     v-if="vaildData($parent.tableOption.title,false) || vaildData($parent.tableOption.dateBtn,config.dateBtn)"
   >
-    <span>{{$parent.tableOption.title}}</span>
+    <p>{{$parent.tableOption.title}}</p>
     <avue-date
       type="dategroup"
       @change="dateChange"

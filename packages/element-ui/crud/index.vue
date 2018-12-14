@@ -18,21 +18,24 @@
           <slot name="menuLeft"></slot>
         </template>
         <template slot="menuRight">
+          <div
+            class="avue-tip"
+            v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection"
+          >
+            <span class="avue-tip__name">
+              {{config.tipStartTitle}}
+              <span class="avue-tip__name--bold">{{selectLen}}</span>
+              {{config.tipEndTitle}}
+            </span>
+            <small
+              class="avue-tip__btn"
+              @click="selectClear"
+              v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection"
+            >{{config.tipBtnTitle}}</small>
+          </div>
           <slot name="menuRight"></slot>
         </template>
       </header-menu>
-      <div class="avue-tip" v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-        <span class="avue-tip__name">
-          {{config.tipStartTitle}}
-          <span class="avue-tip__name--bold">{{selectLen}}</span>
-          {{config.tipEndTitle}}
-        </span>
-        <small
-          class="avue-tip__btn"
-          @click="selectClear"
-          v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection"
-        >{{config.tipBtnTitle}}</small>
-      </div>
       <el-table
         :data="list"
         :size="controlSize"
@@ -174,7 +177,7 @@
           :label="config.menuTitle"
           :align="tableOption.menuAlign || config.menuAlign"
           :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
-          :width="tableOption.menuWidth || config.menuWidth"
+          :width="isMobile?80:( tableOption.menuWidth || config.menuWidth)"
         >
           <template slot-scope="scope">
             <el-dropdown v-if="menuType==='menu'" style="margin-right:9px;">
@@ -261,6 +264,7 @@
           </template>
         </el-table-column>
       </el-table>
+
       <!-- 分页 -->
       <table-page ref="tablePage" v-show="printKey"></table-page>
     </el-card>

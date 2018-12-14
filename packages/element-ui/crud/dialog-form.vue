@@ -3,7 +3,7 @@
     lock-scroll
     :class="b('dialog')"
     :custom-class="vaildData($parent.tableOption.customClass,config.customClass)"
-    :fullscreen="$parent.tableOption.dialogFullscreen"
+    :fullscreen="$parent.isMobile?true:$parent.tableOption.dialogFullscreen"
     :modal-append-to-body="false"
     append-to-body
     :title="dialogTitle"
@@ -12,7 +12,7 @@
     :modal="$parent.tableOption.dialogModal"
     :show-close="$parent.tableOption.dialogCloseBtn"
     :visible.sync="boxVisible"
-    :width="vaildData($parent.tableOption.dialogWidth,config.dialogWidth)"
+    :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
     @close="closeDialog"
   >
     <div :class="b('dialog', ['overflow'])" v-if="boxVisible">
