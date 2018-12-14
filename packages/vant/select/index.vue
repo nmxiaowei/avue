@@ -6,6 +6,7 @@
       :clearable="clearable"
       :left-icon="prefixIcon"
       is-link
+      input-align="right"
       :required="required"
       @click.native="handleSelectClick"
       readonly

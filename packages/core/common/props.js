@@ -83,6 +83,10 @@ export default function() {
         type: Boolean,
         default: false
       },
+      row: {
+        type: Boolean,
+        default: false
+      },
       prop: {
         type: String,
         default: ''

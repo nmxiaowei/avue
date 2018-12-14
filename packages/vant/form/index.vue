@@ -1,10 +1,11 @@
 <template>
   <div :class="b('mobile')" :style="{width:setPx(tableOption.formWidth,'100%')}">
-    <van-cell-group>
+    <van-cell-group class="avue-cell-group">
       <template v-for="(column,index) in columnOption">
         <component
           :key="index"
           v-model="form[column.prop]"
+          :class="{'avue-cell--row':column.row}"
           :is="getComponent(column.type,column.component)"
           :label="column.label"
           :placeholder="getPlaceholder(column)"
@@ -12,9 +13,11 @@
           :suffixIcon="column.suffixIcon"
           :type="column.type"
           :readonly="column.readonly"
+          :tip="column.tip"
           :disabled="column.disabled"
           :minRows="column.minRows"
           :rules="column.rules"
+          :tags="column.tags"
           :valueFormat="column.valueFormat"
           :format="column.format"
           :maxRows="column.maxRows"
@@ -36,6 +39,7 @@ import create from "core/create";
 import init from "../../core/crud/init";
 import { formInitVal } from "core/dataformat";
 import { sendDic } from "core/dic";
+import { getObjType } from "utils/util";
 export default create({
   name: "form",
   mixins: [init()],
@@ -180,7 +184,19 @@ export default create({
       this.$emit("reset-change");
     },
     submit() {
-      this.asyncValidator(this.formRules, this.form)
+      let formRules = this.formRules;
+      let form = this.form;
+      Object.keys(formRules).forEach(ele => {
+        const type = getObjType(form[ele]);
+        if (type !== "string") {
+          formRules[ele].forEach(rule => {
+            if (rule.required) {
+              rule.type = type;
+            }
+          });
+        }
+      });
+      this.asyncValidator(formRules, form, { firstFields: true })
         .then(res => {
           this.$emit("submit", this.form);
         })

@@ -5,6 +5,7 @@
       :placeholder="placeholder"
       :clearable="clearable"
       :left-icon="prefixIcon"
+      :input-align="inputAlign"
       :type="typeParam"
       :required="required"
       :autosize="{ minHeight: minRows*50, maxHeight: maxRows*50}"
@@ -59,6 +60,12 @@ export default create({
       } else {
         return "text";
       }
+    },
+    inputAlign() {
+      if (this.typeParam === "textarea") {
+        return "left";
+      }
+      return "right";
     }
   },
   watch: {

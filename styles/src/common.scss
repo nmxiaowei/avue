@@ -33,18 +33,40 @@
   }
 }
 .avue-cell {
+  border-top: 1px solid #eee;
+  background-color: #fff;
+  &-group {
+    padding-top: 10px;
+  }
+  &--row {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  &__tags {
+    margin-right: 10px;
+  }
+  &__tip {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #999;
+  }
   &__title {
-    margin-bottom: 5px;
-    padding: 10px 15px;
+    margin: 0;
+    padding: 5px 15px 5px 20px;
+    line-height: 30px;
     font-size: 14px;
     color: #323233;
     line-height: 24px;
+    & + .van-cell-group {
+      padding-left: 5px;
+    }
     &--required {
       position: relative;
       &::before {
         content: '*';
         position: absolute;
         left: 7px;
+        top: 7px;
         font-size: 14px;
         color: #f44;
       }

@@ -6,6 +6,7 @@
       :clearable="clearable"
       :left-icon="prefixIcon"
       is-link
+      input-align="right"
       :required="required"
       @click.native="handleDateClick"
       readonly
@@ -30,6 +31,7 @@ import create from "core/create";
 import { findByValue } from "utils/util";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { getDateValues } from "utils/date";
 const formatDafault = {
   datetime: "yyyy-MM-dd hh:mm:ss",
   date: "yyyy-MM-dd"
@@ -80,9 +82,11 @@ export default create({
     },
     box() {
       if (this.box) {
-        this.$nextTick(() => {
-          console.log(this.$refs.picker);
-        });
+        setTimeout(() => {
+          this.$refs.picker.$refs.picker.setValues(
+            getDateValues(this.text, this.valueFormat)
+          );
+        }, 0);
       }
     },
     text() {

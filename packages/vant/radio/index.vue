@@ -1,7 +1,20 @@
 <template>
   <div class="avue-cell">
-    <van-radio-group v-model="text" @change="handleChange">
-      <p :class="['avue-cell__title',{'avue-cell__title--required':required}]">{{label}}</p>
+    <van-cell :title="label" :class="{'van-cell--required':required}" v-if="tags">
+      <van-tag
+        class="avue-cell__tags"
+        plain
+        v-for="(item,index) in dic"
+        :type="text===item[valueKey]?'primary':''"
+        :key="index"
+        @click.native="handleRadioClick(item[valueKey])"
+      >{{item[labelKey]}}</van-tag>
+    </van-cell>
+    <van-radio-group v-model="text" @change="handleChange" v-else>
+      <p :class="['avue-cell__title',{'avue-cell__title--required':required}]">
+        {{label}}
+        <small class="avue-cell__tip" v-if="tip">{{tip}}</small>
+      </p>
       <van-cell-group>
         <van-cell
           v-for="(item,index) in dic "
@@ -27,8 +40,9 @@ export default create({
   name: "radio",
   mixins: [props(), event()],
   props: {
-    rules: {
-      type: Array
+    tags: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

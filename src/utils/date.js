@@ -26,6 +26,31 @@ export const dateFtt = (fmt, date) => {
   return fmt;
 };
 
+export const getDateValues = (value, format = 'yyyy-MM-dd hh:mm::ss') => {
+  let str = new Date();
+  if (!(value instanceof Date)) str = new Date(value);
+  function strDetail(str) {
+    str = str + '';
+    if (str.length === 1) {
+      return '0' + str;
+    }
+    return str;
+  }
+  let result = [];
+  let year = str.getFullYear();
+  let month = str.getMonth();
+  let date = str.getDate();
+  let hours = str.getHours();
+  let minutes = str.getMinutes();
+  let seconds = str.getSeconds();
+  if (format.includes('y')) result.push(strDetail(year));
+  if (format.includes('M')) result.push(strDetail(month));
+  if (format.includes('d')) result.push(strDetail(date));
+  if (format.includes('h')) result.push(strDetail(hours));
+  if (format.includes('m')) result.push(strDetail(minutes));
+  if (format.includes('s')) result.push(strDetail(seconds));
+  return result;
+};
 export const timeToSec = time => {
   var s = '';
   var hour = time.split(':')[0] || '00';

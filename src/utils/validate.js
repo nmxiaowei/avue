@@ -27,10 +27,10 @@ export function validatenull(val) {
   }
   return false;
 }
-export const asyncValidator = (rules, form) =>
+export const asyncValidator = (rules, form, option = {}) =>
   new Promise((resolve, reject) => {
     const schema = new Schema(rules);
-    schema.validate(form, errors => {
+    schema.validate(form, option, errors => {
       if (errors) {
         reject(errors);
       } else {

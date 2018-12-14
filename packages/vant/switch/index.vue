@@ -1,6 +1,6 @@
 <template>
   <div class="avue-cell">
-    <van-cell :title="label">
+    <van-cell :title="label" :class="{'van-cell--required':required}">
       <van-switch
         v-model="textLabel"
         size="20px"

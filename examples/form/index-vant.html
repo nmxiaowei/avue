@@ -9,14 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-    <!-- 引入样式 -->
+
+    <!-- 引入vant组件 -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/vant@1.4/lib/index.css"
     />
-
-    <!-- 引入组件 -->
     <script src="https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js"></script>
+
+    <!-- 引入ele组件 -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
 
     <link rel="stylesheet" href="../../lib/index.css" />
     <script src="../../lib/avue-mobile.js"></script>
@@ -112,6 +119,7 @@
                 defaultIndex: 1,
                 dicFlag: false,
                 dicUrl: `${baseUrl}/getArea/{{key}}`,
+                row: true,
                 rules: [
                   {
                     required: true,
@@ -137,65 +145,7 @@
                 rules: [
                   {
                     required: true,
-                    message: '请选择单选',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '单选',
-                prop: 'radio',
-                type: 'radio',
-                dicData: [
-                  {
-                    label: '单选1',
-                    value: 0
-                  },
-                  {
-                    label: '单选2',
-                    value: 1
-                  }
-                ],
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择单选',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '多选',
-                prop: 'checkbox',
-                type: 'checkbox',
-                dicData: [
-                  {
-                    label: '单选1',
-                    value: 2
-                  },
-                  {
-                    label: '单选2',
-                    value: 3
-                  }
-                ],
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择多选',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '文本',
-                prop: 'textarea',
-                type: 'textarea',
-                minRows: 3,
-                maxRows: 4,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择文本',
+                    message: '请选择开关',
                     trigger: 'blur'
                   }
                 ]
@@ -230,11 +180,83 @@
                 label: '时间',
                 prop: 'time',
                 type: 'time',
+                row: true,
                 format: 'hh小时mm分',
                 rules: [
                   {
                     required: true,
                     message: '请选择时间',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                label: '单选',
+                prop: 'radio',
+                type: 'radio',
+                tip: '这是一个小提示',
+                tags: true,
+                dicData: [
+                  {
+                    label: '单程',
+                    value: 0
+                  },
+                  {
+                    label: '往返',
+                    value: 1
+                  }
+                ],
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择单选',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                label: '多选',
+                prop: 'checkbox',
+                type: 'checkbox',
+                tip: '这是一个小提示',
+                tags: true,
+                row: true,
+                dicData: [
+                  {
+                    label: '飞机',
+                    value: 1
+                  },
+                  {
+                    label: '火车',
+                    value: 2
+                  },
+                  {
+                    label: '动车',
+                    value: 3
+                  },
+                  {
+                    label: '其他',
+                    value: 4
+                  }
+                ],
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择多选',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+              {
+                label: '文本',
+                prop: 'textarea',
+                type: 'textarea',
+                minRows: 3,
+                maxRows: 4,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择文本',
                     trigger: 'blur'
                   }
                 ]
@@ -246,11 +268,12 @@
       mounted() {
         setTimeout(() => {
           this.obj = {
+            password: '111',
             province: '130000',
             city: '130100',
             area: '130101',
             radio: 0,
-            checkbox: [2],
+            checkbox: [1, 3],
             switch: 1,
             datetime: '2019-01-01 23:22:22',
             date: '2019-01-01',
