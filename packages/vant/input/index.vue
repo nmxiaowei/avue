@@ -1,20 +1,18 @@
 <template>
   <div class="avue-cell">
-    <van-field
-      v-model="text"
-      :placeholder="placeholder"
-      :clearable="clearable"
-      :left-icon="prefixIcon"
-      :input-align="inputAlign"
-      :type="typeParam"
-      :required="required"
-      :autosize="{ minHeight: minRows*50, maxHeight: maxRows*50}"
-      @click.native="handleClick"
-      :readonly="readonly"
-      :disabled="disabled"
-      :icon="suffixIcon"
-      :label="label"
-    />
+    <van-field v-model="text"
+               :placeholder="placeholder"
+               :clearable="clearable"
+               :left-icon="prefixIcon"
+               :input-align="inputAlign"
+               :type="typeParam"
+               :required="required"
+               :autosize="{ minHeight: minRows*50, maxHeight: maxRows*50}"
+               @click.native="handleClick"
+               :readonly="readonly"
+               :disabled="disabled"
+               :icon="suffixIcon"
+               :label="label" />
   </div>
 </template>
 

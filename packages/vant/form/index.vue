@@ -1,34 +1,35 @@
 <template>
-  <div :class="b('mobile')" :style="{width:setPx(tableOption.formWidth,'100%')}">
+  <div :class="b('mobile')"
+       :style="{width:setPx(tableOption.formWidth,'100%')}">
     <van-cell-group class="avue-cell-group">
       <template v-for="(column,index) in columnOption">
-        <component
-          :key="index"
-          v-model="form[column.prop]"
-          :class="{'avue-cell--row':column.row}"
-          :is="getComponent(column.type,column.component)"
-          :label="column.label"
-          :placeholder="getPlaceholder(column)"
-          :prefixIcon="column.prefixIcon"
-          :suffixIcon="column.suffixIcon"
-          :type="column.type"
-          :readonly="column.readonly"
-          :tip="column.tip"
-          :disabled="column.disabled"
-          :minRows="column.minRows"
-          :rules="column.rules"
-          :tags="column.tags"
-          :valueFormat="column.valueFormat"
-          :format="column.format"
-          :maxRows="column.maxRows"
-          :props="column.props || tableOption.props"
-          :dic="DIC[column.prop]"
-          :clearable="column.clearable"
-          @change="column.cascader?handleChange(index):''"
-        ></component>
+        <component :key="index"
+                   v-model="form[column.prop]"
+                   :class="{'avue-cell--row':column.row}"
+                   :is="getComponent(column.type,column.component)"
+                   :label="column.label"
+                   :placeholder="getPlaceholder(column)"
+                   :prefixIcon="column.prefixIcon"
+                   :suffixIcon="column.suffixIcon"
+                   :type="column.type"
+                   :readonly="column.readonly"
+                   :tip="column.tip"
+                   :disabled="column.disabled"
+                   :minRows="column.minRows"
+                   :rules="column.rules"
+                   :tags="column.tags"
+                   :valueFormat="column.valueFormat"
+                   :format="column.format"
+                   :maxRows="column.maxRows"
+                   :props="column.props || tableOption.props"
+                   :dic="DIC[column.prop]"
+                   :clearable="column.clearable"
+                   @change="column.cascader?handleChange(index):''"></component>
       </template>
       <div :class="b('mobile-menu')">
-        <van-button block type="primary" @click="submit">{{vaildData(tableOption.submitText,'提 交')}}</van-button>
+        <van-button block
+                    type="primary"
+                    @click="submit">{{vaildData(tableOption.submitText,'提 交')}}</van-button>
       </div>
     </van-cell-group>
   </div>

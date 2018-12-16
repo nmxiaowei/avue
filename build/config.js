@@ -13,7 +13,7 @@ const banner =
   ' Smallwei\n' +
   ' * Released under the MIT License.\n' +
   ' */';
-
+const externals = ['vue', 'axios', 'element-ui', 'vant', 'mockjs', 'xlsx', 'file-saver']
 const resolve = p => {
   const base = p.split('/')[0];
   if (aliases[base]) {
@@ -29,28 +29,42 @@ const builds = {
     dest: resolve('lib'),
     filename: 'avue.min.js',
     env: 'production',
-    externals: ['vue', 'axios', 'element-ui', 'mockjs', 'xlsx', 'file-saver']
+    externals: externals
   },
   dev: {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue.js',
     env: 'development',
-    externals: ['vue', 'axios', 'element-ui', 'mockjs', 'xlsx', 'file-saver']
+    externals: externals
   },
   'prod-vant': {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue-mobile.min.js',
     env: 'production',
-    externals: ['vue', 'axios', 'vant', 'mockjs', 'xlsx', 'file-saver']
+    externals: externals
   },
   'dev-vant': {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue-mobile.js',
     env: 'development',
-    externals: ['vue', 'axios', 'vant', 'mockjs', 'xlsx', 'file-saver']
+    eexternals: externals
+  },
+  'prod-data': {
+    entry: resolve('src/index.js'),
+    dest: resolve('lib'),
+    filename: 'avue-data.min.js',
+    env: 'production',
+    externals: externals
+  },
+  'dev-data': {
+    entry: resolve('src/index.js'),
+    dest: resolve('lib'),
+    filename: 'avue-data.js',
+    env: 'development',
+    externals: externals
   }
 };
 function genConfig(name) {

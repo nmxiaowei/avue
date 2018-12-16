@@ -1,471 +1,445 @@
 <!DOCTYPE html>
 
 <html class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-    <!-- 导入表格需要的包 -->
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
 
-    <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
-    <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- 导入表格需要的包 -->
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
-    <link rel="stylesheet" href="../../lib/index.css" />
-    <script src="../../lib/avue.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <avue-crud
-        ref="crud"
-        :option="option"
-        :data="data"
-        :page="page"
-        :table-loading="loading"
-        v-model="obj"
-        :before-open="handleBeforeOpen"
-        :before-close="handleBeforeClose"
-        @on-load="onLoad"
-        @row-dblclick="handleRowDBLClick"
-        @row-click="handleRowClick"
-        @current-row-change=" "
-        @date-change="dateChange"
-        @row-save="rowSave"
-        @refresh-change="refresh"
-        @row-update="rowUpdate"
-        @row-del="rowDel"
-        @filter-change="filterChange"
-        @expand-change="expandChange"
-        @search-change="searchChange"
-        @search-reset="searchReset"
-      >
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud ref="crud" :option="option" :data="data" :page="page" :table-loading="loading" v-model="obj"
+      :before-open="handleBeforeOpen" :before-close="handleBeforeClose" @on-load="onLoad" @row-dblclick="handleRowDBLClick"
+      @row-click="handleRowClick" @current-row-change=" " @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh"
+      @row-update="rowUpdate" @row-del="rowDel" @filter-change="filterChange" @expand-change="expandChange"
+      @search-change="searchChange" @search-reset="searchReset">
       <template slot="search">
-          <el-form-item label="自定义">
-            <el-input placeholder="自定义搜索" size="small" v-model="searchForm.solt"/>
-          </el-form-item>
-        </template>
-        <template slot="searchMenu">
-            <el-button size="small" >自定义按钮</el-button>
-        </template>
-        <template slot-scope="scope" slot="nameForm">
-          <el-tag :size="scope.size">{{ scope.label }}</el-tag>
-        </template>
-        
-        <template slot-scope="props" slot="menuLeft">
-          <el-button size="small" @click="setCurrent(data[1])"
-            >选中第二行</el-button
-          >
-          <el-button size="small" @click="setCurrent()">取消选择</el-button>
-        </template>
-        <template slot-scope="props" slot="expand">
-          <el-tag>当前行的{{ props }}</el-tag>
-        </template>
-        <template slot-scope="scope" slot="menuForm">
-          <el-button :size="scope.size">自定义按钮</el-button>
-        </template>
-        <template slot-scope="scope" slot="menu">
-          <el-button
-            :size="scope.size"
-            :disabled="scope.disabled"
-            :type="scope.type"
-            icon="el-icon-plus"
-            >自定义</el-button
-          >
-        </template>
-      </avue-crud>
-    </div>
-  </body>
-  <script>
-    let baseUrl = 'https://cli2.avue.top/api/area'
-    new Vue({
-      el: '#app',
-      data() {
-        return {
-          loading: true,
-          page: {
-            total: 40
-          },
-          searchForm:{},
-          obj: {},
-          option: {
-            title: '某某某科技有限公司财务报表2018-2020年第一季度',
-            // header: false,
-            height: 'auto',
-            calcHeight: 330,
-            highlightCurrentRow: true,
-            expand: true,
-            border: true,
-            showSummary: true,
-            // tip:false,
-            sumColumnList: [
-              {
-                name: 'sum',
-                type: 'sum'
-              },
-              {
-                name: 'avg',
-                type: 'avg'
-              },
-              {
-                name: 'count',
-                type: 'count'
-              }
-            ],
-            dateBtn: true,
-            align: 'center',
-            viewBtn: false,
-            cellBtn: true,
-            editBtn: true,
-            addRowBtn:true,
-            printBtn:true,
-            excelBtn:true,
-            menuWidth: 280,
-            menuType: 'text',
-            keyId: 'id', //行编辑的主键，默认为id
-            index: true,
-            selection: true,
-            column: [
-              {
-                label: '姓名',
-                prop: 'name',
-                width: 140,
-                type: 'select',
-                fixed: 'left',
-                formslot: true,
-                cell: true,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入姓名',
-                    trigger: 'blur'
-                  }
-                ],
-                dicData: [
-                  {
-                    label: 'smallwei',
-                    value: '0'
-                  },
-                  {
-                    label: 'lengleng',
-                    value: '1'
-                  }
-                ],
-                tipPlacement: 'bottom',
-                tip: '自定义内容',
-                search: true,
-                searchTipPlacement: 'top',
-                searchTip: '自定义搜索内容'
-              },
-              {
-                width: 120,
-                label: '省份',
-                prop: 'province',
-                type: 'select',
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                cell: true,
-                cascaderItem: ['city', 'area'],
-                cascaderChange: true,
-                dicUrl: `${baseUrl}/getProvince`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择省份',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                width: 120,
-                label: '城市',
-                prop: 'city',
-                type: 'select',
-                cell: true,
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                dicFlag: false,
-                dicUrl: `${baseUrl}/getCity/{{key}}`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择城市',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                width: 120,
-                label: '地区',
-                prop: 'area',
-                dicFlag: false,
-                cell: true,
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                type: 'select',
-                dicUrl: `${baseUrl}/getArea/{{key}}`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择地区',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '网络字典',
-                prop: 'dic',
-                width: 100,
-                type: 'select',
-                cell: true,
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                dicUrl: 'https://cli2.avue.top/api/area/getProvince',
-                search: true,
-                searchDefault: ['110000'],
-                searchMmultiple: true,
-                filter: true
-                // filtersMethod: function(value, row, column) {
-                //   return row.dic === '110000'
-                // }
-                // filterMultiple: false
-              },
-              {
-                width: 140,
-                label: '图片',
-                prop: 'img',
-                type: 'upload',
-                imgWidth: 100,
-                listType: 'picture-img'
-              },
-              {
-                label: 'JSON图片',
-                prop: 'img1',
-                type: 'upload',
-                imgFullscreen: true,
-                imgType: 'card',
-                listType: 'picture-card',
-                span: 24
-              },
-              {
-                width: 120,
-                label: '开关',
-                prop: 'switch',
-                type: 'switch',
-                cell: true,
-                dicData: [
-                  {
-                    label: '开启',
-                    value: 0
-                  },
-                  {
-                    label: '关闭',
-                    value: 1
-                  }
-                ]
-              },
-              {
-                label: '相加',
-                prop: 'sum',
-                width: 100,
-                cell: true
-              },
-              {
-                label: '平均值',
-                prop: 'avg',
-                width: 100,
-                cell: true
-              },
-              {
-                label: '统计',
-                prop: 'count',
-                width: 100,
-                cell: true
-              },
-              {
-                width:150,
-                label: '日期',
-                prop: 'datetime',
-                type:"datetime",
-                format: "yyyy-MM-dd hh:mm:ss",
-                valueFormat: "timestamp",
-                cell:true
-              },
-              {
-                width:100,
-                label: '多选',
-                prop: 'checkbox',
-                type: 'checkbox',
-                props: {
-                  label: 'name',
-                  value: 'code'
-                },
-                span: 24,
-                dicUrl: `${baseUrl}/getProvince`
-              }
-            ]
-          },
-          data: []
-        }
-      },
-      created() {
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
-      },
-      methods: {
-        expandChange(row, expendList) {
-          this.$message.success('展开回调')
+        <el-form-item label="自定义">
+          <el-input placeholder="自定义搜索" size="small" v-model="searchForm.solt" />
+        </el-form-item>
+      </template>
+      <template slot="searchMenu">
+        <el-button size="small">自定义按钮</el-button>
+      </template>
+      <template slot-scope="scope" slot="nameForm">
+        <el-tag :size="scope.size">{{ scope.label }}</el-tag>
+      </template>
+
+      <template slot-scope="props" slot="menuLeft">
+        <el-button size="small" @click="setCurrent(data[1])">选中第二行</el-button>
+        <el-button size="small" @click="setCurrent()">取消选择</el-button>
+      </template>
+      <template slot-scope="props" slot="expand">
+        <el-tag>当前行的{{ props }}</el-tag>
+      </template>
+      <template slot-scope="scope" slot="menuForm">
+        <el-button :size="scope.size">自定义按钮</el-button>
+      </template>
+      <template slot-scope="scope" slot="menu">
+        <el-button :size="scope.size" :disabled="scope.disabled" :type="scope.type" icon="el-icon-plus">自定义</el-button>
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avue.top/api/area'
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        loading: true,
+        page: {
+          total: 40
         },
-        filterChange(result){
-          this.$message.success('过滤器'+JSON.stringify(result))
-        },
-        handleBeforeOpen(done, type) {
-          this.$message.success('打开前的回调')
-          done()
-        },
-        handleBeforeClose(done, type) {
-          this.$message.success('关闭前的回调')
-          done()
-        },
-        setCurrent(row) {
-          this.$refs.crud.setCurrentRow(row)
-        },
-        dateChange(val) {
-          this.$message.success('日期回调' + JSON.stringify(val))
-        },
-        handleCurrentRowChange(val) {
-          this.$message.success('单选' + JSON.stringify(val))
-        },
-        handleRowClick(row, event, column) {
-          this.$message.success('单机' + JSON.stringify(row))
-        },
-        handleRowDBLClick(row, event) {
-          this.$message.success('双击' + JSON.stringify(row))
-        },
-        rowSave(form, done, loading) {
-          this.$message.success('模拟网络请求')
-          setTimeout(() => {
-            this.$message.success('关闭按钮等待')
-            loading()
-          }, 1000)
-          setTimeout(() => {
-            this.$message.success('新增数据' + JSON.stringify(form))
-            done()
-          }, 2000)
-        },
-        refresh(val) {
-          this.$message.success('刷新回调,当前分页对象' + JSON.stringify(val))
-        },
-        rowDel(form, index) {
-          this.$confirm(`此操作将永久删除序号${index+1}, 是否继续?`, '提示', {
-            type: 'warning'
-          }).then(() => {
-            this.data.splice(index,1);
-            this.$message.success('删除数据' + JSON.stringify(form))
-          })
-        },
-        rowUpdate(form, index, done, loading) {
-          this.$message.success('模拟网络请求')
-          setTimeout(() => {
-            this.$message.success('关闭按钮等待')
-            loading()
-          }, 1000)
-          setTimeout(() => {
-            this.$message.success(
-              '编辑数据' + JSON.stringify(form) + '数据序号' + index
-            )
-            done()
-          }, 2000)
-        },
-        onLoad(page, params) {
-          this.page = page
-          const data = [
+        searchForm: {},
+        obj: {},
+        option: {
+          title: '某某某科技有限公司财务报表2018-2020年第一季度',
+          // header: false,
+          height: 'auto',
+          calcHeight: 330,
+          highlightCurrentRow: true,
+          expand: true,
+          border: true,
+          showSummary: true,
+          // tip:false,
+          sumColumnList: [
             {
-              id: '0',
-              img:
-                'https://gitee.com/smallweigit/avue/badge/star.svg?theme=white',
-              img1: [
+              name: 'sum',
+              type: 'sum'
+            },
+            {
+              name: 'avg',
+              type: 'avg'
+            },
+            {
+              name: 'count',
+              type: 'count'
+            }
+          ],
+          dateBtn: true,
+          align: 'center',
+          viewBtn: false,
+          cellBtn: true,
+          editBtn: true,
+          addRowBtn: true,
+          printBtn: true,
+          excelBtn: true,
+          menuWidth: 280,
+          menuType: 'text',
+          keyId: 'id', //行编辑的主键，默认为id
+          index: true,
+          selection: true,
+          column: [
+            {
+              label: '姓名',
+              prop: 'name',
+              width: 140,
+              type: 'select',
+              fixed: 'left',
+              formslot: true,
+              cell: true,
+              rules: [
                 {
-                  label: 'test',
-                  value:
-                    'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
-                },
-                {
-                  label: 'test',
-                  value:
-                    'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
-                },
-                {
-                  label: 'test',
-                  value:
-                    'http://pic.soutu123.com/back_pic/18/09/18/0ca02eb9c35f095481196354a1f455c8.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+                  required: true,
+                  message: '请输入姓名',
+                  trigger: 'blur'
                 }
               ],
-              name: '0',
-              dic: '110000',
-              switch: 0,
-              sum: 5,
-              avg: 10,
-              count: 2,
-              province: '110000',
-              city: '110100',
-              area: '110101',
-              datetime:'2019-01-01 00:00:00'
+              dicData: [
+                {
+                  label: 'smallwei',
+                  value: '0'
+                },
+                {
+                  label: 'lengleng',
+                  value: '1'
+                }
+              ],
+              tipPlacement: 'bottom',
+              tip: '自定义内容',
+              search: true,
+              searchTipPlacement: 'top',
+              searchTip: '自定义搜索内容'
             },
             {
-              id: '1',
-              name: '1',
-              dic: '120000',
-              img: 'https://gitee.com/log4j/pig/badge/star.svg?theme=white',
-              switch: 1,
-              sum: 15,
-              avg: 20,
-              count: 1,
-              province: '130000',
-              city: '130200',
-              area: '130202',
-              datetime:'2019-01-01 00:00:00'
+              width: 120,
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              cell: true,
+              cascaderItem: ['city', 'area'],
+              cascaderChange: true,
+              dicUrl: `${baseUrl}/getProvince`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
             },
             {
-              id: '2',
-              name: '1',
-              dic: '110000',
-              switch: 0,
-              sum: 15,
-              avg: 20,
-              count: 1,
-              datetime:'2019-01-01 00:00:00'
+              width: 120,
+              label: '城市',
+              prop: 'city',
+              type: 'select',
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicFlag: false,
+              dicUrl: `${baseUrl}/getCity/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择城市',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              width: 120,
+              label: '地区',
+              prop: 'area',
+              dicFlag: false,
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '网络字典',
+              prop: 'dic',
+              width: 100,
+              type: 'select',
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicUrl: 'https://cli2.avue.top/api/area/getProvince',
+              search: true,
+              searchDefault: ['110000'],
+              searchMmultiple: true,
+              filter: true
+              // filtersMethod: function(value, row, column) {
+              //   return row.dic === '110000'
+              // }
+              // filterMultiple: false
+            },
+            {
+              width: 140,
+              label: '图片',
+              prop: 'img',
+              type: 'upload',
+              imgWidth: 100,
+              listType: 'picture-img'
+            },
+            {
+              label: 'JSON图片',
+              prop: 'img1',
+              type: 'upload',
+              imgFullscreen: true,
+              imgType: 'card',
+              listType: 'picture-card',
+              span: 24
+            },
+            {
+              width: 120,
+              label: '开关',
+              prop: 'switch',
+              type: 'switch',
+              cell: true,
+              dicData: [
+                {
+                  label: '开启',
+                  value: 0
+                },
+                {
+                  label: '关闭',
+                  value: 1
+                }
+              ]
+            },
+            {
+              label: '相加',
+              prop: 'sum',
+              width: 100,
+              cell: true
+            },
+            {
+              label: '平均值',
+              prop: 'avg',
+              width: 100,
+              cell: true
+            },
+            {
+              label: '统计',
+              prop: 'count',
+              width: 100,
+              cell: true
+            },
+            {
+              width: 150,
+              label: '日期',
+              prop: 'datetime',
+              type: "datetime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "timestamp",
+              cell: true
+            },
+            {
+              width: 100,
+              label: '多选',
+              prop: 'checkbox',
+              type: 'checkbox',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              span: 24,
+              dicUrl: `${baseUrl}/getProvince`
             }
           ]
-          this.data = data
-          this.$message.success('page' + JSON.stringify(page))
         },
-        searchChange(params) {
-          this.$message.success('search callback' + JSON.stringify(Object.assign(params,this.searchForm)))
-        },
-        searchReset() {
-          this.searchForm = {};
-          this.$message.success('search reset callback')
-        }
+        data: []
       }
-    })
-  </script>
+    },
+    created() {
+      setTimeout(() => {
+        this.loading = false
+      }, 1000)
+    },
+    methods: {
+      expandChange(row, expendList) {
+        this.$message.success('展开回调')
+      },
+      filterChange(result) {
+        this.$message.success('过滤器' + JSON.stringify(result))
+      },
+      handleBeforeOpen(done, type) {
+        this.$message.success('打开前的回调')
+        done()
+      },
+      handleBeforeClose(done, type) {
+        this.$message.success('关闭前的回调')
+        done()
+      },
+      setCurrent(row) {
+        this.$refs.crud.setCurrentRow(row)
+      },
+      dateChange(val) {
+        this.$message.success('日期回调' + JSON.stringify(val))
+      },
+      handleCurrentRowChange(val) {
+        this.$message.success('单选' + JSON.stringify(val))
+      },
+      handleRowClick(row, event, column) {
+        this.$message.success('单机' + JSON.stringify(row))
+      },
+      handleRowDBLClick(row, event) {
+        this.$message.success('双击' + JSON.stringify(row))
+      },
+      rowSave(form, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待')
+          loading()
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success('新增数据' + JSON.stringify(form))
+          done()
+        }, 2000)
+      },
+      refresh(val) {
+        this.$message.success('刷新回调,当前分页对象' + JSON.stringify(val))
+      },
+      rowDel(form, index) {
+        this.$confirm(`此操作将永久删除序号${index + 1}, 是否继续?`, '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.data.splice(index, 1);
+          this.$message.success('删除数据' + JSON.stringify(form))
+        })
+      },
+      rowUpdate(form, index, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待')
+          loading()
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success(
+            '编辑数据' + JSON.stringify(form) + '数据序号' + index
+          )
+          done()
+        }, 2000)
+      },
+      onLoad(page, params) {
+        this.page = page
+        const data = [
+          {
+            id: '0',
+            img:
+              'https://gitee.com/smallweigit/avue/badge/star.svg?theme=white',
+            img1: [
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              },
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              },
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/09/18/0ca02eb9c35f095481196354a1f455c8.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              }
+            ],
+            name: '0',
+            dic: '110000',
+            switch: 0,
+            sum: 5,
+            avg: 10,
+            count: 2,
+            province: '110000',
+            city: '110100',
+            area: '110101',
+            datetime: '2019-01-01 00:00:00'
+          },
+          {
+            id: '1',
+            name: '1',
+            dic: '120000',
+            img: 'https://gitee.com/log4j/pig/badge/star.svg?theme=white',
+            switch: 1,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            province: '130000',
+            city: '130200',
+            area: '130202',
+            datetime: '2019-01-01 00:00:00'
+          },
+          {
+            id: '2',
+            name: '1',
+            dic: '110000',
+            switch: 0,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            datetime: '2019-01-01 00:00:00'
+          }
+        ]
+        this.data = data
+        this.$message.success('page' + JSON.stringify(page))
+      },
+      searchChange(params) {
+        this.$message.success('search callback' + JSON.stringify(Object.assign(params, this.searchForm)))
+      },
+      searchReset() {
+        this.searchForm = {};
+        this.$message.success('search reset callback')
+      }
+    }
+  })
+</script>
+
 </html>

@@ -1,26 +1,23 @@
 <template>
   <div class="avue-cell">
-    <van-field
-      v-model="textLabel"
-      :placeholder="placeholder"
-      :clearable="clearable"
-      :left-icon="prefixIcon"
-      is-link
-      input-align="right"
-      :required="required"
-      @click.native="handleDateClick"
-      readonly
-      :icon="suffixIcon"
-      :label="label"
-    />
-    <van-popup v-model="box" position="bottom">
-      <van-datetime-picker
-        ref="picker"
-        :title="label"
-        type="time"
-        @cancel="handleCancel"
-        @confirm="handleConfirm"
-      />
+    <van-field v-model="textLabel"
+               :placeholder="placeholder"
+               :clearable="clearable"
+               :left-icon="prefixIcon"
+               is-link
+               input-align="right"
+               :required="required"
+               @click.native="handleDateClick"
+               readonly
+               :icon="suffixIcon"
+               :label="label" />
+    <van-popup v-model="box"
+               position="bottom">
+      <van-datetime-picker ref="picker"
+                           :title="label"
+                           type="time"
+                           @cancel="handleCancel"
+                           @confirm="handleConfirm" />
     </van-popup>
   </div>
 </template>
@@ -102,7 +99,9 @@ export default create({
     },
     handleSetLabel(value) {
       const date = new Date("2019-01-01 " + value);
-      this.textLabel = dayjs(date).format(this.format);
+      if (!this.validatenull(date)) {
+        this.textLabel = dayjs(date).format(this.format);
+      }
     },
     handleDateClick() {
       this.show();

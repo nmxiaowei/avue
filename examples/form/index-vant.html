@@ -1,291 +1,291 @@
 <!DOCTYPE html>
 
 <html class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
-    <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
 
-    <!-- 引入vant组件 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/vant@1.4/lib/index.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
 
-    <!-- 引入ele组件 -->
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@1.4/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js"></script>
 
-    <link
+  <!-- 引入ele组件 -->
+
+  <!-- <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script> -->
 
-    <link rel="stylesheet" href="../../lib/index.css" />
-    <script src="../../lib/avue-mobile.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <avue-form :option="option" v-model="obj" @submit="submit"></avue-form>
-    </div>
-  </body>
-  <script>
-    let baseUrl = 'https://cli2.avue.top/api/area'
-    new Vue({
-      el: '#app',
-      data() {
-        return {
-          obj: {
-            name: '11'
-          },
-          option: {
-            column: [
-              {
-                // prefixIcon: 'contact',
-                // suffixIcon: 'question',
-                label: '姓名',
-                prop: 'name',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择姓名',
-                    trigger: 'blur'
-                  }
-                ]
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue-mobile.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="obj" @submit="submit"></avue-form>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avue.top/api/area'
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        obj: {
+          name: '11'
+        },
+        option: {
+          column: [
+            {
+              // prefixIcon: 'contact',
+              // suffixIcon: 'question',
+              label: '姓名',
+              prop: 'name',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择姓名',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '密码',
+              prop: 'password',
+              type: 'password',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择密码',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
               },
-              {
-                label: '密码',
-                prop: 'password',
-                type: 'password',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择密码',
-                    trigger: 'blur'
-                  }
-                ]
+              cascaderItem: ['city', 'area'],
+              cascaderChange: true,
+              dicUrl: `${baseUrl}/getProvince`,
+              dicData: 'province',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '城市',
+              prop: 'city',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
               },
-              {
-                label: '省份',
-                prop: 'province',
-                type: 'select',
-                props: {
-                  label: 'name',
-                  value: 'code'
+              defaultIndex: 1,
+              dicFlag: false,
+              dicUrl: `${baseUrl}/getCity/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择城市',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '地区',
+              prop: 'area',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              defaultIndex: 1,
+              dicFlag: false,
+              dicUrl: `${baseUrl}/getArea/{{key}}`,
+              row: true,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '开关',
+              prop: 'switch',
+              type: 'switch',
+              dicData: [
+                {
+                  label: '关闭',
+                  value: 0
                 },
-                cascaderItem: ['city', 'area'],
-                cascaderChange: true,
-                dicUrl: `${baseUrl}/getProvince`,
-                dicData: 'province',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择省份',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '城市',
-                prop: 'city',
-                type: 'select',
-                props: {
-                  label: 'name',
-                  value: 'code'
+                {
+                  label: '启动',
+                  value: 1
+                }
+              ],
+              rules: [
+                {
+                  required: true,
+                  message: '请选择开关',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '日期时间',
+              prop: 'datetime',
+              type: 'datetime',
+              format: 'yyyy年MM月dd日 hh时mm分ss秒',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择文本',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '日期',
+              prop: 'date',
+              type: 'date',
+              format: 'yyyy年MM月dd日',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择日期',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '时间',
+              prop: 'time',
+              type: 'time',
+              row: true,
+              format: 'hh小时mm分',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择时间',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '单选',
+              prop: 'radio',
+              type: 'radio',
+              tip: '这是一个小提示',
+              tags: true,
+              dicData: [
+                {
+                  label: '单程',
+                  value: 0
                 },
-                defaultIndex: 1,
-                dicFlag: false,
-                dicUrl: `${baseUrl}/getCity/{{key}}`,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择城市',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '地区',
-                prop: 'area',
-                type: 'select',
-                props: {
-                  label: 'name',
-                  value: 'code'
+                {
+                  label: '往返',
+                  value: 1
+                }
+              ],
+              rules: [
+                {
+                  required: true,
+                  message: '请选择单选',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '多选',
+              prop: 'checkbox',
+              type: 'checkbox',
+              tip: '这是一个小提示',
+              tags: true,
+              row: true,
+              dicData: [
+                {
+                  label: '飞机',
+                  value: 1
                 },
-                defaultIndex: 1,
-                dicFlag: false,
-                dicUrl: `${baseUrl}/getArea/{{key}}`,
-                row: true,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择地区',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '开关',
-                prop: 'switch',
-                type: 'switch',
-                dicData: [
-                  {
-                    label: '关闭',
-                    value: 0
-                  },
-                  {
-                    label: '启动',
-                    value: 1
-                  }
-                ],
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择开关',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '日期时间',
-                prop: 'datetime',
-                type: 'datetime',
-                format: 'yyyy年MM月dd日 hh时mm分ss秒',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择文本',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '日期',
-                prop: 'date',
-                type: 'date',
-                format: 'yyyy年MM月dd日',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择日期',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '时间',
-                prop: 'time',
-                type: 'time',
-                row: true,
-                format: 'hh小时mm分',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择时间',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '单选',
-                prop: 'radio',
-                type: 'radio',
-                tip: '这是一个小提示',
-                tags: true,
-                dicData: [
-                  {
-                    label: '单程',
-                    value: 0
-                  },
-                  {
-                    label: '往返',
-                    value: 1
-                  }
-                ],
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择单选',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '多选',
-                prop: 'checkbox',
-                type: 'checkbox',
-                tip: '这是一个小提示',
-                tags: true,
-                row: true,
-                dicData: [
-                  {
-                    label: '飞机',
-                    value: 1
-                  },
-                  {
-                    label: '火车',
-                    value: 2
-                  },
-                  {
-                    label: '动车',
-                    value: 3
-                  },
-                  {
-                    label: '其他',
-                    value: 4
-                  }
-                ],
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择多选',
-                    trigger: 'blur'
-                  }
-                ]
-              },
-              {
-                label: '文本',
-                prop: 'textarea',
-                type: 'textarea',
-                minRows: 3,
-                maxRows: 4,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择文本',
-                    trigger: 'blur'
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      },
-      mounted() {
-        setTimeout(() => {
-          this.obj = {
-            password: '111',
-            province: '130000',
-            city: '130100',
-            area: '130101',
-            radio: 0,
-            checkbox: [1, 3],
-            switch: 1,
-            datetime: '2019-01-01 23:22:22',
-            date: '2019-01-01',
-            time: '03:22'
-          }
-        }, 0)
-      },
-      methods: {
-        submit() {
-          this.$toast(JSON.stringify(this.obj))
+                {
+                  label: '火车',
+                  value: 2
+                },
+                {
+                  label: '动车',
+                  value: 3
+                },
+                {
+                  label: '其他',
+                  value: 4
+                }
+              ],
+              rules: [
+                {
+                  required: true,
+                  message: '请选择多选',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '文本',
+              prop: 'textarea',
+              type: 'textarea',
+              minRows: 3,
+              maxRows: 4,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择文本',
+                  trigger: 'blur'
+                }
+              ]
+            }
+          ]
         }
       }
-    })
-  </script>
+    },
+    mounted() {
+      setTimeout(() => {
+        this.obj = {
+          password: '111',
+          province: '130000',
+          city: '130100',
+          area: '130101',
+          radio: 0,
+          checkbox: [1, 3],
+          switch: 1,
+          datetime: '2019-01-01 23:22:22',
+          date: '2019-01-01',
+          time: '03:22'
+        }
+      }, 0)
+    },
+    methods: {
+      submit() {
+        this.$toast(JSON.stringify(this.obj))
+      }
+    }
+  })
+</script>
+
 </html>
