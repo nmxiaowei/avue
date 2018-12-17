@@ -57,11 +57,10 @@ export const loadDic = option => {
     locationdic = option.dicData || {};
 
     createdDic(option.dicUrl, option.column);
-
     if (!validatenull(ajaxdic)) {
       if (axios) {
-        handeDic()
-          .then(res => {
+        handeDic(ajaxdic)
+          .then(() => {
             resolve(Object.assign(locationdic, networkdic));
           })
           .catch(err => {
@@ -102,10 +101,10 @@ function createdDic(url = '', column = []) {
 }
 
 // 循环处理字典
-function handeDic() {
+function handeDic(list) {
   let result = [];
   return new Promise(resolve => {
-    ajaxdic.forEach(ele => {
+    list.forEach(ele => {
       result.push(
         new Promise(resolve => {
           sendDic(`${ele.url.replace('{{key}}', ele.name)}`).then(res => {
@@ -115,7 +114,7 @@ function handeDic() {
       );
     });
     Promise.all(result).then(data => {
-      ajaxdic.forEach((ele, index) => {
+      list.forEach((ele, index) => {
         networkdic[ele.name] = data[index];
       });
       resolve(networkdic);
@@ -126,16 +125,10 @@ function handeDic() {
 // ajax获取字典
 export const sendDic = path => {
   return new Promise(resolve => {
-    axios.get(path).then(function(res) {
+    axios.get(path).then(function (res) {
       // 降级处理
-      const list = res.data;
-      if (!validatenull(list.data)) {
-        resolve(Array.isArray(list.data) ? list.data : []);
-      } else if (!validatenull(list)) {
-        resolve(Array.isArray(list) ? list : []);
-      } else {
-        resolve([]);
-      }
+      const list = (Array.isArray(res.data.data) ? res.data.data : res.data) || [];
+      resolve(list)
     });
   });
 };

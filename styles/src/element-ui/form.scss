@@ -27,7 +27,8 @@
     }
   }
   &__line {
-    height: 30px;
+    display: inline-block;
+    height: 42px;
   }
   &__row {
     &--block {

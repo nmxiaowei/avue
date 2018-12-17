@@ -1,66 +1,74 @@
 <template>
-  <el-dialog
-    lock-scroll
-    :modal-append-to-body="false"
-    append-to-body
-    title="过滤条件"
-    width="70%"
-    :visible.sync="box"
-  >
-    <el-row :span="24" :class="b('dialog', ['overflow'])">
+  <el-dialog :class="b('dialog')"
+             lock-scroll
+             :modal-append-to-body="false"
+             append-to-body
+             :fullscreen="$parent.isMobile"
+             title="过滤条件"
+             :width="$parent.isMobile?'100%':config.dialogWidth"
+             :visible.sync="box">
+    <el-row :span="24"
+            :class="b('dialog', ['overflow'])">
       <div :class="b('filter-menu')">
         <el-button-group>
-          <el-button type="primary" :size="$parent.isMediumSize" @click="handleAdd">新增条件</el-button>
-          <el-button type="primary" :size="$parent.isMediumSize" @click="handleClear">清空条件</el-button>
-          <el-button type="primary" :size="$parent.isMediumSize" @click="handleValueClear">清空数据</el-button>
+          <el-button type="primary"
+                     :size="$parent.isMediumSize"
+                     @click="handleAdd">新增条件</el-button>
+          <el-button type="primary"
+                     :size="$parent.isMediumSize"
+                     @click="handleClear">清空条件</el-button>
+          <el-button type="primary"
+                     :size="$parent.isMediumSize"
+                     @click="handleValueClear">清空数据</el-button>
         </el-button-group>
       </div>
-      <el-col :span="12" v-for="(column,index) in list" :key="index" :class="b('filter-item')">
-        <avue-select
-          v-model="column.text"
-          :dic="columnOption"
-          :props="columnProps"
-          :clearable="false"
-          @change="handleChange(column.text,index)"
-          :size="$parent.isMediumSize"
-          :class="b('filter-label')"
-        ></avue-select>
-        <avue-select
-          :class="b('filter-symbol')"
-          v-model="column.symbol"
-          :dic="symbolDic"
-          :clearable="false"
-          :size="$parent.isMediumSize"
-        ></avue-select>
-        <component
-          v-model="column.value"
-          :class="b('filter-value')"
-          :clearable="false"
-          :defaultExpandAll="columnList[index].defaultExpandAll"
-          :dic="$parent.DIC[columnList[index].prop]"
-          :format="columnList[index].format"
-          :is="getSearchType(columnList[index].type)"
-          multiple
-          placeholder="条件"
-          :parent="columnList[index].parent"
-          :props="columnList[index].props || $parent.tableOption.props"
-          :size="$parent.isMediumSize"
-          :type="getType(columnList[index])"
-          :value-format="columnList[index].valueFormat"
-        ></component>
-        <el-button
-          type="danger"
-          :class="b('filter-icon')"
-          size="mini"
-          @click="handleDelete(index)"
-          circle
-          icon="el-icon-minus"
-        ></el-button>
+      <el-col :md="12"
+              :xs="24"
+              :sm="12"
+              v-for="(column,index) in list"
+              :key="index"
+              :class="b('filter-item')">
+        <avue-select v-model="column.text"
+                     :dic="columnOption"
+                     :props="columnProps"
+                     :clearable="false"
+                     @change="handleChange(column.text,index)"
+                     :size="$parent.isMediumSize"
+                     :class="b('filter-label')"></avue-select>
+        <avue-select :class="b('filter-symbol')"
+                     v-model="column.symbol"
+                     :dic="symbolDic"
+                     :clearable="false"
+                     :size="$parent.isMediumSize"></avue-select>
+        <component v-model="column.value"
+                   :class="b('filter-value')"
+                   :clearable="false"
+                   :defaultExpandAll="columnList[index].defaultExpandAll"
+                   :dic="$parent.DIC[columnList[index].prop]"
+                   :format="columnList[index].format"
+                   :is="getSearchType(columnList[index].type)"
+                   multiple
+                   placeholder="条件"
+                   :parent="columnList[index].parent"
+                   :props="columnList[index].props || $parent.tableOption.props"
+                   :size="$parent.isMediumSize"
+                   :type="getType(columnList[index])"
+                   :value-format="columnList[index].valueFormat"></component>
+        <el-button type="danger"
+                   :class="b('filter-icon')"
+                   size="mini"
+                   @click="handleDelete(index)"
+                   circle
+                   icon="el-icon-minus"></el-button>
       </el-col>
     </el-row>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="box = false" :size="$parent.isMediumSize">取 消</el-button>
-      <el-button type="primary" :size="$parent.isMediumSize" @click="handleSubmit">确 定</el-button>
+    <span slot="footer"
+          class="dialog-footer">
+      <el-button @click="box = false"
+                 :size="$parent.isMediumSize">取 消</el-button>
+      <el-button type="primary"
+                 :size="$parent.isMediumSize"
+                 @click="handleSubmit">确 定</el-button>
     </span>
   </el-dialog>
 </template>

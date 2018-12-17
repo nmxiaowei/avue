@@ -49,7 +49,9 @@ export default create({
       form: {},
       formList: [],
       formDefault: {},
-      formCreate: true
+      formCreate: true,
+      formCascaderInit: false,
+      formCascaderList: []
     };
   },
   watch: {
@@ -79,6 +81,7 @@ export default create({
       list.forEach((ele, index) => {
         //处理级联地址
         if (!this.validatenull(ele.cascaderItem)) {
+          this.formCascaderList.push(ele.prop);
           let cascader = [...ele.cascaderItem];
           list[index].cascader = [...cascader];
           cascader.forEach((item, cindex) => {
@@ -107,8 +110,45 @@ export default create({
     this.dataformat();
     //初始化字典
     this.handleLoadDic();
+    setTimeout(() => {
+      this.formCascaderList.forEach(ele => {
+        if (this.validatenull(this.form[ele])) {
+          this.cascaderInit();
+        }
+      });
+    }, 500);
   },
   methods: {
+    cascaderInit() {
+      if (this.formCascaderInit) return;
+      this.columnOption.forEach((ele, index) => {
+        const list = this.columnOption;
+        if (!this.validatenull(ele.cascaderItem)) {
+          let cascader = [...ele.cascaderItem];
+          const str = list[index].cascader.join(",");
+          //处理级联地址
+          if (
+            this.validatenull(this.form[ele.prop]) &&
+            !this.validatenull(list[index].cascader) &&
+            !this.formList.includes(str)
+          ) {
+            this.formList.push(str);
+          }
+          cascader.forEach((item, cindex) => {
+            const columnIndex = index + cindex + 1;
+            const str = list[columnIndex].cascader.join(",");
+            if (
+              this.validatenull(this.form[list[columnIndex].prop]) &&
+              !this.validatenull(list[columnIndex].cascader) &&
+              !this.formList.includes(str)
+            ) {
+              this.formList.push(str);
+            }
+          });
+        }
+      });
+      this.formCascaderInit = true;
+    },
     dataformat() {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);

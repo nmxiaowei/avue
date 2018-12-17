@@ -2,7 +2,7 @@ import { vaildData, setPx } from 'utils/util.js';
 import { getComponent, getPlaceholder } from 'core/dataformat';
 import { loadDic, loadCascaderDic } from 'core/dic';
 import { detail } from 'core/detail';
-export default function() {
+export default function () {
   return {
     props: {
       option: {
@@ -31,10 +31,6 @@ export default function() {
     },
     created() {
       this.init();
-      this.getIsMobile();
-      window.onresize = () => {
-        this.getIsMobile();
-      };
     },
     computed: {
       menuType() {
@@ -59,14 +55,20 @@ export default function() {
         this.detail = detail;
         this.getPlaceholder = getPlaceholder;
         this.tableOption = this.option;
+        this.getIsMobile();
+        window.onresize = () => {
+          this.getIsMobile();
+        };
       },
       // 加载字典
-      handleLoadDic() {
+      handleLoadDic(option) {
         const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
         // 初始化字典
         if (dicFlag) {
-          loadDic(this.tableOption).then(res => {
-            this.DIC = this.deepClone(res);
+          loadDic(option || this.tableOption).then(res => {
+            Object.keys(res).forEach(ele => {
+              this.$set(this.DIC, ele, res[ele])
+            });
           });
           // 加载传进来的字典
         } else {

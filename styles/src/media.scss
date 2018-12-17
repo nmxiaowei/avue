@@ -5,10 +5,11 @@
   }
   .el-upload-list--picture-card .el-upload-list__item,
   .avue-upload__avatar,
-  .el-upload--picture-card {
-    width: 80px;
-    height: 80px;
-    line-height: 100px;
+  .el-upload--picture-card,.avue-upload__icon {
+    $size:100px;
+    width:  $size;
+    height: $size;
+    line-height: $size;
   }
   .avue-tip {
     display: none;
@@ -22,7 +23,7 @@
       flex: 1;
     }
     .el-form-item__content {
-      flex: 4;
+      flex: 5;
     }
     &__searchMenu {
       text-align: center;

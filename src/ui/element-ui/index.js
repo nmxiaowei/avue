@@ -3,6 +3,7 @@ import Crud from 'components/crud';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
+import Detail from 'components/detail';
 import Time from 'components/time';
 import Input from 'components/input';
 import Radio from 'components/radio';
@@ -25,7 +26,6 @@ if (!window.ELEMENT) {
     'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js',
     'warning'
   );
-  return;
 }
 Vue.use(_export);
 export default [
@@ -44,5 +44,6 @@ export default [
   Rate,
   Upload,
   Silder,
-  Img
+  Img,
+  Detail
 ];

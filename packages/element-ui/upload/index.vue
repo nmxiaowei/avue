@@ -1,30 +1,32 @@
 <template>
   <div :class="b()">
-    <el-upload
-      :class="b({'list':listType=='picture-img'})"
-      @click.native="handleClick"
-      :action="action"
-      :on-remove="handleRemove"
-      :before-remove="beforeRemove"
-      :multiple="multiple"
-      :on-preview="handlePictureCardPreview"
-      :limit="status?99:limit"
-      :http-request="httpRequest"
-      :drag="drag"
-      :readonly="readonly"
-      :show-file-list="showFileList"
-      :list-type="listType"
-      :on-change="handleChange"
-      :on-exceed="handleExceed"
-      :disabled="disabled"
-      :file-list="fileList"
-    >
+    <el-upload :class="b({'list':listType=='picture-img'})"
+               @click.native="handleClick"
+               :action="action"
+               :on-remove="handleRemove"
+               :before-remove="beforeRemove"
+               :multiple="multiple"
+               :on-preview="handlePictureCardPreview"
+               :limit="status?99:limit"
+               :http-request="httpRequest"
+               :drag="drag"
+               :readonly="readonly"
+               :show-file-list="showFileList"
+               :list-type="listType"
+               :on-change="handleChange"
+               :on-exceed="handleExceed"
+               :disabled="disabled"
+               :file-list="fileList">
       <template v-if="listType=='picture-card'">
         <i class="el-icon-plus"></i>
       </template>
       <template v-else-if="listType=='picture-img'">
-        <img v-if="imageUrl" :src="imageUrl" :class="b('avatar')">
-        <i v-else class="el-icon-plus" :class="b('icon')"></i>
+        <img v-if="imageUrl"
+             :src="imageUrl"
+             :class="b('avatar')">
+        <i v-else
+           class="el-icon-plus"
+           :class="b('icon')"></i>
       </template>
       <template v-else-if="drag">
         <i class="el-icon-upload"></i>
@@ -34,13 +36,17 @@
         </div>
       </template>
       <template v-else>
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small"
+                   type="primary">点击上传</el-button>
       </template>
-      <div slot="tip" class="el-upload__tip">{{tip}}</div>
+      <div slot="tip"
+           class="el-upload__tip">{{tip}}</div>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
       <div class="avue-dialog">
-        <img width="100%" :src="dialogImageUrl" alt>
+        <img width="100%"
+             :src="dialogImageUrl"
+             alt>
       </div>
     </el-dialog>
   </div>
@@ -195,17 +201,18 @@ export default create({
         this.$http
           .post(this.action, param, { headers })
           .then(res => {
+            const list = res.data.data ? res.data.data : res.data;
             if (typeof this.uploadAfter === "function")
               this.uploadAfter(
-                res,
+                list,
                 () => {
-                  this.show(res);
+                  this.show(list);
                 },
                 () => {
                   this.loading.close();
                 }
               );
-            else this.show(res);
+            else this.show(list);
           })
           .catch(error => {
             if (typeof this.uploadAfter === "function")

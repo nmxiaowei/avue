@@ -1,67 +1,60 @@
 <template>
-  <el-dialog
-    lock-scroll
-    :class="b('dialog')"
-    :custom-class="vaildData($parent.tableOption.customClass,config.customClass)"
-    :fullscreen="$parent.isMobile?true:$parent.tableOption.dialogFullscreen"
-    :modal-append-to-body="false"
-    append-to-body
-    :title="dialogTitle"
-    :close-on-press-escape="$parent.tableOption.dialogEscape"
-    :close-on-click-modal="$parent.tableOption.dialogClickModal"
-    :modal="$parent.tableOption.dialogModal"
-    :show-close="$parent.tableOption.dialogCloseBtn"
-    :visible.sync="boxVisible"
-    :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
-    @close="closeDialog"
-  >
-    <div :class="b('dialog', ['overflow'])" v-if="boxVisible">
-      <avue-form
-        v-model="tableForm"
-        ref="tableForm"
-        :disabled="keyBtn"
-        :uploadBefore="uploadBefore"
-        :uploadAfter="uploadAfter"
-        :option="formOption"
-      >
-        <template slot-scope="scope" v-for="item in $parent.columnOption" :slot="item.prop">
-          <slot
-            :value="scope.value"
-            :column="scope.column"
-            :dic="scope.dic"
-            :size="scope.size"
-            :label="scope.label"
-            :disabled="scope.disabled"
-            :row="tableForm"
-            :index="tableIndex"
-            :name="item.prop"
-            v-if="item.formslot"
-          ></slot>
+  <el-dialog lock-scroll
+             :class="b('dialog')"
+             :custom-class="vaildData($parent.tableOption.customClass,config.customClass)"
+             :fullscreen="$parent.isMobile?true:$parent.tableOption.dialogFullscreen"
+             :modal-append-to-body="false"
+             append-to-body
+             :title="dialogTitle"
+             :close-on-press-escape="$parent.tableOption.dialogEscape"
+             :close-on-click-modal="$parent.tableOption.dialogClickModal"
+             :modal="$parent.tableOption.dialogModal"
+             :show-close="$parent.tableOption.dialogCloseBtn"
+             :visible.sync="boxVisible"
+             :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
+             @close="closeDialog">
+    <div :class="b('dialog', ['overflow'])">
+      <avue-form v-model="tableForm"
+                 ref="tableForm"
+                 :disabled="keyBtn"
+                 :uploadBefore="uploadBefore"
+                 :uploadAfter="uploadAfter"
+                 :option="formOption">
+        <template slot-scope="scope"
+                  v-for="item in $parent.columnOption"
+                  :slot="item.prop">
+          <slot :value="scope.value"
+                :column="scope.column"
+                :dic="scope.dic"
+                :size="scope.size"
+                :label="scope.label"
+                :disabled="scope.disabled"
+                :row="tableForm"
+                :index="tableIndex"
+                :name="item.prop"
+                v-if="item.formslot"></slot>
         </template>
       </avue-form>
     </div>
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer"
+          class="dialog-footer">
       <!-- 弹出框按钮组 -->
-      <slot name="menuForm" :type="boxType" :size="$parent.controlSize"></slot>
-      <el-button
-        type="primary"
-        @click="rowUpdate"
-        :size="$parent.controlSize"
-        v-if="boxType==='edit'"
-        :loading="keyBtn"
-      >{{vaildData($parent.tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
-      <el-button
-        type="primary"
-        @click="rowSave"
-        :size="$parent.controlSize"
-        :loading="keyBtn"
-        v-else-if="boxType==='add'"
-      >{{vaildData($parent.tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
-      <el-button
-        :size="$parent.controlSize"
-        v-if="boxType!=='view'"
-        @click="closeDialog"
-      >{{vaildData($parent.tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
+      <slot name="menuForm"
+            :type="boxType"
+            :size="$parent.controlSize"></slot>
+      <el-button type="primary"
+                 @click="rowUpdate"
+                 :size="$parent.controlSize"
+                 v-if="boxType==='edit'"
+                 :loading="keyBtn">{{vaildData($parent.tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
+      <el-button type="primary"
+                 @click="rowSave"
+                 :size="$parent.controlSize"
+                 :loading="keyBtn"
+                 v-else-if="boxType==='add'">{{vaildData($parent.tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
+      <el-button :size="$parent.controlSize"
+                 v-if="boxType!=='view'"
+                 @click="closeDialog">{{vaildData($parent.tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
     </span>
   </el-dialog>
 </template>

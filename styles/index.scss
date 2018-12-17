@@ -1,16 +1,19 @@
 @import './src/common.scss';
 @import './src/elementui-reset.scss';
 @import './src/vant-reset.scss';
-@import './src/carousel.scss';
-@import './src/crud.scss';
-@import './src/img.scss';
-@import './src/upload.scss';
-@import './src/form.scss';
-@import './src/date.scss';
-@import './src/checkbox.scss';
-@import './src/radio.scss';
-@import './src/select.scss';
 @import './src/media.scss';
+
+//element-ui
+@import './src/element-ui/carousel.scss';
+@import './src/element-ui/crud.scss';
+@import './src/element-ui/img.scss';
+@import './src/element-ui/upload.scss';
+@import './src/element-ui/form.scss';
+@import './src/element-ui/date.scss';
+@import './src/element-ui/checkbox.scss';
+@import './src/element-ui/radio.scss';
+@import './src/element-ui/select.scss';
+@import './src/element-ui/detail.scss';
 
 
 // 数据展示

@@ -14,6 +14,5 @@ if (!window.vant) {
     'https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js',
     'warning'
   );
-  return;
 }
 export default [Form, Select, Input, Radio, Checkbox, Date, Time, Switch];

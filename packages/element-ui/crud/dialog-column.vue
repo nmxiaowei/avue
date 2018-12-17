@@ -1,18 +1,22 @@
 <template>
-  <el-dialog
-    lock-scroll
-    :modal-append-to-body="false"
-    append-to-body
-    :title="config.columnBtnTitle"
-    :visible.sync="columnBox"
-  >
-    <avue-checkbox v-model="columnIndex" :dic="columnList" :props="defaultProps"></avue-checkbox>
+  <el-dialog :class="b('dialog')"
+             lock-scroll
+             :modal-append-to-body="false"
+             append-to-body
+             :fullscreen="$parent.isMobile"
+             :title="config.columnBtnTitle"
+             :width="$parent.isMobile?'100%':config.dialogWidth"
+             :visible.sync="columnBox">
+    <avue-checkbox v-model="columnIndex"
+                   :dic="columnList"
+                   :props="defaultProps"></avue-checkbox>
   </el-dialog>
 </template>
 <script>
 import config from "./config";
+import create from "core/create";
 import { validatenull } from "utils/validate";
-export default {
+export default create({
   data() {
     return {
       config: config,
@@ -51,6 +55,6 @@ export default {
       addChild(this.$parent.columnOption);
     }
   }
-};
+});
 </script>
 
