@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue-data.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-data-test :option="option"></avue-data-test>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          span:6,
+          data: [
+           {
+               title:'香菜',
+               color:'yellow',
+               icon:'el-icon-mobile-phone',
+               content:'殷其雷，天阴霾，雨零耶，盼君留。 殷其雷，纵不零，卿若留，吾将从。',
+               href:"http://www.baidu.com",
+               target:'_blank',
+               name:'文件上传',
+               date:'1天前'
+           },
+           {
+               title:'钉宫',
+               icon:'el-icon-bell',
+               color:'green',
+               content:'殷其雷，天阴霾，雨零耶，盼君留。 殷其雷，纵不零，卿若留，吾将从。',
+               href:"http://www.baidu.com",
+               name:'流加载',
+               date:'1天前'
+           },
+           {
+               title:'亚丝娜',
+               icon:'el-icon-service',
+               color:'#3fa1ff',
+               content:'殷其雷，天阴霾，雨零耶，盼君留。 殷其雷，纵不零，卿若留，吾将从。',
+               href:"http://www.baidu.com",
+               name:'表单',
+               date:'1天前'
+           },
+           {
+               title:'狂三',
+               icon:'el-icon-time',
+               color:'red',
+               content:'殷其雷，天阴霾，雨零耶，盼君留。 殷其雷，纵不零，卿若留，吾将从。',
+               href:"http://www.baidu.com",
+               name:'文件上传',
+               date:'1天前'
+           },
+           {
+               title:'桐人',
+               icon:'el-icon-date',
+               color:'blue',
+               content:'殷其雷，天阴霾，雨零耶，盼君留。 殷其雷，纵不零，卿若留，吾将从。',
+               href:"http://www.baidu.com",
+               name:'文件上传',
+               date:'1天前'
+           },
+           {
+               title:'士郎',
+               icon:'el-icon-view',
+               color:'',
+               content:'殷其雷，天阴霾，雨零耶，盼君留。 殷其雷，纵不零，卿若留，吾将从。',
+               href:"http://www.baidu.com",
+               name:'文件上传',
+               date:'1天前'
+           }
+          ]
+        },
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

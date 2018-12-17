@@ -1,0 +1,48 @@
+.avue-data-test{
+    .item{
+        padding: 10px 20px;
+        margin: 10px 20px;
+        background: #F8F8F8;
+        &-header{
+            width: 80%;
+            margin: 0 auto;
+            position: relative;
+            i {
+                font-size: 26px;
+                color: #009688;
+            }
+            a {
+                font-size: 16px;
+                margin-left: 6px;
+                position: absolute;
+                bottom: 4px;
+            }
+        }
+        &-content{
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 8PX;
+            font-size:14px;
+            line-height: 22px;
+            color:#333;
+        }
+        &-footer{
+            width: 80%;
+            margin: 0 auto;
+            position: relative;
+            span:nth-child(1) {
+                color: #777;
+                font-size: 12px;
+                text-overflow: ellipsis;
+                word-break: break-all;
+            }
+            span:nth-child(2) {
+                color: #CCC;
+                font-size: 12px;
+                line-height: 24px;
+                position: absolute;
+                right: 0
+            }
+        }
+    }
+}

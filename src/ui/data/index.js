@@ -1,2 +1,3 @@
 import Tabs from 'components/tabs';
-export default [Tabs];
+import Test  from 'components/test';
+export default [Tabs,Test];
