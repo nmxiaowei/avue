@@ -5,7 +5,7 @@
              append-to-body
              :fullscreen="$parent.isMobile"
              :title="config.columnBtnTitle"
-             :width="$parent.isMobile?'100%':config.dialogWidth"
+             :width="$parent.isMobile?'100%':''"
              :visible.sync="columnBox">
     <avue-checkbox v-model="columnIndex"
                    :dic="columnList"

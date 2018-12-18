@@ -1,127 +1,136 @@
 <template>
   <div :class="b()"
-       :style="{width:setPx(tableOption.formWidth,'100%')}">
+       :style="{width:setPx(parentOption.formWidth,'100%')}">
+
     <el-form ref="form"
              status-icon
              :model="form"
-             :label-position="tableOption.labelPosition"
+             :label-position="parentOption.labelPosition"
              :size="controlSize"
-             :label-width="setPx(tableOption.labelWidth,80)"
+             :label-width="setPx(parentOption.labelWidth,80)"
              :rules="formRules">
       <el-row :gutter="20"
               :span="24">
-        <draggable :list="columnOption"
-                   :options="dragOptions"
-                   :class="b('group')">
-          <template v-if="vaildVisdiplay(column)"
-                    v-for="(column,index) in columnOption">
-            <el-col :key="column.prop"
-                    :md="column.span||12"
-                    :xs="24"
-                    :class="b('row',{'cursor':draggableStart})"
-                    @mouseover.native="draggableMenu?mouseover(index):''"
-                    @mouseout.native="draggableMenu?mouseout(index):''">
-              <div :class="b('option')"
-                   v-if="optionIndex[index]">
-                <i class="el-icon-menu"
-                   @click="optionMenu(column,index)"></i>
-                <i class="el-icon-delete"
-                   @click="optionDelete(column,index)"></i>
-              </div>
-              <el-form-item :label="column.label"
-                            :prop="column.prop"
-                            :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)">
-                <el-tooltip :disabled="!column.tip"
-                            :content="vaildData(column.tip,getPlaceholder(column))"
-                            :placement="column.tipPlacement">
-                  <slot :value="form[column.prop]"
-                        :column="column"
-                        :label="form['$'+column.prop]"
-                        :size="column.size || controlSize"
-                        :disabled="vaildDisabled(column)"
-                        :dic="DIC[column.prop]"
-                        :name="column.prop"
-                        v-if="column.formslot"></slot>
+        <div>
+          <avue-group v-for="(item,index) in columnOption"
+                      :key="item.prop"
+                      :icon="item.icon"
+                      :card="parentOption.card"
+                      :label="item.label">
+            <draggable :list="item.column"
+                       :options="dragOptions"
+                       :class="b('group')">
+              <template v-if="vaildVisdiplay(column)"
+                        v-for="(column,cindex) in item.column">
+                <el-col :key="column.prop"
+                        :md="column.span||12"
+                        :xs="24"
+                        :class="b('row',{'cursor':draggableStart})"
+                        @mouseover.native="draggableMenu?mouseover(cindex):''"
+                        @mouseout.native="draggableMenu?mouseout(cindex):''">
+                  <div :class="b('option')"
+                       v-if="optionIndex[cindex]">
+                    <i class="el-icon-menu"
+                       @click="optionMenu(column,cindex)"></i>
+                    <i class="el-icon-delete"
+                       @click="optionDelete(column,cindex)"></i>
+                  </div>
+                  <el-form-item :label="column.label"
+                                :prop="column.prop"
+                                :label-width="setPx(column.labelWidth,parentOption.labelWidth || 80)">
+                    <el-tooltip :disabled="!column.tip"
+                                :content="vaildData(column.tip,getPlaceholder(column))"
+                                :placement="column.tipPlacement">
+                      <slot :value="form[column.prop]"
+                            :column="column"
+                            :label="form['$'+column.prop]"
+                            :size="column.size || controlSize"
+                            :disabled="vaildDisabled(column)"
+                            :dic="DIC[column.prop]"
+                            :name="column.prop"
+                            v-if="column.formslot"></slot>
 
-                  <component :is="getComponent(column.type,column.component)"
-                             v-else
-                             :action="column.action"
-                             :append="column.append"
-                             :border="column.border"
-                             :change="column.change"
-                             :changeoOnSelect="column.changeoOnSelect"
-                             :checked="column.checked"
-                             :clearable="column.clearable"
-                             :click="column.click"
-                             :column="column"
-                             :colors="column.colors"
-                             :controls-position="column.controlsPosition"
-                             :dataType="column.dataType"
-                             :defaultExpandAll="column.defaultExpandAll"
-                             :defaultTime="column.defaultTime"
-                             :dic="DIC[column.prop]"
-                             :disabled="vaildDisabled(column)"
-                             :drag="column.drag"
-                             :endPlaceholder="column.endPlaceholder"
-                             :expand-trigger="column.expandTrigger"
-                             :filter="column.filter"
-                             :filterable="column.filterable"
-                             :format="column.format"
-                             :formatTooltip="column.formatTooltip"
-                             :iconClasses="column.iconClasses"
-                             :label="column.label"
-                             :limit="column.limit"
-                             :listType="column.listType"
-                             :loadText="column.loadText"
-                             :min="column.min"
-                             :max="column.max"
-                             :minlength="column.minlength"
-                             :maxlength="column.maxlength"
-                             :minRows="column.minRows"
-                             :maxRows="column.maxRows"
-                             :multiple="column.multiple"
-                             :nodeClick="column.nodeClick"
-                             :options="column.options"
-                             :parent="column.parent"
-                             :pickerOptions="column.pickerOptions"
-                             :placeholder="getPlaceholder(column)"
-                             :precision="column.precision"
-                             :prefixIcon="column.prefixIcon"
-                             :prepend="column.prepend"
-                             :prop="column.prop"
-                             :props="column.props || tableOption.props"
-                             :propsHttp="column.propsHttp ||tableOption.propsHttp"
-                             :range="column.range"
-                             :readonly="vaildData(draggableStart,column.readonly)"
-                             :separator="column.separator"
-                             :showFileList="column.showFileList"
-                             :showInput="column.showInput"
-                             :showStops="column.showStops"
-                             :showText="column.showText"
-                             :size="column.size || controlSize"
-                             :startPlaceholder="column.startPlaceholder"
-                             :step="column.step"
-                             :suffixIcon="column.suffixIcon"
-                             :texts="column.texts"
-                             :tip="column.tip"
-                             :type="column.type"
-                             :upload-before="uploadBefore"
-                             :upload-after="uploadAfter"
-                             :value-format="column.valueFormat"
-                             :voidIconClass="column.voidIconClass"
-                             v-model="form[column.prop]"
-                             @change="column.cascader?handleChange(index):''"></component>
-                </el-tooltip>
-              </el-form-item>
-            </el-col>
-            <div :class="b('line')"
-                 :key="index"
-                 :style="{width:(column.count/24*100)+'%'}"
-                 v-if="column.row && column.span!==24 && column.count"></div>
-          </template>
-        </draggable>
+                      <component :is="getComponent(column.type,column.component)"
+                                 v-else
+                                 :action="column.action"
+                                 :append="column.append"
+                                 :border="column.border"
+                                 :change="column.change"
+                                 :changeoOnSelect="column.changeoOnSelect"
+                                 :checked="column.checked"
+                                 :clearable="column.clearable"
+                                 :click="column.click"
+                                 :column="column"
+                                 :colors="column.colors"
+                                 :controls-position="column.controlsPosition"
+                                 :dataType="column.dataType"
+                                 :defaultExpandAll="column.defaultExpandAll"
+                                 :defaultTime="column.defaultTime"
+                                 :dic="DIC[column.prop]"
+                                 :disabled="vaildDisabled(column)"
+                                 :drag="column.drag"
+                                 :endPlaceholder="column.endPlaceholder"
+                                 :expand-trigger="column.expandTrigger"
+                                 :filter="column.filter"
+                                 :filterable="column.filterable"
+                                 :format="column.format"
+                                 :formatTooltip="column.formatTooltip"
+                                 :iconClasses="column.iconClasses"
+                                 :label="column.label"
+                                 :limit="column.limit"
+                                 :listType="column.listType"
+                                 :loadText="column.loadText"
+                                 :min="column.min"
+                                 :max="column.max"
+                                 :minlength="column.minlength"
+                                 :maxlength="column.maxlength"
+                                 :minRows="column.minRows"
+                                 :maxRows="column.maxRows"
+                                 :multiple="column.multiple"
+                                 :nodeClick="column.nodeClick"
+                                 :options="column.options"
+                                 :parent="column.parent"
+                                 :pickerOptions="column.pickerOptions"
+                                 :placeholder="getPlaceholder(column)"
+                                 :precision="column.precision"
+                                 :prefixIcon="column.prefixIcon"
+                                 :prepend="column.prepend"
+                                 :prop="column.prop"
+                                 :props="column.props || parentOption.props"
+                                 :propsHttp="column.propsHttp ||parentOption.propsHttp"
+                                 :range="column.range"
+                                 :readonly="vaildData(draggableStart,column.readonly)"
+                                 :separator="column.separator"
+                                 :showFileList="column.showFileList"
+                                 :showInput="column.showInput"
+                                 :showStops="column.showStops"
+                                 :showText="column.showText"
+                                 :size="column.size || controlSize"
+                                 :startPlaceholder="column.startPlaceholder"
+                                 :step="column.step"
+                                 :suffixIcon="column.suffixIcon"
+                                 :texts="column.texts"
+                                 :tip="column.tip"
+                                 :type="column.type"
+                                 :upload-before="uploadBefore"
+                                 :upload-after="uploadAfter"
+                                 :value-format="column.valueFormat"
+                                 :voidIconClass="column.voidIconClass"
+                                 v-model="form[column.prop]"
+                                 @change="column.cascader?handleChange(item.column,cindex):''"></component>
+                    </el-tooltip>
+                  </el-form-item>
+                </el-col>
+                <div :class="b('line')"
+                     :key="cindex"
+                     :style="{width:(column.count/24*100)+'%'}"
+                     v-if="!isMobile && column.row && column.span!==24 && column.count"></div>
+              </template>
+            </draggable>
+          </avue-group>
+        </div>
         <el-col :span="24"
-                v-if="vaildData(tableOption.menuBtn,true)">
+                v-if="vaildData(parentOption.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
             <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPostion])">
@@ -129,16 +138,16 @@
                          @click="handleMock"
                          :size="controlSize"
                          icon="el-icon-edit-outline"
-                         v-if="vaildData(tableOption.mock,false)">一键填充数据</el-button>
+                         v-if="vaildData(parentOption.mock,false)">一键填充数据</el-button>
               <el-button type="primary"
                          @click="submit"
                          :size="controlSize"
                          icon="el-icon-check"
-                         v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提 交')}}</el-button>
+                         v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
                          :size="controlSize"
-                         v-if="vaildData(tableOption.emptyBtn,true)"
-                         @click="resetForm">{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
+                         v-if="vaildData(parentOption.emptyBtn,true)"
+                         @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
               <slot name="menuForm"
                     :size="controlSize"></slot>
             </div>
@@ -146,6 +155,7 @@
         </el-col>
       </el-row>
     </el-form>
+
   </div>
 </template>
 
@@ -200,28 +210,43 @@ export default create({
     }
   },
   computed: {
+    parentOption() {
+      let option = this.deepClone(this.tableOption);
+      let group = option.group;
+      if (!group) {
+        option = Object.assign(option, {
+          group: [this.deepClone(option)]
+        });
+      }
+      delete option.column;
+      return option;
+    },
     //动态计算列的位置
     columnOption() {
-      let list = [...this.tableOption.column] || [];
-      let count = 0;
+      let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
-        if (this.vaildData(ele.visdiplay, true)) ele = calcCount(ele);
-        //处理级联地址
-        if (!this.validatenull(ele.cascaderItem)) {
-          this.formCascaderList.push(ele.prop);
-          let cascader = [...ele.cascaderItem];
-          list[index].cascader = [...cascader];
-          cascader.forEach((item, cindex) => {
-            const columnIndex = index + cindex + 1;
-            list[columnIndex].cascaderChange = ele.cascaderChange;
-            list[columnIndex].cascader = [...cascader].splice(cindex + 1);
-          });
-        }
+        (ele.column || []).forEach((column, cindex) => {
+          if (this.vaildData(column.visdiplay, true))
+            column = calcCount(column, 12, cindex === 0);
+          //处理级联地址
+          if (!this.validatenull(column.cascaderItem)) {
+            this.formCascaderList.push(column.prop);
+            let cascader = [...column.cascaderItem];
+            ele.column[cindex].cascader = [...cascader];
+            cascader.forEach((item, tindex) => {
+              const columnIndex = cindex + tindex + 1;
+              ele.column[columnIndex].cascaderChange = column.cascaderChange;
+              ele.column[columnIndex].cascader = [...cascader].splice(
+                tindex + 1
+              );
+            });
+          }
+        });
       });
       return list;
     },
     draggable() {
-      return this.tableOption.draggable || {};
+      return this.parentOption.draggable || {};
     },
     draggableMenu() {
       return this.draggable.menu || false;
@@ -257,21 +282,21 @@ export default create({
       };
     },
     menuWidth: function() {
-      if (this.tableOption.menuPostion === "left") {
+      if (this.parentOption.menuPostion === "left") {
         return "";
       } else {
         return "0";
       }
     },
     menuPostion: function() {
-      if (this.tableOption.menuPostion) {
-        return this.tableOption.menuPostion;
+      if (this.parentOption.menuPostion) {
+        return this.parentOption.menuPostion;
       } else {
         return "center";
       }
     },
     boxType: function() {
-      return this.tableOption.boxType;
+      return this.parentOption.boxType;
     }
   },
   props: {
@@ -291,11 +316,15 @@ export default create({
   },
   created() {
     // 规则初始化
-    this.rulesInit();
+    this.columnOption.forEach(ele => {
+      this.rulesInit(ele.column);
+    });
     // 初始化表单
     this.dataformat();
     //初始化字典
-    this.handleLoadDic();
+    this.columnOption.forEach(ele => {
+      this.handleLoadDic(ele);
+    });
     setTimeout(() => {
       this.formCascaderList.forEach(ele => {
         if (this.validatenull(this.form[ele])) {
@@ -336,15 +365,21 @@ export default create({
       this.formCascaderInit = true;
     },
     dataformat() {
-      this.formDefault = formInitVal(this.columnOption);
-      this.form = this.deepClone(this.formDefault.tableForm);
+      let formDefault = {};
+      this.columnOption.forEach(ele => {
+        formDefault = Object.assign(
+          formInitVal(ele.column),
+          this.deepClone(formDefault)
+        );
+      });
+      this.formDefault = formDefault;
+      this.form = this.deepClone(formDefault.tableForm);
       this.formVal();
     },
 
-    handleChange(index) {
-      const columnOption = [...this.columnOption];
-      const column = columnOption[index];
-      const columnNext = columnOption[index + 1] || {};
+    handleChange(item, index) {
+      const column = item[index];
+      const columnNext = item[index + 1] || {};
       const columnNextProp = columnNext.prop;
       const list = column.cascader;
       const str = list.join(",");
@@ -452,9 +487,9 @@ export default create({
         return true;
       }
     },
-    rulesInit() {
+    rulesInit(option) {
       this.formRules = {};
-      this.columnOption.forEach(ele => {
+      (option || this.columnOption).forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },

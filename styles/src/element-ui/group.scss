@@ -1,0 +1,41 @@
+.avue-group{
+  &--card{
+    padding: 0 20px;
+    &:last-child{
+      margin-bottom: 50px;
+    }
+    .avue-group__item{
+      box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.15);
+    }
+  }
+  &__item {
+    margin-bottom: 20px;
+    padding: 10px 20px 30px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    border-radius: 5px;
+    box-sizing: border-box;
+    &:last-child {
+        border-bottom: none;
+    }
+  }
+
+  &__header {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    border-bottom:1px solid #eee;
+}
+  &__icon {
+      margin-right: 8px;
+      font-size: 20px;
+  }
+  &__title {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+  }
+}

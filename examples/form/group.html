@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <el-button @click="handle" style="margin-left: 20px">{{title}}</el-button>
+    <component :is="name" :option="option" v-model="obj" @submit="submit">
+      <template slot-scope="scope" slot="name">
+        <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
+      </template>
+    </component>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avue.top/api/area'
+  new Vue({
+    el: '#app',
+    computed: {
+      title() {
+        return this.type === 0 ? '编辑' : '保存'
+      },
+      name() {
+        return this.type === 0 ? 'avue-detail' : 'avue-form'
+      }
+    },
+    data() {
+      return {
+        type: 0,
+        obj: {
+          name: '11'
+        },
+        option: {
+          card: true,
+          group: [
+            {
+              label: '用户信息',
+              prop: 'yhxx',
+              icon: 'el-icon-edit-outline',
+              column: [
+                {
+                  label: '姓名',
+                  prop: 'name',
+                  formslot: true
+                }
+              ]
+            }, {
+              label: '退款申请',
+              prop: 'tksq',
+              icon: 'el-icon-view',
+              column: [
+                {
+                  label: '省份',
+                  prop: 'province',
+                  type: 'select',
+                  props: {
+                    label: 'name',
+                    value: 'code'
+                  },
+                  cascaderItem: ['city', 'area'],
+                  cascaderChange: true,
+                  dicUrl: `${baseUrl}/getProvince`,
+                  dicData: 'province',
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择省份',
+                      trigger: 'blur'
+                    }
+                  ]
+                },
+                {
+                  label: '城市',
+                  prop: 'city',
+                  type: 'select',
+                  props: {
+                    label: 'name',
+                    value: 'code'
+                  },
+                  defaultIndex: 1,
+                  dicFlag: false,
+                  dicUrl: `${baseUrl}/getCity/{{key}}`,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择城市',
+                      trigger: 'blur'
+                    }
+                  ]
+                },
+                {
+                  label: '地区',
+                  prop: 'area',
+                  type: 'select',
+                  props: {
+                    label: 'name',
+                    value: 'code'
+                  },
+                  defaultIndex: 1,
+                  dicFlag: false,
+                  dicUrl: `${baseUrl}/getArea/{{key}}`,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择地区',
+                      trigger: 'blur'
+                    }
+                  ]
+                },
+                {
+                  label: '多选',
+                  prop: 'checkbox',
+                  type: 'checkbox',
+                  props: {
+                    label: 'name',
+                    value: 'code'
+                  },
+                  span: 24,
+                  dicUrl: `${baseUrl}/getProvince`
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.obj = {
+          name: '111',
+          province: '110000',
+          city: '110100',
+          area: '110101',
+          checkbox: ['110000']
+        }
+      }, 100)
+    },
+    methods: {
+      handle() {
+        if (this.type === 1) {
+          this.type = 0;
+        } else {
+          this.type = 1;
+        }
+      },
+      submit() {
+        this.$message.success(JSON.stringify(this.obj))
+      }
+    }
+  })
+</script>
+
+</html>

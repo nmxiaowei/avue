@@ -5,7 +5,7 @@
              append-to-body
              :fullscreen="$parent.isMobile"
              title="过滤条件"
-             :width="$parent.isMobile?'100%':config.dialogWidth"
+             :width="$parent.isMobile?'100%':''"
              :visible.sync="box">
     <el-row :span="24"
             :class="b('dialog', ['overflow'])">

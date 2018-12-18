@@ -1,34 +1,22 @@
 .avue-detail {
-    padding: 0 20px;
-  &__item {
-      padding: 20px 0 20px 0;
-      border-bottom: 1px solid #eee;
-      &:last-child {
-          border-bottom: none;
-      }
-  }
-  &__icon {
-      margin-right: 10px;
-      font-size: 20px;
-  }
-  &__header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-  }
-  &__title {
-      font-size: 16px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.85);
-  }
+  width:100%;
+  width:100%;
+  padding-top: 20px;
   &__box {
-      margin-bottom: 20px;
+      min-height: 50px;
+      line-height: 50px;
       font-size: 14px;
+      box-sizing: border-box;
+  }
+  &__line{
+    display: inline-block;
+    height: 50px;
   }
   &__label {
       margin-right: 10px;
-      line-height: 20px;
-      color: rgba(0, 0, 0, 0.85);
+      min-width: 80px;
+      display: inline-block;
+      color: #606266;
       &--center {
           text-align: center;
       }
@@ -42,6 +30,6 @@
   &__content {
       line-height: 22px;
       width: 100%;
-      color: rgba(0, 0, 0, 0.65);
+      color: #333;
   }
 }

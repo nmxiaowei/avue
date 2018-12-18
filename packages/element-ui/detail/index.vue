@@ -1,13 +1,10 @@
 <template>
   <div :class="b()">
-    <el-row span="24"
-            :class="b('item')"
-            v-for="(item,index) in columnOption"
-            :key="item.prop">
-      <div :class="b('header')">
-        <i :class="[item.icon,b('icon')]"></i>
-        <h1 :class="b('title')">{{item.label}}</h1>
-      </div>
+    <avue-group v-for="(item,index) in columnOption"
+                :key="item.prop"
+                :card="parentOption.card"
+                :icon="item.icon"
+                :label="item.label">
       <slot :name="item.prop"
             :form="form"
             :column="item"
@@ -25,16 +22,19 @@
                   :form="form"
                   :label="form['$'+column.prop]"
                   v-if="column.slot"></slot>
+            <span v-if="column.parentProp"
+                  :class="b('content')">{{handleDetail(column,item,((cascaderDIC[0] || {})[0] || {})[column.prop])}}</span>
+
             <span v-else
                   :class="b('content')">{{handleDetail(column,item,DIC[column.prop])}}</span>
           </div>
         </el-col>
-        <div class="avue-form__line"
+        <div :class="b('line')"
              :key="index"
              :style="{width:(column.count/24*100)+'%'}"
-             v-if="column.row && column.span!==24 && column.count"></div>
+             v-if="!isMobile && column.row && column.span!==24 && column.count"></div>
       </template>
-    </el-row>
+    </avue-group>
   </div>
 </template>
 
@@ -59,19 +59,44 @@ export default create({
     };
   },
   computed: {
+    parentOption() {
+      let option = this.deepClone(this.tableOption);
+      let group = option.group;
+      if (!group) {
+        option = Object.assign(option, {
+          group: [this.deepClone(option)]
+        });
+      }
+      delete option.column;
+      return option;
+    },
     labelPostion: function() {
       if (this.option.labelPostion) {
         return this.tableOption.labelPostion;
       }
-      return "left";
+      return "right";
     },
     columnOption() {
-      let list = [...this.tableOption.group] || [];
-      let count = 0;
+      let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
         (ele.column || []).forEach((column, cindex) => {
           if (this.vaildData(column.visdiplay, true))
             calcCount(column, 8, cindex === 0);
+          //处理级联地址
+          if (!this.validatenull(column.cascaderItem)) {
+            let cascader = [...column.cascaderItem];
+            let parentProp = column.prop;
+            ele.column[cindex].cascader = [...cascader];
+            cascader.forEach((item, tindex) => {
+              const columnIndex = cindex + tindex + 1;
+              ele.column[columnIndex].parentProp = parentProp;
+              ele.column[columnIndex].cascaderChange = column.cascaderChange;
+              ele.column[columnIndex].cascader = [...cascader].splice(
+                tindex + 1
+              );
+              parentProp = ele.column[columnIndex].prop;
+            });
+          }
         });
       });
       return list;
@@ -81,18 +106,21 @@ export default create({
     value: {
       handler() {
         this.form = this.value;
-      },
-      deep: true,
-      immediate: true
+        this.loadDic();
+      }
     }
   },
   created() {
-    //初始化字典
-    this.columnOption.forEach(ele => {
-      this.handleLoadDic(ele);
-    });
+    this.loadDic();
   },
   methods: {
+    loadDic() {
+      //初始化字典
+      this.columnOption.forEach(ele => {
+        this.handleLoadDic(ele);
+        this.handleLoadCascaderDic(ele.column, this.form);
+      });
+    },
     handleDetail(column, option, DIC) {
       if (!this.validatenull(DIC)) {
         const result = this.detail(this.form, column, option, DIC);

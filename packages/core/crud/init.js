@@ -76,9 +76,15 @@ export default function () {
           this.DIC = this.deepClone(dicData);
         }
       },
-      handleLoadCascaderDic() {
-        loadCascaderDic(this.columnOption, this.data).then(res => {
-          this.cascaderDIC = this.deepClone(res);
+      handleLoadCascaderDic(option, data) {
+        loadCascaderDic(option || this.columnOption, this.data || [data]).then(res => {
+          if (option) {
+            Object.keys(res).forEach(ele => {
+              this.$set(this.cascaderDIC, ele, res)
+            });
+          } else {
+            this.cascaderDIC = this.deepClone(res);
+          }
         });
       }
     }
