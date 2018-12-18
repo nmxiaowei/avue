@@ -107,10 +107,12 @@ export default create({
       handler() {
         this.form = this.value;
         this.loadDic();
-      }
+      },
+      deep: true
     }
   },
   created() {
+    this.form = this.value;
     this.loadDic();
   },
   methods: {
