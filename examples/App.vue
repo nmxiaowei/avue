@@ -177,7 +177,8 @@ textarea {
 </style>
 
 <template>
-  <div id="app" :class="{ 'is-component': isComponent }">
+  <div id="app"
+       :class="{ 'is-component': isComponent }">
     <main-header></main-header>
     <div class="main-cnt">
       <router-view></router-view>
@@ -198,7 +199,7 @@ export default {
 
   created() {
     this.$notify({
-      title: "Avuex发布计划",
+      title: "Avuex发布计划（你值得拥有！！！）",
       dangerouslyUseHTMLString: true,
       message: '<a target="_blank" href="https://avue.top/#/pay">点击查看</a>',
       duration: 0,
