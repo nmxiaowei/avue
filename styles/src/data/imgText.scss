@@ -1,0 +1,68 @@
+.avue-data-imgtext {
+    $height: 340px;
+    .item {
+        position: relative;
+        height: $height;
+        width: 240px;
+        margin: 10px auto;
+        margin-bottom: 50px;
+        border-radius: 5px;
+        &-header {
+            img {
+                width: 100%;
+                height: $height*0.5;
+                background: red;
+                border-radius: 5px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+        &-content {
+            padding: 10px 15px;
+            color: #333 !important;
+            span {
+                font-size: 20px;
+            }
+            &:hover {
+                span {
+                    color: #1890ff;
+                }
+            }
+            p {
+                font-size: 14px;
+                height:60px;
+                margin: 6px 0;
+                overflow: hidden;
+            }
+        }
+        &-footer {
+            padding: 10px 15px;
+            position: relative;
+            img {
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+            }
+            div {
+                display: inline-block;
+                ul,li{ 
+                    padding:0;
+                    margin:0;
+                    list-style:none;
+                    display: inline-block;
+                    border: 2px solid white;
+                    border-radius: 50%;
+                    margin-left: -8px;
+                }
+            }
+            div:nth-child(1) {
+                font-size: 14px;
+                color: #ccc !important;
+            }
+            div:nth-child(2) {
+                position: absolute;
+                right: 15px;
+            }
+        }
+    }
+}

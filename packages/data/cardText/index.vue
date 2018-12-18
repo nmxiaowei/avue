@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-data-test">
+  <div class="avue-data-cardText">
     <el-row :span="24">
       <el-col :md="span"
               :xs="24"
@@ -27,7 +27,7 @@
 <script>
 import create from "core/create";
 export default create({
-  name: "data-test",
+  name: "data-cardtext",
   data() {
     return {};
   },

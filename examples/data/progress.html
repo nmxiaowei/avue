@@ -21,7 +21,7 @@
 <body>
   <div id="app">
     <el-card class="box-card">
-      <avue-data-tabs :option="option"></avue-data-tabs>
+        <avue-data-progress :option="option"></avue-data-progress>
     </el-card>
   </div>
 </body>
@@ -32,33 +32,28 @@
     data() {
       return {
         option: {
+          span:6,
           data: [
-            {
-              title: '分类统计',
-              subtitle: '实时',
-              count: 7993,
-              allcount: 10222,
-              text: '当前分类总记录数',
-              color: 'rgb(27, 201, 142)',
-              key: '类'
+           {
+                title: '转化率（日同比 28%）',
+                color: 'rgb(178, 159, 255)',
+                count: 32,
+                href:'https://avue.top',
+                target:'_blank'
             },
             {
-              title: '附件统计',
-              subtitle: '实时',
-              count: 3112,
-              allcount: 10222,
-              text: '当前上传的附件数',
-              color: 'rgb(230, 71, 88)',
-              key: '附'
+                title: '签到率（日同比 11%）',
+                color:'rgb(230, 71, 88)',
+                count: 32,
+                href:'https://avue.top',
+                target:'_blank'
             },
             {
-              title: '文章统计',
-              subtitle: '实时',
-              count: 908,
-              allcount: 10222,
-              text: '评论次数',
-              color: 'rgb(178, 159, 255)',
-              key: '评'
+                title: 'CPU使用率',
+                color:'rgb(27, 201, 142)',
+                count: 56,
+                href:'https://avue.top',
+                target:'_blank'
             }
           ]
         },

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue-data.js"></script>
+</head>
+
+<body>
+  <div id="app">
+      <el-card class="box-card">
+          <avue-data-icons :option="option"></avue-data-icons>
+      </el-card>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          span:4,
+          data: [
+            {
+              title: '今日注册',
+              count: 12678,
+              icon: 'el-icon-tickets',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              title: '今日登录',
+              count: 22139,
+              icon: 'el-icon-success',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              title: '今日订阅',
+              count: 35623,
+              icon: 'el-icon-info',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              title: '今日评论',
+              count: 16826,
+              icon: 'el-icon-message',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              title: '今日评论',
+              count: 16826,
+              icon: 'el-icon-message',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              title: '今日评论',
+              count: 16826,
+              icon: 'el-icon-message',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              title: '今日评论',
+              count: 16826,
+              icon: 'el-icon-message',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+          ]
+        },
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

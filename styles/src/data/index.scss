@@ -1,6 +1,17 @@
 @import './tabs.scss';
-@import './test.scss';
+@import './cardText.scss';
+@import './box.scss';
+@import './progress.scss';
+@import './icons.scss';
+@import './card.scss';
+@import './display.scss';
+@import './imgText.scss';
 [class^="avue-data-"]{
+  a{
+    text-decoration: none;
+  }
+}
+[class^="data-"]{
   a{
     text-decoration: none;
   }

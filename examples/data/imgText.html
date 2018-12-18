@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue-data.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-data-imgtext :option="option"></avue-data-imgtext>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          span:6,
+          data: [
+            {
+              title: '网易掌门人',
+              imgsrc: './images/card2.jpg',
+              headimg: [
+                {
+                  src:'./images/card1.jpg',
+                  name:'张三'
+                },
+                {
+                  src:'./images/card2.jpg',
+                  name:'李四'
+                },
+                {
+                  src:'./images/card3.jpg',
+                  name:'王五'
+                },
+              ],
+              content: '网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
+              href:'https://avue.top',
+              target:'_blank',
+              time:'几秒前'
+            },
+            {
+              title: '小马',
+              imgsrc: './images/card1.jpg',
+              headimg: [
+                {
+                  src:'./images/card1.jpg',
+                  name:'张三'
+                },
+                {
+                  src:'./images/card2.jpg',
+                  name:'李四'
+                },
+                {
+                  src:'./images/card3.jpg',
+                  name:'王五'
+                },
+              ],
+              content: '腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.',
+              href:'https://avue.top',
+              target:'_blank',
+              time:'几秒前'
+            },
+            {
+              title: '桐人',
+              imgsrc: './images/card3.jpg',
+              headimg: [
+                {
+                  src:'./images/card1.jpg',
+                  name:'张三'
+                },
+                {
+                  src:'./images/card2.jpg',
+                  name:'李四'
+                },
+                {
+                  src:'./images/card3.jpg',
+                  name:'王五'
+                },
+              ],
+              content: '没有开不了的挂,没有收不了的后宫.没有开不了的挂,没有收不了的后宫.没有开不了的挂,没有收不了的后宫.',
+              href:'https://avue.top',
+              target:'_blank',
+              time:'几秒前'
+            },
+          ]
+        },
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

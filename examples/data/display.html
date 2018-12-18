@@ -21,7 +21,7 @@
 <body>
   <div id="app">
     <el-card class="box-card">
-      <avue-data-tabs :option="option"></avue-data-tabs>
+        <avue-data-display :option="option"></avue-data-display>
     </el-card>
   </div>
 </body>
@@ -32,33 +32,31 @@
     data() {
       return {
         option: {
+          span:6,
           data: [
-            {
-              title: '分类统计',
-              subtitle: '实时',
-              count: 7993,
-              allcount: 10222,
-              text: '当前分类总记录数',
-              color: 'rgb(27, 201, 142)',
-              key: '类'
+          {
+              count: 100,
+              title: '日活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
-              title: '附件统计',
-              subtitle: '实时',
-              count: 3112,
-              allcount: 10222,
-              text: '当前上传的附件数',
-              color: 'rgb(230, 71, 88)',
-              key: '附'
+              count: '3,000',
+              title: '月活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             },
             {
-              title: '文章统计',
-              subtitle: '实时',
-              count: 908,
-              allcount: 10222,
-              text: '评论次数',
-              color: 'rgb(178, 159, 255)',
-              key: '评'
+              count: '20,000',
+              title: '年活跃数',
+              href:'https://avue.top',
+              target:'_blank'
+            },
+            {
+              count: '40,000',
+              title: '周活跃数',
+              href:'https://avue.top',
+              target:'_blank'
             }
           ]
         },
