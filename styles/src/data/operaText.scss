@@ -1,0 +1,57 @@
+.avue-data-operatext {
+    $height: 200px;
+    .item {
+        position: relative;
+        border: 1px solid #ccc;
+        height: 200px;
+        width: 240px;
+        margin: 10px auto;
+        margin-bottom: 50px;
+        border-radius: 5px;
+        &-header {
+            height: 137px;
+            &:hover {
+                h4 {
+                    color: #1890ff;
+                }
+            }
+            .img {
+                float: left;
+                margin: 10px;
+                img {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                }
+            }
+            .content {
+                h4 {
+                    color: rgba(0,0,0,.85);
+                }
+                p {
+                    color: rgba(0,0,0,.45);
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    overflow: hidden;
+                }
+            }
+        }
+        &-footer {
+            text-align: center;
+            border-top: 1px solid #ccc;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            padding: 10px;
+            background: #f7f9fa;
+            span {
+                display: inline-block;
+                width: 50%;
+            }
+            span:nth-child(1) {
+                width:calc(50% - 1px); 
+                border-right: 1px solid #ccc; 
+            }
+        }
+    }
+}
