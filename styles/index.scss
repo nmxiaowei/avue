@@ -4,17 +4,6 @@
 @import './src/media.scss';
 
 //element-ui
-@import './src/element-ui/carousel.scss';
-@import './src/element-ui/crud.scss';
-@import './src/element-ui/img.scss';
-@import './src/element-ui/upload.scss';
-@import './src/element-ui/form.scss';
-@import './src/element-ui/date.scss';
-@import './src/element-ui/checkbox.scss';
-@import './src/element-ui/radio.scss';
-@import './src/element-ui/select.scss';
-@import './src/element-ui/detail.scss';
-@import './src/element-ui/group.scss';
-
+@import './src/element-ui/index.scss';
 // 数据展示
 @import './src/data/index.scss'

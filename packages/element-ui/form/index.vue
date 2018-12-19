@@ -163,7 +163,7 @@
 import create from "core/create";
 import draggable from "vuedraggable";
 import init from "../../core/crud/init";
-import { formInitVal, calcCount } from "core/dataformat";
+import { formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
 export default create({
@@ -177,6 +177,7 @@ export default create({
       optionIndex: [],
       optionBox: false,
       tableOption: {},
+      itemSpanDefault: 12,
       formOld: {},
       form: {},
       formList: [],
@@ -226,22 +227,15 @@ export default create({
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
         (ele.column || []).forEach((column, cindex) => {
-          if (this.vaildData(column.visdiplay, true))
-            column = calcCount(column, 12, cindex === 0);
-          //处理级联地址
-          if (!this.validatenull(column.cascaderItem)) {
+          if (column.cascaderItem) {
             this.formCascaderList.push(column.prop);
-            let cascader = [...column.cascaderItem];
-            ele.column[cindex].cascader = [...cascader];
-            cascader.forEach((item, tindex) => {
-              const columnIndex = cindex + tindex + 1;
-              ele.column[columnIndex].cascaderChange = column.cascaderChange;
-              ele.column[columnIndex].cascader = [...cascader].splice(
-                tindex + 1
-              );
-            });
+          }
+          if (column.visdiplay !== false) {
+            column = calcCount(column, this.itemSpanDefault, cindex === 0);
           }
         });
+        //处理级联地址
+        ele.column = calcCascader(ele.column);
       });
       return list;
     },
@@ -336,31 +330,33 @@ export default create({
   methods: {
     cascaderInit() {
       if (this.formCascaderInit) return;
-      this.columnOption.forEach((ele, index) => {
-        const list = this.columnOption;
-        if (!this.validatenull(ele.cascaderItem)) {
-          let cascader = [...ele.cascaderItem];
-          const str = list[index].cascader.join(",");
-          //处理级联地址
-          if (
-            this.validatenull(this.form[ele.prop]) &&
-            !this.validatenull(list[index].cascader) &&
-            !this.formList.includes(str)
-          ) {
-            this.formList.push(str);
-          }
-          cascader.forEach((item, cindex) => {
-            const columnIndex = index + cindex + 1;
-            const str = list[columnIndex].cascader.join(",");
+      this.columnOption.forEach(column => {
+        (column.column || []).forEach((ele, index) => {
+          const list = column.column;
+          if (!this.validatenull(ele.cascaderItem)) {
+            let cascader = [...ele.cascaderItem];
+            const str = list[index].cascader.join(",");
+            //处理级联地址
             if (
-              this.validatenull(this.form[list[columnIndex].prop]) &&
-              !this.validatenull(list[columnIndex].cascader) &&
+              this.validatenull(this.form[ele.prop]) &&
+              !this.validatenull(list[index].cascader) &&
               !this.formList.includes(str)
             ) {
               this.formList.push(str);
             }
-          });
-        }
+            cascader.forEach((item, cindex) => {
+              const columnIndex = index + cindex + 1;
+              const str = list[columnIndex].cascader.join(",");
+              if (
+                this.validatenull(this.form[list[columnIndex].prop]) &&
+                !this.validatenull(list[columnIndex].cascader) &&
+                !this.formList.includes(str)
+              ) {
+                this.formList.push(str);
+              }
+            });
+          }
+        });
       });
       this.formCascaderInit = true;
     },
@@ -399,11 +395,12 @@ export default create({
         });
       }
       sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
+        const dic = Array.isArray(res) ? res : [];
         // 修改字典
         this.$nextTick(() => {
-          this.$set(this.DIC, columnNextProp, res || []);
+          this.$set(this.DIC, columnNextProp, dic);
         });
-        const dic = res || [];
+
         /**
          * 1.是change联动
          * 2.字典不为空
@@ -490,7 +487,8 @@ export default create({
     rulesInit(option) {
       this.formRules = {};
       (option || this.columnOption).forEach(ele => {
-        if (ele.rules) this.formRules[ele.prop] = ele.rules;
+        if (ele.rules && ele.visdiplay !== false)
+          this.formRules[ele.prop] = ele.rules;
       });
     },
     clearValidate() {

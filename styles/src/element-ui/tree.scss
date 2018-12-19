@@ -1,0 +1,23 @@
+.avue-tree {
+  &__item {
+      position: relative;
+      width: 100%;
+  }
+  &__title {
+      font-size: 14px;
+  }
+  &__icon {
+      transform: rotate(90deg);
+  }
+  &__menu {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      z-index: 1024;
+  }
+  &__filter {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+  }
+}

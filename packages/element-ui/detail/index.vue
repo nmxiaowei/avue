@@ -41,7 +41,7 @@
 <script>
 import create from "core/create";
 import init from "../../core/crud/init.js";
-import { calcCount } from "core/dataformat";
+import { calcCount, calcCascader } from "core/dataformat";
 export default create({
   name: "detail",
   mixins: [init()],
@@ -55,7 +55,8 @@ export default create({
 
   data() {
     return {
-      form: {}
+      form: {},
+      itemSpanDefault: 8
     };
   },
   computed: {
@@ -80,24 +81,11 @@ export default create({
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
         (ele.column || []).forEach((column, cindex) => {
-          if (this.vaildData(column.visdiplay, true))
-            calcCount(column, 8, cindex === 0);
-          //处理级联地址
-          if (!this.validatenull(column.cascaderItem)) {
-            let cascader = [...column.cascaderItem];
-            let parentProp = column.prop;
-            ele.column[cindex].cascader = [...cascader];
-            cascader.forEach((item, tindex) => {
-              const columnIndex = cindex + tindex + 1;
-              ele.column[columnIndex].parentProp = parentProp;
-              ele.column[columnIndex].cascaderChange = column.cascaderChange;
-              ele.column[columnIndex].cascader = [...cascader].splice(
-                tindex + 1
-              );
-              parentProp = ele.column[columnIndex].prop;
-            });
-          }
+          if (column.visdiplay !== false)
+            column = calcCount(column, this.itemSpanDefault, cindex === 0);
         });
+        //处理级联地址
+        ele.column = calcCascader(ele.column);
       });
       return list;
     }

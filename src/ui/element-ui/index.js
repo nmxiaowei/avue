@@ -16,6 +16,8 @@ import Upload from 'components/upload';
 import Silder from 'components/silder';
 import Img from 'components/img';
 import Group from 'components/group';
+import Tree from 'components/tree';
+import TableTree from 'components/table-tree';
 import Vue from 'Vue';
 import $log from 'plugin/logs/util';
 import _export from 'plugin/export/';
@@ -47,5 +49,7 @@ export default [
   Silder,
   Img,
   Detail,
-  Group
+  Group,
+  Tree,
+  TableTree
 ];

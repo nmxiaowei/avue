@@ -1,5 +1,28 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME } from 'global/variable';
+/**
+ * 计算级联属性
+ */
+export const calcCascader = (list) => {
+  list.forEach((ele, index) => {
+    if (ele.cascaderItem) {
+      let cascader = [...ele.cascaderItem];
+      let parentProp = ele.prop;
+      list[index].cascader = [...cascader];
+      cascader.forEach((citem, cindex) => {
+        const columnIndex = index + cindex + 1;
+        list[columnIndex].parentProp = parentProp;
+        list[columnIndex].cascaderChange = ele.cascaderChange;
+        list[columnIndex].cascader = [...cascader].splice(cindex + 1);
+        parentProp = list[columnIndex].prop;
+      });
+    }
+  })
+  return list;
+}
+/**
+ * 计算空白列row
+ */
 let count = 0;
 export const calcCount = (ele, spanDefault = 12, init = false) => {
   if (init) count = 0;
@@ -15,6 +38,9 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
   }
   return ele;
 }
+/** 
+* 日期控件集合
+*/
 export const dateList = [
   'dates',
   'date',

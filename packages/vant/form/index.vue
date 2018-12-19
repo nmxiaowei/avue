@@ -38,7 +38,7 @@
 <script>
 import create from "core/create";
 import init from "../../core/crud/init";
-import { formInitVal } from "core/dataformat";
+import { formInitVal, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import { getObjType } from "utils/util";
 export default create({
@@ -77,20 +77,7 @@ export default create({
   },
   computed: {
     columnOption() {
-      let list = [...this.tableOption.column] || [];
-      list.forEach((ele, index) => {
-        //处理级联地址
-        if (!this.validatenull(ele.cascaderItem)) {
-          this.formCascaderList.push(ele.prop);
-          let cascader = [...ele.cascaderItem];
-          list[index].cascader = [...cascader];
-          cascader.forEach((item, cindex) => {
-            const columnIndex = index + cindex + 1;
-            list[columnIndex].cascaderChange = ele.cascaderChange;
-            list[columnIndex].cascader = [...cascader].splice(cindex + 1);
-          });
-        }
-      });
+      let list = calcCascader([...this.tableOption.column] || []);
       return list;
     }
   },
@@ -177,9 +164,11 @@ export default create({
         });
       }
       sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
+        const dic = Array.isArray(res) ? res : [];
         // 修改字典
-        this.$set(this.DIC, columnNextProp, res || []);
-        const dic = res || [];
+        this.$nextTick(() => {
+          this.$set(this.DIC, columnNextProp, dic);
+        });
         /**
          * 1.是change联动
          * 2.字典不为空

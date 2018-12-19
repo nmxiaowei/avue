@@ -280,7 +280,7 @@ import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
 import { sendDic } from "core/dic";
-import { getSearchType, getType } from "core/dataformat";
+import { getSearchType, getType, calcCascader } from "core/dataformat";
 
 export default create({
   name: "crud",
@@ -345,22 +345,7 @@ export default create({
       return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
     columnOption() {
-      const list = this.tableOption.column || [];
-      list.forEach((ele, index) => {
-        //处理级联地址
-        if (!this.validatenull(ele.cascaderItem)) {
-          let cascader = [...ele.cascaderItem];
-          let parentProp = ele.prop;
-          list[index].cascader = [...cascader];
-          cascader.forEach((item, cindex) => {
-            const columnIndex = index + cindex + 1;
-            list[columnIndex].parentProp = parentProp;
-            list[columnIndex].cascaderChange = ele.cascaderChange;
-            list[columnIndex].cascader = [...cascader].splice(cindex + 1);
-            parentProp = list[columnIndex].prop;
-          });
-        }
-      });
+      const list = calcCascader(this.tableOption.column || []);
       return list;
     },
     sumColumnList() {
@@ -463,11 +448,10 @@ export default create({
 
       sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
         // 修改字典
-        const data = res || [];
+        const dic = Array.isArray(res) ? res : [];
         this.$nextTick(() => {
-          this.$set(this.cascaderDIC[rowIndex], columnNextProp, data);
+          this.$set(this.cascaderDIC[rowIndex], columnNextProp, dic);
         });
-        const dic = data;
         /**
          * 1.是change联动
          * 2.字典不为空
