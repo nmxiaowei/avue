@@ -222,8 +222,6 @@
             </template>
             <slot name="menu"
                   :row="scope.row"
-                  :dic="scope.dic"
-                  :label="scope.label"
                   :type="menuText('primary')"
                   :disabled="btnDisabled"
                   :size="isMediumSize"
@@ -553,8 +551,8 @@ export default create({
       this.$emit("expand-change", row, expand);
     },
     //设置单选
-    currentRowChange(currentRow, oldCurrentRow) {
-      this.$emit("current-row-change", currentRow, oldCurrentRow);
+    currentRowChange(val) {
+      this.$emit("current-row-change", val);
     },
     //刷新事件
     refreshChange() {

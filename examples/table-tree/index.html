@@ -21,7 +21,15 @@
 
 <body>
   <div id="app">
-    <avue-tree-table :option="option" :data="data"></avue-tree-table>
+    <avue-tree-table :option="option" :data="data" @current-row-change="handleCurrentRowChange" @row-dblclick="handleRowDBLClick"
+      @row-click="handleRowClick">
+      <template slot="icon" slot-scope="scope">
+        <i :class="scope.row.icon" style="font-size:24px"></i>
+      </template>
+      <template slot="menu" slot-scope="scope">
+        <el-button :size="scope.size" @click="tip(scope)">自定义菜单</el-button>
+      </template>
+    </avue-tree-table>
   </div>
 </body>
 <script>
@@ -34,17 +42,20 @@
             id: 0,
             event: '事件1',
             timeLine: 50,
+            icon: 'el-icon-time',
             comment: '无'
           },
           {
             id: 1,
             event: '事件1',
+            icon: 'el-icon-bell',
             timeLine: 100,
             comment: '无',
             children: [
               {
                 id: 2,
                 event: '事件2',
+                icon: 'el-icon-star-on',
                 timeLine: 10,
                 comment: '无'
               },
@@ -112,11 +123,18 @@
           }
         ],
         option: {
+          highlightCurrentRow: true,
+          headerAlign: 'center',
+          align: 'center',
           expandAll: false,
+          expandLevel: 2,
+          border: true,
+          index: true,
           column: [
             {
               label: '事件',
               prop: 'event',
+              align: 'left',
               width: 200
             },
             {
@@ -138,11 +156,30 @@
               prop: 'timeLine'
             },
             {
+              label: '自定义图标',
+              prop: 'icon',
+              slot: true,
+            },
+            {
               label: '备注',
               prop: 'comment'
             }
           ],
         }
+      }
+    },
+    methods: {
+      handleCurrentRowChange(val) {
+        this.$message.success('单选' + JSON.stringify(val))
+      },
+      handleRowClick(row, event, column) {
+        this.$message.success('单机' + JSON.stringify(row))
+      },
+      handleRowDBLClick(row, event) {
+        this.$message.success('双击' + JSON.stringify(row))
+      },
+      tip(scope) {
+        this.$message.success(JSON.stringify(scope.row))
       }
     }
   })

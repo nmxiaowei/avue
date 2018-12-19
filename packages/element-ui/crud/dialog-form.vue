@@ -108,7 +108,6 @@ export default create({
       option.dicFlag = false;
       option.dicData = this.$parent.DIC;
       option.emptyBtn = false;
-      option.card = false;
       return option;
     },
     dialogTitle() {

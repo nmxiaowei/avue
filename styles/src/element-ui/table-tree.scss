@@ -1,6 +1,14 @@
 $color-blue: #2196f3;
-$space-width: 18px;
+$space-width: 15px;
 .avue-tree-table {
+    th {
+        word-break: break-word;
+        color: rgba(0, 0, 0, 0.85);
+        background-color: #fafafa;
+    }
+    .ms-tree-title{
+        padding-left: 10px;
+    }
     .ms-tree-space {
         position: relative;
         top: 1px;

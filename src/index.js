@@ -12,7 +12,7 @@ function install(Vue, opts = {}) {
   Vue.prototype.validatenull = validatenull;
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
-    size: opts.size,
+    size: opts.size || 'medium',
     menuType: opts.menuType || 'text'
   };
 }

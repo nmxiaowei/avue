@@ -23,8 +23,8 @@ export default create({
       type: String
     },
     card: {
-      type: false,
-      default: true
+      type: Boolean,
+      default: false
     },
     label: {
       type: String
