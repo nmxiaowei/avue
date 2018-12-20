@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-data-display :option="option"></avue-data-display>
+    <avue-data-operatext :option="option"></avue-data-operatext>
   </div>
 </body>
 <script>
@@ -30,32 +30,16 @@
     data() {
       return {
         option: {
-          span:6,
+          span:8,
           data: [
-          {
-              count: 100,
-              title: '日活跃数',
-              href:'https://avue.top',
-              target:'_blank'
-            },
             {
-              count: '3,000',
-              title: '月活跃数',
-              href:'https://avue.top',
-              target:'_blank'
+              title: '网易掌门人',
+              imgsrc: './images/card2.jpg',
+              content: '网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
+              href1:'https://avue.top',
+              href2:'https://avue.top',
+              target:'_blank',
             },
-            {
-              count: '20,000',
-              title: '年活跃数',
-              href:'https://avue.top',
-              target:'_blank'
-            },
-            {
-              count: '40,000',
-              title: '周活跃数',
-              href:'https://avue.top',
-              target:'_blank'
-            }
           ]
         },
       }

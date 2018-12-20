@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-data-imgtext">
+  <div class="avue-data-operatext">
     <el-row :span="24">
       <el-col v-for="(item,index) in data"
               :key="index"
@@ -8,28 +8,36 @@
               :sm="12">
           <div class="item"
               :style="{color:color}">
-            <a :href="item.href?item.href:'javascript:void(0);'"
-              :target="item.target">
+            <!-- <a :href="item.href?item.href:'javascript:void(0);'"
+              :target="item.target"> -->
               <div class="item-header">
-                  <img :src="item.imgsrc" alt="">
-              </div>
-              <div class="item-content">
-                  <span>{{item.title}}</span>
-                  <p>{{item.content}}</p>
-              </div>
-              <div class="item-footer">
-                <div class="time"><span>{{item.time}}</span></div>
-                <div class="imgs">
-                  <ul>
-                    <li v-for="(imgs,index) in item.headimg" :key="index">
-                      <el-tooltip effect="dark" :content="imgs.name" placement="top-start">
-                        <img :src='imgs.src' alt="">
-                      </el-tooltip>
-                    </li>
-                  </ul>
+                <div>
+                  <div class="img">
+                    <img :src="item.imgsrc" alt="">
+                  </div>
+                  <div class="content">
+                    <h4>{{item.title}}</h4>
+                    <p>{{item.content}}</p>
+                  </div>
                 </div>
               </div>
-            </a>
+              <div class="item-content">
+              </div>
+              <div class="item-footer">
+                <span>
+                  <a :href="item.href1?item.href1:'javascript:void(0);'"
+              :target="item.target">
+                    连接1
+                  </a>
+                </span>
+                <span>
+                  <a :href="item.href2?item.href2:'javascript:void(0);'"
+              :target="item.target">
+                    连接2
+                  </a>
+                </span>
+              </div>
+            <!-- </a> -->
           </div>
       </el-col>
     </el-row>
@@ -39,7 +47,7 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-imgtext',
+  name: 'data-operatext',
   data () {
     return {
 

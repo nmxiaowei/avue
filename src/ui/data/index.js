@@ -6,4 +6,5 @@ import Icons from 'components/Icons';
 import Card from 'components/Card';
 import Display from 'components/Display';
 import imgText from 'components/imgText';
-export default [Tabs,cardText,Box,Progress,Icons,Card,Display,imgText];
+import operaText from 'components/operaText';
+export default [Tabs,cardText,Box,Progress,Icons,Card,Display,imgText,operaText];
