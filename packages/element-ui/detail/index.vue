@@ -46,13 +46,8 @@ export default create({
   name: "detail",
   mixins: [init()],
   props: {
-    option: {
-      type: Object,
-      default: () => {}
-    },
     value: {}
   },
-
   data() {
     return {
       form: {},

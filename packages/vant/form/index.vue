@@ -9,6 +9,10 @@
                    :is="getComponent(column.type,column.component)"
                    :label="column.label"
                    :placeholder="getPlaceholder(column)"
+                   :dataType="column.dataType"
+                   :action="column.action"
+                   :limit='column.limit'
+                   :listType="column.listType"
                    :prefixIcon="column.prefixIcon"
                    :suffixIcon="column.suffixIcon"
                    :type="column.type"

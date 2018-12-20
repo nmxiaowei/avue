@@ -12,8 +12,8 @@
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
 
   <!-- 引入vant组件 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@1.4/lib/index.css" />
-  <script src="https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@1.5.0-beta2/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@1.5.0-beta2/lib/vant.min.js"></script>
 
   <!-- 引入ele组件 -->
 
@@ -43,6 +43,23 @@
         },
         option: {
           column: [
+            {
+              label: '图片上传',
+              prop: 'img',
+              type: 'upload',
+              limit: 3,
+              row: true,
+              listType: 'picture-card',
+              dataType: 'array',
+              action: 'https://jsonplaceholder.typicode.com/posts/',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择图片上传',
+                  trigger: 'blur'
+                }
+              ]
+            },
             {
               // prefixIcon: 'contact',
               // suffixIcon: 'question',
@@ -267,6 +284,10 @@
     mounted() {
       setTimeout(() => {
         this.obj = {
+          img: [
+            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1',
+            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2'
+          ],
           password: '111',
           province: '130000',
           city: '130100',

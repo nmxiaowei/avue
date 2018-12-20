@@ -44,6 +44,11 @@ export default function () {
       }
     },
     methods: {
+      getKey(item = {}, props = {}, key) {
+        return item[
+          props[key] || (this.parentOption.props || {})[key] || key
+        ];
+      },
       getIsMobile() {
         this.isMobile = window.document.body.clientWidth <= 768;
       },

@@ -6,6 +6,7 @@ import Checkbox from 'components/checkbox';
 import Switch from 'components/switch';
 import Date from 'components/date';
 import Time from 'components/time';
+import Upload from 'components/upload';
 import $log from 'plugin/logs/util';
 if (!window.vant) {
   $log.warning('需要引入UI框架包');
@@ -15,4 +16,4 @@ if (!window.vant) {
     'warning'
   );
 }
-export default [Form, Select, Input, Radio, Checkbox, Date, Time, Switch];
+export default [Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload];
