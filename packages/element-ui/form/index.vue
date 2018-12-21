@@ -505,8 +505,18 @@ export default create({
         });
       });
     },
-    resetForm() {
-      this.form = this.deepClone(this.formDefault.tableForm);
+    resetForm({ part }) {
+      //part为true时清空在column中配置的字段
+      if (part) {
+        this.columnOption.forEach(ele => {
+          ele.column.forEach(column => {
+            const prop = column.prop;
+            this.form[prop] = this.formDefault.tableForm[prop];
+          });
+        });
+      } else {
+        this.form = this.deepClone(this.formDefault.tableForm);
+      }
       this.$emit("input", this.form);
       this.$emit("reset-change");
       this.clearValidate();

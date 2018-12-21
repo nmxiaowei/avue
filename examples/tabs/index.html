@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue.js"></script>
+  <script src="./option.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-tabs :option="option" v-model="form" @change="handleChange" @submit="handleSubmit"></avue-tabs>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        tabs: {},
+        option: {
+          type: 'border-card', //card|border-card
+          // position: 'left',//left|right|top|bottom
+          column: [{
+            label: '选项卡1',
+            prop: 'user',
+            icon: 'el-icon-edit',
+            option: userOption,
+          }, {
+            label: '选项卡2',
+            prop: 'info',
+            icon: 'el-icon-date',
+            option: infoOption,
+
+          }]
+        },
+        form: {
+          name: '张三',
+          checkbox: 0,
+          jtgj: [0, 1, 2, 3]
+        },
+      }
+    },
+    created() {
+      this.tabs = this.columnOption[0];
+    },
+    computed: {
+      columnOption() {
+        return this.option.column || [];
+      }
+    },
+    methods: {
+      handleChange(tabs) {
+        this.tabs = tabs;
+      },
+      handleSubmit(form) {
+        console.log(form);
+        this.$message.success(JSON.stringify(form));
+      }
+    }
+  })
+</script>
+
+</html>

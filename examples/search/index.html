@@ -22,7 +22,7 @@
 <body>
   <div id="app">
     <avue-search :option="option" v-model="form" @change="handleChange"></avue-search>
-    <!-- <avue-crud :option="tableOption" :data="data"></avue-crud> -->
+    <avue-crud :option="tableOption" :data="data"></avue-crud>
   </div>
 </body>
 <script>
@@ -31,20 +31,53 @@
     data() {
       return {
         tableOption: {
+          border: true,
+          index: true,
           column: [{
             label: '姓名',
             prop: 'name'
+          }, {
+            label: '多选',
+            prop: 'checkbox',
+            multiple: false,
+            dicData: [{
+              label: '单层',
+              value: 0
+            }, {
+              label: '多层',
+              value: 1
+            }]
+          }, {
+            label: '交通工具',
+            prop: 'jtgj',
+            dicData: [{
+              label: '飞机',
+              value: 0
+            }, {
+              label: '动车',
+              value: 1
+            }, {
+              label: '驾车',
+              value: 2
+            }, {
+              label: '其他',
+              value: 3
+            }]
           }]
         },
         data: [{
           name: '张三',
+          checkbox: 0,
+          jtgj: [0, 1, 2, 3]
         }, {
-          name: '李四'
+          name: '李四',
+          checkbox: 1,
+          jtgj: [0, 1, 2, 3]
         }],
         form: {
           zt: ["370000", "620000", "610000", "110000", "410000"],
           checkbox: 0,
-          cs: [0, 1, 2, 3, 4]
+          jtgj: [0, 1, 2, 3, 4]
         },
         option: {
           card: true,
@@ -69,7 +102,7 @@
             }]
           }, {
             label: '交通工具',
-            prop: 'cs',
+            prop: 'jtgj',
             dicData: [{
               label: '飞机',
               value: 0

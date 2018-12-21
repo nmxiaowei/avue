@@ -1,9 +1,7 @@
 import axios from 'axios';
 import $log from 'plugin/logs/util';
 import { validatenull } from 'utils/validate';
-let locationdic = {}; // 本地字典
-let networkdic = {}; // 网络字典
-let ajaxdic = []; // 发送ajax的字典
+
 
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
@@ -49,41 +47,42 @@ export const loadCascaderDic = (columnOption, list) => {
 };
 // 初始化方法
 export const loadDic = option => {
-  locationdic = {};
-  networkdic = {};
-  ajaxdic = [];
+  let locationdic = {}; // 本地字典
+  let networkdic = {}; // 网络字典
+  let ajaxdic = []; // 发送ajax的字典
   return new Promise((resolve, reject) => {
     // 本地字典赋值
     locationdic = option.dicData || {};
 
-    createdDic(option.dicUrl, option.column);
-    if (!validatenull(ajaxdic)) {
-      if (axios) {
-        handeDic(ajaxdic)
-          .then(() => {
-            resolve(Object.assign(locationdic, networkdic));
-          })
-          .catch(err => {
-            reject(err);
-          });
-      } else {
-        if (__ENV__ === 'development') {
-          $log.warning('使用网络字典需要引入以下包');
-          $log.capsule(
-            'axios：',
-            'https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js',
-            'warning'
-          );
-        }
-      }
-    } else {
-      resolve(locationdic);
+    const params = createdDic(option.dicUrl, option.column);
+    locationdic = Object.assign(locationdic, params.locationdic);
+    ajaxdic = params.ajaxdic;
+
+    if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
+    if (__ENV__ === 'development' && !axios && !validatenull(ajaxdic)) {
+      $log.warning('使用网络字典需要引入以下包');
+      $log.capsule(
+        'axios：',
+        'https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js',
+        'warning'
+      );
+      resolve();
     }
+    handeDic(ajaxdic)
+      .then((res) => {
+        networkdic = res;
+        resolve(Object.assign(locationdic, networkdic));
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 };
 
 // 创建字典区分本地字典和网络字典
 function createdDic(url = '', column = []) {
+  let ajaxdic = [];
+  let locationdic = {};
   column.forEach(ele => {
     let dicData = ele.dicData;
     let dicUrl = ele.dicUrl;
@@ -98,10 +97,15 @@ function createdDic(url = '', column = []) {
       });
     }
   });
+  return {
+    ajaxdic,
+    locationdic
+  }
 }
 
 // 循环处理字典
 function handeDic(list) {
+  let networkdic = {};
   let result = [];
   return new Promise(resolve => {
     list.forEach(ele => {

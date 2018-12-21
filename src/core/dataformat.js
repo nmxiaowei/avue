@@ -3,7 +3,7 @@ import { KEY_COMPONENT_NAME } from 'global/variable';
 /**
  * 计算级联属性
  */
-export const calcCascader = (list) => {
+export const calcCascader = (list = []) => {
   list.forEach((ele, index) => {
     if (ele.cascaderItem) {
       let cascader = [...ele.cascaderItem];
