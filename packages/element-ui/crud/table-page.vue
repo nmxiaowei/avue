@@ -1,15 +1,14 @@
 <template>
-  <div :class="b('pagination')" v-if="pageFlag">
-    <el-pagination
-      :current-page.sync="defaultPage.currentPage"
-      :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
-      :page-size="defaultPage.pageSize"
-      :page-sizes="defaultPage.pageSizes"
-      @size-change="sizeChange"
-      @current-change="currentChange"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="defaultPage.total"
-    ></el-pagination>
+  <div :class="b('pagination')"
+       v-if="pageFlag">
+    <el-pagination :current-page.sync="defaultPage.currentPage"
+                   :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
+                   :page-size="defaultPage.pageSize"
+                   :page-sizes="defaultPage.pageSizes"
+                   @size-change="sizeChange"
+                   @current-change="currentChange"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="defaultPage.total"></el-pagination>
   </div>
 </template>
 
@@ -40,7 +39,7 @@ export default create({
   },
   computed: {
     pageFlag() {
-      return this.$parent.page.total !== 0;
+      return !this.validatenull(this.$parent.page.total);
     }
   },
   methods: {

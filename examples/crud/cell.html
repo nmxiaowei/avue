@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud ref="crud" :option="option" :data="data" :table-loading="loading" v-model="obj" @on-load="onLoad"
+      @row-update="rowUpdate" @row-del="rowDel">
+      <template slot="menuLeft" slot-scope="scope">
+        <el-button @click="addRow" size="small">添加10条</el-button>
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avue.top/api/area'
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        loading: true,
+        obj: {},
+        option: {
+          size: 'small',
+          border: true,
+          align: 'center',
+          viewBtn: false,
+          cellBtn: true,
+          editBtn: false,
+          addBtn: false,
+          addRowBtn: true,
+          printBtn: true,
+          excelBtn: true,
+          refreshBtn: false,
+          columnBtn: false,
+          filtetBtn: false,
+          menuWidth: 180,
+          menuType: 'text',
+          keyId: 'id', //行编辑的主键，默认为id
+          index: true,
+          column: [
+            {
+              width: 120,
+              label: '姓名',
+              prop: 'name',
+              type: 'select',
+              fixed: 'left',
+              formslot: true,
+              cell: true,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入姓名',
+                  trigger: 'blur'
+                }
+              ],
+              dicData: [
+                {
+                  label: 'smallwei',
+                  value: '0'
+                },
+                {
+                  label: 'lengleng',
+                  value: '1'
+                }
+              ],
+              tipPlacement: 'bottom',
+              tip: '自定义内容'
+            },
+            {
+              width: 120,
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              cell: true,
+              cascaderItem: ['city', 'area'],
+              cascaderChange: true,
+              dicUrl: `${baseUrl}/getProvince`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              width: 120,
+              label: '城市',
+              prop: 'city',
+              type: 'select',
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicFlag: false,
+              dicUrl: `${baseUrl}/getCity/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择城市',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              width: 120,
+              label: '地区',
+              prop: 'area',
+              dicFlag: false,
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '网络字典',
+              prop: 'dic',
+              width: 120,
+              type: 'select',
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicUrl: 'https://cli2.avue.top/api/area/getProvince'
+            },
+            {
+              width: 120,
+              label: '开关',
+              prop: 'switch',
+              type: 'switch',
+              cell: true,
+              dicData: [
+                {
+                  label: '开启',
+                  value: 0
+                },
+                {
+                  label: '关闭',
+                  value: 1
+                }
+              ]
+            },
+            {
+              width: 180,
+              label: '日期',
+              prop: 'datetime',
+              type: "datetime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              valueFormat: "timestamp",
+              cell: true
+            }, {
+              label: '地址',
+              prop: 'textarea',
+              cell: true,
+            }
+          ]
+        },
+        data: []
+      }
+    },
+    created() {
+      setTimeout(() => {
+        this.loading = false
+      }, 1000)
+    },
+    methods: {
+      addRow() {
+        this.$message.success('正在添加，请稍后')
+        setTimeout(() => {
+          for (let i = 0; i < 10; i++) {
+            this.$refs.crud.rowCellAdd({
+              name: '0',
+            });
+          }
+        }, 500)
+      },
+      rowSave(form, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待')
+          loading()
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success('新增数据' + JSON.stringify(form))
+          done()
+        }, 2000)
+      },
+      refresh(val) {
+        this.$message.success('刷新回调,当前分页对象' + JSON.stringify(val))
+      },
+      rowDel(form, index) {
+        this.$confirm(`此操作将永久删除序号${index + 1}, 是否继续?`, '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.data.splice(index, 1);
+          this.$message.success('删除数据' + JSON.stringify(form))
+        })
+      },
+      rowUpdate(form, index, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待')
+          loading()
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success(
+            '编辑数据' + JSON.stringify(form) + '数据序号' + index
+          )
+          done()
+        }, 2000)
+      },
+      onLoad(page, params) {
+        this.page = page
+        const data = [
+          {
+            id: '0',
+            img:
+              'https://gitee.com/smallweigit/avue/badge/star.svg?theme=white',
+            img1: [
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              },
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              },
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/09/18/0ca02eb9c35f095481196354a1f455c8.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              }
+            ],
+            name: '0',
+            dic: '110000',
+            switch: 0,
+            sum: 5,
+            avg: 10,
+            count: 2,
+            province: '110000',
+            city: '110100',
+            area: '110101',
+            datetime: '2019-01-01 00:00:00'
+          },
+          {
+            id: '1',
+            name: '1',
+            dic: '120000',
+            img: 'https://gitee.com/log4j/pig/badge/star.svg?theme=white',
+            switch: 1,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            province: '130000',
+            city: '130200',
+            area: '130202',
+            datetime: '2019-01-01 00:00:00'
+          },
+          {
+            id: '2',
+            name: '1',
+            dic: '110000',
+            switch: 0,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            province: '110000',
+            city: '110100',
+            area: '110101',
+            datetime: '2019-01-01 00:00:00'
+          }
+        ]
+        this.data = data
+      }
+    }
+  })
+</script>
+
+</html>

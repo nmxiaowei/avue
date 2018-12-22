@@ -20,9 +20,7 @@ import Tree from 'components/tree';
 import TableTree from 'components/table-tree';
 import Search from 'components/search'
 import Tabs from 'components/tabs'
-import Vue from 'Vue';
 import $log from 'plugin/logs/util';
-import _export from 'plugin/export/';
 
 if (!window.ELEMENT) {
   $log.warning('需要引入UI框架包');
@@ -32,7 +30,7 @@ if (!window.ELEMENT) {
     'warning'
   );
 }
-Vue.use(_export);
+
 export default [
   Carousel,
   Crud,

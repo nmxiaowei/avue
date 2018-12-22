@@ -418,12 +418,15 @@ export default create({
   methods: {
     handleChange(index, row) {
       const columnOption = [...this.columnOption];
+      //本节点;
       const column = columnOption[index];
+      const list = column.cascader;
+      const value = row[column.prop];
+      const rowIndex = row.$index;
+      // 下一个节点
       const columnNext = columnOption[index + 1];
       const columnNextProp = columnNext.prop;
-      const list = column.cascader;
-      const rowIndex = row.$index;
-      const value = row[column.prop];
+
       //最后一级
       if (
         this.validatenull(list) ||
@@ -433,25 +436,25 @@ export default create({
       ) {
         return;
       }
+      // 如果本节点没有字典则创建节点数组
       if (this.validatenull(this.cascaderDIC[rowIndex])) {
-        this.$set(this.cascaderDIC, rowIndex, []);
+        this.$set(this.cascaderDIC, rowIndex, {});
       }
-
+      // 如果存在队列中则清空字典和值
       if (this.formIndexList.includes(rowIndex)) {
         //清空子类字典
         list.forEach(ele => {
           this.$set(this.cascaderDIC[rowIndex], ele.prop, []);
+          list.forEach(ele => (row[ele] = ""));
         });
       }
 
       sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
         // 修改字典
         const dic = Array.isArray(res) ? res : [];
-        this.$nextTick(() => {
-          this.$set(this.cascaderDIC[rowIndex], columnNextProp, dic);
-        });
+        this.$set(this.cascaderDIC[rowIndex], columnNextProp, dic);
         /**
-         * 1.是change联动
+         * 1.是change多级默认联动
          * 2.字典不为空
          * 3.非首次加载
          */
@@ -461,19 +464,9 @@ export default create({
           this.formIndexList.includes(rowIndex)
         ) {
           //取字典的指定项或则第一项
-          const dicvalue = dic[columnNext.defaultIndex] || dic[0];
+          const dicvalue = dic[columnNext.defaultIndex || 0];
           row[columnNext.prop] =
             dicvalue[(columnNext.props || {}).value || "value"];
-        }
-
-        //首次不清空数据
-        if (
-          (!column.cascaderChange || this.validatenull(dic)) &&
-          this.formIndexList.includes(rowIndex)
-        ) {
-          list.forEach(ele => {
-            row[ele] = "";
-          });
         }
       });
     },
@@ -628,14 +621,18 @@ export default create({
       }
     },
     //单元格新增
-    rowCellAdd() {
+    rowCellAdd(obj = {}) {
       const len = this.list.length;
       this.list.push(
         this.deepClone(
-          Object.assign(this.tableForm, {
-            $cellEdit: true,
-            $index: len
-          })
+          Object.assign(
+            this.tableForm,
+            {
+              $cellEdit: true,
+              $index: len
+            },
+            obj
+          )
         )
       );
       this.formIndexList.push(len);

@@ -11,6 +11,8 @@
           {{column.label}}
         </span>
         <avue-form ref="form"
+                   :upload-before="uploadBefore"
+                   :upload-after="uploadAfter"
                    v-if="tabsObjOption"
                    :option="tabsObjOption"
                    v-model="form"
@@ -53,6 +55,8 @@ export default create({
   name: "tabs",
   props: {
     value: {},
+    uploadBefore: Function,
+    uploadAfter: Function,
     option: {
       type: Object,
       required: true,

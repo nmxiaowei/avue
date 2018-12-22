@@ -16,7 +16,7 @@ table{
   text-align:center;
 }
 table td{
-  padding:8px 0;
+  padding:8px 10px;
   border-right:1px solid #ebeef5;
   border-bottom:1px solid #ebeef5;
 }
@@ -33,9 +33,9 @@ table th{
 }
 `;
 
-export default function(columnOption, list, tableOption) {
+export default function (columnOption, list, tableOption) {
   let html = `<style>${style}</style>`;
-  if (!validatenull(tableOption.title)) {html = html + `<h2>${tableOption.title}</h2>`;}
+  if (!validatenull(tableOption.title)) { html = html + `<h2>${tableOption.title}</h2>`; }
 
   let table = '<table  width="100%" cellspacing="0" cellpadding="0">';
   // 处理头部
@@ -44,7 +44,7 @@ export default function(columnOption, list, tableOption) {
   columnOption.forEach((ele, index) => {
     table_header = `${table_header}<th width="${ele.width || ''}">${
       ele.label
-    }</th>`;
+      }</th>`;
   });
   table_header = `${table_header}</tr>`;
 

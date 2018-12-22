@@ -1,75 +1,67 @@
 <template>
   <div :class="b('menu')">
     <div :class="b('left')">
-      <el-button
-        type="primary"
-        @click="$parent.rowAdd"
-        :icon="config.addBtnIcon"
-        :size="$parent.isMediumSize"
-        v-if="vaildData($parent.tableOption.addBtn,config.addBtn)"
-      >{{config.addBtnTitle}}</el-button>
-      <el-button
-        type="primary"
-        @click="$parent.rowCellAdd"
-        :icon="config.addBtnIcon"
-        :size="$parent.isMediumSize"
-        v-if="vaildData($parent.tableOption.addRowBtn,config.addRowBtn)"
-      >{{config.addBtnTitle}}</el-button>
+      <el-button type="primary"
+                 @click="$parent.rowAdd"
+                 :icon="config.addBtnIcon"
+                 :size="$parent.isMediumSize"
+                 v-if="vaildData($parent.tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
+      <el-button type="primary"
+                 @click="$parent.rowCellAdd"
+                 :icon="config.addBtnIcon"
+                 :size="$parent.isMediumSize"
+                 v-if="vaildData($parent.tableOption.addRowBtn,config.addRowBtn)">{{config.addBtnTitle}}</el-button>
 
-      <el-button
-        type="primary"
-        @click="rowPrint"
-        :icon="config.printBtnIcon"
-        :size="$parent.isMediumSize"
-        v-if="vaildData($parent.tableOption.printBtn,config.printBtn)"
-      >{{config.printBtnTitle}}</el-button>
-      <el-button
-        type="primary"
-        @click="rowExcel"
-        :icon="config.excelBtnIcon"
-        :size="$parent.isMediumSize"
-        v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)"
-      >{{config.excelBtnTitle}}</el-button>
+      <el-button type="primary"
+                 @click="rowPrint"
+                 :icon="config.printBtnIcon"
+                 :size="$parent.isMediumSize"
+                 v-if="vaildData($parent.tableOption.printBtn,config.printBtn)">{{config.printBtnTitle}}</el-button>
+      <el-button type="primary"
+                 @click="rowExcel"
+                 :icon="config.excelBtnIcon"
+                 :size="$parent.isMediumSize"
+                 v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)">{{config.excelBtnTitle}}</el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div :class="b('right')">
       <slot name="menuRight"></slot>
 
-      <el-tooltip effect="dark" content="刷新" placement="top">
-        <el-button
-          :icon="config.refreshBtnIcon"
-          circle
-          :size="$parent.isMediumSize"
-          @click="$parent.refreshChange"
-          v-if="vaildData($parent.tableOption.refreshBtn,config.refreshBtn)"
-        ></el-button>
+      <el-tooltip effect="dark"
+                  content="刷新"
+                  placement="top">
+        <el-button :icon="config.refreshBtnIcon"
+                   circle
+                   :size="$parent.isMediumSize"
+                   @click="$parent.refreshChange"
+                   v-if="vaildData($parent.tableOption.refreshBtn,config.refreshBtn)"></el-button>
       </el-tooltip>
-      <el-tooltip effect="dark" content="列显隐" placement="top">
-        <el-button
-          :icon="config.columnBtnIcon"
-          circle
-          :size="$parent.isMediumSize"
-          @click="$parent.$refs.dialogColumn.columnBox=true"
-          v-if="vaildData($parent.tableOption.columnBtn,config.columnBtn)"
-        ></el-button>
+      <el-tooltip effect="dark"
+                  content="列显隐"
+                  placement="top">
+        <el-button :icon="config.columnBtnIcon"
+                   circle
+                   :size="$parent.isMediumSize"
+                   @click="$parent.$refs.dialogColumn.columnBox=true"
+                   v-if="vaildData($parent.tableOption.columnBtn,config.columnBtn)"></el-button>
       </el-tooltip>
-      <el-tooltip effect="dark" content="搜索" placement="top">
-        <el-button
-          :icon="config.searchboxBtnIcon"
-          circle
-          :size="$parent.isMediumSize"
-          @click="$parent.$refs.headerSearch.handleSearchShow()"
-          v-show="($parent.$refs.headerSearch || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"
-        ></el-button>
+      <el-tooltip effect="dark"
+                  content="搜索"
+                  placement="top">
+        <el-button :icon="config.searchboxBtnIcon"
+                   circle
+                   :size="$parent.isMediumSize"
+                   @click="$parent.$refs.headerSearch.handleSearchShow()"
+                   v-show="($parent.$refs.headerSearch || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"></el-button>
       </el-tooltip>
-      <el-tooltip effect="dark" content="过滤" placement="top">
-        <el-button
-          :icon="config.filtetBtnIcon"
-          circle
-          :size="$parent.isMediumSize"
-          @click="$parent.$refs.dialogFilter.box=true"
-          v-if="vaildData($parent.tableOption.filtetBtn,config.filtetBtn)"
-        ></el-button>
+      <el-tooltip effect="dark"
+                  content="过滤"
+                  placement="top">
+        <el-button :icon="config.filtetBtnIcon"
+                   circle
+                   :size="$parent.isMediumSize"
+                   @click="$parent.$refs.dialogFilter.box=true"
+                   v-if="vaildData($parent.tableOption.filtetBtn,config.filtetBtn)"></el-button>
       </el-tooltip>
     </div>
   </div>

@@ -170,16 +170,20 @@
     },
     methods: {
       handleCurrentRowChange(val) {
-        this.$message.success('单选' + JSON.stringify(val))
+        this.$message.success('查看控制台')
+        console.log('单选', val);
       },
       handleRowClick(row, event, column) {
-        this.$message.success('单机' + JSON.stringify(row))
+        this.$message.success('查看控制台')
+        console.log('单机', row);
       },
       handleRowDBLClick(row, event) {
-        this.$message.success('双击' + JSON.stringify(row))
+        this.$message.success('查看控制台')
+        console.log('双击', row);
       },
       tip(scope) {
-        this.$message.success(JSON.stringify(scope.row))
+        this.$message.success('查看控制台')
+        console.log('行数据', scope);
       }
     }
   })
