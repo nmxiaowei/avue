@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue-data.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-data-rotate :option="option"></avue-data-rotate>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          span:6,
+          data: [
+            {
+              backsrc:'./images/card2.jpg',
+              backtitle:'网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
+              backname:'旋转小丁',
+              frontsrc:'./images/card1.jpg',
+              fronttitle:'腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹',
+              frontname:'旋转小马'
+            },
+            {
+              backsrc:'./images/card3.jpg',
+              backtitle:'网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
+              backname:'旋转小丁',
+              frontsrc:'./images/card1.jpg',
+              fronttitle:'腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹',
+              frontname:'旋转小马'
+            },
+            {
+              backsrc:'./images/card2.jpg',
+              backtitle:'网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
+              backname:'旋转小丁',
+              frontsrc:'./images/card3.jpg',
+              fronttitle:'腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹',
+              frontname:'旋转小马'
+            }
+          ]
+        },
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

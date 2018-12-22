@@ -1,0 +1,89 @@
+.avue-data-rotate {
+    $height: 280px;
+    .re-item {
+        width: 220px;
+        margin: 50px auto;
+        height: $height;
+        position: relative;
+        perspective: 500;
+        -webkit-perspective: 500;
+        img {
+            max-width: 220px;
+            width: 100%;
+            height: $height*0.5;
+        }
+        .re-item-front,
+        .re-item-back {
+            border-radius: 5px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            perspective: 1000;
+            backface-visibility: hidden;
+            transition: all 1.5s;
+            box-shadow: 2px 2px 20px #ccc;
+            overflow: hidden;
+        }
+    }
+    
+    .re-item-back {
+        position: relative;
+        transform: rotateY(-180deg);
+        -webkit-transform: rotateY(-180deg);
+    }
+
+    .re-item:hover .re-item-front {
+        transform: rotateY(-180deg);
+        -webkit-transform: rotateY(-180deg);
+    }
+
+    .re-item:hover .re-item-back {
+        transform: rotateY(-360deg);
+        -webkit-transform: rotateY(-360deg);
+    }
+
+    .re-item .re-item-job {
+        margin: 2px 0;
+        font-size: 18px;
+        color: #303030;
+        line-height: 40px;
+    }
+
+    .re-item .re-item-frontdes,.re-item-backdes {
+        padding: 0 20px;
+        height: $height*0.5;
+        color: #939393;
+        display: block;
+        transition-property:color;
+        transition-duration:1s;
+        transition-delay:0s;
+        -webkit-transition-property:color; 
+        -webkit-transition-duration:1s;
+        -webkit-transition-delay:0s;
+        h4 {
+            padding: 0;
+            margin: 0;
+            padding-top: 10px;
+        }
+        p {
+            display: -webkit-box;
+            font-size: 14px;
+            line-height: 22px;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }
+    }
+    .re-item:hover .re-item-frontdes{
+        color: white;
+    }
+    .re-item .re-item-backdes {
+        color: white;
+    }
+    .re-item:hover .re-item-backdes{
+        color: #939393;
+    }
+}

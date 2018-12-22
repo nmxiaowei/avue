@@ -7,4 +7,5 @@ import Card from 'components/Card';
 import Display from 'components/Display';
 import imgText from 'components/imgText';
 import operaText from 'components/operaText';
-export default [Tabs,cardText,Box,Progress,Icons,Card,Display,imgText,operaText];
+import Rotate from 'components/Rotate';
+export default [Tabs,cardText,Box,Progress,Icons,Card,Display,imgText,operaText,Rotate];
