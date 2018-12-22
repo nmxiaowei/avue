@@ -11,7 +11,8 @@
     "dev:vant": "cross-env TARGET=dev-vant UINAME=vant gulp watch",
     "build:vant": "cross-env TARGET=prod-vant UINAME=vant gulp build",
     "dev:data": "cross-env TARGET=dev-data UINAME=data gulp watch",
-    "build:data": "cross-env TARGET=prod-data UINAME=data gulp build"
+    "build:data": "cross-env TARGET=prod-data UINAME=data gulp build",
+    "build:all": "npm run build && npm run build:vant && npm run build:data"
   },
   "keywords": [
     "element-ui",
