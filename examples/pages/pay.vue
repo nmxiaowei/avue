@@ -14,28 +14,13 @@
         </div>
       </div>
     </div>
-    <fieldset>
-      <legend align="center">AvueX发布计划</legend>
-    </fieldset>
     <div class="pay__x">
-      <h3>为了追求更好的极简化配置思想和一套代码多终端适配原则，来降低企业开发的周期和开发成本，让系统变得易维护，高效率开发的宗旨</h3>
-      <p class="pay__x-list">
-        1.底层代码将全部重构,顶级API进行重大的修整,但依然会保持与现有版本的兼容，现有项目无缝升级</br>
-        2.增添手机版本（vant作为UI组件底层），一套代码多个终端自适应</br>
-        3.crud的主-子的表格和批量（增删改查功能）的支持</br>
-        4.内部功能分解为单独的包，方便企业二次开发和维护</br>
-        5.多种扁平化风格随意切换更加符合企业风格</br>
-        6.一键集成表格的导出excel，打印，等常用功能</br>
-        7.丰富的数据展示组件，一键配置即可生成</br>
-        8.底层更加完善的开发错误调试机制，轻量级的自动构建脚手架上手更容易</br>
-        9.更多组件一键配置即可生成</br>
-        10.详细的开发文档和源码讲解文档</br>
-        11.购买后可用于商业化开发，永久更新授权使用</br>
-        12.开放核心代码自行div开发</br>
-        13.更多彩蛋等着你。。。</br>
-      </p>
       <p>
+        为了更好的感谢支持avue的开发者，现在购买全家桶即可获取全部avue全部代码和服务，1月1日后恢复原价并且启动avuex官网</br>
+
         为了更好的认识avuex，放出一小部分demo测评（缩小浏览器即可体验适配模式）</br>
+        <a href="https://cli2.avue.top"
+           target="_blank">avuex官网</a>&nbsp;&nbsp;
         <a target="_blank"
            href="https://sandbox.runjs.cn/show/g3tvedbg">avuex-crud（表格）</a>&nbsp;&nbsp;
         <a target="_blank"
@@ -45,8 +30,6 @@
         <a target="_blank"
            href="https://sandbox.runjs.cn/show/tacp12ya">avuex-form-group（分组表单）</a>&nbsp;&nbsp;
       </p>
-      <p>发布时间：2019-01-01</p>
-      <p>售价：999（现购企业版全家桶套餐，avuex将免费升级）</p>
     </div>
     <fieldset>
       <legend align="center">获取授权</legend>
@@ -433,7 +416,7 @@ export default {
       }
     }
     &-text {
-      height: 350px;
+      height: 400px;
       margin-top: 15px;
       margin-left: 20px;
       text-align: left;
@@ -442,8 +425,7 @@ export default {
         color: #ff5722;
       }
       li {
-        height: 30px;
-        line-height: 30px;
+        line-height: 28px;
         font-size: 14px;
       }
     }

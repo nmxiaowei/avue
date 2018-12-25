@@ -199,7 +199,7 @@ export default {
 
   created() {
     this.$notify({
-      title: "Avuex发布计划（你值得拥有！！！）",
+      title: "Avuex发布在即（你值得拥有！！！）",
       dangerouslyUseHTMLString: true,
       message: '<a target="_blank" href="https://avue.top/#/pay">点击查看</a>',
       duration: 0,

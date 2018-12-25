@@ -1,59 +1,27 @@
 export const pay = [{
-    title: '核心源码',
-    subtitle: 'avue的核心源码',
+    title: '后台模版',
+    subtitle: 'avue-cli的快速开发后台模版',
     vip: 2,
-    nowmoney: '266.66',
-    money: '299.99',
-    list: [{
-        title: 'avue核心源码解读',
-        bold: true
-    }, {
-        title: '大量的可配置组件源码解读',
-        bold: true
-    }, {
-        title: '更多vue的骚技巧的玩法',
-        bold: true
-    }, {
-        title: '无任何协议限制,可二次开发',
-        bold: true
-    }, {
-        title: '专属的开发者文档，助你快速掌握'
-    }, {
-        title: '支持IE8+等系列浏览器'
-    }, {
-        title: '学习开发基于vue第三方组件的学习'
-    }, {
-        title: '私人交流学习群'
-    }, {
-        title: '前端最新干货分享'
-    }, {
-        title: '免费的私人git私服'
-    }]
-}, {
-    title: '模版源码',
-    subtitle: 'avue-cli的核心源码',
-    vip: 2,
-    nowmoney: '266.66',
-    money: '299.99',
+    nowmoney: '99.99',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
         bold: true
     }, {
-        title: '支持IE8+等系列浏览器',
+        title: '支持IE9+等系列浏览器',
         bold: true
     }, {
         title: '全新的前端错误日志监控机制',
         bold: true
     }, {
-        title: '基于最新的avue2.x底层开发',
+        title: '基于最新的avue底层开发',
         bold: true
     }, {
         title: '前端路由动态服务端加载',
         bold: true
     }, {
-        title: '专属的开发者文档，助你快速掌握',
-    }, {
         title: '灵活的多款主题自由配置'
+    }, {
+        title: '专属的开发者文档，助你快速掌握',
     }, {
         title: '模块的可拆卸化,达到开箱即用'
     }, {
@@ -66,39 +34,59 @@ export const pay = [{
         title: '前端最新干货分享'
     }]
 }, {
+    title: 'Avuex',
+    subtitle: 'avuex的核心源码',
+    vip: 1,
+    nowmoney: '999.99',
+    list: [{
+        title: '一键集成表格的导出excel，打印，等常用功能',
+        bold: true,
+    }, {
+        title: '底层代码可重用轻松对接多个UI框架，不止局限element-ui',
+        bold: true,
+    }, {
+        title: '底层更加完善的开发错误调试机制，轻量级的自动构建脚手架上手更容易',
+        bold: true
+    }, {
+        title: '一套代码多个终端自适应',
+        bold: true,
+    }, {
+        title: '一键集成表格的导出excel，打印，等常用功能',
+        bold: true,
+    }, {
+        title: '表格的批量操作,表单的级联操作更加便捷'
+    }, {
+        title: '新增大量常用组件（搜索，选项卡）'
+    }, {
+        title: '新增大量全新可配置的骚属性'
+    }, {
+        title: '丰富的数据展示模版组件包'
+    }, {
+        title: '手机版的avue，写法与pc端一致'
+    }, {
+        title: '专属的开发者文档，助你快速掌握',
+    }]
+}, {
     title: '全家桶',
     subtitle: 'avue系列的全部源码',
     v: true,
     vip: 1,
-    nowmoney: '299.99',
-    money: '399.99',
+    nowmoney: '499.99',
     list: [{
-        title: '可完全用于商用',
+        title: '赠送专属自己的官网网站代码（avuex官网）',
         bold: true,
     }, {
-        title: '后期升级全部免费',
+        title: '可购买后可用于商业化开发，永久更新授权使用',
         bold: true,
     }, {
-        title: '同时拥有“核心源码”和“模版源码”的授权',
+        title: '后期更新和新产品将全部免费',
         bold: true,
     }, {
-        title: '获得avue中全部的vip特权',
-        bold: true
+        title: '拥有avue系列项目的全部代码',
+        bold: true,
     }, {
-        title: '可附赠avue系列全家桶源码学习',
-        bold: true
-    }, {
-        title: '包含avue2.x和avue-cli2.x源码'
-    }, {
-        title: '包含avue-form表单拖拽工具源码'
-    }, {
-        title: '包含avue-pig最新avue-cli对接pigx和pig'
-    }, {
-        title: '包含avue-cli2html版本的的源码'
-    }, {
-        title: '包含avue-house一个房屋采集系统案例'
-    }, {
-        title: '包含avue-api接口管理工具源码'
+        title: '提供远程技术支持和问题解答',
+        bold: true,
     }]
 }]
 
