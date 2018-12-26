@@ -1,57 +1,46 @@
 <template>
   <el-collapse-transition>
-    <el-form
-      :class="b('search')"
-      :model="searchForm"
-      :inline="true"
-      ref="searchForm"
-      v-if="searchShow && searchFlag"
-    >
+    <el-form :class="b('search')"
+             :model="searchForm"
+             :inline="true"
+             ref="searchForm"
+             v-if="searchShow && searchFlag">
       <!-- 循环列搜索框 -->
-      <el-form-item
-        :prop="column.prop"
-        :label="column.label"
-        v-for="(column,index) in $parent.columnOption"
-        :key="index"
-        v-if="column.search"
-      >
-        <el-tooltip
-          :disabled="!column.searchTip"
-          :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"
-          :placement="column.searchTipPlacement"
-        >
-          <component
-            v-model="searchForm[column.prop]"
-            :clearable="column.searchClearable"
-            :defaultExpandAll="column.defaultExpandAll"
-            :dic="$parent.DIC[column.prop]"
-            :filterable="column.searchFilterable"
-            :filter-method="column.searchFilterMethod"
-            :format="column.format"
-            :is="getSearchType(column.type)"
-            :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
-            :parent="column.parent"
-            :placeholder="getPlaceholder(column,'search')"
-            :props="column.props || $parent.tableOption.props"
-            :size="$parent.isMediumSize"
-            :type="getType(column)"
-            :value-format="column.valueFormat"
-          ></component>
+      <el-form-item :prop="column.prop"
+                    :label="column.label"
+                    v-for="(column,index) in $parent.columnOption"
+                    :key="index"
+                    v-if="column.search">
+        <el-tooltip :disabled="!column.searchTip"
+                    :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"
+                    :placement="column.searchTipPlacement">
+          <component v-model="searchForm[column.prop]"
+                     :clearable="column.searchClearable"
+                     :defaultExpandAll="column.defaultExpandAll"
+                     :dic="$parent.DIC[column.prop]"
+                     :filterable="column.searchFilterable"
+                     :filter-method="column.searchFilterMethod"
+                     :format="column.format"
+                     :checkStrictly="column.searchCheckStrictly"
+                     :is="getSearchType(column.type)"
+                     :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
+                     :parent="column.parent"
+                     :placeholder="getPlaceholder(column,'search')"
+                     :props="column.props || $parent.tableOption.props"
+                     :size="$parent.isMediumSize"
+                     :type="getType(column)"
+                     :value-format="column.valueFormat"></component>
         </el-tooltip>
       </el-form-item>
       <slot name="search"></slot>
       <el-form-item :class="b('searchMenu')">
-        <el-button
-          type="primary"
-          @click="searchChange"
-          :icon="config.searchBtnIcon"
-          :size="$parent.isMediumSize"
-        >{{config.searchBtnTitle}}</el-button>
-        <el-button
-          @click="searchReset"
-          :icon="config.emptyBtnIcon"
-          :size="$parent.isMediumSize"
-        >{{config.emptyBtnTitle}}</el-button>
+        <el-button type="primary"
+                   @click="searchChange"
+                   :icon="config.searchBtnIcon"
+                   :size="$parent.isMediumSize">{{config.searchBtnTitle}}</el-button>
+        <el-button @click="searchReset"
+                   :icon="config.emptyBtnIcon"
+                   :size="$parent.isMediumSize">{{config.emptyBtnTitle}}</el-button>
         <slot name="searchMenu"></slot>
       </el-form-item>
     </el-form>

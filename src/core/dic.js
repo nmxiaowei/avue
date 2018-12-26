@@ -1,4 +1,3 @@
-import axios from 'axios';
 import $log from 'plugin/logs/util';
 import { validatenull } from 'utils/validate';
 
@@ -59,7 +58,7 @@ export const loadDic = option => {
     ajaxdic = params.ajaxdic;
 
     if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
-    if (__ENV__ === 'development' && !axios && !validatenull(ajaxdic)) {
+    if (__ENV__ === 'development' && !window.axios && !validatenull(ajaxdic)) {
       $log.warning('使用网络字典需要引入以下包');
       $log.capsule(
         'axios：',
@@ -129,7 +128,7 @@ function handeDic(list) {
 // ajax获取字典
 export const sendDic = path => {
   return new Promise(resolve => {
-    axios.get(path).then(function (res) {
+    window.axios.get(path).then(function (res) {
       // 降级处理
       const list = (Array.isArray(res.data.data) ? res.data.data : res.data) || [];
       resolve(list)

@@ -46,7 +46,7 @@ export default create({
   watch: {
     value: {
       handler() {
-        this.form = this.value;
+        this.setVal();
         this.dataformat();
       },
       deep: true
@@ -58,6 +58,11 @@ export default create({
     this.dataformat();
   },
   methods: {
+    setVal() {
+      Object.keys(this.value).forEach(ele => {
+        this.$set(this.form, ele, this.value[ele]);
+      });
+    },
     dataformat() {
       this.columnOption.forEach(ele => {
         const prop = ele.prop;

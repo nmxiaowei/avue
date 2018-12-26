@@ -20,9 +20,11 @@ import Tree from 'components/tree';
 import TableTree from 'components/table-tree';
 import Search from 'components/search'
 import Tabs from 'components/tabs'
+import Dynamic from 'components/dynamic'
+import Queue from 'components/queue'
 import $log from 'plugin/logs/util';
 
-if (!window.ELEMENT) {
+if (!window.Element) {
   $log.warning('需要引入UI框架包');
   $log.capsule(
     'element-ui',
@@ -53,5 +55,7 @@ export default [
   Tree,
   TableTree,
   Search,
-  Tabs
+  Tabs,
+  Queue,
+  Dynamic
 ]

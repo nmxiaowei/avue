@@ -79,8 +79,11 @@ export default create({
       },
       immediate: true
     },
-    form() {
-      this.$emit("input", this.form);
+    form: {
+      handler() {
+        this.$emit("input", this.form);
+      },
+      deep: true
     },
     active() {
       this.$emit("change", this.tabsObj);
@@ -139,6 +142,7 @@ export default create({
       this.$emit("reset-change");
     },
     handleSubmit() {
+      this.$emit("input", this.form);
       //返回当先选项卡的字段
       this.formRef.validate(vaild => {
         if (vaild) {

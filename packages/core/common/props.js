@@ -1,5 +1,5 @@
 import { initVal } from 'core/dataformat';
-export default function() {
+export default function () {
   // props配置
   const propsDefault = {
     id: 'id',
@@ -27,7 +27,7 @@ export default function() {
       value: {},
       column: {
         type: Object,
-        default: () => {}
+        default: () => { }
       },
       label: {
         type: String,
@@ -122,29 +122,29 @@ export default function() {
       isString() {
         return this.dataType === 'string';
       },
-      nameKey: function() {
+      nameKey: function () {
         return this.propsHttp.name || this.propsHttpDefault.name;
       },
-      urlKey: function() {
+      urlKey: function () {
         return this.propsHttp.url || this.propsHttpDefault.url;
       },
-      valueKey: function() {
+      valueKey: function () {
         return this.props.value || this.propsDefault.value;
       },
-      labelKey: function() {
+      labelKey: function () {
         return this.props.label || this.propsDefault.label;
       },
-      childrenKey: function() {
+      childrenKey: function () {
         return this.props.children || this.propsDefault.children;
       },
-      disabledKey: function() {
+      disabledKey: function () {
         return this.props.disabled || this.propsDefault.disabled;
       },
-      idKey: function() {
+      idKey: function () {
         return this.props.id || this.propsDefault.id;
       }
     },
-    created() {},
+    created() { },
     methods: {
       initVal() {
         this.text = initVal({
@@ -153,6 +153,9 @@ export default function() {
           value: this.value,
           listType: this.listType
         });
+        if (this.type === 'dynamic' && this.text.length === 0) {
+          this.text.push('')
+        }
       }
     }
   };

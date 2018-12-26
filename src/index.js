@@ -1,18 +1,18 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
-import { deepClone, vaildData } from 'utils/util';
-import axios from 'axios';
+import { deepClone, vaildData, findArray } from 'utils/util';
 import _export from 'plugin/export/';
 import _logs from 'plugin/logs/';
-function install(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   Vue.use(_logs);
   Vue.use(_export);
   components.map(component => {
     Vue.component(component.name, component);
   });
-  Vue.prototype.$http = axios;
+  Vue.prototype.$http = window.axios;
   Vue.prototype.deepClone = deepClone;
   Vue.prototype.vaildData = vaildData;
+  Vue.prototype.findArray = findArray;
   Vue.prototype.validatenull = validatenull;
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
@@ -21,8 +21,13 @@ function install(Vue, opts = {}) {
   };
 }
 
-if (window.Vue) {
+/* istanbul ignore if */
+if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-export default install;
+module.exports = {
+  version: '1.0.0',
+  install
+}
+module.exports.default = module.exports;

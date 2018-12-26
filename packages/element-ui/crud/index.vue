@@ -711,6 +711,10 @@ export default create({
       this.$refs.dialogForm.resetForm();
       this.$emit("input", this.tableForm);
     },
+    //搜索指定的属性配置
+    findColumnIndex(value) {
+      return this.findArray(this.columnOption, value, "prop");
+    },
     //合并行
     tableSpanMethod(param) {
       if (typeof this.spanMethod === "function") return this.spanMethod(param);

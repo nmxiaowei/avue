@@ -8,7 +8,7 @@ import Date from 'components/date';
 import Time from 'components/time';
 import Upload from 'components/upload';
 import $log from 'plugin/logs/util';
-if (!window.vant) {
+if (!window.Vant) {
   $log.warning('需要引入UI框架包');
   $log.capsule(
     'vant',

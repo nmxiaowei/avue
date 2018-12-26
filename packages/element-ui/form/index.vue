@@ -88,6 +88,7 @@
                                :propsHttp="column.propsHttp ||parentOption.propsHttp"
                                :range="column.range"
                                :readonly="column.readonly"
+                               :checkStrictly="column.checkStrictly"
                                :separator="column.separator"
                                :showFileList="column.showFileList"
                                :showInput="column.showInput"
@@ -272,6 +273,14 @@ export default create({
     }, 500);
   },
   methods: {
+    //搜索指定的属性配置
+    findColumnIndex(value) {
+      let result = -1;
+      this.columnOption.forEach(column => {
+        result = this.findArray(column.column, value, "prop");
+      });
+      return result;
+    },
     cascaderInit() {
       if (this.formCascaderInit) return;
       this.columnOption.forEach(column => {
@@ -436,7 +445,8 @@ export default create({
      * 清空表单字段
      * @param part:true 清空在column中字段,否则清空全部
      */
-    resetForm({ part }) {
+    resetForm(params = {}) {
+      const part = params.part;
       if (part) {
         this.columnOption.forEach(ele => {
           ele.column.forEach(column => {

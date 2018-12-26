@@ -56,9 +56,10 @@ export const dateList = [
  * 初始化数据格式
  */
 export const initVal = ({ type, multiple, value, listType }) => {
+
   if (
     (['select', 'tree'].includes(type) && multiple) ||
-    ['checkbox', 'cascader'].includes(type) ||
+    ['checkbox', 'cascader', 'dynamic'].includes(type) ||
     (['upload'].includes(type) && listType !== 'picture-img')
   ) {
     if (!Array.isArray(value)) {
@@ -134,6 +135,8 @@ export const getComponent = (type, component) => {
     result = 'upload';
   } else if (type === 'silder') {
     result = 'silder';
+  } else if (type === 'dynamic') {
+    result = 'dynamic';
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -149,6 +152,7 @@ export const formInitVal = (list = []) => {
     if (
       ele.type === 'checkbox' ||
       ele.type === 'cascader' ||
+      ele.type === 'dynamic' ||
       ele.type === 'dates' ||
       (ele.type === 'upload' && ele.listType !== 'picture-img') ||
       ele.multiple ||

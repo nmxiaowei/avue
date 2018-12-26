@@ -16,6 +16,15 @@ body{
   overflow-y: auto;
 }
 
+.avue-queue--block{
+  display: inline-block;
+}
+.avuex-opacity{
+  opacity: 0
+}
+.avuex-opacity--active{
+  opacity: 1
+}
 .avue-tip {
   position: relative;
   width: 100%;

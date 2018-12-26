@@ -13,7 +13,15 @@ const banner =
   ' Smallwei\n' +
   ' * Released under the MIT License.\n' +
   ' */';
-const externals = ['vue', 'axios', 'element-ui', 'vant', 'mockjs', 'xlsx', 'file-saver']
+const externals = {
+  'vue': 'Vue',
+  'vant': 'vant',
+  'mockjs': 'Mock',
+  'file-saver': 'file-saver',
+  'xlsx': 'xlsx',
+  'axios': 'axios',
+  'element-ui': 'ELEMENT',
+}
 const resolve = p => {
   const base = p.split('/')[0];
   if (aliases[base]) {
@@ -76,8 +84,10 @@ function genConfig(name) {
     output: {
       filename: opts.filename,
       path: opts.dest,
+      chunkFilename: '[id].js',
       libraryTarget: 'umd',
-      library: opts.library || 'Avue'
+      library: 'AVUE',
+      umdNamedDefine: true
     },
     externals: opts.externals,
     plugins: []

@@ -1,52 +1,54 @@
-.el-select,
-.el-date-editor.el-input,
-.el-date-editor.el-input__inner,
-.el-cascader,
-.avue-input-number {
-  width: 100% !important;
-}
-
-.el-button + .el-button {
-  margin-left: 0;
-}
-.el-button {
-  margin-right: 8px;
-  margin-bottom: 8px;
-}
-.el-input__inner {
-  height: 38px;
-  line-height: 38px;
-}
-
-.el-input--small {
-  input {
-    height: 32px !important;
-    line-height: 32px !important;
+.avue-crud,.avue-form{
+  .el-select,
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner,
+  .el-cascader,
+  .avue-input-number {
+    width: 100% !important;
   }
-}
 
-.el-input--mini {
-  input {
-    height: 28px !important;
-    line-height: 28px !important;
+  .el-button + .el-button {
+    margin-left: 0;
   }
-}
+  .el-button {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  .el-input__inner {
+    height: 38px;
+    line-height: 38px;
+  }
 
-.el-table--medium td {
-  padding: 7px 0 !important;
-}
+  .el-input--small {
+    input {
+      height: 32px !important;
+      line-height: 32px !important;
+    }
+  }
 
-.el-tooltip__popper {
-  max-width: 60%;
-}
+  .el-input--mini {
+    input {
+      height: 28px !important;
+      line-height: 28px !important;
+    }
+  }
 
-.el-dropdown-menu__item {
-  line-height: 25px;
-}
+  .el-table--medium td {
+    padding: 7px 0 !important;
+  }
 
-.el-table-filter__list {
-  width: 100%;
-  height: 300px;
-  overflow-y: auto;
+  .el-tooltip__popper {
+    max-width: 60%;
+  }
+
+  .el-dropdown-menu__item {
+    line-height: 25px;
+  }
+
+  .el-table-filter__list {
+    width: 100%;
+    height: 300px;
+    overflow-y: auto;
+  }
 }
 

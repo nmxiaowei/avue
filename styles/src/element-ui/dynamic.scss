@@ -1,0 +1,16 @@
+.avue-dynamic{
+  &__item{
+    margin-bottom: 10px;
+    width:100%;
+    display: flex;
+    align-items: center;
+   
+  }
+  &__input{
+    margin-right: 8px;
+    width:100%;
+   }
+   &__button{
+     margin-bottom: 0 !important;
+   }
+}

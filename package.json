@@ -1,10 +1,10 @@
 {
   "name": "avuex",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "",
-  "main": "lib/index.js",
-  "unpkg": "lib/index.js",
-  "jsdelivr": "lib/index.js",
+  "main": "lib/avue.min.js",
+  "unpkg": "lib/avue.min.js",
+  "jsdelivr": "lib/avue.min.js",
   "scripts": {
     "dev": "cross-env TARGET=dev UINAME=element-ui gulp watch",
     "build": "cross-env TARGET=prod UINAME=element-ui gulp build",
@@ -16,7 +16,8 @@
   },
   "keywords": [
     "element-ui",
-    "avue"
+    "avue",
+    "avuex"
   ],
   "author": "Smallwei",
   "license": "MIT",

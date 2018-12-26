@@ -18,6 +18,7 @@
     <el-tree ref="tree"
              :data="list"
              :node-key="nodeKey"
+             :check-strictly="checkStrictly"
              :filter-node-method="filterNode"
              :expand-on-click-node="false"
              :default-expand-all="defaultExpandAll">
@@ -74,6 +75,10 @@ import create from "core/create";
 export default create({
   name: "tree",
   props: {
+    checkStrictly: {
+      type: Boolean,
+      default: false
+    },
     option: {
       type: Object,
       default: () => {
