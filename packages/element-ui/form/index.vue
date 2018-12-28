@@ -127,7 +127,7 @@
                          @click="handleMock"
                          :size="controlSize"
                          icon="el-icon-edit-outline"
-                         v-if="vaildData(parentOption.mock,false)">一键填充数据</el-button>
+                         v-if="isMock">填充数据</el-button>
               <el-button type="primary"
                          @click="submit"
                          :size="controlSize"
@@ -207,7 +207,6 @@ export default create({
       delete option.column;
       return option;
     },
-
     columnOption() {
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
@@ -235,6 +234,9 @@ export default create({
     },
     boxType: function() {
       return this.parentOption.boxType;
+    },
+    isMock() {
+      return this.vaildData(this.parentOption.mock, false);
     }
   },
   props: {
@@ -384,12 +386,18 @@ export default create({
       this.$emit("input", this.form);
     },
     handleMock() {
-      const form = mock(this.columnOption, this.DIC);
-      Object.keys(form).forEach(ele => {
-        this.form[ele] = form[ele];
-      });
-      this.clearValidate();
-      this.$message.success("模拟数据填充成功");
+      if (this.isMock) {
+        this.columnOption.forEach(column => {
+          const form = mock(column.column, this.DIC, this.form, this.isMock);
+          if (!this.validatenull(form)) {
+            Object.keys(form).forEach(ele => {
+              this.form[ele] = form[ele];
+            });
+            this.clearValidate();
+          }
+        });
+        this.$message.success("模拟数据填充成功");
+      }
     },
     // 验证表单是否禁止
     vaildDisabled(column) {

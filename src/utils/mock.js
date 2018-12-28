@@ -1,9 +1,17 @@
 
-const mockjs = window.Mock;
-const Random = (mockjs || {}).Random;
-export default (column, dic) => {
-  let form = {};
+import packages from 'core/packages';
 
+
+
+export default (column, dic, defaultForm, run) => {
+  if (!run) return
+  if (!window.Mock) {
+    packages.logs("mock");
+    return
+  }
+  let mockjs = window.Mock;
+  let Random = (mockjs || {}).Random;
+  let form = {};
   function createName({ en }) {
     if (en) {
       return Random.name(true);
@@ -115,6 +123,8 @@ export default (column, dic) => {
             form[ele.prop] = createDic(params);
             break;
         }
+      } else if (ele.mock instanceof Function) {
+        form[ele.prop] = ele.mock(defaultForm)
       }
     });
   }

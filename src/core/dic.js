@@ -1,4 +1,4 @@
-import $log from 'plugin/logs/util';
+import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
 
 
@@ -58,13 +58,8 @@ export const loadDic = option => {
     ajaxdic = params.ajaxdic;
 
     if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
-    if (__ENV__ === 'development' && !window.axios && !validatenull(ajaxdic)) {
-      $log.warning('使用网络字典需要引入以下包');
-      $log.capsule(
-        'axios：',
-        'https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js',
-        'warning'
-      );
+    if (!window.axios && !validatenull(ajaxdic)) {
+      packages.logs('axios');
       resolve();
     }
     handeDic(ajaxdic)

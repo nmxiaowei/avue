@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+  <script src="https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="obj" @submit="submit">
+      <template slot-scope="scope" slot="name">
+        <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
+      </template>
+    </avue-form>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avue.top/api/area'
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        obj: {},
+        option: {
+          mock: true,
+          column: [{
+            label: '内容',
+            prop: 'text',
+            mock: {
+              type: 'name',
+              en: true,
+            }
+          }, {
+            label: '内容1',
+            prop: 'text1',
+            mock: (form) => {
+              return '自定义逻辑' + form.text
+            }
+          }]
+        }
+      }
+    },
+    methods: {
+      submit() {
+        this.$message.success(JSON.stringify(this.obj))
+      }
+    }
+  })
+</script>
+
+</html>

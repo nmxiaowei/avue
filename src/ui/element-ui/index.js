@@ -22,15 +22,9 @@ import Search from 'components/search'
 import Tabs from 'components/tabs'
 import Dynamic from 'components/dynamic'
 import Queue from 'components/queue'
-import $log from 'plugin/logs/util';
-
+import packages from 'core/packages';
 if (!window.Element) {
-  $log.warning('需要引入UI框架包');
-  $log.capsule(
-    'element-ui',
-    'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js',
-    'warning'
-  );
+  packages.logs('element-ui')
 }
 
 export default [

@@ -87,7 +87,7 @@ export const getSearchType = type => {
   } else if (['cascader'].includes(type)) {
     result = 'cascader';
   } else if (['number'].includes(type)) {
-    result = 'inputNumber';
+    result = 'input-number';
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -124,7 +124,7 @@ export const getComponent = (type, component) => {
   } else if (type === 'cascader') {
     result = 'cascader';
   } else if (type === 'number') {
-    result = 'inputNumber';
+    result = 'input-number';
   } else if (type === 'password') {
     result = 'input';
   } else if (type === 'switch') {

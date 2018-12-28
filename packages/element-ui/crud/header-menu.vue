@@ -71,6 +71,7 @@
 import tableTemp from "../../util/tableTemp";
 import create from "core/create";
 import config from "./config";
+import packages from "core/packages";
 import { vaildData } from "utils/util";
 export default create({
   name: "crud",
@@ -99,23 +100,8 @@ export default create({
     //下载excel
     rowExcel() {
       if (!window.saveAs || !window.XLSX) {
-        if (__ENV__ === "development") {
-          this.$log.warning("导出excel需要引入以下包");
-          if (!window.saveAs) {
-            this.$log.capsule(
-              "file-saver：",
-              "https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js",
-              "warning"
-            );
-          }
-          if (!window.XLSX) {
-            this.$log.capsule(
-              "xlsx",
-              "https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js",
-              "warning"
-            );
-          }
-        }
+        packages.logs("file-saver");
+        packages.logs("xlsx");
         return;
       }
       if (this.validatenull(this.data)) {
