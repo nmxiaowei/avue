@@ -60,6 +60,20 @@ export default function () {
         type: String,
         default: ''
       },
+      dicUrl: {
+        type: String,
+        default: ''
+      },
+      dicMethod: {
+        type: String,
+        default: ''
+      },
+      dicQuery: {
+        type: Object,
+        default: () => {
+          return {}
+        }
+      },
       dic: {
         type: Array,
         default: () => {

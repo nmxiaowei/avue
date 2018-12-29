@@ -59,20 +59,6 @@ const builds = {
     filename: 'avue-mobile.js',
     env: 'development',
     eexternals: externals
-  },
-  'prod-data': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-data.min.js',
-    env: 'production',
-    externals: externals
-  },
-  'dev-data': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-data.js',
-    env: 'development',
-    externals: externals
   }
 };
 function genConfig(name) {

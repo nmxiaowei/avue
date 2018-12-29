@@ -26,8 +26,9 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-module.exports = {
+const Avue = {
   version: '1.0.0',
   install
 }
+module.exports = Avue
 module.exports.default = module.exports;

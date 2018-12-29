@@ -1,6 +1,14 @@
 .avue-crud {
   margin: 0 auto;
   width: 99%;
+  &--indeterminate{
+    .is-indeterminate{
+      .el-checkbox__inner {
+        background-color: #fff;
+        border-color: #dcdfe6;
+      }
+    }
+  }
   .el-table th {
     word-break: break-word;
     color: rgba(0, 0, 0, 0.85);

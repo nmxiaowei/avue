@@ -26,7 +26,7 @@ import packages from 'core/packages';
 if (!window.Element) {
   packages.logs('element-ui')
 }
-
+import AvueData from '../data/';
 export default [
   Carousel,
   Crud,
@@ -51,5 +51,6 @@ export default [
   Search,
   Tabs,
   Queue,
-  Dynamic
+  Dynamic,
+  ...AvueData
 ]

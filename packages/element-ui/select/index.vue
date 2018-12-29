@@ -2,15 +2,17 @@
   <el-select v-model="text"
              :size="size"
              :multiple="multiple"
-             :filterable="filterable"
+             :filterable="remote?true:filterable"
+             :remote="remote"
              :readonly="readonly"
+             :remote-method="handleRemoteMethod"
              collapse-tags
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
              @click.native="handleClick"
              :multiple-limit="limit"
              :disabled="disabled">
-    <el-option v-for="(item,index) in dic"
+    <el-option v-for="(item,index) in remote?netDic:dic"
                :key="index"
                :disabled="item[disabledKey]"
                :label="item[labelKey]"
@@ -22,14 +24,21 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { sendDic } from "core/dic";
 export default create({
   name: "select",
   mixins: [props(), event()],
   data() {
-    return {};
+    return {
+      netDic: []
+    };
   },
   props: {
     value: {},
+    remote: {
+      type: Boolean,
+      default: false
+    },
     limit: {
       type: Number,
       default: 99
@@ -49,6 +58,16 @@ export default create({
   },
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    handleRemoteMethod(query) {
+      sendDic({
+        url: this.dicUrl.replace("{{key}}", query),
+        method: this.dicMethod,
+        query: this.dicQuery
+      }).then(res => {
+        this.netDic = res;
+      });
+    }
+  }
 });
 </script>

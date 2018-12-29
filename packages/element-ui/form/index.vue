@@ -55,6 +55,9 @@
                                :defaultExpandAll="column.defaultExpandAll"
                                :defaultTime="column.defaultTime"
                                :dic="DIC[column.prop]"
+                               :dicUrl="column.dicUrl"
+                               :dicMethod="column.dicMethod"
+                               :dicQuery="column.dicQuery"
                                :disabled="vaildDisabled(column)"
                                :drag="column.drag"
                                :endPlaceholder="column.endPlaceholder"
@@ -93,6 +96,7 @@
                                :showFileList="column.showFileList"
                                :showInput="column.showInput"
                                :showStops="column.showStops"
+                               :showAllLevels="column.showAllLevels"
                                :showText="column.showText"
                                :size="column.size || controlSize"
                                :startPlaceholder="column.startPlaceholder"
@@ -105,6 +109,7 @@
                                :upload-after="uploadAfter"
                                :value-format="column.valueFormat"
                                :voidIconClass="column.voidIconClass"
+                               :remote="column.remote"
                                v-model="form[column.prop]"
                                @change="column.cascader?handleChange(item.column,cindex):''"></component>
                   </el-tooltip>

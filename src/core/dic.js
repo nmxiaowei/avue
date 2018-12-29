@@ -21,15 +21,18 @@ export const loadCascaderDic = (columnOption, list) => {
                 index: index
               });
             } else {
-              sendDic(
-                `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
-              ).then(res => {
-                resolve({
-                  prop: column.prop,
-                  data: res,
-                  index: index
+              sendDic(Object.assign({
+                url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
+              }, {
+                  method: column.dicMethod,
+                  query: column.dicQuery,
+                })).then(res => {
+                  resolve({
+                    prop: column.prop,
+                    data: res,
+                    index: index
+                  });
                 });
-              });
             }
           })
         );
@@ -85,9 +88,17 @@ function createdDic(url = '', column = []) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     } else if (!validatenull(dicUrl)) {
+      //查找是否存在
+      if (ajaxdic.findIndex((ele) => {
+        return ele.url === (dicUrl || url)
+      }) !== -1) {
+        return
+      }
       ajaxdic.push({
         url: dicUrl || url,
-        name: dicData || prop
+        name: dicData || prop,
+        method: ele.dicMethod,
+        query: ele.dicQuery,
       });
     }
   });
@@ -105,7 +116,9 @@ function handeDic(list) {
     list.forEach(ele => {
       result.push(
         new Promise(resolve => {
-          sendDic(`${ele.url.replace('{{key}}', ele.name)}`).then(res => {
+          sendDic(Object.assign({
+            url: `${ele.url.replace('{{key}}', ele.name)}`
+          }, ele)).then(res => {
             resolve(res);
           });
         })
@@ -121,12 +134,23 @@ function handeDic(list) {
 }
 
 // ajax获取字典
-export const sendDic = path => {
+export const sendDic = (params) => {
+  let { url, query, method } = params;
   return new Promise(resolve => {
-    window.axios.get(path).then(function (res) {
-      // 降级处理
+    const callback = (res) => {
       const list = (Array.isArray(res.data.data) ? res.data.data : res.data) || [];
       resolve(list)
-    });
+    }
+    if (method === 'post') {
+      window.axios.post(url, query).then(function (res) {
+        callback(res);
+      });
+    } else {
+      window.axios.get(url, {
+        params: query
+      }).then(function (res) {
+        callback(res);
+      });
+    }
   });
 };
