@@ -88,12 +88,6 @@ function createdDic(url = '', column = []) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     } else if (!validatenull(dicUrl)) {
-      //查找是否存在
-      if (ajaxdic.findIndex((ele) => {
-        return ele.url === (dicUrl || url)
-      }) !== -1) {
-        return
-      }
       ajaxdic.push({
         url: dicUrl || url,
         name: dicData || prop,
@@ -133,24 +127,32 @@ function handeDic(list) {
   });
 }
 
+//字典层级判断
+export const getDicData = (res) => {
+  return (Array.isArray((res.data || {}).data) ? res.data.data : res.data) || []
+}
 // ajax获取字典
 export const sendDic = (params) => {
   let { url, query, method } = params;
   return new Promise(resolve => {
     const callback = (res) => {
-      const list = (Array.isArray(res.data.data) ? res.data.data : res.data) || [];
+      const list = getDicData(res)
       resolve(list)
     }
     if (method === 'post') {
       window.axios.post(url, query).then(function (res) {
         callback(res);
-      });
+      }).catch(() => [
+        resolve([])
+      ]);
     } else {
       window.axios.get(url, {
         params: query
       }).then(function (res) {
         callback(res);
-      });
+      }).catch(() => [
+        resolve([])
+      ]);
     }
   });
 };

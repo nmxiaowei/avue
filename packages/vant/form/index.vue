@@ -167,37 +167,39 @@ export default create({
           this.$set(this.DIC, ele, []);
         });
       }
-      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
-        const dic = Array.isArray(res) ? res : [];
-        // 修改字典
-        this.$nextTick(() => {
-          this.$set(this.DIC, columnNextProp, dic);
-        });
-        /**
-         * 1.是change联动
-         * 2.字典不为空
-         * 3.非首次加载
-         */
-        if (
-          column.cascaderChange &&
-          !this.validatenull(dic) &&
-          this.formList.includes(str)
-        ) {
-          //取字典的指定项或则第一项
-          const dicvalue = dic[columnNext.defaultIndex] || dic[0];
-          this.form[columnNext.prop] =
-            dicvalue[(columnNext.props || {}).value || "value"];
-        }
-        //首次加载的放入队列记录
-        if (!this.formList.includes(str)) {
-          this.formList.push(str);
-          // 如果非change联动或者字典为空，清空子类数据
-        } else if (!column.cascaderChange || this.validatenull(dic)) {
-          list.forEach(ele => {
-            this.form[ele] = "";
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+        res => {
+          const dic = Array.isArray(res) ? res : [];
+          // 修改字典
+          this.$nextTick(() => {
+            this.$set(this.DIC, columnNextProp, dic);
           });
+          /**
+           * 1.是change联动
+           * 2.字典不为空
+           * 3.非首次加载
+           */
+          if (
+            column.cascaderChange &&
+            !this.validatenull(dic) &&
+            this.formList.includes(str)
+          ) {
+            //取字典的指定项或则第一项
+            const dicvalue = dic[columnNext.defaultIndex] || dic[0];
+            this.form[columnNext.prop] =
+              dicvalue[(columnNext.props || {}).value || "value"];
+          }
+          //首次加载的放入队列记录
+          if (!this.formList.includes(str)) {
+            this.formList.push(str);
+            // 如果非change联动或者字典为空，清空子类数据
+          } else if (!column.cascaderChange || this.validatenull(dic)) {
+            list.forEach(ele => {
+              this.form[ele] = "";
+            });
+          }
         }
-      });
+      );
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {

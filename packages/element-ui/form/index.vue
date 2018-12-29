@@ -361,28 +361,30 @@ export default create({
       }
 
       // 根据当前节点值获取下一个节点的字典
-      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
-        const dic = Array.isArray(res) ? res : [];
-        // 修改字典
-        this.$set(this.DIC, columnNextProp, dic);
-        /**
-         * 1.是change多级默认联动
-         * 2.字典不为空
-         * 3.非首次加载
-         */
-        if (
-          column.cascaderChange &&
-          !this.validatenull(dic) &&
-          this.formList.includes(str)
-        ) {
-          //取字典的指定项或则第一项
-          const dicvalue = dic[columnNext.defaultIndex || 0];
-          this.form[columnNext.prop] =
-            dicvalue[(columnNext.props || {}).value || "value"];
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+        res => {
+          const dic = Array.isArray(res) ? res : [];
+          // 修改字典
+          this.$set(this.DIC, columnNextProp, dic);
+          /**
+           * 1.是change多级默认联动
+           * 2.字典不为空
+           * 3.非首次加载
+           */
+          if (
+            column.cascaderChange &&
+            !this.validatenull(dic) &&
+            this.formList.includes(str)
+          ) {
+            //取字典的指定项或则第一项
+            const dicvalue = dic[columnNext.defaultIndex || 0];
+            this.form[columnNext.prop] =
+              dicvalue[(columnNext.props || {}).value || "value"];
+          }
+          //首次加载的放入队列记录
+          if (!this.formList.includes(str)) this.formList.push(str);
         }
-        //首次加载的放入队列记录
-        if (!this.formList.includes(str)) this.formList.push(str);
-      });
+      );
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {

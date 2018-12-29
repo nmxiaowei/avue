@@ -448,26 +448,28 @@ export default create({
         });
       }
 
-      sendDic(columnNext.dicUrl.replace("{{key}}", value)).then(res => {
-        // 修改字典
-        const dic = Array.isArray(res) ? res : [];
-        this.$set(this.cascaderDIC[rowIndex], columnNextProp, dic);
-        /**
-         * 1.是change多级默认联动
-         * 2.字典不为空
-         * 3.非首次加载
-         */
-        if (
-          column.cascaderChange &&
-          !this.validatenull(dic) &&
-          this.formIndexList.includes(rowIndex)
-        ) {
-          //取字典的指定项或则第一项
-          const dicvalue = dic[columnNext.defaultIndex || 0];
-          row[columnNext.prop] =
-            dicvalue[(columnNext.props || {}).value || "value"];
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+        res => {
+          // 修改字典
+          const dic = Array.isArray(res) ? res : [];
+          this.$set(this.cascaderDIC[rowIndex], columnNextProp, dic);
+          /**
+           * 1.是change多级默认联动
+           * 2.字典不为空
+           * 3.非首次加载
+           */
+          if (
+            column.cascaderChange &&
+            !this.validatenull(dic) &&
+            this.formIndexList.includes(rowIndex)
+          ) {
+            //取字典的指定项或则第一项
+            const dicvalue = dic[columnNext.defaultIndex || 0];
+            row[columnNext.prop] =
+              dicvalue[(columnNext.props || {}).value || "value"];
+          }
         }
-      });
+      );
     },
     handleDetail(row, column, DIC) {
       if (!this.validatenull(DIC)) {
