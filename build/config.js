@@ -4,15 +4,13 @@ const webpack = require('webpack');
 const version = process.env.VERSION || require('../package.json').version;
 
 const banner =
-  '/*!\n' +
-  ' * Avue.js v' +
+  ' Avue.js v' +
   version +
   '\n' +
-  ' * (c) 2017-' +
+  ' (c) 2017-' +
   new Date().getFullYear() +
   ' Smallwei\n' +
-  ' * Released under the MIT License.\n' +
-  ' */';
+  ' Released under the MIT License.\n'
 const externals = {
   'vue': 'Vue',
   'vant': 'vant',
@@ -76,7 +74,9 @@ function genConfig(name) {
       umdNamedDefine: true
     },
     externals: opts.externals,
-    plugins: []
+    plugins: [
+      new webpack.BannerPlugin(banner)
+    ]
   };
   if (opts.env) {
     config.plugins.push(
@@ -92,9 +92,6 @@ function genConfig(name) {
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false
-        },
-        output: {
-          comments: false
         },
         sourceMap: false
       })
