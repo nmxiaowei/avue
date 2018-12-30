@@ -1,47 +1,44 @@
 <template>
   <div :class="b()">
-    <div :class="b('group')" v-if="isDategroup">
+    <div :class="b('group')"
+         v-if="isDategroup">
       <div :class="b('radio')">
-        <el-radio-group :size="size" @change="handleChange" v-model="text">
-          <el-radio-button
-            :label="item.value"
-            v-for="(item,index) in menu"
-            :key="index"
-          >{{item.label}}</el-radio-button>
+        <el-radio-group :size="size"
+                        @change="handleChange"
+                        v-model="text">
+          <el-radio-button :label="item.value"
+                           v-for="(item,index) in menu"
+                           :key="index">{{item.label}}</el-radio-button>
         </el-radio-group>
       </div>
       <div :class="b('date')">
-        <el-date-picker
-          v-model="datetime"
-          type="daterange"
-          :size="size"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
+        <el-date-picker v-model="datetime"
+                        type="daterange"
+                        :size="size"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"></el-date-picker>
       </div>
     </div>
-    <el-date-picker
-      v-else
-      :type="type"
-      v-model="text"
-      :size="size"
-      :readonly="readonly"
-      range-separator="至"
-      :start-placeholder="startPlaceholder"
-      :end-placeholder="endPlaceholder"
-      :format="format"
-      :clearable="disabled?false:clearable"
-      :picker-options="pickerOptions"
-      :value-format="valueFormat"
-      :default-time="defaultTime"
-      :placeholder="placeholder"
-      @change="handleChange"
-      @click.native="handleClick"
-      :disabled="disabled"
-    ></el-date-picker>
+    <el-date-picker v-else
+                    :type="type"
+                    v-model="text"
+                    :size="size"
+                    :readonly="readonly"
+                    range-separator="至"
+                    :start-placeholder="startPlaceholder"
+                    :end-placeholder="endPlaceholder"
+                    :format="format"
+                    :clearable="disabled?false:clearable"
+                    :picker-options="pickerOptions"
+                    :value-format="valueFormat"
+                    :default-time="defaultTime"
+                    :placeholder="placeholder"
+                    @change="handleChange"
+                    @click.native="handleClick"
+                    :disabled="disabled"></el-date-picker>
   </div>
 </template>
 

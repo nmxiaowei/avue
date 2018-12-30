@@ -90,7 +90,6 @@ export default cteate({
     }
   },
   created() {
-    this.$parent = this.$parent.$parent;
     this.getSearchType = getSearchType;
     this.getPlaceholder = getPlaceholder;
     this.getType = getType;

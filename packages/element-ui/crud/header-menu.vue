@@ -82,7 +82,6 @@ export default create({
   },
   created() {
     this.vaildData = vaildData;
-    this.$parent = this.$parent.$parent;
   },
   computed: {
     data() {

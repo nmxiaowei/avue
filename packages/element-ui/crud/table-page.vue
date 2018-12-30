@@ -31,7 +31,6 @@ export default create({
     };
   },
   created() {
-    this.$parent = this.$parent.$parent;
     this.vaildData = vaildData;
     //初始化分页
     this.$parent.$emit("on-load", this.defaultPage);

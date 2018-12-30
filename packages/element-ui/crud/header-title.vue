@@ -1,17 +1,13 @@
 <template>
-  <div
-    slot="header"
-    :class="b('title')"
-    v-if="vaildData($parent.tableOption.title,false) || vaildData($parent.tableOption.dateBtn,config.dateBtn)"
-  >
+  <div slot="header"
+       :class="b('title')"
+       v-if="vaildData($parent.tableOption.title,false) || vaildData($parent.tableOption.dateBtn,config.dateBtn)">
     <p>{{$parent.tableOption.title}}</p>
-    <avue-date
-      type="dategroup"
-      @change="dateChange"
-      v-if="vaildData($parent.tableOption.dateBtn,config.dateBtn)"
-      :default="vaildData($parent.tableOption.dateDefault,config.dateDefault)"
-      :size="$parent.isMediumSize"
-    ></avue-date>
+    <avue-date type="dategroup"
+               @change="dateChange"
+               v-if="vaildData($parent.tableOption.dateBtn,config.dateBtn)"
+               :default="vaildData($parent.tableOption.dateDefault,config.dateDefault)"
+               :size="$parent.isMediumSize"></avue-date>
   </div>
 </template>
 
@@ -27,7 +23,6 @@ export default create({
     };
   },
   created() {
-    this.$parent = this.$parent.$parent;
     this.vaildData = vaildData;
   },
   methods: {
