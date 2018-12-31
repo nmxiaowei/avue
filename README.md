@@ -12,7 +12,7 @@
 
 ## 例子
 
-要查看[Live Examples](https://avuex.avue.top/#/doc/installation)和文档，请访问[https://avuex.top](https://avuex.avue.top).
+要查看[Live Examples](https://avuex.avue.top/#/doc/installation)和文档，请访问[https://avuex.avue.top](https://avuex.avue.top).
 
 ## 问答
 

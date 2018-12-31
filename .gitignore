@@ -1,7 +1,6 @@
 .DS_Store
 .vscode
 node_modules/
-lib/
 packages/theme-chalk/lib
 examples/avue
 npm-debug.log*
