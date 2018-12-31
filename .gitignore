@@ -1,7 +1,6 @@
 .DS_Store
 .vscode
 node_modules/
-dist/
 lib/
 packages/theme-chalk/lib
 examples/avue

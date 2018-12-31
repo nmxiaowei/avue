@@ -1,6 +1,6 @@
 {
   "name": "avuex",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
