@@ -1,5 +1,5 @@
 
-<p align="center"><a href="https://avue.top" target="_blank" rel="noopener noreferrer"><img width="100" src="https://gitee.com/smallweigit/avue/raw/master/static/images/login.jpg" alt="Avue logo"></a></p>
+<p align="center"><a href="https://avue.top" target="_blank" rel="noopener noreferrer"><img width="100" src="https://gitee.com/smallweigit/avue/raw/master/static/images/logo.jpg" alt="Avue logo"></a></p>
 
 ## 介绍
   Avue.js是基于现有的element-ui,库进行的二次封装，简化一些繁琐的操作，核心理念为数据驱动视图,主要的组件库针对table表格和form表单场景，同时衍生出更多企业常用的组件，达到高复用，容易维护和扩展的框架，同时内置了丰富了数据展示组件，让开发变得更加容易
