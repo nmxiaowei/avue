@@ -25,9 +25,7 @@ import Avue from @smallwei/avue/lib/index.js
 import @smallwei/avue/lib/theme-chalk/index.css
 
 #### 使用
-Vue.use(Avue,{
-  size:'small'
-})；
+Vue.use(Avue)；
 ```
 
 ## 文件
