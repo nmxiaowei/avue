@@ -18,12 +18,7 @@
         }
         
         .avue-home {
-            background-image: linear-gradient(
-              -90deg,
-              #03dde4 0%,
-              #30afed 51%,
-              #8755ff 100%
-            );
+            background-color: #2f54eb;
             height: 100%;
             display: flex;
             flex-direction: column;

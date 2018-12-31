@@ -3,6 +3,7 @@ export const pay = [{
     subtitle: 'avue-cli的快速开发后台模版',
     vip: 2,
     nowmoney: '99.99',
+    money: '299,99',
     list: [{
         title: '面向全屏幕尺寸的响应式适配能力',
         bold: true
@@ -37,7 +38,8 @@ export const pay = [{
     title: 'Avuex',
     subtitle: 'avuex的核心源码',
     vip: 1,
-    nowmoney: '999.99',
+    nowmoney: '399.00',
+    money: '999,99',
     list: [{
         title: '一键集成表格的导出excel，打印，等常用功能',
         bold: true,
@@ -71,18 +73,15 @@ export const pay = [{
     subtitle: 'avue系列的全部源码',
     v: true,
     vip: 1,
-    nowmoney: '499.99',
+    nowmoney: '399.99',
     list: [{
-        title: '赠送专属自己的官网网站代码（avuex官网）',
-        bold: true,
-    }, {
         title: '可购买后可用于商业化开发，永久更新授权使用',
         bold: true,
     }, {
         title: '后期更新和新产品将全部免费',
         bold: true,
     }, {
-        title: '拥有avue系列项目的全部代码',
+        title: '拥有avue系列项目的全部代码（包括avuex）',
         bold: true,
     }, {
         title: '提供远程技术支持和问题解答',

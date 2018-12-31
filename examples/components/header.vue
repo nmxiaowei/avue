@@ -3,7 +3,11 @@
           :class="{'header--index':$route.path==='/'}">
     <div class="header__container">
       <p class="header__logo">
-        <router-link :to="{path:'/'}">Avue</router-link>
+        <router-link :to="{path:'/'}">
+          <img alt="logo"
+               src="/static/images/logo.png">
+          <span>AVUE</span>
+        </router-link>
       </p>
       <!-- nav -->
       <ul class="header__nav">
@@ -12,17 +16,14 @@
           </router-link>
         </li>
         <li class="header__nav-item">
-          <router-link :to="{path:'/pay'}">企业版
-          </router-link>
+          <a href="https://avuex.avue.top/#/vip"
+             target="_blank">企业版</a>
         </li>
         <li class="header__nav-item">
           <router-link :to="{path:'/extend'}">第三方扩展
           </router-link>
         </li>
-        <li class="header__nav-item">
-          <router-link :to="{path:'/about'}">联系我们
-          </router-link>
-        </li>
+
         <li class="header__nav-item">
           <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=vqed4m0j"
              target="_blank">阿里云服务器1折起</a>
@@ -50,44 +51,41 @@
   </header>
 </template>
 <script>
-
 export default {
-  data () {
-    return {
-
-    };
+  data() {
+    return {};
   },
 
-  computed: {
-  },
+  computed: {},
 
-  methods: {
-  },
+  methods: {},
 
-  created () {
-
-  }
+  created() {}
 };
 </script>
 <style  lang="scss">
 .header {
-  $width: 1000px;
+  $width: 100%;
+  padding: 0 80px;
+  margin: 0 auto;
   position: fixed;
   width: 100%;
+  height: 80px;
   top: 0;
   left: 0;
-  background-image: linear-gradient(
-    -90deg,
-    #03dde4 0%,
-    #30afed 51%,
-    #8755ff 100%
-  );
+  background-color: #2f54eb;
   color: #fff;
   z-index: 1024;
+  transition: all 0.5s;
+  box-sizing: border-box;
+  &--active {
+    width: 100%;
+  }
   & + div {
     padding-top: 80px;
   }
   &--index {
+    width: 1200px;
     position: relative;
     background-image: none;
     & + div {
@@ -95,17 +93,20 @@ export default {
     }
   }
   &__container {
-    margin: 0 auto;
-    width: $width;
-    height: 80px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   &__logo {
-    margin-right: 100px;
-    font-weight: 300;
-    font-size: 32px;
+    img {
+      margin-right: 10px;
+      width: 28px;
+    }
     a {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 16px;
       color: #fff;
     }
   }
@@ -130,16 +131,11 @@ export default {
     margin-bottom: 40px;
     height: auto;
     overflow: hidden;
-    background-image: linear-gradient(
-      -90deg,
-      #03dde4 0%,
-      #30afed 51%,
-      #8755ff 100%
-    );
+    background-color: #2f54eb;
     &-box {
+      padding: 0 80px;
       position: relative;
       margin: 0 auto;
-      width: $width;
       min-height: 100px;
       height: auto;
       overflow: hidden;

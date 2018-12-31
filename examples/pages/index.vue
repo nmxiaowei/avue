@@ -7,8 +7,9 @@
     <div class="animation animation4"></div>
     <div class="animation animation5"></div>
     <div class="index__banner">
-      <p class="index__banner-title">一款神奇的配置化前端框架</h1>
-        <p class="index__banner-subtitle">完全由数据驱动视图，基于可配置化完成大量重复的curd和form等功能</p>
+      <img src="/static/images/logo.png"
+           class="logo-wepper" />
+      <p class="index__banner-title">Avue是一款神奇的配置化前端框架，让数据驱动视图，减去繁琐的操作，集成多种企业常用的功能，更加贴合企业的开发</h1>
         <div class="index__menu">
           <router-link :to="{path:'/component'}">
             <el-button class="index__menu-btn index__menu-btn--get">开始学习</el-button>
@@ -19,18 +20,6 @@
           <span>
             <router-link :to="{path:'/component/changelog'}">更新日志</router-link>
           </span>
-          <span>授权客户：<em>200+</em></span>
-        </div>
-        <div class="index__banner-other">
-          <a href="https://gitee.com/smallweigit/avue"
-             target="_blank"
-             style="border:none;">
-            <img src='https://gitee.com/smallweigit/avue/badge/star.svg?theme=white'
-                 alt='star'
-                 height="28px"></img>
-          </a>
-          <a href="https://github.com/nmxiaowei/avue"
-             target="_blank">github</a>
         </div>
 
     </div>
@@ -77,17 +66,15 @@
 </template>
 
 <script>
-
-import packages from '../../package.json'
+import packages from "../../package.json";
 export default {
-  data () {
+  data() {
     return {
       version: packages.version
-    }
+    };
   },
-  methods: {
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="scss">
@@ -95,24 +82,25 @@ export default {
 .main-cnt {
   padding: 0;
 }
+.logo-wepper {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px 0;
+  position: relative;
+}
 .index {
   .el-card__header {
     padding: 0;
   }
   &__bg {
-    background-image: linear-gradient(
-      0deg,
-      #03dde4 0%,
-      #30afed 51%,
-      #8755ff 100%
-    );
+    background-color: #2f54eb;
     background-size: cover;
     background-position: center 0;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    height: 530px;
+    height: 620px;
     z-index: -2;
   }
   &__banner {
@@ -121,13 +109,11 @@ export default {
     text-align: center;
     color: #fff;
     &-title {
-      margin: 0;
+      width: 500px;
+      margin: 0 auto;
+      line-height: 30px;
       padding: 0;
-      font-size: 52px;
-      font-weight: 300;
-    }
-    &-subtitle {
-      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
     }
 
     &-version {

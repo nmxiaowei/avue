@@ -198,10 +198,10 @@ export default {
   },
 
   created() {
-    this.$notify({
-      title: "Avuex发布在即（你值得拥有！！！）",
+    this.$notify.success({
+      title: "Avuex发布了，了解一下？",
       dangerouslyUseHTMLString: true,
-      message: '<a target="_blank" href="https://avue.top/#/pay">点击查看</a>',
+      message: '<a target="_blank" href="https://avuex.avue.top">点击查看</a>',
       duration: 0,
       type: "success"
     });

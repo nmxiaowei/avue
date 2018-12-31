@@ -19,7 +19,7 @@
         为了更好的感谢支持avue的开发者，现在购买全家桶即可获取全部avue全部代码和服务，1月1日后恢复原价并且启动avuex官网</br>
 
         为了更好的认识avuex，放出一小部分demo测评（缩小浏览器即可体验适配模式）</br>
-        <a href="https://cli2.avue.top"
+        <a href="https://avuex.avue.top"
            target="_blank">avuex官网</a>&nbsp;&nbsp;
         <a target="_blank"
            href="https://sandbox.runjs.cn/show/g3tvedbg">avuex-crud（表格）</a>&nbsp;&nbsp;
@@ -185,6 +185,9 @@ export default {
       list: list,
       config: pay
     };
+  },
+  created() {
+    window.location.href = "https://avuex.avue.top/#/vip";
   },
   methods: {}
 };

@@ -1,201 +1,274 @@
-[{
+[
+  {
     "name": "阿里云服务器1折起",
     "href": "https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=vqed4m0j"
-}, {
+  },
+  {
     "name": "更新日志",
     "path": "/changelog"
-}, {
-    "name": "套餐付款码",
-    "path": "/avue2.x"
-}, {
+  },
+  {
     "name": "开发指南",
-    "groups": [{
-        "list": [{
+    "groups": [
+      {
+        "list": [
+          {
             "path": "/installation",
             "title": "安装"
-        }, {
+          },
+          {
             "path": "/quickstart",
             "title": "快速上手"
-        }, {
+          },
+          {
             "path": "/plugin",
             "title": "第三方插件"
-        }, {
+          },
+          {
             "path": "/ie",
             "title": "兼容ie"
-        }, {
+          },
+          {
             "path": "/project",
             "title": "项目相关"
-        }]
-    }]
-}, {
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "表格表单",
-    "groups": [{
+    "groups": [
+      {
         "groupName": "Crud",
-        "list": [{
+        "list": [
+          {
             "path": "/crud-doc",
             "title": "文档"
-        }, {
+          },
+          {
             "path": "/crud",
             "title": "基础"
-        }, {
+          },
+          {
             "path": "/crud-tree",
             "title": "树型"
-        }, {
+          },
+          {
             "path": "/crud-header",
             "title": "复杂表头"
-        }, {
+          },
+          {
             "path": "/crud-page",
             "title": "分页"
-        }, {
+          },
+          {
             "path": "/crud-expand",
             "title": "面板"
-        }, {
+          },
+          {
             "path": "/crud-rules",
             "title": "验证"
-        }, {
+          },
+          {
             "path": "/crud-selection",
             "title": "多选"
-        }, {
+          },
+          {
             "path": "/crud-fun",
             "title": "方法"
-        }, {
+          },
+          {
             "path": "/crud-sort",
             "title": "排序"
-        }, {
+          },
+          {
             "path": "/crud-filter",
             "title": "筛选"
-        }, {
+          },
+          {
             "path": "/crud-date",
             "title": "日期"
-        }, {
+          },
+          {
             "path": "/crud-index",
             "title": "序号"
-        }, {
+          },
+          {
             "path": "/crud-border",
             "title": "边框"
-        }, {
+          },
+          {
             "path": "/crud-search",
             "title": "搜索"
-        }, {
+          },
+          {
             "path": "/crud-loading",
             "title": "等待"
-        }, {
+          },
+          {
             "path": "/crud-dic",
             "title": "字典"
-        }, {
+          },
+          {
             "path": "/crud-img",
             "title": "图片"
-        }, {
+          },
+          {
             "path": "/crud-row",
             "title": "行操作"
-        }, {
+          },
+          {
             "path": "/crud-refresh",
             "title": "刷新"
-        }, {
+          },
+          {
             "path": "/crud-edit",
             "title": "编辑"
-        }, {
+          },
+          {
             "path": "/crud-sum",
             "title": "合计"
-        }, {
+          },
+          {
             "path": "/crud-solt",
             "title": "自定义列"
-        }, {
+          },
+          {
             "path": "/crud-formsolt",
             "title": "自定义表单"
-        }, {
+          },
+          {
             "path": "/crud-head",
             "title": "自定义菜单"
-        }, {
+          },
+          {
             "path": "/crud-menu",
             "title": "自定义操作栏"
-        }, {
+          },
+          {
             "path": "/crud-btn",
             "title": "自定义按钮"
-        }]
-    }, {
+          }
+        ]
+      },
+      {
         "groupName": "Form",
-        "list": [{
+        "list": [
+          {
             "path": "/form-doc",
             "title": "文档"
-        }, {
+          },
+          {
             "path": "/form",
             "title": "基础"
-        }, {
+          },
+          {
             "path": "/form-date",
             "title": "日期"
-        }, {
+          },
+          {
             "path": "/form-rate",
             "title": "评价"
-        }, {
+          },
+          {
             "path": "/form-silder",
             "title": "滑块"
-        }, {
+          },
+          {
             "path": "/form-upload",
             "title": "附件上传"
-        }, {
+          },
+          {
             "path": "/form-select",
             "title": "多级联动"
-        }, {
+          },
+          {
             "path": "/form-detail",
             "title": "详情展示"
-        }, {
+          },
+          {
             "path": "/form-tree",
             "title": "树型"
-        }]
-    }]
-}, {
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "工具组件",
-    "groups": [{
+    "groups": [
+      {
         "groupName": "工具",
-        "list": [{
+        "list": [
+          {
             "path": "/date-group",
             "title": "日期选择器"
-        }, {
+          },
+          {
             "path": "/table-tree",
             "title": "表格树"
-        }, {
+          },
+          {
             "path": "/tree",
             "title": "树型"
-        }, {
+          },
+          {
             "path": "/tabs",
             "title": "选项卡"
-        }, {
+          },
+          {
             "path": "/steps",
             "title": "步骤条"
-        }, {
+          },
+          {
             "path": "/json",
             "title": "JSON展示"
-        }, {
+          },
+          {
             "path": "/carousel",
             "title": "走马灯"
-        }, {
+          },
+          {
             "path": "/component",
             "title": "自定义组件"
-        }]
-    }]
-}, {
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "数据展示",
-    "groups": [{
+    "groups": [
+      {
         "groupName": "数据",
-        "list": [{
+        "list": [
+          {
             "path": "/data-display",
             "title": "数据展示1"
-        }, {
+          },
+          {
             "path": "/data-box",
             "title": "数据展示2"
-        }, {
+          },
+          {
             "path": "/data-tabs",
             "title": "数据展示3"
-        }, {
+          },
+          {
             "path": "/data-card",
             "title": "数据展示4"
-        }, {
+          },
+          {
             "path": "/data-icons",
             "title": "数据展示5"
-        }, {
+          },
+          {
             "path": "/data-progress",
             "title": "数据展示6"
-        }]
-    }]
-}]
+          }
+        ]
+      }
+    ]
+  }
+]

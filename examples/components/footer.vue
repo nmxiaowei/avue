@@ -45,19 +45,17 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="scss" scoped>
 .footer {
   margin-top: 80px;
   padding: 50px 0 20px 0;
-  background: #3e4049 none repeat center top;
+  background: #000;
   &__row {
     margin: 0 auto 20px auto;
-    width: 1000px;
+    width: 1200px;
   }
   &__title {
     margin: 0;
@@ -72,7 +70,7 @@ export default {
   &__text {
     text-indent: 30px;
     color: rgb(128, 128, 128);
-    font-size: 12px;
+    font-size: 14px;
     font-family: 微软雅黑, sans-serif;
     display: table-cell;
     line-height: 2em;
@@ -81,7 +79,7 @@ export default {
   }
   &__product {
     color: rgb(128, 128, 128);
-    font-size: 12px;
+    font-size: 14px;
     font-family: 微软雅黑, sans-serif;
     margin-bottom: 5px;
   }
