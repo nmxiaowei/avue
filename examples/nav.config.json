@@ -184,6 +184,14 @@
             "title": "多级联动"
           },
           {
+            "path": "/form-tip",
+            "title": "辅助语"
+          },
+          {
+            "path": "/form-select-remote",
+            "title": "远程搜索"
+          },
+          {
             "path": "/form-detail",
             "title": "详情展示"
           },

@@ -24,7 +24,6 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
-          searchsolt:true,
           searchMenuSpan:6,
           column:[
              {
@@ -298,7 +297,6 @@ export default {
           page:false,
           align:'center',
           menuAlign:'center',
-          searchsolt:true,
           searchMenuSpan:6,
           column:[
              {

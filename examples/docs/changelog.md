@@ -1,5 +1,17 @@
 ## 更新日志
 
+### 1.5.0
+
+#### 2018-1-2
+
+- 新增select组件的remote远程搜索数据属性[demo](https://avue.top/#/component/crud-select)
+- 新增select组件的limit多选限制个数属性
+- 新增crud组件中开启search卡槽即可开启自定义，无需配置列的自定义
+- 修复了form组件多级联动时，监听到数据变化就更新的问题
+- 新增form组件tip辅助语属性[demo](https://avue.top/#/component/form-tip)
+
+
+
 ### 1.4.9
 
 #### 2018-12-6

@@ -28,16 +28,9 @@ import @smallwei/avue/lib/theme-chalk/index.css
 Vue.use(Avue)；
 ```
 
-## 文件
-
-| 文件名 | 用途 |
-|-------------|----------|
-| index.js       | 核心文件	|
-| theme-chalk    | 样式文件	|
-
 ## 例子
 
-要查看[Live Examples](https://avue.top/#/doc/installation)和文档，请访问[https://avue.top](https://avue.top).
+要查看[在线例子](https://avue.top/#/doc/installation)和文档，请访问[https://avue.top](https://avue.top).
 
 ## 问答
 

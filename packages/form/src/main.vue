@@ -1,149 +1,145 @@
 <template>
-  <div :class="b()" :style="{width:setPx(tableOption.formWidth,'100%')}">
-    <el-form
-      ref="form"
-      status-icon
-      :model="form"
-      :label-position="tableOption.labelPosition"
-      :size="controlSize"
-      :label-width="setPx(tableOption.labelWidth,80)"
-      :rules="formRules"
-    >
-      <el-row :gutter="20" :span="24">
-        <draggable :list="columnOption" :options="dragOptions" :class="b('group')">
-          <template v-if="vaildVisdiplay(column)" v-for="(column,index) in columnOption">
-            <el-col
-              :key="column.prop"
-              :md="column.span||12"
-              :xs="24"
-              :class="b('row',{'cursor':draggableStart})"
-              @mouseover.native="draggableMenu?mouseover(index):''"
-              @mouseout.native="draggableMenu?mouseout(index):''"
-            >
-              <div :class="b('option')" v-if="optionIndex[index]">
-                <i class="el-icon-menu" @click="optionMenu(column,index)"></i>
-                <i class="el-icon-delete" @click="optionDelete(column,index)"></i>
+  <div :class="b()"
+       :style="{width:setPx(tableOption.formWidth,'100%')}">
+    <el-form ref="form"
+             status-icon
+             :model="form"
+             :label-position="tableOption.labelPosition"
+             :size="controlSize"
+             :label-width="setPx(tableOption.labelWidth,80)"
+             :rules="formRules">
+      <el-row :gutter="20"
+              :span="24">
+        <draggable :list="columnOption"
+                   :options="dragOptions"
+                   :class="b('group')">
+          <template v-if="vaildVisdiplay(column)"
+                    v-for="(column,index) in columnOption">
+            <el-col :key="column.prop"
+                    :md="column.span||12"
+                    :xs="24"
+                    :class="b('row',{'cursor':draggableStart})"
+                    @mouseover.native="draggableMenu?mouseover(index):''"
+                    @mouseout.native="draggableMenu?mouseout(index):''">
+              <div :class="b('option')"
+                   v-if="optionIndex[index]">
+                <i class="el-icon-menu"
+                   @click="optionMenu(column,index)"></i>
+                <i class="el-icon-delete"
+                   @click="optionDelete(column,index)"></i>
               </div>
-              <el-form-item
-                :label="column.label"
-                :prop="column.prop"
-                :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)"
-              >
-                <slot
-                  :value="form[column.prop]"
-                  :column="column"
-                  :size="column.size || controlSize"
-                  :disabled="vaildDisabled(column)"
-                  :dic="setDic(column.dicData,DIC[column.dicData])"
-                  :name="column.prop"
-                  v-if="column.formsolt"
-                ></slot>
+              <el-form-item :label="column.label"
+                            :prop="column.prop"
+                            :label-width="setPx(column.labelWidth,tableOption.labelWidth || 80)">
+                <el-tooltip :disabled="!column.tip"
+                            :content="column.tip"
+                            :placement="column.tipPlacement">
+                  <slot :value="form[column.prop]"
+                        :column="column"
+                        :size="column.size || controlSize"
+                        :disabled="vaildDisabled(column)"
+                        :dic="setDic(column.dicData,DIC[column.dicData])"
+                        :name="column.prop"
+                        v-if="column.formsolt"></slot>
 
-                <component
-                  :is="getComponent({type:column.type,component:column.component})"
-                  v-else
-                  :prop="column.prop"
-                  :props="column.props || tableOption.props"
-                  :propsHttp="column.propsHttp || tableOption.propsHttp"
-                  v-model="form[column.prop]"
-                  :change="column.change"
-                  :click="column.click"
-                  :nodeClick="column.nodeClick"
-                  :checked="column.checked"
-                  :prepend="column.prepend"
-                  :append="column.append"
-                  :column="column"
-                  :filter="column.filter"
-                  :precision="column.precision"
-                  :multiple="column.multiple"
-                  :readonly="vaildData(draggableStart,column.readonly)"
-                  :placeholder="column.placeholder"
-                  :step="column.step"
-                  :range="column.range"
-                  :showStops="column.showStops"
-                  :showInput="column.showInput"
-                  :controls-position="column.controlsPosition"
-                  :expand-trigger="column.expandTrigger"
-                  :size="column.size || controlSize"
-                  :parent="column.parent"
-                  :colors="column.colors"
-                  :action="column.action"
-                  :limit="column.limit"
-                  :tip="column.tip"
-                  :loadText="column.loadText"
-                  :listType="column.listType"
-                  :drag="column.drag"
-                  :showFileList="column.showFileList"
-                  :iconClasses="column.iconClasses"
-                  :voidIconClass="column.voidIconClass"
-                  :showText="column.showText"
-                  :texts="column.texts"
-                  :filterable="column.filterable"
-                  :separator="column.separator"
-                  :border="column.border"
-                  :minlength="column.minlength"
-                  :maxlength="column.maxlength"
-                  :prefixIcon="column.prefixIcon"
-                  :suffixIcon="column.suffixIcon"
-                  :defaultExpandAll="column.defaultExpandAll"
-                  :options="column.options"
-                  :pickerOptions="column.pickerOptions"
-                  :defaultTime="column.defaultTime"
-                  :min="column.min"
-                  :max="column.max"
-                  :changeoOnSelect="column.changeoOnSelect"
-                  :label="column.label"
-                  :clearable="column.clearable"
-                  :startPlaceholder="column.startPlaceholder"
-                  :dataType="column.dataType"
-                  :endPlaceholder="column.endPlaceholder"
-                  :type="column.type"
-                  :minRows="column.minRows"
-                  :maxRows="column.maxRows"
-                  :format="column.format"
-                  :formatTooltip="column.formatTooltip"
-                  :value-format="column.valueFormat"
-                  :dic="setDic(column.dicData,DIC[column.dicData])"
-                  :disabled="vaildDisabled(column)"
-                  :upload-before="uploadBefore"
-                  :upload-after="uploadAfter"
-                  @change="column.cascader?change(index):''"
-                ></component>
-                <!-- <p class="avue-tip">{{column.tip}}</p> -->
+                  <component :is="getComponent({type:column.type,component:column.component})"
+                             v-else
+                             :prop="column.prop"
+                             :props="column.props || tableOption.props"
+                             :propsHttp="column.propsHttp || tableOption.propsHttp"
+                             v-model="form[column.prop]"
+                             :change="column.change"
+                             :click="column.click"
+                             :nodeClick="column.nodeClick"
+                             :checked="column.checked"
+                             :prepend="column.prepend"
+                             :append="column.append"
+                             :column="column"
+                             :filter="column.filter"
+                             :precision="column.precision"
+                             :multiple="column.multiple"
+                             :readonly="vaildData(draggableStart,column.readonly)"
+                             :placeholder="column.placeholder"
+                             :step="column.step"
+                             :range="column.range"
+                             :showStops="column.showStops"
+                             :showInput="column.showInput"
+                             :controls-position="column.controlsPosition"
+                             :expand-trigger="column.expandTrigger"
+                             :size="column.size || controlSize"
+                             :parent="column.parent"
+                             :colors="column.colors"
+                             :action="column.action"
+                             :limit="column.limit"
+                             :dicUrl="column.dicUrl"
+                             :tip="column.tip"
+                             :loadText="column.loadText"
+                             :listType="column.listType"
+                             :drag="column.drag"
+                             :showFileList="column.showFileList"
+                             :iconClasses="column.iconClasses"
+                             :voidIconClass="column.voidIconClass"
+                             :showText="column.showText"
+                             :texts="column.texts"
+                             :filterable="column.filterable"
+                             :separator="column.separator"
+                             :border="column.border"
+                             :minlength="column.minlength"
+                             :maxlength="column.maxlength"
+                             :prefixIcon="column.prefixIcon"
+                             :suffixIcon="column.suffixIcon"
+                             :defaultExpandAll="column.defaultExpandAll"
+                             :options="column.options"
+                             :pickerOptions="column.pickerOptions"
+                             :defaultTime="column.defaultTime"
+                             :min="column.min"
+                             :max="column.max"
+                             :changeoOnSelect="column.changeoOnSelect"
+                             :label="column.label"
+                             :clearable="column.clearable"
+                             :startPlaceholder="column.startPlaceholder"
+                             :dataType="column.dataType"
+                             :endPlaceholder="column.endPlaceholder"
+                             :type="column.type"
+                             :minRows="column.minRows"
+                             :maxRows="column.maxRows"
+                             :format="column.format"
+                             :formatTooltip="column.formatTooltip"
+                             :value-format="column.valueFormat"
+                             :remote="column.remote"
+                             :dic="setDic(column.dicData,DIC[column.dicData])"
+                             :disabled="vaildDisabled(column)"
+                             :upload-before="uploadBefore"
+                             :upload-after="uploadAfter"
+                             @change="column.cascader?change(index):''"></component>
+                </el-tooltip>
               </el-form-item>
             </el-col>
-            <div
-              :class="b('line')"
-              :key="index"
-              :style="{width:(column.count/24*100)+'%'}"
-              v-if="column.row && column.span!==24"
-            ></div>
+            <div :class="b('line')"
+                 :key="index"
+                 :style="{width:(column.count/24*100)+'%'}"
+                 v-if="column.row && column.span!==24"></div>
           </template>
         </draggable>
-        <el-col :span="24" v-if="vaildData(tableOption.menuBtn,true)">
+        <el-col :span="24"
+                v-if="vaildData(tableOption.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
             <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPostion])">
-              <el-button
-                type="primary"
-                @click="handleMock"
-                :size="controlSize"
-                icon="el-icon-edit-outline"
-                v-if="vaildData(tableOption.mock,false)"
-              >一键填充数据</el-button>
-              <el-button
-                type="primary"
-                @click="submit"
-                :size="controlSize"
-                icon="el-icon-check"
-                v-if="vaildData(tableOption.submitBtn,true)"
-              >{{vaildData(tableOption.submitText,'提 交')}}</el-button>
-              <el-button
-                icon="el-icon-delete"
-                :size="controlSize"
-                v-if="vaildData(tableOption.emptyBtn,true)"
-                @click="resetForm"
-              >{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
+              <el-button type="primary"
+                         @click="handleMock"
+                         :size="controlSize"
+                         icon="el-icon-edit-outline"
+                         v-if="vaildData(tableOption.mock,false)">一键填充数据</el-button>
+              <el-button type="primary"
+                         @click="submit"
+                         :size="controlSize"
+                         icon="el-icon-check"
+                         v-if="vaildData(tableOption.submitBtn,true)">{{vaildData(tableOption.submitText,'提 交')}}</el-button>
+              <el-button icon="el-icon-delete"
+                         :size="controlSize"
+                         v-if="vaildData(tableOption.emptyBtn,true)"
+                         @click="resetForm">{{vaildData(tableOption.emptyText,'清 空')}}</el-button>
               <slot name="menuForm"></slot>
             </div>
           </el-form-item>
@@ -182,7 +178,6 @@ export default create({
     value: {
       handler() {
         this.formVal();
-        this.cascadeInit();
       },
       deep: true
     }
@@ -270,6 +265,11 @@ export default create({
         return {};
       }
     }
+  },
+  created() {
+    setTimeout(() => {
+      this.cascadeInit();
+    }, 0);
   },
   methods: {
     handleMock() {
