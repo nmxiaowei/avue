@@ -13,7 +13,6 @@ export default {
   menuAlign: 'center',
   headerAlign: 'left',
   // 文字
-  canelBtnTitle: '取 消',
   viewBtnTitle: '查 看',
   editBtnTitle: '编 辑',
   addBtnTitle: '新 增',
@@ -29,7 +28,7 @@ export default {
   menuBtnTitle: '功 能',
   saveBtnTitle: '保 存',
   // 图标
-  canelBtnIcon: 'el-icon-delete',
+  cancelBtnIcon: 'el-icon-delete',
   viewBtnIcon: 'el-icon-view',
   editBtnIcon: 'el-icon-edit',
   addBtnIcon: 'el-icon-plus',

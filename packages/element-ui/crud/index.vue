@@ -196,11 +196,11 @@
                        @click.stop="rowCell(scope.row,scope.$index)"
                        v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?config.saveBtnTitle:config.editBtnTitle)}}</el-button>
             <el-button :type="menuText('danger')"
-                       :icon="config.canelBtnIcon"
+                       :icon="config.cancelBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowCanel(scope.row,scope.$index)"
-                       v-if="scope.row.$cellEdit">{{menuIcon(config.canelBtnTitle)}}</el-button>
+                       v-if="scope.row.$cellEdit">{{menuIcon(config.cancelBtnTitle)}}</el-button>
             <el-button :type="menuText('success')"
                        :icon="config.viewBtnIcon"
                        :size="isMediumSize"
