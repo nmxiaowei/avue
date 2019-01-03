@@ -41,7 +41,7 @@ export default {
   columnBtnIcon: 'el-icon-menu',
   filterBtnIcon: 'el-icon-tickets',
   refreshBtnIcon: 'el-icon-refresh',
-  searchboxBtnIcon: 'el-icon-search',
+  searchBoxBtnIcon: 'el-icon-search',
   // 显隐
   viewBtn: false,
   editBtn: true,

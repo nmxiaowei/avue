@@ -48,7 +48,7 @@
       <el-tooltip effect="dark"
                   content="搜索"
                   placement="top">
-        <el-button :icon="config.searchboxBtnIcon"
+        <el-button :icon="config.searchBoxBtnIcon"
                    circle
                    :size="$parent.isMediumSize"
                    @click="$parent.$refs.headerSearch.handleSearchShow()"
