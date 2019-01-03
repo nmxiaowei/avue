@@ -27,7 +27,7 @@
                     :size="scope.size"
                     :type="scope.type"
                     :name="column.prop"
-                    v-if="column.formsolt"></slot>
+                    v-if="column.formslot"></slot>
             </template>
 
           </template>
