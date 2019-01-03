@@ -57,11 +57,11 @@
       <el-tooltip effect="dark"
                   content="过滤"
                   placement="top">
-        <el-button :icon="config.filtetBtnIcon"
+        <el-button :icon="config.filterBtnIcon"
                    circle
                    :size="$parent.isMediumSize"
                    @click="$parent.$refs.dialogFilter.box=true"
-                   v-if="vaildData($parent.tableOption.filtetBtn,config.filtetBtn)"></el-button>
+                   v-if="vaildData($parent.tableOption.filterBtn,config.filterBtn)"></el-button>
       </el-tooltip>
     </div>
   </div>
