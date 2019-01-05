@@ -48,7 +48,7 @@
       <el-tooltip effect="dark"
                   content="搜索"
                   placement="top">
-        <el-button :icon="config.searchboxBtnIcon"
+        <el-button :icon="config.searchBoxBtnIcon"
                    circle
                    :size="$parent.isMediumSize"
                    @click="$parent.$refs.headerSearch.handleSearchShow()"
@@ -57,11 +57,11 @@
       <el-tooltip effect="dark"
                   content="过滤"
                   placement="top">
-        <el-button :icon="config.filtetBtnIcon"
+        <el-button :icon="config.filterBtnIcon"
                    circle
                    :size="$parent.isMediumSize"
                    @click="$parent.$refs.dialogFilter.box=true"
-                   v-if="vaildData($parent.tableOption.filtetBtn,config.filtetBtn)"></el-button>
+                   v-if="vaildData($parent.tableOption.filterBtn,config.filterBtn)"></el-button>
       </el-tooltip>
     </div>
   </div>
