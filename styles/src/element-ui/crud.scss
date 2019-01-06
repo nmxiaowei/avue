@@ -55,7 +55,12 @@
     justify-content: space-between;
     font-size: 22px;
   }
+  &__tip{
+    margin-bottom: 8px;
+  }
   &__menu {
+    display: flex;
+    justify-content: space-between;
     position: relative;
     width: 100%;
     min-height: 40px;

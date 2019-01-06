@@ -6,7 +6,7 @@
              :remote="remote"
              :readonly="readonly"
              :remote-method="handleRemoteMethod"
-             collapse-tags
+             :collapse-tags="tags"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
              @click.native="handleClick"
@@ -36,6 +36,10 @@ export default create({
   props: {
     value: {},
     remote: {
+      type: Boolean,
+      default: false
+    },
+    tags: {
       type: Boolean,
       default: false
     },

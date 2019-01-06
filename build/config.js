@@ -56,7 +56,7 @@ const builds = {
     dest: resolve('lib'),
     filename: 'avue-mobile.js',
     env: 'development',
-    eexternals: externals
+    externals: externals
   }
 };
 function genConfig(name) {

@@ -56,6 +56,7 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { getObjValue } from "utils/util";
 export default create({
   name: "upload",
   mixins: [props(), event()],
@@ -78,8 +79,15 @@ export default create({
       type: Number,
       default: 3
     },
+    accept: {
+      type: String,
+      default: ""
+    },
     listType: {
       type: String
+    },
+    filesize: {
+      type: Number
     },
     drag: {
       type: Boolean,
@@ -94,8 +102,7 @@ export default create({
       default: "文件上传中,请稍等"
     },
     action: {
-      type: String,
-      default: ""
+      type: String
     },
     uploadBefore: Function,
     uploadAfter: Function
@@ -163,8 +170,8 @@ export default create({
       this.$message.success("删除成功");
       this.setVal();
     },
-    handleError() {
-      this.$message.error("上传失败");
+    handleError(msg) {
+      this.$message.error(msg || "上传失败");
     },
     delete(file) {
       if (this.isArray) {
@@ -177,13 +184,13 @@ export default create({
         });
       }
     },
-    show(res) {
+    show(data) {
       this.loading.close();
-      this.handleSuccess(res.data);
+      this.handleSuccess(data);
     },
-    hide() {
+    hide(msg) {
       this.loading.close();
-      this.handleError();
+      this.handleError(msg);
     },
     httpRequest(config) {
       this.loading = this.$loading({
@@ -192,7 +199,20 @@ export default create({
         spinner: "el-icon-loading"
       });
       const file = config.file;
+      const accept = file.type;
+      const filesize = file.size;
+      let acceptList = Array.isArray(this.accept) ? this.accept : [this.accept];
+      acceptList = this.validatenull(acceptList[0]) ? undefined : acceptList;
       this.file = config.file;
+      if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
+        this.hide("文件类型不符合");
+        return;
+      }
+      if (!this.validatenull(filesize) && filesize > this.filesize) {
+        this.hide("文件太大不符合");
+        return;
+      }
+
       const headers = { "Content-Type": "multipart/form-data" };
       let param = new FormData();
       param.append("file", file, file.name);
@@ -201,7 +221,7 @@ export default create({
         this.$http
           .post(this.action, param, { headers })
           .then(res => {
-            const list = res.data.data ? res.data.data : res.data;
+            const list = getObjValue(res.data, this.resKey);
             if (typeof this.uploadAfter === "function")
               this.uploadAfter(
                 list,

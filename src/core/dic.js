@@ -1,6 +1,6 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
-
+import { getObjValue } from 'utils/util'
 
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
@@ -24,6 +24,7 @@ export const loadCascaderDic = (columnOption, list) => {
               sendDic(Object.assign({
                 url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
               }, {
+                  resKey: (column.props || {}).res,
                   method: column.dicMethod,
                   query: column.dicQuery,
                 })).then(res => {
@@ -56,7 +57,7 @@ export const loadDic = option => {
     // 本地字典赋值
     locationdic = option.dicData || {};
 
-    const params = createdDic(option.dicUrl, option.column);
+    const params = createdDic(option);
     locationdic = Object.assign(locationdic, params.locationdic);
     ajaxdic = params.ajaxdic;
 
@@ -77,7 +78,8 @@ export const loadDic = option => {
 };
 
 // 创建字典区分本地字典和网络字典
-function createdDic(url = '', column = []) {
+function createdDic(option) {
+  let { url = '', column = [], props = {} } = option;
   let ajaxdic = [];
   let locationdic = {};
   column.forEach(ele => {
@@ -92,6 +94,7 @@ function createdDic(url = '', column = []) {
         url: dicUrl || url,
         name: dicData || prop,
         method: ele.dicMethod,
+        resKey: (ele.props || {}).res || (props || {}).res,
         query: ele.dicQuery,
       });
     }
@@ -127,16 +130,12 @@ function handeDic(list) {
   });
 }
 
-//字典层级判断
-export const getDicData = (res) => {
-  return (Array.isArray((res.data || {}).data) ? res.data.data : res.data) || []
-}
 // ajax获取字典
 export const sendDic = (params) => {
-  let { url, query, method } = params;
+  let { url, query, method, resKey } = params;
   return new Promise(resolve => {
     const callback = (res) => {
-      const list = getDicData(res)
+      const list = getObjValue(res.data, resKey)
       resolve(list)
     }
     if (method === 'post') {

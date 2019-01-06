@@ -1,5 +1,6 @@
 <template>
-  <div :class="[b(),{'avue-group--card':card}]">
+  <div :class="[b(),{'avue-group--card':card}]"
+       v-if="display">
     <el-row span="24"
             :class="b('item')">
       <div :class="b('header')"
@@ -21,6 +22,10 @@ export default create({
   props: {
     icon: {
       type: String
+    },
+    display: {
+      type: Boolean,
+      default: true
     },
     card: {
       type: Boolean,

@@ -21,20 +21,20 @@
         <slot name="menuLeft"></slot>
       </template>
       <template slot="menuRight">
-        <div class="avue-tip"
-             v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-          <span class="avue-tip__name">
-            {{config.tipStartTitle}}
-            <span class="avue-tip__name--bold">{{selectLen}}</span>
-            {{config.tipEndTitle}}
-          </span>
-          <small class="avue-tip__btn"
-                 @click="selectClear"
-                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</small>
-        </div>
         <slot name="menuRight"></slot>
       </template>
     </header-menu>
+    <div class="avue-tip avue-crud__tip"
+         v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
+      <span class="avue-tip__name">
+        {{config.tipStartTitle}}
+        <span class="avue-tip__name--bold">{{selectLen}}</span>
+        {{config.tipEndTitle}}
+      </span>
+      <small class="avue-tip__btn"
+             @click="selectClear"
+             v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</small>
+    </div>
     <el-table :data="list"
               :class="{'avue-crud--indeterminate':vaildData(this.tableOption.indeterminate,false)}"
               :size="controlSize"
@@ -430,8 +430,7 @@ export default create({
       if (
         this.validatenull(list) ||
         this.validatenull(value) ||
-        this.validatenull(columnNext) ||
-        this.validatenull(row[column.prop])
+        this.validatenull(columnNext)
       ) {
         return;
       }

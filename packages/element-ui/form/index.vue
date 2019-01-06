@@ -12,11 +12,12 @@
               :span="24">
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
+                    :display="item.display"
                     :icon="item.icon"
                     :card="parentOption.card"
                     :label="item.label">
           <div :class="b('group')">
-            <template v-if="vaildVisdiplay(column)"
+            <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">
               <el-col :key="column.prop"
                       :md="column.span || itemSpanDefault"
@@ -26,7 +27,7 @@
                 <el-form-item :label="column.label"
                               :prop="column.prop"
                               :label-width="setPx(column.labelWidth,parentOption.labelWidth || 80)">
-                  <el-tooltip :disabled="!column.tip"
+                  <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
                               :placement="column.tipPlacement">
                     <slot :value="form[column.prop]"
@@ -63,6 +64,7 @@
                                :endPlaceholder="column.endPlaceholder"
                                :expand-trigger="column.expandTrigger"
                                :filter="column.filter"
+                               :filesize="column.filesize"
                                :filterable="column.filterable"
                                :format="column.format"
                                :formatTooltip="column.formatTooltip"
@@ -105,6 +107,8 @@
                                :texts="column.texts"
                                :tip="column.tip"
                                :type="column.type"
+                               :accept="column.accept"
+                               :tags="column.tags"
                                :upload-before="uploadBefore"
                                :upload-after="uploadAfter"
                                :value-format="column.valueFormat"
@@ -221,7 +225,7 @@ export default create({
           // 如果时级联放入数组中记录
           column.cascaderItem && this.formCascaderList.push(column.prop);
           //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
-          if (column.visdiplay !== false && !this.isMobile) {
+          if (column.display !== false && !this.isMobile) {
             column = calcCount(column, this.itemSpanDefault, cindex === 0);
           }
         });
@@ -335,7 +339,7 @@ export default create({
       const list = column.cascader;
       const str = list.join(",");
       const value = this.form[column.prop];
-
+      // 下一个节点
       const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
       const columnNextProp = columnNext.prop;
       /**
@@ -345,8 +349,7 @@ export default create({
       if (
         this.validatenull(list) ||
         this.validatenull(value) ||
-        this.validatenull(columnNext) ||
-        this.validatenull(this.form[column.prop])
+        this.validatenull(columnNext)
       ) {
         return;
       }
@@ -422,15 +425,15 @@ export default create({
       }
     },
     // 验证表单是否显隐
-    vaildVisdiplay(column) {
-      if (!this.validatenull(column.visdiplay)) {
-        return this.vaildData(column.visdiplay, true);
+    vaildDisplay(column) {
+      if (!this.validatenull(column.display)) {
+        return this.vaildData(column.display, true);
       } else if (this.boxType === "add") {
-        return this.vaildData(column.addVisdiplay, true);
+        return this.vaildData(column.addDisplay, true);
       } else if (this.boxType === "edit") {
-        return this.vaildData(column.editVisdiplay, true);
+        return this.vaildData(column.editDisplay, true);
       } else if (this.boxType === "view") {
-        return this.vaildData(column.viewVisdiplay, true);
+        return this.vaildData(column.viewDisplay, true);
       } else {
         return true;
       }
@@ -438,7 +441,7 @@ export default create({
     rulesInit(option) {
       this.formRules = {};
       (option || this.columnOption).forEach(ele => {
-        if (ele.rules && ele.visdiplay !== false)
+        if (ele.rules && ele.display !== false)
           this.formRules[ele.prop] = ele.rules;
       });
     },

@@ -11,7 +11,8 @@ export default function () {
   // httpProps配置
   const propsHttpDefault = {
     name: 'name',
-    url: 'url'
+    url: 'url',
+    res: ''
   };
   return {
     data() {
@@ -141,6 +142,9 @@ export default function () {
       },
       urlKey: function () {
         return this.propsHttp.url || this.propsHttpDefault.url;
+      },
+      resKey: function () {
+        return this.propsHttp.res || this.propsDefault.res;
       },
       valueKey: function () {
         return this.props.value || this.propsDefault.value;

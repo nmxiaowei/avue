@@ -32,6 +32,7 @@
                      :props="column.props || $parent.tableOption.props"
                      :size="$parent.isMediumSize"
                      :type="getType(column)"
+                     :tags="column.searchTags"
                      :value-format="column.valueFormat"></component>
         </el-tooltip>
       </el-form-item>
@@ -52,7 +53,7 @@
 
 <script>
 import cteate from "core/create";
-import { vaildData } from "utils/util";
+import { vaildData, filterForm } from "utils/util";
 import { validatenull } from "utils/validate";
 import {
   formInitVal,
@@ -108,7 +109,7 @@ export default cteate({
   methods: {
     // 搜索回调
     searchChange() {
-      this.$parent.$emit("search-change", this.searchForm);
+      this.$parent.$emit("search-change", filterForm(this.searchForm));
     },
     // 搜索清空
     searchReset() {

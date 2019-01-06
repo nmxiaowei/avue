@@ -2,6 +2,7 @@
   <div :class="b()">
     <avue-group v-for="(item,index) in columnOption"
                 :key="item.prop"
+                :display="item.display"
                 :card="parentOption.card"
                 :icon="item.icon"
                 :label="item.label">
@@ -9,7 +10,7 @@
             :form="form"
             :column="item"
             v-if="item.slot"></slot>
-      <template v-if="!item.slot && vaildData(column.visdiplay,true)"
+      <template v-if="!item.slot && vaildData(column.display,true)"
                 v-for="(column,cindex) in item.column">
         <el-col :md="column.span || 8"
                 :xs="24"
@@ -76,7 +77,7 @@ export default create({
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
         (ele.column || []).forEach((column, cindex) => {
-          if (column.visdiplay !== false)
+          if (column.display !== false)
             column = calcCount(column, this.itemSpanDefault, cindex === 0);
         });
         //处理级联地址

@@ -11,7 +11,9 @@
             v-loading="tableLoading"
             :row-style="showRow"
             :row-class-name="rowClassName"
-            :border="parentOption.border">
+            :border="parentOption.border"
+            :default-sort="parentOption.defaultSort"
+            @sort-change="sortChange">
     <!-- 序号 -->
     <el-table-column v-if="parentOption.index"
                      :label="parentOption.indexLabel || '序号'"
@@ -21,6 +23,7 @@
                      align="center"></el-table-column>
     <el-table-column v-for="(column, index) in columnOption"
                      :key="column.prop"
+                     :sortable="column.sortable"
                      :align="column.align || parentOption.align"
                      :header-align="column.headerAlign || parentOption.headerAlign"
                      :label="column.label"
@@ -164,6 +167,10 @@ export default create({
     // 行单机
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
+    },
+    // 排序回调
+    sortChange(val) {
+      this.$emit("sort-change", val);
     },
     //设置单选
     currentRowChange(val) {
