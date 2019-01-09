@@ -80,7 +80,7 @@ export default create({
       default: 3
     },
     accept: {
-      type: [String,Array],
+      type: [String, Array],
       default: ""
     },
     listType: {
@@ -221,8 +221,7 @@ export default create({
         this.$http
           .post(this.action, param, { headers })
           .then(res => {
-            // const list = getObjValue(res.data, this.resKey);
-            var list = res.data.data ? res.data.data : res.data;
+            const list = getObjValue(res.data, this.resKey, "object");
             if (typeof this.uploadAfter === "function")
               this.uploadAfter(
                 list,

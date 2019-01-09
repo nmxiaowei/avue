@@ -471,12 +471,9 @@ export default create({
       );
     },
     handleDetail(row, column, DIC) {
-      if (!this.validatenull(DIC)) {
-        const result = this.detail(row, column, this.tableOption, DIC);
-        row["$" + column.prop] = result;
-        return result;
-      }
-      return row[column.prop];
+      const result = this.detail(row, column, this.tableOption, DIC);
+      row["$" + column.prop] = result;
+      return result;
     },
     rulesInit() {
       this.formRules = {};
