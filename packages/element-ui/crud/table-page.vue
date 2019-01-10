@@ -1,7 +1,9 @@
 <template>
   <div :class="b('pagination')"
        v-if="pageFlag">
-    <el-pagination :current-page.sync="defaultPage.currentPage"
+    <el-pagination :small="$parent.isMobile"
+                   :pager-count="$parent.isMobile?5:7"
+                   :current-page.sync="defaultPage.currentPage"
                    :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"

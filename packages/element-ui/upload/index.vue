@@ -77,7 +77,7 @@ export default create({
     },
     limit: {
       type: Number,
-      default: 3
+      default: 10
     },
     accept: {
       type: [String, Array],
@@ -265,7 +265,7 @@ export default create({
       this.dialogVisible = true;
     },
     beforeRemove(file) {
-      return this.$confirm(`确定移除 ${file.name}？`);
+      return this.$confirm(`确定移除该图片？`);
     }
   }
 });

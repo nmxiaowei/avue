@@ -91,7 +91,7 @@
       <el-table-column v-if="tableOption.index"
                        :label="tableOption.indexLabel || config.indexLabel"
                        type="index"
-                       width="50"
+                       width="60"
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>

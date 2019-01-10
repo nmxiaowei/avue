@@ -9,6 +9,7 @@
         <div class="item"
              :style="{color:color}">
           <a :href="item.href?item.href:'javascript:void(0);'"
+             @click="item.click?item.click():''"
              :target="item.target">
             <h5 class="count">{{item.count}}</h5>
             <span class="splitLine" />
@@ -24,30 +25,28 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-display',
-  data () {
-    return {
-
-    };
+  name: "data-display",
+  data() {
+    return {};
   },
   computed: {
-    span () {
+    span() {
       return this.option.span || 6;
     },
-    data () {
+    data() {
       return this.option.data || [];
     },
-    color () {
-      return this.option.color || 'rgb(63, 161, 255)';
+    color() {
+      return this.option.color || "rgb(63, 161, 255)";
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
-  created () { },
+  created() {},
   methods: {}
 });
 </script>

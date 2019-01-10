@@ -9,6 +9,7 @@
           <div class="item"
                :class="[{'item--easy':discount}]">
             <a :href="item.href?item.href:'javascript:void(0);'"
+               @click="item.click?item.click():''"
                :target="item.target">
               <div class="item-icon"
                    :style="{color:color}">
@@ -30,22 +31,28 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-icons',
-  data () {
-    return {
-
-    };
+  name: "data-icons",
+  data() {
+    return {};
   },
   computed: {
-    span () { return this.option.span || 4; },
-    data () { return this.option.data; },
-    color () { return this.option.color || 'rgb(63, 161, 255)'; },
-    discount () { return this.option.discount || false; }
+    span() {
+      return this.option.span || 4;
+    },
+    data() {
+      return this.option.data;
+    },
+    color() {
+      return this.option.color || "rgb(63, 161, 255)";
+    },
+    discount() {
+      return this.option.discount || false;
+    }
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   }
 });

@@ -8,6 +8,7 @@
               :key="index">
         <div class="item">
           <a :href="item.href?item.href:'javascript:void(0);'"
+             @click="item.click?item.click():''"
              :target="item.target">
             <div class="item-header">
               <div class="item-count"
@@ -29,24 +30,26 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-progress',
-  data () {
-    return {
-
-    };
+  name: "data-progress",
+  data() {
+    return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   computed: {
-    span () { return this.option.span || 8; },
-    data () { return this.option.data || []; }
+    span() {
+      return this.option.span || 8;
+    },
+    data() {
+      return this.option.data || [];
+    }
   },
-  created () { },
-  mounted () { },
+  created() {},
+  mounted() {},
   watch: {},
   methods: {}
 });

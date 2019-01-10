@@ -8,6 +8,7 @@
               :key="index">
         <div class="item">
           <a :href="item.href?item.href:'javascript:void(0);'"
+             @click="item.click?item.click():''"
              :target="item.target">
             <img :src="item.src"
                  class="item-img" />
@@ -26,37 +27,35 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-card',
-  data () {
-    return {
-
-    };
+  name: "data-card",
+  data() {
+    return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   computed: {
-    span () {
+    span() {
       return this.option.span || 6;
     },
-    data () {
+    data() {
       return this.option.data || [];
     },
-    colorText () {
-      return this.option.colorText || '#fff';
+    colorText() {
+      return this.option.colorText || "#fff";
     },
-    bgText () {
-      return this.option.bgText || '#2e323f';
+    bgText() {
+      return this.option.bgText || "#2e323f";
     },
-    borderColor () {
-      return this.option.borderColor || '#2e323f';
+    borderColor() {
+      return this.option.borderColor || "#2e323f";
     }
   },
-  created () { },
-  mounted () { },
+  created() {},
+  mounted() {},
   watch: {},
   methods: {}
 });

@@ -6,19 +6,22 @@
               :sm="12"
               v-for="(item,index) in data"
               :key="index">
-       <div class="item">
-         <!-- <a :href="item.href || 'javascript:void(0);'" :target="item.target"> -->
+        <div class="item">
+          <a :href="item.href || 'javascript:void(0);'"
+             @click="item.click?item.click():''"
+             :target="item.target">
             <div class="item-header">
-            <i :class="item.icon || 'el-icon-bell'" :style="{color:item.color || 'red'}"></i>
-            <a class="">{{item.title}}</a>
+              <i :class="item.icon || 'el-icon-bell'"
+                 :style="{color:item.color || 'red'}"></i>
+              <a class="">{{item.title}}</a>
             </div>
             <div class="item-content">{{item.content}}</div>
             <div class="item-footer">
               <span>{{item.name}}</span>
               <span>{{item.date}}</span>
             </div>
-         <!-- </a> -->
-       </div>
+          </a>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -32,11 +35,11 @@ export default create({
     return {};
   },
   computed: {
-    icon(){
-        return this.option.icon;
+    icon() {
+      return this.option.icon;
     },
-    color(){
-        return this.option.color || '#333';
+    color() {
+      return this.option.color || "#333";
     },
     span() {
       return this.option.span || 8;

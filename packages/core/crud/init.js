@@ -64,6 +64,26 @@ export default function () {
         window.onresize = () => {
           this.getIsMobile();
         };
+        setTimeout(() => {
+          this.initDic();
+        }, 0);
+      },
+      //检测本地字典
+      initDic() {
+        //表单赋值
+        this.columnOption.forEach(ele => {
+          (ele.column || []).forEach(item => {
+            if (!this.validatenull(item.dicData)) {
+              this.DIC[item.prop] = item.dicData;
+            }
+          })
+        })
+        // 表格赋值
+        this.columnOption.forEach(ele => {
+          if (!this.validatenull(ele.dicData)) {
+            this.DIC[ele.prop] = ele.dicData;
+          }
+        })
       },
       // 加载字典
       handleLoadDic(option) {

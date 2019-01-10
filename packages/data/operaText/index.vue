@@ -6,36 +6,38 @@
               :md="span"
               :xs="24"
               :sm="12">
-          <div class="item"
-              :style="{color:color}">
-              <div class="item-header">
-                <div>
-                  <div class="img">
-                    <img :src="item.imgsrc" alt="">
-                  </div>
-                  <div class="content">
-                    <h4>{{item.title}}</h4>
-                    <p>{{item.content}}</p>
-                  </div>
-                </div>
+        <div class="item"
+             :style="{color:color}">
+          <div class="item-header">
+            <div>
+              <div class="img">
+                <img :src="item.imgsrc"
+                     alt="">
               </div>
-              <div class="item-content">
+              <div class="content">
+                <h4>{{item.title}}</h4>
+                <p>{{item.content}}</p>
               </div>
-              <div class="item-footer">
-                <span>
-                  <a :href="item.href1?item.href1:'javascript:void(0);'"
-              :target="item.target">
-                    {{item.name1}}
-                  </a>
-                </span>
-                <span>
-                  <a :href="item.href2?item.href2:'javascript:void(0);'"
-              :target="item.target">
-                    {{item.name2}}
-                  </a>
-                </span>
-              </div>
+            </div>
           </div>
+          <div class="item-content">
+          </div>
+          <div class="item-footer">
+            <span>
+              <a :href="item.href1?item.href1:'javascript:void(0);'"
+                 @click="item.click?item.click():''"
+                 :target="item.target">
+                {{item.name1}}
+              </a>
+            </span>
+            <span>
+              <a :href="item.href2?item.href2:'javascript:void(0);'"
+                 :target="item.target">
+                {{item.name2}}
+              </a>
+            </span>
+          </div>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -44,30 +46,28 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-operatext',
-  data () {
-    return {
-
-    };
+  name: "data-operatext",
+  data() {
+    return {};
   },
   computed: {
-    span () {
+    span() {
       return this.option.span || 6;
     },
-    data () {
+    data() {
       return this.option.data || [];
     },
-    color () {
-      return this.option.color || 'rgb(63, 161, 255)';
+    color() {
+      return this.option.color || "rgb(63, 161, 255)";
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
-  created () { },
+  created() {},
   methods: {}
 });
 </script>
