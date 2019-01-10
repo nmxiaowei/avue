@@ -17,8 +17,8 @@
       <avue-form v-model="tableForm"
                  ref="tableForm"
                  :disabled="keyBtn"
-                 :uploadBefore="uploadBefore"
-                 :uploadAfter="uploadAfter"
+                 :uploadBefore="$parent.uploadBefore"
+                 :uploadAfter="$parent.uploadAfter"
                  :option="formOption">
         <template slot-scope="scope"
                   v-for="item in $parent.columnOption"

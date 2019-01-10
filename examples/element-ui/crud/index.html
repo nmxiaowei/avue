@@ -26,10 +26,10 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" :page="page" :table-loading="loading" v-model="obj"
-      :before-open="handleBeforeOpen" :before-close="handleBeforeClose" @on-load="onLoad" @row-dblclick="handleRowDBLClick"
-      @row-click="handleRowClick" @current-row-change=" " @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh"
-      @row-update="rowUpdate" @row-del="rowDel" @filter-change="filterChange" @expand-change="expandChange"
-      @search-change="searchChange" @search-reset="searchReset">
+      :upload-before="uploadBefore" :upload-after="uploadAfter" :before-open="handleBeforeOpen" :before-close="handleBeforeClose"
+      @on-load="onLoad" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" @current-row-change=" "
+      @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate" @row-del="rowDel"
+      @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange" @search-reset="searchReset">
       <template slot="search">
         <el-form-item label="自定义">
           <el-input placeholder="自定义搜索" size="small" v-model="searchForm.solt" />
@@ -230,7 +230,7 @@
               prop: 'img',
               type: 'upload',
               tip: '图片提示',
-              action: '',
+              action: 'https://jsonplaceholder.typicode.com/posts/',
               imgWidth: 100,
               listType: 'picture-img'
             },
@@ -241,7 +241,7 @@
               type: 'upload',
               imgFullscreen: true,
               imgType: 'card',
-              action: '',
+              action: 'https://jsonplaceholder.typicode.com/posts/',
               listType: 'picture-card',
               span: 24
             },
@@ -448,7 +448,17 @@
       searchReset() {
         this.searchForm = {};
         this.$message.success('search reset callback')
-      }
+      },
+      uploadBefore(file, done, loading) {
+        console.log(file)
+        done()
+        this.$message.success('上传前的方法')
+      },
+      uploadAfter(res, done, loading) {
+        console.log(res)
+        done()
+        this.$message.success('上传后的方法')
+      },
     }
   })
 </script>
