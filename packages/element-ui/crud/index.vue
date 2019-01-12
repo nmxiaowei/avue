@@ -163,7 +163,7 @@
                        :label="config.menuTitle"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
-                       :width="isMobile?80:( tableOption.menuWidth || config.menuWidth)">
+                       :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
         <template slot-scope="scope">
           <el-dropdown v-if="menuType==='menu'"
                        style="margin-right:9px;">

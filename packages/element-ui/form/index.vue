@@ -8,7 +8,7 @@
              :size="controlSize"
              :label-width="setPx(parentOption.labelWidth,80)"
              :rules="formRules">
-      <el-row :gutter="20"
+      <el-row :gutter="parentOption.gutter || 20"
               :span="24">
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
@@ -22,6 +22,7 @@
               <el-col :key="column.prop"
                       :md="column.span || itemSpanDefault"
                       :xs="24"
+                      :offset="column.offset || 0"
                       :class="b('row')">
 
                 <el-form-item :label="column.label"

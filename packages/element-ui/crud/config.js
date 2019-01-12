@@ -10,6 +10,7 @@ export default {
   sumText: '合 计',
   // 尺寸
   menuWidth: 240,
+  menuXsWidth: 100,
   menuAlign: 'center',
   headerAlign: 'left',
   // 文字

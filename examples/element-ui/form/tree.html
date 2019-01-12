@@ -42,13 +42,15 @@
       }
     },
     mounted() {
-      this.option.column[0].dicData = [{
-        label: '测试数据',
-        value: 0,
-      }, {
-        label: '测试数据2',
-        value: 1,
-      }]
+      setTimeout(() => {
+        this.option.column[0].dicData = [{
+          label: '测试数据',
+          value: 0,
+        }, {
+          label: '测试数据2',
+          value: 1,
+        }]
+      }, 2000);
     },
     methods: {
 
