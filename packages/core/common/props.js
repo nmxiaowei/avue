@@ -168,8 +168,7 @@ export default function () {
         this.text = initVal({
           type: this.type,
           multiple: this.multiple,
-          value: this.value,
-          listType: this.listType
+          value: this.value
         });
         if (this.type === 'dynamic' && this.text.length === 0) {
           this.text.push('')

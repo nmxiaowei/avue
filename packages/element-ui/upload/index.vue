@@ -7,11 +7,11 @@
                :before-remove="beforeRemove"
                :multiple="multiple"
                :on-preview="handlePictureCardPreview"
-               :limit="status?99:limit"
+               :limit="limit"
                :http-request="httpRequest"
                :drag="drag"
                :readonly="readonly"
-               :show-file-list="showFileList"
+               :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
                :on-change="handleChange"
                :on-exceed="handleExceed"
@@ -21,8 +21,8 @@
         <i class="el-icon-plus"></i>
       </template>
       <template v-else-if="listType=='picture-img'">
-        <img v-if="imageUrl"
-             :src="imageUrl"
+        <img v-if="imgUrl"
+             :src="imgUrl"
              :class="b('avatar')">
         <i v-else
            class="el-icon-plus"
@@ -57,6 +57,7 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { getObjValue } from "utils/util";
+import { detailImg } from "./canvas";
 export default create({
   name: "upload",
   mixins: [props(), event()],
@@ -65,7 +66,7 @@ export default create({
       loading: false,
       dialogImageUrl: "",
       dialogVisible: false,
-      text: this.status ? "" : [],
+      text: [],
       file: {}
     };
   },
@@ -85,6 +86,12 @@ export default create({
     },
     listType: {
       type: String
+    },
+    canvasOption: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     },
     filesize: {
       type: Number
@@ -108,31 +115,32 @@ export default create({
     uploadAfter: Function
   },
   computed: {
-    status() {
+    isPictureImg() {
       return this.listType === "picture-img";
     },
-    imageUrl() {
-      return this.status ? this.text : "";
+    //单个头像图片
+    imgUrl() {
+      if (!this.validatenull(this.text)) {
+        return this.text[0];
+      }
     },
     fileList() {
       let list = [];
-      if (!this.status) {
-        this.text.forEach((ele, index) => {
-          let obj;
-          if (this.isArray || this.isString) {
-            obj = {
-              name: index,
-              url: ele
-            };
-          } else {
-            obj = {
-              name: ele[this.labelKey],
-              url: ele[this.valueKey]
-            };
-          }
-          list.push(obj);
-        });
-      }
+      this.text.forEach((ele, index) => {
+        let obj;
+        if (this.isArray || this.isString) {
+          obj = {
+            name: index,
+            url: ele
+          };
+        } else {
+          obj = {
+            name: ele[this.labelKey],
+            url: ele[this.valueKey]
+          };
+        }
+        list.push(obj);
+      });
       return list;
     }
   },
@@ -150,17 +158,15 @@ export default create({
         this.change({ value: this.text, column: this.column });
     },
     handleSuccess(file) {
-      if (!this.status) {
-        if (this.isArray) {
-          this.text.push(file[this.nameKey]);
-        } else {
-          let obj = {};
-          obj[this.labelKey] = file[this.nameKey];
-          obj[this.valueKey] = file[this.urlKey];
-          this.text.push(obj);
-        }
+      if (this.isArray || this.isString) {
+        this.text.push(file[this.urlKey]);
+      } else if (this.isPictureImg) {
+        this.text.unshift(file[this.urlKey]);
       } else {
-        this.text = file[this.urlKey];
+        let obj = {};
+        obj[this.labelKey] = file[this.nameKey];
+        obj[this.valueKey] = file[this.urlKey];
+        this.text.push(obj);
       }
       this.$message.success("上传成功");
       this.setVal();
@@ -174,7 +180,7 @@ export default create({
       this.$message.error(msg || "上传失败");
     },
     delete(file) {
-      if (this.isArray) {
+      if (this.isArray || this.isString) {
         this.text.forEach((ele, index) => {
           if (ele === file.url) this.text.splice(index, 1);
         });
@@ -198,7 +204,7 @@ export default create({
         text: this.loadText,
         spinner: "el-icon-loading"
       });
-      const file = config.file;
+      let file = config.file;
       const accept = file.type;
       const filesize = file.size;
       let acceptList = Array.isArray(this.accept) ? this.accept : [this.accept];
@@ -215,41 +221,58 @@ export default create({
 
       const headers = { "Content-Type": "multipart/form-data" };
       let param = new FormData();
-      param.append("file", file, file.name);
-
-      const callack = () => {
-        this.$http
-          .post(this.action, param, { headers })
-          .then(res => {
-            const list = getObjValue(res.data, this.resKey, "object");
-            if (typeof this.uploadAfter === "function")
-              this.uploadAfter(
-                list,
-                () => {
-                  this.show(list);
-                },
-                () => {
+      const done = () => {
+        param.append("file", file, file.name);
+        const callack = () => {
+          this.$http
+            .post(this.action, param, { headers })
+            .then(res => {
+              const list = getObjValue(res.data, this.resKey, "object");
+              if (typeof this.uploadAfter === "function")
+                this.uploadAfter(
+                  list,
+                  () => {
+                    this.show(list);
+                  },
+                  () => {
+                    this.loading.close();
+                  }
+                );
+              else this.show(list);
+            })
+            .catch(error => {
+              if (typeof this.uploadAfter === "function")
+                this.uploadAfter(error, this.hide, () => {
                   this.loading.close();
-                }
-              );
-            else this.show(list);
-          })
-          .catch(error => {
-            if (typeof this.uploadAfter === "function")
-              this.uploadAfter(error, this.hide, () => {
-                this.loading.close();
-              });
-            else this.hide(error);
+                });
+              else this.hide(error);
+            });
+        };
+        if (typeof this.uploadBefore === "function")
+          this.uploadBefore(this.file, callack, () => {
+            this.loading.close();
           });
+        else callack();
       };
-      if (typeof this.uploadBefore === "function")
-        this.uploadBefore(this.file, callack, () => {
-          this.loading.close();
+      //是否开启水印
+      if (!this.validatenull(this.canvasOption)) {
+        detailImg(file, this.canvasOption).then(res => {
+          file = res;
+          done();
         });
-      else callack();
+      } else {
+        done();
+      }
     },
     setVal() {
-      const result = this.isString ? this.text.join(",") : this.text;
+      let result = "";
+      if (this.isString) {
+        result = this.text.join(",");
+      } else if (this.isPictureImg) {
+        result = this.text[0];
+      } else {
+        result = this.text;
+      }
       this.$emit("input", result);
       this.$emit("change", result);
     },

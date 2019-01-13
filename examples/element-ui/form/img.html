@@ -19,6 +19,7 @@
 
 <body>
   <div id="app">
+    {{form}}
     <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
@@ -29,26 +30,7 @@
     data() {
       return {
         form: {
-          img: [
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1',
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2'
-          ],
-          string:
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1,https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2',
-          imgUrl: [
-            {
-              label: '图片名称',
-              value:
-                'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=1'
-            },
-            {
-              label: '图片名称',
-              value:
-                'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=2'
-            }
-          ],
-          imgUrl3:
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?a=3'
+
         },
         option: {
           labelWidth: 120,
@@ -76,8 +58,14 @@
               type: 'upload',
               listType: 'picture-img',
               span: 24,
+              propsHttp: {
+                url: 'filename'
+              },
+              canvasOption: {
+                text: 'avue'
+              },
               tip: '只能上传jpg/png用户头像，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/'
+              action: 'http://yxpos.cn:8070/mchInfo/upload'
             },
             {
               label: '照片墙',
@@ -86,27 +74,36 @@
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/'
+              propsHttp: {
+                url: 'filename'
+              },
+              action: 'http://yxpos.cn:8070/mchInfo/upload'
             },
             {
               label: '数组图片组',
               prop: 'img',
               dataType: 'array',
               type: 'upload',
+              propsHttp: {
+                url: 'filename'
+              },
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/'
+              action: 'http://yxpos.cn:8070/mchInfo/upload'
             },
             {
               label: '字符串图片组',
               prop: 'string',
               dataType: 'string',
               type: 'upload',
+              propsHttp: {
+                url: 'filename'
+              },
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/'
+              action: 'http://yxpos.cn:8070/mchInfo/upload'
             },
             {
               label: '拖拽上传',

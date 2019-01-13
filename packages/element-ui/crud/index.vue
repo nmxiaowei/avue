@@ -689,7 +689,7 @@ export default create({
       this.tableForm = this.deepClone(row);
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
-      this.$refs.dialogForm.show("edit");
+      this.$refs.dialogForm.show("edit", index);
     },
 
     //查看

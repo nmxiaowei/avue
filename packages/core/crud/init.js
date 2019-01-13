@@ -73,14 +73,14 @@ export default function () {
         //表单赋值
         this.columnOption.forEach(ele => {
           (ele.column || []).forEach(item => {
-            if (!this.validatenull(item.dicData)) {
+            if (Array.isArray(item.dicData)) {
               this.$set(this.DIC, item.prop, item.dicData)
             }
           })
         })
         // 表格赋值
         this.columnOption.forEach(ele => {
-          if (!this.validatenull(ele.dicData)) {
+          if (Array.isArray(ele.dicData)) {
             this.$set(this.DIC, ele.prop, ele.dicData)
           }
         })

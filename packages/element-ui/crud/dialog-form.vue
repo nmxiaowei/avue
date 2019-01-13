@@ -71,7 +71,8 @@ export default create({
       boxType: "",
       keyBtn: false,
       boxVisible: false,
-      tableForm: {}
+      tableForm: {},
+      index: -1
     };
   },
   props: {
@@ -151,7 +152,7 @@ export default create({
         this.$parent.$emit(
           "row-update",
           this.deepClone(this.tableForm),
-          index,
+          this.index,
           this.closeDialog,
           () => {
             this.keyBtn = false;
@@ -176,7 +177,8 @@ export default create({
       else callack();
     },
     // 显示表单
-    show(type) {
+    show(type, index = -1) {
+      this.index = index;
       this.boxType = type;
       const callack = () => {
         this.boxVisible = true;

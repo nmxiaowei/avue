@@ -55,22 +55,20 @@ export const dateList = [
 /**
  * 初始化数据格式
  */
-export const initVal = ({ type, multiple, value, listType }) => {
+export const initVal = ({ type, multiple, value }) => {
 
   if (
     (['select', 'tree'].includes(type) && multiple) ||
     ['checkbox', 'cascader', 'dynamic'].includes(type) ||
-    (['upload'].includes(type) && listType !== 'picture-img')
+    (['upload'].includes(type))
   ) {
     if (!Array.isArray(value)) {
-      if (validatenull(value)) {
-        return [];
-      }
+      if (validatenull(value)) return [];
       return (value || '').split(',');
-    } else return value;
-  } else {
+    }
     return value;
   }
+  return value;
 };
 
 /**

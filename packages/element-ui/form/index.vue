@@ -52,6 +52,7 @@
                                :click="column.click"
                                :column="column"
                                :colors="column.colors"
+                               :canvasOption="column.canvasOption"
                                :controls-position="column.controlsPosition"
                                :dataType="column.dataType"
                                :defaultExpandAll="column.defaultExpandAll"
