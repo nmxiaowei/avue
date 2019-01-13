@@ -4,14 +4,14 @@ var canvas, ctx, configDefault = {
   height: 200
 };
 let config = {
-  text: 'avue.top',
-  fontFamily: 'microsoft yahei',
-  color: "#999",
-  fontSize: 16,
-  opacity: 100,
-  bottom: 10,
-  right: 10,
-  ratio: 1
+  text: 'avue.top',//文字
+  fontFamily: 'microsoft yahei',//字体
+  color: "#999",//颜色
+  fontSize: 16,//大小
+  opacity: 100,//透明度
+  bottom: 10,//下边位置
+  right: 10,//右边位置
+  ratio: 1//压缩比
 }
 //将base64转换为文件
 
@@ -54,7 +54,7 @@ export function detailImg(file, option = {}) {
         cretedCanvas(width, height);
         ctx.drawImage(img, 0, 0, width, height);
         setText(width, height);
-        resolve(dataURLtoFile(document.getElementById('canvas').toDataURL(file.type), file.name, config.ratio));
+        resolve(dataURLtoFile(document.getElementById('canvas').toDataURL(file.type, config.ratio), file.name));
       }
     }
     //创建画板

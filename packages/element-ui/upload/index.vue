@@ -42,7 +42,9 @@
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
     </el-upload>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog append-to-body
+               :modal-append-to-body="false"
+               :visible.sync="dialogVisible">
       <div class="avue-dialog">
         <img width="100%"
              :src="dialogImageUrl"
