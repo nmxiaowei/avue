@@ -19,7 +19,6 @@
 
 <body>
   <div id="app">
-    {{form}}
     <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
@@ -42,15 +41,14 @@
               loadText: '附件上传中，请稍等',
               span: 24,
               propsHttp: {
-                name: 'label',
-                url: 'value'
+                res: 'data.0'
               },
               props: {
                 label: 'label',
                 value: 'value'
               },
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/'
+              action: 'http://avueupload.91eic.com/upload/list'
             },
             {
               label: '用户头像',
@@ -59,14 +57,14 @@
               listType: 'picture-img',
               span: 24,
               propsHttp: {
-                url: 'filename'
+                res: 'data.0'
               },
               canvasOption: {
                 text: 'avue',
                 ratio: 0.1
               },
               tip: '只能上传jpg/png用户头像，且不超过500kb',
-              action: 'http://yxpos.cn:8070/mchInfo/upload'
+              action: 'http://avueupload.91eic.com/upload/list'
             },
             {
               label: '照片墙',
@@ -76,9 +74,9 @@
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
               propsHttp: {
-                url: 'filename'
+                res: 'data.0'
               },
-              action: 'http://yxpos.cn:8070/mchInfo/upload'
+              action: 'http://avueupload.91eic.com/upload/list'
             },
             {
               label: '数组图片组',
@@ -86,12 +84,12 @@
               dataType: 'array',
               type: 'upload',
               propsHttp: {
-                url: 'filename'
+                res: 'data.0'
               },
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'http://yxpos.cn:8070/mchInfo/upload'
+              action: 'http://avueupload.91eic.com/upload/list'
             },
             {
               label: '字符串图片组',
@@ -99,12 +97,12 @@
               dataType: 'string',
               type: 'upload',
               propsHttp: {
-                url: 'filename'
+                res: 'data.0'
               },
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'http://yxpos.cn:8070/mchInfo/upload'
+              action: 'http://avueupload.91eic.com/upload/list'
             },
             {
               label: '拖拽上传',
@@ -112,8 +110,11 @@
               type: 'upload',
               span: 24,
               drag: true,
+              propsHttp: {
+                res: 'data.0'
+              },
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/'
+              action: 'http://avueupload.91eic.com/upload/list'
             },
             {
               label: '缩略图上传',
@@ -121,9 +122,12 @@
               type: 'upload',
               limit: 3,
               span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
               listType: 'picture',
               tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'https://jsonplaceholder.typicode.com/posts/' //上传图片地址
+              action: 'http://avueupload.91eic.com/upload/list'
             }
           ]
         }
