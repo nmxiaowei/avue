@@ -68,41 +68,56 @@ export const findByvalue = (dic, value, props, first) => {
                 findByvalue(dic[i][childrenKey], value, props, true);
             }
         }
-        //父子集字典
-    } else if (value instanceof Array && dic[0][childrenKey]) {
-        let index = 0;
-        let count = 0;
-        result = [];
-        while (count < value.length) {
-            index = findArray(dic, value[count], valueKey);
-            if (index !== -1) {
-                result.push(dic[index][labelKey]);
-            } else {
-                result.push(value[count]);
-            }
-            if (!validatenull(dic[index][childrenKey])) {
-                dic = dic[index][childrenKey] || [];
-            }
-            count++;
-        }
-        result = result.join('/').toString();
-        //多选字典
     } else if (value instanceof Array) {
-        let index = 0;
-        let count = 0;
-        result = [];
-        while (count < value.length) {
-            index = findArray(dic, value[count], valueKey);
-            if (index !== -1) {
-                result.push(dic[index][labelKey]);
-            } else {
-                result.push(value[count]);
+        let isTree = false;
+        for (const item of dic) {
+            if (item[childrenKey]) {
+                isTree = true
+                break;
             }
-            count++;
         }
-        result = result.join(',').toString();
+        if (isTree) {
+            //父子集字典
+            result = value.map(item => {
+                return findLabelNode(dic, item, props) || item;
+            }).join('/').toString();
+        } else {
+            //多选字典
+            let index = 0;
+            let count = 0;
+            result = [];
+            while (count < value.length) {
+                index = findArray(dic, value[count], valueKey);
+                if (index !== -1) {
+                    result.push(dic[index][labelKey]);
+                } else {
+                    result.push(value[count]);
+                }
+                count++;
+            }
+            result = result.join(',').toString();
+        }
     }
     return result;
+};
+/**
+ * 树形字典
+ */
+export const findLabelNode = (dic, value, props) => {
+    const labelKey = props.label || 'label';
+    const valueKey = props.value || 'value';
+    const childrenKey = props.children || 'children';
+    for (const ele of dic) {
+        const children = ele[childrenKey];
+        if (ele[valueKey] === value) {
+            return ele[labelKey];
+        } else if (!validatenull(children)) {
+            const label = findLabelNode(children, value, props);
+            if (!validatenull(label)) {
+                return label;
+            }
+        }
+    }
 };
 /**
  * 根据字典的value查找对应的index

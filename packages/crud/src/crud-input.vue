@@ -78,6 +78,7 @@
 import create from '../../utils/create';
 import crudCompoents from '../../mixins/crud-compoents.js';
 import { validatenull } from '../../utils/validate';
+import { findLabelNode } from '../../utils/util';
 export default create({
   name: 'crud-input',
   mixins: [crudCompoents()],
@@ -205,13 +206,11 @@ export default create({
         const check = setInterval(() => {
           if (!validatenull(this.dic)) {
             if (this.multiple) {
-              this.labelText = [];
-              this.text.forEach(ele => {
-                this.findLabelNode(this.dic, ele, this.props);
+              this.labelText = this.text.map(ele => {
+                return findLabelNode(this.dic, ele, this.props) || ele;
               });
             } else {
-              this.labelText = this.text;
-              this.findLabelNode(this.dic, this.text, this.props);
+              this.labelText = findLabelNode(this.dic, this.text, this.props) || this.text;
             }
             if (!this.parent) this.disabledParentNode(this.dic);
             clearInterval(check);
@@ -224,20 +223,6 @@ export default create({
           this.text = this.textShow;
         }
       }
-    },
-    findLabelNode (dic, value, props) {
-      const labelKey = props.label || 'label';
-      const valueKey = props.value || 'value';
-      const childrenKey = props.children || 'children';
-      dic.forEach(ele => {
-        const children = ele[childrenKey];
-        if (ele[valueKey] === value) {
-          const label = ele[labelKey];
-          this.multiple ? this.labelText.push(label) : this.labelText = label;
-        } else if (!validatenull(children)) {
-          this.findLabelNode(children, value, props);
-        }
-      });
     },
     disabledParentNode (dic) {
       dic.forEach(ele => {
