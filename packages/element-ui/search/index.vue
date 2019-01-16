@@ -48,8 +48,7 @@ export default create({
       handler() {
         this.setVal();
         this.dataformat();
-      },
-      deep: true
+      }
     }
   },
   created() {
