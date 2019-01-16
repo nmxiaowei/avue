@@ -99,6 +99,16 @@
         s.parentNode.insertBefore(hm, s);
       })();
     </script>
+    <script type="text/javascript">
+    (function (w, d, s, n, a, e) {
+        w[n] = w[n] || function () { (w[n].z = w[n].z || []).push(arguments) };
+        a = d.createElement(s), e = d.getElementsByTagName(s)[0];
+        a.async = 1; a.charset = "UTF-8";
+        a.src = "https://pubres.aihecong.com/hecong.js";
+        e.parentNode.insertBefore(a, e)
+    })(window, document, "script", "_AIHECONG");
+    _AIHECONG('ini', { entId: 11231 });
+    </script>
 
   </body>
 </html>

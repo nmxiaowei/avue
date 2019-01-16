@@ -23,10 +23,12 @@ import DataBox from './data-box/';
 import Form from './form/';
 import Tabs from './tabs/';
 import Steps from './steps/';
+import Search from './search/';
 import Tree from './tree/';
 import FormDetail from './form-detail/';
 import TableTree from './table-tree/';
 import DateGroup from './date-group/';
+import { validatenull } from './utils/validate'
 import axios from 'axios';
 const components = [
     Json,
@@ -57,11 +59,13 @@ const components = [
     DataTabs,
     DataBox,
     TableTree,
-    DateGroup
+    DateGroup,
+    Search
 ];
 
 function install(Vue, opts = {}) {
     if (axios || window.axios) Vue.prototype.$http = axios || window.axios;
+    Vue.prototype.validatenull = validatenull;
     components.map(component => {
         Vue.component(component.name, component);
     });
@@ -104,5 +108,6 @@ export default {
     DataTabs,
     DataBox,
     TableTree,
+    Search,
     DateGroup
 };

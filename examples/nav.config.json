@@ -218,6 +218,10 @@
             "title": "表格树"
           },
           {
+            "path": "/search",
+            "title": "搜索"
+          },
+          {
             "path": "/tree",
             "title": "树型"
           },

@@ -13,7 +13,7 @@ import crudRate from '../crud/src/crud-rate';
 import crudUpload from '../crud/src/crud-upload';
 import crudSilder from '../crud/src/crud-silder';
 import crudImg from '../crud/src/crud-img';
-export default function() {
+export default function () {
   return {
     props: {
       option: {
@@ -80,6 +80,11 @@ export default function() {
       }
     },
     methods: {
+      getKey(item = {}, props = {}, key) {
+        return item[
+          props[key] || (this.parentOption.props || {})[key] || key
+        ];
+      },
       init() {
         // 初始化工具
         this.initFun();
@@ -112,11 +117,16 @@ export default function() {
                 dicUrl: this.tableOption.dicUrl,
                 dicData: ele.dicData
               });
+            } else if (Array.isArray(ele.dicData)) {
+              this.$set(this.DIC, ele.prop, ele.dicData);
             }
           }
         });
         this.GetDic().then(data => {
-          this.DIC = Object.assign({}, locaDic, data);
+          const obj = Object.assign({}, locaDic, data);
+          Object.keys(obj).forEach(ele => {
+            this.$set(this.DIC, ele, obj[ele]);
+          })
         });
       },
       vaildData(val, dafult) {
@@ -127,7 +137,7 @@ export default function() {
       },
       GetDicByType(href) {
         return new Promise(resolve => {
-          this.$http.get(href).then(function(res) {
+          this.$http.get(href).then(function (res) {
             // 降级处理
             const list = res.data;
             if (!validatenull(list.data)) {
@@ -151,7 +161,7 @@ export default function() {
               new Promise(resolve => {
                 this.GetDicByType(
                   `${ele.dicUrl.replace('{{key}}', ele.dicData)}`
-                ).then(function(res) {
+                ).then(function (res) {
                   resolve(res);
                 });
               })
