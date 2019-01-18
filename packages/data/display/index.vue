@@ -9,7 +9,7 @@
         <div class="item"
              :style="{color:color}">
           <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click():''"
+             @click="item.click?item.click(item):''"
              :target="item.target">
             <h5 class="count">{{item.count}}</h5>
             <span class="splitLine" />

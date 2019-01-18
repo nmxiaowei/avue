@@ -6,21 +6,18 @@
               :sm="12"
               v-for="(item,index) in data"
               :key="index">
-        <div class="re-item">
-            <div class="re-item-back">
-                <div><img :src="item.backsrc" :alt="item.backalt"></div>
-                <div class="re-item-backdes">
-                    <h4>{{item.backname}}</h4>
-                    <p>{{item.backtitle}}</p>
-                </div>
-            </div>
-            <div class="re-item-front">
-                <img :src="item.frontsrc" :alt="item.frontalt" />
-                <div class="re-item-frontdes">
-                    <h4>{{item.frontname}}</h4>
-                    <p>{{item.fronttitle}}</p>
-                </div>
-            </div>
+        <div class="item"
+             :style="{backgroundColor:item.color}">
+          <div class="item-box">
+            <span class="item-count">{{item.count}}</span>
+            <span class="item-title">{{item.title}}</span>
+            <i class="item-icon"
+               :class="item.icon"></i>
+          </div>
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             @click="item.click?item.click(item):''">
+            <p class="item-more">更多<i class="el-icon-arrow-right"></i></p>
+          </a>
         </div>
       </el-col>
     </el-row>
@@ -29,24 +26,26 @@
 <script>
 import create from "core/create";
 export default create({
-  name: 'data-rotate',
-  data () {
-    return {
-
-    };
+  name: "data-rotate",
+  data() {
+    return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   computed: {
-    span () { return this.option.span || 8; },
-    data () { return this.option.data || []; }
+    span() {
+      return this.option.span || 8;
+    },
+    data() {
+      return this.option.data || [];
+    }
   },
-  created () { },
-  mounted () { },
+  created() {},
+  mounted() {},
   watch: {},
   methods: {}
 });

@@ -9,7 +9,7 @@
         <div class="item"
              :style="{background:item.color}">
           <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click():''"
+             @click="item.click?item.click(itme):''"
              :target="item.target">
             <div class="item-header">
               <p>{{item.title}}</p>

@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
   <link rel="stylesheet" href="../../lib/index.css" />
-  <script src="../../lib/avue-data.js"></script>
+  <script src="../../lib/avue.js"></script>
 </head>
 
 <body>
@@ -30,32 +30,29 @@
     data() {
       return {
         option: {
-          span:6,
+          span: 6,
           data: [
             {
-              backsrc:'./images/card2.jpg',
-              backtitle:'网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
-              backname:'旋转小丁',
-              frontsrc:'./images/card1.jpg',
-              fronttitle:'腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹',
-              frontname:'旋转小马'
+              count: '150',
+              title: '新订单',
+              icon: 'el-icon-warning',
+              color: 'rgb(49, 180, 141)'
+            }, {
+              count: '53%',
+              title: '跳出率',
+              icon: 'el-icon-view',
+              color: '#00a65a'
+            }, {
+              count: '44',
+              title: '用户注册数',
+              icon: 'el-icon-setting',
+              color: '#f39c12'
+            }, {
+              count: '56',
+              title: '访客',
+              icon: 'el-icon-tickets',
+              color: '#dd4b39'
             },
-            {
-              backsrc:'./images/card3.jpg',
-              backtitle:'网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
-              backname:'旋转小丁',
-              frontsrc:'./images/card1.jpg',
-              fronttitle:'腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹',
-              frontname:'旋转小马'
-            },
-            {
-              backsrc:'./images/card2.jpg',
-              backtitle:'网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
-              backname:'旋转小丁',
-              frontsrc:'./images/card3.jpg',
-              fronttitle:'腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹.腾讯游戏,没钱玩你麻痹',
-              frontname:'旋转小马'
-            }
           ]
         },
       }

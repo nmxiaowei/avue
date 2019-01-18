@@ -6,37 +6,29 @@
               :md="span"
               :xs="24"
               :sm="12">
-        <div class="item"
-             :style="{color:color}">
-          <div class="item-header">
-            <div>
-              <div class="img">
-                <img :src="item.imgsrc"
+        <div class="item">
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             @click="item.click?item.click(item):''">
+            <div class="item-header"
+                 :style="{backgroundColor:item.color,backgroundImage:`url(${item.colorImg})`}">
+              <span class="item-title">{{item.title}}</span>
+              <span class="item-subtitle">{{item.subtitle}}</span>
+            </div>
+            <div class="item-content">
+              <div class="item-img">
+                <img :src="item.img"
                      alt="">
               </div>
-              <div class="content">
-                <h4>{{item.title}}</h4>
-                <p>{{item.content}}</p>
+              <div class="item-list">
+                <div class="item-row"
+                     v-for="(citem,cindex) in item.list"
+                     :key="cindex">
+                  <span class="item-label">{{citem.label}}</span>
+                  <span class="item-value">{{citem.value}}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="item-content">
-          </div>
-          <div class="item-footer">
-            <span>
-              <a :href="item.href1?item.href1:'javascript:void(0);'"
-                 @click="item.click?item.click():''"
-                 :target="item.target">
-                {{item.name1}}
-              </a>
-            </span>
-            <span>
-              <a :href="item.href2?item.href2:'javascript:void(0);'"
-                 :target="item.target">
-                {{item.name2}}
-              </a>
-            </span>
-          </div>
+          </a>
         </div>
       </el-col>
     </el-row>
@@ -56,9 +48,6 @@ export default create({
     },
     data() {
       return this.option.data || [];
-    },
-    color() {
-      return this.option.color || "rgb(63, 161, 255)";
     }
   },
   props: {

@@ -8,7 +8,7 @@
               :key="index">
         <div class="item">
           <a :href="item.href || 'javascript:void(0);'"
-             @click="item.click?item.click():''"
+             @click="item.click?item.click(item):''"
              :target="item.target">
             <div class="item-header">
               <i :class="item.icon || 'el-icon-bell'"

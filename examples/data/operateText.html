@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
   <link rel="stylesheet" href="../../lib/index.css" />
-  <script src="../../lib/avue-data.js"></script>
+  <script src="../../lib/avue.js"></script>
 </head>
 
 <body>
@@ -30,17 +30,55 @@
     data() {
       return {
         option: {
-          span:8,
+          span: 8,
           data: [
             {
-              title: '网易掌门人',
-              imgsrc: './images/card2.jpg',
-              content: '网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.网易游戏,玩你麻痹.',
-              href1:'https://avue.top',
-              name1:'连接1',
-              href2:'https://avue.top',
-              name2:'连接2',
-              target:'_blank',
+              title: 'smallwei',
+              subtitle: 'avue部门-前端研发工程师',
+              img: './images/img1.jpg',
+              color: '#00a7d0',
+              list: [{
+                label: '点赞',
+                value: '3,200'
+              }, {
+                label: '关注',
+                value: '13,000'
+              }, {
+                label: '项目',
+                value: '13,000'
+              }]
+            },
+            {
+              title: 'smallwei',
+              subtitle: 'avue部门-前端研发工程师',
+              img: './images/img2.jpg',
+              color: '#f39c12',
+              list: [{
+                label: '点赞',
+                value: '3,200'
+              }, {
+                label: '关注',
+                value: '13,000'
+              }, {
+                label: '项目',
+                value: '13,000'
+              }]
+            },
+            {
+              title: 'smallwei',
+              subtitle: 'avue部门-前端研发工程师',
+              img: './images/img3.jpg',
+              colorImg: 'images/bg1.png',
+              list: [{
+                label: '点赞',
+                value: '3,200'
+              }, {
+                label: '关注',
+                value: '13,000'
+              }, {
+                label: '项目',
+                value: '13,000'
+              }]
             },
           ]
         },
