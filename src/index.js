@@ -9,7 +9,7 @@ const install = function (Vue, opts = {}) {
   components.map(component => {
     Vue.component(component.name, component);
   });
-  Vue.prototype.$http = window.axios;
+  Vue.prototype.$httpajax = window.axios;
   Vue.prototype.deepClone = deepClone;
   Vue.prototype.vaildData = vaildData;
   Vue.prototype.findArray = findArray;

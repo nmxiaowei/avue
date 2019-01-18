@@ -226,7 +226,7 @@ export default create({
       const done = () => {
         param.append("file", file, file.name);
         const callack = () => {
-          this.$http
+          this.$httpajax
             .post(this.action, param, { headers })
             .then(res => {
               const list = getObjValue(res.data, this.resKey, "object");

@@ -169,7 +169,7 @@ export default create({
       param.append("file", file, file.name);
 
       const callack = () => {
-        this.$http
+        this.$httpajax
           .post(this.action, param, { headers })
           .then(res => {
             const list = res.data.data ? res.data.data : res.data;
