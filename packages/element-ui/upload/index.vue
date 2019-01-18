@@ -46,7 +46,8 @@
                :modal-append-to-body="false"
                :visible.sync="dialogVisible">
       <div class="avue-dialog">
-        <img width="100%"
+        <img v-if="dialogImgType"
+             width="100%"
              :src="dialogImageUrl"
              alt>
       </div>
@@ -67,6 +68,7 @@ export default create({
     return {
       loading: false,
       dialogImageUrl: "",
+      dialogImgType: true,
       dialogVisible: false,
       text: [],
       file: {}
@@ -287,11 +289,15 @@ export default create({
     },
     handlePictureCardPreview(file) {
       //判断是否为图片
-      if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
-        return;
-      }
       this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
+        this.dialogImgType = false;
+        window.open(this.dialogImageUrl);
+        return;
+      } else {
+        this.dialogImgType = true;
+        this.dialogVisible = true;
+      }
     },
     beforeRemove(file) {
       return this.$confirm(`确定移除该图片？`);
