@@ -42,6 +42,18 @@
               formslot: true
             },
             {
+              label: '数字',
+              prop: 'number',
+              type: 'number',
+              rules: [
+                {
+                  required: true,
+                  message: '请输入数字',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
               label: '省份',
               prop: 'province',
               type: 'select',

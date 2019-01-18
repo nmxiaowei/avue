@@ -34,12 +34,14 @@
           <template slot="menuForm"
                     slot-scope="{size}">
             <el-button type="primary"
-                       @click="handleSubmit"
+                       @click="submit"
                        :size="size"
-                       icon="el-icon-check">提 交</el-button>
+                       v-if="vaildData(parentOption.submitBtn,true)"
+                       icon="el-icon-check">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
             <el-button icon="el-icon-delete"
                        :size="size"
-                       @click="handleResetForm">清 空</el-button>
+                       v-if="vaildData(parentOption.emptyBtn,true)"
+                       @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
             <slot name="menuForm"></slot>
           </template>
         </avue-form>
@@ -135,13 +137,27 @@ export default create({
         );
       });
     },
-    handleResetForm() {
+    clearValidate() {
+      this.formRef.clearValidate();
+    },
+    resetForm() {
       this.formRef.resetForm({
         part: true
       });
       this.$emit("reset-change");
     },
-    handleSubmit() {
+    validate() {
+      return new Promise((resolve, reject) => {
+        this.formRef.validate(valid => {
+          if (valid) {
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      });
+    },
+    submit() {
       this.$emit("input", this.form);
       //返回当先选项卡的字段
       this.formRef.validate(vaild => {

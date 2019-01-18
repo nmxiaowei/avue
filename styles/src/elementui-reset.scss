@@ -51,4 +51,18 @@
     overflow-y: auto;
   }
 }
+.is-success,.is-error{
+  .el-input-number__decrease,.el-input-number__increase{
+    right: 25px !important;
+  }
+}
+.el-input-number__decrease, .el-input-number__increase{
+  background-color: transparent;
+  border-left: none !important;
+  color: #c0c4cc !important;
+  font-size: 16px !important;
+}
+.el-input-number__increase{
+  border-bottom: none !important;
+}
 

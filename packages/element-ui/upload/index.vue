@@ -286,6 +286,10 @@ export default create({
       );
     },
     handlePictureCardPreview(file) {
+      //判断是否为图片
+      if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
+        return;
+      }
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
