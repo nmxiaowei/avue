@@ -190,6 +190,7 @@ export default create({
       handler() {
         if (!this.formCreate) {
           this.$emit("input", this.form);
+          this.$emit("change", this.form);
         } else {
           this.formCreate = false;
         }

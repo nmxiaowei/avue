@@ -69,6 +69,7 @@ export default create({
   },
   data() {
     return {
+      form: {},
       tabsForm: {},
       active: "0",
       tableOption: {}
