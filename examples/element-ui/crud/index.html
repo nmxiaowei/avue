@@ -27,9 +27,10 @@
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" :page="page" :table-loading="loading" v-model="obj"
       :upload-before="uploadBefore" :upload-after="uploadAfter" :before-open="handleBeforeOpen" :before-close="handleBeforeClose"
-      @on-load="onLoad" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" @current-row-change=" "
-      @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate" @row-del="rowDel"
-      @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange" @search-reset="searchReset">
+      @selection-change="selectionChange" @on-load="onLoad" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick"
+      @current-row-change=" " @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate"
+      @row-del="rowDel" @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange"
+      @search-reset="searchReset">
       <template slot="search">
         <el-form-item label="自定义">
           <el-input placeholder="自定义搜索" size="small" v-model="searchForm.solt" />
@@ -329,6 +330,9 @@
       handleBeforeOpen(done, type) {
         this.$message.success('打开前的回调')
         done()
+      },
+      selectionChange(list) {
+        this.$message.success('选中的数据' + JSON.stringify(list));
       },
       handleBeforeClose(done, type) {
         this.$message.success('关闭前的回调')

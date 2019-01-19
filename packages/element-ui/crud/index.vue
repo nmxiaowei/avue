@@ -38,6 +38,7 @@
       <slot name="tip"></slot>
     </div>
     <el-table :data="list"
+              :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(this.tableOption.indeterminate,false)}"
               :size="controlSize"
               :highlight-current-row="tableOption.highlightCurrentRow"
@@ -86,6 +87,7 @@
       <!-- 选择框 -->
       <el-table-column v-if="tableOption.selection"
                        type="selection"
+                       :reserve-selection="vaildData(tableOption.reserveSelection,true)"
                        width="50"
                        :fixed="fixedFlag"
                        align="center"></el-table-column>
@@ -417,6 +419,9 @@ export default create({
     }
   },
   methods: {
+    handleGetRowKeys(row) {
+      return row[this.idKey];
+    },
     handleChange(index, row) {
       const columnOption = [...this.columnOption];
       //本节点;
