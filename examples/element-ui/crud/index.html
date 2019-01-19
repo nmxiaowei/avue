@@ -41,7 +41,12 @@
       <template slot-scope="scope" slot="nameForm">
         <el-tag :size="scope.size">{{ scope.label }}</el-tag>
       </template>
-
+      <template slot="tip">
+        <el-button type="text" size="small">
+          自定义按钮
+        </el-button>
+        <span>自定义内容</span>
+      </template>
       <template slot-scope="props" slot="menuLeft">
         <el-button size="small" @click="setCurrent(data[1])">选中第二行</el-button>
         <el-button size="small" @click="setCurrent()">取消选择</el-button>

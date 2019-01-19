@@ -35,28 +35,7 @@ body{
 .avuex-opacity--active{
   opacity: 1
 }
-.avue-tip {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  &__name {
-    font-size: 12px;
-    margin-right: 15px;
-    color: #515a6e;
-    &--bold {
-      padding: 0 2px;
-      color: #409eff;
-      font-weight: bold;
-      font-size: 18px;
-    }
-  }
-  &__btn {
-    margin-top: 3px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-}
+
 .avue-cell {
   border-top: 1px solid #eee;
   background-color: #fff;

@@ -24,16 +24,18 @@
         <slot name="menuRight"></slot>
       </template>
     </header-menu>
-    <div class="avue-tip avue-crud__tip"
+    <div class="avue-crud__tip"
          v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-      <span class="avue-tip__name">
+      <span class="avue-crud__tip-name">
         {{config.tipStartTitle}}
-        <span class="avue-tip__name--bold">{{selectLen}}</span>
+        <span class="avue-crud__tip-count">{{selectLen}}</span>
         {{config.tipEndTitle}}
       </span>
-      <small class="avue-tip__btn"
-             @click="selectClear"
-             v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</small>
+      <el-button type="text"
+                 size="small"
+                 @click="selectClear"
+                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</el-button>
+      <slot name="tip"></slot>
     </div>
     <el-table :data="list"
               :class="{'avue-crud--indeterminate':vaildData(this.tableOption.indeterminate,false)}"
