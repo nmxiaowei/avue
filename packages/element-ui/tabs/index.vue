@@ -15,8 +15,7 @@
                    :upload-after="uploadAfter"
                    v-if="tabsObjOption"
                    :option="tabsObjOption"
-                   v-model="form"
-                   :key="tabsObj.prop">
+                   v-model="form">
           <template slot-scope="scope"
                     v-for="item in tabsObjOption">
             <template v-for="column in item.column"
