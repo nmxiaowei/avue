@@ -83,20 +83,22 @@
                      v-if="searchFlag && vaildData(tableOption.searchBtn,config.searchBtn)"></el-button>
         </div>
       </div>
-      <el-tag class="avue-tip"
-              v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-        <i class="el-icon-info avue-tip__icon">&nbsp;</i>
-        <span class="avue-tip__name">
+      <div class="avue-crud__tip"
+           v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
+        <span class="avue-crud__tip-name">
           {{config.tipStartTitle}}
-          <span class="avue-tip__name--bold">{{selectLen}}</span>
+          <span class="avue-crud__tip-count">{{selectLen}}</span>
           {{config.tipEndTitle}}
         </span>
-        <span class="avue-tip__btn"
-              @click="selectClear"
-              v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</span>
-      </el-tag>
+        <el-button type="text"
+                   size="small"
+                   @click="selectClear"
+                   v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</el-button>
+        <slot name="tip"></slot>
+      </div>
       <el-table :data="list"
                 :size="controlSize"
+                :row-key="handleGetRowKeys"
                 :highlight-current-row="tableOption.highlightCurrentRow"
                 @current-change="currentRowChange"
                 :show-summary="tableOption.showSummary"
@@ -440,6 +442,9 @@ export default create({
     this.$emit("on-load", this.defaultPage);
   },
   computed: {
+    idKey() {
+      return this.tableOption.idKey || "id";
+    },
     btnDisabled() {
       return this.keyBtn && this.tableOption.cellBtn;
     },
@@ -530,6 +535,9 @@ export default create({
     }
   },
   methods: {
+    handleGetRowKeys(row) {
+      return row[this.idKey];
+    },
     menuIcon(value) {
       return this.menuType === "icon" ? "" : value;
     },

@@ -20,6 +20,7 @@ import DataTabs from './data-tabs/';
 import DataProgress from './data-progress/';
 import DataIcons from './data-icons/';
 import DataBox from './data-box/';
+import DataInfo from './data-info/';
 import Form from './form/';
 import Tabs from './tabs/';
 import Steps from './steps/';
@@ -52,6 +53,7 @@ const components = [
     CrudUpload,
     CrudSilder,
     CrudImg,
+    DataInfo,
     DataProgress,
     DataDisplay,
     DataCard,
@@ -101,6 +103,7 @@ export default {
     CrudUpload,
     CrudSilder,
     CrudImg,
+    DataInfo,
     DataProgress,
     DataDisplay,
     DataCard,

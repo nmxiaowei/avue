@@ -6,10 +6,10 @@
                 :sm="6"
                 :md="span"
                 :key="index">
-          <div class="item"
-               :class="[{'item--easy':discount}]">
-            <a :href="item.href?item.href:'javascript:void(0);'"
-               :target="item.target">
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             :target="item.target">
+            <div class="item"
+                 :class="[{'item--easy':discount}]">
               <div class="item-icon"
                    :style="{color:color}">
                 <i :class="item.icon"></i>
@@ -19,8 +19,8 @@
                 <div class="count"
                      :style="{color:color}">{{item.count}}</div>
               </div>
-            </a>
-          </div>
+            </div>
+          </a>
         </el-col>
       </template>
     </el-row>
@@ -28,24 +28,30 @@
 </template>
 
 <script>
-import create from '../../utils/create';
+import create from "../../utils/create";
 export default create({
-  name: 'data-icons',
-  data () {
-    return {
-
-    };
+  name: "data-icons",
+  data() {
+    return {};
   },
   computed: {
-    span () { return this.option.span || 4; },
-    data () { return this.option.data; },
-    color () { return this.option.color || 'rgb(63, 161, 255)'; },
-    discount () { return this.option.discount || false; }
+    span() {
+      return this.option.span || 4;
+    },
+    data() {
+      return this.option.data;
+    },
+    color() {
+      return this.option.color || "rgb(63, 161, 255)";
+    },
+    discount() {
+      return this.option.discount || false;
+    }
   },
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   }
 });

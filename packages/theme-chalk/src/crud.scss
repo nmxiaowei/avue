@@ -39,6 +39,21 @@
         align-items: center;
         justify-content: space-between;
     }
+    &__tip{
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      &-name{
+        margin-right: 10px;
+      }
+      &-count{
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .el-button{
+        margin-bottom: 0;
+      }
+    }
     &__menu {
         position: relative;
         width: 100%;

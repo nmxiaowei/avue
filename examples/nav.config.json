@@ -278,6 +278,10 @@
           {
             "path": "/data-progress",
             "title": "数据展示6"
+          },
+          {
+            "path": "/data-info",
+            "title": "数据展示7"
           }
         ]
       }

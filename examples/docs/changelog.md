@@ -1,4 +1,11 @@
 ## 更新日志
+### 1.5.2
+
+#### 2019-1-21
+
+- 优化crud组件tip部分，同时开放了tip相关参数[#IQUWE](https://gitee.com/smallweigit/avue/issues/IQUWE)[demo](/#/component/crud-selection)
+- 调整数据展示组件部分模版[数据展示7](/#/component/data-info),[数据展示5](/#/component/data-icons)
+
 ### 1.5.1
 
 #### 2019-1-16
@@ -6,6 +13,7 @@
 - 新增search组件[demo](/#/component/search)
 - 优化了框架中全部的字典部门的逻辑
 - 表格字段 tree 类型 多选模式下 字典格式化出错[#pr11](https://gitee.com/smallweigit/avue/pulls/11)
+
 
 ### 1.5.0
 
@@ -16,7 +24,6 @@
 - 新增crud组件中开启search卡槽即可开启自定义，无需配置列的自定义
 - 修复了form组件多级联动时，监听到数据变化就更新的问题
 - 新增form组件tip辅助语属性[demo](/#/component/form-tip)
-
 
 
 ### 1.4.9
