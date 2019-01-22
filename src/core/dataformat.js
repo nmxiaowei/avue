@@ -135,6 +135,8 @@ export const getComponent = (type, component) => {
     result = 'silder';
   } else if (type === 'dynamic') {
     result = 'dynamic';
+  } else if (type === 'icon-select') {
+    result = 'icon-select';
   }
   return KEY_COMPONENT_NAME + result;
 };

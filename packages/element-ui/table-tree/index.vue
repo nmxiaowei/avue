@@ -53,6 +53,7 @@
     </el-table-column>
     <el-table-column label="操作"
                      fixed="right"
+                     v-if="vaildData(tableOption.menu,true)"
                      :width="isMobile?80:( tableOption.menuWidth || '200')"
                      :align="tableOption.menuAlign || 'center'"
                      :header-align="tableOption.menuheaderAlign">

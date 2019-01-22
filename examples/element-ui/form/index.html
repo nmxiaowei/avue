@@ -35,6 +35,7 @@
         obj: {},
         option: {
           card: false,
+          labelWidth: 110,
           column: [
             {
               label: '姓名',
@@ -132,6 +133,21 @@
               label: '动态表单',
               prop: 'dynamic',
               type: 'dynamic'
+            },
+            {
+              label: '图标选择器',
+              prop: 'icon',
+              type: 'icon-select',
+              iconList: [{
+                label: '基本图标',
+                list: ['el-icon-info', 'el-icon-error', 'el-icon-error', 'el-icon-success', 'el-icon-warning', 'el-icon-question']
+              }, {
+                label: '方向图标',
+                list: ['el-icon-back', 'el-icon-arrow-left', 'el-icon-arrow-down', 'el-icon-arrow-right', 'el-icon-arrow-up']
+              }, {
+                label: '符号图标',
+                list: ['el-icon-plus', 'el-icon-minus', 'el-icon-close', 'el-icon-check']
+              }]
             }
           ]
         }
@@ -142,7 +158,8 @@
         this.obj = {
           province: '110000',
           city: '110100',
-          area: '110101'
+          area: '110101',
+          icon: 'el-icon-error',
         }
       }, 100)
     },

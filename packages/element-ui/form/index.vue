@@ -94,6 +94,7 @@
                                :props="column.props || parentOption.props"
                                :propsHttp="column.propsHttp ||parentOption.propsHttp"
                                :range="column.range"
+                               :iconList="column.iconList"
                                :readonly="column.readonly"
                                :checkStrictly="column.checkStrictly"
                                :separator="column.separator"
