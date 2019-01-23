@@ -9,4 +9,5 @@ import imgText from 'packages/data/imgText';
 import operaText from 'packages/data/operaText';
 import Rotate from 'packages/data/Rotate';
 import Pay from 'packages/data/pay';
-export default [Tabs, cardText, Box, Progress, Icons, Card, Display, imgText, operaText, Rotate, Pay];
+import Panel from 'packages/data/panel';
+export default [Tabs, cardText, Box, Progress, Icons, Card, Display, imgText, operaText, Rotate, Pay, Panel];
