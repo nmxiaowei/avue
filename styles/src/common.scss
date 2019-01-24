@@ -9,6 +9,16 @@ body{
   background: #c8ebfb;
 }
 
+.avue-mask{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(55,55,55,.6);
+  height: 100%;
+  z-index: 1000;
+}
 .avue--card{
   box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
@@ -76,4 +86,12 @@ body{
       }
     }
   }
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0;
 }

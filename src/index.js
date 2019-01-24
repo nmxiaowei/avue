@@ -1,6 +1,6 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
-import { deepClone, vaildData, findArray } from 'utils/util';
+import { deepClone, vaildData, findArray, setPx } from 'utils/util';
 import _export from 'plugin/export/';
 import _logs from 'plugin/logs/';
 const install = function (Vue, opts = {}) {
@@ -11,6 +11,7 @@ const install = function (Vue, opts = {}) {
   });
   Vue.prototype.$httpajax = window.axios;
   Vue.prototype.deepClone = deepClone;
+  Vue.prototype.setPx = setPx;
   Vue.prototype.vaildData = vaildData;
   Vue.prototype.findArray = findArray;
   Vue.prototype.validatenull = validatenull;
