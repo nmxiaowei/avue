@@ -15,30 +15,30 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
+  <style>
+    .top {
+      padding: 10px;
+      font-size: 14px;
+      background: rgba(0, 153, 229, .7);
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+    }
+  </style>
 </head>
 
 <body>
   <div id="app">
-    <el-button @click="dialogVisible=true">打开</el-button>
-    <avue-drawer title="提示" v-model="dialogVisible" show-close :before-close="handleClose">
-      <span>这里是内容</span>
-    </avue-drawer>
+    <div style="height:2000px"></div>
+    <avue-back-top></avue-back-top>
+    <avue-back-top :height="100" :bottom="200">
+      <div class="top">返回顶端</div>
+    </avue-back-top>
   </div>
 </body>
 <script>
   new Vue({
-    el: '#app',
-    data() {
-      return {
-        dialogVisible: false,
-      }
-    },
-    methods: {
-      handleClose(hide) {
-        this.$message.success('关闭')
-        hide();
-      }
-    }
+    el: '#app'
   })
 </script>
 

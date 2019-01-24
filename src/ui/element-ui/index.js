@@ -24,6 +24,7 @@ import Dynamic from 'components/dynamic'
 import Queue from 'components/queue'
 import IconSelect from 'components/icon-select'
 import Drawer from 'components/drawer'
+import BackTop from 'components/back-top'
 import packages from 'core/packages';
 if (!window.Element) {
   packages.logs('element-ui')
@@ -56,5 +57,6 @@ export default [
   Dynamic,
   IconSelect,
   Drawer,
+  BackTop,
   ...AvueData
 ]
