@@ -24,6 +24,7 @@ import Tabs from 'components/tabs'
 import Dynamic from 'components/dynamic'
 import Queue from 'components/queue'
 import IconSelect from 'components/icon-select'
+import Timeline from 'components/timeline';
 import Drawer from 'components/drawer'
 import BackTop from 'components/back-top'
 import packages from 'core/packages';
@@ -60,5 +61,7 @@ export default [
   IconSelect,
   Drawer,
   BackTop,
+  Timeline,
+  Timeline.Item,
   ...AvueData
 ]
