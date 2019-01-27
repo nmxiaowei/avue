@@ -1,3 +1,4 @@
+import Affix from 'components/affix'
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
 import Form from 'components/form';
@@ -31,6 +32,7 @@ if (!window.Element) {
 }
 import AvueData from '../data/';
 export default [
+  Affix,
   Carousel,
   Crud,
   Form,
