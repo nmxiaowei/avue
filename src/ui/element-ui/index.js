@@ -27,6 +27,7 @@ import IconSelect from 'components/icon-select'
 import Timeline from 'components/timeline';
 import Drawer from 'components/drawer'
 import BackTop from 'components/back-top'
+import textEllipsis from 'components/text-ellipsis'
 import packages from 'core/packages';
 if (!window.Element) {
   packages.logs('element-ui')
@@ -63,5 +64,6 @@ export default [
   BackTop,
   Timeline,
   Timeline.Item,
+  textEllipsis,
   ...AvueData
 ]

@@ -6,10 +6,6 @@
     list-style: none;
     position: relative;
     display: flex;
-    &.has-icon .avue-timeline-item-circle {
-      font-size: 18px;
-      border: none;
-  }
     &-pending &-tail {
       display: none;
     }
@@ -60,6 +56,26 @@
       top: 3px;
       background: #FFF;
       z-index: 2;
+    }
+    &.has-icon .avue-timeline-item-circle {
+      font-size: 18px;
+      border: none;
+
+      [class*=" el-icon"],
+      [class^=el-icon] {
+        vertical-align: 2px;
+      }
+    }
+    &:last-child {
+      .avue-timeline-item {
+        &-content,
+        &-time {
+          padding-bottom: 10px;
+          &:after {
+            border-left: 1px solid transparent;
+          }
+        }
+      }
     }
   }
 
