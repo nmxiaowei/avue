@@ -2,7 +2,7 @@ const path = require('path');
 const aliases = require('./alias');
 const webpack = require('webpack');
 const version = process.env.VERSION || require('../package.json').version;
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const banner =
   ' Avue.js v' +
   version +
@@ -96,6 +96,7 @@ function genConfig(name) {
         sourceMap: false
       })
     );
+    config.plugins.push(new BundleAnalyzerPlugin())
   }
   return config;
 }

@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "cross-env TARGET=dev UINAME=element-ui gulp watch",
     "build": "cross-env TARGET=prod UINAME=element-ui gulp build",
+    "analyz": "NODE_ENV=production npm_config_report=true npm run build",
     "dev:vant": "cross-env TARGET=dev-vant UINAME=vant gulp watch",
     "build:vant": "cross-env TARGET=prod-vant UINAME=vant gulp build",
     "build:all": "npm run build && npm run build:vant"
@@ -57,6 +58,7 @@
     "vue-template-compiler": "^2.5.2",
     "vue-template-es2015-compiler": "^1.6.0",
     "webpack": "3.7.1",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
