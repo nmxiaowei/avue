@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud ref="crud" :option="option" :data="data" @expand-change="expandChange">
+      <template slot="expand" slot-scope="scope">
+        {{scope}}
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          expand: true,
+          column: [{
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '年龄',
+            prop: 'sex'
+          }]
+        },
+        data: [{
+          id: 1,
+          name: '张三',
+          sex: 12,
+        }, {
+          id: 2,
+          name: '李四',
+          sex: 20,
+        }]
+      }
+    }, methods: {
+
+      expandChange(row, expendList) {
+        this.$message.success('展开回调')
+      },
+    }
+  })
+</script>
+
+</html>

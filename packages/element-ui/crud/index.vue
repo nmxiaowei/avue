@@ -424,7 +424,7 @@ export default create({
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
     handleGetRowKeys(row) {
-      return row[this.idKey];
+      return row[this.idKey] || false;
     },
     handleChange(index, row) {
       const columnOption = [...this.columnOption];

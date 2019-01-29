@@ -350,6 +350,7 @@ export default create({
                   (columnNext.props || this.parentOption.props || {}).value ||
                     "value"
                 ];
+              this.clearValidate();
             }
           }
           //首次加载的放入队列记录
