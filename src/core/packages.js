@@ -1,4 +1,4 @@
-import $log from 'plugin/logs/util';
+import $Log from 'plugin/logs/';
 const list = {
   'element-ui': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js',
@@ -43,14 +43,14 @@ export default (() => {
     logs: function (name) {
       if (__ENV__ === 'development') {
         const obj = list[name];
-        $log.capsule(
+        $Log.capsule(
           name,
           obj.title,
           'warning'
         );
-        $log.warning('版本:' + obj.version);
-        $log.warning('CDN:' + obj.url);
-        $log.warning('GITHUB:' + obj.gihub);
+        $Log.warning('版本:' + obj.version);
+        $Log.warning('CDN:' + obj.url);
+        $Log.warning('GITHUB:' + obj.gihub);
 
       }
     }

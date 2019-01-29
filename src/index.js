@@ -2,15 +2,21 @@ import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx } from 'utils/util';
 import _export from 'plugin/export/';
-import _logs from 'plugin/logs/';
+import $Log from 'plugin/logs/';
 import $Clipboard from 'plugin/clipboard/';
+let prototypes = {
+  $Clipboard,
+  $Log
+}
+
 const install = function (Vue, opts = {}) {
-  Vue.use(_logs);
   Vue.use(_export);
   components.map(component => {
     Vue.component(component.name, component);
   });
-  Vue.prototype.$Clipboard = $Clipboard;
+  Object.keys(prototypes).forEach((key) => {
+    Vue.prototype[key] = prototypes[key];
+  });
   Vue.prototype.$httpajax = window.axios;
   Vue.prototype.deepClone = deepClone;
   Vue.prototype.setPx = setPx;
