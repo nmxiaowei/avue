@@ -68,7 +68,6 @@
                 value: 'code'
               },
               cascaderItem: ['city', 'area'],
-              cascaderChange: true,
               dicUrl: `${baseUrl}/getProvince`,
               dicData: 'province',
               rules: [
@@ -161,7 +160,7 @@
           area: '110101',
           icon: 'el-icon-error',
         }
-      }, 100)
+      }, 3000)
     },
     methods: {
       submit() {

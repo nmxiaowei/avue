@@ -179,8 +179,6 @@ export default create({
       form: {},
       formList: [],
       formCascader: false,
-      formCascaderInit: false,
-      formCascaderList: [],
       formCreate: true,
       formDefault: {},
       formRules: {}
@@ -226,8 +224,6 @@ export default create({
         ele.column = ele.column || [];
         // 循环列的全部属性
         ele.column.forEach((column, cindex) => {
-          // 如果时级联放入数组中记录
-          column.cascaderItem && this.formCascaderList.push(column.prop);
           //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
           if (column.display !== false && !this.isMobile) {
             column = calcCount(column, this.itemSpanDefault, cindex === 0);
@@ -278,16 +274,12 @@ export default create({
     });
     // 初始化表单
     this.dataformat();
-    // 延迟判断级联框是否有值
-    setTimeout(() => {
-      this.formCascaderList.forEach(ele => {
-        if (this.validatenull(this.form[ele])) {
-          this.cascaderInit();
-        }
-      });
-    }, 500);
   },
   methods: {
+    //对部分表单字段进行校验的方法
+    validateField(val) {
+      return this.$refs.form.validateField(val);
+    },
     //搜索指定的属性配置
     findColumnIndex(value) {
       let result = -1;
@@ -295,35 +287,6 @@ export default create({
         result = this.findArray(column.column, value, "prop");
       });
       return result;
-    },
-    cascaderInit() {
-      if (this.formCascaderInit) return;
-      this.columnOption.forEach(column => {
-        let list = column.column || [];
-        list.forEach((ele, index) => {
-          //如果没有级联配置跳过
-          if (this.validatenull(ele.cascaderItem)) return;
-
-          this.vaildFormList(list[index]);
-          // 子节点级联处理
-          ele.cascaderItem.forEach((item, cindex) => {
-            const columnIndex = index + cindex + 1;
-            this.vaildFormList(list[columnIndex]);
-          });
-        });
-      });
-      this.formCascaderInit = true;
-    },
-    //判断加入级联列
-    vaildFormList(column) {
-      const str = column.cascader.join(",");
-      if (
-        this.validatenull(this.form[column.prop]) &&
-        !this.validatenull(column.cascader) &&
-        !this.formList.includes(str)
-      ) {
-        this.formList.push(str);
-      }
     },
     dataformat() {
       let formDefault = {};
@@ -366,7 +329,6 @@ export default create({
           this.$set(this.DIC, ele, []);
         });
       }
-
       // 根据当前节点值获取下一个节点的字典
       sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
         res => {
@@ -378,15 +340,17 @@ export default create({
            * 2.字典不为空
            * 3.非首次加载
            */
-          if (
-            column.cascaderChange &&
-            !this.validatenull(dic) &&
-            this.formList.includes(str)
-          ) {
+          if (!this.validatenull(dic) && this.formList.includes(str)) {
             //取字典的指定项或则第一项
-            const dicvalue = dic[columnNext.defaultIndex || 0];
-            this.form[columnNext.prop] =
-              dicvalue[(columnNext.props || {}).value || "value"];
+            let dicvalue = dic[columnNext.defaultIndex || 0];
+            if (!dicvalue) dicvalue = dic[0];
+            if (dicvalue) {
+              this.form[columnNext.prop] =
+                dicvalue[
+                  (columnNext.props || this.parentOption.props || {}).value ||
+                    "value"
+                ];
+            }
           }
           //首次加载的放入队列记录
           if (!this.formList.includes(str)) this.formList.push(str);

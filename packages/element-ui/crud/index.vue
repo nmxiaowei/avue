@@ -419,6 +419,10 @@ export default create({
     }
   },
   methods: {
+    //对部分表单字段进行校验的方法
+    validateField(val) {
+      return this.$refs.dialogForm.$refs.tableForm.validateField(val);
+    },
     handleGetRowKeys(row) {
       return row[this.idKey];
     },
@@ -465,14 +469,19 @@ export default create({
            * 3.非首次加载
            */
           if (
-            column.cascaderChange &&
             !this.validatenull(dic) &&
             this.formIndexList.includes(rowIndex)
           ) {
             //取字典的指定项或则第一项
-            const dicvalue = dic[columnNext.defaultIndex || 0];
-            row[columnNext.prop] =
-              dicvalue[(columnNext.props || {}).value || "value"];
+            let dicvalue = dic[columnNext.defaultIndex || 0];
+            if (!dicvalue) dicvalue = dic[0];
+            if (dicvalue) {
+              this.form[columnNext.prop] =
+                dicvalue[
+                  (columnNext.props || this.parentOption.props || {}).value ||
+                    "value"
+                ];
+            }
           }
         }
       );
