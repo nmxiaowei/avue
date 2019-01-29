@@ -98,11 +98,11 @@ export default cteate({
     this.dataformat();
   },
   computed: {
-    searchSolt() {
+    searchSlot() {
       return !validatenull(this.$slots.search);
     },
     searchFlag() {
-      if (this.searchSolt) return true;
+      if (this.searchSlot) return true;
       else return !validatenull(this.searchForm);
     }
   },

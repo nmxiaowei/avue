@@ -518,7 +518,7 @@ export default create({
           "month",
           "year"
         ].includes(column.type) &&
-        column.solt !== true &&
+        column.slot !== true &&
         column.cell
       );
     },
