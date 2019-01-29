@@ -516,7 +516,8 @@ export default create({
           "datetime",
           "week",
           "month",
-          "year"
+          "year",
+          "phone"
         ].includes(column.type) &&
         column.slot !== true &&
         column.cell
