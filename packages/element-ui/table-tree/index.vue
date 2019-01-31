@@ -24,6 +24,7 @@
     <el-table-column v-for="(column, index) in columnOption"
                      :key="column.prop"
                      :sortable="column.sortable"
+                     :show-overflow-tooltip="column.overHidden"
                      :align="column.align || parentOption.align"
                      :header-align="column.headerAlign || parentOption.headerAlign"
                      :label="column.label"
