@@ -44,6 +44,7 @@
                                v-else
                                :action="column.action"
                                :append="column.append"
+                               :appendClick="column.appendClick"
                                :border="column.border"
                                :change="column.change"
                                :changeoOnSelect="column.changeoOnSelect"
@@ -90,6 +91,7 @@
                                :precision="column.precision"
                                :prefixIcon="column.prefixIcon"
                                :prepend="column.prepend"
+                               :prependClick="column.prependClick"
                                :prop="column.prop"
                                :props="column.props || parentOption.props"
                                :propsHttp="column.propsHttp ||parentOption.propsHttp"

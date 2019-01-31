@@ -1,77 +1,90 @@
 <template>
   <div>
-    <el-input
-      v-if="type==='tree'"
-      :size="size"
-      v-model="labelShow"
-      :type="typeParam"
-      :clearable="disabled?false:clearable"
-      :autosize="{ minRows: minRows, maxRows: maxRows}"
-      :prefix-icon="prefixIcon"
-      :suffix-icon="suffixIcon"
-      :placeholder="placeholder"
-      @change="handleChange"
-      :disabled="disabled"
-      :readonly="true"
-      @click.native="disabled?'':open()"
-    />
-    <el-input
-      v-else-if="type==='phone'"
-      :size="size"
-      :clearable="disabled?false:clearable"
-      v-model="text"
-      @click.native="handleClick"
-      :type="typeParam"
-      :maxlength="maxlength"
-      :autosize="{ minRows: minRows, maxRows: maxRows}"
-      :prefix-icon="prefixIcon"
-      :suffix-icon="suffixIcon"
-      :readonly="readonly"
-      :placeholder="placeholder"
-      @change="handleChange"
-      :disabled="disabled"
-    />
-    <el-input
-      v-else
-      :size="size"
-      :clearable="disabled?false:clearable"
-      v-model="text"
-      @click.native="handleClick"
-      :type="typeParam"
-      :maxlength="maxlength"
-      :minlength="minlength"
-      :autosize="{ minRows: minRows, maxRows: maxRows}"
-      :prefix-icon="prefixIcon"
-      :suffix-icon="suffixIcon"
-      :readonly="readonly"
-      :placeholder="placeholder"
-      @change="handleChange"
-      :disabled="disabled"
-    >
-      <template slot="prepend" v-if="prepend">{{prepend}}</template>
-      <template slot="append" v-if="append">{{append}}</template>
+    <el-input v-if="type==='tree'"
+              :size="size"
+              v-model="labelShow"
+              :type="typeParam"
+              :clearable="disabled?false:clearable"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :placeholder="placeholder"
+              @change="handleChange"
+              :disabled="disabled"
+              :readonly="true"
+              @click.native="disabled?'':open()" />
+    <el-input v-else-if="type==='phone'"
+              :size="size"
+              :clearable="disabled?false:clearable"
+              v-model="text"
+              @click.native="handleClick"
+              :type="typeParam"
+              :maxlength="maxlength"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :readonly="readonly"
+              :placeholder="placeholder"
+              @change="handleChange"
+              :disabled="disabled" />
+    <el-input v-else-if="type==='search'"
+              :size="size"
+              :clearable="disabled?false:clearable"
+              v-model="text"
+              @click.native="handleClick"
+              :type="typeParam"
+              :maxlength="maxlength"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :readonly="readonly"
+              @keyup.enter="appendClick()"
+              :placeholder="placeholder"
+              @change="handleChange"
+              :disabled="disabled">
+      <el-button slot="append"
+                 icon="el-icon-search"
+                 @click="appendClick()"></el-button>
     </el-input>
-    <el-dialog :visible.sync="box" append-to-body :title="`请选择${label}`" width="50%">
-      <el-input
-        style="margin-bottom:15px;"
-        placeholder="输入关键字进行过滤"
-        v-model="filterText"
-        v-if="filter"
-      ></el-input>
+    <el-input v-else
+              :size="size"
+              :clearable="disabled?false:clearable"
+              v-model="text"
+              @click.native="handleClick"
+              :type="typeParam"
+              :maxlength="maxlength"
+              :minlength="minlength"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :readonly="readonly"
+              :placeholder="placeholder"
+              @change="handleChange"
+              :disabled="disabled">
+      <template slot="prepend"
+                v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
+      <template slot="append"
+                v-if="append"><span @click="appendClick()">{{append}}</span></template>
+    </el-input>
+    <el-dialog :visible.sync="box"
+               append-to-body
+               :title="`请选择${label}`"
+               width="50%">
+      <el-input style="margin-bottom:15px;"
+                placeholder="输入关键字进行过滤"
+                v-model="filterText"
+                v-if="filter"></el-input>
       <div class="avue-dialog">
-        <el-tree
-          :data="dic"
-          :node-key="valueKey"
-          :show-checkbox="multiple"
-          :props="props"
-          ref="tree"
-          @check="checkChange"
-          :filter-node-method="filterNode"
-          :default-expanded-keys="multiple?text:[]"
-          :default-checked-keys="multiple?text:[]"
-          :default-expand-all="defaultExpandAll"
-          @node-click="handleNodeClick"
-        ></el-tree>
+        <el-tree :data="dic"
+                 :node-key="valueKey"
+                 :show-checkbox="multiple"
+                 :props="props"
+                 ref="tree"
+                 @check="checkChange"
+                 :filter-node-method="filterNode"
+                 :default-expanded-keys="multiple?text:[]"
+                 :default-checked-keys="multiple?text:[]"
+                 :default-expand-all="defaultExpandAll"
+                 @node-click="handleNodeClick"></el-tree>
       </div>
     </el-dialog>
   </div>
@@ -114,8 +127,16 @@ export default create({
     suffixIcon: {
       type: String
     },
+    prependClick: {
+      type: Function,
+      default: () => {}
+    },
     prepend: {
       type: String
+    },
+    appendClick: {
+      type: Function,
+      default: () => {}
     },
     append: {
       type: String
