@@ -3,10 +3,12 @@ import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx } from 'utils/util';
 import _export from 'plugin/export/';
 import $Log from 'plugin/logs/';
+import $ImagePreview from 'components/image-preview/';
 import $Clipboard from 'plugin/clipboard/';
 let prototypes = {
   $Clipboard,
-  $Log
+  $Log,
+  $ImagePreview
 }
 
 const install = function (Vue, opts = {}) {
