@@ -3,8 +3,8 @@ import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx } from 'utils/util';
 import _export from 'plugin/export/';
 import $Log from 'plugin/logs/';
-import $ImagePreview from 'components/image-preview/';
 import $Clipboard from 'plugin/clipboard/';
+import $ImagePreview from 'components/image-preview/';
 let prototypes = {
   $Clipboard,
   $Log,
@@ -41,5 +41,4 @@ const Avue = {
   version: '1.0.5',
   install
 }
-module.exports = Avue
-module.exports.default = module.exports;
+export default Avue;

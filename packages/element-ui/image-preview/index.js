@@ -1,4 +1,5 @@
 import Main from './index.vue';
+import Vue from 'vue';
 import { isVNode } from 'utils/vdom';
 let instance;
 let instances = [];
