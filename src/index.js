@@ -28,7 +28,14 @@ const install = function (Vue, opts = {}) {
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
     size: opts.size || 'medium',
-    menuType: opts.menuType || 'text'
+    menuType: opts.menuType || 'text',
+    qiniu: {
+      AK: 'BLEIUCkTJhUKfb7Yl4wa2X-5B6uecKNxoCd93IlG',
+      SK: '1_Falie5zL2BH7IBuZSZi1EJqm_5_G1-Gdjz-DS4',
+      scope: 'test',
+      url: 'http://pm7cc17lu.bkt.clouddn.com/',
+      deadline: 1
+    }
   };
 }
 

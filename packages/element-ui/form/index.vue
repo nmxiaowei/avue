@@ -85,6 +85,7 @@
                                :multiple="column.multiple"
                                :nodeClick="column.nodeClick"
                                :options="column.options"
+                               :oss="column.oss"
                                :parent="column.parent"
                                :pickerOptions="column.pickerOptions"
                                :placeholder="getPlaceholder(column)"

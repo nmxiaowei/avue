@@ -1,5 +1,10 @@
 import $Log from 'plugin/logs/';
 const list = {
+  'CryptoJS': {
+    url: 'http://qtestbucket.qiniudn.com/demo/CryptoJS.js',
+    title: '七牛云图片上传，需要引入CryptoJS',
+    version: '3.1.2',
+  },
   'element-ui': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js',
     title: '需要引入Element-ui框架包',
@@ -48,9 +53,9 @@ export default (() => {
           obj.title,
           'warning'
         );
-        $Log.warning('版本:' + obj.version);
-        $Log.warning('CDN:' + obj.url);
-        $Log.warning('GITHUB:' + obj.gihub);
+        $Log.warning('版本:' + (obj.version || '-'));
+        $Log.warning('CDN:' + (obj.url || '-'));
+        $Log.warning('GITHUB:' + (obj.gihub || '-'));
 
       }
     }

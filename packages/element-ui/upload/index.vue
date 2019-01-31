@@ -61,6 +61,8 @@ import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { getObjValue } from "utils/util";
 import { detailImg } from "./canvas";
+import { getToken } from "plugin/qiniu/";
+import packages from "core/packages";
 export default create({
   name: "upload",
   mixins: [props(), event()],
@@ -79,6 +81,9 @@ export default create({
     showFileList: {
       type: Boolean,
       default: true
+    },
+    oss: {
+      type: String
     },
     limit: {
       type: Number,
@@ -113,7 +118,8 @@ export default create({
       default: "文件上传中,请稍等"
     },
     action: {
-      type: String
+      type: String,
+      default: ""
     },
     uploadBefore: Function,
     uploadAfter: Function
@@ -224,13 +230,34 @@ export default create({
       }
 
       const headers = { "Content-Type": "multipart/form-data" };
+      //oss配置属性
+      let oss_config = {};
       let param = new FormData();
       const done = () => {
+        let url = this.action;
         param.append("file", file, file.name);
         const callack = () => {
+          //七牛云oss存储
+          if (this.oss === "qiniu") {
+            if (!window.CryptoJS) {
+              packages.logs("CryptoJS");
+              this.hide();
+              return;
+            }
+            oss_config = this.$AVUE.qiniu;
+            const token = getToken(oss_config.AK, oss_config.SK, {
+              scope: oss_config.scope,
+              deadline: new Date().getTime() + oss_config.deadline * 3600
+            });
+            param.append("token", token);
+            url = "http://up.qiniu.com/";
+          }
           this.$httpajax
-            .post(this.action, param, { headers })
+            .post(url, param, { headers })
             .then(res => {
+              if (this.oss === "qiniu") {
+                res.data.key = oss_config.url + res.data.key;
+              }
               const list = getObjValue(res.data, this.resKey, "object");
               if (typeof this.uploadAfter === "function")
                 this.uploadAfter(
