@@ -270,8 +270,17 @@
             {
               label: '相加',
               prop: 'sum',
+              type: 'number',
               width: 100,
-              cell: true
+              cell: true,
+              rules: [
+                {
+                  required: true,
+                  type: 'number',
+                  message: '请输入相加数字',
+                  trigger: 'blur'
+                }
+              ]
             },
             {
               label: '平均值',

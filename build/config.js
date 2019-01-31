@@ -96,7 +96,7 @@ function genConfig(name) {
         sourceMap: false
       })
     );
-    config.plugins.push(new BundleAnalyzerPlugin())
+    // config.plugins.push(new BundleAnalyzerPlugin())
   }
   return config;
 }
