@@ -7,8 +7,7 @@ import $Clipboard from 'plugin/clipboard/';
 import $ImagePreview from 'components/image-preview/';
 let prototypes = {
   $Clipboard,
-  $Log,
-  $ImagePreview
+  $Log
 }
 
 const install = function (Vue, opts = {}) {
@@ -19,6 +18,7 @@ const install = function (Vue, opts = {}) {
   Object.keys(prototypes).forEach((key) => {
     Vue.prototype[key] = prototypes[key];
   });
+  Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   Vue.prototype.$httpajax = window.axios;
   Vue.prototype.deepClone = deepClone;
   Vue.prototype.setPx = setPx;
@@ -41,4 +41,5 @@ const Avue = {
   version: '1.0.5',
   install
 }
-export default Avue;
+module.exports = Avue
+module.exports.default = module.exports;
