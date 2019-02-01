@@ -62,6 +62,7 @@ import event from "../../core/common/event.js";
 import { getObjValue } from "utils/util";
 import { detailImg } from "./canvas";
 import { getToken } from "plugin/qiniu/";
+import { getClient } from "plugin/ali/";
 import packages from "core/packages";
 export default create({
   name: "upload",
@@ -125,6 +126,12 @@ export default create({
     uploadAfter: Function
   },
   computed: {
+    isAliOss() {
+      return this.oss === "ali";
+    },
+    isQiniuOss() {
+      return this.oss === "qiniu";
+    },
     isPictureImg() {
       return this.listType === "picture-img";
     },
@@ -187,6 +194,7 @@ export default create({
       this.setVal();
     },
     handleError(msg) {
+      console.log(new Error(msg));
       this.$message.error(msg || "上传失败");
     },
     delete(file) {
@@ -232,13 +240,14 @@ export default create({
       const headers = { "Content-Type": "multipart/form-data" };
       //oss配置属性
       let oss_config = {};
+      let client = {};
       let param = new FormData();
       const done = () => {
         let url = this.action;
         param.append("file", file, file.name);
         const callack = () => {
           //七牛云oss存储
-          if (this.oss === "qiniu") {
+          if (this.isQiniuOss) {
             if (!window.CryptoJS) {
               packages.logs("CryptoJS");
               this.hide();
@@ -251,14 +260,40 @@ export default create({
             });
             param.append("token", token);
             url = "http://up.qiniu.com/";
+          } else if (this.isAliOss) {
+            if (!window.OSS) {
+              packages.logs("AliOSS");
+              this.hide();
+              return;
+            }
+            oss_config = this.$AVUE.ali;
+            client = getClient({
+              region: oss_config.region,
+              endpoint: oss_config.endpoint,
+              accessKeyId: oss_config.accessKeyId,
+              accessKeySecret: oss_config.accessKeySecret,
+              bucket: oss_config.bucket
+            });
           }
-          this.$httpajax
-            .post(url, param, { headers })
+          (() => {
+            if (this.isAliOss) {
+              return client.put(file.name, file);
+            } else {
+              return this.$httpajax.post(url, param, { headers });
+            }
+          })()
             .then(res => {
-              if (this.oss === "qiniu") {
+              let list = {};
+              if (this.isQiniuOss) {
                 res.data.key = oss_config.url + res.data.key;
               }
-              const list = getObjValue(res.data, this.resKey, "object");
+
+              if (this.isAliOss) {
+                list = getObjValue(res, this.resKey, "object");
+              } else {
+                list = getObjValue(res.data, this.resKey, "object");
+              }
+
               if (typeof this.uploadAfter === "function")
                 this.uploadAfter(
                   list,

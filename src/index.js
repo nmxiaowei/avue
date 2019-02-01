@@ -35,7 +35,14 @@ const install = function (Vue, opts = {}) {
       scope: '',
       url: '',
       deadline: 1
-    }, (opts.qiniu || {}))
+    }, (opts.qiniu || {})),
+    ali: Object.assign({
+      region: '',
+      endpoint: '',
+      accessKeyId: '',
+      accessKeySecret: '',
+      bucket: '',
+    }, (opts.ali || {})),
   };
 }
 

@@ -1,7 +1,13 @@
 import $Log from 'plugin/logs/';
 const list = {
+  'AliOSS': {
+    url: 'https://avuex.avue.top/cdn/aliyun-oss-sdk.min.js',
+    title: '阿里云云图片上传，需要引入OSS的sdk',
+    version: '6.1.0',
+    github: 'https://github.com/ali-sdk/ali-oss/',
+  },
   'CryptoJS': {
-    url: 'http://qtestbucket.qiniudn.com/demo/CryptoJS.js',
+    url: 'https://avuex.avue.top/cdn/CryptoJS.js',
     title: '七牛云图片上传，需要引入CryptoJS',
     version: '3.1.2',
   },
