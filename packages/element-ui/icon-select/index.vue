@@ -66,6 +66,7 @@ export default create({
     handleSubmit(item) {
       this.box = false;
       this.text = item;
+      this.handleChange(item);
     },
     handleShow() {
       this.box = true;
