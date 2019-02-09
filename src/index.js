@@ -1,6 +1,7 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx } from 'utils/util';
+import directive from 'packages/core/directive/permission'
 import _export from 'plugin/export/';
 import $Log from 'plugin/logs/';
 import $Clipboard from 'plugin/clipboard/';
@@ -12,6 +13,8 @@ let prototypes = {
 
 const install = function (Vue, opts = {}) {
   Vue.use(_export);
+  //初始化指令
+  directive(Vue);
   components.map(component => {
     Vue.component(component.name, component);
   });

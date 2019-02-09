@@ -170,9 +170,6 @@ export default function () {
           multiple: this.multiple,
           value: this.value
         });
-        if (this.type === 'dynamic' && this.text.length === 0) {
-          this.text.push('')
-        }
       }
     }
   };

@@ -131,7 +131,14 @@
             {
               label: '动态表单',
               prop: 'dynamic',
-              type: 'dynamic'
+              type: 'dynamic',
+              rules: [
+                {
+                  required: true,
+                  message: '必填项测试',
+                  trigger: 'blur'
+                }
+              ]
             },
             {
               label: '图标选择器',

@@ -34,6 +34,7 @@
       <el-button type="text"
                  size="small"
                  @click="selectClear"
+                 v-permission="permission.selectClearBtn"
                  v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</el-button>
       <slot name="tip"></slot>
     </div>
@@ -178,12 +179,15 @@
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
+                                v-permission="permission.viewBtn"
                                 @click.native="rowView(scope.row,scope.$index)">{{config.viewBtnTitle}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.editBtn,true)"
+                                v-permission="permission.editBtn"
                                 @click.native="rowEdit(scope.row,scope.$index)">{{config.editBtnTitle}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
+                                v-permission="permission.delBtn"
                                 @click.native="rowDel(scope.row,scope.$index)">{{config.delBtnTitle}}</el-dropdown-item>
               <slot name="menuBtn"
                     :row="scope.row"
@@ -198,6 +202,7 @@
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowCell(scope.row,scope.$index)"
+                       v-permission="permission.cellBtn"
                        v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?config.saveBtnTitle:config.editBtnTitle)}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.cancelBtnIcon"
@@ -210,18 +215,21 @@
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowView(scope.row,scope.$index)"
+                       v-permission="permission.viewBtn"
                        v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon(config.viewBtnTitle)}}</el-button>
             <el-button :type="menuText('primary')"
                        :icon="config.editBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowEdit(scope.row,scope.$index)"
+                       v-permission="permission.editBtn"
                        v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon(config.editBtnTitle)}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.delBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowDel(scope.row,scope.$index)"
+                       v-permission="permission.delBtn"
                        v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon(config.delBtnTitle)}}</el-button>
           </template>
           <slot name="menu"
@@ -385,6 +393,12 @@ export default create({
     }
   },
   props: {
+    permission: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
     value: {
       type: Object,
       default: () => {

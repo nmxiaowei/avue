@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <div v-for="(item,index) in text"
+    <div v-for="(item,index) in text.length===0?1:text"
          :key="index"
          :class="b('item')">
       <avue-input :class="b('input')"
