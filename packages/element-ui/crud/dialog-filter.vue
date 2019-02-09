@@ -4,7 +4,7 @@
              :modal-append-to-body="false"
              append-to-body
              :fullscreen="$parent.isMobile"
-             title="过滤条件"
+             :title="t('crud.filterTitle')"
              :width="$parent.isMobile?'100%':''"
              :visible.sync="box">
     <el-row :span="24"
@@ -75,10 +75,12 @@
 
 <script>
 import { getSearchType, getType } from "core/dataformat";
+import locale from "../../core/common/locale";
 import create from "core/create";
 import { dateList } from "core/dataformat";
 export default create({
   name: "crud",
+  mixins: [locale],
   data() {
     return {
       box: false,

@@ -165,7 +165,7 @@
       </el-table-column>
       <el-table-column fixed="right"
                        v-if="vaildData(tableOption.menu,config.menu) && printKey"
-                       :label="config.menuTitle"
+                       :label="t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
                        :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">

@@ -114,8 +114,10 @@ export default create({
       return option;
     },
     dialogTitle() {
-      const key = `${this.boxType}Title`;
-      return this.$parent.tableOption[key] || this.config[key];
+      const key = `${this.boxType}`;
+      if (!this.validatenull(this.boxType)) {
+        return this.$parent.tableOption[key] || this.t(`crud.${key}Title`);
+      }
     }
   },
   methods: {

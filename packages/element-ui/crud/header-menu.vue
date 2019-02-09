@@ -59,7 +59,7 @@
                    :size="$parent.isMediumSize"
                    @click="$parent.$refs.headerSearch.handleSearchShow()"
                    v-permission="$parent.permission.searchBtn"
-                   v-show="($parent.$refs.headerSearch || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"></el-button>
+                   v-if="($parent.$refs.headerSearch || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
                   content="过滤"

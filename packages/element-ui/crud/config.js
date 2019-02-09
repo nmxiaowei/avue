@@ -1,10 +1,6 @@
 // crud配置文件
 export default {
   // 标题
-  editTitle: '编 辑',
-  addTitle: '新 增',
-  viewTitle: '查 看',
-  menuTitle: '操 作',
   tipStartTitle: '当前表格已选择',
   tipEndTitle: '项',
   sumText: '合 计',

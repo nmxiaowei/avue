@@ -1,5 +1,10 @@
 export default {
   crud: {
+    editTitle: 'edit',
+    addTitle: 'add',
+    viewTitle: 'view',
+    filterTitle: 'filter',
+    menu: 'menu',
     addBtn: 'add',
     printBtn: 'print',
     excelBtn: 'excel',

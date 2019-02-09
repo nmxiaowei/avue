@@ -1,5 +1,10 @@
 export default {
   crud: {
+    editTitle: '编 辑',
+    addTitle: '新 增',
+    viewTitle: '查 看',
+    filterTitle: '过滤条件',
+    menu: '操作',
     addBtn: '新 增',
     printBtn: '打 印',
     excelBtn: '导出',
