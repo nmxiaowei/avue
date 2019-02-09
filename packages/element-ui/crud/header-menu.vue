@@ -6,26 +6,26 @@
                  :icon="config.addBtnIcon"
                  :size="$parent.isMediumSize"
                  v-permission="$parent.permission.addBtn"
-                 v-if="vaildData($parent.tableOption.addBtn,config.addBtn)">{{config.addBtnTitle}}</el-button>
+                 v-if="vaildData($parent.tableOption.addBtn,config.addBtn)">{{t('crud.addBtn')}}</el-button>
       <el-button type="primary"
                  @click="$parent.rowCellAdd"
                  :icon="config.addBtnIcon"
                  v-permission="$parent.permission.addRowBtn"
                  :size="$parent.isMediumSize"
-                 v-if="vaildData($parent.tableOption.addRowBtn,config.addRowBtn)">{{config.addBtnTitle}}</el-button>
+                 v-if="vaildData($parent.tableOption.addRowBtn,config.addRowBtn)">{{t('crud.addBtn')}}</el-button>
 
       <el-button type="primary"
                  @click="rowPrint"
                  :icon="config.printBtnIcon"
                  v-permission="$parent.permission.printBtn"
                  :size="$parent.isMediumSize"
-                 v-if="vaildData($parent.tableOption.printBtn,config.printBtn)">{{config.printBtnTitle}}</el-button>
+                 v-if="vaildData($parent.tableOption.printBtn,config.printBtn)">{{t('crud.printBtn')}}</el-button>
       <el-button type="primary"
                  @click="rowExcel"
                  :icon="config.excelBtnIcon"
                  v-permission="$parent.permission.excelBtn"
                  :size="$parent.isMediumSize"
-                 v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)">{{config.excelBtnTitle}}</el-button>
+                 v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)">{{t('curd.excelBtn')}}</el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div :class="b('right')">
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import locale from "../../core/common/locale";
 import tableTemp from "../../util/tableTemp";
 import create from "core/create";
 import config from "./config";
@@ -83,6 +84,7 @@ import packages from "core/packages";
 import { vaildData } from "utils/util";
 export default create({
   name: "crud",
+  mixins: [locale],
   data() {
     return {
       config: config

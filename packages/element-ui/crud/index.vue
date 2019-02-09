@@ -35,7 +35,7 @@
                  size="small"
                  @click="selectClear"
                  v-permission="permission.selectClearBtn"
-                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{config.tipBtnTitle}}</el-button>
+                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.tipBtn')}}</el-button>
       <slot name="tip"></slot>
     </div>
     <el-table :data="list"
@@ -174,21 +174,21 @@
                        style="margin-right:9px;">
             <el-button type="primary"
                        :size="isMediumSize">
-              {{config.menuBtnTitle}}
+              {{t('crud.menuBtn')}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
                                 v-permission="permission.viewBtn"
-                                @click.native="rowView(scope.row,scope.$index)">{{config.viewBtnTitle}}</el-dropdown-item>
+                                @click.native="rowView(scope.row,scope.$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.editBtn,true)"
                                 v-permission="permission.editBtn"
-                                @click.native="rowEdit(scope.row,scope.$index)">{{config.editBtnTitle}}</el-dropdown-item>
+                                @click.native="rowEdit(scope.row,scope.$index)"> {{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
                                 v-permission="permission.delBtn"
-                                @click.native="rowDel(scope.row,scope.$index)">{{config.delBtnTitle}}</el-dropdown-item>
+                                @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
               <slot name="menuBtn"
                     :row="scope.row"
                     :dic="scope.dic"
@@ -203,34 +203,34 @@
                        :disabled="btnDisabled"
                        @click.stop="rowCell(scope.row,scope.$index)"
                        v-permission="permission.cellBtn"
-                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?config.saveBtnTitle:config.editBtnTitle)}}</el-button>
+                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.cancelBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowCanel(scope.row,scope.$index)"
-                       v-if="scope.row.$cellEdit">{{menuIcon(config.cancelBtnTitle)}}</el-button>
+                       v-if="scope.row.$cellEdit">{{menuIcon('cancelBtn')}}</el-button>
             <el-button :type="menuText('success')"
                        :icon="config.viewBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowView(scope.row,scope.$index)"
                        v-permission="permission.viewBtn"
-                       v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon(config.viewBtnTitle)}}</el-button>
+                       v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon('viewBtn')}}</el-button>
             <el-button :type="menuText('primary')"
                        :icon="config.editBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowEdit(scope.row,scope.$index)"
                        v-permission="permission.editBtn"
-                       v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon(config.editBtnTitle)}}</el-button>
+                       v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon('editBtn')}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.delBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowDel(scope.row,scope.$index)"
                        v-permission="permission.delBtn"
-                       v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon(config.delBtnTitle)}}</el-button>
+                       v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon('delBtn')}}</el-button>
           </template>
           <slot name="menu"
                 :row="scope.row"
@@ -282,6 +282,7 @@ import create from "core/create";
 import init from "../../core/crud/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
+import locale from "../../core/common/locale";
 import headerMenu from "./header-menu";
 import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
@@ -293,7 +294,7 @@ import { getSearchType, getType, calcCascader } from "core/dataformat";
 
 export default create({
   name: "crud",
-  mixins: [init()],
+  mixins: [init(), locale],
   components: {
     tablePage, //分页
     headerSearch, //搜索
@@ -538,7 +539,7 @@ export default create({
       );
     },
     menuIcon(value) {
-      return this.menuType === "icon" ? "" : value;
+      return this.menuType === "icon" ? "" : this.t("crud." + value);
     },
     menuText(value) {
       return this.menuType === "text" ? "text" : value;

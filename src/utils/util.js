@@ -1,5 +1,11 @@
 import { validatenull } from './validate';
 
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+
+
+export function hasOwn(obj, key) {
+  return hasOwnProperty.call(obj, key);
+};
 export const getObjType = obj => {
   var toString = Object.prototype.toString;
   var map = {

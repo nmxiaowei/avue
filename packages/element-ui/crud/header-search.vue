@@ -41,10 +41,10 @@
         <el-button type="primary"
                    @click="searchChange"
                    :icon="config.searchBtnIcon"
-                   :size="$parent.isMediumSize">{{config.searchBtnTitle}}</el-button>
+                   :size="$parent.isMediumSize">{{t('crud.searchBtn')}}</el-button>
         <el-button @click="searchReset"
                    :icon="config.emptyBtnIcon"
-                   :size="$parent.isMediumSize">{{config.emptyBtnTitle}}</el-button>
+                   :size="$parent.isMediumSize">{{t('crud.emptyBtn')}}</el-button>
         <slot name="searchMenu"></slot>
       </el-form-item>
     </el-form>
@@ -55,6 +55,7 @@
 import cteate from "core/create";
 import { vaildData, filterForm } from "utils/util";
 import { validatenull } from "utils/validate";
+import locale from "../../core/common/locale";
 import {
   formInitVal,
   getSearchType,
@@ -64,6 +65,7 @@ import {
 import config from "./config";
 export default cteate({
   name: "crud",
+  mixins: [locale],
   data() {
     return {
       config: config,

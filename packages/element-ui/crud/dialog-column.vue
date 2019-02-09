@@ -4,7 +4,7 @@
              :modal-append-to-body="false"
              append-to-body
              :fullscreen="$parent.isMobile"
-             :title="config.columnBtnTitle"
+             :title="t('crud.columnBtn')"
              :width="$parent.isMobile?'100%':''"
              :visible.sync="columnBox">
     <avue-checkbox v-model="columnIndex"
@@ -15,8 +15,10 @@
 <script>
 import config from "./config";
 import create from "core/create";
+import locale from "../../core/common/locale";
 import { validatenull } from "utils/validate";
 export default create({
+  mixins: [locale],
   data() {
     return {
       config: config,

@@ -4,6 +4,7 @@ import { deepClone, vaildData, findArray, setPx } from 'utils/util';
 import directive from 'packages/core/directive/permission'
 import _export from 'plugin/export/';
 import $Log from 'plugin/logs/';
+import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
 import $ImagePreview from 'components/image-preview/';
 let prototypes = {
@@ -21,6 +22,9 @@ const install = function (Vue, opts = {}) {
   Object.keys(prototypes).forEach((key) => {
     Vue.prototype[key] = prototypes[key];
   });
+  //国际化
+  locale.use(opts.locale);
+  locale.i18n(opts.i18n);
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   Vue.prototype.$httpajax = window.axios;
   Vue.prototype.deepClone = deepClone;

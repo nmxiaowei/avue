@@ -46,15 +46,15 @@
                  @click="rowUpdate"
                  :size="$parent.controlSize"
                  v-if="boxType==='edit'"
-                 :loading="keyBtn">{{vaildData($parent.tableOption.updateBtnTitle,config.updateBtnTitle)}}</el-button>
+                 :loading="keyBtn">{{vaildData($parent.tableOption.updateBtnTitle,t('crud.updateBtn'))}}</el-button>
       <el-button type="primary"
                  @click="rowSave"
                  :size="$parent.controlSize"
                  :loading="keyBtn"
-                 v-else-if="boxType==='add'">{{vaildData($parent.tableOption.saveBtnTitle,config.saveBtnTitle)}}</el-button>
+                 v-else-if="boxType==='add'">{{vaildData($parent.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
       <el-button :size="$parent.controlSize"
                  v-if="boxType!=='view'"
-                 @click="closeDialog">{{vaildData($parent.tableOption.cancelBtnTitle,config.cancelBtnTitle)}}</el-button>
+                 @click="closeDialog">{{vaildData($parent.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
     </span>
   </el-dialog>
 </template>
@@ -62,9 +62,11 @@
 <script>
 import create from "core/create";
 import { vaildData } from "utils/util";
+import locale from "../../core/common/locale";
 import config from "./config";
 export default create({
   name: "crud",
+  mixins: [locale],
   data() {
     return {
       config: config,
