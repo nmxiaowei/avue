@@ -775,7 +775,9 @@ export default create({
     },
     // 编辑
     rowEdit(row, index) {
-      this.tableForm = this.deepClone(row);
+      const rowData = Object.assign(row, {});
+      delete rowData.children;
+      this.tableForm = this.deepClone(rowData);
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("edit", index);

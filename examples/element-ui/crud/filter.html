@@ -20,11 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" @expand-change="expandChange">
-      <template slot="expand" slot-scope="scope">
-        {{scope}}
-      </template>
-    </avue-crud>
+    <avue-crud :data="data" :option="option"></avue-crud>
   </div>
 </body>
 <script>
@@ -32,31 +28,38 @@
     el: '#app',
     data() {
       return {
-        option: {
-          expand: true,
-          column: [{
-            label: '姓名',
-            prop: 'name'
+        data: [
+          {
+            name: '张三',
+            sex: '男'
           }, {
-            label: '年龄',
-            prop: 'sex'
-          }]
-        },
-        data: [{
-          id: 1,
-          name: '张三',
-          sex: 12,
-        }, {
-          id: 2,
-          name: '李四',
-          sex: 20,
-        }]
+            name: '李四',
+            sex: '女'
+          }
+        ],
+        option: {
+          page: false,
+          align: 'center',
+          menuAlign: 'center',
+          column: [
+            {
+              label: '姓名',
+              prop: 'name',
+              formatter: function (row, value, label, column) {
+                return row.name + '自定义'
+              }
+            }, {
+              label: '性别',
+              prop: 'sex',
+              filter: true,
+              dicFilters: [{ text: '男', value: '男' }, { text: '女', value: '女' }],
+              filterMethod: function (value, row, column) {
+                return row.sex === value;
+              }
+            }
+          ]
+        }
       }
-    }, methods: {
-
-      expandChange(row, expendList) {
-        this.$message.success('展开回调')
-      },
     }
   })
 </script>

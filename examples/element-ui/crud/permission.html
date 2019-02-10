@@ -12,10 +12,6 @@
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
 
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <!-- 导入表格需要的包 -->
-
-  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
-  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
@@ -24,7 +20,8 @@
 
 <body>
   <div id="app">
-    权限开关<el-switch :active-value="false" :inactive-value="true" v-model="text" active-color="#13ce66" inactive-color="#ff4949">
+    权限开关<el-switch :active-value="false" :inactive-value="true" v-model="text" active-color="#13ce66"
+      inactive-color="#ff4949">
     </el-switch>
     <avue-crud ref="crud" :permission="permission" :option="option" :data="data" @expand-change="expandChange">
       <template slot="expand" slot-scope="scope">
