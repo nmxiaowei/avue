@@ -7,7 +7,7 @@ export default {
     menu: '操作',
     addBtn: '新 增',
     printBtn: '打 印',
-    excelBtn: '导出',
+    excelBtn: '导 出',
     updateBtn: '修 改',
     cancelBtn: '取 消',
     columnBtn: '多 选',

@@ -60,6 +60,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 const Avue = {
   version: '1.0.5',
+  locale: locale.locale,
   install
 }
 module.exports = Avue

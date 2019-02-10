@@ -53,6 +53,7 @@
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
+              :row-style="showRow"
               @row-dblclick="rowDblclick"
               :row-class-name="rowClassName"
               :cell-class-name="cellClassName"
@@ -118,49 +119,63 @@
                        :fixed="isMobile?false:column.fixed"
                        v-if="(($refs.dialogColumn || []).columnIndex || []).includes(column.prop)">
         <template slot-scope="scope">
-          <template v-if="cellEditFlag(scope.row,column)">
-            <component :is="getSearchType(column.type)"
-                       size="mini"
-                       v-model="scope.row[column.prop]"
-                       :type="getType(column)"
-                       :disabled="btnDisabled"
-                       :props="column.props || tableOption.props"
-                       :format="column.format"
-                       :parent="column.parent"
-                       :defaultExpandAll="column.defaultExpandAll"
-                       :filterable="column.searchFilterable"
-                       :filter-method="column.searchFilterMethod"
-                       :value-format="column.valueFormat"
-                       :multiple="column.multiple"
-                       :clearable="vaildData(column.clearable,false)"
-                       :placeholder="column.searchPlaceholder || column.label"
-                       @change="column.cascader?handleChange(index,scope.row):''"
-                       :dic="(cascaderDIC[scope.row.$index] || {})[column.prop] || DIC[column.prop]"></component>
-          </template>
-          <slot :row="scope.row"
-                :dic="DIC[column.prop]"
-                :size="isMediumSize"
-                :label="scope.row['$'+column.prop]"
-                :name="column.prop"
-                v-else-if="column.slot"></slot>
-          <template v-else-if="column.type==='upload'">
-            <avue-img :align="column.align"
-                      :listType="column.listType"
-                      :imgWidth="column.imgWidth"
-                      :fullscreen="column.imgFullscreen"
-                      :imgHeight="column.imgHeight"
-                      :imgType="column.imgType"
-                      :type="menuText()"
-                      :dataType="column.dataType"
-                      :size="isMediumSize"
-                      :value="scope.row[column.prop]"
-                      v-if="scope.row[column.prop]"></avue-img>
-          </template>
-          <template v-else>
-            <span v-if="column.parentProp">{{handleDetail(scope.row,column,(cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
-            <span v-else
-                  v-html="handleDetail(scope.row,column,DIC[column.prop])"></span>
-          </template>
+          <span v-if="index === 0"
+                v-for="space in scope.row._level"
+                class="ms-tree-space"
+                :key="space"></span>
+          <span class="tree-ctrl"
+                v-if="iconShow(index,scope.row)"
+                @click="toggleExpanded(scope.row,scope.$index)">
+            <i v-if="!scope.row._expanded"
+               class="el-icon-plus"></i>
+            <i v-else
+               class="el-icon-minus"></i>
+          </span>
+          <span :class="{'ms-tree-title':index===0}">
+            <template v-if="cellEditFlag(scope.row,column)">
+              <component :is="getSearchType(column.type)"
+                         size="mini"
+                         v-model="scope.row[column.prop]"
+                         :type="getType(column)"
+                         :disabled="btnDisabled"
+                         :props="column.props || tableOption.props"
+                         :format="column.format"
+                         :parent="column.parent"
+                         :defaultExpandAll="column.defaultExpandAll"
+                         :filterable="column.searchFilterable"
+                         :filter-method="column.searchFilterMethod"
+                         :value-format="column.valueFormat"
+                         :multiple="column.multiple"
+                         :clearable="vaildData(column.clearable,false)"
+                         :placeholder="column.searchPlaceholder || column.label"
+                         @change="column.cascader?handleChange(index,scope.row):''"
+                         :dic="(cascaderDIC[scope.row.$index] || {})[column.prop] || DIC[column.prop]"></component>
+            </template>
+            <slot :row="scope.row"
+                  :dic="DIC[column.prop]"
+                  :size="isMediumSize"
+                  :label="scope.row['$'+column.prop]"
+                  :name="column.prop"
+                  v-else-if="column.slot"></slot>
+            <template v-else-if="column.type==='upload'">
+              <avue-img :align="column.align"
+                        :listType="column.listType"
+                        :imgWidth="column.imgWidth"
+                        :fullscreen="column.imgFullscreen"
+                        :imgHeight="column.imgHeight"
+                        :imgType="column.imgType"
+                        :type="menuText()"
+                        :dataType="column.dataType"
+                        :size="isMediumSize"
+                        :value="scope.row[column.prop]"
+                        v-if="scope.row[column.prop]"></avue-img>
+            </template>
+            <template v-else>
+              <span v-if="column.parentProp">{{handleDetail(scope.row,column,(cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
+              <span v-else
+                    v-html="handleDetail(scope.row,column,DIC[column.prop])"></span>
+            </template>
+          </span>
         </template>
       </el-table-column>
       <el-table-column fixed="right"
@@ -289,6 +304,7 @@ import dialogColumn from "./dialog-column";
 import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
+import treeToArray from "./eval";
 import { sendDic } from "core/dic";
 import { getSearchType, getType, calcCascader } from "core/dataformat";
 
@@ -336,6 +352,15 @@ export default create({
     this.getSearchType = getSearchType;
   },
   computed: {
+    expandLevel() {
+      return this.parentOption.expandLevel || 0;
+    },
+    expandAll() {
+      return this.parentOption.expandAll || false;
+    },
+    isTree() {
+      return this.vaildData(this.parentOption.tree, false);
+    },
     fixedFlag() {
       return this.isMobile ? false : "left";
     },
@@ -354,8 +379,11 @@ export default create({
     btnDisabled() {
       return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
+    parentOption() {
+      return this.tableOption || {};
+    },
     columnOption() {
-      const list = calcCascader(this.tableOption.column || []);
+      let list = calcCascader(this.tableOption.column || []);
       return list;
     },
     sumColumnList() {
@@ -434,6 +462,34 @@ export default create({
     }
   },
   methods: {
+    // 格式化数据源
+    formatData() {
+      let tmp = Array.isArray(this.data) ? this.data : [this.data];
+      const func = this.evalFunc || treeToArray;
+      const args = this.evalArgs
+        ? Array.concat([this.expandLevel, tmp, this.expandAll], this.evalArgs)
+        : [this.expandLevel, tmp, this.expandAll];
+      this.list = [...func.apply(null, args)];
+    },
+    showRow(row) {
+      const index = row.rowIndex;
+      const show = row.row.parent
+        ? row.row.parent._expanded && row.row.parent._show
+        : true;
+      row.row._show = show;
+      return show
+        ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
+        : "display:none;";
+    },
+    // 图标显示
+    iconShow(index, record) {
+      return index === 0 && record.children && record.children.length > 0;
+    },
+    // 切换下级是否展开
+    toggleExpanded(row, index) {
+      row._expanded = !row._expanded;
+      this.$set(this.list, index, row);
+    },
     //对部分表单字段进行校验的方法
     validateField(val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
@@ -562,6 +618,7 @@ export default create({
     },
     dataInit() {
       this.list = [...this.data];
+      if (this.isTree) this.formatData();
       //初始化序列的参数
       this.list.forEach((ele, index) => {
         ele.$index = index;

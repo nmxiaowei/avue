@@ -25,7 +25,7 @@
                  :icon="config.excelBtnIcon"
                  v-permission="$parent.permission.excelBtn"
                  :size="$parent.isMediumSize"
-                 v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)">{{t('curd.excelBtn')}}</el-button>
+                 v-if="vaildData($parent.tableOption.excelBtn,config.excelBtn)">{{t('crud.excelBtn')}} {{t('crud.printBtn')}}</el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div :class="b('right')">
