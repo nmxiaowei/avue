@@ -1,10 +1,18 @@
 ## 更新日志
+### 1.5.3
+
+#### 2019-2-12
+
+- 新增crud权限控制方法[demo](/#/component/crud-permission)
+- 新增icon-select图标选择器组件[demo](/#/component/form-icon-select)
+
 ### 1.5.2
 
 #### 2019-1-21
 
-- 优化crud组件tip部分，同时开放了tip相关参数[#IQUWE](https://gitee.com/smallweigit/avue/issues/IQUWE)[demo](/#/component/crud-selection)
+- 优化crud组件tip部分，同时开放了tip相关参数[#IQUWE](https://gitee.com/smallweigit/avue/issues/IQUWE),[demo](/#/component/crud-selection)
 - 调整数据展示组件部分模版[数据展示7](/#/component/data-info),[数据展示5](/#/component/data-icons)
+
 
 ### 1.5.1
 

@@ -56,6 +56,7 @@
                              :append="column.append"
                              :column="column"
                              :filter="column.filter"
+                             :iconList="column.iconList"
                              :precision="column.precision"
                              :multiple="column.multiple"
                              :readonly="vaildData(draggableStart,column.readonly)"

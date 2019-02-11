@@ -180,6 +180,10 @@
             "title": "滑块"
           },
           {
+            "path": "/form-icon-select",
+            "title": "图标选择器"
+          },
+          {
             "path": "/form-upload",
             "title": "附件上传"
           },

@@ -59,7 +59,7 @@ export const findByvalue = (dic, value, props, first) => {
     if (validatenull(first)) result = value;
     if (validatenull(dic)) return result;
     //正常字典
-    if (typeof(value) === 'string' || typeof(value) === 'number' || typeof(value) === 'boolean') {
+    if (typeof (value) === 'string' || typeof (value) === 'number' || typeof (value) === 'boolean') {
         for (let i = 0; i < dic.length; i++) {
             if (dic[i][valueKey] === value) {
                 result = dic[i][labelKey];
@@ -135,7 +135,7 @@ export const findArray = (dic, value, valueKey) => {
  * 获取字典
  */
 export const setDic = (dicData, DIC) => {
-    return (typeof(dicData) === 'string') ? DIC : dicData;
+    return (typeof (dicData) === 'string') ? DIC : dicData;
 };
 /**
  * 初始化数据格式
@@ -268,6 +268,8 @@ export const getComponent = ({ type, component }) => {
         return 'crudUpload';
     } else if (type === 'silder') {
         return 'crudSilder';
+    } else if (type === 'icon-select') {
+        return 'crudIconSelect';
     } else {
         return 'crudInput';
     }

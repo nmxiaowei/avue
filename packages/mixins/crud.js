@@ -13,6 +13,7 @@ import crudRate from '../crud/src/crud-rate';
 import crudUpload from '../crud/src/crud-upload';
 import crudSilder from '../crud/src/crud-silder';
 import crudImg from '../crud/src/crud-img';
+import crudIconSelect from '../crud/src/crud-icon-select';
 export default function () {
   return {
     props: {
@@ -37,7 +38,8 @@ export default function () {
       crudRate,
       crudUpload,
       crudSilder,
-      crudImg
+      crudImg,
+      crudIconSelect
     },
     watch: {
       tableForm: {

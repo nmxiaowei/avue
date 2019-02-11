@@ -10,9 +10,14 @@
     <el-dialog title="请选择图标"
                :visible.sync="box"
                width="40%">
-      <avue-tabs :option="option"
-                 @change="handleTabs"></avue-tabs>
-      <div :class="b('list')">
+      <el-tabs @tab-click="handleClick">
+        <el-tab-pane v-for="(citem,cindex) in iconList"
+                     :key="cindex"
+                     :label="citem.label"
+                     :name="cindex+''"></el-tab-pane>
+      </el-tabs>
+      <div :class="
+                     b('list')">
         <div :class="b('item')"
              v-for="(item,index) in list"
              :key="index">
@@ -33,6 +38,7 @@ export default create({
   name: "crud-icon-select",
   mixins: [crudCompoents(), crudFun()],
   props: {
+    value: {},
     iconList: {
       type: Array,
       default: () => {
@@ -49,17 +55,16 @@ export default create({
   computed: {
     list() {
       return this.tabs.list || [];
-    },
-    option() {
-      return {
-        column: this.iconList
-      };
     }
   },
   created() {
     this.tabs = this.iconList[0] || {};
   },
   methods: {
+    handleClick(tabs, event) {
+      const index = tabs.index;
+      this.handleTabs(this.iconList[index]);
+    },
     handleTabs(tabs) {
       this.tabs = tabs;
     },
