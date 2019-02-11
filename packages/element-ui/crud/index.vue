@@ -777,7 +777,8 @@ export default create({
     rowEdit(row, index) {
       const rowData = Object.assign(row, {});
       delete rowData.children;
-      this.tableForm = this.deepClone(rowData);
+      delete rowData.parent;
+      this.tableForm = rowData;
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("edit", index);
