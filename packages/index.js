@@ -30,6 +30,7 @@ import FormDetail from './form-detail/';
 import TableTree from './table-tree/';
 import DateGroup from './date-group/';
 import { validatenull } from './utils/validate'
+import directive from './directive/';
 import axios from 'axios';
 const components = [
     Json,
@@ -67,6 +68,8 @@ const components = [
 
 function install(Vue, opts = {}) {
     if (axios || window.axios) Vue.prototype.$http = axios || window.axios;
+    //初始化指令
+    directive(Vue);
     Vue.prototype.validatenull = validatenull;
     components.map(component => {
         Vue.component(component.name, component);

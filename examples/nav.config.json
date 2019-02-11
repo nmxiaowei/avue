@@ -55,6 +55,10 @@
             "title": "树型"
           },
           {
+            "path": "/crud-permission",
+            "title": "权限"
+          },
+          {
             "path": "/crud-header",
             "title": "复杂表头"
           },
