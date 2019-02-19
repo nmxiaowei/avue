@@ -2,8 +2,9 @@
 export default {
  data() {
       return {
-         data:{},
          type:'',
+         form:'',
+         item:'',
          list: [
           {
             money:'12.00',
@@ -27,6 +28,8 @@ export default {
                 description: '用于信息的转账',
                 option: {
                     formWidth:'40%',
+                    submitBtn:false,
+                    emptyBtn:false,
                     column: [
                         {
                             label: "转账金额",
@@ -48,6 +51,7 @@ export default {
                 description: '为了安全再次确认转账',
                 option: {
                     formWidth:'40%',
+                    submitBtn:false,
                     emptyBtn:false,
                     column: [{
                         label: "支付密码",
@@ -67,7 +71,6 @@ export default {
                 prop: 'finsh',
                 description: '转账信息完成',
                 // icon: 'el-icon-picture-outline',
-                type:'crud',
                 option: {
                     page:false,
                     index:true,
@@ -87,13 +90,13 @@ export default {
       }
     },
     methods:{
-       submit (form, next) {
-         this.$message.success('当前数据'+JSON.stringify(form));
+       submit (next) {
          next();
        },
       change (item) {
-        this.type = item.prop;
-        this.$message.success('当前步骤数据'+JSON.stringify(item));
+         this.type = item.prop;
+         this.item = item;
+         this.$message.success('当前步骤数据'+JSON.stringify(item));
       },
     }
 }
@@ -111,15 +114,24 @@ export default {
 
 :::demo 
 ```html
-<avue-steps v-model="data"  :data="list" :option="option" @change="change" @submit="submit">
-  <template slot="menuForm">
-    <el-button v-if="type==='finsh'">自定义按钮</el-button>
-  </template>
+<avue-steps  :option="option" @change="change" @submit="submit">
   <template slot="before">
     <el-tag>卡槽头部{{type}}</el-tag>
   </template>
+  <template slot="info">
+    <avue-form :option="item.option" v-model="form"></avue-form>
+  </template>
+  <template slot="pwd">
+     <avue-form :option="item.option" v-model="form"></avue-form>
+  </template>
+  <template slot="finsh">
+    <avue-crud :option="item.option" :data="list"></avue-crud>
+  </template>
   <template slot="after">
    <el-tag>卡槽尾部{{type}}</el-tag>
+  </template>
+   <template slot="menu">
+    <el-button type="primary">自定义按钮</el-button>
   </template>
 </avue-steps>
 
@@ -127,8 +139,9 @@ export default {
 export default {
  data() {
       return {
-         data:{},
-         type:'',
+        type:'',
+         form:'',
+         item:'',
          list: [
           {
             money:'12.00',
@@ -192,7 +205,6 @@ export default {
                 prop: 'finsh',
                 description: '转账信息完成',
                 // icon: 'el-icon-picture-outline',
-                type:'crud',
                 option: {
                     page:false,
                     index:true,
@@ -212,12 +224,12 @@ export default {
       }
     },
     methods:{
-      submit (form, next) {
-         this.$message.success('当前数据'+JSON.stringify(form));
+      submit (next) {
          next();
       },
       change (item) {
          this.type = item.prop;
+         this.item = item;
          this.$message.success('当前步骤数据'+JSON.stringify(item));
       },
     }
@@ -237,17 +249,14 @@ export default {
 | icon | 步骤条图标 | String | -  | - |
 | switchBtn | 步骤条是否可以点击 | Boolean | true / false  | false |
 | simple | 步骤条是否为简约模式 | Boolean | true / false  | false |
-| type | 步骤条内容类型 | String | form / crud  | form |
-| breakBtn | 步骤条返回按钮 | Boolean | true / false  | true |
-| 说明 | crud和form的配置都可以使用，要配置在每一个步骤条option里面 |
 
 ### Avue-steps Events
 
 | 事件名 | 说明 | 参数 |
 | ---- | ---- | ---- |
-| change | 返回当前步骤的整体对象 | form |
-| submit | 点击下一步或提交的回调(当为最后一个步骤时，无next返回) | form,next |
-| 说明 | crud和form的方法都可以使用 |
+| change | 返回当前步骤的整体对象 | item |
+| submit | 点击下一步或提交的回调(当为最后一个步骤时，无next返回) |next |
+
 
 ### Avue-steps Scoped Slot
 
@@ -255,5 +264,5 @@ export default {
 |------|--------|
 | after | 内容之前的卡槽 |
 | brfore | 内容之后的卡槽 |
-| 说明 | crud和form的卡槽都可以使用 |
+| 说明   | 每个选项卡的卡槽  |
 

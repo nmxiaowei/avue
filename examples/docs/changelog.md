@@ -1,10 +1,19 @@
 ## 更新日志
+### 1.5.4
+
+#### 2019-2-19
+
+- 完善了steps组件的逻辑和用法[demo](/#/component/steps)
+- 完善了tabs组件的逻辑和用法[demo](/#/component/tabs)
+
+
 ### 1.5.3
 
 #### 2019-2-12
 
 - 新增crud权限控制方法[demo](/#/component/crud-permission)
 - 新增icon-select图标选择器组件[demo](/#/component/form-icon-select)
+
 
 ### 1.5.2
 

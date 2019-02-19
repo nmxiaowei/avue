@@ -59,7 +59,7 @@
 | dicUrl           | 字典的网络请求接口（例如配置/xxx/xx/{{key}},这样的格式，在 column 中 dicData 写加载的字典，自动替换 key 挂载请求） | String          | -                           | -        |
 | addBtn           | 添加按钮                                                                                                           | Boolean         | true / false                | true     |
 | delBtn           | 删除按钮                                                                                                           | Boolean         | true / false                | true     |
-| editBtn          | 删除按钮                                                                                                           | Boolean         | true / false                | true     |
+| editBtn          | 编辑按钮                                                                                                           | Boolean         | true / false                | true     |
 | viewBtn          | 查看按钮                                                                                                           | Boolean         | true / false                | false    |
 | dateBtn          | 日期组件按钮                                                                                                       | Boolean         | true / false                | false    |
 | dateDefault      | 日期控件默认的值                                                                                                   | Boolean         | true / false                | false    |
