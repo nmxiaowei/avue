@@ -786,7 +786,10 @@ export default create({
 
     //查看
     rowView(row, index) {
-      this.tableForm = this.deepClone(row);
+      const rowData = Object.assign(row, {});
+      delete rowData.children;
+      delete rowData.parent;
+      this.tableForm = rowData;
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("view");
