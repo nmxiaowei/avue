@@ -1,4 +1,5 @@
 import Affix from 'components/affix'
+import Avatar from 'components/avatar'
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
 import Form from 'components/form';
@@ -35,6 +36,7 @@ if (!window.Element) {
 import AvueData from '../data/';
 export default [
   Affix,
+  Avatar,
   Carousel,
   Crud,
   Form,

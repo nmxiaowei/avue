@@ -1,0 +1,52 @@
+
+.avue-avatar{
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.65);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+    text-align: center;
+    background: #ccc;
+    color: #fff;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    &__images{
+      width: 100%;
+      height: 100%;
+    }
+    &__icon{
+        font-size: 18px;
+    }
+    &__string{
+      position: absolute;
+      left: 50%;
+      transform-origin: 0 center;
+    }
+    &--lg{
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 50%;
+      font-size: 24px;
+    }
+    &--sm {
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      font-size: 14px;
+    }
+    &--square {
+      border-radius: 4px;
+    }
+}
