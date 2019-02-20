@@ -259,7 +259,11 @@ export default create({
               deadline: new Date().getTime() + oss_config.deadline * 3600
             });
             param.append("token", token);
-            url = "http://up.qiniu.com/";
+            if (window.location.protocol.includes("https")) {
+              url = "https://up.qbox.me";
+            } else {
+              url = "http://up.qiniu.com/";
+            }
           } else if (this.isAliOss) {
             if (!window.OSS) {
               packages.logs("AliOSS");
