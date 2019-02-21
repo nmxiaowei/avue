@@ -87,19 +87,23 @@ export default function () {
       },
       // 加载字典
       handleLoadDic(option) {
-        const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
-        // 初始化字典
-        if (dicFlag) {
-          loadDic(option || this.tableOption).then((res = {}) => {
-            Object.keys(res).forEach(ele => {
-              this.$set(this.DIC, ele, res[ele])
+        return new Promise((resolve) => {
+          const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
+          // 初始化字典
+          if (dicFlag) {
+            loadDic(option || this.tableOption).then((res = {}) => {
+              Object.keys(res).forEach(ele => {
+                this.$set(this.DIC, ele, res[ele])
+              });
+              resolve();
             });
-          });
-          // 加载传进来的字典
-        } else {
-          const dicData = this.tableOption.dicData || [];
-          this.DIC = this.deepClone(dicData);
-        }
+            // 加载传进来的字典
+          } else {
+            const dicData = this.tableOption.dicData || [];
+            this.DIC = this.deepClone(dicData);
+            resolve();
+          }
+        })
       },
       handleLoadCascaderDic(option, data) {
         loadCascaderDic(option || this.columnOption, this.data || [data]).then(res => {

@@ -6,6 +6,7 @@ import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
 import Detail from 'components/detail';
+import Divider from 'components/divider';
 import Time from 'components/time';
 import Input from 'components/input';
 import Radio from 'components/radio';
@@ -21,6 +22,7 @@ import Group from 'components/group';
 import Tree from 'components/tree';
 import TableTree from 'components/table-tree';
 import Search from 'components/search'
+import Skeleton from 'components/skeleton'
 import Tabs from 'components/tabs'
 import Dynamic from 'components/dynamic'
 import Queue from 'components/queue'
@@ -42,6 +44,7 @@ export default [
   Form,
   Checkbox,
   Date,
+  Divider,
   Time,
   Input,
   Radio,
@@ -67,5 +70,6 @@ export default [
   Timeline,
   Timeline.Item,
   textEllipsis,
+  Skeleton,
   ...AvueData
 ]

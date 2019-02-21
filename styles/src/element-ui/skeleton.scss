@@ -1,0 +1,58 @@
+.avue-skeleton{
+  &__avatar{
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #f2f2f2;
+  }
+  &__header{
+    display: table-cell;
+    vertical-align: top;
+    padding-right: 16px;
+  }
+  &__content {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+  }
+  &__title{
+    margin-top: 16px;
+    height: 16px;
+    width: 40%;
+    background: #f2f2f2;
+  }
+  &__item{
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e8e8e8;
+    &:last-child{
+      border-bottom:none;
+    }
+  }
+  &__li{
+      margin-bottom: 10px;
+      height: 16px;
+      background: #f2f2f2;
+      list-style: none;
+      width: 100%;
+      &:last-child{
+        width: 50%;
+      }
+  }
+  &__loading{
+    background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+    animation: avue-skeleton-loading 1.4s ease infinite;
+    background-size: 400% 100%;
+  }
+  
+  @keyframes avue-skeleton-loading {
+    0% {
+    background-position: 100% 50%;
+    }
+    100% {
+    background-position: 0 50%;
+    }
+  }
+}

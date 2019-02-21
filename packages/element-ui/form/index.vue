@@ -273,12 +273,25 @@ export default create({
     });
     //初始化字典
     this.columnOption.forEach(ele => {
-      this.handleLoadDic(ele);
+      this.handleLoadDic(ele).then(res => {
+        ele.column.forEach(column => {
+          this.handleShowLabel(column, this.DIC[column.prop]);
+        });
+      });
     });
     // 初始化表单
     this.dataformat();
   },
   methods: {
+    //获取全部字段字典的label
+    handleShowLabel(column, DIC) {
+      let result = "";
+      if (!this.validatenull(DIC)) {
+        result = this.detail(this.form, column, this.tableOption, DIC);
+        this.$set(this.form, ["$" + column.prop], result);
+      }
+      return result;
+    },
     //对部分表单字段进行校验的方法
     validateField(val) {
       return this.$refs.form.validateField(val);
