@@ -154,7 +154,7 @@
             <slot :row="scope.row"
                   :dic="DIC[column.prop]"
                   :size="isMediumSize"
-                  :label="scope.row['$'+column.prop]"
+                  :label="handleShowLabel(scope.row,column,DIC[column.prop])"
                   :name="column.prop"
                   v-else-if="column.slot"></slot>
             <template v-else-if="column.type==='upload'">
@@ -557,9 +557,20 @@ export default create({
         }
       );
     },
+    handleShowLabel(row, column, DIC) {
+      let result = "";
+      if (!this.validatenull(DIC)) {
+        result = this.detail(row, column, this.tableOption, DIC);
+        row["$" + column.prop] = result;
+      }
+      return result;
+    },
     handleDetail(row, column, DIC) {
-      const result = this.detail(row, column, this.tableOption, DIC);
-      row["$" + column.prop] = result;
+      let result = row[column.prop];
+      if (!this.validatenull(DIC)) {
+        result = this.detail(row, column, this.tableOption, DIC);
+        row["$" + column.prop] = result;
+      }
       return result;
     },
     rulesInit() {
