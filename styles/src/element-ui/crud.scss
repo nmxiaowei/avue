@@ -34,8 +34,20 @@ $space-width: 15px;
   .tree-ctrl {
       position: relative;
       cursor: pointer;
-      color: $color-blue;
+      color:#666;
       margin-left: -$space-width;
+      display: inline-block;
+      width: 17px;
+      height: 17px;
+      text-align: center;
+      line-height: 14px;
+      border: 1px solid #e8e8e8;
+      user-select: none;
+      background: #fff;
+      font-size: 10px;
+      i{
+        padding-top: 3px;
+      }
   }
   @keyframes treeTableShow {
       from {

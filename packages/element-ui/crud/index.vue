@@ -120,9 +120,9 @@
                        v-if="(($refs.dialogColumn || []).columnIndex || []).includes(column.prop)">
         <template slot-scope="scope">
           <span v-if="index === 0"
-                v-for="(space,index) in scope.row._level"
+                v-for="space in scope.row._level"
                 class="ms-tree-space"
-                :key="index"></span>
+                :key="space"></span>
           <span class="tree-ctrl"
                 v-if="iconShow(index,scope.row)"
                 @click="toggleExpanded(scope.row,scope.$index)">
@@ -495,7 +495,7 @@ export default create({
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
     handleGetRowKeys(row) {
-      return row[this.idKey] || false;
+      return row[this.idKey];
     },
     handleChange(index, row) {
       const columnOption = [...this.columnOption];
