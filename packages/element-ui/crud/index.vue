@@ -496,9 +496,7 @@ export default create({
     },
     handleGetRowKeys(row) {
       const idKey = row[this.idKey];
-      if (this.validatenull(idKey)) {
-        return idKey;
-      }
+      return idKey;
     },
     handleChange(index, row) {
       const columnOption = [...this.columnOption];
