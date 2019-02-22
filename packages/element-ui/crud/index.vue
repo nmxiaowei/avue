@@ -495,7 +495,10 @@ export default create({
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
     handleGetRowKeys(row) {
-      return row[this.idKey];
+      const idKey = row[this.idKey];
+      if (this.validatenull(idKey)) {
+        return idKey;
+      }
     },
     handleChange(index, row) {
       const columnOption = [...this.columnOption];
