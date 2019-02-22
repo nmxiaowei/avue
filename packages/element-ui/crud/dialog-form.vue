@@ -13,7 +13,7 @@
              :visible.sync="boxVisible"
              :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
              @close="closeDialog">
-    <div :class="b('dialog', ['overflow'])">
+    <el-scrollbar :style="{height:setPx(vaildData($parent.tableOption.dialogHeight,config.dialogHeight))}">
       <avue-form v-model="tableForm"
                  ref="tableForm"
                  :disabled="keyBtn"
@@ -35,7 +35,7 @@
                 v-if="item.formslot"></slot>
         </template>
       </avue-form>
-    </div>
+    </el-scrollbar>
     <span slot="footer"
           class="dialog-footer">
       <!-- 弹出框按钮组 -->
