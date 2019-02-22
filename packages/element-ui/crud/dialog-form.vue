@@ -13,7 +13,7 @@
              :visible.sync="boxVisible"
              :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
              @close="closeDialog">
-    <el-scrollbar :style="{height:setPx(vaildData($parent.tableOption.dialogHeight,config.dialogHeight))}">
+    <el-scrollbar :style="{height:'100%',maxHeight:dialogHeight,overflow:'auto'}">
       <avue-form v-model="tableForm"
                  ref="tableForm"
                  :disabled="keyBtn"
@@ -103,6 +103,14 @@ export default create({
     this.vaildData = vaildData;
   },
   computed: {
+    dialogHeight() {
+      return this.setPx(
+        this.vaildData(
+          this.$parent.tableOption.dialogHeight,
+          config.dialogHeight
+        )
+      );
+    },
     formOption() {
       let option = this.deepClone(this.$parent.tableOption);
       option.submitBtn = false;

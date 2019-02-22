@@ -274,15 +274,20 @@ export default create({
     //初始化字典
     this.columnOption.forEach(ele => {
       this.handleLoadDic(ele).then(res => {
-        ele.column.forEach(column => {
-          this.handleShowLabel(column, this.DIC[column.prop]);
-        });
+        this.forEachLabel();
       });
     });
     // 初始化表单
     this.dataformat();
   },
   methods: {
+    forEachLabel() {
+      this.columnOption.forEach(ele => {
+        ele.column.forEach(column => {
+          this.handleShowLabel(column, this.DIC[column.prop]);
+        });
+      });
+    },
     //获取全部字段字典的label
     handleShowLabel(column, DIC) {
       let result = "";
@@ -378,6 +383,7 @@ export default create({
       Object.keys(this.value).forEach(ele => {
         this.form[ele] = this.value[ele];
       });
+      this.forEachLabel();
       this.$emit("input", this.form);
     },
     handleMock() {
