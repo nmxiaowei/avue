@@ -13,7 +13,7 @@
              :visible.sync="boxVisible"
              :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
              @close="closeDialog">
-    <el-scrollbar :style="{height:'100%',maxHeight:dialogHeight,overflow:'auto'}">
+    <el-scrollbar :style="{height:'100%',maxHeight:dialogHeight,overflowY:'auto',overflowX:'hidden'}">
       <avue-form v-model="tableForm"
                  ref="tableForm"
                  :disabled="keyBtn"
