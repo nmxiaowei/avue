@@ -13,29 +13,33 @@
              :visible.sync="boxVisible"
              :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
              @close="closeDialog">
-    <el-scrollbar :style="{height:'100%',maxHeight:dialogHeight,overflowY:'auto',overflowX:'hidden'}">
-      <avue-form v-model="tableForm"
-                 ref="tableForm"
-                 :disabled="keyBtn"
-                 :uploadBefore="$parent.uploadBefore"
-                 :uploadAfter="$parent.uploadAfter"
-                 :option="formOption">
-        <template slot-scope="scope"
-                  v-for="item in $parent.columnOption"
-                  :slot="item.prop">
-          <slot :value="scope.value"
-                :column="scope.column"
-                :dic="scope.dic"
-                :size="scope.size"
-                :label="scope.label"
-                :disabled="scope.disabled"
-                :row="tableForm"
-                :index="tableIndex"
-                :name="item.prop"
-                v-if="item.formslot"></slot>
-        </template>
-      </avue-form>
-    </el-scrollbar>
+    <div :style="{height:dialogHeight,overflow:'hidden'}"
+         ref="content">
+      <el-scrollbar style="height:100%">
+        <avue-form v-model="tableForm"
+                   ref="tableForm"
+                   :disabled="keyBtn"
+                   :uploadBefore="$parent.uploadBefore"
+                   :uploadAfter="$parent.uploadAfter"
+                   :option="formOption">
+          <template slot-scope="scope"
+                    v-for="item in $parent.columnOption"
+                    :slot="item.prop">
+            <slot :value="scope.value"
+                  :column="scope.column"
+                  :dic="scope.dic"
+                  :size="scope.size"
+                  :label="scope.label"
+                  :disabled="scope.disabled"
+                  :row="tableForm"
+                  :index="tableIndex"
+                  :name="item.prop"
+                  v-if="item.formslot"></slot>
+          </template>
+        </avue-form>
+      </el-scrollbar>
+    </div>
+
     <span slot="footer"
           class="dialog-footer">
       <!-- 弹出框按钮组 -->
@@ -73,6 +77,7 @@ export default create({
       boxType: "",
       keyBtn: false,
       boxVisible: false,
+      boxHeight: 0,
       tableForm: {},
       index: -1
     };
