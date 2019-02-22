@@ -120,9 +120,9 @@
                        v-if="(($refs.dialogColumn || []).columnIndex || []).includes(column.prop)">
         <template slot-scope="scope">
           <span v-if="index === 0"
-                v-for="space in scope.row._level"
+                v-for="(space,index) in scope.row._level"
                 class="ms-tree-space"
-                :key="space"></span>
+                :key="index"></span>
           <span class="tree-ctrl"
                 v-if="iconShow(index,scope.row)"
                 @click="toggleExpanded(scope.row,scope.$index)">
