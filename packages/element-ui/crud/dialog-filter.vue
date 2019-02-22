@@ -170,6 +170,8 @@ export default create({
       );
     },
     handleSubmit() {
+      this.list.push({});
+      this.list.splice(this.list.length - 1, 1);
       this.$parent.$emit("filter-change", this.result);
       this.box = false;
     },
