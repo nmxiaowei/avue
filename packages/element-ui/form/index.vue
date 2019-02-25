@@ -426,7 +426,6 @@ export default create({
       }
     },
     rulesInit(option) {
-      this.formRules = {};
       (option || this.columnOption).forEach(ele => {
         if (ele.rules && ele.display !== false)
           this.formRules[ele.prop] = ele.rules;
