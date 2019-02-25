@@ -144,7 +144,7 @@ export default function () {
         return this.propsHttp.url || this.propsHttpDefault.url;
       },
       resKey: function () {
-        return this.propsHttp.res || this.propsDefault.res;
+        return this.propsHttp.res || this.propsHttpDefault.res;
       },
       valueKey: function () {
         return this.props.value || this.propsDefault.value;

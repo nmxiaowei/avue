@@ -64,6 +64,13 @@ export default function () {
         window.onresize = () => {
           this.getIsMobile();
         };
+        // 规则初始化
+        if (this.rulesInit) {
+          this.columnOption.forEach(ele => {
+            this.rulesInit(ele.column);
+          });
+        }
+
         setTimeout(() => {
           this.initDic();
         }, 0);

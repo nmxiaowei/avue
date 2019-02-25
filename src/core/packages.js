@@ -18,9 +18,9 @@ const list = {
     gihub: 'https://github.com/ElemeFE/element',
   },
   'vant': {
-    url: 'https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js',
+    url: 'https://cdn.jsdelivr.net/npm/vant@1.6/lib/vant.min.js',
     title: '需要引入Vant框架包',
-    version: '1.4',
+    version: '1.6',
     gihub: 'https://github.com/youzan/vant',
   },
   'file-saver': {

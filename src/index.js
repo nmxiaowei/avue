@@ -36,6 +36,16 @@ const install = function (Vue, opts = {}) {
   Vue.prototype.$AVUE = {
     size: opts.size || 'medium',
     menuType: opts.menuType || 'text',
+    canvas: Object.assign({
+      text: 'avue.top',
+      fontFamily: 'microsoft yahei',
+      color: "#999",
+      fontSize: 16,
+      opacity: 100,
+      bottom: 10,
+      right: 10,
+      ratio: 1
+    }, opts.canvas),
     qiniu: Object.assign({
       AK: '',
       SK: '',

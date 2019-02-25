@@ -30,9 +30,13 @@
 
 <script>
 import create from "core/create";
-import { findByValue } from "utils/util";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { getObjValue } from "utils/util";
+import { detailImg } from "plugin/canvas/";
+import { getToken } from "plugin/qiniu/";
+import { getClient } from "plugin/ali/";
+import packages from "core/packages";
 export default create({
   name: "upload",
   mixins: [props(), event()],
@@ -40,6 +44,7 @@ export default create({
     return {
       loading: false,
       dialogImageUrl: "",
+      dialogImgType: true,
       dialogVisible: false,
       text: [],
       file: {}
@@ -51,12 +56,28 @@ export default create({
       type: Boolean,
       default: true
     },
+    oss: {
+      type: String
+    },
     limit: {
       type: Number,
-      default: 3
+      default: 10
+    },
+    accept: {
+      type: [String, Array],
+      default: ""
     },
     listType: {
       type: String
+    },
+    canvasOption: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    filesize: {
+      type: Number
     },
     drag: {
       type: Boolean,
@@ -78,6 +99,21 @@ export default create({
     uploadAfter: Function
   },
   computed: {
+    isAliOss() {
+      return this.oss === "ali";
+    },
+    isQiniuOss() {
+      return this.oss === "qiniu";
+    },
+    isPictureImg() {
+      return this.listType === "picture-img";
+    },
+    //单个头像图片
+    imgUrl() {
+      if (!this.validatenull(this.text)) {
+        return this.text[0];
+      }
+    },
     fileList() {
       let list = [];
       this.text.forEach((ele, index) => {
@@ -118,15 +154,16 @@ export default create({
         this.change({ value: this.text, column: this.column });
     },
     handleSuccess(file) {
-      if (this.isArray) {
-        this.text.push(file[this.nameKey]);
+      if (this.isArray || this.isString) {
+        this.text.push(file[this.urlKey]);
+      } else if (this.isPictureImg) {
+        this.text.unshift(file[this.urlKey]);
       } else {
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
         obj[this.valueKey] = file[this.urlKey];
         this.text.push(obj);
       }
-
       this.$toast.success("上传成功");
       this.setVal();
     },
@@ -135,11 +172,12 @@ export default create({
       this.$toast.success("删除成功");
       this.setVal();
     },
-    handleError() {
-      this.$toast.fail("上传失败");
+    handleError(msg) {
+      console.log(new Error(msg));
+      this.$toast.fail(msg || "上传失败");
     },
     delete(file) {
-      if (this.isArray) {
+      if (this.isArray || this.isString) {
         this.text.forEach((ele, index) => {
           if (ele === file.url) this.text.splice(index, 1);
         });
@@ -149,70 +187,169 @@ export default create({
         });
       }
     },
-    show(res) {
+    show(data) {
       this.loading.close();
-      this.handleSuccess(res.data);
+      this.handleSuccess(data);
     },
-    hide() {
+    hide(msg) {
       this.loading.close();
-      this.handleError();
+      this.handleError(msg);
     },
     httpRequest(config) {
       this.loading = this.$toast.loading({
         mask: true,
         message: this.loadText
       });
-      const file = config.file;
-      this.file = config.file;
-      const headers = { "Content-Type": "multipart/form-data" };
-      let param = new FormData();
-      param.append("file", file, file.name);
 
-      const callack = () => {
-        this.$httpajax
-          .post(this.action, param, { headers })
-          .then(res => {
-            const list = res.data.data ? res.data.data : res.data;
-            if (typeof this.uploadAfter === "function")
-              this.uploadAfter(
-                list,
-                () => {
-                  this.show(list);
-                },
-                () => {
+      let file = config.file;
+      const accept = file.type;
+      const filesize = file.size;
+      let acceptList = Array.isArray(this.accept) ? this.accept : [this.accept];
+      acceptList = this.validatenull(acceptList[0]) ? undefined : acceptList;
+      this.file = config.file;
+      if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
+        this.hide("文件类型不符合");
+        return;
+      }
+      if (!this.validatenull(filesize) && filesize > this.filesize) {
+        this.hide("文件太大不符合");
+        return;
+      }
+
+      const headers = { "Content-Type": "multipart/form-data" };
+      //oss配置属性
+      let oss_config = {};
+      let client = {};
+      let param = new FormData();
+      const done = () => {
+        let url = this.action;
+        param.append("file", file, file.name);
+        const callack = () => {
+          //七牛云oss存储
+          if (this.isQiniuOss) {
+            if (!window.CryptoJS) {
+              packages.logs("CryptoJS");
+              this.hide();
+              return;
+            }
+            oss_config = this.$AVUE.qiniu;
+            const token = getToken(oss_config.AK, oss_config.SK, {
+              scope: oss_config.scope,
+              deadline: new Date().getTime() + oss_config.deadline * 3600
+            });
+            param.append("token", token);
+            if (window.location.protocol.includes("https")) {
+              url = "https://up.qbox.me";
+            } else {
+              url = "http://up.qiniu.com/";
+            }
+          } else if (this.isAliOss) {
+            if (!window.OSS) {
+              packages.logs("AliOSS");
+              this.hide();
+              return;
+            }
+            oss_config = this.$AVUE.ali;
+            client = getClient({
+              region: oss_config.region,
+              endpoint: oss_config.endpoint,
+              accessKeyId: oss_config.accessKeyId,
+              accessKeySecret: oss_config.accessKeySecret,
+              bucket: oss_config.bucket
+            });
+          }
+          (() => {
+            if (this.isAliOss) {
+              return client.put(file.name, file);
+            } else {
+              return this.$httpajax.post(url, param, { headers });
+            }
+          })()
+            .then(res => {
+              let list = {};
+              if (this.isQiniuOss) {
+                res.data.key = oss_config.url + res.data.key;
+              }
+
+              if (this.isAliOss) {
+                list = getObjValue(res, this.resKey, "object");
+              } else {
+                list = getObjValue(res.data, this.resKey, "object");
+              }
+              if (typeof this.uploadAfter === "function")
+                this.uploadAfter(
+                  list,
+                  () => {
+                    this.show(list);
+                  },
+                  () => {
+                    this.loading.close();
+                  }
+                );
+              else this.show(list);
+            })
+            .catch(error => {
+              if (typeof this.uploadAfter === "function")
+                this.uploadAfter(error, this.hide, () => {
                   this.loading.close();
-                }
-              );
-            else this.show(list);
-          })
-          .catch(error => {
-            if (typeof this.uploadAfter === "function")
-              this.uploadAfter(error, this.hide, () => {
-                this.loading.close();
-              });
-            else this.hide(error);
+                });
+              else this.hide(error);
+            });
+        };
+        if (typeof this.uploadBefore === "function")
+          this.uploadBefore(this.file, callack, () => {
+            this.loading.close();
           });
+        else callack();
       };
-      if (typeof this.uploadBefore === "function")
-        this.uploadBefore(this.file, callack, () => {
-          this.loading.close();
+      //是否开启水印
+      if (!this.validatenull(this.canvasOption)) {
+        detailImg(file, this.canvasOption).then(res => {
+          file = res;
+          done();
         });
-      else callack();
+      } else {
+        done();
+      }
     },
     setVal() {
       const result = this.isString ? this.text.join(",") : this.text;
       this.$emit("input", result);
       this.$emit("change", result);
     },
-    handleExceed() {
-      this.$toast.fail(`当前只允许上传${this.limit}文件数量`);
+    setVal() {
+      let result = "";
+      if (this.isString) {
+        result = this.text.join(",");
+      } else if (this.isPictureImg) {
+        result = this.text[0];
+      } else {
+        result = this.text;
+      }
+      this.$emit("input", result);
+      this.$emit("change", result);
+    },
+    handleExceed(files, fileList) {
+      this.$toast.error(
+        `当前限制选择 ${this.limit} 个文件，本次选择了 ${
+          files.length
+        } 个文件，共上传了 ${files.length + fileList.length} 个文件`
+      );
     },
     handlePictureCardPreview(file) {
+      //判断是否为图片
       this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
+        this.dialogImgType = false;
+        window.open(this.dialogImageUrl);
+        return;
+      } else {
+        this.dialogImgType = true;
+        this.dialogVisible = true;
+      }
     },
     beforeRemove(file) {
-      return this.$confirm(`确定移除 ${file.name}？`);
+      return this.$confirm(`确定移除该图片？`);
     }
   }
 });

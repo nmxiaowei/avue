@@ -267,10 +267,6 @@ export default create({
     }
   },
   created() {
-    // 规则初始化
-    this.columnOption.forEach(ele => {
-      this.rulesInit(ele.column);
-    });
     //初始化字典
     this.columnOption.forEach(ele => {
       this.handleLoadDic(ele).then(res => {
@@ -434,6 +430,9 @@ export default create({
       (option || this.columnOption).forEach(ele => {
         if (ele.rules && ele.display !== false)
           this.formRules[ele.prop] = ele.rules;
+      });
+      this.$nextTick(() => {
+        this.clearValidate();
       });
     },
     clearValidate() {
