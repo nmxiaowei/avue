@@ -70,7 +70,6 @@ export default function () {
             this.rulesInit(ele.column);
           });
         }
-
         setTimeout(() => {
           this.initDic();
         }, 0);
