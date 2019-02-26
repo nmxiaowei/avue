@@ -63,8 +63,10 @@ export const initVal = ({ type, multiple, value }) => {
     (['upload'].includes(type))
   ) {
     if (!Array.isArray(value)) {
-      if (validatenull(value)) return [];
-      return (value || '').split(',');
+      if (!validatenull(value)) {
+        return value.split(',');
+      }
+      return [];
     }
     return value;
   }

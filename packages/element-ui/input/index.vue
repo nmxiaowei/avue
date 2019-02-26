@@ -78,6 +78,7 @@
                  :node-key="valueKey"
                  :show-checkbox="multiple"
                  :props="props"
+                 :check-strictly="checkStrictly"
                  ref="tree"
                  @check="checkChange"
                  :filter-node-method="filterNode"
@@ -112,6 +113,10 @@ export default create({
     filter: {
       type: Boolean,
       default: true
+    },
+    checkStrictly: {
+      type: Boolean,
+      default: false
     },
     parent: {
       type: Boolean,
@@ -210,8 +215,12 @@ export default create({
     checkChange(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
       this.labelText = [];
-      checkedKeys.checkedNodes.forEach(node => {
-        if (validatenull(node[this.childrenKey])) {
+      const list = checkedKeys.checkedNodes;
+      list.forEach(node => {
+        if (validatenull(node[this.childrenKey]) && !this.checkStrictly) {
+          this.text.push(node[this.valueKey]);
+          this.labelText.push(node[this.labelKey]);
+        } else if (this.checkStrictly) {
           this.text.push(node[this.valueKey]);
           this.labelText.push(node[this.labelKey]);
         }

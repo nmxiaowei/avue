@@ -105,25 +105,7 @@ export const findByValue = (dic, value, props, first) => {
         findByValue(dic[i][childrenKey], value, props, true);
       }
     }
-    // 父子集字典
-  } else if (value instanceof Array && dic[0][childrenKey]) {
-    let index = 0;
-    let count = 0;
-    result = [];
-    while (count < value.length) {
-      index = findArray(dic, value[count], valueKey);
-      if (index !== -1) {
-        result.push(dic[index][labelKey]);
-      } else {
-        result.push(value[count]);
-      }
-      if (!validatenull(dic[index][childrenKey])) {
-        dic = dic[index][childrenKey] || [];
-      }
-      count++;
-    }
-    result = result.join('/').toString();
-    // 多选字典
+
   } else if (value instanceof Array) {
     let index = 0;
     let count = 0;
