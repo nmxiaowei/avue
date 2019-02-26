@@ -34,6 +34,21 @@
 </body>
 <script>
   let baseUrl = 'https://cli2.avue.top/api/area'
+  Vue.use(AVUE, {
+    ali: {
+      region: 'oss-cn-beijing',
+      endpoint: 'oss-cn-beijing.aliyuncs.com',
+      accessKeyId: 'DVVDfw5e3GK53rxt',
+      accessKeySecret: 'T3xEVl1BPOOmBSEfz8w0Qpp9lqmyHa',
+      bucket: 'avue',
+    },
+    qiniu: {
+      AK: 'BLEIUCkTJhUKfb7Yl4wa2X-5B6uecKNxoCd93IlG',
+      SK: '1_Falie5zL2BH7IBuZSZi1EJqm_5_G1-Gdjz-DS4',
+      scope: 'test',
+      url: 'http://pm7cc17lu.bkt.clouddn.com/',
+    }
+  })
   new Vue({
     el: '#app',
     data() {
@@ -43,6 +58,34 @@
         },
         option: {
           column: [
+            {
+              label: '七牛上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              listType: 'picture-img',
+              propsHttp: {
+                name: 'hash',
+                url: "key"
+              },
+              oss: 'qiniu',
+              loadText: '附件上传中，请稍等',
+              span: 24,
+              tip: '只能上传jpg/png文件，且不超过500kb',
+            },
+            {
+              label: '阿里上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              listType: 'picture-img',
+              canvasOption: {
+                text: 'avue',
+                ratio: 0.1
+              },
+              oss: 'ali',
+              loadText: '附件上传中，请稍等',
+              span: 24,
+              tip: '只能上传jpg/png文件，且不超过500kb',
+            },
             {
               label: '图片上传',
               prop: 'img',

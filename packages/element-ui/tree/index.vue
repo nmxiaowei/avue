@@ -79,10 +79,6 @@ export default create({
       type: Boolean,
       default: false
     },
-    size: {
-      type: String,
-      default: "size"
-    },
     option: {
       type: Object,
       default: () => {
@@ -108,6 +104,9 @@ export default create({
     },
     addFlag() {
       return this.type === "add" || this.type === "parentAdd";
+    },
+    size() {
+      return this.option.size || "small";
     },
     props() {
       return this.option.props || {};

@@ -19,6 +19,7 @@
 
 <body>
   <div id="app">
+    {{obj}}
     <avue-form :option="option" v-model="obj" @submit="submit">
       <template slot-scope="scope" slot="name">
         <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
@@ -41,6 +42,23 @@
               label: '姓名',
               prop: 'name',
               formslot: true
+            },
+            {
+              width: 120,
+              label: '开关',
+              prop: 'switch',
+              type: 'switch',
+              cell: true,
+              dicData: [
+                {
+                  label: '开启',
+                  value: 0
+                },
+                {
+                  label: '关闭',
+                  value: 1
+                }
+              ]
             },
             {
               label: '默认值',
@@ -162,6 +180,7 @@
     mounted() {
 
       this.obj = {
+        switch: 1,
         province: '110000',
         city: '110100',
         area: '110101',
