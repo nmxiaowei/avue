@@ -1,27 +1,25 @@
 <template>
   <div class="avue-cell">
-    <van-field
-      v-model="textLabel"
-      :placeholder="placeholder"
-      :clearable="clearable"
-      :left-icon="prefixIcon"
-      is-link
-      input-align="right"
-      :required="required"
-      @click.native="handleSelectClick"
-      readonly
-      :icon="suffixIcon"
-      :label="label"
-    />
-    <van-popup v-model="box" position="bottom">
-      <van-picker
-        ref="picker"
-        show-toolbar
-        :title="label"
-        :columns="columns"
-        @cancel="handleCancel"
-        @confirm="handleConfirm"
-      />
+    <van-field v-model="textLabel"
+               :placeholder="placeholder"
+               :disabled="disabled"
+               :clearable="clearable"
+               :left-icon="prefixIcon"
+               is-link
+               input-align="right"
+               :required="required"
+               @click.native="handleSelectClick"
+               readonly
+               :icon="suffixIcon"
+               :label="label" />
+    <van-popup v-model="box"
+               position="bottom">
+      <van-picker ref="picker"
+                  show-toolbar
+                  :title="label"
+                  :columns="columns"
+                  @cancel="handleCancel"
+                  @confirm="handleConfirm" />
     </van-popup>
   </div>
 </template>
@@ -93,6 +91,7 @@ export default create({
   },
   methods: {
     handleSelectClick() {
+      if (this.disabled) return;
       this.show();
       this.handleClick();
     },

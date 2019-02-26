@@ -5,6 +5,7 @@
                :clearable="clearable"
                :left-icon="prefixIcon"
                is-link
+               :disabled="disabled"
                input-align="right"
                :required="required"
                @click.native="handleDateClick"

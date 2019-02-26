@@ -4,6 +4,7 @@
                :placeholder="placeholder"
                :clearable="clearable"
                :left-icon="prefixIcon"
+               :disabled="disabled"
                is-link
                input-align="right"
                :required="required"

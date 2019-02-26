@@ -19,7 +19,7 @@
                    :type="column.type"
                    :readonly="column.readonly"
                    :tip="column.tip"
-                   :disabled="column.disabled"
+                   :disabled="column.disabled || tableOption.disabled"
                    :minRows="column.minRows"
                    :rules="column.rules"
                    :tags="column.tags"
@@ -36,6 +36,7 @@
       <div :class="b('mobile-menu')">
         <van-button block
                     type="primary"
+                    v-if="tableOption.submitBtn"
                     @click="submit">{{vaildData(tableOption.submitText,'提 交')}}</van-button>
       </div>
     </van-cell-group>
