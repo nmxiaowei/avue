@@ -8,8 +8,7 @@
              :size="controlSize"
              :label-width="setPx(parentOption.labelWidth,80)"
              :rules="formRules">
-      <el-row :gutter="parentOption.gutter || 20"
-              :span="24">
+      <el-row :span="24">
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
                     :display="item.display"
@@ -20,6 +19,7 @@
             <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">
               <el-col :key="column.prop"
+                      :style="{paddingLeft:setPx(parentOption.gutter/2),paddingRight:setPx(parentOption.gutter/2)}"
                       :md="column.span || itemSpanDefault"
                       :xs="24"
                       :offset="column.offset || 0"
