@@ -19,14 +19,14 @@
             <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">
               <el-col :key="column.prop"
-                      :style="{paddingLeft:setPx(parentOption.gutter/2),paddingRight:setPx(parentOption.gutter/2)}"
+                      :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
                       :md="column.span || itemSpanDefault"
                       :xs="24"
                       :offset="column.offset || 0"
                       :class="b('row')">
-
                 <el-form-item :label="column.label"
                               :prop="column.prop"
+                              :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
                               :label-width="setPx(column.labelWidth,parentOption.labelWidth || 80)">
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"

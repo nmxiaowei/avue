@@ -4,6 +4,23 @@
   box-sizing: border-box;
   padding: 0 10px;
   padding-top: 20px;
+  &__item{
+    &--top{
+      .el-form-item__label{
+        width:100% !important;
+        text-align: left !important;
+      }
+      .el-form-item__content{
+        margin-left: 0 !important;
+      }
+    }
+    &--left{
+     .el-form-item__label{
+      text-align: left !important;
+     }
+    }
+  }
+  
   &__menu {
     width: 100%;
     &--center {
