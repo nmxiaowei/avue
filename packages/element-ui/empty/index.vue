@@ -1,6 +1,7 @@
 <template>
   <div :class="b()">
-    <div :class="b('image')">
+    <div :class="b('image')"
+         :style="{height:setPx(size)}">
       <img :src="image"
            alt="">
     </div>
@@ -16,6 +17,9 @@ import event from "../../core/common/event.js";
 export default create({
   name: "empty",
   props: {
+    size: {
+      type: String
+    },
     image: {
       type: String,
       default:

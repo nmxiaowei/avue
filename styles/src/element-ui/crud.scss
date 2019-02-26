@@ -92,6 +92,9 @@ $space-width: 15px;
   &__form {
     padding: 0 8px;
   }
+  &__empty{
+    padding:  60px 0;
+  }
   &__header {
     margin-bottom: 10px;
     & > .el-button {
