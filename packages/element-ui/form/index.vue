@@ -181,7 +181,6 @@ export default create({
       formOld: {},
       form: {},
       formList: [],
-      formCascader: false,
       formCreate: true,
       formDefault: {},
       formRules: {}

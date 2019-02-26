@@ -31,7 +31,7 @@
                    :props="column.props || tableOption.props"
                    :dic="DIC[column.prop]"
                    :clearable="column.clearable"
-                   @change="column.cascader?handleChange(index):''"></component>
+                   @change="column.cascader?handleChange(columnOption,index):''"></component>
       </template>
       <div :class="b('mobile-menu')">
         <van-button block
@@ -66,6 +66,7 @@ export default create({
       handler() {
         if (!this.formCreate) {
           this.$emit("input", this.form);
+          this.$emit("change", this.form);
         } else {
           this.formCreate = false;
         }
@@ -100,107 +101,79 @@ export default create({
   created() {
     // 规则初始化
     this.rulesInit();
-    // 初始化表单
-    this.dataformat();
     //初始化字典
     this.handleLoadDic();
-    setTimeout(() => {
-      this.formCascaderList.forEach(ele => {
-        if (this.validatenull(this.form[ele])) {
-          this.cascaderInit();
-        }
-      });
-    }, 500);
+    // 初始化表单
+    this.dataformat();
   },
   methods: {
-    cascaderInit() {
-      if (this.formCascaderInit) return;
-      this.columnOption.forEach((ele, index) => {
-        const list = this.columnOption;
-        if (!this.validatenull(ele.cascaderItem)) {
-          let cascader = [...ele.cascaderItem];
-          const str = list[index].cascader.join(",");
-          //处理级联地址
-          if (
-            this.validatenull(this.form[ele.prop]) &&
-            !this.validatenull(list[index].cascader) &&
-            !this.formList.includes(str)
-          ) {
-            this.formList.push(str);
-          }
-          cascader.forEach((item, cindex) => {
-            const columnIndex = index + cindex + 1;
-            const str = list[columnIndex].cascader.join(",");
-            if (
-              this.validatenull(this.form[list[columnIndex].prop]) &&
-              !this.validatenull(list[columnIndex].cascader) &&
-              !this.formList.includes(str)
-            ) {
-              this.formList.push(str);
-            }
-          });
-        }
-      });
-      this.formCascaderInit = true;
-    },
     dataformat() {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
     },
-    handleChange(index) {
-      const columnOption = [...this.columnOption];
-      const column = columnOption[index];
-      const columnNext = columnOption[index + 1] || {};
-      const columnNextProp = columnNext.prop;
+    //搜索指定的属性配置
+    findColumnIndex(value) {
+      let result = -1;
+      this.columnOption.forEach(column => {
+        result = this.findArray(column.column, value, "prop");
+      });
+      return result;
+    },
+    handleChange(item, index) {
+      const column = item[index]; //获取当前节点级联
       const list = column.cascader;
       const str = list.join(",");
       const value = this.form[column.prop];
-      //最后一级
+      // 下一个节点
+      const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
+      const columnNextProp = columnNext.prop;
+      /**
+       * 1.判断当前节点是否有下级节点
+       * 2.判断当前节点是否有值
+       */
       if (
         this.validatenull(list) ||
         this.validatenull(value) ||
-        this.validatenull(columnNext) ||
-        this.validatenull(this.form[column.prop])
-      )
+        this.validatenull(columnNext)
+      ) {
         return;
+      }
+
+      // 如果不是首次加载则清空全部关联节点的属性值和字典值
       if (this.formList.includes(str)) {
-        //清空子类字典
+        //清空子类字典列表和值
         list.forEach(ele => {
+          this.form[ele] = "";
           this.$set(this.DIC, ele, []);
         });
       }
+      // 根据当前节点值获取下一个节点的字典
       sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
         res => {
           const dic = Array.isArray(res) ? res : [];
           // 修改字典
-          this.$nextTick(() => {
-            this.$set(this.DIC, columnNextProp, dic);
-          });
+          this.$set(this.DIC, columnNextProp, dic);
           /**
-           * 1.是change联动
+           * 1.是change多级默认联动
            * 2.字典不为空
            * 3.非首次加载
            */
-          if (
-            column.cascaderChange &&
-            !this.validatenull(dic) &&
-            this.formList.includes(str)
-          ) {
+          if (!this.validatenull(dic) && this.formList.includes(str)) {
             //取字典的指定项或则第一项
-            const dicvalue = dic[columnNext.defaultIndex] || dic[0];
-            this.form[columnNext.prop] =
-              dicvalue[(columnNext.props || {}).value || "value"];
+            let dicvalue = dic[columnNext.defaultIndex || 0];
+            if (!dicvalue) dicvalue = dic[0];
+            if (dicvalue) {
+              this.form[columnNext.prop] =
+                dicvalue[
+                  (columnNext.props || this.parentOption.props || {}).value ||
+                    "value"
+                ];
+              this.clearValidate();
+            }
           }
           //首次加载的放入队列记录
-          if (!this.formList.includes(str)) {
-            this.formList.push(str);
-            // 如果非change联动或者字典为空，清空子类数据
-          } else if (!column.cascaderChange || this.validatenull(dic)) {
-            list.forEach(ele => {
-              this.form[ele] = "";
-            });
-          }
+          if (!this.formList.includes(str)) this.formList.push(str);
         }
       );
     },
