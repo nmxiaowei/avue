@@ -2,10 +2,10 @@
   <div :class="b()">
     <div :class="b('filter')">
       <el-input placeholder="输入关键字进行过滤"
-                size="small"
+                :size="size"
                 v-model="filterText">
         <el-button slot="append"
-                   size="small"
+                   :size="size"
                    @click="parentAdd"
                    icon="el-icon-plus"
                    v-if="vaildData(option.addBtn,true)"></el-button>
@@ -78,6 +78,10 @@ export default create({
     checkStrictly: {
       type: Boolean,
       default: false
+    },
+    size: {
+      type: String,
+      default: "size"
     },
     option: {
       type: Object,
