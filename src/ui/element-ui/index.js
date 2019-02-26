@@ -7,6 +7,7 @@ import Checkbox from 'components/checkbox';
 import Date from 'components/date';
 import Detail from 'components/detail';
 import Divider from 'components/divider';
+import Empty from 'components/empty';
 import Time from 'components/time';
 import Input from 'components/input';
 import Radio from 'components/radio';
@@ -45,6 +46,7 @@ export default [
   Checkbox,
   Date,
   Divider,
+  Empty,
   Time,
   Input,
   Radio,
