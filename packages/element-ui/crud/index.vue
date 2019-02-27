@@ -570,8 +570,8 @@ export default create({
     },
     handleDetail(row, column, DIC) {
       let result = row[column.prop];
+      result = this.detail(row, column, this.tableOption, DIC);
       if (!this.validatenull(DIC)) {
-        result = this.detail(row, column, this.tableOption, DIC);
         row["$" + column.prop] = result;
       }
       return result;
