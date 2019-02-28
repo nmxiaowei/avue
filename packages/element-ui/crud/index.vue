@@ -42,6 +42,8 @@
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(this.tableOption.indeterminate,false)}"
               :size="controlSize"
+              :expand-row-keys="tableOption.expandRowKeys"
+              :default-expand-all="tableOption.defaultExpandAll"
               :highlight-current-row="tableOption.highlightCurrentRow"
               @current-change="currentRowChange"
               @expand-change="expandChange"

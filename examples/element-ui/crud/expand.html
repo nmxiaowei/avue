@@ -34,6 +34,8 @@
       return {
         option: {
           expand: true,
+          // defaultExpandAll: true,
+          // expandRowKeys: [1, 2],
           column: [{
             label: '姓名',
             prop: 'name'
@@ -52,8 +54,12 @@
           sex: 20,
         }]
       }
-    }, methods: {
-
+    },
+    mounted() {
+      //调用方法展开
+      // this.$refs.crud.toggleRowExpansion(this.data[0], true)
+    },
+    methods: {
       expandChange(row, expendList) {
         this.$message.success('展开回调')
       },
