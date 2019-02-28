@@ -26,10 +26,11 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" :page="page" :table-loading="loading" v-model="obj"
-      :upload-before="uploadBefore" :upload-after="uploadAfter" :before-open="handleBeforeOpen" :before-close="handleBeforeClose"
-      @selection-change="selectionChange" @on-load="onLoad" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick"
-      @current-row-change=" " @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate"
-      @row-del="rowDel" @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange"
+      :upload-before="uploadBefore" :upload-after="uploadAfter" :before-open="handleBeforeOpen"
+      :before-close="handleBeforeClose" @selection-change="selectionChange" @on-load="onLoad"
+      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" @current-row-change=" " @date-change="dateChange"
+      @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate" @row-del="rowDel"
+      @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange"
       @search-reset="searchReset">
       <template slot="search">
         <el-form-item label="自定义">
@@ -52,6 +53,7 @@
         <el-button size="small" @click="setCurrent(data[1])">选中第二行</el-button>
         <el-button size="small" @click="setCurrent()">取消选择</el-button>
       </template>
+
       <template slot-scope="props" slot="expand">
         <el-tag>当前行的{{ props }}</el-tag>
       </template>
@@ -121,6 +123,9 @@
               type: 'select',
               fixed: 'left',
               formslot: true,
+              renderHeader: (h, { column, $index }) => {
+                return h('el-tag', column.label);
+              },
               cell: true,
               rules: [
                 {

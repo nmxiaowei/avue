@@ -57,6 +57,7 @@
           name: '11'
         },
         option: {
+          disabled: true,
           column: [
             {
               label: '七牛上传',
@@ -137,9 +138,7 @@
                 value: 'code'
               },
               cascaderItem: ['city', 'area'],
-              cascaderChange: true,
               dicUrl: `${baseUrl}/getProvince`,
-              dicData: 'province',
               rules: [
                 {
                   required: true,
