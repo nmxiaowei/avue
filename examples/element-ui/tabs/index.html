@@ -22,7 +22,7 @@
 
 <body>
   <div id="app">
-    <avue-tabs :option="option" v-model="form" @change="handleChange" @submit="handleSubmit"></avue-tabs>
+    <avue-tabs ref="tabs" :option="option" v-model="form" @change="handleChange" @submit="handleSubmit"></avue-tabs>
   </div>
 </body>
 <script>
@@ -55,6 +55,9 @@
     },
     created() {
       this.tabs = this.columnOption[0];
+    },
+    mounted() {
+      this.$refs.tabs.changeTabs(1);
     },
     computed: {
       columnOption() {

@@ -125,6 +125,9 @@ export default create({
     this.tableOption = this.option;
   },
   methods: {
+    changeTabs(active) {
+      this.active = active + "";
+    },
     setVal(list) {
       list.forEach(column => {
         const prop = column.prop;
