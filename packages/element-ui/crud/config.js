@@ -36,7 +36,7 @@ export default {
   dateBtn: false,
   refreshBtn: true,
   columnBtn: true,
-  filterBtn: true,
+  filterBtn: false,
   searchBtn: true,
   menuBtn: false,
   selectClearBtn: true,
