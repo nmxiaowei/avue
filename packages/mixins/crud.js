@@ -1,5 +1,6 @@
 import * as utils from '../utils/util.js';
 import { validatenull } from '../utils/validate.js';
+import { loadDic } from '../utils/dic.js';
 import crudInput from '../crud/src/crud-input';
 import crudSelect from '../crud/src/crud-select';
 import crudRadio from '../crud/src/crud-radio';
@@ -42,18 +43,6 @@ export default function () {
       crudIconSelect
     },
     watch: {
-      tableForm: {
-        handler() {
-          this.$emit('input', this.tableForm);
-        },
-        deep: true
-      },
-      form: {
-        handler() {
-          this.$emit('input', this.form);
-        },
-        deep: true
-      },
       option: {
         handler() {
           this.init();
@@ -91,91 +80,45 @@ export default function () {
         // 初始化工具
         this.initFun();
         this.tableOption = this.option;
-        const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
         // 规则初始化
         this.rulesInit();
-
-        // 初始化字典
-        if (dicFlag) this.dicInit();
-        else this.DIC = this.tableOption.dicData;
-
-        // 初始化表单formInitVal;
-        this.formInit();
+        setTimeout(() => {
+          this.initDic();
+        }, 0);
       },
-      dicInit() {
-        let locaDic = this.tableOption.dicData || {};
+      //检测本地字典
+      initDic() {
+        // 表格赋值
         this.columnOption.forEach(ele => {
-          if (this.vaildData(ele.dicFlag, true)) {
-            if (!validatenull(ele.dicUrl)) {
-              this.dicCascaderList.push({
-                dicUrl: ele.dicUrl,
-                dicData: ele.dicData
-              });
-            } else if (
-              !validatenull(this.tableOption.dicUrl) &&
-              typeof ele.dicData === 'string'
-            ) {
-              this.dicCascaderList.push({
-                dicUrl: this.tableOption.dicUrl,
-                dicData: ele.dicData
-              });
-            } else if (Array.isArray(ele.dicData)) {
-              this.$set(this.DIC, ele.prop, ele.dicData);
-            }
+          if (Array.isArray(ele.dicData)) {
+            this.$set(this.DIC, ele.prop, ele.dicData)
           }
-        });
-        this.GetDic().then(data => {
-          const obj = Object.assign({}, locaDic, data);
-          Object.keys(obj).forEach(ele => {
-            this.$set(this.DIC, ele, obj[ele]);
-          })
-        });
+        })
+      },
+      handleLoadDic() {
+        return new Promise((resolve) => {
+          const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
+          // 初始化字典
+          if (dicFlag) {
+            loadDic(this.tableOption).then((res = {}) => {
+              Object.keys(res).forEach(ele => {
+                this.$set(this.DIC, ele, res[ele])
+              });
+              resolve();
+            });
+            // 加载传进来的字典
+          } else {
+            const dicData = this.tableOption.dicData || [];
+            this.DIC = this.deepClone(dicData);
+            resolve();
+          }
+        })
       },
       vaildData(val, dafult) {
         if (typeof val === 'boolean') {
           return val;
         }
         return !validatenull(val) ? val : dafult;
-      },
-      GetDicByType(href) {
-        return new Promise(resolve => {
-          this.$http.get(href).then(function (res) {
-            // 降级处理
-            const list = res.data;
-            if (!validatenull(list.data)) {
-              resolve(list.data instanceof Array ? list.data : []);
-            } else if (!validatenull(list)) {
-              resolve(list instanceof Array ? list : []);
-            } else {
-              resolve([]);
-            }
-          });
-        });
-      },
-      GetDic() {
-        return new Promise(resolve => {
-          let result = [];
-          let dicData = {};
-          let cascaderList = Object.assign([], this.dicCascaderList);
-          if (validatenull(cascaderList)) resolve({});
-          cascaderList.forEach(ele => {
-            result.push(
-              new Promise(resolve => {
-                this.GetDicByType(
-                  `${ele.dicUrl.replace('{{key}}', ele.dicData)}`
-                ).then(function (res) {
-                  resolve(res);
-                });
-              })
-            );
-          });
-          Promise.all(result).then(data => {
-            cascaderList.forEach((ele, index) => {
-              dicData[ele.dicData] = data[index];
-            });
-            resolve(dicData);
-          });
-        });
       },
       initFun() {
         Object.keys(utils).forEach(key => {

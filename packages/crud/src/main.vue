@@ -38,7 +38,7 @@
                          :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
                          :clearable="column.searchClearable"
                          :placeholder="column.searchPlaceholder || column.label"
-                         :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+                         :dic="DIC[column.prop]"></component>
             </el-form-item>
             <slot name="search"></slot>
             <el-form-item>
@@ -108,6 +108,7 @@
                 :default-expand-all="tableOption.defaultExpandAll"
                 :highlight-current-row="tableOption.highlightCurrentRow"
                 @current-change="currentRowChange"
+                @expand-change="expandChange"
                 :show-summary="tableOption.showSummary"
                 :summary-method="tableSummaryMethod"
                 :empty-text="tableOption.emptyText"
@@ -212,10 +213,10 @@
                          :multiple="column.multiple"
                          :clearable="vaildData(column.clearable,false)"
                          :placeholder="column.label"
-                         :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+                         :dic="DIC[column.prop]"></component>
             </template>
             <slot :row="scope.row"
-                  :dic="setDic(column.dicData,DIC[column.dicData])"
+                  :dic="DIC[column.prop]"
                   :label="detail(scope.row,column)"
                   :name="column.prop"
                   v-else-if="column.solt"></slot>
@@ -324,6 +325,7 @@
       </div>
     </el-card>
     <!-- 表单 -->
+
     <el-dialog lock-scroll
                :custom-class="vaildData(tableOption.customClass,config.customClass)"
                :fullscreen="tableOption.dialogFullscreen"
@@ -450,7 +452,10 @@ export default create({
     this.dataInit();
     // 初始化列
     this.columnInit();
-
+    // 初始化数据
+    this.formInit();
+    //初始化字典
+    this.handleLoadDic();
     //初始化分页
     this.pageInit();
     this.$emit("on-load", this.defaultPage);
@@ -494,6 +499,12 @@ export default create({
     }
   },
   watch: {
+    tableForm: {
+      handler() {
+        this.$emit("input", this.tableForm);
+      },
+      deep: true
+    },
     value: {
       handler() {
         this.formVal();
@@ -513,7 +524,6 @@ export default create({
       this.dataInit();
     }
   },
-  mounted() {},
   props: {
     permission: {
       type: Object,
@@ -649,13 +659,11 @@ export default create({
     },
     formInit() {
       this.defaultForm = this.formInitVal(this.columnOption);
-      this.tableForm = this.deepClone(this.defaultForm.tableForm);
       this.searchForm = this.deepClone(this.defaultForm.searchForm);
       this.searchShow = this.vaildData(
         this.tableOption.searchShow,
         this.config.searchShow
       );
-      this.formVal();
     },
     // 搜索清空
     searchReset() {
@@ -672,6 +680,11 @@ export default create({
     //日期组件回调
     dateChange(val) {
       this.$emit("date-change", val);
+    },
+    //展开或则关闭
+    expandChange(row, expand) {
+      this.expandList = [...expand];
+      this.$emit("expand-change", row, expand);
     },
     // 页码回调
     currentChange(val) {
@@ -828,7 +841,6 @@ export default create({
         if (cancel !== true) {
           this.boxVisible = true;
           this.$nextTick(() => {
-            this.$refs["tableForm"].cascadeInit();
             this.$refs["tableForm"].clearValidate();
           });
         }

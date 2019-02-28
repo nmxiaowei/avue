@@ -62,6 +62,7 @@ export default create({
     },
     changeTabs(active) {
       this.formIndex = active;
+      this.setVal();
     },
     setVal() {
       this.$emit("change", this.columnOption[this.formIndex]);

@@ -38,7 +38,7 @@
                         :column="column"
                         :size="column.size || controlSize"
                         :disabled="vaildDisabled(column)"
-                        :dic="setDic(column.dicData,DIC[column.dicData])"
+                        :dic="DIC[column.prop]"
                         :name="column.prop"
                         v-if="column.formsolt"></slot>
 
@@ -108,11 +108,11 @@
                              :formatTooltip="column.formatTooltip"
                              :value-format="column.valueFormat"
                              :remote="column.remote"
-                             :dic="setDic(column.dicData,DIC[column.dicData])"
+                             :dic="DIC[column.prop]"
                              :disabled="vaildDisabled(column)"
                              :upload-before="uploadBefore"
                              :upload-after="uploadAfter"
-                             @change="column.cascader?change(index):''"></component>
+                             @change="column.cascader?handleChange(index):''"></component>
                 </el-tooltip>
               </el-form-item>
             </el-col>
@@ -152,9 +152,10 @@
 
 <script>
 import create from "../../utils/create";
+import { sendDic } from "../../utils/dic";
 import draggable from "vuedraggable";
 import crud from "../../mixins/crud";
-import { deepClone } from "../../utils/util";
+import { deepClone, calcCascader } from "../../utils/util";
 import mock from "../../utils/mock";
 import { validatenull } from "../../utils/validate.js";
 import { setTimeout } from "timers";
@@ -171,14 +172,29 @@ export default create({
       optionBox: false,
       tableOption: {},
       form: {},
+      formCreate: true,
       formDefault: {},
+      formList: [],
       formRules: {}
     };
   },
   watch: {
+    form: {
+      handler() {
+        if (!this.formCreate) {
+          this.$emit("input", this.form);
+          this.$emit("change", this.form);
+        } else {
+          this.formCreate = false;
+        }
+      },
+      deep: true
+    },
     value: {
       handler() {
-        this.formVal();
+        if (!this.formCreate) {
+          this.formVal();
+        }
       },
       deep: true
     }
@@ -196,6 +212,7 @@ export default create({
           count = 0;
         }
       });
+      list = calcCascader(list);
       return list;
     },
     draggable() {
@@ -268,9 +285,10 @@ export default create({
     }
   },
   created() {
-    setTimeout(() => {
-      this.cascadeInit();
-    }, 0);
+    //初始化字典
+    this.handleLoadDic();
+    // 初始化数据
+    this.formInit();
   },
   methods: {
     handleMock() {
@@ -324,71 +342,79 @@ export default create({
         return true;
       }
     },
+    formInit() {
+      this.formDefault = this.formInitVal(this.columnOption);
+      this.form = this.deepClone(this.formDefault.tableForm);
+      this.formVal();
+    },
     rulesInit() {
       this.formRules = {};
       this.columnOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },
-    change(index) {
-      const column = this.columnOption;
-      const list = column[index].cascader;
-      const prop = column[index].prop;
-      const url = column[index + 1].dicUrl;
-      const type = column[index + 1].dicData;
-      if (!this.first) {
+    handleChange(index) {
+      const item = this.columnOption;
+      const column = item[index]; //获取当前节点级联
+      const list = column.cascader;
+      const str = list.join(",");
+      const value = this.form[column.prop];
+      // 下一个节点
+      const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
+      const columnNextProp = columnNext.prop;
+      /**
+       * 1.判断当前节点是否有下级节点
+       * 2.判断当前节点是否有值
+       */
+      if (
+        this.validatenull(list) ||
+        this.validatenull(value) ||
+        this.validatenull(columnNext)
+      ) {
+        return;
+      }
+
+      // 如果不是首次加载则清空全部关联节点的属性值和字典值
+      if (this.formList.includes(str)) {
+        //清空子类字典列表和值
         list.forEach(ele => {
           this.form[ele] = "";
-          setTimeout(() => {
-            this.DIC[ele] = [];
-            this.DIC = Object.assign({}, this.DIC);
-          }, 10);
+          this.$set(this.DIC, ele, []);
         });
       }
-      this.GetDicByType(url.replace("{{key}}", this.form[prop])).then(res => {
-        let data = res;
-        setTimeout(() => {
-          this.DIC[type] = data;
-          this.DIC = Object.assign({}, this.DIC);
-        }, 10);
-      });
-    },
-    formInit() {
-      this.formDefault = this.formInitVal(this.columnOption);
-      this.form = this.deepClone(this.formDefault.tableForm);
-      this.formVal();
-      this.cascadeInit();
-    },
-    cascadeInit() {
-      this.first = true;
-      for (let i = 0; i < this.columnOption.length; i++) {
-        const ele = this.columnOption[i];
-        if (ele.cascaderFirst) {
-          const cascader = [].concat(ele.cascader);
-          const cascaderLen = ele.cascader.length - 1;
-          cascader.forEach(ele => {
-            this.DIC[ele] = [];
-            this.DIC = Object.assign({}, this.DIC);
-          });
-          if (!validatenull(this.form[ele.prop])) this.change(i);
-          for (let j = 0; j < cascaderLen; j++) {
-            const cindex = i + (j + 1);
-            const cele = this.columnOption[cindex];
-            cele.cascader = cascader.slice(cindex);
-            if (!validatenull(this.form[cele.prop])) this.change(cindex);
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+        res => {
+          const dic = Array.isArray(res) ? res : [];
+          // 修改字典
+          this.$set(this.DIC, columnNextProp, dic);
+          /**
+           * 1.是change多级默认联动
+           * 2.字典不为空
+           * 3.非首次加载
+           */
+          if (!this.validatenull(dic) && this.formList.includes(str)) {
+            //取字典的指定项或则第一项
+            let dicvalue = dic[columnNext.defaultIndex || 0];
+            if (!dicvalue) dicvalue = dic[0];
+            if (dicvalue) {
+              this.form[columnNext.prop] =
+                dicvalue[
+                  (columnNext.props || this.tableOption.props || {}).value ||
+                    "value"
+                ];
+              this.clearValidate();
+            }
           }
+          //首次加载的放入队列记录
+          if (!this.formList.includes(str)) this.formList.push(str);
         }
-      }
-      this.first = false;
+      );
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {
         this.form[ele] = this.value[ele];
       });
       this.$emit("input", this.form);
-      this.$nextTick(() => {
-        this.clearValidate();
-      });
     },
     clearValidate() {
       this.$refs["form"].clearValidate();

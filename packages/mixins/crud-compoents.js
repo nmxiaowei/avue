@@ -102,8 +102,11 @@ export default function () {
             }
         },
         watch: {
-            value() {
-                this.initVal();
+            value: {
+                handler() {
+                    this.initVal();
+                },
+                immediate: true
             }
         },
         computed: {
@@ -139,7 +142,6 @@ export default function () {
             this.initVal();
         },
         methods: {
-
             initVal() {
                 this.text = initVal({
                     type: this.type,

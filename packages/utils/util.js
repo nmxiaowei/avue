@@ -131,12 +131,21 @@ export const findArray = (dic, value, valueKey) => {
     }
     return -1;
 };
-/**
- * 获取字典
- */
-export const setDic = (dicData, DIC) => {
-    return (typeof (dicData) === 'string') ? DIC : dicData;
-};
+export const getDeepData = (res) => {
+    return (Array.isArray(res) ? res : res.data) || []
+}
+export const getObjValue = (data, params = '', type) => {
+    const list = params.split('.');
+    let result = data;
+    if (list[0] === '' && type !== 'object') {
+        return getDeepData(data);
+    } else if (list[0] !== '') {
+        list.forEach(ele => {
+            result = result[ele]
+        })
+    }
+    return result;
+}
 /**
  * 初始化数据格式
  */
@@ -238,6 +247,23 @@ export const getSearchType = (type) => {
     }
 };
 
+export const calcCascader = (list) => {
+    list.forEach((ele, index) => {
+        if (ele.cascaderItem) {
+            let cascader = [...ele.cascaderItem];
+            let parentProp = ele.prop;
+            list[index].cascader = [...cascader];
+            cascader.forEach((citem, cindex) => {
+                const columnIndex = index + cindex + 1;
+                list[columnIndex].parentProp = parentProp;
+                list[columnIndex].cascaderChange = ele.cascaderChange;
+                list[columnIndex].cascader = [...cascader].splice(cindex + 1);
+                parentProp = list[columnIndex].prop;
+            });
+        }
+    })
+    return list;
+}
 /**
  * 动态获取组件
  */

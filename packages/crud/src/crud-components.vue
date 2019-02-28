@@ -40,10 +40,10 @@
                      :type="getType(column)"
                      clearable
                      :placeholder="column.label"
-                     :dic="setDic(column.dicData,DIC[column.dicData])"></component>
+                     :dic="DIC[column.prop]"></component>
         </template>
         <slot :row="scope.row"
-              :dic="setDic(column.dicData,DIC[column.dicData])"
+              :dic="DIC[column.prop]"
               :label="detail(scope.row,column)"
               :name="column.prop"
               v-else-if="column.solt"></slot>
@@ -56,29 +56,22 @@
 </template>
 
 <script>
-import column from '../../mixins/column'
-import crudInput from './crud-input';
-import crudSelect from './crud-select';
+import column from "../../mixins/column";
+import crudInput from "./crud-input";
+import crudSelect from "./crud-select";
 export default {
-  name: 'crud-components',
+  name: "crud-components",
   mixins: [column()],
-  props: [
-    'columnIndex',
-    'columnOption',
-    'tableOption',
-    'DIC',
-    'tableForm'
-  ],
+  props: ["columnIndex", "columnOption", "tableOption", "DIC", "tableForm"],
   components: {
     crudInput,
-    crudSelect,
+    crudSelect
   },
-  created () {
+  created() {
     this.initFun();
   },
-  methods: {
-  }
-}
+  methods: {}
+};
 </script>
 
 <style>

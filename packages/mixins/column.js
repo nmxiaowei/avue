@@ -1,7 +1,7 @@
 import * as utils from '../utils/util.js';
 import { validatenull } from '../utils/validate.js';
 import dayjs from 'dayjs';
-export default function() {
+export default function () {
     return {
         methods: {
             initFun() {
@@ -19,7 +19,7 @@ export default function() {
                 if (validatenull(result)) result = '';
                 if (type) {
                     if (column.dataType === 'string') result = result.split(',')
-                        //日期处理
+                    //日期处理
                     if (['date', 'time', 'datetime'].includes(type) && column.format && !validatenull(result)) {
                         const format = column.format
                             .replace('dd', 'DD')
@@ -31,9 +31,9 @@ export default function() {
                         return this.getPasswordChar(result.toString().length, '*');
                     }
                     //字典处理
-                    if (column.dicData) {
+                    if (column.dicData || column.dicUrl) {
                         result = this.findByvalue(
-                            (typeof column.dicData === 'string' ? this.DIC[column.dicData] : column.dicData) || [],
+                            this.DIC[column.prop],
                             result,
                             (column.props || this.tableOption.props)
                         );

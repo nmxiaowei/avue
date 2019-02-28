@@ -49,7 +49,14 @@ export default create({
       default: false
     }
   },
-  watch: {},
+  watch: {
+    text: {
+      handler() {
+        this.handleChange(this.text);
+      },
+      immediate: true
+    }
+  },
   created() {},
   mounted() {},
   methods: {
