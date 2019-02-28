@@ -63,16 +63,16 @@
 
 <script>
 const propsDefault = {
-  nodeKey: 'id',
-  label: 'label',
-  value: 'value',
-  children: 'children',
-  labelText: '名称'
-}
-import { deepClone, vaildData } from '../../utils/util';
-import create from '../../utils/create'
+  nodeKey: "id",
+  label: "label",
+  value: "value",
+  children: "children",
+  labelText: "名称"
+};
+import { deepClone, vaildData } from "../../utils/util";
+import create from "../../utils/create";
 export default create({
-  name: 'tree',
+  name: "tree",
   props: {
     option: {
       type: Object,
@@ -94,166 +94,174 @@ export default create({
     }
   },
   computed: {
-    addText () {
-      return this.addFlag ? '新增' : '修改';
+    addText() {
+      return this.addFlag ? "新增" : "修改";
     },
-    addFlag () {
-      return this.type === 'add' || this.type === 'parentAdd'
+    addFlag() {
+      return this.type === "add" || this.type === "parentAdd";
     },
-    props () {
-      return this.option.props || {}
+    props() {
+      return this.option.props || {};
     },
-    valueKey () {
+    valueKey() {
       return this.props.value || propsDefault.value;
     },
-    labelText () {
+    labelText() {
       return this.props.labelText || propsDefault.labelText;
     },
-    labelKey () {
+    labelKey() {
       return this.props.label || propsDefault.label;
     },
-    childrenKey () {
+    childrenKey() {
       return this.props.children || propsDefault.children;
     },
-    defaultExpandAll () {
+    defaultExpandAll() {
       return this.option.defaultExpandAll || true;
     },
-    nodeKey () {
+    nodeKey() {
       return this.option.nodeKey || propsDefault.nodeKey;
     },
-    columnOption () {
+    columnOption() {
       return this.appednKey(deepClone(this.data || []));
     },
-    formColumnOption () {
+    formColumnOption() {
       return (this.option.formOption || {}).column || [];
     },
-    formOption () {
-      return Object.assign({
-        submitText: this.addText,
-        column: [
-          {
-            label: this.labelText,
-            prop: this.labelKey,
-            rules: [{
-              required: true,
-              message: "请输入" + this.labelText,
-              trigger: "blur"
-            }]
-          }, ...this.formColumnOption]
-      }, (() => {
-        let option = this.option.formOption || {};
-        delete option.column;
-        return option
-      })())
+    formOption() {
+      return Object.assign(
+        {
+          submitText: this.addText,
+          column: [
+            {
+              label: this.labelText,
+              prop: this.labelKey,
+              rules: [
+                {
+                  required: true,
+                  message: "请输入" + this.labelText,
+                  trigger: "blur"
+                }
+              ]
+            },
+            ...this.formColumnOption
+          ]
+        },
+        (() => {
+          let option = this.option.formOption || {};
+          delete option.column;
+          return option;
+        })()
+      );
     }
   },
-  data () {
+  data() {
     return {
-      filterText: '',
+      filterText: "",
       box: false,
-      type: '',
+      type: "",
       node: {},
       obj: {},
       form: {},
-      list: [],
-    }
+      list: []
+    };
   },
-  created () {
+  created() {
     this.vaildData = vaildData;
     this.list = deepClone(this.columnOption);
   },
   watch: {
-    columnOption () {
+    columnOption() {
       this.list = deepClone(this.columnOption);
     },
-    option () {
+    option() {
       this.init();
     },
-    filterText (val) {
+    filterText(val) {
       this.$refs.tree.filter(val);
     },
-    value (val) {
+    value(val) {
       this.form = val;
     },
-    form (val) {
-      this.$emit('input', val);
+    form(val) {
+      this.$emit("input", val);
     }
   },
 
   methods: {
-    appednKey (list) {
+    appednKey(list) {
       list.forEach(ele => {
         ele.is_show = false;
         if (ele[this.childrenKey]) {
           this.appednKey(ele[this.childrenKey]);
         }
-      })
+      });
       return list;
     },
-    nodeClick (data) {
-      this.$emit('node-click', data);
+    nodeClick(data) {
+      this.$emit("node-click", data);
     },
-    filterNode (value, data) {
+    filterNode(value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
-    hide () {
+    hide() {
       this.box = false;
       this.node = {};
       this.obj = {};
       this.$refs.form.resetForm();
       this.$refs.form.clearValidate();
     },
-    save () {
+    save() {
       const callback = () => {
         const form = deepClone(Object.assign(this.form, { is_show: false }));
-        if (this.type === 'add') {
+        if (this.type === "add") {
           if (!this.obj[this.childrenKey]) {
-            this.$set(this.obj, 'children', []);
+            this.$set(this.obj, "children", []);
           }
           this.obj.children.push(form);
-        }
-        else if (this.type === 'parentAdd') this.obj.push(form);
+        } else if (this.type === "parentAdd") this.obj.push(form);
         this.hide();
-      }
-      this.$emit('save', this.obj, this.node, callback);
+      };
+      this.$emit("save", this.obj, this.node, callback);
     },
-    update () {
+    update() {
       const callback = () => {
         const parent = this.node.parent;
         const children = parent.data[this.childrenKey] || parent.data;
-        const index = children.findIndex(item => item[this.nodeKey] === this.form[this.nodeKey]);
+        const index = children.findIndex(
+          item => item[this.nodeKey] === this.form[this.nodeKey]
+        );
         children.splice(index, 1, this.form);
         this.hide();
-      }
-      this.$emit('update', this.obj, this.node, callback);
+      };
+      this.$emit("update", this.obj, this.node, callback);
     },
 
-    edit (node, data) {
-      this.type = 'edit';
+    edit(node, data) {
+      this.type = "edit";
       this.node = node;
       this.obj = data;
       this.form = deepClone(this.obj);
       this.show();
     },
-    parentAdd (data) {
-      this.type = 'parentAdd';
+    parentAdd(data) {
+      this.type = "parentAdd";
       this.obj = this.list;
       this.show();
     },
-    append (node, data) {
-      this.type = 'add';
+    append(node, data) {
+      this.type = "add";
       this.obj = data;
       this.node = node;
       this.show();
     },
-    show () {
+    show() {
       this.box = true;
       setTimeout(() => {
         this.$refs.form.clearValidate();
       }, 0);
     },
-    remove (node, data) {
+    remove(node, data) {
       this.obj = data;
       this.node = node;
       const callback = () => {
@@ -261,20 +269,19 @@ export default create({
         const children = parent.data.children || parent.data;
         const index = children.findIndex(d => d.id === data.id);
         children.splice(index, 1);
-      }
-      this.$confirm('是否删除改节点?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$emit('del', this.obj, this.node, callback);
-      }).catch(() => {
-
-      });
-
+      };
+      this.$confirm("是否删除改节点?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$emit("del", this.obj, this.node, callback);
+        })
+        .catch(() => {});
     }
   }
-})
+});
 </script>
 
 <style>

@@ -104,6 +104,8 @@
       <el-table :data="list"
                 :size="controlSize"
                 :row-key="handleGetRowKeys"
+                :expand-row-keys="tableOption.expandRowKeys"
+                :default-expand-all="tableOption.defaultExpandAll"
                 :highlight-current-row="tableOption.highlightCurrentRow"
                 @current-change="currentRowChange"
                 :show-summary="tableOption.showSummary"
@@ -554,7 +556,8 @@ export default create({
   },
   methods: {
     handleGetRowKeys(row) {
-      return row[this.idKey];
+      const idKey = row[this.idKey];
+      return idKey;
     },
     menuIcon(value) {
       return this.menuType === "icon" ? "" : value;
@@ -678,6 +681,15 @@ export default create({
     //设置单选
     currentRowChange(currentRow, oldCurrentRow) {
       this.$emit("current-row-change", currentRow, oldCurrentRow);
+    },
+    selectClear() {
+      this.$refs.table.clearSelection();
+    },
+    toggleRowSelection(row, selected) {
+      this.$refs.table.toggleRowSelection(row, selected);
+    },
+    toggleRowExpansion(row, expanded) {
+      this.$refs.table.toggleRowExpansion(row, expanded);
     },
     //设置多选选中
     setCurrentRow(row) {
