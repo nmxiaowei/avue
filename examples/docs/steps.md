@@ -158,7 +158,7 @@ export default {
           }
         ],
          option:{
-            switchBtn,
+            switchBtn:true,
             column: [{
                 label: '填写转账信息',
                 prop: 'info',

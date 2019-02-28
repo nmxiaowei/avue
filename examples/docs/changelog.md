@@ -1,6 +1,19 @@
 ## 更新日志
-### 1.5.4
+### 1.6.0
+#### 2019-2-27
 
+- 增强curd的面板功能[#IS2FB](https://gitee.com/smallweigit/avue/issues/IS2FB),[demo](/#/component/crud-expand)
+- 修复crud级联的重复请求问题[#IS2ES](https://gitee.com/smallweigit/avue/issues/IS2ES)
+- 修复字典的请求逻辑[#IRUXF](https://gitee.com/smallweigit/avue/issues/IRUXF)
+- 增加tabs组件的changeTabs切换标签的方法[#IRNTO](https://gitee.com/smallweigit/avue/issues/IRNTO)
+- 修复tree组件的defaultExpandAll全部展开属性问题[#IRVY8](https://gitee.com/smallweigit/avue/issues/IRVY8)
+
+#### 说明
+- 废除了dicData为字符串的类型去加载本地字典集合方法（也就是配置option中dicData数组字典，在cloumn中调用key值），具体参考[demo](/#/component/crud-dic)
+- 配置网络字典dicUrl时，无需再次配置dicData别名属性，具体参考[demo](/#/component/crud-dic)
+
+
+### 1.5.4
 #### 2019-2-19
 
 - 完善了steps组件的逻辑和用法[demo](/#/component/steps)
@@ -8,7 +21,6 @@
 
 
 ### 1.5.3
-
 #### 2019-2-12
 
 - 新增crud权限控制方法[demo](/#/component/crud-permission)
@@ -16,7 +28,6 @@
 
 
 ### 1.5.2
-
 #### 2019-1-21
 
 - 优化crud组件tip部分，同时开放了tip相关参数[#IQUWE](https://gitee.com/smallweigit/avue/issues/IQUWE),[demo](/#/component/crud-selection)
@@ -24,7 +35,6 @@
 
 
 ### 1.5.1
-
 #### 2019-1-16
 
 - 新增search组件[demo](/#/component/search)
@@ -33,7 +43,6 @@
 
 
 ### 1.5.0
-
 #### 2019-1-2
 
 - 新增select组件的remote远程搜索数据属性[demo](/#/component/crud-select)
@@ -44,14 +53,13 @@
 
 
 ### 1.4.9
-
 #### 2018-12-6
 
 - 修复级联字典的问题
 - 修复动态改变 option 验证未消失的问题
 
-### 1.4.8
 
+### 1.4.8
 #### 2018-12-6
 
 - 删除 crud 组件的 page 字段，自动根据分页参数判断是否显示
@@ -62,23 +70,23 @@
 - 新增 form 自定义组件返回属性(disabled，size)
 - 修复 tabs 组件和 steps 组件自定义卡槽失效问题
 
-### 1.4.7
 
+### 1.4.7
 #### 2018-12-4
 
 - 优化了 crud 中 page 分页
 - 修复调用 initVal 报错问题
 
-### 1.4.6-beta1
 
+### 1.4.6-beta1
 #### 2018-11-30
 
 - 修复 crud 组件中 validate 方法问题
 - 修复 crud 组件新增 dataType 属性导致翻译失效的问题
 - 新增 upload 组件 crud 表格图片展示[demo](/#/component/crud-img)
 
-### 1.4.5
 
+### 1.4.5
 #### 2018-11-29
 
 - 全部数组类型的组件可以设置 dataType 为 string 专成字符串数据类型（checkbox / tree / cascader / select 多选）
@@ -86,16 +94,16 @@
 - 修复了 tree 组件重新打开后不清空问题
 - 修复 form 组件的级联赋值数据不刷新问题
 
-### 1.4.4
 
+### 1.4.4
 #### 2018-11-28
 
 - 新增全局控制属性 menuType，可控制 crud 组件操作栏的按钮类型[详情](/#/component/quickstart)和[crudDemo](/#/component/crud)
 - 新增 form 组件的 validate 方法，可以像常规一样\$refs['form'].validate 操作[demo](/#/component/form)
 - 新增 form 组件的验证辅助图标
 
-### 1.4.3
 
+### 1.4.3
 #### 2018-11-23
 
 - 新增 upload 组件 upload-before 和 upload-after 中回调 loading（终止操作的方法）
@@ -107,8 +115,8 @@
 - 新增 crud 组件 cell-class-name，header-cell-class-name 变量，具体参考文档
 - 修复 upload 组件 dataType 为 array 时的无法删除问题
 
-### 1.4.2
 
+### 1.4.2
 #### 2018-11-20
 
 - 优化了 tree 组件，支持 form 自定义以及更多灵活配置[demo](/#/component/tree)

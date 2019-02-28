@@ -41,7 +41,6 @@ export default {
          return{
           size:this.sizeValue,
           mock:true,
-          dicData:DIC,
           submitText: '完成',
           column: [{
                   label: "用户名",
@@ -81,7 +80,7 @@ export default {
                   label: "类型",
                   prop: "type",
                   type: "select",
-                  dicData: 'VAILD',
+                  dicData: DIC.VAILD,
                   span:6,
                   mock:{
                     type:'dic',
@@ -92,7 +91,7 @@ export default {
                   prop: "grade",
                   span: 6,
                   type: "checkbox",
-                  dicData: 'VAILD',
+                  dicData: DIC.VAILD,
                   mock:{
                     type:'dic',
                   },
@@ -102,7 +101,7 @@ export default {
                   prop: "switch",
                   span: 6,
                   type: "switch",
-                  dicData: 'SEX',
+                  dicData: DIC.SEX,
                   mock:{
                     type:'dic'
                   },
@@ -114,7 +113,7 @@ export default {
                   prop: "sex",
                   span: 6,
                   type: "radio",
-                  dicData: 'SEX',
+                  dicData: DIC.SEX,
                   mock:{
                     type:'dic'
                   },
@@ -300,7 +299,6 @@ export default {
          return{
           size:this.sizeValue,
           mock:true,
-          dicData:DIC,
           submitText: '完成',
           column: [{
                   label: "用户名",
@@ -340,7 +338,7 @@ export default {
                   label: "类型",
                   prop: "type",
                   type: "select",
-                  dicData: 'VAILD',
+                  dicData: DIC.VAILD,
                   span:6,
                   mock:{
                     type:'dic',
@@ -351,7 +349,7 @@ export default {
                   prop: "grade",
                   span: 6,
                   type: "checkbox",
-                  dicData: 'VAILD',
+                  dicData: DIC.VAILD,
                   mock:{
                     type:'dic',
                   },
@@ -361,7 +359,7 @@ export default {
                   prop: "switch",
                   span: 6,
                   type: "switch",
-                  dicData: 'SEX',
+                  dicData: DIC.SEX,
                   mock:{
                     type:'dic'
                   },
@@ -373,7 +371,7 @@ export default {
                   prop: "sex",
                   span: 6,
                   type: "radio",
-                  dicData: 'SEX',
+                  dicData: DIC.SEX,
                   mock:{
                     type:'dic'
                   },

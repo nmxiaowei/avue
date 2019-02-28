@@ -5,29 +5,30 @@ export default {
       return {
         data:{},
         data1:[
-            {
-                province:"110000",
-                city:"110100",
-                area:"110101"
-            },{
-                province:"140000",
-                city:"140600",
-                area:"140623"
-            }
-         ],
+          {
+            name:'张三',
+            province: '110000',
+            city: '110100',
+            area: '110101'
+          },
+          {
+            name:'李四',
+            province: '140000',
+            city: '140600',
+            area: '140623'
+          }
+        ],
          option:{
             props: {
                 label: 'name',
                 value: 'code'
             },
-            column: [ {
+            column: [{
                 label: '省份',
                 prop: 'province',
                 type: 'select',
-                cascader: ['city', 'area'],
-                cascaderFirst: true,
+                cascaderItem: ['city', 'area'],
                 dicUrl: `${baseUrl}/getProvince`,
-                dicData: 'province',
                 rules: [{
                     required: true,
                     message: "请选择省份",
@@ -39,7 +40,6 @@ export default {
                 type: 'select',
                 dicFlag: false,
                 dicUrl: `${baseUrl}/getCity/{{key}}`,
-                dicData: 'city',
                 rules: [{
                     required: true,
                     message: "请选择城市",
@@ -51,7 +51,6 @@ export default {
                 dicFlag: false,
                 type: 'select',
                 dicUrl: `${baseUrl}/getArea/{{key}}`,
-                dicData: 'area',
                 rules: [{
                     required: true,
                     message: "请选择地区",
@@ -66,14 +65,15 @@ export default {
             },
             align:'center',
             menuAlign:'center',
-            column: [ {
+            column: [{
+              label:'姓名',
+              prop:'name'
+            },{
                 label: '省份',
                 prop: 'province',
                 type: 'select',
-                cascader: ['city', 'area'],
-                cascaderFirst: true,
+                cascaderItem: ['city', 'area'],
                 dicUrl: `${baseUrl}/getProvince`,
-                dicData: 'province',
                 rules: [{
                     required: true,
                     message: "请选择省份",
@@ -86,7 +86,6 @@ export default {
                 dicFlag: false,
                 hide:true,
                 dicUrl: `${baseUrl}/getCity/{{key}}`,
-                dicData: 'city',
                 rules: [{
                     required: true,
                     message: "请选择城市",
@@ -99,7 +98,6 @@ export default {
                 hide:true,
                 type: 'select',
                 dicUrl: `${baseUrl}/getArea/{{key}}`,
-                dicData: 'area',
                 rules: [{
                     required: true,
                     message: "请选择地区",
@@ -153,10 +151,8 @@ export default {
               label: '省份',
               prop: 'province',
               type: 'select',
-              cascader: ['city', 'area'],
-              cascaderFirst: true,
+              cascaderItem: ['city', 'area'],
               dicUrl: `${baseUrl}/getProvince`,
-              dicData: 'province',
               rules: [
                 {
                   required: true,
@@ -171,7 +167,6 @@ export default {
               type: 'select',
               dicFlag: false,
               dicUrl: `${baseUrl}/getCity/{{key}}`,
-              dicData: 'city',
               rules: [
                 {
                   required: true,
@@ -186,7 +181,6 @@ export default {
               dicFlag: false,
               type: 'select',
               dicUrl: `${baseUrl}/getArea/{{key}}`,
-              dicData: 'area',
               rules: [
                 {
                   required: true,
@@ -229,11 +223,13 @@ export default {
       return {
         data1: [
           {
+            name:'张三',
             province: '110000',
             city: '110100',
             area: '110101'
           },
           {
+            name:'李四',
             province: '140000',
             city: '140600',
             area: '140623'
@@ -246,15 +242,15 @@ export default {
           },
           align: 'center',
           menuAlign: 'center',
-          column: [
-            {
+          column: [{
+              label:'姓名',
+              prop:'name'
+            },{
               label: '省份',
               prop: 'province',
               type: 'select',
-              cascader: ['city', 'area'],
-              cascaderFirst: true,
+              cascaderItem: ['city', 'area'],
               dicUrl: `${baseUrl}/getProvince`,
-              dicData: 'province',
               rules: [
                 {
                   required: true,
@@ -270,7 +266,6 @@ export default {
               dicFlag: false,
               hide: true,
               dicUrl: `${baseUrl}/getCity/{{key}}`,
-              dicData: 'city',
               rules: [
                 {
                   required: true,
@@ -286,7 +281,6 @@ export default {
               hide: true,
               type: 'select',
               dicUrl: `${baseUrl}/getArea/{{key}}`,
-              dicData: 'area',
               rules: [
                 {
                   required: true,

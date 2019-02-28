@@ -268,6 +268,13 @@ export default {
 | ------ | ----------------------------- | ---- |
 | change | 返回当前选项卡的整体对象      | item |
 
+
+### Avue-tabs Methods
+
+| 方法名 | 说明	 | 参数 |
+| ------ | ----------------- |----------- |
+|changeTabs|传入标签的序号即可切换|active|	
+
 ### Avue-tabs Scoped Slot
 
 | name   | 说明                          |

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link type="text/css" rel="stylesheet" href="https://at.alicdn.com/t/font_567566_r22zi6t8noas8aor.css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_567566_pwc3oottzol.css">
     <title>Avue</title>
     <script type="text/javascript" src='https://webapi.amap.com/maps?v=1.4.11&key=7ab53b28352e55dc5754699add0ad862&plugin=AMap.PlaceSearch'></script>
     <!-- UI组件库 1.0 -->
@@ -98,16 +99,6 @@
         var s = document.getElementsByTagName("script")[0]; 
         s.parentNode.insertBefore(hm, s);
       })();
-    </script>
-    <script type="text/javascript">
-    (function (w, d, s, n, a, e) {
-        w[n] = w[n] || function () { (w[n].z = w[n].z || []).push(arguments) };
-        a = d.createElement(s), e = d.getElementsByTagName(s)[0];
-        a.async = 1; a.charset = "UTF-8";
-        a.src = "https://pubres.aihecong.com/hecong.js";
-        e.parentNode.insertBefore(a, e)
-    })(window, document, "script", "_AIHECONG");
-    _AIHECONG('ini', { entId: 11231 });
     </script>
 
   </body>

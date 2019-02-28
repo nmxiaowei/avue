@@ -23,7 +23,10 @@
           <router-link :to="{path:'/extend'}">第三方扩展
           </router-link>
         </li>
-
+        <li class="header__nav-item">
+          <a href="https://support.qq.com/products/54822"
+             target="_blank">问题反馈</a>
+        </li>
         <li class="header__nav-item">
           <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=vqed4m0j"
              target="_blank">阿里云服务器1折起</a>
