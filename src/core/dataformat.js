@@ -62,7 +62,7 @@ export const initVal = ({ type, multiple, dataType, value }) => {
   ) {
     if (Array.isArray(value)) return value;
     else if (!validatenull(value)) {
-      const list = value.split(',') || [];
+      const list = (value || '').split(',') || [];
       if (dataType === 'number') {
         return list.map(ele => Number(ele))
       } else {
