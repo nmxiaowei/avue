@@ -43,14 +43,16 @@ export default create({
             safe.tableOption.columnBtn = false;
             addChild(children);
           }
-          if (validatenull(ele.hide)) safe.columnIndex.push(ele.prop);
-          if (ele.showColumn !== false) {
-            let obj = {
-              label: ele.label,
-              prop: ele.prop,
-              index: index
-            };
-            safe.columnList.push(safe.deepClone(obj));
+          if (!safe.vaildData(ele.hide, false)) {
+            safe.columnIndex.push(ele.prop);
+            if (safe.vaildData(ele.showColumn, true)) {
+              let obj = {
+                label: ele.label,
+                prop: ele.prop,
+                index: index
+              };
+              safe.columnList.push(safe.deepClone(obj));
+            }
           }
         });
       }
