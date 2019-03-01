@@ -9,7 +9,11 @@ export default function () {
         }
       },
       handleChange(value) {
-        const result = this.isString && this.multiple ? value.join(',') : value;
+        let result = value;
+        if ((this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader', 'dynamic'].includes(this.type))) {
+          result = value.join(',')
+        }
+
         if (typeof this.change === 'function') {
           this.change({ value: result, column: this.column });
         }

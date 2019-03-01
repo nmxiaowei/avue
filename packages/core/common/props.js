@@ -137,6 +137,9 @@ export default function () {
       isString() {
         return this.dataType === 'string';
       },
+      isNumber() {
+        return this.dataType === 'number';
+      },
       nameKey: function () {
         return this.propsHttp.name || this.propsHttpDefault.name;
       },
@@ -168,6 +171,7 @@ export default function () {
         this.text = initVal({
           type: this.type,
           multiple: this.multiple,
+          dataType: this.dataType,
           value: this.value
         });
       }
