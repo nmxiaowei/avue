@@ -8,6 +8,8 @@
       <template slot="prepend"><i :class="text"></i></template>
     </el-input>
     <el-dialog title="请选择图标"
+               :modal-append-to-body="false"
+               append-to-body
                :visible.sync="box"
                width="40%">
       <avue-tabs :option="option"

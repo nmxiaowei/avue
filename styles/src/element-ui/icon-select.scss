@@ -1,4 +1,7 @@
 .avue-icon-select{
+  &__item{
+    margin-bottom: 20px;
+  }
   &__list{
     display: flex;
     flex-wrap: wrap;
