@@ -1,17 +1,16 @@
 .avue-icon-select{
   &__item{
-    margin-bottom: 20px;
+    padding: 20px;
+    transition: all .2s;
+    &:hover{
+      transform: scale(1.4);
+    }
   }
   &__list{
     display: flex;
     flex-wrap: wrap;
   }
   &__icon{
-    padding: 20px;
-    font-size: 24px;
-    transition: all .2s;
-    &:hover{
-      transform: scale(1.4);
-    }
+    font-size: 24px !important;
   }
 }

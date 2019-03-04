@@ -3,6 +3,7 @@
     <el-input placeholder="请选择图标"
               v-model="text"
               :size="size"
+              :disabled="disabled"
               @click.native="handleShow"
               readonly>
       <template slot="prepend"><i :class="text"></i></template>
@@ -71,6 +72,7 @@ export default create({
       this.handleChange(item);
     },
     handleShow() {
+      if (this.disabled || this.readonly) return;
       this.box = true;
     }
   }

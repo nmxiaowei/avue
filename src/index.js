@@ -7,6 +7,7 @@ import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
 import $ImagePreview from 'components/image-preview/';
+// import { Notification } from 'element-ui';
 let prototypes = {
   $Clipboard,
   $Log
@@ -65,12 +66,22 @@ const install = function (Vue, opts = {}) {
 
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
+  // setTimeout(() => {
+  //   Notification({
+  //     type: 'success',
+  //     title: 'avuex授权',
+  //     dangerouslyUseHTMLString: true,
+  //     message: '感谢你对avue的支持，本系统采用了avuex开发，如果想使用avuex的授权<a href="https://avuex.avue.top/#/vip">点击购买授权</a>',
+  //     duration: 3000
+
+  //   })
+  // }, 1000)
   install(window.Vue);
 }
 
 
 const Avue = {
-  version: '1.0.7',
+  version: '1.0.8',
   locale: locale.locale,
   install
 }
