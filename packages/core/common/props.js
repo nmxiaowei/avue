@@ -30,6 +30,10 @@ export default function () {
         type: Object,
         default: () => { }
       },
+      typeslot: {
+        type: Boolean,
+        default: false
+      },
       label: {
         type: String,
         default: ''

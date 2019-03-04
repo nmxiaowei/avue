@@ -44,6 +44,7 @@
                                v-else
                                :action="column.action"
                                :append="column.append"
+                               :typeslot="column.typeslot"
                                :appendClick="column.appendClick"
                                :border="column.border"
                                :change="column.change"
@@ -121,7 +122,16 @@
                                :voidIconClass="column.voidIconClass"
                                :remote="column.remote"
                                v-model="form[column.prop]"
-                               @change="column.cascader?handleChange(item.column,cindex):''"></component>
+                               @change="column.cascader?handleChange(item.column,cindex):''">
+                      <template :slot="column.prop+'Type'"
+                                slot-scope="{item,label,value}"
+                                v-if="column.typeslot">
+                        <slot :name="column.prop+'Type'"
+                              :item="item"
+                              :value="value"
+                              :label="label"></slot>
+                      </template>
+                    </component>
                   </el-tooltip>
                 </el-form-item>
               </el-col>

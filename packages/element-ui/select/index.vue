@@ -16,7 +16,12 @@
                :key="index"
                :disabled="item[disabledKey]"
                :label="item[labelKey]"
-               :value="item[valueKey]"></el-option>
+               :value="item[valueKey]">
+      <slot :name="prop+'Type'"
+            :label="labelKey"
+            :value="valueKey"
+            :item="item"></slot>
+    </el-option>
   </el-select>
 </template>
 
