@@ -3,7 +3,7 @@
     <transition name="fade">
       <div v-if="closed && modal"
            class="avue-mask"
-           @click.self="handleClose"></div>
+           @click.self="handleClose('modal')"></div>
     </transition>
     <transition :name="isLeft?'drawer-fade-left':'drawer-fade'">
       <div v-if="closed"
@@ -15,7 +15,7 @@
           <div :class="b('header')">
             <div :class="b('close')"
                  v-if="showClose"
-                 @click="handleClose">
+                 @click="handleClose('close')">
               <i class="el-icon-close"></i>
             </div>
             <slot name="title">
@@ -113,8 +113,8 @@ export default create({
     }
   },
   methods: {
-    handleClose() {
-      if (!this.closeOnClickModal) return;
+    handleClose(type) {
+      if (!this.closeOnClickModal && type === "modal") return;
       if (typeof this.beforeClose === "function") {
         this.beforeClose(this.hide);
       } else {
