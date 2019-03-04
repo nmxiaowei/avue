@@ -12,7 +12,6 @@
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
-  <script src="http://qtestbucket.qiniudn.com/demo/CryptoJS.js"></script>
 
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -20,51 +19,53 @@
 
 <body>
   <div id="app">
-    {{form}}
-    <avue-form :option="option" v-model="form"> </avue-form>
+    {{obj}}
+    <avue-form :option="option" v-model="obj">
+      <template slot="provinceType" slot-scope="{item,value,label}">
+        <div>
+          <span style="float: left">{{ item[value] }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
+        </div>
+      </template>
+    </avue-form>
   </div>
 </body>
 <script>
-  Vue.use(AVUE, {
-    qiniu: {
-      AK: 'BLEIUCkTJhUKfb7Yl4wa2X-5B6uecKNxoCd93IlG',
-      SK: '1_Falie5zL2BH7IBuZSZi1EJqm_5_G1-Gdjz-DS4',
-      scope: 'test',
-      url: 'http://pm7cc17lu.bkt.clouddn.com/',
-    }
-  })
-</script>
-<script>
+  let baseUrl = 'https://cli2.avue.top/api/area'
   new Vue({
     el: '#app',
     data() {
       return {
-        form: {},
+        obj: {},
         option: {
-          labelWidth: 120,
           column: [
             {
-              label: '附件上传',
-              prop: 'imgUrl',
-              type: 'upload',
-              listType: 'picture-img',
-              propsHttp: {
-                name: 'hash',
-                url: "key"
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
               },
-              canvasOption: {
-                text: 'avue',
-                ratio: 0.1
+              typeslot: true,
+              dicUrl: `${baseUrl}/getProvince`,
+              tpyeformat(item, label, value) {
+                return `值:${item[label]}-名:${item[value]}`
               },
-              oss: 'qiniu',
-              loadText: '附件上传中，请稍等',
-              span: 24,
-              tip: '只能上传jpg/png文件，且不超过500kb',
-              action: 'http://avueupload.91eic.com/upload/list'
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
             }
           ]
         }
       }
+    },
+    mounted() {
+
     },
     methods: {
     }

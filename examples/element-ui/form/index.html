@@ -48,15 +48,14 @@
               label: '开关',
               prop: 'switch',
               type: 'switch',
-              cell: true,
               dicData: [
                 {
                   label: '开启',
-                  value: 0
+                  value: '0'
                 },
                 {
                   label: '关闭',
-                  value: 1
+                  value: '1'
                 }
               ]
             },
@@ -66,9 +65,24 @@
               valueDefault: '22'
             },
             {
+              label: '多选',
+              prop: 'selects',
+              multiple: true,
+              type: 'select',
+              dataType: 'number',
+              dicData: [{
+                label: '选项1',
+                value: 0
+              }, {
+                label: '选项2',
+                value: 1
+              }]
+            },
+            {
               label: '数字',
               prop: 'number',
               type: 'number',
+              minRows: 1,
               rules: [
                 {
                   required: true,
@@ -177,10 +191,17 @@
         }
       }
     },
+    watch: {
+      'obj.selects'() {
+        console.log(1);
+      }
+    },
     mounted() {
 
       this.obj = {
-        switch: 1,
+        switch: '1',
+        selects: '0,1',
+        name: 'small',
         province: '110000',
         city: '110100',
         area: '110101',

@@ -20,7 +20,8 @@
 <body>
   <div id="app">
     <el-button @click="dialogVisible=true">打开</el-button>
-    <avue-drawer title="提示" v-model="dialogVisible" show-close :before-close="handleClose">
+    <avue-drawer title="提示" :close-on-click-modal="false" v-model="dialogVisible" show-close
+      :before-close="handleClose">
       <span>这里是内容</span>
     </avue-drawer>
   </div>
