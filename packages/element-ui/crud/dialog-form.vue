@@ -57,7 +57,6 @@
                  :loading="keyBtn"
                  v-else-if="boxType==='add'">{{vaildData($parent.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
       <el-button :size="$parent.controlSize"
-                 v-if="boxType!=='view'"
                  @click="closeDialog">{{vaildData($parent.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
     </span>
   </el-dialog>
