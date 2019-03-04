@@ -6,7 +6,7 @@
               :disabled="disabled"
               @click.native="handleShow"
               readonly>
-      <template slot="prepend"><i :class="text"></i></template>
+      <template slot="append"><i :class="text"></i></template>
     </el-input>
     <el-dialog title="请选择图标"
                :modal-append-to-body="false"
