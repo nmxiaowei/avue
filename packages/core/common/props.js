@@ -25,6 +25,7 @@ export default function () {
     props: {
       change: Function,
       click: Function,
+      tpyeformat: Function,
       value: {},
       column: {
         type: Object,

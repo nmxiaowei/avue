@@ -1,6 +1,12 @@
 export default function () {
   return {
     methods: {
+      getLabelText(item) {
+        if (typeof this.tpyeformat === 'function') {
+          return this.tpyeformat(item, this.labelKey, this.valueKey);
+        }
+        return item[this.labelKey]
+      },
       handleClick() {
         const result =
           this.isString && this.multiple ? this.text.join(',') : this.text;

@@ -68,6 +68,7 @@
                                :endPlaceholder="column.endPlaceholder"
                                :expand-trigger="column.expandTrigger"
                                :filter="column.filter"
+                               :tpyeformat="column.tpyeformat"
                                :filesize="column.filesize"
                                :filterable="column.filterable"
                                :format="column.format"

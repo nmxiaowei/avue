@@ -15,7 +15,7 @@
     <el-option v-for="(item,index) in remote?netDic:dic"
                :key="index"
                :disabled="item[disabledKey]"
-               :label="item[labelKey]"
+               :label="getLabelText(item)"
                :value="item[valueKey]">
       <slot :name="prop+'Type'"
             :label="labelKey"
