@@ -24,9 +24,6 @@ export default create({
     return {};
   },
   props: {
-    value: {
-      type: Number
-    },
     step: {
       type: Number,
       default: 1
