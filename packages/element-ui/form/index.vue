@@ -438,7 +438,7 @@ export default create({
     rulesInit(option) {
       (option || this.columnOption).forEach(ele => {
         if (ele.rules && ele.display !== false)
-          this.formRules[ele.prop] = ele.rules;
+          this.$set(this.formRules, ele.prop, ele.rules);
       });
       this.$nextTick(() => {
         this.clearValidate();
