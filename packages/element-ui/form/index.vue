@@ -15,6 +15,9 @@
                     :icon="item.icon"
                     :card="parentOption.card"
                     :label="item.label">
+          <template slot="header">
+            <slot :name="item.prop+'Header'"></slot>
+          </template>
           <div :class="b('group')">
             <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">

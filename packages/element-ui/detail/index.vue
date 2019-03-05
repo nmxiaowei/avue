@@ -6,6 +6,9 @@
                 :card="parentOption.card"
                 :icon="item.icon"
                 :label="item.label">
+      <template slot="header">
+        <slot :name="item.prop+'Header'"></slot>
+      </template>
       <slot :name="item.prop"
             :form="form"
             :column="item"

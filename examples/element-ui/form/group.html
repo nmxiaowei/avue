@@ -24,6 +24,9 @@
       <template slot-scope="scope" slot="name">
         <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
       </template>
+      <template slot="jbxxHeader">
+        自定义头部
+      </template>
     </component>
   </div>
 </body>
@@ -50,7 +53,7 @@
           group: [
             {
               label: '用户信息',
-              prop: 'yhxx',
+              prop: 'jbxx',
               icon: 'el-icon-edit-outline',
               column: [
                 {
