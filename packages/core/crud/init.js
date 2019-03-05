@@ -61,6 +61,8 @@ export default function () {
         this.getPlaceholder = getPlaceholder;
         this.tableOption = this.option;
         this.getIsMobile();
+        //如果有搜索激活搜索
+        if (this.$refs.headerSearch) this.$refs.headerSearch.init();
         window.onresize = () => {
           this.getIsMobile();
         };

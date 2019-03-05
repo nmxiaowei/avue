@@ -93,11 +93,7 @@ export default cteate({
     }
   },
   created() {
-    this.getSearchType = getSearchType;
-    this.getPlaceholder = getPlaceholder;
-    this.getType = getType;
-    this.vaildData = vaildData;
-    this.dataformat();
+    this.init();
   },
   computed: {
     searchSlot() {
@@ -109,6 +105,14 @@ export default cteate({
     }
   },
   methods: {
+    //初始化
+    init() {
+      this.getSearchType = getSearchType;
+      this.getPlaceholder = getPlaceholder;
+      this.getType = getType;
+      this.vaildData = vaildData;
+      this.dataformat();
+    },
     // 搜索回调
     searchChange() {
       this.$parent.$emit("search-change", filterForm(this.searchForm));
