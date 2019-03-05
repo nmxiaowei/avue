@@ -1,19 +1,16 @@
 <template>
-  <el-input-number
-    v-model="text"
-    class="avue-input-number"
-    @change="handleChange"
-    @click.native="handleClick"
-    :precision="precision"
-    :size="size"
-    :min="minRows"
-    :max="maxRows"
-    :clearable="disabled?false:clearable"
-    :readonly="readonly"
-    :controls-position="controlsPosition"
-    :label="placeholder"
-    :disabled="disabled"
-  ></el-input-number>
+  <el-input-number v-model="text"
+                   class="avue-input-number"
+                   @click.native="handleClick"
+                   :precision="precision"
+                   :size="size"
+                   :min="minRows"
+                   :max="maxRows"
+                   :clearable="disabled?false:clearable"
+                   :readonly="readonly"
+                   :controls-position="controlsPosition"
+                   :label="placeholder"
+                   :disabled="disabled"></el-input-number>
 </template>
 
 <script>
@@ -51,7 +48,14 @@ export default create({
       default: Infinity
     }
   },
-  watch: {},
+  watch: {
+    text: {
+      handler() {
+        this.handleChange(this.text);
+      },
+      immediate: true
+    }
+  },
   created() {},
   mounted() {},
   methods: {}
