@@ -15,7 +15,8 @@
                     :icon="item.icon"
                     :card="parentOption.card"
                     :label="item.label">
-          <template slot="header">
+          <template slot="header"
+                    v-if="$slots[item.prop+'Header']">
             <slot :name="item.prop+'Header'"></slot>
           </template>
           <div :class="b('group')">
