@@ -341,6 +341,7 @@
                @close="closeDialog">
       <div :class="b('dialog', ['overflow'])">
         <avue-form v-model="tableForm"
+                   v-if="boxVisible"
                    ref="tableForm"
                    :disabled="keyBtn"
                    :uploadBefore="uploadBefore"

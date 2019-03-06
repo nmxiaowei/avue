@@ -1,4 +1,10 @@
 ## 更新日志
+### 1.6.1-alpha.1
+#### 2019-3-6
+
+- 修复表格组件select多级联动的回显问题[#ISHMA](https://gitee.com/smallweigit/avue/issues/ISHMA)
+
+
 ### 1.6.0
 #### 2019-2-27
 

@@ -216,7 +216,7 @@ export default {
           }
        }
     },
-    created(){
+    mounted(){
         this.obj.username = 'smallwei'
         this.obj.switch = 0;
         this.obj.phone='17547400800';
@@ -474,7 +474,7 @@ export default {
           }
        }
     },
-    created(){
+    mounted(){
         this.obj.username = 'smallwei'
         this.obj.switch = 0;
         this.obj.phone='17547400800';
