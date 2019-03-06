@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <el-input v-if="type==='tree'"
-              :size="size"
+  <div :class="b()">
+    <el-input :size="size"
+              v-if="type==='tree'"
               v-model="labelShow"
               :type="typeParam"
               :clearable="disabled?false:clearable"
@@ -13,6 +13,7 @@
               :disabled="disabled"
               :readonly="true"
               @click.native="disabled?'':open()" />
+
     <el-input v-else-if="type==='phone'"
               :size="size"
               :clearable="disabled?false:clearable"
@@ -45,26 +46,33 @@
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
-    <el-input v-else
-              :size="size"
-              :clearable="disabled?false:clearable"
-              v-model="text"
-              @click.native="handleClick"
-              :type="typeParam"
-              :maxlength="maxlength"
-              :minlength="minlength"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :readonly="readonly"
-              :placeholder="placeholder"
-              @change="handleChange"
-              :disabled="disabled">
-      <template slot="prepend"
-                v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
-      <template slot="append"
-                v-if="append"><span @click="appendClick()">{{append}}</span></template>
-    </el-input>
+
+    <div :class="b('content')"
+         v-else>
+      <div :class="b('tip')"
+           v-if="maxlength">
+        <span>{{textLen}} / {{maxlength}}</span>
+      </div>
+      <el-input :size="size"
+                :clearable="disabled?false:clearable"
+                v-model="text"
+                @click.native="handleClick"
+                :type="typeParam"
+                :maxlength="maxlength"
+                :minlength="minlength"
+                :autosize="{ minRows: minRows, maxRows: maxRows}"
+                :prefix-icon="prefixIcon"
+                :suffix-icon="suffixIcon"
+                :readonly="readonly"
+                :placeholder="placeholder"
+                @change="handleChange"
+                :disabled="disabled">
+        <template slot="prepend"
+                  v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
+        <template slot="append"
+                  v-if="append"><span @click="appendClick()">{{append}}</span></template>
+      </el-input>
+    </div>
     <el-dialog :visible.sync="box"
                append-to-body
                :title="`请选择${label}`"
@@ -110,6 +118,8 @@ export default create({
     nodeClick: Function,
     checked: Function,
     value: {},
+    maxlength: "",
+    minlength: "",
     filter: {
       type: Boolean,
       default: true
@@ -157,11 +167,11 @@ export default create({
     },
     minRows: {
       type: Number,
-      default: 3
+      default: 5
     },
     maxRows: {
       type: Number,
-      default: 4
+      default: 10
     }
   },
   watch: {
@@ -174,6 +184,9 @@ export default create({
     }
   },
   computed: {
+    textLen() {
+      return this.text.length || 0;
+    },
     isTree() {
       return this.type === "tree";
     },

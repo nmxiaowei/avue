@@ -95,3 +95,15 @@ body{
 .fade-enter, .fade-leave-to  {
   opacity: 0;
 }
+
+.avue-input{
+  &__content{
+    position: relative;
+  }
+  &__tip{
+    position: absolute;
+    bottom:5px;
+    right: 20px;
+    color:#999;
+  }
+}
