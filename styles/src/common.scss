@@ -105,5 +105,10 @@ body{
     bottom:5px;
     right: 20px;
     color:#999;
+    &--input{
+      top:1px;
+      right: 28px;
+      z-index: 2;
+    }
   }
 }

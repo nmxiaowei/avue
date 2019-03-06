@@ -49,7 +49,7 @@
 
     <div :class="b('content')"
          v-else>
-      <div :class="b('tip')"
+      <div :class="b('tip', { 'input':type!=='textarea' })"
            v-if="maxlength">
         <span>{{textLen}} / {{maxlength}}</span>
       </div>
