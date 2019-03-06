@@ -17,6 +17,7 @@
          ref="content">
       <el-scrollbar style="height:100%">
         <avue-form v-model="tableForm"
+                   v-if="boxVisible"
                    ref="tableForm"
                    :disabled="keyBtn"
                    :uploadBefore="$parent.uploadBefore"
