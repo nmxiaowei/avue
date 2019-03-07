@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :option="option1" :data="data1" @submit="submit"></avue-crud>
+  </div>
+</body>
+<script>
+  const baseUrl = `https://cli2.avue.top/api/area`
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data1: [
+          {
+            name: '张三',
+            province: '110000',
+            city: '110100',
+            area: '110101'
+          },
+          {
+            name: '李四',
+            province: '140000',
+            city: '140600',
+            area: '140623'
+          }
+        ],
+        option1: {
+          props: {
+            label: 'name',
+            value: 'code'
+          },
+          align: 'center',
+          menuAlign: 'center',
+          column: [{
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '省份',
+            prop: 'province',
+            type: 'select',
+            cascaderItem: ['city', 'area'],
+            dicUrl: `${baseUrl}/getProvince`,
+            rules: [
+              {
+                required: true,
+                message: '请选择省份',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '城市',
+            prop: 'city',
+            type: 'select',
+            dicFlag: false,
+            hide: true,
+            dicUrl: `${baseUrl}/getCity/{{key}}`,
+            rules: [
+              {
+                required: true,
+                message: '请选择城市',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '地区',
+            prop: 'area',
+            dicFlag: false,
+            hide: true,
+            type: 'select',
+            dicUrl: `${baseUrl}/getArea/{{key}}`,
+            rules: [
+              {
+                required: true,
+                message: '请选择地区',
+                trigger: 'blur'
+              }
+            ]
+          }
+          ]
+        }
+      }
+    },
+    methods: {
+      submit() {
+        this.$message.success('当前数据' + JSON.stringify(this.data))
+      }
+    }
+  })
+</script>
+
+</html>

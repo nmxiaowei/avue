@@ -391,7 +391,7 @@ export default create({
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {
-        this.form[ele] = this.value[ele];
+        this.$set(this.form, ele, this.value[ele]);
       });
       this.forEachLabel();
       this.$emit("input", this.form);
