@@ -6,7 +6,8 @@
                 :card="parentOption.card"
                 :icon="item.icon"
                 :label="item.label">
-      <template slot="header">
+      <template slot="header"
+                v-if="$slots[item.prop+'Header']">
         <slot :name="item.prop+'Header'"></slot>
       </template>
       <slot :name="item.prop"
