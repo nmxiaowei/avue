@@ -56,6 +56,10 @@
               @row-click="rowClick"
               :row-style="showRow"
               @row-dblclick="rowDblclick"
+              @cell-mouse-enter="cellMouseEnter"
+              @cell-mouse-leave="cellMouseLeave"
+              @cell-click="cellClick"
+              @cell-dblclick="cellDblclick"
               :row-class-name="rowClassName"
               :cell-class-name="cellClassName"
               :header-cell-class-name="headerCellClassName"
@@ -719,6 +723,22 @@ export default create({
     // 行单机
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
+    },
+    //当单元格 hover 进入时会触发该事件
+    cellMouseEnter(row, column, cell, event) {
+      this.$emit("cell-mouse-enter", row, column, cell, event);
+    },
+    //当单元格 hover 退出时会触发该事件
+    cellMouseLeave(row, column, cell, event) {
+      this.$emit("cell-mouse-leave", row, column, cell, event);
+    },
+    //当某个单元格被点击时会触发该事件
+    cellClick(row, column, cell, event) {
+      this.$emit("cell-click", row, column, cell, event);
+    },
+    //当某个单元格被双击击时会触发该事件
+    cellDblclick(row, column, cell, event) {
+      this.$emit("cell-dblclick", row, column, cell, event);
     },
     //行编辑点击
     rowCell(row, index) {
