@@ -319,6 +319,9 @@ export default create({
       });
       return result;
     },
+    updateDic(prop, list) {
+      this.$set(this.DIC, prop, list);
+    },
     dataformat() {
       let formDefault = {};
       this.columnOption.forEach(ele => {

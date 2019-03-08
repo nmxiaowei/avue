@@ -134,6 +134,9 @@ export default create({
     }
   },
   methods: {
+    updateDic(prop, list) {
+      this.$refs.tableForm.updateDic(prop, list);
+    },
     formVal() {
       Object.keys(this.value).forEach(ele => {
         this.tableForm[ele] = this.value[ele];

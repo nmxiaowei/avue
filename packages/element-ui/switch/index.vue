@@ -3,10 +3,10 @@
     <el-switch v-model="text"
                @change="handleChange"
                @click.native="handleClick"
-               :active-text="getDic(1)[labelKey]"
-               :active-value="getDic(1)[valueKey]"
-               :inactive-value="getDic(0)[valueKey]"
-               :inactive-text="getDic(0)[labelKey]"
+               :active-text="active[labelKey]"
+               :active-value="active[valueKey]"
+               :inactive-value="inactive[valueKey]"
+               :inactive-text="inactive[labelKey]"
                :disabled="disabled"
                :readonly="readonly"
                :size="size"></el-switch>
@@ -29,11 +29,15 @@ export default create({
   watch: {},
   created() {},
   mounted() {},
-  methods: {
-    getDic(index) {
-      return this.dic[index] ? this.dic[index] : {};
+  computed: {
+    active() {
+      return this.dic[0] || {};
+    },
+    inactive() {
+      return this.dic[1] || {};
     }
-  }
+  },
+  methods: {}
 });
 </script>
 

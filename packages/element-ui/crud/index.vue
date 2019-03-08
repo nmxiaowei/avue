@@ -471,6 +471,9 @@ export default create({
     }
   },
   methods: {
+    updateDic(prop, list) {
+      this.$refs.dialogForm.updateDic(prop, list);
+    },
     // 格式化数据源
     formatData() {
       let tmp = Array.isArray(this.data) ? this.data : [this.data];
