@@ -2,6 +2,7 @@ import Affix from 'components/affix'
 import Avatar from 'components/avatar'
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
+import Card from 'components/Card';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
@@ -43,6 +44,7 @@ export default [
   Avatar,
   Carousel,
   Crud,
+  Card,
   Form,
   Checkbox,
   Date,
