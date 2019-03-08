@@ -343,6 +343,16 @@
       handleBeforeOpen(done, type) {
         this.$message.success('打开前的回调')
         done()
+        setTimeout(() => {
+          this.$refs.crud.updateDic('switch', [{
+            label: '0',
+            value: 0
+          },
+          {
+            label: '1',
+            value: 1
+          }])
+        }, 500)
       },
       selectionChange(list) {
         this.$message.success('选中的数据' + JSON.stringify(list));

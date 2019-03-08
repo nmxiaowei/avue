@@ -31,10 +31,10 @@ export default create({
   mounted() {},
   computed: {
     active() {
-      return this.dic[0] || {};
+      return this.dic[1] || {};
     },
     inactive() {
-      return this.dic[1] || {};
+      return this.dic[0] || {};
     }
   },
   methods: {}

@@ -37,6 +37,7 @@ if (!window.Element) {
   packages.logs('element-ui')
 }
 import AvueData from '../data/';
+import AvueEchart from '../echart/';
 export default [
   Affix,
   Avatar,
@@ -73,5 +74,6 @@ export default [
   Timeline.Item,
   textEllipsis,
   Skeleton,
-  ...AvueData
+  ...AvueData,
+  ...AvueEchart
 ]

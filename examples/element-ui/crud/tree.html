@@ -24,8 +24,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" @current-row-change="handleCurrentRowChange"
-      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
+    <avue-crud ref="crud" :option="option" :data="data" :table-loading="tableLoading"
+      @current-row-change="handleCurrentRowChange" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
       <template slot="icon" slot-scope="scope">
         <i :class="scope.row.icon" style="font-size:24px"></i>
       </template>
@@ -40,6 +40,7 @@
     el: '#app',
     data() {
       return {
+        tableLoading: true,
         option: {
           tree: true,
           highlightCurrentRow: true,
@@ -160,6 +161,11 @@
           }
         ],
       }
+    },
+    created() {
+      setTimeout(() => {
+        this.tableLoading = false;
+      }, 2000);
     },
     methods: {
       handleCurrentRowChange(val) {

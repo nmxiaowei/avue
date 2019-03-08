@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-echart-bar :option="option"></avue-echart-bar>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          width: '100%',
+          height: 600,
+          title: '手机大比拼',
+          categories: [
+            "苹果",
+            "三星",
+            "华为",
+            "oppo",
+            "vivo",
+            "小米"
+          ],
+          series: [
+            {
+              name: "手机品牌",
+              data: [
+                1000879,
+                678564,
+                897744,
+                439087,
+                478900,
+                390877
+              ]
+            }, {
+              name: "其他手机品牌",
+              data: [
+                2000879,
+                678564,
+                897744,
+                439087,
+                478900,
+                390877
+              ]
+            }
+          ]
+        }
+      }
+    }
+  })
+</script>
+
+</html>
