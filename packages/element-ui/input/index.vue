@@ -184,9 +184,6 @@ export default create({
     }
   },
   computed: {
-    textLen() {
-      return this.text.length || 0;
-    },
     isTree() {
       return this.type === "tree";
     },
@@ -204,7 +201,7 @@ export default create({
       return this.text;
     },
     textLen() {
-      return this.text.length;
+      return (this.text || "").length || 0;
     },
     typeParam: function() {
       if (this.type === "textarea") {
