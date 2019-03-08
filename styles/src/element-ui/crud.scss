@@ -179,6 +179,9 @@ $space-width: 15px;
     }
   }
   &__dialog {
+    .el-scrollbar__wrap{
+      overflow-x: hidden;
+    }
     .el-dialog {
       border-radius: 5px;
     }
