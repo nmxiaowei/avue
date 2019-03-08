@@ -44,7 +44,7 @@
     },
     data() {
       return {
-        type: 0,
+        type: 1,
         obj: {
           name: '11'
         },
@@ -144,9 +144,9 @@
               icon: 'el-icon-edit-outline',
               column: [
                 {
-                  label: '姓名',
-                  prop: 'name',
-                  formslot: true
+                  label: '测试长度',
+                  prop: 'len',
+                  maxlength: 5,
                 }
               ]
             }
