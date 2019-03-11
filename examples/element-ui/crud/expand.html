@@ -32,19 +32,7 @@
     el: '#app',
     data() {
       return {
-        option: {
-          expand: true,
-          viewBtn: true,
-          // defaultExpandAll: true,
-          // expandRowKeys: [1, 2],
-          column: [{
-            label: '姓名',
-            prop: 'name'
-          }, {
-            label: '年龄',
-            prop: 'sex'
-          }]
-        },
+        expands: [],
         data: [{
           id: 1,
           name: '张三',
@@ -56,12 +44,37 @@
         }]
       }
     },
+    computed: {
+      option() {
+        return {
+          expand: true,
+          viewBtn: true,
+          // defaultExpandAll: true,
+          expandRowKeys: this.expands,
+          column: [{
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '年龄',
+            prop: 'sex'
+          }]
+        }
+      }
+    },
     mounted() {
       //调用方法展开
       // this.$refs.crud.toggleRowExpansion(this.data[0], true)
     },
     methods: {
       expandChange(row, expendList) {
+        if (expendList.length) {
+          this.expands = []
+          if (row) {
+            this.expands.push(row.id)
+          }
+        } else {
+          this.expands = []
+        }
         this.$message.success('展开回调')
       },
     }
