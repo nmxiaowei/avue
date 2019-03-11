@@ -82,12 +82,7 @@ export default create({
     };
   },
   props: {
-    columnFormOption: {
-      type: Array,
-      default: () => {
-        return [];
-      }
-    },
+    columnFormOption: {},
     value: {
       type: Object,
       default: () => {
@@ -124,7 +119,6 @@ export default create({
       option.submitBtn = false;
       option.emptyBtn = false;
       option.boxType = this.boxType;
-      delete option.column;
       //不分组的表单不加载字典
       if (!this.$parent.isGroup) {
         option.dicFlag = false;
