@@ -19,43 +19,31 @@
 
 <body>
   <div id="app">
-    <el-button @click="handle" style="margin-left: 20px">{{title}}</el-button>
-    <component :is="name" :option="option" v-model="obj" @submit="submit">
-      <template slot-scope="scope" slot="name">
-        <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
-      </template>
-      <template slot-scope="scope" slot="names">
+    <avue-crud :option="option" v-model="obj" :data="data">
+      <template slot-scope="scope" slot="namesForm">
         <div>
           <span>{{obj.names}}</span>
           <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.names"></avue-input>
         </div>
       </template>
-      <template slot="jbxxHeader">
-        自定义头部
-      </template>
-    </component>
+    </avue-crud>
   </div>
 </body>
 <script>
   let baseUrl = 'https://cli2.avue.top/api/area'
   new Vue({
     el: '#app',
-    computed: {
-      title() {
-        return this.type === 0 ? '编辑' : '保存'
-      },
-      name() {
-        return this.type === 0 ? 'avue-detail' : 'avue-form'
-      }
-    },
     data() {
       return {
-        type: 1,
         obj: {
           name: '11'
         },
+        data: [],
         option: {
-          card: true,
+          column: [{
+            label: '姓名',
+            prop: 'name'
+          }],
           group: [
             {
               label: '用户信息',
@@ -64,8 +52,7 @@
               column: [
                 {
                   label: '姓名',
-                  prop: 'name',
-                  formslot: true
+                  prop: 'name'
                 }
               ]
             }, {
@@ -145,7 +132,7 @@
             }
             , {
               label: '用户信息',
-              prop: 'yhxx',
+              prop: 'yhxxs',
               icon: 'el-icon-edit-outline',
               column: [
                 {
@@ -165,27 +152,15 @@
       }
     },
     mounted() {
-      setTimeout(() => {
-        this.obj = {
-          name: '111',
-          province: '110000',
-          city: '110100',
-          area: '110101',
-          checkbox: ['110000']
-        }
-      }, 100)
+      this.data = [{
+        name: '111',
+        province: '110000',
+        city: '110100',
+        area: '110101',
+        checkbox: ['110000']
+      }]
     },
     methods: {
-      handle() {
-        if (this.type === 1) {
-          this.type = 0;
-        } else {
-          this.type = 1;
-        }
-      },
-      submit() {
-        this.$message.success(JSON.stringify(this.obj))
-      }
     }
   })
 </script>

@@ -24,7 +24,7 @@
                    :uploadAfter="$parent.uploadAfter"
                    :option="formOption">
           <template slot-scope="scope"
-                    v-for="item in $parent.columnOption"
+                    v-for="item in columnFormOption"
                     :slot="item.prop">
             <slot :value="scope.value"
                   :column="scope.column"
@@ -65,7 +65,6 @@
 
 <script>
 import create from "core/create";
-import { vaildData } from "utils/util";
 import locale from "../../core/common/locale";
 import config from "./config";
 export default create({
@@ -83,6 +82,12 @@ export default create({
     };
   },
   props: {
+    columnFormOption: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
     value: {
       type: Object,
       default: () => {
@@ -104,9 +109,7 @@ export default create({
       deep: true
     }
   },
-  created() {
-    this.vaildData = vaildData;
-  },
+  created() {},
   computed: {
     dialogHeight() {
       return this.setPx(
@@ -119,11 +122,14 @@ export default create({
     formOption() {
       let option = this.deepClone(this.$parent.tableOption);
       option.submitBtn = false;
-      option.submitPostion = "right";
-      option.boxType = this.boxType;
-      option.dicFlag = false;
-      option.dicData = this.$parent.DIC;
       option.emptyBtn = false;
+      option.boxType = this.boxType;
+      delete option.column;
+      //不分组的表单不加载字典
+      if (!this.$parent.isGroup) {
+        option.dicFlag = false;
+        option.dicData = this.$parent.DIC;
+      }
       return option;
     },
     dialogTitle() {

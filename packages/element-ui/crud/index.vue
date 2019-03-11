@@ -271,9 +271,10 @@
                 v-show="printKey"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
+                 :columnFormOption="columnFormOption"
                  v-model="tableForm">
       <template slot-scope="{value,column,dic,size,label,disabled}"
-                v-for="item in columnOption"
+                v-for="item in columnFormOption"
                 :slot="item.prop">
         <slot :value="value"
               :column="column"
@@ -361,6 +362,27 @@ export default create({
     this.getSearchType = getSearchType;
   },
   computed: {
+    isGroup() {
+      return !this.validatenull(this.tableOption.group);
+    },
+    groupOption() {
+      return this.parentOption.group;
+    },
+    columnFormOption() {
+      let list = [];
+      if (this.isGroup) {
+        this.groupOption.forEach(ele => {
+          if (ele.column) {
+            ele.column.forEach(column => {
+              list.push(column);
+            });
+          }
+        });
+      } else {
+        list = this.columnOption;
+      }
+      return list;
+    },
     expandLevel() {
       return this.parentOption.expandLevel || 0;
     },
