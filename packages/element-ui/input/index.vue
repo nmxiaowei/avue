@@ -84,12 +84,12 @@
     <el-dialog :visible.sync="box"
                append-to-body
                :title="`请选择${label}`"
-               width="50%">
+               width="30%">
       <el-input style="margin-bottom:15px;"
                 placeholder="输入关键字进行过滤"
                 v-model="filterText"
                 v-if="filter"></el-input>
-      <div class="avue-dialog">
+      <el-scrollbar style="height:380px;overflow-x:hidden">
         <el-tree :data="dic"
                  :node-key="valueKey"
                  :show-checkbox="multiple"
@@ -98,11 +98,11 @@
                  ref="tree"
                  @check="checkChange"
                  :filter-node-method="filterNode"
-                 :default-expanded-keys="multiple?text:[]"
-                 :default-checked-keys="multiple?text:[]"
+                 :default-expanded-keys="keysList"
+                 :default-checked-keys="keysList"
                  :default-expand-all="defaultExpandAll"
                  @node-click="handleNodeClick"></el-tree>
-      </div>
+      </el-scrollbar>
     </el-dialog>
   </div>
 </template>
@@ -192,6 +192,9 @@ export default create({
     }
   },
   computed: {
+    keysList() {
+      return this.multiple ? this.text : [];
+    },
     isTree() {
       return this.type === "tree";
     },
