@@ -261,21 +261,31 @@ export default create({
           this.labelText = "获取字典中...";
         }
         const check = setInterval(() => {
-          if (!validatenull(this.dic)) {
-            if (this.multiple) {
-              this.labelText = [];
+          if (validatenull(this.dic)) {
+            this.labelText = "";
+            clearInterval(check);
+            return;
+          }
+          //是否禁止父类
+          !this.parent && this.disabledParentNode(this.dic);
+          if (this.multiple) {
+            this.labelText = [];
+            if (!validatenull(this.text)) {
               this.text.forEach(ele => {
                 this.findLabelNode(this.dic, ele, this.props);
               });
-            } else {
+            }
+          } else {
+            this.labelText = "";
+            if (!validatenull(this.text)) {
               this.labelText = this.text;
               this.findLabelNode(this.dic, this.text, this.props);
             }
-            if (!this.parent) this.disabledParentNode(this.dic);
-            clearInterval(check);
-          } else {
-            this.labelText = "";
           }
+          setTimeout(() => {
+            this.$parent.$parent.clearValidate();
+          }, 0);
+          clearInterval(check);
         }, 500);
       } else if (this.type === "phone") {
         if (!validatenull(this.text) && this.textLen == 11) {
