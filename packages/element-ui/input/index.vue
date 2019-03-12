@@ -10,6 +10,8 @@
               :suffix-icon="suffixIcon"
               :placeholder="placeholder"
               @change="handleChange"
+              @focus="handleFocus"
+              @blur="handleBlur"
               :disabled="disabled"
               :readonly="true"
               @click.native="disabled?'':open()" />
@@ -27,6 +29,8 @@
               :readonly="readonly"
               :placeholder="placeholder"
               @change="handleChange"
+              @focus="handleFocus"
+              @blur="handleBlur"
               :disabled="disabled" />
     <el-input v-else-if="type==='search'"
               :size="size"
@@ -41,6 +45,8 @@
               @keyup.enter="appendClick()"
               :placeholder="placeholder"
               @change="handleChange"
+              @focus="handleFocus"
+              @blur="handleBlur"
               :disabled="disabled">
       <el-button slot="append"
                  icon="el-icon-search"
@@ -66,6 +72,8 @@
                 :readonly="readonly"
                 :placeholder="placeholder"
                 @change="handleChange"
+                @focus="handleFocus"
+                @blur="handleBlur"
                 :disabled="disabled">
         <template slot="prepend"
                   v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>

@@ -9,6 +9,8 @@
              :collapse-tags="tags"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
+             @focus="handleFocus"
+             @blur="handleBlur"
              @click.native="handleClick"
              :multiple-limit="limit"
              :disabled="disabled">

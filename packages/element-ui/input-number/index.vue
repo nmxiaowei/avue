@@ -2,6 +2,8 @@
   <el-input-number v-model="text"
                    class="avue-input-number"
                    @click.native="handleClick"
+                   @focus="handleFocus"
+                   @blur="handleBlur"
                    :precision="precision"
                    :size="size"
                    :min="minRows"

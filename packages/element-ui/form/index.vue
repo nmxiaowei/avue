@@ -72,6 +72,8 @@
                                :endPlaceholder="column.endPlaceholder"
                                :expand-trigger="column.expandTrigger"
                                :filter="column.filter"
+                               :blur="column.blur"
+                               :focus="column.focus"
                                :tpyeformat="column.tpyeformat"
                                :filesize="column.filesize"
                                :filterable="column.filterable"

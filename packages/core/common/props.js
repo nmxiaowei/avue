@@ -23,6 +23,8 @@ export default function () {
       };
     },
     props: {
+      blur: Function,
+      focus: Function,
       change: Function,
       click: Function,
       tpyeformat: Function,

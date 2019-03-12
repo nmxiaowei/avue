@@ -1,6 +1,12 @@
 export default function () {
   return {
     methods: {
+      handleFocus() {
+        typeof this.focus === 'function' && this.focus()
+      },
+      handleBlur() {
+        typeof this.blur === 'function' && this.blur()
+      },
       getLabelText(item) {
         if (typeof this.tpyeformat === 'function') {
           return this.tpyeformat(item, this.labelKey, this.valueKey);

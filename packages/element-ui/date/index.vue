@@ -17,6 +17,8 @@
                         :size="size"
                         format="yyyy-MM-dd"
                         value-format="yyyy-MM-dd"
+                        @focus="handleFocus"
+                        @change="handleChange"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"></el-date-picker>
@@ -37,6 +39,8 @@
                     :default-time="defaultTime"
                     :placeholder="placeholder"
                     @change="handleChange"
+                    @blur="handleBlur"
+                    @focus="handleFocus"
                     @click.native="handleClick"
                     :disabled="disabled"></el-date-picker>
   </div>
