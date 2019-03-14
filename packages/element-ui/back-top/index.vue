@@ -12,13 +12,12 @@
 
 <script>
 import create from "core/create";
+import { isDom } from "utils/vdom";
 import { scrollTop } from "../../util/assist";
 export default create({
   name: "back-top",
   props: {
-    id: {
-      type: String
-    },
+    id: {},
     height: {
       type: Number,
       default: 400
@@ -46,7 +45,8 @@ export default create({
       if (this.validatenull(this.id)) {
         return window;
       } else {
-        return window.document.getElementById(this.id);
+        if (isDom(this.id)) return this.id;
+        else return window.document.getElementById(this.id);
       }
     },
     styles() {
