@@ -135,7 +135,7 @@
           <span class="tree-ctrl"
                 v-if="iconShow(index,scope.row)"
                 @click="toggleExpanded(scope.row,scope.$index)">
-            <i v-if="!scope.row._expanded"
+            <i v-if="!scope.row._expand"
                class="el-icon-plus"></i>
             <i v-else
                class="el-icon-minus"></i>
@@ -314,7 +314,7 @@ import dialogColumn from "./dialog-column";
 import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
-import treeToArray from "./eval";
+import treeToArray, { addAttrs } from "./eval";
 import { sendDic } from "core/dic";
 import { getSearchType, getType, calcCascader } from "core/dataformat";
 
@@ -498,17 +498,20 @@ export default create({
     },
     // 格式化数据源
     formatData() {
-      let tmp = Array.isArray(this.data) ? this.data : [this.data];
-      const func = this.evalFunc || treeToArray;
-      const args = this.evalArgs
-        ? Array.concat([this.expandLevel, tmp, this.expandAll], this.evalArgs)
-        : [this.expandLevel, tmp, this.expandAll];
-      this.list = [...func.apply(null, args)];
+      const data = this.data;
+      if (data.length === 0) {
+        return [];
+      }
+      addAttrs(this, data, {
+        expand: this.expandAll,
+        expandLevel: this.expandLevel
+      });
+      this.list = treeToArray(this, data);
     },
     showRow(row) {
       const index = row.rowIndex;
-      const show = row.row.parent
-        ? row.row.parent._expanded && row.row.parent._show
+      const show = row.row._parent
+        ? row.row._parent._expand && row.row._parent._show
         : true;
       row.row._show = show;
       return show
@@ -521,7 +524,7 @@ export default create({
     },
     // 切换下级是否展开
     toggleExpanded(row, index) {
-      row._expanded = !row._expanded;
+      row._expand = !row._expand;
       this.$set(this.list, index, row);
     },
     //对部分表单字段进行校验的方法
@@ -840,12 +843,19 @@ export default create({
     rowAdd() {
       this.$refs.dialogForm.show("add");
     },
+    //对象克隆
+    rowClone(row) {
+      let rowData = {};
+      Object.keys(row).forEach(ele => {
+        if (!["_parent", "children"].includes(ele)) {
+          rowData[ele] = row[ele];
+        }
+      });
+      return rowData;
+    },
     // 编辑
     rowEdit(row, index) {
-      const rowData = Object.assign(row, {});
-      delete rowData.children;
-      delete rowData.parent;
-      this.tableForm = rowData;
+      this.tableForm = this.rowClone(row);
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("edit", index);
@@ -853,10 +863,7 @@ export default create({
 
     //查看
     rowView(row, index) {
-      const rowData = Object.assign(row, {});
-      delete rowData.children;
-      delete rowData.parent;
-      this.tableForm = rowData;
+      this.tableForm = this.rowClone(row);
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("view");
