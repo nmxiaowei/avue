@@ -116,8 +116,7 @@ export default create({
     },
     formOption() {
       let option = this.deepClone(this.$parent.tableOption);
-      option.submitBtn = false;
-      option.emptyBtn = false;
+      option.menuBtn = false;
       option.boxType = this.boxType;
       //不分组的表单不加载字典
       if (!this.$parent.isGroup) {
