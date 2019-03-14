@@ -16,6 +16,9 @@ import { scrollTop } from "../../util/assist";
 export default create({
   name: "back-top",
   props: {
+    id: {
+      type: String
+    },
     height: {
       type: Number,
       default: 400
@@ -39,6 +42,13 @@ export default create({
     };
   },
   computed: {
+    parent() {
+      if (this.validatenull(this.id)) {
+        return window;
+      } else {
+        return window.document.getElementById(this.id);
+      }
+    },
     styles() {
       return {
         bottom: `${this.bottom}px`,
@@ -47,22 +57,22 @@ export default create({
     }
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll, false);
-    window.addEventListener("resize", this.handleScroll, false);
+    this.parent.addEventListener("scroll", this.handleScroll, false);
+    this.parent.addEventListener("resize", this.handleScroll, false);
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll, false);
-    window.removeEventListener("resize", this.handleScroll, false);
+    this.parent.removeEventListener("scroll", this.handleScroll, false);
+    this.parent.removeEventListener("resize", this.handleScroll, false);
   },
 
   methods: {
     handleScroll() {
-      this.backTop = window.pageYOffset >= this.height;
+      this.backTop =
+        (this.parent.pageYOffset || this.parent.scrollTop) >= this.height;
     },
     back() {
-      const sTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      scrollTop(window, sTop, 0, this.duration);
+      const sTop = this.parent.pageYOffset || this.parent.scrollTop;
+      scrollTop(this.parent, sTop, 0, this.duration);
       this.$emit("on-click");
     }
   }
