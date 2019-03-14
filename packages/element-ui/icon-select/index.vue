@@ -16,7 +16,7 @@
       <avue-tabs :option="option"
                  @change="handleTabs"></avue-tabs>
       <div :class="b('list')">
-        <div :class="b('item')"
+        <div :class="b('item',{'active':text===item})"
              v-for="(item,index) in list"
              :key="index">
           <i :class="[b('icon'),item]"

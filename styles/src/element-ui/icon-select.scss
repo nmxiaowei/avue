@@ -5,6 +5,10 @@
     &:hover{
       transform: scale(1.4);
     }
+    &--active{
+      transform: scale(1.4);
+      color:#409EFF;
+    }
   }
   &__list{
     display: flex;
