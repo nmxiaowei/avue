@@ -5,7 +5,7 @@
              :fullscreen="$parent.isMobile?true:$parent.tableOption.dialogFullscreen"
              :modal-append-to-body="false"
              append-to-body
-             :top="setPx($parent.tableOption.dialogTop)"
+             :top="setPx($parent.tableOption.dialogTop,'15vh')"
              :title="dialogTitle"
              :close-on-press-escape="$parent.tableOption.dialogEscape"
              :close-on-click-modal="$parent.tableOption.dialogClickModal"
