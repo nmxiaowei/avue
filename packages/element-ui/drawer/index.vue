@@ -13,15 +13,14 @@
 
         <div :class="b('content')">
           <div :class="b('header')">
+            <slot name="title">
+              <span :class="b('title')">{{title}}</span>
+            </slot>
             <div :class="b('close')"
                  v-if="showClose"
                  @click="handleClose('close')">
               <i class="el-icon-close"></i>
             </div>
-            <slot name="title">
-              <span :class="b('title')">{{title}}</span>
-            </slot>
-
           </div>
           <div :class="b('body')">
             <slot></slot>

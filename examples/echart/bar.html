@@ -13,23 +13,50 @@
   <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
-  <link rel="stylesheet" href="./common.css">
+  <link rel="stylesheet" href="../cdn/codemirror/codemirror.css" />
+  <link rel="stylesheet" href="../cdn/codemirror/theme/rubyblue.css" />
+  <link rel="stylesheet" href="../cdn/codemirror/addon/lint/lint.css" />
+  <script src="../cdn/codemirror/codemirror.js"></script>
+  <script src="../cdn/codemirror/addon/lint/lint.js"></script>
+  <script src="../cdn/codemirror/mode/javascript/javascript.js"></script>
   <script src="../../../lib/avue.js"></script>
+  <style>
+    #app,
+    html,
+    body {
+      height: 100%;
+    }
+
+
+
+    .json-editor .CodeMirror {
+      height: 500px;
+    }
+
+    .json-editor .cm-s-rubyblue span.cm-string {
+      color: #F08047;
+    }
+  </style>
 </head>
 
 <body>
   <div id="app">
-    <div class="left">
-      <avue-echart-bar :option="option"></avue-echart-bar>
-    </div>
-    <div class="right">
-      <avue-form :option="formOption" v-model="config">
+    <el-button @click="dialogVisible=true">打开设置</el-button>
+    <avue-echart-bar ref="echart" :option="config" :data="apiData"></avue-echart-bar>
+    <avue-drawer :width="500" title="设置" show-close v-model="dialogVisible">
+      <avue-tabs :option="tabsOption" @change="handleChange"></avue-tabs>
+      <avue-form v-show="type==='base'" :option="formOption" v-model="config">
         <template slot="barColor" slot-scope="scope">
           <avue-crud :option="colorOption" :data="config.barColor" @row-save="rowSave" @row-del="rowDel"
             @row-update="rowUpdate"></avue-crud>
         </template>
       </avue-form>
-    </div>
+      <div v-show="type==='data'" class="json-editor">
+        <textarea id="code" name="code"></textarea>
+        <br />
+        <el-button type="primary" @click="getVal">刷新数据</el-button>
+      </div>
+    </avue-drawer>
   </div>
 </body>
 <script>
@@ -38,11 +65,64 @@
     el: '#app',
     data() {
       return {
+        CodeMirrorEditor: {},
+        dialogVisible: true,
+        apiText: '',
+        apiFirst: false,
+        apiData: {
+          "categories": [
+            "北京",
+            "上海",
+            "杭州",
+            "深圳",
+            "杭州",
+            "深圳",
+            "广州",
+            "连云港"
+          ],
+          "series": [
+            {
+              "name": "手机品牌",
+              "data": [
+                1131776,
+                1349011,
+                905718,
+                1349011,
+                905718,
+                656020,
+                571234,
+                467397
+              ]
+            }, {
+              "name": "其他手机品牌",
+              "data": [
+                1131776,
+                1349011,
+                905718,
+                1349011,
+                905718,
+                656020,
+                571234,
+                467397
+              ]
+            }
+          ]
+        },
+        type: 'base',
+        tabsOption: {
+          column: [{
+            label: '基本配置',
+            prop: 'base',
+          }, {
+            label: '数据配置',
+            prop: 'data',
+          }]
+        },
         colorOption: {
           size: 'mini',
           columnBtn: false,
           refreshBtn: false,
-          menuWidth: 100,
+          menuWidth: 150,
           labelWidth: 100,
           dialogHeight: 150,
           dialogWidth: 200,
@@ -66,9 +146,24 @@
           group: [{
             label: '标题设置',
             column: [{
+              label: '标题隐藏',
+              prop: 'titleShow',
+              type: 'switch',
+              span: 24
+            }, {
               label: '标题',
               prop: 'title',
               span: 24
+            }, {
+              label: '标题大小',
+              prop: 'titleFontSize',
+              type: 'number',
+              span: 24
+            }, {
+              label: '标题颜色',
+              prop: 'titleColor',
+              span: 24,
+              type: 'color',
             }, {
               label: '标题位置',
               prop: 'titlePostion',
@@ -89,11 +184,6 @@
             }, {
               label: '标题链接',
               prop: 'titleLink',
-              span: 24
-            }, {
-              label: '标题隐藏',
-              prop: 'titleShow',
-              type: 'switch',
               span: 24
             }, {
               label: '图表简介',
@@ -239,19 +329,21 @@
           }]
         },
         config: {
-          title: '手机大比拼',
+          title: '2019年度潍坊城市销售额排名',
           titlePostion: '',
+          titleFontSize: 24,
+          titleColor: 'rgb(115, 170, 229)',
           titleLink: "http://avue.top",
           width: '100%',
-          height: 500,
-          gridX: 65,
-          gridY: 20,
-          gridX2: 20,
-          gridY2: 60,
+          height: 600,
+          gridX: 105,
+          gridY: 50,
+          gridX2: 80,
+          gridY2: 100,
           nameColor: '#333',
           lineColor: '#333',
-          xNameFontSize: 14,
-          yNameFontSize: 14,
+          xNameFontSize: 16,
+          yNameFontSize: 16,
           labelShow: false,
           labelShowFontSize: 14,
           labelShowFontWeight: 300,
@@ -259,56 +351,60 @@
           xAxisInverse: false,
           xAxisShow: true,
           yAxisShow: true,
-          xAxisSplitLineShow: true,
-          yAxisSplitLineShow: true,
-          barWidth: 40,
-          barRadius: 3,
+          xAxisSplitLineShow: false,
+          yAxisSplitLineShow: false,
+          barWidth: 30,
+          barRadius: 8,
           barColor: [{
             color1: '#83bff6',
             color2: '#188df0',
             postion: 90
+          }, {
+            color1: '#23B7E5',
+            color2: '#564AA3',
+            postion: 50
           }],
-          barMinHeight: 0,
+          barMinHeight: 2,
         }
       }
     },
-    computed: {
-      option() {
-        return Object.assign(this.config, {
-          categories: [
-            "苹果",
-            "三星",
-            "华为",
-            "oppo",
-            "vivo",
-            "小米"
-          ],
-          series: [
-            {
-              name: "手机品牌",
-              data: [
-                1000879,
-                678564,
-                897744,
-                439087,
-                478900,
-                390877
-              ]
-            }, {
-              name: "其他手机品牌",
-              data: [
-                2000879,
-                678564,
-                697744,
-                439087,
-                778900,
-                190877
-              ]
-            }
-          ]
-        })
-      }
-    }, methods: {
+    mounted() {
+    },
+    methods: {
+      getVal() {
+        try {
+          this.apiData = JSON.parse(this.apiText)
+        } catch (error) {
+          this.$message.error('数据格式错误');
+          return
+        }
+        this.$message.success('刷新成功');
+      },
+      handleChange(item) {
+        this.type = item.prop;
+        if (this.type === 'data') {
+          this.jsonView();
+        }
+      },
+      jsonView() {
+        setTimeout(() => {
+          if (!this.apiFirst) {
+            this.CodeMirrorEditor = CodeMirror.fromTextArea(document.getElementById('code'), {
+              lineNumbers: true,
+              mode: 'application/json',
+              gutters: ['CodeMirror-lint-markers'],
+              theme: 'rubyblue',
+              lint: true
+            });
+            this.apiText = JSON.stringify(this.apiData, null, 2);
+            this.CodeMirrorEditor.setValue(this.apiText)
+            this.apiFirst = true;
+            this.CodeMirrorEditor.on("change", (e) => {
+              this.apiText = e.getValue();
+            });
+          }
+        }, 0)
+      },
       rowSave(row, done) {
         this.config.barColor.push(row);
         done()

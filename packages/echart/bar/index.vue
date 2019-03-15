@@ -2,7 +2,9 @@
   <div :style="styleName"
        class="avue-echart">
     <echart-title :title="option.title"
+                  :color="option.titleColor"
                   :info="option.info"
+                  :font-size="option.titleFontSize"
                   :link="option.titleLink"
                   :show="option.titleShow"
                   :postion="option.titlePostion"></echart-title>
@@ -21,6 +23,7 @@ export default create({
   },
   methods: {
     updateChart() {
+      const optionData = this.deepClone(this.data);
       const option = {
         tooltip: {},
         grid: {
@@ -31,8 +34,11 @@ export default create({
         },
         legend: {
           bottom: 0,
+          textStyle: {
+            color: this.option.nameColor || "#333"
+          },
           data: (() => {
-            return (this.option.series || []).map(ele => {
+            return (optionData.series || []).map(ele => {
               return ele.name;
             });
           })()
@@ -43,7 +49,7 @@ export default create({
               color: this.option.lineColor || "#333"
             }
           },
-          data: this.option.categories,
+          data: optionData.categories || [],
           inverse: this.vaildData(this.option.xAxisInverse, false),
           show: this.vaildData(this.option.xAxisShow, true),
           splitLine: {
@@ -52,7 +58,7 @@ export default create({
           axisLabel: {
             textStyle: {
               color: this.option.nameColor || "#333",
-              fontSize: this.option.xNameFontSize
+              fontSize: this.option.xNameFontSize || 14
             }
           }
         },
@@ -60,7 +66,7 @@ export default create({
           axisLabel: {
             textStyle: {
               color: this.option.nameColor || "#333",
-              fontSize: this.option.yNameFontSize
+              fontSize: this.option.yNameFontSize || 14
             }
           },
           axisLine: {
@@ -75,8 +81,8 @@ export default create({
           }
         },
         series: (() => {
-          const barColor = this.option.barColor;
-          const list = (this.option.series || []).map((ele, index) => {
+          const barColor = this.option.barColor || [];
+          const list = (optionData.series || []).map((ele, index) => {
             return Object.assign(ele, {
               type: "bar",
               barWidth: this.option.barWidth || 16,
@@ -86,7 +92,7 @@ export default create({
                   if (barColor[index]) {
                     const color1 = barColor[index].color1;
                     const color2 = barColor[index].color2;
-                    const postion = barColor[index].postion;
+                    const postion = (barColor[index].postion || 0.9) * 0.01;
                     if (color2) {
                       return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         {
@@ -94,7 +100,7 @@ export default create({
                           color: color1
                         },
                         {
-                          offset: postion * 0.01 || 0.9,
+                          offset: postion,
                           color: color2
                         }
                       ]);

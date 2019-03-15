@@ -2,6 +2,12 @@ import { setPx } from 'utils/util'
 export default (function (sfc) {
   return {
     props: {
+      data: {
+        type: Object,
+        default: () => {
+          return {};
+        }
+      },
       option: {
         type: Object,
         default: () => {
@@ -15,6 +21,15 @@ export default (function (sfc) {
       };
     },
     watch: {
+      data: {
+        handler() {
+          if (this.myChart) {
+            this.updateChart();
+          }
+        },
+        deep: true,
+        immediate: true
+      },
       option: {
         handler() {
           if (this.myChart) {
