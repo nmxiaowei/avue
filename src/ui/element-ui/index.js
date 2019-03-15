@@ -3,6 +3,7 @@ import Avatar from 'components/avatar'
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
 import Card from 'components/Card';
+import Color from 'components/color';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
@@ -44,6 +45,7 @@ export default [
   Avatar,
   Carousel,
   Crud,
+  Color,
   Card,
   Form,
   Checkbox,

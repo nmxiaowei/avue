@@ -141,6 +141,8 @@ export const getComponent = (type, component) => {
     result = 'dynamic';
   } else if (type === 'icon-select') {
     result = 'icon-select';
+  } else if (type === 'color') {
+    result = 'color';
   }
   return KEY_COMPONENT_NAME + result;
 };

@@ -1,0 +1,20 @@
+
+html,
+body,
+#app,
+.right {
+  height: 100%;
+}
+
+#app {
+  display: flex;
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  width: 460px;
+  overflow: auto;
+}

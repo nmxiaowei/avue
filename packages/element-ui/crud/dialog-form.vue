@@ -12,7 +12,7 @@
              :modal="$parent.tableOption.dialogModal"
              :show-close="$parent.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
-             :width="vaildData($parent.tableOption.dialogWidth,$parent.isMobile?'100%':config.dialogWidth)"
+             :width="vaildData($parent.tableOption.dialogWidth+'',$parent.isMobile?'100%':config.dialogWidth+'')"
              @close="closeDialog">
     <div :style="{height:dialogHeight,overflow:'hidden'}"
          ref="content">

@@ -21,6 +21,7 @@ export default (function (sfc) {
             this.updateChart();
           }
         },
+        deep: true,
         immediate: true
       }
     },

@@ -1,6 +1,25 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
+  
+  .el-table--mini{
+    .avue-crud__color{
+      width: 20px;
+      height: 20px;
+    }
+    .avue-crud__icon-select{
+      font-size: 22px;
+    }
+  }
+  .el-table--small{
+    .avue-crud__color{
+      width: 30px;
+      height: 30px;
+    }
+    .avue-crud__icon-select{
+      font-size: 22px;
+    }
+  }
   margin: 0 auto;
   width: 99%;
   th {
@@ -77,6 +96,15 @@ $space-width: 15px;
     word-break: break-word;
     color: rgba(0, 0, 0, 0.85);
     background-color: #fafafa;
+  }
+  &__color{
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: block;
+  }
+  &__icon-select{
+    font-size: 28px;
   }
   &__pagination {
     position: relative;

@@ -180,7 +180,17 @@
                         v-if="scope.row[column.prop]"></avue-img>
             </template>
             <template v-else>
-              <span v-if="column.parentProp">{{handleDetail(scope.row,column,(cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
+              <span v-if="[undefined,'number'].includes(column.type)">
+                {{scope.row[column.prop]}}
+              </span>
+              <span v-else-if="column.parentProp">{{handleDetail(scope.row,column,(cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
+              <span v-else-if="['color'].includes(column.type)">
+                <i :class="b('color')"
+                   :style="{backgroundColor:scope.row[column.prop]}"></i>
+              </span>
+              <span v-else-if="['icon-select'].includes(column.type)">
+                <i :class="[b('icon-select'),scope.row[column.prop]]"></i>
+              </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,DIC[column.prop])"></span>
             </template>

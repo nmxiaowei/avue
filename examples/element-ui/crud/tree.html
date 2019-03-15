@@ -26,9 +26,6 @@
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" :table-loading="tableLoading"
       @current-row-change="handleCurrentRowChange" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
-      <template slot="icon" slot-scope="scope">
-        <i :class="scope.row.icon" style="font-size:24px"></i>
-      </template>
       <template slot="menu" slot-scope="scope">
         <el-button :size="scope.size" :type="scope.type" @click="tip(scope)">自定义菜单</el-button>
       </template>
@@ -43,6 +40,7 @@
         tableLoading: true,
         option: {
           tree: true,
+          labelWidth: 100,
           highlightCurrentRow: true,
           headerAlign: 'center',
           align: 'center',
@@ -68,7 +66,11 @@
           {
             label: '自定义图标',
             prop: 'icon',
-            slot: true,
+            type: "icon-select",
+            iconList: [{
+              label: '基本图表',
+              list: ['el-icon-time', 'el-icon-bell', 'el-icon-star-on']
+            }]
           },
           {
             label: '备注',

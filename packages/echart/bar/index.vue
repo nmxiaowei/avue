@@ -1,17 +1,36 @@
 <template>
-  <div id="main"
-       :style="styleName"></div>
+  <div :style="styleName"
+       class="avue-echart">
+    <echart-title :title="option.title"
+                  :info="option.info"
+                  :link="option.titleLink"
+                  :show="option.titleShow"
+                  :postion="option.titlePostion"></echart-title>
+    <div id="main"
+         :style="styleName"></div>
+  </div>
 </template>
 
 <script>
 import create from "core/echart/create";
+import echartTitle from "../title";
 export default create({
   name: "bar",
+  components: {
+    echartTitle
+  },
   methods: {
     updateChart() {
       const option = {
         tooltip: {},
+        grid: {
+          x: this.option.gridX || 65,
+          y: this.option.gridY || 20,
+          x2: this.option.gridX2 || 20,
+          y2: this.option.gridY2 || 60
+        },
         legend: {
+          bottom: 0,
           data: (() => {
             return (this.option.series || []).map(ele => {
               return ele.name;
@@ -19,12 +38,9 @@ export default create({
           })()
         },
         xAxis: {
-          nameTextStyle: {
-            color: "bule"
-          },
           axisLine: {
             lineStyle: {
-              color: "red"
+              color: this.option.lineColor || "#333"
             }
           },
           data: this.option.categories,
@@ -32,9 +48,26 @@ export default create({
           show: this.vaildData(this.option.xAxisShow, true),
           splitLine: {
             show: this.vaildData(this.option.xAxisSplitLineShow, false)
+          },
+          axisLabel: {
+            textStyle: {
+              color: this.option.nameColor || "#333",
+              fontSize: this.option.xNameFontSize
+            }
           }
         },
         yAxis: {
+          axisLabel: {
+            textStyle: {
+              color: this.option.nameColor || "#333",
+              fontSize: this.option.yNameFontSize
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: this.option.lineColor || "#333"
+            }
+          },
           inverse: this.vaildData(this.option.yAxisInverse, false),
           show: this.vaildData(this.option.yAxisShow, true),
           splitLine: {
@@ -42,24 +75,45 @@ export default create({
           }
         },
         series: (() => {
-          const list = (this.option.series || []).map(ele => {
-            return Object.assign(
-              {
-                type: "bar"
-              },
-              ele,
-              {
-                label: {
-                  show: this.vaildData(this.option.labelShow, false), //开启显示
-                  position: "top", //在上方显示
-                  textStyle: {
-                    //数值样式
-                    fontSize: 16,
-                    fontWeight: 500
+          const barColor = this.option.barColor;
+          const list = (this.option.series || []).map((ele, index) => {
+            return Object.assign(ele, {
+              type: "bar",
+              barWidth: this.option.barWidth || 16,
+              barMinHeight: this.option.barMinHeight || 0,
+              itemStyle: {
+                color: (() => {
+                  if (barColor[index]) {
+                    const color1 = barColor[index].color1;
+                    const color2 = barColor[index].color2;
+                    const postion = barColor[index].postion;
+                    if (color2) {
+                      return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: color1
+                        },
+                        {
+                          offset: postion * 0.01 || 0.9,
+                          color: color2
+                        }
+                      ]);
+                    }
+                    return color1;
                   }
+                })(),
+                barBorderRadius: this.option.barRadius || 0
+              },
+              label: {
+                show: this.vaildData(this.option.labelShow, false), //开启显示
+                position: "top", //在上方显示
+                textStyle: {
+                  //数值样式
+                  fontSize: this.option.labelShowFontSize || 14,
+                  fontWeight: this.option.labelShowFontWeight || 500
                 }
               }
-            );
+            });
           });
           return list;
         })()

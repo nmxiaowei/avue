@@ -1,0 +1,23 @@
+
+.avue-echart{
+  padding: 10px;
+  &-header{
+    padding: 10px;
+    &--center{
+      text-align: center;
+    }
+    &--right{
+      text-align: right;
+    }
+    &__title{
+      margin-right: 5px;
+      font-size: 18px;
+      font-weight: 400;
+      color:#333;
+      text-decoration: none;
+    }
+    &__info{
+      display: inline-block;
+    }
+  }
+}

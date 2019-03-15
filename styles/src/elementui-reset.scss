@@ -7,7 +7,7 @@
     width: 100% !important;
   }
 
-  .avue-crud__left,.avue-crud__right,{
+  .avue-crud__left,.avue-crud__right{
     .el-button + .el-button {
       margin-left: 0;
     }
@@ -54,6 +54,13 @@
     overflow-y: auto;
   }
 }
+.el-form-item--mini{
+  .el-color-picker--mini,.el-color-picker--mini .el-color-picker__trigger{
+    width: 23px;;
+    height:23px;
+  }
+}
+
 .is-success,.is-error{
   .el-input-number__decrease,.el-input-number__increase{
     right: 25px !important;

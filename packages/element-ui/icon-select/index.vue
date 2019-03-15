@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <el-input placeholder="请选择图标"
+    <el-input :placeholder="placeholder"
               v-model="text"
               :size="size"
               :disabled="disabled"
@@ -8,7 +8,7 @@
               readonly>
       <template slot="append"><i :class="text"></i></template>
     </el-input>
-    <el-dialog title="请选择图标"
+    <el-dialog :title="placeholder"
                :modal-append-to-body="false"
                append-to-body
                :visible.sync="box"
