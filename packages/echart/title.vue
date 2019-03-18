@@ -1,6 +1,6 @@
 <template>
   <div :class="b([postion])"
-       v-if="show">
+       v-if="!show">
     <a :href="link"
        :class="b('title')"
        :style="{color:color,fontSize:setPx(fontSize)}"
@@ -46,7 +46,7 @@ export default create({
     },
     show: {
       type: Boolean,
-      default: true
+      default: false
     }
   }
 });

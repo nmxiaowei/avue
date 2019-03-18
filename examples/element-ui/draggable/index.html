@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+  <!-- CDNJS :: Sortable (https://cdnjs.com/) -->
+  <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+  <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.19.2/vuedraggable.umd.min.js"></script>
+  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body,
+    #app,
+    .app {
+      height: 100%;
+    }
+
+    img {
+      user-select: none;
+    }
+
+    .app {
+      padding: 5px;
+      display: flex;
+      box-sizing: border-box;
+    }
+
+
+    .menu {
+      margin: 0 5px;
+      width: 150px;
+      height: 100%;
+      overflow: hidden;
+      overflow-y: auto;
+      border: 1px solid #eee;
+    }
+
+    .menu__item {
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-indent: 1em;
+      font-size: 14px;
+      border: 1px solid #eee;
+    }
+
+    .menu__item:hover {
+      border: 1px dashed #09f;
+      cursor: move;
+    }
+
+    .menu__item--active {
+      border: 1px dashed #09f;
+    }
+
+    .wrapper {
+      position: relative;
+      width: calc(100% - 220px);
+      height: 100%;
+      overflow: auto;
+      border: 1px solid #eee;
+    }
+
+    .container {
+      transform: scale(0.510417, 0.510417);
+      user-select: none;
+      transform-origin: 0 0;
+      position: relative;
+    }
+
+    .grade {
+      width: 100%;
+      height: 100%;
+      background-size: 30px 30px, 30px 30px;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 0px);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .title {
+      margin-bottom: 10px;
+      line-height: 40px;
+      height: 40px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-indent: 2px;
+      background-color: #eee;
+    }
+
+    .params {
+      width: 350px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="app">
+      <div class="menu">
+        <p class="title">图层</p>
+        <draggable v-model="menuList">
+          <div class="menu__item" :class="{'menu__item--active':item.index===active}" v-for="(item,index) in menuList"
+            :key="index" @click="active=item.index">
+            {{item.title}}
+          </div>
+        </draggable>
+      </div>
+
+      <div class="wrapper">
+        <div class="container" :style="styleName">
+          <div class="grade" @mousedown.stop.self="handleMouseDown" v-if="gradeFlag || config.gradeShow"
+            :style="gradeLenStyle"></div>
+          <avue-draggable :ref="'item_'+index" :step="2" @focus="handleFocus" @resize="handleResize" @blur="handleBlur"
+            @change="handleChange" :index="index" :z-index="item.zIndex" v-for="(item,index) in list"
+            :width="item.component.width" :height="item.component.height" :key="index" :top="item.top"
+            :left="item.left">
+            <img v-if="['img'].includes(item.component.prop)" :src="item.component.value" draggable="false" />
+            <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
+              {{item.component.value}}</div>
+            <component :id="'component_'+index" v-else :is="item.component.name" :data="item.component.data"
+              :option="item.component.option">
+            </component>
+          </avue-draggable>
+        </div>
+      </div>
+      <div class="menu params">
+        <p class="title">操作</p>
+        <template v-if="activeComponent.prop==='text'">
+          <el-form label-width="80px">
+            <el-form-item label="图层名称">
+              <avue-input v-model="activeComponent.name"></avue-input>
+            </el-form-item>
+            <el-form-item label="文本内容">
+              <avue-input v-model="activeComponent.value"></avue-input>
+            </el-form-item>
+            <el-form-item label="字体大小">
+              <avue-silder v-model="activeComponent.style.fontSize"></avue-silder>
+            </el-form-item>
+            <el-form-item label="字体颜色">
+              <avue-color v-model="activeComponent.style.color"></avue-color>
+            </el-form-item>
+            <el-form-item label="字体背景">
+              <avue-color v-model="activeComponent.style.backgroundColor"></avue-color>
+            </el-form-item>
+            <el-form-item label="文字粗细">
+              <avue-select v-model="activeComponent.style.fontWeight"
+                :dic="[{label:'normal',value:'normal'},{label:'bold',value:'bold'},{label:'bolder',value:'bolder'},{label:'ligter',value:'ligter'}]">
+              </avue-select>
+            </el-form-item>
+            <el-form-item label="对齐方式">
+              <avue-select v-model="activeComponent.style.textAlign"
+                :dic="[{label:'居中',value:'center'},{label:'左对齐',value:'left'},{label:'右对齐',value:'right'}]">
+              </avue-select>
+            </el-form-item>
+          </el-form>
+        </template>
+        <template v-else-if="activeComponent.prop==='img'">
+          <el-form label-width="80px">
+            <el-form-item label="图层名称">
+              <avue-input v-model="activeComponent.name"></avue-input>
+            </el-form-item>
+            <el-form-item label="缩略图">
+              <img :src="activeComponent.value" alt="" width="100%" />
+            </el-form-item>
+            <el-form-item label="图片地址">
+              <avue-input v-model="activeComponent.value"></avue-input>
+            </el-form-item>
+          </el-form>
+        </template>
+        <template v-else-if="activeComponent.prop==='bar'">
+          <el-form label-width="80px">
+            <el-form-item label="数据刷新">
+              <avue-input v-model="activeComponent.option.refreshTime"></avue-input>
+            </el-form-item>
+            <el-form-item label="标题">
+              <avue-input type="textarea" v-model="activeComponent.option.title"></avue-input>
+            </el-form-item>
+            <el-form-item label="标题大小">
+              <avue-silder v-model="activeComponent.option.titleFontSize"></avue-silder>
+            </el-form-item>
+            <el-form-item label="标题颜色">
+              <avue-color v-model="activeComponent.option.titleColor"></avue-color>
+            </el-form-item>
+            <el-form-item label="标题对其">
+              <avue-select v-model="activeComponent.option.titlePostion"
+                :dic="[{label:'居中',value:'center'},{label:'左对齐',value:''},{label:'右对齐',value:'right'}]">
+              </avue-select>
+            </el-form-item>
+            <el-form-item label="标题隐藏">
+              <avue-switch v-model="activeComponent.option.titleShow"></avue-switch>
+            </el-form-item>
+            <el-form-item label="标题链接">
+              <avue-input type="textarea" v-model="activeComponent.option.titleLink"></avue-input>
+            </el-form-item>
+            <el-form-item label="文字颜色">
+              <avue-color v-model="activeComponent.option.nameColor">
+              </avue-color>
+            </el-form-item>
+            <el-form-item label="轴线颜色">
+              <avue-color v-model="activeComponent.option.lineColor"></avue-color>
+            </el-form-item>
+            <avue-crud :option="colorOption" :data="activeComponent.option.barColor" @row-save="rowSave"
+              @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
+          </el-form>
+        </template>
+        <template v-else>
+          <el-form label-width="80px">
+            <el-form-item label="大屏宽度">
+              <avue-input-number v-model="config.width"></avue-input-number>
+            </el-form-item>
+            <el-form-item label="大屏高度">
+              <avue-input-number v-model="config.height"></avue-input-number>
+            </el-form-item>
+            <el-form-item label="缩略图">
+              <img :src="config.backgroundImage" alt="" width="100%" />
+            </el-form-item>
+            <el-form-item label="背景图片">
+              <avue-input v-model="config.backgroundImage"></avue-input>
+            </el-form-item>
+            <el-form-item label="显示网格">
+              <avue-switch v-model="config.gradeShow"></avue-switch>
+            </el-form-item>
+            <el-form-item label="网格间距">
+              <avue-input-number v-model="config.gradeLen"></avue-input-number>
+            </el-form-item>
+          </el-form>
+        </template>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        gradeFlag: false,
+        form: {},
+        colorOption: {
+          size: 'mini',
+          columnBtn: false,
+          refreshBtn: false,
+          menuWidth: 150,
+          labelWidth: 100,
+          dialogHeight: 150,
+          dialogWidth: 200,
+          column: [{
+            label: '颜色1',
+            prop: 'color1',
+            type: 'color',
+          }, {
+            label: '渐变色',
+            prop: 'color2',
+            type: 'color',
+          }, {
+            label: '位置',
+            prop: 'postion',
+            type: 'number'
+          }]
+        },
+
+        config: {
+          width: 1920,
+          height: 1080,
+          backgroundImage: 'https://sugar.bce.baidu.com/static/img-templet/background-2.png',
+          gradeShow: true,
+          gradeLen: 30,
+        },
+        active: -1,
+        menuList: [],
+        list: [{
+          title: '柱状图',
+          top: 214,
+          left: 384,
+          zIndex: 0,
+          component: {
+            width: 1200,
+            height: 600,
+            name: 'avue-echart-bar',
+            prop: 'bar',
+            option: {
+              refreshTime: 5000,
+              title: '2019年度潍坊城市销售额排名',
+              titlePostion: '',
+              titleFontSize: 24,
+              titleColor: 'rgb(115, 170, 229)',
+              titleLink: "http://avue.top",
+              info: '这是图表的简介',
+              width: 1200,
+              height: 600,
+              gridX: 105,
+              gridY: 50,
+              gridX2: 80,
+              gridY2: 100,
+              nameColor: '#eee',
+              lineColor: '#eee',
+              xNameFontSize: 16,
+              yNameFontSize: 16,
+              labelShow: false,
+              labelShowFontSize: 14,
+              labelShowFontWeight: 300,
+              yAxisInverse: false,
+              xAxisInverse: false,
+              xAxisShow: true,
+              yAxisShow: true,
+              xAxisSplitLineShow: false,
+              yAxisSplitLineShow: false,
+              refresh: 3000,
+              barWidth: 30,
+              barRadius: 8,
+              barColor: [{
+                color1: '#83bff6',
+                color2: '#188df0',
+                postion: 90
+              }, {
+                color1: '#23B7E5',
+                color2: '#564AA3',
+                postion: 50
+              }],
+              barMinHeight: 2,
+            },
+
+            data: {
+              "categories": [
+                "北京",
+                "上海",
+                "杭州",
+                "深圳",
+                "杭州",
+                "深圳",
+                "广州",
+                "连云港"
+              ],
+              "series": [
+                {
+                  "name": "手机品牌",
+                  "data": [
+                    1131776,
+                    1349011,
+                    905718,
+                    1349011,
+                    905718,
+                    656020,
+                    571234,
+                    467397
+                  ]
+                }, {
+                  "name": "其他手机品牌",
+                  "data": [
+                    1131776,
+                    1349011,
+                    905718,
+                    1349011,
+                    905718,
+                    656020,
+                    571234,
+                    467397
+                  ]
+                }
+              ]
+            }
+          }
+        }, {
+          title: '图片框',
+          top: 0,
+          left: 155,
+          zIndex: 3,
+          component: {
+            width: 1625,
+            height: 146,
+            name: 'img',
+            prop: 'img',
+            value: 'https://sugar.bce.baidu.com/static/img-templet/pic-2.png'
+          }
+        }, {
+          title: '文本框',
+          top: 14,
+          left: 702,
+          zIndex: 4,
+          component: {
+            width: 490,
+            height: 50,
+            value: 'avuex数据大屏实时展示',
+            style: {
+              textAlign: 'center',
+              fontSize: 40,
+              fontWeight: 'bold',
+              color: '#fff'
+            },
+            name: 'text',
+            prop: 'text'
+          }
+        }]
+      }
+    },
+    computed: {
+      activeComponent() {
+        return this.activeObj.component || {}
+      },
+      activeObj() {
+        return this.list[this.active] || {}
+      },
+      styleName() {
+        return {
+          background: `url(${this.config.backgroundImage}) 0% 0% / 100% 100% rgb(3, 12, 59)`,
+          width: this.setPx(this.config.width),
+          height: this.setPx(this.config.height)
+        }
+      },
+      gradeLenStyle() {
+        return {
+          backgroundSize: `${this.setPx(this.config.gradeLen)} ${this.setPx(this.config.gradeLen)},${this.setPx(this.config.gradeLen)} ${this.setPx(this.config.gradeLen)}`
+        }
+      }
+    },
+    created() {
+      //初始化数据
+      this.initData()
+    },
+    watch: {
+      active(val) {
+        this.list.forEach((ele, index) => {
+          if (index === val) {
+            this.$refs['item_' + index][0].setActive(true)
+          } else {
+            this.$refs['item_' + index][0].setActive(false)
+          }
+        });
+      },
+      menuList(val) {
+        const leng = val.length;
+        val.forEach((ele, index) => {
+          this.$set(this.list, ele.index, Object.assign(ele, {
+            zIndex: leng - index
+          }))
+        })
+      }
+    },
+    methods: {
+      handleStyle(item) {
+        const style = item.component.style
+        let obj = {
+          padding: '10px'
+        }
+        Object.keys(style).forEach(ele => {
+          if (['fontSize'].includes(ele)) {
+            obj[ele] = style[ele] + 'px'
+          } else {
+            obj[ele] = style[ele]
+          }
+
+        })
+        return obj;
+      },
+      initData() {
+        this.list.forEach((ele, index) => {
+          this.$set(this.list, index, Object.assign(ele, {
+            index
+          }));
+        })
+        this.menuList = [...this.list];
+        this.handleListMenuSort();
+      },
+      handleListMenuSort() {
+        function compare(propertyName) {
+          return function (object1, object2) {
+            var value1 = object1[propertyName];
+            var value2 = object2[propertyName];
+            if (value2 < value1) {
+              return -1;
+            } else if (value2 > value1) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+        this.menuList.sort(compare("zIndex"));
+      },
+      handleMouseDown() {
+        this.active = -1;
+      },
+      handleChange(index) {
+        this.active = index;
+      },
+      handleFocus() {
+        this.gradeFlag = true;
+      },
+      handleBlur() {
+        this.gradeFlag = false;
+      },
+      handleResize({ width, height }) {
+        if (['bar'].includes(this.activeComponent.prop)) {
+          this.activeComponent.option.width = width;
+          this.activeComponent.option.height = height;
+        }
+
+      },
+      rowSave(row, done) {
+        this.activeComponent.option.barColor.push(row);
+        done()
+      },
+      rowDel(row, index) {
+        this.activeComponent.option.barColor.splice(index, 1);
+      },
+      rowUpdate(row, index, done) {
+        this.activeComponent.option.barColor.splice(index, 1, row);
+        done()
+      }
+    }
+  })
+</script>
+
+</html>

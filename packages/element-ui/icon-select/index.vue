@@ -3,7 +3,9 @@
     <el-input :placeholder="placeholder"
               v-model="text"
               :size="size"
+              :clearable="disabled?false:clearable"
               :disabled="disabled"
+              @change="handleChange"
               @click.native="handleShow"
               readonly>
       <template slot="append"><i :class="text"></i></template>

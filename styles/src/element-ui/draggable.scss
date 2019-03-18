@@ -1,0 +1,77 @@
+.avue-draggable{
+  padding: 10px;
+  position: absolute;
+  cursor: move;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  &--active{
+    cursor: move;
+    border:1px solid #09f;
+    background-color: rgba(255,228,196,.6)
+  }
+  &--move{
+    opacity: .6;
+    background-color: rgba(255,228,196,.6)
+  }
+  &__wrapper{
+    position: relative;
+  }
+  &__line{
+    &--left {
+      position: absolute;
+      border-top: 1px dashed #09f;
+      width: 10000px;
+      height: 0;
+      top: 0;
+      transform: translateX(-100%);
+    }
+    &--top {
+      position: absolute;
+      border-left: 1px dashed #09f;
+      width: 0;
+      height: 10000px;
+      left: 0;
+      transform: translateY(-100%);
+    }
+    &--label{
+      position: absolute;
+      padding: 5px;
+      transform: translate(-100%,-100%);
+      color: #09f;
+      font-size: 30px;
+      white-space: nowrap;
+      cursor: move;
+    }
+  }
+  &__range{
+    position: absolute;
+    width:12px;
+    height: 12px;
+    background-color: #09f;
+    
+    &--right{
+      &:hover{
+        cursor:ew-resize 
+      }
+      top:50%;
+      right: -35px;
+      transform: translateY(-50%);
+    }
+    &--bottom{
+      &:hover{
+        cursor: ns-resize
+      }
+      left: 50%;
+      bottom: -35px;
+      transform: translateX(-50%);
+      
+    }
+    &--bottom-right{
+      &:hover{
+        cursor: nwse-resize
+      }
+      bottom: -35px;
+      right: -35px;
+    }
+  }
+}

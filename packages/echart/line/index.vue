@@ -1,5 +1,5 @@
 <template>
-  <div id="main"
+  <div :ref="id"
        :style="styleName"></div>
 </template>
 

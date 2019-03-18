@@ -3,8 +3,9 @@
     <el-input :placeholder="placeholder"
               v-model="text"
               :size="size"
-              :disabled="disabled"
-              @click.native="handleShow">
+              @change="handleChange"
+              :clearable="disabled?false:clearable"
+              :disabled="disabled">
       <template slot="append">
         <el-color-picker size="mini"
                          v-model="text"

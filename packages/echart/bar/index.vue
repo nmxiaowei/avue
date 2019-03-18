@@ -1,6 +1,5 @@
 <template>
-  <div :style="styleName"
-       class="avue-echart">
+  <div class="avue-echart">
     <echart-title :title="option.title"
                   :color="option.titleColor"
                   :info="option.info"
@@ -8,7 +7,7 @@
                   :link="option.titleLink"
                   :show="option.titleShow"
                   :postion="option.titlePostion"></echart-title>
-    <div id="main"
+    <div :ref="id"
          :style="styleName"></div>
   </div>
 </template>
@@ -124,7 +123,8 @@ export default create({
           return list;
         })()
       };
-      this.myChart.setOption(option);
+      this.myChart.resize();
+      this.myChart.setOption(option, true);
     }
   }
 });

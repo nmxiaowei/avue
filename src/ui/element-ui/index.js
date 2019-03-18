@@ -9,6 +9,7 @@ import Checkbox from 'components/checkbox';
 import Date from 'components/date';
 import Detail from 'components/detail';
 import Divider from 'components/divider';
+import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Time from 'components/time';
 import Input from 'components/input';
@@ -51,6 +52,7 @@ export default [
   Checkbox,
   Date,
   Divider,
+  Draggable,
   Empty,
   Time,
   Input,
