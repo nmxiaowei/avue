@@ -20,4 +20,51 @@
       display: inline-block;
     }
   }
+  &-progress{
+    position: relative;
+    &__text{
+      &--circle{
+      position: absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      text-align: center;
+      line-height: 30px;
+      }
+      &--line{
+        margin-bottom: 20px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        p{
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  &-flop{
+    &__item{
+      display: inline-block;
+      font-family: "Microsoft Yahei";
+      font-size: 32px;
+      font-weight: normal;
+      color: rgb(255, 255, 255);
+      margin-left: 3.2px;
+      margin-right: 3.2px;
+      padding: 0px 0.1em;
+      box-sizing: content-box;
+      width: 0.6em;
+      text-align: center;
+      &--img{
+        border-image-slice: 10 16 15 10 fill;
+        border-width: 10px 16px 15px 10px;
+        border-style: solid;
+      }
+      &--none{
+        padding: 0 !important;
+        border-width:0 !important;
+        background-color: transparent !important;
+      }
+    }
+  }
 }

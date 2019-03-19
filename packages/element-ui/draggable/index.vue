@@ -118,20 +118,21 @@ export default create({
     baseWidth(val) {
       this.$refs.wrapper.style.width = this.setPx(val);
       this.children.style.width = this.setPx(val);
-      this.$emit("resize", { width: this.baseWidth, height: this.baseHeight });
     },
     baseHeight(val) {
       this.$refs.wrapper.style.height = this.setPx(val);
       this.children.style.height = this.setPx(val);
-      this.$emit("resize", { width: this.baseWidth, height: this.baseHeight });
     }
   },
   mounted() {
-    this.children = this.$refs.item.firstChild;
-    this.baseWidth = this.width || this.children.offsetWidth;
-    this.baseHeight = this.height || this.children.offsetHeight;
-    this.baseLeft = this.left;
-    this.baseTop = this.top;
+    this.$nextTick(() => {
+      this.children = this.$refs.item.firstChild;
+      this.baseWidth = this.width || this.children.offsetWidth;
+      this.baseHeight = this.height || this.children.offsetHeight;
+      this.baseLeft = this.left;
+      this.baseTop = this.top;
+      this.children.style.overflow = "hidden";
+    });
   },
 
   methods: {
@@ -145,6 +146,16 @@ export default create({
       this.$emit("focus");
       window.document.onmouseup = e => {
         window.document.onmousemove = undefined;
+        this.$emit("resize", {
+          index: this.index,
+          width: this.baseWidth,
+          height: this.baseHeight
+        });
+        this.$emit("postion", {
+          index: this.index,
+          left: this.baseLeft,
+          top: this.baseTop
+        });
         this.rangeActive = false;
         this.moveActive = false;
       };

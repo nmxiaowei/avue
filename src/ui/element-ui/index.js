@@ -11,6 +11,7 @@ import Detail from 'components/detail';
 import Divider from 'components/divider';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
+import Progress from 'components/progress';
 import Time from 'components/time';
 import Input from 'components/input';
 import Radio from 'components/radio';
@@ -54,6 +55,7 @@ export default [
   Divider,
   Draggable,
   Empty,
+  Progress,
   Time,
   Input,
   Radio,

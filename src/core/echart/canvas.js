@@ -22,13 +22,9 @@ export default (function (sfc) {
     data() {
       return {
         myChart: "",
-        checkRefreshTime: '',
       };
     },
     watch: {
-      'option.refreshTime'() {
-        this.refreshData();
-      },
       data: {
         handler() {
           if (this.myChart) {
@@ -61,30 +57,16 @@ export default (function (sfc) {
           width: setPx((this.option.width || 600)),
           height: setPx((this.option.height || 400))
         };
-      },
-      refreshTime() {
-        return Number(this.option.refreshTime) || 0;
       }
     },
     mounted() {
-      this.myChart = window.echarts.init(this.$refs[this.id]);
-      this.updateChart();
-      this.refreshData();
+      if (this.$refs[this.id]) {
+        this.myChart = window.echarts.init(this.$refs[this.id]);
+        this.updateChart();
+      }
+
     },
     methods: {
-      refreshData() {
-        if (this.refreshTime === 0) {
-          clearInterval(this.checkRefreshTime);
-        } else {
-          this.checkRefreshTime = setInterval(() => {
-            if (this.myChart) {
-              this.myChart.clear();
-              this.updateChart();
-            }
-          }, this.refreshTime);
-        }
-
-      }
     }
   }
 })()
