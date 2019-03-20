@@ -183,6 +183,12 @@ export default create({
     }
   },
   watch: {
+    text: {
+      handler() {
+        this.handleChange(this.text);
+      },
+      immediate: true
+    },
     value() {
       this.initVal();
       this.init();

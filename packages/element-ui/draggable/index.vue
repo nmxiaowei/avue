@@ -1,10 +1,10 @@
 <template>
   <div :class="b({'active':(active || overActive),'move':moveActive})"
-       @mouseover="handleMouseOver"
-       @mouseout="handleMouseOut"
-       @mousedown="handleMouseDown"
-       @mousemove="handleMouseMove"
-       @mouseup="handleMouseUp"
+       @mouseover="disabled?false:handleMouseOver($event)"
+       @mouseout="disabled?false:handleMouseOut($event)"
+       @mousedown="disabled?false:handleMouseDown($event)"
+       @mousemove="disabled?false:handleMouseMove($event)"
+       @mouseup="disabled?false:handleMouseUp($event)"
        :style="styleName">
     <div :class="b('wrapper')"
          ref="wrapper">
@@ -34,6 +34,10 @@ import create from "core/create";
 export default create({
   name: "draggable",
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     step: {
       type: Number,
       default: 0
