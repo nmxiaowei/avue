@@ -36,10 +36,14 @@
         data: [{
           id: 1,
           name: '张三',
+          checkbox: [0, 1],
+          cascader: [0, 1],
           sex: 12,
         }, {
           id: 2,
           name: '李四',
+          checkbox: [0, 2],
+          cascader: [0, 2],
           sex: 20,
         }]
       }
@@ -52,6 +56,37 @@
           // defaultExpandAll: true,
           expandRowKeys: this.expands,
           column: [{
+            label: '多选',
+            prop: 'checkbox',
+            type: 'checkbox',
+            dicData: [{
+              label: '一级0',
+              value: 0
+            }, {
+              label: '一级1',
+              value: 1,
+            }, {
+              label: '一级2',
+              value: 2,
+            }],
+          }, {
+            label: '级别',
+            prop: 'cascader',
+            type: 'cascader',
+            dicData: [{
+              label: '一级',
+              value: 0,
+              children: [
+                {
+                  label: '一级1',
+                  value: 1,
+                }, {
+                  label: '一级2',
+                  value: 2,
+                }
+              ]
+            }],
+          }, {
             label: '姓名',
             prop: 'name'
           }, {

@@ -14,111 +14,33 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
   <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-  <!-- CDNJS :: Sortable (https://cdnjs.com/) -->
-  <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
-  <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.19.2/vuedraggable.umd.min.js"></script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="../../cdn/codemirror/codemirror.css" />
+  <link rel="stylesheet" href="../../cdn/codemirror/theme/rubyblue.css" />
+  <link rel="stylesheet" href="../../cdn/codemirror/addon/lint/lint.css" />
+  <script src="../../cdn/codemirror/codemirror.js"></script>
+  <script src="../../cdn/codemirror/addon/lint/lint.js"></script>
+  <script src="../../cdn/codemirror/mode/javascript/javascript.js"></script>
   <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    html,
-    body,
-    #app,
-    .app {
-      height: 100%;
-    }
-
-    img {
-      user-select: none;
-    }
-
-    .app {
-      padding: 5px;
-      display: flex;
-      box-sizing: border-box;
-    }
-
-
-    .menu {
-      margin: 0 5px;
-      width: 150px;
-      height: 100%;
-      overflow: hidden;
-      overflow-y: auto;
-      border: 1px solid #eee;
-    }
-
-    .menu__item {
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
-      text-indent: 1em;
-      font-size: 14px;
-      border: 1px solid #eee;
-    }
-
-    .menu__item:hover {
-      border: 1px dashed #09f;
-      cursor: move;
-    }
-
-    .menu__item--active {
-      border: 1px dashed #09f;
-    }
-
-    .wrapper {
-      position: relative;
-      width: calc(100% - 220px);
-      height: 100%;
-      overflow: auto;
-      border: 1px solid #eee;
-    }
-
-    .container {
-      user-select: none;
-      transform-origin: 0 0;
-      position: relative;
-    }
-
-    .grade {
-      width: 100%;
-      height: 100%;
-      background-size: 30px 30px, 30px 30px;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 0px);
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-
-    .title {
-      margin-bottom: 10px;
-      line-height: 40px;
-      height: 40px;
-      text-align: center;
-      font-weight: 500;
-      font-size: 16px;
-      letter-spacing: 2px;
-      text-indent: 2px;
-      background-color: #eee;
-    }
-
-    .params {
-      width: 350px;
-    }
-  </style>
+  <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.19.2/vuedraggable.umd.min.js"></script>
+  <script src="./js/colorOption.js"></script>
+  <script src="./js/listOption.js"></script>
+  <script src="../../../lib/avue.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <div class="app">
-      <div class="menu">
+    <el-dialog title="复制代码" :visible.sync="dialogVisible">
+      <div class="json-editor">
+        <textarea ref="code" name="code"></textarea>
+      </div>
+    </el-dialog>
+    <div class="top">
+      <el-button type="primary" @click="menuFlag=true" v-show="!menuFlag" size="small">还 原</el-button>
+    </div>
+    <div class="app" :class="{'app--none':!menuFlag}">
+      <div class="menu" v-show="menuFlag">
         <p class="title">图层</p>
         <draggable v-model="menuList">
           <div class="menu__item" :class="{'menu__item--active':item.index===active}" v-for="(item,index) in menuList"
@@ -127,25 +49,26 @@
           </div>
         </draggable>
       </div>
-
-      <div class="wrapper">
-        <div class="container" :style="styleName" ref="container">
-          <div class="grade" @mousedown.stop.self="handleMouseDown" v-if="gradeFlag || config.gradeShow"
-            :style="gradeLenStyle"></div>
-          <avue-draggable :ref="'item_'+index" :step="2" @focus="handleFocus" @postion="handlePostion"
-            @resize="handleResize" @blur="handleBlur" @change="handleChange" :index="index" :z-index="item.zIndex"
-            v-for="(item,index) in list" :width="item.component.width" :height="item.component.height" :key="index"
-            :top="item.top" :left="item.left">
-            <img v-if="['img'].includes(item.component.prop)" :src="item.component.value" draggable="false" />
-            <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
-              {{item.component.value}}</div>
-            <component :id="'component_'+index" v-else :is="item.component.name" :component="item.component"
-              :data="item.component.data" :option="item.component.option">
-            </component>
-          </avue-draggable>
+      <div class="wrapper" ref="wrapper">
+        <div class="content">
+          <div class="container" :style="styleName" ref="container">
+            <div class="grade" @mousedown.stop.self="handleMouseDown" v-if="gradeFlag || config.gradeShow"
+              :style="gradeLenStyle"></div>
+            <avue-draggable :disabled="!menuFlag" :ref="'item_'+index" :step="2" @focus="handleFocus"
+              @postion="handlePostion" @resize="handleResize" @blur="handleBlur" @change="handleChange" :index="index"
+              :z-index="item.zIndex" v-for="(item,index) in list" :width="item.component.width"
+              :height="item.component.height" :key="index" :top="item.top" :left="item.left">
+              <img v-if="['img'].includes(item.component.prop)" :src="item.component.value" draggable="false" />
+              <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
+                {{item.component.value}}</div>
+              <component :id="'component_'+index" v-else :is="item.component.name" :component="item.component"
+                :data="item.component.data" :option="item.component.option">
+              </component>
+            </avue-draggable>
+          </div>
         </div>
       </div>
-      <div class="menu params">
+      <div class="menu params" v-show="menuFlag">
         <p class="title">操作</p>
         <template v-if="activeComponent.prop==='text'">
           <el-form label-width="80px">
@@ -193,6 +116,11 @@
           <el-form label-width="80px">
             <el-form-item label="图层名称">
               <avue-input v-model="activeObj.name"></avue-input>
+            </el-form-item>
+            <el-form-item label="类型">
+              <avue-radio v-model="activeComponent.option.type"
+                :dic="[{label:'线条',value:'line'},{label:'圆环',value:'circle'}]">
+                </avue-select>
             </el-form-item>
             <el-form-item label="字体大小">
               <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
@@ -358,6 +286,10 @@
             <el-form-item label="网格间距">
               <avue-input-number v-model="config.gradeLen"></avue-input-number>
             </el-form-item>
+            <el-form-item label="生成代码">
+              <el-button type="primary" @click="handleBuild" size="small">生 成</el-button>
+              <el-button @click="handleView" size="small">预 览</el-button>
+            </el-form-item>
           </el-form>
         </template>
       </div>
@@ -369,31 +301,12 @@
     el: '#app',
     data() {
       return {
+        menuFlag: true,
+        dialogVisible: false,
+        CodeMirrorEditor: {},
         gradeFlag: false,
         form: {},
-        colorOption: {
-          size: 'mini',
-          columnBtn: false,
-          refreshBtn: false,
-          menuWidth: 150,
-          labelWidth: 100,
-          dialogHeight: 150,
-          dialogWidth: 200,
-          column: [{
-            label: '颜色1',
-            prop: 'color1',
-            type: 'color',
-          }, {
-            label: '渐变色',
-            prop: 'color2',
-            type: 'color',
-          }, {
-            label: '位置',
-            prop: 'postion',
-            type: 'number'
-          }]
-        },
-
+        colorOption: colorOption,
         config: {
           name: 'avuex数据大屏',
           width: 1920,
@@ -405,605 +318,7 @@
         },
         active: -1,
         menuList: [],
-        list: [{
-          "name": "柱状图",
-          "title": "柱状图",
-          "top": 276,
-          "left": 536,
-          "zIndex": 1,
-          "component": {
-            "width": 1200,
-            "height": 600,
-            "name": "avue-echart-bar",
-            "prop": "bar",
-            "option": {
-              "refreshTime": 5000,
-              "title": "2019年度潍坊城市销售额排名",
-              "titlePostion": "",
-              "titleFontSize": 24,
-              "titleColor": "rgb(115, 170, 229)",
-              "titleLink": "http://avue.top",
-              "info": "这是图表的简介",
-              "width": 1282,
-              "height": 600,
-              "gridX": 105,
-              "gridY": 50,
-              "gridX2": 80,
-              "gridY2": 100,
-              "nameColor": "#eee",
-              "lineColor": "#eee",
-              "xNameFontSize": 16,
-              "yNameFontSize": 16,
-              "labelShow": false,
-              "labelShowFontSize": 14,
-              "labelShowFontWeight": 300,
-              "yAxisInverse": false,
-              "xAxisInverse": false,
-              "xAxisShow": true,
-              "yAxisShow": true,
-              "xAxisSplitLineShow": false,
-              "yAxisSplitLineShow": false,
-              "refresh": 3000,
-              "barWidth": 30,
-              "barRadius": 8,
-              "barColor": [{
-                "color1": "#83bff6",
-                "color2": "#188df0",
-                "postion": 90,
-                "$index": 0,
-                "_show": true
-              }, {
-                "color1": "#23B7E5",
-                "color2": "#564AA3",
-                "postion": 50,
-                "$index": 1,
-                "_show": true
-              }],
-              "barMinHeight": 2
-            },
-            "data": {
-              "categories": ["北京", "上海", "杭州", "深圳", "杭州", "深圳", "广州", "连云港"],
-              "series": [{
-                "name": "手机品牌",
-                "data": [1131776, 1349011, 905718, 1349011, 905718, 656020, 571234, 467397]
-              }, {
-                "name": "其他手机品牌",
-                "data": [1131776, 1349011, 905718, 1349011, 905718, 656020, 571234, 467397]
-              }]
-            }
-          },
-          "index": 0
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 0,
-          "left": 115,
-          "zIndex": 13,
-          "component": {
-            "width": 1700,
-            "height": 146,
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-2.png"
-          },
-          "index": 1
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 900,
-          "left": 115,
-          "zIndex": 12,
-          "component": {
-            "width": 1700,
-            "height": 146,
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-1.png"
-          },
-          "index": 2
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 20,
-          "left": 20,
-          "zIndex": 11,
-          "component": {
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-8.png "
-          },
-          "index": 3
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 344,
-          "left": 10,
-          "zIndex": 10,
-          "component": {
-            "width": 80,
-            "height": 80,
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-4.png"
-          },
-          "index": 4
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 340,
-          "left": 230,
-          "zIndex": 9,
-          "component": {
-            "width": 80,
-            "height": 80,
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-5.png"
-          },
-          "index": 5
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 479,
-          "left": 10,
-          "zIndex": 8,
-          "component": {
-            "width": 80,
-            "height": 80,
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-6.png"
-          },
-          "index": 6
-        }, {
-          "title": "图片框",
-          "name": "图片框",
-          "top": 481,
-          "left": 232,
-          "zIndex": 7,
-          "component": {
-            "width": 80,
-            "height": 80,
-            "name": "img",
-            "prop": "img",
-            "value": "https://sugar.bce.baidu.com/static/img-templet/pic-7.png"
-          },
-          "index": 7
-        }, {
-          "title": "翻牌器",
-          "name": "翻牌器",
-          "top": 230,
-          "left": 1140,
-          "zIndex": 6,
-          "component": {
-            "width": 750,
-            "height": 120,
-            "name": "avue-echart-flop",
-            "prop": "flop",
-            "data": "1201009,2",
-            "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
-            "option": {
-              "type": "img",
-              "borderColor": "#fff",
-              "borderWidth": 3,
-              "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-              "fontSize": 64,
-              "fontWeight": "normal",
-              "split": 3,
-              "backgroundColor": "rgb(15, 57, 107)",
-              "color": "#fff"
-            }
-          },
-          "index": 8
-        }, {
-          "title": "翻牌器",
-          "name": "翻牌器",
-          "top": 344,
-          "left": 100,
-          "zIndex": 5,
-          "component": {
-            "width": 230,
-            "height": 100,
-            "name": "avue-echart-flop",
-            "prop": "flop",
-            "data": "71.9",
-            "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
-            "option": {
-              "type": "",
-              "suffixText": "订单总数(万)",
-              "suffixTextAlign": "",
-              "suffixSplit": 5,
-              "suffixColor": "rgba(176, 194, 249, 1)",
-              "suffixFontSize": 16,
-              "borderColor": "#fff",
-              "borderWidth": 3,
-              "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-              "fontSize": 42,
-              "fontWeight": "normal",
-              "split": 0,
-              "backgroundColor": "",
-              "color": "#fff"
-            }
-          },
-          "index": 9
-        }, {
-          "title": "翻牌器",
-          "name": "翻牌器",
-          "top": 346,
-          "left": 320,
-          "zIndex": 4,
-          "component": {
-            "width": 230,
-            "height": 100,
-            "name": "avue-echart-flop",
-            "prop": "flop",
-            "data": "16.24",
-            "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
-            "option": {
-              "type": "",
-              "suffixText": "销售总量（万元）",
-              "suffixTextAlign": "",
-              "suffixSplit": 5,
-              "suffixColor": "rgba(176, 194, 249, 1)",
-              "suffixFontSize": 16,
-              "borderColor": "#fff",
-              "borderWidth": 3,
-              "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-              "fontSize": 42,
-              "fontWeight": "normal",
-              "split": 0,
-              "backgroundColor": "",
-              "color": "#fff"
-            }
-          },
-          "index": 10
-        }, {
-          "title": "翻牌器",
-          "name": "翻牌器",
-          "top": 478,
-          "left": 102,
-          "zIndex": 3,
-          "component": {
-            "width": 230,
-            "height": 100,
-            "name": "avue-echart-flop",
-            "prop": "flop",
-            "data": "10.5",
-            "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
-            "option": {
-              "type": "",
-              "suffixText": "人均消费",
-              "suffixTextAlign": "",
-              "suffixSplit": 5,
-              "suffixColor": "rgba(176, 194, 249, 1)",
-              "suffixFontSize": 16,
-              "borderColor": "#fff",
-              "borderWidth": 3,
-              "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-              "fontSize": 42,
-              "fontWeight": "normal",
-              "split": 0,
-              "backgroundColor": "",
-              "color": "#fff"
-            }
-          },
-          "index": 11
-        }, {
-          "title": "翻牌器",
-          "name": "翻牌器",
-          "top": 478,
-          "left": 322,
-          "zIndex": 2,
-          "component": {
-            "width": 230,
-            "height": 100,
-            "name": "avue-echart-flop",
-            "prop": "flop",
-            "data": "75",
-            "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
-            "option": {
-              "type": "",
-              "suffixText": "近10分钟新增订单数(万)",
-              "suffixTextAlign": "",
-              "suffixSplit": 5,
-              "suffixColor": "rgba(176, 194, 249, 1)",
-              "suffixFontSize": 16,
-              "borderColor": "#fff",
-              "borderWidth": 3,
-              "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-              "fontSize": 42,
-              "fontWeight": "normal",
-              "split": 0,
-              "backgroundColor": "",
-              "color": "#fff"
-            }
-          },
-          "index": 12
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 14,
-          "left": 702,
-          "zIndex": 26,
-          "component": {
-            "width": 490,
-            "height": 50,
-            "value": "avuex数据大屏实时展示",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 40,
-              "fontWeight": "bold",
-              "color": "#fff"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 13
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 120,
-          "left": 1122,
-          "zIndex": 25,
-          "component": {
-            "width": 100,
-            "height": 50,
-            "value": "电商数据",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 22,
-              "fontWeight": "normal",
-              "color": "rgba(154, 168, 212, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 14
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 120,
-          "left": 1250,
-          "zIndex": 24,
-          "component": {
-            "width": 100,
-            "height": 50,
-            "value": "Sell Data",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 20,
-              "fontWeight": "normal",
-              "color": "rgba(64, 77, 105, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 15
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 276,
-          "left": 15,
-          "zIndex": 23,
-          "component": {
-            "width": 100,
-            "height": 50,
-            "value": "数据统计",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 22,
-              "fontWeight": "normal",
-              "color": "rgba(154, 168, 212, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 16
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 278,
-          "left": 350,
-          "zIndex": 22,
-          "component": {
-            "width": 150,
-            "height": 50,
-            "value": "Statistics Data",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 20,
-              "fontWeight": "normal",
-              "color": "rgba(64, 77, 105, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 17
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 124,
-          "left": 320,
-          "zIndex": 21,
-          "component": {
-            "width": 150,
-            "height": 50,
-            "value": "完成的百分比",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 20,
-              "fontWeight": "normal",
-              "color": "rgba(64, 77, 105, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 18
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 180,
-          "left": 1104,
-          "zIndex": 20,
-          "component": {
-            "width": 100,
-            "height": 50,
-            "value": "销售量",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 16,
-              "fontWeight": "normal",
-              "color": "rgba(154, 168, 212, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 19
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 180,
-          "left": 1760,
-          "zIndex": 19,
-          "component": {
-            "width": 100,
-            "height": 50,
-            "value": "万元",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 16,
-              "fontWeight": "normal",
-              "color": "rgba(154, 168, 212, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 20
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 646,
-          "left": 15,
-          "zIndex": 18,
-          "component": {
-            "width": 100,
-            "height": 50,
-            "value": "交易统计",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 22,
-              "fontWeight": "normal",
-              "color": "rgba(154, 168, 212, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 21
-        }, {
-          "title": "文本框",
-          "name": "文本框",
-          "top": 650,
-          "left": 350,
-          "zIndex": 17,
-          "component": {
-            "width": 150,
-            "height": 50,
-            "value": "Count Data",
-            "style": {
-              "textAlign": "center",
-              "fontSize": 20,
-              "fontWeight": "normal",
-              "color": "rgba(64, 77, 105, 1)"
-            },
-            "name": "text",
-            "prop": "text"
-          },
-          "index": 22
-        }, {
-          "title": "进度条",
-          "name": "进度条",
-          "top": 736,
-          "left": 40,
-          "zIndex": 16,
-          "component": {
-            "width": 200,
-            "height": 200,
-            "data": {
-              "label": "订单交易",
-              "value": 300,
-              "data": 30
-            },
-            "option": {
-              "width": 200,
-              "type": "circle",
-              "color": "rgba(154, 168, 212, 1)",
-              "fontSize": 24,
-              "strokeWidth": 14,
-              "fontWeight": "normal",
-              "borderColor": "#23b7e5",
-              "height": 200
-            },
-            "name": "avue-echart-progress",
-            "prop": "progress"
-          },
-          "index": 23
-        }, {
-          "title": "进度条",
-          "name": "进度条",
-          "top": 738,
-          "left": 300,
-          "zIndex": 15,
-          "component": {
-            "width": 200,
-            "height": 200,
-            "data": {
-              "label": "人数增涨",
-              "value": 40,
-              "data": 80
-            },
-            "option": {
-              "width": 200,
-              "type": "circle",
-              "color": "rgba(154, 168, 212, 1)",
-              "fontSize": 24,
-              "strokeWidth": 14,
-              "fontWeight": "normal",
-              "borderColor": "#564AA3",
-              "height": 200
-            },
-            "name": "avue-echart-progress",
-            "prop": "progress"
-          },
-          "index": 24
-        }, {
-          "title": "进度条",
-          "name": "进度条",
-          "top": 150,
-          "left": 60,
-          "zIndex": 14,
-          "component": {
-            "width": 400,
-            "height": 80,
-            "data": {
-              "label": "人数增涨",
-              "value": 40,
-              "data": 80
-            },
-            "option": {
-              "type": "line",
-              "color": "rgba(154, 168, 212, 1)",
-              "fontSize": 24,
-              "strokeWidth": 18,
-              "fontWeight": "normal",
-              "borderColor": "#564AA3",
-              "width": 400,
-              "height": 80
-            },
-            "name": "avue-echart-progress",
-            "prop": "progress"
-          },
-          "index": 25
-        }]
+        list: list
       }
     },
     computed: {
@@ -1033,13 +348,14 @@
       this.initData()
     },
     mounted() {
-      this.$nextTick(() => {
-        const swidth = window.document.body.clientWidth - 450;
-        const scale = swidth / this.config.width
-        this.config.scale = scale * 100
-      })
+      this.setResize();
     },
     watch: {
+      menuFlag(val) {
+        this.$nextTick(() => {
+          this.setResize();
+        })
+      },
       active(val) {
         this.list.forEach((ele, index) => {
           if (index === val) {
@@ -1059,6 +375,9 @@
       }
     },
     methods: {
+      setResize() {
+        this.config.scale = (this.$refs.wrapper.offsetWidth / this.config.width) * 100
+      },
       formatTooltip(val) {
         return parseInt(val);
       },
@@ -1138,7 +457,23 @@
       rowUpdate(row, index, done) {
         this.activeComponent.option.barColor.splice(index, 1, row);
         done()
-      }
+      },
+      handleView() {
+        this.menuFlag = false;
+      },
+      handleBuild() {
+        this.dialogVisible = true;
+        this.$nextTick(() => {
+          this.CodeMirrorEditor = CodeMirror.fromTextArea(this.$refs.code, {
+            lineNumbers: true,
+            mode: 'application/json',
+            gutters: ['CodeMirror-lint-markers'],
+            theme: 'rubyblue',
+            lint: true
+          });
+          this.CodeMirrorEditor.setValue(JSON.stringify(this.list, null, 2))
+        })
+      },
     }
   })
 </script>
