@@ -1,19 +1,17 @@
 <template>
   <div class="avue-cell">
-    <van-cell :title="label" :class="{'van-cell--required':required}">
-      <van-switch
-        v-model="textLabel"
-        size="20px"
-        :disabled="disabled"
-        @change="handleSwitchChange"
-      />
+    <van-cell :title="label"
+              :class="{'van-cell--required':required}">
+      <van-switch v-model="textLabel"
+                  size="20px"
+                  :disabled="disabled"
+                  @change="handleSwitchChange" />
     </van-cell>
   </div>
 </template>
 
 <script>
 import create from "core/create";
-import { findByValue } from "utils/util";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 export default create({

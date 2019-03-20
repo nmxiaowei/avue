@@ -84,12 +84,12 @@ export const setPx = (val, defval = '') => {
  * 根据字典的value显示label
  */
 let result = '';
-export const findByValue = (dic, value, props, first) => {
+export const findByValue = (dic, value, props, isFirst, isTree) => {
   props = props || {};
   const labelKey = props.label || 'label';
   const valueKey = props.value || 'value';
   const childrenKey = props.children || 'children';
-  if (validatenull(first)) result = value;
+  if (validatenull(isFirst)) result = value;
   if (validatenull(dic)) return result;
   // 正常字典
   if (
@@ -102,10 +102,9 @@ export const findByValue = (dic, value, props, first) => {
         result = dic[i][labelKey];
         break;
       } else {
-        findByValue(dic[i][childrenKey], value, props, true);
+        findByValue(dic[i][childrenKey], value, props, true, isTree);
       }
     }
-
   } else if (value instanceof Array) {
     let index = 0;
     let count = 0;
@@ -114,6 +113,7 @@ export const findByValue = (dic, value, props, first) => {
       index = findArray(dic, value[count], valueKey);
       if (index !== -1) result.push(dic[index][labelKey]);
       else result.push(value[count]);
+      if (isTree) dic = dic[index][childrenKey];
       count++;
     }
     result = result.join(',').toString();

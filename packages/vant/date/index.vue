@@ -26,7 +26,6 @@
 <script>
 import dayjs from "dayjs";
 import create from "core/create";
-import { findByValue } from "utils/util";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { getDateValues } from "utils/date";
