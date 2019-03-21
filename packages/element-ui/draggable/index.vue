@@ -20,6 +20,11 @@
            @mousedown.stop="goLink(item,'mousedown',$event)"
            @mousemove.stop="goLink(item,'mousemove',$event)"
            @mouseup="goLink(item,'mouseup',$event)"></div>
+      <div :class="b('menu')"
+           v-show="active || overActive">
+        <slot name="menu"
+              :index="index"></slot>
+      </div>
       <div :class="b('item')"
            ref="item">
         <slot></slot>
@@ -107,8 +112,8 @@ export default create({
       return {
         top: this.setPx(this.baseTop),
         left: this.setPx(this.baseLeft),
-        width: this.setPx(this.baseWidth + 20),
-        height: this.setPx(this.baseHeight + 20),
+        width: this.setPx(this.baseWidth),
+        height: this.setPx(this.baseHeight),
         zIndex: this.zIndex
       };
     }

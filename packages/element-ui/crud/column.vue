@@ -88,7 +88,7 @@
                             v-if="scope.row[column.prop]"></avue-img>
                 </template>
                 <span v-else-if="['color'].includes(column.type)">
-                  <i class="avue-crud__color')"
+                  <i class="avue-crud__color"
                      :style="{backgroundColor:scope.row[column.prop]}"></i>
                 </span>
                 <span v-else-if="['icon-select'].includes(column.type)">

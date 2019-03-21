@@ -26,6 +26,8 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.19.2/vuedraggable.umd.min.js"></script>
   <script src="./js/colorOption.js"></script>
   <script src="./js/listOption.js"></script>
+  <script src="./js/dicOption.js"></script>
+  <script src="./js/baseList.js"></script>
   <script src="../../../lib/avue.js"></script>
 </head>
 
@@ -36,9 +38,17 @@
         <textarea ref="code" name="code"></textarea>
       </div>
     </el-dialog>
-    <div class="top">
-      <el-button type="primary" @click="menuFlag=true" v-show="!menuFlag" size="small">还 原</el-button>
-    </div>
+    <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <el-submenu :index="index+''" v-for="(item,index) in baseList" :key="index">
+        <template slot="title">{{item.label}}</template>
+        <el-menu-item @click="addCompoment(citem.option)" :index=`${index}-${cindex}`
+          v-for="(citem,cindex) in item.children">{{citem.label}}</el-menu-item>
+      </el-submenu>
+      <el-menu-item @click="menuFlag=true" v-show="!menuFlag">还原</el-menu-item>
+      <el-menu-item @click="handleView" v-show="menuFlag">预览</el-menu-item>
+      <el-menu-item @click="handleBuild">生成数据</el-menu-item>
+
+    </el-menu>
     <div class="app" :class="{'app--none':!menuFlag}">
       <div class="menu" v-show="menuFlag">
         <p class="title">图层</p>
@@ -54,29 +64,52 @@
           <div class="container" :style="styleName" ref="container">
             <div class="grade" @mousedown.stop.self="handleMouseDown" v-if="gradeFlag || config.gradeShow"
               :style="gradeLenStyle"></div>
-            <avue-draggable :disabled="!menuFlag" :ref="'item_'+index" :step="2" @focus="handleFocus"
+            <avue-draggable v-if="relaod" :disabled="!menuFlag" :ref="'item_'+index" :step="2" @focus="handleFocus"
               @postion="handlePostion" @resize="handleResize" @blur="handleBlur" @change="handleChange" :index="index"
               :z-index="item.zIndex" v-for="(item,index) in list" :width="item.component.width"
               :height="item.component.height" :key="index" :top="item.top" :left="item.left">
-              <img v-if="['img'].includes(item.component.prop)" :src="item.component.value" draggable="false" />
+              <img v-if="['img'].includes(item.component.prop)" :src="item.data" draggable="false" />
               <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
-                {{item.component.value}}</div>
-              <component :id="'component_'+index" v-else :is="item.component.name" :component="item.component"
-                :data="item.component.data" :option="item.component.option">
+                {{item.data}}</div>
+              <component :id="'component_'+index" v-else :is="item.component.name" :data="item.data"
+                :option="item.component.option" :url="item.url" :time="item.time" :data-Type="item.dataType">
               </component>
+              <div slot-scope="scope" slot="menu">
+                <i class="el-icon-close" @click="handleDel(scope.index)"></i>
+                <i class="el-icon-document" @click="handleCopy(scope.index)"></i>
+              </div>
             </avue-draggable>
           </div>
         </div>
       </div>
       <div class="menu params" v-show="menuFlag">
         <p class="title">操作</p>
-        <template v-if="activeComponent.prop==='text'">
-          <el-form label-width="80px">
-            <el-form-item label="图层名称">
-              <avue-input v-model="activeObj.name"></avue-input>
+        <el-form label-width="80px">
+          <el-form-item label="图层名称" v-if="![undefined].includes(activeComponent.prop)">
+            <avue-input v-model="activeObj.name"></avue-input>
+          </el-form-item>
+          <template v-if="['flop','bar'].includes(activeComponent.prop)">
+            <el-form-item label="数据类型">
+              <avue-radio v-model="activeObj.dataType" :dic="dicOption.dataType"></avue-radio>
             </el-form-item>
+            <el-form-item label="数据值" v-if="activeObj.dataType===0">
+              <avue-input v-model="activeObj.data"></avue-input>
+            </el-form-item>
+            <template v-if="activeObj.dataType===1">
+              <el-form-item label="接口地址">
+                <avue-input v-model="activeObj.url"></avue-input>
+              </el-form-item>
+              <el-form-item label="刷新时间">
+                <avue-input-number v-model="activeObj.time">
+                </avue-input-number>
+              </el-form-item>
+
+            </template>
+
+          </template>
+          <template v-if="activeComponent.prop==='text'">
             <el-form-item label="文本内容">
-              <avue-input v-model="activeComponent.value"></avue-input>
+              <avue-input v-model="activeObj.data"></avue-input>
             </el-form-item>
             <el-form-item label="字体大小">
               <avue-silder v-model="activeComponent.style.fontSize"></avue-silder>
@@ -88,38 +121,25 @@
               <avue-color v-model="activeComponent.style.backgroundColor"></avue-color>
             </el-form-item>
             <el-form-item label="文字粗细">
-              <avue-select v-model="activeComponent.style.fontWeight"
-                :dic="[{label:'normal',value:'normal'},{label:'bold',value:'bold'},{label:'bolder',value:'bolder'},{label:'ligter',value:'ligter'}]">
+              <avue-select v-model="activeComponent.style.fontWeight" :dic="dicOption.fontWeight">
               </avue-select>
             </el-form-item>
             <el-form-item label="对齐方式">
-              <avue-select v-model="activeComponent.style.textAlign"
-                :dic="[{label:'居中',value:'center'},{label:'左对齐',value:'left'},{label:'右对齐',value:'right'}]">
+              <avue-select v-model="activeComponent.style.textAlign" :dic="dicOption.textAlign">
               </avue-select>
             </el-form-item>
-          </el-form>
-        </template>
-        <template v-else-if="activeComponent.prop==='img'">
-          <el-form label-width="80px">
-            <el-form-item label="图层名称">
-              <avue-input v-model="activeObj.name"></avue-input>
-            </el-form-item>
+          </template>
+          <template v-else-if="activeComponent.prop==='img'">
             <el-form-item label="缩略图">
-              <img :src="activeComponent.value" alt="" width="100%" />
+              <img :src="activeObj.data" alt="" width="100%" />
             </el-form-item>
             <el-form-item label="图片地址">
-              <avue-input v-model="activeComponent.value"></avue-input>
+              <avue-input v-model="activeObj.data"></avue-input>
             </el-form-item>
-          </el-form>
-        </template>
-        <template v-else-if="activeComponent.prop==='progress'">
-          <el-form label-width="80px">
-            <el-form-item label="图层名称">
-              <avue-input v-model="activeObj.name"></avue-input>
-            </el-form-item>
+          </template>
+          <template v-else-if="activeComponent.prop==='progress'">
             <el-form-item label="类型">
-              <avue-radio v-model="activeComponent.option.type"
-                :dic="[{label:'线条',value:'line'},{label:'圆环',value:'circle'}]">
+              <avue-radio v-model="activeComponent.option.type" :dic="dicOption.line">
                 </avue-select>
             </el-form-item>
             <el-form-item label="字体大小">
@@ -132,20 +152,14 @@
               <avue-color v-model="activeComponent.option.color"></avue-color>
             </el-form-item>
             <el-form-item label="文字粗细">
-              <avue-select v-model="activeComponent.option.fontWeight"
-                :dic="[{label:'normal',value:'normal'},{label:'bold',value:'bold'},{label:'bolder',value:'bolder'},{label:'ligter',value:'ligter'}]">
+              <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
               </avue-select>
             </el-form-item>
             <el-form-item label="边框颜色">
               <avue-color v-model="activeComponent.option.borderColor"></avue-color>
             </el-form-item>
-          </el-form>
-        </template>
-        <template v-else-if="activeComponent.prop==='flop'">
-          <el-form label-width="80px">
-            <el-form-item label="图层名称">
-              <avue-input v-model="activeObj.name"></avue-input>
-            </el-form-item>
+          </template>
+          <template v-else-if="activeComponent.prop==='flop'">
             <el-form-item label="字体大小">
               <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
             </el-form-item>
@@ -156,19 +170,14 @@
               <avue-silder v-model="activeComponent.option.split"></avue-silder>
             </el-form-item>
             <el-form-item label="文字粗细">
-              <avue-select v-model="activeComponent.option.fontWeight"
-                :dic="[{label:'normal',value:'normal'},{label:'bold',value:'bold'},{label:'bolder',value:'bolder'},{label:'ligter',value:'ligter'}]">
+              <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
               </avue-select>
             </el-form-item>
             <el-form-item label="边框">
-              <avue-radio v-model="activeComponent.option.type"
-                :dic="[{label:'无边框',value:''},{label:'内置图片',value:'img'},{label:'内置边框',value:'border'}]">
+              <avue-radio v-model="activeComponent.option.type" :dic="dicOption.border">
                 </avue-select>
             </el-form-item>
             <template v-if="activeComponent.option.type==='img'">
-              <el-form-item label="图层名称">
-                <avue-input v-model="activeObj.name"></avue-input>
-              </el-form-item>
               <el-form-item label="背景图片">
                 <img :src="item" v-for="(item,index) in activeComponent.list" :key="index"
                   @click="activeComponent.option.backgroundImage=item">
@@ -189,8 +198,7 @@
               <avue-input v-model="activeComponent.option.prefixText"></avue-input>
             </el-form-item>
             <el-form-item label="对其方式">
-              <avue-select v-model="activeComponent.option.prefixTextAlign"
-                :dic="[{label:'居中',value:'center'},{label:'左对齐',value:'left'},{label:'右对齐',value:'right'}]">
+              <avue-select v-model="activeComponent.option.prefixTextAlign" :dic="dicOption.textAlign">
               </avue-select>
             </el-form-item>
             <el-form-item label="间距">
@@ -206,8 +214,7 @@
               <avue-input v-model="activeComponent.option.suffixText"></avue-input>
             </el-form-item>
             <el-form-item label="对其方式">
-              <avue-select v-model="activeComponent.option.suffixTextAlign"
-                :dic="[{label:'居中',value:'center'},{label:'左对齐',value:'left'},{label:'右对齐',value:'right'}]">
+              <avue-select v-model="activeComponent.option.suffixTextAlign" :dic="dicOption.textAlign">
               </avue-select>
             </el-form-item>
             <el-form-item label="间距">
@@ -219,16 +226,8 @@
             <el-form-item label="字体大小">
               <avue-silder v-model="activeComponent.option.suffixFontSize" :max="200"></avue-silder>
             </el-form-item>
-          </el-form>
-        </template>
-        <template v-else-if="activeComponent.prop==='bar'">
-          <el-form label-width="80px">
-            <el-form-item label="图层名称">
-              <avue-input v-model="activeObj.name"></avue-input>
-            </el-form-item>
-            <el-form-item label="数据刷新">
-              <avue-input v-model="activeComponent.option.refreshTime"></avue-input>
-            </el-form-item>
+          </template>
+          <template v-else-if="activeComponent.prop==='bar'">
             <el-form-item label="标题">
               <avue-input type="textarea" v-model="activeComponent.option.title"></avue-input>
             </el-form-item>
@@ -238,9 +237,8 @@
             <el-form-item label="标题颜色">
               <avue-color v-model="activeComponent.option.titleColor"></avue-color>
             </el-form-item>
-            <el-form-item label="标题对其">
-              <avue-select v-model="activeComponent.option.titlePostion"
-                :dic="[{label:'居中',value:'center'},{label:'左对齐',value:''},{label:'右对齐',value:'right'}]">
+            <el-form-item label="标题对齐">
+              <avue-select v-model="activeComponent.option.titlePostion" :dic="dicOption.textAlign">
               </avue-select>
             </el-form-item>
             <el-form-item label="标题隐藏">
@@ -258,10 +256,8 @@
             </el-form-item>
             <avue-crud :option="colorOption" :data="activeComponent.option.barColor" @row-save="rowSave"
               @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
-          </el-form>
-        </template>
-        <template v-else>
-          <el-form label-width="80px">
+          </template>
+          <template v-else>
             <el-form-item label="大屏名称">
               <avue-input v-model="config.name"></avue-input>
             </el-form-item>
@@ -286,12 +282,8 @@
             <el-form-item label="网格间距">
               <avue-input-number v-model="config.gradeLen"></avue-input-number>
             </el-form-item>
-            <el-form-item label="生成代码">
-              <el-button type="primary" @click="handleBuild" size="small">生 成</el-button>
-              <el-button @click="handleView" size="small">预 览</el-button>
-            </el-form-item>
-          </el-form>
-        </template>
+          </template>
+        </el-form>
       </div>
     </div>
   </div>
@@ -301,11 +293,14 @@
     el: '#app',
     data() {
       return {
+        baseList: baseList,
         menuFlag: true,
         dialogVisible: false,
         CodeMirrorEditor: {},
         gradeFlag: false,
+        relaod: true,
         form: {},
+        dicOption: dicOption,
         colorOption: colorOption,
         config: {
           name: 'avuex数据大屏',
@@ -434,6 +429,35 @@
       handleBlur() {
         this.gradeFlag = false;
       },
+      handleDel(index) {
+        const obj = this.list[index]
+        this.$confirm(`是否删除<<${obj.name}>>图层?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.list.splice(index, 1);
+          this.relaod = false;
+          this.$nextTick(() => {
+            this.relaod = true;
+          })
+        }).catch(() => {
+
+        });
+
+      },
+      handleCopy(index) {
+        const obj = this.list[index]
+        this.$confirm(`是否复制<<${obj.name}>>图层?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.addCompoment(obj);
+        }).catch(() => {
+
+        });
+      },
       handleResize({ index, width, height }) {
         const ele = this.list[index].component.option;
         if (['bar', 'progress'].includes(this.activeComponent.prop)) {
@@ -457,6 +481,12 @@
       rowUpdate(row, index, done) {
         this.activeComponent.option.barColor.splice(index, 1, row);
         done()
+      },
+      addCompoment(option) {
+        option.left = 0;
+        option.top = 0;
+        option.zIndex = this.list.length;
+        this.list.push(option);
       },
       handleView() {
         this.menuFlag = false;

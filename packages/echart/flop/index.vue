@@ -23,7 +23,7 @@ export default create({
       return this.option.type;
     },
     text() {
-      return this.data + "".split("");
+      return this.dataChart + "".split("");
     },
     prefixStyle() {
       return {

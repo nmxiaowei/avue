@@ -4,13 +4,16 @@ var list = [{
   "top": 276,
   "left": 536,
   "zIndex": 1,
+  "dataType": 1,
+  "time": 4000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/bar',
+  "data": {},
   "component": {
     "width": 1200,
     "height": 600,
     "name": "avue-echart-bar",
     "prop": "bar",
     "option": {
-      "refreshTime": 5000,
       "title": "2019年度潍坊城市销售额排名",
       "titlePostion": "",
       "titleFontSize": 24,
@@ -54,16 +57,6 @@ var list = [{
       }],
       "barMinHeight": 2
     },
-    "data": {
-      "categories": ["北京", "上海", "杭州", "深圳", "杭州", "深圳", "广州", "连云港"],
-      "series": [{
-        "name": "手机品牌",
-        "data": [1131776, 1349011, 905718, 1349011, 905718, 656020, 571234, 467397]
-      }, {
-        "name": "其他手机品牌",
-        "data": [1131776, 1349011, 905718, 1349011, 905718, 656020, 571234, 467397]
-      }]
-    }
   },
   "index": 0
 }, {
@@ -72,12 +65,12 @@ var list = [{
   "top": 0,
   "left": 115,
   "zIndex": 13,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-2.png",
   "component": {
     "width": 1700,
     "height": 146,
     "name": "img",
     "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-2.png"
   },
   "index": 1
 }, {
@@ -86,12 +79,12 @@ var list = [{
   "top": 900,
   "left": 115,
   "zIndex": 12,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-1.png",
   "component": {
     "width": 1700,
     "height": 146,
     "name": "img",
     "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-1.png"
   },
   "index": 2
 }, {
@@ -100,10 +93,10 @@ var list = [{
   "top": 20,
   "left": 20,
   "zIndex": 11,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-8.png",
   "component": {
     "name": "img",
     "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-8.png "
   },
   "index": 3
 }, {
@@ -112,12 +105,12 @@ var list = [{
   "top": 344,
   "left": 10,
   "zIndex": 10,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-4.png",
   "component": {
     "width": 80,
     "height": 80,
     "name": "img",
-    "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-4.png"
+    "prop": "img"
   },
   "index": 4
 }, {
@@ -126,12 +119,12 @@ var list = [{
   "top": 340,
   "left": 230,
   "zIndex": 9,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-5.png",
   "component": {
     "width": 80,
     "height": 80,
     "name": "img",
     "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-5.png"
   },
   "index": 5
 }, {
@@ -140,12 +133,12 @@ var list = [{
   "top": 479,
   "left": 10,
   "zIndex": 8,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-6.png",
   "component": {
     "width": 80,
     "height": 80,
     "name": "img",
     "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-6.png"
   },
   "index": 6
 }, {
@@ -154,12 +147,12 @@ var list = [{
   "top": 481,
   "left": 232,
   "zIndex": 7,
+  "data": "https://sugar.bce.baidu.com/static/img-templet/pic-7.png",
   "component": {
     "width": 80,
     "height": 80,
     "name": "img",
     "prop": "img",
-    "value": "https://sugar.bce.baidu.com/static/img-templet/pic-7.png"
   },
   "index": 7
 }, {
@@ -168,12 +161,14 @@ var list = [{
   "top": 230,
   "left": 1140,
   "zIndex": 6,
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count',
   "component": {
     "width": 750,
     "height": 120,
     "name": "avue-echart-flop",
     "prop": "flop",
-    "data": "1201009,2",
     "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
     "option": {
       "type": "img",
@@ -194,12 +189,13 @@ var list = [{
   "top": 344,
   "left": 100,
   "zIndex": 5,
+  "data": "71.9",
+  'dataType': 0,
   "component": {
     "width": 230,
     "height": 100,
     "name": "avue-echart-flop",
     "prop": "flop",
-    "data": "71.9",
     "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
     "option": {
       "type": "",
@@ -225,12 +221,13 @@ var list = [{
   "top": 346,
   "left": 320,
   "zIndex": 4,
+  'dataType': 0,
+  "data": "16.24",
   "component": {
     "width": 230,
     "height": 100,
     "name": "avue-echart-flop",
     "prop": "flop",
-    "data": "16.24",
     "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
     "option": {
       "type": "",
@@ -256,12 +253,13 @@ var list = [{
   "top": 478,
   "left": 102,
   "zIndex": 3,
+  "dataType": 0,
+  "data": "10.5",
   "component": {
     "width": 230,
     "height": 100,
     "name": "avue-echart-flop",
     "prop": "flop",
-    "data": "10.5",
     "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
     "option": {
       "type": "",
@@ -287,12 +285,13 @@ var list = [{
   "top": 478,
   "left": 322,
   "zIndex": 2,
+  "dataType": 0,
+  "data": "75",
   "component": {
     "width": 230,
     "height": 100,
     "name": "avue-echart-flop",
     "prop": "flop",
-    "data": "75",
     "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
     "option": {
       "type": "",
@@ -318,10 +317,10 @@ var list = [{
   "top": 14,
   "left": 702,
   "zIndex": 26,
+  "data": "avuex数据大屏实时展示",
   "component": {
     "width": 490,
     "height": 50,
-    "value": "avuex数据大屏实时展示",
     "style": {
       "textAlign": "center",
       "fontSize": 40,
@@ -338,10 +337,10 @@ var list = [{
   "top": 120,
   "left": 1122,
   "zIndex": 25,
+  "data": "电商数据",
   "component": {
     "width": 100,
     "height": 50,
-    "value": "电商数据",
     "style": {
       "textAlign": "center",
       "fontSize": 22,
@@ -358,10 +357,10 @@ var list = [{
   "top": 120,
   "left": 1250,
   "zIndex": 24,
+  "data": "Sell Data",
   "component": {
     "width": 100,
     "height": 50,
-    "value": "Sell Data",
     "style": {
       "textAlign": "center",
       "fontSize": 20,
@@ -378,10 +377,10 @@ var list = [{
   "top": 276,
   "left": 15,
   "zIndex": 23,
+  "data": "数据统计",
   "component": {
     "width": 100,
     "height": 50,
-    "value": "数据统计",
     "style": {
       "textAlign": "center",
       "fontSize": 22,
@@ -398,10 +397,10 @@ var list = [{
   "top": 278,
   "left": 350,
   "zIndex": 22,
+  "data": "Statistics Data",
   "component": {
     "width": 150,
     "height": 50,
-    "value": "Statistics Data",
     "style": {
       "textAlign": "center",
       "fontSize": 20,
@@ -418,10 +417,10 @@ var list = [{
   "top": 124,
   "left": 320,
   "zIndex": 21,
+  "data": "完成的百分比",
   "component": {
     "width": 150,
     "height": 50,
-    "value": "完成的百分比",
     "style": {
       "textAlign": "center",
       "fontSize": 20,
@@ -438,10 +437,10 @@ var list = [{
   "top": 180,
   "left": 1104,
   "zIndex": 20,
+  "data": "销售量",
   "component": {
     "width": 100,
     "height": 50,
-    "value": "销售量",
     "style": {
       "textAlign": "center",
       "fontSize": 16,
@@ -458,10 +457,10 @@ var list = [{
   "top": 180,
   "left": 1760,
   "zIndex": 19,
+  "data": "万元",
   "component": {
     "width": 100,
     "height": 50,
-    "value": "万元",
     "style": {
       "textAlign": "center",
       "fontSize": 16,
@@ -478,10 +477,10 @@ var list = [{
   "top": 646,
   "left": 15,
   "zIndex": 18,
+  "data": "交易统计",
   "component": {
     "width": 100,
     "height": 50,
-    "value": "交易统计",
     "style": {
       "textAlign": "center",
       "fontSize": 22,
@@ -498,10 +497,10 @@ var list = [{
   "top": 650,
   "left": 350,
   "zIndex": 17,
+  "data": "Count Data",
   "component": {
     "width": 150,
     "height": 50,
-    "value": "Count Data",
     "style": {
       "textAlign": "center",
       "fontSize": 20,
@@ -518,14 +517,14 @@ var list = [{
   "top": 736,
   "left": 40,
   "zIndex": 16,
+  "data": {
+    "label": "订单交易",
+    "value": 300,
+    "data": 30
+  },
   "component": {
     "width": 200,
     "height": 200,
-    "data": {
-      "label": "订单交易",
-      "value": 300,
-      "data": 30
-    },
     "option": {
       "width": 200,
       "type": "circle",
@@ -546,14 +545,14 @@ var list = [{
   "top": 738,
   "left": 300,
   "zIndex": 15,
+  "data": {
+    "label": "人数增涨",
+    "value": 40,
+    "data": 80
+  },
   "component": {
     "width": 200,
     "height": 200,
-    "data": {
-      "label": "人数增涨",
-      "value": 40,
-      "data": 80
-    },
     "option": {
       "width": 200,
       "type": "circle",
@@ -574,14 +573,14 @@ var list = [{
   "top": 150,
   "left": 60,
   "zIndex": 14,
+  "data": {
+    "label": "人数增涨",
+    "value": 40,
+    "data": 80
+  },
   "component": {
     "width": 400,
     "height": 80,
-    "data": {
-      "label": "人数增涨",
-      "value": 40,
-      "data": 80
-    },
     "option": {
       "type": "line",
       "color": "rgba(154, 168, 212, 1)",

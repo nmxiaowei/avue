@@ -43,7 +43,17 @@
       cursor: move;
     }
   }
+  &__menu{
+    position: absolute;
+    top:-8px;
+    left: -8px;
+    background-color: #409EFF;
+    font-size: 25px;
+    color:#fff;
+    cursor: pointer;
+  }
   &__range{
+    $calcheight:-16px;
     position: absolute;
     width:12px;
     height: 12px;
@@ -54,7 +64,7 @@
         cursor:ew-resize 
       }
       top:50%;
-      right: -35px;
+      right: $calcheight;
       transform: translateY(-50%);
     }
     &--bottom{
@@ -62,7 +72,7 @@
         cursor: ns-resize
       }
       left: 50%;
-      bottom: -35px;
+      bottom: $calcheight;
       transform: translateX(-50%);
       
     }
@@ -70,8 +80,8 @@
       &:hover{
         cursor: nwse-resize
       }
-      bottom: -35px;
-      right: -35px;
+      bottom: $calcheight;
+      right:$calcheight;
     }
   }
 }

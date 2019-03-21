@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart">
+  <div class="avue-echart avue-echart-bar">
     <echart-title :title="option.title"
                   :color="option.titleColor"
                   :info="option.info"
@@ -22,7 +22,7 @@ export default create({
   },
   methods: {
     updateChart() {
-      const optionData = this.deepClone(this.data);
+      const optionData = this.deepClone(this.dataChart);
       const option = {
         tooltip: {},
         grid: {
