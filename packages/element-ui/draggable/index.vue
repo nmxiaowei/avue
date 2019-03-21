@@ -40,7 +40,7 @@ export default create({
     },
     step: {
       type: Number,
-      default: 0
+      default: 1
     },
     zIndex: {
       type: Number,

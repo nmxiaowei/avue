@@ -43,6 +43,9 @@
       <template slot-scope="scope" slot="nameForm">
         <el-tag :size="scope.size">{{ scope.label }}</el-tag>
       </template>
+      <template slot-scope="scope" slot="name">
+        <el-tag :size="scope.size">{{ scope.label }}</el-tag>
+      </template>
       <template slot="tip">
         <el-button type="text" size="small">
           自定义按钮
@@ -121,8 +124,8 @@
               prop: 'name',
               width: 140,
               type: 'select',
-              fixed: 'left',
               formslot: true,
+              slot: true,
               renderHeader: (h, { column, $index }) => {
                 return h('el-tag', column.label);
               },
@@ -464,6 +467,16 @@
           {
             id: '2',
             name: '1',
+            dic: '110000',
+            switch: 0,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            datetime: '2019-01-01 00:00:00'
+          },
+          {
+            id: '2',
+            name: '0',
             dic: '110000',
             switch: 0,
             sum: 15,

@@ -8,6 +8,7 @@
              :width="$parent.isMobile?'100%':config.dialogWidth"
              :visible.sync="columnBox">
     <avue-checkbox v-model="columnIndex"
+                   @change="handleChange"
                    :dic="columnList"
                    :props="defaultProps"></avue-checkbox>
   </el-dialog>
@@ -32,31 +33,32 @@ export default create({
   },
   created() {},
   methods: {
-    columnInit: function() {
-      const safe = this;
+    handleChange() {
+      this.$parent.doLayout = false;
+      this.$nextTick(() => {
+        this.$parent.doLayout = true;
+        this.$parent.$refs.table.doLayout();
+      });
+    },
+    columnInit() {
       this.columnIndex = [];
       this.columnList = [];
-      function addChild(list) {
-        list.forEach((ele, index) => {
-          const children = ele.children;
-          if (!validatenull(children)) {
-            safe.tableOption.columnBtn = false;
-            addChild(children);
-          }
-          if (!safe.vaildData(ele.hide, false)) {
-            safe.columnIndex.push(ele.prop);
-            if (safe.vaildData(ele.showColumn, true)) {
-              let obj = {
-                label: ele.label,
-                prop: ele.prop,
-                index: index
-              };
-              safe.columnList.push(safe.deepClone(obj));
-            }
-          }
-        });
+      if (this.$parent.isChild) {
+        this.$parent.tableOption.columnBtn = false;
       }
-      addChild(this.$parent.columnOption);
+      this.$parent.propOption.forEach((ele, index) => {
+        if (!this.vaildData(ele.hide, false)) {
+          this.columnIndex.push(ele.prop);
+          if (this.vaildData(ele.showColumn, true)) {
+            let obj = {
+              label: ele.label,
+              prop: ele.prop,
+              index: index
+            };
+            this.columnList.push(this.deepClone(obj));
+          }
+        }
+      });
     }
   }
 });

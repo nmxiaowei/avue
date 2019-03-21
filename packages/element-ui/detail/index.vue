@@ -46,6 +46,7 @@
 <script>
 import create from "core/create";
 import init from "../../core/crud/init.js";
+import { detail } from "core/detail";
 import { calcCount, calcCascader } from "core/dataformat";
 export default create({
   name: "detail",
@@ -112,12 +113,12 @@ export default create({
       });
     },
     handleDetail(column, option, DIC) {
-      if (!this.validatenull(DIC)) {
-        const result = this.detail(this.form, column, option, DIC);
+      let result = this.form[column.prop];
+      if (result) {
+        result = detail(this.form, column, option, DIC);
         this.form["$" + column.prop] = result;
         return result;
       }
-      return this.form[column.prop];
     }
   }
 });

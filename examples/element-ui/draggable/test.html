@@ -20,7 +20,12 @@
 
 <body>
   <div id="app">
-    <avue-detail :option="option" v-model="form"></avue-detail>
+    <div style="position:relative;height:400px;">
+      <avue-draggable>
+        <div style="width:200px;height:200px;background:red">
+        </div>
+      </avue-draggable>
+    </div>
   </div>
 </body>
 
@@ -28,33 +33,6 @@
 
 <script>
   new Vue({
-    el: '#app',
-    data() {
-      return {
-        form: {
-          text1: '文本1',
-          text2: '文本2',
-          text3: new Date().getTime(),
-        },
-        option: {
-          icon: 'el-icon-info',
-          label: '分组',
-          prop: 'group',
-          column: [{
-            label: '内容1',
-            prop: 'text1',
-          }, {
-            label: '选项卡2',
-            prop: 'text2',
-          }, {
-            label: '选项卡3',
-            prop: 'text3',
-            type: 'datetime',
-            format: 'yyyy-MM-dd hh:mm:ss',
-            valueFormat: 'timestamp'
-          },]
-        }
-      }
-    }
+    el: '#app'
   })
 </script>

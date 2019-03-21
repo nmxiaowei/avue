@@ -5,7 +5,6 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop || column.value];
   let type = column.type;
   if (validatenull(result)) result = '';
-
   if (column.dataType === 'string') result = result.split(',');
   // 日期处理
   if (

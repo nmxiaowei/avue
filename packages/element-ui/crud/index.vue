@@ -109,94 +109,18 @@
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>
-
-      <el-table-column v-for="(column,index) in columnOption"
-                       :prop="column.prop"
-                       :key="column.prop"
-                       filter-placement="bottom-end"
-                       :filters="handleFilters(column)"
-                       :filter-method="column.filter? handleFiltersMethod : undefined"
-                       :filter-multiple="vaildData(column.filterMultiple,true)"
-                       :show-overflow-tooltip="column.overHidden"
-                       :min-width="column.minWidth"
-                       :sortable="column.sortable"
-                       :render-header="column.renderHeader"
-                       :align="column.align || tableOption.align"
-                       :header-align="column.headerAlign || tableOption.headerAlign"
-                       :width="column.width"
-                       :label="column.label"
-                       :fixed="isMobile?false:column.fixed"
-                       v-if="(($refs.dialogColumn || []).columnIndex || []).includes(column.prop)">
-        <template slot-scope="scope">
-          <span v-if="index === 0"
-                v-for="space in scope.row._level"
-                class="ms-tree-space"
-                :key="space"></span>
-          <span class="tree-ctrl"
-                v-if="iconShow(index,scope.row)"
-                @click="toggleExpanded(scope.row,scope.$index)">
-            <i v-if="!scope.row._expand"
-               class="el-icon-plus"></i>
-            <i v-else
-               class="el-icon-minus"></i>
-          </span>
-          <span :class="{'ms-tree-title':index===0}">
-            <template v-if="cellEditFlag(scope.row,column)">
-              <component :is="getSearchType(column.type)"
-                         size="mini"
-                         v-model="scope.row[column.prop]"
-                         :type="getType(column)"
-                         :disabled="btnDisabled"
-                         :props="column.props || tableOption.props"
-                         :format="column.format"
-                         :parent="column.parent"
-                         :defaultExpandAll="column.defaultExpandAll"
-                         :filterable="column.searchFilterable"
-                         :filter-method="column.searchFilterMethod"
-                         :value-format="column.valueFormat"
-                         :multiple="column.multiple"
-                         :clearable="vaildData(column.clearable,false)"
-                         :placeholder="column.searchPlaceholder || column.label"
-                         @change="column.cascader?handleChange(index,scope.row):''"
-                         :dic="(cascaderDIC[scope.row.$index] || {})[column.prop] || DIC[column.prop]"></component>
-            </template>
-            <slot :row="scope.row"
-                  :dic="DIC[column.prop]"
-                  :size="isMediumSize"
-                  :label="handleShowLabel(scope.row,column,DIC[column.prop])"
-                  :name="column.prop"
-                  v-else-if="column.slot"></slot>
-            <template v-else-if="column.type==='upload'">
-              <avue-img :align="column.align"
-                        :listType="column.listType"
-                        :imgWidth="column.imgWidth"
-                        :fullscreen="column.imgFullscreen"
-                        :imgHeight="column.imgHeight"
-                        :imgType="column.imgType"
-                        :type="menuText()"
-                        :dataType="column.dataType"
-                        :size="isMediumSize"
-                        :value="scope.row[column.prop]"
-                        v-if="scope.row[column.prop]"></avue-img>
-            </template>
-            <template v-else>
-              <span v-if="[undefined,'number'].includes(column.type)">
-                {{scope.row[column.prop]}}
-              </span>
-              <span v-else-if="column.parentProp">{{handleDetail(scope.row,column,(cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
-              <span v-else-if="['color'].includes(column.type)">
-                <i :class="b('color')"
-                   :style="{backgroundColor:scope.row[column.prop]}"></i>
-              </span>
-              <span v-else-if="['icon-select'].includes(column.type)">
-                <i :class="[b('icon-select'),scope.row[column.prop]]"></i>
-              </span>
-              <span v-else
-                    v-html="handleDetail(scope.row,column,DIC[column.prop])"></span>
-            </template>
-          </span>
+      <column :columnOption="columnOption"
+              v-if="doLayout">
+        <template v-for="(item,index) in propOption"
+                  slot-scope="scope"
+                  :slot="item.prop">
+          <slot :row="scope.row"
+                :dic="scope.dic"
+                :size="scope.size"
+                :label="scope.label"
+                :name="item.prop"></slot>
         </template>
-      </el-table-column>
+      </column>
       <el-table-column fixed="right"
                        v-if="vaildData(tableOption.menu,config.menu) && printKey"
                        :label="t('crud.menu')"
@@ -318,6 +242,7 @@ import init from "../../core/crud/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
 import locale from "../../core/common/locale";
+import column from "./column";
 import headerMenu from "./header-menu";
 import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
@@ -325,13 +250,18 @@ import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
-import { sendDic } from "core/dic";
-import { getSearchType, getType, calcCascader } from "core/dataformat";
+import { calcCascader } from "core/dataformat";
 
 export default create({
   name: "crud",
-  mixins: [init(), locale],
+  mixins: [init("crud"), locale],
+  provide() {
+    return {
+      crud: this
+    };
+  },
   components: {
+    column,
     tablePage, //分页
     headerSearch, //搜索
     headerMenu, //菜单头部
@@ -342,6 +272,9 @@ export default create({
   },
   data() {
     return {
+      doLayout: true,
+      treeProp: "",
+      isChild: false,
       searchForm: {},
       config: config,
       list: [],
@@ -359,8 +292,6 @@ export default create({
     };
   },
   created() {
-    //初始化全局方法
-    this.getType = getType;
     // 初始化数据
     this.dataInit();
     // 规则初始化
@@ -368,10 +299,30 @@ export default create({
     //初始化字典
     this.handleLoadDic();
   },
-  mounted() {
-    this.getSearchType = getSearchType;
-  },
   computed: {
+    propOption() {
+      let result = [];
+      const safe = this;
+      function findProp(list) {
+        list.forEach(ele => {
+          if (ele.prop) {
+            result.push(ele);
+          }
+          if (ele.children) {
+            safe.isChild = true;
+            findProp(ele.children);
+          }
+        });
+      }
+      findProp(this.columnOption);
+      if (this.isChild) {
+        result = calcCascader(result);
+      } else {
+        result = calcCascader(this.columnOption);
+      }
+      if (this.isTree) this.treeProp = result[0].prop;
+      return result;
+    },
     isGroup() {
       return !this.validatenull(this.tableOption.group);
     },
@@ -382,14 +333,13 @@ export default create({
       let list = [];
       if (this.isGroup) {
         this.groupOption.forEach(ele => {
-          if (ele.column) {
-            ele.column.forEach(column => {
-              list.push(column);
-            });
-          }
+          if (!ele.column) return;
+          ele.column.forEach(column => {
+            list.push(column);
+          });
         });
       } else {
-        list = this.columnOption;
+        list = this.propOption;
       }
       return list;
     },
@@ -424,8 +374,7 @@ export default create({
       return this.tableOption || {};
     },
     columnOption() {
-      let list = calcCascader(this.tableOption.column || []);
-      return list;
+      return this.tableOption.column || [];
     },
     sumColumnList() {
       return this.tableOption.sumColumnList || [];
@@ -453,7 +402,7 @@ export default create({
       },
       deep: true
     },
-    columnOption() {
+    propOption() {
       this.$refs.dialogColumn.columnInit();
     },
     data() {
@@ -528,15 +477,6 @@ export default create({
         ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
         : "display:none;";
     },
-    // 图标显示
-    iconShow(index, record) {
-      return index === 0 && record.children && record.children.length > 0;
-    },
-    // 切换下级是否展开
-    toggleExpanded(row, index) {
-      row._expand = !row._expand;
-      this.$set(this.list, index, row);
-    },
     //对部分表单字段进行校验的方法
     validateField(val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
@@ -545,113 +485,12 @@ export default create({
       const idKey = row[this.idKey];
       return idKey;
     },
-    handleChange(index, row) {
-      const columnOption = [...this.columnOption];
-      //本节点;
-      const column = columnOption[index];
-      const list = column.cascader;
-      const value = row[column.prop];
-      const rowIndex = row.$index;
-      // 下一个节点
-      const columnNext = columnOption[index + 1];
-      const columnNextProp = columnNext.prop;
-
-      //最后一级
-      if (
-        this.validatenull(list) ||
-        this.validatenull(value) ||
-        this.validatenull(columnNext)
-      ) {
-        return;
-      }
-      // 如果本节点没有字典则创建节点数组
-      if (this.validatenull(this.cascaderDIC[rowIndex])) {
-        this.$set(this.cascaderDIC, rowIndex, {});
-      }
-      // 如果存在队列中则清空字典和值
-      if (this.formIndexList.includes(rowIndex)) {
-        //清空子类字典
-        list.forEach(ele => {
-          this.$set(this.cascaderDIC[rowIndex], ele.prop, []);
-          list.forEach(ele => (row[ele] = ""));
-        });
-      }
-
-      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
-        res => {
-          // 修改字典
-          const dic = Array.isArray(res) ? res : [];
-          this.$set(this.cascaderDIC[rowIndex], columnNextProp, dic);
-          /**
-           * 1.是change多级默认联动
-           * 2.字典不为空
-           * 3.非首次加载
-           */
-          if (
-            !this.validatenull(dic) &&
-            this.formIndexList.includes(rowIndex)
-          ) {
-            //取字典的指定项或则第一项
-            let dicvalue = dic[columnNext.defaultIndex || 0];
-            if (!dicvalue) dicvalue = dic[0];
-            if (dicvalue) {
-              this.form[columnNext.prop] =
-                dicvalue[
-                  (columnNext.props || this.parentOption.props || {}).value ||
-                    "value"
-                ];
-            }
-          }
-        }
-      );
-    },
-    handleShowLabel(row, column, DIC) {
-      let result = "";
-      if (!this.validatenull(DIC)) {
-        result = this.detail(row, column, this.tableOption, DIC);
-        row["$" + column.prop] = result;
-      }
-      return result;
-    },
-    handleDetail(row, column, DIC) {
-      let result = row[column.prop];
-      result = this.detail(row, column, this.tableOption, DIC);
-      if (!this.validatenull(DIC)) {
-        row["$" + column.prop] = result;
-      }
-      return result;
-    },
     rulesInit() {
       this.formRules = {};
-      this.columnOption.forEach(ele => {
+      this.propOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
         if (ele.rules && ele.cell) this.formCellRules[ele.prop] = ele.rules;
       });
-    },
-    cellEditFlag(row, column) {
-      return (
-        row.$cellEdit &&
-        [
-          undefined,
-          "select",
-          "radio",
-          "checkbox",
-          "cascader",
-          "number",
-          "switch",
-          "input",
-          "tree",
-          "dates",
-          "date",
-          "datetime",
-          "week",
-          "month",
-          "year",
-          "phone"
-        ].includes(column.type) &&
-        column.slot !== true &&
-        column.cell
-      );
     },
     menuIcon(value) {
       return this.menuType === "icon" ? "" : this.t("crud." + value);
@@ -707,33 +546,6 @@ export default create({
         page: this.defaultPage,
         searchForm: this.searchForm
       });
-    },
-    //表格筛选逻辑
-    handleFiltersMethod(value, row, column) {
-      const columnNew = this.columnOption.filter(
-        ele => ele.prop === column.property
-      )[0];
-      if (typeof columnNew.filtersMethod === "function") {
-        return columnNew.filtersMethod(value, row, columnNew);
-      } else {
-        return row[columnNew.prop] === value;
-      }
-    },
-    //表格筛选字典
-    handleFilters(column) {
-      if (column.filter !== true) return undefined;
-      if (this.validatenull(column.dicFilters)) {
-        let list = [];
-        (this.DIC[column.prop] || []).forEach(ele => {
-          const props = column.props || this.tableOption.props || {};
-          list.push({
-            text: ele[props.label || "label"],
-            value: ele[props.value || "value"]
-          });
-        });
-        return list;
-      }
-      return column.dicFilters;
     },
     // 选中实例
     toggleSelection(rows) {
@@ -889,7 +701,7 @@ export default create({
     },
     //搜索指定的属性配置
     findColumnIndex(value) {
-      return this.findArray(this.columnOption, value, "prop");
+      return this.findArray(this.propOption, value, "prop");
     },
     //合并行
     tableSpanMethod(param) {

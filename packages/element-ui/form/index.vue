@@ -31,7 +31,7 @@
                 <el-form-item :label="column.label"
                               :prop="column.prop"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
-                              :label-width="setPx(column.labelWidth,parentOption.labelWidth || 80)">
+                              :label-width="setPx(column.labelWidth || item.labelWidth || parentOption.labelWidth || 80)">
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
                               :placement="column.tipPlacement">
@@ -181,8 +181,10 @@
 </template>
 
 <script>
+import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/crud/init";
+import { getComponent, getPlaceholder } from "core/dataformat";
 import { formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
@@ -293,6 +295,8 @@ export default create({
     this.dataformat();
   },
   methods: {
+    getComponent,
+    getPlaceholder,
     forEachLabel() {
       this.columnOption.forEach(ele => {
         ele.column.forEach(column => {
@@ -304,7 +308,7 @@ export default create({
     handleShowLabel(column, DIC) {
       let result = "";
       if (!this.validatenull(DIC)) {
-        result = this.detail(this.form, column, this.tableOption, DIC);
+        result = detail(this.form, column, this.tableOption, DIC);
         this.$set(this.form, ["$" + column.prop], result);
       }
       return result;

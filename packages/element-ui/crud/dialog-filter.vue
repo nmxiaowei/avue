@@ -140,7 +140,7 @@ export default create({
       return this.columnOption[0];
     },
     columnOption() {
-      return this.$parent.columnOption;
+      return this.$parent.propOption;
     }
   },
   created() {

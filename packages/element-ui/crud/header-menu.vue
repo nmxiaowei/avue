@@ -121,7 +121,7 @@ export default create({
         title: this.$parent.tableOption.title || new Date().getTime(),
         columns: (() => {
           let list = [];
-          this.$parent.columnOption.forEach(ele => {
+          this.$parent.propOption.forEach(ele => {
             if (this.columnIndex.includes(ele.prop)) {
               list.push({
                 label: ele.label,
@@ -146,7 +146,7 @@ export default create({
     //计算统计
     handleSum() {
       const option = this.$parent.tableOption;
-      const columnOption = this.$parent.columnOption;
+      const columnOption = this.$parent.propOption;
       let count = 0;
       let data = [...this.data];
       let sumsList = [...this.$parent.sumsList];
@@ -172,7 +172,7 @@ export default create({
       }
       let headerOption = [];
       const getTemplate = () => {
-        headerOption = this.$parent.columnOption.filter(ele => {
+        headerOption = this.$parent.propOption.filter(ele => {
           return this.columnIndex.includes(ele.prop) && ele.type !== "upload";
         });
         return tableTemp(

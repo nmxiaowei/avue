@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.6.1/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.6.1/index.js"></script>
+  <script src="https://avuex.avue.top/cdn/aliyun-oss-sdk.min.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :option="option" :data="data" :page="page" @on-load="onLoad"></avue-crud>
+  </div>
+</body>
+
+</html>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        page: {
+          pageSize: 20
+        },
+        option: {
+          border: true,
+          index: true,
+          expandLevel: 3,
+          headerAlign: 'center',
+          align: 'center',
+          tree: true,
+          labelWidth: 100,
+          column: [{
+            label: '姓名',
+            prop: 'name',
+          }, {
+            label: '性别1',
+            prop: 'sex',
+          },
+          {
+            label: '自定义图标',
+            prop: 'icon',
+            type: "icon-select",
+            iconList: [{
+              label: '基本图表',
+              list: ['el-icon-time', 'el-icon-bell', 'el-icon-star-on']
+            }]
+          }, {
+            label: '复杂表头',
+            children: [{
+              label: '信息',
+              children: [{
+                label: '年龄',
+                prop: 'age'
+              }, {
+                label: '手机号',
+                prop: 'phone',
+              }]
+            }, {
+              label: '级别',
+              prop: 'grade',
+              type: 'select',
+              dicData: [{
+                label: '测试',
+                value: 1
+              }]
+            }]
+          }, {
+            label: '测试',
+            prop: 'test',
+          },
+          {
+            label: '手机信息1',
+            prop: 'phone1'
+          }],
+          group: [{
+            label: '用户信息',
+            prop: 'jbxx',
+            icon: 'el-icon-edit-outline',
+            column: [
+              {
+                label: '姓名',
+                prop: 'name'
+              },
+              {
+                label: '年龄',
+                prop: 'age'
+              }
+            ]
+          }, {
+            label: '其他信息',
+            prop: 'jbxxs',
+            icon: 'el-icon-edit-outline',
+            column: [
+              {
+                label: '级别',
+                prop: 'grade',
+                type: 'select',
+                dicData: [{
+                  label: '测试',
+                  value: 1
+                }]
+              },
+              {
+                label: '手机信息',
+                prop: 'phone'
+              },
+              {
+                label: '自定义图标',
+                prop: 'icon',
+                type: "icon-select",
+                iconList: [{
+                  label: '基本图表',
+                  list: ['el-icon-time', 'el-icon-bell', 'el-icon-star-on']
+                }]
+              },
+            ]
+          }]
+        },
+        data: [{
+          name: '张三',
+          age: 14,
+          grade: 1,
+          phone1: '17547400800',
+          phone: '17547400800',
+          icon: 'el-icon-time',
+          test: 1,
+          sex: '男',
+          children: [{
+            name: '李四',
+            age: 20,
+            grade: 1,
+            sex: '男',
+            test: 1,
+            phone1: '17547400800',
+            phone: '17547400800',
+            icon: 'el-icon-bell',
+            children: [{
+              name: '王五',
+              age: 10,
+              grade: 1,
+              test: 1,
+              sex: '女',
+              icon: 'el-icon-star-on',
+              phone1: '17547400800',
+              phone: '17547400800'
+            }]
+          }]
+        }, {
+          name: '王五',
+          age: 10,
+          grade: 1,
+          test: 1,
+          sex: '女',
+          icon: 'el-icon-star-on',
+          phone1: '17547400800',
+          phone: '17547400800'
+        }]
+      }
+    },
+    methods: {
+      onLoad(page) {
+        //模拟分页
+        this.page.total = 40
+      }
+    }
+  })
+</script>

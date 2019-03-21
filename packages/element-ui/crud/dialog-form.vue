@@ -119,6 +119,7 @@ export default create({
       let option = this.deepClone(this.$parent.tableOption);
       option.menuBtn = false;
       option.boxType = this.boxType;
+      option.column = this.$parent.propOption;
       //不分组的表单不加载字典
       if (!this.$parent.isGroup) {
         option.dicFlag = false;
@@ -201,7 +202,9 @@ export default create({
       this.index = index;
       this.boxType = type;
       const callack = () => {
-        this.boxVisible = true;
+        this.$nextTick(() => {
+          this.boxVisible = true;
+        });
       };
       if (typeof this.$parent.beforeOpen === "function")
         this.$parent.beforeOpen(callack, this.boxType);

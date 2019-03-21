@@ -1,8 +1,6 @@
-import { vaildData, setPx } from 'utils/util.js';
-import { getComponent, getPlaceholder } from 'core/dataformat';
 import { loadDic, loadCascaderDic } from 'core/dic';
-import { detail } from 'core/detail';
-export default function () {
+export default function (type) {
+  const isCrud = type === 'crud'
   return {
     props: {
       option: {
@@ -53,12 +51,6 @@ export default function () {
         this.isMobile = window.document.body.clientWidth <= 768;
       },
       init() {
-        // 工具初始化
-        this.vaildData = vaildData;
-        this.setPx = setPx;
-        this.getComponent = getComponent;
-        this.detail = detail;
-        this.getPlaceholder = getPlaceholder;
         this.tableOption = this.option;
         this.getIsMobile();
         //如果有搜索激活搜索
@@ -68,7 +60,7 @@ export default function () {
         };
         // 规则初始化
         if (this.rulesInit) {
-          this.columnOption.forEach(ele => {
+          (isCrud ? this.propOption : this.columnOption).forEach(ele => {
             this.rulesInit(ele.column);
           });
         }
@@ -78,20 +70,23 @@ export default function () {
       },
       //检测本地字典
       initDic() {
-        //表单赋值
-        this.columnOption.forEach(ele => {
-          (ele.column || []).forEach(item => {
-            if (Array.isArray(item.dicData)) {
-              this.$set(this.DIC, item.prop, item.dicData)
+        if (isCrud) {
+          // 表格赋值
+          this.propOption.forEach(ele => {
+            if (Array.isArray(ele.dicData)) {
+              this.$set(this.DIC, ele.prop, ele.dicData)
             }
           })
-        })
-        // 表格赋值
-        this.columnOption.forEach(ele => {
-          if (Array.isArray(ele.dicData)) {
-            this.$set(this.DIC, ele.prop, ele.dicData)
-          }
-        })
+        } else {
+          //表单赋值
+          this.columnOption.forEach(ele => {
+            (ele.column || []).forEach(item => {
+              if (Array.isArray(item.dicData)) {
+                this.$set(this.DIC, item.prop, item.dicData)
+              }
+            })
+          })
+        }
       },
       // 加载字典
       handleLoadDic(option) {
@@ -114,7 +109,7 @@ export default function () {
         })
       },
       handleLoadCascaderDic(option, data) {
-        loadCascaderDic(option || this.columnOption, this.data || [data]).then(res => {
+        loadCascaderDic(option || (isCrud ? this.propOption : this.columnOption), this.data || [data]).then(res => {
           if (option) {
             Object.keys(res).forEach(ele => {
               this.$set(this.cascaderDIC, ele, res)

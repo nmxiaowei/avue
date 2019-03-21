@@ -8,7 +8,7 @@
       <!-- 循环列搜索框 -->
       <el-form-item :prop="column.prop"
                     :label="column.label"
-                    v-for="(column,index) in $parent.columnOption"
+                    v-for="(column,index) in $parent.propOption"
                     :key="index"
                     v-if="column.search">
         <el-tooltip :disabled="!column.searchTip"
@@ -126,7 +126,7 @@ export default cteate({
       this.searchShow = !this.searchShow;
     },
     dataformat() {
-      this.defaultForm = formInitVal(this.$parent.columnOption);
+      this.defaultForm = formInitVal(this.$parent.propOption);
       this.searchForm = this.deepClone(this.defaultForm.searchForm);
       this.searchShow = vaildData(
         this.$parent.tableOption.searchShow,
