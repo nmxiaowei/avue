@@ -38,7 +38,8 @@
                  v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.tipBtn')}}</el-button>
       <slot name="tip"></slot>
     </div>
-    <el-table :data="list"
+    <el-table v-if="doLayout"
+              :data="list"
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(this.tableOption.indeterminate,false)}"
               :size="controlSize"
@@ -109,8 +110,7 @@
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>
-      <column :columnOption="columnOption"
-              v-if="doLayout">
+      <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
                   :slot="item.prop">
@@ -298,6 +298,12 @@ export default create({
     this.rulesInit();
     //初始化字典
     this.handleLoadDic();
+  },
+  mounted() {
+    this.doLayout = false;
+    this.$nextTick(() => {
+      this.doLayout = true;
+    });
   },
   computed: {
     propOption() {

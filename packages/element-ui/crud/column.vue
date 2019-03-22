@@ -140,9 +140,6 @@ export default {
     getComponent,
     getPlaceholder,
     vaildColumn(prop) {
-      if (this.crud.isChild) {
-        return true;
-      }
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
         prop
       );

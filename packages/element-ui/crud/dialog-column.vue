@@ -43,7 +43,7 @@ export default create({
     columnInit() {
       this.columnIndex = [];
       this.columnList = [];
-      if (this.$parent.isChild) this.$parent.tableOption.columnBtn = false;
+      // if (this.$parent.isChild) this.$parent.tableOption.columnBtn = false;
       this.$parent.propOption.forEach((ele, index) => {
         if (!this.vaildData(ele.hide, false)) {
           this.columnIndex.push(ele.prop);
