@@ -1,20 +1,13 @@
 <template>
-  <div>
+  <span>
     <template v-for="(column,index) in list">
-      <el-table-column :key="column.prop"
-                       v-if="column.children"
-                       :label="column.label"
-                       :width="column.width"
-                       :min-width="column.minWidth"
-                       :show-overflow-tooltip="column.overHidden"
-                       :render-header="column.renderHeader"
-                       :align="column.align || crud.tableOption.align"
-                       :header-align="column.headerAlign || crud.tableOption.headerAlign">
-        <column :columnOption="column.children"
-                first></column>
-      </el-table-column>
+      <dynamic-column v-if="column.children && column.children.length"
+                      :columnOption="column"
+                      :key="column.label">
+      </dynamic-column>
       <template v-else>
-        <el-table-column v-if="crud.isChild?true:((crud.$refs.dialogColumn || {}).columnIndex || []).includes(column.prop)"
+        <el-table-column v-if="vaildColumn(column.prop)"
+                         :key="column.prop"
                          :prop="column.prop"
                          :label="column.label"
                          filter-placement="bottom-end"
@@ -104,38 +97,39 @@
 
         </el-table-column>
       </template>
-
     </template>
 
-  </div>
+  </span>
 
 </template>
 
 <script>
+import dynamicColumn from "./dynamic-column";
 import { sendDic } from "core/dic";
 import { getComponent, getPlaceholder } from "core/dataformat";
 import { getSearchType, getType } from "core/dataformat";
 import { detail } from "core/detail";
 export default {
   name: "column",
+  components: {
+    dynamicColumn
+  },
+  provide() {
+    return {
+      dynamic: this
+    };
+  },
   props: {
     columnOption: {
       type: Array,
       default: () => {
         return [];
       }
-    },
-    first: {
-      type: Boolean,
-      default: false
     }
   },
   computed: {
     list() {
       let result = [...this.columnOption];
-      if (this.crud.isChild && this.first) {
-        result = result.reverse();
-      }
       return result;
     }
   },
@@ -145,6 +139,14 @@ export default {
     getType,
     getComponent,
     getPlaceholder,
+    vaildColumn(prop) {
+      if (this.crud.isChild) {
+        return true;
+      }
+      return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
+        prop
+      );
+    },
     menuText(value) {
       return this.menuType === "text" ? "text" : value;
     },

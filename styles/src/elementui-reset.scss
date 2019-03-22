@@ -61,6 +61,14 @@
   }
 }
 
+
+ .el-table th.gutter{
+  display: table-cell!important;
+}
+
+.el-table colgroup.gutter{
+  display: table-cell!important;
+}
 .is-success,.is-error{
   .el-input-number__decrease,.el-input-number__increase{
     right: 25px !important;

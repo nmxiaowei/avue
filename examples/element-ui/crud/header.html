@@ -43,6 +43,7 @@
           tree: true,
           labelWidth: 100,
           column: [{
+            width: 150,
             label: '姓名',
             prop: 'name',
           }, {
@@ -67,6 +68,24 @@
               }, {
                 label: '手机号',
                 prop: 'phone',
+              }, {
+                label: '单位：天',
+                children: [
+                  {
+                    label: 'D1-D3天数', children: [{
+                      label: 'D1天数', prop: 'd1day', type: 'number', minWidth: '100', minRows: 0, span: 24
+                    }, {
+                      label: 'D2天数', prop: 'd2day', type: 'number', minWidth: '100', minRows: 0, span: 24
+                    }, {
+                      label: 'D3天数', prop: 'd3day', type: 'number', minWidth: '100', minRows: 0, span: 24
+                    }]
+                  },
+                  { label: 'D4天数', prop: 'd4day', type: 'number', minWidth: '100', minRows: 0, span: 24 },
+                  { label: 'D5天数', prop: 'd5day', type: 'number', minWidth: '100', minRows: 0, span: 24 },
+                  { label: 'D6天数', prop: 'd6day', type: 'number', minWidth: '100', minRows: 0, span: 24 },
+                  { label: 'D7天数', prop: 'd7day', type: 'number', minWidth: '100', minRows: 0, span: 24 },
+                  { label: 'D8天数', prop: 'd8day', type: 'number', minWidth: '100', minRows: 0, span: 24 },
+                ]
               }]
             }, {
               label: '级别',
@@ -84,49 +103,6 @@
           {
             label: '手机信息1',
             prop: 'phone1'
-          }],
-          group: [{
-            label: '用户信息',
-            prop: 'jbxx',
-            icon: 'el-icon-edit-outline',
-            column: [
-              {
-                label: '姓名',
-                prop: 'name'
-              },
-              {
-                label: '年龄',
-                prop: 'age'
-              }
-            ]
-          }, {
-            label: '其他信息',
-            prop: 'jbxxs',
-            icon: 'el-icon-edit-outline',
-            column: [
-              {
-                label: '级别',
-                prop: 'grade',
-                type: 'select',
-                dicData: [{
-                  label: '测试',
-                  value: 1
-                }]
-              },
-              {
-                label: '手机信息',
-                prop: 'phone'
-              },
-              {
-                label: '自定义图标',
-                prop: 'icon',
-                type: "icon-select",
-                iconList: [{
-                  label: '基本图表',
-                  list: ['el-icon-time', 'el-icon-bell', 'el-icon-star-on']
-                }]
-              },
-            ]
           }]
         },
         data: [{
