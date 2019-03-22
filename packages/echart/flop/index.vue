@@ -1,11 +1,14 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       :style="styleParentName">
     <div :style="prefixStyle">{{option.prefixText}}</div>
-    <div :class="b('item',{'none':(item===',' || type===''),'img':type==='img'})"
+    <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img'})"
          v-for="(item,index) in text"
          :key="index"
          :style="styleName">
-      {{item}}
+      <span v-if="statusDIC.includes(item)">{{item}}</span>
+      <avue-count-up v-else
+                     :end="Number(item)"></avue-count-up>
     </div>
     <div :style="suffixStyle">{{option.suffixText}}</div>
   </div>
@@ -16,7 +19,9 @@ import create from "core/echart/create";
 export default create({
   name: "flop",
   data() {
-    return {};
+    return {
+      statusDIC: [".", ","]
+    };
   },
   computed: {
     type() {
@@ -41,14 +46,22 @@ export default create({
         fontSize: (this.option.suffixFontSize || 24) + "px"
       };
     },
+    styleParentName() {
+      if (!["img", "border"].includes(this.type)) {
+        return Object.assign(this.styleSizeName, {
+          backgroundColor: this.option.backgroundColor
+        });
+      }
+      return this.styleSizeName;
+    },
     styleName() {
       return Object.assign(
         {
+          backgroundColor: this.option.backgroundColor,
           color: this.option.color || "#fff",
           fontSize: (this.option.fontSize || 64) + "px",
           fontWeight: this.option.fontWeight,
-          margin: `0 ${this.option.split}px`,
-          backgroundColor: this.option.backgroundColor
+          margin: `0 ${this.option.split}px`
         },
         (() => {
           if (this.type === "img") {

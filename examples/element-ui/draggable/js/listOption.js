@@ -8,6 +8,7 @@ var list = [{
   "time": 4000,
   'url': 'http://yapi.demo.qunar.com/mock/9013/bar',
   "data": {},
+  "resize": false,
   "component": {
     "width": 1200,
     "height": 600,
@@ -189,8 +190,9 @@ var list = [{
   "top": 344,
   "left": 100,
   "zIndex": 5,
-  "data": "71.9",
-  'dataType': 0,
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count1',
   "component": {
     "width": 230,
     "height": 100,
@@ -221,8 +223,9 @@ var list = [{
   "top": 346,
   "left": 320,
   "zIndex": 4,
-  'dataType': 0,
-  "data": "16.24",
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count1',
   "component": {
     "width": 230,
     "height": 100,
@@ -253,8 +256,9 @@ var list = [{
   "top": 478,
   "left": 102,
   "zIndex": 3,
-  "dataType": 0,
-  "data": "10.5",
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count1',
   "component": {
     "width": 230,
     "height": 100,
@@ -285,8 +289,9 @@ var list = [{
   "top": 478,
   "left": 322,
   "zIndex": 2,
-  "dataType": 0,
-  "data": "75",
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count1',
   "component": {
     "width": 230,
     "height": 100,
@@ -517,11 +522,9 @@ var list = [{
   "top": 736,
   "left": 40,
   "zIndex": 16,
-  "data": {
-    "label": "订单交易",
-    "value": 300,
-    "data": 30
-  },
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count2',
   "component": {
     "width": 200,
     "height": 200,
@@ -545,11 +548,9 @@ var list = [{
   "top": 738,
   "left": 300,
   "zIndex": 15,
-  "data": {
-    "label": "人数增涨",
-    "value": 40,
-    "data": 80
-  },
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count3',
   "component": {
     "width": 200,
     "height": 200,
@@ -573,11 +574,9 @@ var list = [{
   "top": 150,
   "left": 60,
   "zIndex": 14,
-  "data": {
-    "label": "人数增涨",
-    "value": 40,
-    "data": 80
-  },
+  'dataType': 1,
+  'time': 3000,
+  'url': 'http://yapi.demo.qunar.com/mock/9013/count3',
   "component": {
     "width": 400,
     "height": 80,

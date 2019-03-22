@@ -32,6 +32,7 @@ export default (function (sfc) {
     },
     data() {
       return {
+        headerHeight: '',
         checkChart: '',
         myChart: "",
         dataChart: '',
@@ -39,38 +40,28 @@ export default (function (sfc) {
       };
     },
     watch: {
+      styleChartName() {
+        this.updateData();
+      },
       time() {
-        this.$nextTick(() => {
-          this.updateData();
-        })
+        this.updateData();
       },
       url() {
-        this.$nextTick(() => {
-          this.updateData();
-        })
+        this.updateData();
       },
       dataType() {
-        this.$nextTick(() => {
-          this.updateData();
-        });
+        this.updateData();
       },
       data: {
         handler() {
-          this.$nextTick(() => {
-            this.updateData();
-          })
+          this.updateData();
+
         },
         deep: true,
         immediate: true
       },
       option: {
         handler() {
-          //样式动态调整
-          const main = this.$refs[this.id];
-          if (main) {
-            main.style.width = this.setPx(this.option.width);
-            main.style.height = this.setPx(this.option.height);
-          }
           if (this.myChart && this.isChart) {
             this.updateChart();
           }
@@ -83,10 +74,23 @@ export default (function (sfc) {
       isApi() {
         return this.dataType === 1;
       },
-      styleName() {
+      width() {
+        return this.option.width || 600
+      },
+      height() {
+        return this.option.height || 400
+      },
+      styleChartName() {
+        const obj = {
+          width: setPx(this.width - 20),
+          height: setPx(this.height - 60)
+        };
+        return obj
+      },
+      styleSizeName() {
         return {
-          width: setPx((this.option.width || 600)),
-          height: setPx((this.option.height || 400))
+          width: setPx((this.width)),
+          height: setPx((this.height))
         };
       }
     },
@@ -126,16 +130,17 @@ export default (function (sfc) {
             }
           }
         }
-        if (this.time === 0) {
-          callback();
-          clearInterval(this.checkChart);
-        } else {
-          callback();
-          this.checkChart = setInterval(() => {
+        this.$nextTick(() => {
+          if (this.time === 0) {
             callback();
-          }, this.time);
-        }
-
+            clearInterval(this.checkChart);
+          } else {
+            callback();
+            this.checkChart = setInterval(() => {
+              callback();
+            }, this.time);
+          }
+        })
       },
     }
   }

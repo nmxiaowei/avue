@@ -1,16 +1,19 @@
 <template>
   <div :class="b()"
+       :style="styleSizeName"
        ref="main">
     <div :class="b('text',{'line':type==='line','circle':type==='circle'})"
          :style="styleName">
-      <p>{{data.label}}</p>
-      <p>{{data.value}}</p>
+      <p>{{dataChart.label}}</p>
+      <p>
+        <avue-count-up :end="Number(dataChart.value)"></avue-count-up>
+      </p>
     </div>
     <avue-progress :color="color"
                    :width="width"
                    :showText="false"
                    :strokeWidth="strokeWidth"
-                   :percentage="data.data"
+                   :percentage="dataChart.data"
                    :type="type">
     </avue-progress>
   </div>

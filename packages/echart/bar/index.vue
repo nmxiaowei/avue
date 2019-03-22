@@ -1,6 +1,8 @@
 <template>
-  <div class="avue-echart avue-echart-bar">
-    <echart-title :title="option.title"
+  <div class="avue-echart avue-echart-bar"
+       :style="styleSizeName">
+    <echart-title ref="header"
+                  :title="option.title"
                   :color="option.titleColor"
                   :info="option.info"
                   :font-size="option.titleFontSize"
@@ -8,7 +10,7 @@
                   :show="option.titleShow"
                   :postion="option.titlePostion"></echart-title>
     <div :ref="id"
-         :style="styleName"></div>
+         :style="styleChartName"></div>
   </div>
 </template>
 

@@ -69,7 +69,7 @@ img {
   background-color: rgba(255,255,255,.4);
 }
 .wrapper {
-  padding-top: 150px;
+  padding-top: 60px;
   background-color: #eee;
   position: relative;
   width:900px;
@@ -92,7 +92,6 @@ img {
 .content{
   height: 500px;
   overflow: hidden;
-  border:2px solid red;
 }
 .container {
   user-select: none;
@@ -125,4 +124,7 @@ img {
 
 .params {
   width: 350px;
+}
+.el-form-item{
+  margin-top: 10px;
 }

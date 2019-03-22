@@ -39,6 +39,10 @@ import create from "core/create";
 export default create({
   name: "draggable",
   props: {
+    resize: {
+      type: Boolean,
+      default: true
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -126,22 +130,24 @@ export default create({
     },
     baseWidth(val) {
       this.$refs.wrapper.style.width = this.setPx(val);
-      this.children.style.width = this.setPx(val);
+      if (this.resize) {
+        this.children.style.width = this.setPx(val);
+      }
     },
     baseHeight(val) {
       this.$refs.wrapper.style.height = this.setPx(val);
-      this.children.style.height = this.setPx(val);
+      if (this.resize) {
+        this.children.style.height = this.setPx(val);
+      }
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.children = this.$refs.item.firstChild;
-      this.baseWidth = this.width || this.children.offsetWidth;
-      this.baseHeight = this.height || this.children.offsetHeight;
-      this.baseLeft = this.left;
-      this.baseTop = this.top;
-      this.children.style.overflow = "hidden";
-    });
+    this.children = this.$refs.item.firstChild;
+    this.baseWidth = this.width || this.children.offsetWidth;
+    this.baseHeight = this.height || this.children.offsetHeight;
+    this.baseLeft = this.left;
+    this.baseTop = this.top;
+    this.children.style.overflow = "hidden";
   },
 
   methods: {

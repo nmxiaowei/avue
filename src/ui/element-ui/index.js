@@ -1,4 +1,5 @@
 import Affix from 'components/affix'
+import countUp from 'components/count-up'
 import Avatar from 'components/avatar'
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
@@ -52,6 +53,7 @@ export default [
   Form,
   Checkbox,
   Date,
+  countUp,
   Divider,
   Draggable,
   Empty,
