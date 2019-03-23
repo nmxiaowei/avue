@@ -4,6 +4,15 @@
       <dynamic-column v-if="column.children && column.children.length"
                       :columnOption="column"
                       :key="column.label">
+        <template v-for="(item,index) in crud.propOption"
+                  slot-scope="scope"
+                  :slot="item.prop">
+          <slot :row="scope.row"
+                :dic="scope.dic"
+                :size="scope.size"
+                :label="scope.label"
+                :name="item.prop"></slot>
+        </template>
       </dynamic-column>
       <template v-else>
         <el-table-column v-if="vaildColumn(column.prop)"

@@ -103,7 +103,7 @@
                        :fixed="fixedFlag"
                        align="center"></el-table-column>
       <!-- 序号 -->
-      <el-table-column v-if="tableOption.index"
+      <el-table-column v-if="this.vaildData(tableOption.index,true)"
                        :label="tableOption.indexLabel || config.indexLabel"
                        type="index"
                        width="60"
@@ -325,7 +325,6 @@ export default create({
         result = calcCascader(result);
       } else {
         result = calcCascader(this.columnOption);
-        result.reverse();
       }
       if (this.isTree) this.treeProp = result[0].prop;
       return result;
