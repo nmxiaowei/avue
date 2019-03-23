@@ -23,6 +23,7 @@
       <div :class="b('menu')"
            v-show="active || overActive">
         <slot name="menu"
+              :zIndex="zIndex"
               :index="index"></slot>
       </div>
       <div :class="b('item')"
@@ -130,13 +131,13 @@ export default create({
     },
     baseWidth(val) {
       this.$refs.wrapper.style.width = this.setPx(val);
-      if (this.resize) {
+      if (this.resize && this.children.style) {
         this.children.style.width = this.setPx(val);
       }
     },
     baseHeight(val) {
       this.$refs.wrapper.style.height = this.setPx(val);
-      if (this.resize) {
+      if (this.resize && this.children.style) {
         this.children.style.height = this.setPx(val);
       }
     }

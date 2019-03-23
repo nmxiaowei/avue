@@ -36,6 +36,7 @@ export default (function (sfc) {
         checkChart: '',
         myChart: "",
         dataChart: '',
+        key: false,
         isChart: true,
       };
     },
@@ -63,7 +64,7 @@ export default (function (sfc) {
       option: {
         handler() {
           if (this.myChart && this.isChart) {
-            this.updateChart();
+            this.updateData();
           }
         },
         deep: true,
@@ -80,9 +81,12 @@ export default (function (sfc) {
       height() {
         return this.option.height || 400
       },
+      style() {
+        return this.option.style || {}
+      },
       styleChartName() {
         const obj = {
-          width: setPx(this.width - 20),
+          width: setPx(this.width - 0),
           height: setPx(this.height - 60)
         };
         return obj
@@ -105,14 +109,14 @@ export default (function (sfc) {
         if (this.isChart) {
           this.myChart = window.echarts.init(this.$refs[this.id]);
         }
-        this.$nextTick(() => {
-          this.updateData();
-        })
       }
     },
     methods: {
       updateData() {
+        if (this.key) return
+        this.key = true;
         const callback = () => {
+          this.key = false;
           if (this.isApi) {
             this.$httpajax(this.url).then(res => {
               const data = res.data
@@ -131,11 +135,10 @@ export default (function (sfc) {
           }
         }
         this.$nextTick(() => {
+          callback();
           if (this.time === 0) {
-            callback();
             clearInterval(this.checkChart);
           } else {
-            callback();
             this.checkChart = setInterval(() => {
               callback();
             }, this.time);

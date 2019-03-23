@@ -28,6 +28,7 @@
   <script src="./js/listOption.js"></script>
   <script src="./js/dicOption.js"></script>
   <script src="./js/baseList.js"></script>
+  <script src="./js/utils.js"></script>
   <script src="../../../lib/avue.js"></script>
 </head>
 
@@ -52,8 +53,8 @@
     <div class="app" :class="{'app--none':!menuFlag}">
       <div class="menu" v-show="menuFlag">
         <p class="title">图层</p>
-        <draggable v-model="menuList">
-          <div class="menu__item" :class="{'menu__item--active':item.index===active}" v-for="(item,index) in menuList"
+        <draggable v-model="zIndexList">
+          <div class="menu__item" :class="{'menu__item--active':item.index===active}" v-for="(item,index) in zIndexList"
             :key="index" @click="active=item.index">
             {{item.title}}
           </div>
@@ -61,23 +62,22 @@
       </div>
       <div class="wrapper" ref="wrapper">
         <div class="content">
-          <div class="container" :style="styleName" ref="container">
-            <div class="grade" @mousedown.stop.self="handleMouseDown" v-if="gradeFlag || config.gradeShow"
-              :style="gradeLenStyle"></div>
-            <avue-draggable v-if="relaod" :disabled="!menuFlag" :ref="'item_'+index" :step="2" @focus="handleFocus"
-              @postion="handlePostion" :resize="item.resize" @resize="handleResize" @blur="handleBlur"
-              @change="handleChange" :index="index" :z-index="item.zIndex" v-for="(item,index) in list"
-              :width="item.component.width" :height="item.component.height" :key="index" :top="item.top"
-              :left="item.left">
+          <div class="container" :style="styleName" ref="container" @mousedown.stop.self="handleMouseDown">
+            <div class="grade" v-if="gradeFlag || config.gradeShow" :style="gradeLenStyle"></div>
+            <avue-draggable v-if="relaod" :disabled="!menuFlag" :ref="'item_'+index" :id="'item_'+index" :step="2"
+              @focus="handleFocus" @postion="handlePostion" :resize="item.resize" @resize="handleResize"
+              @blur="handleBlur" @change="handleChange" :index="index" :z-index="item.zIndex"
+              v-for="(item,index) in list" :width="item.component.width" :height="item.component.height" :key="index"
+              :top="item.top" :left="item.left">
               <img v-if="['img'].includes(item.component.prop)" :src="item.data" draggable="false" />
               <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
                 {{item.data}}</div>
-              <component :id="'component_'+index" v-else :is="item.component.name" :data="item.data"
+              <component :id="'component_'+index" v-else :is="'avue-echart-'+item.component.name" :data="item.data"
                 :option="item.component.option" :url="item.url" :time="item.time" :data-Type="item.dataType">
               </component>
               <div slot-scope="scope" slot="menu">
-                <i class="el-icon-close" @click="handleDel(scope.index)"></i>
-                <i class="el-icon-document" @click="handleCopy(scope.index)"></i>
+                <i class="el-icon-close" @click="handleDel(scope.index,scope.zIndex)"></i>
+                <i class="el-icon-document" @click="handleCopy(scope.index,scope.zIndex)"></i>
               </div>
             </avue-draggable>
           </div>
@@ -236,6 +236,10 @@
               </el-collapse-item>
             </el-collapse>
           </template>
+          <template v-else-if="activeComponent.prop==='table'">
+            <avue-crud :option="tableOption" :data="activeComponent.option.column" @row-save="rowSave" @row-del="rowDel"
+              @row-update="rowUpdate"></avue-crud>
+          </template>
           <template v-else-if="activeComponent.prop==='bar'">
             <el-form-item label="标题">
               <avue-input type="textarea" v-model="activeComponent.option.title"></avue-input>
@@ -256,15 +260,83 @@
             <el-form-item label="标题链接">
               <avue-input type="textarea" v-model="activeComponent.option.titleLink"></avue-input>
             </el-form-item>
-            <el-form-item label="文字颜色">
-              <avue-color v-model="activeComponent.option.nameColor">
-              </avue-color>
-            </el-form-item>
-            <el-form-item label="轴线颜色">
-              <avue-color v-model="activeComponent.option.lineColor"></avue-color>
-            </el-form-item>
-            <avue-crud :option="colorOption" :data="activeComponent.option.barColor" @row-save="rowSave"
-              @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
+            <el-collapse>
+              <el-collapse-item title="X轴设置">
+                <el-form-item label="显示">
+                  <avue-switch v-model="activeComponent.option.xAxisShow">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="显示网格线">
+                  <avue-switch v-model="activeComponent.option.xAxisSplitLineShow">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="轴反转">
+                  <avue-switch v-model="activeComponent.option.xAxisInverse">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="字号">
+                  <avue-silder v-model="activeComponent.option.xNameFontSize">
+                  </avue-silder>
+                </el-form-item>
+              </el-collapse-item>
+              <el-collapse-item title="Y轴设置">
+                <el-form-item label="显示">
+                  <avue-switch v-model="activeComponent.option.yAxisShow">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="轴网格线">
+                  <avue-switch v-model="activeComponent.option.yAxisSplitLineShow">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="反转">
+                  <avue-switch v-model="activeComponent.option.yAxisInverse">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="字号">
+                  <avue-silder v-model="activeComponent.option.yNameFontSize">
+                  </avue-silder>
+                </el-form-item>
+              </el-collapse-item>
+              <el-collapse-item title="柱顶设置">
+                <el-form-item label="显示">
+                  <avue-switch v-model="activeComponent.option.labelShow">
+                  </avue-switch>
+                </el-form-item>
+                <el-form-item label="字体大小">
+                  <avue-silder v-model="activeComponent.option.labelShowFontSize">
+                  </avue-silder>
+                </el-form-item>
+                <el-form-item label="字体粗细">
+                  <avue-select v-model="activeComponent.option.labelShowFontWeight" :dic="dicOption.fontWeight">
+                  </avue-select>
+                </el-form-item>
+              </el-collapse-item>
+              <el-collapse-item title="柱体设置">
+                <el-form-item label="最大宽度">
+                  <avue-silder v-model="activeComponent.option.barWidth">
+                  </avue-silder>
+                </el-form-item>
+                <el-form-item label="圆角">
+                  <avue-silder v-model="activeComponent.option.barRadius">
+                  </avue-silder>
+                </el-form-item>
+                <el-form-item label="最小高度">
+                  <avue-silder v-model="activeComponent.option.barMinHeight">
+                  </avue-silder>
+                </el-form-item>
+              </el-collapse-item>
+              <el-collapse-item title="自定义配色">
+                <el-form-item label="文字颜色">
+                  <avue-color v-model="activeComponent.option.nameColor">
+                  </avue-color>
+                </el-form-item>
+                <el-form-item label="轴线颜色">
+                  <avue-color v-model="activeComponent.option.lineColor"></avue-color>
+                </el-form-item>
+                <avue-crud :option="colorOption" :data="activeComponent.option.barColor" @row-save="rowSave"
+                  @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
+              </el-collapse-item>
+            </el-collapse>
           </template>
           <template v-else>
             <el-form-item label="大屏名称">
@@ -302,6 +374,7 @@
     el: '#app',
     data() {
       return {
+        key: '',
         baseList: baseList,
         menuFlag: true,
         dialogVisible: false,
@@ -310,6 +383,7 @@
         relaod: true,
         form: {},
         dicOption: dicOption,
+        tableOption: tableOption,
         colorOption: colorOption,
         config: {
           name: 'avuex数据大屏',
@@ -317,17 +391,47 @@
           height: 1080,
           scale: 1,
           backgroundImage: 'https://sugar.bce.baidu.com/static/img-templet/background-2.png',
-          gradeShow: true,
+          gradeShow: false,
           gradeLen: 30,
         },
         active: -1,
-        menuList: [],
         list: list
       }
     },
     computed: {
+      zIndexList: {
+        set(val) {
+          const leng = val.length;
+          val.forEach((ele, index) => {
+            const zIndex = leng - index;
+            this.$set(this.list[ele.index], 'zIndex', zIndex)
+          })
+        },
+        get() {
+          let list = [];
+          list = this.list.map(ele => {
+            return {
+              index: ele.index,
+              title: ele.title,
+              zIndex: ele.zIndex
+            }
+          })
+          list.sort(compare("zIndex"));
+          return list;
+        }
+      },
+      listLen() {
+        return this.list.length || 0;
+      },
       activeComponent() {
         return this.activeObj.component || {}
+      },
+      activeKey() {
+        if (this.activeComponent.name === 'table') {
+          return this.activeComponent.option.column
+        } else if (this.activeComponent.name === 'bar') {
+          return this.activeComponent.option.barColor
+        }
       },
       activeObj() {
         return this.list[this.active] || {}
@@ -348,8 +452,7 @@
       }
     },
     created() {
-      //初始化数据
-      this.initData()
+      this.initData();
     },
     mounted() {
       this.setResize();
@@ -362,23 +465,26 @@
       },
       active(val) {
         this.list.forEach((ele, index) => {
-          if (index === val) {
-            this.$refs['item_' + index][0].setActive(true)
-          } else {
-            this.$refs['item_' + index][0].setActive(false)
+          if (this.$refs['item_' + index]) {
+            if (index === val) {
+              this.$refs['item_' + index][0].setActive(true)
+            } else {
+              this.$refs['item_' + index][0].setActive(false)
+            }
           }
+
         });
       },
-      menuList(val) {
-        const leng = val.length;
-        val.forEach((ele, index) => {
-          this.$set(this.list, ele.index, Object.assign(ele, {
-            zIndex: leng - index
-          }))
-        })
-      }
     },
     methods: {
+      initData() {
+        this.list.forEach((ele, index) => {
+          this.$set(this.list, index, Object.assign(ele, {
+            index,
+            zIndex: (this.listLen - 1) - index
+          }));
+        })
+      },
       setResize() {
         this.config.scale = (this.$refs.wrapper.offsetWidth / this.config.width) * 100
       },
@@ -400,32 +506,6 @@
         })
         return obj;
       },
-      initData() {
-        this.list.forEach((ele, index) => {
-          this.$set(this.list, index, Object.assign(ele, {
-            index
-          }));
-        })
-
-        this.menuList = [...this.list];
-        this.handleListMenuSort();
-      },
-      handleListMenuSort() {
-        function compare(propertyName) {
-          return function (object1, object2) {
-            var value1 = object1[propertyName];
-            var value2 = object2[propertyName];
-            if (value2 < value1) {
-              return -1;
-            } else if (value2 > value1) {
-              return 1;
-            } else {
-              return 0;
-            }
-          }
-        }
-        this.menuList.sort(compare("zIndex"));
-      },
       handleMouseDown() {
         this.active = -1;
       },
@@ -438,24 +518,20 @@
       handleBlur() {
         this.gradeFlag = false;
       },
-      handleDel(index) {
+      handleDel(index, zIndex) {
         const obj = this.list[index]
         this.$confirm(`是否删除<<${obj.name}>>图层?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          this.active = -1;
           this.list.splice(index, 1);
-          this.relaod = false;
-          this.$nextTick(() => {
-            this.relaod = true;
-          })
         }).catch(() => {
 
         });
-
       },
-      handleCopy(index) {
+      handleCopy(index, zIndex) {
         const obj = this.list[index]
         this.$confirm(`是否复制<<${obj.name}>>图层?`, '提示', {
           confirmButtonText: '确定',
@@ -481,21 +557,24 @@
         this.$set(ele, 'top', top)
       },
       rowSave(row, done) {
-        this.activeComponent.option.barColor.push(row);
+        this.activeKey.push(row);
         done()
       },
       rowDel(row, index) {
-        this.activeComponent.option.barColor.splice(index, 1);
+        activeKey.splice(index, 1);
       },
       rowUpdate(row, index, done) {
-        this.activeComponent.option.barColor.splice(index, 1, row);
+        this.activeKey.splice(index, 1, row);
         done()
       },
       addCompoment(option) {
-        option.left = 0;
-        option.top = 0;
-        option.zIndex = this.list.length;
-        this.list.push(option);
+        const obj = this.deepClone(option);
+        obj.left = 0;
+        obj.top = 0;
+        obj.zIndex = this.listLen;
+        obj.index = this.listLen;
+        this.active = this.listLen;
+        this.list.push(obj);
       },
       handleView() {
         this.menuFlag = false;

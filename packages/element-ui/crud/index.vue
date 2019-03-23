@@ -325,6 +325,7 @@ export default create({
         result = calcCascader(result);
       } else {
         result = calcCascader(this.columnOption);
+        result.reverse();
       }
       if (this.isTree) this.treeProp = result[0].prop;
       return result;

@@ -1,6 +1,21 @@
 var baseList = [{
   label: '基本组件',
   children: [{
+    label: '表格',
+    option: {
+      "title": "表格",
+      "name": "表格",
+      "top": 0,
+      "left": 0,
+      "data": "表格",
+      "component": {
+        "width": 100,
+        "value": "表格",
+        "name": "table",
+        "prop": "table"
+      },
+    }
+  }, {
     label: '文本框',
     option: {
       "title": "文本框",
@@ -47,7 +62,7 @@ var baseList = [{
       "component": {
         "width": 260,
         "height": 100,
-        "name": "avue-echart-flop",
+        "name": "flop",
         "prop": "flop",
         "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
         "option": {
@@ -94,7 +109,7 @@ var baseList = [{
           "width": 400,
           "height": 80
         },
-        "name": "avue-echart-progress",
+        "name": "progress",
         "prop": "progress"
       },
       "index": 25
@@ -122,7 +137,7 @@ var baseList = [{
       "component": {
         "width": 1200,
         "height": 600,
-        "name": "avue-echart-bar",
+        "name": "bar",
         "prop": "bar",
         "option": {
           "refreshTime": 5000,

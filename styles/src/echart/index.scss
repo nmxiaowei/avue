@@ -1,6 +1,19 @@
 
 .avue-echart{
   padding: 10px;
+  &-table{
+    table{
+      width:100%;
+      border-width: 1px ;
+      border-style: solid;
+    }
+    td,th{
+      padding: 8px 0;
+      border-width: 0;
+      border-bottom-width: 1px ;
+      border-style: solid;
+    }
+  }
   &-header{
     padding: 10px;
     &--center{
