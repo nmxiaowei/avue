@@ -1,6 +1,17 @@
 <template>
   <div :class="b()"
        :style="styleSizeName">
+    <div :class="b('header')"
+         v-if="queryList"
+         :style="styleTdName">
+      <div :class="b('item',{'active':activeIndex===index})"
+           v-for="(item,index) in queryList"
+           :key="index"
+           @click="handleClick(item.value,index)"
+           :style="styleTdName">
+        {{ item.label }}
+      </div>
+    </div>
     <table :style="styleTdName"
            cellspacing="0"
            cellpadding="0">
@@ -16,7 +27,7 @@
         <td v-for="(item,index) in columnOption"
             :style="styleTdName"
             :key="index">
-          {{citem[item.prop]}}
+          <avue-count-up :end="citem[item.prop]"></avue-count-up>
         </td>
       </tr>
     </table>
@@ -27,7 +38,16 @@
 import create from "core/echart/create";
 export default create({
   name: "table",
+  data() {
+    return {
+      activeIndex: 0,
+      query: {}
+    };
+  },
   computed: {
+    queryList() {
+      return this.component.queryList || {};
+    },
     styleThName() {
       return {
         textAlign: this.style.headerTextAlign || "center",
@@ -67,6 +87,13 @@ export default create({
       default: () => {
         return {};
       }
+    }
+  },
+  methods: {
+    handleClick(value, index) {
+      this.activeIndex = index;
+      this.query.type = value;
+      this.updateData();
     }
   }
 });

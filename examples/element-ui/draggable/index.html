@@ -72,7 +72,8 @@
               <img v-if="['img'].includes(item.component.prop)" :src="item.data" draggable="false" />
               <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
                 {{item.data}}</div>
-              <component :id="'component_'+index" v-else :is="'avue-echart-'+item.component.name" :data="item.data"
+              <component :id="'component_'+index" :component="item.component" v-else
+                :is="'avue-echart-'+item.component.name" :component="item.component" :data="item.data"
                 :option="item.component.option" :url="item.url" :time="item.time" :data-Type="item.dataType">
               </component>
               <div slot-scope="scope" slot="menu">
@@ -85,7 +86,7 @@
       </div>
       <div class="menu params" v-show="menuFlag">
         <p class="title">操作</p>
-        <el-form label-width="80px">
+        <el-form label-width="100px">
           <template v-if="![undefined].includes(activeComponent.prop)">
             <el-collapse>
               <el-collapse-item title="数据设置" v-if="dicOption.dataList.includes(activeComponent.prop)">
@@ -108,236 +109,300 @@
             <el-form-item label="图层名称">
               <avue-input v-model="activeObj.name"></avue-input>
             </el-form-item>
-          </template>
-
-          <template v-if="activeComponent.prop==='text'">
-            <el-form-item label="文本内容">
-              <avue-input v-model="activeObj.data"></avue-input>
-            </el-form-item>
-            <el-form-item label="字体大小">
-              <avue-silder v-model="activeComponent.style.fontSize"></avue-silder>
-            </el-form-item>
-            <el-form-item label="字体颜色">
-              <avue-color v-model="activeComponent.style.color"></avue-color>
-            </el-form-item>
-            <el-form-item label="字体背景">
-              <avue-color v-model="activeComponent.style.backgroundColor"></avue-color>
-            </el-form-item>
-            <el-form-item label="文字粗细">
-              <avue-select v-model="activeComponent.style.fontWeight" :dic="dicOption.fontWeight">
-              </avue-select>
-            </el-form-item>
-            <el-form-item label="对齐方式">
-              <avue-select v-model="activeComponent.style.textAlign" :dic="dicOption.textAlign">
-              </avue-select>
-            </el-form-item>
-          </template>
-          <template v-else-if="activeComponent.prop==='img'">
-            <el-form-item label="缩略图">
-              <img :src="activeObj.data" alt="" width="100%" />
-            </el-form-item>
-            <el-form-item label="图片地址">
-              <avue-input v-model="activeObj.data"></avue-input>
-            </el-form-item>
-          </template>
-          <template v-else-if="activeComponent.prop==='progress'">
-            <el-form-item label="类型">
-              <avue-radio v-model="activeComponent.option.type" :dic="dicOption.line">
+            <template v-if="activeComponent.prop==='text'">
+              <el-form-item label="文本内容">
+                <avue-input v-model="activeObj.data"></avue-input>
+              </el-form-item>
+              <el-form-item label="字体大小">
+                <avue-silder v-model="activeComponent.style.fontSize"></avue-silder>
+              </el-form-item>
+              <el-form-item label="字体颜色">
+                <avue-color v-model="activeComponent.style.color"></avue-color>
+              </el-form-item>
+              <el-form-item label="字体背景">
+                <avue-color v-model="activeComponent.style.backgroundColor"></avue-color>
+              </el-form-item>
+              <el-form-item label="文字粗细">
+                <avue-select v-model="activeComponent.style.fontWeight" :dic="dicOption.fontWeight">
                 </avue-select>
-            </el-form-item>
-            <el-form-item label="字体大小">
-              <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
-            </el-form-item>
-            <el-form-item label="边框大小">
-              <avue-silder v-model="activeComponent.option.strokeWidth" :max="50"></avue-silder>
-            </el-form-item>
-            <el-form-item label="字体颜色">
-              <avue-color v-model="activeComponent.option.color"></avue-color>
-            </el-form-item>
-            <el-form-item label="文字粗细">
-              <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
-              </avue-select>
-            </el-form-item>
-            <el-form-item label="边框颜色">
-              <avue-color v-model="activeComponent.option.borderColor"></avue-color>
-            </el-form-item>
-          </template>
-          <template v-else-if="activeComponent.prop==='flop'">
-            <el-form-item label="字体大小">
-              <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
-            </el-form-item>
-            <el-form-item label="字体颜色">
-              <avue-color v-model="activeComponent.option.color"></avue-color>
-            </el-form-item>
-            <el-form-item label="字体间距">
-              <avue-silder v-model="activeComponent.option.split"></avue-silder>
-            </el-form-item>
-            <el-form-item label="文字粗细">
-              <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
-              </avue-select>
-            </el-form-item>
-            <el-form-item label="边框">
-              <avue-radio v-model="activeComponent.option.type" :dic="dicOption.border">
+              </el-form-item>
+              <el-form-item label="对齐方式">
+                <avue-select v-model="activeComponent.style.textAlign" :dic="dicOption.textAlign">
                 </avue-select>
-            </el-form-item>
-            <template v-if="activeComponent.option.type==='img'">
-              <el-form-item label="背景图片">
-                <img :src="item" v-for="(item,index) in activeComponent.list" :key="index"
-                  @click="activeComponent.option.backgroundImage=item">
               </el-form-item>
             </template>
-            <template v-else-if="activeComponent.option.type==='border'">
+            <template v-else-if="activeComponent.prop==='img'">
+              <el-form-item label="缩略图">
+                <img :src="activeObj.data" alt="" width="100%" />
+              </el-form-item>
+              <el-form-item label="图片地址">
+                <avue-input v-model="activeObj.data"></avue-input>
+              </el-form-item>
+            </template>
+            <template v-else-if="activeComponent.prop==='progress'">
+              <el-form-item label="类型">
+                <avue-radio v-model="activeComponent.option.type" :dic="dicOption.line">
+                  </avue-select>
+              </el-form-item>
+              <el-form-item label="字体大小">
+                <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
+              </el-form-item>
+              <el-form-item label="边框大小">
+                <avue-silder v-model="activeComponent.option.strokeWidth" :max="50"></avue-silder>
+              </el-form-item>
+              <el-form-item label="字体颜色">
+                <avue-color v-model="activeComponent.option.color"></avue-color>
+              </el-form-item>
+              <el-form-item label="文字粗细">
+                <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
+                </avue-select>
+              </el-form-item>
               <el-form-item label="边框颜色">
                 <avue-color v-model="activeComponent.option.borderColor"></avue-color>
               </el-form-item>
-              <el-form-item label="边框宽度">
-                <avue-silder v-model="activeComponent.option.borderWidth" :max="10"></avue-silder>
-              </el-form-item>
             </template>
-            <el-form-item label="背景颜色">
-              <avue-color v-model="activeComponent.option.backgroundColor"></avue-color>
-            </el-form-item>
-            <el-collapse>
-              <el-collapse-item title="前缀设置">
-                <el-form-item label="前缀内容">
-                  <avue-input v-model="activeComponent.option.prefixText"></avue-input>
-                </el-form-item>
-                <el-form-item label="对其方式">
-                  <avue-select v-model="activeComponent.option.prefixTextAlign" :dic="dicOption.textAlign">
+            <template v-else-if="activeComponent.prop==='flop'">
+              <el-form-item label="字体大小">
+                <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
+              </el-form-item>
+              <el-form-item label="字体颜色">
+                <avue-color v-model="activeComponent.option.color"></avue-color>
+              </el-form-item>
+              <el-form-item label="字体间距">
+                <avue-silder v-model="activeComponent.option.split"></avue-silder>
+              </el-form-item>
+              <el-form-item label="文字粗细">
+                <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
+                </avue-select>
+              </el-form-item>
+              <el-form-item label="边框">
+                <avue-radio v-model="activeComponent.option.type" :dic="dicOption.border">
                   </avue-select>
+              </el-form-item>
+              <template v-if="activeComponent.option.type==='img'">
+                <el-form-item label="背景图片">
+                  <img :src="item" v-for="(item,index) in activeComponent.list" :key="index"
+                    @click="activeComponent.option.backgroundImage=item">
                 </el-form-item>
-                <el-form-item label="间距">
-                  <avue-silder v-model="activeComponent.option.prefixSplit"></avue-silder>
+              </template>
+              <template v-else-if="activeComponent.option.type==='border'">
+                <el-form-item label="边框颜色">
+                  <avue-color v-model="activeComponent.option.borderColor"></avue-color>
                 </el-form-item>
-                <el-form-item label="颜色">
-                  <avue-color v-model="activeComponent.option.prefixColor"></avue-color>
+                <el-form-item label="边框宽度">
+                  <avue-silder v-model="activeComponent.option.borderWidth" :max="10"></avue-silder>
                 </el-form-item>
-                <el-form-item label="字体大小">
-                  <avue-silder v-model="activeComponent.option.prefixFontSize" :max="200"></avue-silder>
-                </el-form-item>
-              </el-collapse-item>
-              <el-collapse-item title="后缀设置">
-                <el-form-item label="后缀内容">
-                  <avue-input v-model="activeComponent.option.suffixText"></avue-input>
-                </el-form-item>
-                <el-form-item label="对其方式">
-                  <avue-select v-model="activeComponent.option.suffixTextAlign" :dic="dicOption.textAlign">
-                  </avue-select>
-                </el-form-item>
-                <el-form-item label="间距">
-                  <avue-silder v-model="activeComponent.option.suffixSplit"></avue-silder>
-                </el-form-item>
-                <el-form-item label="颜色">
-                  <avue-color v-model="activeComponent.option.suffixColor"></avue-color>
-                </el-form-item>
-                <el-form-item label="字体大小">
-                  <avue-silder v-model="activeComponent.option.suffixFontSize" :max="200"></avue-silder>
-                </el-form-item>
-              </el-collapse-item>
-            </el-collapse>
+              </template>
+              <el-form-item label="背景颜色">
+                <avue-color v-model="activeComponent.option.backgroundColor"></avue-color>
+              </el-form-item>
+              <el-collapse>
+                <el-collapse-item title="前缀设置">
+                  <el-form-item label="前缀内容">
+                    <avue-input v-model="activeComponent.option.prefixText"></avue-input>
+                  </el-form-item>
+                  <el-form-item label="对其方式">
+                    <avue-select v-model="activeComponent.option.prefixTextAlign" :dic="dicOption.textAlign">
+                    </avue-select>
+                  </el-form-item>
+                  <el-form-item label="间距">
+                    <avue-silder v-model="activeComponent.option.prefixSplit"></avue-silder>
+                  </el-form-item>
+                  <el-form-item label="颜色">
+                    <avue-color v-model="activeComponent.option.prefixColor"></avue-color>
+                  </el-form-item>
+                  <el-form-item label="字体大小">
+                    <avue-silder v-model="activeComponent.option.prefixFontSize" :max="200"></avue-silder>
+                  </el-form-item>
+                </el-collapse-item>
+                <el-collapse-item title="后缀设置">
+                  <el-form-item label="后缀内容">
+                    <avue-input v-model="activeComponent.option.suffixText"></avue-input>
+                  </el-form-item>
+                  <el-form-item label="对其方式">
+                    <avue-select v-model="activeComponent.option.suffixTextAlign" :dic="dicOption.textAlign">
+                    </avue-select>
+                  </el-form-item>
+                  <el-form-item label="间距">
+                    <avue-silder v-model="activeComponent.option.suffixSplit"></avue-silder>
+                  </el-form-item>
+                  <el-form-item label="颜色">
+                    <avue-color v-model="activeComponent.option.suffixColor"></avue-color>
+                  </el-form-item>
+                  <el-form-item label="字体大小">
+                    <avue-silder v-model="activeComponent.option.suffixFontSize" :max="200"></avue-silder>
+                  </el-form-item>
+                </el-collapse-item>
+              </el-collapse>
+            </template>
+            <template v-else-if="activeComponent.prop==='table'">
+              <el-form-item label="表头颜色">
+                <avue-color type="textarea" v-model="activeComponent.style.headerColor"></avue-color>
+              </el-form-item>
+              <el-form-item label="表头背景">
+                <avue-color type="textarea" v-model="activeComponent.style.headerBackgroud"></avue-color>
+              </el-form-item>
+              <el-form-item label="字体位置">
+                <avue-select v-model="activeComponent.style.headerTextAlign" :dic="dicOption.textAlign">
+                </avue-select>
+              </el-form-item>
+              </el-form-item>
+              <el-form-item label="文字颜色">
+                <avue-color type="textarea" v-model="activeComponent.style.bodyColor"></avue-color>
+              </el-form-item>
+              <el-form-item label="表格背景">
+                <avue-color type="textarea" v-model="activeComponent.style.bodyBackgroud"></avue-color>
+              </el-form-item>
+              <el-form-item label="字体位置">
+                <avue-select v-model="activeComponent.style.bodyTextAlign" :dic="dicOption.textAlign">
+                </avue-select>
+              </el-form-item>
+              </el-form-item>
+              <el-form-item label="分割线">
+                <avue-color type="textarea" v-model="activeComponent.style.borderColor"></avue-color>
+              </el-form-item>
+              <avue-crud :option="tableOption" :data="activeComponent.option.column" @row-save="rowSave"
+                @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
+            </template>
+            <template v-else-if="activeComponent.prop==='pie'">
+              <el-form-item label="设置为环形">
+                <avue-switch v-model="activeComponent.option.radius"></avue-switch>
+              </el-form-item>
+              <el-form-item label="南丁格尔玫瑰">
+                <avue-switch v-model="activeComponent.option.roseType"></avue-switch>
+              </el-form-item>
+              <el-form-item label="自动按数据大小排序">
+                <avue-switch v-model="activeComponent.option.sort"></avue-switch>
+              </el-form-item>
+              <el-form-item label="不展示为零数据项">
+                <avue-switch v-model="activeComponent.option.notCount"></avue-switch>
+              </el-form-item>
+              <el-form-item label="显示Label">
+                <avue-switch v-model="activeComponent.option.labelShow"></avue-switch>
+              </el-form-item>
+
+            </template>
+            <template v-else-if="['bar','line'].includes(activeComponent.prop)">
+              <el-form-item label="标题">
+                <avue-input type="textarea" v-model="activeComponent.option.title"></avue-input>
+              </el-form-item>
+              <el-form-item label="标题大小">
+                <avue-silder v-model="activeComponent.option.titleFontSize"></avue-silder>
+              </el-form-item>
+              <el-form-item label="标题颜色">
+                <avue-color v-model="activeComponent.option.titleColor"></avue-color>
+              </el-form-item>
+              <el-form-item label="标题对齐">
+                <avue-select v-model="activeComponent.option.titlePostion" :dic="dicOption.textAlign">
+                </avue-select>
+              </el-form-item>
+              <el-form-item label="标题隐藏">
+                <avue-switch v-model="activeComponent.option.titleShow"></avue-switch>
+              </el-form-item>
+              <el-form-item label="标题链接">
+                <avue-input type="textarea" v-model="activeComponent.option.titleLink"></avue-input>
+              </el-form-item>
+              <el-form-item label="面积堆积" v-if="['line'].includes(activeComponent.prop)">
+                <avue-switch v-model="activeComponent.option.areaStyle"></avue-switch>
+              </el-form-item>
+              <el-collapse>
+                <el-collapse-item title="X轴设置">
+                  <el-form-item label="显示">
+                    <avue-switch v-model="activeComponent.option.xAxisShow">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="显示网格线">
+                    <avue-switch v-model="activeComponent.option.xAxisSplitLineShow">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="轴反转">
+                    <avue-switch v-model="activeComponent.option.xAxisInverse">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="字号">
+                    <avue-silder v-model="activeComponent.option.xNameFontSize">
+                    </avue-silder>
+                  </el-form-item>
+                </el-collapse-item>
+                <el-collapse-item title="Y轴设置">
+                  <el-form-item label="显示">
+                    <avue-switch v-model="activeComponent.option.yAxisShow">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="轴网格线">
+                    <avue-switch v-model="activeComponent.option.yAxisSplitLineShow">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="反转">
+                    <avue-switch v-model="activeComponent.option.yAxisInverse">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="字号">
+                    <avue-silder v-model="activeComponent.option.yNameFontSize">
+                    </avue-silder>
+                  </el-form-item>
+                </el-collapse-item>
+
+                <el-collapse-item title="数字提示设置">
+                  <el-form-item label="显示">
+                    <avue-switch v-model="activeComponent.option.labelShow">
+                    </avue-switch>
+                  </el-form-item>
+                  <el-form-item label="字体大小">
+                    <avue-silder v-model="activeComponent.option.labelShowFontSize">
+                    </avue-silder>
+                  </el-form-item>
+                  <el-form-item label="字体颜色">
+                    <avue-color v-model="activeComponent.option.labelShowColor">
+                    </avue-color>
+                  </el-form-item>
+                  <el-form-item label="字体粗细">
+                    <avue-select v-model="activeComponent.option.labelShowFontWeight" :dic="dicOption.fontWeight">
+                    </avue-select>
+                  </el-form-item>
+                </el-collapse-item>
+                <template v-if="['bar'].includes(activeComponent.prop)">
+                  <el-collapse-item title="柱体设置">
+                    <el-form-item label="最大宽度">
+                      <avue-silder v-model="activeComponent.option.barWidth">
+                      </avue-silder>
+                    </el-form-item>
+                    <el-form-item label="圆角">
+                      <avue-silder v-model="activeComponent.option.barRadius">
+                      </avue-silder>
+                    </el-form-item>
+                    <el-form-item label="最小高度">
+                      <avue-silder v-model="activeComponent.option.barMinHeight">
+                      </avue-silder>
+                    </el-form-item>
+                  </el-collapse-item>
+                </template>
+              </el-collapse>
+            </template>
+            <template v-if="['bar','pie','line'].includes(activeComponent.prop)">
+              <el-collapse>
+                <el-collapse-item title="公共设置">
+                  <el-form-item label="图例">
+                    <avue-switch v-model="activeComponent.option.legendShow"></avue-switch>
+                  </el-form-item>
+                </el-collapse-item>
+                <el-collapse-item title="自定义配色">
+                  <el-form-item label="文字颜色">
+                    <avue-color v-model="activeComponent.option.nameColor">
+                    </avue-color>
+                  </el-form-item>
+                  <el-form-item label="轴线颜色">
+                    <avue-color v-model="activeComponent.option.lineColor"></avue-color>
+                  </el-form-item>
+                  <avue-crud :option="colorOption" :data="activeComponent.option.barColor" @row-save="rowSave"
+                    @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
+                </el-collapse-item>
+              </el-collapse>
+            </template>
           </template>
-          <template v-else-if="activeComponent.prop==='table'">
-            <avue-crud :option="tableOption" :data="activeComponent.option.column" @row-save="rowSave" @row-del="rowDel"
-              @row-update="rowUpdate"></avue-crud>
+
           </template>
-          <template v-else-if="activeComponent.prop==='bar'">
-            <el-form-item label="标题">
-              <avue-input type="textarea" v-model="activeComponent.option.title"></avue-input>
-            </el-form-item>
-            <el-form-item label="标题大小">
-              <avue-silder v-model="activeComponent.option.titleFontSize"></avue-silder>
-            </el-form-item>
-            <el-form-item label="标题颜色">
-              <avue-color v-model="activeComponent.option.titleColor"></avue-color>
-            </el-form-item>
-            <el-form-item label="标题对齐">
-              <avue-select v-model="activeComponent.option.titlePostion" :dic="dicOption.textAlign">
-              </avue-select>
-            </el-form-item>
-            <el-form-item label="标题隐藏">
-              <avue-switch v-model="activeComponent.option.titleShow"></avue-switch>
-            </el-form-item>
-            <el-form-item label="标题链接">
-              <avue-input type="textarea" v-model="activeComponent.option.titleLink"></avue-input>
-            </el-form-item>
-            <el-collapse>
-              <el-collapse-item title="X轴设置">
-                <el-form-item label="显示">
-                  <avue-switch v-model="activeComponent.option.xAxisShow">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="显示网格线">
-                  <avue-switch v-model="activeComponent.option.xAxisSplitLineShow">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="轴反转">
-                  <avue-switch v-model="activeComponent.option.xAxisInverse">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="字号">
-                  <avue-silder v-model="activeComponent.option.xNameFontSize">
-                  </avue-silder>
-                </el-form-item>
-              </el-collapse-item>
-              <el-collapse-item title="Y轴设置">
-                <el-form-item label="显示">
-                  <avue-switch v-model="activeComponent.option.yAxisShow">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="轴网格线">
-                  <avue-switch v-model="activeComponent.option.yAxisSplitLineShow">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="反转">
-                  <avue-switch v-model="activeComponent.option.yAxisInverse">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="字号">
-                  <avue-silder v-model="activeComponent.option.yNameFontSize">
-                  </avue-silder>
-                </el-form-item>
-              </el-collapse-item>
-              <el-collapse-item title="柱顶设置">
-                <el-form-item label="显示">
-                  <avue-switch v-model="activeComponent.option.labelShow">
-                  </avue-switch>
-                </el-form-item>
-                <el-form-item label="字体大小">
-                  <avue-silder v-model="activeComponent.option.labelShowFontSize">
-                  </avue-silder>
-                </el-form-item>
-                <el-form-item label="字体粗细">
-                  <avue-select v-model="activeComponent.option.labelShowFontWeight" :dic="dicOption.fontWeight">
-                  </avue-select>
-                </el-form-item>
-              </el-collapse-item>
-              <el-collapse-item title="柱体设置">
-                <el-form-item label="最大宽度">
-                  <avue-silder v-model="activeComponent.option.barWidth">
-                  </avue-silder>
-                </el-form-item>
-                <el-form-item label="圆角">
-                  <avue-silder v-model="activeComponent.option.barRadius">
-                  </avue-silder>
-                </el-form-item>
-                <el-form-item label="最小高度">
-                  <avue-silder v-model="activeComponent.option.barMinHeight">
-                  </avue-silder>
-                </el-form-item>
-              </el-collapse-item>
-              <el-collapse-item title="自定义配色">
-                <el-form-item label="文字颜色">
-                  <avue-color v-model="activeComponent.option.nameColor">
-                  </avue-color>
-                </el-form-item>
-                <el-form-item label="轴线颜色">
-                  <avue-color v-model="activeComponent.option.lineColor"></avue-color>
-                </el-form-item>
-                <avue-crud :option="colorOption" :data="activeComponent.option.barColor" @row-save="rowSave"
-                  @row-del="rowDel" @row-update="rowUpdate"></avue-crud>
-              </el-collapse-item>
-            </el-collapse>
-          </template>
+
           <template v-else>
             <el-form-item label="大屏名称">
               <avue-input v-model="config.name"></avue-input>
@@ -429,7 +494,7 @@
       activeKey() {
         if (this.activeComponent.name === 'table') {
           return this.activeComponent.option.column
-        } else if (this.activeComponent.name === 'bar') {
+        } else if (['bar', 'line', 'pie'].includes(this.activeComponent.name)) {
           return this.activeComponent.option.barColor
         }
       },
@@ -544,8 +609,8 @@
         });
       },
       handleResize({ index, width, height }) {
-        const ele = this.list[index].component.option;
-        if (['bar', 'progress'].includes(this.activeComponent.prop)) {
+        const ele = this.list[index].component;
+        if (['bar', 'progress', 'pie', 'line'].includes(this.activeComponent.prop)) {
           this.$set(ele, 'width', width)
           this.$set(ele, 'height', height)
         }
@@ -561,7 +626,7 @@
         done()
       },
       rowDel(row, index) {
-        activeKey.splice(index, 1);
+        this.activeKey.splice(index, 1);
       },
       rowUpdate(row, index, done) {
         this.activeKey.splice(index, 1, row);
@@ -578,6 +643,7 @@
       },
       handleView() {
         this.menuFlag = false;
+        this.active = -1;
       },
       handleBuild() {
         this.dialogVisible = true;

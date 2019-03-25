@@ -34,6 +34,7 @@ export default create({
           y2: this.option.gridY2 || 60
         },
         legend: {
+          show: this.vaildData(this.option.legendShow, false),
           bottom: 0,
           textStyle: {
             color: this.option.nameColor || "#333"
@@ -117,6 +118,7 @@ export default create({
                 textStyle: {
                   //数值样式
                   fontSize: this.option.labelShowFontSize || 14,
+                  color: this.option.labelShowColor || "#333",
                   fontWeight: this.option.labelShowFontWeight || 500
                 }
               }

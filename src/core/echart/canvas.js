@@ -1,5 +1,5 @@
 import { setPx } from 'utils/util'
-export default (function (sfc) {
+export default (function () {
   return {
     props: {
       time: {
@@ -18,6 +18,12 @@ export default (function (sfc) {
         default: 'main_' + new Date()
       },
       data: {
+        type: Object,
+        default: () => {
+          return {};
+        }
+      },
+      component: {
         type: Object,
         default: () => {
           return {};
@@ -61,6 +67,7 @@ export default (function (sfc) {
         deep: true,
         immediate: true
       },
+
       option: {
         handler() {
           if (this.myChart && this.isChart) {
@@ -76,13 +83,13 @@ export default (function (sfc) {
         return this.dataType === 1;
       },
       width() {
-        return this.option.width || 600
+        return this.component.width || 600
       },
       height() {
-        return this.option.height || 400
+        return this.component.height || 400
       },
       style() {
-        return this.option.style || {}
+        return this.component.style || {}
       },
       styleChartName() {
         const obj = {
@@ -101,7 +108,7 @@ export default (function (sfc) {
     mounted() {
       if (this.$refs[this.id]) {
         const className = this.$el.className.replace('avue-echart ', '')
-        if (['avue-echart-bar'].includes(className)) {
+        if (['bar', 'line', 'pie'].includes(className.replace('avue-echart-', ''))) {
           this.isChart = true;
         } else {
           this.isChart = false;
@@ -118,7 +125,9 @@ export default (function (sfc) {
         const callback = () => {
           this.key = false;
           if (this.isApi) {
-            this.$httpajax(this.url).then(res => {
+            this.$httpajax.get(this.url, {
+              params: this.query
+            }).then(res => {
               const data = res.data
               this.dataChart = data.data;
               if (this.isChart && this.myChart) {
@@ -136,9 +145,8 @@ export default (function (sfc) {
         }
         this.$nextTick(() => {
           callback();
-          if (this.time === 0) {
-            clearInterval(this.checkChart);
-          } else {
+          clearInterval(this.checkChart);
+          if (this.time !== 0) {
             this.checkChart = setInterval(() => {
               callback();
             }, this.time);

@@ -1,5 +1,5 @@
 <template>
-  <span> {{end}}</span>
+  <span>{{end}}</span>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ export default create({
       default: 0
     },
     end: {
-      type: Number,
+      type: [Number, String],
       required: true
     },
     decimals: {

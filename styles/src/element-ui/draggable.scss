@@ -1,4 +1,5 @@
 .avue-draggable{
+  $active__color:rgba(115, 170, 229,.2);
   padding: 10px;
   position: absolute;
   cursor: move;
@@ -7,11 +8,11 @@
   &--active{
     cursor: move;
     border:1px solid #09f;
-    background-color: rgba(255,228,196,.6)
+    background-color: $active__color;
   }
   &--move{
     opacity: .6;
-    background-color: rgba(255,228,196,.6)
+    background-color:$active__color;
   }
   &__wrapper{
     position: relative;

@@ -7,12 +7,50 @@ var baseList = [{
       "name": "表格",
       "top": 0,
       "left": 0,
-      "data": "表格",
+      "dataType": 0,
+      "data": [{
+        type1: '数据1',
+        type2: '数据2'
+      }, {
+        type1: '数据1',
+        type2: '数据2'
+      }],
       "component": {
-        "width": 100,
-        "value": "表格",
+        "width": 500,
+        "height": 200,
         "name": "table",
-        "prop": "table"
+        "prop": "table",
+        "queryList": [
+          {
+            "label": "类型1",
+            "value": 1
+          },
+          {
+            "label": "类型2",
+            "value": 2
+          }
+        ],
+        style: {
+          headerBackground: 'rgba(0, 0, 0, 0.01)',
+          headerColor: 'rgba(154, 168, 212, 1)',
+          headerTextAlign: 'center',
+          bodyBackground: 'rgba(0, 0, 0, 0.01)',
+          bodyColor: 'rgba(154, 168, 212, 1)',
+          borderColor: 'rgba(51, 65, 107, 1)',
+          bodyTextAlign: 'center',
+        },
+        "option": {
+          "column": [
+            {
+              "label": "类型1",
+              "prop": "type1"
+            },
+            {
+              "label": "类型2",
+              "prop": "type2"
+            },
+          ]
+        }
       },
     }
   }, {
@@ -139,6 +177,75 @@ var baseList = [{
         "height": 600,
         "name": "bar",
         "prop": "bar",
+        "option": {
+          "refreshTime": 5000,
+          "title": "2019年度潍坊城市销售额排名",
+          "titlePostion": "",
+          "titleFontSize": 24,
+          "titleColor": "rgb(115, 170, 229)",
+          "titleLink": "http://avue.top",
+          "info": "这是图表的简介",
+          "width": 1282,
+          "height": 600,
+          "gridX": 105,
+          "gridY": 50,
+          "gridX2": 80,
+          "gridY2": 100,
+          "nameColor": "#eee",
+          "lineColor": "#eee",
+          "xNameFontSize": 16,
+          "yNameFontSize": 16,
+          "labelShow": false,
+          "labelShowFontSize": 14,
+          "labelShowFontWeight": 300,
+          "yAxisInverse": false,
+          "xAxisInverse": false,
+          "xAxisShow": true,
+          "yAxisShow": true,
+          "xAxisSplitLineShow": false,
+          "yAxisSplitLineShow": false,
+          "refresh": 3000,
+          "barWidth": 30,
+          "barRadius": 8,
+          "barColor": [{
+            "color1": "#83bff6",
+            "color2": "#188df0",
+            "postion": 90,
+            "$index": 0,
+            "_show": true
+          }, {
+            "color1": "#23B7E5",
+            "color2": "#564AA3",
+            "postion": 50,
+            "$index": 1,
+            "_show": true
+          }],
+          "barMinHeight": 2
+        }
+      },
+    }
+  }, {
+    label: '折线图',
+    option: {
+      "name": "折线图",
+      "title": "折线图",
+      "top": 276,
+      "left": 536,
+      "data": {
+        "categories": ["北京", "上海", "杭州", "深圳", "杭州", "深圳", "广州", "连云港"],
+        "series": [{
+          "name": "手机品牌",
+          "data": [1131776, 1349011, 905718, 1349011, 905718, 656020, 571234, 467397]
+        }, {
+          "name": "其他手机品牌",
+          "data": [1131776, 1349011, 905718, 1349011, 905718, 656020, 571234, 467397]
+        }]
+      },
+      "component": {
+        "width": 1200,
+        "height": 600,
+        "name": "line",
+        "prop": "line",
         "option": {
           "refreshTime": 5000,
           "title": "2019年度潍坊城市销售额排名",

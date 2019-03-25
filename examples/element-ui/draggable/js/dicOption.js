@@ -4,5 +4,5 @@ var dicOption = {
   border: [{ label: '无边框', value: '' }, { label: '内置图片', value: 'img' }, { label: '内置边框', value: 'border' }],
   textAlign: [{ label: '居中', value: 'center' }, { label: '左对齐', value: 'left' }, { label: '右对齐', value: 'right' }],
   dataType: [{ label: '静态数据', value: 0 }, { label: '动态数据', value: 1 }],
-  dataList: ['flop', 'bar', 'progress', 'table']
+  dataList: ['flop', 'bar', 'line', 'progress', 'table']
 }
