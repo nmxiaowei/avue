@@ -71,10 +71,7 @@
                     :name="column.prop"
                     v-else-if="column.slot"></slot>
               <template v-else>
-                <span v-if="[undefined,'number'].includes(column.type)">
-                  {{scope.row[column.prop]}}
-                </span>
-                <span v-else-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
+                <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
 
                 <template v-else-if="['upload'].includes(column.type)">
                   <avue-img :align="column.align"
@@ -158,13 +155,11 @@ export default {
     },
     handleDetail(row, column, DIC) {
       let result = row[column.prop];
-      if (result) {
-        result = detail(row, column, this.crud.tableOption, DIC);
-        if (!this.validatenull(DIC)) {
-          row["$" + column.prop] = result;
-        }
-        return result;
+      result = detail(row, column, this.crud.tableOption, DIC);
+      if (!this.validatenull(DIC)) {
+        row["$" + column.prop] = result;
       }
+      return result;
     },
     handleShowLabel(row, column, DIC) {
       let result = "";
