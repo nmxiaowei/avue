@@ -16,19 +16,16 @@
                    v-if="tabsObjOption"
                    :option="tabsObjOption"
                    v-model="form">
-          <template slot-scope="scope"
-                    v-for="item in tabsObjOption">
-            <template v-for="column in item.column"
-                      :slot="column.prop">
-              <slot :value="scope.value"
-                    :column="scope.column"
-                    :dic="scope.dic"
-                    :size="scope.size"
-                    :type="scope.type"
-                    :name="column.prop"
-                    v-if="column.formslot"></slot>
-            </template>
-
+          <template v-for="column in tabsPropOptiom"
+                    slot-scope="scope"
+                    :slot="column.prop">
+            <slot :value="scope.value"
+                  :column="scope.column"
+                  :dic="scope.dic"
+                  :size="scope.size"
+                  :type="scope.type"
+                  :name="column.prop"
+                  v-if="column.formslot"></slot>
           </template>
           <template slot="menuForm"
                     slot-scope="{size}">
@@ -92,6 +89,15 @@ export default create({
     }
   },
   computed: {
+    tabsPropOptiom() {
+      let list = [];
+      this.tabsObjOption.group.forEach(ele => {
+        ele.column.forEach(column => {
+          list.push(column);
+        });
+      });
+      return list;
+    },
     tabsObjOption() {
       if (this.tabsObj.option) {
         let option = this.deepClone(this.tabsObj.option);
