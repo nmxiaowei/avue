@@ -114,11 +114,11 @@ export default create({
     },
     handleDetail(column, option, DIC) {
       let result = this.form[column.prop];
-      if (result) {
-        result = detail(this.form, column, option, DIC);
+      result = detail(this.form, column, option, DIC);
+      if (!this.validatenull(DIC)) {
         this.form["$" + column.prop] = result;
-        return result;
       }
+      return result;
     }
   }
 });
