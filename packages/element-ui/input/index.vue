@@ -16,22 +16,6 @@
               :readonly="true"
               @click.native="disabled?'':open()" />
 
-    <el-input v-else-if="type==='phone'"
-              :size="size"
-              :clearable="disabled?false:clearable"
-              v-model="text"
-              @click.native="handleClick"
-              :type="typeParam"
-              :maxlength="maxlength"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :readonly="readonly"
-              :placeholder="placeholder"
-              @change="handleChange"
-              @focus="handleFocus"
-              @blur="handleBlur"
-              :disabled="disabled" />
     <el-input v-else-if="type==='search'"
               :size="size"
               :clearable="disabled?false:clearable"
@@ -173,10 +157,7 @@ export default create({
       type: Number
     },
     maxlength: {
-      type: Number,
-      default: function() {
-        if (this.type === "phone") return 11;
-      }
+      type: Number
     },
     minRows: {
       type: Number,
@@ -317,10 +298,6 @@ export default create({
           }, 0);
           clearInterval(check);
         }, 500);
-      } else if (this.type === "phone") {
-        if (!validatenull(this.text) && this.textLen == 11) {
-          this.text = this.textShow;
-        }
       }
     },
     findLabelNode(dic, value, props) {
@@ -375,12 +352,8 @@ export default create({
     handleChange(value) {
       let text = this.text;
       const result = this.isString && this.multiple ? value.join(",") : value;
-      if (typeof this.change === "function")
+      if (typeof this.change === "function") {
         this.change({ value: result, column: this.column });
-      if (this.type === "phone") {
-        this.text = text.replace(/[^0-9.]/g, "");
-        this.text = this.textShow;
-        text = this.text.replace(/\s/g, "");
       }
       this.$emit("input", result);
       this.$emit("change", result);

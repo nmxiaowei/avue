@@ -247,8 +247,7 @@ export default {
           "datetime",
           "week",
           "month",
-          "year",
-          "phone"
+          "year"
         ].includes(column.type) &&
         column.slot !== true &&
         column.cell
