@@ -93,8 +93,8 @@ export default (function () {
       },
       styleChartName() {
         const obj = {
-          width: setPx(this.width - 0),
-          height: setPx(this.height - 60)
+          width: setPx(this.width),
+          height: setPx(this.height)
         };
         return obj
       },

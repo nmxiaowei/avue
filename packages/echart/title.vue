@@ -42,7 +42,8 @@ export default create({
       type: String
     },
     postion: {
-      type: String
+      type: String,
+      default: ""
     },
     show: {
       type: Boolean,

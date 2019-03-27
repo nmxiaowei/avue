@@ -44,6 +44,25 @@
               formslot: true
             },
             {
+              label: '树型',
+              prop: 'tree',
+              type: 'tree',
+              nodeClick: (data) => {
+                console.log(data)
+              },
+              dicData: [{
+                label: '测试1',
+                value: 0,
+                children: [{
+                  label: '测试0',
+                  value: 2
+                }]
+              }, {
+                label: '测试2',
+                value: 1
+              }]
+            },
+            {
               width: 120,
               label: '开关',
               prop: 'switch',

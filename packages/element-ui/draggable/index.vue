@@ -30,6 +30,7 @@
            ref="item">
         <slot></slot>
       </div>
+      <div :class="b('mask')"></div>
     </div>
   </div>
   </div>
@@ -114,13 +115,22 @@ export default create({
   },
   computed: {
     styleName() {
-      return {
-        top: this.setPx(this.baseTop),
-        left: this.setPx(this.baseLeft),
-        width: this.setPx(this.baseWidth),
-        height: this.setPx(this.baseHeight),
-        zIndex: this.zIndex
-      };
+      return Object.assign(
+        (() => {
+          if (this.active) {
+            return {
+              zIndex: 9999
+            };
+          }
+          return { zIndex: this.zIndex };
+        })(),
+        {
+          top: this.setPx(this.baseTop),
+          left: this.setPx(this.baseLeft),
+          width: this.setPx(this.baseWidth),
+          height: this.setPx(this.baseHeight)
+        }
+      );
     }
   },
   watch: {
@@ -172,6 +182,7 @@ export default create({
           left: this.baseLeft,
           top: this.baseTop
         });
+        this.active = true;
         this.rangeActive = false;
         this.moveActive = false;
       };

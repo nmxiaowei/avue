@@ -1,6 +1,33 @@
 
 .avue-echart{
   padding: 10px;
+  &-iframe{
+    iframe{
+      border:none;
+      width:100%;
+      height: 100%; 
+    }
+  }
+  &-text{
+    &__box{
+      width: 100%;
+      height: 100%;
+    }
+    &__text{
+      display: block;
+      text-decoration: none;
+    }
+  }
+  &-swiper{
+    .el-carousel,.el-carousel__container{
+      height: 100%;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+      user-select: none;
+    }
+  }
   &-table{
     &__header{
       margin-bottom: 20px;

@@ -28,6 +28,9 @@
     el: '#app',
     data() {
       return {
+        data: [{
+          name: 'smallwei'
+        }],
         option: {
           emptyText: '自定义暂无数据提示语',
           column: [{
@@ -35,10 +38,12 @@
             prop: 'name'
           }, {
             label: '年龄',
-            prop: 'sex'
+            prop: 'sex',
+            formatter: () => {
+              return 123;
+            }
           }]
-        },
-        data: []
+        }
       }
     }
   })

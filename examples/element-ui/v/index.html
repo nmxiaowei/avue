@@ -70,6 +70,8 @@
               v-for="(item,index) in list" :width="item.component.width" :height="item.component.height" :key="index"
               :top="item.top" :left="item.left">
               <img v-if="['img'].includes(item.component.prop)" :src="item.data" draggable="false" />
+              <div v-else-if="['text'].includes(item.component.prop)" :style="handleStyle(item)">
+                {{item.data}}</div>
               <component :id="'component_'+index" :component="item.component" v-else
                 :is="'avue-echart-'+item.component.name" :component="item.component" :data="item.data"
                 :option="item.component.option" :url="item.url" :time="item.time" :data-Type="item.dataType">
@@ -107,88 +109,26 @@
             <el-form-item label="图层名称">
               <avue-input v-model="activeObj.name"></avue-input>
             </el-form-item>
-            <template v-if="activeComponent.prop==='swiper'">
-              <el-form-item label="类型">
-                <avue-radio v-model="activeComponent.option.type" :dic="dicOption.swiperType"></avue-radio>
-              </el-form-item>
-              <el-form-item label="轮播时间">
-                <avue-input v-model="activeComponent.option.interval"></avue-input>
-              </el-form-item>
-              <el-form-item label="选择器">
-                <avue-radio v-model="activeComponent.option.indicator" :dic="dicOption.swiperIndicator"></avue-radio>
-              </el-form-item>
-              <el-form-item label="图片透明度">
-                <avue-silder v-model="activeComponent.option.opacity"></avue-silder>
-              </el-form-item>
-            </template>
             <template v-if="activeComponent.prop==='text'">
               <el-form-item label="文本内容">
                 <avue-input v-model="activeObj.data"></avue-input>
               </el-form-item>
               <el-form-item label="字体大小">
-                <avue-silder v-model="activeComponent.option.fontSize"></avue-silder>
+                <avue-silder v-model="activeComponent.style.fontSize"></avue-silder>
               </el-form-item>
               <el-form-item label="字体颜色">
-                <avue-color v-model="activeComponent.option.color"></avue-color>
+                <avue-color v-model="activeComponent.style.color"></avue-color>
               </el-form-item>
               <el-form-item label="字体背景">
-                <avue-color v-model="activeComponent.option.backgroundColor"></avue-color>
+                <avue-color v-model="activeComponent.style.backgroundColor"></avue-color>
               </el-form-item>
               <el-form-item label="文字粗细">
-                <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
+                <avue-select v-model="activeComponent.style.fontWeight" :dic="dicOption.fontWeight">
                 </avue-select>
               </el-form-item>
               <el-form-item label="对齐方式">
-                <avue-select v-model="activeComponent.option.textAlign" :dic="dicOption.textAlign">
+                <avue-select v-model="activeComponent.style.textAlign" :dic="dicOption.textAlign">
                 </avue-select>
-              </el-form-item>
-              <el-collapse>
-                <el-collapse-item title="跑马灯设置">
-                  <el-form-item label="开启">
-                    <avue-switch v-model="activeComponent.option.scroll"></avue-switch>
-                  </el-form-item>
-                  <template v-if="activeComponent.option.scroll">
-                    <el-form-item label="滚动速度">
-                      <avue-input v-model="activeComponent.option.speed"></avue-input>
-                    </el-form-item>
-                  </template>
-                </el-collapse-item>
-                <el-collapse-item title="超链设置">
-                  <el-form-item label="开启">
-                    <avue-switch v-model="activeComponent.option.link"></avue-switch>
-                  </el-form-item>
-                  <template v-if="activeComponent.option.link">
-                    <el-form-item label="打开方式">
-                      <avue-radio v-model="activeComponent.option.linkTarget" :dic="dicOption.target"></avue-radio>
-                    </el-form-item>
-                    <el-form-item label="超链地址">
-                      <avue-input v-model="activeComponent.option.linkHref"></avue-input>
-                    </el-form-item>
-                  </template>
-                </el-collapse-item>
-              </el-collapse>
-            </template>
-            <template v-else-if="activeComponent.prop==='datetime'">
-              <el-form-item label="时间格式">
-                <avue-select v-model="activeComponent.option.format" :dic="dicOption.format">
-                </avue-select>
-              </el-form-item>
-              <el-form-item label="字体大小">
-                <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
-              </el-form-item>
-              <el-form-item label="字体背景">
-                <avue-color v-model="activeComponent.option.backgroundColor"></avue-color>
-              </el-form-item>
-              <el-form-item label="对其方式">
-                <avue-select v-model="activeComponent.option.textAlign" :dic="dicOption.textAlign">
-                </avue-select>
-              </el-form-item>
-              <el-form-item label="文字粗细">
-                <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
-                </avue-select>
-              </el-form-item>
-              <el-form-item label="字体颜色">
-                <avue-color v-model="activeComponent.option.color"></avue-color>
               </el-form-item>
             </template>
             <template v-else-if="activeComponent.prop==='img'">
@@ -441,21 +381,9 @@
             </template>
             <template v-if="['bar','pie','line'].includes(activeComponent.prop)">
               <el-collapse>
-                <el-collapse-item title="坐标轴边距设置">
+                <el-collapse-item title="公共设置">
                   <el-form-item label="图例">
                     <avue-switch v-model="activeComponent.option.legendShow"></avue-switch>
-                  </el-form-item>
-                  <el-form-item label="左边距(像素)">
-                    <avue-silder v-model="activeComponent.option.gridX" max="200"></avue-silder>
-                  </el-form-item>
-                  <el-form-item label="顶边距(像素)">
-                    <avue-silder v-model="activeComponent.option.gridY" max="200"></avue-silder>
-                  </el-form-item>
-                  <el-form-item label="右边距(像素)">
-                    <avue-silder v-model="activeComponent.option.gridX2" max="200"></avue-silder>
-                  </el-form-item>
-                  <el-form-item label="底边距(像素)">
-                    <avue-silder v-model="activeComponent.option.gridY2" max="200"></avue-silder>
                   </el-form-item>
                 </el-collapse-item>
                 <el-collapse-item title="自定义配色">
@@ -615,18 +543,33 @@
     },
     methods: {
       initData() {
-        this.list.forEach((ele, index) => {
-          this.$set(this.list, index, Object.assign(ele, {
-            index,
-            zIndex: (this.listLen - 1) - index
-          }));
-        })
+        // this.list.forEach((ele, index) => {
+        //   this.$set(this.list, index, Object.assign(ele, {
+        //     index,
+        //     zIndex: (this.listLen - 1) - index
+        //   }));
+        // })
       },
       setResize() {
         this.config.scale = (this.$refs.wrapper.offsetWidth / this.config.width) * 100
       },
       formatTooltip(val) {
         return parseInt(val);
+      },
+      handleStyle(item) {
+        const style = item.component.style
+        let obj = {
+          padding: '10px'
+        }
+        Object.keys(style).forEach(ele => {
+          if (['fontSize'].includes(ele)) {
+            obj[ele] = style[ele] + 'px'
+          } else {
+            obj[ele] = style[ele]
+          }
+
+        })
+        return obj;
       },
       handleMouseDown() {
         this.active = -1;
@@ -649,10 +592,6 @@
         }).then(() => {
           this.active = -1;
           this.list.splice(index, 1);
-          this.relaod = false;
-          this.$nextTick(() => {
-            this.relaod = true;
-          })
         }).catch(() => {
 
         });
@@ -697,6 +636,7 @@
         obj.top = 0;
         obj.zIndex = this.listLen;
         obj.index = this.listLen;
+        this.active = this.listLen;
         this.list.push(obj);
       },
       handleView() {

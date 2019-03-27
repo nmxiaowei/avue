@@ -1,163 +1,8 @@
 var baseList = [{
-  label: '基本组件',
-  children: [{
-    label: '表格',
-    option: {
-      "title": "表格",
-      "name": "表格",
-      "top": 0,
-      "left": 0,
-      "dataType": 0,
-      "data": [{
-        type1: '数据1',
-        type2: '数据2'
-      }, {
-        type1: '数据1',
-        type2: '数据2'
-      }],
-      "component": {
-        "width": 500,
-        "height": 200,
-        "name": "table",
-        "prop": "table",
-        "queryList": [
-          {
-            "label": "类型1",
-            "value": 1
-          },
-          {
-            "label": "类型2",
-            "value": 2
-          }
-        ],
-        style: {
-          headerBackground: 'rgba(0, 0, 0, 0.01)',
-          headerColor: 'rgba(154, 168, 212, 1)',
-          headerTextAlign: 'center',
-          bodyBackground: 'rgba(0, 0, 0, 0.01)',
-          bodyColor: 'rgba(154, 168, 212, 1)',
-          borderColor: 'rgba(51, 65, 107, 1)',
-          bodyTextAlign: 'center',
-        },
-        "option": {
-          "column": [
-            {
-              "label": "类型1",
-              "prop": "type1"
-            },
-            {
-              "label": "类型2",
-              "prop": "type2"
-            },
-          ]
-        }
-      },
-    }
-  }, {
-    label: '文本框',
-    option: {
-      "title": "文本框",
-      "name": "文本框",
-      "top": 0,
-      "left": 0,
-      "data": "文本框",
-      "component": {
-        "width": 100,
-        "height": 50,
-        "value": "文本框",
-        "style": {
-          "textAlign": "center",
-          "fontSize": 26,
-          "fontWeight": "normal",
-          "color": "#fff"
-        },
-        "name": "text",
-        "prop": "text"
-      },
-    },
-  }, {
-    label: '图片框',
-    option: {
-      "title": "图片框",
-      "name": "图片框",
-      "top": 0,
-      "left": 0,
-      "component": {
-        "width": 80,
-        "height": 80,
-        "name": "img",
-        "prop": "img",
-      },
-    }
-  }, {
-    label: '翻牌器',
-    option: {
-      "title": "翻牌器",
-      "name": "翻牌器",
-      "top": 0,
-      "left": 0,
-      "data": "16.24",
-      "component": {
-        "width": 260,
-        "height": 100,
-        "name": "flop",
-        "prop": "flop",
-        "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
-        "option": {
-          "type": "img",
-          "suffixText": "",
-          "suffixTextAlign": "",
-          "suffixSplit": '',
-          "suffixColor": "",
-          "suffixFontSize": '',
-          "borderColor": "#fff",
-          "borderWidth": 3,
-          "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-          "fontSize": 42,
-          "fontWeight": "normal",
-          "split": 0,
-          "backgroundColor": "",
-          "color": "#fff"
-        }
-      },
-      "index": 10
-    }
-  }, {
-    label: '进度条',
-    option: {
-      "title": "进度条",
-      "name": "进度条",
-      "top": 0,
-      "left": 0,
-      "data": {
-        "label": "人数增涨",
-        "value": 40,
-        "data": 80
-      },
-      "component": {
-        "width": 400,
-        "height": 80,
-        "option": {
-          "type": "line",
-          "color": "rgba(154, 168, 212, 1)",
-          "fontSize": 24,
-          "strokeWidth": 18,
-          "fontWeight": "normal",
-          "borderColor": "#564AA3",
-          "width": 400,
-          "height": 80
-        },
-        "name": "progress",
-        "prop": "progress"
-      },
-      "index": 25
-    }
-  }]
-}, {
-  label: '图表',
-  children: [{
-    label: '柱形图',
-    option: {
+  "label": '图表',
+  "children": [{
+    "label": '柱形图',
+    "option": {
       "name": "柱状图",
       "title": "柱状图",
       "top": 276,
@@ -222,11 +67,11 @@ var baseList = [{
           }],
           "barMinHeight": 2
         }
-      },
+      }
     }
   }, {
-    label: '折线图',
-    option: {
+    "label": '折线图',
+    "option": {
       "name": "折线图",
       "title": "折线图",
       "top": 276,
@@ -290,6 +135,320 @@ var baseList = [{
             "_show": true
           }],
           "barMinHeight": 2
+        }
+      },
+    }
+  }, {
+    labael: '饼图',
+    option: {
+      "name": "饼图",
+      "title": "饼图",
+      "top": 548,
+      "left": 808,
+      "zIndex": 30,
+      "dataType": 1,
+      "time": 5000,
+      "url": "http://yapi.demo.qunar.com/mock/9013/pie",
+      "data": [],
+      "resize": false,
+      "component": {
+        "width": 588,
+        "height": 340,
+        "name": "pie",
+        "prop": "pie",
+        "option": {
+          "title": "手机大比拼",
+          "barColor": [
+            {
+              "color1": "#83bff6"
+            },
+            {
+              "color1": "#23B7E5"
+            },
+            {
+              "color1": "rgba(154, 168, 212, 1)"
+            },
+            {
+              "color1": "#188df0"
+            },
+            {
+              "color1": "#564AA3"
+            }
+          ]
+        }
+      },
+    }
+  }]
+}, {
+  "label": '文字',
+  "children": [{
+    "label": '文本框',
+    "option": {
+      "title": "文本框",
+      "name": "文本框",
+      "top": 0,
+      "left": 0,
+      "data": "文本框",
+      "component": {
+        "width": 100,
+        "height": 50,
+        "option": {
+          "textAlign": "center",
+          "fontSize": 26,
+          "fontWeight": "normal",
+          "color": "#fff"
+        },
+        "name": "text",
+        "prop": "text"
+      },
+    },
+  }, {
+    "label": '跑马灯',
+    "option": {
+      "title": "跑马灯",
+      "name": "跑马灯",
+      "top": 0,
+      "left": 0,
+      "data": "跑马灯",
+      "component": {
+        "width": 100,
+        "height": 50,
+        "option": {
+          scroll: true,
+          speed: 70,
+          "textAlign": "center",
+          "fontSize": 26,
+          "fontWeight": "normal",
+          "color": "#fff"
+        },
+        "name": "text",
+        "prop": "text"
+      },
+    },
+  }, {
+    "label": '超链接',
+    "option": {
+      "title": "超链接",
+      "name": "超链接",
+      "top": 0,
+      "left": 0,
+      "data": "超链接",
+      "component": {
+        "width": 100,
+        "height": 50,
+        "option": {
+          link: true,
+          linkHref: 'http://avue.top',
+          linkTarget: '_self',
+          "textAlign": "center",
+          "fontSize": 26,
+          "fontWeight": "normal",
+          "color": "#fff"
+        },
+        "name": "text",
+        "prop": "text"
+      },
+    },
+  }, {
+    "label": '实时时间',
+    "option": {
+      "name": "实时时间",
+      "title": "实时时间",
+      "top": 78,
+      "left": 1604,
+      "zIndex": 31,
+      "component": {
+        "width": 250,
+        "height": 50,
+        "name": "datetime",
+        "prop": "datetime",
+        "option": {
+          "format": 'yyyy-MM-dd hh:mm:ss',
+          "color": "#fff",
+          'textAlign': 'left',
+          "fontSize": 24,
+          "fontWeight": "normal"
+        }
+      }
+    },
+  }]
+}, {
+  "label": '媒体',
+  "children": [{
+    "label": '图片框',
+    "option": {
+      "title": "图片框",
+      "name": "图片框",
+      "top": 0,
+      "left": 0,
+      "component": {
+        "width": 80,
+        "height": 80,
+        "name": "img",
+        "prop": "img",
+      },
+    }
+  }, {
+    label: '轮播图',
+    option: {
+      "title": "轮播图",
+      "name": "轮播图",
+      "top": 0,
+      "left": 0,
+      "zIndex": 33,
+      "dataType": 1,
+      "time": 5000,
+      "url": "http://yapi.demo.qunar.com/mock/9013/swiper",
+      "data": [],
+      "component": {
+        "width": 670,
+        "height": 370,
+        "option": {
+          type: '',
+          interval: 5000,
+          opacity: 100,
+          indicator: 'none'
+        },
+        "name": "swiper",
+        "prop": "swiper"
+      },
+    }
+  }, {
+    label: 'iframe',
+    option: {
+      "title": "iframe",
+      "name": "iframe",
+      "top": 0,
+      "left": 0,
+      "dataType": 0,
+      "data": 'https://cloud.baidu.com/',
+      "component": {
+        "width": 670,
+        "height": 370,
+        "option": {},
+        "name": "iframe",
+        "prop": "iframe"
+      },
+    }
+  }]
+}, {
+  "label": '指标',
+  "children": [{
+    "label": '翻牌器',
+    "option": {
+      "title": "翻牌器",
+      "name": "翻牌器",
+      "top": 0,
+      "left": 0,
+      "data": "16.24",
+      "component": {
+        "width": 260,
+        "height": 100,
+        "name": "flop",
+        "prop": "flop",
+        "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
+        "option": {
+          "type": "img",
+          "suffixText": "",
+          "suffixTextAlign": "",
+          "suffixSplit": '',
+          "suffixColor": "",
+          "suffixFontSize": '',
+          "borderColor": "#fff",
+          "borderWidth": 3,
+          "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
+          "fontSize": 42,
+          "fontWeight": "normal",
+          "split": 0,
+          "backgroundColor": "",
+          "color": "#fff"
+        }
+      },
+      "index": 10
+    }
+  }, {
+    "label": '进度条',
+    "option": {
+      "title": "进度条",
+      "name": "进度条",
+      "top": 0,
+      "left": 0,
+      "data": {
+        "label": "人数增涨",
+        "value": 40,
+        "data": 80
+      },
+      "component": {
+        "width": 400,
+        "height": 80,
+        "option": {
+          "type": "line",
+          "color": "rgba(154, 168, 212, 1)",
+          "fontSize": 24,
+          "strokeWidth": 18,
+          "fontWeight": "normal",
+          "borderColor": "#564AA3",
+          "width": 400,
+          "height": 80
+        },
+        "name": "progress",
+        "prop": "progress"
+      },
+      "index": 25
+    }
+  }]
+}, {
+  "label": '表格',
+  "children": [{
+    "label": '表格',
+    "option": {
+      "title": "表格",
+      "name": "表格",
+      "top": 0,
+      "left": 0,
+      "dataType": 0,
+      "data": [{
+        "type1": '数据1',
+        "type2": '数据2'
+      }, {
+        "type1": '数据1',
+        "type2": '数据2'
+      }],
+      "component": {
+        "width": 500,
+        "height": 200,
+        "name": "table",
+        "prop": "table",
+        "queryList": [
+          {
+            "label": "类型1",
+            "value": 1
+          },
+          {
+            "label": "类型2",
+            "value": 2
+          }
+        ],
+        style: {
+          headerBackground: 'rgba(0, 0, 0, 0.01)',
+          headerColor: 'rgba(154, 168, 212, 1)',
+          headerTextAlign: 'center',
+          bodyBackground: 'rgba(0, 0, 0, 0.01)',
+          bodyColor: 'rgba(154, 168, 212, 1)',
+          borderColor: 'rgba(51, 65, 107, 1)',
+          bodyTextAlign: 'center',
+        },
+        "option": {
+          "column": [
+            {
+              "label": "类型1",
+              "prop": "type1"
+            },
+            {
+              "label": "类型2",
+              "prop": "type2"
+            },
+          ]
         }
       },
     }
