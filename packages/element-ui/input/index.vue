@@ -92,6 +92,7 @@
       <el-scrollbar style="height:380px;overflow-x:hidden">
         <el-tree :data="dicList"
                  :node-key="valueKey"
+                 :accordion="accordion"
                  :show-checkbox="multiple"
                  :props="props"
                  :check-strictly="checkStrictly"
@@ -133,6 +134,10 @@ export default create({
       default: true
     },
     checkStrictly: {
+      type: Boolean,
+      default: false
+    },
+    accordion: {
       type: Boolean,
       default: false
     },

@@ -48,6 +48,7 @@
                                v-else
                                :action="column.action"
                                :append="column.append"
+                               :accordion="column.accordion"
                                :typeslot="column.typeslot"
                                :appendClick="column.appendClick"
                                :border="column.border"
