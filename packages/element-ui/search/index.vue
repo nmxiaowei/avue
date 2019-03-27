@@ -7,7 +7,11 @@
             :class="b('item')">
       <p :class="b('title')">{{column.label}}:</p>
       <div :class="b('content')">
-        <span :class="[b('tags'),{'avue-search__tags--active':getActive(item,column)}]"
+        <slot :name="column.prop"
+              :dic="DIC[column.prop]"
+              v-if="column.slot"></slot>
+        <span v-else
+              :class="[b('tags'),{'avue-search__tags--active':getActive(item,column)}]"
               @click="handleClick(column,item)"
               v-for="item in DIC[column.prop]"
               :key="getKey(item,column.props,'value')">{{getKey(item,column.props,'label')}}</span>
