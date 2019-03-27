@@ -303,6 +303,8 @@ export default create({
     this.doLayout = false;
     this.$nextTick(() => {
       this.doLayout = true;
+      //如果有搜索激活搜索
+      if (this.$refs.headerSearch) this.$refs.headerSearch.init();
     });
   },
   computed: {
