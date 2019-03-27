@@ -90,7 +90,7 @@
                 v-model="filterText"
                 v-if="filter"></el-input>
       <el-scrollbar style="height:380px;overflow-x:hidden">
-        <el-tree :data="dic"
+        <el-tree :data="dicList"
                  :node-key="valueKey"
                  :show-checkbox="multiple"
                  :props="props"
@@ -198,6 +198,22 @@ export default create({
     }
   },
   computed: {
+    dicList() {
+      function addParent(result, parent) {
+        result.forEach(ele => {
+          const children = ele.children;
+          if (children) {
+            addParent(children, ele);
+          }
+          if (parent) {
+            ele.parent = parent;
+          }
+        });
+      }
+      let list = this.dic;
+      addParent(list);
+      return list;
+    },
     keysList() {
       return this.multiple ? this.text : [];
     },
