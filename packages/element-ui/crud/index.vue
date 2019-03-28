@@ -103,13 +103,14 @@
                        :fixed="fixedFlag"
                        align="center"></el-table-column>
       <!-- 序号 -->
-      <el-table-column v-if="this.vaildData(tableOption.index,true)"
+      <el-table-column v-if="this.vaildData(tableOption.index,false)"
                        :label="tableOption.indexLabel || config.indexLabel"
                        type="index"
                        width="60"
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>
+      <el-table-column></el-table-column>
       <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
