@@ -84,19 +84,16 @@ export const setPx = (val, defval = '') => {
  * 根据字典的value显示label
  */
 let result = '';
+
 export const findByValue = (dic, value, props, isFirst, isTree) => {
   props = props || {};
   const labelKey = props.label || 'label';
   const valueKey = props.value || 'value';
   const childrenKey = props.children || 'children';
-  if (validatenull(isFirst)) result = value;
+  result = value;
   if (validatenull(dic)) return result;
   // 正常字典
-  if (
-    typeof value === 'string' ||
-    typeof value === 'number' ||
-    typeof value === 'boolean'
-  ) {
+  if (['string', 'number', 'boolean'].includes(typeof value)) {
     for (let i = 0; i < dic.length; i++) {
       if (dic[i][valueKey] === value) {
         result = dic[i][labelKey];

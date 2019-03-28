@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop || column.value];
   let type = column.type;
-  result = result || '';
+  if (validatenull(result)) result = ''
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {
     result = column.formatter(row, row[column.prop], result, column);
@@ -22,7 +22,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   }
 
   // 字典处理
-  if (column.dicData || column.dicUrl && !validatenull(result)) {
+  if (!validatenull(dic)) {
     result = findByValue(dic, result, column.props || option.props, false, ['cascader'].includes(column.type));
   }
   return result;
