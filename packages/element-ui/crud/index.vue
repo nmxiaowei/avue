@@ -110,7 +110,7 @@
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>
-      <el-table-column></el-table-column>
+      <el-table-column width="0px"></el-table-column>
       <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
