@@ -4,7 +4,7 @@
                :placeholder="placeholder"
                :props="props"
                :readonly="readonly"
-               :change-on-select="changeoOnSelect"
+               :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
                :show-all-levels="showAllLevels"
@@ -27,7 +27,7 @@ export default create({
       type: Array,
       default: () => []
     },
-    changeoOnSelect: {
+    changeOnSelect: {
       type: Boolean,
       default: false
     },
