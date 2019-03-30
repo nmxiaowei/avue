@@ -22,7 +22,11 @@
 
 <body>
   <div id="app">
-    <avue-tabs ref="tabs" :option="option" v-model="form" @change="handleChange" @submit="handleSubmit"></avue-tabs>
+    <avue-tabs ref="tabs" :option="option" v-model="form" @change="handleChange" @submit="handleSubmit">
+      <template slot-scope="scope" slot="test">
+        <el-tag>测试自定义内容</el-tag>
+      </template>
+    </avue-tabs>
   </div>
 </body>
 <script>

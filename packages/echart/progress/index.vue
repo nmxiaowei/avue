@@ -50,12 +50,6 @@ export default create({
       default: () => {
         return {};
       }
-    },
-    data: {
-      type: Object,
-      default: () => {
-        return {};
-      }
     }
   }
 });

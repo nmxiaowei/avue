@@ -27,7 +27,7 @@ var tableOption = {
   refreshBtn: false,
   menuWidth: 150,
   labelWidth: 100,
-  dialogHeight: 150,
+  dialogHeight: 50,
   dialogWidth: 200,
   column: [{
     label: '名称',

@@ -1,4 +1,5 @@
 import { setPx } from 'utils/util'
+import echartList from './list'
 export default (function () {
   return {
     props: {
@@ -18,10 +19,7 @@ export default (function () {
         default: 'main_' + new Date()
       },
       data: {
-        type: Object,
-        default: () => {
-          return {};
-        }
+        type: [Object, String, Array]
       },
       component: {
         type: Object,
@@ -108,7 +106,7 @@ export default (function () {
     mounted() {
       if (this.$refs[this.id]) {
         const className = this.$el.className.replace('avue-echart ', '')
-        if (['bar', 'line', 'pie'].includes(className.replace('avue-echart-', ''))) {
+        if (echartList.includes(className.replace('avue-echart-', ''))) {
           this.isChart = true;
         } else {
           this.isChart = false;
@@ -129,14 +127,14 @@ export default (function () {
               params: this.query
             }).then(res => {
               const data = res.data
-              this.dataChart = data.data;
+              this.dataChart = data.data || {};
               if (this.isChart && this.myChart) {
                 this.myChart.clear();
                 this.updateChart();
               }
             })
           } else {
-            this.dataChart = this.data;
+            this.dataChart = this.data || {};
             if (this.isChart && this.myChart) {
               this.myChart.clear();
               this.updateChart();

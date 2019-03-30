@@ -85,10 +85,6 @@ export default create({
       default: () => {
         return {};
       }
-    },
-    data: {
-      type: [String, Number],
-      default: ""
     }
   },
   created() {},

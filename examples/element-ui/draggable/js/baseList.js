@@ -5,6 +5,7 @@ var baseList = [{
     "option": {
       "name": "柱状图",
       "title": "柱状图",
+      "icon": 'icon-bar',
       "top": 276,
       "left": 536,
       "data": {
@@ -74,6 +75,7 @@ var baseList = [{
     "option": {
       "name": "折线图",
       "title": "折线图",
+      "icon": 'icon-line',
       "top": 276,
       "left": 536,
       "data": {
@@ -139,10 +141,11 @@ var baseList = [{
       },
     }
   }, {
-    labael: '饼图',
+    label: '饼图',
     option: {
       "name": "饼图",
       "title": "饼图",
+      "icon": 'icon-pie',
       "top": 548,
       "left": 808,
       "zIndex": 30,
@@ -186,6 +189,7 @@ var baseList = [{
     "option": {
       "title": "文本框",
       "name": "文本框",
+      "icon": 'icon-text',
       "top": 0,
       "left": 0,
       "data": "文本框",
@@ -207,6 +211,7 @@ var baseList = [{
     "option": {
       "title": "跑马灯",
       "name": "跑马灯",
+      "icon": 'icon-scroll',
       "top": 0,
       "left": 0,
       "data": "跑马灯",
@@ -230,6 +235,7 @@ var baseList = [{
     "option": {
       "title": "超链接",
       "name": "超链接",
+      "icon": 'icon-link',
       "top": 0,
       "left": 0,
       "data": "超链接",
@@ -254,6 +260,7 @@ var baseList = [{
     "option": {
       "name": "实时时间",
       "title": "实时时间",
+      "icon": 'icon-datetime',
       "top": 78,
       "left": 1604,
       "zIndex": 31,
@@ -279,6 +286,7 @@ var baseList = [{
     "option": {
       "title": "图片框",
       "name": "图片框",
+      "icon": 'icon-img',
       "top": 0,
       "left": 0,
       "component": {
@@ -293,6 +301,7 @@ var baseList = [{
     option: {
       "title": "轮播图",
       "name": "轮播图",
+      "icon": 'icon-banner',
       "top": 0,
       "left": 0,
       "zIndex": 33,
@@ -318,6 +327,7 @@ var baseList = [{
     option: {
       "title": "iframe",
       "name": "iframe",
+      "icon": 'icon-iframe',
       "top": 0,
       "left": 0,
       "dataType": 0,
@@ -338,6 +348,7 @@ var baseList = [{
     "option": {
       "title": "翻牌器",
       "name": "翻牌器",
+      "icon": 'icon-flop',
       "top": 0,
       "left": 0,
       "data": "16.24",
@@ -371,6 +382,7 @@ var baseList = [{
     "option": {
       "title": "进度条",
       "name": "进度条",
+      "icon": 'icon-progress',
       "top": 0,
       "left": 0,
       "data": {
@@ -396,6 +408,46 @@ var baseList = [{
       },
       "index": 25
     }
+  }, {
+    label: '仪表盘',
+    option: {
+      "title": "gauge",
+      "icon": 'icon-gauge',
+      "name": "gauge",
+      "dataType": 1,
+      "time": 5000,
+      "url": "http://yapi.demo.qunar.com/mock/9013/gauge",
+      "data": [],
+      "component": {
+        "width": 390,
+        "height": 314,
+        "option": {
+          "lineSize": 15,
+          "axisLabelShow": false,
+          "axisLabelFontSize": 25,
+          "nameFontSize": 20,
+          "valueFontSize": 30,
+          "nameColor": "",
+          "lineColor": "#eee",
+          "barColor": [
+            {
+              "color1": "rgba(154, 168, 212, 1)",
+              "postion": "0.2",
+            },
+            {
+              "color1": "#23B7E5",
+              "postion": "0.8",
+            },
+            {
+              "color1": "#564AA3",
+              "postion": "1",
+            }
+          ]
+        },
+        "name": "gauge",
+        "prop": "gauge"
+      },
+    },
   }]
 }, {
   "label": '表格',
@@ -404,6 +456,7 @@ var baseList = [{
     "option": {
       "title": "表格",
       "name": "表格",
+      "icon": 'icon-table',
       "top": 0,
       "left": 0,
       "dataType": 0,

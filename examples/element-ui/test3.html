@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :option="option" :data="data"></avue-crud>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: [],
+        option: {
+          height: 627,
+          align: 'center',
+          menuAlign: 'center',
+          menuWidth: 300,
+          index: true,
+          viewBtn: true,
+          column: [
+            {
+              label: '产品名称',
+              prop: 'name',
+              type: 'input'
+            },
+            {
+              label: '上游名称',
+              prop: 'customerId',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'id',
+              },
+              dicUrl: 'https://cli2.avue.top/api/area/getProvince'
+            },
+            {
+              label: '投放媒体',
+              prop: 'mediaId',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'id',
+              },
+              dicUrl: 'https://cli2.avue.top/api/area/getProvince'
+            },
+            {
+              label: '状态',
+              prop: 'status',
+              type: 'radio',
+              valueDefault: 0,
+              addDisplay: false,
+              editDisplay: false,
+              dicData: [
+                {
+                  label: '正常',
+                  value: 0
+                },
+                {
+                  label: '删除',
+                  value: 1
+                }
+              ]
+            },
+            {
+              label: '支持状态',
+              prop: 'flag',
+              type: 'radio',
+              valueDefault: 0,
+              dicData: [
+                {
+                  label: '安卓和IOS',
+                  value: 0
+                },
+                {
+                  label: '安卓',
+                  value: 1
+                },
+                {
+                  label: 'IOS',
+                  value: 2
+                }
+              ]
+            },
+            {
+              label: '有无上限',
+              prop: 'maxFlag',
+              type: 'radio',
+              valueDefault: 1,
+              dicData: [
+                {
+                  label: '无',
+                  value: 0
+                },
+                {
+                  label: '有',
+                  value: 1
+                }
+              ]
+            },
+            {
+              label: '上限值',
+              prop: 'maxNum',
+              type: 'input',
+              display: true
+            }
+
+          ]
+        },
+      };
+    },
+    created() {
+      this.data = [{
+        "id": "3093854368551256071",
+        "name": "测试",
+        "customerId": 3093854368551256065,
+        "mediaId": 3093854368551256070,
+        "maxFlag": 1,
+        "maxNum": 1000000,
+        "flag": 0,
+        "status": 0,
+        "pubTime": "2019-03-28T04:29:15",
+        "upTime": "2019-03-28T04:29:15",
+        "customer": "萨达",
+        "media": "腾讯"
+      }, {
+        "id": "21312",
+        "name": "chanpin",
+        "customerId": 121312,
+        "mediaId": 12312312,
+        "maxFlag": 0,
+        "maxNum": 1000000,
+        "flag": 0,
+        "status": 0,
+        "pubTime": "2019-03-27T01:03:16",
+        "upTime": "2019-03-27T01:03:17",
+        "customer": "asdas",
+        "media": "今日头条"
+      }]
+    }
+  })
+</script>
+
+</html>

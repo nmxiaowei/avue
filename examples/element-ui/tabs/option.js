@@ -28,6 +28,10 @@ var infoOption = {
       label: '其他',
       value: 3
     }]
+  }, {
+    label: '自定义测试',
+    prop: 'test',
+    formslot: true
   }]
 }
 

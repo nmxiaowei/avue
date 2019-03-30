@@ -134,11 +134,6 @@ export default create({
     }
   },
   watch: {
-    active(val) {
-      if (val) {
-        this.$emit("change", this.index);
-      }
-    },
     baseWidth(val) {
       this.$refs.wrapper.style.width = this.setPx(val);
       if (this.resize && this.children.style) {
@@ -182,7 +177,6 @@ export default create({
           left: this.baseLeft,
           top: this.baseTop
         });
-        this.active = true;
         this.rangeActive = false;
         this.moveActive = false;
       };
@@ -229,6 +223,7 @@ export default create({
       this.overActive = true;
     },
     handleMouseDown(e) {
+      this.$emit("change", this.index);
       this.active = true;
       this.moveActive = true;
       this.x = e.clientX;

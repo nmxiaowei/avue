@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="../../cdn/codemirror/codemirror.css" />
   <link rel="stylesheet" href="../../cdn/codemirror/theme/rubyblue.css" />
   <link rel="stylesheet" href="../../cdn/codemirror/addon/lint/lint.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1117329_uhn20j1c39b.css">
   <script src="../../cdn/codemirror/codemirror.js"></script>
   <script src="../../cdn/codemirror/addon/lint/lint.js"></script>
   <script src="../../cdn/codemirror/mode/javascript/javascript.js"></script>
@@ -39,11 +40,29 @@
         <textarea ref="code" name="code"></textarea>
       </div>
     </el-dialog>
-    <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+    <div class="contentmenu" v-show="contentMenu" :style="styleContentmenu" @click="contentMenu=false">
+      <div class="contentmenu__item" @click="handleDel(active,zIndex)"> <i class="el-icon-close"></i>删除图层
+      </div>
+      <div class="contentmenu__item" @click="handleCopy(active,zIndex)"><i class="el-icon-document"></i>复制图层
+      </div>
+      <div class="contentmenu__item" @click="handleTop(active,zIndex)"><i class="el-icon-arrow-up"></i>置顶图层
+      </div>
+      <div class="contentmenu__item" @click="handleBottom(active,zIndex)"><i class="el-icon-arrow-down"></i>置底图层
+      </div>
+      <div class="contentmenu__item" @click="handleStepTop(active,zIndex)"><i class="el-icon-arrow-up"></i>上移一层
+      </div>
+      <div class="contentmenu__item" @click="handleStepBottom(active,zIndex)"><i class="el-icon-arrow-down"></i>下移一层
+      </div>
+    </div>
+    <el-menu class="nav" mode="horizontal" background-color="#212528" text-color="#fff" active-text-color="#409EFF"
+      @mousedown="handleMouseDown">
       <el-submenu :index="index+''" v-for="(item,index) in baseList" :key="index">
         <template slot="title">{{item.label}}</template>
-        <el-menu-item @click="addCompoment(citem.option)" :key="cindex" :index=`${index}-${cindex}`
-          v-for="(citem,cindex) in item.children">{{citem.label}}</el-menu-item>
+        <el-menu-item @click="addCompoment(citem.option)" :key="cindex" :index="`${index}-${cindex}`"
+          v-for="(citem,cindex) in item.children">
+          <i :class="'nav__icon iconfont '+citem.option.icon"></i>
+          <span>{{citem.label}}</span>
+        </el-menu-item>
       </el-submenu>
       <el-menu-item index="6" @click="menuFlag=true" v-show="!menuFlag">还原</el-menu-item>
       <el-menu-item index="7" @click="handleView" v-show="menuFlag">预览</el-menu-item>
@@ -51,18 +70,22 @@
 
     </el-menu>
     <div class="app" :class="{'app--none':!menuFlag}">
-      <div class="menu" v-show="menuFlag">
+      <div class="menu" v-show="menuFlag" @mousedown="handleMouseDown">
         <p class="title">图层</p>
         <draggable v-model="zIndexList">
           <div class="menu__item" :class="{'menu__item--active':item.index===active}" v-for="(item,index) in zIndexList"
             :key="index" @click="active=item.index">
-            {{item.title}}
+            <span class="menu__icon">
+              <i :class="'iconfont '+item.icon"></i>
+            </span>
+            <span>{{item.title}}</span>
           </div>
         </draggable>
       </div>
-      <div class="wrapper" ref="wrapper">
-        <div class="content">
-          <div class="container" :style="styleName" ref="container" @mousedown.stop.self="handleMouseDown">
+      <div class="wrapper" @mousedown.self="handleMouseDown">
+        <div class="content" ref="content" @mousedown.self="handleMouseDown">
+          <div class="container" :style="styleName" ref="container" @mousedown.self="handleMouseDown"
+            @contextmenu.prevent="handleContextMenu">
             <div class="grade" v-if="gradeFlag || config.gradeShow" :style="gradeLenStyle"></div>
             <avue-draggable v-if="relaod" :disabled="!menuFlag" :ref="'item_'+index" :id="'item_'+index" :step="2"
               @focus="handleFocus" @postion="handlePostion" :resize="item.resize" @resize="handleResize"
@@ -70,21 +93,21 @@
               v-for="(item,index) in list" :width="item.component.width" :height="item.component.height" :key="index"
               :top="item.top" :left="item.left">
               <img v-if="['img'].includes(item.component.prop)" :src="item.data" draggable="false" />
-              <component :id="'component_'+index" :component="item.component" v-else
-                :is="'avue-echart-'+item.component.name" :component="item.component" :data="item.data"
-                :option="item.component.option" :url="item.url" :time="item.time" :data-Type="item.dataType">
+              <component :id="'component_'+index" v-else :is="'avue-echart-'+item.component.name"
+                :component="item.component" :data="item.data" :option="item.component.option" :url="item.url"
+                :time="item.time" :data-type="item.dataType">
               </component>
-              <div slot-scope="scope" slot="menu">
+              <template slot-scope="scope" slot="menu">
                 <i class="el-icon-close" @click="handleDel(scope.index,scope.zIndex)"></i>
                 <i class="el-icon-document" @click="handleCopy(scope.index,scope.zIndex)"></i>
-              </div>
+              </template>
             </avue-draggable>
           </div>
         </div>
       </div>
       <div class="menu params" v-show="menuFlag">
         <p class="title">操作</p>
-        <el-form label-width="100px">
+        <el-form label-width="120px" label-position="left" size="small">
           <template v-if="![undefined].includes(activeComponent.prop)">
             <el-collapse>
               <el-collapse-item title="数据设置" v-if="dicOption.dataList.includes(activeComponent.prop)">
@@ -119,6 +142,23 @@
               </el-form-item>
               <el-form-item label="图片透明度">
                 <avue-silder v-model="activeComponent.option.opacity"></avue-silder>
+              </el-form-item>
+            </template>
+            <template v-if="activeComponent.prop==='gauge'">
+              <el-form-item label="刻度线粗度(像素)">
+                <avue-silder v-model="activeComponent.option.lineSize"></avue-silder>
+              </el-form-item>
+              <el-form-item label="显示刻度值">
+                <avue-switch v-model="activeComponent.option.axisLabelShow"></avue-switch>
+              </el-form-item>
+              <el-form-item label="刻度字号">
+                <avue-silder v-model="activeComponent.option.axisLabelFontSize"></avue-silder>
+              </el-form-item>
+              <el-form-item label="指标名称字号">
+                <avue-silder v-model="activeComponent.option.nameFontSize"></avue-silder>
+              </el-form-item>
+              <el-form-item label="指标字号">
+                <avue-silder v-model="activeComponent.option.valueFontSize"></avue-silder>
               </el-form-item>
             </template>
             <template v-if="activeComponent.prop==='text'">
@@ -202,7 +242,7 @@
             <template v-else-if="activeComponent.prop==='progress'">
               <el-form-item label="类型">
                 <avue-radio v-model="activeComponent.option.type" :dic="dicOption.line">
-                  </avue-select>
+                </avue-radio>
               </el-form-item>
               <el-form-item label="字体大小">
                 <avue-silder v-model="activeComponent.option.fontSize" :max="200"></avue-silder>
@@ -237,7 +277,7 @@
               </el-form-item>
               <el-form-item label="边框">
                 <avue-radio v-model="activeComponent.option.type" :dic="dicOption.border">
-                  </avue-select>
+                </avue-radio>
               </el-form-item>
               <template v-if="activeComponent.option.type==='img'">
                 <el-form-item label="背景图片">
@@ -316,7 +356,6 @@
               <el-form-item label="字体位置">
                 <avue-select v-model="activeComponent.style.bodyTextAlign" :dic="dicOption.textAlign">
                 </avue-select>
-              </el-form-item>
               </el-form-item>
               <el-form-item label="分割线">
                 <avue-color type="textarea" v-model="activeComponent.style.borderColor"></avue-color>
@@ -439,7 +478,7 @@
                 </template>
               </el-collapse>
             </template>
-            <template v-if="['bar','pie','line'].includes(activeComponent.prop)">
+            <template v-if="dicOption.colorList.includes(activeComponent.prop)">
               <el-collapse>
                 <el-collapse-item title="坐标轴边距设置">
                   <el-form-item label="图例">
@@ -471,8 +510,6 @@
                 </el-collapse-item>
               </el-collapse>
             </template>
-          </template>
-
           </template>
 
           <template v-else>
@@ -511,6 +548,10 @@
     el: '#app',
     data() {
       return {
+        contentMenu: false,
+        contentMenuX: 0,
+        contentMenuY: 0,
+        zIndex: 0,
         key: '',
         baseList: baseList,
         menuFlag: true,
@@ -536,6 +577,12 @@
       }
     },
     computed: {
+      styleContentmenu() {
+        return {
+          left: this.setPx(this.contentMenuX),
+          top: this.setPx(this.contentMenuY)
+        }
+      },
       zIndexList: {
         set(val) {
           const leng = val.length;
@@ -550,7 +597,8 @@
             return {
               index: ele.index,
               title: ele.title,
-              zIndex: ele.zIndex
+              zIndex: ele.zIndex,
+              icon: ele.icon
             }
           })
           list.sort(compare("zIndex"));
@@ -572,6 +620,12 @@
       },
       activeObj() {
         return this.list[this.active] || {}
+      },
+      activeNextObj() {
+        return this.list[this.active - 1] || {}
+      },
+      activeBreakObj() {
+        return this.list[this.active + 1] || {}
       },
       styleName() {
         const scale = this.config.scale;
@@ -602,14 +656,7 @@
       },
       active(val) {
         this.list.forEach((ele, index) => {
-          if (this.$refs['item_' + index]) {
-            if (index === val) {
-              this.$refs['item_' + index][0].setActive(true)
-            } else {
-              this.$refs['item_' + index][0].setActive(false)
-            }
-          }
-
+          this.$refs['item_' + index][0].setActive(index === val)
         });
       },
     },
@@ -623,16 +670,47 @@
         })
       },
       setResize() {
-        this.config.scale = (this.$refs.wrapper.offsetWidth / this.config.width) * 100
+        this.config.scale = (this.$refs.content.offsetWidth / this.config.width) * 100
+        this.$refs.content.style.height = (this.config.scale * this.config.height) / 100 + 'px'
       },
       formatTooltip(val) {
         return parseInt(val);
       },
       handleMouseDown() {
         this.active = -1;
+        this.$nextTick(() => {
+          this.contentMenu = false;
+        })
       },
-      handleChange(index) {
+      handleTop(active) {
+        this.activeObj.zIndex = this.listLen + 1;
+      },
+      handleStepTop(active) {
+        this.activeObj.zIndex = this.activeObj.zIndex + 1;
+        if (this.activeNextObj) this.activeNextObj.zIndex = this.activeNextObj.zIndex - 1;
+      },
+      handleStepBottom(active) {
+        this.activeObj.zIndex = this.activeObj.zIndex - 1;
+        if (this.activeBreakObj) this.activeBreakObj.zIndex = this.activeBreakObj.zIndex + 1
+      },
+      handleBottom(active) {
+        this.list[active].zIndex = -1;
+      },
+      handleContextMenu(e) {
+        this.$nextTick(() => {
+          if (this.active === -1) {
+            this.contentMenu = false;
+          } else {
+            this.contentMenuX = e.clientX;
+            this.contentMenuY = e.clientY;
+            this.contentMenu = true;
+          }
+        })
+      },
+      handleChange(index, zindex) {
         this.active = index;
+        this.zIndex = zindex;
+        this.contentMenu = false;
       },
       handleFocus() {
         this.gradeFlag = true;

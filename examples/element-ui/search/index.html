@@ -21,7 +21,11 @@
 
 <body>
   <div id="app">
-    <avue-search :option="option" v-model="form" @change="handleChange"></avue-search>
+    <avue-search :option="option" v-model="form" @change="handleChange">
+      <template slot="zdy" slot-scope="scope">
+        <el-tag>自定义</el-tag>
+      </template>
+    </avue-search>
     <avue-crud :option="tableOption" :data="data"></avue-crud>
   </div>
 </body>
@@ -80,6 +84,10 @@
         option: {
           card: true,
           column: [{
+            label: '自定义',
+            prop: 'zdy',
+            slot: true
+          }, {
             label: '地区',
             prop: 'zt',
             dicUrl: 'https://cli2.avue.top/api/area/getProvince',

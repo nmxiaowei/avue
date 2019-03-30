@@ -31,7 +31,7 @@
                 <el-form-item :label="column.label"
                               :prop="column.prop"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
-                              :label-width="setPx(column.labelWidth || item.labelWidth || parentOption.labelWidth || 80)">
+                              :label-width="getLabelWidth(column,item)">
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
                               :placement="column.tipPlacement">
@@ -304,6 +304,15 @@ export default create({
           this.handleShowLabel(column, this.DIC[column.prop]);
         });
       });
+    },
+    getLabelWidth(column, item) {
+      const result =
+        column.labelWidth === 0
+          ? 0
+          : column.labelWidth || item.labelWidth === 0
+          ? 0
+          : item.labelWidth || this.parentOption.labelWidth || 80;
+      return this.setPx(result);
     },
     //获取全部字段字典的label
     handleShowLabel(column, DIC) {

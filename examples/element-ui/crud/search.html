@@ -20,10 +20,9 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data">
-
+    <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
       <template slot="search">
-        我是自定义
+        <el-tag>我是自定义</el-tag>
       </template>
     </avue-crud>
   </div>
@@ -48,14 +47,31 @@
           column: [{
             label: '姓名',
             prop: 'name',
-            type: 'number',
             search: true
           }, {
             label: '年龄',
             prop: 'sex'
+          }, {
+            label: '字典',
+            prop: 'dic',
+            type: 'select',
+            dicData: [{
+              label: 1,
+              value: 1
+            }]
           }]
         }
       }, 0);
+    },
+    methods: {
+      searchChange(params) {
+        const index = this.$refs.crud.findColumnIndex("dic");
+        console.log(params);
+        this.option.column[index].dicData = [{
+          label: 2,
+          value: 2
+        }];
+      }
     }
   })
 </script>

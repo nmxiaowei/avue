@@ -20,7 +20,12 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
+    <avue-crud :option="option" :data="data" v-model="form">
+      <template slot="infoForm" slot-scope="scope">
+        <avue-crud :option="infoOption" :data="infoData">
+        </avue-crud>
+      </template>
+    </avue-crud>
   </div>
 </body>
 <script>
@@ -28,23 +33,43 @@
     el: '#app',
     data() {
       return {
+        form: {},
         data: [{
-          name: 'smallwei'
+          name: '张三',
+          info: [
+            {
+              sex: 15,
+            }, {
+              sex: 16,
+            }
+          ]
         }],
         option: {
-          emptyText: '自定义暂无数据提示语',
-          border: true,
+          dialogWidth: '100%',
+          dialogFullscreen: true,
           column: [{
             label: '姓名',
-            prop: 'name'
+            prop: 'name',
           }, {
+            labelWidth: 0,
+            label: '',
+            prop: 'info',
+            span: 24,
+            hide: true,
+            formslot: true,
+          }]
+        },
+        infoOption: {
+          column: [{
             label: '年龄',
             prop: 'sex',
-            formatter: () => {
-              return 123;
-            }
           }]
         }
+      }
+    },
+    computed: {
+      infoData() {
+        return this.form.info || []
       }
     }
   })
