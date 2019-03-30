@@ -56,6 +56,7 @@
                                :changeoOnSelect="column.changeoOnSelect"
                                :checked="column.checked"
                                :clearable="column.clearable"
+                               :changeOnSelect="column.changeOnSelect"
                                :click="column.click"
                                :column="column"
                                :colors="column.colors"
