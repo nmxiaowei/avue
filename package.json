@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "1.6.1-alpha.1",
+  "version": "1.6.1",
   "main": "lib/index.js",
   "description": "基于数据驱动视图的思想，根据json数据快速构建crud和form等组件",
   "author": "smallwei <1634566606@qq.com>",
@@ -26,13 +26,11 @@
     "dayjs": "^1.7.5",
     "deepmerge": "^1.2.0",
     "element-ui": "^2.4.9",
-    "mockjs": "^1.0.1-beta3",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
     "throttle-debounce": "^1.0.1",
     "vue": "^2.5.2",
-    "vue-json-editor": "^1.2.3",
-    "vuedraggable": "^2.16.0"
+    "vue-json-editor": "^1.2.3"
   },
   "devDependencies": {
     "algoliasearch": "^3.24.5",
