@@ -211,7 +211,6 @@ export default {
                   },
                   span: 12,
                   prop: "phone",
-                  type:'phone'
               }]
           }
        }
@@ -251,7 +250,10 @@ export default {
 
 ## Form 模块
 
-
+如果使用mockjs一键生成数据需要导入包
+```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Mock.js/1.0.0/mock-min.js"></script>
+```
 
 ### 基础
 
@@ -469,7 +471,6 @@ export default {
                   },
                   span: 12,
                   prop: "phone",
-                  type:'phone'
               }]
           }
        }

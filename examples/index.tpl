@@ -9,6 +9,7 @@
     <script type="text/javascript" src='https://webapi.amap.com/maps?v=1.4.11&key=7ab53b28352e55dc5754699add0ad862&plugin=AMap.PlaceSearch'></script>
     <!-- UI组件库 1.0 -->
     <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Mock.js/1.0.0/mock-min.js"></script>
     <style>
         html,
         body,

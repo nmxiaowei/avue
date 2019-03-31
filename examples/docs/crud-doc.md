@@ -99,7 +99,6 @@
 | input         | 输入框       |
 | select        | 选择框       |
 | radio         | 单选框       |
-| phone         | 手机号输入框 |
 | checkbox      | 多选框       |
 | textarea      | 文本框       |
 | cascader      | 级联框       |
@@ -166,7 +165,7 @@
 | span             | 表单栅列                                                                                                                  | Number                               | -                                                                                                                                                                                         | 12                    |
 | filterable       | 是否可以输入搜索。                                                                                                        | Boolean                              | true / false                                                                                                                                                                              | false                 |
 | readonly         | 只读                                                                                                                      | Boolean                              | true / false                                                                                                                                                                              | false                 |
-| type             | 类型                                                                                                                      | String                               | input / select / radio / checkbox / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / password / switch / tree / phone | input                 | - |
+| type             | 类型                                                                                                                      | String                               | input / select / radio / checkbox / textarea / cascader / date / time / datetime / daterange / timerange / datetimerange / week / month / year / dates / password / switch / tree | input                 | - |
 | disabled         | 全部是否禁止                                                                                                              | Boolean                              | true / false                                                                                                                                                                              | false                 |
 | addDisabled      | 表单新增时是否禁止                                                                                                        | Boolean                              | true / false                                                                                                                                                                              | false                 |
 | editDisabled     | 表单编辑时是否禁止                                                                                                        | Boolean                              | true / false                                                                                                                                                                              | false                 |

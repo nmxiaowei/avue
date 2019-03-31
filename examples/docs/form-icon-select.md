@@ -14,7 +14,7 @@ export default{
             type: 'icon-select',
             iconList: [{
               label: '基本图标',
-              list: ['el-icon-info', 'el-icon-error', 'el-icon-error', 'el-icon-success', 'el-icon-warning', 'el-icon-question']
+              list: ['el-icon-info', 'el-icon-error','el-icon-success', 'el-icon-warning', 'el-icon-question']
             }, {
               label: '方向图标',
               list: ['el-icon-info', 'el-icon-back', 'el-icon-arrow-left', 'el-icon-arrow-down', 'el-icon-arrow-right', 'el-icon-arrow-up']
@@ -47,18 +47,7 @@ export default{
 <avue-form :option="option" v-model="form" > </avue-form>
 
 <script>
-// 引入阿里巴巴的图表库后，直接使用图标名即可，记得加前缀
-// <link rel="stylesheet" href="https://at.alicdn.com/t/font_567566_pwc3oottzol.css">
 
-// 同时给你的图标加统一样式
-// .avue-icon-select__list .iconfont{
-//     padding: 20px;
-//     font-size: 24px;
-// }
-// .avue-icon-select__list .iconfont:hover{
-//    transform: scale(1.4);
-//    webkit-transform: scale(1.4);
-// }
 export default{
   data() {
     return {
@@ -74,7 +63,7 @@ export default{
             type: 'icon-select',
             iconList: [{
               label: '基本图标',
-              list: ['el-icon-info', 'el-icon-error', 'el-icon-error', 'el-icon-success', 'el-icon-warning', 'el-icon-question']
+              list: ['el-icon-info', 'el-icon-error', 'el-icon-success', 'el-icon-warning', 'el-icon-question']
             }, {
               label: '方向图标',
               list: ['el-icon-info', 'el-icon-back', 'el-icon-arrow-left', 'el-icon-arrow-down', 'el-icon-arrow-right', 'el-icon-arrow-up']

@@ -28,7 +28,7 @@
              target="_blank">问题反馈</a>
         </li>
         <li class="header__nav-item">
-          <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=vqed4m0j"
+          <a href="https://www.aliyun.com/acts/product-section-2019/home?spm=5176.section-products.4utv_eeferw.2.76b9327bi0UFCU&accounttraceid=2c88e9df-9588-4e64-b9fc-2fa81edd09b8&userCode=vqed4m0j"
              target="_blank">阿里云服务器1折起</a>
         </li>
         <li class="header__nav-item">

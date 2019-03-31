@@ -199,9 +199,10 @@ export default {
 
   created() {
     this.$notify.success({
-      title: "Avuex发布了，了解一下？",
+      title: "为了更好的满足企业需求，即将发布数据大屏解决方案",
       dangerouslyUseHTMLString: true,
-      message: '<a target="_blank" href="https://avuex.avue.top">点击查看</a>',
+      message:
+        '<a target="_blank" href="https://avuex.avue.top/#/vip">点击查看</a>',
       duration: 0,
       type: "success"
     });

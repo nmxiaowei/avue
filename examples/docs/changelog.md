@@ -1,4 +1,17 @@
 ## 更新日志
+### 1.6.1
+#### 2019-3-31
+
+- 移除mockjs的内置引用，采用导入式引用[demo](/#/component/form)
+- 移除form组件中大量的多余代码，减少包的体积
+- 移除type为phone时组件
+- 调整icon-select组件的样式显示[demo](/#/component/form-icon-select)
+- 修复tree组件props的children属性不起作用[#IUSM9](https://gitee.com/smallweigit/avue/issues/IUSM9)
+- 修复表格中的datetime与表单中的datetime并不兼容[#IS233](https://gitee.com/smallweigit/avue/issues/IS233)
+- 组件cascader新增showAllLevels和changeOnSelect属性
+- 新增crud组件select和select-all事件
+- 新增卡片展示card组件[demo](/#/component/card)
+
 ### 1.6.1-alpha.1
 #### 2019-3-6
 
