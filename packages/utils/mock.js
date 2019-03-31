@@ -1,6 +1,7 @@
-import mockjs from 'mockjs';
-const Random = mockjs.Random;
+let Random = {};
 export default (column, dic) => {
+    if (!window.Mock) return
+    Random = window.Mock.Random;
     let form = {};
 
     function createName({ en }) {

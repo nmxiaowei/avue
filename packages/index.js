@@ -1,6 +1,7 @@
 import Carousel from './carousel/';
 import Json from './json/'
 import Crud from './crud/';
+import Card from './card/'
 import CrudCheckbox from './crud-checkbox/';
 import CrudDate from './crud-date/';
 import CrudTime from './crud-time/';
@@ -36,6 +37,7 @@ import axios from 'axios';
 const components = [
     Json,
     Crud,
+    Card,
     Form,
     Tabs,
     Tree,
@@ -89,6 +91,7 @@ export default {
     install,
     Json,
     Crud,
+    Card,
     Form,
     Tabs,
     Tree,

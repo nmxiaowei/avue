@@ -4,7 +4,7 @@
                :placeholder="placeholder?placeholder:`请选择${label}`"
                :props="props"
                :readonly="readonly"
-               :change-on-select="changeoOnSelect"
+               :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
                :show-all-levels="showAllLevels"
@@ -17,24 +17,24 @@
 </template>
 
 <script>
-import create from '../../utils/create';
-import crudCompoents from '../../mixins/crud-compoents.js';
-import crudFun from '../../mixins/crud-fun.js';
+import create from "../../utils/create";
+import crudCompoents from "../../mixins/crud-compoents.js";
+import crudFun from "../../mixins/crud-fun.js";
 export default create({
-  name: 'crud-cascader',
+  name: "crud-cascader",
   mixins: [crudCompoents(), crudFun()],
   props: {
     value: {
       type: Array,
       default: () => []
     },
-    changeoOnSelect: {
+    changeOnSelect: {
       type: Boolean,
       default: false
     },
     expandTrigger: {
       type: String,
-      default: 'hover'
+      default: "hover"
     },
     showAllLevels: {
       type: Boolean,
@@ -46,17 +46,15 @@ export default create({
     },
     separator: {
       type: String,
-      default: '/'
+      default: "/"
     }
   },
-  data () {
+  data() {
     return {};
   },
   watch: {},
-  created () { },
-  mounted () { },
-  methods: {
-
-  }
+  created() {},
+  mounted() {},
+  methods: {}
 });
 </script>

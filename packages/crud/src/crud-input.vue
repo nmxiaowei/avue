@@ -13,20 +13,6 @@
               :disabled="disabled"
               :readonly="true"
               @click.native="disabled?'':open()" />
-    <el-input v-else-if="type==='phone'"
-              :size="size"
-              :clearable="disabled?false:clearable"
-              v-model="text"
-              @click.native="handleClick"
-              :type="typeParam"
-              :maxlength="maxlength"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :readonly="readonly"
-              :placeholder="placeholder?placeholder:`请输入${label}`"
-              @change="handleChange"
-              :disabled="disabled" />
     <el-input v-else
               :size="size"
               :clearable="disabled?false:clearable"
@@ -75,25 +61,24 @@
 </template>
 
 <script>
-import create from '../../utils/create';
-import crudCompoents from '../../mixins/crud-compoents.js';
-import { validatenull } from '../../utils/validate';
-import { findLabelNode } from '../../utils/util';
+import create from "../../utils/create";
+import crudCompoents from "../../mixins/crud-compoents.js";
+import { validatenull } from "../../utils/validate";
+import { findLabelNode } from "../../utils/util";
 export default create({
-  name: 'crud-input',
+  name: "crud-input",
   mixins: [crudCompoents()],
-  data () {
+  data() {
     return {
-      filterText: '',
+      filterText: "",
       box: false,
-      labelText: this.multiple ? [] : ''
+      labelText: this.multiple ? [] : ""
     };
   },
   props: {
     nodeClick: Function,
     checked: Function,
-    value: {
-    },
+    value: {},
     filter: {
       type: Boolean,
       default: true
@@ -122,10 +107,7 @@ export default create({
       type: Number
     },
     maxlength: {
-      type: Number,
-      default: function () {
-        if (this.type === 'phone') return 11;
-      }
+      type: Number
     },
     minRows: {
       type: Number,
@@ -137,48 +119,54 @@ export default create({
     }
   },
   watch: {
-    value () {
+    value() {
       this.initVal();
       this.init();
     },
-    filterText (val) {
+    filterText(val) {
       this.$refs.tree.filter(val);
     }
   },
   computed: {
-    isTree () {
-      return this.type === 'tree';
+    isTree() {
+      return this.type === "tree";
     },
-    labelShow () {
-      return this.multiple ? this.labelText.join('/').toString() : this.labelText;
+    labelShow() {
+      return this.multiple
+        ? this.labelText.join("/").toString()
+        : this.labelText;
     },
-    textShow () {
-      if (this.textLen === 11) return `${this.text.substr(0, 3)} ${this.text.substr(3, 4)} ${this.text.substr(7, 4)}`
+    textShow() {
+      if (this.textLen === 11)
+        return `${this.text.substr(0, 3)} ${this.text.substr(
+          3,
+          4
+        )} ${this.text.substr(7, 4)}`;
       return this.text;
     },
-    textLen () {
+    textLen() {
       return this.text.length;
     },
-    typeParam: function () {
-      if (this.type === 'textarea') {
-        return 'textarea';
-      } else if (this.type === 'password') {
-        return 'password';
+    typeParam: function() {
+      if (this.type === "textarea") {
+        return "textarea";
+      } else if (this.type === "password") {
+        return "password";
       } else {
-        return 'text';
+        return "text";
       }
     }
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     this.init();
   },
   methods: {
-    filterNode (value, data) {
+    filterNode(value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
-    checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
+    checkChange(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
       this.labelText = [];
       checkedKeys.checkedNodes.forEach(node => {
@@ -187,21 +175,22 @@ export default create({
           this.labelText.push(node[this.labelKey]);
         }
       });
-      if (typeof this.checked === 'function') this.checked(checkedNodes);
-      const result = (this.isString && this.multiple) ? this.text.join(',') : this.text;
-      this.$emit('input', result);
-      this.$emit('change', result);
+      if (typeof this.checked === "function") this.checked(checkedNodes);
+      const result =
+        this.isString && this.multiple ? this.text.join(",") : this.text;
+      this.$emit("input", result);
+      this.$emit("change", result);
     },
-    open () {
+    open() {
       this.box = true;
       this.handleClick();
     },
-    init () {
+    init() {
       if (this.isTree) {
         if (this.multiple) {
-          this.labelText = ['获取字典中...'];
+          this.labelText = ["获取字典中..."];
         } else {
-          this.labelText = '获取字典中...';
+          this.labelText = "获取字典中...";
         }
         const check = setInterval(() => {
           if (!validatenull(this.dic)) {
@@ -210,21 +199,18 @@ export default create({
                 return findLabelNode(this.dic, ele, this.props) || ele;
               });
             } else {
-              this.labelText = findLabelNode(this.dic, this.text, this.props) || this.text;
+              this.labelText =
+                findLabelNode(this.dic, this.text, this.props) || this.text;
             }
             if (!this.parent) this.disabledParentNode(this.dic);
             clearInterval(check);
           } else {
-            this.labelText = '';
+            this.labelText = "";
           }
         }, 500);
-      } else if (this.type === 'phone') {
-        if (!validatenull(this.text) && this.textLen == 11) {
-          this.text = this.textShow;
-        }
       }
     },
-    disabledParentNode (dic) {
+    disabledParentNode(dic) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
         if (!validatenull(children)) {
@@ -233,39 +219,39 @@ export default create({
         }
       });
     },
-    handleNodeClick (data) {
+    handleNodeClick(data) {
       const callback = () => {
         this.box = false;
-      }
-      if (typeof this.nodeClick === 'function') this.nodeClick(data);
+      };
+      if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;
-      if (validatenull(data[this.childrenKey]) && !this.multiple || this.parent) {
+      if (
+        (validatenull(data[this.childrenKey]) && !this.multiple) ||
+        this.parent
+      ) {
         const value = data[this.valueKey];
         const label = data[this.labelKey];
-        const result = (this.isString && this.multiple) ? value.join(',') : value;
+        const result = this.isString && this.multiple ? value.join(",") : value;
         this.text = value;
         this.labelText = label;
-        this.$emit('input', result);
-        this.$emit('change', result);
+        this.$emit("input", result);
+        this.$emit("change", result);
         callback();
       }
-
     },
-    handleClick () {
-      const result = (this.isString && this.multiple) ? this.text.join(',') : this.text;
-      if (typeof this.click === 'function') this.click({ value: result, column: this.column });
+    handleClick() {
+      const result =
+        this.isString && this.multiple ? this.text.join(",") : this.text;
+      if (typeof this.click === "function")
+        this.click({ value: result, column: this.column });
     },
-    handleChange (value) {
+    handleChange(value) {
       let text = this.text;
-      const result = (this.isString && this.multiple) ? value.join(',') : value;
-      if (typeof this.change === 'function') this.change({ value: result, column: this.column });
-      if (this.type === 'phone') {
-        this.text = text.replace(/[^0-9.]/g, '');
-        this.text = this.textShow;
-        text = this.text.replace(/\s/g, "");
-      }
-      this.$emit('input', result);
-      this.$emit('change', result);
+      const result = this.isString && this.multiple ? value.join(",") : value;
+      if (typeof this.change === "function")
+        this.change({ value: result, column: this.column });
+      this.$emit("input", result);
+      this.$emit("change", result);
     }
   }
 });

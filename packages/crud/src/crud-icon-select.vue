@@ -1,13 +1,14 @@
 <template>
   <div :class="b()">
-    <el-input placeholder="请选择图标"
+    <el-input :placeholder="placeholder"
               v-model="text"
               :size="size"
+              :disabled="disabled"
               @click.native="handleShow"
               readonly>
-      <template slot="prepend"><i :class="text"></i></template>
+      <template slot="append"><i :class="text"></i></template>
     </el-input>
-    <el-dialog title="请选择图标"
+    <el-dialog :title="placeholder"
                :visible.sync="box"
                width="40%">
       <el-tabs @tab-click="handleClick">
@@ -16,9 +17,8 @@
                      :label="citem.label"
                      :name="cindex+''"></el-tab-pane>
       </el-tabs>
-      <div :class="
-                     b('list')">
-        <div :class="b('item')"
+      <div :class="b('list')">
+        <div :class="b('item',{'active':text===item})"
              v-for="(item,index) in list"
              :key="index">
           <i :class="[b('icon'),item]"
@@ -75,6 +75,7 @@ export default create({
       this.$emit("change", item);
     },
     handleShow() {
+      if (this.disabled || this.readonly) return;
       this.box = true;
     }
   }

@@ -18,6 +18,7 @@
     <el-tree ref="tree"
              :data="list"
              :node-key="nodeKey"
+             :props="defaultProps"
              :filter-node-method="filterNode"
              :expand-on-click-node="false"
              :default-expand-all="defaultExpandAll">
@@ -94,6 +95,11 @@ export default create({
     }
   },
   computed: {
+    defaultProps() {
+      return {
+        children: this.childrenKey
+      };
+    },
     addText() {
       return this.addFlag ? "新增" : "修改";
     },

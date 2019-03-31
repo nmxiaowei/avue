@@ -1,14 +1,20 @@
 .avue-crud-icon-select{
+  &__item{
+    padding: 20px;
+    transition: all .2s;
+    &:hover{
+      transform: scale(1.4);
+    }
+    &--active{
+      transform: scale(1.4);
+      color:#409EFF;
+    }
+  }
   &__list{
     display: flex;
     flex-wrap: wrap;
   }
   &__icon{
-    padding: 20px;
-    font-size: 24px;
-    transition: all .2s;
-    &:hover{
-      transform: scale(1.4);
-    }
+    font-size: 24px !important;
   }
 }

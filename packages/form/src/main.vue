@@ -10,17 +10,13 @@
              :rules="formRules">
       <el-row :gutter="20"
               :span="24">
-        <draggable :list="columnOption"
-                   :options="dragOptions"
-                   :class="b('group')">
+        <div :class="b('group')">
           <template v-if="vaildVisdiplay(column)"
                     v-for="(column,index) in columnOption">
             <el-col :key="column.prop"
                     :md="column.span||12"
                     :xs="24"
-                    :class="b('row',{'cursor':draggableStart})"
-                    @mouseover.native="draggableMenu?mouseover(index):''"
-                    @mouseout.native="draggableMenu?mouseout(index):''">
+                    :class="b('row')">
               <div :class="b('option')"
                    v-if="optionIndex[index]">
                 <i class="el-icon-menu"
@@ -51,6 +47,8 @@
                              :change="column.change"
                              :click="column.click"
                              :nodeClick="column.nodeClick"
+                             :showAllLevels="column.showAllLevels"
+                             :changeOnSelect="column.changeOnSelect"
                              :checked="column.checked"
                              :prepend="column.prepend"
                              :append="column.append"
@@ -59,7 +57,7 @@
                              :iconList="column.iconList"
                              :precision="column.precision"
                              :multiple="column.multiple"
-                             :readonly="vaildData(draggableStart,column.readonly)"
+                             :readonly="column.readonly"
                              :placeholder="column.placeholder"
                              :step="column.step"
                              :range="column.range"
@@ -121,7 +119,7 @@
                  :style="{width:(column.count/24*100)+'%'}"
                  v-if="column.row && column.span!==24"></div>
           </template>
-        </draggable>
+        </div>
         <el-col :span="24"
                 v-if="vaildData(tableOption.menuBtn,true)">
           <el-form-item :label-width="menuWidth">
@@ -153,7 +151,6 @@
 <script>
 import create from "../../utils/create";
 import { sendDic } from "../../utils/dic";
-import draggable from "vuedraggable";
 import crud from "../../mixins/crud";
 import { deepClone, calcCascader } from "../../utils/util";
 import mock from "../../utils/mock";
@@ -162,9 +159,6 @@ import { setTimeout } from "timers";
 export default create({
   name: "form",
   mixins: [crud()],
-  components: {
-    draggable
-  },
   data() {
     return {
       first: true,
@@ -215,42 +209,6 @@ export default create({
       list = calcCascader(list);
       return list;
     },
-    draggable() {
-      return this.tableOption.draggable || {};
-    },
-    draggableMenu() {
-      return this.draggable.menu || false;
-    },
-    draggableStart() {
-      return this.draggable.start;
-    },
-    draggableFlag() {
-      return this.vaildData(this.draggable.clone, true);
-    },
-    dragOptions() {
-      if (!this.draggableStart) {
-        return {
-          disabled: true
-        };
-      }
-      let pull = (() => {
-        if (this.draggableFlag) {
-          return {
-            pull: "clone",
-            revertClone: false
-          };
-        }
-        return {};
-      })();
-      return {
-        animation: 0,
-        ghostClass: "avue-ghost",
-        group: (function() {
-          return Object.assign({ name: "avue" }, pull);
-        })(),
-        sort: this.vaildData(this.draggable.sort, false)
-      };
-    },
     menuWidth: function() {
       if (this.tableOption.menuPostion === "left") {
         return "";
@@ -292,7 +250,7 @@ export default create({
   },
   methods: {
     handleMock() {
-      const form = mock(this.columnOption, this.DIC);
+      const form = mock(this.columnOption, this.DIC) || {};
       Object.keys(form).forEach(ele => {
         this.form[ele] = form[ele];
       });
