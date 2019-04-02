@@ -1,4 +1,8 @@
 export default {
+  tip: {
+    select: '请选择',
+    input: '请输入'
+  },
   crud: {
     editTitle: '编 辑',
     addTitle: '新 增',

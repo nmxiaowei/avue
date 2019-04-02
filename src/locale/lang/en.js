@@ -1,4 +1,8 @@
 export default {
+  tip: {
+    select: 'please select',
+    input: 'please input'
+  },
   crud: {
     editTitle: 'edit',
     addTitle: 'add',

@@ -1,4 +1,5 @@
 import { validatenull } from 'utils/validate';
+import { locale } from 'packages/core/common/locale'
 import { KEY_COMPONENT_NAME } from 'global/variable';
 /**
  * 计算级联属性
@@ -206,9 +207,9 @@ export const getPlaceholder = (column, type) => {
     }
   } else if (validatenull(placeholder)) {
     if (['select', 'checkbox', 'radio', 'tree'].includes(column.type)) {
-      return `请选择${label}`;
+      return `${locale('tip.select')} ${label}`;
     } else {
-      return `请输入${label}`;
+      return `${locale('tip.input')} ${label}`;
     }
   }
 

@@ -70,10 +70,13 @@ const propsDefault = {
   children: "children",
   labelText: "名称"
 };
+
+import locale from "../../core/common/locale";
 import { deepClone, vaildData } from "utils/util";
 import create from "core/create";
 export default create({
   name: "tree",
+  mixins: [locale],
   props: {
     checkStrictly: {
       type: Boolean,
@@ -100,7 +103,7 @@ export default create({
   },
   computed: {
     addText() {
-      return this.addFlag ? "新增" : "修改";
+      return this.addFlag ? this.t("crud.addBtn") : this.t("crud.editBtn");
     },
     addFlag() {
       return this.type === "add" || this.type === "parentAdd";
@@ -146,7 +149,7 @@ export default create({
               rules: [
                 {
                   required: true,
-                  message: "请输入" + this.labelText,
+                  message: `${this.t("tip.input")} ${this.labelText}`,
                   trigger: "blur"
                 }
               ]
