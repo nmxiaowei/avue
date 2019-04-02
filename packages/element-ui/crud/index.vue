@@ -529,7 +529,7 @@ export default create({
     },
     formVal() {
       Object.keys(this.value).forEach(ele => {
-        this.tableForm[ele] = this.value[ele];
+        this.$set(this.tableForm, ele, this.value[ele]);
       });
     },
     dataInit() {
