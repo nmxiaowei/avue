@@ -1,42 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body,
-#app {
-  height: 100%;
-}
-
-::-webkit-scrollbar-track-piece {
-  background-color: transparent;
-}
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-  background-color: transparent;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background-color: hsla(220, 4%, 58%, .3);
-}
-.app{
-  height: calc(100% - 45px);
-}
-.json-editor .CodeMirror {
-  height: 500px;
-  overflow: auto;
-}
-
-.json-editor .cm-s-rubyblue span.cm-string {
-  color: #F08047;
-}
-img {
-  user-select: none;
-}
 
 .app {
+  height: calc(100% - 45px);
   display: flex;
   box-sizing: border-box;
 }
@@ -108,14 +72,12 @@ img {
   background-color: #2a2d32;
   position: relative;
   height: 100%;
-  overflow: hidden;
   box-sizing: border-box;
 }
 .content{
   margin: 0 auto;
   width:860px;
   height: auto;
-  overflow: hidden;
   box-shadow: 5px 5px 15px #000;
 }
 .app--none{
@@ -180,6 +142,9 @@ img {
   left: 0;
   right: 0;
 }
+.wrapper__grade{
+  background-size:20px 20px,20px 20px;
+}
 
 .title {
   margin-bottom: 10px;
@@ -230,8 +195,8 @@ img {
   color:#09f;
   border-color: #282e3a;
 }
-.params .el-input-group__append, .params .el-input-group__prepend{
-  background-color: transparent;
+.params .el-input-group__append, .params .el-input-group__prepend,.el-dialog .el-input-group__append, .el-dialog .el-input-group__prepend{
+  background-color: #0f1014;
   border-color: #282e3a;
 }
 .params .el-collapse-item__wrap{
@@ -270,12 +235,12 @@ img {
   line-height: 25px;
   font-size: 14px;
 }
-.params .el-color-picker__trigger{
+.params .el-color-picker__trigger,.el-dialog .el-color-picker__trigger{
   border:none;
 }
 .params .el-collapse-item__arrow{
   line-height: 40px;
-  color:#282e3a
+  color:#09f
 }
 .params .el-collapse{
   border-top:none;
@@ -288,3 +253,4 @@ img {
 .el-form-item{
   margin-top: 10px;
 }
+

@@ -1,1 +1,1 @@
-export default ['bar', 'line', 'pie', 'gauge']
+export default ['map', 'bar', 'line', 'pie', 'gauge']

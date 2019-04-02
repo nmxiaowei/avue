@@ -13,15 +13,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="../../cdn/codemirror/codemirror.css" />
-  <link rel="stylesheet" href="../../cdn/codemirror/theme/rubyblue.css" />
-  <link rel="stylesheet" href="../../cdn/codemirror/addon/lint/lint.css" />
-  <link rel="stylesheet" href="//at.alicdn.com/t/font_1117329_uhn20j1c39b.css">
-  <script src="../../cdn/codemirror/codemirror.js"></script>
-  <script src="../../cdn/codemirror/addon/lint/lint.js"></script>
-  <script src="../../cdn/codemirror/mode/javascript/javascript.js"></script>
+  <link rel="stylesheet" href="/lib/index.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/common.css" />
+  <link rel="stylesheet" href="./css/iconfont.css" />
+  <link rel="stylesheet" href="/cdn/codemirror/codemirror.css" />
+  <link rel="stylesheet" href="/cdn/codemirror/theme/rubyblue.css" />
+  <link rel="stylesheet" href="/cdn/codemirror/addon/lint/lint.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1117329_5g27am88es.css">
+  <script src="/cdn/codemirror/codemirror.js"></script>
+  <script src="/cdn/codemirror/addon/lint/lint.js"></script>
+  <script src="/cdn/codemirror/mode/javascript/javascript.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.19.2/vuedraggable.umd.min.js"></script>
@@ -30,7 +32,7 @@
   <script src="./js/dicOption.js"></script>
   <script src="./js/baseList.js"></script>
   <script src="./js/utils.js"></script>
-  <script src="../../../lib/avue.js"></script>
+  <script src="/lib/avue.min.js"></script>
 </head>
 
 <body>
@@ -57,16 +59,28 @@
     <el-menu class="nav" mode="horizontal" background-color="#212528" text-color="#fff" active-text-color="#409EFF"
       @mousedown="handleMouseDown">
       <el-submenu :index="index+''" v-for="(item,index) in baseList" :key="index">
-        <template slot="title">{{item.label}}</template>
+        <template slot="title">
+          <i :class="'nav__icon iconfont '+item.icon"></i>
+          <span>{{item.label}}</span>
+        </template>
         <el-menu-item @click="addCompoment(citem.option)" :key="cindex" :index="`${index}-${cindex}`"
           v-for="(citem,cindex) in item.children">
           <i :class="'nav__icon iconfont '+citem.option.icon"></i>
           <span>{{citem.label}}</span>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item index="6" @click="menuFlag=true" v-show="!menuFlag">还原</el-menu-item>
-      <el-menu-item index="7" @click="handleView" v-show="menuFlag">预览</el-menu-item>
-      <el-menu-item index="8" @click="handleBuild">生成数据</el-menu-item>
+      <el-menu-item index="6" @click="menuFlag=true" v-show="!menuFlag">
+        <i class="nav__icon iconfont icon-reset"></i>
+        <span>还原</span>
+      </el-menu-item>
+      <el-menu-item index="7" @click="handleView" v-show="menuFlag">
+        <i class="nav__icon iconfont icon-view"></i>
+        <span>预览</span>
+      </el-menu-item>
+      <el-menu-item index="8" @click="handleBuild">
+        <i class="nav__icon iconfont icon-build"></i>
+        <span>生成</span>
+      </el-menu-item>
 
     </el-menu>
     <div class="app" :class="{'app--none':!menuFlag}">
@@ -83,6 +97,7 @@
         </draggable>
       </div>
       <div class="wrapper" @mousedown.self="handleMouseDown">
+        <div class="grade wrapper__grade" @mousedown.self="handleMouseDown"></div>
         <div class="content" ref="content" @mousedown.self="handleMouseDown">
           <div class="container" :style="styleName" ref="container" @mousedown.self="handleMouseDown"
             @contextmenu.prevent="handleContextMenu">
@@ -525,11 +540,9 @@
             <el-form-item label="缩放比例">
               <el-slider v-model="config.scale" :max="200" :format-tooltip="formatTooltip"></el-slider>
             </el-form-item>
-            <el-form-item label="缩略图">
-              <img :src="config.backgroundImage" alt="" width="100%" />
-            </el-form-item>
             <el-form-item label="背景图片">
-              <avue-input v-model="config.backgroundImage"></avue-input>
+              <img :src="item" class="img" width="80" v-for="(item,index) in dicOption.backgroundImage" :key="index"
+                @click="config.backgroundImage=item">
             </el-form-item>
             <el-form-item label="显示网格">
               <avue-switch v-model="config.gradeShow"></avue-switch>
@@ -649,6 +662,16 @@
       this.setResize();
     },
     watch: {
+      'config.width'() {
+        this.$nextTick(() => {
+          this.setResize();
+        })
+      },
+      'config.height'() {
+        this.$nextTick(() => {
+          this.setResize();
+        })
+      },
       menuFlag(val) {
         this.$nextTick(() => {
           this.setResize();

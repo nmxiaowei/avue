@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: hsla(220, 4%, 58%, .3);
+}
+
+.json-editor .CodeMirror {
+  height: 500px;
+  overflow: auto;
+}
+
+.json-editor .cm-s-rubyblue span.cm-string {
+  color: #F08047;
+}
+img {
+  user-select: none;
+}
+
+.img{
+  margin-right: 5px;
+}

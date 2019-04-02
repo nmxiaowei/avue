@@ -49,6 +49,24 @@
             label: '姓名',
             prop: 'name',
             formslot: true
+          }, {
+            label: '级别',
+            prop: 'cascader',
+            type: 'cascader',
+            changeOnSelect: true,
+            dicData: [{
+              label: '一级',
+              value: 0,
+              children: [
+                {
+                  label: '一级1',
+                  value: 1,
+                }, {
+                  label: '一级2',
+                  value: 2,
+                }
+              ]
+            }],
           },
           {
             label: '树型',

@@ -1,5 +1,6 @@
 var baseList = [{
   "label": '图表',
+  "icon": 'icon-bar',
   "children": [{
     "label": '柱形图',
     "option": {
@@ -151,7 +152,7 @@ var baseList = [{
       "zIndex": 30,
       "dataType": 1,
       "time": 5000,
-      "url": "http://yapi.demo.qunar.com/mock/9013/pie",
+      "url": "https://wechat.avue.top/yapiwy/pie",
       "data": [],
       "resize": false,
       "component": {
@@ -184,6 +185,7 @@ var baseList = [{
   }]
 }, {
   "label": '文字',
+  "icon": 'icon-text',
   "children": [{
     "label": '文本框',
     "option": {
@@ -281,6 +283,7 @@ var baseList = [{
   }]
 }, {
   "label": '媒体',
+  "icon": 'icon-img',
   "children": [{
     "label": '图片框',
     "option": {
@@ -307,7 +310,7 @@ var baseList = [{
       "zIndex": 33,
       "dataType": 1,
       "time": 5000,
-      "url": "http://yapi.demo.qunar.com/mock/9013/swiper",
+      "url": "https://wechat.avue.top/yapiwy/swiper",
       "data": [],
       "component": {
         "width": 670,
@@ -343,6 +346,7 @@ var baseList = [{
   }]
 }, {
   "label": '指标',
+  "icon": 'icon-flop',
   "children": [{
     "label": '翻牌器',
     "option": {
@@ -376,6 +380,37 @@ var baseList = [{
         }
       },
       "index": 10
+    }
+  }, {
+    "label": '环形图',
+    "option": {
+      "title": "环形图",
+      "name": "环形图",
+      "icon": 'icon-circle',
+      "top": 0,
+      "left": 0,
+      "data": {
+        "label": "人数增涨",
+        "value": 40,
+        "data": 80
+      },
+      "component": {
+        "width": 200,
+        "height": 200,
+        "option": {
+          "type": "circle",
+          "color": "rgba(154, 168, 212, 1)",
+          "fontSize": 24,
+          "strokeWidth": 18,
+          "fontWeight": "normal",
+          "borderColor": "#564AA3",
+          "width": 400,
+          "height": 80
+        },
+        "name": "progress",
+        "prop": "progress"
+      },
+      "index": 25
     }
   }, {
     "label": '进度条',
@@ -416,7 +451,7 @@ var baseList = [{
       "name": "gauge",
       "dataType": 1,
       "time": 5000,
-      "url": "http://yapi.demo.qunar.com/mock/9013/gauge",
+      "url": "https://wechat.avue.top/yapiwy/gauge",
       "data": [],
       "component": {
         "width": 390,
@@ -451,6 +486,7 @@ var baseList = [{
   }]
 }, {
   "label": '表格',
+  "icon": 'icon-table',
   "children": [{
     "label": '表格',
     "option": {

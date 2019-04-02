@@ -1,14 +1,77 @@
 var list = [
   {
-    "title": "仪表盘",
-    "name": "仪表盘",
-    "icon": 'icon-gauge',
-    "top": 702,
-    "left": 224,
-    "zIndex": 32,
+    "name": "柱状图",
+    "title": "柱状图",
+    "icon": 'icon-bar',
+    "top": 118,
+    "left": 504,
+    "zIndex": 31,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/gauge",
+    "url": "https://wechat.avue.top/yapiwy/bar",
+    "data": {},
+    "resize": false,
+    "component": {
+      "width": 746,
+      "height": 450,
+      "name": "bar",
+      "prop": "bar",
+      "option": {
+        "title": "2019各地的房价大比拼",
+        "titlePostion": "",
+        "titleFontSize": 20,
+        "titleColor": "rgb(115, 170, 229)",
+        "titleLink": "http://avue.top",
+        "info": "这是一些简单的图表介绍",
+        "gridX": 105,
+        "gridY": 50,
+        "gridX2": 80,
+        "gridY2": 100,
+        "nameColor": "#eee",
+        "lineColor": "#eee",
+        "xNameFontSize": 16,
+        "yNameFontSize": 16,
+        "labelShow": false,
+        "labelShowColor": "#fff",
+        "labelShowFontSize": 14,
+        "labelShowFontWeight": 300,
+        "yAxisInverse": false,
+        "xAxisInverse": false,
+        "xAxisShow": true,
+        "yAxisShow": true,
+        "xAxisSplitLineShow": false,
+        "yAxisSplitLineShow": false,
+        "refresh": 3000,
+        "barWidth": 30,
+        "barRadius": 8,
+        "barColor": [
+          {
+            "color1": "#83bff6",
+            "color2": "#188df0",
+            "postion": 90,
+            "$index": 0,
+          },
+          {
+            "color1": "#23B7E5",
+            "color2": "#564AA3",
+            "postion": 50,
+          }
+        ],
+        "barMinHeight": 2
+      }
+    },
+    "index": 2
+  },
+  {
+    "title": "仪表盘",
+    "name": "仪表盘",
+    "icon": "icon-gauge",
+    "top": 702,
+    "left": 224,
+    "zIndex": 31,
+    "dataType": 1,
+    "time": 5000,
+    "url": "https://wechat.avue.top/yapiwy/gauge",
     "data": [],
     "component": {
       "width": 340,
@@ -45,16 +108,16 @@ var list = [
       "name": "gauge",
       "prop": "gauge"
     },
-    "index": 0
+    "index": 1
   },
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 52,
     "left": 227,
     "data": "这是滚动的文字",
-    "zIndex": 31,
+    "zIndex": 30,
     "component": {
       "width": 230,
       "height": 50,
@@ -72,15 +135,15 @@ var list = [
       "name": "text",
       "prop": "text"
     },
-    "index": 1
+    "index": 2
   },
   {
     "name": "实时时间",
     "title": "实时时间",
-    "icon": 'icon-datetime',
+    "icon": "icon-datetime",
     "top": 78,
     "left": 1604,
-    "zIndex": 30,
+    "zIndex": 29,
     "component": {
       "width": 250,
       "height": 50,
@@ -94,18 +157,18 @@ var list = [
         "fontWeight": "normal"
       }
     },
-    "index": 2
+    "index": 3
   },
   {
     "name": "饼图",
     "title": "饼图",
-    "icon": 'icon-pie',
+    "icon": "icon-pie",
     "top": 548,
     "left": 808,
-    "zIndex": 29,
+    "zIndex": 28,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/pie",
+    "url": "https://wechat.avue.top/yapiwy/pie",
     "data": [],
     "resize": false,
     "component": {
@@ -144,17 +207,17 @@ var list = [
         ]
       }
     },
-    "index": 3
+    "index": 4
   },
   {
     "title": "表格",
     "name": "表格",
-    "icon": 'icon-table',
+    "icon": "icon-table",
     "top": 408,
     "left": 1344,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/table",
+    "url": "https://wechat.avue.top/yapiwy/table",
     "data": [],
     "component": {
       "width": 500,
@@ -207,19 +270,19 @@ var list = [
         "header": false
       }
     },
-    "index": 4,
-    "zIndex": 28
+    "index": 5,
+    "zIndex": 27
   },
   {
     "name": "折线图",
     "title": "折线图",
-    "icon": 'icon-line',
+    "icon": "icon-line",
     "top": 540,
     "left": 517,
-    "zIndex": 27,
+    "zIndex": 26,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/bar",
+    "url": "https://wechat.avue.top/yapiwy/bar",
     "data": {},
     "resize": false,
     "component": {
@@ -278,80 +341,12 @@ var list = [
         "areaStyle": true
       }
     },
-    "index": 5
-  },
-  {
-    "name": "柱状图",
-    "title": "柱状图",
-    "icon": 'icon-bar',
-    "top": 118,
-    "left": 504,
-    "zIndex": 26,
-    "dataType": 1,
-    "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/bar",
-    "data": {},
-    "resize": false,
-    "component": {
-      "width": 746,
-      "height": 450,
-      "name": "bar",
-      "prop": "bar",
-      "option": {
-        "title": "2019年度潍坊城市销售额排名",
-        "titlePostion": "",
-        "titleFontSize": 20,
-        "titleColor": "rgb(115, 170, 229)",
-        "titleLink": "http://avue.top",
-        "info": "这是图表的简介",
-        "width": 746,
-        "height": 450,
-        "gridX": 105,
-        "gridY": 50,
-        "gridX2": 80,
-        "gridY2": 100,
-        "nameColor": "#eee",
-        "lineColor": "#eee",
-        "xNameFontSize": 16,
-        "yNameFontSize": 16,
-        "labelShow": false,
-        "labelShowColor": "#fff",
-        "labelShowFontSize": 14,
-        "labelShowFontWeight": 300,
-        "yAxisInverse": false,
-        "xAxisInverse": false,
-        "xAxisShow": true,
-        "yAxisShow": true,
-        "xAxisSplitLineShow": false,
-        "yAxisSplitLineShow": false,
-        "refresh": 3000,
-        "barWidth": 30,
-        "barRadius": 8,
-        "barColor": [
-          {
-            "color1": "#83bff6",
-            "color2": "#188df0",
-            "postion": 90,
-            "$index": 0,
-            "_show": true
-          },
-          {
-            "color1": "#23B7E5",
-            "color2": "#564AA3",
-            "postion": 50,
-            "$index": 1,
-            "_show": true
-          }
-        ],
-        "barMinHeight": 2
-      }
-    },
     "index": 6
   },
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": -6,
     "left": 135,
     "zIndex": 25,
@@ -367,7 +362,7 @@ var list = [
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": 900,
     "left": 115,
     "zIndex": 24,
@@ -383,7 +378,7 @@ var list = [
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": 20,
     "left": 20,
     "zIndex": 23,
@@ -397,7 +392,7 @@ var list = [
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": 344,
     "left": 10,
     "zIndex": 22,
@@ -413,7 +408,7 @@ var list = [
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": 340,
     "left": 230,
     "zIndex": 21,
@@ -429,7 +424,7 @@ var list = [
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": 479,
     "left": 10,
     "zIndex": 20,
@@ -445,7 +440,7 @@ var list = [
   {
     "title": "图片框",
     "name": "图片框",
-    "icon": 'icon-img',
+    "icon": "icon-img",
     "top": 481,
     "left": 232,
     "zIndex": 19,
@@ -461,13 +456,13 @@ var list = [
   {
     "title": "翻牌器",
     "name": "翻牌器",
-    "icon": 'icon-flop',
+    "icon": "icon-flop",
     "top": 240,
     "left": 1222,
     "zIndex": 18,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count",
+    "url": "https://wechat.avue.top/yapiwy/count",
     "component": {
       "width": 750,
       "height": 120,
@@ -494,13 +489,13 @@ var list = [
   {
     "title": "翻牌器",
     "name": "翻牌器",
-    "icon": 'icon-flop',
+    "icon": "icon-flop",
     "top": 344,
     "left": 100,
     "zIndex": 17,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count1",
+    "url": "https://wechat.avue.top/yapiwy/count1",
     "component": {
       "width": 230,
       "height": 100,
@@ -532,13 +527,13 @@ var list = [
   {
     "title": "翻牌器",
     "name": "翻牌器",
-    "icon": 'icon-flop',
+    "icon": "icon-flop",
     "top": 346,
     "left": 320,
     "zIndex": 16,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count1",
+    "url": "https://wechat.avue.top/yapiwy/count1",
     "component": {
       "width": 230,
       "height": 100,
@@ -570,13 +565,13 @@ var list = [
   {
     "title": "翻牌器",
     "name": "翻牌器",
-    "icon": 'icon-flop',
+    "icon": "icon-flop",
     "top": 478,
     "left": 102,
     "zIndex": 15,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count1",
+    "url": "https://wechat.avue.top/yapiwy/count1",
     "component": {
       "width": 230,
       "height": 100,
@@ -608,13 +603,13 @@ var list = [
   {
     "title": "翻牌器",
     "name": "翻牌器",
-    "icon": 'icon-flop',
+    "icon": "icon-flop",
     "top": 478,
     "left": 322,
     "zIndex": 14,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count1",
+    "url": "https://wechat.avue.top/yapiwy/count1",
     "component": {
       "width": 230,
       "height": 100,
@@ -646,7 +641,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-flop',
+    "icon": "icon-flop",
     "top": 14,
     "left": 702,
     "zIndex": 13,
@@ -668,7 +663,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 120,
     "left": 1220,
     "zIndex": 12,
@@ -690,7 +685,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 120,
     "left": 1338,
     "zIndex": 11,
@@ -712,7 +707,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 276,
     "left": 15,
     "zIndex": 10,
@@ -734,7 +729,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 278,
     "left": 350,
     "zIndex": 9,
@@ -756,7 +751,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 124,
     "left": 320,
     "zIndex": 8,
@@ -778,7 +773,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 180,
     "left": 1204,
     "zIndex": 7,
@@ -800,7 +795,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 180,
     "left": 1760,
     "zIndex": 6,
@@ -822,7 +817,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 646,
     "left": 15,
     "zIndex": 5,
@@ -844,7 +839,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 650,
     "left": 350,
     "zIndex": 4,
@@ -866,13 +861,13 @@ var list = [
   {
     "title": "进度条",
     "name": "进度条",
-    "icon": 'icon-progress',
+    "icon": "icon-progress",
     "top": 736,
     "left": 40,
     "zIndex": 3,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count2",
+    "url": "https://wechat.avue.top/yapiwy/count2",
     "component": {
       "width": 200,
       "height": 200,
@@ -894,13 +889,13 @@ var list = [
   {
     "title": "进度条",
     "name": "进度条",
-    "icon": 'icon-progress',
+    "icon": "icon-progress",
     "top": 150,
     "left": 60,
     "zIndex": 2,
     "dataType": 1,
     "time": 5000,
-    "url": "http://yapi.demo.qunar.com/mock/9013/count3",
+    "url": "https://wechat.avue.top/yapiwy/count3",
     "component": {
       "width": 400,
       "height": 80,
@@ -922,7 +917,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 392,
     "left": 1326,
     "zIndex": 1,
@@ -944,7 +939,7 @@ var list = [
   {
     "title": "文本框",
     "name": "文本框",
-    "icon": 'icon-text',
+    "icon": "icon-text",
     "top": 394,
     "left": 1480,
     "zIndex": 0,

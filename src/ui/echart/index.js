@@ -9,5 +9,6 @@ import Swiper from 'packages/echart/swiper';
 import Iframe from 'packages/echart/iframe';
 import Gauge from 'packages/echart/gauge';
 import Progress from 'packages/echart/progress';
+import Maps from 'packages/echart/map';
 
-export default [Bar, Gauge, Iframe, Swiper, Table, Pie, Text, Line, Flop, Datetime, Progress];
+export default [Maps, Bar, Gauge, Iframe, Swiper, Table, Pie, Text, Line, Flop, Datetime, Progress];

@@ -230,6 +230,15 @@ export default create({
     }
   },
   computed: {
+    propOption() {
+      let list = [];
+      this.columnOption.forEach(option => {
+        option.column.forEach(column => {
+          list.push(column);
+        });
+      });
+      return list;
+    },
     parentOption() {
       let option = this.deepClone(this.tableOption);
       let group = option.group;
@@ -340,13 +349,7 @@ export default create({
       this.$set(this.DIC, prop, list);
     },
     dataformat() {
-      let formDefault = {};
-      this.columnOption.forEach(ele => {
-        formDefault = Object.assign(
-          formInitVal(ele.column),
-          this.deepClone(formDefault)
-        );
-      });
+      let formDefault = formInitVal(this.propOption);
       this.formDefault = formDefault;
       this.form = this.deepClone(formDefault.tableForm);
       this.formVal();
