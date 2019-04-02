@@ -4,6 +4,7 @@
              :tab-position="parentOption.position"
              :type="parentOption.type">
       <el-tab-pane :name="index+''"
+                   :disabled="column.disabled"
                    v-for="(column,index) in columnOption"
                    :key="index">
         <span slot="label">
