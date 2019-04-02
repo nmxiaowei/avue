@@ -97,7 +97,7 @@ export default create({
   watch: {
     datetime() {
       this.text = "";
-      this.setCurrent(this.datetime.join(","));
+      this.setCurrent((this.datetime || []).join(","));
     }
   },
   created() {
