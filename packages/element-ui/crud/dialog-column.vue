@@ -3,9 +3,9 @@
              lock-scroll
              :modal-append-to-body="false"
              append-to-body
-             :fullscreen="$parent.isMobile"
+             :fullscreen="crud.isMobile"
              :title="t('crud.columnBtn')"
-             :width="$parent.isMobile?'100%':config.dialogWidth"
+             :width="crud.isMobile?'100%':config.dialogWidth"
              :visible.sync="columnBox">
     <avue-checkbox v-model="columnIndex"
                    @change="handleChange"
@@ -20,6 +20,7 @@ import locale from "../../core/common/locale";
 import { validatenull } from "utils/validate";
 export default create({
   mixins: [locale],
+  inject: ["crud"],
   data() {
     return {
       config: config,
@@ -34,17 +35,18 @@ export default create({
   created() {},
   methods: {
     handleChange() {
-      this.$parent.doLayout = false;
+      this.crud.doLayout = false;
       this.$nextTick(() => {
-        this.$parent.doLayout = true;
-        this.$parent.$refs.table.doLayout();
+        this.crud.doLayout = true;
+        this.$nextTick(() => {
+          this.crud.$refs.table.doLayout();
+        });
       });
     },
     columnInit() {
       this.columnIndex = [];
       this.columnList = [];
-      // if (this.$parent.isChild) this.$parent.tableOption.columnBtn = false;
-      this.$parent.propOption.forEach((ele, index) => {
+      this.crud.propOption.forEach((ele, index) => {
         if (!this.vaildData(ele.hide, false)) {
           this.columnIndex.push(ele.prop);
           if (this.vaildData(ele.showColumn, true)) {
