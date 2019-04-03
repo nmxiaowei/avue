@@ -317,11 +317,7 @@ export default create({
     },
     getLabelWidth(column, item) {
       const result =
-        column.labelWidth === 0
-          ? 0
-          : column.labelWidth || item.labelWidth === 0
-          ? 0
-          : item.labelWidth || this.parentOption.labelWidth || 80;
+        column.labelWidth || item.labelWidth || this.parentOption.labelWidth;
       return this.setPx(result);
     },
     //获取全部字段字典的label
