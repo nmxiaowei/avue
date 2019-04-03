@@ -10,10 +10,12 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     result = column.formatter(row, row[column.prop], result, column);
   }
 
-  // 日期处理
-  if (['date', 'time', 'datetime'].includes(type) && column.format) {
-    const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
-    result = dayjs(result).format(format);
+  if (!validatenull(result)) {
+    // 日期处理
+    if (['date', 'time', 'datetime'].includes(type) && column.format) {
+      const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
+      result = dayjs(result).format(format);
+    }
   }
 
   // 密码处理
