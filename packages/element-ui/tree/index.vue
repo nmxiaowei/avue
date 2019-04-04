@@ -127,7 +127,7 @@ export default create({
       return this.props.children || propsDefault.children;
     },
     defaultExpandAll() {
-      return this.vaildData(this.option.defaultExpandAll, true);
+      return this.vaildData(this.option.expandAll, true);
     },
     nodeKey() {
       return this.option.nodeKey || propsDefault.nodeKey;
