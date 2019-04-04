@@ -46,7 +46,7 @@
             </span>
             <span :class="{'ms-tree-title':column.prop===crud.treeProp}">
               <template v-if="cellEditFlag(scope.row,column)">
-                <component :is="getSearchType(column.type)"
+                <component :is="getCellType(column.type)"
                            size="mini"
                            v-model="scope.row[column.prop]"
                            :type="getType(column)"
@@ -121,7 +121,7 @@
 import dynamicColumn from "./dynamic-column";
 import { sendDic } from "core/dic";
 import { getComponent, getPlaceholder } from "core/dataformat";
-import { getSearchType, getType } from "core/dataformat";
+import { getSearchType, getCellType, getType } from "core/dataformat";
 import { detail } from "core/detail";
 export default {
   name: "column",
@@ -150,6 +150,7 @@ export default {
   inject: ["crud"],
   methods: {
     getSearchType,
+    getCellType,
     getType,
     getComponent,
     getPlaceholder,

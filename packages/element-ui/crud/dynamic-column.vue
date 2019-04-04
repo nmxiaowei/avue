@@ -136,6 +136,7 @@ export default {
   created() {
     const list = [
       "getSearchType",
+      "getCellType",
       "getType",
       "getComponent",
       "getPlaceholder",

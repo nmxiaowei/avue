@@ -76,6 +76,28 @@ export const initVal = ({ type, multiple, dataType, value }) => {
   return value;
 };
 
+
+
+/**
+ * 行编辑框获取动态组件
+ */
+export const getCellType = type => {
+  let result = 'input';
+  if (['select', 'radio', 'checkbox'].includes(type)) {
+    result = 'select';
+  } else if (['time', 'timerange'].includes(type)) {
+    result = 'time';
+  } else if (dateList.includes(type)) {
+    result = 'date';
+  } else if (['cascader'].includes(type)) {
+    result = 'cascader';
+  } else if (['number'].includes(type)) {
+    result = 'input-number';
+  } else if (['switch'].includes(type)) {
+    result = 'switch'
+  }
+  return KEY_COMPONENT_NAME + result;
+};
 /**
  * 搜索框获取动态组件
  */

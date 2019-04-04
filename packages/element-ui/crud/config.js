@@ -27,6 +27,7 @@ export default {
   // 显隐
   viewBtn: false,
   editBtn: true,
+  cancelBtn: true,
   addBtn: true,
   addRowBtn: false,
   printBtn: false,

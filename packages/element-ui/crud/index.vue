@@ -168,7 +168,7 @@
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowCanel(scope.row,scope.$index)"
-                       v-if="scope.row.$cellEdit">{{menuIcon('cancelBtn')}}</el-button>
+                       v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">{{menuIcon('cancelBtn')}}</el-button>
             <el-button :type="menuText('success')"
                        :icon="config.viewBtnIcon"
                        :size="isMediumSize"
