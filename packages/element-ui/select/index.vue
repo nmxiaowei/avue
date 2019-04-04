@@ -1,30 +1,32 @@
 <template>
-  <el-select v-model="text"
-             :size="size"
-             :multiple="multiple"
-             :filterable="remote?true:filterable"
-             :remote="remote"
-             :readonly="readonly"
-             :remote-method="handleRemoteMethod"
-             :collapse-tags="tags"
-             :clearable="disabled?false:clearable"
-             :placeholder="placeholder"
-             @focus="handleFocus"
-             @blur="handleBlur"
-             @click.native="handleClick"
-             :multiple-limit="limit"
-             :disabled="disabled">
-    <el-option v-for="(item,index) in remote?netDic:dic"
-               :key="index"
-               :disabled="item[disabledKey]"
-               :label="getLabelText(item)"
-               :value="item[valueKey]">
-      <slot :name="prop+'Type'"
-            :label="labelKey"
-            :value="valueKey"
-            :item="item"></slot>
-    </el-option>
-  </el-select>
+  <div>
+    <el-select v-model="text"
+               :size="size"
+               :multiple="multiple"
+               :filterable="remote?true:filterable"
+               :remote="remote"
+               :readonly="readonly"
+               :remote-method="handleRemoteMethod"
+               :collapse-tags="tags"
+               :clearable="disabled?false:clearable"
+               :placeholder="placeholder"
+               @focus="handleFocus"
+               @blur="handleBlur"
+               @click.native="handleClick"
+               :multiple-limit="limit"
+               :disabled="disabled">
+      <el-option v-for="(item,index) in netDic"
+                 :key="index"
+                 :disabled="item[disabledKey]"
+                 :label="getLabelText(item)"
+                 :value="item[valueKey]">
+        <slot :name="prop+'Type'"
+              :label="labelKey"
+              :value="valueKey"
+              :item="item"></slot>
+      </el-option>
+    </el-select>
+  </div>
 </template>
 
 <script>
@@ -60,9 +62,15 @@ export default create({
     }
   },
   watch: {
+    dic: {
+      handler(val) {
+        this.netDic = val;
+      },
+      immediate: true
+    },
     text: {
-      handler() {
-        this.handleChange(this.text);
+      handler(val) {
+        this.handleChange(val);
       },
       immediate: true
     }

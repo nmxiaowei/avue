@@ -113,9 +113,9 @@ function handeDic(list) {
     list.forEach(ele => {
       result.push(
         new Promise(resolve => {
-          sendDic(Object.assign({
-            url: `${ele.url.replace('{{key}}', ele.name)}`
-          }, ele)).then(res => {
+          sendDic(Object.assign(ele, {
+            url: `${ele.url.replace('{{key}}', '')}`
+          })).then(res => {
             resolve(res);
           });
         })
