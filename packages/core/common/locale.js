@@ -1,12 +1,12 @@
 import { t } from 'locale';
 
-export const locale = (...args) => {
+export const locale = function (...args) {
   return t.apply(this, args);
 }
 export default {
   methods: {
     t(...args) {
-      return locale(...args);
+      return t.apply(this, args);
     }
   }
 };
