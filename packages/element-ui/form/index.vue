@@ -183,6 +183,7 @@
 </template>
 
 <script>
+import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/crud/init";
@@ -192,7 +193,7 @@ import { sendDic } from "core/dic";
 import mock from "utils/mock";
 export default create({
   name: "form",
-  mixins: [init()],
+  mixins: [init(), locale],
   data() {
     return {
       optionIndex: [],

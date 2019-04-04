@@ -217,7 +217,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = (column, type) => {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
@@ -229,9 +229,9 @@ export const getPlaceholder = (column, type) => {
     }
   } else if (validatenull(placeholder)) {
     if (['select', 'checkbox', 'radio', 'tree'].includes(column.type)) {
-      return `${locale('tip.select')} ${label}`;
+      return `${this.t('tip.select')} ${label}`;
     } else {
-      return `${locale('tip.input')} ${label}`;
+      return `${this.t('tip.input')} ${label}`;
     }
   }
 
