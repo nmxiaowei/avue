@@ -118,6 +118,9 @@ export default create({
                   }
                 })()
               },
+              lineStyle: {
+                width: this.option.lineWidth
+              },
               label: {
                 show: this.vaildData(this.option.labelShow, false), //开启显示
                 position: "top", //在上方显示

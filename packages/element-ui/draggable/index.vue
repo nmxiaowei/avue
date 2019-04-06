@@ -1,5 +1,5 @@
 <template>
-  <div :class="b({'active':(active || overActive),'move':moveActive})"
+  <div :class="b({'active':(active || overActive),'move':moveActive,'click':disabled})"
        @mouseover="disabled?false:handleMouseOver($event)"
        @mouseout="disabled?false:handleMouseOut($event)"
        @mousedown="disabled?false:handleMouseDown($event)"
@@ -30,7 +30,8 @@
            ref="item">
         <slot></slot>
       </div>
-      <div :class="b('mask')"></div>
+      <div :class="b('mask')"
+           v-if="!disabled"></div>
     </div>
   </div>
   </div>

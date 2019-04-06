@@ -25,6 +25,9 @@
     opacity: .6;
     background-color:$active__color;
   }
+  &--click{
+    cursor: pointer;
+  }
   &__line{
     &--left {
       position: absolute;
@@ -63,12 +66,12 @@
     cursor: pointer;
   }
   &__range{
-    $calcheight:-16px;
+    $calcheight:-10px;
     position: absolute;
-    width:12px;
-    height: 12px;
+    width:15px;
+    height: 15px;
+    z-index:9999;
     background-color: #09f;
-    
     &--right{
       &:hover{
         cursor:ew-resize 
