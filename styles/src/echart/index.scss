@@ -29,6 +29,24 @@
     }
   }
   &-table{
+    &__body{
+      position: relative;
+      overflow: hidden;
+    }
+    &__tr{
+      display: flex;
+      &--line{
+        transition: all .5s;
+        width: 100%;
+        position: absolute;
+      }
+    }
+    &__td{
+      flex:1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     &__header{
       margin-bottom: 20px;
       display: flex;

@@ -24,6 +24,11 @@
       <template slot="expand" slot-scope="scope">
         {{scope}}
       </template>
+      <template slot-scope="scope" slot="switch">
+        <el-switch v-model="scope.row.switch" active-color="#13ce66" inactive-color="#ff4949" :active-value="0"
+          :inactive-value="1">
+        </el-switch>
+      </template>
     </avue-crud>
   </div>
 </body>
@@ -36,12 +41,14 @@
         data: [{
           id: 1,
           name: '张三',
+          switch: 1,
           checkbox: [0, 1],
           cascader: [0, 1],
           sex: 12,
         }, {
           id: 2,
           name: '李四',
+          switch: 0,
           checkbox: [0, 2],
           cascader: [0, 2],
           sex: 20,
@@ -56,6 +63,10 @@
           // defaultExpandAll: true,
           expandRowKeys: this.expands,
           column: [{
+            label: '开关',
+            prop: 'switch',
+            slot: true,
+          }, {
             label: '多选',
             prop: 'checkbox',
             type: 'checkbox',

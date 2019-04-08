@@ -234,16 +234,14 @@ var list = [
           "value": 2
         }
       ],
-      "style": {
+      "option": {
         "headerBackground": "rgba(0, 0, 0, 0.01)",
         "headerColor": "rgba(154, 168, 212, 1)",
         "headerTextAlign": "center",
         "bodyBackground": "rgba(0, 0, 0, 0.01)",
         "bodyColor": "rgba(154, 168, 212, 1)",
         "borderColor": "rgba(51, 65, 107, 1)",
-        "bodyTextAlign": "center"
-      },
-      "option": {
+        "bodyTextAlign": "center",
         "column": [
           {
             "label": "姓名",

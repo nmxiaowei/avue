@@ -110,6 +110,7 @@ var baseList = [{
           "gridY2": 100,
           "nameColor": "#eee",
           "lineColor": "#eee",
+          "lineWidth": 5,
           "xNameFontSize": 16,
           "yNameFontSize": 16,
           "labelShow": false,
@@ -361,7 +362,6 @@ var baseList = [{
         "height": 100,
         "name": "flop",
         "prop": "flop",
-        "list": ["https://sugar.bce.baidu.com/static/img-templet/border-1.png", "https://sugar.bce.baidu.com/static/img-templet/border-2.png"],
         "option": {
           "type": "img",
           "suffixText": "",
@@ -508,17 +508,8 @@ var baseList = [{
         "height": 200,
         "name": "table",
         "prop": "table",
-        "queryList": [
-          {
-            "label": "类型1",
-            "value": 1
-          },
-          {
-            "label": "类型2",
-            "value": 2
-          }
-        ],
-        style: {
+        "queryList": [],
+        "option": {
           headerBackground: 'rgba(0, 0, 0, 0.01)',
           headerColor: 'rgba(154, 168, 212, 1)',
           headerTextAlign: 'center',
@@ -526,8 +517,6 @@ var baseList = [{
           bodyColor: 'rgba(154, 168, 212, 1)',
           borderColor: 'rgba(51, 65, 107, 1)',
           bodyTextAlign: 'center',
-        },
-        "option": {
           "column": [
             {
               "label": "类型1",
