@@ -23,7 +23,7 @@ export default {
   cancelBtnTitle: '取 消',
   columnBtnTitle: '多 选',
   searchBtnTitle: '查询',
-  emptyBtnTitle: '清 空',
+  emptyBtnTitle: '重置',
   tipBtnTitle: '重置',
   menuBtnTitle: '功 能',
   cellEditBtnTitle: '修 改',

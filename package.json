@@ -1,6 +1,6 @@
 {
   "name": "force-avue",
-  "version": "1.6.2",
+  "version": "1.6.5",
   "main": "lib/index.js",
   "description": "基于数据驱动视图的思想，根据json数据快速构建crud和form等组件",
   "author": "tager <545540437@qq.com>",

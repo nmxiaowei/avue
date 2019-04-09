@@ -44,10 +44,8 @@
             <el-form-item>
               <el-button type="primary"
                          @click="searchChange"
-                         :icon="config.searchBtnIcon"
                          :size="isMediumSize">{{config.searchBtnTitle}}</el-button>
               <el-button @click="searchReset"
-                         :icon="config.emptyBtnIcon"
                          :size="isMediumSize">{{config.emptyBtnTitle}}</el-button>
               <slot name="searchMenu"></slot>
             </el-form-item>
