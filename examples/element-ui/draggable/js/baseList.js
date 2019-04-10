@@ -298,6 +298,7 @@ var baseList = [{
         "height": 80,
         "name": "img",
         "prop": "img",
+        "option": {}
       },
     }
   }, {
@@ -374,7 +375,8 @@ var baseList = [{
           "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
           "fontSize": 42,
           "fontWeight": "normal",
-          "split": 0,
+          "splitx": 0,
+          "splity": 0,
           "backgroundColor": "",
           "color": "#fff"
         }

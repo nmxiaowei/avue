@@ -20,7 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" @expand-change="expandChange">
+    <avue-crud ref="crud" :option="option" :data="data" :page="page" @on-load="onLoad" @expand-change="expandChange"
+      @sort-change="sortChange">
       <template slot="expand" slot-scope="scope">
         {{scope}}
       </template>
@@ -37,22 +38,11 @@
     el: '#app',
     data() {
       return {
+        page: {
+          pageSize: 20
+        },
         expands: [],
-        data: [{
-          id: 1,
-          name: '张三',
-          switch: 1,
-          checkbox: [0, 1],
-          cascader: [0, 1],
-          sex: 12,
-        }, {
-          id: 2,
-          name: '李四',
-          switch: 0,
-          checkbox: [0, 2],
-          cascader: [0, 2],
-          sex: 20,
-        }]
+        data: []
       }
     },
     computed: {
@@ -83,7 +73,9 @@
           }, {
             label: '级别',
             prop: 'cascader',
-            type: 'cascader',
+            type: 'tree',
+            multiple: true,
+            search: true,
             dicData: [{
               label: '一级',
               value: 0,
@@ -102,7 +94,8 @@
             prop: 'name'
           }, {
             label: '年龄',
-            prop: 'sex'
+            prop: 'sex',
+            sortable: true,
           }]
         }
       }
@@ -112,6 +105,28 @@
       // this.$refs.crud.toggleRowExpansion(this.data[0], true)
     },
     methods: {
+      onLoad(page) {
+        this.page.total = 40
+        this.data = [{
+          id: 1,
+          name: '张三',
+          switch: 1,
+          checkbox: [0, 1],
+          cascader: [0, 1],
+          sex: 12,
+        }, {
+          id: 2,
+          name: '李四',
+          switch: 0,
+          checkbox: [0, 2],
+          cascader: [0, 2],
+          sex: 20,
+        }]
+      },
+      sortChange(val) {
+        this.page.pageSize = 50;
+        this.onLoad(this.page, this.params);
+      },
       expandChange(row, expendList) {
         if (expendList.length) {
           this.expands = []

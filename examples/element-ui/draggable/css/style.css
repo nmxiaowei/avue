@@ -224,10 +224,13 @@
 }
 .hover-row td,.hover-row th{
   background-color: transparent !important;
-  border-bottom: 1px solid #859094 !important;
+  border-bottom: none;
 }
 .el-table__fixed-right::before, .el-table__fixed::before,.el-table::before{
   display: none;
+}
+.el-table td, .el-table th.is-leaf {
+  border-bottom:none;
 }
 .el-dialog ,.avue-group__item{
   background: #1b1e25;

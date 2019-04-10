@@ -1,11 +1,20 @@
+var config = {
+  name: 'avuex数据大屏',
+  width: 1920,
+  height: 1080,
+  scale: 1,
+  backgroundImage: 'https://sugar.bce.baidu.com/static/img-templet/background-2.png',
+  gradeShow: false,
+  gradeLen: 30,
+}
 var list = [
   {
     "name": "柱状图",
     "title": "柱状图",
-    "icon": 'icon-bar',
+    "icon": "icon-bar",
     "top": 118,
     "left": 504,
-    "zIndex": 31,
+    "zIndex": 32,
     "dataType": 1,
     "time": 5000,
     "url": "https://wechat.avue.top/yapiwy/bar",
@@ -49,18 +58,18 @@ var list = [
             "color1": "#83bff6",
             "color2": "#188df0",
             "postion": 90,
-            "$index": 0,
+            "$index": 0
           },
           {
             "color1": "#23B7E5",
             "color2": "#564AA3",
-            "postion": 50,
+            "postion": 50
           }
         ],
         "barMinHeight": 2
       }
     },
-    "index": 2
+    "index": 0
   },
   {
     "title": "仪表盘",
@@ -221,7 +230,7 @@ var list = [
     "data": [],
     "component": {
       "width": 500,
-      "height": 500,
+      "height": 538,
       "name": "table",
       "prop": "table",
       "queryList": [
@@ -265,7 +274,11 @@ var list = [
         "menu": false,
         "align": "center",
         "headerAlign": "center",
-        "header": false
+        "header": false,
+        "count": 10,
+        "scroll": true,
+        "scrollTime": 500,
+        "scrollCount": 1
       }
     },
     "index": 5,

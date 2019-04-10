@@ -6,7 +6,7 @@ var dicOption = {
   dataType: [{ label: '静态数据', value: 0 }, { label: '动态数据', value: 1 }],
   dataList: ['map', 'iframe', 'swiper', 'flop', 'bar', 'line', 'progress', 'table', 'gauge'],
   backgroundImage: [
-    '../../img/bg.jpg',
+    '../../img/bg.png',
     'https://sugar.bce.baidu.com/static/img-templet/background-1.png'
     , 'https://sugar.bce.baidu.com/static/img-templet/background-2.png'
     , 'https://sugar.bce.baidu.com/static/img-templet/background-3.png'
@@ -22,6 +22,15 @@ var dicOption = {
   ],
   colorList: ['bar', 'pie', 'line', 'gauge'],
   mapList: [{
+    label: '潍坊',
+    value: 0,
+    list: map_weifang
+  }, {
+    label: '香港',
+    value: 1,
+    list: map_hk
+  }],
+  mapType: [{
     label: '原生',
     value: 0
   }, {

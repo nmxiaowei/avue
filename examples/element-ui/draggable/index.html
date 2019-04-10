@@ -27,6 +27,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.19.2/vuedraggable.umd.min.js"></script>
+  <script src="./js/map.js"></script>
   <script src="./js/colorOption.js"></script>
   <script src="./js/vOption.js"></script>
   <script src="./js/dicOption.js"></script>
@@ -108,10 +109,9 @@
                 @blur="handleBlur" @change="handleChange" :index="index" :z-index="item.zIndex"
                 v-for="(item,index) in list" :width="item.component.width" :height="item.component.height" :key="index"
                 :top="item.top" :left="item.left">
-                <img v-if="['img'].includes(item.component.prop)" :src="item.data" draggable="false" />
-                <component :id="'component_'+index" v-else :is="'avue-echart-'+item.component.name"
-                  :component="item.component" :data="item.data" :option="item.component.option" :url="item.url"
-                  :time="item.time" :data-type="item.dataType">
+                <component :id="'component_'+index" :is="'avue-echart-'+item.component.name" :component="item.component"
+                  :data="item.data" :option="item.component.option" :url="item.url" :time="item.time"
+                  :data-type="item.dataType">
                 </component>
                 <template slot-scope="scope" slot="menu">
                   <i class="el-icon-close" @click="handleDel(scope.index,scope.zIndex)"></i>
@@ -149,6 +149,18 @@
             <el-form-item label="图层名称">
               <avue-input v-model="activeObj.name"></avue-input>
             </el-form-item>
+            <template v-if="activeComponent.prop==='img'">
+              <el-form-item label="开启旋转">
+                <avue-switch v-model="activeComponent.option.rotate"></avue-switch>
+              </el-form-item>
+              <template v-if="activeComponent.option.rotate">
+                <el-form-item label="旋转时间">
+                  <avue-input-number v-model="activeComponent.option.duration"></avue-input-number>
+                </el-form-item>
+              </template>
+
+            </template>
+
             <template v-if="activeComponent.prop==='swiper'">
               <el-form-item label="类型">
                 <avue-radio v-model="activeComponent.option.type" :dic="dicOption.swiperType"></avue-radio>
@@ -285,11 +297,38 @@
             </template>
             <template v-else-if="activeComponent.prop==='map'">
               <el-form-item label="地图类型">
-                <avue-radio v-model="activeComponent.option.type" :dic="dicOption.mapList"></avue-radio>
+                <avue-radio v-model="activeComponent.option.type" :dic="dicOption.mapType"></avue-radio>
               </el-form-item>
+              <el-form-item label="开启轮播">
+                <avue-switch v-model="activeComponent.option.banner"></avue-switch>
+              </el-form-item>
+              <template v-if="activeComponent.option.banner">
+                <el-form-item label="轮播时间">
+                  <avue-input v-model="activeComponent.option.bannerTime"></avue-input>
+                </el-form-item>
+              </template>
               <template v-if="activeComponent.option.type===0">
+                <el-form-item label="地图选择">
+                  <el-select v-model="activeComponent.option.mapKey" @change="handleMapSelect" placeholder="请选择区域选择">
+                    <el-option v-for="item in dicOption.mapList" :key="item.value" :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="字体大小">
+                  <avue-input-number v-model="activeComponent.option.fontSize"></avue-input-number>
+                </el-form-item>
+                <el-form-item label="字体高亮颜色">
+                  <avue-color v-model="activeComponent.option.empColor"></avue-color>
+                </el-form-item>
+                <el-form-item label="字体颜色">
+                  <avue-color v-model="activeComponent.option.color"></avue-color>
+                </el-form-item>
                 <el-form-item label="区域颜色">
                   <avue-color v-model="activeComponent.option.areaColor"></avue-color>
+                </el-form-item>
+                <el-form-item label="区域高亮颜色">
+                  <avue-color v-model="activeComponent.option.empAreaColor"></avue-color>
                 </el-form-item>
                 <el-form-item label="边框颜色">
                   <avue-color v-model="activeComponent.option.borderColor"></avue-color>
@@ -311,12 +350,15 @@
               <el-form-item label="字体颜色">
                 <avue-color v-model="activeComponent.option.color"></avue-color>
               </el-form-item>
-              <el-form-item label="字体间距">
-                <avue-silder v-model="activeComponent.option.split"></avue-silder>
-              </el-form-item>
               <el-form-item label="文字粗细">
                 <avue-select v-model="activeComponent.option.fontWeight" :dic="dicOption.fontWeight">
                 </avue-select>
+              </el-form-item>
+              <el-form-item label="边框X间距">
+                <avue-silder v-model="activeComponent.option.splitx"></avue-silder>
+              </el-form-item>
+              <el-form-item label="边框Y间距">
+                <avue-silder v-model="activeComponent.option.splity"></avue-silder>
               </el-form-item>
               <el-form-item label="边框宽度">
                 <avue-silder v-model="activeComponent.option.width" :max="1000"></avue-silder>
@@ -327,6 +369,10 @@
               <el-form-item label="对其方式">
                 <avue-select v-model="activeComponent.option.textAlign" :dic="dicOption.textAlign">
                 </avue-select>
+              </el-form-item>
+              <el-form-item label="并排">
+                <avue-switch v-model="activeComponent.option.warp">
+                </avue-switch>
               </el-form-item>
               <el-form-item label="整体框">
                 <avue-switch v-model="activeComponent.option.whole">
@@ -466,10 +512,12 @@
               <el-form-item label="不展示为零数据项">
                 <avue-switch v-model="activeComponent.option.notCount"></avue-switch>
               </el-form-item>
-              <el-form-item label="显示Label">
+              <el-form-item label="显示标题">
                 <avue-switch v-model="activeComponent.option.labelShow"></avue-switch>
               </el-form-item>
-
+              <el-form-item label="标题大小">
+                <avue-silder v-model="activeComponent.option.fontSize"></avue-silder>
+              </el-form-item>
             </template>
             <template v-else-if="['bar','line'].includes(activeComponent.prop)">
               <el-form-item label="标题">
@@ -658,15 +706,7 @@
         dicOption: dicOption,
         tableOption: tableOption,
         colorOption: colorOption,
-        config: {
-          name: 'avuex数据大屏',
-          width: 3840,
-          height: 2160,
-          scale: 1,
-          backgroundImage: 'https://sugar.bce.baidu.com/static/img-templet/background-2.png',
-          gradeShow: false,
-          gradeLen: 30,
-        },
+        config: config,
         active: -1,
         list: list
       }
@@ -802,6 +842,9 @@
       },
       handleBottom(active) {
         this.list[active].zIndex = -1;
+      },
+      handleMapSelect(value) {
+        this.activeComponent.option.mapList = this.dicOption.mapList[value].list;
       },
       handleContextMenu(e) {
         this.$nextTick(() => {

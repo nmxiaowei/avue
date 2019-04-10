@@ -1,4 +1,8 @@
 
+@keyframes rotating{
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+}
 .avue-echart{
   padding: 10px;
   &-iframe{
@@ -143,7 +147,16 @@
       }
     }
   }
+  &-img{
+    &--rotate{
+      animation:rotating 0s linear infinite;
+    }
+  }
   &-flop{
+    &--warp{
+      display: flex;
+      flex-wrap: wrap;
+    }
     &__item{
       display: inline-block;
       font-family: "Microsoft Yahei";
