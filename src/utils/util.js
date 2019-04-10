@@ -57,10 +57,12 @@ export const deepClone = data => {
   }
   if (type === 'array') {
     for (var i = 0, len = data.length; i < len; i++) {
+      delete data[i].$parent;
       obj.push(deepClone(data[i]));
     }
   } else if (type === 'object') {
     for (var key in data) {
+      delete data.$parent;
       obj[key] = deepClone(data[key]);
     }
   }

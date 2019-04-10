@@ -192,7 +192,7 @@ export default create({
             addParent(children, ele);
           }
           if (parent) {
-            ele.parent = parent;
+            ele.$parent = parent;
           }
         });
       }
