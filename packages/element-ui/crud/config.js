@@ -1,8 +1,6 @@
 // crud配置文件
 export default {
   // 标题
-  tipStartTitle: '当前表格已选择',
-  tipEndTitle: '项',
   sumText: '合 计',
   // 尺寸
   menuWidth: 240,

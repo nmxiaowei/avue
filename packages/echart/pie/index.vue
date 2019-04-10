@@ -10,6 +10,11 @@
 import create from "core/echart/create";
 export default create({
   name: "pie",
+  computed: {
+    fontSize() {
+      return this.option.fontSize || 14;
+    }
+  },
   methods: {
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
@@ -43,6 +48,9 @@ export default create({
               animationEasing: "elasticOut",
               animationDelay: function(idx) {
                 return Math.random() * 200;
+              },
+              label: {
+                fontSize: this.fontSize
               },
               data: (() => {
                 let list = optionData;

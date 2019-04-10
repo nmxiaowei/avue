@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()"
+  <div :class="b({'warp':isWarp})"
        :style="styleParentName">
     <template v-if="whole">
       <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole})"
@@ -37,6 +37,9 @@ export default create({
     };
   },
   computed: {
+    isWarp() {
+      return this.option.warp;
+    },
     isArray() {
       return Array.isArray(this.dataChart);
     },
@@ -87,19 +90,10 @@ export default create({
           backgroundColor: this.option.backgroundColor,
           color: this.option.color || "#fff",
           fontSize: (this.option.fontSize || 64) + "px",
-          fontWeight: this.option.fontWeight
+          fontWeight: this.option.fontWeight,
+          marginRight: `${this.option.splitx}px`,
+          marginBottom: `${this.option.splity}px`
         },
-        (() => {
-          if (this.isArray) {
-            return {
-              marginBottom: `${this.option.split}px`
-            };
-          } else {
-            return {
-              margin: `0 ${this.option.split}px`
-            };
-          }
-        })(),
         (() => {
           if (this.whole && !this.isArray) {
             return {

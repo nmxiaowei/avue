@@ -27,15 +27,15 @@
     <div class="avue-crud__tip"
          v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
       <span class="avue-crud__tip-name">
-        {{config.tipStartTitle}}
+        {{t('crud.tipStartTitle')}}
         <span class="avue-crud__tip-count">{{selectLen}}</span>
-        {{config.tipEndTitle}}
+        {{t('crud.tipEndTitle')}}
       </span>
       <el-button type="text"
                  size="small"
                  @click="selectClear"
                  v-permission="permission.selectClearBtn"
-                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.tipBtn')}}</el-button>
+                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
       <slot name="tip"></slot>
     </div>
     <el-table v-if="doLayout"

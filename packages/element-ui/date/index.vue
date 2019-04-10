@@ -19,9 +19,9 @@
                         value-format="yyyy-MM-dd"
                         @focus="handleFocus"
                         @change="handleChange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"></el-date-picker>
+                        :range-separator="t('date.tip')"
+                        :start-placeholder="t('date.start')"
+                        :end-placeholder="t('date.end')"></el-date-picker>
       </div>
     </div>
     <el-date-picker v-else
@@ -29,7 +29,7 @@
                     v-model="text"
                     :size="size"
                     :readonly="readonly"
-                    range-separator="至"
+                    :range-separator="t('date.tip')"
                     :start-placeholder="startPlaceholder"
                     :end-placeholder="endPlaceholder"
                     :format="format"
@@ -51,9 +51,10 @@ import create from "core/create";
 import { GetDateStr } from "utils/date.js";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import locale from "../../core/common/locale";
 export default create({
   name: "date",
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   data() {
     return {
       text: "",
@@ -117,19 +118,19 @@ export default create({
     init() {
       this.menu = [
         {
-          label: "今天",
+          label: this.t("date.t"),
           value: GetDateStr(0)
         },
         {
-          label: "昨天",
+          label: this.t("date.y"),
           value: GetDateStr(-1)
         },
         {
-          label: "近7天",
+          label: this.t("date.n"),
           value: GetDateStr(-7)
         },
         {
-          label: "全部",
+          label: this.t("date.a"),
           value: "-1"
         }
       ];

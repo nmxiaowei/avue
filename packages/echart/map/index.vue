@@ -1,7 +1,7 @@
 <<template>
   <div class="avue-echart avue-echart-map"
        :style="styleSizeName" @mousewheel.prevent="handleMousewheel">
-    <div :ref="id" :style="styleChartName" v-if="type===0"></div>
+    <div :ref="id" :style="styleChartName" v-if="isEchart"></div>
       <div :class="b('map')" v-else >
         <div :class="b('box')" 
           :style="styleImgName"
@@ -21,6 +21,8 @@ export default create({
   name: "map",
   data() {
     return {
+      bannerCount: 0,
+      bannerCheck: "",
       move: false,
       step: 1,
       startLeft: 0,
@@ -31,6 +33,29 @@ export default create({
     };
   },
   watch: {
+    mapList() {
+      this.updateChart();
+    },
+    mapListLen() {
+      this.setBanner();
+    },
+    bannerTime() {
+      this.setBanner();
+    },
+    banner: {
+      handler() {
+        this.setBanner();
+      },
+      immediate: true
+    },
+    type() {
+      if (this.isEchart) {
+        this.$nextTick(() => {
+          this.init();
+          this.updateData();
+        });
+      }
+    },
     scale: {
       handler(val) {
         this.baseScale = val;
@@ -39,6 +64,42 @@ export default create({
     }
   },
   computed: {
+    borderColor() {
+      return this.option.borderColor || "#389BB7";
+    },
+    areaColor() {
+      return this.option.areaColor || "#0c162f";
+    },
+    empColor() {
+      return this.option.empColor || "#fff";
+    },
+    empAreaColor() {
+      return this.option.empAreaColor || "yellow";
+    },
+    color() {
+      return this.option.color || "#fff";
+    },
+    fontSize() {
+      return this.option.fontSize || 14;
+    },
+    mapList() {
+      return this.option.mapList || {};
+    },
+    mapListLen() {
+      return this.mapList.features.length;
+    },
+    isEchart() {
+      return this.type === 0;
+    },
+    bannerTime() {
+      return this.option.bannerTime || 3000;
+    },
+    banner() {
+      return this.option.banner;
+    },
+    formatter() {
+      return this.option.formatter;
+    },
     scale() {
       return this.option.scale || 100;
     },
@@ -95,25 +156,80 @@ export default create({
         this.baseScale = this.baseScale - 10;
       }
     },
+    resetBanner() {
+      this.$nextTick(() => {
+        dispatchAction({
+          type: "hideTip"
+        });
+        this.myChart.dispatchAction({
+          type: "downplay"
+        });
+      });
+    },
+    setBanner() {
+      clearInterval(this.bannerCheck);
+      if (this.banner) {
+        this.bannerCheck = setInterval(() => {
+          const curr = this.bannerCount % this.mapListLen;
+          this.myChart.dispatchAction({
+            type: "showTip",
+            seriesIndex: "0",
+            dataIndex: curr
+          });
+          this.myChart.dispatchAction({
+            type: "downplay"
+          });
+          this.myChart.dispatchAction({
+            type: "highlight",
+            dataIndex: curr
+          });
+          this.bannerCount += 1;
+        }, this.bannerTime);
+      }
+    },
     updateChart() {
-      const optionData = this.deepClone(this.dataChart);
-      window.echarts.registerMap("HK", this.dataChart);
+      const optionData = this.deepClone(this.mapList);
+      window.echarts.registerMap("HK", optionData);
       const option = {
+        tooltip: {
+          trigger: "item",
+          backgroundColor: "rgba(255,255,255,0)",
+          formatter: this.formatter
+        },
+
         series: [
           {
             type: "map",
             mapType: "HK", // 自定义扩展图表类型
             label: {
               show: true,
-              color: "#fff"
+              fontSize: this.fontSize,
+              color: this.color
+            },
+            emphasis: {
+              label: {
+                color: this.empColor
+              },
+              itemStyle: {
+                areaColor: this.empAreaColor
+              }
             },
             itemStyle: {
-              borderColor: "#389BB7",
-              areaColor: "#0c162f"
+              borderColor: this.borderColor,
+              areaColor: this.areaColor
             }
           }
         ]
       };
+      this.myChart.on("mouseover", () => {
+        clearInterval(this.bannerCheck);
+        this.resetBanner();
+      });
+
+      this.myChart.on("mouseout", () => {
+        this.bannerCount = 0;
+        this.setBanner();
+      });
       this.myChart.resize();
       this.myChart.setOption(option, true);
     }

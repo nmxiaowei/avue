@@ -3,7 +3,18 @@ export default {
     select: 'please select',
     input: 'please input'
   },
+  date: {
+    start: 'Start date',
+    end: 'End date',
+    tip: 'to',
+    t: 'today',
+    y: 'yesterday',
+    n: 'nearly 7',
+    a: 'whole'
+  },
   crud: {
+    tipStartTitle: 'Currently selected',
+    tipEndTitle: 'term',
     editTitle: 'edit',
     addTitle: 'add',
     viewTitle: 'view',
@@ -17,7 +28,6 @@ export default {
     columnBtn: 'column',
     searchBtn: 'search',
     emptyBtn: 'empty',
-    tipBtn: 'tip',
     menuBtn: 'menu',
     saveBtn: 'save',
     viewBtn: 'view',

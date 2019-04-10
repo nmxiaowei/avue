@@ -104,19 +104,22 @@ export default (function () {
       }
     },
     mounted() {
-      if (this.$refs[this.id]) {
-        const className = this.$el.className.replace('avue-echart ', '')
-        if (echartList.includes(className.replace('avue-echart-', ''))) {
-          this.isChart = true;
-        } else {
-          this.isChart = false;
-        }
-        if (this.isChart) {
-          this.myChart = window.echarts.init(this.$refs[this.id]);
-        }
-      }
+      this.init();
     },
     methods: {
+      init() {
+        if (this.$refs[this.id]) {
+          const className = this.$el.className.replace('avue-echart ', '')
+          if (echartList.includes(className.replace('avue-echart-', ''))) {
+            this.isChart = true;
+          } else {
+            this.isChart = false;
+          }
+          if (this.isChart) {
+            this.myChart = window.echarts.init(this.$refs[this.id]);
+          }
+        }
+      },
       updateData() {
         if (this.key) return
         this.key = true;

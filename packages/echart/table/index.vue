@@ -166,6 +166,7 @@ export default create({
   methods: {
     setTime() {
       this.top = 0;
+      clearInterval(this.scrollCheck);
       if (this.scroll) {
         this.scrollCheck = setInterval(() => {
           if (this.top <= -this.allHeight) {
@@ -174,8 +175,6 @@ export default create({
             this.top = this.top - this.speed;
           }
         }, this.scrollTime);
-      } else {
-        clearInterval(this.scrollCheck);
       }
     },
     styleTrName(index) {
