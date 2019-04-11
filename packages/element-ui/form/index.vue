@@ -343,7 +343,19 @@ export default create({
       return result;
     },
     updateDic(prop, list) {
-      this.$set(this.DIC, prop, list);
+      if (this.validatenull(list)) {
+        const column = this.propOption[this.findColumnIndex(prop)];
+        if (!this.validatenull(column.dicUrl)) {
+          sendDic({
+            url: column.dicUrl,
+            resKey: (column.props || {}).res
+          }).then(list => {
+            this.$set(this.DIC, prop, list);
+          });
+        }
+      } else {
+        this.$set(this.DIC, prop, list);
+      }
     },
     dataformat() {
       let formDefault = formInitVal(this.propOption);
