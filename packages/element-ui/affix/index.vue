@@ -10,38 +10,12 @@
   </div>
 </template>
 <script>
-function getScroll(target, top) {
-  const prop = top ? "pageYOffset" : "pageXOffset";
-  const method = top ? "scrollTop" : "scrollLeft";
-
-  let ret = target[prop];
-
-  if (typeof ret !== "number") {
-    ret = window.document.documentElement[method];
-  }
-
-  return ret;
-}
-
-function getOffset(element) {
-  const rect = element.getBoundingClientRect();
-
-  const scrollTop = getScroll(window, true);
-  const scrollLeft = getScroll(window);
-
-  const docEl = window.document.body;
-  const clientTop = docEl.clientTop || 0;
-  const clientLeft = docEl.clientLeft || 0;
-
-  return {
-    top: rect.top + scrollTop - clientTop,
-    left: rect.left + scrollLeft - clientLeft
-  };
-}
 import create from "core/create";
+import { isDom } from "utils/vdom";
 export default create({
   name: "affix",
   props: {
+    id: {},
     offsetTop: {
       type: Number,
       default: 0
@@ -59,6 +33,14 @@ export default create({
     };
   },
   computed: {
+    parent() {
+      if (this.validatenull(this.id)) {
+        return window;
+      } else {
+        if (isDom(this.id)) return this.id;
+        else return window.document.getElementById(this.id);
+      }
+    },
     offsetType() {
       let type = "top";
       if (this.offsetBottom >= 0) {
@@ -69,18 +51,46 @@ export default create({
     }
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll, false);
-    window.addEventListener("resize", this.handleScroll, false);
+    this.parent.addEventListener("scroll", this.handleScroll, false);
+    this.parent.addEventListener("resize", this.handleScroll, false);
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll, false);
-    window.removeEventListener("resize", this.handleScroll, false);
+    this.parent.removeEventListener("scroll", this.handleScroll, false);
+    this.parent.removeEventListener("resize", this.handleScroll, false);
   },
   methods: {
+    getScroll(target, top) {
+      const prop = top ? "pageYOffset" : "pageXOffset";
+      const method = top ? "scrollTop" : "scrollLeft";
+
+      let ret = target[prop];
+
+      if (typeof ret !== "number") {
+        ret = window.document.documentElement[method];
+      }
+
+      return ret;
+    },
+
+    getOffset(element) {
+      const rect = element.getBoundingClientRect();
+
+      const scrollTop = this.getScroll(this.parent, true);
+      const scrollLeft = this.getScroll(this.parent);
+
+      const docEl = window.document.body;
+      const clientTop = docEl.clientTop || 0;
+      const clientLeft = docEl.clientLeft || 0;
+
+      return {
+        top: rect.top + scrollTop - clientTop,
+        left: rect.left + scrollLeft - clientLeft
+      };
+    },
     handleScroll() {
       const affix = this.affix;
-      const scrollTop = getScroll(window, true);
-      const elOffset = getOffset(this.$el);
+      const scrollTop = this.getScroll(window, true);
+      const elOffset = this.getOffset(this.$el);
       const windowHeight = window.innerHeight;
       const elHeight = this.$el.getElementsByTagName("div")[0].offsetHeight;
 
