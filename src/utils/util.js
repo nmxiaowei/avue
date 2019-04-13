@@ -68,6 +68,18 @@ export const deepClone = data => {
   }
   return obj;
 };
+export const sortArrys = (list, prop) => {
+  list.sort(function (a, b) {
+    if (a[prop] > b[prop]) {
+      return -1;
+    }
+    if (a[prop] < b[prop]) {
+      return 1;
+    }
+    return 0;
+  });
+  return list;
+}
 
 /**
  * 设置px
@@ -86,13 +98,12 @@ export const setPx = (val, defval = '') => {
  * 根据字典的value显示label
  */
 let result = '';
-
-export const findByValue = (dic, value, props, isFirst, isTree) => {
+export const findByValue = (dic, value, props, first, isTree) => {
   props = props || {};
   const labelKey = props.label || 'label';
   const valueKey = props.value || 'value';
   const childrenKey = props.children || 'children';
-  result = value;
+  if (first) result = value;
   if (validatenull(dic)) return result;
   // 正常字典
   if (['string', 'number', 'boolean'].includes(typeof value)) {
@@ -101,7 +112,7 @@ export const findByValue = (dic, value, props, isFirst, isTree) => {
         result = dic[i][labelKey];
         break;
       } else {
-        findByValue(dic[i][childrenKey], value, props, true, isTree);
+        findByValue(dic[i][childrenKey], value, props, false, isTree);
       }
     }
   } else if (value instanceof Array) {
@@ -158,8 +169,9 @@ export const findArray = (dic, value, valueKey) => {
   return -1;
 };
 
-export const getPasswordChar = (len, char) => {
-  let result = '';
+export const getPasswordChar = (result = '', char) => {
+  let len = result.toString().length
+  result = '';
   for (let i = 0; i < len; i++) {
     result = result + char;
   }

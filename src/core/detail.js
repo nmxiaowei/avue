@@ -20,12 +20,12 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
 
   // 密码处理
   if (['password'].includes(type)) {
-    result = getPasswordChar(result.toString().length, '*');
+    result = getPasswordChar(result, '*');
   }
 
   // 字典处理
   if (!validatenull(dic)) {
-    result = findByValue(dic, result, column.props || option.props, false, ['cascader'].includes(column.type));
+    result = findByValue(dic, result, column.props || option.props, true, ['cascader'].includes(column.type));
   }
   return result;
 };
