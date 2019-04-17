@@ -69,7 +69,8 @@
                append-to-body
                :title="`请选择${label}`"
                width="30%">
-      <el-input style="margin-bottom:15px;"
+      <el-input size="small"
+                style="margin-bottom:15px;"
                 placeholder="输入关键字进行过滤"
                 v-model="filterText"
                 v-if="filter"></el-input>
