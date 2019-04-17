@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.6.1/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.6.1/index.js"></script>
   <script src="https://avuex.avue.top/cdn/aliyun-oss-sdk.min.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
 
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -39,6 +43,7 @@
           index: true,
           expandLevel: 3,
           headerAlign: 'center',
+          excelBtn: true,
           align: 'center',
           tree: true,
           labelWidth: 100,
