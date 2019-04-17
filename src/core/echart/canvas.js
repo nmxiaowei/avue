@@ -3,6 +3,10 @@ import echartList from './list'
 export default (function () {
   return {
     props: {
+      animation: {
+        type: Boolean,
+        default: true
+      },
       time: {
         type: Number,
         default: 0,
@@ -115,6 +119,7 @@ export default (function () {
           } else {
             this.isChart = false;
           }
+
           if (this.isChart) {
             this.myChart = window.echarts.init(this.$refs[this.id]);
           }
@@ -132,7 +137,7 @@ export default (function () {
               const data = res.data
               this.dataChart = data.data || {};
               if (this.isChart && this.myChart) {
-                this.myChart.clear();
+                if (this.animation) this.myChart.clear();
                 this.updateChart();
               }
             })

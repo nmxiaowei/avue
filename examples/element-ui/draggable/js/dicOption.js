@@ -4,7 +4,7 @@ var dicOption = {
   border: [{ label: '无边框', value: '' }, { label: '内置图片', value: 'img' }, { label: '内置边框', value: 'border' }],
   textAlign: [{ label: '居中', value: 'center' }, { label: '左对齐', value: 'left' }, { label: '右对齐', value: 'right' }],
   dataType: [{ label: '静态数据', value: 0 }, { label: '动态数据', value: 1 }],
-  dataList: ['map', 'iframe', 'swiper', 'flop', 'bar', 'line', 'progress', 'table', 'gauge'],
+  dataList: ['map', 'wordCloud', 'pie', 'pictorialBar', 'iframe', 'swiper', 'flop', 'bar', 'line', 'progress', 'table', 'gauge'],
   backgroundImage: [
     '../../img/bg.png',
     'https://sugar.bce.baidu.com/static/img-templet/background-1.png'

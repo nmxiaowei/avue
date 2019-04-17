@@ -1,1 +1,1 @@
-export default ['map', 'bar', 'line', 'pie', 'gauge']
+export default ['map', 'wordCloud', 'bar', 'line', 'pie', 'gauge']

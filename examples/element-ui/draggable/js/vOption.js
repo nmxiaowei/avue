@@ -1,9 +1,10 @@
 var config = {
   name: 'V贷管理驾驶舱',
-  width: 3840,
+  width: 4840,
   height: 2160,
   scale: 1,
   backgroundImage: '../../img/bg.png',
+  url: 'https://wechat.avue.top/yapiwy',
   gradeShow: false,
   gradeLen: 30,
 }
@@ -13,18 +14,127 @@ const formatter = () => {
 var list = (function () {
   return [
     {
+      "title": "象形图",
+      "name": "象形图",
+      "icon": "icon-pictorialBar",
+      "top": 274,
+      "left": 3806,
+      "dataType": 1,
+      "url": "https://wechat.avue.top/yapiwy/pie",
+      "time": 5000,
+      "component": {
+        "width": 970,
+        "height": 400,
+        "name": "pictorialBar",
+        "prop": "pictorialBar",
+        "option": {
+          "symbol": "../../img/logo.png",
+          "symbolSize": 30,
+          "split": 30,
+          "fontSize": "24",
+          "xAxisShow": false,
+          "yAxisShow": true,
+          "color": "#4dffff",
+          "nameColor": "#564AA3",
+          "xNameFontSize": "24",
+          "yNameFontSize": "24"
+        }
+      },
+      "index": 0,
+      "zIndex": 29
+    },
+    {
+      "title": "表格",
+      "name": "表格",
+      "icon": "icon-table",
+      "top": 1672,
+      "left": 1142,
+      "dataType": 1,
+      "data": [],
+      "component": {
+        "width": 1536,
+        "height": 410,
+        "name": "table",
+        "prop": "table",
+        "queryList": [],
+        "option": {
+          "scroll": true,
+          "count": 7,
+          "headerBackground": "rgba(0, 0, 0, 0.01)",
+          "headerColor": "#feffff",
+          "headerTextAlign": "center",
+          "bodyBackground": "rgba(0, 0, 0, 0.01)",
+          "bodyColor": "rgba(154, 168, 212, 1)",
+          "borderColor": "rgba(51, 65, 107, 1)",
+          "bodyTextAlign": "center",
+          "column": [
+            {
+              "label": "客户姓名",
+              "prop": "name",
+              "$index": 0,
+              "_show": true
+            },
+            {
+              "label": "放款时间(min)",
+              "prop": "sj",
+              "$index": 1,
+              "_show": true
+            },
+            {
+              "label": "担保方式",
+              "prop": "type",
+              "$index": 2,
+              "_show": true
+            },
+            {
+              "label": "放款金额",
+              "prop": "je",
+              "$index": 3,
+              "_show": true
+            },
+            {
+              "label": "法人机构",
+              "prop": "jg",
+              "$index": 4,
+              "_show": true
+            },
+            {
+              "label": "客户经理",
+              "prop": "jl",
+              "$index": 5,
+              "_show": true
+            }
+          ],
+          "menu": false,
+          "align": "center",
+          "headerAlign": "center",
+          "header": false,
+          "index": false,
+          "fontSize": 23,
+          "othColor": "#11274c",
+          "scrollTime": 2000,
+          "scrollCount": 1
+        }
+      },
+      "zIndex": 28,
+      "index": 1,
+      "url": "https://wechat.avue.top/yapiwy/sls/table2",
+      "time": 5000
+    },
+    {
       "name": "地图",
       "title": "地图",
       "icon": "icon-map",
       "top": 174,
       "left": 1026,
-      "zIndex": 26,
+      "zIndex": 27,
       "component": {
         "width": 1726,
         "height": 1552,
         "name": "map",
         "prop": "map",
         "option": {
+          "borderWidth": 3,
           formatter: formatter,
           "location": [
             {
@@ -3172,86 +3282,7 @@ var list = (function () {
           }
         }
       },
-      "index": 0,
-      "data": "客户实时申请滚动"
-    },
-    {
-      "title": "表格",
-      "name": "表格",
-      "icon": "icon-table",
-      "top": 1672,
-      "left": 1142,
-      "dataType": 1,
-      "data": [],
-      "component": {
-        "width": 1536,
-        "height": 410,
-        "name": "table",
-        "prop": "table",
-        "queryList": [],
-        "option": {
-          "scroll": true,
-          "count": 7,
-          "headerBackground": "rgba(0, 0, 0, 0.01)",
-          "headerColor": "#feffff",
-          "headerTextAlign": "center",
-          "bodyBackground": "rgba(0, 0, 0, 0.01)",
-          "bodyColor": "rgba(154, 168, 212, 1)",
-          "borderColor": "rgba(51, 65, 107, 1)",
-          "bodyTextAlign": "center",
-          "column": [
-            {
-              "label": "客户姓名",
-              "prop": "name",
-              "$index": 0,
-              "_show": true
-            },
-            {
-              "label": "放款时间(min)",
-              "prop": "sj",
-              "$index": 1,
-              "_show": true
-            },
-            {
-              "label": "担保方式",
-              "prop": "type",
-              "$index": 2,
-              "_show": true
-            },
-            {
-              "label": "放款金额",
-              "prop": "je",
-              "$index": 3,
-              "_show": true
-            },
-            {
-              "label": "法人机构",
-              "prop": "jg",
-              "$index": 4,
-              "_show": true
-            },
-            {
-              "label": "客户经理",
-              "prop": "jl",
-              "$index": 5,
-              "_show": true
-            }
-          ],
-          "menu": false,
-          "align": "center",
-          "headerAlign": "center",
-          "header": false,
-          "index": false,
-          "fontSize": 23,
-          "othColor": "#11274c",
-          "scrollTime": 2000,
-          "scrollCount": 1
-        }
-      },
-      "zIndex": 25,
-      "index": 1,
-      "url": "https://wechat.avue.top/yapiwy/sls/table2",
-      "time": 5000
+      "index": 2
     },
     {
       "title": "表格",
@@ -3326,8 +3357,8 @@ var list = (function () {
           "othColor": "#11274c"
         }
       },
-      "zIndex": 24,
-      "index": 2,
+      "zIndex": 26,
+      "index": 3,
       "url": "https://wechat.avue.top/yapiwy/sls/table1",
       "time": 5000
     },
@@ -3404,8 +3435,8 @@ var list = (function () {
           "othColor": "#11274c"
         }
       },
-      "zIndex": 23,
-      "index": 3,
+      "zIndex": 25,
+      "index": 4,
       "url": "https://wechat.avue.top/yapiwy/sls/table1",
       "time": 5000
     },
@@ -3428,8 +3459,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 22,
-      "index": 4
+      "zIndex": 24,
+      "index": 5
     },
     {
       "title": "文本框",
@@ -3450,8 +3481,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 21,
-      "index": 5
+      "zIndex": 23,
+      "index": 6
     },
     {
       "name": "实时时间",
@@ -3459,7 +3490,7 @@ var list = (function () {
       "icon": "icon-datetime",
       "top": 84,
       "left": 3206,
-      "zIndex": 20,
+      "zIndex": 22,
       "component": {
         "width": 266,
         "height": 62,
@@ -3473,7 +3504,7 @@ var list = (function () {
           "fontWeight": "normal"
         }
       },
-      "index": 6
+      "index": 7
     },
     {
       "name": "实时时间",
@@ -3481,7 +3512,7 @@ var list = (function () {
       "icon": "icon-datetime",
       "top": 0,
       "left": 3204,
-      "zIndex": 19,
+      "zIndex": 21,
       "component": {
         "width": 266,
         "height": 92,
@@ -3495,7 +3526,7 @@ var list = (function () {
           "fontWeight": "normal"
         }
       },
-      "index": 7
+      "index": 8
     },
     {
       "title": "文本框",
@@ -3517,8 +3548,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 18,
-      "index": 8
+      "zIndex": 20,
+      "index": 9
     },
     {
       "title": "翻牌器",
@@ -3535,7 +3566,7 @@ var list = (function () {
         "option": {
           "type": "img",
           "suffixText": "",
-          "suffixTextAlign": "",
+          "suffixTextAlign": "center",
           "suffixSplit": "",
           "suffixColor": "",
           "suffixFontSize": "",
@@ -3548,16 +3579,17 @@ var list = (function () {
           "backgroundColor": "",
           "color": "#fff",
           "prefixText": "",
+          "prefixTextAlign": "center",
           "whole": true,
           "width": 240,
           "prefixColor": "#4dffff",
           "height": 94,
           "prefixFontSize": 26,
-          "prefixSplit": 7
+          "prefixSplity": 7
         }
       },
-      "index": 9,
-      "zIndex": 17,
+      "index": 10,
+      "zIndex": 19,
       "dataType": 1,
       "url": "https://wechat.avue.top/yapiwy/sls/table3",
       "time": 5000
@@ -3577,7 +3609,7 @@ var list = (function () {
         "option": {
           "type": "border",
           "suffixText": "",
-          "suffixTextAlign": "",
+          "suffixTextAlign": "center",
           "suffixSplit": "",
           "suffixColor": "",
           "suffixFontSize": "",
@@ -3592,14 +3624,15 @@ var list = (function () {
           "prefixText": "",
           "whole": true,
           "width": 255,
+          "prefixTextAlign": "center",
           "prefixColor": "#4dffff",
           "height": 114,
           "prefixFontSize": 26,
-          "prefixSplit": 7
+          "prefixSplity": 7
         }
       },
-      "index": 10,
-      "zIndex": 16,
+      "index": 11,
+      "zIndex": 18,
       "dataType": 1,
       "url": "https://wechat.avue.top/yapiwy/sls/table4",
       "time": 5000
@@ -3623,8 +3656,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 15,
-      "index": 11
+      "zIndex": 17,
+      "index": 12
     },
     {
       "title": "文本框",
@@ -3645,8 +3678,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 14,
-      "index": 12
+      "zIndex": 16,
+      "index": 13
     },
     {
       "title": "文本框",
@@ -3667,8 +3700,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 13,
-      "index": 13
+      "zIndex": 15,
+      "index": 14
     },
     {
       "title": "文本框",
@@ -3689,8 +3722,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 12,
-      "index": 14
+      "zIndex": 14,
+      "index": 15
     },
     {
       "title": "文本框",
@@ -3711,8 +3744,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 11,
-      "index": 15
+      "zIndex": 13,
+      "index": 16
     },
     {
       "title": "文本框",
@@ -3734,8 +3767,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 10,
-      "index": 16
+      "zIndex": 12,
+      "index": 17
     },
     {
       "title": "文本框",
@@ -3756,8 +3789,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 9,
-      "index": 17
+      "zIndex": 11,
+      "index": 18
     },
     {
       "title": "文本框",
@@ -3778,8 +3811,8 @@ var list = (function () {
         "name": "text",
         "prop": "text"
       },
-      "zIndex": 8,
-      "index": 18
+      "zIndex": 10,
+      "index": 19
     },
     {
       "name": "折线图",
@@ -3884,8 +3917,8 @@ var list = (function () {
           "areaStyle": true
         }
       },
-      "zIndex": 7,
-      "index": 19,
+      "zIndex": 9,
+      "index": 20,
       "dataType": 1,
       "url": "https://wechat.avue.top/yapiwy/bar",
       "time": 5000
@@ -3896,46 +3929,9 @@ var list = (function () {
       "icon": "icon-bar",
       "top": 390,
       "left": 18,
-      "data": {
-        "categories": [
-          "北京",
-          "上海",
-          "杭州",
-          "深圳",
-          "杭州",
-          "深圳",
-          "广州",
-          "连云港"
-        ],
-        "series": [
-          {
-            "name": "手机品牌",
-            "data": [
-              1131776,
-              1349011,
-              905718,
-              1349011,
-              905718,
-              656020,
-              571234,
-              467397
-            ]
-          },
-          {
-            "name": "其他手机品牌",
-            "data": [
-              1131776,
-              1349011,
-              905718,
-              1349011,
-              905718,
-              656020,
-              571234,
-              467397
-            ]
-          }
-        ]
-      },
+      "dataType": 1,
+      "url": "https://wechat.avue.top/yapiwy/bar",
+      "time": 5000,
       "component": {
         "width": 1000,
         "height": 376,
@@ -3991,8 +3987,8 @@ var list = (function () {
           "titleShow": true
         }
       },
-      "zIndex": 6,
-      "index": 20
+      "zIndex": 8,
+      "index": 21
     },
     {
       "name": "饼图",
@@ -4000,7 +3996,7 @@ var list = (function () {
       "icon": "icon-pie",
       "top": 1126,
       "left": 84,
-      "zIndex": 5,
+      "zIndex": 7,
       "dataType": 1,
       "time": 5000,
       "url": "https://wechat.avue.top/yapiwy/pie",
@@ -4013,7 +4009,7 @@ var list = (function () {
         "prop": "pie",
         "option": {
           "title": "手机大比拼",
-          fontSize: 24,
+          "fontSize": 24,
           "barColor": [
             {
               "color1": "#83bff6",
@@ -4043,7 +4039,7 @@ var list = (function () {
           ]
         }
       },
-      "index": 21
+      "index": 22
     },
     {
       "name": "饼图",
@@ -4051,7 +4047,7 @@ var list = (function () {
       "icon": "icon-pie",
       "top": 688,
       "left": -20,
-      "zIndex": 4,
+      "zIndex": 6,
       "dataType": 1,
       "time": 5000,
       "url": "https://wechat.avue.top/yapiwy/pie",
@@ -4064,59 +4060,7 @@ var list = (function () {
         "prop": "pie",
         "option": {
           "title": "手机大比拼",
-          fontSize: 24,
-          "barColor": [
-            {
-              "color1": "#83bff6",
-              "$index": 0,
-              "_show": true
-            },
-            {
-              "color1": "#23B7E5",
-              "$index": 1,
-              "_show": true
-            },
-            {
-              "color1": "rgba(154, 168, 212, 1)",
-              "$index": 2,
-              "_show": true
-            },
-            {
-              "color1": "#188df0",
-              "$index": 3,
-              "_show": true
-            },
-            {
-              "color1": "#564AA3",
-              "$index": 4,
-              "_show": true
-            }
-          ],
-          "radius": true
-        }
-      },
-      "index": 22
-    },
-    {
-      "name": "饼图",
-      "title": "饼图",
-      "icon": "icon-pie",
-      "top": 764,
-      "left": 518,
-      "zIndex": 3,
-      "dataType": 1,
-      "time": 5000,
-      "url": "https://wechat.avue.top/yapiwy/pie",
-      "data": [],
-      "resize": false,
-      "component": {
-        "width": 424,
-        "height": 394,
-        "name": "pie",
-        "prop": "pie",
-        "option": {
-          fontSize: 24,
-          "title": "手机大比拼",
+          "fontSize": 24,
           "barColor": [
             {
               "color1": "#83bff6",
@@ -4150,6 +4094,58 @@ var list = (function () {
       "index": 23
     },
     {
+      "name": "饼图",
+      "title": "饼图",
+      "icon": "icon-pie",
+      "top": 764,
+      "left": 518,
+      "zIndex": 5,
+      "dataType": 1,
+      "time": 5000,
+      "url": "https://wechat.avue.top/yapiwy/pie",
+      "data": [],
+      "resize": false,
+      "component": {
+        "width": 424,
+        "height": 394,
+        "name": "pie",
+        "prop": "pie",
+        "option": {
+          "fontSize": 24,
+          "title": "手机大比拼",
+          "barColor": [
+            {
+              "color1": "#83bff6",
+              "$index": 0,
+              "_show": true
+            },
+            {
+              "color1": "#23B7E5",
+              "$index": 1,
+              "_show": true
+            },
+            {
+              "color1": "rgba(154, 168, 212, 1)",
+              "$index": 2,
+              "_show": true
+            },
+            {
+              "color1": "#188df0",
+              "$index": 3,
+              "_show": true
+            },
+            {
+              "color1": "#564AA3",
+              "$index": 4,
+              "_show": true
+            }
+          ],
+          "radius": true
+        }
+      },
+      "index": 24
+    },
+    {
       "title": "图片框",
       "name": "图片框",
       "icon": "icon-img",
@@ -4164,29 +4160,29 @@ var list = (function () {
           "rotate": false
         }
       },
-      "zIndex": 2,
-      "index": 24,
+      "zIndex": 4,
+      "index": 25,
       "data": "../../img/logo.png"
     },
     {
       "title": "翻牌器",
       "name": "翻牌器",
       "icon": "icon-flop",
-      "top": 298,
+      "top": 288,
       "left": 58,
       "data": "16.24",
       "component": {
-        "width": 904,
+        "width": 1074,
         "height": 134,
         "name": "flop",
         "prop": "flop",
         "option": {
           "type": "img",
           "suffixText": "",
-          "suffixTextAlign": "",
+          "suffixTextAlign": "center",
           "suffixSplit": "",
           "suffixColor": "",
-          "suffixFontSize": "",
+          "suffixFontSize": 0,
           "borderColor": "#4affff",
           "borderWidth": 3,
           "backgroundImage": "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
@@ -4197,16 +4193,19 @@ var list = (function () {
           "color": "#fff",
           "prefixText": "",
           "whole": true,
-          "width": 249,
+          "width": 248,
           "prefixColor": "#4dffff",
+          "prefixTextAlign": "center",
           "height": 104,
           "prefixFontSize": 23,
-          "prefixSplit": 4,
-          "warp": true
+          "prefixSplity": 4,
+          "warp": true,
+          "row": true,
+          "prefixSplitx": 18
         }
       },
-      "index": 25,
-      "zIndex": 1,
+      "index": 26,
+      "zIndex": 3,
       "dataType": 1,
       "url": "https://wechat.avue.top/yapiwy/sls/table4",
       "time": 5000
@@ -4227,9 +4226,68 @@ var list = (function () {
           "rotate": true
         }
       },
-      "zIndex": 0,
-      "index": 26,
+      "zIndex": 2,
+      "index": 27,
       "data": "../../img/samiao.png"
+    },
+    {
+      "title": "字符云",
+      "name": "字符云",
+      "icon": "icon-circle",
+      "top": 725,
+      "left": 3780,
+      "dataType": 1,
+      "url": "https://wechat.avue.top/yapiwy/wordCloud",
+      "time": 5000,
+      "component": {
+        "name": "wordCloud",
+        "prop": "wordCloud",
+        "width": 955,
+        "height": 565,
+        option: {
+          minFontSize: 30,
+          maxFontSize: 80,
+          split: 30,
+          rotate: true,
+        }
+      },
+      "index": 28,
+      "zIndex": 1
+    },
+    {
+      "title": "环形图",
+      "name": "环形图",
+      "icon": "icon-circle",
+      "top": 1435,
+      "left": 3970,
+      "dataType": 0,
+      "data": {
+        "label": "人数增涨",
+        "value": 40,
+        "data": 80
+      },
+      "component": {
+        "width": 620,
+        "height": 665,
+        "option": {
+          "type": "circle",
+          "strokeWidth": 30,
+          "color": "rgba(154, 168, 212, 1)",
+          "fontSize": 120,
+          "fontWeight": "normal",
+          "suffixColor": "rgba(154, 168, 212, 1)",
+          "suffixFontSize": 80,
+          "suffixFontWeight": "normal",
+          "borderColor": "#564AA3",
+          "split": 20,
+          "width": 400,
+          "height": 80
+        },
+        "name": "progress",
+        "prop": "progress"
+      },
+      "index": 29,
+      "zIndex": 0
     }
   ]
 })()

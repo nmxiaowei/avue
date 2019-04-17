@@ -129,12 +129,11 @@
     position: relative;
     &__text{
       &--circle{
-      position: absolute;
-      top:50%;
-      left:50%;
-      transform:translate(-50%,-50%);
-      text-align: center;
-      line-height: 30px;
+        position: absolute;
+        width:100%;
+        top:50%;
+        transform:translate(0,-50%);
+        text-align: center;
       }
       &--line{
         margin-bottom: 20px;
@@ -177,17 +176,25 @@
       &--whole{
         display: flex;
         align-items: center;
-       flex-direction: column;
-       justify-content: center;
-       div,span{
-         display: block;
-         width: 100%;
-       }
-      }
+        flex-direction: column;
+        justify-content: center;
+        div,span{
+          display: block;
+          width: 100%;
+        }
+        }
       &--none{
         padding: 0 !important;
         border-width:0 !important;
         background-color: transparent !important;
+      }
+    }
+    &--row{
+      display: flex;
+     justify-content: flex-start;
+      flex-direction: row;
+      span,div{
+        width:auto;
       }
     }
   }

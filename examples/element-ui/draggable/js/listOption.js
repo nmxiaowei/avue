@@ -479,10 +479,6 @@ var list = [
       "height": 120,
       "name": "flop",
       "prop": "flop",
-      "list": [
-        "https://sugar.bce.baidu.com/static/img-templet/border-1.png",
-        "https://sugar.bce.baidu.com/static/img-templet/border-2.png"
-      ],
       "option": {
         "type": "img",
         "borderColor": "#fff",

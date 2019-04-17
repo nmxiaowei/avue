@@ -183,6 +183,65 @@ var baseList = [{
         }
       },
     }
+  }, {
+    label: '象形图',
+    option: {
+      "title": "象形图",
+      "name": "象形图",
+      "icon": "icon-pictorialBar",
+      "top": 274,
+      "left": 3806,
+      "dataType": 1,
+      "time": 5000,
+      "url": "https://wechat.avue.top/yapiwy/pie",
+      "data": [],
+      "component": {
+        "width": 970,
+        "height": 400,
+        "name": "pictorialBar",
+        "prop": "pictorialBar",
+        "option": {
+          symbolSize: 30,
+          split: 30,
+          fontSize: '24',
+          xAxisShow: false,
+          yAxisShow: true,
+          color: '#4dffff',
+          nameColor: '#564AA3',
+          xNameFontSize: '24',
+          yNameFontSize: '24',
+        }
+      }
+    }
+  }, {
+    label: '地图',
+    option: {
+      "name": "地图",
+      "title": "地图",
+      "icon": "icon-map",
+      "top": 174,
+      "left": 1026,
+      "zIndex": 25,
+      "component": {
+        "width": 1726,
+        "height": 1552,
+        "name": "map",
+        "prop": "map",
+        "option": {
+          borderWidth: 3,
+          "scale": 87,
+          "type": 0,
+          "borderColor": "#0dffff",
+          "areaColor": "#061d33",
+          "banner": true,
+          "bannerTime": 3000,
+          "fontSize": 39,
+          "empAreaColor": "rgba(35, 183, 229, 0.42)",
+          "empColor": "#fff",
+          "color": "rgba(13, 255, 255, 1)",
+        }
+      },
+    },
   }]
 }, {
   "label": '文字',
@@ -336,7 +395,9 @@ var baseList = [{
       "top": 0,
       "left": 0,
       "dataType": 0,
-      "data": 'https://cloud.baidu.com/',
+      "data": {
+        value: 'https://cloud.baidu.com'
+      },
       "component": {
         "width": 670,
         "height": 370,
@@ -391,21 +452,26 @@ var baseList = [{
       "icon": 'icon-circle',
       "top": 0,
       "left": 0,
+      "dataType": 0,
       "data": {
         "label": "人数增涨",
         "value": 40,
         "data": 80
       },
       "component": {
-        "width": 200,
-        "height": 200,
+        "width": 620,
+        "height": 665,
         "option": {
           "type": "circle",
+          "strokeWidth": 30,
           "color": "rgba(154, 168, 212, 1)",
-          "fontSize": 24,
-          "strokeWidth": 18,
+          "fontSize": 120,
           "fontWeight": "normal",
+          "suffixColor": "rgba(154, 168, 212, 1)",
+          "suffixFontSize": 80,
+          "suffixFontWeight": "normal",
           "borderColor": "#564AA3",
+          "split": 20,
           "width": 400,
           "height": 80
         },
