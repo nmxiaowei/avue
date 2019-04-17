@@ -53,7 +53,7 @@ export default create({
         transform: "translateX(" + this.left + "px)",
         textAlign: this.option.textAlign,
         letterSpacing: this.setPx(this.split),
-        textIndent: this.setPx(-this.split),
+        textIndent: this.setPx(this.split),
         backgroundColor: this.option.backgroundColor,
         fontWeight: this.option.fontWeight || "normal",
         fontSize: this.fontSize + "px",

@@ -2,11 +2,11 @@
   <div :class="b()"
        :style="styleSizeName"
        ref="main">
-    <div :class="b('text',{'line':type==='line','circle':type==='circle'})"
-         :style="styleName">
-      <p>{{dataChart.label}}</p>
-      <p>
-        <avue-count-up :end="Number(dataChart.value)"></avue-count-up>
+    <div :class="b('text',{'line':type==='line','circle':type==='circle'})">
+      <p :style="styleSuffixName">{{dataChart.label}}</p>
+      <p :style="styleName">
+        <avue-count-up v-if="dataChart.value"
+                       :end="Number(dataChart.value)"></avue-count-up>
       </p>
     </div>
     <avue-progress :color="color"
@@ -24,15 +24,23 @@ import create from "core/echart/create";
 export default create({
   name: "progress",
   computed: {
+    styleSuffixName() {
+      return {
+        fontWeight: this.option.suffixFontWeight || "normal",
+        fontSize: (this.option.suffixFontSize || 40) + "px",
+        color: this.option.suffixColor || "#333"
+      };
+    },
     styleName() {
       return {
+        marginBottom: this.option.split + "px",
         fontWeight: this.option.fontWeight || "normal",
         fontSize: (this.option.fontSize || 40) + "px",
         color: this.option.color || "#333"
       };
     },
     width() {
-      return this.option.width || 200;
+      return this.component.width || 200;
     },
     type() {
       return this.option.type || "line";

@@ -64,6 +64,9 @@ export default create({
     }
   },
   computed: {
+    borderWidth() {
+      return this.option.borderWidth || 3;
+    },
     borderColor() {
       return this.option.borderColor || "#389BB7";
     },
@@ -158,7 +161,7 @@ export default create({
     },
     resetBanner() {
       this.$nextTick(() => {
-        dispatchAction({
+        this.myChart.dispatchAction({
           type: "hideTip"
         });
         this.myChart.dispatchAction({
@@ -215,6 +218,7 @@ export default create({
               }
             },
             itemStyle: {
+              borderWidth: this.borderWidth,
               borderColor: this.borderColor,
               areaColor: this.areaColor
             }

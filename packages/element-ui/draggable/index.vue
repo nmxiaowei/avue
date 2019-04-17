@@ -234,7 +234,6 @@ export default create({
     handleMouseMove(e) {
       if (this.moveActive && !this.rangeActive) {
         window.document.onmousemove = e => {
-          this.active = false;
           this.overActive = false;
           const startX = e.clientX;
           const startY = e.clientY;

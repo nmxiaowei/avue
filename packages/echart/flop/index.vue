@@ -1,18 +1,22 @@
 <template>
   <div :class="b({'warp':isWarp})"
        :style="styleParentName">
-    <template v-if="whole">
-      <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole})"
-           :style="styleName"
-           v-for="(item,index) in listData"
-           :key="index">
-        <div :style="prefixStyle">{{isArray?item.prefixText:option.prefixText}}</div>
-        <avue-count-up :end="Number(isArray?item.data:dataChart)"></avue-count-up>
-        <div :style="suffixStyle">{{isArray?item.suffixText:option.suffixText}}</div>
-      </div>
-    </template>
-    <template v-else>
-      <div :style="prefixStyle">{{option.prefixText}}</div>
+    <div v-if="whole"
+         :class="[b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole}),b({'row':isRow})]"
+         :style="styleName"
+         v-for="(item,index) in listData"
+         :key="index">
+      <div :style="prefixStyle"
+           v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
+      <avue-count-up v-if="isArray?item.data:dataChart"
+                     :end="Number(isArray?item.data:dataChart)"></avue-count-up>
+      <div :style="suffixStyle"
+           v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
+    </div>
+    <div v-else
+         :class="b({'row':isRow})">
+      <div :style="prefixStyle"
+           v-if="option.prefixText">{{option.prefixText}}</div>
       <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img'})"
            v-for="(item,index) in text"
            :key="index"
@@ -21,9 +25,9 @@
         <avue-count-up v-else
                        :end="Number(item)"></avue-count-up>
       </div>
-      <div :style="suffixStyle">{{option.suffixText}}</div>
-    </template>
-
+      <div :style="suffixStyle"
+           v-if="option.suffixText">{{option.suffixText}}</div>
+    </div>
   </div>
 </template>
 
@@ -37,6 +41,9 @@ export default create({
     };
   },
   computed: {
+    isRow() {
+      return this.option.row;
+    },
     isWarp() {
       return this.option.warp;
     },
@@ -62,7 +69,8 @@ export default create({
     prefixStyle() {
       return {
         textAlign: this.option.prefixTextAlign,
-        marginBottom: this.option.prefixSplit + "px",
+        marginBottom: this.option.prefixSplity + "px",
+        marginRight: this.option.prefixSplitx + "px",
         color: this.option.prefixColor || "#fff",
         fontSize: (this.option.prefixFontSize || 24) + "px"
       };
@@ -70,7 +78,8 @@ export default create({
     suffixStyle() {
       return {
         textAlign: this.option.suffixTextAlign,
-        marginTop: this.option.suffixSplit + "px",
+        marginTop: this.option.suffixSplity + "px",
+        marginLeft: this.option.suffixSplitx + "px",
         color: this.option.suffixColor || "#fff",
         fontSize: (this.option.suffixFontSize || 24) + "px"
       };
@@ -132,6 +141,10 @@ export default create({
     }
   },
   created() {},
-  methods: {}
+  methods: {
+    getValByArray(item, prop) {
+      return this.isArray ? item[prop] : this.option[prop];
+    }
+  }
 });
 </script>

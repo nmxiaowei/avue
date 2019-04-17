@@ -16,14 +16,15 @@
          :class="b('table',{'line':!line})">
       <div :class="b('tr')">
         <div :class="b('td')"
-             :style="styleThName"
+             :style="[styleThName,{width:setPx(indexWidth)}]"
              v-if="index">
           {{indexLabel}}
         </div>
         <div :class="b('td')"
              v-for="(item,index) in columnOption"
              :style="styleThName"
-             :key="index">
+             :key="index"
+             @click="handleSortable(item.prop)">
           {{item.label}}
         </div>
       </div>
@@ -31,11 +32,11 @@
            ref="body"
            :style="styleSizeName">
         <div :class="b('tr',['line'])"
-             v-for="(citem,cindex) in dataChart"
+             v-for="(citem,cindex) in dataTabel"
              :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]"
              :key="cindex">
           <div :class="b('td')"
-               :style="styleTdName"
+               :style="[styleThName,{width:setPx(indexWidth)}]"
                :key="index"
                v-if="index">
             <div :class="b('index',[(cindex+1)+''])"> {{(cindex+1)}}</div>
@@ -59,7 +60,9 @@ export default create({
   name: "table",
   data() {
     return {
+      indexWidth: 50,
       top: 0,
+      prop: "",
       scrollCheck: "",
       activeIndex: 0,
       query: {}
@@ -86,6 +89,13 @@ export default create({
     }
   },
   computed: {
+    dataTabel() {
+      let list = this.dataChart;
+      if (!this.validatenull(this.prop)) {
+        list = this.sortArrys(list, this.prop);
+      }
+      return list;
+    },
     allHeight() {
       return (this.count - 1) * this.lineHeight;
     },
@@ -164,6 +174,9 @@ export default create({
     }
   },
   methods: {
+    handleSortable(prop) {
+      this.prop = prop;
+    },
     setTime() {
       this.top = 0;
       clearInterval(this.scrollCheck);

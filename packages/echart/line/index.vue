@@ -46,6 +46,7 @@ export default create({
           })()
         },
         xAxis: {
+          type: this.option.category ? "value" : "category",
           axisLine: {
             lineStyle: {
               color: this.option.lineColor || "#333"
@@ -65,6 +66,8 @@ export default create({
           }
         },
         yAxis: {
+          type: this.option.category ? "category" : "value",
+          data: optionData.categories || [],
           axisLabel: {
             textStyle: {
               color: this.option.nameColor || "#333",

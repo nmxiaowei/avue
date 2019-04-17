@@ -2,7 +2,7 @@
   <div :class="b()"
        :style="styleSizeName"
        ref="main">
-    <iframe :src="dataChart"
+    <iframe :src="dataChart.value"
             draggable="false"></iframe>
   </div>
 </template>

@@ -8,7 +8,7 @@
                  :height="height">
       <el-carousel-item v-for="item in dataChart"
                         :key="item">
-        <img :src="item.url"
+        <img :src="item.value"
              draggable="false"
              :style="styleName" />
       </el-carousel-item>
