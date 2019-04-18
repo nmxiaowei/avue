@@ -11,7 +11,7 @@
         <slot :name="item.prop+'Header'"></slot>
       </template>
       <slot :name="item.prop"
-            :form="form"
+            :row="form"
             :column="item"
             v-if="item.slot"></slot>
       <template v-if="!item.slot && vaildData(column.display,true)"
@@ -24,14 +24,15 @@
                   :style="{width:`${item.labelWidth}px`}">{{column.label}}:</span>
             <slot :name="column.prop"
                   :column="column"
-                  :form="form"
+                  :row="form"
                   :label="form['$'+column.prop]"
-                  v-if="column.slot"></slot>
-            <span v-if="column.parentProp"
-                  :class="b('content')">{{handleDetail(column,item,((cascaderDIC[0] || {})[0] || {})[column.prop])}}</span>
-
-            <span v-else
-                  :class="b('content')">{{handleDetail(column,item,DIC[column.prop])}}</span>
+                  v-if="column.formslot"></slot>
+            <template v-else>
+              <span v-if="column.parentProp"
+                    :class="b('content')">{{handleDetail(column,item,((cascaderDIC[0] || {})[0] || {})[column.prop])}}</span>
+              <span v-else
+                    :class="b('content')">{{handleDetail(column,item,DIC[column.prop])}}</span>
+            </template>
           </div>
         </el-col>
         <div :class="b('line')"
