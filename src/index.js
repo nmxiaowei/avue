@@ -3,6 +3,7 @@ import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import directive from 'packages/core/directive/permission'
 import _export from 'plugin/export/';
+import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
