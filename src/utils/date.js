@@ -26,9 +26,8 @@ export const dateFtt = (fmt, date) => {
   return fmt;
 };
 
-export const getDateValues = (value, format = 'yyyy-MM-dd hh:mm::ss') => {
-  let str = new Date();
-  if (!(value instanceof Date)) str = new Date(value);
+export const getDateValues = (value, format = 'yyyy/MM/dd hh:mm::ss') => {
+
   function strDetail(str) {
     str = str + '';
     if (str.length === 1) {
@@ -36,9 +35,15 @@ export const getDateValues = (value, format = 'yyyy-MM-dd hh:mm::ss') => {
     }
     return str;
   }
+  let str = new Date();
+  if (typeof (value) === 'number') {
+    str = new Date(value);
+  } else if (typeof (value) === 'string') {
+    str = new Date(value.replace(/-/g, "/").replace(/\./g, "/"))
+  }
   let result = [];
   let year = str.getFullYear();
-  let month = str.getMonth();
+  let month = str.getMonth() + 1;
   let date = str.getDate();
   let hours = str.getHours();
   let minutes = str.getMinutes();

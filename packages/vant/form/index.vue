@@ -44,14 +44,16 @@
 </template>
 
 <script>
+import locale from "../../core/common/locale";
 import create from "core/create";
 import init from "../../core/crud/init";
+import { getComponent, getPlaceholder } from "core/dataformat";
 import { formInitVal, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import { getObjType } from "utils/util";
 export default create({
   name: "form",
-  mixins: [init()],
+  mixins: [init(), locale],
   data() {
     return {
       form: {},
@@ -108,6 +110,8 @@ export default create({
     this.dataformat();
   },
   methods: {
+    getComponent,
+    getPlaceholder,
     dataformat() {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);

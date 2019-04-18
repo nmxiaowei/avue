@@ -81,7 +81,10 @@ export default create({
       if (this.box) {
         setTimeout(() => {
           this.$refs.picker.$refs.picker.setValues(
-            getDateValues(this.text, this.valueFormat)
+            getDateValues(
+              this.text,
+              this.isTimestamp ? undefined : this.valueFormat
+            )
           );
         }, 0);
       }
@@ -90,7 +93,11 @@ export default create({
       this.handleChange(this.value);
     }
   },
-  computed: {},
+  computed: {
+    isTimestamp() {
+      return this.valueFormat === "timestamp";
+    }
+  },
   created() {},
   mounted() {},
   methods: {
@@ -113,7 +120,12 @@ export default create({
         .replace("dd", "DD")
         .replace("yyyy", "YYYY");
       this.handleSetLabel(value);
-      this.text = dayjs(value).format(valueFormat);
+      if (this.isTimestamp) {
+        this.text = new Date(value).getTime();
+      } else {
+        this.text = dayjs(value).format(valueFormat);
+      }
+
       this.handleChange(this.text);
       this.hide();
     },
