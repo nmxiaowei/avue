@@ -3,7 +3,8 @@ import countUp from 'components/count-up'
 import Avatar from 'components/avatar'
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
-import Card from 'components/Card';
+import Card from 'components/card';
+import Code from 'components/code';
 import Color from 'components/color';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
@@ -48,6 +49,7 @@ export default [
   Avatar,
   Carousel,
   Crud,
+  Code,
   Color,
   Card,
   Form,

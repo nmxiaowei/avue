@@ -17,6 +17,12 @@ const list = {
     version: '2.4.11',
     gihub: 'https://github.com/ElemeFE/element',
   },
+  'hljs': {
+    url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js',
+    title: '需要引入hljs框架包',
+    version: '9.15.6',
+    gihub: 'https://github.com/highlightjs/highlight.js',
+  },
   'vant': {
     url: 'https://cdn.jsdelivr.net/npm/vant@1.6/lib/vant.min.js',
     title: '需要引入Vant框架包',
