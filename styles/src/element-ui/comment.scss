@@ -30,7 +30,7 @@
     vertical-align: middle;
   }
   &__header{
-    padding: 0 15px;
+    padding: 5px 15px;
     background: #f8f8f8;
     border-bottom: 1px solid #eee;
     display: flex;
@@ -43,6 +43,7 @@
     color: #999;
   }
   &__main{
+    flex:1;
     margin: 0 20px;
     position: relative;
     border: 1px solid #dedede;

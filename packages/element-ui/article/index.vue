@@ -1,9 +1,9 @@
 <template>
   <div :class="b()">
     <div :class="b('header')">
-      <p :class="b('title')"
-         v-if="title"
-         v-text="title"></p>
+      <div :class="b('title')"
+           v-if="title"
+           v-text="title"></div>
       <small :class="b('meta')"
              v-if="meta"
              v-text="meta"></small>

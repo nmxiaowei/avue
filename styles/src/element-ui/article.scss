@@ -1,7 +1,8 @@
 .avue-article{
   &__title{
-    font-size: 28px;
-    line-height:28px;
+    margin-bottom: 15px;
+    font-size: 32px;
+    line-height:32px;
     font-weight: 400;
   }
   &__meta{
@@ -20,6 +21,7 @@
     padding: 10px;
   }
   &__body{
+    padding-top: 10px;
     background: #fff;
     font-family: Segoe UI,Lucida Grande,Helvetica,Arial,Microsoft YaHei,FreeSans,Arimo,Droid Sans,wenquanyi micro hei,Hiragino Sans GB,Hiragino Sans GB W3,FontAwesome,sans-serif;color: #333;
     font-size: 14px;

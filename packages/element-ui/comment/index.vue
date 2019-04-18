@@ -5,9 +5,9 @@
          :class="b('avatar')">
     <div :class="b('main')">
       <div :class="b('header')">
-        <p :class="b('author')"
-           v-if="author"
-           v-text="author"></p>
+        <div :class="b('author')"
+             v-if="author"
+             v-text="author"></div>
         <slot></slot>
       </div>
       <div :class="b('body')"
