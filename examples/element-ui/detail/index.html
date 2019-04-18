@@ -20,7 +20,14 @@
 
 <body>
   <div id="app">
-    <avue-detail :option="option" v-model="form"></avue-detail>
+    <avue-detail :option="option" v-model="form">
+      <template slot="text1" slot-scope="scope">
+        <el-tag>{{scope.row.text1}}</el-tag>
+      </template>
+      <template slot="test" slot-scope="scope">
+        <span>{{scope.row}}</span>
+      </template>
+    </avue-detail>
   </div>
 </body>
 
@@ -37,22 +44,30 @@
           text3: new Date().getTime(),
         },
         option: {
-          icon: 'el-icon-info',
-          label: '分组',
-          prop: 'group',
-          column: [{
-            label: '内容1',
-            prop: 'text1',
+          group: [{
+            icon: 'el-icon-info',
+            label: '分组',
+            prop: 'group',
+            column: [{
+              label: '内容1',
+              prop: 'text1',
+              formslot: true,
+            }, {
+              label: '选项卡2',
+              prop: 'text2',
+            }, {
+              label: '选项卡3',
+              prop: 'text3',
+              type: 'datetime',
+              format: 'yyyy-MM-dd hh:mm:ss',
+              valueFormat: 'timestamp'
+            }]
           }, {
-            label: '选项卡2',
-            prop: 'text2',
-          }, {
-            label: '选项卡3',
-            prop: 'text3',
-            type: 'datetime',
-            format: 'yyyy-MM-dd hh:mm:ss',
-            valueFormat: 'timestamp'
-          },]
+            icon: 'el-icon-info',
+            label: '自定义分组',
+            slot: true,
+            prop: 'test'
+          }]
         }
       }
     }
