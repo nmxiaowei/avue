@@ -1,29 +1,35 @@
 <template>
-  <el-select v-model="text"
-             :size="size"
-             :multiple="multiple"
-             :filterable="remote?true:filterable"
-             :remote="remote"
-             :readonly="readonly"
-             :remote-method="handleRemoteMethod"
-             :clearable="disabled?false:clearable"
-             :placeholder="placeholder?placeholder:`请选择${label}`"
-             @change="handleChange"
-             :multiple-limit="limit"
-             @click.native="handleClick"
-             :disabled="disabled">
-    <el-option v-for="(item,index) in remote?netDic:dic"
-               :key="index"
-               :disabled="item[disabledKey]"
-               :label="item[labelKey]"
-               :value="item[valueKey]">
-    </el-option>
-  </el-select>
-
+  <div>
+    <el-select v-model="text"
+               :size="size"
+               :multiple="multiple"
+               :filterable="remote?true:filterable"
+               :remote="remote"
+               :readonly="readonly"
+               :remote-method="handleRemoteMethod"
+               :collapse-tags="tags"
+               :clearable="disabled?false:clearable"
+               @click.native="handleClick"
+               :placeholder="placeholder"
+               :multiple-limit="limit"
+               :disabled="disabled">
+      <el-option v-for="(item,index) in netDic"
+                 :key="index"
+                 :disabled="item[disabledKey]"
+                 :label="getLabelText(item)"
+                 :value="item[valueKey]">
+        <slot :name="prop+'Type'"
+              :label="labelKey"
+              :value="valueKey"
+              :item="item"></slot>
+      </el-option>
+    </el-select>
+  </div>
 </template>
 
 <script>
 import create from "../../utils/create";
+import { sendDic } from "../../utils/dic";
 import crudCompoents from "../../mixins/crud-compoents.js";
 import crudFun from "../../mixins/crud-fun.js";
 export default create({
@@ -36,7 +42,12 @@ export default create({
   },
   props: {
     value: {},
+    tpyeformat: Function,
     remote: {
+      type: Boolean,
+      default: false
+    },
+    tags: {
       type: Boolean,
       default: false
     },
@@ -50,9 +61,15 @@ export default create({
     }
   },
   watch: {
+    dic: {
+      handler(val) {
+        this.netDic = val;
+      },
+      immediate: true
+    },
     text: {
-      handler() {
-        this.handleChange(this.text);
+      handler(val) {
+        this.handleChange(val);
       },
       immediate: true
     }
@@ -60,14 +77,17 @@ export default create({
   created() {},
   mounted() {},
   methods: {
-    getDicData(res) {
-      return (
-        (Array.isArray((res.data || {}).data) ? res.data.data : res.data) || []
-      );
+    getLabelText(item) {
+      if (typeof this.tpyeformat === "function") {
+        return this.tpyeformat(item, this.labelKey, this.valueKey);
+      }
+      return item[this.labelKey];
     },
     handleRemoteMethod(query) {
-      this.$http.get(this.dicUrl.replace("{{key}}", query)).then(res => {
-        this.netDic = this.getDicData(res);
+      sendDic({
+        url: this.dicUrl.replace("{{key}}", query)
+      }).then(res => {
+        this.netDic = res;
       });
     }
   }

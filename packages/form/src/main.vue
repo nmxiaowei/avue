@@ -80,6 +80,7 @@
                              :voidIconClass="column.voidIconClass"
                              :showText="column.showText"
                              :texts="column.texts"
+                             :tpyeformat="column.tpyeformat"
                              :filterable="column.filterable"
                              :separator="column.separator"
                              :border="column.border"
@@ -100,6 +101,7 @@
                              :dataType="column.dataType"
                              :endPlaceholder="column.endPlaceholder"
                              :type="column.type"
+                             :typeformat="column.typeformat"
                              :minRows="column.minRows"
                              :maxRows="column.maxRows"
                              :format="column.format"
@@ -110,7 +112,16 @@
                              :disabled="vaildDisabled(column)"
                              :upload-before="uploadBefore"
                              :upload-after="uploadAfter"
-                             @change="column.cascader?handleChange(index):''"></component>
+                             @change="column.cascader?handleChange(index):''">
+                    <template :slot="column.prop+'Type'"
+                              slot-scope="{item,label,value}"
+                              v-if="column.typesolt">
+                      <slot :name="column.prop+'Type'"
+                            :item="item"
+                            :value="value"
+                            :label="label"></slot>
+                    </template>
+                  </component>
                 </el-tooltip>
               </el-form-item>
             </el-col>

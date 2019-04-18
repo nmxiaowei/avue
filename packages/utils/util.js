@@ -300,13 +300,15 @@ export const getComponent = ({ type, component }) => {
         return 'crudInput';
     }
 };
-export const getPasswordChar = (len, char) => {
-    let result = '';
+export const getPasswordChar = (result = '', char) => {
+    let len = result.toString().length
+    result = '';
     for (let i = 0; i < len; i++) {
         result = result + char;
     }
     return result;
-}
+};
+
 export const vaildData = (val, dafult) => {
     if (typeof val === 'boolean') {
         return val;
