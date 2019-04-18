@@ -52,6 +52,7 @@
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
               :stripe="tableOption.stripe"
+              :selectable="tableOption.selectable"
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
@@ -71,6 +72,8 @@
               :border="tableOption.border"
               v-loading="tableLoading"
               @selection-change="selectionChange"
+              @select="select"
+              @select-all="selectAll"
               @sort-change="sortChange">
       <!-- 暂无数据提醒 -->
       <template slot="empty">
@@ -570,6 +573,14 @@ export default create({
     selectionChange(val) {
       this.tableSelect = val;
       this.$emit("selection-change", this.tableSelect);
+    },
+    // 单个选择回调
+    select(selection, row) {
+      this.$emit("select", selection, row);
+    },
+    // 点击勾选全选 Checkbox
+    selectAll(selection) {
+      this.$emit("select-all", selection);
     },
     // 排序回调
     sortChange(val) {
