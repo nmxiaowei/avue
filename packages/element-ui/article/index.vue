@@ -29,6 +29,12 @@ const propsDefault = {
 export default create({
   name: "article",
   props: {
+    data: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
     props: {
       type: Object,
       default: () => {
@@ -56,16 +62,16 @@ export default create({
       return this.props.body || propsDefault.body;
     },
     title() {
-      return this.option[this.titleKey];
+      return this.data[this.titleKey];
     },
     meta() {
-      return this.option[this.metaKey];
+      return this.data[this.metaKey];
     },
     lead() {
-      return this.option[this.leadKey];
+      return this.data[this.leadKey];
     },
     body() {
-      return this.option[this.bodyKey];
+      return this.data[this.bodyKey];
     }
   },
   mounted() {}
