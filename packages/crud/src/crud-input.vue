@@ -36,13 +36,14 @@
     <el-dialog :visible.sync="box"
                append-to-body
                :title="`请选择${label}`"
-               width="50%">
-      <el-input style="margin-bottom:15px;"
+               width="30%">
+      <el-input size="small"
+                style="margin-bottom:15px;"
                 placeholder="输入关键字进行过滤"
                 v-model="filterText"
                 v-if="filter">
       </el-input>
-      <div class="avue-dialog">
+      <el-scrollbar style="height:380px;overflow-x:hidden">
         <el-tree :data="dic"
                  :node-key="valueKey"
                  :show-checkbox="multiple"
@@ -54,7 +55,7 @@
                  :default-checked-keys="multiple?text:[]"
                  :default-expand-all="defaultExpandAll"
                  @node-click="handleNodeClick"></el-tree>
-      </div>
+      </el-scrollbar>
 
     </el-dialog>
   </div>
@@ -207,6 +208,9 @@ export default create({
           } else {
             this.labelText = "";
           }
+          setTimeout(() => {
+            this.$parent.$parent.clearValidate();
+          }, 0);
         }, 500);
       }
     },
