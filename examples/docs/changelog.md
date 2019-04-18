@@ -1,4 +1,14 @@
 ## 更新日志
+### 1.6.2
+#### 2019-4-18
+
+- 新增crud组件selectable属性用于判断表格是否可选择[在线例子](/#/component/crud-selection)
+- 修复form-detail组件不加载字典问题[#IUY2K](https://gitee.com/smallweigit/avue/issues/IUY2K)
+- 优化了form中的tree组件样式和rules规则[在线例子](/#/component/form-tree)
+- 修复select远程搜索初始化url错误[在线例子](/#/component/form-select-remote)
+- 修复crud组件date,datetime,time时返回为空时转换问题
+- 新增crud组件typeslot自定义组件参数（目前只有type为select）[在线例子](/#/component/form-select-slot)
+
 ### 1.6.1
 #### 2019-3-31
 

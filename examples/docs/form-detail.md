@@ -20,17 +20,17 @@ export default {
             icon: 'el-icon-view',
             column: [{
                   label: '取货单号',
-                  prop: 'qhdh'
+                  prop: 'qhdh',
+                   formsolt:true,
               }, {
                   label: '地区',
                   prop: 'zt',
-                 type:'dic',
+                 type:'select',
                   props: {
                     label: 'name',
                     value: 'code'
                   },
-                  dicUrl:'https://cli2.avue.top/api/area/{{key}}',
-                  dicData:'getProvince'
+                  dicUrl:'https://cli2.avue.top/api/area/getProvince',
               }, {
                   label: '销售单号',
                   prop: 'xsdh'
@@ -59,6 +59,12 @@ export default {
                   label: '备注',
                   prop: 'bz'
               }]
+          },{
+            label: '自定义分组',
+            prop: 'test',
+            solt:true,
+            icon: 'el-icon-view',
+            column: []
           }]
         }
       };
@@ -77,7 +83,14 @@ export default {
 
 :::demo 支持`本地字典`和`网络字典`以及`solt`卡槽自定义
 ```html
-<avue-form-detail  v-model="form" :option="option" ></avue-form-detail>
+<avue-form-detail  v-model="form" :option="option" >
+    <template slot="qhdhForm" slot-scope="scope">
+        <el-tag>{{scope.row.qhdh}}</el-tag>
+    </template>
+     <template slot="test" slot-scope="scope">
+        <span>{{scope.row}}</span>
+    </template>
+</avue-form-detail>
 
 <script>
 export default {
@@ -101,7 +114,8 @@ export default {
             icon: 'el-icon-view',
             column: [{
                   label: '取货单号',
-                  prop: 'qhdh'
+                  prop: 'qhdh',
+                  formsolt:true,
               }, {
                   label: '地区',
                   prop: 'zt',
@@ -109,9 +123,8 @@ export default {
                     label: 'name',
                     value: 'code'
                   },
-                  type:'dic',
-                  dicUrl:'https://cli2.avue.top/api/area/getArea/{{key}}',
-                  dicData:'getProvince'
+                  type:'select',
+                  dicUrl:'https://cli2.avue.top/api/area/getProvince',
               }, {
                   label: '销售单号',
                   prop: 'xsdh'
@@ -140,6 +153,12 @@ export default {
                   label: '备注',
                   prop: 'bz'
               }]
+          },{
+            label: '自定义分组',
+            prop: 'test',
+            solt:true,
+            icon: 'el-icon-view',
+            column: []
           }]
         }
       };
@@ -148,3 +167,17 @@ export default {
 </script>
 ```
 :::
+
+
+
+## Variables
+
+|参数|说明|类型|可选值|默认值|
+|----------------------|--------------------------------|--------|------------|------|
+|solt|开启某一分组的自定义组件|Boolean|true / false|false|
+|formsolt|开启某一列的自定义组件|Boolean|true / false|false|
+
+|name|说明|
+|----|---|
+|分组的名称|列自定义列的内容，参数为{row}|
+|分组列的名称+Form(nameForm)|表单自定义列的内容，参数为{row}|

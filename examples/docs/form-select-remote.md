@@ -3,7 +3,9 @@ const baseUrl = 'https://cli2.avue.top/api/area'
 export default {
   data(){
     return {
-       form:{},
+       form:{
+        province: '110000',
+       },
        option: {
         column: [
           {
@@ -47,7 +49,9 @@ const baseUrl = 'https://cli2.avue.top/api/area'
 export default {
   data(){
     return {
-       form:{},
+       form:{
+        province: '110000',
+       },
        option: {
         column: [
           {

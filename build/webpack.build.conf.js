@@ -1,7 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
+const version = require('../package.json').version;
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const config = require('./config');
+const banner =
+  ' Avue.js v' +
+  version +
+  '\n' +
+  ' (c) 2017-' +
+  new Date().getFullYear() +
+  ' Smallwei\n' +
+  ' Released under the MIT License.\n';
 
 module.exports = {
   entry: {
@@ -78,15 +87,13 @@ module.exports = {
   },
   plugins: [
     new ProgressBarPlugin(),
+    new webpack.BannerPlugin(banner),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
-      },
-      output: {
-        comments: false
       },
       sourceMap: false
     }),

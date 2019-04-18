@@ -13,6 +13,9 @@ export default {
         ],
         option4:{
           selection: true,
+           selectable:(row,index)=>{
+            return index===1;
+          },
           page:false,
           align:'center',
           menuAlign:'center',
@@ -49,7 +52,7 @@ export default {
 
 ### 多选
 
-:::demo  设`selection`属性为`true`即可；勾选的同时会回调`selectionChange`方法返回当前选中的数据,`setCurrent`方法设置选中的行
+:::demo  设`selection`属性为`true`即可；勾选的同时会回调`selectionChange`方法返回当前选中的数据,`setCurrent`方法设置选中的行,`selectable`函数决定该行是否可以勾选
 ```html
 
 <avue-crud ref="crud" :data="data" :option="option4" @selection-change="selectionChange">
@@ -79,6 +82,9 @@ export default {
         ],
         option4:{
           selection: true,
+          selectable:(row,index)=>{
+            return index===1;
+          },
           page:false,
           align:'center',
           menuAlign:'center',

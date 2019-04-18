@@ -7,7 +7,7 @@
         <p class="footer__title">项目简介</p>
         <p class="footer__text">
           Avue是基于vue和element-ui的快速开发框架 它的核心是数据驱动UI的思想，
-          让我们从繁琐的crud开发中解脱出来，同时不知局限于crud，它还有我们经常用的一些组件例如，
+          让我们从繁琐的crud开发中解脱出来，同时不只是限于crud，它还有我们经常用的一些组件例如，
           表单，数据展示卡，人物展示卡等，更多的组件还在开发
         </p>
       </el-col>

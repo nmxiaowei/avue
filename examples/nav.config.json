@@ -196,8 +196,8 @@
             "title": "远程搜索"
           },
           {
-            "path": "/form-detail",
-            "title": "详情展示"
+            "path": "/form-select-slot",
+            "title": "选择框自定义"
           },
           {
             "path": "/form-tree",
@@ -216,6 +216,10 @@
           {
             "path": "/date-group",
             "title": "日期选择器"
+          },
+          {
+            "path": "/form-detail",
+            "title": "详情展示"
           },
           {
             "path": "/table-tree",
