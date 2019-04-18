@@ -9,9 +9,9 @@
         <h1 :class="b('title')">{{item.label}}</h1>
       </div>
       <slot :name="item.prop"
-            :form="form"
+            :row="form"
             :column="item"
-            v-if="item.slot"></slot>
+            v-if="item.solt"></slot>
       <el-col :md="column.span||8"
               :xs="24"
               v-else
@@ -22,8 +22,8 @@
                 :style="{width:`${item.labelWidth}px`}">{{column.label}}:</span>
           <slot :name="column.prop+'Form'"
                 :column="column"
-                :form="form"
-                v-if="column.slot"></slot>
+                :row="form"
+                v-if="column.formsolt"></slot>
           <span v-else
                 :class="b('content')">{{detail(form,column)}}</span>
         </div>
@@ -33,77 +33,61 @@
 </template>
 
 <script>
-
-import create from '../../utils/create';
-import crud from '../../mixins/crud.js';
-import column from '../../mixins/column.js';
-import { validatenull } from '../../utils/validate.js';
+import create from "../../utils/create";
+import crud from "../../mixins/crud.js";
+import column from "../../mixins/column.js";
+import { validatenull } from "../../utils/validate.js";
 export default create({
-  name: 'form-detail',
+  name: "form-detail",
   mixins: [crud(), column()],
   props: {
     option: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     value: {}
   },
   computed: {
-    labelPostion: function () {
+    propOption() {
+      let result = {
+        column: []
+      };
+      this.columnOption.forEach(ele => {
+        result.column = result.column.concat(ele.column);
+      });
+      return result;
+    },
+    labelPostion: function() {
       if (this.option.labelPostion) {
         return this.option.labelPostion;
       }
-      return 'left';
+      return "left";
     },
-    columnOption () {
+    columnOption() {
       return this.option.option || [];
     }
   },
   watch: {
     value: {
-      handler (n) {
+      handler(n) {
         this.form = n;
       },
       deep: true
     }
   },
-  data () {
+  data() {
     return {
       tableOption: {},
       form: {}
     };
   },
-  created () {
+  created() {
+    this.handleLoadDic(this.propOption);
     this.formInit();
   },
   methods: {
-    dicInit () {
-      let locaDic = this.tableOption.dicData || {};
-      this.columnOption.forEach(child => {
-        child.column.forEach(ele => {
-          if (this.vaildData(ele.dicFlag, true)) {
-            if (!validatenull(ele.dicUrl)) {
-              this.dicCascaderList.push({
-                dicUrl: ele.dicUrl,
-                dicData: ele.dicData
-              });
-            } else if (!validatenull(this.tableOption.dicUrl) && typeof ele.dicData === 'string') {
-              this.dicCascaderList.push({
-                dicUrl: this.tableOption.dicUrl,
-                dicData: ele.dicData
-              });
-            }
-          }
-        })
-      });
-      this.GetDic().then(data => {
-        this.DIC = Object.assign({}, locaDic, data);
-      });
-    },
-    rulesInit () {
-
-    },
-    formInit () {
+    rulesInit() {},
+    formInit() {
       this.form = this.value;
     }
   }

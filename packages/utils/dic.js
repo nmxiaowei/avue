@@ -55,7 +55,6 @@ export const loadDic = option => {
   return new Promise((resolve, reject) => {
     // 本地字典赋值
     locationdic = option.dicData || {};
-
     const params = createdDic(option);
     locationdic = Object.assign(locationdic, params.locationdic);
     ajaxdic = params.ajaxdic;

@@ -156,6 +156,7 @@
                          type="selection"
                          width="50"
                          fixed="left"
+                         :selectable="tableOption.selectable"
                          align="center"></el-table-column>
         <!-- 序号 -->
         <el-table-column v-if="tableOption.index"

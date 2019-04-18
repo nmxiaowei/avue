@@ -95,12 +95,12 @@ export default function () {
           }
         })
       },
-      handleLoadDic() {
+      handleLoadDic(option) {
         return new Promise((resolve) => {
           const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
           // 初始化字典
           if (dicFlag) {
-            loadDic(this.tableOption).then((res = {}) => {
+            loadDic(option || this.tableOption).then((res = {}) => {
               Object.keys(res).forEach(ele => {
                 this.$set(this.DIC, ele, res[ele])
               });
