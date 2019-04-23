@@ -1,6 +1,6 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
-import { getObjValue } from 'utils/util'
+import { getObjValue, detailDic } from 'utils/util'
 
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
@@ -94,6 +94,8 @@ function createdDic(option) {
         url: dicUrl || url,
         name: dicData || prop,
         method: ele.dicMethod,
+        props: ele.props,
+        dataType: ele.dataType,
         resKey: (ele.props || {}).res || (props || {}).res,
         query: ele.dicQuery,
       });
@@ -116,6 +118,7 @@ function handeDic(list) {
           sendDic(Object.assign(ele, {
             url: `${ele.url.replace('{{key}}', '')}`
           })).then(res => {
+            res = detailDic(res, ele.props, ele.dataType);
             resolve(res);
           });
         })

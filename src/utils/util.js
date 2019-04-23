@@ -93,12 +93,29 @@ export const setPx = (val, defval = '') => {
   }
   return val;
 };
-
+/**
+ * 转换数据类型
+ */
+export const detailDic = (list, props = {}, type) => {
+  let valueKey = props.value || 'value'
+  let childrenKey = props.children || 'children'
+  list.forEach(ele => {
+    if (type === 'number') {
+      ele[valueKey] = Number(ele[valueKey])
+    } else if (type === 'string') {
+      ele[valueKey] = ele[valueKey] + ''
+    }
+    if (ele[childrenKey]) {
+      detailDic(ele[childrenKey], prop, type)
+    }
+  })
+  return list;
+}
 /**
  * 根据字典的value显示label
  */
 let result = '';
-export const findByValue = (dic, value, props, first, isTree, equal) => {
+export const findByValue = (dic, value, props, first, isTree, dicType) => {
   props = props || {};
   const labelKey = props.label || 'label';
   const valueKey = props.value || 'value';
@@ -108,11 +125,11 @@ export const findByValue = (dic, value, props, first, isTree, equal) => {
   // 正常字典
   if (['string', 'number', 'boolean'].includes(typeof value)) {
     for (let i = 0; i < dic.length; i++) {
-      if (equal ? dic[i][valueKey] == value : dic[i][valueKey] === value) {
+      if (dic[i][valueKey] === value) {
         result = dic[i][labelKey];
         break;
       } else {
-        findByValue(dic[i][childrenKey], value, props, false, isTree, equal);
+        findByValue(dic[i][childrenKey], value, props, false, isTree);
       }
     }
   } else if (value instanceof Array) {
@@ -120,7 +137,7 @@ export const findByValue = (dic, value, props, first, isTree, equal) => {
     let count = 0;
     result = [];
     while (count < value.length) {
-      index = findArray(dic, value[count], valueKey, equal);
+      index = findArray(dic, value[count], valueKey);
       if (index !== -1) result.push(dic[index][labelKey]);
       else result.push(value[count]);
       if (isTree) dic = dic[index][childrenKey];
@@ -159,10 +176,10 @@ export const filterForm = (form) => {
  * 根据字典的value查找对应的index
  */
 
-export const findArray = (dic, value, valueKey, equal) => {
+export const findArray = (dic, value, valueKey) => {
   valueKey = valueKey || 'value';
   for (let i = 0; i < dic.length; i++) {
-    if (equal ? dic[i][valueKey] == value : dic[i][valueKey] === value) {
+    if (dic[i][valueKey] === value) {
       return i;
     }
   }

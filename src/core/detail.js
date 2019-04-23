@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop || column.value];
   let type = column.type;
-  let equal = column.equal;
   if (validatenull(result)) result = ''
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {
@@ -26,7 +25,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
 
   // 字典处理
   if (!validatenull(dic)) {
-    result = findByValue(dic, result, column.props || option.props, true, ['cascader'].includes(column.type), equal);
+    result = findByValue(dic, result, column.props || option.props, true, ['cascader'].includes(column.type));
   }
   return result;
 };
