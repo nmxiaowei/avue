@@ -98,7 +98,7 @@ export const setPx = (val, defval = '') => {
  * 根据字典的value显示label
  */
 let result = '';
-export const findByValue = (dic, value, props, first, isTree) => {
+export const findByValue = (dic, value, props, first, isTree, equal) => {
   props = props || {};
   const labelKey = props.label || 'label';
   const valueKey = props.value || 'value';
@@ -108,11 +108,11 @@ export const findByValue = (dic, value, props, first, isTree) => {
   // 正常字典
   if (['string', 'number', 'boolean'].includes(typeof value)) {
     for (let i = 0; i < dic.length; i++) {
-      if (dic[i][valueKey] === value) {
+      if (equal ? dic[i][valueKey] == value : dic[i][valueKey] === value) {
         result = dic[i][labelKey];
         break;
       } else {
-        findByValue(dic[i][childrenKey], value, props, false, isTree);
+        findByValue(dic[i][childrenKey], value, props, false, isTree, equal);
       }
     }
   } else if (value instanceof Array) {
@@ -120,7 +120,7 @@ export const findByValue = (dic, value, props, first, isTree) => {
     let count = 0;
     result = [];
     while (count < value.length) {
-      index = findArray(dic, value[count], valueKey);
+      index = findArray(dic, value[count], valueKey, equal);
       if (index !== -1) result.push(dic[index][labelKey]);
       else result.push(value[count]);
       if (isTree) dic = dic[index][childrenKey];
@@ -159,10 +159,10 @@ export const filterForm = (form) => {
  * 根据字典的value查找对应的index
  */
 
-export const findArray = (dic, value, valueKey) => {
+export const findArray = (dic, value, valueKey, equal) => {
   valueKey = valueKey || 'value';
   for (let i = 0; i < dic.length; i++) {
-    if (dic[i][valueKey] === value) {
+    if (equal ? dic[i][valueKey] == value : dic[i][valueKey] === value) {
       return i;
     }
   }
