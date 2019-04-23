@@ -4,7 +4,7 @@ var dicOption = {
   border: [{ label: '无边框', value: '' }, { label: '内置图片', value: 'img' }, { label: '内置边框', value: 'border' }],
   textAlign: [{ label: '居中', value: 'center' }, { label: '左对齐', value: 'left' }, { label: '右对齐', value: 'right' }],
   dataType: [{ label: '静态数据', value: 0 }, { label: '动态数据', value: 1 }],
-  dataList: ['map', 'wordCloud', 'pie', 'pictorialBar', 'iframe', 'swiper', 'flop', 'bar', 'line', 'progress', 'table', 'gauge'],
+  dataList: ['video', 'wordCloud', 'pie', 'pictorialBar', 'iframe', 'swiper', 'flop', 'bar', 'line', 'progress', 'table', 'gauge'],
   backgroundImage: [
     '../../img/bg.png',
     'https://sugar.bce.baidu.com/static/img-templet/background-1.png'
@@ -22,20 +22,21 @@ var dicOption = {
   ],
   colorList: ['bar', 'pie', 'line', 'gauge'],
   mapList: [{
-    label: '潍坊',
+    label: '中国',
     value: 0,
+    list: map_china
+  }, {
+    label: '潍坊',
+    value: 1,
     list: map_weifang
   }, {
     label: '香港',
-    value: 1,
+    value: 2,
     list: map_hk
   }],
   mapType: [{
     label: '原生',
     value: 0
-  }, {
-    label: '自绘',
-    value: 1
   }],
   target: [{ label: '本窗口', value: '_self' }, { label: '新窗口', value: '_blank', }],
   swiperType: [{ label: '普通', value: '' }, { label: '立体', value: 'card' }],

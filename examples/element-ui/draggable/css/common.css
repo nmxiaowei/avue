@@ -38,3 +38,8 @@ img {
 .img{
   margin-right: 5px;
 }
+.block{
+  margin: 0 auto;
+  width:90%;
+  display: block;
+}

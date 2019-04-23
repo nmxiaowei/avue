@@ -9,6 +9,7 @@ var baseList = [{
       "icon": 'icon-bar',
       "top": 276,
       "left": 536,
+      "dataType": 0,
       "data": {
         "categories": ["北京", "上海", "杭州", "深圳", "杭州", "深圳", "广州", "连云港"],
         "series": [{
@@ -236,6 +237,7 @@ var baseList = [{
           "banner": true,
           "bannerTime": 3000,
           "fontSize": 39,
+          "zoom": 1,
           "empAreaColor": "rgba(35, 183, 229, 0.42)",
           "empColor": "#fff",
           "color": "rgba(13, 255, 255, 1)",
@@ -406,6 +408,26 @@ var baseList = [{
         "prop": "iframe"
       },
     }
+  }, {
+    label: 'video',
+    option: {
+      "title": "video",
+      "name": "video",
+      "icon": 'icon-video',
+      "top": 0,
+      "left": 0,
+      "dataType": 0,
+      "data": {
+        value: 'http://www.w3school.com.cn/i/movie.ogg'
+      },
+      "component": {
+        "width": 670,
+        "height": 370,
+        "option": {},
+        "name": "video",
+        "prop": "video"
+      },
+    }
   }]
 }, {
   "label": '指标',
@@ -551,6 +573,30 @@ var baseList = [{
         "prop": "gauge"
       },
     },
+  }, {
+    label: '字符云',
+    option: {
+      "title": "字符云",
+      "name": "字符云",
+      "icon": "icon-wordCloud",
+      "top": 725,
+      "left": 3780,
+      "dataType": 1,
+      "url": "https://wechat.avue.top/yapiwy/wordCloud",
+      "time": 5000,
+      "component": {
+        "name": "wordCloud",
+        "prop": "wordCloud",
+        "width": 955,
+        "height": 565,
+        option: {
+          minFontSize: 30,
+          maxFontSize: 80,
+          split: 30,
+          rotate: true,
+        }
+      },
+    }
   }]
 }, {
   "label": '表格',
