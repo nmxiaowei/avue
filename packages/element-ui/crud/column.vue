@@ -55,6 +55,7 @@
                            :format="column.format"
                            :parent="column.parent"
                            :change="column.change"
+                           :remote="column.remote"
                            :focus="column.focus"
                            :blur="column.blur"
                            :click="column.click"
@@ -121,7 +122,7 @@
 import dynamicColumn from "./dynamic-column";
 import { sendDic } from "core/dic";
 import { getComponent, getPlaceholder } from "core/dataformat";
-import { getSearchType, getCellType, getType } from "core/dataformat";
+import { getCellType, getType } from "core/dataformat";
 import { detail } from "core/detail";
 export default {
   name: "column",
@@ -149,7 +150,6 @@ export default {
   },
   inject: ["crud"],
   methods: {
-    getSearchType,
     getCellType,
     getType,
     getComponent,

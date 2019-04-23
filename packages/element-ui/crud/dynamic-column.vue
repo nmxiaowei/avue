@@ -52,7 +52,7 @@
             </span>
             <span :class="{'ms-tree-title':column.prop===crud.treeProp}">
               <template v-if="cellEditFlag(scope.row,column)">
-                <component :is="getSearchType(column.type)"
+                <component :is="getCellType(column.type)"
                            size="mini"
                            v-model="scope.row[column.prop]"
                            :type="getType(column)"
@@ -60,11 +60,20 @@
                            :props="column.props || crud.tableOption.props"
                            :format="column.format"
                            :parent="column.parent"
+                           :change="column.change"
+                           :remote="column.remote"
+                           :focus="column.focus"
+                           :blur="column.blur"
+                           :click="column.click"
+                           :maxlength="column.maxlength"
+                           :prefix-icon="column.prefixIcon"
+                           :suffix-icon="column.suffixIcon"
                            :defaultExpandAll="column.defaultExpandAll"
                            :filterable="column.searchFilterable"
                            :filter-method="column.searchFilterMethod"
                            :value-format="column.valueFormat"
                            :multiple="column.multiple"
+                           :readonly="column.readonly"
                            :clearable="vaildData(column.clearable,false)"
                            :placeholder="column.searchPlaceholder || column.label"
                            @change="column.cascader?handleChange(index,scope.row):''"
@@ -135,7 +144,6 @@ export default {
   },
   created() {
     const list = [
-      "getSearchType",
       "getCellType",
       "getType",
       "getComponent",
