@@ -1,5 +1,5 @@
 .avue-draggable{
-  $active__color:rgba(115, 170, 229,.2);
+  $active__color:rgba(115, 170, 229,.5);
   padding: 10px;
   position: absolute;
   cursor: move;
@@ -18,7 +18,7 @@
   }
   &--active{
     cursor: move;
-    border:1px solid #09f;
+    border:1px dashed #09f;
     background-color: $active__color;
   }
   &--move{
@@ -46,11 +46,13 @@
       transform: translateY(-100%);
     }
     &--label{
+      top:-5px;
+      left: -8px;
       position: absolute;
       padding: 5px;
       transform: translate(-100%,-100%);
       color: #09f;
-      font-size: 22px;
+      font-size: 18px;
       white-space: nowrap;
       cursor: move;
     }
@@ -66,35 +68,64 @@
     cursor: pointer;
   }
   &__range{
-    $calcheight:-10px;
+    $calcheight:-6px;
     position: absolute;
-    width:15px;
-    height: 15px;
+    width:10px;
+    height: 10px;
+    border-radius: 100%;
     z-index:9999;
     background-color: #09f;
-    &--right{
+    &--left,&--right{
       &:hover{
         cursor:ew-resize 
       }
       top:50%;
-      right: $calcheight;
       transform: translateY(-50%);
     }
-    &--bottom{
+    &--left{
+      left: $calcheight;
+    }
+    &--right{
+      right: $calcheight;
+    }
+    &--top,&--bottom{
       &:hover{
         cursor: ns-resize
       }
       left: 50%;
-      bottom: $calcheight;
       transform: translateX(-50%);
-      
     }
-    &--bottom-right{
+    &--top{
+      top: $calcheight;
+    }
+    &--bottom{
+      bottom: $calcheight;
+    }
+    &--bottom-right,&--top-left{
       &:hover{
         cursor: nwse-resize
       }
+    }
+    &--bottom-left,&--top-right{
+      &:hover{
+        cursor: nesw-resize
+      }
+    }
+    &--top-right{
+      top: $calcheight;
+      right:$calcheight;
+    }
+    &--top-left{
+      top: $calcheight;
+      left:$calcheight;
+    }
+    &--bottom-right{
       bottom: $calcheight;
       right:$calcheight;
+    }
+    &--bottom-left{
+      bottom: $calcheight;
+      left:$calcheight;
     }
   }
 }

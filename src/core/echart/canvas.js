@@ -14,6 +14,10 @@ export default (function () {
       url: {
         type: String,
       },
+      disabled: {
+        type: Boolean,
+        default: true
+      },
       dataType: {
         type: Number,
         default: 0,
@@ -49,18 +53,6 @@ export default (function () {
       };
     },
     watch: {
-      styleChartName() {
-        this.updateData();
-      },
-      time() {
-        this.updateData();
-      },
-      url() {
-        this.updateData();
-      },
-      dataType() {
-        this.updateData();
-      },
       data: {
         handler() {
           this.updateData();
@@ -152,7 +144,7 @@ export default (function () {
         this.$nextTick(() => {
           callback();
           clearInterval(this.checkChart);
-          if (this.time !== 0) {
+          if (this.time !== 0 && this.disabled) {
             this.checkChart = setInterval(() => {
               callback();
             }, this.time);

@@ -9,18 +9,23 @@
     <div :class="b('wrapper')"
          ref="wrapper">
       <template v-if="active || overActive || moveActive">
-        <div :class="b('line',['left'])"></div>
-        <div :class="b('line',['top'])"></div>
-        <div :class="b('line',['label'])">{{baseLeft}},{{baseTop}}</div>
+        <div :style="styleLineName"
+             :class="b('line',['left'])"></div>
+        <div :style="styleLineName"
+             :class="b('line',['top'])"></div>
+        <div :class="b('line',['label'])"
+             :style="styleLabelName">{{baseLeft}},{{baseTop}}</div>
       </template>
       <div :class="b('range',[item.classname])"
            v-for="(item,index) in rangeList"
            :key="index"
+           :style="[styleRangeName,getRangeStyle(item.classname)]"
            v-if="active"
            @mousedown.stop="goLink(item,'mousedown',$event)"
            @mousemove.stop="goLink(item,'mousemove',$event)"
            @mouseup="goLink(item,'mouseup',$event)"></div>
       <div :class="b('menu')"
+           :style="styleMenuName"
            v-show="active || overActive">
         <slot name="menu"
               :zIndex="zIndex"
@@ -42,6 +47,10 @@ import create from "core/create";
 export default create({
   name: "draggable",
   props: {
+    scale: {
+      type: Number,
+      default: 1
+    },
     resize: {
       type: Boolean,
       default: true
@@ -94,7 +103,19 @@ export default create({
       active: false,
       rangeList: [
         {
+          classname: "left",
+          mousedown: "rangeMouseDown",
+          mousemove: "rangeMouseXMove",
+          mouseup: "rangeMouseUp"
+        },
+        {
           classname: "right",
+          mousedown: "rangeMouseDown",
+          mousemove: "rangeMouseXMove",
+          mouseup: "rangeMouseUp"
+        },
+        {
+          classname: "top",
           mousedown: "rangeMouseDown",
           mousemove: "rangeMouseXMove",
           mouseup: "rangeMouseUp"
@@ -103,6 +124,24 @@ export default create({
           classname: "bottom",
           mousedown: "rangeMouseDown",
           mousemove: "rangeMouseYMove",
+          mouseup: "rangeMouseUp"
+        },
+        {
+          classname: "top-left",
+          mousedown: "rangeMouseDown",
+          mousemove: "rangeMouseMove",
+          mouseup: "rangeMouseUp"
+        },
+        {
+          classname: "top-right",
+          mousedown: "rangeMouseDown",
+          mousemove: "rangeMouseMove",
+          mouseup: "rangeMouseUp"
+        },
+        {
+          classname: "bottom-left",
+          mousedown: "rangeMouseDown",
+          mousemove: "rangeMouseMove",
           mouseup: "rangeMouseUp"
         },
         {
@@ -115,13 +154,39 @@ export default create({
     };
   },
   computed: {
+    styleMenuName() {
+      return {
+        transformOrigin: "0 0",
+        transform: `scale(${this.scale})`
+      };
+    },
+    styleLineName() {
+      return {
+        borderWidth: this.setPx(this.scale)
+      };
+    },
+    styleRangeName() {
+      const calc = this.scale * 10;
+      return {
+        width: this.setPx(calc),
+        height: this.setPx(calc)
+      };
+    },
+    styleLabelName() {
+      return {
+        fontSize: this.setPx(this.scale * 18)
+      };
+    },
     styleName() {
       return Object.assign(
         (() => {
           if (this.active) {
-            return {
-              zIndex: 9999
-            };
+            return Object.assign(
+              {
+                zIndex: 9999
+              },
+              this.styleLineName
+            );
           }
           return { zIndex: this.zIndex };
         })(),
@@ -158,11 +223,23 @@ export default create({
   },
 
   methods: {
+    getRangeStyle(postion) {
+      const calc = (this.scale * 10) / 2;
+      let result = {};
+      let list = postion.split("-");
+      list.forEach(ele => {
+        result[ele] = this.setPx(-calc);
+      });
+      return result;
+    },
+    setOverActive(val) {
+      this.overActive = val;
+    },
     setActive(val) {
       this.active = val;
     },
     goLink(item, type, e) {
-      this[item[type]](e);
+      this[item[type]](e, item.classname);
     },
     docMouseUp() {
       this.$emit("focus");
@@ -188,26 +265,76 @@ export default create({
       this.ry = e.clientY;
       this.docMouseUp();
     },
-    rangeMouseXMove(e) {
-      this.rangeMove(e, true, false);
+    rangeMouseXMove(e, postion) {
+      this.rangeMove(e, postion);
     },
-    rangeMouseYMove(e) {
-      this.rangeMove(e, false, true);
+    rangeMouseYMove(e, postion) {
+      this.rangeMove(e, postion);
     },
-    rangeMouseMove(e) {
-      this.rangeMove(e, true, true);
+    rangeMouseMove(e, postion) {
+      this.rangeMove(e, postion);
     },
-    rangeMove(e, x, y) {
+    rangeMove(e, postion) {
+      //移动的方向
+      let x, y;
+      //移动的位置
+      let xp, yp;
+      //移动的正负
+      let xc, yc;
       if (this.rangeActive) {
         window.document.onmousemove = e => {
-          this.active = false;
           this.moveActive = true;
           const startX = e.clientX;
           const startY = e.clientY;
-          if (x)
-            this.baseWidth = this.baseWidth + (startX - this.rx) * this.step;
-          if (y)
-            this.baseHeight = this.baseHeight + (startY - this.ry) * this.step;
+          if (postion === "right") {
+            x = true;
+            y = false;
+          } else if (postion === "left") {
+            x = true;
+            xp = true;
+            xc = true;
+            y = false;
+          } else if (postion === "top") {
+            x = false;
+            y = true;
+            yp = true;
+            yc = true;
+          } else if (postion === "bottom") {
+            x = false;
+            y = true;
+          } else if (postion === "bottom-right") {
+            x = true;
+            y = true;
+          } else if (postion === "bottom-left") {
+            x = true;
+            y = true;
+            xp = true;
+            xc = true;
+          } else if (postion === "top-right") {
+            x = true;
+            y = true;
+            yp = true;
+            yc = true;
+          } else if (postion === "top-left") {
+            x = true;
+            y = true;
+            xp = true;
+            xc = true;
+            yp = true;
+            yc = true;
+          }
+          if (x) {
+            let calc = (startX - this.rx) * this.step;
+            if (xc) calc = -calc;
+            if (xp) this.baseLeft = parseInt(this.baseLeft - calc);
+            this.baseWidth = this.baseWidth + calc;
+          }
+          if (y) {
+            let calc = (startY - this.ry) * this.step;
+            if (yc) calc = -calc;
+            if (yp) this.baseTop = parseInt(this.baseTop - calc);
+            this.baseHeight = this.baseHeight + calc;
+          }
           this.rx = startX;
           this.ry = startY;
         };

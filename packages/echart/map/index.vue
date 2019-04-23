@@ -56,6 +56,12 @@ export default create({
         });
       }
     },
+    width() {
+      this.updateData();
+    },
+    height() {
+      this.updateData();
+    },
     scale: {
       handler(val) {
         this.baseScale = val;
@@ -64,6 +70,9 @@ export default create({
     }
   },
   computed: {
+    zoom() {
+      return this.option.zoom || 1;
+    },
     borderWidth() {
       return this.option.borderWidth || 3;
     },
@@ -204,6 +213,7 @@ export default create({
           {
             type: "map",
             mapType: "HK", // 自定义扩展图表类型
+            zoom: this.zoom,
             label: {
               show: true,
               fontSize: this.fontSize,
