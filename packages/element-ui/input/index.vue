@@ -209,7 +209,7 @@ export default create({
     },
     labelShow() {
       return this.multiple
-        ? this.labelText.join("/").toString()
+        ? (this.labelText || []).join(" / ").toString()
         : this.labelText;
     },
     textShow() {
@@ -233,7 +233,6 @@ export default create({
       }
     }
   },
-  created() {},
   mounted() {
     this.init();
   },
