@@ -106,7 +106,7 @@ export const detailDic = (list, props = {}, type) => {
       ele[valueKey] = ele[valueKey] + ''
     }
     if (ele[childrenKey]) {
-      detailDic(ele[childrenKey], prop, type)
+      detailDic(ele[childrenKey], props, type)
     }
   })
   return list;
