@@ -243,8 +243,8 @@ export default create({
     },
     docMouseUp() {
       this.$emit("focus");
-      window.document.onmouseup = e => {
-        window.document.onmousemove = undefined;
+      window.onmouseup = e => {
+        window.onmousemove = undefined;
         this.$emit("resize", {
           index: this.index,
           width: this.baseWidth,
@@ -282,7 +282,7 @@ export default create({
       //移动的正负
       let xc, yc;
       if (this.rangeActive) {
-        window.document.onmousemove = e => {
+        window.onmousemove = e => {
           this.moveActive = true;
           const startX = e.clientX;
           const startY = e.clientY;
@@ -360,7 +360,7 @@ export default create({
     },
     handleMouseMove(e) {
       if (this.moveActive && !this.rangeActive) {
-        window.document.onmousemove = e => {
+        window.onmousemove = e => {
           this.overActive = false;
           const startX = e.clientX;
           const startY = e.clientY;

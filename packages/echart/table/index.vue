@@ -97,7 +97,9 @@ export default create({
       return list;
     },
     allHeight() {
-      return (this.count - 1) * this.lineHeight;
+      const count = this.count - 1;
+      const calcState = this.dataChartLen - count;
+      return calcState * this.lineHeight;
     },
     count() {
       return (this.option.count || 10) + 1;

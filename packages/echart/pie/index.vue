@@ -11,6 +11,9 @@ import create from "core/echart/create";
 export default create({
   name: "pie",
   computed: {
+    labelShow() {
+      return this.vaildData(this.option.labelShow, false);
+    },
     fontSize() {
       return this.option.fontSize || 14;
     }
@@ -50,6 +53,7 @@ export default create({
                 return Math.random() * 200;
               },
               label: {
+                show: this.labelShow,
                 fontSize: this.fontSize
               },
               data: (() => {

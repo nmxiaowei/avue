@@ -129,7 +129,7 @@ export default (function () {
               const data = res.data
               this.dataChart = data.data || {};
               if (this.isChart && this.myChart) {
-                if (this.animation) this.myChart.clear();
+                this.myChart.clear();
                 this.updateChart();
               }
             })

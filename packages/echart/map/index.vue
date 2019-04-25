@@ -214,11 +214,16 @@ export default create({
             type: "map",
             mapType: "HK", // 自定义扩展图表类型
             zoom: this.zoom,
+            roam: true,
             label: {
               show: true,
               fontSize: this.fontSize,
               color: this.color
             },
+            left: this.option.gridX,
+            top: this.option.gridY,
+            right: this.option.gridX2,
+            bottom: this.option.gridY2,
             emphasis: {
               label: {
                 color: this.empColor
@@ -244,6 +249,7 @@ export default create({
         this.bannerCount = 0;
         this.setBanner();
       });
+
       this.myChart.resize();
       this.myChart.setOption(option, true);
     }

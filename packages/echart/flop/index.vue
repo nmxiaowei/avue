@@ -1,29 +1,32 @@
 <template>
-  <div :class="b({'warp':isWarp})"
+  <div :class="b()"
        :style="styleParentName">
     <div v-if="whole"
-         :class="[b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole}),b({'row':isRow})]"
+         :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole,'row':isRow})"
          :style="styleName"
          v-for="(item,index) in listData"
          :key="index">
       <div :style="prefixStyle"
            v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
-      <avue-count-up v-if="isArray?item.data:dataChart"
-                     :end="Number(isArray?item.data:dataChart)"></avue-count-up>
+      <avue-count-up :style="styleValueName"
+                     v-if="isArray?item.data:dataChart.value"
+                     :end="isArray?item.data:dataChart.value"></avue-count-up>
       <div :style="suffixStyle"
            v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
     </div>
-    <div v-else
-         :class="b({'row':isRow})">
+    <div v-else>
       <div :style="prefixStyle"
            v-if="option.prefixText">{{option.prefixText}}</div>
-      <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img'})"
-           v-for="(item,index) in text"
-           :key="index"
-           :style="styleName">
-        <span v-if="statusDIC.includes(item)">{{item}}</span>
-        <avue-count-up v-else
-                       :end="Number(item)"></avue-count-up>
+      <div :class="b('flop')">
+        <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img'})"
+             v-for="(item,index) in text"
+             :key="index"
+             :style="[styleItemName,styleName]">
+          <div v-if="statusDIC.includes(item)">{{item}}</div>
+          <avue-count-up v-else
+                         :style="styleValueName"
+                         :end="item"></avue-count-up>
+        </div>
       </div>
       <div :style="suffixStyle"
            v-if="option.suffixText">{{option.suffixText}}</div>
@@ -41,12 +44,6 @@ export default create({
     };
   },
   computed: {
-    isRow() {
-      return this.option.row;
-    },
-    isWarp() {
-      return this.option.warp;
-    },
     isArray() {
       return Array.isArray(this.dataChart);
     },
@@ -57,6 +54,9 @@ export default create({
         return [this.dataChart];
       }
     },
+    isRow() {
+      return this.option.row;
+    },
     whole() {
       return this.vaildData(this.option.whole, false);
     },
@@ -64,7 +64,7 @@ export default create({
       return this.option.type;
     },
     text() {
-      return this.dataChart + "".split("");
+      return this.dataChart.value + "".split("");
     },
     prefixStyle() {
       return {
@@ -87,21 +87,41 @@ export default create({
     styleParentName() {
       if (!["img", "border"].includes(this.type)) {
         return Object.assign(this.styleSizeName, {
+          backgroundImage: `url(${this.option.backgroundImage})`,
           backgroundColor: this.option.backgroundColor
         });
       }
       return this.styleSizeName;
     },
+    styleItemName() {
+      return {
+        marginRight: `${this.option.gridY}px`
+      };
+    },
+    styleValueName() {
+      if (this.whole) {
+        return {
+          marginTop: `${this.option.gridY}px`
+        };
+      }
+    },
     styleName() {
       return Object.assign(
+        (() => {
+          if (this.option.backgroundImage) {
+            return {
+              backgroundImage: `url(${this.option.backgroundImage})`,
+              backgroundSize: "100% 100%"
+            };
+          }
+          return {};
+        })(),
         {
           textAlign: this.option.textAlign,
           backgroundColor: this.option.backgroundColor,
           color: this.option.color || "#fff",
           fontSize: (this.option.fontSize || 64) + "px",
-          fontWeight: this.option.fontWeight,
-          marginRight: `${this.option.splitx}px`,
-          marginBottom: `${this.option.splity}px`
+          fontWeight: this.option.fontWeight
         },
         (() => {
           if (this.whole && !this.isArray) {
@@ -119,13 +139,13 @@ export default create({
         (() => {
           if (this.type === "img") {
             return {
-              borderImageSource: `url(${this.option.backgroundImage})`
+              borderImageSource: `url(${this.option.backgroundBorder})`
             };
           } else if (this.type === "border") {
             return {
               borderColor: this.option.borderColor || "#fff",
               borderStyle: "solid",
-              borderWidth: (this.option.borderWidth || 2) + "px"
+              borderWidth: this.setPx(this.option.borderWidth)
             };
           }
         })()
