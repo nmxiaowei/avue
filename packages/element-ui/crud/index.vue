@@ -695,6 +695,14 @@ export default create({
       });
       return rowData;
     },
+    //搜索
+    searchChange() {
+      this.$refs.headerSearch.searchChange();
+    },
+    //清空
+    searchReset() {
+      this.$refs.headerSearch.searchReset();
+    },
     //导出excel
     rowExcel() {
       this.$refs.headerMenu.rowExcel();

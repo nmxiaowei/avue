@@ -41,9 +41,11 @@
         <el-button type="primary"
                    @click="searchChange"
                    :icon="config.searchBtnIcon"
+                   v-if="vaildData($parent.tableOption.searchSubmitBtn,true)"
                    :size="$parent.isMediumSize">{{t('crud.searchBtn')}}</el-button>
         <el-button @click="searchReset"
                    :icon="config.emptyBtnIcon"
+                   v-if="vaildData($parent.tableOption.searchResetBtn,true)"
                    :size="$parent.isMediumSize">{{t('crud.emptyBtn')}}</el-button>
         <slot name="searchMenu"></slot>
       </el-form-item>
