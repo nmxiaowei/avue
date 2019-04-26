@@ -38,7 +38,7 @@ export default {
   filterBtn: false,
   searchBtn: true,
   menuBtn: false,
-  searchSubmitBtn: true,
+  searchSubBtn: true,
   searchResetBtn: true,
   selectClearBtn: true,
   searchShow: true,
