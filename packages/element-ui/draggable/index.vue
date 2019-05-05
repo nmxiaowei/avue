@@ -14,7 +14,7 @@
         <div :style="styleLineName"
              :class="b('line',['top'])"></div>
         <div :class="b('line',['label'])"
-             :style="styleLabelName">{{baseLeft}},{{baseTop}}</div>
+             :style="styleLabelName">{{baseLeft.toFixed(2)}},{{baseTop.toFixed(2)}}</div>
       </template>
       <div :class="b('range',[item.classname])"
            v-for="(item,index) in rangeList"
@@ -36,9 +36,8 @@
         <slot></slot>
       </div>
       <div :class="b('mask')"
-           v-if="!disabled"></div>
+           v-if="!disabled && mask"></div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -47,6 +46,10 @@ import create from "core/create";
 export default create({
   name: "draggable",
   props: {
+    mask: {
+      type: Boolean,
+      default: true
+    },
     scale: {
       type: Number,
       default: 1
@@ -326,13 +329,13 @@ export default create({
           if (x) {
             let calc = (startX - this.rx) * this.step;
             if (xc) calc = -calc;
-            if (xp) this.baseLeft = parseInt(this.baseLeft - calc);
+            if (xp) this.baseLeft = this.baseLeft - calc;
             this.baseWidth = this.baseWidth + calc;
           }
           if (y) {
             let calc = (startY - this.ry) * this.step;
             if (yc) calc = -calc;
-            if (yp) this.baseTop = parseInt(this.baseTop - calc);
+            if (yp) this.baseTop = this.baseTop - calc;
             this.baseHeight = this.baseHeight + calc;
           }
           this.rx = startX;

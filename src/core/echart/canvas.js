@@ -1,11 +1,31 @@
 import { setPx } from 'utils/util'
 import echartList from './list'
-export default (function () {
+export default (() => {
   return {
     props: {
+      click: Function,
+      dataFormatter: Function,
+      titleFormatter: Function,
+      clickFormatter: Function,
+      formatter: Function,
+      scale: Number,
+      width: {
+        type: Number,
+        default: 600
+      },
+      height: {
+        type: Number,
+        default: 600
+      },
       animation: {
         type: Boolean,
         default: true
+      },
+      child: {
+        type: Object,
+        default: () => {
+          return {}
+        }
       },
       time: {
         type: Number,
@@ -21,6 +41,19 @@ export default (function () {
       dataType: {
         type: Number,
         default: 0,
+      },
+      dataQuery: {
+        type: Object,
+        default: () => {
+          return {}
+        },
+      },
+      homeUrl: {
+        type: String,
+      },
+      dataMethod: {
+        type: String,
+        default: 'get',
       },
       id: {
         type: String,
@@ -48,20 +81,32 @@ export default (function () {
         checkChart: '',
         myChart: "",
         dataChart: '',
+        dataUrl: '',
         key: false,
         isChart: true,
       };
     },
     watch: {
-      data: {
-        handler() {
-          this.updateData();
-
+      url: {
+        handler(val) {
+          this.dataUrl = val;
         },
         deep: true,
         immediate: true
       },
-
+      data: {
+        handler() {
+          this.updateData();
+        },
+        deep: true,
+        immediate: true
+      },
+      width() {
+        this.updateData();
+      },
+      height() {
+        this.updateData();
+      },
       option: {
         handler() {
           if (this.myChart && this.isChart) {
@@ -73,14 +118,11 @@ export default (function () {
       }
     },
     computed: {
+      name() {
+        return this.$el.className.replace('avue-echart-', '').replace('avue-echart', '').replace(' ', '');
+      },
       isApi() {
         return this.dataType === 1;
-      },
-      width() {
-        return this.component.width || 600
-      },
-      height() {
-        return this.component.height || 400
       },
       style() {
         return this.component.style || {}
@@ -105,8 +147,7 @@ export default (function () {
     methods: {
       init() {
         if (this.$refs[this.id]) {
-          const className = this.$el.className.replace('avue-echart ', '')
-          if (echartList.includes(className.replace('avue-echart-', ''))) {
+          if (echartList.includes(this.name)) {
             this.isChart = true;
           } else {
             this.isChart = false;
@@ -117,22 +158,50 @@ export default (function () {
           }
         }
       },
+      updateUrl(url) {
+        this.dataUrl = url
+        this.updateData();
+      },
       updateData() {
+        this.resetData && this.resetData();
         if (this.key) return
         this.key = true;
         const callback = () => {
           this.key = false;
           if (this.isApi) {
-            this.$httpajax.get(this.url, {
-              params: this.query
-            }).then(res => {
-              const data = res.data
+            let dataUrl = this.dataUrl.replace('${HOME_URL}', this.homeUrl);
+            const detail = (res) => {
+              const data = typeof (this.dataFormatter) === 'function' ? this.dataFormatter(res.data) : res.data
               this.dataChart = data.data || {};
               if (this.isChart && this.myChart) {
                 this.myChart.clear();
                 this.updateChart();
               }
-            })
+            }
+            if (this.dataMethod === 'get') {
+              this.$httpajax.get(dataUrl, {
+                params: this.dataQuery
+              }).then(res => {
+                detail(res);
+              })
+            } else if (this.dataMethod === 'post') {
+              let params = {};
+              let url = dataUrl;
+              if (url.includes("?")) {
+                const index = url.indexOf("?");
+                url = url.substr(index + 1);
+                let list = url.split('&');
+                list.forEach(ele => {
+                  let dic = ele.split('=');
+                  let label = dic[0];
+                  let value = dic[1];
+                  params[label] = value;
+                })
+              }
+              this.$httpajax.post(dataUrl, Object.assign(this.dataQuery, params)).then(res => {
+                detail(res);
+              })
+            }
           } else {
             this.dataChart = this.data || {};
             if (this.isChart && this.myChart) {

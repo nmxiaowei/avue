@@ -19,7 +19,9 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="obj"> </avue-form>
+    {{form}}
+    <avue-crud :option="option" :data="data" v-model="form">
+    </avue-crud>
   </div>
 </body>
 <script>
@@ -28,9 +30,10 @@
     el: '#app',
     data() {
       return {
-        obj: {
-          province: '110000'
-        },
+        form: {},
+        data: [{
+          province: 110000
+        }],
         option: {
           column: [
             {
@@ -42,6 +45,7 @@
                 label: 'name',
                 value: 'code'
               },
+              dataType: 'number',
               dicUrl: `${baseUrl}/getProvince/{{key}}`,
               rules: [
                 {

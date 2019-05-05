@@ -5,6 +5,34 @@
 }
 .avue-echart{
   padding: 10px;
+  &-tabs{
+    .el-select{
+      width: 100%;
+    }
+    .el-select,.el-input,input{
+      height: 100%;
+    }
+    .el-input{
+      font-size:inherit;
+    }
+    &__list{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100%;
+    }
+    &__icon{
+      margin-right: 10px;
+    }
+    &__item{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content:center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+  }
   &-iframe{
     iframe{
       border:none;
@@ -32,10 +60,41 @@
       user-select: none;
     }
   }
+  &-pie{
+    &__title{
+      position: absolute;
+      width:100%;
+      height:100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  &-slide{
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+  }
   &-table{
     &__body{
       position: relative;
       overflow: hidden;
+    }
+    &__menu{
+      padding: 10px 10px;
+      width:100%;
+      display: flex;
+      justify-content: flex-end;
+      box-sizing: border-box;
+      i{
+        font-size: 24px;
+      }
     }
     &__tr{
       display: flex;
@@ -88,7 +147,7 @@
     }
     table{
       width:100%;
-      border-width: 1px ;
+      border-width: 1px;
       border-style: solid;
     }
     td,th{

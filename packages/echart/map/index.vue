@@ -29,7 +29,9 @@ export default create({
       startTop: 0,
       baseScale: 0,
       left: 0,
-      top: 0
+      top: 0,
+      centerData: [],
+      zoomData: 1
     };
   },
   watch: {
@@ -62,6 +64,18 @@ export default create({
     height() {
       this.updateData();
     },
+    zoom: {
+      handler() {
+        this.zoomData = this.zoom;
+      },
+      immediate: true
+    },
+    zoomData: {
+      handler() {
+        this.updateData();
+      },
+      immediate: true
+    },
     scale: {
       handler(val) {
         this.baseScale = val;
@@ -92,7 +106,7 @@ export default create({
       return this.option.color || "#fff";
     },
     fontSize() {
-      return this.option.fontSize || 14;
+      return 20 * this.zoomData;
     },
     mapList() {
       return this.option.mapList || {};
@@ -108,9 +122,6 @@ export default create({
     },
     banner() {
       return this.option.banner;
-    },
-    formatter() {
-      return this.option.formatter;
     },
     scale() {
       return this.option.scale || 100;
@@ -130,6 +141,17 @@ export default create({
     },
     type() {
       return this.option.type;
+    },
+    locationData() {
+      return this.location.map(ele => {
+        ele.zoom = ele.zoom || 1;
+        if (this.zoomData >= ele.zoom) {
+          return {
+            name: ele.name,
+            value: [ele.lng, ele.lat, ele.value]
+          };
+        }
+      });
     }
   },
   methods: {
@@ -208,12 +230,23 @@ export default create({
           backgroundColor: "rgba(255,255,255,0)",
           formatter: this.formatter
         },
-
-        series: [
+        geo: Object.assign(
+          (() => {
+            if (!this.validatenull(this.centerData)) {
+              return {
+                center: this.centerData
+              };
+            }
+            return {};
+          })(),
           {
-            type: "map",
-            mapType: "HK", // 自定义扩展图表类型
-            zoom: this.zoom,
+            map: "HK",
+            label: {
+              emphasis: {
+                show: false
+              }
+            },
+            zoom: this.zoomData,
             roam: true,
             label: {
               show: true,
@@ -238,16 +271,51 @@ export default create({
               areaColor: this.areaColor
             }
           }
+        ),
+        series: [
+          {
+            type: "scatter",
+            coordinateSystem: "geo",
+            data: this.locationData,
+            symbolSize: this.fontSize,
+            label: {
+              show: true,
+              position: ["130%", "0"],
+              fontSize: this.fontSize,
+              color: this.color,
+              formatter: params => {
+                return params.name;
+              }
+            },
+            itemStyle: {
+              color: this.color
+            }
+          }
         ]
       };
       this.myChart.on("mouseover", () => {
         clearInterval(this.bannerCheck);
         this.resetBanner();
       });
+      this.myChart.on("click", e => {
+        if (e.marker) {
+          this.clickFormatter({
+            type: this.name,
+            name: e.name,
+            value: e.value[2]
+          });
+        }
+      });
 
       this.myChart.on("mouseout", () => {
         this.bannerCount = 0;
         this.setBanner();
+      });
+      this.myChart.on("georoam", e => {
+        const option = this.myChart.getOption();
+        const geo = option.geo[0];
+        this.centerData = geo.center;
+        this.zoomData = geo.zoom;
       });
 
       this.myChart.resize();

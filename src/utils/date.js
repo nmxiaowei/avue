@@ -1,3 +1,12 @@
+//获取当前日期
+export const getDayText = (date = new Date()) => {
+  if (typeof (date) === 'number') {
+    date = new Date(date);
+  } else if (typeof (date) === 'string') {
+    date = new Date(date.replace(/-/g, "/").replace(/\./g, "/"))
+  }
+  return "日一二三四五六".charAt(date.getDay());
+}
 export const dateFtt = (fmt, date) => {
   // author: meizz
   var o = {

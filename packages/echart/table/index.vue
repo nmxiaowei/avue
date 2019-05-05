@@ -1,16 +1,18 @@
 <template>
   <div :class="b()"
        :style="styleSizeName">
-    <div :class="b('header')"
-         v-if="!validatenull(queryList)"
-         :style="styleTdName">
-      <div :class="b('item',{'active':activeIndex===index})"
-           v-for="(item,index) in queryList"
-           :key="index"
-           @click="handleClick(item.value,index)"
-           :style="styleTdName">
-        {{ item.label }}
-      </div>
+    <el-dialog :visible.sync="visible"
+               modal-append-to-body
+               append-to-body
+               width="30%">
+      <avue-checkbox :dic="columnList"
+                     v-model="columnData"></avue-checkbox>
+    </el-dialog>
+    <div :class="b('menu')"
+         :style="styleMenuName">
+      <i class="el-icon-menu"
+         v-if="columnShow"
+         @click="visible=true"></i>
     </div>
     <div :style="styleTdName"
          :class="b('table',{'line':!line})">
@@ -22,7 +24,8 @@
         </div>
         <div :class="b('td')"
              v-for="(item,index) in columnOption"
-             :style="styleThName"
+             :style="[styleThName,styleWidth(item)]"
+             v-if="columnData.includes(item.prop)"
              :key="index"
              @click="handleSortable(item.prop)">
           {{item.label}}
@@ -36,14 +39,15 @@
              :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]"
              :key="cindex">
           <div :class="b('td')"
-               :style="[styleThName,{width:setPx(indexWidth)}]"
+               :style="[styleThName,styleWidth(citem)]"
                :key="index"
                v-if="index">
             <div :class="b('index',[(cindex+1)+''])"> {{(cindex+1)}}</div>
           </div>
           <div :class="b('td')"
                v-for="(item,index) in columnOption"
-               :style="styleTdName"
+               v-if="columnData.includes(item.prop)"
+               :style="[styleTdName,styleWidth(item)]"
                :key="index">
             <span v-html="citem[item.prop]"></span>
           </div>
@@ -60,6 +64,8 @@ export default create({
   name: "table",
   data() {
     return {
+      visible: false,
+      columnData: [],
       indexWidth: 50,
       top: 0,
       prop: "",
@@ -88,7 +94,37 @@ export default create({
       immediate: true
     }
   },
+  created() {
+    this.columnList.forEach(ele => {
+      if (!this.columnShowList.includes(ele.value)) {
+        this.columnData.push(ele.value);
+      }
+    });
+  },
   computed: {
+    columnList() {
+      let list = this.columnOption.map(ele => {
+        if (!this.columnShowWhite.includes(ele.prop)) {
+          return {
+            label: ele.label,
+            value: ele.prop
+          };
+        }
+        return false;
+      });
+      return list.filter(ele => {
+        return ele.value;
+      });
+    },
+    columnShow() {
+      return this.option.columnShow;
+    },
+    columnShowWhite() {
+      return this.option.columnShowWhite || [];
+    },
+    columnShowList() {
+      return this.option.columnShowList || [];
+    },
     dataTabel() {
       let list = this.dataChart;
       if (!this.validatenull(this.prop)) {
@@ -134,9 +170,6 @@ export default create({
     speed() {
       return this.scrollCount * this.lineHeight;
     },
-    queryList() {
-      return this.component.queryList || {};
-    },
     styleThName() {
       return {
         fontSize: this.setPx(this.fontSize),
@@ -158,6 +191,11 @@ export default create({
         borderColor: this.option.borderColor || "rgba(51, 65, 107, 1)"
       };
     },
+    styleMenuName() {
+      return {
+        color: this.option.headerColor || "rgba(154, 168, 212, 1)"
+      };
+    },
     crudOption() {
       return Object.assign(this.option, {
         menu: false,
@@ -176,6 +214,15 @@ export default create({
     }
   },
   methods: {
+    styleWidth(item) {
+      return {
+        width: this.setPx(item.width),
+        flex: item.width ? "auto" : 1
+      };
+    },
+    resetData() {
+      this.top = 0;
+    },
     handleSortable(prop) {
       this.prop = prop;
     },

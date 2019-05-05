@@ -22,26 +22,66 @@ export default create({
   components: {
     echartTitle
   },
+  computed: {
+    x2() {
+      return this.option.gridX2 || 20;
+    }
+  },
   methods: {
+    getColor(index, first) {
+      const barColor = this.option.barColor || [];
+      if (barColor[index]) {
+        const color1 = barColor[index].color1;
+        const color2 = barColor[index].color2;
+        const postion = (barColor[index].postion || 0.9) * 0.01;
+        if (first) return color1;
+        if (color2) {
+          return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: color1
+            },
+            {
+              offset: postion,
+              color: color2
+            }
+          ]);
+        }
+        return color1;
+      }
+    },
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        tooltip: {},
+        tooltip: {
+          formatter: this.formatter,
+          textStyle: {
+            fontSize: this.option.tipFontSize,
+            color: this.option.tipColor || "#fff"
+          }
+        },
         grid: {
           x: this.option.gridX || 65,
           y: this.option.gridY || 20,
-          x2: this.option.gridX2 || 20,
+          x2: this.x2,
           y2: this.option.gridY2 || 60
         },
         legend: {
           show: this.vaildData(this.option.legendShow, false),
-          bottom: 0,
+          top: 0,
+          right: this.x2,
           textStyle: {
-            color: this.option.nameColor || "#333"
+            fontSize: this.option.legendShowFontSize || 12
           },
           data: (() => {
-            return (optionData.series || []).map(ele => {
-              return ele.name;
+            return (optionData.series || []).map((ele, index) => {
+              return {
+                name: ele.name,
+                textStyle: {
+                  borderColor: this.getColor(index, true),
+                  color: this.getColor(index, true)
+                }
+              };
             });
           })()
         },
@@ -86,8 +126,6 @@ export default create({
           }
         },
         series: (() => {
-          const barColor = this.option.barColor || [];
-
           const list = (optionData.series || []).map((ele, index) => {
             return Object.assign(ele, {
               type: "line",
@@ -100,39 +138,7 @@ export default create({
                 }
               })(),
               itemStyle: {
-                color: (() => {
-                  if (barColor[index]) {
-                    const color1 = barColor[index].color1;
-                    const color2 = barColor[index].color2;
-                    const postion = (barColor[index].postion || 0.9) * 0.01;
-                    if (color2) {
-                      return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: color1
-                        },
-                        {
-                          offset: postion,
-                          color: color2
-                        }
-                      ]);
-                    }
-                    return color1;
-                  }
-                })()
-              },
-              lineStyle: {
-                width: this.option.lineWidth
-              },
-              label: {
-                show: this.vaildData(this.option.labelShow, false), //开启显示
-                position: "top", //在上方显示
-                textStyle: {
-                  //数值样式
-                  fontSize: this.option.labelShowFontSize || 14,
-                  color: this.option.labelShowColor || "#333",
-                  fontWeight: this.option.labelShowFontWeight || 500
-                }
+                color: this.getColor(index)
               }
             });
           });

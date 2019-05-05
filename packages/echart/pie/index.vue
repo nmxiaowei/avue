@@ -1,6 +1,10 @@
 <template>
   <div class="avue-echart avue-echart-pie"
        :style="styleSizeName">
+    <div :class="b('title')"
+         v-html="titleFormatter && titleFormatter(dataChart)">
+
+    </div>
     <div :ref="id"
          :style="styleChartName"></div>
   </div>
@@ -19,10 +23,42 @@ export default create({
     }
   },
   methods: {
+    getColor(index, first) {
+      const barColor = this.option.barColor || [];
+      if (barColor[index]) {
+        const color1 = barColor[index].color1;
+        const color2 = barColor[index].color2;
+        const postion = (barColor[index].postion || 0.9) * 0.01;
+        if (first) return color1;
+        if (color2) {
+          return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: color1
+            },
+            {
+              offset: postion,
+              color: color2
+            }
+          ]);
+        }
+        return color1;
+      }
+    },
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        tooltip: {},
+        tooltip: {
+          formatter: name => {
+            if (this.formatter) {
+              return this.formatter(name, this.dataChart);
+            }
+          },
+          textStyle: {
+            fontSize: this.option.tipFontSize,
+            color: this.option.tipColor || "#fff"
+          }
+        },
         grid: {
           x: this.option.gridX || 65,
           y: this.option.gridY || 20,
@@ -33,9 +69,18 @@ export default create({
           show: this.vaildData(this.option.legendShow, false),
           orient: "vertical",
           left: "left",
+          textStyle: {
+            fontSize: this.option.legendShowFontSize || 12
+          },
           data: (() => {
-            return optionData.map(ele => {
-              return ele.name;
+            return optionData.map((ele, index) => {
+              return {
+                name: ele.name,
+                textStyle: {
+                  borderColor: this.getColor(index, true),
+                  color: this.getColor(index, true)
+                }
+              };
             });
           })()
         },
@@ -80,10 +125,7 @@ export default create({
                     shadowColor: "rgba(0, 0, 0, 0.5)"
                   },
                   normal: {
-                    color: params => {
-                      const barColor = this.option.barColor || [];
-                      return (barColor[params.dataIndex] || {}).color1;
-                    }
+                    color: params => this.getColor(params.dataIndex)
                   }
                 };
               })()
