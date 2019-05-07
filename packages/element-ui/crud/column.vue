@@ -56,6 +56,7 @@
                            :parent="column.parent"
                            :change="column.change"
                            :remote="column.remote"
+                           :dicUrl="column.dicUrl"
                            :focus="column.focus"
                            :blur="column.blur"
                            :click="column.click"
