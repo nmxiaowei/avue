@@ -13,6 +13,13 @@ export default {
     a: 'whole'
   },
   crud: {
+    filter: {
+      addBtn: 'add',
+      clearBtn: 'clear',
+      resetBtn: 'reset',
+      cancelBtn: 'cancel',
+      submitBtn: 'submit'
+    },
     tipStartTitle: 'Currently selected',
     tipEndTitle: 'term',
     editTitle: 'edit',
@@ -21,6 +28,9 @@ export default {
     filterTitle: 'filter',
     menu: 'menu',
     addBtn: 'add',
+    showBtn: 'show',
+    filterBtn: 'filter',
+    refreshBtn: 'refresh',
     printBtn: 'print',
     excelBtn: 'excel',
     updateBtn: 'update',

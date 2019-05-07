@@ -13,6 +13,13 @@ export default {
     a: '全部'
   },
   crud: {
+    filter: {
+      addBtn: '新增条件',
+      clearBtn: '清空数据',
+      resetBtn: '清空条件',
+      cancelBtn: '取 消',
+      submitBtn: '确 定'
+    },
     tipStartTitle: '当前表格已选择',
     tipEndTitle: '项',
     editTitle: '编 辑',
@@ -21,6 +28,9 @@ export default {
     filterTitle: '过滤条件',
     menu: '操作',
     addBtn: '新 增',
+    showBtn: '显 隐',
+    filterBtn: '过 滤',
+    refreshBtn: '刷 新',
     printBtn: '打 印',
     excelBtn: '导 出',
     updateBtn: '修 改',

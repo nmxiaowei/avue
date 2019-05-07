@@ -32,7 +32,7 @@
       <slot name="menuRight"></slot>
 
       <el-tooltip effect="dark"
-                  content="刷新"
+                  :content="t('crud.refreshBtn')"
                   placement="top">
         <el-button :icon="config.refreshBtnIcon"
                    circle
@@ -52,7 +52,7 @@
                    v-if="vaildData($parent.tableOption.columnBtn,config.columnBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
-                  content="搜索"
+                  :content="t('crud.searchBtn')"
                   placement="top">
         <el-button :icon="config.searchBoxBtnIcon"
                    circle
@@ -62,7 +62,7 @@
                    v-if="($parent.$refs.headerSearch || {}).searchFlag && vaildData($parent.tableOption.searchBtn,config.searchBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
-                  content="过滤"
+                  :content="t('crud.filterBtn')"
                   placement="top">
         <el-button :icon="config.filterBtnIcon"
                    circle

@@ -13,13 +13,13 @@
         <el-button-group>
           <el-button type="primary"
                      :size="$parent.isMediumSize"
-                     @click="handleAdd">新增条件</el-button>
+                     @click="handleAdd">{{t('crud.filter.addBtn')}}</el-button>
           <el-button type="primary"
                      :size="$parent.isMediumSize"
-                     @click="handleClear">清空条件</el-button>
+                     @click="handleClear">{{t('crud.filter.resetBtn')}}</el-button>
           <el-button type="primary"
                      :size="$parent.isMediumSize"
-                     @click="handleValueClear">清空数据</el-button>
+                     @click="handleValueClear">{{t('crud.filter.clearBtn')}}</el-button>
         </el-button-group>
       </div>
       <el-col :md="12"
@@ -64,11 +64,11 @@
     </el-row>
     <span slot="footer"
           class="dialog-footer">
-      <el-button @click="box = false"
-                 :size="$parent.isMediumSize">取 消</el-button>
       <el-button type="primary"
                  :size="$parent.isMediumSize"
-                 @click="handleSubmit">确 定</el-button>
+                 @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
+      <el-button @click="box = false"
+                 :size="$parent.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
     </span>
   </el-dialog>
 </template>
