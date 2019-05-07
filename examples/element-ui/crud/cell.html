@@ -188,6 +188,17 @@
               label: '地址',
               prop: 'textarea',
               cell: true,
+            }, {
+              label: '远程搜索',
+              prop: 'select',
+              remote: true,
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicUrl: 'https://cli2.avue.top/api/area/getProvince/{{key}}',
+              cell: true,
             }
           ]
         },
