@@ -14,11 +14,19 @@ export default create({
   name: "img",
   computed: {
     styleImgName() {
-      if (this.rotate) {
-        return {
-          animationDuration: this.duration / 1000 + "s"
-        };
-      }
+      return Object.assign(
+        (() => {
+          if (this.rotate) {
+            return {
+              animationDuration: this.duration / 1000 + "s"
+            };
+          }
+          return {};
+        })(),
+        {
+          opacity: this.option.opacity || 1
+        }
+      );
     },
     duration() {
       return this.option.duration || 3000;

@@ -3,7 +3,6 @@
        :style="styleSizeName">
     <div :class="b('title')"
          v-html="titleFormatter && titleFormatter(dataChart)">
-
     </div>
     <div :ref="id"
          :style="styleChartName"></div>
@@ -48,17 +47,26 @@ export default create({
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        tooltip: {
-          formatter: name => {
-            if (this.formatter) {
-              return this.formatter(name, this.dataChart);
+        tooltip: (() => {
+          return Object.assign(
+            (() => {
+              if (this.formatter) {
+                return {
+                  formatter: name => {
+                    return this.formatter(name, this.dataChart);
+                  }
+                };
+              }
+              return {};
+            })(),
+            {
+              textStyle: {
+                fontSize: this.option.tipFontSize,
+                color: this.option.tipColor || "#fff"
+              }
             }
-          },
-          textStyle: {
-            fontSize: this.option.tipFontSize,
-            color: this.option.tipColor || "#fff"
-          }
-        },
+          );
+        })(),
         grid: {
           x: this.option.gridX || 65,
           y: this.option.gridY || 20,

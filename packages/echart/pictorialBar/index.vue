@@ -23,7 +23,26 @@ export default create({
         if (ele.value > maxData) maxData = ele.value;
       });
       const option = {
-        tooltip: {},
+        tooltip: (() => {
+          return Object.assign(
+            (() => {
+              if (this.formatter) {
+                return {
+                  formatter: name => {
+                    return this.formatter(name, this.dataChart);
+                  }
+                };
+              }
+              return {};
+            })(),
+            {
+              textStyle: {
+                fontSize: this.option.tipFontSize,
+                color: this.option.tipColor || "#fff"
+              }
+            }
+          );
+        })(),
         xAxis: {
           show: this.vaildData(this.option.xAxisShow, true),
           max: maxData,

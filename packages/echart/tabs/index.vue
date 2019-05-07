@@ -3,7 +3,7 @@
        :style="styleSizeName"
        ref="main">
     <avue-select v-if="isSelect"
-                 :dic="dataChart"
+                 :dic="typeof dataChart ==='string'?[]:dataChart"
                  :style="styleSelectName"
                  v-model="active"></avue-select>
     <div :class="b('list')"

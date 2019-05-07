@@ -14,7 +14,6 @@ export default create({
       default: 0
     },
     end: {
-      type: [Number, String],
       required: true
     },
     decimals: {

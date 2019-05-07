@@ -1,19 +1,19 @@
 <template>
   <div :class="b()"
        :style="styleParentName">
-    <div v-if="whole"
-         :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole,'row':isRow})"
-         :style="styleName"
-         v-for="(item,index) in listData"
-         :key="index">
-      <div :style="prefixStyle"
-           v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
-      <avue-count-up :style="styleValueName"
-                     v-if="isArray?item.data:dataChart.value"
-                     :end="isArray?item.data:dataChart.value"></avue-count-up>
-      <div :style="suffixStyle"
-           v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
-    </div>
+    <template v-if="whole">
+      <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole,'row':isRow})"
+           :style="styleName"
+           v-for="(item,index) in listData"
+           :key="index">
+        <div :style="prefixStyle"
+             v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
+        <avue-count-up :style="styleValueName"
+                       :end="isArray?item.data:dataChart.value"></avue-count-up>
+        <div :style="suffixStyle"
+             v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
+      </div>
+    </template>
     <div v-else>
       <div :style="prefixStyle"
            v-if="option.prefixText">{{option.prefixText}}</div>

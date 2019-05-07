@@ -8,7 +8,6 @@ export default (() => {
       titleFormatter: Function,
       clickFormatter: Function,
       formatter: Function,
-      scale: Number,
       width: {
         type: Number,
         default: 600
@@ -89,7 +88,7 @@ export default (() => {
     watch: {
       url: {
         handler(val) {
-          this.dataUrl = val;
+          this.dataUrl = val || '';
         },
         deep: true,
         immediate: true
@@ -118,6 +117,9 @@ export default (() => {
       }
     },
     computed: {
+      dataChartLen() {
+        return (this.dataChart || []).length
+      },
       name() {
         return this.$el.className.replace('avue-echart-', '').replace('avue-echart', '').replace(' ', '');
       },

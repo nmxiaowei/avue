@@ -38,7 +38,7 @@ export default create({
     mapList() {
       this.updateChart();
     },
-    mapListLen() {
+    dataChartLen() {
       this.setBanner();
     },
     bannerTime() {
@@ -106,13 +106,10 @@ export default create({
       return this.option.color || "#fff";
     },
     fontSize() {
-      return 20 * this.zoomData;
+      return 20;
     },
     mapList() {
       return this.option.mapList || {};
-    },
-    mapListLen() {
-      return this.mapList.features.length;
     },
     isEchart() {
       return this.type === 0;
@@ -143,7 +140,7 @@ export default create({
       return this.option.type;
     },
     locationData() {
-      return this.location.map(ele => {
+      return (this.dataChart || []).map(ele => {
         ele.zoom = ele.zoom || 1;
         if (this.zoomData >= ele.zoom) {
           return {
@@ -204,7 +201,7 @@ export default create({
       clearInterval(this.bannerCheck);
       if (this.banner) {
         this.bannerCheck = setInterval(() => {
-          const curr = this.bannerCount % this.mapListLen;
+          const curr = this.bannerCount % this.dataChartLen;
           this.myChart.dispatchAction({
             type: "showTip",
             seriesIndex: "0",
@@ -225,11 +222,26 @@ export default create({
       const optionData = this.deepClone(this.mapList);
       window.echarts.registerMap("HK", optionData);
       const option = {
-        tooltip: {
-          trigger: "item",
-          backgroundColor: "rgba(255,255,255,0)",
-          formatter: this.formatter
-        },
+        tooltip: (() => {
+          return Object.assign(
+            (() => {
+              if (this.formatter) {
+                return {
+                  formatter: name => {
+                    return this.formatter(name, this.dataChart);
+                  }
+                };
+              }
+              return {};
+            })(),
+            {
+              textStyle: {
+                fontSize: this.option.tipFontSize,
+                color: this.option.tipColor || "#fff"
+              }
+            }
+          );
+        })(),
         geo: Object.assign(
           (() => {
             if (!this.validatenull(this.centerData)) {
@@ -299,11 +311,13 @@ export default create({
       });
       this.myChart.on("click", e => {
         if (e.marker) {
-          this.clickFormatter({
-            type: this.name,
-            name: e.name,
-            value: e.value[2]
-          });
+          if (this.clickFormatter) {
+            this.clickFormatter({
+              type: this.name,
+              name: e.name,
+              value: e.value[2]
+            });
+          }
         }
       });
 

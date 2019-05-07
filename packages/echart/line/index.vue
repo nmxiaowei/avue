@@ -53,13 +53,26 @@ export default create({
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        tooltip: {
-          formatter: this.formatter,
-          textStyle: {
-            fontSize: this.option.tipFontSize,
-            color: this.option.tipColor || "#fff"
-          }
-        },
+        tooltip: (() => {
+          return Object.assign(
+            (() => {
+              if (this.formatter) {
+                return {
+                  formatter: name => {
+                    return this.formatter(name, this.dataChart);
+                  }
+                };
+              }
+              return {};
+            })(),
+            {
+              textStyle: {
+                fontSize: this.option.tipFontSize,
+                color: this.option.tipColor || "#fff"
+              }
+            }
+          );
+        })(),
         grid: {
           x: this.option.gridX || 65,
           y: this.option.gridY || 20,
@@ -130,6 +143,7 @@ export default create({
             return Object.assign(ele, {
               type: "line",
               smooth: true,
+              symbolSize: this.option.symbolSize || 10,
               areaStyle: (() => {
                 if (this.option.areaStyle) {
                   return {
@@ -137,6 +151,9 @@ export default create({
                   };
                 }
               })(),
+              lineStyle: {
+                width: this.option.lineWidth || 1
+              },
               itemStyle: {
                 color: this.getColor(index)
               }
