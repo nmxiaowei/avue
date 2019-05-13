@@ -13,16 +13,16 @@
 
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <avue-tree-table :option="option" :data="data" @current-row-change="handleCurrentRowChange" @row-dblclick="handleRowDBLClick"
-      @row-click="handleRowClick">
+    <avue-tree-table :option="option" :data="data" @current-row-change="handleCurrentRowChange"
+      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
       <template slot="icon" slot-scope="scope">
         <i :class="scope.row.icon" style="font-size:24px"></i>
       </template>

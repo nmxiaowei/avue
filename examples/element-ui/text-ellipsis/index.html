@@ -10,8 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
   <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -40,8 +40,8 @@
       <small slot="after">[09/14]</small>
     </avue-text-ellipsis>
     <div class="demo-line"></div>
-    <avue-text-ellipsis :text="text" :height="100" :width="200" use-tooltip :is-limit-height="isLimitHeight" @show="show"
-      @hide="hide">
+    <avue-text-ellipsis :text="text" :height="100" :width="200" use-tooltip :is-limit-height="isLimitHeight"
+      @show="show" @hide="hide">
       <el-tag slot="before" size="small">new</el-tag>
       <small slot="more"><span>...</span><span class="link" @click="isLimitHeight=false">查看更多</span></small>
       <small slot="after" class="link" v-if="!isLimitHeight" @click="isLimitHeight=true">收起</small>

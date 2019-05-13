@@ -13,15 +13,16 @@
 
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <avue-tree :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
+    <avue-tree :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del"
+      v-model="form">
       <template slot-scope="scope" slot="menuBtn">
         <el-dropdown-item @click.native="tip(scope.node,scope.data)">自定义按钮</el-dropdown-item>
       </template>

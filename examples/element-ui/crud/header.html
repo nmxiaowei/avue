@@ -10,8 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.6.1/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.6.1/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
   <script src="https://avuex.avue.top/cdn/aliyun-oss-sdk.min.js"></script>
   <!-- 导入表格需要的包 -->
 
@@ -45,7 +45,7 @@
           headerAlign: 'center',
           excelBtn: true,
           align: 'center',
-          tree: true,
+          rowKey: 'id',
           labelWidth: 100,
           column: [{
             width: 150,
@@ -111,6 +111,7 @@
           }]
         },
         data: [{
+          id: 1,
           name: '张三',
           age: 14,
           grade: 1,
@@ -120,6 +121,7 @@
           test: 1,
           sex: '男',
           children: [{
+            id: 2,
             name: '李四',
             age: 20,
             grade: 1,
@@ -129,6 +131,7 @@
             phone: '17547400800',
             icon: 'el-icon-bell',
             children: [{
+              id: 3,
               name: '王五',
               age: 10,
               grade: 1,
@@ -140,6 +143,7 @@
             }]
           }]
         }, {
+          id: 4,
           name: '王五',
           age: 10,
           grade: 1,
