@@ -35,7 +35,10 @@ export default create({
       };
     },
     circleSC() {
-      let styles = {};
+      let styles = {
+        borderColor: this.color,
+        color: this.color
+      };
       let classes = {
         [`${prefix}-item-circle`]: true
       };
