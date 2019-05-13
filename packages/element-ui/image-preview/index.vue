@@ -7,9 +7,11 @@
          :style="previewStyle"
          v-loading="changeing">
       <img ref="img"
-           :src="datas[index].url"
-           v-show="!changeing"
-           @load="initStyle">
+           hidden
+           :src="datas[index].url" />
+      <el-image :src="datas[index].url"
+                v-show="!changeing"
+                @load="initStyle"></el-image>
     </div>
   </div>
 
