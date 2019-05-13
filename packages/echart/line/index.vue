@@ -66,6 +66,7 @@ export default create({
               return {};
             })(),
             {
+              trigger: "axis",
               textStyle: {
                 fontSize: this.option.tipFontSize,
                 color: this.option.tipColor || "#fff"

@@ -2,17 +2,23 @@
   <div :class="b()"
        :style="styleParentName">
     <template v-if="whole">
-      <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole,'row':isRow})"
-           :style="styleName"
-           v-for="(item,index) in listData"
-           :key="index">
-        <div :style="prefixStyle"
-             v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
-        <avue-count-up :style="styleValueName"
-                       :end="isArray?item.data:dataChart.value"></avue-count-up>
-        <div :style="suffixStyle"
-             v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
-      </div>
+
+      <el-tooltip :disabled="!item.formatter"
+                  placement="top-start"
+                  :key="index"
+                  v-for="(item,index) in listData">
+        <div slot="content"
+             v-html="item.formatter && item.formatter()"></div>
+        <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole,'row':isRow})"
+             :style="styleName">
+          <div :style="prefixStyle"
+               v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
+          <avue-count-up :style="styleValueName"
+                         :end="isArray?item.data:dataChart.value"></avue-count-up>
+          <div :style="suffixStyle"
+               v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
+        </div>
+      </el-tooltip>
     </template>
     <div v-else>
       <div :style="prefixStyle"

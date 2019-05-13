@@ -17,6 +17,9 @@ export default create({
     labelShow() {
       return this.vaildData(this.option.labelShow, false);
     },
+    x2() {
+      return this.option.gridX2 || 20;
+    },
     fontSize() {
       return this.option.fontSize || 14;
     }
@@ -70,18 +73,18 @@ export default create({
         grid: {
           x: this.option.gridX || 65,
           y: this.option.gridY || 20,
-          x2: this.option.gridX2 || 20,
+          x2: this.x2,
           y2: this.option.gridY2 || 60
         },
         legend: {
           show: this.vaildData(this.option.legendShow, false),
-          orient: "vertical",
-          left: "left",
+          top: 0,
+          right: this.x2,
           textStyle: {
             fontSize: this.option.legendShowFontSize || 12
           },
           data: (() => {
-            return optionData.map((ele, index) => {
+            return (optionData.series || []).map((ele, index) => {
               return {
                 name: ele.name,
                 textStyle: {
@@ -98,7 +101,7 @@ export default create({
             {
               type: "pie",
               roseType: this.option.roseType ? "radius" : "",
-              radius: this.option.radius ? ["50%", "70%"] : "50%",
+              radius: this.option.radius ? ["40%", "55%"] : "50%",
               center: ["50%", "60%"],
               animationType: "scale",
               animationEasing: "elasticOut",

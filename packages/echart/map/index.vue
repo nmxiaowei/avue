@@ -106,7 +106,7 @@ export default create({
       return this.option.color || "#fff";
     },
     fontSize() {
-      return 20;
+      return this.option.fontSize || 24;
     },
     mapList() {
       return this.option.mapList || {};
