@@ -21,7 +21,7 @@
                 :key="column.prop">
           <div :class="b('box')">
             <span :class="b('label',[labelPostion])"
-                  :style="{width:`${item.labelWidth}px`}">{{column.label}}:</span>
+                  :style="getLabelWidth(column,item)">{{column.label?column.label+':':''}}</span>
             <slot :name="column.prop+'Form'"
                   :column="column"
                   :row="form"
@@ -108,6 +108,18 @@ export default create({
     this.loadDic();
   },
   methods: {
+    getLabelWidth(column, item) {
+      const labelWidth = column.labelWidth || item.labelWidth;
+      if (labelWidth) {
+        return {
+          minWidth: 0,
+          marginRight: 0
+        };
+      }
+      return {
+        width: this.setPx(labelWidth)
+      };
+    },
     loadDic() {
       //初始化字典
       this.columnOption.forEach(ele => {
