@@ -366,7 +366,7 @@ export default create({
       }
     },
     beforeRemove(file) {
-      return this.$confirm(`确定移除该图片？`);
+      return this.$confirm(`是否确定移除该选项？`);
     }
   }
 });
