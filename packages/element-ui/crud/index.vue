@@ -56,7 +56,6 @@
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
-              :row-style="showRow"
               @row-dblclick="rowDblclick"
               @cell-mouse-enter="cellMouseEnter"
               @cell-mouse-leave="cellMouseLeave"
@@ -113,7 +112,6 @@
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>
-      <el-table-column width="0px"></el-table-column>
       <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
@@ -367,8 +365,8 @@ export default create({
     fixedFlag() {
       return this.isMobile ? false : "left";
     },
-    idKey() {
-      return this.tableOption.idKey || "id";
+    rowKey() {
+      return this.tableOption.rowKey || "id";
     },
     tableHeight() {
       const clientHeight = document.documentElement.clientHeight;
@@ -494,8 +492,8 @@ export default create({
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
     handleGetRowKeys(row) {
-      const idKey = row[this.idKey];
-      return idKey;
+      const rowKey = row[this.rowKey];
+      return rowKey;
     },
     rulesInit() {
       this.formRules = {};
@@ -537,7 +535,7 @@ export default create({
     },
     dataInit() {
       this.list = [...this.data];
-      if (this.isTree) this.formatData();
+      // if (this.isTree) this.formatData();
       //初始化序列的参数
       this.list.forEach((ele, index) => {
         ele.$index = index;
@@ -637,7 +635,7 @@ export default create({
     },
     //行取消
     rowCanel(row, index) {
-      if (this.validatenull(row[this.idKey])) {
+      if (this.validatenull(row[this.rowKey])) {
         this.list.splice(index, 1);
         return;
       }

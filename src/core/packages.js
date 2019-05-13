@@ -12,9 +12,9 @@ const list = {
     version: '3.1.2',
   },
   'element-ui': {
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/index.js',
+    url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js',
     title: '需要引入Element-ui框架包',
-    version: '2.4.11',
+    version: '2.8.2',
     gihub: 'https://github.com/ElemeFE/element',
   },
   'hljs': {

@@ -38,7 +38,7 @@
                          :width="column.width"
                          :fixed="crud.isMobile?false:column.fixed">
           <template slot-scope="scope">
-            <span v-if="column.prop===crud.treeProp"
+            <!-- <span v-if="column.prop===crud.treeProp"
                   v-for="space in scope.row._level"
                   class="ms-tree-space"
                   :key="space"></span>
@@ -49,7 +49,7 @@
                  class="el-icon-plus"></i>
               <i v-else
                  class="el-icon-minus"></i>
-            </span>
+            </span> -->
             <span :class="{'ms-tree-title':column.prop===crud.treeProp}">
               <template v-if="cellEditFlag(scope.row,column)">
                 <component :is="getCellType(column.type)"
