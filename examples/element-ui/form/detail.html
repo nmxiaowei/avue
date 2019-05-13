@@ -23,8 +23,8 @@
       <template slot="slot">
         自定义内容
       </template>
-      <template slot="text">
-        自定义内容
+      <template slot="textForm" slot-scope="scope">
+        <span>自定义内容1</span>
       </template>
     </avue-detail>
   </div>
@@ -54,16 +54,18 @@
               label: '取货单号',
               prop: 'qhdh'
             }, {
-              label: '地区',
+              label: '',
+              labelWidth: 0,
               prop: 'zt',
               dicUrl: 'https://cli2.avue.top/api/area/getProvince',
               props: {
                 label: 'name',
                 value: 'code'
               },
+              row: true
             }, {
               label: '销售单号',
-              prop: 'xsdh'
+              prop: 'xsdh',
             }, {
               label: '子订单',
               prop: 'zdd'
@@ -93,7 +95,7 @@
             }, {
               label: '自定义',
               prop: 'text',
-              slot: true,
+              formslot: true,
             }]
           }, {
             label: '自定义卡槽',
