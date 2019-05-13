@@ -22,7 +22,7 @@
           <div :class="b('box')">
             <span :class="b('label',[labelPostion])"
                   :style="{width:`${item.labelWidth}px`}">{{column.label}}:</span>
-            <slot :name="column.prop"
+            <slot :name="column.prop+'Form'"
                   :column="column"
                   :row="form"
                   :label="form['$'+column.prop]"
@@ -82,12 +82,14 @@ export default create({
     columnOption() {
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
-        (ele.column || []).forEach((column, cindex) => {
-          if (column.display !== false)
+        ele.column = ele.column || [];
+        // 循环列的全部属性
+        ele.column.forEach((column, cindex) => {
+          //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
+          if (column.display !== false && !this.isMobile) {
             column = calcCount(column, this.itemSpanDefault, cindex === 0);
+          }
         });
-        //处理级联地址
-        ele.column = calcCascader(ele.column);
       });
       return list;
     }
