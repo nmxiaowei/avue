@@ -5,12 +5,13 @@
              append-to-body
              :fullscreen="crud.isMobile"
              :title="t('crud.columnBtn')"
-             :width="crud.isMobile?'100%':config.dialogWidth"
+             :width="crud.isMobile?'100%':'600px'"
              :visible.sync="columnBox">
-    <avue-checkbox v-model="columnIndex"
-                   @change="handleChange"
-                   :dic="columnList"
-                   :props="defaultProps"></avue-checkbox>
+    <el-transfer v-model="columnIndex"
+                 :data="columnList"
+                 :titles="['隐藏', '显示']"
+                 :props="defaultProps"></el-transfer>
+
   </el-dialog>
 </template>
 <script>
@@ -26,7 +27,7 @@ export default create({
       config: config,
       columnBox: false,
       defaultProps: {
-        value: "prop"
+        key: "prop"
       },
       columnList: [],
       columnIndex: []

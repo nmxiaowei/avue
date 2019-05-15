@@ -91,4 +91,8 @@
 .el-table colgroup.gutter { //element-ui中table表头错位问题
   display: table-cell !important;
 }
+.el-transfer{
+  display: flex;
+  justify-content: center
+}
 
