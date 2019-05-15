@@ -380,6 +380,17 @@ export default create({
       );
     },
     formVal() {
+      let valueItems = Object.keys(this.value);
+      let formItems = Object.keys(this.form);
+      // 找出两个列表的不同字段
+      let diff = valueItems
+        .concat(formItems)
+        .filter(v => !valueItems.includes(v) || !formItems.includes(v));
+      // 删除旧的字段
+      diff.forEach(item => {
+        delete this.form[item];
+      });
+      
       Object.keys(this.value).forEach(ele => {
         this.form[ele] = this.value[ele];
       });
