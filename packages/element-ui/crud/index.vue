@@ -112,6 +112,8 @@
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>
+      <!-- 占位符号解决ele问题 -->
+      <el-table-column width="0px"></el-table-column>
       <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"

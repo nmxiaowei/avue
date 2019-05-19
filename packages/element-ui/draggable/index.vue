@@ -222,7 +222,7 @@ export default create({
     this.baseHeight = this.height || this.children.offsetHeight;
     this.baseLeft = this.left;
     this.baseTop = this.top;
-    this.children.style.overflow = "hidden";
+    // this.children.style.overflow = "hidden";
   },
 
   methods: {
