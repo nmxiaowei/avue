@@ -68,6 +68,12 @@ export default create({
     };
   },
   props: {
+    data:{
+      type: Object,
+      default: function() { 
+          return {} 
+      }
+    },
     value: {
 
     },
@@ -200,7 +206,9 @@ export default create({
       const headers = { 'Content-Type': 'multipart/form-data' }
       let param = new FormData()
       param.append('file', file, file.name)
-
+      Object.keys(this.data).forEach((ele,index) => {
+        param.append(ele,JSON.stringify(this.data[ele]))
+      });
       const callack = () => {
         this.$http.post(this.action, param, { headers }).then(res => {
           if (typeof this.uploadAfter === 'function') this.uploadAfter(res, () => {

@@ -69,6 +69,7 @@
                              :parent="column.parent"
                              :colors="column.colors"
                              :action="column.action"
+                             :data="column.data"
                              :limit="column.limit"
                              :dicUrl="column.dicUrl"
                              :tip="column.tip"
