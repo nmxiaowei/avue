@@ -105,7 +105,8 @@ export default create({
       default: ''
     },
     uploadBefore: Function,
-    uploadAfter: Function
+    uploadAfter: Function,
+    onRemove:Function
   },
   computed: {
     status () {
@@ -169,7 +170,7 @@ export default create({
     },
     handleRemove (file, fileList) {
       this.delete(file);
-      this.$message.success('删除成功');
+      this.onRemove?this.onRemove(file,fileList):this.$message.success('删除成功');
       this.setVal();
     },
     handleError () {
