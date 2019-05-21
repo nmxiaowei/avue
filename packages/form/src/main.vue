@@ -113,6 +113,7 @@
                              :disabled="vaildDisabled(column)"
                              :upload-before="uploadBefore"
                              :upload-after="uploadAfter"
+                             :on-remove ="onRemove"
                              @change="column.cascader?handleChange(index):''">
                     <template :slot="column.prop+'Type'"
                               slot-scope="{item,label,value}"
@@ -246,6 +247,7 @@ export default create({
     },
     uploadBefore: Function,
     uploadAfter: Function,
+    onRemove:Function,
     value: {
       type: Object,
       required: true,
