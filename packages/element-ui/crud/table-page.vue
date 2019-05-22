@@ -35,8 +35,8 @@ export default create({
   created() {
     this.vaildData = vaildData;
     //初始化分页
-    this.$parent.$emit("on-load", this.defaultPage);
     this.pageInit();
+    this.$parent.$emit("on-load", this.defaultPage);
   },
   computed: {
     pageFlag() {
