@@ -143,6 +143,7 @@ export default create({
           const list = (optionData.series || []).map((ele, index) => {
             return Object.assign(ele, {
               type: "bar",
+              stack: ele.stack,
               barWidth: this.option.barWidth || 16,
               barMinHeight: this.option.barMinHeight || 0,
               itemStyle: {
@@ -151,7 +152,13 @@ export default create({
               },
               label: {
                 show: this.vaildData(this.option.labelShow, false), //开启显示
-                position: "top", //在上方显示
+                position: "top", //在上方显示,
+                formatter: name => {
+                  if (this.labelFormatter) {
+                    return this.labelFormatter(name);
+                  }
+                  return name.value;
+                },
                 textStyle: {
                   //数值样式
                   fontSize: this.option.labelShowFontSize || 14,

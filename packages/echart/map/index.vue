@@ -145,7 +145,14 @@ export default create({
         if (this.zoomData >= ele.zoom) {
           return {
             name: ele.name,
-            value: [ele.lng, ele.lat, ele.value]
+            value: [ele.lng, ele.lat, ele.value],
+            symbolSize: this.fontSize,
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: this.fontSize + 20
+              }
+            }
           };
         }
       });
@@ -192,9 +199,9 @@ export default create({
         this.myChart.dispatchAction({
           type: "hideTip"
         });
-        this.myChart.dispatchAction({
-          type: "downplay"
-        });
+        // this.myChart.dispatchAction({
+        //   type: "downplay"
+        // });
       });
     },
     setBanner() {
@@ -235,6 +242,7 @@ export default create({
               return {};
             })(),
             {
+              backgroundColor: "rgba(0,0,0,1)",
               textStyle: {
                 fontSize: this.option.tipFontSize,
                 color: this.option.tipColor || "#fff"
@@ -259,6 +267,8 @@ export default create({
               }
             },
             zoom: this.zoomData,
+            layoutCenter: ["50%", "50%"],
+            layoutSize: 1200,
             roam: true,
             label: {
               show: true,
@@ -289,7 +299,6 @@ export default create({
             type: "scatter",
             coordinateSystem: "geo",
             data: this.locationData,
-            symbolSize: this.fontSize,
             label: {
               show: true,
               position: ["130%", "0"],
@@ -305,10 +314,7 @@ export default create({
           }
         ]
       };
-      this.myChart.on("mouseover", () => {
-        clearInterval(this.bannerCheck);
-        this.resetBanner();
-      });
+
       this.myChart.on("click", e => {
         if (e.marker) {
           if (this.clickFormatter) {
@@ -320,7 +326,10 @@ export default create({
           }
         }
       });
-
+      this.myChart.on("mouseover", () => {
+        clearInterval(this.bannerCheck);
+        this.resetBanner();
+      });
       this.myChart.on("mouseout", () => {
         this.bannerCount = 0;
         this.setBanner();
@@ -330,6 +339,7 @@ export default create({
         const geo = option.geo[0];
         this.centerData = geo.center;
         this.zoomData = geo.zoom;
+        if (this.zoomData < 1) this.zoomData = 1;
       });
 
       this.myChart.resize();

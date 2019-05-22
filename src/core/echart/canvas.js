@@ -6,6 +6,7 @@ export default (() => {
       click: Function,
       dataFormatter: Function,
       titleFormatter: Function,
+      labelFormatter: Function,
       clickFormatter: Function,
       formatter: Function,
       width: {
@@ -50,6 +51,10 @@ export default (() => {
       homeUrl: {
         type: String,
       },
+      dataAppend: {
+        type: Boolean,
+        default: false,
+      },
       dataMethod: {
         type: String,
         default: 'get',
@@ -76,16 +81,23 @@ export default (() => {
     },
     data() {
       return {
+        propQuery: {},
+        dataCount: 0,
         headerHeight: '',
         checkChart: '',
         myChart: "",
-        dataChart: '',
+        dataChart: [],
         dataUrl: '',
         key: false,
         isChart: true,
       };
     },
     watch: {
+      styleChartName() {
+        this.$nextTick(() => {
+          this.myChart.resize();
+        })
+      },
       url: {
         handler(val) {
           this.dataUrl = val || '';
@@ -120,8 +132,16 @@ export default (() => {
       dataChartLen() {
         return (this.dataChart || []).length
       },
+      datetime() {
+        return this.option.datetime || 'datetime'
+      },
       name() {
         return this.$el.className.replace('avue-echart-', '').replace('avue-echart', '').replace(' ', '');
+      },
+      minWidth() {
+        const val = this.option.minWidth
+        if (val > this.width) return val
+
       },
       isApi() {
         return this.dataType === 1;
@@ -131,16 +151,24 @@ export default (() => {
       },
       styleChartName() {
         const obj = {
-          width: setPx(this.width),
+          width: setPx(this.minWidth || this.width),
           height: setPx(this.height)
         };
         return obj
       },
       styleSizeName() {
-        return {
+        return Object.assign({
           width: setPx((this.width)),
           height: setPx((this.height))
-        };
+        }, (() => {
+          if (this.minWidth) {
+            return {
+              overflowX: 'auto',
+              overflowY: 'hidden'
+            }
+          }
+          return {}
+        })());
       }
     },
     mounted() {
@@ -154,7 +182,6 @@ export default (() => {
           } else {
             this.isChart = false;
           }
-
           if (this.isChart) {
             this.myChart = window.echarts.init(this.$refs[this.id]);
           }
@@ -174,7 +201,20 @@ export default (() => {
             let dataUrl = this.dataUrl.replace('${HOME_URL}', this.homeUrl);
             const detail = (res) => {
               const data = typeof (this.dataFormatter) === 'function' ? this.dataFormatter(res.data) : res.data
-              this.dataChart = data.data || {};
+              const result = data.data || {};
+              if (this.dataAppend) {
+                for (let i = 0; i < result.length; i++) {
+                  if (i === result.length - 1) {
+                    this.propQuery.datetime = result[i][this.datetime]
+                  }
+                  this.dataCount++;
+                  setTimeout(() => {
+                    this.dataChart.unshift(result[i]);
+                  }, this.dataCount * 1500);
+                }
+              } else {
+                this.dataChart = result;
+              }
               if (this.isChart && this.myChart) {
                 this.myChart.clear();
                 this.updateChart();
@@ -182,7 +222,7 @@ export default (() => {
             }
             if (this.dataMethod === 'get') {
               this.$httpajax.get(dataUrl, {
-                params: this.dataQuery
+                params: Object.assign(this.dataQuery, this.propQuery)
               }).then(res => {
                 detail(res);
               })
@@ -200,7 +240,7 @@ export default (() => {
                   params[label] = value;
                 })
               }
-              this.$httpajax.post(dataUrl, Object.assign(this.dataQuery, params)).then(res => {
+              this.$httpajax.post(dataUrl, Object.assign(this.dataQuery, params, this.propQuery)).then(res => {
                 detail(res);
               })
             }

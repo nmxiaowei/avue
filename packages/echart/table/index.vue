@@ -1,18 +1,31 @@
 <template>
   <div :class="b()"
-       :style="styleSizeName">
+       :style="[styleSizeName,{overflow:(scroll?'hidden':'inherit')}]">
     <el-dialog :visible.sync="visible"
                modal-append-to-body
                append-to-body
+               title="数据显隐"
                width="30%">
       <avue-checkbox :dic="columnList"
                      v-model="columnData"></avue-checkbox>
+    </el-dialog>
+    <el-dialog :visible.sync="listVisible"
+               modal-append-to-body
+               :class="b('allview')"
+               title="详细数据"
+               append-to-body
+               width="80%">
+      <avue-crud :option="listOption"
+                 :data="dataTabel"></avue-crud>
     </el-dialog>
     <div :class="b('menu')"
          :style="styleMenuName">
       <i class="el-icon-menu"
          v-if="columnShow"
          @click="visible=true"></i>
+      <i class="el-icon-view"
+         v-if="columnListShow"
+         @click="listVisible=true"></i>
     </div>
     <div :style="styleTdName"
          :class="b('table',{'line':!line})">
@@ -22,37 +35,58 @@
              v-if="index">
           {{indexLabel}}
         </div>
+        <template v-for="(item,index) in columnOption">
+          <div :class="b('td')"
+               :style="[styleThName,styleWidth(item)]"
+               v-if="columnData.includes(item.prop)"
+               :key="index"
+               @click="handleSortable(item.prop)">
+            {{item.label}}
+          </div>
+        </template>
+      </div>
+      <div :class="b('tr')"
+           v-if="totalFlag">
         <div :class="b('td')"
-             v-for="(item,index) in columnOption"
-             :style="[styleThName,styleWidth(item)]"
-             v-if="columnData.includes(item.prop)"
-             :key="index"
-             @click="handleSortable(item.prop)">
-          {{item.label}}
+             :style="[styleThName,{width:setPx(indexWidth)}]"
+             v-if="index">
+          合计
         </div>
+        <template v-for="(item,index) in columnOption">
+          <div :class="b('td')"
+               :style="[styleThName,styleWidth(item)]"
+               v-if="columnData.includes(item.prop)"
+               :key="index">
+            {{totalData[item.prop]}}
+          </div>
+        </template>
       </div>
       <div :class="b('body')"
            ref="body"
            :style="styleSizeName">
-        <div :class="b('tr',['line'])"
-             v-for="(citem,cindex) in dataTabel"
-             :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]"
-             :key="cindex">
-          <div :class="b('td')"
-               :style="[styleThName,styleWidth(citem)]"
-               :key="index"
-               v-if="index">
-            <div :class="b('index',[(cindex+1)+''])"> {{(cindex+1)}}</div>
+        <transition-group :enter-active-class="option.enterActiveClass"
+                          :leave-active-class="option.leaveActiveClass"
+                          tag="div">
+          <div v-for="(citem,cindex) in dataTabel"
+               :key="dataTabelLen-cindex"
+               :class="b('tr',['line'])"
+               :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]">
+            <div :class="b('td')"
+                 :style="[styleThName,styleWidth(citem)]"
+                 :key="index"
+                 v-if="index">
+              <div :class="b('index',[(cindex+1)+''])"> {{(cindex+1)}}</div>
+            </div>
+            <template v-for="(item,index) in columnOption">
+              <div :class="b('td')"
+                   v-if="columnData.includes(item.prop)"
+                   :style="[styleTdName,styleWidth(item)]"
+                   :key="index">
+                <span v-html="citem[item.prop]"></span>
+              </div>
+            </template>
           </div>
-          <div :class="b('td')"
-               v-for="(item,index) in columnOption"
-               v-if="columnData.includes(item.prop)"
-               :style="[styleTdName,styleWidth(item)]"
-               :key="index">
-            <span v-html="citem[item.prop]"></span>
-          </div>
-        </div>
-
+        </transition-group>
       </div>
     </div>
   </div>
@@ -65,6 +99,7 @@ export default create({
   data() {
     return {
       visible: false,
+      listVisible: false,
       columnData: [],
       indexWidth: 50,
       top: 0,
@@ -102,6 +137,47 @@ export default create({
     });
   },
   computed: {
+    listOption() {
+      return Object.assign(
+        {
+          align: "center",
+          headerAlign: "center",
+          size: "mini",
+          menu: false,
+          header: false,
+          height: 500,
+          sumText: "合计",
+          showSummary: true,
+          column: this.option.column
+        },
+        (() => {
+          return {
+            sumColumnList: this.totalList.map(column => {
+              return {
+                name: column,
+                type: "sum"
+              };
+            })
+          };
+        })()
+      );
+    },
+    totalList() {
+      return this.option.totalList || [];
+    },
+    totalFlag() {
+      return !this.validatenull(this.totalList);
+    },
+    totalData() {
+      let obj = {};
+      this.totalList.forEach(prop => {
+        this.dataChart.forEach(ele => {
+          obj[prop] = (obj[prop] || 0) + Number(ele[prop]);
+          obj[prop] = Number(obj[prop].toFixed(2));
+        });
+      });
+      return obj;
+    },
     columnList() {
       let list = this.columnOption.map(ele => {
         if (!this.columnShowWhite.includes(ele.prop)) {
@@ -119,11 +195,17 @@ export default create({
     columnShow() {
       return this.option.columnShow;
     },
+    columnListShow() {
+      return this.option.columnListShow;
+    },
     columnShowWhite() {
       return this.option.columnShowWhite || [];
     },
     columnShowList() {
       return this.option.columnShowList || [];
+    },
+    dataTabelLen() {
+      return this.dataChart.length;
     },
     dataTabel() {
       let list = this.dataChart;
@@ -133,7 +215,7 @@ export default create({
       return list;
     },
     allHeight() {
-      const count = this.count - 1;
+      const count = this.count - (this.totalFlag ? 2 : 1);
       const calcState = this.dataChartLen - count;
       return calcState * this.lineHeight;
     },
@@ -196,6 +278,9 @@ export default create({
         color: this.option.headerColor || "rgba(154, 168, 212, 1)"
       };
     },
+    sortableProp() {
+      return this.option.sortableProp || "order";
+    },
     crudOption() {
       return Object.assign(this.option, {
         menu: false,
@@ -224,20 +309,23 @@ export default create({
       this.top = 0;
     },
     handleSortable(prop) {
-      this.prop = prop;
+      this.propQuery[this.sortableProp] = prop;
+      this.updateData();
     },
     setTime() {
       this.top = 0;
       clearInterval(this.scrollCheck);
-      if (this.scroll) {
-        this.scrollCheck = setInterval(() => {
-          if (this.top <= -this.allHeight) {
-            this.top = 0;
-          } else {
-            this.top = this.top - this.speed;
-          }
-        }, this.scrollTime);
-      }
+      setTimeout(() => {
+        if (this.scroll) {
+          this.scrollCheck = setInterval(() => {
+            if (this.top <= -this.allHeight) {
+              this.top = 0;
+            } else {
+              this.top = this.top - this.speed;
+            }
+          }, this.scrollTime);
+        }
+      }, 2000);
     },
     styleTrName(index) {
       let result = {

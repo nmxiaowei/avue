@@ -5,6 +5,7 @@
 }
 .avue-echart{
   padding: 10px;
+  overflow: inherit;
   &-tabs{
     .el-select{
       width: 100%;
@@ -87,13 +88,17 @@
       overflow: hidden;
     }
     &__menu{
-      padding: 10px 10px;
-      width:100%;
-      display: flex;
-      justify-content: flex-end;
-      box-sizing: border-box;
+      position: absolute;
+      left: 0;
       i{
+        margin-right: 20px;
         font-size: 24px;
+      }
+    }
+    &__allview{
+      opacity: .9;
+      .el-table--enable-row-hover .el-table__body tr:hover>td{
+        background-color: #333;
       }
     }
     &__tr{

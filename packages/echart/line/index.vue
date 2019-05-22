@@ -66,6 +66,7 @@ export default create({
               return {};
             })(),
             {
+              backgroundColor: "rgba(0,0,0,1)",
               trigger: "axis",
               textStyle: {
                 fontSize: this.option.tipFontSize,
