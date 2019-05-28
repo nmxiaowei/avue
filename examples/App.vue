@@ -199,7 +199,7 @@ export default {
 
   created() {
     this.$notify.success({
-      title: "为了更好的满足企业需求，即将发布数据大屏解决方案",
+      title: "数据大屏解决方案已经发布",
       dangerouslyUseHTMLString: true,
       message:
         '<a target="_blank" href="https://avuex.avue.top/#/vip">点击查看</a>',
