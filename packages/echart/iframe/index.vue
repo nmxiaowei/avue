@@ -17,7 +17,7 @@ export default create({
   computed: {},
   created() {},
   mounted() {},
-  methods: {},
+  methods: {}
   props: {
     option: {
       type: Object,

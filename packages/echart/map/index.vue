@@ -142,7 +142,8 @@ export default create({
     locationData() {
       return (this.dataChart || []).map(ele => {
         ele.zoom = ele.zoom || 1;
-        if (this.zoomData >= ele.zoom) {
+        const zoomData = this.zoomData < 1 ? 1 : this.zoomData;
+        if (zoomData >= ele.zoom) {
           return {
             name: ele.name,
             value: [ele.lng, ele.lat, ele.value],

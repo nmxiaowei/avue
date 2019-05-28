@@ -9,7 +9,7 @@
 <script>
 import create from "core/echart/create";
 export default create({
-  name: "pictorialBar",
+  name: "pictorialbar",
   methods: {
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
@@ -79,8 +79,8 @@ export default create({
         grid: {
           top: "center",
           height: Number(this.option.split) * 10,
-          left: 70,
-          right: 100
+          left: this.option.gridX || 70,
+          right: this.option.gridX2 || 100
         },
         series: [
           {
