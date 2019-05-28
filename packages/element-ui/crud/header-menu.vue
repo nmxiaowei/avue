@@ -42,7 +42,7 @@
                    v-if="vaildData($parent.tableOption.refreshBtn,config.refreshBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
-                  content="列显隐"
+                  :content="t('crud.showBtn')"
                   placement="top">
         <el-button :icon="config.columnBtnIcon"
                    circle

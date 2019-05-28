@@ -89,44 +89,46 @@ export default create({
       dateList: dateList,
       columnProps: {
         value: "prop"
-      },
-      symbolDic: [
-        {
-          label: "等于",
-          value: "="
-        },
-        {
-          label: "不等于",
-          value: "≠"
-        },
-        {
-          label: "相似",
-          value: "like"
-        },
-        {
-          label: "大于",
-          value: ">"
-        },
-        {
-          label: "大于等于",
-          value: "≥"
-        },
-        {
-          label: "小于",
-          value: "<"
-        },
-        {
-          label: "小于等于",
-          value: "≤"
-        },
-        {
-          label: "包含",
-          value: "∈"
-        }
-      ]
+      }
     };
   },
   computed: {
+    symbolDic() {
+      return [
+        {
+          label: "=",
+          value: "="
+        },
+        {
+          label: "≠",
+          value: "≠"
+        },
+        {
+          label: "like",
+          value: "like"
+        },
+        {
+          label: ">",
+          value: ">"
+        },
+        {
+          label: "≥",
+          value: "≥"
+        },
+        {
+          label: "<",
+          value: "<"
+        },
+        {
+          label: "≤",
+          value: "≤"
+        },
+        {
+          label: "∈",
+          value: "∈"
+        }
+      ];
+    },
     result() {
       let result = [];
       this.list.forEach(ele => {
