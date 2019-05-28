@@ -1,5 +1,6 @@
 export default {
   common: {
+    condition: '条件',
     display: '显示',
     hide: '隐藏'
   },

@@ -1,5 +1,6 @@
 export default {
   common: {
+    condition: 'condition',
     display: 'display',
     hide: 'hide'
   },

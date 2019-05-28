@@ -48,7 +48,7 @@
                    :format="columnList[index].format"
                    :is="getSearchType(columnList[index].type)"
                    multiple
-                   placeholder="条件"
+                   :placeholder="t('common.condition')"
                    :parent="columnList[index].parent"
                    :props="columnList[index].props || $parent.tableOption.props"
                    :size="$parent.isMediumSize"
