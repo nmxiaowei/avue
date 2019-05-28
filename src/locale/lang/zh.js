@@ -1,4 +1,8 @@
 export default {
+  common: {
+    display: '显示',
+    hide: '隐藏'
+  },
   tip: {
     select: '请选择',
     input: '请输入'

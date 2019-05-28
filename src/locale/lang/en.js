@@ -1,4 +1,8 @@
 export default {
+  common: {
+    display: 'display',
+    hide: 'hide'
+  },
   tip: {
     select: 'please select',
     input: 'please input'

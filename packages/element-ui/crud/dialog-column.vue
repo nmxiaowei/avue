@@ -9,7 +9,7 @@
              :visible.sync="columnBox">
     <el-transfer v-model="columnIndex"
                  :data="columnList"
-                 :titles="['隐藏', '显示']"
+                 :titles="[t('common.hide'), t('common.display')]"
                  :props="defaultProps"></el-transfer>
 
   </el-dialog>
