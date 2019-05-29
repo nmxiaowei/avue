@@ -95,7 +95,7 @@ export default (() => {
     watch: {
       styleChartName() {
         this.$nextTick(() => {
-          this.myChart.resize();
+          this.myChart && this.myChart.resize();
         })
       },
       url: {

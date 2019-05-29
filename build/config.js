@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const version = process.env.VERSION || require('../package.json').version;
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const banner =
-  ' Avuex.js v' +
+  ' Avue.js v' +
   version +
   '\n' +
   ' (c) 2017-' +

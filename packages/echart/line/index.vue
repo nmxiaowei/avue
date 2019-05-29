@@ -1,14 +1,6 @@
 <template>
   <div class="avue-echart avue-echart-line"
        :style="styleSizeName">
-    <echart-title ref="header"
-                  :title="option.title"
-                  :color="option.titleColor"
-                  :info="option.info"
-                  :font-size="option.titleFontSize"
-                  :link="option.titleLink"
-                  :show="option.titleShow"
-                  :postion="option.titlePostion"></echart-title>
     <div :ref="id"
          :style="styleChartName"></div>
   </div>
@@ -16,12 +8,8 @@
 
 <script>
 import create from "core/echart/create";
-import echartTitle from "../title";
 export default create({
   name: "line",
-  components: {
-    echartTitle
-  },
   computed: {
     x2() {
       return this.option.gridX2 || 20;
