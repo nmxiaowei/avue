@@ -1,7 +1,7 @@
 {
-  "name": "avuex",
-  "version": "1.1.0",
-  "description": "",
+  "name": "@smallwei/avue",
+  "version": "2.0.0",
+  "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
   "jsdelivr": "lib/avue.min.js",
@@ -15,12 +15,20 @@
     "build:all": "npm run build && npm run build:vant"
   },
   "keywords": [
+    "vue",
     "element-ui",
-    "avue",
-    "avuex"
+    "avue"
   ],
-  "author": "Smallwei",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitee.com/smallweigit/avue.git"
+  },
+  "author": "smallwei",
   "license": "MIT",
+  "bugs": {
+    "url": "https://gitee.com/smallweigit/avue/issues"
+  },
+  "homepage": "https://gitee.com/smallweigit/avue/blob/master/README.md",
   "devDependencies": {
     "babel-cli": "^6.14.0",
     "babel-core": "^6.14.0",
