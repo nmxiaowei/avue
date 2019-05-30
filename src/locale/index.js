@@ -1,9 +1,9 @@
 
 import zh from './lang/zh';
-import en from './lang/en';
-import Vue from 'vue';
+import en from './lang/en';;
 import deepmerge from 'deepmerge';
 import Format from './format';
+const Vue = window.Vue;
 const format = Format(Vue);
 let lang = zh;
 let merged = false;
