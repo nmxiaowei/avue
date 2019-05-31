@@ -26,20 +26,17 @@ export const watermark = function (text = 'avue商用通用无敌大水印') {
   ctx.rotate('20*Math.PI/180');  //坐标系还原,如果后续没有其他操作,这一步可以省略
   // 将canvas的内容转换为base64编码
   let data = canvas.toDataURL('image/png', 1);  //1表示质量(无损压缩)
-
-  window.onload = () => {
-    let background = "url(" + data + ") repeat";
-    var watermark = document.createElement('div');
-    watermark.style.width = '100%';
-    watermark.style.height = '100%';
-    watermark.style.position = 'fixed'
-    watermark.style.left = '0'
-    watermark.style.top = '0'
-    watermark.style.pointerEvents = 'none'
-    watermark.style.background = background
-    watermark.style.zIndex = '9999'
-    document.body.append(watermark);
-  }
+  let background = "url(" + data + ") repeat";
+  var watermark = document.createElement('div');
+  watermark.style.width = '100%';
+  watermark.style.height = '100%';
+  watermark.style.position = 'fixed'
+  watermark.style.left = '0'
+  watermark.style.top = '0'
+  watermark.style.pointerEvents = 'none'
+  watermark.style.background = background
+  watermark.style.zIndex = '9999'
+  document.body.append(watermark);
 }
 
 //将base64转换为文件

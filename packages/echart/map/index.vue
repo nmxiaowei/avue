@@ -84,6 +84,9 @@ export default create({
     }
   },
   computed: {
+    zoomShow() {
+      return this.option.zoomShow || 1;
+    },
     zoom() {
       return this.option.zoom || 1;
     },
@@ -144,17 +147,26 @@ export default create({
         ele.zoom = ele.zoom || 1;
         const zoomData = this.zoomData < 1 ? 1 : this.zoomData;
         if (zoomData >= ele.zoom) {
-          return {
-            name: ele.name,
-            value: [ele.lng, ele.lat, ele.value],
-            symbolSize: this.fontSize,
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: this.fontSize + 20
+          return Object.assign(
+            (() => {
+              if (this.zoomShow <= this.zoomData) {
+                return {
+                  name: ele.name
+                };
+              }
+              return {};
+            })(),
+            {
+              value: [ele.lng, ele.lat, ele.value],
+              symbolSize: this.fontSize,
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: this.fontSize + 20
+                }
               }
             }
-          };
+          );
         }
       });
     }
