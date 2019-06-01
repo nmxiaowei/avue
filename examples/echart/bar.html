@@ -31,7 +31,10 @@
     <el-button type="primary" @click="dialogVisible=true">打开设置</el-button>
     <el-button @click='change1'>换紫色主题</el-button>
     <el-button @click='change2'>换绿色主题</el-button>
+    <avue-echart-bar ref="echart" :option="config" :data="apiData"></avue-echart-bar>
+    <!-- <avue-echart-line ref="echart" :theme='theme' :option="config" :data="apiData"></avue-echart-line>
     <avue-echart-bar ref="echart" :theme='theme' :option="config" :data="apiData"></avue-echart-bar>
+    <avue-echart-line ref="echart" :theme='theme' :option="config" :data="apiData"></avue-echart-line> -->
     <avue-drawer :width="500" title="设置" show-close v-model="dialogVisible">
       <avue-tabs :option="tabsOption" @change="handleChange"></avue-tabs>
       <avue-form v-show="type==='base'" :option="formOption" v-model="config">
@@ -56,7 +59,7 @@
     el: '#app',
     data() {
       return {
-        theme: theme.themeName,
+        // theme: theme.themeName,
         CodeMirrorEditor: {},
         dialogVisible: true,
         apiText: '',
@@ -333,6 +336,8 @@
           }]
         },
         config: {
+          legendShow: false,
+          switchTheme: false,
           refreshTime: 5000,
           title: '2019年度潍坊城市销售额排名',
           titlePostion: '',

@@ -99,6 +99,7 @@ export default (() => {
     },
     watch: {
       styleChartName() {
+
         this.$nextTick(() => {
           this.myChart && this.myChart.resize();
         });
@@ -272,6 +273,34 @@ export default (() => {
             }, this.time);
           }
         });
+
+      },
+      // 下面俩都是公共的方法,就放这里面共用
+      getColor(index, first) {
+        const barColor = this.option.barColor || [];
+        if (barColor[index]) {
+          const color1 = barColor[index].color1;
+          const color2 = barColor[index].color2;
+          const postion = (barColor[index].postion || 0.9) * 0.01;
+          if (first) return color1;
+          if (color2) {
+            return new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: color1
+            },
+            {
+              offset: postion,
+              color: color2
+            }
+            ]);
+          }
+          return color1;
+        }
+      },
+      ishasprop(condition, isprop, alwaysObj) {
+        return Object.assign((() => {
+          return condition ? isprop : {};
+        })(), alwaysObj);
       }
     }
   };
