@@ -157,14 +157,7 @@ export default create({
               return {};
             })(),
             {
-              value: [ele.lng, ele.lat, ele.value],
-              symbolSize: this.fontSize,
-              emphasis: {
-                label: {
-                  show: true,
-                  fontSize: this.fontSize + 20
-                }
-              }
+              value: [ele.lng, ele.lat, ele.value]
             }
           );
         }
@@ -309,8 +302,15 @@ export default create({
         ),
         series: [
           {
-            type: "scatter",
+            type: "effectScatter",
             coordinateSystem: "geo",
+            showEffectOn: "emphasis",
+            rippleEffect: {
+              brushType: "fill",
+              scale: 4
+            },
+            symbolSize: this.fontSize,
+            hoverAnimation: true,
             data: this.locationData,
             label: {
               show: true,
@@ -323,6 +323,16 @@ export default create({
             },
             itemStyle: {
               color: this.color
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: this.fontSize + 20,
+                color: this.option.empColor
+              },
+              itemStyle: {
+                color: this.option.empColor
+              }
             }
           }
         ]
