@@ -31,6 +31,13 @@ export default create({
                   (this.option.barColor || []).forEach(ele => {
                     list.push([ele.postion, ele.color1]);
                   });
+                  if (this.validatenull(list)) {
+                    list = [
+                      [0, 2, "#91c7ae"],
+                      [0.8, "#638693"],
+                      [1, "#c23531"]
+                    ];
+                  }
                   return list;
                 })(),
                 width: this.option.lineSize || 5
