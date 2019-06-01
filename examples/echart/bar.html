@@ -20,13 +20,18 @@
   <script src="../cdn/codemirror/addon/lint/lint.js"></script>
   <script src="../cdn/codemirror/mode/javascript/javascript.js"></script>
   <script src="../../../lib/avue.js"></script>
+  <script src="../theme/avue.project.js"></script>
+  <script src="../theme/halloween.project.js"></script>
+  <script src="../theme/wonderland.project.js"></script>
 
 </head>
 
 <body>
   <div id="app">
     <el-button type="primary" @click="dialogVisible=true">打开设置</el-button>
-    <avue-echart-bar ref="echart" :option="config" :data="apiData"></avue-echart-bar>
+    <el-button @click='change1'>换紫色主题</el-button>
+    <el-button @click='change2'>换绿色主题</el-button>
+    <avue-echart-bar ref="echart" :theme='theme' :option="config" :data="apiData"></avue-echart-bar>
     <avue-drawer :width="500" title="设置" show-close v-model="dialogVisible">
       <avue-tabs :option="tabsOption" @change="handleChange"></avue-tabs>
       <avue-form v-show="type==='base'" :option="formOption" v-model="config">
@@ -44,11 +49,14 @@
   </div>
 </body>
 <script>
-
+  window.echarts.registerTheme(theme.themeName, theme.theme)
+  window.echarts.registerTheme(theme1.themeName, theme1.theme)
+  window.echarts.registerTheme(theme2.themeName, theme2.theme)
   new Vue({
     el: '#app',
     data() {
       return {
+        theme: theme.themeName,
         CodeMirrorEditor: {},
         dialogVisible: true,
         apiText: '',
@@ -64,33 +72,31 @@
             "广州",
             "连云港"
           ],
-          "series": [
-            {
-              "name": "手机品牌",
-              "data": [
-                1131776,
-                1349011,
-                905718,
-                1349011,
-                905718,
-                656020,
-                571234,
-                467397
-              ]
-            }, {
-              "name": "其他手机品牌",
-              "data": [
-                1131776,
-                1349011,
-                905718,
-                1349011,
-                905718,
-                656020,
-                571234,
-                467397
-              ]
-            }
-          ]
+          "series": [{
+            "name": "手机品牌",
+            "data": [
+              1131776,
+              1349011,
+              905718,
+              1349011,
+              905718,
+              656020,
+              571234,
+              467397
+            ]
+          }, {
+            "name": "其他手机品牌",
+            "data": [
+              1131776,
+              1349011,
+              905718,
+              1349011,
+              905718,
+              656020,
+              571234,
+              467397
+            ]
+          }]
         },
         type: 'base',
         tabsOption: {
@@ -369,9 +375,15 @@
         }
       }
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
+      change1() {
+        console.log(theme1.themeName);
+        this.theme = theme1.themeName
+      },
+      change2() {
+        this.theme = theme2.themeName
+      },
       getVal() {
         try {
           this.apiData = JSON.parse(this.apiText)
@@ -419,6 +431,7 @@
       }
     }
   })
+
 </script>
 
 </html>

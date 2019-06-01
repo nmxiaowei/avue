@@ -1,5 +1,7 @@
-import { setPx } from 'utils/util'
-import echartList from './list'
+import {
+  setPx
+} from 'utils/util';
+import echartList from './list';
 export default (() => {
   return {
     props: {
@@ -17,6 +19,9 @@ export default (() => {
         type: Number,
         default: 600
       },
+      theme: {
+        type: String
+      },
       animation: {
         type: Boolean,
         default: true
@@ -24,15 +29,15 @@ export default (() => {
       child: {
         type: Object,
         default: () => {
-          return {}
+          return {};
         }
       },
       time: {
         type: Number,
-        default: 0,
+        default: 0
       },
       url: {
-        type: String,
+        type: String
       },
       disabled: {
         type: Boolean,
@@ -40,24 +45,24 @@ export default (() => {
       },
       dataType: {
         type: Number,
-        default: 0,
+        default: 0
       },
       dataQuery: {
         type: Object,
         default: () => {
-          return {}
-        },
+          return {};
+        }
       },
       homeUrl: {
-        type: String,
+        type: String
       },
       dataAppend: {
         type: Boolean,
-        default: false,
+        default: false
       },
       dataMethod: {
         type: String,
-        default: 'get',
+        default: 'get'
       },
       id: {
         type: String,
@@ -85,18 +90,18 @@ export default (() => {
         dataCount: 0,
         headerHeight: '',
         checkChart: '',
-        myChart: "",
+        myChart: '',
         dataChart: [],
         dataUrl: '',
         key: false,
-        isChart: true,
+        isChart: true
       };
     },
     watch: {
       styleChartName() {
         this.$nextTick(() => {
           this.myChart && this.myChart.resize();
-        })
+        });
       },
       url: {
         handler(val) {
@@ -118,6 +123,12 @@ export default (() => {
       height() {
         this.updateData();
       },
+      theme() {
+        // 这三句一句都不能少
+        this.myChart.dispose();
+        this.init();
+        this.updateData();
+      },
       option: {
         handler() {
           if (this.myChart && this.isChart) {
@@ -130,31 +141,31 @@ export default (() => {
     },
     computed: {
       dataChartLen() {
-        return (this.dataChart || []).length
+        return (this.dataChart || []).length;
       },
       datetime() {
-        return this.option.datetime || 'datetime'
+        return this.option.datetime || 'datetime';
       },
       name() {
         return this.$el.className.replace('avue-echart-', '').replace('avue-echart', '').replace(' ', '');
       },
       minWidth() {
-        const val = this.option.minWidth
-        if (val > this.width) return val
+        const val = this.option.minWidth;
+        if (val > this.width) return val;
 
       },
       isApi() {
         return this.dataType === 1;
       },
       style() {
-        return this.component.style || {}
+        return this.component.style || {};
       },
       styleChartName() {
         const obj = {
           width: setPx(this.minWidth || this.width),
           height: setPx(this.height)
         };
-        return obj
+        return obj;
       },
       styleSizeName() {
         return Object.assign({
@@ -165,9 +176,9 @@ export default (() => {
             return {
               overflowX: 'auto',
               overflowY: 'hidden'
-            }
+            };
           }
-          return {}
+          return {};
         })());
       }
     },
@@ -183,29 +194,29 @@ export default (() => {
             this.isChart = false;
           }
           if (this.isChart) {
-            this.myChart = window.echarts.init(this.$refs[this.id]);
+            this.myChart = window.echarts.init(this.$refs[this.id], this.theme);
           }
         }
       },
       updateUrl(url) {
-        this.dataUrl = url
+        this.dataUrl = url;
         this.updateData();
       },
       updateData() {
         this.resetData && this.resetData();
-        if (this.key) return
+        if (this.key) return;
         this.key = true;
         const callback = () => {
           this.key = false;
           if (this.isApi) {
             let dataUrl = this.dataUrl.replace('${HOME_URL}', this.homeUrl);
             const detail = (res) => {
-              const data = typeof (this.dataFormatter) === 'function' ? this.dataFormatter(res.data) : res.data
+              const data = typeof (this.dataFormatter) === 'function' ? this.dataFormatter(res.data) : res.data;
               const result = data.data || {};
               if (this.dataAppend) {
                 for (let i = 0; i < result.length; i++) {
                   if (i === result.length - 1) {
-                    this.propQuery.datetime = result[i][this.datetime]
+                    this.propQuery.datetime = result[i][this.datetime];
                   }
                   this.dataCount++;
                   setTimeout(() => {
@@ -219,18 +230,18 @@ export default (() => {
                 this.myChart.clear();
                 this.updateChart();
               }
-            }
+            };
             if (this.dataMethod === 'get') {
               this.$httpajax.get(dataUrl, {
                 params: Object.assign(this.dataQuery, this.propQuery)
               }).then(res => {
                 detail(res);
-              })
+              });
             } else if (this.dataMethod === 'post') {
               let params = {};
               let url = dataUrl;
-              if (url.includes("?")) {
-                const index = url.indexOf("?");
+              if (url.includes('?')) {
+                const index = url.indexOf('?');
                 url = url.substr(index + 1);
                 let list = url.split('&');
                 list.forEach(ele => {
@@ -238,11 +249,11 @@ export default (() => {
                   let label = dic[0];
                   let value = dic[1];
                   params[label] = value;
-                })
+                });
               }
               this.$httpajax.post(dataUrl, Object.assign(this.dataQuery, params, this.propQuery)).then(res => {
                 detail(res);
-              })
+              });
             }
           } else {
             this.dataChart = this.data || {};
@@ -251,7 +262,7 @@ export default (() => {
               this.updateChart();
             }
           }
-        }
+        };
         this.$nextTick(() => {
           callback();
           clearInterval(this.checkChart);
@@ -260,8 +271,8 @@ export default (() => {
               callback();
             }, this.time);
           }
-        })
-      },
+        });
+      }
     }
-  }
-})()
+  };
+})();

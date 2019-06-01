@@ -16,28 +16,6 @@ export default create({
     }
   },
   methods: {
-    getColor(index, first) {
-      const barColor = this.option.barColor || [];
-      if (barColor[index]) {
-        const color1 = barColor[index].color1;
-        const color2 = barColor[index].color2;
-        const postion = (barColor[index].postion || 0.9) * 0.01;
-        if (first) return color1;
-        if (color2) {
-          return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: color1
-            },
-            {
-              offset: postion,
-              color: color2
-            }
-          ]);
-        }
-        return color1;
-      }
-    },
     updateChart() {
       const optionData = this.deepClone(this.dataChart);
       const option = {
@@ -56,7 +34,6 @@ export default create({
             {
               textStyle: {
                 fontSize: this.option.tipFontSize,
-                color: this.option.tipColor || "#fff"
               }
             }
           );
@@ -77,22 +54,13 @@ export default create({
           data: (() => {
             return (optionData.series || []).map((ele, index) => {
               return {
-                name: ele.name,
-                textStyle: {
-                  borderColor: this.getColor(index, true),
-                  color: this.getColor(index, true)
-                }
+                name: ele.name,            
               };
             });
           })()
         },
         xAxis: {
           type: this.option.category ? "value" : "category",
-          axisLine: {
-            lineStyle: {
-              color: this.option.lineColor || "#333"
-            }
-          },
           data: optionData.categories || [],
           inverse: this.vaildData(this.option.xAxisInverse, false),
           show: this.vaildData(this.option.xAxisShow, true),
@@ -101,7 +69,6 @@ export default create({
           },
           axisLabel: {
             textStyle: {
-              color: this.option.nameColor || "#333",
               fontSize: this.option.xNameFontSize || 14
             }
           }
@@ -111,13 +78,7 @@ export default create({
           data: optionData.categories || [],
           axisLabel: {
             textStyle: {
-              color: this.option.nameColor || "#333",
               fontSize: this.option.yNameFontSize || 14
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              color: this.option.lineColor || "#333"
             }
           },
           inverse: this.vaildData(this.option.yAxisInverse, false),
@@ -127,7 +88,6 @@ export default create({
           }
         },
         series: (() => {
-          const barColor = this.option.barColor || [];
           const list = (optionData.series || []).map((ele, index) => {
             return Object.assign(ele, {
               type: "bar",
@@ -135,7 +95,6 @@ export default create({
               barWidth: this.option.barWidth || 16,
               barMinHeight: this.option.barMinHeight || 0,
               itemStyle: {
-                color: this.getColor(index),
                 barBorderRadius: this.option.barRadius || 0
               },
               label: {
@@ -150,7 +109,6 @@ export default create({
                 textStyle: {
                   //数值样式
                   fontSize: this.option.labelShowFontSize || 14,
-                  color: this.option.labelShowColor || "#333",
                   fontWeight: this.option.labelShowFontWeight || 500
                 }
               }
