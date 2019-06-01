@@ -2,7 +2,7 @@
   <div class="avue-echart avue-echart-img"
        :style="styleSizeName">
     <img :style="[styleImgName,styleSizeName]"
-         :src="dataChart"
+         :src="src"
          :class="b({'rotate': rotate})"
          draggable="false" />
   </div>
@@ -13,6 +13,9 @@ import create from "core/echart/create";
 export default create({
   name: "img",
   computed: {
+    src() {
+      return this.validatenull(this.dataChart) ? "" : this.dataChart;
+    },
     styleImgName() {
       return Object.assign(
         (() => {

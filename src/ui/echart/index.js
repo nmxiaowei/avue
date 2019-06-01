@@ -13,8 +13,9 @@ import Gauge from 'packages/echart/gauge';
 import Progress from 'packages/echart/progress';
 import Maps from 'packages/echart/map';
 import Img from 'packages/echart/img';
+import ImgBorder from 'packages/echart/imgBorder';
 import Tabs from 'packages/echart/tabs';
 import Slide from 'packages/echart/slide'
 import PictorialBar from 'packages/echart/pictorialBar';
 
-export default [Slide, Tabs, Video, WordCloud, PictorialBar, Maps, Img, Bar, Gauge, Iframe, Swiper, Table, Pie, Text, Line, Flop, Datetime, Progress];
+export default [Slide, Tabs, Video, WordCloud, PictorialBar, Maps, Img, ImgBorder, Bar, Gauge, Iframe, Swiper, Table, Pie, Text, Line, Flop, Datetime, Progress];

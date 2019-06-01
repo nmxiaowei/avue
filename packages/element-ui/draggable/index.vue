@@ -1,8 +1,8 @@
 <template>
   <div :class="b({'active':(active || overActive),'move':moveActive,'click':disabled})"
-       @mouseover="disabled?false:handleMouseOver($event)"
-       @mouseout="disabled?false:handleMouseOut($event)"
-       @mousedown="disabled?false:handleMouseDown($event)"
+       @mouseover.stop="disabled?false:handleMouseOver($event)"
+       @mouseout.stop="disabled?false:handleMouseOut($event)"
+       @mousedown.stop="disabled?false:handleMouseDown($event)"
        @mousemove="disabled?false:handleMouseMove($event)"
        @mouseup="disabled?false:handleMouseUp($event)"
        :style="styleName">
@@ -231,6 +231,12 @@ export default create({
   },
 
   methods: {
+    setLeft(left) {
+      this.baseLeft = left;
+    },
+    setTop(top) {
+      this.baseTop = top;
+    },
     getRangeStyle(postion) {
       const calc = (10 * this.scaleVal) / 2;
       let result = {};

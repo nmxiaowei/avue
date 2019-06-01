@@ -48,7 +48,7 @@ export default create({
       }
     },
     updateChart() {
-      const optionData = this.deepClone(this.dataChart);
+      const optionData = this.deepClone(this.dataChart) || [];
       const option = {
         tooltip: (() => {
           return Object.assign(
@@ -77,22 +77,16 @@ export default create({
           y2: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
+          orient: this.option.legendOrient || "vertical",
+          x: this.option.legendPostion || "left",
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendShowFontSize || 12
+            fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
-            return (optionData.series || []).map((ele, index) => {
-              return {
-                name: ele.name,
-                textStyle: {
-                  borderColor: this.getColor(index, true),
-                  color: this.getColor(index, true)
-                }
-              };
-            });
+            return optionData.map((ele, index) => ele.name);
           })()
         },
         series: (() => {

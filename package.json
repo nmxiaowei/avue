@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.0.0",
+  "version": "2.0.1-alpha.1",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -62,7 +62,6 @@
     "progress-bar-webpack-plugin": "^1.11.0",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0",
-    "vue": "^2.5.2",
     "vue-loader": "^13.3.0",
     "vue-template-compiler": "^2.5.2",
     "vue-template-es2015-compiler": "^1.6.0",
