@@ -14,18 +14,27 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.11/theme-chalk/index.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
+  <script src="../theme/avue.project.js"></script>
+  <script src="../theme/halloween.project.js"></script>
+  <script src="../theme/wonderland.project.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <avue-echart-pie :option="option" :data="data"></avue-echart-pie>
+    <el-button @click='change1'>换紫色主题</el-button>
+    <el-button @click='change2'>换绿色主题</el-button>
+    <avue-echart-pie :theme='theme' :option="option" :data="data"></avue-echart-pie>
   </div>
 </body>
 <script>
+  window.echarts.registerTheme(theme.themeName, theme.theme)
+  window.echarts.registerTheme(theme1.themeName, theme1.theme)
+  window.echarts.registerTheme(theme2.themeName, theme2.theme)
   new Vue({
     el: '#app',
     data() {
       return {
+        theme: "",
         data: [{
             value: 335,
             name: '直接访问'
@@ -48,6 +57,7 @@
           }
         ],
         option: {
+          switchTheme: true,
           width: '100%',
           height: 600,
           title: '手机大比拼',
@@ -96,9 +106,19 @@
               name: '搜索引擎'
             }
           ]
-        }
+        },
+
       }
-    }
+    },
+    methods: {
+      change1() {
+        console.log(theme1.themeName);
+        this.theme = theme1.themeName
+      },
+      change2() {
+        this.theme = theme2.themeName
+      },
+    },
   })
 
 </script>

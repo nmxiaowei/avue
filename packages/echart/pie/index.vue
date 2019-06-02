@@ -96,18 +96,16 @@ export default create({
                 }
                 return list;
               })(),
-              itemStyle: (() => {
-                return {
-                  emphasis: {
+              itemStyle:this.ishasprop(!this.option.switchTheme,{
+                        normal: {
+                    color:
+                     params => this.getColor(params.dataIndex)
+                  }
+                      },{emphasis: {
                     shadowBlur: 10,
                     shadowOffsetX: 0,
                     shadowColor: "rgba(0, 0, 0, 0.5)"
-                  },
-                  normal: {
-                    color: params => this.getColor(params.dataIndex)
-                  }
-                };
-              })()
+                  }}),            
             }
           ];
           return list;

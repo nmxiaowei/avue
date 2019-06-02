@@ -275,7 +275,7 @@ export default (() => {
         });
 
       },
-      // 下面俩都是公共的方法,就放这里面共用
+      // 下面俩都是chart的公共的方法,就放这里面共用
       getColor(index, first) {
         const barColor = this.option.barColor || [];
         if (barColor[index]) {
@@ -284,15 +284,21 @@ export default (() => {
           const postion = (barColor[index].postion || 0.9) * 0.01;
           if (first) return color1;
           if (color2) {
-            return new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-              offset: 0,
-              color: color1
-            },
-            {
-              offset: postion,
-              color: color2
-            }
-            ]);
+            return {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0,
+                color: color1 // 0% 处的颜色
+              }, {
+                offset: postion,
+                color: color2 // 100% 处的颜色
+              }],
+              global: false // 缺省为 false
+            };
           }
           return color1;
         }
