@@ -12,20 +12,32 @@ import create from "core/echart/create";
 export default create({
   name: "radar",
   x2 () {
-    return this.option.gridX2 || 20;
+    return this.option.gridX2 || '80%';
   },
   methods: {
-
     updateChart () {
       console.log("我更新了");
-
       const optionData = this.deepClone(this.dataChart);
       const option = {
+        title: this.ishasprop(this.option.subtext, {
+          text: this.option.title,
+          subtext: 'Example in MetricsGraphics.js',
+          textStyle: {
+            color: this.option.titleColor || '#333',
+            fontSize: this.option.titleFontSize || 18
+          },
+
+          subtextStyle: {
+            color: this.option.subtitleColor || '#aaa',
+            fontSize: this.option.subtitleFontSize || 12
+          }
+        }, {}),
+
         grid: {
-          x: this.option.gridX || 65,
-          y: this.option.gridY || 20,
-          x2: this.x2,
-          y2: this.option.gridY2 || 60
+          top: 500,
+          bottom: 200,
+          left: 400,
+          right: 60
         },
         legend: {
           show: this.vaildData(this.option.legendShow, false),

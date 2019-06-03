@@ -11,9 +11,16 @@ import create from "core/echart/create";
 export default create({
   name: "gauge",
   methods: {
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const option = {
+        title: this.ishasprop(this.option.title, {
+          text: this.option.title,
+          textStyle: {
+            color: this.option.titleColor || '#333',
+            fontSize: this.option.titleFontSize || 1818
+          }
+        }, {}),
         series: [
           {
             name: "业务指标",

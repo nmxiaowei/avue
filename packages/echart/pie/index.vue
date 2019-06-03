@@ -25,8 +25,16 @@ export default create({
   },
   methods: {
     updateChart () {
+      console.log("23234");
       const optionData = this.deepClone(this.dataChart) || [];
       const option = {
+        title: this.ishasprop(this.option.title, {
+          text: this.option.title,
+          textStyle: {
+            color: this.option.titleColor || '#333',
+            fontSize: this.option.titleFontSize || 1818
+          }
+        }, {}),
         tooltip: (() => {
           return Object.assign(
             (() => {
