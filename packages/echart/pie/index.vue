@@ -1,7 +1,10 @@
 <template>
-  <div class="avue-echart avue-echart-pie" :style="styleSizeName">
-    <div :class="b('title')" v-html="titleFormatter && titleFormatter(dataChart)"></div>
-    <div :ref="id" :style="styleChartName"></div>
+  <div class="avue-echart avue-echart-pie"
+       :style="styleSizeName">
+    <div :class="b('title')"
+         v-html="titleFormatter && titleFormatter(dataChart)"></div>
+    <div :ref="id"
+         :style="styleChartName"></div>
   </div>
 </template>
 
@@ -10,18 +13,18 @@ import create from "core/echart/create";
 export default create({
   name: "pie",
   computed: {
-    labelShow() {
+    labelShow () {
       return this.vaildData(this.option.labelShow, false);
     },
-    x2() {
+    x2 () {
       return this.option.gridX2 || 20;
     },
-    fontSize() {
+    fontSize () {
       return this.option.fontSize || 14;
     }
   },
   methods: {
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart) || [];
       const option = {
         tooltip: (() => {
@@ -73,7 +76,7 @@ export default create({
               center: ["50%", "60%"],
               animationType: "scale",
               animationEasing: "elasticOut",
-              animationDelay: function(idx) {
+              animationDelay: function (idx) {
                 return Math.random() * 200;
               },
               label: {
@@ -90,22 +93,22 @@ export default create({
                   });
                 }
                 if (this.option.sort) {
-                  list.sort(function(a, b) {
+                  list.sort(function (a, b) {
                     return a.value - b.value;
                   });
                 }
                 return list;
               })(),
-              itemStyle:this.ishasprop(!this.option.switchTheme,{
-                        normal: {
-                    color:
-                     params => this.getColor(params.dataIndex)
-                  }
-                      },{emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: "rgba(0, 0, 0, 0.5)"
-                  }}),            
+              itemStyle: this.ishasprop(!this.switchTheme, {
+                normal: {
+                  color:
+                    params => this.getColor(params.dataIndex)
+                }
+              }, {                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
+                }                }),
             }
           ];
           return list;

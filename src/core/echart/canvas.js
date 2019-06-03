@@ -147,6 +147,9 @@ export default (() => {
       datetime() {
         return this.option.datetime || 'datetime';
       },
+      switchTheme() {
+        return this.vaildData(this.option.switchTheme, false);
+      },
       name() {
         return this.$el.className.replace('avue-echart-', '').replace('avue-echart', '').replace(' ', '');
       },
