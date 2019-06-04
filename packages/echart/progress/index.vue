@@ -39,9 +39,6 @@ export default create({
         color: this.option.color || "#333"
       };
     },
-    width() {
-      return this.component.width || 200;
-    },
     type() {
       return this.option.type || "line";
     },

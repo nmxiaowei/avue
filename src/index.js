@@ -3,17 +3,16 @@ import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import directive from 'packages/core/directive/permission'
 import _export from 'plugin/export/';
+import { watermark } from 'plugin/canvas/'
 import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
 import $ImagePreview from 'components/image-preview/';
-// import { Notification } from 'element-ui';
 let prototypes = {
   $Clipboard,
   $Log
 }
-
 const install = function (Vue, opts = {}) {
   Vue.use(_export);
   //初始化指令
@@ -36,6 +35,7 @@ const install = function (Vue, opts = {}) {
   Vue.prototype.sortArrys = sortArrys;
   Vue.prototype.findArray = findArray;
   Vue.prototype.validatenull = validatenull;
+  Vue.prototype.watermark = watermark;
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
     size: opts.size || 'medium',
@@ -67,18 +67,7 @@ const install = function (Vue, opts = {}) {
   };
 }
 
-/* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
-  // setTimeout(() => {
-  //   Notification({
-  //     type: 'success',
-  //     title: 'avuex授权',
-  //     dangerouslyUseHTMLString: true,
-  //     message: '感谢你对avue的支持，本系统采用了avuex开发，如果想使用avuex的授权<a href="https://avuex.avue.top/#/vip">点击购买授权</a>',
-  //     duration: 3000
-
-  //   })
-  // }, 1000)
   install(window.Vue);
 }
 

@@ -2,8 +2,7 @@
   <div class="avue-echart avue-echart-pie"
        :style="styleSizeName">
     <div :class="b('title')"
-         v-html="titleFormatter && titleFormatter(dataChart)">
-    </div>
+         v-html="titleFormatter && titleFormatter(dataChart)"></div>
     <div :ref="id"
          :style="styleChartName"></div>
   </div>
@@ -14,41 +13,19 @@ import create from "core/echart/create";
 export default create({
   name: "pie",
   computed: {
-    labelShow() {
+    labelShow () {
       return this.vaildData(this.option.labelShow, false);
     },
-    x2() {
+    x2 () {
       return this.option.gridX2 || 20;
     },
-    fontSize() {
+    fontSize () {
       return this.option.fontSize || 14;
     }
   },
   methods: {
-    getColor(index, first) {
-      const barColor = this.option.barColor || [];
-      if (barColor[index]) {
-        const color1 = barColor[index].color1;
-        const color2 = barColor[index].color2;
-        const postion = (barColor[index].postion || 0.9) * 0.01;
-        if (first) return color1;
-        if (color2) {
-          return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: color1
-            },
-            {
-              offset: postion,
-              color: color2
-            }
-          ]);
-        }
-        return color1;
-      }
-    },
-    updateChart() {
-      const optionData = this.deepClone(this.dataChart);
+    updateChart () {
+      const optionData = this.deepClone(this.dataChart) || [];
       const option = {
         tooltip: (() => {
           return Object.assign(
@@ -77,22 +54,16 @@ export default create({
           y2: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
+          orient: this.option.legendOrient || "vertical",
+          x: this.option.legendPostion || "left",
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendShowFontSize || 12
+            fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
-            return (optionData.series || []).map((ele, index) => {
-              return {
-                name: ele.name,
-                textStyle: {
-                  borderColor: this.getColor(index, true),
-                  color: this.getColor(index, true)
-                }
-              };
-            });
+            return optionData.map((ele, index) => ele.name);
           })()
         },
         series: (() => {
@@ -105,7 +76,7 @@ export default create({
               center: ["50%", "60%"],
               animationType: "scale",
               animationEasing: "elasticOut",
-              animationDelay: function(idx) {
+              animationDelay: function (idx) {
                 return Math.random() * 200;
               },
               label: {
@@ -122,24 +93,22 @@ export default create({
                   });
                 }
                 if (this.option.sort) {
-                  list.sort(function(a, b) {
+                  list.sort(function (a, b) {
                     return a.value - b.value;
                   });
                 }
                 return list;
               })(),
-              itemStyle: (() => {
-                return {
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: "rgba(0, 0, 0, 0.5)"
-                  },
-                  normal: {
-                    color: params => this.getColor(params.dataIndex)
-                  }
-                };
-              })()
+              itemStyle: this.ishasprop(!this.switchTheme, {
+                normal: {
+                  color:
+                    params => this.getColor(params.dataIndex)
+                }
+              }, {                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
+                }                }),
             }
           ];
           return list;

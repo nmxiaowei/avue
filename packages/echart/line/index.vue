@@ -11,34 +11,12 @@ import create from "core/echart/create";
 export default create({
   name: "line",
   computed: {
-    x2() {
+    x2 () {
       return this.option.gridX2 || 20;
     }
   },
   methods: {
-    getColor(index, first) {
-      const barColor = this.option.barColor || [];
-      if (barColor[index]) {
-        const color1 = barColor[index].color1;
-        const color2 = barColor[index].color2;
-        const postion = (barColor[index].postion || 0.9) * 0.01;
-        if (first) return color1;
-        if (color2) {
-          return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: color1
-            },
-            {
-              offset: postion,
-              color: color2
-            }
-          ]);
-        }
-        return color1;
-      }
-    },
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const option = {
         tooltip: (() => {
@@ -52,8 +30,7 @@ export default create({
                 };
               }
               return {};
-            })(),
-            {
+            })(), {
               backgroundColor: "rgba(0,0,0,1)",
               trigger: "axis",
               textStyle: {
@@ -70,18 +47,20 @@ export default create({
           y2: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
+          orient: this.option.legendOrient || "horizontal",
+          x: this.option.legendPostion || "right",
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendShowFontSize || 12
+            fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
             return (optionData.series || []).map((ele, index) => {
               return {
                 name: ele.name,
                 textStyle: {
-                  borderColor: this.getColor(index, true),
+                  // borderColor: this.getColor(index, true),//写错位置了
                   color: this.getColor(index, true)
                 }
               };
@@ -144,9 +123,9 @@ export default create({
               lineStyle: {
                 width: this.option.lineWidth || 1
               },
-              itemStyle: {
+              itemStyle: this.ishasprop(!this.switchTheme, {
                 color: this.getColor(index)
-              }
+              }, {}),
             });
           });
           return list;
@@ -157,5 +136,5 @@ export default create({
     }
   }
 });
-</script>
 
+</script>

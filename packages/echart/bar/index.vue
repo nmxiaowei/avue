@@ -8,59 +8,28 @@
 
 <script>
 import create from "core/echart/create";
+
+
 export default create({
   name: "bar",
   computed: {
-    x2() {
+    x2 () {
       return this.option.gridX2 || 20;
     }
   },
+
   methods: {
-    getColor(index, first) {
-      const barColor = this.option.barColor || [];
-      if (barColor[index]) {
-        const color1 = barColor[index].color1;
-        const color2 = barColor[index].color2;
-        const postion = (barColor[index].postion || 0.9) * 0.01;
-        if (first) return color1;
-        if (color2) {
-          return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: color1
-            },
-            {
-              offset: postion,
-              color: color2
-            }
-          ]);
-        }
-        return color1;
-      }
-    },
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        tooltip: (() => {
-          return Object.assign(
-            (() => {
-              if (this.formatter) {
-                return {
-                  formatter: name => {
-                    return this.formatter(name, this.dataChart);
-                  }
-                };
-              }
-              return {};
-            })(),
-            {
-              textStyle: {
-                fontSize: this.option.tipFontSize,
-                color: this.option.tipColor || "#fff"
-              }
+        tooltip: this.ishasprop(this.formatter, {
+          formatter: name => { return this.formatter(name, this.dataChart) }
+        }, {
+            textStyle: {
+              fontSize: this.option.tipFontSize,
+              color: this.option.tipColor || "#fff"
             }
-          );
-        })(),
+          }),
         grid: {
           x: this.option.gridX || 65,
           y: this.option.gridY || 20,
@@ -78,10 +47,9 @@ export default create({
             return (optionData.series || []).map((ele, index) => {
               return {
                 name: ele.name,
-                textStyle: {
-                  borderColor: this.getColor(index, true),
+                textStyle: this.ishasprop(!this.switchTheme, {
                   color: this.getColor(index, true)
-                }
+                }, {})
               };
             });
           })()
@@ -134,10 +102,9 @@ export default create({
               stack: ele.stack,
               barWidth: this.option.barWidth || 16,
               barMinHeight: this.option.barMinHeight || 0,
-              itemStyle: {
-                color: this.getColor(index),
-                barBorderRadius: this.option.barRadius || 0
-              },
+              itemStyle: this.ishasprop(!this.switchTheme, {
+                color: this.getColor(index)
+              }, { barBorderRadius: this.option.barRadius || 0 }),
               label: {
                 show: this.vaildData(this.option.labelShow, false), //开启显示
                 position: "top", //在上方显示,
@@ -164,5 +131,5 @@ export default create({
     }
   }
 });
-</script>
 
+</script>
