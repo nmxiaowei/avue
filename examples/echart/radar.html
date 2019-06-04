@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-echart-radar :data="data">
+    <avue-echart-radar :option="option" :data="data">
     </avue-echart-radar>
   </div>
 </body>
@@ -31,33 +31,31 @@
       return {
         data: {
           indicator: [{
-              name: '销售（sales）',
+              name: '销售',
               max: 6500
             },
             {
-              name: '管理（Administration）',
+              name: '管理',
               max: 16000
             },
             {
-              name: '信息技术（Information Techology）',
+              name: '信息技术',
               max: 30000
             },
             {
-              name: '客服（Customer Support）',
+              name: '客服',
               max: 38000
             },
             {
-              name: '研发（Development）',
+              name: '研发',
               max: 52000
             },
             {
-              name: '市场（Marketing）',
+              name: '市场',
               max: 25000
             }
           ],
           series: [{
-            name: '预算 vs 开销（Budget vs spending）',
-            type: 'radar',
             data: [{
                 value: [4300, 10000, 28000, 35000, 50000, 19000],
                 name: '预算分配（Allocated Budget）'
@@ -68,7 +66,38 @@
               }
             ]
           }]
-        }
+        },
+        option: {
+          width: '100%',
+          height: 600,
+          title: '各部门开销',
+          subtext: '最近一个月',
+          titleColor: '#666',
+          shape: 'polygon',
+          radius: "75%",
+          splitNumber: 4,
+          radarNameColor: '#333',
+          radarNameSize: 12,
+          titleFontSize: 18,
+          legendShow: true,
+          labelShow: true,
+          "barColor": [{
+              "color1": "#83bff6",
+            },
+            {
+              "color1": "#23B7E5",
+            },
+            {
+              "color1": "rgba(154, 168, 212, 1)",
+            },
+            {
+              "color1": "#188df0",
+            },
+            {
+              "color1": "#564AA3",
+            }
+          ]
+        },
       }
     },
     created() {

@@ -16,38 +16,37 @@ export default create({
   },
   methods: {
     updateChart () {
-      console.log("我更新了");
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        title: this.ishasprop(this.option.subtext, {
+        title: this.ishasprop(this.option.title, {
           text: this.option.title,
-          subtext: 'Example in MetricsGraphics.js',
+          subtext: this.option.subtext || '',
           textStyle: {
             color: this.option.titleColor || '#333',
-            fontSize: this.option.titleFontSize || 18
+            fontSize: this.option.titleFontSize || 16
           },
-
           subtextStyle: {
-            color: this.option.subtitleColor || '#aaa',
-            fontSize: this.option.subtitleFontSize || 12
+            color: this.option.subTitleColor || '#aaa',
+            fontSize: this.option.subTitleFontSize || 14
           }
         }, {}),
 
         grid: {
-          top: 500,
-          bottom: 200,
-          left: 400,
-          right: 60
+          left: this.option.gridX || 20,
+          top: this.option.gridY || 60,
+          right: this.x2,
+          bottom: this.option.gridY2 || 60
         },
-        legend: {
+        legend: {//雷达的legend是单系列的和其他不一样,不能合并
           show: this.vaildData(this.option.legendShow, false),
-          top: this.option.legendaline.top || 0,
-          left: this.option.legendaline.left || center,
+          top: 0,
+          x: this.option.legendPostion || "right",
+          right: this.x2,
           textStyle: {
             fontSize: this.option.legendShowFontSize || 12
           },
           data: (() => {
-            return (optionData.series || []).map((ele, index) => {
+            return (optionData.series[0].data || []).map((ele, index) => {
               return {
                 name: ele.name,
                 textStyle: this.ishasprop(!this.option.switchTheme, {
@@ -60,38 +59,17 @@ export default create({
         radar: {
           name: {
             textStyle: {
-              color: '#fff',
-              backgroundColor: '#999',
-              borderRadius: 3,
-              padding: [3, 5]
+              color: this.option.radarNameColor || '#333'
             }
           },
-          indicator: optionData.indicator || [
-            { name: '销售（sales）', max: 6500 },
-            { name: '管理（Administration）', max: 16000 },
-            { name: '信息技术（Information Techology）', max: 30000 },
-            { name: '客服（Customer Support）', max: 38000 },
-            { name: '研发（Development）', max: 52000 },
-            { name: '市场（Marketing）', max: 25000 }
-          ]
+          indicator: optionData.indicator || [],
+          shape: this.option.shape || 'polygon',
+          radius: this.option.radius || '75%',
+          fontSize: this.option.radarNameSize || 12
         },
         series: (() => {
           const barColor = this.option.barColor || [];
-          const list = (optionData.series ||
-            [{
-              type: 'radar',
-              data: [
-                {
-                  value: [4300, 10000, 28000, 35000, 50000, 19000],
-                  name: '预算分配（Allocated Budget）'
-                },
-                {
-                  value: [5000, 14000, 28000, 31000, 42000, 21000],
-                  name: '实际开销（Actual Spending）'
-                }
-              ]
-            }]
-          ).map((ele, index) => {
+          const list = (optionData.series || []).map((ele, index) => {
             return Object.assign(ele, {
               type: "radar",
               barWidth: this.option.barWidth || 16,
@@ -102,9 +80,8 @@ export default create({
               },
               label: {
                 show: this.vaildData(this.option.labelShow, false), //开启显示
-                // position: "top", //在上方显示
                 textStyle: {
-                  //数值样式
+
                   fontSize: this.option.labelShowFontSize || 14,
                   color: this.option.labelShowColor || "#333",
                   fontWeight: this.option.labelShowFontWeight || 500
@@ -115,7 +92,6 @@ export default create({
           return list;
         })()
       }
-      console.log('雷达', this.radar.indicator)
       this.myChart.resize();
       this.myChart.setOption(option, true);
     }

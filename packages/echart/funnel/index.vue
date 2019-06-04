@@ -24,9 +24,14 @@ export default create({
       const option = {
         title: this.ishasprop(this.option.title, {
           text: this.option.title,
+          subtext: this.option.subtext || '',
           textStyle: {
             color: this.option.titleColor || '#333',
-            fontSize: this.option.titleFontSize || 1818
+            fontSize: this.option.titleFontSize || 16
+          },
+          subtextStyle: {
+            color: this.option.subTitleColor || '#aaa',
+            fontSize: this.option.subTitleFontSize || 14
           }
         }, {}),
         tooltip: this.ishasprop(this.formatter, {
@@ -37,11 +42,11 @@ export default create({
               color: this.option.tipColor || "#fff"
             }
           }),
-        grid: {
-          x: this.option.gridX || 65,
-          y: this.option.gridY || 20,
-          x2: this.x2,
-          y2: this.option.gridY2 || 60
+         grid: {
+          left: this.option.gridX || 20,
+          top: this.option.gridY || 60,
+          right: this.x2,
+          bottom: this.option.gridY2 || 60
         },
         legend: {
           show: this.vaildData(this.option.legendShow, false),
