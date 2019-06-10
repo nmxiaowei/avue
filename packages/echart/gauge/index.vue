@@ -10,10 +10,34 @@
 import create from "core/echart/create";
 export default create({
   name: "gauge",
+  computed: {
+    x2 () {
+      return this.option.gridX2 || 20;
+    }
+  },
+
   methods: {
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const option = {
+        title: this.ishasprop(this.option.title, {
+          text: this.option.title,
+          subtext: this.option.subtext || '',
+          textStyle: {
+            color: this.option.titleColor || '#333',
+            fontSize: this.option.titleFontSize || 16
+          },
+          subtextStyle: {
+            color: this.option.subTitleColor || '#aaa',
+            fontSize: this.option.subTitleFontSize || 14
+          }
+        }, {}),
+        grid: {
+          left: this.option.gridX || 20,
+          top: this.option.gridY || 60,
+          right: this.x2,
+          bottom: this.option.gridY2 || 60
+        },
         series: [
           {
             name: "业务指标",

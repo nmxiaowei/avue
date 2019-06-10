@@ -1,8 +1,6 @@
 <template>
-  <div class="avue-echart avue-echart-pie"
+  <div class="avue-echart avue-echart-funnel"
        :style="styleSizeName">
-    <div :class="b('title')"
-         v-html="titleFormatter && titleFormatter(dataChart)"></div>
     <div :ref="id"
          :style="styleChartName"></div>
   </div>
@@ -11,11 +9,8 @@
 <script>
 import create from "core/echart/create";
 export default create({
-  name: "pie",
+  name: "funnel",
   computed: {
-    labelShow () {
-      return this.vaildData(this.option.labelShow, false);
-    },
     x2 () {
       return this.option.gridX2 || 20;
     },
@@ -25,8 +20,7 @@ export default create({
   },
   methods: {
     updateChart () {
-      console.log("23234");
-      const optionData = this.deepClone(this.dataChart) || [];
+      const optionData = this.deepClone(this.dataChart);
       const option = {
         title: this.ishasprop(this.option.title, {
           text: this.option.title,
@@ -40,37 +34,25 @@ export default create({
             fontSize: this.option.subTitleFontSize || 14
           }
         }, {}),
-        tooltip: (() => {
-          return Object.assign(
-            (() => {
-              if (this.formatter) {
-                return {
-                  formatter: name => {
-                    return this.formatter(name, this.dataChart);
-                  }
-                };
-              }
-              return {};
-            })(),
-            {
-              textStyle: {
-                fontSize: this.option.tipFontSize,
-                color: this.option.tipColor || "#fff"
-              }
+        tooltip: this.ishasprop(this.formatter, {
+          formatter: name => { return this.formatter(name, this.dataChart) }
+        }, {
+            textStyle: {
+              fontSize: this.option.tipFontSize,
+              color: this.option.tipColor || "#fff"
             }
-          );
-        })(),
-          grid: {
+          }),
+         grid: {
           left: this.option.gridX || 20,
           top: this.option.gridY || 60,
           right: this.x2,
           bottom: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legend, false),
-          orient: this.option.legendOrient || "vertical",
-          x: this.option.legendPostion || "left",
+          show: this.vaildData(this.option.legendShow, false),
+          orient: this.option.legendOrient || "horizontal",
           top: 0,
+          x: this.option.legendPostion || "right",
           right: this.x2,
           textStyle: {
             fontSize: this.option.legendFontSize || 12
@@ -83,19 +65,15 @@ export default create({
           const barColor = this.option.barColor || [];
           const list = [
             {
-              type: "pie",
-              roseType: this.option.roseType ? "radius" : "",
-              radius: this.option.radius ? ["40%", "55%"] : "50%",
-              center: ["50%", "60%"],
-              animationType: "scale",
-              animationEasing: "elasticOut",
+              type: "funnel",
               animationDelay: function (idx) {
                 return Math.random() * 200;
               },
               label: {
-                show: this.labelShow,
+                show: this.vaildData(this.option.labelShow, false),
                 fontSize: this.fontSize
               },
+
               data: (() => {
                 let list = optionData;
                 if (this.option.notCount) {
@@ -121,7 +99,7 @@ export default create({
                   shadowBlur: 10,
                   shadowOffsetX: 0,
                   shadowColor: "rgba(0, 0, 0, 0.5)"
-                }                }),
+                }                })
             }
           ];
           return list;

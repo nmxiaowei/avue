@@ -187,6 +187,8 @@ export default (() => {
       }
     },
     mounted() {
+      console.log('我初始化');
+
       this.init();
     },
     methods: {
@@ -260,7 +262,7 @@ export default (() => {
               });
             }
           } else {
-            this.dataChart = this.data || {};
+            this.dataChart = this.data || [];
             if (this.isChart && this.myChart) {
               this.myChart.clear();
               this.updateChart();
