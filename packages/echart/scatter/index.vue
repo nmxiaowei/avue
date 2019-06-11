@@ -18,7 +18,7 @@ export default create({
   methods: {
     updateChart () {
       const optionData = this.deepClone(this.dataChart);
-      console.log("我更新了", optionData);
+      // console.log("我更新了", optionData);
       const option = {
         title: this.ishasprop(this.option.title, {
           text: this.option.title,

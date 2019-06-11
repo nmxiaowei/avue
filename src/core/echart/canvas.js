@@ -187,7 +187,7 @@ export default (() => {
       }
     },
     mounted() {
-      console.log('我初始化');
+      // console.log('我初始化');
 
       this.init();
     },

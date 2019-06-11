@@ -25,7 +25,7 @@ export default create({
   },
   methods: {
     updateChart () {
-      console.log("23234");
+      // console.log("23234");
       const optionData = this.deepClone(this.dataChart) || [];
       const option = {
         title: this.ishasprop(this.option.title, {
