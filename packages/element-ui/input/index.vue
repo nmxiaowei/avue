@@ -58,7 +58,8 @@
                 @change="handleChange"
                 @focus="handleFocus"
                 @blur="handleBlur"
-                :disabled="disabled">
+                :disabled="disabled"
+                :autocomplete="autocomplete">
         <template slot="prepend"
                   v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
         <template slot="append"

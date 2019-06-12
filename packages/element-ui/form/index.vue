@@ -130,6 +130,7 @@
                                :value-format="column.valueFormat"
                                :voidIconClass="column.voidIconClass"
                                :remote="column.remote"
+                               :autocomplete="column.autocomplete"
                                v-model="form[column.prop]"
                                @change="column.cascader?handleChange(item.column,cindex):''">
                       <template :slot="column.prop+'Type'"
