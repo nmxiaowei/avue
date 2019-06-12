@@ -58,7 +58,8 @@
                 @change="handleChange"
                 @focus="handleFocus"
                 @blur="handleBlur"
-                :disabled="disabled">
+                :disabled="disabled"
+                :autocomplete="autocomplete">
         <template slot="prepend"
                   v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
         <template slot="append"
@@ -167,6 +168,9 @@ export default create({
     maxRows: {
       type: Number,
       default: 10
+    },
+    autocomplete: {
+      type: String
     }
   },
   watch: {
