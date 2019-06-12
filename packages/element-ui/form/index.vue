@@ -58,6 +58,7 @@
                                :clearable="column.clearable"
                                :changeOnSelect="column.changeOnSelect"
                                :click="column.click"
+                               :onRemove="column.onRemove"
                                :column="column"
                                :colors="column.colors"
                                :canvasOption="column.canvasOption"
@@ -195,7 +196,7 @@ import mock from "utils/mock";
 export default create({
   name: "form",
   mixins: [init(), locale],
-  data() {
+  data () {
     return {
       optionIndex: [],
       optionBox: false,
@@ -211,7 +212,7 @@ export default create({
   },
   watch: {
     form: {
-      handler() {
+      handler () {
         if (!this.formCreate) {
           this.$emit("input", this.form);
           this.$emit("change", this.form);
@@ -222,7 +223,7 @@ export default create({
       deep: true
     },
     value: {
-      handler() {
+      handler () {
         this.formOld = this.deepClone(this.value);
         if (!this.formCreate) {
           this.formVal();
@@ -232,7 +233,7 @@ export default create({
     }
   },
   computed: {
-    propOption() {
+    propOption () {
       let list = [];
       this.columnOption.forEach(option => {
         option.column.forEach(column => {
@@ -241,7 +242,7 @@ export default create({
       });
       return list;
     },
-    parentOption() {
+    parentOption () {
       let option = this.deepClone(this.tableOption);
       let group = option.group;
       if (!group) {
@@ -252,7 +253,7 @@ export default create({
       delete option.column;
       return option;
     },
-    columnOption() {
+    columnOption () {
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
         ele.column = ele.column || [];
@@ -268,17 +269,17 @@ export default create({
       });
       return list;
     },
-    menuPostion: function() {
+    menuPostion: function () {
       if (this.parentOption.menuPostion) {
         return this.parentOption.menuPostion;
       } else {
         return "center";
       }
     },
-    boxType: function() {
+    boxType: function () {
       return this.parentOption.boxType;
     },
-    isMock() {
+    isMock () {
       return this.vaildData(this.parentOption.mock, false);
     }
   },
@@ -297,7 +298,7 @@ export default create({
       }
     }
   },
-  created() {
+  created () {
     //初始化字典
     this.columnOption.forEach(ele => {
       this.handleLoadDic(ele).then(res => {
@@ -310,20 +311,20 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
-    forEachLabel() {
+    forEachLabel () {
       this.columnOption.forEach(ele => {
         ele.column.forEach(column => {
           this.handleShowLabel(column, this.DIC[column.prop]);
         });
       });
     },
-    getLabelWidth(column, item) {
+    getLabelWidth (column, item) {
       const result =
         column.labelWidth || item.labelWidth || this.parentOption.labelWidth;
       return this.setPx(result);
     },
     //获取全部字段字典的label
-    handleShowLabel(column, DIC) {
+    handleShowLabel (column, DIC) {
       let result = "";
       if (!this.validatenull(DIC)) {
         result = detail(this.form, column, this.tableOption, DIC);
@@ -332,18 +333,18 @@ export default create({
       return result;
     },
     //对部分表单字段进行校验的方法
-    validateField(val) {
+    validateField (val) {
       return this.$refs.form.validateField(val);
     },
     //搜索指定的属性配置
-    findColumnIndex(value) {
+    findColumnIndex (value) {
       let result = -1;
       this.columnOption.forEach(column => {
         result = this.findArray(column.column, value, "prop");
       });
       return result;
     },
-    updateDic(prop, list) {
+    updateDic (prop, list) {
       if (this.validatenull(list)) {
         const column = this.propOption[this.findColumnIndex(prop)];
         if (!this.validatenull(column.dicUrl)) {
@@ -358,14 +359,14 @@ export default create({
         this.$set(this.DIC, prop, list);
       }
     },
-    dataformat() {
+    dataformat () {
       let formDefault = formInitVal(this.propOption);
       this.formDefault = formDefault;
       this.form = this.deepClone(formDefault.tableForm);
       this.formVal();
     },
 
-    handleChange(item, index) {
+    handleChange (item, index) {
       const column = item[index]; //获取当前节点级联
       const list = column.cascader;
       const str = list.join(",");
@@ -411,8 +412,8 @@ export default create({
             if (dicvalue) {
               this.form[columnNext.prop] =
                 dicvalue[
-                  (columnNext.props || this.parentOption.props || {}).value ||
-                    "value"
+                (columnNext.props || this.parentOption.props || {}).value ||
+                "value"
                 ];
               this.clearValidate();
             }
@@ -422,14 +423,14 @@ export default create({
         }
       );
     },
-    formVal() {
+    formVal () {
       Object.keys(this.value).forEach(ele => {
         this.$set(this.form, ele, this.value[ele]);
       });
       this.forEachLabel();
       this.$emit("input", this.form);
     },
-    handleMock() {
+    handleMock () {
       if (this.isMock) {
         this.columnOption.forEach(column => {
           const form = mock(column.column, this.DIC, this.form, this.isMock);
@@ -444,7 +445,7 @@ export default create({
       }
     },
     // 验证表单是否禁止
-    vaildDisabled(column) {
+    vaildDisabled (column) {
       if (this.disabled) return true;
       if (!this.validatenull(column.disabled)) {
         return this.vaildData(column.disabled, false);
@@ -459,7 +460,7 @@ export default create({
       }
     },
     // 验证表单是否显隐
-    vaildDisplay(column) {
+    vaildDisplay (column) {
       if (!this.validatenull(column.display)) {
         return this.vaildData(column.display, true);
       } else if (this.boxType === "add") {
@@ -472,7 +473,7 @@ export default create({
         return true;
       }
     },
-    rulesInit(option) {
+    rulesInit (option) {
       (option || this.columnOption).forEach(ele => {
         if (ele.rules && ele.display !== false)
           this.$set(this.formRules, ele.prop, ele.rules);
@@ -481,10 +482,10 @@ export default create({
         this.clearValidate();
       });
     },
-    clearValidate() {
+    clearValidate () {
       this.$refs.form.clearValidate();
     },
-    validate() {
+    validate () {
       return new Promise((resolve, reject) => {
         this.$refs.form.validate(valid => {
           if (valid) {
@@ -499,7 +500,7 @@ export default create({
      * 清空表单字段
      * @param part:true 清空在column中字段,否则清空全部
      */
-    resetForm(params = {}) {
+    resetForm (params = {}) {
       const part = params.part;
       if (part) {
         this.columnOption.forEach(ele => {
@@ -515,10 +516,10 @@ export default create({
       this.$emit("reset-change");
       this.clearValidate();
     },
-    validate(callback) {
+    validate (callback) {
       this.$refs["form"].validate(valid => callback(valid));
     },
-    submit() {
+    submit () {
       this.validate(valid => {
         if (valid) {
           this.$emit("submit", this.form);
