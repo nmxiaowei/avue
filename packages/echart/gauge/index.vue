@@ -27,6 +27,7 @@ export default create({
             color: this.option.titleColor || '#333',
             fontSize: this.option.titleFontSize || 16
           },
+          left: this.option.titlePostion || 'auto',
           subtextStyle: {
             color: this.option.subTitleColor || '#aaa',
             fontSize: this.option.subTitleFontSize || 14

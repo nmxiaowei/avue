@@ -25,11 +25,33 @@ export default create({
             color: this.option.titleColor || '#333',
             fontSize: this.option.titleFontSize || 16
           },
+          left: this.option.titlePostion || 'auto',
           subtextStyle: {
             color: this.option.subTitleColor || '#aaa',
             fontSize: this.option.subTitleFontSize || 14
           }
         }, {}),
+        tooltip: (() => {
+          return Object.assign(
+            (() => {
+              if (this.formatter) {
+                return {
+                  formatter: name => {
+                    return this.formatter(name, this.dataChart);
+                  }
+                };
+              }
+              return {};
+            })(),
+            {
+              backgroundColor: this.option.tipBackgroundColor || 'rgba(50,50,50,0.7)',
+              textStyle: {
+                fontSize: this.option.tipFontSize || 14,
+                color: this.option.tipColor || "#fff"
+              }
+            }
+          );
+        })(),
 
         grid: {
           left: this.option.gridX || 20,
@@ -58,37 +80,46 @@ export default create({
         },
         radar: {
           name: {
-            textStyle: {
-              color: this.option.radarNameColor || '#333'
-            }
+            fontSize: this.option.radarNameSize || 12,
+            color: this.option.radarNameColor || '#333'
           },
           indicator: optionData.indicator || [],
           shape: this.option.shape || 'polygon',
           radius: this.option.radius || '75%',
-          fontSize: this.option.radarNameSize || 12
+
         },
         series: (() => {
           const barColor = this.option.barColor || [];
-          const list = (optionData.series || []).map((ele, index) => {
-            return Object.assign(ele, {
+          const list = [
+            {
               type: "radar",
               barWidth: this.option.barWidth || 16,
               barMinHeight: this.option.barMinHeight || 0,
               itemStyle: {
-                color: this.getColor(index),
                 barBorderRadius: this.option.barRadius || 0
               },
-              label: {
-                show: this.vaildData(this.option.labelShow, false), //开启显示
-                textStyle: {
-
-                  fontSize: this.option.labelShowFontSize || 14,
-                  color: this.option.labelShowColor || "#333",
-                  fontWeight: this.option.labelShowFontWeight || 500
-                }
-              }
-            });
-          });
+              data: (() => {
+                return (optionData.series[0].data || []).map((ele, index) => {
+                  return {
+                    name: ele.name,
+                    value: ele.value,
+                    label: {
+                      show: this.vaildData(this.option.labelShow, false), //开启显示
+                      textStyle: {
+                        fontSize: this.option.fontSize || 14,
+                        color: this.getColor(index),
+                        fontWeight: this.option.labelShowFontWeight || 500
+                      }
+                    },
+                    areaStyle: {
+                      color: this.getColor(index),
+                      opacity: this.option.areaOpacity || 0.9,
+                    }
+                  };
+                });
+              })()
+            }
+          ];
           return list;
         })()
       }

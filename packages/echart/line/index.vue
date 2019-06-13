@@ -26,6 +26,7 @@ export default create({
             color: this.option.titleColor || '#333',
             fontSize: this.option.titleFontSize || 16
           },
+          left: this.option.titlePostion || 'auto',
           subtextStyle: {
             color: this.option.subTitleColor || '#aaa',
             fontSize: this.option.subTitleFontSize || 14
@@ -52,7 +53,7 @@ export default create({
             }
           );
         })(),
-         grid: {
+        grid: {
           left: this.option.gridX || 20,
           top: this.option.gridY || 60,
           right: this.x2,
