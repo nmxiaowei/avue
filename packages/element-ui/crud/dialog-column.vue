@@ -22,7 +22,7 @@ import { validatenull } from "utils/validate";
 export default create({
   mixins: [locale],
   inject: ["crud"],
-  data() {
+  data () {
     return {
       config: config,
       columnBox: false,
@@ -33,9 +33,9 @@ export default create({
       columnIndex: []
     };
   },
-  created() {},
+  created () { },
   methods: {
-    handleChange() {
+    handleChange () {
       this.crud.doLayout = false;
       this.$nextTick(() => {
         this.crud.doLayout = true;
@@ -44,20 +44,18 @@ export default create({
         });
       });
     },
-    columnInit() {
+    columnInit () {
       this.columnIndex = [];
       this.columnList = [];
       this.crud.propOption.forEach((ele, index) => {
-        if (!this.vaildData(ele.hide, false)) {
-          this.columnIndex.push(ele.prop);
-          if (this.vaildData(ele.showColumn, true)) {
-            let obj = {
-              label: ele.label,
-              prop: ele.prop,
-              index: index
-            };
-            this.columnList.push(this.deepClone(obj));
-          }
+        if (!this.vaildData(ele.hide, false)) this.columnIndex.push(ele.prop);
+        if (this.vaildData(ele.showColumn, true)) {
+          let obj = {
+            label: ele.label,
+            prop: ele.prop,
+            index: index
+          };
+          this.columnList.push(this.deepClone(obj));
         }
       });
     }

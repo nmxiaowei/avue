@@ -67,7 +67,7 @@ import packages from "core/packages";
 export default create({
   name: "upload",
   mixins: [props(), event()],
-  data() {
+  data () {
     return {
       loading: false,
       dialogImageUrl: "",
@@ -79,6 +79,7 @@ export default create({
   },
   props: {
     value: {},
+    onRemove: Function,
     showFileList: {
       type: Boolean,
       default: true
@@ -126,22 +127,22 @@ export default create({
     uploadAfter: Function
   },
   computed: {
-    isAliOss() {
+    isAliOss () {
       return this.oss === "ali";
     },
-    isQiniuOss() {
+    isQiniuOss () {
       return this.oss === "qiniu";
     },
-    isPictureImg() {
+    isPictureImg () {
       return this.listType === "picture-img";
     },
     //单个头像图片
-    imgUrl() {
+    imgUrl () {
       if (!this.validatenull(this.text)) {
         return this.text[0];
       }
     },
-    fileList() {
+    fileList () {
       let list = [];
       this.text.forEach((ele, index) => {
         let obj;
@@ -161,20 +162,20 @@ export default create({
       return list;
     }
   },
-  created() {},
+  created () { },
   watch: {},
-  mounted() {},
+  mounted () { },
   methods: {
-    handleClick() {
+    handleClick () {
       if (typeof this.click === "function")
         this.click({ value: this.text, column: this.column });
     },
-    handleChange(file, fileList) {
+    handleChange (file, fileList) {
       fileList.splice(fileList.length - 1, 1);
       if (typeof this.change === "function")
         this.change({ value: this.text, column: this.column });
     },
-    handleSuccess(file) {
+    handleSuccess (file) {
       if (this.isArray || this.isString) {
         this.text.push(file[this.urlKey]);
       } else if (this.isPictureImg) {
@@ -188,16 +189,17 @@ export default create({
       this.$message.success("上传成功");
       this.setVal();
     },
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
+      this.onRemove && this.onRemove(file, fileList);
       this.delete(file);
       this.$message.success("删除成功");
       this.setVal();
     },
-    handleError(msg) {
+    handleError (msg) {
       console.log(new Error(msg));
       this.$message.error(msg || "上传失败");
     },
-    delete(file) {
+    delete (file) {
       if (this.isArray || this.isString) {
         this.text.forEach((ele, index) => {
           if (ele === file.url) this.text.splice(index, 1);
@@ -208,15 +210,15 @@ export default create({
         });
       }
     },
-    show(data) {
+    show (data) {
       this.loading.close();
       this.handleSuccess(data);
     },
-    hide(msg) {
+    hide (msg) {
       this.loading.close();
       this.handleError(msg);
     },
-    httpRequest(config) {
+    httpRequest (config) {
       this.loading = this.$loading({
         lock: true,
         text: this.loadText,
@@ -334,7 +336,7 @@ export default create({
         done();
       }
     },
-    setVal() {
+    setVal () {
       let result = "";
       if (this.isString) {
         result = this.text.join(",");
@@ -346,14 +348,14 @@ export default create({
       this.$emit("input", result);
       this.$emit("change", result);
     },
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       this.$message.warning(
         `当前限制选择 ${this.limit} 个文件，本次选择了 ${
-          files.length
+        files.length
         } 个文件，共上传了 ${files.length + fileList.length} 个文件`
       );
     },
-    handlePictureCardPreview(file) {
+    handlePictureCardPreview (file) {
       //判断是否为图片
       this.dialogImageUrl = file.url;
       if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
@@ -365,7 +367,7 @@ export default create({
         this.dialogVisible = true;
       }
     },
-    beforeRemove(file) {
+    beforeRemove (file) {
       return this.$confirm(`是否确定移除该选项？`);
     }
   }
