@@ -38,6 +38,7 @@ export default create({
         tooltip: this.ishasprop(this.formatter, {
           formatter: name => { return this.formatter(name, this.dataChart) }
         }, {
+            backgroundColor: this.option.tipBackgroundColor || 'rgba(50,50,50,0.7)',
             textStyle: {
               fontSize: this.option.tipFontSize,
               color: this.option.tipColor || "#fff"
