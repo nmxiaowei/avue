@@ -22,7 +22,7 @@ export default create({
     updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        title: this.ishasprop(this.option.title, {
+        title: this.ishasprop(this.option.titleShow, {
           text: this.option.title,
           subtext: this.option.subtext || '',
           textStyle: {
