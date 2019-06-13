@@ -60,12 +60,12 @@ export default create({
           bottom: this.option.gridY2 || 60
         },
         legend: {//雷达的legend是单系列的和其他不一样,不能合并
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
           top: 0,
           x: this.option.legendPostion || "right",
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendShowFontSize || 12
+            fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
             return (optionData.series[0].data || []).map((ele, index) => {

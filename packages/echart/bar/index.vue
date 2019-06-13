@@ -50,11 +50,11 @@ export default create({
           bottom: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendShowFontSize || 12
+            fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
             // console.log(optionData.series);

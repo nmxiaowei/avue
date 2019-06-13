@@ -51,7 +51,7 @@ export default create({
           bottom: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
           orient: this.option.legendOrient || "horizontal",
           top: 0,
           x: this.option.legendPostion || "right",
