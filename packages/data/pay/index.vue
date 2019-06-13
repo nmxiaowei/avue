@@ -22,7 +22,9 @@
               <p class="money"
                  :style="{color:item.color}">
                 <span>¥</span>
-                <b>{{item.dismoney}}</b>
+                <avue-count-up class="b"
+                               :animation="animation"
+                               :end="item.dismoney"></avue-count-up>
                 <s>{{item.money}}</s>
                 <em>{{item.tip}}</em>
               </p>
@@ -59,14 +61,17 @@ export default create({
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 6;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   }

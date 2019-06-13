@@ -9,7 +9,9 @@
         <div class="item"
              :style="{backgroundColor:item.color}">
           <div class="item-box">
-            <span class="item-count">{{item.count}}</span>
+            <avue-count-up class="item-count"
+                           :animation="animation"
+                           :end="item.count"></avue-count-up>
             <span class="item-title">{{item.title}}</span>
             <i class="item-icon"
                :class="item.icon"></i>
@@ -27,25 +29,28 @@
 import create from "core/create";
 export default create({
   name: "data-rotate",
-  data() {
+  data () {
     return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   watch: {},
   methods: {}
 });

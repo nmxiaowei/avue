@@ -17,8 +17,10 @@
               </div>
               <div class="item-info">
                 <span>{{item.title}}</span>
-                <div class="count"
-                     :style="{color:color}">{{item.count}}</div>
+                <avue-count-up :animation="animation"
+                               :style="{color:color}"
+                               class="count"
+                               :end="item.count"></avue-count-up>
               </div>
             </a>
           </div>
@@ -32,27 +34,30 @@
 import create from "core/create";
 export default create({
   name: "data-icons",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 4;
     },
-    data() {
+    data () {
       return this.option.data;
     },
-    color() {
+    color () {
       return this.option.color || "rgb(63, 161, 255)";
     },
-    discount() {
+    discount () {
       return this.option.discount || false;
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   }
 });

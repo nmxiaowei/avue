@@ -30,11 +30,12 @@
       }
   }
   .item-body {
-      &>h2 {
+      .h2 {
           color: #fff;
           margin: 0;
           font-size: 32px;
           line-height: 60px;
+          font-weight: bold
       }
   }
   .item-footer {
