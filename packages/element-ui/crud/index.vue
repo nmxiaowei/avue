@@ -242,6 +242,7 @@
 </template>
 <script>
 import create from "core/create";
+import packages from "core/packages";
 import init from "../../core/crud/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
@@ -309,6 +310,10 @@ export default create({
       this.doLayout = true;
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
+      this.$nextTick(() => {
+        //是否开启表格排序
+        if (this.isSortable) setTimeout(this.setSort(), 0)
+      })
     });
   },
   computed: {
@@ -340,6 +345,9 @@ export default create({
     },
     groupOption () {
       return this.parentOption.group;
+    },
+    isSortable () {
+      return this.tableOption.sortable;
     },
     columnFormOption () {
       let list = [];
@@ -464,6 +472,24 @@ export default create({
     }
   },
   methods: {
+    //开启排序
+    setSort () {
+      if (!window.Sortable) {
+        packages.logs("Sortable")
+        return
+      }
+      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = window.Sortable.create(el, {
+        ghostClass: 'avue-crud__sortable',
+        onEnd: evt => {
+          const oldindex = evt.oldIndex;
+          const newindex = evt.newIndex;
+          const targetRow = this.list.splice(oldindex, 1)[0]
+          this.list.splice(newindex, 0, targetRow)
+          this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
+        }
+      })
+    },
     updateDic (prop, list) {
       this.$refs.dialogForm.updateDic(prop, list);
     },
