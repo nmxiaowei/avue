@@ -134,173 +134,214 @@
           menuBtn: false,
           labelWidth: 120,
           group: [{
-            label: '基本设置',
-            column: [{
-              label: '数据刷新时间',
-              prop: 'refreshTime',
-              span: 24
-            }]
-          }, {
-            label: '主题设置',
-            column: [{
-              label: '切换主题',
-              prop: 'switchTheme',
-              type: 'switch',
-              span: 24
-            }]
-          }, {
-            label: '坐标轴边距设置',
-            column: [{
-              label: '宽度',
-              prop: 'width',
-              span: 24,
-              type: 'silder',
-              min: 400,
-              max: 1200,
+              label: '基本设置',
+              column: [{
+                label: '数据刷新时间',
+                prop: 'refreshTime',
+                span: 24
+              }]
             }, {
-              label: '高度',
-              prop: 'height',
-              span: 24,
-              type: 'silder',
-              max: 1200,
-            }, {
-              label: '左边距(像素)',
-              prop: 'gridX',
-              span: 24,
-              type: 'silder',
-              max: 300,
-            }, {
-              label: '顶边距(像素)',
-              prop: 'gridY',
-              span: 24,
-              type: 'silder',
-              max: 300,
-            }, {
-              label: '右边距(像素)',
-              prop: 'gridX2',
-              span: 24,
-              type: 'silder',
-              max: 300,
-            }, {
-              label: '底边距(像素)',
-              prop: 'gridY2',
-              span: 24,
-              type: 'silder',
-              max: 300,
-            }]
-          }, {
-            label: '自定义配色',
-            column: [{
-              label: '文字颜色',
-              prop: 'nameColor',
-              type: 'color',
-              span: 24
-            }, {
-              label: '轴线颜色',
-              prop: 'lineColor',
-              type: 'color',
-              span: 24
-            }, {
-              labelPosition: 'top',
-              label: '柱体颜色',
-              prop: 'barColor',
-              formslot: true,
-              span: 24
-            }]
-          }, {
-            label: 'X轴设置',
-            column: [{
-              label: '显示X轴',
-              prop: 'xAxisShow',
-              type: 'switch',
-            }, {
-              label: '显示X轴网格线',
-              prop: 'xAxisSplitLineShow',
-              type: 'switch',
-            }, {
-              label: 'X轴反转',
-              prop: 'xAxisInverse',
-              type: 'switch',
-            }, {
-              label: 'X轴字号',
-              prop: 'xNameFontSize',
-              type: 'silder',
-              span: 24
-            }]
-          }, {
-            label: '柱顶设置',
-            column: [{
-              label: '显示柱顶数字',
-              prop: 'labelShow',
-              type: 'switch',
-            }, {
-              label: '柱顶字体大小',
-              prop: 'labelShowFontSize',
-              type: 'silder',
-              span: 24
-            }, {
-              label: '柱顶字体粗细',
-              prop: 'labelShowFontWeight',
-              type: 'radio',
-              dicData: [{
-                label: '细',
-                value: 300
+              label: '标题设置',
+              column: [{
+                label: '标题隐藏',
+                prop: 'titleShow',
+                type: 'switch',
+                span: 24
               }, {
-                label: '粗',
-                value: 500
-              }],
-              span: 24
-            }]
-          }, {
-            label: '柱体设置',
-            column: [{
-              label: '柱体最大宽度',
-              prop: 'barWidth',
-              type: 'silder',
-              span: 24,
+                label: '标题',
+                prop: 'title',
+                span: 24
+              }, {
+                label: '标题大小',
+                prop: 'titleFontSize',
+                type: 'silder',
+                span: 24
+              }, {
+                label: '标题颜色',
+                prop: 'titleColor',
+                span: 24,
+                type: 'color',
+              }, {
+                label: '标题位置',
+                prop: 'titlePostion',
+                type: 'radio',
+                border: true,
+                size: 'mini',
+                span: 24,
+                dicData: [{
+                  label: '左',
+                  value: ''
+                }, {
+                  label: '中',
+                  value: 'center'
+                }, {
+                  label: '右',
+                  value: 'right'
+                }]
+              }]
+            },
+
+            {
+              label: '主题设置',
+              column: [{
+                label: '切换主题',
+                prop: 'switchTheme',
+                type: 'switch',
+                span: 24
+              }]
             }, {
-              label: '柱体圆角',
-              prop: 'barRadius',
-              type: 'silder',
-              span: 24,
+              label: '坐标轴边距设置',
+              column: [{
+                label: '宽度',
+                prop: 'width',
+                span: 24,
+                type: 'silder',
+                min: 400,
+                max: 1200,
+              }, {
+                label: '高度',
+                prop: 'height',
+                span: 24,
+                type: 'silder',
+                max: 1200,
+              }, {
+                label: '左边距(像素)',
+                prop: 'gridX',
+                span: 24,
+                type: 'silder',
+                max: 300,
+              }, {
+                label: '顶边距(像素)',
+                prop: 'gridY',
+                span: 24,
+                type: 'silder',
+                max: 300,
+              }, {
+                label: '右边距(像素)',
+                prop: 'gridX2',
+                span: 24,
+                type: 'silder',
+                max: 300,
+              }, {
+                label: '底边距(像素)',
+                prop: 'gridY2',
+                span: 24,
+                type: 'silder',
+                max: 300,
+              }]
             }, {
-              label: '柱体最小高度',
-              prop: 'barMinHeight',
-              type: 'silder',
-              span: 24,
-            }]
-          }, {
-            label: 'Y轴设置',
-            column: [{
-              label: 'Y轴反转',
-              prop: 'yAxisInverse',
-              type: 'switch',
+              label: '自定义配色',
+              column: [{
+                label: '文字颜色',
+                prop: 'nameColor',
+                type: 'color',
+                span: 24
+              }, {
+                label: '轴线颜色',
+                prop: 'lineColor',
+                type: 'color',
+                span: 24
+              }, {
+                labelPosition: 'top',
+                label: '柱体颜色',
+                prop: 'barColor',
+                formslot: true,
+                span: 24
+              }]
             }, {
-              label: '显示Y轴',
-              prop: 'yAxisShow',
-              type: 'switch',
+              label: 'X轴设置',
+              column: [{
+                label: '显示X轴',
+                prop: 'xAxisShow',
+                type: 'switch',
+              }, {
+                label: '显示X轴网格线',
+                prop: 'xAxisSplitLineShow',
+                type: 'switch',
+              }, {
+                label: 'X轴反转',
+                prop: 'xAxisInverse',
+                type: 'switch',
+              }, {
+                label: 'X轴字号',
+                prop: 'xNameFontSize',
+                type: 'silder',
+                span: 24
+              }]
             }, {
-              label: '显示Y轴网格线',
-              prop: 'yAxisSplitLineShow',
-              type: 'switch',
+              label: '柱顶设置',
+              column: [{
+                label: '显示柱顶数字',
+                prop: 'labelShow',
+                type: 'switch',
+              }, {
+                label: '柱顶字体大小',
+                prop: 'labelShowFontSize',
+                type: 'silder',
+                span: 24
+              }, {
+                label: '柱顶字体粗细',
+                prop: 'labelShowFontWeight',
+                type: 'radio',
+                dicData: [{
+                  label: '细',
+                  value: 300
+                }, {
+                  label: '粗',
+                  value: 500
+                }],
+                span: 24
+              }]
             }, {
-              label: 'Y轴字号',
-              prop: 'yNameFontSize',
-              type: 'silder',
-              span: 24
-            }]
-          }]
+              label: '柱体设置',
+              column: [{
+                label: '柱体最大宽度',
+                prop: 'barWidth',
+                type: 'silder',
+                span: 24,
+              }, {
+                label: '柱体圆角',
+                prop: 'barRadius',
+                type: 'silder',
+                span: 24,
+              }, {
+                label: '柱体最小高度',
+                prop: 'barMinHeight',
+                type: 'silder',
+                span: 24,
+              }]
+            }, {
+              label: 'Y轴设置',
+              column: [{
+                label: 'Y轴反转',
+                prop: 'yAxisInverse',
+                type: 'switch',
+              }, {
+                label: '显示Y轴',
+                prop: 'yAxisShow',
+                type: 'switch',
+              }, {
+                label: '显示Y轴网格线',
+                prop: 'yAxisSplitLineShow',
+                type: 'switch',
+              }, {
+                label: 'Y轴字号',
+                prop: 'yNameFontSize',
+                type: 'silder',
+                span: 24
+              }]
+            }
+          ]
         },
         config: {
-          legendShow: false,
           switchTheme: false,
           refreshTime: 5000,
           title: '2019年度潍坊城市销售额排名',
           titlePostion: '',
           titleFontSize: 24,
           titleColor: 'rgb(115, 170, 229)',
-          titleLink: "http://avue.top",
-          info: '这是图表的简介',
+          titleShow: true,
+          legend: false,
           width: 1200,
           height: 600,
           gridX: 105,
@@ -339,7 +380,8 @@
     mounted() {},
     methods: {
       change1() {
-        console.log(theme1.themeName);
+
+
         this.theme = theme1.themeName
       },
       change2() {

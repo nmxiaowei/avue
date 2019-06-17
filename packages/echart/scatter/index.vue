@@ -9,7 +9,7 @@
 <script>
 import create from "core/echart/create";
 export default create({
-  name: "scatter",
+  name: "scatter",//散点图
   computed: {
     x2 () {
       return this.option.gridX2 || 20;
@@ -18,15 +18,15 @@ export default create({
   methods: {
     updateChart () {
       const optionData = this.deepClone(this.dataChart);
-      console.log("我更新了", optionData);
       const option = {
-        title: this.ishasprop(this.option.title, {
+        title: this.ishasprop(this.option.titleShow, {
           text: this.option.title,
           subtext: this.option.subtext || '',
           textStyle: {
             color: this.option.titleColor || '#333',
             fontSize: this.option.titleFontSize || 16
           },
+          left: this.option.titlePostion || 'auto',
           subtextStyle: {
             color: this.option.subTitleColor || '#aaa',
             fontSize: this.option.subTitleFontSize || 14
@@ -34,6 +34,7 @@ export default create({
         }, {}),
         tooltip: {
           formatter: this.option.formatter || '',
+          backgroundColor: this.option.tipBackgroundColor || 'rgba(50,50,50,0.7)',
           textStyle: {
             fontSize: this.option.tipFontSize,
             color: this.option.tipColor || "#fff"
@@ -71,7 +72,7 @@ export default create({
                 show: this.vaildData(this.option.labelShow, false), //开启显示
                 position: "top",
                 textStyle: {
-                  fontSize: this.option.labelShowFontSize || 14,
+                  fontSize: this.option.fontSize || 14,
                   color: this.option.labelShowColor || "#333",
                   fontWeight: this.option.labelShowFontWeight || 500
                 }

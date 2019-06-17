@@ -15,8 +15,10 @@
               <i :class="item.icon"></i>
             </div>
             <div class="item-info">
-              <div :style="{color:item.color}"
-                   class="title">{{item.count}}</div>
+              <avue-count-up :animation="animation"
+                             :style="{color:item.color}"
+                             class="title"
+                             :end="item.count"></avue-count-up>
               <div class="info">{{item.title}}</div>
             </div>
           </a>
@@ -30,25 +32,28 @@
 import create from "core/create";
 export default create({
   name: "data-box",
-  data() {
+  data () {
     return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   watch: {},
   methods: {}
 });

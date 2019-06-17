@@ -16,7 +16,9 @@
               <span>{{item.subtitle}}</span>
             </div>
             <div class="item-body">
-              <h2>{{item.count}}</h2>
+              <avue-count-up class="h2"
+                             :animation="animation"
+                             :end="item.count"></avue-count-up>
             </div>
             <div class="item-footer">
               <span>{{item.allcount}}</span>
@@ -34,21 +36,24 @@
 import create from "core/create";
 export default create({
   name: "data-tabs",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   }
 });

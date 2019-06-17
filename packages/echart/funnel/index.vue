@@ -22,13 +22,14 @@ export default create({
     updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const option = {
-        title: this.ishasprop(this.option.title, {
+        title: this.ishasprop(this.option.titleShow, {
           text: this.option.title,
           subtext: this.option.subtext || '',
           textStyle: {
             color: this.option.titleColor || '#333',
             fontSize: this.option.titleFontSize || 16
           },
+          left: this.option.titlePostion || 'auto',
           subtextStyle: {
             color: this.option.subTitleColor || '#aaa',
             fontSize: this.option.subTitleFontSize || 14
@@ -37,19 +38,20 @@ export default create({
         tooltip: this.ishasprop(this.formatter, {
           formatter: name => { return this.formatter(name, this.dataChart) }
         }, {
+            backgroundColor: this.option.tipBackgroundColor || 'rgba(50,50,50,0.7)',
             textStyle: {
               fontSize: this.option.tipFontSize,
               color: this.option.tipColor || "#fff"
             }
           }),
-         grid: {
+        grid: {
           left: this.option.gridX || 20,
           top: this.option.gridY || 60,
           right: this.x2,
           bottom: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
           orient: this.option.legendOrient || "horizontal",
           top: 0,
           x: this.option.legendPostion || "right",

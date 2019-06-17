@@ -106,6 +106,9 @@ $space-width: 15px;
   &__icon-select{
     font-size: 28px;
   }
+  &__sortable{
+    opacity: 0.2;
+  }
   &__pagination {
     position: relative;
     height: 25px;

@@ -11,9 +11,11 @@
           <a :href="item.href?item.href:'javascript:void(0);'"
              @click="item.click?item.click(item):''"
              :target="item.target">
-            <h5 class="count">{{item.count}}</h5>
+            <avue-count-up :animation="animation"
+                           class="count"
+                           :end="item.count"></avue-count-up>
             <span class="splitLine" />
-            <p class="title">{{item.title}}</p>
+            <div class="title">{{item.title}}</div>
           </a>
         </div>
       </el-col>
@@ -26,27 +28,30 @@
 import create from "core/create";
 export default create({
   name: "data-display",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 6;
     },
-    data() {
+    data () {
       return this.option.data || [];
     },
-    color() {
+    color () {
       return this.option.color || "rgb(63, 161, 255)";
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
-  created() {},
+  created () { },
   methods: {}
 });
 </script>

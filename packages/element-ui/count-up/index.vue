@@ -8,6 +8,10 @@ import create from "core/create";
 export default create({
   name: "count-up",
   props: {
+    animation: {
+      type: Boolean,
+      default: true
+    },
     start: {
       type: Number,
       required: false,
@@ -29,33 +33,36 @@ export default create({
     options: {
       type: Object,
       required: false,
-      default() {
+      default () {
         return {};
       }
     },
     callback: {
       type: Function,
       required: false,
-      default: () => {}
+      default: () => { }
     }
   },
-  data() {
+  data () {
     return {
       c: null
     };
   },
   watch: {
-    end(value) {
+    end (value) {
       if (this.c && this.c.update) {
         this.c.update(value);
       }
     }
   },
-  mounted() {
-    this.init();
+  mounted () {
+    if (this.animation) {
+      this.init();
+    }
+
   },
   methods: {
-    init() {
+    init () {
       if (!this.c) {
         this.c = new CountUp(
           this.$el,
@@ -70,31 +77,31 @@ export default create({
         });
       }
     },
-    destroy() {
+    destroy () {
       this.c = null;
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.destroy();
   },
-  start(callback) {
+  start (callback) {
     if (this.c && this.c.start) {
       this.c.start(() => {
         callback && callback(this.c);
       });
     }
   },
-  pauseResume() {
+  pauseResume () {
     if (this.c && this.c.pauseResume) {
       this.c.pauseResume();
     }
   },
-  reset() {
+  reset () {
     if (this.c && this.c.reset) {
       this.c.reset();
     }
   },
-  update(newEndVal) {
+  update (newEndVal) {
     if (this.c && this.c.update) {
       this.c.update(newEndVal);
     }

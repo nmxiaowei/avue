@@ -242,6 +242,7 @@
 </template>
 <script>
 import create from "core/create";
+import packages from "core/packages";
 import init from "../../core/crud/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
@@ -259,7 +260,7 @@ import { calcCascader } from "core/dataformat";
 export default create({
   name: "crud",
   mixins: [init("crud"), locale],
-  provide() {
+  provide () {
     return {
       crud: this
     };
@@ -274,7 +275,7 @@ export default create({
     dialogFilter, //过滤器
     dialogForm //分页,
   },
-  data() {
+  data () {
     return {
       doLayout: true,
       treeProp: "",
@@ -295,7 +296,7 @@ export default create({
       printKey: true
     };
   },
-  created() {
+  created () {
     // 初始化数据
     this.dataInit();
     // 规则初始化
@@ -303,19 +304,23 @@ export default create({
     //初始化字典
     this.handleLoadDic();
   },
-  mounted() {
+  mounted () {
     this.doLayout = false;
     this.$nextTick(() => {
       this.doLayout = true;
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
+      this.$nextTick(() => {
+        //是否开启表格排序
+        if (this.isSortable) setTimeout(this.setSort(), 0)
+      })
     });
   },
   computed: {
-    propOption() {
+    propOption () {
       let result = [];
       const safe = this;
-      function findProp(list) {
+      function findProp (list) {
         list.forEach(ele => {
           if (ele.prop) {
             result.push(ele);
@@ -335,13 +340,16 @@ export default create({
       if (this.isTree) this.treeProp = result[0].prop;
       return result;
     },
-    isGroup() {
+    isGroup () {
       return !this.validatenull(this.tableOption.group);
     },
-    groupOption() {
+    groupOption () {
       return this.parentOption.group;
     },
-    columnFormOption() {
+    isSortable () {
+      return this.tableOption.sortable;
+    },
+    columnFormOption () {
       let list = [];
       if (this.isGroup) {
         this.groupOption.forEach(ele => {
@@ -355,69 +363,69 @@ export default create({
       }
       return list;
     },
-    expandLevel() {
+    expandLevel () {
       return this.parentOption.expandLevel || 0;
     },
-    expandAll() {
+    expandAll () {
       return this.parentOption.expandAll || false;
     },
-    isTree() {
+    isTree () {
       return this.vaildData(this.parentOption.tree, false);
     },
-    fixedFlag() {
+    fixedFlag () {
       return this.isMobile ? false : "left";
     },
-    rowKey() {
+    rowKey () {
       return this.tableOption.rowKey || "id";
     },
-    tableHeight() {
+    tableHeight () {
       const clientHeight = document.documentElement.clientHeight;
       const height =
         this.tableOption.height == "auto"
           ? clientHeight -
-            this.vaildData(this.tableOption.calcHeight, config.calcHeight)
+          this.vaildData(this.tableOption.calcHeight, config.calcHeight)
           : this.tableOption.height;
       return height <= 300 ? 300 : height;
     },
-    btnDisabled() {
+    btnDisabled () {
       return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
-    parentOption() {
+    parentOption () {
       return this.tableOption || {};
     },
-    columnOption() {
+    columnOption () {
       return this.tableOption.column || [];
     },
-    sumColumnList() {
+    sumColumnList () {
       return this.tableOption.sumColumnList || [];
     },
-    selectLen() {
+    selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
     }
   },
   watch: {
     tableForm: {
-      handler() {
+      handler () {
         this.$emit("input", this.tableForm);
       },
       deep: true
     },
     value: {
-      handler() {
+      handler () {
         this.formVal();
       },
       deep: true
     },
     page: {
-      handler() {
+      handler () {
         this.$refs.tablePage.pageInit();
       },
       deep: true
     },
-    propOption() {
+    propOption () {
       this.$refs.dialogColumn.columnInit();
     },
-    data() {
+    data () {
       this.dataInit();
       //初始化级联字典
       this.handleLoadCascaderDic();
@@ -447,7 +455,7 @@ export default create({
     uploadAfter: Function,
     page: {
       type: Object,
-      default() {
+      default () {
         return {};
       }
     },
@@ -464,11 +472,29 @@ export default create({
     }
   },
   methods: {
-    updateDic(prop, list) {
+    //开启排序
+    setSort () {
+      if (!window.Sortable) {
+        packages.logs("Sortable")
+        return
+      }
+      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = window.Sortable.create(el, {
+        ghostClass: 'avue-crud__sortable',
+        onEnd: evt => {
+          const oldindex = evt.oldIndex;
+          const newindex = evt.newIndex;
+          const targetRow = this.list.splice(oldindex, 1)[0]
+          this.list.splice(newindex, 0, targetRow)
+          this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
+        }
+      })
+    },
+    updateDic (prop, list) {
       this.$refs.dialogForm.updateDic(prop, list);
     },
     // 格式化数据源
-    formatData() {
+    formatData () {
       const data = this.data;
       if (data.length === 0) {
         return [];
@@ -479,7 +505,7 @@ export default create({
       });
       this.list = treeToArray(this, data);
     },
-    showRow(row) {
+    showRow (row) {
       const index = row.rowIndex;
       const show = row.row._parent
         ? row.row._parent._expand && row.row._parent._show
@@ -490,52 +516,52 @@ export default create({
         : "display:none;";
     },
     //对部分表单字段进行校验的方法
-    validateField(val) {
+    validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
-    handleGetRowKeys(row) {
+    handleGetRowKeys (row) {
       const rowKey = row[this.rowKey];
       return rowKey;
     },
-    rulesInit() {
+    rulesInit () {
       this.formRules = {};
       this.propOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
         if (ele.rules && ele.cell) this.formCellRules[ele.prop] = ele.rules;
       });
     },
-    menuIcon(value) {
+    menuIcon (value) {
       return this.menuType === "icon" ? "" : this.t("crud." + value);
     },
-    menuText(value) {
+    menuText (value) {
       return this.menuType === "text" ? "text" : value;
     },
-    selectClear() {
+    selectClear () {
       this.$refs.table.clearSelection();
     },
-    toggleRowSelection(row, selected) {
+    toggleRowSelection (row, selected) {
       this.$refs.table.toggleRowSelection(row, selected);
     },
-    toggleRowExpansion(row, expanded) {
+    toggleRowExpansion (row, expanded) {
       this.$refs.table.toggleRowExpansion(row, expanded);
     },
-    setCurrentRow(row) {
+    setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (
         index +
         1 +
         ((this.$refs.tablePage.defaultPage.currentPage || 1) - 1) *
-          (this.$refs.tablePage.defaultPage.pageSize || 10)
+        (this.$refs.tablePage.defaultPage.pageSize || 10)
       );
     },
-    formVal() {
+    formVal () {
       Object.keys(this.value).forEach(ele => {
         this.$set(this.tableForm, ele, this.value[ele]);
       });
     },
-    dataInit() {
+    dataInit () {
       this.list = [...this.data];
       // if (this.isTree) this.formatData();
       //初始化序列的参数
@@ -544,23 +570,23 @@ export default create({
       });
     },
     //展开或则关闭
-    expandChange(row, expand) {
+    expandChange (row, expand) {
       this.expandList = [...expand];
       this.$emit("expand-change", row, expand);
     },
     //设置单选
-    currentRowChange(val) {
+    currentRowChange (val) {
       this.$emit("current-row-change", val);
     },
     //刷新事件
-    refreshChange() {
+    refreshChange () {
       this.$emit("refresh-change", {
         page: this.defaultPage,
         searchForm: this.searchForm
       });
     },
     // 选中实例
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.table.toggleRowSelection(row);
@@ -570,48 +596,48 @@ export default create({
       }
     },
     // 选择回调
-    selectionChange(val) {
+    selectionChange (val) {
       this.tableSelect = val;
       this.$emit("selection-change", this.tableSelect);
     },
     // 单个选择回调
-    select(selection, row) {
+    select (selection, row) {
       this.$emit("select", selection, row);
     },
     // 点击勾选全选 Checkbox
-    selectAll(selection) {
+    selectAll (selection) {
       this.$emit("select-all", selection);
     },
     // 排序回调
-    sortChange(val) {
+    sortChange (val) {
       this.$emit("sort-change", val);
     },
     // 行双击
-    rowDblclick(row, event) {
+    rowDblclick (row, event) {
       this.$emit("row-dblclick", row, event);
     },
     // 行单机
-    rowClick(row, event, column) {
+    rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
     //当单元格 hover 进入时会触发该事件
-    cellMouseEnter(row, column, cell, event) {
+    cellMouseEnter (row, column, cell, event) {
       this.$emit("cell-mouse-enter", row, column, cell, event);
     },
     //当单元格 hover 退出时会触发该事件
-    cellMouseLeave(row, column, cell, event) {
+    cellMouseLeave (row, column, cell, event) {
       this.$emit("cell-mouse-leave", row, column, cell, event);
     },
     //当某个单元格被点击时会触发该事件
-    cellClick(row, column, cell, event) {
+    cellClick (row, column, cell, event) {
       this.$emit("cell-click", row, column, cell, event);
     },
     //当某个单元格被双击击时会触发该事件
-    cellDblclick(row, column, cell, event) {
+    cellDblclick (row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
     },
     //行编辑点击
-    rowCell(row, index) {
+    rowCell (row, index) {
       if (row.$cellEdit) {
         this.rowCellUpdate(row, index);
       } else {
@@ -619,7 +645,7 @@ export default create({
       }
     },
     //单元格新增
-    rowCellAdd(obj = {}) {
+    rowCellAdd (obj = {}) {
       const len = this.list.length;
       this.list.push(
         this.deepClone(
@@ -636,7 +662,7 @@ export default create({
       this.formIndexList.push(len);
     },
     //行取消
-    rowCanel(row, index) {
+    rowCanel (row, index) {
       if (this.validatenull(row[this.rowKey])) {
         this.list.splice(index, 1);
         return;
@@ -649,7 +675,7 @@ export default create({
       this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
     },
     // 单元格编辑
-    rowCellEdit(row, index) {
+    rowCellEdit (row, index) {
       row.$cellEdit = true;
       this.$set(this.list, index, row);
       //缓冲行数据
@@ -661,7 +687,7 @@ export default create({
       }, 1000);
     },
     //单元格更新
-    rowCellUpdate(row, index) {
+    rowCellUpdate (row, index) {
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
           this.$refs.dialogForm.keyBtn = true;
@@ -682,11 +708,11 @@ export default create({
           this.$message.warning(errors[0]);
         });
     },
-    rowAdd() {
+    rowAdd () {
       this.$refs.dialogForm.show("add");
     },
     //对象克隆
-    rowClone(row) {
+    rowClone (row) {
       let rowData = {};
       Object.keys(row).forEach(ele => {
         if (!["_parent", "children"].includes(ele)) {
@@ -696,23 +722,23 @@ export default create({
       return rowData;
     },
     //搜索
-    searchChange() {
+    searchChange () {
       this.$refs.headerSearch.searchChange();
     },
     //清空
-    searchReset() {
+    searchReset () {
       this.$refs.headerSearch.searchReset();
     },
     //导出excel
-    rowExcel() {
+    rowExcel () {
       this.$refs.headerMenu.rowExcel();
     },
     //打印
-    rowPrint() {
+    rowPrint () {
       this.$refs.headerMenu.rowPrint();
     },
     // 编辑
-    rowEdit(row, index) {
+    rowEdit (row, index) {
       this.tableForm = this.rowClone(row);
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
@@ -720,31 +746,31 @@ export default create({
     },
 
     //查看
-    rowView(row, index) {
+    rowView (row, index) {
       this.tableForm = this.rowClone(row);
       this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("view");
     },
     // 删除
-    rowDel(row, index) {
+    rowDel (row, index) {
       this.$emit("row-del", row, index);
     },
     //清空表单
-    resetForm() {
+    resetForm () {
       this.$refs.dialogForm.resetForm();
       this.$emit("input", this.tableForm);
     },
     //搜索指定的属性配置
-    findColumnIndex(value) {
+    findColumnIndex (value) {
       return this.findArray(this.propOption, value, "prop");
     },
     //合并行
-    tableSpanMethod(param) {
+    tableSpanMethod (param) {
       if (typeof this.spanMethod === "function") return this.spanMethod(param);
     },
     //合集统计逻辑
-    tableSummaryMethod(param) {
+    tableSummaryMethod (param) {
       //如果自己写逻辑则调用summaryMethod方法
       if (typeof this.summaryMethod === "function")
         return this.summaryMethod(param);

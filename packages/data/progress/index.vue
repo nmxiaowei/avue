@@ -11,8 +11,9 @@
              @click="item.click?item.click(item):''"
              :target="item.target">
             <div class="item-header">
-              <div class="item-count"
-                   v-text="item.count+'%'"></div>
+              <avue-count-up class="item-count"
+                             :animation="animation"
+                             :end="item.count"></avue-count-up>
               <div class="item-title"
                    v-text="item.title"></div>
             </div>
@@ -31,25 +32,28 @@
 import create from "core/create";
 export default create({
   name: "data-progress",
-  data() {
+  data () {
     return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   watch: {},
   methods: {}
 });

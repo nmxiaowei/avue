@@ -15,7 +15,9 @@
             </div>
             <div class="item-info">
               <div class="item-title">{{item.title}}</div>
-              <span class="item-count">{{item.count}}</span>
+              <avue-count-up :animation="animation"
+                             class="item-count"
+                             :end="item.count"></avue-count-up>
             </div>
 
           </div>
@@ -29,24 +31,27 @@
 import create from "core/create";
 export default create({
   name: "data-panel",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    span() {
+    animation () {
+      return this.option.animation
+    },
+    span () {
       return this.option.span || 6;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
-  created() {},
+  created () { },
   methods: {}
 });
 </script>

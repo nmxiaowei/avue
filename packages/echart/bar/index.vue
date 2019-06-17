@@ -21,15 +21,15 @@ export default create({
   methods: {
     updateChart () {
       const optionData = this.deepClone(this.dataChart);
-
       const option = {
-        title: this.ishasprop(this.option.title, {
+        title: this.ishasprop(this.option.titleShow, {
           text: this.option.title,
           subtext: this.option.subtext || '',
           textStyle: {
             color: this.option.titleColor || '#333',
             fontSize: this.option.titleFontSize || 16
           },
+          left: this.option.titlePostion || 'auto',
           subtextStyle: {
             color: this.option.subTitleColor || '#aaa',
             fontSize: this.option.subTitleFontSize || 14
@@ -50,14 +50,14 @@ export default create({
           bottom: this.option.gridY2 || 60
         },
         legend: {
-          show: this.vaildData(this.option.legendShow, false),
+          show: this.vaildData(this.option.legend, false),
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendShowFontSize || 12
+            fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
-            console.log(optionData.series);
+            // console.log(optionData.series);
             return (optionData.series || []).map((ele, index) => {
               return {
                 name: ele.name,
