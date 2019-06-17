@@ -114,6 +114,19 @@
                        align="center"></el-table-column>
       <!-- 占位符号解决ele问题 -->
       <el-table-column width="0px"></el-table-column>
+      <!-- 拖动排序  -->
+      <el-table-column v-if="tableOption.draggable && !tableOption.expand"
+                       width="50"
+                       align="center">
+        <template slot="header" slot-scope="scope">
+          <i class="el-icon-sort" />
+        </template>
+        <template slot-scope="scope">
+          <span class="avue-crud__drag-table-row-handler">
+            <i class="el-icon-rank" />
+          </span>
+        </template>
+      </el-table-column>
       <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
@@ -146,7 +159,7 @@
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.editBtn,true)"
                                 v-permission="permission.editBtn"
-                                @click.native="rowEdit(scope.row,scope.$index)"> {{t('crud.editBtn')}}</el-dropdown-item>
+                                @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
                                 v-permission="permission.delBtn"
@@ -256,6 +269,7 @@ import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
 import { calcCascader } from "core/dataformat";
+import Sortable from 'sortablejs';
 
 export default create({
   name: "crud",
@@ -303,6 +317,10 @@ export default create({
     this.rulesInit();
     //初始化字典
     this.handleLoadDic();
+    // 拖动排序
+    this.$nextTick(() => {
+      setTimeout(() => this.setTableDraggable(), 1000);
+    });
   },
   mounted () {
     this.doLayout = false;
@@ -821,6 +839,21 @@ export default create({
       }
       this.sumsList = sums;
       return sums;
+    },
+    setTableDraggable() {
+      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0];
+      Sortable.create(el, {
+        ghostClass: 'avue-crud__drag-table-row-ghost',
+        handle: '.avue-crud__drag-table-row-handler',
+        setData: function (dataTransfer) {
+          dataTransfer.setData('Text', '');
+        },
+        onEnd: evt => {
+          const targetRow = this.list.splice(evt.oldIndex, 1)[0];
+          this.list.splice(evt.newIndex, 0, targetRow);
+          this.$emit("drag-table-row", targetRow, evt.oldIndex, evt.newIndex);
+        }
+      });
     }
   }
 });
