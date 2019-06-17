@@ -5,8 +5,11 @@ class waterMark {
     this.CONTAINERID = this.randomId();
     this.drawCanvas = this.drawCanvas.bind(this);
     this.parentObserver = this.parentObserver.bind(this);
+    this.Repaint = this.Repaint.bind(this);
     this.isOberserve = false;
     this.init(opt);
+    this.drawCanvas();
+    this.parentObserver();
   }
 
   init(opt) {
@@ -18,8 +21,6 @@ class waterMark {
     this.option.textAlign = opt.textAlign || 'center';
     this.option.textStyle = opt.textStyle || 'rgba(100,100,100,0.15)';
     this.option.degree = opt.degree || -20;
-    this.drawCanvas();
-    this.parentObserver();
   }
 
   drawCanvas() {
@@ -90,6 +91,14 @@ class waterMark {
       id += $chars.charAt(Math.floor(Math.random() * maxPos));
     }
     return id;
+  }
+
+  Repaint(opt = {}) {
+    this.isOberserve = true;
+    this.init(opt);
+    let _wm = document.querySelector(`#${this.CONTAINERID}`);
+    _wm.parentNode.removeChild(_wm);
+    this.drawCanvas();
   }
 }
 export default waterMark;
