@@ -6,6 +6,7 @@
 .avue-echart{
   padding: 10px;
   overflow: inherit;
+  box-sizing: border-box;
   &-tabs{
     .el-select{
       width: 100%;
