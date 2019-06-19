@@ -57,7 +57,6 @@ export default create({
             fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
-            // console.log(optionData.series);
             return (optionData.series || []).map((ele, index) => {
               return {
                 name: ele.name,
