@@ -109,6 +109,9 @@ $space-width: 15px;
   &__sortable{
     opacity: 0.2;
   }
+  &__drag-handler{
+    cursor: pointer;
+  }
   &__pagination {
     position: relative;
     height: 25px;

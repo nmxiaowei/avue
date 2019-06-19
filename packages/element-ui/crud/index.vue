@@ -97,6 +97,20 @@
                 name="expand"></slot>
         </template>
       </el-table-column>
+      <!-- 拖动排序  -->
+      <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
+                       width="50"
+                       align="center">
+        <template slot="header"
+                  slot-scope="scope">
+          <i class="el-icon-sort" />
+        </template>
+        <template slot-scope="scope">
+          <span class="avue-crud__drag-handler">
+            <i class="el-icon-rank" />
+          </span>
+        </template>
+      </el-table-column>
       <!-- 选择框 -->
       <el-table-column v-if="tableOption.selection"
                        type="selection"
@@ -146,7 +160,7 @@
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.editBtn,true)"
                                 v-permission="permission.editBtn"
-                                @click.native="rowEdit(scope.row,scope.$index)"> {{t('crud.editBtn')}}</el-dropdown-item>
+                                @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
                                 v-permission="permission.delBtn"
@@ -481,6 +495,7 @@ export default create({
       const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = window.Sortable.create(el, {
         ghostClass: 'avue-crud__sortable',
+        handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
         onEnd: evt => {
           const oldindex = evt.oldIndex;
           const newindex = evt.newIndex;
