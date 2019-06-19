@@ -12,10 +12,11 @@ export default function () {
   const propsHttpDefault = {
     name: 'name',
     url: 'url',
+    fileName: 'file',
     res: ''
   };
   return {
-    data() {
+    data () {
       return {
         text: undefined,
         propsHttpDefault: propsHttpDefault,
@@ -128,23 +129,23 @@ export default function () {
     },
     watch: {
       value: {
-        handler() {
+        handler () {
           this.initVal();
         },
         immediate: true
       }
     },
     computed: {
-      required() {
+      required () {
         return !this.validatenull(this.rules);
       },
-      isArray() {
+      isArray () {
         return this.dataType === 'array';
       },
-      isString() {
+      isString () {
         return this.dataType === 'string';
       },
-      isNumber() {
+      isNumber () {
         return this.dataType === 'number';
       },
       nameKey: function () {
@@ -172,9 +173,9 @@ export default function () {
         return this.props.id || this.propsDefault.id;
       }
     },
-    created() { },
+    created () { },
     methods: {
-      initVal() {
+      initVal () {
         this.text = initVal({
           type: this.type,
           multiple: this.multiple,

@@ -128,7 +128,7 @@ export default create({
   },
   computed: {
     fileName () {
-      return this.resKey.fileName || 'file'
+      return this.propsHttp.fileName || 'file'
     },
     isAliOss () {
       return this.oss === "ali";
