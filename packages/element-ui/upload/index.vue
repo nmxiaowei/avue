@@ -127,6 +127,9 @@ export default create({
     uploadAfter: Function
   },
   computed: {
+    fileName () {
+      return this.resKey.fileName || 'file'
+    },
     isAliOss () {
       return this.oss === "ali";
     },
@@ -246,7 +249,7 @@ export default create({
       let param = new FormData();
       const done = () => {
         let url = this.action;
-        param.append("file", file, file.name);
+        param.append(this.fileName, file, file.name);
         const callack = () => {
           //七牛云oss存储
           if (this.isQiniuOss) {
