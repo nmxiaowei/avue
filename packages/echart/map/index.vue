@@ -84,17 +84,10 @@ export default create({
     }
   },
   computed: {
-<<<<<<< HEAD
-    zoomShow() {
-      return this.option.zoomShow || 1;
-    },
-    zoom() {
-=======
     zoomShow () {
       return this.option.zoomShow || 1;
     },
     zoom () {
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
       return this.option.zoom || 1;
     },
     borderWidth () {

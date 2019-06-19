@@ -3,11 +3,7 @@ import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import directive from 'packages/core/directive/permission';
 import _export from 'plugin/export/';
-<<<<<<< HEAD
-import { watermark } from 'plugin/canvas/'
-=======
 import { watermark } from 'plugin/canvas/';
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
 import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
@@ -16,13 +12,8 @@ import $ImagePreview from 'components/image-preview/';
 let prototypes = {
   $Clipboard,
   $Log
-<<<<<<< HEAD
-}
-const install = function (Vue, opts = {}) {
-=======
 };
 const install = function(Vue, opts = {}) {
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
   Vue.use(_export);
   // 初始化指令
   directive(Vue);

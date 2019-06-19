@@ -127,12 +127,9 @@ export default create({
     uploadAfter: Function
   },
   computed: {
-<<<<<<< HEAD
-=======
     fileName () {
       return this.propsHttp.fileName || 'file'
     },
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
     isAliOss () {
       return this.oss === "ali";
     },

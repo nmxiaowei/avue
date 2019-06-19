@@ -1,26 +1,10 @@
-<<<<<<< HEAD
-import _waterMark from './watermark'
-//标准参数
-=======
 import _waterMark from './watermark';
 // 标准参数
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
 var canvas, ctx, configDefault = {
   width: 200,
   height: 200
 };
 let config = {
-<<<<<<< HEAD
-  text: 'avue.top',//文字
-  fontFamily: 'microsoft yahei',//字体
-  color: "#999",//颜色
-  fontSize: 16,//大小
-  opacity: 100,//透明度
-  bottom: 10,//下边位置
-  right: 10,//右边位置
-  ratio: 1//压缩比
-}
-=======
   text: 'avue.top', // 文字
   fontFamily: 'microsoft yahei', // 字体
   color: '#999', // 颜色
@@ -30,7 +14,6 @@ let config = {
   right: 10, // 右边位置
   ratio: 1// 压缩比
 };
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
 
 /**
  * 参数 {Object} opt
@@ -44,17 +27,10 @@ let config = {
  * @param return
  **/
 export const watermark = function(opt = {}) {
-<<<<<<< HEAD
-  new _waterMark(opt);
-};
-
-//将base64转换为文件
-=======
   return new _waterMark(opt);
 };
 
 // 将base64转换为文件
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
 
 export function detailImg(file, option = {}) {
   return new Promise(function(resolve, reject) {

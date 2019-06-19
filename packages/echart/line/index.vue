@@ -139,8 +139,6 @@ export default create({
               itemStyle: this.ishasprop(!this.switchTheme, {
                 color: this.getColor(index)
               }, {}),
-<<<<<<< HEAD
-=======
               label: {
                 show: this.vaildData(this.option.labelShow, false), //开启显示
                 position: "top", //在上方显示,
@@ -152,7 +150,6 @@ export default create({
                   fontWeight: this.option.labelShowFontWeight || 500
                 }
               }
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
             });
           });
           return list;

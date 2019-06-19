@@ -281,8 +281,6 @@ export default (() => {
           }
         });
 
-<<<<<<< HEAD
-=======
       },
       getLabelFormatter(name) {
         if (this.labelFormatter) {
@@ -303,7 +301,6 @@ export default (() => {
             }
           }
         });
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
       },
       // 下面俩都是chart的公共的方法,就放这里面共用
       getColor(index, first) {

@@ -495,10 +495,7 @@ export default create({
       const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = window.Sortable.create(el, {
         ghostClass: 'avue-crud__sortable',
-<<<<<<< HEAD
-=======
         handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
->>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
         onEnd: evt => {
           const oldindex = evt.oldIndex;
           const newindex = evt.newIndex;
