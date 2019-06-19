@@ -5,8 +5,16 @@ class waterMark {
     this.CONTAINERID = this.randomId();
     this.drawCanvas = this.drawCanvas.bind(this);
     this.parentObserver = this.parentObserver.bind(this);
+<<<<<<< HEAD
     this.isOberserve = false;
     this.init(opt);
+=======
+    this.Repaint = this.Repaint.bind(this);
+    this.isOberserve = false;
+    this.init(opt);
+    this.drawCanvas();
+    this.parentObserver();
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
   }
 
   init(opt) {
@@ -18,8 +26,11 @@ class waterMark {
     this.option.textAlign = opt.textAlign || 'center';
     this.option.textStyle = opt.textStyle || 'rgba(100,100,100,0.15)';
     this.option.degree = opt.degree || -20;
+<<<<<<< HEAD
     this.drawCanvas();
     this.parentObserver();
+=======
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
   }
 
   drawCanvas() {
@@ -91,5 +102,16 @@ class waterMark {
     }
     return id;
   }
+<<<<<<< HEAD
+=======
+
+  Repaint(opt = {}) {
+    this.isOberserve = true;
+    this.init(opt);
+    let _wm = document.querySelector(`#${this.CONTAINERID}`);
+    _wm.parentNode.removeChild(_wm);
+    this.drawCanvas();
+  }
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
 }
 export default waterMark;

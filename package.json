@@ -1,6 +1,10 @@
 {
   "name": "@smallwei/avue",
+<<<<<<< HEAD
   "version": "2.0.2",
+=======
+  "version": "2.0.3",
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",

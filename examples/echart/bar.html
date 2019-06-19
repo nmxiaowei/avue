@@ -13,12 +13,6 @@
   <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
-  <link rel="stylesheet" href="../cdn/codemirror/codemirror.css" />
-  <link rel="stylesheet" href="../cdn/codemirror/theme/rubyblue.css" />
-  <link rel="stylesheet" href="../cdn/codemirror/addon/lint/lint.css" />
-  <script src="../cdn/codemirror/codemirror.js"></script>
-  <script src="../cdn/codemirror/addon/lint/lint.js"></script>
-  <script src="../cdn/codemirror/mode/javascript/javascript.js"></script>
   <script src="../../../lib/avue.js"></script>
   <script src="../theme/avue.project.js"></script>
   <script src="../theme/halloween.project.js"></script>
@@ -28,6 +22,7 @@
 
 <body>
   <div id="app">
+<<<<<<< HEAD
     <el-button type="primary" @click="dialogVisible=true">打开设置</el-button>
     <el-button @click='change1'>换紫色主题</el-button>
     <el-button @click='change2'>换绿色主题</el-button>
@@ -46,6 +41,13 @@
         <el-button type="primary" @click="getVal">刷新数据</el-button>
       </div>
     </avue-drawer>
+=======
+    <el-button @click='change1'>换紫色主题</el-button>
+    <el-button @click='change2'>换绿色主题</el-button>
+    <avue-echart-bar :theme='theme' ref="echart" :width="config.width" :height="config.height" :option="config"
+      :data="apiData">
+    </avue-echart-bar>
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
   </div>
 </body>
 <script>
@@ -57,10 +59,13 @@
     data() {
       return {
         theme: theme.themeName,
+<<<<<<< HEAD
         CodeMirrorEditor: {},
         dialogVisible: true,
         apiText: '',
         apiFirst: false,
+=======
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
         apiData: {
           "categories": [
             "北京",
@@ -84,6 +89,7 @@
               571234,
               467397
             ]
+<<<<<<< HEAD
           }, {
             "name": "其他手机品牌",
             "data": [
@@ -336,6 +342,24 @@
         config: {
           switchTheme: false,
           refreshTime: 5000,
+=======
+          }, {
+            "name": "其他手机品牌",
+            "data": [
+              1131776,
+              1349011,
+              905718,
+              1349011,
+              905718,
+              656020,
+              571234,
+              467397
+            ]
+          }]
+        },
+        config: {
+          switchTheme: true,
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
           title: '2019年度潍坊城市销售额排名',
           titlePostion: '',
           titleFontSize: 24,
@@ -377,11 +401,17 @@
         }
       }
     },
+<<<<<<< HEAD
     mounted() {},
     methods: {
       change1() {
 
 
+=======
+    mounted() { },
+    methods: {
+      change1() {
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
         this.theme = theme1.themeName
       },
       change2() {

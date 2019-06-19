@@ -109,6 +109,12 @@ $space-width: 15px;
   &__sortable{
     opacity: 0.2;
   }
+<<<<<<< HEAD
+=======
+  &__drag-handler{
+    cursor: pointer;
+  }
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
   &__pagination {
     position: relative;
     height: 25px;

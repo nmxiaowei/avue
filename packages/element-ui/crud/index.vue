@@ -97,6 +97,20 @@
                 name="expand"></slot>
         </template>
       </el-table-column>
+      <!-- 拖动排序  -->
+      <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
+                       width="50"
+                       align="center">
+        <template slot="header"
+                  slot-scope="scope">
+          <i class="el-icon-sort" />
+        </template>
+        <template slot-scope="scope">
+          <span class="avue-crud__drag-handler">
+            <i class="el-icon-rank" />
+          </span>
+        </template>
+      </el-table-column>
       <!-- 选择框 -->
       <el-table-column v-if="tableOption.selection"
                        type="selection"
@@ -113,7 +127,7 @@
                        fixed="left"
                        align="center"></el-table-column>
       <!-- 占位符号解决ele问题 -->
-      <el-table-column width="0px"></el-table-column>
+      <el-table-column width="1"></el-table-column>
       <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
@@ -146,7 +160,7 @@
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.editBtn,true)"
                                 v-permission="permission.editBtn"
-                                @click.native="rowEdit(scope.row,scope.$index)"> {{t('crud.editBtn')}}</el-dropdown-item>
+                                @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
                                 v-permission="permission.delBtn"
@@ -481,6 +495,10 @@ export default create({
       const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = window.Sortable.create(el, {
         ghostClass: 'avue-crud__sortable',
+<<<<<<< HEAD
+=======
+        handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
+>>>>>>> 167b3a089d3abf456d1bcc896b9a63217a9e7220
         onEnd: evt => {
           const oldindex = evt.oldIndex;
           const newindex = evt.newIndex;
