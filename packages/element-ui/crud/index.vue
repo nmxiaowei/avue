@@ -744,14 +744,6 @@ export default create({
     searchReset () {
       this.$refs.headerSearch.searchReset();
     },
-    //导出excel
-    rowExcel () {
-      this.$refs.headerMenu.rowExcel();
-    },
-    //打印
-    rowPrint () {
-      this.$refs.headerMenu.rowPrint();
-    },
     // 编辑
     rowEdit (row, index) {
       this.tableForm = this.rowClone(row);
