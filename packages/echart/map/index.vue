@@ -19,7 +19,7 @@
 import create from "core/echart/create";
 export default create({
   name: "map",
-  data() {
+  data () {
     return {
       bannerCount: 0,
       bannerCheck: "",
@@ -35,22 +35,22 @@ export default create({
     };
   },
   watch: {
-    mapList() {
+    mapList () {
       this.updateChart();
     },
-    dataChartLen() {
+    dataChartLen () {
       this.setBanner();
     },
-    bannerTime() {
+    bannerTime () {
       this.setBanner();
     },
     banner: {
-      handler() {
+      handler () {
         this.setBanner();
       },
       immediate: true
     },
-    type() {
+    type () {
       if (this.isEchart) {
         this.$nextTick(() => {
           this.init();
@@ -58,126 +58,124 @@ export default create({
         });
       }
     },
-    width() {
+    width () {
       this.updateData();
     },
-    height() {
+    height () {
       this.updateData();
     },
     zoom: {
-      handler() {
+      handler () {
         this.zoomData = this.zoom;
       },
       immediate: true
     },
     zoomData: {
-      handler() {
+      handler () {
         this.updateData();
       },
       immediate: true
     },
     scale: {
-      handler(val) {
+      handler (val) {
         this.baseScale = val;
       },
       immediate: true
     }
   },
   computed: {
-    zoomShow() {
+    zoomShow () {
       return this.option.zoomShow || 1;
     },
-    zoom() {
+    zoom () {
       return this.option.zoom || 1;
     },
-    borderWidth() {
+    borderWidth () {
       return this.option.borderWidth || 3;
     },
-    borderColor() {
+    borderColor () {
       return this.option.borderColor || "#389BB7";
     },
-    areaColor() {
+    areaColor () {
       return this.option.areaColor || "#0c162f";
     },
-    empColor() {
+    empColor () {
       return this.option.empColor || "#fff";
     },
-    empAreaColor() {
+    empAreaColor () {
       return this.option.empAreaColor || "yellow";
     },
-    color() {
+    color () {
       return this.option.color || "#fff";
     },
-    fontSize() {
+    fontSize () {
       return this.option.fontSize || 24;
     },
-    mapList() {
+    mapList () {
       return this.option.mapList || {};
     },
-    isEchart() {
+    isEchart () {
       return this.type === 0;
     },
-    bannerTime() {
+    bannerTime () {
       return this.option.bannerTime || 3000;
     },
-    banner() {
+    banner () {
       return this.option.banner;
     },
-    scale() {
+    scale () {
       return this.option.scale || 100;
     },
-    styleImgName() {
+    styleImgName () {
       return {
         marginLeft: this.setPx(this.left),
         marginTop: this.setPx(this.top),
         transform: `scale(${this.baseScale / 100}, ${this.baseScale / 100})`
       };
     },
-    location() {
+    location () {
       return this.option.location || [];
     },
-    img() {
+    img () {
       return this.option.img;
     },
-    type() {
+    type () {
       return this.option.type;
     },
-    locationData() {
+    locationData () {
       return (this.dataChart || []).map(ele => {
         ele.zoom = ele.zoom || 1;
         const zoomData = this.zoomData < 1 ? 1 : this.zoomData;
-        if (zoomData >= ele.zoom) {
-          return Object.assign(
-            (() => {
-              if (this.zoomShow <= this.zoomData) {
-                return {
-                  name: ele.name
-                };
-              }
-              return {};
-            })(),
-            {
-              value: [ele.lng, ele.lat, ele.value]
+        return Object.assign(
+          (() => {
+            if (ele.zoom <= zoomData) {
+              return {
+                name: ele.name
+              };
             }
-          );
-        }
+            return {};
+          })(),
+          {
+            value: [ele.lng, ele.lat, ele.value]
+          }
+        );
       });
     }
   },
   methods: {
-    docMouseUp() {
+    docMouseUp () {
       window.document.onmouseup = e => {
         window.document.onmousemove = undefined;
         this.move = false;
       };
     },
-    handleMouseDown(e) {
+    handleMouseDown (e) {
       this.move = true;
       this.startLeft = e.clientX;
       this.startTop = e.clientY;
       this.docMouseUp();
     },
-    handleMouseMove(e) {
+    handleMouseMove (e) {
       if (this.move) {
         window.document.onmousemove = e => {
           const startX = e.clientX;
@@ -189,10 +187,10 @@ export default create({
         };
       }
     },
-    handleMouseUp() {
+    handleMouseUp () {
       this.move = false;
     },
-    handleMousewheel(e) {
+    handleMousewheel (e) {
       const type = e.deltaY;
       if (type > 0) {
         this.baseScale = this.baseScale + 10;
@@ -200,7 +198,7 @@ export default create({
         this.baseScale = this.baseScale - 10;
       }
     },
-    resetBanner() {
+    resetBanner () {
       this.$nextTick(() => {
         this.myChart.dispatchAction({
           type: "hideTip"
@@ -210,7 +208,7 @@ export default create({
         // });
       });
     },
-    setBanner() {
+    setBanner () {
       clearInterval(this.bannerCheck);
       if (this.banner) {
         this.bannerCheck = setInterval(() => {
@@ -231,7 +229,7 @@ export default create({
         }, this.bannerTime);
       }
     },
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.mapList);
       window.echarts.registerMap("HK", optionData);
       const option = {
@@ -337,18 +335,6 @@ export default create({
           }
         ]
       };
-
-      this.myChart.on("click", e => {
-        if (e.marker) {
-          if (this.clickFormatter) {
-            this.clickFormatter({
-              type: this.name,
-              name: e.name,
-              value: e.value[2]
-            });
-          }
-        }
-      });
       this.myChart.on("mouseover", () => {
         clearInterval(this.bannerCheck);
         this.resetBanner();

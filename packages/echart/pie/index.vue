@@ -25,7 +25,6 @@ export default create({
   },
   methods: {
     updateChart () {
-      // console.log("23234");
       const optionData = this.deepClone(this.dataChart) || [];
       const option = {
         title: this.ishasprop(this.option.titleShow, {
@@ -114,10 +113,7 @@ export default create({
                 return list;
               })(),
               itemStyle: this.ishasprop(!this.switchTheme, {
-                normal: {
-                  color:
-                    params => this.getColor(params.dataIndex)
-                }
+                color: params => this.getColor(params.dataIndex)
               }, {                emphasis: {
                   shadowBlur: 10,
                   shadowOffsetX: 0,

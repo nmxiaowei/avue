@@ -3,11 +3,17 @@
 // 库
 import * as Excel from './_export2Excel';
 import { isJson } from 'utils/util';
+import packages from "core/packages";
 export default {
-  install(Vue, options) {
+  install (Vue, options) {
     Vue.prototype.$export = {
       // 导出 excel
-      excel(params) {
+      excel (params) {
+        if (!window.saveAs || !window.XLSX) {
+          packages.logs("file-saver");
+          packages.logs("xlsx");
+          return;
+        }
         return new Promise((resolve, reject) => {
           // 默认值
           const paramsDefault = {

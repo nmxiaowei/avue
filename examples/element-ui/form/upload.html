@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <script src="http://qtestbucket.qiniudn.com/demo/CryptoJS.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        form: {
+          imgUrl: [{ "label": "avue@226d5c1a_logo.png", "value": "http://avue.oss-cn-beijing.aliyuncs.com/1_1.png" }],
+          imgUrl3: 'http://avue.oss-cn-beijing.aliyuncs.com/1_1.png',
+          string: 'http://avue.oss-cn-beijing.aliyuncs.com/1_1.png,http://avue.oss-cn-beijing.aliyuncs.com/1_1.png',
+          img: ['http://avue.oss-cn-beijing.aliyuncs.com/1_1.png', 'http://avue.oss-cn-beijing.aliyuncs.com/1_1.png']
+        }, option: {
+          labelWidth: 120,
+          column: [
+            {
+              label: '附件上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              loadText: '附件上传中，请稍等',
+              span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '水印头像',
+              prop: 'imgUrl3',
+              type: 'upload',
+              listType: 'picture-img',
+              span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
+              canvasOption: {
+                text: 'avue',
+                ratio: 0.1
+              },
+              tip: '只能上传jpg/png用户头像，且不超过500kb',
+              action: 'https://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '照片墙',
+              prop: 'imgUrl',
+              type: 'upload',
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              propsHttp: {
+                res: 'data.0'
+              },
+              action: 'https://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '数组图片组',
+              prop: 'img',
+              dataType: 'array',
+              type: 'upload',
+              propsHttp: {
+                res: 'data.0'
+              },
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '字符串图片组',
+              prop: 'string',
+              dataType: 'string',
+              type: 'upload',
+              propsHttp: {
+                res: 'data.0'
+              },
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '拖拽上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              span: 24,
+              drag: true,
+              propsHttp: {
+                res: 'data.0'
+              },
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '缩略图上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              limit: 3,
+              span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
+              listType: 'picture',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'https://avueupload.91eic.com/upload/list'
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      uploadBefore(file, done, loading) {
+        console.log(file)
+        done()
+        this.$message.success('上传前的方法')
+      },
+      uploadAfter(res, done, loading) {
+        console.log(res)
+        done()
+        this.$message.success('上传后的方法')
+      },
+      submit() {
+        this.$message.success('当前数据' + JSON.stringify(this.form))
+      }
+    }
+  })
+</script>
+
+</html>

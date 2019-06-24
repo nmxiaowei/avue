@@ -18,7 +18,7 @@
 
 <body>
   <div id="app">
-    <avue-echart-map :option='option' :data="data"></avue-echart-map>
+    <avue-echart-map :option='option' :data="data" :width="1200" :height="900"></avue-echart-map>
   </div>
 </body>
 <script>
@@ -35,7 +35,7 @@
           "banner": true,
           "bannerTime": 3000,
           "fontSize": 39,
-          "zoom": 1,
+          "zoom": 0.6,
           "empAreaColor": "rgba(35, 183, 229, 0.42)",
           "empColor": "#fff",
           "color": "rgba(13, 255, 255, 1)",
@@ -1743,11 +1743,16 @@
           }
         },
         data: [{
-          "name": "cxy",
+          "name": "cxy1",
           "value": 1,
           "lng": 118.836486,
           "lat": 36.653518,
-          "zoom": 1
+        }, {
+          "name": "cxy2",
+          "value": 1,
+          "lng": 118.733576,
+          "lat": 36.747475,
+          "zoom": 1.1
         }]
       }
 

@@ -139,6 +139,17 @@ export default create({
               itemStyle: this.ishasprop(!this.switchTheme, {
                 color: this.getColor(index)
               }, {}),
+              label: {
+                show: this.vaildData(this.option.labelShow, false), //开启显示
+                position: "top", //在上方显示,
+                formatter: name => this.getLabelFormatter(name),
+                textStyle: {
+                  //数值样式
+                  fontSize: this.option.labelShowFontSize || 14,
+                  color: this.option.labelShowColor || "#333",
+                  fontWeight: this.option.labelShowFontWeight || 500
+                }
+              }
             });
           });
           return list;

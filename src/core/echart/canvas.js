@@ -235,6 +235,7 @@ export default (() => {
               if (this.isChart && this.myChart) {
                 this.myChart.clear();
                 this.updateChart();
+                this.bindClick();
               }
             };
             if (this.dataMethod === 'get') {
@@ -266,6 +267,7 @@ export default (() => {
             if (this.isChart && this.myChart) {
               this.myChart.clear();
               this.updateChart();
+              this.bindClick();
             }
           }
         };
@@ -279,6 +281,26 @@ export default (() => {
           }
         });
 
+      },
+      getLabelFormatter(name) {
+        if (this.labelFormatter) {
+          return this.labelFormatter(name, this.dataChart);
+        }
+        return name.value;
+      },
+      bindClick() {
+        this.myChart.on('click', e => {
+          if (e.marker) {
+            if (this.clickFormatter) {
+              this.clickFormatter({
+                type: this.name,
+                name: e.name,
+                value: e.value[2] || e.value,
+                data: this.dataChart
+              });
+            }
+          }
+        });
       },
       // 下面俩都是chart的公共的方法,就放这里面共用
       getColor(index, first) {

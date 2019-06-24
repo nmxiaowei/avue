@@ -57,7 +57,6 @@ export default create({
             fontSize: this.option.legendFontSize || 12
           },
           data: (() => {
-            // console.log(optionData.series);
             return (optionData.series || []).map((ele, index) => {
               return {
                 name: ele.name,
@@ -82,6 +81,8 @@ export default create({
             show: this.vaildData(this.option.xAxisSplitLineShow, false)
           },
           axisLabel: {
+            interval: this.option.xAxisinterval || 'auto',
+            rotate: this.option.xAxisRotate || 0,
             textStyle: {
               color: this.option.nameColor || "#333",
               fontSize: this.option.xNameFontSize || 14
@@ -122,12 +123,7 @@ export default create({
               label: {
                 show: this.vaildData(this.option.labelShow, false), //开启显示
                 position: "top", //在上方显示,
-                formatter: name => {
-                  if (this.labelFormatter) {
-                    return this.labelFormatter(name);
-                  }
-                  return name.value;
-                },
+                formatter: name => this.getLabelFormatter(name),
                 textStyle: {
                   //数值样式
                   fontSize: this.option.labelShowFontSize || 14,

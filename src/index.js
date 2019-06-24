@@ -1,9 +1,9 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
-import directive from 'packages/core/directive/permission'
+import directive from 'packages/core/directive/permission';
 import _export from 'plugin/export/';
-import { watermark } from 'plugin/canvas/'
+import { watermark } from 'plugin/canvas/';
 import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
@@ -12,10 +12,10 @@ import $ImagePreview from 'components/image-preview/';
 let prototypes = {
   $Clipboard,
   $Log
-}
-const install = function (Vue, opts = {}) {
+};
+const install = function(Vue, opts = {}) {
   Vue.use(_export);
-  //初始化指令
+  // 初始化指令
   directive(Vue);
   components.map(component => {
     Vue.component(component.name, component);
@@ -23,7 +23,7 @@ const install = function (Vue, opts = {}) {
   Object.keys(prototypes).forEach((key) => {
     Vue.prototype[key] = prototypes[key];
   });
-  //国际化
+  // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
@@ -43,7 +43,7 @@ const install = function (Vue, opts = {}) {
     canvas: Object.assign({
       text: 'avue.top',
       fontFamily: 'microsoft yahei',
-      color: "#999",
+      color: '#999',
       fontSize: 16,
       opacity: 100,
       bottom: 10,
@@ -60,23 +60,23 @@ const install = function (Vue, opts = {}) {
     ali: Object.assign({
       region: '',
       endpoint: '',
+      stsToken: '',
       accessKeyId: '',
       accessKeySecret: '',
-      bucket: '',
-    }, (opts.ali || {})),
+      bucket: ''
+    }, (opts.ali || {}))
   };
-}
+};
 
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-
 const Avue = {
   version: '1.0.8',
   locale: locale.locale,
   install
-}
+};
 
-module.exports = Avue
+module.exports = Avue;
 module.exports.default = module.exports;
