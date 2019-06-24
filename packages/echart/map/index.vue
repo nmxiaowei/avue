@@ -146,21 +146,19 @@ export default create({
       return (this.dataChart || []).map(ele => {
         ele.zoom = ele.zoom || 1;
         const zoomData = this.zoomData < 1 ? 1 : this.zoomData;
-        if (zoomData >= ele.zoom) {
-          return Object.assign(
-            (() => {
-              if (this.zoomShow <= this.zoomData) {
-                return {
-                  name: ele.name
-                };
-              }
-              return {};
-            })(),
-            {
-              value: [ele.lng, ele.lat, ele.value]
+        return Object.assign(
+          (() => {
+            if (ele.zoom <= zoomData) {
+              return {
+                name: ele.name
+              };
             }
-          );
-        }
+            return {};
+          })(),
+          {
+            value: [ele.lng, ele.lat, ele.value]
+          }
+        );
       });
     }
   },
