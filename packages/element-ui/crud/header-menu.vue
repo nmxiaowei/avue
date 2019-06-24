@@ -113,7 +113,6 @@ export default create({
       this.crud.rowExcel = this.rowExcel;
       this.crud.rowPrint = this.rowPrint;
     },
-    //下载excel
     rowExcel () {
       if (!window.saveAs || !window.XLSX) {
         packages.logs("file-saver");
