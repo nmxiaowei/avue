@@ -9,6 +9,7 @@
               :prefix-icon="prefixIcon"
               :suffix-icon="suffixIcon"
               :placeholder="placeholder"
+              :show-word-limit="showWordLimit"
               @change="handleChange"
               @focus="handleFocus"
               @blur="handleBlur"
@@ -28,6 +29,7 @@
               :readonly="readonly"
               @keyup.enter="appendClick()"
               :placeholder="placeholder"
+              :show-word-limit="showWordLimit"
               @change="handleChange"
               @focus="handleFocus"
               @blur="handleBlur"
@@ -36,36 +38,30 @@
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
-
-    <div :class="b('content')"
-         v-else>
-      <div :class="b('tip', { 'input':type!=='textarea' })"
-           v-if="maxlength">
-        <span>{{textLen}} / {{maxlength}}</span>
-      </div>
-      <el-input :size="size"
-                :clearable="disabled?false:clearable"
-                v-model="text"
-                @click.native="handleClick"
-                :type="typeParam"
-                :maxlength="maxlength"
-                :minlength="minlength"
-                :autosize="{ minRows: minRows, maxRows: maxRows}"
-                :prefix-icon="prefixIcon"
-                :suffix-icon="suffixIcon"
-                :readonly="readonly"
-                :placeholder="placeholder"
-                @change="handleChange"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                :disabled="disabled"
-                :autocomplete="autocomplete">
-        <template slot="prepend"
-                  v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
-        <template slot="append"
-                  v-if="append"><span @click="appendClick()">{{append}}</span></template>
-      </el-input>
-    </div>
+    <el-input v-else
+              :size="size"
+              :clearable="disabled?false:clearable"
+              v-model="text"
+              @click.native="handleClick"
+              :type="typeParam"
+              :maxlength="maxlength"
+              :minlength="minlength"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :readonly="readonly"
+              :placeholder="placeholder"
+              :show-word-limit="showWordLimit"
+              @change="handleChange"
+              @focus="handleFocus"
+              @blur="handleBlur"
+              :disabled="disabled"
+              :autocomplete="autocomplete">
+      <template slot="prepend"
+                v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
+      <template slot="append"
+                v-if="append"><span @click="appendClick()">{{append}}</span></template>
+    </el-input>
     <el-dialog :visible.sync="box"
                append-to-body
                :title="`请选择${label}`"
@@ -102,7 +98,7 @@ import { validatenull } from "utils/validate";
 export default create({
   name: "input",
   mixins: [props(), event()],
-  data() {
+  data () {
     return {
       filterText: "",
       box: false,
@@ -115,6 +111,10 @@ export default create({
     value: {},
     maxlength: "",
     minlength: "",
+    showWordLimit: {
+      type: Boolean,
+      default: false
+    },
     filter: {
       type: Boolean,
       default: true
@@ -143,14 +143,14 @@ export default create({
     },
     prependClick: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     prepend: {
       type: String
     },
     appendClick: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     append: {
       type: String
@@ -175,22 +175,22 @@ export default create({
   },
   watch: {
     text: {
-      handler() {
+      handler () {
         this.handleChange(this.text);
       },
       immediate: true
     },
-    value() {
+    value () {
       this.initVal();
       this.init();
     },
-    filterText(val) {
+    filterText (val) {
       this.$refs.tree.filter(val);
     }
   },
   computed: {
-    dicList() {
-      function addParent(result, parent) {
+    dicList () {
+      function addParent (result, parent) {
         result.forEach(ele => {
           const children = ele.children;
           if (children) {
@@ -205,18 +205,18 @@ export default create({
       addParent(list);
       return list;
     },
-    keysList() {
+    keysList () {
       return this.multiple ? this.text : [];
     },
-    isTree() {
+    isTree () {
       return this.type === "tree";
     },
-    labelShow() {
+    labelShow () {
       return this.multiple
         ? (this.labelText || []).join(" / ").toString()
         : this.labelText;
     },
-    textShow() {
+    textShow () {
       if (this.textLen === 11)
         return `${this.text.substr(0, 3)} ${this.text.substr(
           3,
@@ -224,10 +224,10 @@ export default create({
         )} ${this.text.substr(7, 4)}`;
       return this.text;
     },
-    textLen() {
+    textLen () {
       return (this.text || "").length || 0;
     },
-    typeParam: function() {
+    typeParam: function () {
       if (this.type === "textarea") {
         return "textarea";
       } else if (this.type === "password") {
@@ -237,15 +237,15 @@ export default create({
       }
     }
   },
-  mounted() {
+  mounted () {
     this.init();
   },
   methods: {
-    filterNode(value, data) {
+    filterNode (value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
-    checkChange(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
+    checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
       this.labelText = [];
       const list = checkedKeys.checkedNodes;
@@ -264,11 +264,11 @@ export default create({
       this.$emit("input", result);
       this.$emit("change", result);
     },
-    open() {
+    open () {
       this.box = true;
       this.handleClick();
     },
-    init() {
+    init () {
       if (this.isTree) {
         if (this.multiple) {
           this.labelText = ["获取字典中..."];
@@ -304,7 +304,7 @@ export default create({
         }, 500);
       }
     },
-    findLabelNode(dic, value, props) {
+    findLabelNode (dic, value, props) {
       const labelKey = props.label || "label";
       const valueKey = props.value || "value";
       const childrenKey = props.children || "children";
@@ -318,7 +318,7 @@ export default create({
         }
       });
     },
-    disabledParentNode(dic) {
+    disabledParentNode (dic) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
         if (!validatenull(children)) {
@@ -327,7 +327,7 @@ export default create({
         }
       });
     },
-    handleNodeClick(data) {
+    handleNodeClick (data) {
       const callback = () => {
         this.box = false;
       };
@@ -347,13 +347,13 @@ export default create({
         callback();
       }
     },
-    handleClick() {
+    handleClick () {
       const result =
         this.isString && this.multiple ? this.text.join(",") : this.text;
       if (typeof this.click === "function")
         this.click({ value: result, column: this.column });
     },
-    handleChange(value) {
+    handleChange (value) {
       let text = this.text;
       const result = this.isString && this.multiple ? value.join(",") : value;
       if (typeof this.change === "function") {
