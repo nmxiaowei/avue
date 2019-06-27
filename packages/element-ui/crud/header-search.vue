@@ -8,7 +8,7 @@
       <!-- 循环列搜索框 -->
       <el-form-item :prop="column.prop"
                     :label="column.label"
-                    v-for="(column,index) in $parent.propOption"
+                    v-for="(column,index) in crud.propOption"
                     :key="index"
                     v-if="column.search">
         <el-tooltip :disabled="!column.searchTip"
@@ -18,7 +18,7 @@
                      :is="getSearchType(column.type)"
                      :clearable="column.searchClearable"
                      :defaultExpandAll="column.defaultExpandAll"
-                     :dic="$parent.DIC[column.prop]"
+                     :dic="crud.DIC[column.prop]"
                      :filterable="column.searchFilterable"
                      :filter-method="column.searchFilterMethod"
                      :format="column.format"
@@ -29,8 +29,8 @@
                      :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
                      :parent="column.parent"
                      :placeholder="getPlaceholder(column,'search')"
-                     :props="column.props || $parent.tableOption.props"
-                     :size="$parent.isMediumSize"
+                     :props="column.props || crud.tableOption.props"
+                     :size="crud.isMediumSize"
                      :type="getType(column)"
                      :tags="column.searchTags"
                      :value-format="column.valueFormat"></component>
@@ -41,12 +41,12 @@
         <el-button type="primary"
                    @click="searchChange"
                    :icon="config.searchBtnIcon"
-                   v-if="vaildData($parent.tableOption.searchSubBtn,config.searchSubBtn)"
-                   :size="$parent.isMediumSize">{{t('crud.searchBtn')}}</el-button>
+                   v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
+                   :size="crud.isMediumSize">{{t('crud.searchBtn')}}</el-button>
         <el-button @click="searchReset"
                    :icon="config.emptyBtnIcon"
-                   v-if="vaildData($parent.tableOption.searchResetBtn,config.searchResetBtn)"
-                   :size="$parent.isMediumSize">{{t('crud.emptyBtn')}}</el-button>
+                   v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
+                   :size="crud.isMediumSize">{{t('crud.emptyBtn')}}</el-button>
         <slot name="searchMenu"></slot>
       </el-form-item>
     </el-form>
@@ -66,9 +66,10 @@ import {
 } from "core/dataformat";
 import config from "./config";
 export default cteate({
-  name: "crud",
+  name: "crud-search",
+  inject: ["crud"],
   mixins: [locale],
-  data() {
+  data () {
     return {
       config: config,
       defaultForm: {
@@ -88,51 +89,54 @@ export default cteate({
   },
   watch: {
     searchForm: {
-      handler() {
+      handler () {
         this.$emit("input", this.searchForm);
       },
       deep: true
     }
   },
-  created() {
+  created () {
     this.init();
   },
   computed: {
-    searchSlot() {
+    searchSlot () {
       return !validatenull(this.$slots.search);
     },
-    searchFlag() {
+    searchFlag () {
       if (this.searchSlot) return true;
       else return !validatenull(this.searchForm);
     }
   },
   methods: {
     //初始化
-    init() {
+    init () {
       this.getSearchType = getSearchType;
       this.getPlaceholder = getPlaceholder;
       this.getType = getType;
       this.vaildData = vaildData;
       this.dataformat();
+      //扩展搜索的相关api
+      this.crud.searchChange = this.searchChange;
+      this.crud.searchReset = this.searchReset;
     },
     // 搜索回调
-    searchChange() {
-      this.$parent.$emit("search-change", filterForm(this.searchForm));
+    searchChange () {
+      this.crud.$emit("search-change", filterForm(this.searchForm));
     },
     // 搜索清空
-    searchReset() {
+    searchReset () {
       this.$refs["searchForm"].resetFields();
-      this.$parent.$emit("search-reset");
+      this.crud.$emit("search-reset");
     },
-    handleSearchShow() {
+    handleSearchShow () {
       this.searchShow = !this.searchShow;
     },
-    dataformat() {
-      this.defaultForm = formInitVal(this.$parent.propOption);
+    dataformat () {
+      this.defaultForm = formInitVal(this.crud.propOption);
       this.searchForm = this.deepClone(this.defaultForm.searchForm);
       this.searchShow = vaildData(
-        this.$parent.tableOption.searchShow,
-        this.$parent.config.searchShow
+        this.crud.tableOption.searchShow,
+        this.crud.config.searchShow
       );
     }
   }
