@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { locale } from 'packages/core/common/locale'
+import { locale } from 'packages/core/common/locale';
 import { KEY_COMPONENT_NAME } from 'global/variable';
 /**
  * 计算级联属性
@@ -18,9 +18,9 @@ export const calcCascader = (list = []) => {
         parentProp = list[columnIndex].prop;
       });
     }
-  })
+  });
   return list;
-}
+};
 /**
  * 计算空白列row
  */
@@ -38,8 +38,8 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
     count = 0;
   }
   return ele;
-}
-/** 
+};
+/**
 * 日期控件集合
 */
 export const dateList = [
@@ -65,18 +65,16 @@ export const initVal = ({ type, multiple, dataType, value }) => {
     else if (!validatenull(value)) {
       const list = (value || '').split(',') || [];
       if (dataType === 'number') {
-        return list.map(ele => Number(ele))
+        return list.map(ele => Number(ele));
       } else {
         return list;
       }
     } else {
-      return []
+      return [];
     }
   }
   return value;
 };
-
-
 
 /**
  * 行编辑框获取动态组件
@@ -94,7 +92,7 @@ export const getCellType = type => {
   } else if (['number'].includes(type)) {
     result = 'input-number';
   } else if (['switch'].includes(type)) {
-    result = 'switch'
+    result = 'switch';
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -251,6 +249,9 @@ export const getType = column => {
     } else {
       return type;
     }
+  }
+  if (type === 'textarea') {
+    return 'input';
   }
   return type;
 };
