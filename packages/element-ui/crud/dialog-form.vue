@@ -1,5 +1,7 @@
 <template>
-  <el-dialog lock-scroll
+  <component :is="dialogType"
+             lock-scroll
+             show-close
              :class="b('dialog')"
              :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
              :fullscreen="crud.isMobile?true:crud.tableOption.dialogFullscreen"
@@ -12,6 +14,7 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
+             v-model="boxVisible"
              :width="vaildData(crud.tableOption.dialogWidth+'',crud.isMobile?'100%':config.dialogWidth+'')"
              @close="closeDialog">
     <div :style="{height:dialogHeight,overflow:'hidden'}"
@@ -61,7 +64,7 @@
       <el-button :size="crud.controlSize"
                  @click="closeDialog">{{vaildData(crud.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
     </span>
-  </el-dialog>
+  </component>
 </template>
 
 <script>
@@ -117,6 +120,9 @@ export default create({
 
   },
   computed: {
+    dialogType () {
+      return this.crud.tableOption.dialogType === 'drawer' ? 'avue-drawer' : 'elDialog'
+    },
     dialogHeight () {
       return this.setPx(
         this.vaildData(
