@@ -1,21 +1,49 @@
 <template>
   <div :class="b()">
-    <el-input :size="size"
-              v-if="type==='tree'"
-              v-model="labelShow"
-              :type="typeParam"
-              :clearable="disabled?false:clearable"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :placeholder="placeholder"
-              :show-word-limit="showWordLimit"
-              @change="handleChange"
-              @focus="handleFocus"
-              @blur="handleBlur"
-              :disabled="disabled"
-              :readonly="true"
-              @click.native="disabled?'':open()" />
+    <div v-if="type==='tree'"
+         v-clickout="closeBox"
+         :class="b('content')">
+      <el-input :size="size"
+                v-model="labelShow"
+                :type="typeParam"
+                :clearable="disabled?false:clearable"
+                :autosize="{ minRows: minRows, maxRows: maxRows}"
+                :prefix-icon="prefixIcon"
+                :suffix-icon="suffixIcon"
+                :placeholder="placeholder"
+                :show-word-limit="showWordLimit"
+                @change="handleChange"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                :disabled="disabled"
+                :readonly="true"
+                @click.native="disabled?'':open()" />
+      <div :class="b('tree')"
+           v-if="box"
+           :style="treeStyle">
+        <div :class="b('arrow')"></div>
+        <el-input size="small"
+                  style="margin-bottom:15px;"
+                  placeholder="输入关键字进行过滤"
+                  v-model="filterText"
+                  v-if="filter"></el-input>
+        <el-scrollbar style="height:180px;overflow-x:hidden">
+          <el-tree :data="dicList"
+                   :node-key="valueKey"
+                   :accordion="accordion"
+                   :show-checkbox="multiple"
+                   :props="props"
+                   :check-strictly="checkStrictly"
+                   ref="tree"
+                   @check="checkChange"
+                   :filter-node-method="filterNode"
+                   :default-expanded-keys="keysList"
+                   :default-checked-keys="keysList"
+                   :default-expand-all="defaultExpandAll"
+                   @node-click="handleNodeClick"></el-tree>
+        </el-scrollbar>
+      </div>
+    </div>
 
     <el-input v-else-if="type==='search'"
               :size="size"
@@ -62,31 +90,6 @@
       <template slot="append"
                 v-if="append"><span @click="appendClick()">{{append}}</span></template>
     </el-input>
-    <el-dialog :visible.sync="box"
-               append-to-body
-               :title="`请选择${label}`"
-               width="30%">
-      <el-input size="small"
-                style="margin-bottom:15px;"
-                placeholder="输入关键字进行过滤"
-                v-model="filterText"
-                v-if="filter"></el-input>
-      <el-scrollbar style="height:380px;overflow-x:hidden">
-        <el-tree :data="dicList"
-                 :node-key="valueKey"
-                 :accordion="accordion"
-                 :show-checkbox="multiple"
-                 :props="props"
-                 :check-strictly="checkStrictly"
-                 ref="tree"
-                 @check="checkChange"
-                 :filter-node-method="filterNode"
-                 :default-expanded-keys="keysList"
-                 :default-checked-keys="keysList"
-                 :default-expand-all="defaultExpandAll"
-                 @node-click="handleNodeClick"></el-tree>
-      </el-scrollbar>
-    </el-dialog>
   </div>
 </template>
 
@@ -100,6 +103,10 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      treeStyle: {
+        left: 0,
+        top: 0,
+      },
       filterText: "",
       box: false,
       labelText: this.multiple ? [] : ""
@@ -241,6 +248,9 @@ export default create({
     this.init();
   },
   methods: {
+    closeBox () {
+      this.box = false
+    },
     filterNode (value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
@@ -265,6 +275,17 @@ export default create({
       this.$emit("change", result);
     },
     open () {
+      const height = this.$el.offsetHeight;
+      const width = this.$el.getBoundingClientRect().width;
+      const left = this.$el.getBoundingClientRect().left;
+      const top = this.$el.getBoundingClientRect().top;
+      this.treeStyle = {
+        top: this.setPx(height),
+        // top: this.setPx(top + height),
+        // left: this.setPx(left),
+        // width: this.setPx(width),
+      }
+      this.treeStyle
       this.box = true;
       this.handleClick();
     },

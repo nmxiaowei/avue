@@ -1,5 +1,4 @@
 import { validatenull } from 'utils/validate';
-import { locale } from 'packages/core/common/locale';
 import { KEY_COMPONENT_NAME } from 'global/variable';
 /**
  * 计算级联属性
@@ -215,7 +214,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {

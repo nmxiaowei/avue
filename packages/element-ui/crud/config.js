@@ -57,5 +57,5 @@ export default {
   width: '100%',
   dateDefault: true,
   // 搜索参数
-  searchMultiple: ['checkbox', 'tree', 'select']
+  searchMultiple: ['checkbox', 'tree', 'select', 'tree']
 };

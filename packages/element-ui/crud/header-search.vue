@@ -26,7 +26,7 @@
                      :changeoOnSelect="column.changeoOnSelect"
                      :separator="column.separator"
                      :showAllLevels="column.showAllLevels"
-                     :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMmultiple,false)"
+                     :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMultiple,false)"
                      :parent="column.parent"
                      :placeholder="getPlaceholder(column,'search')"
                      :props="column.props || crud.tableOption.props"

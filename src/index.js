@@ -2,6 +2,7 @@ import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import directive from 'packages/core/directive/permission';
+import clickout from 'packages/core/directive/clickout';
 import _export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
 import './utils/es6.js';
@@ -17,6 +18,7 @@ const install = function(Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   directive(Vue);
+  clickout(Vue);
   components.map(component => {
     Vue.component(component.name, component);
   });
