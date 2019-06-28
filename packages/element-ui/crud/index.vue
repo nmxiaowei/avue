@@ -122,7 +122,7 @@
       <el-table-column v-if="this.vaildData(tableOption.index,false)"
                        :label="tableOption.indexLabel || config.indexLabel"
                        type="index"
-                       width="60"
+                       :width="tableOption.indexWidth || config.indexWidth"
                        :index="indexMethod"
                        fixed="left"
                        align="center"></el-table-column>

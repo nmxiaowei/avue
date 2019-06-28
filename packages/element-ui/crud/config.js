@@ -51,6 +51,7 @@ export default {
   page: true,
   menu: true,
   indexLabel: '#',
+  indexWidth:60,
   filterMultiple: true,
   calcHeight: 300,
   title: '表格标题',
