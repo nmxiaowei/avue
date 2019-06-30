@@ -91,7 +91,7 @@ export default create({
       type: Number
     }
   },
-  data() {
+  data () {
     return {
       rx: 0,
       ry: 0,
@@ -159,33 +159,33 @@ export default create({
     };
   },
   computed: {
-    scaleVal() {
+    scaleVal () {
       return this.scale;
     },
-    styleMenuName() {
+    styleMenuName () {
       return {
         transformOrigin: "0 0",
         transform: `scale(${this.scaleVal})`
       };
     },
-    styleLineName() {
+    styleLineName () {
       return {
         borderWidth: this.setPx(this.scaleVal)
       };
     },
-    styleRangeName() {
+    styleRangeName () {
       const calc = 10 * this.scaleVal;
       return {
         width: this.setPx(calc),
         height: this.setPx(calc)
       };
     },
-    styleLabelName() {
+    styleLabelName () {
       return {
         fontSize: this.setPx(18 * this.scaleVal)
       };
     },
-    styleName() {
+    styleName () {
       return Object.assign(
         (() => {
           if (this.active) {
@@ -208,20 +208,20 @@ export default create({
     }
   },
   watch: {
-    baseWidth(val) {
+    baseWidth (val) {
       this.$refs.wrapper.style.width = this.setPx(val);
       if (this.resize && this.children.style) {
         this.children.style.width = this.setPx(val);
       }
     },
-    baseHeight(val) {
+    baseHeight (val) {
       this.$refs.wrapper.style.height = this.setPx(val);
       if (this.resize && this.children.style) {
         this.children.style.height = this.setPx(val);
       }
     }
   },
-  mounted() {
+  mounted () {
     this.children = this.$refs.item.firstChild;
     this.baseWidth = this.width || this.children.offsetWidth;
     this.baseHeight = this.height || this.children.offsetHeight;
@@ -231,13 +231,13 @@ export default create({
   },
 
   methods: {
-    setLeft(left) {
+    setLeft (left) {
       this.baseLeft = left;
     },
-    setTop(top) {
+    setTop (top) {
       this.baseTop = top;
     },
-    getRangeStyle(postion) {
+    getRangeStyle (postion) {
       const calc = (10 * this.scaleVal) / 2;
       let result = {};
       let list = postion.split("-");
@@ -246,16 +246,16 @@ export default create({
       });
       return result;
     },
-    setOverActive(val) {
+    setOverActive (val) {
       this.overActive = val;
     },
-    setActive(val) {
+    setActive (val) {
       this.active = val;
     },
-    goLink(item, type, e) {
+    goLink (item, type, e) {
       this[item[type]](e, item.classname);
     },
-    docMouseUp() {
+    docMouseUp () {
       this.$emit("focus");
       window.onmouseup = e => {
         window.onmousemove = undefined;
@@ -273,22 +273,22 @@ export default create({
         this.moveActive = false;
       };
     },
-    rangeMouseDown(e) {
+    rangeMouseDown (e) {
       this.rangeActive = true;
       this.rx = e.clientX;
       this.ry = e.clientY;
       this.docMouseUp();
     },
-    rangeMouseXMove(e, postion) {
+    rangeMouseXMove (e, postion) {
       this.rangeMove(e, postion);
     },
-    rangeMouseYMove(e, postion) {
+    rangeMouseYMove (e, postion) {
       this.rangeMove(e, postion);
     },
-    rangeMouseMove(e, postion) {
+    rangeMouseMove (e, postion) {
       this.rangeMove(e, postion);
     },
-    rangeMove(e, postion) {
+    rangeMove (e, postion) {
       //移动的方向
       let x, y;
       //移动的位置
@@ -354,17 +354,17 @@ export default create({
         };
       }
     },
-    rangeMouseUp() {
+    rangeMouseUp () {
       this.$emit("blur");
       this.rangeActive = false;
     },
-    handleMouseOut() {
+    handleMouseOut () {
       this.overActive = false;
     },
-    handleMouseOver() {
+    handleMouseOver () {
       this.overActive = true;
     },
-    handleMouseDown(e) {
+    handleMouseDown (e) {
       this.$emit("change", this.index);
       this.active = true;
       this.moveActive = true;
@@ -372,7 +372,7 @@ export default create({
       this.y = e.clientY;
       this.docMouseUp();
     },
-    handleMouseMove(e) {
+    handleMouseMove (e) {
       if (this.moveActive && !this.rangeActive) {
         window.onmousemove = e => {
           this.overActive = false;
@@ -387,7 +387,7 @@ export default create({
         };
       }
     },
-    handleMouseUp() {
+    handleMouseUp () {
       this.$emit("blur");
       this.moveActive = false;
     }

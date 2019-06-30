@@ -49,8 +49,11 @@
     computed: {
       option() {
         return {
+          dialogType: 'drawer',
           expand: true,
           viewBtn: true,
+          border: true,
+          index: true,
           // defaultExpandAll: true,
           expandRowKeys: this.expands,
           column: [{
