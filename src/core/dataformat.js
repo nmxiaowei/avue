@@ -55,11 +55,15 @@ export const dateList = [
 /**
  * 初始化数据格式
  */
-export const initVal = ({ type, multiple, dataType, value }) => {
+export const initVal = ({ listType, type, multiple, dataType, value }) => {
   if (
     (['select', 'tree'].includes(type) && multiple) ||
     ['checkbox', 'cascader', 'dynamic', 'upload'].includes(type)
   ) {
+    // 头像框特殊处理
+    if (listType === 'picture-img' && type === 'upload') {
+      return [value];
+    }
     if (Array.isArray(value)) return value;
     else if (!validatenull(value)) {
       const list = (value || '').split(',') || [];
@@ -214,7 +218,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
