@@ -15,7 +15,8 @@
                       @change="handleChange"
                       @postion="changeNodeSite"
                       :mask="false">
-        <div :class="b('node')">
+        <div :class="b('node',{'active':active===node.id})"
+             @click="handleClick(node)">
           <div :class="b('node-header')">
             <i class="el-icon-rank"
                :class="b('node-drag')"></i>
@@ -39,6 +40,7 @@ export default create({
   name: "flow",
   data () {
     return {
+      active: '',
       jsPlumb: {},
       id: '',
       // 默认设置参数
@@ -88,6 +90,9 @@ export default create({
     }
   },
   props: {
+    value: {
+      type: String,
+    },
     option: {
       type: Object
     },
@@ -98,6 +103,17 @@ export default create({
     height: {
       type: [Number, String],
       default: '100%'
+    }
+  },
+  watch: {
+    value: {
+      handler () {
+        this.active = this.value;
+      },
+      immediate: true
+    },
+    active (val) {
+      this.$emit('input', val)
     }
   },
   created () {
@@ -120,6 +136,9 @@ export default create({
     }
   },
   methods: {
+    handleClick (node) {
+      this.$emit('click', node)
+    },
     handleMouseDown () {
       //调用内部方法取消选中，false取消，true激活
       for (var i = 0; i < this.option.nodeList.length; i++) {
