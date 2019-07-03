@@ -199,6 +199,17 @@
               },
               dicUrl: 'https://cli2.avue.top/api/area/getProvince/{{key}}',
               cell: true,
+            }, {
+              label: '开关1',
+              prop: 'switch1',
+              cell: true,
+              type: 'switch'
+            }, {
+              label: '开关2',
+              prop: 'switch2',
+              cell: true,
+              type: 'switch',
+              displayAs: 'switch'
             }
           ]
         },
@@ -289,7 +300,9 @@
             province: '110000',
             city: '110100',
             area: '110101',
-            datetime: '2019-01-01 00:00:00'
+            datetime: '2019-01-01 00:00:00',
+            switch1: true,
+            switch2: true
           },
           {
             id: '1',
@@ -303,7 +316,9 @@
             province: '130000',
             city: '130200',
             area: '130202',
-            datetime: '2019-01-01 00:00:00'
+            datetime: '2019-01-01 00:00:00',
+            switch1: false,
+            switch2: false
           },
           {
             id: '2',
@@ -316,7 +331,9 @@
             province: '110000',
             city: '110100',
             area: '110101',
-            datetime: '2019-01-01 00:00:00'
+            datetime: '2019-01-01 00:00:00',
+            switch1: true,
+            switch2: false
           }
         ]
         this.data = data

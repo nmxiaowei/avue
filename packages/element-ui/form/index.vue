@@ -134,6 +134,8 @@
                                :remote="column.remote"
                                :autocomplete="column.autocomplete"
                                v-model="form[column.prop]"
+                               :allow-create="column.allowCreate"
+                               :default-first-option="column.defaultFirstOption"
                                @change="column.cascader?handleChange(item.column,cindex):''">
                       <template :slot="column.prop+'Type'"
                                 slot-scope="{item,label,value}"
