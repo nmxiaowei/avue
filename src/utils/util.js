@@ -2,12 +2,20 @@ import { validatenull } from './validate';
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
-
 export function hasOwn(obj, key) {
   return hasOwnProperty.call(obj, key);
 };
 export function getFixed(val, len = 2) {
-  return Number(val.toFixed(len))
+  return Number(val.toFixed(len));
+}
+export function randomId() {
+  let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let maxPos = $chars.length;
+  let id = '';
+  for (let i = 0; i < 16; i++) {
+    id += $chars.charAt(Math.floor(Math.random() * maxPos));
+  }
+  return id;
 }
 export const getObjType = obj => {
   var toString = Object.prototype.toString;
@@ -72,7 +80,7 @@ export const deepClone = data => {
   return obj;
 };
 export const sortArrys = (list, prop) => {
-  list.sort(function (a, b) {
+  list.sort(function(a, b) {
     if (a[prop] > b[prop]) {
       return -1;
     }
@@ -82,7 +90,7 @@ export const sortArrys = (list, prop) => {
     return 0;
   });
   return list;
-}
+};
 
 /**
  * 设置px
@@ -100,20 +108,20 @@ export const setPx = (val, defval = '') => {
  * 转换数据类型
  */
 export const detailDic = (list, props = {}, type) => {
-  let valueKey = props.value || 'value'
-  let childrenKey = props.children || 'children'
+  let valueKey = props.value || 'value';
+  let childrenKey = props.children || 'children';
   list.forEach(ele => {
     if (type === 'number') {
-      ele[valueKey] = Number(ele[valueKey])
+      ele[valueKey] = Number(ele[valueKey]);
     } else if (type === 'string') {
-      ele[valueKey] = ele[valueKey] + ''
+      ele[valueKey] = ele[valueKey] + '';
     }
     if (ele[childrenKey]) {
-      detailDic(ele[childrenKey], props, type)
+      detailDic(ele[childrenKey], props, type);
     }
-  })
+  });
   return list;
-}
+};
 /**
  * 根据字典的value显示label
  */
@@ -152,8 +160,8 @@ export const findByValue = (dic, value, props, first, isTree, dicType) => {
 };
 
 export const getDeepData = (res) => {
-  return (Array.isArray(res) ? res : res.data) || []
-}
+  return (Array.isArray(res) ? res : res.data) || [];
+};
 export const getObjValue = (data, params = '', type) => {
   const list = params.split('.');
   let result = data;
@@ -161,20 +169,20 @@ export const getObjValue = (data, params = '', type) => {
     return getDeepData(data);
   } else if (list[0] !== '') {
     list.forEach(ele => {
-      result = result[ele]
-    })
+      result = result[ele];
+    });
   }
   return result;
-}
+};
 export const filterForm = (form) => {
   let obj = {};
   Object.keys(form).forEach(ele => {
     if (!validatenull(form[ele])) {
-      obj[ele] = form[ele]
+      obj[ele] = form[ele];
     }
   });
   return obj;
-}
+};
 /**
  * 根据字典的value查找对应的index
  */
@@ -190,7 +198,7 @@ export const findArray = (dic, value, valueKey) => {
 };
 
 export const getPasswordChar = (result = '', char) => {
-  let len = result.toString().length
+  let len = result.toString().length;
   result = '';
   for (let i = 0; i < len; i++) {
     result = result + char;

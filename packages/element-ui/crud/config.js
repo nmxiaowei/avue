@@ -4,6 +4,7 @@ export default {
   sumText: '合 计',
   // 尺寸
   menuWidth: 240,
+  menuFixed: 'right',
   menuXsWidth: 100,
   menuAlign: 'center',
   headerAlign: 'left',
@@ -51,11 +52,19 @@ export default {
   page: true,
   menu: true,
   indexLabel: '#',
+  indexWidth: 50,
+  indexFixed: 'left',
+  selectionWidth: 50,
+  selectionFixed: 'left',
+  expandWidth: 60,
+  expandFixed: 'left',
+  sortableWidth: 50,
+  sortableFixed: false,
   filterMultiple: true,
   calcHeight: 300,
   title: '表格标题',
   width: '100%',
   dateDefault: true,
   // 搜索参数
-  searchMultiple: ['checkbox', 'tree', 'select']
+  searchMultiple: ['checkbox', 'tree', 'select', 'tree']
 };

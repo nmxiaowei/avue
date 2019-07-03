@@ -59,6 +59,7 @@
                                :changeOnSelect="column.changeOnSelect"
                                :click="column.click"
                                :onRemove="column.onRemove"
+                               :showWordLimit="column.showWordLimit"
                                :column="column"
                                :colors="column.colors"
                                :canvasOption="column.canvasOption"

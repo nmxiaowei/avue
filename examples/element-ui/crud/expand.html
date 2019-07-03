@@ -39,7 +39,8 @@
     data() {
       return {
         page: {
-          pageSize: 20
+          pageSize: 20,
+          total: 0
         },
         expands: [],
         data: []
@@ -48,8 +49,11 @@
     computed: {
       option() {
         return {
+          dialogType: 'drawer',
           expand: true,
           viewBtn: true,
+          border: true,
+          index: true,
           // defaultExpandAll: true,
           expandRowKeys: this.expands,
           column: [{
@@ -57,9 +61,14 @@
             prop: 'switch',
             slot: true,
           }, {
-            label: '多选',
-            prop: 'checkbox',
-            type: 'checkbox',
+            label: '多行文本',
+            prop: 'textarea',
+            type: "textarea",
+            search: true
+          }, {
+            label: '下拉框',
+            prop: 'select',
+            type: "select",
             dicData: [{
               label: '一级0',
               value: 0
@@ -69,12 +78,42 @@
             }, {
               label: '一级2',
               value: 2,
+            }, {
+              label: '一级2',
+              value: 3,
+            }, {
+              label: '一级2',
+              value: 4,
+            }, {
+              label: '一级2',
+              value: 5,
+            }, {
+              label: '一级2',
+              value: 6,
+            }, {
+              label: '一级2',
+              value: 7,
             }],
+          }, {
+            label: '多选',
+            prop: 'checkbox',
+            type: 'checkbox',
+            dicData: [{
+              label: '一级0',
+              value: 0,
+            }, {
+              label: '一级1',
+              value: 1,
+            }, {
+              label: '一级2',
+              value: 2,
+            }]
           }, {
             label: '级别',
             prop: 'cascader',
             type: 'tree',
             multiple: true,
+            searchMultiple: true,
             search: true,
             dicData: [{
               label: '一级',
@@ -86,6 +125,33 @@
                 }, {
                   label: '一级2',
                   value: 2,
+                  children: [
+                    {
+                      label: '一级1',
+                      value: 1,
+                      children: [
+                        {
+                          label: '一级1',
+                          value: 1,
+                          children: [
+                            {
+                              label: '一级1',
+                              value: 1,
+                            }, {
+                              label: '一级3',
+                              value: 2,
+                            }
+                          ]
+                        }, {
+                          label: '一级2',
+                          value: 2,
+                        }
+                      ]
+                    }, {
+                      label: '一级2',
+                      value: 2,
+                    }
+                  ]
                 }
               ]
             }],

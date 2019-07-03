@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsplumb@2.9.2/dist/js/jsplumb.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <el-button type="primary" @click="$refs.flow.addNode('测试节点')">添加节点</el-button>
+    <el-button type="primary" @click="handleNext">下一个节点</el-button>
+    <br /><br />
+    <avue-flow :height="600" :width="1200" ref="flow" :option="option" v-model="form" @click="handleClick">
+      <template slot-scope="scope" slot="header">
+        <i class="el-icon-delete" @click="$refs.flow.deleteNode(scope.node.id)"></i>
+        自定义头部
+      </template>
+    </avue-flow>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        count: 0,
+        form: '',
+        option: {
+          "name": "流程",
+          "nodeList": [
+            {
+              "id": "nodeA",
+              "name": "节点A",
+              "left": 39,
+              "top": 110,
+            },
+            {
+              "id": "nodeB",
+              "name": "节点B",
+              "left": 340,
+              "top": 161,
+            },
+            {
+              "id": "nodeC",
+              "name": "节点C",
+              "left": 739,
+              "top": 161,
+            },
+            {
+              "id": "nodeD",
+              "name": "节点D",
+              "left": 739,
+              "top": 20,
+            }
+          ],
+          "lineList": [
+            {
+              "from": "nodeA",
+              "to": "nodeB"
+            },
+            {
+              "from": "nodeB",
+              "to": "nodeC"
+            },
+            {
+              "from": "nodeC",
+              "to": "nodeD"
+            }
+          ]
+        }
+      }
+    },
+    computed: {
+      nodeList() {
+        return this.option.nodeList
+      }
+    },
+    mounted() {
+      this.form = this.nodeList[this.count].id;
+    },
+    methods: {
+      handleClick(node) {
+        this.$message.success(JSON.stringify(node))
+      },
+      handleNext() {
+        this.count++
+        if (this.count >= this.nodeList.length) {
+          this.count = 0;
+        }
+        this.form = this.nodeList[this.count].id;
+      }
+    }
+  })
+</script>
+
+</html>

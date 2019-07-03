@@ -58,7 +58,7 @@ export default create({
       default: "right"
     },
     width: {
-      type: Number,
+      type: [Number, String],
       default: 300
     },
     appendToBody: {
@@ -79,17 +79,17 @@ export default create({
     }
   },
   computed: {
-    isLeft() {
+    isLeft () {
       return this.placement === "left";
     }
   },
-  data() {
+  data () {
     return {
       closed: false
     };
   },
   watch: {
-    value(val) {
+    value (val) {
       if (val) {
         this.open();
         this.$nextTick(() => {
@@ -103,7 +103,7 @@ export default create({
       }
     }
   },
-  mounted() {
+  mounted () {
     if (this.value) {
       this.open();
       if (this.appendToBody) {
@@ -112,7 +112,7 @@ export default create({
     }
   },
   methods: {
-    handleClose(type) {
+    handleClose (type) {
       if (!this.closeOnClickModal && type === "modal") return;
       if (typeof this.beforeClose === "function") {
         this.beforeClose(this.hide);
@@ -120,15 +120,16 @@ export default create({
         this.hide();
       }
     },
-    open() {
+    open () {
       this.closed = true;
     },
-    hide() {
+    hide () {
       this.$emit("input", false);
       this.closed = false;
+      this.$emit('close');
     }
   },
-  destroyed() {
+  destroyed () {
     if (this.appendToBody && this.$el && this.$el.parentNode) {
       this.$el.parentNode.removeChild(this.$el);
     }

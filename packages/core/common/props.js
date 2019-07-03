@@ -29,6 +29,10 @@ export default function () {
       change: Function,
       click: Function,
       tpyeformat: Function,
+      listType: {
+        type: String,
+        default: ''
+      },
       value: {},
       column: {
         type: Object,
@@ -178,6 +182,7 @@ export default function () {
       initVal () {
         this.text = initVal({
           type: this.type,
+          listType: this.listType,
           multiple: this.multiple,
           dataType: this.dataType,
           value: this.value

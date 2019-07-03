@@ -88,8 +88,8 @@
 
       <!-- 折叠面板  -->
       <el-table-column type="expand"
-                       width="60"
-                       :fixed="fixedFlag"
+                       :width="tableOption.expandWidth || config.expandWidth"
+                       :fixed="vaildData(tableOption.expandFixed,config.expandFixed)"
                        align="center"
                        v-if="tableOption.expand">
         <template slot-scope="props">
@@ -99,7 +99,8 @@
       </el-table-column>
       <!-- 拖动排序  -->
       <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
-                       width="50"
+                       :width="tableOption.sortableWidth || config.sortableWidth"
+                       :fixed="vaildData(tableOption.sortableFixed,config.sortableFixed)"
                        align="center">
         <template slot="header"
                   slot-scope="scope">
@@ -115,16 +116,16 @@
       <el-table-column v-if="tableOption.selection"
                        type="selection"
                        :reserve-selection="vaildData(tableOption.reserveSelection,true)"
-                       width="50"
-                       :fixed="fixedFlag"
+                       :width="tableOption.selectionWidth || config.selectionWidth"
+                       :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
                        align="center"></el-table-column>
       <!-- 序号 -->
       <el-table-column v-if="this.vaildData(tableOption.index,false)"
                        :label="tableOption.indexLabel || config.indexLabel"
                        type="index"
-                       width="60"
+                       :width="tableOption.indexWidth || config.indexWidth"
                        :index="indexMethod"
-                       fixed="left"
+                       :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
                        align="center"></el-table-column>
       <!-- 占位符号解决ele问题 -->
       <el-table-column width="1"></el-table-column>
@@ -139,7 +140,7 @@
                 :name="item.prop"></slot>
         </template>
       </column>
-      <el-table-column fixed="right"
+      <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
                        v-if="vaildData(tableOption.menu,config.menu) && printKey"
                        :label="t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
@@ -385,9 +386,6 @@ export default create({
     },
     isTree () {
       return this.vaildData(this.parentOption.tree, false);
-    },
-    fixedFlag () {
-      return this.isMobile ? false : "left";
     },
     rowKey () {
       return this.tableOption.rowKey || "id";

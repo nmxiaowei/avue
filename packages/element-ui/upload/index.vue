@@ -95,9 +95,6 @@ export default create({
       type: [String, Array],
       default: ""
     },
-    listType: {
-      type: String
-    },
     canvasOption: {
       type: Object,
       default: () => {
