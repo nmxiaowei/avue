@@ -63,6 +63,8 @@
               @cell-dblclick="cellDblclick"
               :row-class-name="rowClassName"
               :cell-class-name="cellClassName"
+              :row-style="rowStyle"
+              :cell-style="cellStyle"
               :header-cell-class-name="headerCellClassName"
               :max-height="tableOption.maxHeight"
               :height="tableHeight"
@@ -458,6 +460,8 @@ export default create({
     },
     spanMethod: Function,
     summaryMethod: Function,
+    rowStyle: Function,
+    cellStyle: Function,
     beforeClose: Function,
     beforeOpen: Function,
     rowClassName: Function,
