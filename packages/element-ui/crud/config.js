@@ -46,6 +46,7 @@ export default {
   tip: true,
   dialogHeight: 400,
   dialogWidth: '60%',
+  dialogDrag: false,
   formFullscreen: false,
   customClass: '',
   pageBackground: true,

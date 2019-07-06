@@ -2,6 +2,7 @@
   <component :is="dialogType"
              lock-scroll
              show-close
+             v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog')"
              :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
              :fullscreen="crud.isMobile?true:crud.tableOption.dialogFullscreen"
