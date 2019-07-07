@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    <avue-sign ref="sign"></avue-sign>
+    <el-button type="primary" @click="handleSubmit">生成</el-button>
+    <el-button @click="$refs.sign.clear()">清空</el-button>
+    <div>
+      结果
+      <img :src="img" alt="" width="80" height="50" />
+    </div>
+
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        img: ''
+      }
+    },
+    methods: {
+      handleSubmit() {
+        this.img = this.$refs.sign.submit(80, 50);
+        console.log(this.img)
+      }
+    }
+  })
+</script>
+
+</html>

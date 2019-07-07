@@ -26,6 +26,7 @@ import InputNumber from 'components/input-number';
 import Switchs from 'components/switch';
 import Rate from 'components/rate';
 import Upload from 'components/upload';
+import Sign from 'components/sign';
 import Silder from 'components/silder';
 import Img from 'components/img';
 import Group from 'components/group';
@@ -92,6 +93,7 @@ export default [
   Timeline.Item,
   textEllipsis,
   Skeleton,
+  Sign,
   ...AvueData,
   ...AvueEchart
 ];

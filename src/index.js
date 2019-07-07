@@ -3,7 +3,7 @@ import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import permission from 'packages/core/directive/permission';
 import clickout from 'packages/core/directive/clickout';
-import dialogdrag from 'packages/core/directive/directives';
+import dialogdrag from 'packages/core/directive/dialogdrag';
 import _export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
 import './utils/es6.js';
