@@ -22,6 +22,7 @@
   <div id="app">
     <avue-sign ref="sign"></avue-sign>
     <el-button type="primary" @click="handleSubmit">生成</el-button>
+    <el-button type="primary" @click="$refs.sign.getStar('这里是用途','这里是单位的名称','1221332')">印章</el-button>
     <el-button @click="$refs.sign.clear()">清空</el-button>
     <div>
       结果

@@ -42,16 +42,93 @@ export default create({
     this.init();
   },
   methods: {
+    getStar (text, text1, text2) {
+      var canvas = this.canvas;
+      var context = this.context
+      // 绘制印章边框   
+      var width = canvas.width / 2;
+      var height = canvas.height / 2;
+      context.lineWidth = 7;
+      context.strokeStyle = "#f00";
+      context.beginPath();
+      context.arc(width, height, 110, 0, Math.PI * 2);
+      context.stroke();
+
+      //画五角星
+      create5star(context, width, height, 20, "#f00", 0);
+
+      // 绘制印章名称   
+      context.font = '18px 黑体';
+      context.textBaseline = 'middle';//设置文本的垂直对齐方式
+      context.textAlign = 'center'; //设置文本的水平对对齐方式
+      context.lineWidth = 1;
+      context.strokeStyle = '#f00';
+      context.strokeText(text, width, height + 50);
+
+      // 绘制印章副属性名称   
+      context.font = '14px 黑体';
+      context.textBaseline = 'middle';//设置文本的垂直对齐方式
+      context.textAlign = 'center'; //设置文本的水平对对齐方式
+      context.lineWidth = 1;
+      context.strokeStyle = '#f00';
+      context.strokeText(text2, width, height + 80);
+
+      // 绘制印章单位   
+      context.translate(width, height);// 平移到此位置,
+      context.font = '22px 黑体'
+      var count = text1.length;// 字数   
+      var angle = 4 * Math.PI / (3 * (count - 1));// 字间角度   
+      var chars = text1.split("");
+      var c;
+      for (var i = 0; i < count; i++) {
+        c = chars[i];// 需要绘制的字符   
+        if (i == 0) context.rotate(5 * Math.PI / 6);
+        else
+          context.rotate(angle);// 
+        context.save();
+        context.translate(90, 0);// 平移到此位置,此时字和x轴垂直   
+        context.rotate(Math.PI / 2);// 旋转90度,让字平行于x轴   
+        context.strokeText(c, 0, 0);// 此点为字的中心点   
+        context.restore();
+        context.save();//锁画布(为了保存之前的画布状态)  
+      }
+
+      //绘制五角星  
+      /** 
+       * 创建一个五角星形状. 该五角星的中心坐标为(sx,sy),中心到顶点的距离为radius,rotate=0时一个顶点在对称轴上 
+       * rotate:绕对称轴旋转rotate弧度 
+       */
+      function create5star (context, sx, sy, radius, color, rotato) {
+        context.save();
+        context.fillStyle = color;
+        context.translate(sx, sy);//移动坐标原点  
+        context.rotate(Math.PI + rotato);//旋转  
+        context.beginPath();//创建路径  
+        var x = Math.sin(0);
+        var y = Math.cos(0);
+        var dig = Math.PI / 5 * 4;
+        for (var i = 0; i < 5; i++) {//画五角星的五条边  
+          var x = Math.sin(i * dig);
+          var y = Math.cos(i * dig);
+          context.lineTo(x * radius, y * radius);
+        }
+        context.closePath();
+        context.stroke();
+        context.fill();
+        context.restore();
+      }
+    },
     submit (width, height) {
       if (!width) width = this.width;
       if (!height) height = this.height;
-      return this.canvas.toDataURL("i/png");;
+      return this.canvas.toDataURL("i/png");
     },
     clear () {
       this.linex = new Array();
       this.liney = new Array();
       this.linen = new Array();
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.canvas.width = this.canvas.width
+
     },
     init () {
       this.canvas = this.$refs.canvas;
