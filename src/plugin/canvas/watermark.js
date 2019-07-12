@@ -1,8 +1,9 @@
 // const CONTAINERID = '_avue_markcontainer';
 
+import { randomId } from 'utils/util';
 class waterMark {
   constructor(opt = {}) {
-    this.CONTAINERID = this.randomId();
+    this.CONTAINERID = randomId();
     this.drawCanvas = this.drawCanvas.bind(this);
     this.parentObserver = this.parentObserver.bind(this);
     this.Repaint = this.Repaint.bind(this);
@@ -81,16 +82,6 @@ class waterMark {
       }
     });
     bodyObserver.observe(document.querySelector(`#${this.CONTAINERID}`).parentNode, { childList: true });
-  }
-
-  randomId() {
-    let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    let maxPos = $chars.length;
-    let id = '';
-    for (let i = 0; i < 16; i++) {
-      id += $chars.charAt(Math.floor(Math.random() * maxPos));
-    }
-    return id;
   }
 
   Repaint(opt = {}) {

@@ -14,6 +14,8 @@
                @blur="handleBlur"
                @click.native="handleClick"
                :multiple-limit="limit"
+               :allow-create="allowCreate"
+               :default-first-option="defaultFirstOption"
                :disabled="disabled">
       <el-option v-for="(item,index) in netDic"
                  :key="index"
@@ -57,6 +59,14 @@ export default create({
       default: 99
     },
     filterable: {
+      type: Boolean,
+      default: false
+    },
+    allowCreate: {
+      type: Boolean,
+      default: false
+    },
+    defaultFirstOption: {
       type: Boolean,
       default: false
     }

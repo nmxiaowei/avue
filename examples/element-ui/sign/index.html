@@ -8,19 +8,27 @@
   <title></title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
-
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.7.0/animate.min.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
+
 </head>
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" :page="page" @on-load="onLoad"></avue-crud>
+    <avue-sign ref="sign"></avue-sign>
+    <el-button type="primary" @click="handleSubmit">生成</el-button>
+    <el-button type="primary" @click="$refs.sign.getStar('这里是用途','这里是单位的名称','1221332')">印章</el-button>
+    <el-button @click="$refs.sign.clear()">清空</el-button>
+    <div>
+      结果
+      <img :src="img" alt="" width="80" height="50" />
+    </div>
+
   </div>
 </body>
 <script>
@@ -28,31 +36,13 @@
     el: '#app',
     data() {
       return {
-        page: {
-          pageSize: 50,
-          pageSizes: [100, 150, 200],
-          total: 0
-        },
-        data: [{
-          name: 'smallwei',
-          sex: 12,
-        }],
-        option: {
-          border: true,
-          column: [{
-            label: '姓名',
-            prop: 'name'
-          }, {
-            label: '年龄',
-            prop: 'sex'
-          }]
-        }
+        img: ''
       }
     },
     methods: {
-      onLoad(page) {
-        this.$message.success('分页信息:' + JSON.stringify(page))
-        this.page.total = 40
+      handleSubmit() {
+        this.img = this.$refs.sign.submit(80, 50);
+        console.log(this.img)
       }
     }
   })

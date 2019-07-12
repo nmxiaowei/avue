@@ -32,7 +32,8 @@
       return {
         form: {},
         data: [{
-          province: 110000
+          province: 110000,
+          multipleSelect: []
         }],
         option: {
           column: [
@@ -53,6 +54,25 @@
                   message: '请选择省份',
                   trigger: 'blur'
                 }
+              ]
+            },
+            {
+              label: '多选，可创建条目',
+              prop: 'multipleSelect',
+              type: 'select',
+              span: 24,
+              multiple: true,
+              filterable: true,
+              allowCreate: true,
+              defaultFirstOption: true,
+              props: {
+                label: 'value',
+                value: 'value'
+              },
+              dicData: [
+                { value: '新增' },
+                { value: '修改' },
+                { value: '删除' }
               ]
             }
           ]
