@@ -171,6 +171,7 @@
                          @click="submit"
                          :size="controlSize"
                          icon="el-icon-check"
+                         :loading="parentOption.submitLoading"
                          v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
                          :size="controlSize"
