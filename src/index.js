@@ -10,10 +10,12 @@ import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
+import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'components/image-preview/';
 let prototypes = {
   $Clipboard,
-  $Log
+  $Log,
+  $NProgress
 };
 const install = function(Vue, opts = {}) {
   Vue.use(_export);
