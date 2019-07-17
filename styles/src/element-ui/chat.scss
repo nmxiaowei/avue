@@ -1,0 +1,233 @@
+.avue-chat{
+  position: relative;
+  background-color: #fcfcfc;
+  ul,li{
+    padding:0;
+    margin: 0;
+  }
+  li{
+    list-style: none;
+  }
+  .web__main {
+    height: calc(100% - 155px);
+    padding: 15px 15px 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  .web__logo{
+    background-color: #409eff;
+    display: flex;
+    margin: 20px auto;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+  }
+  .web__logo img{
+    width:70px;
+  }
+  .web__logo span{
+    color:#fff;
+    font-size:24px;
+    font-weight: 300;
+  }
+  .web__main-item {
+    position: relative;
+    font-size: 0;
+    margin-bottom: 10px;
+    padding-left: 60px;
+    min-height: 68px;
+  }
+
+  .web__main-user,
+  .web__main-text {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    font-size: 14px;
+  }
+
+  .web__main-user {
+    position: absolute;
+    left: 3px;
+  }
+
+  .web__main-user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+  }
+
+  .web__main-user cite {
+    position: absolute;
+    left: 60px;
+    top: -2px;
+    width: 500px;
+    line-height: 24px;
+    font-size: 12px;
+    white-space: nowrap;
+    color: #999;
+    text-align: left;
+    font-style: normal;
+  }
+
+  .web__main-user cite i {
+    padding-left: 15px;
+    font-style: normal;
+  }
+
+  .web__main-text {
+    position: relative;
+    line-height: 22px;
+    margin-top: 25px;
+    padding: 8px 15px;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #f0f0f0;
+    color: #000;
+    word-break: break-all;
+  }
+
+  .web__main-arrow{
+    top:6px;
+    left:-8px;
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 8px;
+    border-left-width: 0;
+    border-right-color: #ebeef5;
+  }
+  .web__main-arrow::after{
+    content: " ";
+    top:-7px;
+    left:1px;
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 7px;
+    border-left-width: 0;
+    border-right-color: #fff;
+  }
+  .web__main-item--mine .web__main-text .web__main-arrow{
+    left:auto;
+    right:-5px;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 8px;
+    border-right-width: 0;
+    border-left-color: #409eff;
+  }
+  .web__main-item--mine .web__main-text .web__main-arrow::after{
+    left:auto;
+    right:-2px;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 7px;
+    border-right-width: 0;
+    border-left-color: #409eff;
+  }
+  .web__main-list{
+    margin-top:20px;
+  }
+  .web__main-list li{
+    height: 30px;
+    color:#409eff;
+    line-height: 30px;
+  }
+
+  .web__main-item--mine {
+    text-align: right;
+    padding-left: 0;
+    padding-right: 60px;
+  }
+
+  .web__main-item--mine .web__main-user {
+    left: auto;
+    right: 3px;
+  }
+
+  .web__main-item--mine .web__main-user cite {
+    left: auto;
+    right: 60px;
+    text-align: right;
+  }
+
+  .web__main-item--mine .web__main-user cite i {
+    padding-left: 0;
+    padding-right: 15px;
+  }
+
+  .web__main-item--mine .web__main-text {
+    margin-left: 0;
+    text-align: left;
+    background-color: #409eff;
+    color: #fff;
+  }
+  .web__footer{
+    position: absolute;
+    left: 0;
+    bottom:0;
+    width:100%;
+  }
+  .web__msg{
+    padding: 10px 10px;
+    display: flex;
+    background-color: #f8f8f8;
+  }
+  .web__msg-input{
+    text-indent: 1em;
+    margin-right: 5px;;
+    height: 35px;
+    line-height: 35px;
+    box-sizing: border-box;
+    flex:1;
+    border:1px solid #eee;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  .web__msg-submit{
+    display: inline-block;
+    width:80px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background-color: #ccc;
+    color:#fff;
+    font-size: 14px;
+    border-radius: 3px;
+    &--active{
+      background-color: #007aff;
+      color:#fff;
+    }
+  }
+  .web__dialog{
+    padding-top: 80px;
+    position: fixed;
+    top:0;
+    left: 0;
+    width:100%;
+    height:auto;
+    min-height: 100%;
+    background-color: #333;
+  }
+    
+  .web__dialog img{
+    width:100%;
+  }
+  .web__dialog-close{
+    position: absolute;
+    right: 10px;
+    top:10px;
+    color:#fff;
+    font-size: 26px;
+    font-weight: 300;
+  }
+}

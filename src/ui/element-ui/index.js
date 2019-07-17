@@ -7,6 +7,7 @@ import Crud from 'components/crud';
 import Card from 'components/card';
 import Code from 'components/code';
 import Color from 'components/color';
+import Chat from 'components/chat';
 import Comment from 'components/comment';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
@@ -57,6 +58,7 @@ export default [
   Code,
   Color,
   Card,
+  Chat,
   Comment,
   Form,
   Checkbox,
