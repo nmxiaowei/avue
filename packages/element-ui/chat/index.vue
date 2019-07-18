@@ -152,11 +152,10 @@ export default create({
     },
     //选择列表
     handleItemMsg (item) {
-      this.msg = item.ask;
-      this.handleSend();
+      this.$emit('submit', item.ask);
     },
     //处理排版
-    handleDetail (html) {
+    handleDetail (html = '') {
       let result = html;
       result = result.replace(/<img/g, '<br /><img width="100px" style="margin-top:20px;"');
       return result;

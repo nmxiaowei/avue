@@ -49,8 +49,12 @@
         }]
       }
     },
+    mounted() {
+      this.handleSubmit('如何贷款')
+    },
     methods: {
-      handleSubmit() {
+      handleSubmit(msg) {
+        this.msg = msg || this.msg
         this.$refs.chat.pushMsg({
           mine: true,
           text: this.msg
