@@ -533,9 +533,9 @@ export default create({
       this.allDisabled = false;
     },
     submit () {
-      this.show();
       this.validate(valid => {
         if (valid) {
+          this.show();
           this.$emit("submit", this.form, this.hide);
         }
       });
