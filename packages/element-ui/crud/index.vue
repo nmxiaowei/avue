@@ -598,8 +598,8 @@ export default create({
     //刷新事件
     refreshChange () {
       this.$emit("refresh-change", {
-        page: this.defaultPage,
-        searchForm: this.searchForm
+        page: this.$refs.tablePage.defaultPage,
+        searchForm: this.$refs.headerSearch.searchForm
       });
     },
     // 选中实例
