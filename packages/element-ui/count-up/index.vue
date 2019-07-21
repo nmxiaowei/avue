@@ -49,6 +49,11 @@ export default create({
     };
   },
   watch: {
+    decimals () {
+      if (this.c && this.c.update) {
+        this.c.update(this.end);
+      }
+    },
     end (value) {
       if (this.c && this.c.update) {
         this.c.update(value);
