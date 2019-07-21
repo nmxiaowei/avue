@@ -2,8 +2,22 @@
   <div :class="b()"
        :style="styleName"
        @keyup.enter="handleSend">
+    <audio ref="chatAudio">
+      <source src="https://www.helloweba.net/demo/notifysound/notify.ogg"
+              type="audio/ogg">
+      <source src="https://www.helloweba.net/demo/notifysound/notify.mp3"
+              type="audio/mpeg">
+      <source src="https://www.helloweba.net/demo/notifysound/notify.wav"
+              type="audio/wav">
+    </audio>
     <div class="web__logo">
-      <span>{{title}}</span>
+      <img :src="config.img"
+           class="web__logo-img"
+           alt="">
+      <div class="web__logo-info">
+        <p class="web__logo-name">{{config.name}}</p>
+        <p class="web__logo-dept">{{config.dept}}</p>
+      </div>
     </div>
 
     <div class="web__main"
@@ -34,13 +48,15 @@
     </div>
     <div class="web__footer">
       <div class="web__msg">
-        <input v-model="msg"
-               placeholder="我想问..."
-               type="text"
-               class="web__msg-input">
-        <span class="web__msg-submit"
-              :class="{'web__msg-submit--active':msgActive}"
-              @click="handleSend">发送</span>
+        <textarea v-model="msg"
+                  rows="2"
+                  placeholder="请输入..."
+                  class="web__msg-input"></textarea>
+        <div class="web__msg-menu">
+          <span class="web__msg-submit"
+                :class="{'web__msg-submit--active':msgActive}"
+                @click="handleSend">发送</span>
+        </div>
       </div>
     </div>
     <div class="web__dialog"
@@ -70,13 +86,20 @@ export default create({
     },
     height: {
       type: [String, Number],
-      default: 480
+      default: 520
     },
     value: {
       type: String
     },
-    title: {
-      type: String
+    notice: {
+      type: Boolean,
+      default: true
+    },
+    config: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     list: {
       type: Array,
@@ -118,6 +141,48 @@ export default create({
     }
   },
   methods: {
+    getAudio () {
+      this.$refs.chatAudio.play();
+    },
+    getNotification (text) {
+      const safe = this;
+      const NotificationInstance = Notification || window.Notification;
+      if (!!NotificationInstance) {
+        const permissionNow = NotificationInstance.permission;
+        if (permissionNow === 'granted') {//允许通知
+          CreatNotification();
+        } else if (permissionNow === 'denied') {
+          console.log('用户拒绝了你!!!');
+        } else {
+          setPermission();
+        }
+        function setPermission () {
+          //请求获取通知权限
+          NotificationInstance.requestPermission(function (PERMISSION) {
+            if (PERMISSION === 'granted') {
+              CreatNotification();
+            } else {
+              console.log('用户无情残忍的拒绝了你!!!');
+            }
+          });
+        }
+        function CreatNotification () {
+          const n = new Notification(safe.config.name, {
+            body: text,
+            icon: safe.config.img
+          });
+          n.onshow = function () {
+            safe.getAudio();
+            setTimeout(() => {
+              n.close();
+            }, 2500);
+          }
+          n.onclick = function (e) {
+            n.close();
+          }
+        }
+      }
+    },
     //mine为'我'的对话
     //text为内容
     pushMsg (params = {}) {
@@ -171,6 +236,9 @@ export default create({
       this.pushMsg({
         text: msg
       });
+      if (this.notice) {
+        this.getNotification(msg.text);
+      }
     }
   }
 });
