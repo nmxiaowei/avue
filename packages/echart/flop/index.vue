@@ -13,7 +13,8 @@
              :style="styleName">
           <div :style="prefixStyle"
                v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
-          <avue-count-up :style="styleValueName"
+          <avue-count-up :decimals="decimals"
+                         :style="styleValueName"
                          :end="isArray?item.data:dataChart.value"></avue-count-up>
           <div :style="suffixStyle"
                v-if="getValByArray(item,'suffixText')">{{getValByArray(item,'suffixText')}}</div>
@@ -29,7 +30,8 @@
              :key="index"
              :style="[styleItemName,styleName]">
           <div v-if="statusDIC.includes(item)">{{item}}</div>
-          <avue-count-up v-else
+          <avue-count-up :decimals="decimals"
+                         v-else
                          :style="styleValueName"
                          :end="item"></avue-count-up>
         </div>
@@ -44,35 +46,38 @@
 import create from "core/echart/create";
 export default create({
   name: "flop",
-  data() {
+  data () {
     return {
       statusDIC: [".", ","]
     };
   },
   computed: {
-    isArray() {
+    isArray () {
       return Array.isArray(this.dataChart);
     },
-    listData() {
+    decimals () {
+      return this.option.decimals || 2
+    },
+    listData () {
       if (this.isArray) {
         return this.dataChart;
       } else {
         return [this.dataChart];
       }
     },
-    isRow() {
+    isRow () {
       return this.option.row;
     },
-    whole() {
+    whole () {
       return this.vaildData(this.option.whole, false);
     },
-    type() {
+    type () {
       return this.option.type;
     },
-    text() {
+    text () {
       return this.dataChart.value + "".split("");
     },
-    prefixStyle() {
+    prefixStyle () {
       return {
         textAlign: this.option.prefixTextAlign,
         marginBottom: this.option.prefixSplity + "px",
@@ -81,7 +86,7 @@ export default create({
         fontSize: (this.option.prefixFontSize || 24) + "px"
       };
     },
-    suffixStyle() {
+    suffixStyle () {
       return {
         textAlign: this.option.suffixTextAlign,
         marginTop: this.option.suffixSplity + "px",
@@ -90,7 +95,7 @@ export default create({
         fontSize: (this.option.suffixFontSize || 24) + "px"
       };
     },
-    styleParentName() {
+    styleParentName () {
       if (!["img", "border"].includes(this.type)) {
         return Object.assign(this.styleSizeName, {
           backgroundImage: `url(${this.option.backgroundImage})`,
@@ -99,19 +104,19 @@ export default create({
       }
       return this.styleSizeName;
     },
-    styleItemName() {
+    styleItemName () {
       return {
         marginRight: `${this.option.gridY}px`
       };
     },
-    styleValueName() {
+    styleValueName () {
       if (this.whole) {
         return {
           marginTop: `${this.option.gridY}px`
         };
       }
     },
-    styleName() {
+    styleName () {
       return Object.assign(
         (() => {
           if (this.option.backgroundImage) {
@@ -166,9 +171,9 @@ export default create({
       }
     }
   },
-  created() {},
+  created () { },
   methods: {
-    getValByArray(item, prop) {
+    getValByArray (item, prop) {
       return this.isArray ? item[prop] : this.option[prop];
     }
   }
