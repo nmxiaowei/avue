@@ -62,19 +62,24 @@ export default create({
         this.$refs.canvas.height = beauty.height;
         context.drawImage(beauty, 0, 0);
         this.list.forEach(ele => {
+          if (ele.bold) {
+            context.font = `bold ${ele.size}px ${ele.style}`
+          } else {
+            context.font = `${ele.size}px ${ele.style}`
+          }
           context.fillStyle = ele.color;
-          context.font = `${ele.size}px ${ele.style}`
+
           context.fillText(ele.text, ele.left, ele.top);
           context.stroke();
         })
       };
     },
-    getFile () {
+    getFile (name = new Date().getTime()) {
       const data = this.canvas.toDataURL('image/jpeg', 1.0);
-      const file = this.dataURLtoFile(data, this.form.name)
+      const file = this.dataURLtoFile(data, name)
       return file;
     },
-    getPdf () {
+    getPdf (name = new Date().getTime()) {
       const contentWidth = this.canvas.width;
       const contentHeight = this.canvas.height;
       const pageHeight = (contentWidth / 592.28) * 841.89;
@@ -96,7 +101,7 @@ export default create({
           }
         }
       }
-      PDF.save(`${this.form.name}.pdf`);
+      PDF.save(`${name}.pdf`);
     }
   }
 })
