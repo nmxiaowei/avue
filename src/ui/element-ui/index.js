@@ -17,6 +17,7 @@ import Divider from 'components/divider';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
+import License from 'components/license';
 import Progress from 'components/progress';
 import Time from 'components/time';
 import Input from 'components/input';
@@ -68,6 +69,7 @@ export default [
   Draggable,
   Empty,
   Flow,
+  License,
   Progress,
   Time,
   Input,
