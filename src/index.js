@@ -1,6 +1,6 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
-import { deepClone, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
+import { deepClone, dataURLtoFile, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import permission from 'packages/core/directive/permission';
 import clickout from 'packages/core/directive/clickout';
 import dialogdrag from 'packages/core/directive/dialogdrag';
@@ -10,10 +10,12 @@ import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
+import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'components/image-preview/';
 let prototypes = {
   $Clipboard,
-  $Log
+  $Log,
+  $NProgress
 };
 const install = function(Vue, opts = {}) {
   Vue.use(_export);
@@ -33,6 +35,7 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   Vue.prototype.$httpajax = window.axios;
   Vue.prototype.deepClone = deepClone;
+  Vue.prototype.dataURLtoFile = dataURLtoFile;
   Vue.prototype.isJson = isJson;
   Vue.prototype.setPx = setPx;
   Vue.prototype.vaildData = vaildData;

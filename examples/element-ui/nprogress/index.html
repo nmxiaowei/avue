@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <script src="https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+  <style>
+    #app,
+    html,
+    body {
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {}
+    },
+    created() {
+      this.$message.success('开始进度条')
+      this.$NProgress.start();
+      setTimeout(() => {
+        this.$message.success('停止进度条')
+        this.$NProgress.done();
+      }, 4000)
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

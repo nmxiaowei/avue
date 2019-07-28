@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-chat :config="config" width="320" height="520" ref="chat" @submit="handleSubmit" v-model="msg" :list="list">
+    </avue-chat>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        config: {
+          img: 'https://gitee.com/uploads/61/632261_smallweigit.jpg',
+          name: 'avue自助机器人',
+          dept: '这是一个神奇的前端框架'
+        },
+        msg: '这是你想说的话～。～',
+        list: [{
+          "date": "2019-07-17 23:25:15",
+          "text": {
+            "text": "1111"
+          },
+          "mine": true,
+          "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542562834&di=4d469265c6847a8f29393fe1038c64c8&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FhFB4FUPIIlJSIN5vlQwX2OGlW03Oic9SdtXoOAgMmNBYxfpibmxyG6C0rf7Yml1YKQKrLbet5C4ebpmzGOJZ8icEQ%2F640%3Fwx_fmt%3Djpeg\t",
+          "name": "我"
+        }, {
+          "date": "2019-07-17 23:25:15",
+          "text": {
+            "text": "你说啥我听不懂啊"
+          },
+          "mine": false,
+          "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542538742&di=33c9b3d1ad6bdfe87eb19e44c8d0da04&imgtype=0&src=http%3A%2F%2Fcyjmw.shengyilu.com%2Fskin%2Findex%2Fimages_four%2Fpic_fi_32.png\t",
+          "name": "云集汇通自助客服"
+        }]
+      }
+    },
+    mounted() {
+      this.handleSubmit('如何贷款')
+    },
+    methods: {
+      handleSubmit(msg) {
+        this.msg = msg || this.msg
+        this.$refs.chat.pushMsg({
+          mine: true,
+          text: this.msg
+        });
+        this.$refs.chat.rootSendMsg(this.getMsg(this.msg));
+        this.msg = '';
+      },
+      //智能题库
+      getMsg(msg) {
+        if (msg === 'wel') {
+          return {
+            text: '您好，我是银行小客服，有什么可以帮助你的?',
+            list: [{
+              text: "如何申请贷款？",
+              ask: '如何贷款'
+            }]
+          };
+        } else if (msg === '如何贷款') {
+          return {
+            text: '我行提供了如下贷款方式',
+            list: [{
+              text: "1.微信线上申请",
+              ask: '微信线上申请'
+            }, {
+              text: "2.电话申请",
+              ask: '电话申请'
+            }, {
+              text: "3.到网点申请",
+              ask: '到网点申请'
+            }]
+          }
+        } else if (msg === '微信线上申请') {
+          return '可关注***银行微信公众号，点击我要贷款，身份认证，发起申请。'
+        } else if (msg === '电话申请') {
+          return '可拨打24小时热线96668或********'
+        } else if (msg === '到网点申请') {
+          return '可就近选择网点，附网点列表及联系人'
+        }
+        return {
+          text: '你说啥我听不懂啊'
+        }
+      },
+    }
+  })
+</script>
+
+</html>

@@ -164,7 +164,9 @@ export default create({
       if (option.showSummary) {
         let sumsObj = {};
         sumsList.forEach((ele, index) => {
-          sumsObj[columnOption[index].prop] = ele;
+          if ((columnOption[index] || {}).prop) {
+            sumsObj[columnOption[index].prop] = ele;
+          }
         });
         data.push(sumsObj);
       }

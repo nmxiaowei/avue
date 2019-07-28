@@ -7,6 +7,7 @@ import Crud from 'components/crud';
 import Card from 'components/card';
 import Code from 'components/code';
 import Color from 'components/color';
+import Chat from 'components/chat';
 import Comment from 'components/comment';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
@@ -16,6 +17,7 @@ import Divider from 'components/divider';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
+import License from 'components/license';
 import Progress from 'components/progress';
 import Time from 'components/time';
 import Input from 'components/input';
@@ -57,6 +59,7 @@ export default [
   Code,
   Color,
   Card,
+  Chat,
   Comment,
   Form,
   Checkbox,
@@ -66,6 +69,7 @@ export default [
   Draggable,
   Empty,
   Flow,
+  License,
   Progress,
   Time,
   Input,

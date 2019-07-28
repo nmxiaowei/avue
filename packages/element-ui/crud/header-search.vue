@@ -3,6 +3,7 @@
     <el-form :class="b('search')"
              :model="searchForm"
              :inline="true"
+             @submit.native.prevent
              ref="searchForm"
              v-if="searchShow && searchFlag">
       <!-- 循环列搜索框 -->

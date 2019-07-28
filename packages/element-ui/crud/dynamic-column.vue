@@ -61,6 +61,7 @@
                            :format="column.format"
                            :parent="column.parent"
                            :change="column.change"
+                           :precision="column.precision"
                            :remote="column.remote"
                            :focus="column.focus"
                            :blur="column.blur"
@@ -115,7 +116,8 @@
                      :class="scope.row[column.prop]"></i>
                 </span>
                 <span v-else-if="column.displayAs=='switch' && ['switch'].includes(column.type)">
-                  <el-switch v-model="scope.row[column.prop]" disabled />
+                  <el-switch v-model="scope.row[column.prop]"
+                             disabled />
                 </span>
                 <span v-else
                       v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
@@ -143,11 +145,11 @@ export default {
     }
   },
   computed: {
-    crud() {
+    crud () {
       return this.dynamic.crud;
     }
   },
-  created() {
+  created () {
     const list = [
       "getCellType",
       "getType",

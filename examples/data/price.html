@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-data-price :option="option"></avue-data-price>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          span: 6,
+          data: [
+            {
+              title: '日套餐',
+              price: 20,
+              append: '1 / 天',
+              click: function () {
+                alert('弹窗');
+              },
+              list: ['1天的使用时间', '支持pc客户端', '支持vue的全部体系', '一个神奇的框架']
+            }, {
+              title: '周套餐',
+              price: 30,
+              append: '7 / 天',
+              click: function () {
+                alert('弹窗');
+              },
+              list: ['1天的使用时间', '支持pc客户端', '支持vue的全部体系', '一个神奇的框架']
+            }, {
+              title: '月套餐',
+              price: 40,
+              append: '30 / 天',
+              click: function () {
+                alert('弹窗');
+              },
+              list: ['1天的使用时间', '支持pc客户端', '支持vue的全部体系', '一个神奇的框架']
+            }, {
+              title: '年套餐',
+              price: 50,
+              append: '360 / 天',
+              click: function () {
+                alert('弹窗');
+              },
+              list: ['1天的使用时间', '支持pc客户端', '支持vue的全部体系', '一个神奇的框架']
+            }
+          ]
+        }
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

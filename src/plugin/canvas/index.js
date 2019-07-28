@@ -1,4 +1,5 @@
 import _waterMark from './watermark';
+import {dataURLtoFile} from 'utils/util';
 // 标准参数
 var canvas, ctx, configDefault = {
   width: 200,
@@ -37,19 +38,6 @@ export function detailImg(file, option = {}) {
     const { text, fontFamily, color, fontSize, opacity, bottom, right, ratio } = option;
     initParams();
     fileToBase64(file, initImg);
-    function dataURLtoFile(dataurl, filename) {
-      var arr = dataurl.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]),
-        n = bstr.length,
-        u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new File([u8arr], filename, {
-        type: mime
-      });
-    }
     // 参数初始化
     function initParams() {
       config.text = text || config.text;

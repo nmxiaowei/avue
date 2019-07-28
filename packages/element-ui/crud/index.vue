@@ -41,8 +41,9 @@
     <el-table v-if="doLayout"
               :data="list"
               :row-key="handleGetRowKeys"
-              :class="{'avue-crud--indeterminate':vaildData(this.tableOption.indeterminate,false)}"
+              :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
               :size="controlSize"
+              :tree-props="tableOption.treeProps || {}"
               :expand-row-keys="tableOption.expandRowKeys"
               :default-expand-all="tableOption.defaultExpandAll"
               :highlight-current-row="tableOption.highlightCurrentRow"
@@ -598,8 +599,8 @@ export default create({
     //刷新事件
     refreshChange () {
       this.$emit("refresh-change", {
-        page: this.defaultPage,
-        searchForm: this.searchForm
+        page: this.$refs.tablePage.defaultPage,
+        searchForm: this.$refs.headerSearch.searchForm
       });
     },
     // 选中实例

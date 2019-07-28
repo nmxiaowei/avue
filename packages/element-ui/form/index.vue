@@ -71,7 +71,7 @@
                                :dicUrl="column.dicUrl"
                                :dicMethod="column.dicMethod"
                                :dicQuery="column.dicQuery"
-                               :disabled="vaildDisabled(column)"
+                               :disabled="vaildDisabled(column) || allDisabled"
                                :drag="column.drag"
                                :endPlaceholder="column.endPlaceholder"
                                :expand-trigger="column.expandTrigger"
@@ -166,14 +166,17 @@
                          @click="handleMock"
                          :size="controlSize"
                          icon="el-icon-edit-outline"
+                         :loading="allDisabled"
                          v-if="isMock">填充数据</el-button>
               <el-button type="primary"
                          @click="submit"
                          :size="controlSize"
                          icon="el-icon-check"
+                         :loading="allDisabled"
                          v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
                          :size="controlSize"
+                         :loading="allDisabled"
                          v-if="vaildData(parentOption.emptyBtn,true)"
                          @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
               <slot name="menuForm"
@@ -201,6 +204,7 @@ export default create({
   mixins: [init(), locale],
   data () {
     return {
+      allDisabled: false,
       optionIndex: [],
       optionBox: false,
       tableOption: {},
@@ -522,10 +526,17 @@ export default create({
     validate (callback) {
       this.$refs["form"].validate(valid => callback(valid));
     },
+    show () {
+      this.allDisabled = true;
+    },
+    hide () {
+      this.allDisabled = false;
+    },
     submit () {
       this.validate(valid => {
         if (valid) {
-          this.$emit("submit", this.form);
+          this.show();
+          this.$emit("submit", this.form, this.hide);
         }
       });
     }

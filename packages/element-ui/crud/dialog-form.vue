@@ -122,9 +122,15 @@ export default create({
   },
   computed: {
     dialogType () {
-      return this.crud.tableOption.dialogType === 'drawer' ? 'avue-drawer' : 'elDialog'
+      return this.isDrawer ? 'avue-drawer' : 'elDialog'
+    },
+    isDrawer () {
+      return this.crud.tableOption.dialogType === 'drawer';
     },
     dialogHeight () {
+      if (this.isDrawer) {
+        return 'calc(100% - 55px)';
+      }
       return this.setPx(
         this.vaildData(
           this.crud.tableOption.dialogHeight,
