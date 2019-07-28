@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-chat width="320" height="480" ref="chat" title="avue自助机器人" @submit="handleSubmit" v-model="msg" :list="list">
+    <avue-chat :config="config" width="320" height="520" ref="chat" @submit="handleSubmit" v-model="msg" :list="list">
     </avue-chat>
   </div>
 </body>
@@ -29,6 +29,11 @@
     el: '#app',
     data() {
       return {
+        config: {
+          img: 'https://gitee.com/uploads/61/632261_smallweigit.jpg',
+          name: 'avue自助机器人',
+          dept: '这是一个神奇的前端框架'
+        },
         msg: '这是你想说的话～。～',
         list: [{
           "date": "2019-07-17 23:25:15",

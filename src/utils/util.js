@@ -8,7 +8,7 @@ export function hasOwn(obj, key) {
 export function getFixed(val, len = 2) {
   return Number(val.toFixed(len));
 }
-export function dataURLtoFile (dataurl, filename) {
+export function dataURLtoFile(dataurl, filename) {
   let arr = dataurl.split(','),
     mime = arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),
@@ -81,6 +81,7 @@ export const deepClone = data => {
   }
   if (type === 'array') {
     for (var i = 0, len = data.length; i < len; i++) {
+      data[i] = data[i] || {};
       delete data[i].$parent;
       obj.push(deepClone(data[i]));
     }
