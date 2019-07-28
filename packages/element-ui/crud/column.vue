@@ -55,6 +55,7 @@
                            :format="column.format"
                            :parent="column.parent"
                            :change="column.change"
+                           :precision="column.precision"
                            :remote="column.remote"
                            :dicUrl="column.dicUrl"
                            :focus="column.focus"
@@ -107,7 +108,8 @@
                      :class="scope.row[column.prop]"></i>
                 </span>
                 <span v-else-if="column.displayAs=='switch' && ['switch'].includes(column.type)">
-                  <el-switch v-model="scope.row[column.prop]" disabled />
+                  <el-switch v-model="scope.row[column.prop]"
+                             disabled />
                 </span>
                 <span v-else
                       v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
@@ -135,7 +137,7 @@ export default {
   components: {
     dynamicColumn
   },
-  provide() {
+  provide () {
     return {
       dynamic: this
     };
@@ -149,7 +151,7 @@ export default {
     }
   },
   computed: {
-    list() {
+    list () {
       let result = [...this.columnOption];
       return result;
     }
@@ -160,15 +162,15 @@ export default {
     getType,
     getComponent,
     getPlaceholder,
-    vaildColumn(prop) {
+    vaildColumn (prop) {
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
         prop
       );
     },
-    menuText(value) {
+    menuText (value) {
       return this.menuType === "text" ? "text" : value;
     },
-    handleDetail(row, column, DIC) {
+    handleDetail (row, column, DIC) {
       let result = row[column.prop];
       result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC)) {
@@ -176,7 +178,7 @@ export default {
       }
       return result;
     },
-    handleShowLabel(row, column, DIC) {
+    handleShowLabel (row, column, DIC) {
       let result = "";
       if (!this.validatenull(DIC)) {
         result = detail(row, column, this.tableOption, DIC);
@@ -184,7 +186,7 @@ export default {
       }
       return result;
     },
-    handleChange(index, row) {
+    handleChange (index, row) {
       const columnOption = [...this.crud.propOption];
       //本节点;
       const column = columnOption[index];
@@ -236,15 +238,15 @@ export default {
             if (dicvalue) {
               row[columnNext.prop] =
                 dicvalue[
-                  (columnNext.props || this.crud.parentOption.props || {})
-                    .value || "value"
+                (columnNext.props || this.crud.parentOption.props || {})
+                  .value || "value"
                 ];
             }
           }
         }
       );
     },
-    cellEditFlag(row, column) {
+    cellEditFlag (row, column) {
       return (
         row.$cellEdit &&
         [
@@ -269,7 +271,7 @@ export default {
       );
     },
     // 图标显示
-    iconShow(prop, record) {
+    iconShow (prop, record) {
       return (
         prop === this.crud.treeProp &&
         record.children &&
@@ -277,12 +279,12 @@ export default {
       );
     },
     // 切换下级是否展开
-    toggleExpanded(row, index) {
+    toggleExpanded (row, index) {
       row._expand = !row._expand;
       this.$set(this.crud.list, index, row);
     },
     //表格筛选逻辑
-    handleFiltersMethod(value, row, column) {
+    handleFiltersMethod (value, row, column) {
       const columnNew = this.columnOption.filter(
         ele => ele.prop === column.property
       )[0];
@@ -293,7 +295,7 @@ export default {
       }
     },
     //表格筛选字典
-    handleFilters(column) {
+    handleFilters (column) {
       if (column.filter !== true) return undefined;
       if (this.validatenull(column.dicFilters)) {
         let list = [];
