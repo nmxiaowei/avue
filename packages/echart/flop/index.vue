@@ -2,7 +2,6 @@
   <div :class="b()"
        :style="styleParentName">
     <template v-if="whole">
-
       <el-tooltip :disabled="!item.formatter"
                   placement="top-start"
                   :key="index"
@@ -10,7 +9,8 @@
         <div slot="content"
              v-html="item.formatter && item.formatter()"></div>
         <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img','whole':whole,'row':isRow})"
-             :style="styleName">
+             :style="styleName"
+             @click="handleClick(item,index)">
           <div :style="prefixStyle"
                v-if="getValByArray(item,'prefixText')">{{getValByArray(item,'prefixText')}}</div>
           <avue-count-up :decimals="decimals"
@@ -28,6 +28,7 @@
         <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'img':type==='img'})"
              v-for="(item,index) in text"
              :key="index"
+             @click="handleClick(item,index)"
              :style="[styleItemName,styleName]">
           <div v-if="statusDIC.includes(item)">{{item}}</div>
           <avue-count-up :decimals="decimals"
@@ -173,6 +174,13 @@ export default create({
   },
   created () { },
   methods: {
+    handleClick (item, index) {
+      this.clickFormatter({
+        type: index,
+        value: item,
+        data: this.dataChart
+      });
+    },
     getValByArray (item, prop) {
       return this.isArray ? item[prop] : this.option[prop];
     }
