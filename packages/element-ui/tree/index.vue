@@ -1,6 +1,7 @@
 <template>
   <div :class="b()">
-    <div :class="b('filter')">
+    <div :class="b('filter')"
+         v-if="vaildData(option.filter,true)">
       <el-input placeholder="输入关键字进行过滤"
                 :size="size"
                 v-model="filterText">
@@ -56,7 +57,7 @@
       <avue-form v-model="form"
                  :option="formOption"
                  ref="form"
-                 @submit="addFlag?save():update()"></avue-form>
+                 @submit="handleSubmit"></avue-form>
     </el-dialog>
 
   </div>
@@ -102,43 +103,43 @@ export default create({
     }
   },
   computed: {
-    addText() {
+    addText () {
       return this.addFlag ? this.t("crud.addBtn") : this.t("crud.editBtn");
     },
-    addFlag() {
+    addFlag () {
       return this.type === "add" || this.type === "parentAdd";
     },
-    size() {
+    size () {
       return this.option.size || "small";
     },
-    props() {
+    props () {
       return this.option.props || {};
     },
-    valueKey() {
+    valueKey () {
       return this.props.value || propsDefault.value;
     },
-    labelText() {
+    labelText () {
       return this.props.labelText || propsDefault.labelText;
     },
-    labelKey() {
+    labelKey () {
       return this.props.label || propsDefault.label;
     },
-    childrenKey() {
+    childrenKey () {
       return this.props.children || propsDefault.children;
     },
-    defaultExpandAll() {
+    defaultExpandAll () {
       return this.vaildData(this.option.expandAll, true);
     },
-    nodeKey() {
+    nodeKey () {
       return this.option.nodeKey || propsDefault.nodeKey;
     },
-    columnOption() {
+    columnOption () {
       return this.appednKey(deepClone(this.data || []));
     },
-    formColumnOption() {
+    formColumnOption () {
       return (this.option.formOption || {}).column || [];
     },
-    formOption() {
+    formOption () {
       return Object.assign(
         {
           submitText: this.addText,
@@ -165,7 +166,7 @@ export default create({
       );
     }
   },
-  data() {
+  data () {
     return {
       filterText: "",
       box: false,
@@ -176,30 +177,33 @@ export default create({
       list: []
     };
   },
-  created() {
+  created () {
     this.vaildData = vaildData;
     this.list = deepClone(this.columnOption);
   },
   watch: {
-    columnOption() {
+    columnOption () {
       this.list = deepClone(this.columnOption);
     },
-    option() {
+    option () {
       this.init();
     },
-    filterText(val) {
+    filterText (val) {
       this.$refs.tree.filter(val);
     },
-    value(val) {
+    value (val) {
       this.form = val;
     },
-    form(val) {
+    form (val) {
       this.$emit("input", val);
     }
   },
 
   methods: {
-    appednKey(list) {
+    handleSubmit (form, done) {
+      this.addFlag ? this.save(form, done) : this.update(form, done)
+    },
+    appednKey (list) {
       list.forEach(ele => {
         ele.is_show = false;
         if (ele[this.childrenKey]) {
@@ -208,21 +212,21 @@ export default create({
       });
       return list;
     },
-    nodeClick(data) {
+    nodeClick (data) {
       this.$emit("node-click", data);
     },
-    filterNode(value, data) {
+    filterNode (value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
-    hide() {
+    hide () {
       this.box = false;
       this.node = {};
       this.obj = {};
       this.$refs.form.resetForm();
       this.$refs.form.clearValidate();
     },
-    save() {
+    save (data, done) {
       const callback = () => {
         const form = deepClone(Object.assign(this.form, { is_show: false }));
         if (this.type === "add") {
@@ -232,10 +236,11 @@ export default create({
           this.obj.children.push(form);
         } else if (this.type === "parentAdd") this.obj.push(form);
         this.hide();
+        done();
       };
-      this.$emit("save", this.obj, this.node, callback);
+      this.$emit("save", this.obj, this.node, callback, done);
     },
-    update() {
+    update (data, done) {
       const callback = () => {
         const parent = this.node.parent;
         const children = parent.data[this.childrenKey] || parent.data;
@@ -244,35 +249,36 @@ export default create({
         );
         children.splice(index, 1, this.form);
         this.hide();
+        done();
       };
-      this.$emit("update", this.obj, this.node, callback);
+      this.$emit("update", this.obj, this.node, callback, done);
     },
 
-    edit(node, data) {
+    edit (node, data) {
       this.type = "edit";
       this.node = node;
       this.obj = data;
       this.form = deepClone(this.obj);
       this.show();
     },
-    parentAdd(data) {
+    parentAdd (data) {
       this.type = "parentAdd";
       this.obj = this.list;
       this.show();
     },
-    append(node, data) {
+    append (node, data) {
       this.type = "add";
       this.obj = data;
       this.node = node;
       this.show();
     },
-    show() {
+    show () {
       this.box = true;
       setTimeout(() => {
         this.$refs.form.clearValidate();
       }, 0);
     },
-    remove(node, data) {
+    remove (node, data) {
       this.obj = data;
       this.node = node;
       const callback = () => {
@@ -289,7 +295,7 @@ export default create({
         .then(() => {
           this.$emit("del", this.obj, this.node, callback);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
 });

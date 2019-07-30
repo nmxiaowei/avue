@@ -71,6 +71,7 @@
         ],
         option: {
           nodeKey: 'id',
+          dialogWidth: '60%',
           formOption: {
             labelWidth: 100,
             column: [{
@@ -95,11 +96,11 @@
         this.$message.success('删除回调')
         done();
       },
-      update(data, node, done) {
+      update(data, node, done, loadng) {
         this.$message.success('更新回调')
         done();
       },
-      save(data, node, done) {
+      save(data, node, done, loadng) {
         this.$message.success('新增回调')
         this.form.id = new Date().getTime();
         this.form.value = new Date().getTime();
