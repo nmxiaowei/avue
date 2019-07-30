@@ -804,7 +804,7 @@ export default create({
                 sums[index] = avgValues.reduce((perv, curr) => {
                   let value = Number(curr);
                   if (!isNaN(value)) {
-                    return (perv + curr) / nowindex++;
+                    return (perv * (nowindex - 1) + curr) / nowindex++;
                   } else {
                     return perv;
                   }
