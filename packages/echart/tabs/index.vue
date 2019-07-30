@@ -26,18 +26,18 @@
 import create from "core/echart/create";
 export default create({
   name: "tabs",
-  data() {
+  data () {
     return {
       active: ""
     };
   },
   watch: {
-    active(val) {
+    active (val) {
       if (!val) return;
       this.handleClick(val);
     },
     dataChart: {
-      handler(val) {
+      handler (val) {
         if (val.length !== 0) {
           this.active = val[0].value;
         }
@@ -46,19 +46,19 @@ export default create({
     }
   },
   computed: {
-    isSelect() {
+    isSelect () {
       return this.type === "select";
     },
-    type() {
+    type () {
       return this.option.type;
     },
-    paramName() {
+    paramName () {
       return this.option.paramName;
     },
-    iconSize() {
+    iconSize () {
       return this.option.iconSize || 20;
     },
-    styleSelectName() {
+    styleSelectName () {
       return Object.assign(
         {
           fontSize: this.setPx(this.option.fontSize || 30)
@@ -66,14 +66,14 @@ export default create({
         this.styleSizeName
       );
     },
-    styleIconName() {
+    styleIconName () {
       return Object.assign({
         marginRight: this.setPx(this.option.iconSplit),
         width: this.setPx(this.option.iconSize),
         height: this.setPx(this.option.iconSize)
       });
     },
-    styleName() {
+    styleName () {
       return Object.assign(
         (() => {
           if (this.option.backgroundImage) {
@@ -96,10 +96,10 @@ export default create({
       );
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    styleIconBgName(item) {
+    styleIconBgName (item) {
       if (item.icon) {
         return {
           backgroundImage: `url(${item.icon})`,
@@ -107,7 +107,7 @@ export default create({
         };
       }
     },
-    styleIconActiveName(item) {
+    styleIconActiveName (item) {
       if (this.active == item.value && item.empIcon) {
         return {
           backgroundImage: `url(${item.empIcon})`,
@@ -115,7 +115,7 @@ export default create({
         };
       }
     },
-    styleActiveName(item) {
+    styleActiveName (item) {
       if (this.active == item.value) {
         return Object.assign(
           (() => {
@@ -136,7 +136,7 @@ export default create({
         );
       }
     },
-    handleClick(val) {
+    handleClick (val) {
       this.active = val;
       this.click({
         type: this.name,

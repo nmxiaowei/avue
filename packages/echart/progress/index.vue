@@ -1,7 +1,8 @@
 <template>
   <div :class="b()"
        :style="styleSizeName"
-       ref="main">
+       ref="main"
+       @click="handleClick">
     <div :class="b('text',{'line':type==='line','circle':type==='circle'})">
       <p :style="styleSuffixName">{{dataChart.label}}</p>
       <p :style="styleName">
@@ -24,14 +25,14 @@ import create from "core/echart/create";
 export default create({
   name: "progress",
   computed: {
-    styleSuffixName() {
+    styleSuffixName () {
       return {
         fontWeight: this.option.suffixFontWeight || "normal",
         fontSize: (this.option.suffixFontSize || 40) + "px",
         color: this.option.suffixColor || "#333"
       };
     },
-    styleName() {
+    styleName () {
       return {
         marginBottom: this.option.split + "px",
         fontWeight: this.option.fontWeight || "normal",
@@ -39,13 +40,13 @@ export default create({
         color: this.option.color || "#333"
       };
     },
-    type() {
+    type () {
       return this.option.type || "line";
     },
-    color() {
+    color () {
       return this.option.borderColor || "#333";
     },
-    strokeWidth() {
+    strokeWidth () {
       return this.option.strokeWidth || 14;
     }
   },
@@ -55,6 +56,13 @@ export default create({
       default: () => {
         return {};
       }
+    }
+  },
+  methods: {
+    handleClick () {
+      this.clickFormatter({
+        data: this.dataChart
+      });
     }
   }
 });

@@ -7,7 +7,8 @@
                  :interval="interval"
                  :height="height">
       <el-carousel-item v-for="item in dataChart"
-                        :key="item">
+                        :key="item"
+                        @click="handleClick(item,index)">
         <img :src="item.value"
              draggable="false"
              :style="styleName" />
@@ -20,31 +21,39 @@
 import create from "core/echart/create";
 export default create({
   name: "swiper",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    styleName() {
+    styleName () {
       return {
         opacity: this.opacity
       };
     },
-    indicator() {
+    indicator () {
       return this.opacity.indicator || "none";
     },
-    opacity() {
+    opacity () {
       return (this.option.opacity || 100) * 0.01;
     },
-    type() {
+    type () {
       return this.option.type || "";
     },
-    interval() {
+    interval () {
       return this.option.interval || 5000;
     }
   },
-  created() {},
-  mounted() {},
-  methods: {},
+  created () { },
+  mounted () { },
+  methods: {
+    handleClick (item, index) {
+      this.clickFormatter({
+        type: index,
+        value: item,
+        data: this.dataChart
+      });
+    }
+  },
   props: {
     option: {
       type: Object,

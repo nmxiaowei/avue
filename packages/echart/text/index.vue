@@ -1,7 +1,8 @@
 <template>
   <div :class="b()"
        :style="styleSizeName"
-       ref="main">
+       ref="main"
+       @click="handleClick">
     <div ref="box"
          :class="b('box')">
       <a ref="text"
@@ -18,7 +19,7 @@
 import create from "core/echart/create";
 export default create({
   name: "text",
-  data() {
+  data () {
     return {
       check: "",
       date: new Date(),
@@ -27,28 +28,28 @@ export default create({
     };
   },
   computed: {
-    scroll() {
+    scroll () {
       return this.vaildData(this.option.scroll, false);
     },
-    linkHref() {
+    linkHref () {
       return this.option.linkHref || "#";
     },
-    linkTarget() {
+    linkTarget () {
       return this.option.linkTarget || "_self";
     },
-    step() {
+    step () {
       return this.option.step || 5;
     },
-    speed() {
+    speed () {
       return this.option.speed || 100;
     },
-    fontSize() {
+    fontSize () {
       return this.option.fontSize || 30;
     },
-    split() {
+    split () {
       return this.option.split;
     },
-    styleName() {
+    styleName () {
       return {
         transform: "translateX(" + this.left + "px)",
         textAlign: this.option.textAlign,
@@ -62,23 +63,28 @@ export default create({
     }
   },
   watch: {
-    scroll() {
+    scroll () {
       this.move();
     },
-    speed() {
+    speed () {
       this.move();
     }
   },
-  created() {
+  created () {
     setInterval(() => {
       this.date = new Date();
     }, 1000);
   },
-  mounted() {
+  mounted () {
     this.move();
   },
   methods: {
-    move() {
+    handleClick () {
+      this.clickFormatter({
+        data: this.dataChart
+      });
+    },
+    move () {
       clearInterval(this.check);
       if (this.scroll) {
         const textLen = this.data.length;
