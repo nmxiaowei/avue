@@ -26,7 +26,7 @@
       <div slot-scope="{ node,data }"
            :class="b('item')">
         <div :class="b('title')"
-             @click.stop="nodeClick(data)"
+             @click.self="nodeClick(data)"
              @mouseenter="data.is_show=true"
              @mouseleave="data.is_show=false">{{ data[labelKey]}}
           <div :class="b('menu')"
