@@ -26,6 +26,7 @@
                      :checkStrictly="column.searchCheckStrictly || column.checkStrictly"
                      :changeoOnSelect="column.changeoOnSelect"
                      :separator="column.separator"
+                     :remote="column.remote"
                      :showAllLevels="column.showAllLevels"
                      :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMultiple,false)"
                      :parent="column.parent"
