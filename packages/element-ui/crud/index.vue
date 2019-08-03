@@ -24,6 +24,7 @@
         <slot name="menuRight"></slot>
       </template>
     </header-menu>
+    <slot name="header"></slot>
     <div class="avue-crud__tip"
          v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
       <span class="avue-crud__tip-name">
