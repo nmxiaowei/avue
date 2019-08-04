@@ -55,14 +55,15 @@
       <el-button type="primary"
                  @click="rowUpdate"
                  :size="crud.controlSize"
-                 v-if="boxType==='edit'"
+                 v-if="boxType==='edit' && vaildData(crud.tableOption.updateBtn,config.updateBtn)"
                  :loading="keyBtn">{{vaildData(crud.tableOption.updateBtnTitle,t('crud.updateBtn'))}}</el-button>
       <el-button type="primary"
                  @click="rowSave"
                  :size="crud.controlSize"
                  :loading="keyBtn"
-                 v-else-if="boxType==='add'">{{vaildData(crud.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
+                 v-else-if="boxType==='add' && vaildData(crud.tableOption.saveBtn,config.saveBtn)">{{vaildData(crud.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
       <el-button :size="crud.controlSize"
+                 v-if="vaildData(crud.tableOption.cancelBtn,config.cancelBtn)"
                  @click="closeDialog">{{vaildData(crud.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
     </span>
   </component>

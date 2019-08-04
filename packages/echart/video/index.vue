@@ -1,7 +1,8 @@
 <template>
   <div :class="b()"
        :style="styleSizeName"
-       ref="main">
+       ref="main"
+       @click="handleClick">
     <video controls=""
            autoplay=""
            loop=""
@@ -17,13 +18,21 @@
 import create from "core/echart/create";
 export default create({
   name: "video",
-  data() {
+  data () {
     return {};
   },
   computed: {},
-  created() {},
-  mounted() {},
-  methods: {},
+  created () { },
+  mounted () { },
+  methods: {
+    handleClick () {
+      this.clickFormatter({
+        type: index,
+        value: item,
+        data: this.dataChart
+      });
+    }
+  },
   props: {
     option: {
       type: Object,

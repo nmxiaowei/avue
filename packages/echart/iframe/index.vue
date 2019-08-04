@@ -1,7 +1,8 @@
 <template>
   <div :class="b()"
        :style="styleSizeName"
-       ref="main">
+       ref="main"
+       @click="handleClick">
     <iframe :src="dataChart.value"
             draggable="false"></iframe>
   </div>
@@ -11,13 +12,19 @@
 import create from "core/echart/create";
 export default create({
   name: "iframe",
-  data() {
+  data () {
     return {};
   },
   computed: {},
-  created() {},
-  mounted() {},
-  methods: {},
+  created () { },
+  mounted () { },
+  methods: {
+    handleClick () {
+      this.clickFormatter({
+        data: this.dataChart
+      });
+    }
+  },
   props: {
     option: {
       type: Object,

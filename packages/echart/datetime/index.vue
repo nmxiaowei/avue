@@ -1,7 +1,8 @@
 <template>
   <div :class="b()"
        :style="styleSizeName"
-       ref="main">
+       ref="main"
+       @click="handleClick">
     <p :style="styleName">{{nowDate}}</p>
   </div>
 </template>
@@ -12,13 +13,13 @@ import { getDayText } from "utils/date";
 import create from "core/echart/create";
 export default create({
   name: "datetime",
-  data() {
+  data () {
     return {
       date: new Date()
     };
   },
   computed: {
-    nowDate() {
+    nowDate () {
       if (this.option.format === "day") {
         return "星期" + getDayText();
       }
@@ -27,7 +28,7 @@ export default create({
         .replace("yyyy", "YYYY");
       return dayjs(this.date).format(format);
     },
-    styleName() {
+    styleName () {
       return {
         width: "100%",
         height: "100%",
@@ -41,7 +42,7 @@ export default create({
       };
     }
   },
-  created() {
+  created () {
     setInterval(() => {
       this.date = new Date();
     }, 1000);
@@ -52,6 +53,13 @@ export default create({
       default: () => {
         return {};
       }
+    }
+  },
+  methods: {
+    handleClick () {
+      this.clickFormatter({
+        data: this.dataChart
+      });
     }
   }
 });

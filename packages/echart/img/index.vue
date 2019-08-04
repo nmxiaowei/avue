@@ -1,6 +1,7 @@
 <template>
   <div class="avue-echart avue-echart-img"
-       :style="styleSizeName">
+       :style="styleSizeName"
+       @click="handleClick">
     <img :style="[styleImgName,styleSizeName]"
          :src="src"
          :class="b({'rotate': rotate})"
@@ -13,10 +14,10 @@ import create from "core/echart/create";
 export default create({
   name: "img",
   computed: {
-    src() {
+    src () {
       return this.validatenull(this.dataChart) ? "" : this.dataChart;
     },
-    styleImgName() {
+    styleImgName () {
       return Object.assign(
         (() => {
           if (this.rotate) {
@@ -31,14 +32,20 @@ export default create({
         }
       );
     },
-    duration() {
+    duration () {
       return this.option.duration || 3000;
     },
-    rotate() {
+    rotate () {
       return this.option.rotate;
     }
   },
-  methods: {}
+  methods: {
+    handleClick () {
+      this.clickFormatter({
+        data: this.dataChart
+      });
+    }
+  }
 });
 </script>
 

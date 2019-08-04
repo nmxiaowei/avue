@@ -24,6 +24,7 @@
         <slot name="menuRight"></slot>
       </template>
     </header-menu>
+    <slot name="header"></slot>
     <div class="avue-crud__tip"
          v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
       <span class="avue-crud__tip-name">
@@ -325,6 +326,8 @@ export default create({
   mounted () {
     this.doLayout = false;
     this.$nextTick(() => {
+      //初始化dialogForm对外方法
+      this.dialogFormFun();
       this.doLayout = true;
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
@@ -729,6 +732,14 @@ export default create({
     rowAdd () {
       this.$refs.dialogForm.show("add");
     },
+    dialogFormFun () {
+      let list = ['rowSave', 'rowUpdate']
+      list.forEach(ele => {
+        this[ele] = () => {
+          this.$refs.dialogForm[ele]();
+        }
+      })
+    },
     //对象克隆
     rowClone (row) {
       let rowData = {};
@@ -804,7 +815,7 @@ export default create({
                 sums[index] = avgValues.reduce((perv, curr) => {
                   let value = Number(curr);
                   if (!isNaN(value)) {
-                    return (perv + curr) / nowindex++;
+                    return (perv * (nowindex - 1) + curr) / nowindex++;
                   } else {
                     return perv;
                   }

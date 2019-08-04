@@ -68,6 +68,7 @@
                           :leave-active-class="option.leaveActiveClass"
                           tag="div">
           <div v-for="(citem,cindex) in dataTabel"
+               @click="rowClick(citem,cindex)"
                :key="dataTabelLen-cindex"
                :class="b('tr',['line'])"
                :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]">
@@ -96,7 +97,7 @@
 import create from "core/echart/create";
 export default create({
   name: "table",
-  data() {
+  data () {
     return {
       visible: false,
       listVisible: false,
@@ -110,26 +111,26 @@ export default create({
     };
   },
   watch: {
-    scrollCount() {
+    scrollCount () {
       this.setTime();
     },
-    count() {
+    count () {
       this.setTime();
     },
-    scrollTime() {
+    scrollTime () {
       this.setTime();
     },
-    count() {
+    count () {
       this.setTime();
     },
     scroll: {
-      handler(val) {
+      handler (val) {
         this.setTime();
       },
       immediate: true
     }
   },
-  created() {
+  created () {
     this.columnList.forEach(ele => {
       if (!this.columnShowList.includes(ele.value)) {
         this.columnData.push(ele.value);
@@ -137,7 +138,7 @@ export default create({
     });
   },
   computed: {
-    listOption() {
+    listOption () {
       return Object.assign(
         {
           align: "center",
@@ -162,13 +163,13 @@ export default create({
         })()
       );
     },
-    totalList() {
+    totalList () {
       return this.option.totalList || [];
     },
-    totalFlag() {
+    totalFlag () {
       return !this.validatenull(this.totalList);
     },
-    totalData() {
+    totalData () {
       let obj = {};
       this.totalList.forEach(prop => {
         this.dataChart.forEach(ele => {
@@ -178,7 +179,7 @@ export default create({
       });
       return obj;
     },
-    columnList() {
+    columnList () {
       let list = this.columnOption.map(ele => {
         if (!this.columnShowWhite.includes(ele.prop)) {
           return {
@@ -192,67 +193,67 @@ export default create({
         return ele.value;
       });
     },
-    columnShow() {
+    columnShow () {
       return this.option.columnShow;
     },
-    columnListShow() {
+    columnListShow () {
       return this.option.columnListShow;
     },
-    columnShowWhite() {
+    columnShowWhite () {
       return this.option.columnShowWhite || [];
     },
-    columnShowList() {
+    columnShowList () {
       return this.option.columnShowList || [];
     },
-    dataTabelLen() {
+    dataTabelLen () {
       return this.dataChart.length;
     },
-    dataTabel() {
+    dataTabel () {
       let list = this.dataChart;
       if (!this.validatenull(this.prop)) {
         list = this.sortArrys(list, this.prop);
       }
       return list;
     },
-    allHeight() {
+    allHeight () {
       const count = this.count - (this.totalFlag ? 2 : 1);
       const calcState = this.dataChartLen - count;
       return calcState * this.lineHeight;
     },
-    count() {
+    count () {
       return (this.option.count || 10) + 1;
     },
-    dataChartLen() {
+    dataChartLen () {
       return this.dataChart.length;
     },
-    lineHeight() {
+    lineHeight () {
       return parseInt(this.height / this.count);
     },
-    index() {
+    index () {
       return this.option.index;
     },
-    scroll() {
+    scroll () {
       return this.option.scroll;
     },
-    scrollTime() {
+    scrollTime () {
       return this.option.scrollTime || 5000;
     },
-    indexLabel() {
+    indexLabel () {
       return this.option.indexLabel || "排名";
     },
-    line() {
+    line () {
       return this.option.line;
     },
-    fontSize() {
+    fontSize () {
       return this.option.fontSize || 14;
     },
-    scrollCount() {
+    scrollCount () {
       return this.option.scrollCount || this.count;
     },
-    speed() {
+    speed () {
       return this.scrollCount * this.lineHeight;
     },
-    styleThName() {
+    styleThName () {
       return {
         fontSize: this.setPx(this.fontSize),
         textAlign: this.option.headerTextAlign || "center",
@@ -260,10 +261,10 @@ export default create({
         color: this.option.headerColor || "rgba(154, 168, 212, 1)"
       };
     },
-    columnOption() {
+    columnOption () {
       return this.crudOption.column || [];
     },
-    styleTdName() {
+    styleTdName () {
       return {
         fontSize: this.setPx(this.fontSize),
         lineHeight: this.setPx(this.lineHeight),
@@ -273,15 +274,15 @@ export default create({
         borderColor: this.option.borderColor || "rgba(51, 65, 107, 1)"
       };
     },
-    styleMenuName() {
+    styleMenuName () {
       return {
         color: this.option.headerColor || "rgba(154, 168, 212, 1)"
       };
     },
-    sortableProp() {
+    sortableProp () {
       return this.option.sortableProp || "order";
     },
-    crudOption() {
+    crudOption () {
       return Object.assign(this.option, {
         menu: false,
         align: "center",
@@ -299,20 +300,20 @@ export default create({
     }
   },
   methods: {
-    styleWidth(item) {
+    styleWidth (item) {
       return {
         width: this.setPx(item.width),
         flex: item.width ? "auto" : 1
       };
     },
-    resetData() {
+    resetData () {
       this.top = 0;
     },
-    handleSortable(prop) {
+    handleSortable (prop) {
       this.propQuery[this.sortableProp] = prop;
       this.updateData();
     },
-    setTime() {
+    setTime () {
       this.top = 0;
       clearInterval(this.scrollCheck);
       setTimeout(() => {
@@ -327,7 +328,7 @@ export default create({
         }
       }, 2000);
     },
-    styleTrName(index) {
+    styleTrName (index) {
       let result = {
         lineHeight: this.setPx(this.lineHeight)
       };
@@ -338,7 +339,14 @@ export default create({
       }
       return result;
     },
-    handleClick(value, index) {
+    rowClick (item, index) {
+      this.clickFormatter({
+        type: index,
+        value: item,
+        data: this.dataChart
+      });
+    },
+    handleClick (value, index) {
       this.activeIndex = index;
       this.query.type = value;
       this.updateData();
