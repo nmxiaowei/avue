@@ -21,7 +21,10 @@
 
 <body>
   <div id="app">
-    <input type="file" accept=".xlsx" @change="handleChange">
+
+    <el-upload :show-file-list="false" action="action" :on-change="handleChange">
+      <el-button type="primary">上传 excel</el-button>
+    </el-upload>
     <el-button type="primary" @click="handleExcel">下载 excel</el-button>
   </div>
 </body>
@@ -34,13 +37,11 @@
     mounted() {
     },
     methods: {
-      handleChange(e) {
-        for (let index = 0; index < e.target.files.length; index++) {
-          this.$export.xlsx(e.target.files[index])
-            .then(data => {
-              console.log(data)
-            })
-        }
+      handleChange(file, fileLis) {
+        this.$export.xlsx(file.raw)
+          .then(data => {
+            console.log(data)
+          })
       },
       handleExcel() {
         let opt = {
