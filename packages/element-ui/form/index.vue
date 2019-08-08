@@ -276,9 +276,9 @@ export default create({
       });
       return list;
     },
-    menuPoistion: function () {
+    menuPosition: function () {
       if (this.parentOption.menuPosition) {
-        return this.parentOption.menuPoistion;
+        return this.parentOption.menuPosition;
       } else {
         return "center";
       }
