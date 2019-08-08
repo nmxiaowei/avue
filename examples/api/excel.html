@@ -21,6 +21,7 @@
 
 <body>
   <div id="app">
+    <input type="file" accept=".xlsx" @change="handleChange">
     <el-button type="primary" @click="handleExcel">下载 excel</el-button>
   </div>
 </body>
@@ -33,6 +34,14 @@
     mounted() {
     },
     methods: {
+      handleChange(e) {
+        for (let index = 0; index < e.target.files.length; index++) {
+          this.$export.xlsx(e.target.files[index])
+            .then(data => {
+              console.log(data)
+            })
+        }
+      },
       handleExcel() {
         let opt = {
           title: '文档标题',
