@@ -161,7 +161,7 @@
                 v-if="vaildData(parentOption.menuBtn,true)">
           <el-form-item>
             <!-- 菜单按钮组 -->
-            <div :class="b('menu',[menuPostion])">
+            <div :class="b('menu',[menuPosition])">
               <el-button type="primary"
                          @click="handleMock"
                          :size="controlSize"
@@ -276,9 +276,9 @@ export default create({
       });
       return list;
     },
-    menuPostion: function () {
-      if (this.parentOption.menuPostion) {
-        return this.parentOption.menuPostion;
+    menuPoistion: function () {
+      if (this.parentOption.menuPosition) {
+        return this.parentOption.menuPoistion;
       } else {
         return "center";
       }
