@@ -33,7 +33,6 @@ import Slider from 'components/slider';
 import Img from 'components/img';
 import Group from 'components/group';
 import Tree from 'components/tree';
-import TableTree from 'components/table-tree';
 import Search from 'components/search';
 import Skeleton from 'components/skeleton';
 import Tabs from 'components/tabs';
@@ -84,7 +83,6 @@ export default [
   Detail,
   Group,
   Tree,
-  TableTree,
   Search,
   Tabs,
   Queue,
