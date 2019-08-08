@@ -2,6 +2,7 @@
   <component :is="dialogType"
              lock-scroll
              show-close
+             :direction="direction"
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog')"
              :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
@@ -15,8 +16,8 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
-             v-model="boxVisible"
-             :width="vaildData(crud.tableOption.dialogWidth+'',crud.isMobile?'100%':config.dialogWidth+'')"
+             :size="size"
+             :width="size"
              @close="closeDialog">
     <div :style="{height:dialogHeight,overflow:'hidden'}"
          ref="content">
@@ -46,26 +47,28 @@
       </el-scrollbar>
     </div>
 
-    <span slot="footer"
-          class="dialog-footer">
-      <!-- 弹出框按钮组 -->
-      <slot name="menuForm"
-            :type="boxType"
-            :size="crud.controlSize"></slot>
-      <el-button type="primary"
-                 @click="rowUpdate"
-                 :size="crud.controlSize"
-                 v-if="boxType==='edit' && vaildData(crud.tableOption.updateBtn,config.updateBtn)"
-                 :loading="keyBtn">{{vaildData(crud.tableOption.updateBtnTitle,t('crud.updateBtn'))}}</el-button>
-      <el-button type="primary"
-                 @click="rowSave"
-                 :size="crud.controlSize"
-                 :loading="keyBtn"
-                 v-else-if="boxType==='add' && vaildData(crud.tableOption.saveBtn,config.saveBtn)">{{vaildData(crud.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
-      <el-button :size="crud.controlSize"
-                 v-if="vaildData(crud.tableOption.cancelBtn,config.cancelBtn)"
-                 @click="closeDialog">{{vaildData(crud.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
-    </span>
+    <div class="el-dialog__footer">
+      <span class="dialog-footer">
+
+        <!-- 弹出框按钮组 -->
+        <slot name="menuForm"
+              :type="boxType"
+              :size="crud.controlSize"></slot>
+        <el-button type="primary"
+                   @click="rowUpdate"
+                   :size="crud.controlSize"
+                   v-if="boxType==='edit' && vaildData(crud.tableOption.updateBtn,config.updateBtn)"
+                   :loading="keyBtn">{{vaildData(crud.tableOption.updateBtnTitle,t('crud.updateBtn'))}}</el-button>
+        <el-button type="primary"
+                   @click="rowSave"
+                   :size="crud.controlSize"
+                   :loading="keyBtn"
+                   v-else-if="boxType==='add' && vaildData(crud.tableOption.saveBtn,config.saveBtn)">{{vaildData(crud.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
+        <el-button :size="crud.controlSize"
+                   v-if="vaildData(crud.tableOption.cancelBtn,config.cancelBtn)"
+                   @click="closeDialog">{{vaildData(crud.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
+      </span>
+    </div>
   </component>
 </template>
 
@@ -122,8 +125,14 @@ export default create({
 
   },
   computed: {
+    direction () {
+      return this.crud.tableOption.dialogDirection
+    },
+    size () {
+      return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
+    },
     dialogType () {
-      return this.isDrawer ? 'avue-drawer' : 'elDialog'
+      return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
