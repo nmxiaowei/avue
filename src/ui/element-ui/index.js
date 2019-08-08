@@ -29,7 +29,7 @@ import Switchs from 'components/switch';
 import Rate from 'components/rate';
 import Upload from 'components/upload';
 import Sign from 'components/sign';
-import Silder from 'components/silder';
+import Slider from 'components/slider';
 import Img from 'components/img';
 import Group from 'components/group';
 import Tree from 'components/tree';
@@ -80,7 +80,7 @@ export default [
   Switchs,
   Rate,
   Upload,
-  Silder,
+  Slider,
   Img,
   Detail,
   Group,

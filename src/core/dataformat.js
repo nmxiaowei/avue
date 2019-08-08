@@ -159,8 +159,8 @@ export const getComponent = (type, component) => {
     result = 'rate';
   } else if (type === 'upload') {
     result = 'upload';
-  } else if (type === 'silder') {
-    result = 'silder';
+  } else if (type === 'slider') {
+    result = 'slider';
   } else if (type === 'dynamic') {
     result = 'dynamic';
   } else if (type === 'icon-select') {
@@ -192,7 +192,7 @@ export const formInitVal = (list = []) => {
       tableForm[ele.prop] = [];
       if (ele.search) searchForm[ele.prop] = [];
     } else if (
-      ['number', 'rate', 'silder'].includes(ele.type) ||
+      ['number', 'rate', 'slider'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
       tableForm[ele.prop] = 0;
