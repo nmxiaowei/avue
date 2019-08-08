@@ -352,16 +352,14 @@ export default create({
       return result;
     },
     updateDic (prop, list) {
-      if (this.validatenull(list)) {
-        const column = this.propOption[this.findColumnIndex(prop)];
-        if (!this.validatenull(column.dicUrl)) {
-          sendDic({
-            url: column.dicUrl,
-            resKey: (column.props || {}).res
-          }).then(list => {
-            this.$set(this.DIC, prop, list);
-          });
-        }
+      const column = this.propOption[this.findColumnIndex(prop)];
+      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+        sendDic({
+          url: column.dicUrl,
+          resKey: (column.props || {}).res
+        }).then(list => {
+          this.$set(this.DIC, prop, list);
+        });
       } else {
         this.$set(this.DIC, prop, list);
       }
