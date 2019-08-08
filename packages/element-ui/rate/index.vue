@@ -1,17 +1,16 @@
 <template>
-  <el-rate
-    v-model="text"
-    style="margin-top:10px"
-    @change="handleChange"
-    @click.native="handleClick"
-    :max="max"
-    :readonly="readonly"
-    :show-text="showText"
-    :icon-classes="iconClasses"
-    :void-icon-class="voidIconClass"
-    :disabled="disabled"
-    :colors="colors"
-  ></el-rate>
+  <el-rate v-model="text"
+           style="margin-top:10px"
+           @change="handleChange"
+           @click.native="handleClick"
+           :max="max"
+           :readonly="readonly"
+           :texts="texts"
+           :show-text="showText"
+           :icon-classes="iconClasses"
+           :void-icon-class="voidIconClass"
+           :disabled="disabled"
+           :colors="colors"></el-rate>
 </template>
 
 <script>
@@ -47,12 +46,12 @@ export default create({
       type: String
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {}
 });
 </script>
