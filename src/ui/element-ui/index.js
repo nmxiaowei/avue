@@ -13,7 +13,6 @@ import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
 import Detail from 'components/detail';
-import Divider from 'components/divider';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
@@ -62,7 +61,6 @@ export default [
   Checkbox,
   Date,
   countUp,
-  Divider,
   Draggable,
   Empty,
   Flow,
