@@ -39,7 +39,6 @@ import Tabs from 'components/tabs';
 import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
 import IconSelect from 'components/icon-select';
-import Timeline from 'components/timeline';
 import BackTop from 'components/back-top';
 import textEllipsis from 'components/text-ellipsis';
 import packages from 'core/packages';
@@ -89,8 +88,6 @@ export default [
   Dynamic,
   IconSelect,
   BackTop,
-  Timeline,
-  Timeline.Item,
   textEllipsis,
   Skeleton,
   Sign,
