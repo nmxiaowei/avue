@@ -22,6 +22,7 @@
 
 <body>
   <div id="app">
+    {{list}}
     <avue-crud :data="list" :option="option" @sortable-change="sortableChange">
     </avue-crud>
   </div>
@@ -96,6 +97,7 @@
        * @param return
        **/
       sortableChange(oldindex, newindex, row, list) {
+        this.list = list
         console.log(oldindex, newindex, row, list)
       }
     }
