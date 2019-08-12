@@ -309,7 +309,8 @@ export default create({
                   },
                   () => {
                     this.loading.close();
-                  }
+                  },
+                  this.column
                 );
               else this.show(list);
             })
@@ -317,14 +318,14 @@ export default create({
               if (typeof this.uploadAfter === "function")
                 this.uploadAfter(error, this.hide, () => {
                   this.loading.close();
-                });
+                }, this.column);
               else this.hide(error);
             });
         };
         if (typeof this.uploadBefore === "function")
           this.uploadBefore(this.file, callack, () => {
             this.loading.close();
-          });
+          }, this.column);
         else callack();
       };
       //是否开启水印
