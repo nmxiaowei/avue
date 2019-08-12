@@ -6,7 +6,6 @@
   .avue-input-number {
     width: 100% !important;
   }
-
   .avue-crud__left,.avue-crud__right{
     .el-button + .el-button {
       margin-left: 0;
@@ -66,7 +65,9 @@
   }
 }
 
-
+.el-drawer__body{
+  height: 100%;
+}
  .el-table th.gutter{
   display: table-cell!important;
 }

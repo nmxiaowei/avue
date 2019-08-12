@@ -2,6 +2,8 @@
   <component :is="dialogType"
              lock-scroll
              show-close
+             destroy-on-close
+             :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog')"
@@ -17,7 +19,7 @@
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
              :size="size"
-             :width="size"
+             :width="width"
              @close="closeDialog">
     <div :style="{height:dialogHeight,overflow:'hidden'}"
          ref="content">
@@ -49,7 +51,6 @@
 
     <div class="el-dialog__footer">
       <span class="dialog-footer">
-
         <!-- 弹出框按钮组 -->
         <slot name="menuForm"
               :type="boxType"
@@ -128,6 +129,9 @@ export default create({
     direction () {
       return this.crud.tableOption.dialogDirection
     },
+    width () {
+      return this.setPx(this.vaildData(this.crud.tableOption.dialogWidth, this.crud.isMobile ? '100%' : config.dialogWidth))
+    },
     size () {
       return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
     },
@@ -139,7 +143,7 @@ export default create({
     },
     dialogHeight () {
       if (this.isDrawer) {
-        return 'calc(100% - 55px)';
+        return 'calc(100% - 100px)';
       }
       return this.setPx(
         this.vaildData(

@@ -1,7 +1,11 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
-  
+  &-search{
+    &__menu{
+      text-align: center;
+    }
+  }
   .el-table--mini{
     .avue-crud__color{
       width: 20px;
@@ -135,24 +139,6 @@ $space-width: 15px;
       padding: 12px 25px;
     }
   }
-  &__search {
-    .el-form-item {
-      margin-bottom: 14px;
-    }
-  }
-  &__search-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  &__box {
-    box-shadow: none !important;
-    border: none;
-    .el-card__body,
-    .el-card__header {
-      padding: 18px 0;
-    }
-  }
   &__title {
     font-weight: bold;
     margin-bottom: 20px;
@@ -162,9 +148,10 @@ $space-width: 15px;
     font-size: 22px;
   }
   &__tip{
+    margin:8px 0;
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     &-name{
       margin-right: 10px;
     }

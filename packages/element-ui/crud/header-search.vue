@@ -1,27 +1,8 @@
 <template>
   <el-collapse-transition>
-    <el-card :body-style="{ padding: '20px 20px 0 20px' }"
-             shadow="hover"
-             v-show="searchShow && searchFlag">
-      <div slot="header"
-           class="avue-crud__search-header">
-        <span><i class="el-icon-search"> 搜索</i></span>
-        <div>
-          <slot name="search"></slot>
-          <el-button type="primary"
-                     @click="searchChange"
-                     :icon="config.searchBtnIcon"
-                     v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
-                     :size="crud.isMediumSize">{{t('crud.searchBtn')}}
-          </el-button>
-          <el-button @click="searchReset"
-                     :icon="config.emptyBtnIcon"
-                     v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
-                     :size="crud.isMediumSize">{{t('crud.emptyBtn')}}
-          </el-button>
-          <slot name="searchMenu"></slot>
-        </div>
-      </div>
+    <el-card shadow="hover"
+             v-show="searchShow && searchFlag"
+             style="margin-bottom:10px;">
       <el-form :class="b('search')"
                :model="searchForm"
                label-suffix="："
@@ -30,9 +11,7 @@
                ref="searchForm">
         <!-- 循环列搜索框 -->
         <el-row :gutter="10">
-          <el-col :xl="6"
-                  :lg="8"
-                  :md="12"
+          <el-col :md="column.searchSpan || 6"
                   :xs="24"
                   v-for="(column,index) in crud.propOption"
                   :key="index"
@@ -66,8 +45,24 @@
               </el-tooltip>
             </el-form-item>
           </el-col>
+          <slot name="search"></slot>
         </el-row>
       </el-form>
+      <div :class="b('menu')">
+
+        <el-button type="primary"
+                   @click="searchChange"
+                   :icon="config.searchBtnIcon"
+                   v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
+                   :size="crud.isMediumSize">{{t('crud.searchBtn')}}
+        </el-button>
+        <el-button @click="searchReset"
+                   :icon="config.emptyBtnIcon"
+                   v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
+                   :size="crud.isMediumSize">{{t('crud.emptyBtn')}}
+        </el-button>
+        <slot name="searchMenu"></slot>
+      </div>
     </el-card>
   </el-collapse-transition>
 </template>
