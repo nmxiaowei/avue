@@ -140,6 +140,11 @@ $space-width: 15px;
       margin-bottom: 14px;
     }
   }
+  &__search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   &__box {
     box-shadow: none !important;
     border: none;

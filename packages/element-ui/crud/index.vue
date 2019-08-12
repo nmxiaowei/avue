@@ -14,17 +14,6 @@
         <slot name="searchMenu"></slot>
       </template>
     </header-search>
-    <!-- 表格功能列 -->
-    <header-menu ref="headerMenu"
-                 v-show="printKey && vaildData(tableOption.header,true)">
-      <template slot="menuLeft">
-        <slot name="menuLeft"></slot>
-      </template>
-      <template slot="menuRight">
-        <slot name="menuRight"></slot>
-      </template>
-    </header-menu>
-    <slot name="header"></slot>
     <div class="avue-crud__tip"
          v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
       <span class="avue-crud__tip-name">
@@ -39,7 +28,19 @@
                  v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
       <slot name="tip"></slot>
     </div>
-    <el-table v-if="doLayout"
+    <el-card shadow="hover" style="margin: 10px 0 0 0;">
+      <!-- 表格功能列 -->
+      <header-menu ref="headerMenu"
+                   v-show="printKey && vaildData(tableOption.header,true)">
+        <template slot="menuLeft">
+          <slot name="menuLeft"></slot>
+        </template>
+        <template slot="menuRight">
+          <slot name="menuRight"></slot>
+        </template>
+      </header-menu>
+      <slot name="header"></slot>
+      <el-table v-if="doLayout"
               :data="list"
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
@@ -78,151 +79,151 @@
               @select="select"
               @select-all="selectAll"
               @sort-change="sortChange">
-      <!-- 暂无数据提醒 -->
-      <template slot="empty">
-        <div :class="b('empty')">
-          <slot name="empty"
-                v-if="$slots.empty"></slot>
-          <avue-empty v-else
-                      size="50"
-                      image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                      :desc="tableOption.emptyText || 暂无数据"></avue-empty>
-        </div>
-      </template>
+        <!-- 暂无数据提醒 -->
+        <template slot="empty">
+          <div :class="b('empty')">
+            <slot name="empty"
+                  v-if="$slots.empty"></slot>
+            <avue-empty v-else
+                        size="50"
+                        image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
+                        :desc="tableOption.emptyText || 暂无数据"></avue-empty>
+          </div>
+        </template>
 
-      <!-- 折叠面板  -->
-      <el-table-column type="expand"
-                       :width="tableOption.expandWidth || config.expandWidth"
-                       :fixed="vaildData(tableOption.expandFixed,config.expandFixed)"
-                       align="center"
-                       v-if="tableOption.expand">
-        <template slot-scope="props">
-          <slot :row="props.row"
-                name="expand"></slot>
-        </template>
-      </el-table-column>
-      <!-- 拖动排序  -->
-      <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
-                       :width="tableOption.sortableWidth || config.sortableWidth"
-                       :fixed="vaildData(tableOption.sortableFixed,config.sortableFixed)"
-                       align="center">
-        <template slot="header"
-                  slot-scope="scope">
-          <i class="el-icon-sort" />
-        </template>
-        <template slot-scope="scope">
-          <span class="avue-crud__drag-handler">
-            <i class="el-icon-rank" />
-          </span>
-        </template>
-      </el-table-column>
-      <!-- 选择框 -->
-      <el-table-column v-if="tableOption.selection"
-                       type="selection"
-                       :reserve-selection="vaildData(tableOption.reserveSelection,true)"
-                       :width="tableOption.selectionWidth || config.selectionWidth"
-                       :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
-                       align="center"></el-table-column>
-      <!-- 序号 -->
-      <el-table-column v-if="this.vaildData(tableOption.index,false)"
-                       :label="tableOption.indexLabel || config.indexLabel"
-                       type="index"
-                       :width="tableOption.indexWidth || config.indexWidth"
-                       :index="indexMethod"
-                       :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
-                       align="center"></el-table-column>
-      <!-- 占位符号解决ele问题 -->
-      <el-table-column width="1"></el-table-column>
-      <column :columnOption="columnOption">
-        <template v-for="(item,index) in propOption"
-                  slot-scope="scope"
-                  :slot="item.prop">
-          <slot :row="scope.row"
-                :dic="scope.dic"
-                :size="scope.size"
-                :label="scope.label"
-                :name="item.prop"></slot>
-        </template>
-      </column>
-      <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                       v-if="vaildData(tableOption.menu,config.menu) && printKey"
-                       :label="t('crud.menu')"
-                       :align="tableOption.menuAlign || config.menuAlign"
-                       :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
-                       :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
-        <template slot-scope="scope">
-          <el-dropdown v-if="menuType==='menu'"
-                       style="margin-right:9px;">
-            <el-button type="primary"
-                       :size="isMediumSize">
-              {{t('crud.menuBtn')}}
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
-                                v-permission="permission.viewBtn"
-                                @click.native="rowView(scope.row,scope.$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
-              <el-dropdown-item divided
-                                v-if="vaildData(tableOption.editBtn,true)"
-                                v-permission="permission.editBtn"
-                                @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
-              <el-dropdown-item divided
-                                v-if="vaildData(tableOption.delBtn,true)"
-                                v-permission="permission.delBtn"
-                                @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
-              <slot name="menuBtn"
-                    :row="scope.row"
-                    :dic="scope.dic"
-                    :label="scope.label"
-                    :index="scope.$index"></slot>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <template v-else-if="['button','text','icon'].includes(menuType)">
-            <el-button :type="menuText('primary')"
-                       :icon="scope.row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
-                       :size="isMediumSize"
-                       :disabled="btnDisabled"
-                       @click.stop="rowCell(scope.row,scope.$index)"
-                       v-permission="permission.cellBtn"
-                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}</el-button>
-            <el-button :type="menuText('danger')"
-                       :icon="config.cancelBtnIcon"
-                       :size="isMediumSize"
-                       :disabled="btnDisabled"
-                       @click.stop="rowCanel(scope.row,scope.$index)"
-                       v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">{{menuIcon('cancelBtn')}}</el-button>
-            <el-button :type="menuText('success')"
-                       :icon="config.viewBtnIcon"
-                       :size="isMediumSize"
-                       :disabled="btnDisabled"
-                       @click.stop="rowView(scope.row,scope.$index)"
-                       v-permission="permission.viewBtn"
-                       v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon('viewBtn')}}</el-button>
-            <el-button :type="menuText('primary')"
-                       :icon="config.editBtnIcon"
-                       :size="isMediumSize"
-                       :disabled="btnDisabled"
-                       @click.stop="rowEdit(scope.row,scope.$index)"
-                       v-permission="permission.editBtn"
-                       v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon('editBtn')}}</el-button>
-            <el-button :type="menuText('danger')"
-                       :icon="config.delBtnIcon"
-                       :size="isMediumSize"
-                       :disabled="btnDisabled"
-                       @click.stop="rowDel(scope.row,scope.$index)"
-                       v-permission="permission.delBtn"
-                       v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon('delBtn')}}</el-button>
+        <!-- 折叠面板  -->
+        <el-table-column type="expand"
+                         :width="tableOption.expandWidth || config.expandWidth"
+                         :fixed="vaildData(tableOption.expandFixed,config.expandFixed)"
+                         align="center"
+                         v-if="tableOption.expand">
+          <template slot-scope="props">
+            <slot :row="props.row"
+                  name="expand"></slot>
           </template>
-          <slot name="menu"
-                :row="scope.row"
-                :type="menuText('primary')"
-                :disabled="btnDisabled"
-                :size="isMediumSize"
-                :index="scope.$index"></slot>
-        </template>
-      </el-table-column>
-    </el-table>
-
+        </el-table-column>
+        <!-- 拖动排序  -->
+        <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
+                         :width="tableOption.sortableWidth || config.sortableWidth"
+                         :fixed="vaildData(tableOption.sortableFixed,config.sortableFixed)"
+                         align="center">
+          <template slot="header"
+                    slot-scope="scope">
+            <i class="el-icon-sort" />
+          </template>
+          <template slot-scope="scope">
+            <span class="avue-crud__drag-handler">
+              <i class="el-icon-rank" />
+            </span>
+          </template>
+        </el-table-column>
+        <!-- 选择框 -->
+        <el-table-column v-if="tableOption.selection"
+                         type="selection"
+                         :reserve-selection="vaildData(tableOption.reserveSelection,true)"
+                         :width="tableOption.selectionWidth || config.selectionWidth"
+                         :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
+                         align="center"></el-table-column>
+        <!-- 序号 -->
+        <el-table-column v-if="this.vaildData(tableOption.index,false)"
+                         :label="tableOption.indexLabel || config.indexLabel"
+                         type="index"
+                         :width="tableOption.indexWidth || config.indexWidth"
+                         :index="indexMethod"
+                         :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
+                         align="center"></el-table-column>
+        <!-- 占位符号解决ele问题 -->
+        <el-table-column width="1"></el-table-column>
+        <column :columnOption="columnOption">
+          <template v-for="(item,index) in propOption"
+                    slot-scope="scope"
+                    :slot="item.prop">
+            <slot :row="scope.row"
+                  :dic="scope.dic"
+                  :size="scope.size"
+                  :label="scope.label"
+                  :name="item.prop"></slot>
+          </template>
+        </column>
+        <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
+                         v-if="vaildData(tableOption.menu,config.menu) && printKey"
+                         :label="t('crud.menu')"
+                         :align="tableOption.menuAlign || config.menuAlign"
+                         :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
+                         :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
+          <template slot-scope="scope">
+            <el-dropdown v-if="menuType==='menu'"
+                         style="margin-right:9px;">
+              <el-button type="primary"
+                         :size="isMediumSize">
+                {{t('crud.menuBtn')}}
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
+                                  v-permission="permission.viewBtn"
+                                  @click.native="rowView(scope.row,scope.$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
+                <el-dropdown-item divided
+                                  v-if="vaildData(tableOption.editBtn,true)"
+                                  v-permission="permission.editBtn"
+                                  @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
+                <el-dropdown-item divided
+                                  v-if="vaildData(tableOption.delBtn,true)"
+                                  v-permission="permission.delBtn"
+                                  @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
+                <slot name="menuBtn"
+                      :row="scope.row"
+                      :dic="scope.dic"
+                      :label="scope.label"
+                      :index="scope.$index"></slot>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <template v-else-if="['button','text','icon'].includes(menuType)">
+              <el-button :type="menuText('primary')"
+                         :icon="scope.row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
+                         :size="isMediumSize"
+                         :disabled="btnDisabled"
+                         @click.stop="rowCell(scope.row,scope.$index)"
+                         v-permission="permission.cellBtn"
+                         v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}</el-button>
+              <el-button :type="menuText('danger')"
+                         :icon="config.cancelBtnIcon"
+                         :size="isMediumSize"
+                         :disabled="btnDisabled"
+                         @click.stop="rowCanel(scope.row,scope.$index)"
+                         v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">{{menuIcon('cancelBtn')}}</el-button>
+              <el-button :type="menuText('success')"
+                         :icon="config.viewBtnIcon"
+                         :size="isMediumSize"
+                         :disabled="btnDisabled"
+                         @click.stop="rowView(scope.row,scope.$index)"
+                         v-permission="permission.viewBtn"
+                         v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon('viewBtn')}}</el-button>
+              <el-button :type="menuText('primary')"
+                         :icon="config.editBtnIcon"
+                         :size="isMediumSize"
+                         :disabled="btnDisabled"
+                         @click.stop="rowEdit(scope.row,scope.$index)"
+                         v-permission="permission.editBtn"
+                         v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon('editBtn')}}</el-button>
+              <el-button :type="menuText('danger')"
+                         :icon="config.delBtnIcon"
+                         :size="isMediumSize"
+                         :disabled="btnDisabled"
+                         @click.stop="rowDel(scope.row,scope.$index)"
+                         v-permission="permission.delBtn"
+                         v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon('delBtn')}}</el-button>
+            </template>
+            <slot name="menu"
+                  :row="scope.row"
+                  :type="menuText('primary')"
+                  :disabled="btnDisabled"
+                  :size="isMediumSize"
+                  :index="scope.$index"></slot>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
     <!-- 分页 -->
     <table-page ref="tablePage"
                 v-show="printKey"></table-page>

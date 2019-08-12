@@ -1,57 +1,68 @@
 <template>
   <el-collapse-transition>
-    <el-form :class="b('search')"
-             :model="searchForm"
-             :inline="true"
-             @submit.native.prevent
-             ref="searchForm"
-             v-if="searchShow && searchFlag">
-      <!-- 循环列搜索框 -->
-      <el-form-item :prop="column.prop"
-                    :label="column.label"
-                    v-for="(column,index) in crud.propOption"
-                    :key="index"
-                    v-if="column.search">
-        <el-tooltip :disabled="!column.searchTip"
-                    :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"
-                    :placement="column.searchTipPlacement">
-          <component v-model="searchForm[column.prop]"
-                     :is="getSearchType(column.type)"
-                     :clearable="column.searchClearable"
-                     :defaultExpandAll="column.defaultExpandAll"
-                     :dic="crud.DIC[column.prop]"
-                     :filterable="column.searchFilterable"
-                     :filter-method="column.searchFilterMethod"
-                     :format="column.format"
-                     :checkStrictly="column.searchCheckStrictly || column.checkStrictly"
-                     :changeoOnSelect="column.changeoOnSelect"
-                     :separator="column.separator"
-                     :remote="column.remote"
-                     :showAllLevels="column.showAllLevels"
-                     :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMultiple,false)"
-                     :parent="column.parent"
-                     :placeholder="getPlaceholder(column,'search')"
-                     :props="column.props || crud.tableOption.props"
-                     :size="crud.isMediumSize"
-                     :type="getType(column)"
-                     :tags="column.searchTags"
-                     :value-format="column.valueFormat"></component>
-        </el-tooltip>
-      </el-form-item>
-      <slot name="search"></slot>
-      <el-form-item :class="b('searchMenu')">
-        <el-button type="primary"
-                   @click="searchChange"
-                   :icon="config.searchBtnIcon"
-                   v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
-                   :size="crud.isMediumSize">{{t('crud.searchBtn')}}</el-button>
-        <el-button @click="searchReset"
-                   :icon="config.emptyBtnIcon"
-                   v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
-                   :size="crud.isMediumSize">{{t('crud.emptyBtn')}}</el-button>
-        <slot name="searchMenu"></slot>
-      </el-form-item>
-    </el-form>
+    <el-card :body-style="{ padding: '20px 20px 0 20px' }" shadow="hover" v-show="searchShow && searchFlag">
+      <div slot="header" class="avue-crud__search-header">
+        <span><i class="el-icon-search"> 搜索</i></span>
+        <div>
+          <slot name="search"></slot>
+          <el-button type="primary"
+                     @click="searchChange"
+                     :icon="config.searchBtnIcon"
+                     v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
+                     :size="crud.isMediumSize">{{t('crud.searchBtn')}}
+          </el-button>
+          <el-button @click="searchReset"
+                     :icon="config.emptyBtnIcon"
+                     v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
+                     :size="crud.isMediumSize">{{t('crud.emptyBtn')}}
+          </el-button>
+          <slot name="searchMenu"></slot>
+        </div>
+      </div>
+      <el-form :class="b('search')"
+               :model="searchForm"
+               label-suffix="："
+               label-width="110px"
+               label-position="right"
+               ref="searchForm">
+        <!-- 循环列搜索框 -->
+        <el-row :gutter="10">
+          <el-col :xl="6" :lg="8" :md="12" :xs="24"
+                  v-for="(column,index) in crud.propOption"
+                  :key="index"
+                  v-if="column.search">
+            <el-form-item :prop="column.prop"
+                          :label="column.label">
+              <el-tooltip :disabled="!column.searchTip"
+                          :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"
+                          :placement="column.searchTipPlacement">
+                <component v-model="searchForm[column.prop]"
+                           :is="getSearchType(column.type)"
+                           :clearable="column.searchClearable"
+                           :defaultExpandAll="column.defaultExpandAll"
+                           :dic="crud.DIC[column.prop]"
+                           :filterable="column.searchFilterable"
+                           :filter-method="column.searchFilterMethod"
+                           :format="column.format"
+                           :checkStrictly="column.searchCheckStrictly || column.checkStrictly"
+                           :changeoOnSelect="column.changeoOnSelect"
+                           :separator="column.separator"
+                           :showAllLevels="column.showAllLevels"
+                           :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMultiple,false)"
+                           :parent="column.parent"
+                           :placeholder="getPlaceholder(column,'search')"
+                           :props="column.props || crud.tableOption.props"
+                           :size="crud.isMediumSize"
+                           :type="getType(column)"
+                           :tags="column.searchTags"
+                           :value-format="column.valueFormat"
+                           @keyup.enter.native="searchChange"></component>
+              </el-tooltip>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-card>
   </el-collapse-transition>
 </template>
 
@@ -144,4 +155,3 @@ export default cteate({
   }
 });
 </script>
-
