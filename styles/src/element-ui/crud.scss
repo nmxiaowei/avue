@@ -266,9 +266,7 @@ $space-width: 15px;
     min-width: 150px;
     max-height: 250px;
     background-color: #fff;
-    position: absolute;
-    top:50px;
-    left:0;
+    position: fixed;
     z-index:2001;
   }
   &__arrow{

@@ -281,9 +281,9 @@ export default create({
       const top = this.$el.getBoundingClientRect().top;
       this.treeStyle = {
         top: this.setPx(height),
-        // top: this.setPx(top + height),
-        // left: this.setPx(left),
-        // width: this.setPx(width),
+        top: this.setPx(top + height),
+        left: this.setPx(left),
+        width: this.setPx(width),
       }
       this.treeStyle
       this.box = true;
@@ -292,9 +292,9 @@ export default create({
     init () {
       if (this.isTree) {
         if (this.multiple) {
-          this.labelText = ["获取字典中..."];
+          this.labelText = [];
         } else {
-          this.labelText = "获取字典中...";
+          this.labelText = "";
         }
         const check = setInterval(() => {
           if (validatenull(this.dic)) {
