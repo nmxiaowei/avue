@@ -92,7 +92,8 @@
                 <span v-if="[undefined,'number'].includes(column.type)">
                   {{scope.row[column.prop]}}
                 </span>
-                <span v-else-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
+                <span v-else-if="column.parentProp"
+                      v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
 
                 <template v-else-if="['upload'].includes(column.type)">
                   <avue-img :align="column.align"
