@@ -22,7 +22,12 @@
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
       <template slot="search">
-        <el-tag>我是自定义</el-tag>
+        <el-col :md="6" :xs="24">
+          <el-form-item label="自定义">
+            <el-tag>我是自定义</el-tag>
+          </el-form-item>
+        </el-col>
+
       </template>
     </avue-crud>
   </div>
