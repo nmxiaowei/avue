@@ -1,7 +1,10 @@
 <template>
   <el-collapse-transition>
-    <el-card :body-style="{ padding: '20px 20px 0 20px' }" shadow="hover" v-show="searchShow && searchFlag">
-      <div slot="header" class="avue-crud__search-header">
+    <el-card :body-style="{ padding: '20px 20px 0 20px' }"
+             shadow="hover"
+             v-show="searchShow && searchFlag">
+      <div slot="header"
+           class="avue-crud__search-header">
         <span><i class="el-icon-search"> 搜索</i></span>
         <div>
           <slot name="search"></slot>
@@ -27,7 +30,10 @@
                ref="searchForm">
         <!-- 循环列搜索框 -->
         <el-row :gutter="10">
-          <el-col :xl="6" :lg="8" :md="12" :xs="24"
+          <el-col :xl="6"
+                  :lg="8"
+                  :md="12"
+                  :xs="24"
                   v-for="(column,index) in crud.propOption"
                   :key="index"
                   v-if="column.search">
@@ -48,7 +54,7 @@
                            :changeoOnSelect="column.changeoOnSelect"
                            :separator="column.separator"
                            :showAllLevels="column.showAllLevels"
-                           :multiple="config.searchMultiple.includes(column.type) && vaildData(column.searchMultiple,false)"
+                           :multiple="column.multiple"
                            :parent="column.parent"
                            :placeholder="getPlaceholder(column,'search')"
                            :props="column.props || crud.tableOption.props"

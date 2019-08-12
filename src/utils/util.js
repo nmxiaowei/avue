@@ -1,5 +1,5 @@
 import { validatenull } from './validate';
-
+import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 export function hasOwn(obj, key) {
@@ -122,8 +122,8 @@ export const setPx = (val, defval = '') => {
  * 转换数据类型
  */
 export const detailDic = (list, props = {}, type) => {
-  let valueKey = props.value || 'value';
-  let childrenKey = props.children || 'children';
+  let valueKey = props.value || DIC_PROPS.value;
+  let childrenKey = props.children || DIC_PROPS.children;
   list.forEach(ele => {
     if (type === 'number') {
       ele[valueKey] = Number(ele[valueKey]);
@@ -139,40 +139,45 @@ export const detailDic = (list, props = {}, type) => {
 /**
  * 根据字典的value显示label
  */
-let result = '';
-export const findByValue = (dic, value, props, first, isTree, dicType) => {
-  props = props || {};
-  const labelKey = props.label || 'label';
-  const valueKey = props.value || 'value';
-  const childrenKey = props.children || 'children';
-  if (first) result = value;
-  if (validatenull(dic)) return result;
-  // 正常字典
-  if (['string', 'number', 'boolean'].includes(typeof value)) {
-    for (let i = 0; i < dic.length; i++) {
-      if (dic[i][valueKey] === value) {
-        result = dic[i][labelKey];
-        break;
-      } else {
-        findByValue(dic[i][childrenKey], value, props, false, isTree);
-      }
-    }
-  } else if (value instanceof Array) {
-    let index = 0;
-    let count = 0;
+
+export const findByValue = (dic, value, props, isTree) => {
+  // 如果为空直接返回
+  if (validatenull(dic)) return value;
+  let result = '';
+  props = props || DIC_PROPS;
+  if (value instanceof Array && isTree) {
     result = [];
-    while (count < value.length) {
-      index = findArray(dic, value[count], valueKey);
-      if (index !== -1) result.push(dic[index][labelKey]);
-      else result.push(value[count]);
-      if (isTree) dic = dic[index][childrenKey];
-      count++;
+    for (let i = 0; i < value.length; i++) {
+      const dicvalue = value[i];
+      result.push(findLabelNode(dic, dicvalue, props) || dicvalue);
     }
-    result = result.join(',').toString();
+    result = result.join(DIC_SPLIT).toString();
+
+  } else if (['string', 'number', 'boolean'].includes(typeof value)) {
+    result = findLabelNode(dic, value, props) || value;
   }
   return result;
 };
 
+export const findLabelNode = (dic, value, props) => {
+  let result = '';
+  let rev = (dic1, value1, props1) => {
+    const labelKey = props1.label || DIC_PROPS.label;
+    const valueKey = props1.value || DIC_PROPS.value;
+    const childrenKey = props1.children || DIC_PROPS.children;
+    for (let i = 0; i < dic1.length; i++) {
+      const ele = dic1[i];
+      const children = ele[childrenKey] || [];
+      if (ele[valueKey] === value1) {
+        result = ele[labelKey];
+      } else {
+        rev(children, value1, props1);
+      }
+    }
+  };
+  rev(dic, value, props);
+  return result;
+};
 export const getDeepData = (res) => {
   return (Array.isArray(res) ? res : res.data) || [];
 };
@@ -202,13 +207,13 @@ export const filterForm = (form) => {
  */
 
 export const findArray = (dic, value, valueKey) => {
-  valueKey = valueKey || 'value';
+  valueKey = valueKey || DIC_PROPS.value;
   for (let i = 0; i < dic.length; i++) {
     if (dic[i][valueKey] === value) {
       return i;
     }
   }
-  return -1;
+  return value;
 };
 
 export const getPasswordChar = (result = '', char) => {

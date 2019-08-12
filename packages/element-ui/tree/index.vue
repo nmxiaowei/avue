@@ -64,14 +64,7 @@
 </template>
 
 <script>
-const propsDefault = {
-  nodeKey: "id",
-  label: "label",
-  value: "value",
-  children: "children",
-  labelText: "名称"
-};
-
+import { DIC_PROPS } from 'global/variable';
 import locale from "../../core/common/locale";
 import { deepClone, vaildData } from "utils/util";
 import create from "core/create";
@@ -116,22 +109,22 @@ export default create({
       return this.option.props || {};
     },
     valueKey () {
-      return this.props.value || propsDefault.value;
+      return this.props.value || DIC_PROPS.value;
     },
     labelText () {
-      return this.props.labelText || propsDefault.labelText;
+      return this.props.labelText || DIC_PROPS.labelText;
     },
     labelKey () {
-      return this.props.label || propsDefault.label;
+      return this.props.label || DIC_PROPS.label;
     },
     childrenKey () {
-      return this.props.children || propsDefault.children;
+      return this.props.children || DIC_PROPS.children;
     },
     defaultExpandAll () {
       return this.vaildData(this.option.expandAll, true);
     },
     nodeKey () {
-      return this.option.nodeKey || propsDefault.nodeKey;
+      return this.option.nodeKey || DIC_PROPS.nodeKey;
     },
     columnOption () {
       return this.appednKey(deepClone(this.data || []));

@@ -35,6 +35,8 @@
                    :props="props"
                    :check-strictly="checkStrictly"
                    ref="tree"
+                   highlight-current
+                   :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
                    :default-expanded-keys="keysList"
@@ -97,6 +99,8 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
+import { findLabelNode } from 'utils/util'
 import { validatenull } from "utils/validate";
 export default create({
   name: "input",
@@ -220,7 +224,7 @@ export default create({
     },
     labelShow () {
       return this.multiple
-        ? (this.labelText || []).join(" | ").toString()
+        ? (this.labelText || []).join(DIC_SPLIT).toString()
         : this.labelText;
     },
     textShow () {
@@ -308,14 +312,16 @@ export default create({
             this.labelText = [];
             if (!validatenull(this.text)) {
               this.text.forEach(ele => {
-                this.findLabelNode(this.dic, ele, this.props);
+                const label = findLabelNode(this.dic, ele, this.props) || ele;
+                this.labelText.push(label)
               });
             }
           } else {
             this.labelText = "";
             if (!validatenull(this.text)) {
               this.labelText = this.text;
-              this.findLabelNode(this.dic, this.text, this.props);
+              const label = findLabelNode(this.dic, this.text, this.props) || this.text;
+              this.labelText = label
             }
           }
           setTimeout(() => {
@@ -324,20 +330,6 @@ export default create({
           clearInterval(check);
         }, 500);
       }
-    },
-    findLabelNode (dic, value, props) {
-      const labelKey = props.label || "label";
-      const valueKey = props.value || "value";
-      const childrenKey = props.children || "children";
-      dic.forEach(ele => {
-        const children = ele[childrenKey];
-        if (ele[valueKey] === value) {
-          const label = ele[labelKey];
-          this.multiple ? this.labelText.push(label) : (this.labelText = label);
-        } else if (!validatenull(children)) {
-          this.findLabelNode(children, value, props);
-        }
-      });
     },
     disabledParentNode (dic) {
       dic.forEach(ele => {

@@ -1,26 +1,13 @@
 import { initVal } from 'core/dataformat';
+import { DIC_PROPS, DIC_HTTP_PROPS } from 'global/variable';
 export default function () {
-  // props配置
-  const propsDefault = {
-    id: 'id',
-    label: 'label',
-    value: 'value',
-    children: 'children',
-    disabled: 'disabled'
-  };
-  // httpProps配置
-  const propsHttpDefault = {
-    name: 'name',
-    url: 'url',
-    fileName: 'file',
-    res: ''
-  };
+
   return {
     data () {
       return {
         text: undefined,
-        propsHttpDefault: propsHttpDefault,
-        propsDefault: propsDefault
+        propsHttpDefault: DIC_HTTP_PROPS,
+        propsDefault: DIC_PROPS
       };
     },
     props: {
@@ -124,11 +111,11 @@ export default function () {
       },
       propsHttp: {
         type: Object,
-        default: () => propsHttpDefault
+        default: () => DIC_HTTP_PROPS
       },
       props: {
         type: Object,
-        default: () => propsDefault
+        default: () => DIC_PROPS
       }
     },
     watch: {

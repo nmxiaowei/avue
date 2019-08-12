@@ -68,7 +68,5 @@ export default {
   calcHeight: 300,
   title: '表格标题',
   width: '100%',
-  dateDefault: true,
-  // 搜索参数
-  searchMultiple: ['checkbox', 'tree', 'select', 'tree']
+  dateDefault: true
 };

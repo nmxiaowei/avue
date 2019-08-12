@@ -16,7 +16,9 @@
       margin-bottom: 8px;
     }
   }
-
+  .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+    color:#409EFF;
+  }
   .el-tree-node__label{
     margin-left: 8px;
   }
