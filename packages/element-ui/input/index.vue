@@ -186,8 +186,8 @@ export default create({
   },
   watch: {
     text: {
-      handler () {
-        this.handleChange(this.text);
+      handler (value) {
+        this.handleChange(value);
       },
       immediate: true
     },
@@ -312,6 +312,8 @@ export default create({
             this.labelText = [];
             if (!validatenull(this.text)) {
               this.text.forEach(ele => {
+                //特殊处理0
+                ele = validatenull(ele) ? 0 : ele;
                 const label = findLabelNode(this.dic, ele, this.props) || ele;
                 this.labelText.push(label)
               });

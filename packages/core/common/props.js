@@ -120,7 +120,7 @@ export default function () {
     },
     watch: {
       value: {
-        handler () {
+        handler (val) {
           this.initVal();
         },
         immediate: true

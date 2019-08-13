@@ -218,7 +218,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
