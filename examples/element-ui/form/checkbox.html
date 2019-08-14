@@ -8,21 +8,18 @@
   <title></title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
-
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
-
-    </avue-crud>
+    <avue-form :option="option" v-model="obj"></avue-form>
   </div>
 </body>
 <script>
@@ -30,46 +27,36 @@
     el: '#app',
     data() {
       return {
-        option: {},
-        data: [{
-          name: '1'
-        }, {
-          name: '2'
-        }]
-      }
-    },
-    mounted() {
-      setTimeout(() => {
-        this.option = {
-          emptyText: '自定义暂无数据提示语',
+        obj: {
+          checkbox: 'authorizedGrantTypes,password,refresh_token'
+        },
+        data: [],
+        option: {
           column: [{
-            label: '姓名',
-            prop: 'name',
-            search: true
-          }, {
-            label: '年龄',
-            prop: 'sex'
-          }, {
-            label: '字典',
-            prop: 'dic',
-            type: 'select',
+            label: '多选',
+            prop: 'checkbox',
+            type: 'checkbox',
             dicData: [{
-              label: 1,
-              value: 1
+              label: '授权模式',
+              value: 'authorizedGrantTypes'
+            }, {
+              label: '密码模式',
+              value: 'password'
+            }, {
+              label: '刷新token模式',
+              value: 'refresh_token'
+            }, {
+              label: '其他',
+              value: 'default'
             }]
           }]
         }
-      }, 0);
+      }
+    },
+    mounted() {
+
     },
     methods: {
-      searchChange(params) {
-        const index = this.$refs.crud.findColumnIndex("dic");
-        console.log(params);
-        this.option.column[index].dicData = [{
-          label: 2,
-          value: 2
-        }];
-      }
     }
   })
 </script>
