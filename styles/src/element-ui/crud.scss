@@ -2,8 +2,11 @@ $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
   &-search{
-    &__menu{
-      text-align: center;
+    &__menu {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      height: 40px;
     }
   }
   .el-table--mini{
@@ -162,20 +165,6 @@ $space-width: 15px;
     .el-button{
       margin-bottom: 0;
     }
-  }
-  &__menu {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    width: 100%;
-    min-height: 40px;
-    height: auto;
-    overflow: hidden;
-    margin-bottom: 5px;
-  }
-  &__right {
-    // display: flex;
-    // justify-content: flex-end;
   }
   &__filter {
     &-item {

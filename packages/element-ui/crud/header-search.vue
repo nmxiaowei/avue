@@ -1,8 +1,7 @@
 <template>
   <el-collapse-transition>
-    <el-card shadow="hover"
-             v-show="searchShow && searchFlag"
-             style="margin-bottom:10px;">
+    <div v-show="searchShow && searchFlag"
+         style="margin-bottom:10px;">
       <el-form :class="b('search')"
                :model="searchForm"
                label-suffix="："
@@ -46,24 +45,31 @@
             </el-form-item>
           </el-col>
           <slot name="search"></slot>
+          <el-col :md="6"
+                  :xs="24">
+            <el-form-item label-width="0"
+                          label="">
+              <div :class="b('menu')">
+
+                <el-button type="primary"
+                           @click="searchChange"
+                           :icon="config.searchBtnIcon"
+                           v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
+                           :size="crud.isMediumSize">{{t('crud.searchBtn')}}
+                </el-button>
+                <el-button @click="searchReset"
+                           :icon="config.emptyBtnIcon"
+                           v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
+                           :size="crud.isMediumSize">{{t('crud.emptyBtn')}}
+                </el-button>
+                <slot name="searchMenu"></slot>
+              </div>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
-      <div :class="b('menu')">
 
-        <el-button type="primary"
-                   @click="searchChange"
-                   :icon="config.searchBtnIcon"
-                   v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
-                   :size="crud.isMediumSize">{{t('crud.searchBtn')}}
-        </el-button>
-        <el-button @click="searchReset"
-                   :icon="config.emptyBtnIcon"
-                   v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
-                   :size="crud.isMediumSize">{{t('crud.emptyBtn')}}
-        </el-button>
-        <slot name="searchMenu"></slot>
-      </div>
-    </el-card>
+    </div>
   </el-collapse-transition>
 </template>
 
@@ -102,6 +108,12 @@ export default cteate({
     }
   },
   watch: {
+    'crud.propOption': {
+      handler () {
+        this.dataformat();
+      },
+      immediate: true
+    },
     searchForm: {
       handler () {
         this.$emit("input", this.searchForm);
@@ -128,7 +140,6 @@ export default cteate({
       this.getPlaceholder = getPlaceholder;
       this.getType = getType;
       this.vaildData = vaildData;
-      this.dataformat();
       //扩展搜索的相关api
       this.crud.searchChange = this.searchChange;
       this.crud.searchReset = this.searchReset;
