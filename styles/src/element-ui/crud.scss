@@ -1,6 +1,16 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    min-height: 40px;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
   &-search{
     &__menu {
       padding-left: 20px;
