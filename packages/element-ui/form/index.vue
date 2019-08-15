@@ -4,6 +4,7 @@
     <el-form ref="form"
              status-icon
              :model="form"
+             label-suffix=":"
              :label-position="parentOption.labelPosition"
              :size="controlSize"
              :label-width="setPx(parentOption.labelWidth,80)"

@@ -4,8 +4,8 @@
          style="margin-bottom:10px;">
       <el-form :class="b('search')"
                :model="searchForm"
-               label-suffix="："
-               label-width="110px"
+               label-suffix=":"
+               label-width="80px"
                label-position="right"
                ref="searchForm">
         <!-- 循环列搜索框 -->
