@@ -39,7 +39,7 @@ import { sendDic } from "core/dic";
 export default create({
   name: "select",
   mixins: [props(), event()],
-  data() {
+  data () {
     return {
       netDic: []
     };
@@ -73,22 +73,22 @@ export default create({
   },
   watch: {
     dic: {
-      handler(val) {
+      handler (val) {
         this.netDic = val;
       },
       immediate: true
     },
     text: {
-      handler(val) {
+      handler (val) {
         this.handleChange(val);
       },
       immediate: true
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleRemoteMethod(query) {
+    handleRemoteMethod (query) {
       sendDic({
         url: this.dicUrl.replace("{{key}}", query),
         method: this.dicMethod,

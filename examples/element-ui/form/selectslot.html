@@ -19,10 +19,21 @@
 
 <body>
   <div id="app">
-    {{obj}}
     <avue-form :option="option" v-model="obj">
       <template slot="provinceType" slot-scope="{item,value,label}">
         <div>
+          <span style="float: left">{{ item[value] }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
+        </div>
+      </template>
+      <template slot="codeType" slot-scope="{item,value,label}">
+        <div>
+          <span style="float: left">{{ item[value] }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
+        </div>
+      </template>
+      <template slot="codesType" slot-scope="{item,value,label}">
+        <div style="padding-left:5px;">
           <span style="float: left">{{ item[value] }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
         </div>
@@ -38,9 +49,10 @@
       return {
         obj: {},
         option: {
+          labelWidth: 100,
           column: [
             {
-              label: '省份',
+              label: '单选',
               prop: 'province',
               type: 'select',
               props: {
@@ -49,7 +61,48 @@
               },
               typeslot: true,
               dicUrl: `${baseUrl}/getProvince`,
-              tpyeformat(item, label, value) {
+              typeformat(item, label, value) {
+                return `值:${item[label]}-名:${item[value]}`
+              },
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            }, {
+              label: '单选树省份',
+              prop: 'code',
+              type: 'tree',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              typeslot: true,
+              dicUrl: `${baseUrl}/getProvince`,
+              typeformat(item, label, value) {
+                return `值:${item[label]}-名:${item[value]}`
+              },
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            }, {
+              label: '多选树省份',
+              prop: 'codes',
+              type: 'tree',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              multiple: true,
+              typeslot: true,
+              dicUrl: `${baseUrl}/getProvince`,
+              typeformat(item, label, value) {
                 return `值:${item[label]}-名:${item[value]}`
               },
               rules: [

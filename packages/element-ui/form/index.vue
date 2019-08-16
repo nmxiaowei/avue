@@ -7,7 +7,7 @@
              label-suffix=":"
              :label-position="parentOption.labelPosition"
              :size="controlSize"
-             :label-width="setPx(parentOption.labelWidth,80)"
+             :label-width="setPx(parentOption.labelWidth,90)"
              :rules="formRules">
       <el-row :span="24">
         <avue-group v-for="(item,index) in columnOption"
@@ -79,7 +79,7 @@
                                :filter="column.filter"
                                :blur="column.blur"
                                :focus="column.focus"
-                               :tpyeformat="column.tpyeformat"
+                               :typeformat="column.typeformat"
                                :filesize="column.filesize"
                                :filterable="column.filterable"
                                :format="column.format"

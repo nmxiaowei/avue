@@ -15,7 +15,7 @@ export default function () {
       focus: Function,
       change: Function,
       click: Function,
-      tpyeformat: Function,
+      typeformat: Function,
       listType: {
         type: String,
         default: ''

@@ -22,8 +22,8 @@
            v-if="box"
            :style="treeStyle">
         <div :class="b('arrow')"></div>
-        <el-input size="small"
-                  style="margin-bottom:15px;"
+        <el-input size="mini"
+                  style="margin-bottom:8px;"
                   placeholder="输入关键字进行过滤"
                   v-model="filterText"
                   v-if="filter"></el-input>
@@ -42,7 +42,17 @@
                    :default-expanded-keys="keysList"
                    :default-checked-keys="keysList"
                    :default-expand-all="defaultExpandAll"
-                   @node-click="handleNodeClick"></el-tree>
+                   @node-click="handleNodeClick">
+            <div style="width:100%;padding-right:10px;"
+                 slot-scope="{ data }">
+              <slot :name="prop+'Type'"
+                    :label="labelKey"
+                    :value="valueKey"
+                    :item="data"
+                    v-if="typeslot"></slot>
+              <span v-else>{{data[labelKey]}}</span>
+            </div>
+          </el-tree>
         </el-scrollbar>
       </div>
     </div>
@@ -88,7 +98,8 @@
               :disabled="disabled"
               :autocomplete="autocomplete">
       <template slot="prepend"
-                v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
+                v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+      </template>
       <template slot="append"
                 v-if="append"><span @click="appendClick()">{{append}}</span></template>
     </el-input>
@@ -111,6 +122,7 @@ export default create({
         left: 0,
         top: 0,
       },
+      node: {},
       filterText: "",
       box: false,
       labelText: this.multiple ? [] : ""
@@ -223,9 +235,10 @@ export default create({
       return this.type === "tree";
     },
     labelShow () {
-      return this.multiple
-        ? (this.labelText || []).join(DIC_SPLIT).toString()
-        : this.labelText;
+      if (this.multiple) {
+        return (this.labelText || []).join(DIC_SPLIT).toString()
+      }
+      return this.getLabelText(this.node);
     },
     textShow () {
       if (this.textLen === 11)
@@ -345,6 +358,7 @@ export default create({
     handleNodeClick (data) {
       const callback = () => {
         this.box = false;
+        this.node = data;
       };
       if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;
