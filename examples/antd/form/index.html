@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="../../cdn/antd/antd.min.css" />
+  <script src="../../cdn/antd/antd.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-antd.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{data}}
+    <avue-form :option="option" v-model="data"></avue-form>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: {
+          name: 'smallwei',
+          age: 15,
+          sex: 0
+        },
+        option: {
+          column: [{
+            label: '姓名',
+            prop: 'name',
+            rules: [{
+              required: true,
+              message: "请输入姓名",
+              trigger: "blur"
+            }],
+          }, {
+            label: '年龄',
+            prop: 'age',
+            rules: [{
+              required: true,
+              message: "请输入年龄",
+              trigger: "blur"
+            }],
+          }, {
+            label: '性别',
+            prop: 'sex',
+            type: 'radio',
+            button: true,
+            border: true,
+            dicData: [{
+              label: '男',
+              value: 0
+            }, {
+              label: '女',
+              value: 1
+            }],
+            rules: [{
+              required: true,
+              message: "请输入年龄",
+              trigger: "blur"
+            }],
+          }]
+        }
+      }
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

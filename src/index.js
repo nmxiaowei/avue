@@ -11,7 +11,8 @@ import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
 import $NProgress from 'plugin/nprogress/';
-import $ImagePreview from 'components/image-preview/';
+import $ImagePreview from 'packages/common/image-preview/';
+
 let prototypes = {
   $Clipboard,
   $Log,
@@ -45,6 +46,19 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.watermark = watermark;
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
+    ui: (() => {
+      if (window.antd) {
+        return {
+          name: 'antd',
+          type: 'a'
+        };
+      } else if (window.Element) {
+        return {
+          name: 'element-ui',
+          type: 'el'
+        };
+      }
+    })(),
     size: opts.size || 'medium',
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
@@ -80,7 +94,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = {
-  version: '1.0.8',
+  version: '2.1.0',
   locale: locale.locale,
   install
 };
