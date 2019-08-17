@@ -2,7 +2,6 @@
   <component :is="dialogType"
              lock-scroll
              show-close
-             destroy-on-close
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"

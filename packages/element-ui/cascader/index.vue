@@ -48,12 +48,12 @@ export default create({
       default: "/"
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {}
 });
 </script>

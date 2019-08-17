@@ -734,7 +734,7 @@ export default create({
       this.$refs.dialogForm.show("add");
     },
     dialogFormFun () {
-      let list = ['rowSave', 'rowUpdate']
+      let list = ['rowSave', 'rowUpdate', 'closeDialog']
       list.forEach(ele => {
         this[ele] = () => {
           this.$refs.dialogForm[ele]();
