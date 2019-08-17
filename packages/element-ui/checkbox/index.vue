@@ -4,14 +4,16 @@
                        @change="handleChange"
                        :disabled="disabled"
                        @click.native="handleClick">
-      <el-checkbox v-for="(item,index) in dic"
-                   :label="item[valueKey]"
-                   :border="border"
-                   :min="min"
-                   :readonly="readonly"
-                   :max="max"
-                   :disabled="item[disabledKey]"
-                   :key="index">{{item[labelKey]}}</el-checkbox>
+      <component :is="componentName"
+                 v-for="(item,index) in dic"
+                 :label="item[valueKey]"
+                 :border="border"
+                 :min="min"
+                 :readonly="readonly"
+                 :max="max"
+                 :disabled="item[disabledKey]"
+                 :key="index">{{item[labelKey]}}
+      </component>
     </el-checkbox-group>
   </div>
 </template>
@@ -24,7 +26,9 @@ export default create({
   name: "checkbox",
   mixins: [props(), event()],
   data () {
-    return {};
+    return {
+      name: 'checkbox',
+    };
   },
   watch: {},
   created () { },

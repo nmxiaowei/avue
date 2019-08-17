@@ -5,6 +5,7 @@ export default function () {
   return {
     data () {
       return {
+        name: '',
         text: undefined,
         propsHttpDefault: DIC_HTTP_PROPS,
         propsDefault: DIC_PROPS
@@ -97,6 +98,10 @@ export default function () {
         type: Boolean,
         default: false
       },
+      button: {
+        type: Boolean,
+        default: false
+      },
       row: {
         type: Boolean,
         default: false
@@ -127,6 +132,11 @@ export default function () {
       }
     },
     computed: {
+      componentName () {
+        const type = this.$AVUE.ui.type;
+        const result = `${type}-${this.name}${this.button ? '-button' : ''}`
+        return result
+      },
       required () {
         return !this.validatenull(this.rules);
       },
@@ -164,7 +174,6 @@ export default function () {
         return this.props.id || this.propsDefault.id;
       }
     },
-    created () { },
     methods: {
       initVal () {
         this.text = initVal({

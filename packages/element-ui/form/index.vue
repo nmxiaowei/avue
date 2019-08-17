@@ -53,6 +53,7 @@
                                :typeslot="column.typeslot"
                                :appendClick="column.appendClick"
                                :border="column.border"
+                               :button="column.button"
                                :change="column.change"
                                :changeoOnSelect="column.changeoOnSelect"
                                :checked="column.checked"
