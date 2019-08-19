@@ -4,6 +4,7 @@ export const DIC_PROPS = {
   nodeKey: 'id',
   label: 'label',
   value: 'value',
+  groups: 'groups',
   children: 'children',
   labelText: '名称',
   disabled: 'disabled'

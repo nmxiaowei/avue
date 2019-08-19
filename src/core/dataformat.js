@@ -49,6 +49,7 @@ export const dateList = [
   'daterange',
   'week',
   'month',
+  'monthrange',
   'dategrpup',
   'year'
 ];
@@ -133,19 +134,7 @@ export const getComponent = (type, component) => {
     result = 'checkbox';
   } else if (['time', 'timerange'].includes(type)) {
     result = 'time';
-  } else if (
-    [
-      'dates',
-      'date',
-      'datetime',
-      'datetimerange',
-      'daterange',
-      'week',
-      'month',
-      'dategrpup',
-      'year'
-    ].includes(type)
-  ) {
+  } else if (dateList.includes(type)) {
     result = 'date';
   } else if (type === 'cascader') {
     result = 'cascader';
@@ -218,7 +207,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {

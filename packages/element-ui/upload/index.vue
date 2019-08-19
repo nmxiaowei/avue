@@ -1,5 +1,6 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       v-loading.lock="loading">
     <el-upload :class="b({'list':listType=='picture-img'})"
                @click.native="handleClick"
                :action="action"
@@ -91,6 +92,12 @@ export default create({
       type: Number,
       default: 10
     },
+    headers: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     accept: {
       type: [String, Array],
       default: ""
@@ -107,10 +114,6 @@ export default create({
     drag: {
       type: Boolean,
       default: false
-    },
-    multiple: {
-      type: Boolean,
-      default: true
     },
     loadText: {
       type: String,
@@ -144,20 +147,14 @@ export default create({
     },
     fileList () {
       let list = [];
+      const flag = this.isArray || this.isString;
       this.text.forEach((ele, index) => {
-        let obj;
-        if (this.isArray || this.isString) {
-          obj = {
-            name: index,
-            url: ele
-          };
-        } else {
-          obj = {
-            name: ele[this.labelKey],
-            url: ele[this.valueKey]
-          };
-        }
-        list.push(obj);
+        list.push({
+          uid: index + '',
+          status: 'done',
+          name: flag ? index : ele[this.labelKey],
+          url: flag ? ele : ele[this.valueKey]
+        });
       });
       return list;
     }
@@ -211,19 +208,15 @@ export default create({
       }
     },
     show (data) {
-      this.loading.close();
+      this.loading = false;
       this.handleSuccess(data);
     },
     hide (msg) {
-      this.loading.close();
+      this.loading = false;
       this.handleError(msg);
     },
     httpRequest (config) {
-      this.loading = this.$loading({
-        lock: true,
-        text: this.loadText,
-        spinner: "el-icon-loading"
-      });
+      this.loading = true;
       let file = config.file;
       const accept = file.type;
       const filesize = file.size;
@@ -239,7 +232,7 @@ export default create({
         return;
       }
 
-      const headers = { "Content-Type": "multipart/form-data" };
+      const headers = Object.assign(this.headers, { "Content-Type": "multipart/form-data" });
       //oss配置属性
       let oss_config = {};
       let client = {};
@@ -308,7 +301,7 @@ export default create({
                     this.show(list);
                   },
                   () => {
-                    this.loading.close();
+                    this.loading = false;
                   },
                   this.column
                 );
@@ -317,14 +310,14 @@ export default create({
             .catch(error => {
               if (typeof this.uploadAfter === "function")
                 this.uploadAfter(error, this.hide, () => {
-                  this.loading.close();
+                  this.loading = false;
                 }, this.column);
               else this.hide(error);
             });
         };
         if (typeof this.uploadBefore === "function")
           this.uploadBefore(this.file, callack, () => {
-            this.loading.close();
+            this.loading = false;
           }, this.column);
         else callack();
       };

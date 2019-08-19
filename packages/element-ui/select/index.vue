@@ -17,16 +17,35 @@
                :allow-create="allowCreate"
                :default-first-option="defaultFirstOption"
                :disabled="disabled">
-      <el-option v-for="(item,index) in netDic"
-                 :key="index"
-                 :disabled="item[disabledKey]"
-                 :label="getLabelText(item)"
-                 :value="item[valueKey]">
-        <slot :name="prop+'Type'"
-              :label="labelKey"
-              :value="valueKey"
-              :item="item"></slot>
-      </el-option>
+      <template v-if="group">
+        <el-option-group v-for="(item,index) in netDic"
+                         :key="index"
+                         :label="getLabelText(item)">
+          <el-option v-for="(citem,cindex) in item[groupsKey]"
+                     :key="cindex"
+                     :disabled="citem[disabledKey]"
+                     :label="getLabelText(citem)"
+                     :value="citem[valueKey]">
+            <slot :name="prop+'Type'"
+                  :label="labelKey"
+                  :value="valueKey"
+                  :item="citem"></slot>
+          </el-option>
+        </el-option-group>
+      </template>
+      <template v-else>
+        <el-option v-for="(item,index) in netDic"
+                   :key="index"
+                   :disabled="item[disabledKey]"
+                   :label="getLabelText(item)"
+                   :value="item[valueKey]">
+          <slot :name="prop+'Type'"
+                :label="labelKey"
+                :value="valueKey"
+                :item="item"></slot>
+        </el-option>
+      </template>
+
     </el-select>
   </div>
 </template>

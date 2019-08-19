@@ -11,7 +11,7 @@ import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
 import $NProgress from 'plugin/nprogress/';
-import $ImagePreview from 'packages/common/image-preview/';
+import $ImagePreview from 'packages/core/components/image-preview/';
 
 let prototypes = {
   $Clipboard,
@@ -48,6 +48,7 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.$AVUE = {
     ui: (() => {
       if (window.antd) {
+        Vue.prototype.moment = window.moment;
         return {
           name: 'antd',
           type: 'a'

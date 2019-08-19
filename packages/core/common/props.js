@@ -19,7 +19,7 @@ export default function () {
       typeformat: Function,
       listType: {
         type: String,
-        default: ''
+        default: 'text'
       },
       value: {},
       column: {
@@ -102,6 +102,10 @@ export default function () {
         type: Boolean,
         default: false
       },
+      group: {
+        type: Boolean,
+        default: false
+      },
       row: {
         type: Boolean,
         default: false
@@ -157,6 +161,9 @@ export default function () {
       },
       resKey: function () {
         return this.propsHttp.res || this.propsHttpDefault.res;
+      },
+      groupsKey: function () {
+        return this.props.groups || this.propsDefault.groups;
       },
       valueKey: function () {
         return this.props.value || this.propsDefault.value;
