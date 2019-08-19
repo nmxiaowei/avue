@@ -132,13 +132,13 @@
       }
     },
     methods: {
-      uploadBefore(file, done, loading) {
-        console.log(file)
+      uploadBefore(file, done, loading, column) {
+        console.log(file, column)
         done()
         this.$message.success('上传前的方法')
       },
-      uploadAfter(res, done, loading) {
-        console.log(res)
+      uploadAfter(res, done, loading, column) {
+        console.log(res, column)
         done()
         this.$message.success('上传后的方法')
       },
