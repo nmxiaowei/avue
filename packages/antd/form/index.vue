@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <a-form :form="formRules"
-            @submit="handleSubmit">
+            @submit="submit">
       <a-row>
         <a-col :span="column.span || 12"
                v-for="(column,index) in columnOption">
@@ -9,17 +9,127 @@
                        :key="index"
                        :label-col="{ span: labelCol }"
                        :wrapper-col="{ span: wrapperCol }">
-            <component :is="getComponent(column.type,column.component)"
-                       :dic="DIC[column.prop]"
-                       v-model="form[column.prop]"
-                       :button="column.button"
-                       :border="column.border"
-                       :placeholder="getPlaceholder(column)"
-                       v-decorator="[
-                        column.prop,
-                        {rules: column.rules,initialValue: form[column.prop]}
-                      ]">
-            </component>
+            <a-tooltip :placement="column.tipPlacement">
+              <template slot="title"
+                        v-if="!column.tip || column.type==='upload'">
+                <span>{{vaildData(column.tip,getPlaceholder(column))}}</span>
+              </template>
+              <slot :value="form[column.prop]"
+                    :column="column"
+                    :label="form['$'+column.prop]"
+                    :size="column.size || controlSize"
+                    :disabled="vaildDisabled(column)"
+                    :dic="DIC[column.prop]"
+                    :name="column.prop"
+                    v-if="column.formslot"></slot>
+
+              <component :is="getComponent(column.type,column.component)"
+                         v-else
+                         :action="column.action"
+                         :append="column.append"
+                         :accordion="column.accordion"
+                         :typeslot="column.typeslot"
+                         :appendClick="column.appendClick"
+                         :border="column.border"
+                         :button="column.button"
+                         :change="column.change"
+                         :changeoOnSelect="column.changeoOnSelect"
+                         :checked="column.checked"
+                         :clearable="column.clearable"
+                         :changeOnSelect="column.changeOnSelect"
+                         :click="column.click"
+                         :onRemove="column.onRemove"
+                         :showWordLimit="column.showWordLimit"
+                         :column="column"
+                         :colors="column.colors"
+                         :canvasOption="column.canvasOption"
+                         :controls-position="column.controlsPosition"
+                         :dataType="column.dataType"
+                         :defaultExpandAll="column.defaultExpandAll"
+                         :defaultTime="column.defaultTime"
+                         :dic="DIC[column.prop]"
+                         :dicUrl="column.dicUrl"
+                         :dicMethod="column.dicMethod"
+                         :dicQuery="column.dicQuery"
+                         :disabled="vaildDisabled(column) || allDisabled"
+                         :drag="column.drag"
+                         :endPlaceholder="column.endPlaceholder"
+                         :expand-trigger="column.expandTrigger"
+                         :filter="column.filter"
+                         :blur="column.blur"
+                         :focus="column.focus"
+                         :typeformat="column.typeformat"
+                         :filesize="column.filesize"
+                         :filterable="column.filterable"
+                         :format="column.format"
+                         :formatTooltip="column.formatTooltip"
+                         :iconClasses="column.iconClasses"
+                         :label="column.label"
+                         :limit="column.limit"
+                         :listType="column.listType"
+                         :loadText="column.loadText"
+                         :min="column.min"
+                         :max="column.max"
+                         :minlength="column.minlength"
+                         :maxlength="column.maxlength"
+                         :minRows="column.minRows"
+                         :maxRows="column.maxRows"
+                         :multiple="column.multiple"
+                         :nodeClick="column.nodeClick"
+                         :options="column.options"
+                         :oss="column.oss"
+                         :parent="column.parent"
+                         :pickerOptions="column.pickerOptions"
+                         :placeholder="getPlaceholder(column)"
+                         :precision="column.precision"
+                         :prefixIcon="column.prefixIcon"
+                         :prepend="column.prepend"
+                         :prependClick="column.prependClick"
+                         :prop="column.prop"
+                         :props="column.props || parentOption.props"
+                         :propsHttp="column.propsHttp ||parentOption.propsHttp"
+                         :range="column.range"
+                         :iconList="column.iconList"
+                         :readonly="column.readonly"
+                         :checkStrictly="column.checkStrictly"
+                         :separator="column.separator"
+                         :showFileList="column.showFileList"
+                         :showInput="column.showInput"
+                         :showStops="column.showStops"
+                         :showAllLevels="column.showAllLevels"
+                         :showText="column.showText"
+                         :size="column.size || controlSize"
+                         :startPlaceholder="column.startPlaceholder"
+                         :step="column.step"
+                         :suffixIcon="column.suffixIcon"
+                         :texts="column.texts"
+                         :tip="column.tip"
+                         :type="column.type"
+                         :accept="column.accept"
+                         :tags="column.tags"
+                         :upload-before="uploadBefore"
+                         :upload-after="uploadAfter"
+                         :value-format="column.valueFormat"
+                         :voidIconClass="column.voidIconClass"
+                         :remote="column.remote"
+                         :autocomplete="column.autocomplete"
+                         v-model="form[column.prop]"
+                         :allow-create="column.allowCreate"
+                         :default-first-option="column.defaultFirstOption"
+                         v-decorator="[
+                          column.prop,
+                          {rules: column.rules,initialValue: form[column.prop]}
+                        ]">
+                <template :slot="column.prop+'Type'"
+                          slot-scope="{item,label,value}"
+                          v-if="column.typeslot">
+                  <slot :name="column.prop+'Type'"
+                        :item="item"
+                        :value="value"
+                        :label="label"></slot>
+                </template>
+              </component>
+            </a-tooltip>
           </a-form-item>
         </a-col>
       </a-row>
@@ -27,11 +137,15 @@
         <a-form-item :wrapper-col="{ span: 24}">
           <div :class="b('menu',[menuPosition])">
             <a-button type="primary"
+                      icon="check"
+                      :loading="allDisabled"
                       html-type="submit">
               提 交
             </a-button>
 
-            <a-button @click="handleReset">取消</a-button>
+            <a-button icon="delete"
+                      :loading="allDisabled"
+                      @click="handleReset">取 消</a-button>
           </div>
         </a-form-item>
       </a-col>
@@ -66,6 +180,7 @@ export default create({
   },
   data () {
     return {
+      allDisabled: false,
       form: {},
       formCreate: true,
       formOld: {},
@@ -123,6 +238,9 @@ export default create({
     columnOption () {
       return this.parentOption.column || [];
     },
+    boxType: function () {
+      return this.parentOption.boxType;
+    },
   },
   methods: {
     getComponent,
@@ -131,6 +249,35 @@ export default create({
       this.columnOption.forEach(column => {
         this.handleShowLabel(column, this.DIC[column.prop]);
       });
+    },
+    // 验证表单是否禁止
+    vaildDisabled (column) {
+      if (this.disabled) return true;
+      if (!this.validatenull(column.disabled)) {
+        return this.vaildData(column.disabled, false);
+      } else if (this.boxType === "add") {
+        return this.vaildData(column.addDisabled, false);
+      } else if (this.boxType === "edit") {
+        return this.vaildData(column.editDisabled, false);
+      } else if (this.boxType === "view") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    // 验证表单是否显隐
+    vaildDisplay (column) {
+      if (!this.validatenull(column.display)) {
+        return this.vaildData(column.display, true);
+      } else if (this.boxType === "add") {
+        return this.vaildData(column.addDisplay, true);
+      } else if (this.boxType === "edit") {
+        return this.vaildData(column.editDisplay, true);
+      } else if (this.boxType === "view") {
+        return this.vaildData(column.viewDisplay, true);
+      } else {
+        return true;
+      }
     },
     //获取全部字段字典的label
     handleShowLabel (column, DIC) {
@@ -157,14 +304,22 @@ export default create({
     handleReset () {
       this.formRules.resetFields();
     },
-    handleSubmit (e) {
+    show () {
+      this.allDisabled = true;
+    },
+    hide () {
+      this.allDisabled = false;
+    },
+    submit (e) {
       e.preventDefault();
       this.formRules.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          this.form = values;
+          this.show();
+          this.$emit("submit", this.form, this.hide);
         }
       });
-    },
+    }
   }
 });
 </script>

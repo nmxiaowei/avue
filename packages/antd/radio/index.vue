@@ -1,6 +1,10 @@
 <template>
   <div :class="b()">
     <a-radio-group v-model="text"
+                   :readonly="readonly"
+                   :disabled="disabled"
+                   @click.native="handleClick"
+                   @change="handleChange"
                    :buttonStyle="border?'outline':'solid'">
       <component :is="componentName"
                  v-for="(item,index) in netDic"

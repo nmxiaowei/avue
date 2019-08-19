@@ -1,15 +1,11 @@
 <template>
   <div :class="b()">
-    <a-select v-model="text"
+    <a-slider v-model="text"
               :placeholder="placeholder"
               :readonly="readonly"
               :disabled="disabled"
               @click.native="handleClick"
-              @change="handleChange">
-      <a-select-option v-for="(item,index) in netDic"
-                       :disabled="item[disabledKey]"
-                       :value="item[valueKey]">{{getLabelText(item)}}</a-select-option>
-    </a-select>
+              @change="handleChange"></a-slider>
   </div>
 </template>
 
@@ -18,21 +14,17 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 export default create({
-  name: "select",
+  name: "slider",
   mixins: [props(), event()],
   data () {
     return {
-      netDic: []
+      name: 'slider',
     };
   },
-  watch: {
-    dic: {
-      handler (val) {
-        this.netDic = val;
-      },
-      immediate: true
-    },
+  props: {
+
   },
+  watch: {},
   created () { },
   mounted () { },
   methods: {}

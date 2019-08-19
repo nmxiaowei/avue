@@ -36,45 +36,75 @@
           multipleSelect: []
         }],
         option: {
-          column: [
-            {
-              label: '省份',
-              prop: 'province',
-              type: 'select',
-              remote: true,
-              props: {
-                label: 'name',
-                value: 'code'
-              },
-              dataType: 'number',
-              dicUrl: `${baseUrl}/getProvince/{{key}}`,
-              rules: [
-                {
-                  required: true,
-                  message: '请选择省份',
-                  trigger: 'blur'
-                }
-              ]
+          column: [{
+            label: '分组',
+            prop: 'selects',
+            type: 'select',
+            group: true,
+            dicData: [{
+              label: '热门城市',
+              groups: [{
+                value: 'Shanghai',
+                label: '上海'
+              }, {
+                value: 'Beijing',
+                label: '北京'
+              }]
+            }, {
+              label: '城市名',
+              groups: [{
+                value: 'Chengdu',
+                label: '成都'
+              }, {
+                value: 'Shenzhen',
+                label: '深圳'
+              }, {
+                value: 'Guangzhou',
+                label: '广州'
+              }, {
+                value: 'Dalian',
+                label: '大连'
+              }]
+            }]
+          },
+          {
+            label: '省份',
+            prop: 'province',
+            type: 'select',
+            remote: true,
+            props: {
+              label: 'name',
+              value: 'code'
             },
-            {
-              label: '多选，可创建条目',
-              prop: 'multipleSelect',
-              type: 'select',
-              span: 24,
-              multiple: true,
-              filterable: true,
-              allowCreate: true,
-              defaultFirstOption: true,
-              props: {
-                label: 'value',
-                value: 'value'
-              },
-              dicData: [
-                { value: '新增' },
-                { value: '修改' },
-                { value: '删除' }
-              ]
-            }
+            dataType: 'number',
+            dicUrl: `${baseUrl}/getProvince/{{key}}`,
+            rules: [
+              {
+                required: true,
+                message: '请选择省份',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '多选，可创建条目',
+            prop: 'multipleSelect',
+            type: 'select',
+            span: 24,
+            multiple: true,
+            filterable: true,
+            allowCreate: true,
+            defaultFirstOption: true,
+            props: {
+              label: 'value',
+              value: 'value'
+            },
+            dicData: [
+              { value: '新增' },
+              { value: '修改' },
+              { value: '删除' }
+            ]
+          }
           ]
         }
       }
