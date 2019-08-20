@@ -218,7 +218,7 @@ export const findArray = (dic, value, valueKey) => {
       return i;
     }
   }
-  return value;
+  return -1;
 };
 
 export const getPasswordChar = (result = '', char) => {

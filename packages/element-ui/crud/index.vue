@@ -512,9 +512,6 @@ export default create({
         }
       })
     },
-    updateDic (prop, list) {
-      this.$refs.dialogForm.updateDic(prop, list);
-    },
     // 格式化数据源
     formatData () {
       const data = this.data;
@@ -734,11 +731,9 @@ export default create({
       this.$refs.dialogForm.show("add");
     },
     dialogFormFun () {
-      let list = ['rowSave', 'rowUpdate', 'closeDialog']
+      let list = ['updateDic', 'rowSave', 'rowUpdate', 'closeDialog']
       list.forEach(ele => {
-        this[ele] = () => {
-          this.$refs.dialogForm[ele]();
-        }
+        this[ele] = this.$refs.dialogForm[ele];
       })
     },
     //对象克隆

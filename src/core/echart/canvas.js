@@ -12,11 +12,11 @@ export default (() => {
       clickFormatter: Function,
       formatter: Function,
       width: {
-        type: Number,
+        type: [Number, String],
         default: 600
       },
       height: {
-        type: Number,
+        type: [Number, String],
         default: 600
       },
       theme: {
