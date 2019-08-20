@@ -68,6 +68,9 @@
               :cell-class-name="cellClassName"
               :row-style="rowStyle"
               :cell-style="cellStyle"
+              :sort-method="sortMethod"
+              :sort-orders="sortOrders"
+              :sort-by="sortBy"
               :header-cell-class-name="headerCellClassName"
               :max-height="tableOption.maxHeight"
               :height="tableHeight"
@@ -463,6 +466,9 @@ export default create({
         return {};
       }
     },
+    sortBy: Function,
+    sortOrders: Function,
+    sortMethod: Function,
     spanMethod: Function,
     summaryMethod: Function,
     rowStyle: Function,
