@@ -587,7 +587,7 @@ export default create({
       });
     },
     dataInit () {
-      this.list = [...this.data];
+      this.list = this.data;
       // if (this.isTree) this.formatData();
       //初始化序列的参数
       this.list.forEach((ele, index) => {

@@ -54,6 +54,7 @@
                                :appendClick="column.appendClick"
                                :border="column.border"
                                :button="column.button"
+                               :children="column.children"
                                :group="column.group"
                                :change="column.change"
                                :changeoOnSelect="column.changeoOnSelect"

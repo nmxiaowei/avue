@@ -1,32 +1,25 @@
 <template>
   <div :class="b()">
-    <div v-for="(item,index) in text.length===0?1:text"
-         :key="index"
-         :class="b('item')">
-      <avue-input :class="b('input')"
-                  v-model="text[index]"
-                  :disabled="disabled"
-                  :size="size"></avue-input>
-      <div :class="b('menu')">
-        <el-button type="primary"
-                   size="small"
-                   :class="b('button')"
-                   @click="addRow"
-                   :disabled="disabled"
-                   v-if="index===0"
-                   icon="el-icon-plus"
-                   circle></el-button>
-        <el-button type="danger"
-                   size="small"
-                   v-if="index!==0"
-                   :class="b('button')"
-                   @click="delRow(index)"
-                   :disabled="disabled"
-                   icon="el-icon-minus"
-                   circle></el-button>
+    <el-scrollbar :style="{width:'100%'}">
+      <avue-crud ref="crud"
+                 :option="option"
+                 :data="text">
+        <template slot-scope="scope"
+                  slot="index">
+          <el-button v-if="hoverList[scope.row.$index]"
+                     @mouseout.native="mouseoutRow(scope.row.$index)"
+                     @click="delRow(scope.row.$index)"
+                     type="danger"
+                     size="mini"
+                     icon="el-icon-delete"
+                     circle></el-button>
+          <span v-else
+                @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
+        </template>
 
-      </div>
-    </div>
+      </avue-crud>
+    </el-scrollbar>
+
   </div>
 </template>
 
@@ -37,12 +30,98 @@ import event from "../../core/common/event.js";
 export default create({
   name: "dynamic",
   mixins: [props(), event()],
-  methods: {
-    addRow() {
-      this.text.push("");
+  data () {
+    return {
+      hoverList: []
+    }
+  },
+  props: {
+    children: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  computed: {
+    columnOption () {
+      return this.children.column || []
     },
-    delRow(index) {
+    option () {
+      return Object.assign({
+        border: true,
+        header: false,
+        menu: false,
+      }, (() => {
+        let option = this.deepClone(this.children)
+        delete option.column;
+        return option;
+      })(), (() => {
+        let list = [{
+          label: '#',
+          prop: 'index',
+          fixed: true,
+          width: 50,
+          renderHeader: (h, { column, $index }) => {
+            return h('el-button', {
+              attrs: {
+                size: 'mini',
+                type: 'primary',
+                icon: 'el-icon-plus',
+                circle: true
+              },
+              on: {
+                click: this.addRow
+              }
+            })
+          },
+          slot: true
+        }];
+        this.columnOption.forEach(ele => {
+          list.push(Object.assign(ele, {
+            cell: true,
+          }))
+        })
+        return {
+          column: list
+        }
+      })())
+    }
+  },
+  mounted () {
+    this.initData();
+  },
+  watch: {
+    text () {
+      this.initData();
+    }
+  },
+  methods: {
+    initData () {
+      this.text.forEach((ele, index) => {
+        ele = Object.assign(ele, {
+          $cellEdit: true,
+        })
+      })
+    },
+    mouseoverRow (index) {
+      this.flagList();
+      this.$set(this.hoverList, index, true)
+    },
+    mouseoutRow (index) {
+      this.flagList();
+      this.$set(this.hoverList, index, false)
+    },
+    flagList () {
+      this.hoverList.forEach((ele, index) => {
+        ele = false;
+      })
+    },
+    delRow (index) {
       this.text.splice(index, 1);
+    },
+    addRow () {
+      this.$refs.crud.rowCellAdd({});
     }
   }
 });

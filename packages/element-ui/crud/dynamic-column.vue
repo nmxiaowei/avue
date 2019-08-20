@@ -52,7 +52,7 @@
             </span> -->
             <span :class="{'ms-tree-title':column.prop===crud.treeProp}">
               <template v-if="cellEditFlag(scope.row,column)">
-                <component :is="getCellType(column.type)"
+                <component :is="getComponent(column.type)"
                            size="mini"
                            v-model="scope.row[column.prop]"
                            :type="getType(column)"
@@ -152,9 +152,8 @@ export default {
   },
   created () {
     const list = [
-      "getCellType",
-      "getType",
       "getComponent",
+      "getType",
       "getPlaceholder",
       "vaildColumn",
       "menuText",
