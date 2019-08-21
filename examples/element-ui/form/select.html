@@ -20,7 +20,7 @@
 <body>
   <div id="app">
     {{form}}
-    <avue-crud :option="option" :data="data" v-model="form">
+    <avue-crud ref="crud" :option="option" :data="data" v-model="form">
     </avue-crud>
   </div>
 </body>
@@ -77,7 +77,7 @@
               value: 'code'
             },
             dataType: 'number',
-            dicUrl: `${baseUrl}/getProvince/{{key}}`,
+            dicUrl: `${baseUrl}/getProvince`,
             rules: [
               {
                 required: true,
@@ -110,7 +110,12 @@
       }
     },
     mounted() {
-
+      setTimeout(() => {
+        setInterval(() => {
+          console.log('更新字典')
+          this.$refs.crud.updateDic('province')
+        }, 1000)
+      }, 2000)
     },
     methods: {
     }

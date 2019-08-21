@@ -20,7 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" :page="page" @on-load="onLoad"></avue-crud>
+    <avue-crud ref="crud" :option="option" @size-change="sizeChange" @current-change="currentChange" :data="data"
+      :page="page" @on-load="onLoad"></avue-crud>
   </div>
 </body>
 <script>
@@ -29,15 +30,14 @@
     data() {
       return {
         page: {
-          pageSize: 50,
-          pageSizes: [100, 150, 200],
+          pageSize: 20,
+          pageSizes: [20, 100, 150, 200],
           total: 0
         },
-        data: [{
-          name: 'smallwei',
-          sex: 12,
-        }],
+        data: [],
         option: {
+          align: 'center',
+          menuAlign: 'center',
           border: true,
           column: [{
             label: '姓名',
@@ -50,9 +50,34 @@
       }
     },
     methods: {
+
+      sizeChange(val) {
+
+        this.$message.success('行数' + val)
+      },
+      currentChange(val) {
+
+        this.$message.success('页码' + val)
+      },
       onLoad(page) {
         this.$message.success('分页信息:' + JSON.stringify(page))
         this.page.total = 40
+        //模拟分页
+        if (page.currentPage === 1) {
+          this.data = [
+            {
+              name: '张三',
+              sex: '男'
+            }
+          ]
+        } else if (page.currentPage == 2) {
+          this.data = [
+            {
+              name: '李四',
+              sex: '女'
+            }
+          ]
+        }
       }
     }
   })

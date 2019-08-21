@@ -45,6 +45,18 @@
             prop: "input",
             span: 16,
             row: true
+          }, {
+            label: '树型',
+            prop: "tree",
+            type: 'tree',
+            dicData: [{
+              label: '1-1',
+              value: 0,
+              children: [{
+                label: "2-1",
+                value: 1
+              }]
+            }]
           },
           {
             label: '子表单',
@@ -63,6 +75,19 @@
                 label: '密码框',
                 prop: "password",
                 type: 'password'
+              }, {
+                width: 200,
+                label: '树型',
+                prop: "tree",
+                type: 'tree',
+                dicData: [{
+                  label: '1-1',
+                  value: 0,
+                  children: [{
+                    label: "2-1",
+                    value: 1
+                  }]
+                }]
               }, {
                 width: 200,
                 label: '选择框',
