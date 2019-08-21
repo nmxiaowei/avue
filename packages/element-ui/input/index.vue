@@ -336,6 +336,8 @@ export default create({
             if (!validatenull(this.text)) {
               this.labelText = this.text;
               const label = findLabelNode(this.dic, this.text, this.props) || this.text;
+              this.node = {}
+              this.node[this.labelKey] = label
               this.labelText = label
             }
           }
