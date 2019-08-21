@@ -68,6 +68,9 @@
 .el-drawer__body{
   height: 100%;
 }
+.el-checkbox:last-of-type {
+  margin-right: 8px;
+}
  .el-table th.gutter{
   display: table-cell!important;
 }

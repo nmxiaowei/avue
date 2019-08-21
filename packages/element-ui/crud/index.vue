@@ -2,11 +2,10 @@
   <div :class="b()">
     <!-- 头部组件 -->
     <header-title ref="headerTitle"
-                  v-show="printKey && vaildData(tableOption.header,true)"></header-title>
+                  v-show="vaildData(tableOption.header,true)"></header-title>
     <!-- 搜索组件 -->
     <header-search v-model="searchForm"
-                   ref="headerSearch"
-                   v-show="printKey">
+                   ref="headerSearch">
       <template slot="search">
         <slot name="search"></slot>
       </template>
@@ -17,7 +16,7 @@
 
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
-                 v-show="printKey && vaildData(tableOption.header,true)">
+                 v-show="vaildData(tableOption.header,true)">
       <template slot="menuLeft">
         <slot name="menuLeft"></slot>
       </template>
@@ -137,7 +136,8 @@
                        align="center"></el-table-column>
       <!-- 占位符号解决ele问题 -->
       <el-table-column width="1"></el-table-column>
-      <column :columnOption="columnOption">
+      <column :columnOption="columnOption"
+              :disabled="btnDisabled">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
                   :slot="item.prop">
@@ -149,7 +149,7 @@
         </template>
       </column>
       <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                       v-if="vaildData(tableOption.menu,config.menu) && printKey"
+                       v-if="vaildData(tableOption.menu,config.menu)"
                        :label="t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
@@ -228,8 +228,7 @@
     </el-table>
 
     <!-- 分页 -->
-    <table-page ref="tablePage"
-                v-show="printKey"></table-page>
+    <table-page ref="tablePage"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
                  :columnFormOption="columnFormOption"
@@ -315,7 +314,7 @@ export default create({
       formCascaderList: {},
       formRules: {},
       formCellRules: {},
-      printKey: true
+      btnDisabled: false,
     };
   },
   created () {
@@ -403,9 +402,6 @@ export default create({
           this.vaildData(this.tableOption.calcHeight, config.calcHeight)
           : this.tableOption.height;
       return height <= 300 ? 300 : height;
-    },
-    btnDisabled () {
-      return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
     parentOption () {
       return this.tableOption || {};
@@ -707,6 +703,7 @@ export default create({
     },
     //单元格更新
     rowCellUpdate (row, index) {
+      this.btnDisabled = true;
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
           this.$refs.dialogForm.keyBtn = true;
@@ -719,7 +716,7 @@ export default create({
               this.$set(this.list, index, row);
             },
             () => {
-              this.$refs.dialogForm.keyBtn = false;
+              this.btnDisabled = false
             }
           );
         })

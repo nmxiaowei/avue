@@ -38,7 +38,7 @@
                            size="mini"
                            v-model="scope.row[column.prop]"
                            :type="column.type"
-                           :disabled="btnDisabled"
+                           :disabled="column.disabled || crud.btnDisabled"
                            :props="column.props || crud.tableOption.props"
                            :format="column.format"
                            :parent="column.parent"
@@ -124,8 +124,10 @@ export default {
   components: {
     dynamicColumn
   },
+  inject: ["crud"],
   provide () {
     return {
+      crud: this.crud,
       dynamic: this
     };
   },
@@ -143,7 +145,6 @@ export default {
       return result;
     }
   },
-  inject: ["crud"],
   methods: {
     getComponent,
     getPlaceholder,

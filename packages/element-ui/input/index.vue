@@ -339,9 +339,9 @@ export default create({
               this.labelText = label
             }
           }
-          // setTimeout(() => {
-          //   this.$partent.$parent.clearValidate();
-          // }, 0);
+          setTimeout(() => {
+            this.$partent && this.$partent.$parent.clearValidate();
+          }, 0);
           clearInterval(check);
         }, 500);
       }

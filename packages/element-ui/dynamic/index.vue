@@ -76,6 +76,7 @@ export default create({
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
             cell: true,
+            disabled:this.disabled
           }))
         })
         return {

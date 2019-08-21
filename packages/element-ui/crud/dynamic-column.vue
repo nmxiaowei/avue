@@ -44,7 +44,7 @@
                            size="mini"
                            v-model="scope.row[column.prop]"
                            :type="column.type"
-                           :disabled="btnDisabled"
+                           :disabled="column.disabled || crud.btnDisabled"
                            :props="column.props || crud.tableOption.props"
                            :format="column.format"
                            :parent="column.parent"
@@ -126,16 +126,11 @@
 <script>
 export default {
   name: "dynamic-column",
-  inject: ["dynamic"],
+  inject: ["dynamic", 'crud'],
   props: {
     columnOption: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    crud () {
-      return this.dynamic.crud;
     }
   },
   created () {
