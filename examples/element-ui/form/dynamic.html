@@ -43,12 +43,14 @@
           column: [{
             label: '输入框',
             prop: "input",
+            span: 16,
             row: true
           },
           {
             label: '子表单',
             prop: 'dynamic',
             type: 'dynamic',
+            span: 16,
             children: {
               align: 'center',
               headerAlign: 'center',
@@ -56,6 +58,11 @@
                 width: 200,
                 label: '输入框',
                 prop: "input"
+              }, {
+                width: 200,
+                label: '密码框',
+                prop: "password",
+                type: 'password'
               }, {
                 width: 200,
                 label: '选择框',
@@ -70,9 +77,9 @@
                 }]
               }, {
                 width: 200,
-                label: '单选',
-                prop: "radio",
-                type: 'radio',
+                label: '多选',
+                prop: "checkbox",
+                type: 'checkbox',
                 dicData: [{
                   label: '测试1',
                   value: 1
@@ -82,9 +89,9 @@
                 }]
               }, {
                 width: 200,
-                label: '单选',
-                prop: "radio1",
-                type: 'radio',
+                label: '开关',
+                prop: "switch",
+                type: 'switch',
                 dicData: [{
                   label: '测试1',
                   value: 1
@@ -94,16 +101,9 @@
                 }]
               }, {
                 width: 200,
-                label: '单选',
-                prop: "radio2",
-                type: 'radio',
-                dicData: [{
-                  label: '测试1',
-                  value: 1
-                }, {
-                  label: '测试2',
-                  value: 2
-                }]
+                label: '数字框',
+                prop: "number",
+                type: 'number'
               }]
             },
             rules: [
@@ -118,13 +118,6 @@
           ]
         }
       }
-    },
-    mounted() {
-
-
-    },
-    methods: {
-
     }
   })
 </script>

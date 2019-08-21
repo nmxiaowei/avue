@@ -301,7 +301,6 @@ export default create({
   data () {
     return {
       doLayout: true,
-      treeProp: "",
       isChild: false,
       searchForm: {},
       config: config,
@@ -362,7 +361,6 @@ export default create({
       } else {
         result = calcCascader(this.columnOption);
       }
-      if (this.isTree) this.treeProp = result[0].prop;
       return result;
     },
     isGroup () {
@@ -393,9 +391,6 @@ export default create({
     },
     expandAll () {
       return this.parentOption.expandAll || false;
-    },
-    isTree () {
-      return this.vaildData(this.parentOption.tree, false);
     },
     rowKey () {
       return this.tableOption.rowKey || "id";
@@ -588,7 +583,6 @@ export default create({
     },
     dataInit () {
       this.list = this.data;
-      // if (this.isTree) this.formatData();
       //初始化序列的参数
       this.list.forEach((ele, index) => {
         ele.$index = index;

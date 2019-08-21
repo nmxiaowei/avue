@@ -199,8 +199,7 @@ import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/crud/init";
-import { getComponent, getPlaceholder } from "core/dataformat";
-import { formInitVal, calcCount, calcCascader } from "core/dataformat";
+import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
 export default create({

@@ -1,25 +1,21 @@
 <template>
   <div :class="b()">
-    <el-scrollbar :style="{width:'100%'}">
-      <avue-crud ref="crud"
-                 :option="option"
-                 :data="text">
-        <template slot-scope="scope"
-                  slot="index">
-          <el-button v-if="hoverList[scope.row.$index]"
-                     @mouseout.native="mouseoutRow(scope.row.$index)"
-                     @click="delRow(scope.row.$index)"
-                     type="danger"
-                     size="mini"
-                     icon="el-icon-delete"
-                     circle></el-button>
-          <span v-else
-                @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
-        </template>
-
-      </avue-crud>
-    </el-scrollbar>
-
+    <avue-crud ref="crud"
+               :option="option"
+               :data="text">
+      <template slot-scope="scope"
+                slot="index">
+        <el-button v-if="hoverList[scope.row.$index]"
+                   @mouseout.native="mouseoutRow(scope.row.$index)"
+                   @click="delRow(scope.row.$index)"
+                   type="danger"
+                   size="mini"
+                   icon="el-icon-delete"
+                   circle></el-button>
+        <span v-else
+              @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
+      </template>
+    </avue-crud>
   </div>
 </template>
 
