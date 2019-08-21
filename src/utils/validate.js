@@ -12,6 +12,7 @@ export function validatenull(val) {
   if (val instanceof Array) {
     if (val.length === 0) return true;
   } else if (val instanceof Object) {
+    delete val.$parent;
     if (JSON.stringify(val) === '{}') return true;
   } else {
     if (

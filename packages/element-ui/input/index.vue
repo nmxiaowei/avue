@@ -42,7 +42,7 @@
                    :default-expanded-keys="keysList"
                    :default-checked-keys="keysList"
                    :default-expand-all="defaultExpandAll"
-                   @node-click="handleNodeClick">
+                   @node-click.self="handleNodeClick">
             <div style="width:100%;padding-right:10px;"
                  slot-scope="{ data }">
               <slot :name="prop+'Type'"
@@ -339,9 +339,9 @@ export default create({
               this.labelText = label
             }
           }
-          setTimeout(() => {
-            this.$parent.$parent.clearValidate();
-          }, 0);
+          // setTimeout(() => {
+          //   this.$partent.$parent.clearValidate();
+          // }, 0);
           clearInterval(check);
         }, 500);
       }
