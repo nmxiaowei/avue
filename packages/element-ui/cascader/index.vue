@@ -4,6 +4,7 @@
                :placeholder="placeholder"
                :props="props"
                :readonly="readonly"
+               :size="size"
                :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
