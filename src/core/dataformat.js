@@ -184,9 +184,9 @@ export const formInitVal = (list = []) => {
       ['number', 'rate', 'slider'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
-      tableForm[ele.prop] = 0;
+      tableForm[ele.prop] = undefined;
       if (ele.search) {
-        searchForm[ele.prop] = 0;
+        searchForm[ele.prop] = undefined;
       }
     } else {
       tableForm[ele.prop] = '';

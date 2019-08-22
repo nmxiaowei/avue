@@ -347,19 +347,21 @@ export default create({
       return this.$refs.form.validateField(val);
     },
     //搜索指定的属性配置
-    findColumnIndex (prop) {
-      let result = [];
+    findColumnIndex (prop, group = false) {
+      let list = [];
+      let result;
       this.columnOption.forEach((column, index) => {
         const val = this.findArray(column.column, prop, "prop");
         if (val !== -1) {
-          result.push(index);
-          result.push(val)
+          list.push(index);
+          list.push(val)
+          result = val;
         }
       });
-      return result;
+      return group ? list : result
     },
     updateDic (prop, list) {
-      const columnList = this.findColumnIndex(prop);
+      const columnList = this.findColumnIndex(prop, true);
       const groupIndex = columnList[0];//分组序号
       const columnIndex = columnList[1];//列序号
       const column = this.columnOption[groupIndex].column[columnIndex];

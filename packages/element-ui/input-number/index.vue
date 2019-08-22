@@ -22,7 +22,7 @@ import event from "../../core/common/event.js";
 export default create({
   name: "input-number",
   mixins: [props(), event()],
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -49,14 +49,14 @@ export default create({
   },
   watch: {
     text: {
-      handler() {
+      handler () {
         this.handleChange(this.text);
       },
       immediate: true
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {}
 });
 </script>
