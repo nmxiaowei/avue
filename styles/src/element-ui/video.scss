@@ -1,0 +1,49 @@
+.avue-video{
+  position: relative;
+  width:500px;
+  overflow: hidden;
+  &__border {
+    span{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-width:4px;
+      color:#0073eb;
+      border-style: solid;
+      &:nth-child(1){
+        left:15px;
+        top:15px;
+        border-right: 0;
+        border-bottom: 0;
+      }
+      &:nth-child(2){
+        right: 15px;
+        top:15px;
+        border-left: 0;
+        border-bottom: 0;
+      }
+      &:nth-child(3){
+        bottom:15px;
+        left:15px;
+        border-right: 0;
+        border-top: 0;
+      }
+      &:nth-child(4){
+        bottom:15px;
+        right:15px;
+        border-left: 0;
+        border-top: 0;
+      }
+    }
+  }
+  &__img{
+    width: 100px;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%)
+  }
+  &__main{
+    width:100%;
+  }
+}

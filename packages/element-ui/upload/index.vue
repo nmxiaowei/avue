@@ -254,11 +254,7 @@ export default create({
               deadline: new Date().getTime() + oss_config.deadline * 3600
             });
             param.append("token", token);
-            if (window.location.protocol.includes("https")) {
-              url = "https://up.qbox.me";
-            } else {
-              url = "http://up.qiniu.com/";
-            }
+            url = oss_config.bucket
           } else if (this.isAliOss) {
             if (!window.OSS) {
               packages.logs("AliOSS");

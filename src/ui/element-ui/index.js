@@ -39,6 +39,7 @@ import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
 import IconSelect from 'components/icon-select';
 import BackTop from 'components/back-top';
+import Video from 'components/video';
 import textEllipsis from 'components/text-ellipsis';
 import packages from 'core/packages';
 if (!window.Element) {
@@ -84,6 +85,7 @@ export default [
   Tabs,
   Queue,
   Dynamic,
+  Video,
   IconSelect,
   BackTop,
   textEllipsis,
