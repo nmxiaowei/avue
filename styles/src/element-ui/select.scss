@@ -1,6 +1,10 @@
 .avue-select {
-  &__mobile {
-    &-dialog {
-    }
+  .sortable-ghost {
+    opacity: .8;
+    color: #fff!important;
+    background: #409EFF!important;
+  }
+  .el-tag {
+    cursor: pointer;
   }
 }

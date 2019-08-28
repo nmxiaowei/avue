@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <el-switch v-model="text"
-               @change="handleChange"
-               @click.native="handleClick"
-               :active-text="active[labelKey]"
-               :active-value="active[valueKey]"
-               :inactive-value="inactive[valueKey]"
-               :inactive-text="inactive[labelKey]"
-               :disabled="disabled"
-               :readonly="readonly"
-               :size="size"></el-switch>
-  </div>
+  <el-switch v-model="text"
+             @change="handleChange"
+             @click.native="handleClick"
+             :active-text="active[labelKey]"
+             :active-value="active[valueKey]"
+             :inactive-value="inactive[valueKey]"
+             :inactive-text="inactive[labelKey]"
+             :disabled="disabled"
+             :readonly="readonly"
+             :size="size"></el-switch>
 </template>
 
 <script>
@@ -23,17 +21,17 @@ export default create({
   props: {
     value: {}
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   computed: {
-    active() {
+    active () {
       return this.dic[1] || {};
     },
-    inactive() {
+    inactive () {
       return this.dic[0] || {};
     }
   },

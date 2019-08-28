@@ -16,8 +16,8 @@
 
   <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
   <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -33,7 +33,7 @@
   </div>
 </body>
 <script>
-  let baseUrl = 'https://cli2.avue.top/api/area'
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
   new Vue({
     el: '#app',
     data() {
@@ -157,7 +157,7 @@
                 label: 'name',
                 value: 'code'
               },
-              dicUrl: 'https://cli2.avue.top/api/area/getProvince'
+              dicUrl: 'https://cli2.avuejs.com/api/area/getProvince'
             },
             {
               width: 120,
@@ -197,7 +197,7 @@
                 label: 'name',
                 value: 'code'
               },
-              dicUrl: 'https://cli2.avue.top/api/area/getProvince/{{key}}',
+              dicUrl: 'https://cli2.avuejs.com/api/area/getProvince/{{key}}',
               cell: true,
             }, {
               label: '开关1',

@@ -1,21 +1,19 @@
 <template>
   <div :class="b()">
-    <el-checkbox-group
-      v-model="text"
-      @change="handleChange"
-      :disabled="disabled"
-      @click.native="handleClick"
-    >
-      <el-checkbox
-        v-for="(item,index) in dic"
-        :label="item[valueKey]"
-        :border="border"
-        :min="min"
-        :readonly="readonly"
-        :max="max"
-        :disabled="item[disabledKey]"
-        :key="index"
-      >{{item[labelKey]}}</el-checkbox>
+    <el-checkbox-group v-model="text"
+                       @change="handleChange"
+                       :disabled="disabled"
+                       @click.native="handleClick">
+      <component :is="componentName"
+                 v-for="(item,index) in dic"
+                 :label="item[valueKey]"
+                 :border="border"
+                 :min="min"
+                 :readonly="readonly"
+                 :max="max"
+                 :disabled="item[disabledKey]"
+                 :key="index">{{item[labelKey]}}
+      </component>
     </el-checkbox-group>
   </div>
 </template>
@@ -27,18 +25,14 @@ import event from "../../core/common/event.js";
 export default create({
   name: "checkbox",
   mixins: [props(), event()],
-  data() {
-    return {};
-  },
-  props: {
-    value: {
-      type: Array,
-      default: () => []
-    }
+  data () {
+    return {
+      name: 'checkbox',
+    };
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {}
 });
 </script>

@@ -10,8 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
 
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -31,7 +31,7 @@
   </div>
 </body>
 <script>
-  let baseUrl = 'https://cli2.avue.top/api/area'
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
   new Vue({
     el: '#app',
     data() {
@@ -142,7 +142,7 @@
           {
             label: '省份',
             prop: 'province',
-            type: 'tree',
+            type: 'select',
             props: {
               label: 'name',
               value: 'code'
@@ -209,18 +209,6 @@
             dicUrl: `${baseUrl}/getProvince`
           },
           {
-            label: '动态表单',
-            prop: 'dynamic',
-            type: 'dynamic',
-            rules: [
-              {
-                required: true,
-                message: '必填项测试',
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
             label: '图标选择器',
             prop: 'icon',
             type: 'icon-select',
@@ -245,7 +233,6 @@
       }
     },
     mounted() {
-
       this.obj = {
         switch: '1',
         selects: '0,1',
@@ -258,8 +245,11 @@
 
     },
     methods: {
-      submit() {
-        this.$message.success(JSON.stringify(this.obj))
+      submit(form, done) {
+        this.$message.success('3s后关闭');
+        setTimeout(() => {
+          done()
+        }, 3000)
       }
     }
   })

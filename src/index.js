@@ -11,13 +11,14 @@ import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Clipboard from 'plugin/clipboard/';
 import $NProgress from 'plugin/nprogress/';
-import $ImagePreview from 'components/image-preview/';
+import $ImagePreview from 'packages/core/components/image-preview/';
+
 let prototypes = {
   $Clipboard,
   $Log,
   $NProgress
 };
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   permission(Vue);
@@ -45,6 +46,20 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.watermark = watermark;
   Vue.prototype.asyncValidator = asyncValidator;
   Vue.prototype.$AVUE = {
+    ui: (() => {
+      if (window.antd) {
+        Vue.prototype.moment = window.moment;
+        return {
+          name: 'antd',
+          type: 'a'
+        };
+      } else if (window.Element) {
+        return {
+          name: 'element-ui',
+          type: 'el'
+        };
+      }
+    })(),
     size: opts.size || 'medium',
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
@@ -62,6 +77,7 @@ const install = function(Vue, opts = {}) {
       SK: '',
       scope: '',
       url: '',
+      bucket: 'https://upload.qiniup.com',
       deadline: 1
     }, (opts.qiniu || {})),
     ali: Object.assign({
@@ -80,7 +96,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = {
-  version: '1.0.8',
+  version: '2.1.0',
   locale: locale.locale,
   install
 };

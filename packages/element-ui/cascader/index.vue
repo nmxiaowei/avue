@@ -4,6 +4,7 @@
                :placeholder="placeholder"
                :props="props"
                :readonly="readonly"
+               :size="size"
                :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
@@ -48,12 +49,12 @@ export default create({
       default: "/"
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {}
 });
 </script>

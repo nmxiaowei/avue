@@ -38,25 +38,13 @@
                          :width="column.width"
                          :fixed="crud.isMobile?false:column.fixed">
           <template slot-scope="scope">
-            <!-- <span v-if="column.prop===crud.treeProp"
-                  v-for="space in scope.row._level"
-                  class="ms-tree-space"
-                  :key="space"></span>
-            <span class="tree-ctrl"
-                  v-if="iconShow(column.prop,scope.row)"
-                  @click="toggleExpanded(scope.row,scope.$index)">
-              <i v-if="!scope.row._expand"
-                 class="el-icon-plus"></i>
-              <i v-else
-                 class="el-icon-minus"></i>
-            </span> -->
-            <span :class="{'ms-tree-title':column.prop===crud.treeProp}">
+            <span>
               <template v-if="cellEditFlag(scope.row,column)">
-                <component :is="getCellType(column.type)"
+                <component :is="getComponent(column.type)"
                            size="mini"
                            v-model="scope.row[column.prop]"
-                           :type="getType(column)"
-                           :disabled="btnDisabled"
+                           :type="column.type"
+                           :disabled="column.disabled || crud.btnDisabled"
                            :props="column.props || crud.tableOption.props"
                            :format="column.format"
                            :parent="column.parent"
@@ -92,7 +80,8 @@
                 <span v-if="[undefined,'number'].includes(column.type)">
                   {{scope.row[column.prop]}}
                 </span>
-                <span v-else-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
+                <span v-else-if="column.parentProp"
+                      v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
 
                 <template v-else-if="['upload'].includes(column.type)">
                   <avue-img :align="column.align"
@@ -137,22 +126,15 @@
 <script>
 export default {
   name: "dynamic-column",
-  inject: ["dynamic"],
+  inject: ["dynamic", 'crud'],
   props: {
     columnOption: {
       type: Object,
       required: true
     }
   },
-  computed: {
-    crud () {
-      return this.dynamic.crud;
-    }
-  },
   created () {
     const list = [
-      "getCellType",
-      "getType",
       "getComponent",
       "getPlaceholder",
       "vaildColumn",

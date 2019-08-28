@@ -2,11 +2,10 @@
   <div :class="b()">
     <!-- 头部组件 -->
     <header-title ref="headerTitle"
-                  v-show="printKey && vaildData(tableOption.header,true)"></header-title>
+                  v-show="vaildData(tableOption.header,true)"></header-title>
     <!-- 搜索组件 -->
     <header-search v-model="searchForm"
-                   ref="headerSearch"
-                   v-show="printKey">
+                   ref="headerSearch">
       <template slot="search">
         <slot name="search"></slot>
       </template>
@@ -14,9 +13,10 @@
         <slot name="searchMenu"></slot>
       </template>
     </header-search>
+
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
-                 v-show="printKey && vaildData(tableOption.header,true)">
+                 v-show="vaildData(tableOption.header,true)">
       <template slot="menuLeft">
         <slot name="menuLeft"></slot>
       </template>
@@ -24,9 +24,8 @@
         <slot name="menuRight"></slot>
       </template>
     </header-menu>
-    <slot name="header"></slot>
-    <div class="avue-crud__tip"
-         v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
+    <el-tag class="avue-crud__tip"
+            v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
       <span class="avue-crud__tip-name">
         {{t('crud.tipStartTitle')}}
         <span class="avue-crud__tip-count">{{selectLen}}</span>
@@ -38,7 +37,8 @@
                  v-permission="permission.selectClearBtn"
                  v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
       <slot name="tip"></slot>
-    </div>
+    </el-tag>
+    <slot name="header"></slot>
     <el-table v-if="doLayout"
               :data="list"
               :row-key="handleGetRowKeys"
@@ -67,6 +67,9 @@
               :cell-class-name="cellClassName"
               :row-style="rowStyle"
               :cell-style="cellStyle"
+              :sort-method="sortMethod"
+              :sort-orders="sortOrders"
+              :sort-by="sortBy"
               :header-cell-class-name="headerCellClassName"
               :max-height="tableOption.maxHeight"
               :height="tableHeight"
@@ -133,7 +136,8 @@
                        align="center"></el-table-column>
       <!-- 占位符号解决ele问题 -->
       <el-table-column width="1"></el-table-column>
-      <column :columnOption="columnOption">
+      <column :columnOption="columnOption"
+              :disabled="btnDisabled">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
                   :slot="item.prop">
@@ -145,7 +149,7 @@
         </template>
       </column>
       <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                       v-if="vaildData(tableOption.menu,config.menu) && printKey"
+                       v-if="vaildData(tableOption.menu,config.menu)"
                        :label="t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
@@ -224,8 +228,7 @@
     </el-table>
 
     <!-- 分页 -->
-    <table-page ref="tablePage"
-                v-show="printKey"></table-page>
+    <table-page ref="tablePage"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
                  :columnFormOption="columnFormOption"
@@ -297,7 +300,6 @@ export default create({
   data () {
     return {
       doLayout: true,
-      treeProp: "",
       isChild: false,
       searchForm: {},
       config: config,
@@ -312,7 +314,7 @@ export default create({
       formCascaderList: {},
       formRules: {},
       formCellRules: {},
-      printKey: true
+      btnDisabled: false,
     };
   },
   created () {
@@ -358,7 +360,6 @@ export default create({
       } else {
         result = calcCascader(this.columnOption);
       }
-      if (this.isTree) this.treeProp = result[0].prop;
       return result;
     },
     isGroup () {
@@ -390,9 +391,6 @@ export default create({
     expandAll () {
       return this.parentOption.expandAll || false;
     },
-    isTree () {
-      return this.vaildData(this.parentOption.tree, false);
-    },
     rowKey () {
       return this.tableOption.rowKey || "id";
     },
@@ -404,9 +402,6 @@ export default create({
           this.vaildData(this.tableOption.calcHeight, config.calcHeight)
           : this.tableOption.height;
       return height <= 300 ? 300 : height;
-    },
-    btnDisabled () {
-      return this.$refs.dialogForm.keyBtn && this.tableOption.cellBtn;
     },
     parentOption () {
       return this.tableOption || {};
@@ -462,6 +457,9 @@ export default create({
         return {};
       }
     },
+    sortBy: Function,
+    sortOrders: Function,
+    sortMethod: Function,
     spanMethod: Function,
     summaryMethod: Function,
     rowStyle: Function,
@@ -510,9 +508,6 @@ export default create({
           this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
         }
       })
-    },
-    updateDic (prop, list) {
-      this.$refs.dialogForm.updateDic(prop, list);
     },
     // 格式化数据源
     formatData () {
@@ -583,8 +578,7 @@ export default create({
       });
     },
     dataInit () {
-      this.list = [...this.data];
-      // if (this.isTree) this.formatData();
+      this.list = this.data;
       //初始化序列的参数
       this.list.forEach((ele, index) => {
         ele.$index = index;
@@ -709,6 +703,7 @@ export default create({
     },
     //单元格更新
     rowCellUpdate (row, index) {
+      this.btnDisabled = true;
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
           this.$refs.dialogForm.keyBtn = true;
@@ -721,7 +716,7 @@ export default create({
               this.$set(this.list, index, row);
             },
             () => {
-              this.$refs.dialogForm.keyBtn = false;
+              this.btnDisabled = false
             }
           );
         })
@@ -733,11 +728,9 @@ export default create({
       this.$refs.dialogForm.show("add");
     },
     dialogFormFun () {
-      let list = ['rowSave', 'rowUpdate']
+      let list = ['updateDic', 'rowSave', 'rowUpdate', 'closeDialog']
       list.forEach(ele => {
-        this[ele] = () => {
-          this.$refs.dialogForm[ele]();
-        }
+        this[ele] = this.$refs.dialogForm[ele];
       })
     },
     //对象克隆

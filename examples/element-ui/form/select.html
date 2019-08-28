@@ -10,9 +10,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+  <!-- 导入拖拽需要的包 -->
+  <script src="https://cdn.bootcss.com/Sortable/1.10.0-rc2/Sortable.min.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -20,12 +21,12 @@
 <body>
   <div id="app">
     {{form}}
-    <avue-crud :option="option" :data="data" v-model="form">
+    <avue-crud ref="crud" :option="option" :data="data" v-model="form">
     </avue-crud>
   </div>
 </body>
 <script>
-  let baseUrl = 'https://cli2.avue.top/api/area'
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
   new Vue({
     el: '#app',
     data() {
@@ -36,51 +37,87 @@
           multipleSelect: []
         }],
         option: {
-          column: [
-            {
-              label: '省份',
-              prop: 'province',
-              type: 'select',
-              remote: true,
-              props: {
-                label: 'name',
-                value: 'code'
-              },
-              dataType: 'number',
-              dicUrl: `${baseUrl}/getProvince/{{key}}`,
-              rules: [
-                {
-                  required: true,
-                  message: '请选择省份',
-                  trigger: 'blur'
-                }
-              ]
+          column: [{
+            label: '分组',
+            prop: 'selects',
+            type: 'select',
+            group: true,
+            dicData: [{
+              label: '热门城市',
+              groups: [{
+                value: 'Shanghai',
+                label: '上海'
+              }, {
+                value: 'Beijing',
+                label: '北京'
+              }]
+            }, {
+              label: '城市名',
+              groups: [{
+                value: 'Chengdu',
+                label: '成都'
+              }, {
+                value: 'Shenzhen',
+                label: '深圳'
+              }, {
+                value: 'Guangzhou',
+                label: '广州'
+              }, {
+                value: 'Dalian',
+                label: '大连'
+              }]
+            }]
+          },
+          {
+            label: '省份',
+            prop: 'province',
+            type: 'select',
+            remote: true,
+            props: {
+              label: 'name',
+              value: 'code'
             },
-            {
-              label: '多选，可创建条目',
-              prop: 'multipleSelect',
-              type: 'select',
-              span: 24,
-              multiple: true,
-              filterable: true,
-              allowCreate: true,
-              defaultFirstOption: true,
-              props: {
-                label: 'value',
-                value: 'value'
-              },
-              dicData: [
-                { value: '新增' },
-                { value: '修改' },
-                { value: '删除' }
-              ]
-            }
+            dataType: 'number',
+            dicUrl: `${baseUrl}/getProvince`,
+            rules: [
+              {
+                required: true,
+                message: '请选择省份',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '多选，可创建条目',
+            prop: 'multipleSelect',
+            type: 'select',
+            span: 24,
+            drag: true,
+            multiple: true,
+            filterable: true,
+            allowCreate: true,
+            defaultFirstOption: true,
+            props: {
+              label: 'value',
+              value: 'value'
+            },
+            dicData: [
+              { value: '新增' },
+              { value: '修改' },
+              { value: '删除' }
+            ]
+          }
           ]
         }
       }
     },
     mounted() {
-
+      setTimeout(() => {
+        setInterval(() => {
+          console.log('更新字典')
+          this.$refs.crud.updateDic('province')
+        }, 1000)
+      }, 2000)
     },
     methods: {
     }

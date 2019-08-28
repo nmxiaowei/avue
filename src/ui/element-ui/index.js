@@ -1,5 +1,5 @@
 import Affix from 'components/affix';
-import countUp from 'components/count-up';
+import CountUp from 'components/count-up';
 import Avatar from 'components/avatar';
 import Article from 'components/article';
 import Carousel from 'components/carousel';
@@ -13,7 +13,6 @@ import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
 import Detail from 'components/detail';
-import Divider from 'components/divider';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
@@ -25,24 +24,23 @@ import Radio from 'components/radio';
 import Select from 'components/select';
 import Cascader from 'components/cascader';
 import InputNumber from 'components/input-number';
+import Verifys from 'components/verify';
 import Switchs from 'components/switch';
 import Rate from 'components/rate';
 import Upload from 'components/upload';
 import Sign from 'components/sign';
-import Silder from 'components/silder';
+import Slider from 'components/slider';
 import Img from 'components/img';
 import Group from 'components/group';
 import Tree from 'components/tree';
-import TableTree from 'components/table-tree';
 import Search from 'components/search';
 import Skeleton from 'components/skeleton';
 import Tabs from 'components/tabs';
 import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
 import IconSelect from 'components/icon-select';
-import Timeline from 'components/timeline';
-import Drawer from 'components/drawer';
 import BackTop from 'components/back-top';
+import Video from 'components/video';
 import textEllipsis from 'components/text-ellipsis';
 import packages from 'core/packages';
 if (!window.Element) {
@@ -64,8 +62,7 @@ export default [
   Form,
   Checkbox,
   Date,
-  countUp,
-  Divider,
+  CountUp,
   Draggable,
   Empty,
   Flow,
@@ -80,21 +77,19 @@ export default [
   Switchs,
   Rate,
   Upload,
-  Silder,
+  Slider,
   Img,
   Detail,
   Group,
   Tree,
-  TableTree,
   Search,
   Tabs,
   Queue,
   Dynamic,
+  Video,
+  Verifys,
   IconSelect,
-  Drawer,
   BackTop,
-  Timeline,
-  Timeline.Item,
   textEllipsis,
   Skeleton,
   Sign,

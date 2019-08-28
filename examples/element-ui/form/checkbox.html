@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="obj"></avue-form>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        obj: {
+          checkbox: 'authorizedGrantTypes,password,refresh_token'
+        },
+        data: [],
+        option: {
+          column: [{
+            label: '多选',
+            prop: 'checkbox',
+            type: 'checkbox',
+            dicData: [{
+              label: '授权模式',
+              value: 'authorizedGrantTypes'
+            }, {
+              label: '密码模式',
+              value: 'password'
+            }, {
+              label: '刷新token模式',
+              value: 'refresh_token'
+            }, {
+              label: '其他',
+              value: 'default'
+            }]
+          }]
+        }
+      }
+    },
+    mounted() {
+
+    },
+    methods: {
+    }
+  })
+</script>
+
+</html>

@@ -10,16 +10,17 @@ const banner =
   ' (c) 2017-' +
   new Date().getFullYear() +
   ' Smallwei\n' +
-  ' Released under the MIT License.\n'
+  ' Released under the MIT License.\n';
 const externals = {
   'vue': 'Vue',
   'vant': 'vant',
   'mockjs': 'Mock',
+  'ant-design-vue': 'antd',
   'file-saver': 'file-saver',
   'xlsx': 'xlsx',
   'axios': 'axios',
-  'element-ui': 'ELEMENT',
-}
+  'element-ui': 'ELEMENT'
+};
 const resolve = p => {
   const base = p.split('/')[0];
   if (aliases[base]) {
@@ -55,6 +56,20 @@ const builds = {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue-mobile.js',
+    env: 'development',
+    externals: externals
+  },
+  'prod-antd': {
+    entry: resolve('src/index.js'),
+    dest: resolve('lib'),
+    filename: 'avue-antd.min.js',
+    env: 'production',
+    externals: externals
+  },
+  'dev-antd': {
+    entry: resolve('src/index.js'),
+    dest: resolve('lib'),
+    filename: 'avue-antd.js',
     env: 'development',
     externals: externals
   }

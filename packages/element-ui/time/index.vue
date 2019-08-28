@@ -1,20 +1,18 @@
 <template>
-  <el-time-picker
-    v-model="text"
-    :is-range="isRange"
-    :size="size"
-    range-separator="至"
-    :start-placeholder="startPlaceholder"
-    :end-placeholder="endPlaceholder"
-    :format="format"
-    :readonly="readonly"
-    :clearable="disabled?false:clearable"
-    :value-format="valueFormat"
-    :placeholder="placeholder"
-    @change="handleChange"
-    @click.native="handleClick"
-    :disabled="disabled"
-  ></el-time-picker>
+  <el-time-picker v-model="text"
+                  :is-range="isRange"
+                  :size="size"
+                  range-separator="至"
+                  :start-placeholder="startPlaceholder"
+                  :end-placeholder="endPlaceholder"
+                  :format="format"
+                  :readonly="readonly"
+                  :clearable="disabled?false:clearable"
+                  :value-format="valueFormat"
+                  :placeholder="placeholder"
+                  @change="handleChange"
+                  @click.native="handleClick"
+                  :disabled="disabled"></el-time-picker>
 </template>
 
 <script>
@@ -24,7 +22,7 @@ import event from "../../core/common/event.js";
 export default create({
   name: "time",
   mixins: [props(), event()],
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -50,10 +48,10 @@ export default create({
     }
   },
   watch: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   computed: {
-    isRange() {
+    isRange () {
       return this.type === "timerange";
     }
   },

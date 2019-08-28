@@ -12,8 +12,8 @@
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
 
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -21,9 +21,7 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
-      <template slot="search">
-        <el-tag>我是自定义</el-tag>
-      </template>
+
     </avue-crud>
   </div>
 </body>
@@ -50,11 +48,18 @@
             search: true
           }, {
             label: '年龄',
-            prop: 'sex'
+            prop: 'sex',
+            search: true
+          }, {
+            label: '日期',
+            prop: 'datetime',
+            type: 'datetime',
+            search: true
           }, {
             label: '字典',
             prop: 'dic',
             type: 'select',
+            search: true,
             dicData: [{
               label: 1,
               value: 1

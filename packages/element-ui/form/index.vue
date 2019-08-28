@@ -4,9 +4,10 @@
     <el-form ref="form"
              status-icon
              :model="form"
+             label-suffix=":"
              :label-position="parentOption.labelPosition"
              :size="controlSize"
-             :label-width="setPx(parentOption.labelWidth,80)"
+             :label-width="setPx(parentOption.labelWidth,90)"
              :rules="formRules">
       <el-row :span="24">
         <avue-group v-for="(item,index) in columnOption"
@@ -52,6 +53,9 @@
                                :typeslot="column.typeslot"
                                :appendClick="column.appendClick"
                                :border="column.border"
+                               :button="column.button"
+                               :children="column.children"
+                               :group="column.group"
                                :change="column.change"
                                :changeoOnSelect="column.changeoOnSelect"
                                :checked="column.checked"
@@ -78,7 +82,7 @@
                                :filter="column.filter"
                                :blur="column.blur"
                                :focus="column.focus"
-                               :tpyeformat="column.tpyeformat"
+                               :typeformat="column.typeformat"
                                :filesize="column.filesize"
                                :filterable="column.filterable"
                                :format="column.format"
@@ -161,7 +165,7 @@
                 v-if="vaildData(parentOption.menuBtn,true)">
           <el-form-item>
             <!-- 菜单按钮组 -->
-            <div :class="b('menu',[menuPostion])">
+            <div :class="b('menu',[menuPosition])">
               <el-button type="primary"
                          @click="handleMock"
                          :size="controlSize"
@@ -195,8 +199,7 @@ import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/crud/init";
-import { getComponent, getPlaceholder } from "core/dataformat";
-import { formInitVal, calcCount, calcCascader } from "core/dataformat";
+import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import mock from "utils/mock";
 export default create({
@@ -276,9 +279,9 @@ export default create({
       });
       return list;
     },
-    menuPostion: function () {
-      if (this.parentOption.menuPostion) {
-        return this.parentOption.menuPostion;
+    menuPosition: function () {
+      if (this.parentOption.menuPosition) {
+        return this.parentOption.menuPosition;
       } else {
         return "center";
       }
@@ -344,24 +347,31 @@ export default create({
       return this.$refs.form.validateField(val);
     },
     //搜索指定的属性配置
-    findColumnIndex (value) {
-      let result = -1;
-      this.columnOption.forEach(column => {
-        result = this.findArray(column.column, value, "prop");
+    findColumnIndex (prop, group = false) {
+      let list = [];
+      let result;
+      this.columnOption.forEach((column, index) => {
+        const val = this.findArray(column.column, prop, "prop");
+        if (val !== -1) {
+          list.push(index);
+          list.push(val)
+          result = val;
+        }
       });
-      return result;
+      return group ? list : result
     },
     updateDic (prop, list) {
-      if (this.validatenull(list)) {
-        const column = this.propOption[this.findColumnIndex(prop)];
-        if (!this.validatenull(column.dicUrl)) {
-          sendDic({
-            url: column.dicUrl,
-            resKey: (column.props || {}).res
-          }).then(list => {
-            this.$set(this.DIC, prop, list);
-          });
-        }
+      const columnList = this.findColumnIndex(prop, true);
+      const groupIndex = columnList[0];//分组序号
+      const columnIndex = columnList[1];//列序号
+      const column = this.columnOption[groupIndex].column[columnIndex];
+      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+        sendDic({
+          url: column.dicUrl,
+          resKey: (column.props || {}).res
+        }).then(list => {
+          this.$set(this.DIC, prop, list);
+        });
       } else {
         this.$set(this.DIC, prop, list);
       }

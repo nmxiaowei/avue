@@ -49,6 +49,7 @@ export const dateList = [
   'daterange',
   'week',
   'month',
+  'monthrange',
   'dategrpup',
   'year'
 ];
@@ -133,19 +134,7 @@ export const getComponent = (type, component) => {
     result = 'checkbox';
   } else if (['time', 'timerange'].includes(type)) {
     result = 'time';
-  } else if (
-    [
-      'dates',
-      'date',
-      'datetime',
-      'datetimerange',
-      'daterange',
-      'week',
-      'month',
-      'dategrpup',
-      'year'
-    ].includes(type)
-  ) {
+  } else if (dateList.includes(type)) {
     result = 'date';
   } else if (type === 'cascader') {
     result = 'cascader';
@@ -159,8 +148,8 @@ export const getComponent = (type, component) => {
     result = 'rate';
   } else if (type === 'upload') {
     result = 'upload';
-  } else if (type === 'silder') {
-    result = 'silder';
+  } else if (type === 'slider') {
+    result = 'slider';
   } else if (type === 'dynamic') {
     result = 'dynamic';
   } else if (type === 'icon-select') {
@@ -192,12 +181,12 @@ export const formInitVal = (list = []) => {
       tableForm[ele.prop] = [];
       if (ele.search) searchForm[ele.prop] = [];
     } else if (
-      ['number', 'rate', 'silder'].includes(ele.type) ||
+      ['number', 'rate', 'slider'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
-      tableForm[ele.prop] = 0;
+      tableForm[ele.prop] = undefined;
       if (ele.search) {
-        searchForm[ele.prop] = 0;
+        searchForm[ele.prop] = undefined;
       }
     } else {
       tableForm[ele.prop] = '';
@@ -218,7 +207,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {

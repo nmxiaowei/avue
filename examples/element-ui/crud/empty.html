@@ -16,8 +16,8 @@
   <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
 
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -36,6 +36,7 @@
           name: 'smallwei'
         }],
         option: {
+          dialogType: 'drawer',
           excelBtn: true,
           showSummary: true,
           sumColumnList: [
@@ -56,7 +57,24 @@
             formatter: () => {
               return 123;
             }
-          }]
+          },
+          {
+            width: 120,
+            label: '开关',
+            prop: 'switch',
+            type: 'switch',
+            cell: true,
+            dicData: [
+              {
+                label: '开启',
+                value: 0
+              },
+              {
+                label: '关闭',
+                value: 1
+              }
+            ]
+          },]
         }
       }
     }

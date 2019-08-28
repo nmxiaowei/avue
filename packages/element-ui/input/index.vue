@@ -22,8 +22,8 @@
            v-if="box"
            :style="treeStyle">
         <div :class="b('arrow')"></div>
-        <el-input size="small"
-                  style="margin-bottom:15px;"
+        <el-input size="mini"
+                  style="margin-bottom:8px;"
                   placeholder="输入关键字进行过滤"
                   v-model="filterText"
                   v-if="filter"></el-input>
@@ -35,12 +35,24 @@
                    :props="props"
                    :check-strictly="checkStrictly"
                    ref="tree"
+                   highlight-current
+                   :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
                    :default-expanded-keys="keysList"
                    :default-checked-keys="keysList"
                    :default-expand-all="defaultExpandAll"
-                   @node-click="handleNodeClick"></el-tree>
+                   @node-click.self="handleNodeClick">
+            <div style="width:100%;padding-right:10px;"
+                 slot-scope="{ data }">
+              <slot :name="prop+'Type'"
+                    :label="labelKey"
+                    :value="valueKey"
+                    :item="data"
+                    v-if="typeslot"></slot>
+              <span v-else>{{data[labelKey]}}</span>
+            </div>
+          </el-tree>
         </el-scrollbar>
       </div>
     </div>
@@ -86,7 +98,8 @@
               :disabled="disabled"
               :autocomplete="autocomplete">
       <template slot="prepend"
-                v-if="prepend"><span @click="prependClick()">{{prepend}}</span></template>
+                v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+      </template>
       <template slot="append"
                 v-if="append"><span @click="appendClick()">{{append}}</span></template>
     </el-input>
@@ -97,6 +110,8 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
+import { findLabelNode } from 'utils/util'
 import { validatenull } from "utils/validate";
 export default create({
   name: "input",
@@ -107,6 +122,7 @@ export default create({
         left: 0,
         top: 0,
       },
+      node: {},
       filterText: "",
       box: false,
       labelText: this.multiple ? [] : ""
@@ -182,8 +198,8 @@ export default create({
   },
   watch: {
     text: {
-      handler () {
-        this.handleChange(this.text);
+      handler (value) {
+        this.handleChange(value);
       },
       immediate: true
     },
@@ -219,9 +235,10 @@ export default create({
       return this.type === "tree";
     },
     labelShow () {
-      return this.multiple
-        ? (this.labelText || []).join(" | ").toString()
-        : this.labelText;
+      if (this.multiple) {
+        return (this.labelText || []).join(DIC_SPLIT).toString()
+      }
+      return this.getLabelText(this.node);
     },
     textShow () {
       if (this.textLen === 11)
@@ -281,9 +298,9 @@ export default create({
       const top = this.$el.getBoundingClientRect().top;
       this.treeStyle = {
         top: this.setPx(height),
-        // top: this.setPx(top + height),
-        // left: this.setPx(left),
-        // width: this.setPx(width),
+        top: this.setPx(top + height),
+        left: this.setPx(left),
+        width: this.setPx(width),
       }
       this.treeStyle
       this.box = true;
@@ -292,9 +309,9 @@ export default create({
     init () {
       if (this.isTree) {
         if (this.multiple) {
-          this.labelText = ["获取字典中..."];
+          this.labelText = [];
         } else {
-          this.labelText = "获取字典中...";
+          this.labelText = "";
         }
         const check = setInterval(() => {
           if (validatenull(this.dic)) {
@@ -308,36 +325,28 @@ export default create({
             this.labelText = [];
             if (!validatenull(this.text)) {
               this.text.forEach(ele => {
-                this.findLabelNode(this.dic, ele, this.props);
+                //特殊处理0
+                ele = validatenull(ele) ? 0 : ele;
+                const label = findLabelNode(this.dic, ele, this.props) || ele;
+                this.labelText.push(label)
               });
             }
           } else {
             this.labelText = "";
             if (!validatenull(this.text)) {
               this.labelText = this.text;
-              this.findLabelNode(this.dic, this.text, this.props);
+              const label = findLabelNode(this.dic, this.text, this.props) || this.text;
+              this.node = {}
+              this.node[this.labelKey] = label
+              this.labelText = label
             }
           }
           setTimeout(() => {
-            this.$parent.$parent.clearValidate();
+            this.$partent && this.$partent.$parent.clearValidate();
           }, 0);
           clearInterval(check);
         }, 500);
       }
-    },
-    findLabelNode (dic, value, props) {
-      const labelKey = props.label || "label";
-      const valueKey = props.value || "value";
-      const childrenKey = props.children || "children";
-      dic.forEach(ele => {
-        const children = ele[childrenKey];
-        if (ele[valueKey] === value) {
-          const label = ele[labelKey];
-          this.multiple ? this.labelText.push(label) : (this.labelText = label);
-        } else if (!validatenull(children)) {
-          this.findLabelNode(children, value, props);
-        }
-      });
     },
     disabledParentNode (dic) {
       dic.forEach(ele => {
@@ -351,6 +360,7 @@ export default create({
     handleNodeClick (data) {
       const callback = () => {
         this.box = false;
+        this.node = data;
       };
       if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;

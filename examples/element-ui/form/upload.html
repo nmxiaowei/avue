@@ -10,8 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.8.2/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
   <script src="http://qtestbucket.qiniudn.com/demo/CryptoJS.js"></script>
 
   <link rel="stylesheet" href="../../../lib/index.css" />
@@ -132,13 +132,13 @@
       }
     },
     methods: {
-      uploadBefore(file, done, loading) {
-        console.log(file)
+      uploadBefore(file, done, loading, column) {
+        console.log(file, column)
         done()
         this.$message.success('上传前的方法')
       },
-      uploadAfter(res, done, loading) {
-        console.log(res)
+      uploadAfter(res, done, loading, column) {
+        console.log(res, column)
         done()
         this.$message.success('上传后的方法')
       },

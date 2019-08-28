@@ -1,8 +1,8 @@
 <template>
   <div :class="b('pagination')"
        v-if="pageFlag">
-    <el-pagination :small="$parent.isMobile"
-                   :pager-count="$parent.isMobile?5:7"
+    <el-pagination :small="crud.isMobile"
+                   :pager-count="crud.isMobile?5:7"
                    :current-page.sync="defaultPage.currentPage"
                    :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
@@ -20,7 +20,8 @@ import create from "core/create";
 import { vaildData } from "utils/util";
 export default create({
   name: "crud",
-  data() {
+  inject: ["crud"],
+  data () {
     return {
       config: config,
       defaultPage: {
@@ -32,23 +33,23 @@ export default create({
       }
     };
   },
-  created() {
+  created () {
     this.vaildData = vaildData;
     //初始化分页
     this.pageInit();
-    this.$parent.$emit("on-load", this.defaultPage);
+    this.crud.$emit("on-load", this.defaultPage);
   },
   computed: {
-    pageFlag() {
-      return !this.validatenull(this.$parent.page.total);
+    pageFlag () {
+      return !this.validatenull(this.crud.page.total);
     }
   },
   methods: {
-    pageInit() {
-      this.defaultPage.total = this.$parent.page.total || 0;
-      this.defaultPage.currentPage = this.$parent.page.currentPage || 1;
-      this.defaultPage.pageSize = this.$parent.page.pageSize || 10;
-      this.defaultPage.pageSizes = this.$parent.page.pageSizes || [
+    pageInit () {
+      this.defaultPage.total = this.crud.page.total || 0;
+      this.defaultPage.currentPage = this.crud.page.currentPage || 1;
+      this.defaultPage.pageSize = this.crud.page.pageSize || 10;
+      this.defaultPage.pageSizes = this.crud.page.pageSizes || [
         10,
         20,
         30,
@@ -56,19 +57,19 @@ export default create({
         50,
         100
       ];
-      this.defaultPage.background = this.$parent.page.background || true;
+      this.defaultPage.background = this.crud.page.background || true;
     },
     // 页大小回调
-    sizeChange(val) {
+    sizeChange (val) {
       this.defaultPage.currentPage = 1;
       this.defaultPage.pageSize = val;
-      this.$parent.$emit("on-load", this.defaultPage);
-      this.$parent.$emit("size-change", val);
+      this.crud.$emit("on-load", this.defaultPage);
+      this.crud.$emit("size-change", val);
     },
     // 页码回调
-    currentChange(val) {
-      this.$parent.$emit("on-load", this.defaultPage);
-      this.$parent.$emit("current-change", val);
+    currentChange (val) {
+      this.crud.$emit("on-load", this.defaultPage);
+      this.crud.$emit("current-change", val);
     }
   }
 });

@@ -6,7 +6,6 @@
   .avue-input-number {
     width: 100% !important;
   }
-
   .avue-crud__left,.avue-crud__right{
     .el-button + .el-button {
       margin-left: 0;
@@ -16,7 +15,12 @@
       margin-bottom: 8px;
     }
   }
-
+  .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+    color:#409EFF;
+  }
+  .el-tree-node__label{
+    margin-left: 8px;
+  }
   .el-input__inner {
     height: 38px;
     line-height: 38px;
@@ -61,7 +65,12 @@
   }
 }
 
-
+.el-drawer__body{
+  height: 100%;
+}
+.el-checkbox:last-of-type {
+  margin-right: 8px;
+}
  .el-table th.gutter{
   display: table-cell!important;
 }

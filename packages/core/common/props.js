@@ -1,26 +1,14 @@
 import { initVal } from 'core/dataformat';
+import { DIC_PROPS, DIC_HTTP_PROPS } from 'global/variable';
 export default function () {
-  // props配置
-  const propsDefault = {
-    id: 'id',
-    label: 'label',
-    value: 'value',
-    children: 'children',
-    disabled: 'disabled'
-  };
-  // httpProps配置
-  const propsHttpDefault = {
-    name: 'name',
-    url: 'url',
-    fileName: 'file',
-    res: ''
-  };
+
   return {
     data () {
       return {
+        name: '',
         text: undefined,
-        propsHttpDefault: propsHttpDefault,
-        propsDefault: propsDefault
+        propsHttpDefault: DIC_HTTP_PROPS,
+        propsDefault: DIC_PROPS
       };
     },
     props: {
@@ -28,10 +16,10 @@ export default function () {
       focus: Function,
       change: Function,
       click: Function,
-      tpyeformat: Function,
+      typeformat: Function,
       listType: {
         type: String,
-        default: ''
+        default: 'text'
       },
       value: {},
       column: {
@@ -110,6 +98,14 @@ export default function () {
         type: Boolean,
         default: false
       },
+      button: {
+        type: Boolean,
+        default: false
+      },
+      group: {
+        type: Boolean,
+        default: false
+      },
       row: {
         type: Boolean,
         default: false
@@ -124,22 +120,27 @@ export default function () {
       },
       propsHttp: {
         type: Object,
-        default: () => propsHttpDefault
+        default: () => DIC_HTTP_PROPS
       },
       props: {
         type: Object,
-        default: () => propsDefault
+        default: () => DIC_PROPS
       }
     },
     watch: {
       value: {
-        handler () {
+        handler (val) {
           this.initVal();
         },
         immediate: true
       }
     },
     computed: {
+      componentName () {
+        const type = this.$AVUE.ui.type;
+        const result = `${type}-${this.name}${this.button ? '-button' : ''}`
+        return result
+      },
       required () {
         return !this.validatenull(this.rules);
       },
@@ -161,6 +162,9 @@ export default function () {
       resKey: function () {
         return this.propsHttp.res || this.propsHttpDefault.res;
       },
+      groupsKey: function () {
+        return this.props.groups || this.propsDefault.groups;
+      },
       valueKey: function () {
         return this.props.value || this.propsDefault.value;
       },
@@ -177,7 +181,6 @@ export default function () {
         return this.props.id || this.propsDefault.id;
       }
     },
-    created () { },
     methods: {
       initVal () {
         this.text = initVal({

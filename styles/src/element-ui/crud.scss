@@ -1,7 +1,24 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
-  
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    min-height: 40px;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  &-search{
+    &__menu {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      height: 40px;
+    }
+  }
   .el-table--mini{
     .avue-crud__color{
       width: 20px;
@@ -135,19 +152,6 @@ $space-width: 15px;
       padding: 12px 25px;
     }
   }
-  &__search {
-    .el-form-item {
-      margin-bottom: 14px;
-    }
-  }
-  &__box {
-    box-shadow: none !important;
-    border: none;
-    .el-card__body,
-    .el-card__header {
-      padding: 18px 0;
-    }
-  }
   &__title {
     font-weight: bold;
     margin-bottom: 20px;
@@ -157,9 +161,10 @@ $space-width: 15px;
     font-size: 22px;
   }
   &__tip{
+    margin:8px 0;
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     &-name{
       margin-right: 10px;
     }
@@ -170,20 +175,6 @@ $space-width: 15px;
     .el-button{
       margin-bottom: 0;
     }
-  }
-  &__menu {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    width: 100%;
-    min-height: 40px;
-    height: auto;
-    overflow: hidden;
-    margin-bottom: 5px;
-  }
-  &__right {
-    // display: flex;
-    // justify-content: flex-end;
   }
   &__filter {
     &-item {
@@ -261,9 +252,7 @@ $space-width: 15px;
     min-width: 150px;
     max-height: 250px;
     background-color: #fff;
-    position: absolute;
-    top:50px;
-    left:0;
+    position: fixed;
     z-index:2001;
   }
   &__arrow{

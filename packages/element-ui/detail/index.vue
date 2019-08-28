@@ -29,9 +29,11 @@
                   v-if="column.formslot"></slot>
             <template v-else>
               <span v-if="column.parentProp"
-                    :class="b('content')">{{handleDetail(column,item,((cascaderDIC[0] || {})[0] || {})[column.prop])}}</span>
+                    :class="b('content')"
+                    v-html="handleDetail(column,item,((cascaderDIC[0] || {})[0] || {})[column.prop])"></span>
               <span v-else
-                    :class="b('content')">{{handleDetail(column,item,DIC[column.prop])}}</span>
+                    :class="b('content')"
+                    v-html="handleDetail(column,item,DIC[column.prop])"></span>
             </template>
           </div>
         </el-col>
@@ -55,14 +57,14 @@ export default create({
   props: {
     value: {}
   },
-  data() {
+  data () {
     return {
       form: {},
       itemSpanDefault: 8
     };
   },
   computed: {
-    parentOption() {
+    parentOption () {
       let option = this.deepClone(this.tableOption);
       let group = option.group;
       if (!group) {
@@ -73,13 +75,13 @@ export default create({
       delete option.column;
       return option;
     },
-    labelPostion: function() {
+    labelPostion: function () {
       if (this.option.labelPostion) {
         return this.tableOption.labelPostion;
       }
       return "right";
     },
-    columnOption() {
+    columnOption () {
       let list = [...this.parentOption.group] || [];
       list.forEach((ele, index) => {
         ele.column = ele.column || [];
@@ -96,19 +98,19 @@ export default create({
   },
   watch: {
     value: {
-      handler() {
+      handler () {
         this.form = this.value;
         this.loadDic();
       },
       deep: true
     }
   },
-  created() {
+  created () {
     this.form = this.value;
     this.loadDic();
   },
   methods: {
-    getLabelWidth(column, item) {
+    getLabelWidth (column, item) {
       const labelWidth = column.labelWidth || item.labelWidth;
       if (labelWidth) {
         return {
@@ -120,14 +122,14 @@ export default create({
         width: this.setPx(labelWidth)
       };
     },
-    loadDic() {
+    loadDic () {
       //初始化字典
       this.columnOption.forEach(ele => {
         this.handleLoadDic(ele);
         this.handleLoadCascaderDic(ele.column, this.form);
       });
     },
-    handleDetail(column, option, DIC) {
+    handleDetail (column, option, DIC) {
       let result = this.form[column.prop];
       result = detail(this.form, column, option, DIC);
       if (!this.validatenull(DIC)) {

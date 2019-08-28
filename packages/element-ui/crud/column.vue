@@ -32,25 +32,13 @@
                          :width="column.width"
                          :fixed="crud.isMobile?false:column.fixed">
           <template slot-scope="scope">
-            <!-- <span v-if="column.prop===crud.treeProp"
-                  v-for="space in scope.row._level"
-                  class="ms-tree-space"
-                  :key="space"></span>
-            <span class="tree-ctrl"
-                  v-if="iconShow(column.prop,scope.row)"
-                  @click="toggleExpanded(scope.row,scope.$index)">
-              <i v-if="!scope.row._expand"
-                 class="el-icon-plus"></i>
-              <i v-else
-                 class="el-icon-minus"></i>
-            </span> -->
-            <span :class="{'ms-tree-title':column.prop===crud.treeProp}">
+            <span>
               <template v-if="cellEditFlag(scope.row,column)">
-                <component :is="getCellType(column.type)"
+                <component :is="getComponent(column.type)"
                            size="mini"
                            v-model="scope.row[column.prop]"
-                           :type="getType(column)"
-                           :disabled="btnDisabled"
+                           :type="column.type"
+                           :disabled="column.disabled || crud.btnDisabled"
                            :props="column.props || crud.tableOption.props"
                            :format="column.format"
                            :parent="column.parent"
@@ -130,15 +118,16 @@
 import dynamicColumn from "./dynamic-column";
 import { sendDic } from "core/dic";
 import { getComponent, getPlaceholder } from "core/dataformat";
-import { getCellType, getType } from "core/dataformat";
 import { detail } from "core/detail";
 export default {
   name: "column",
   components: {
     dynamicColumn
   },
+  inject: ["crud"],
   provide () {
     return {
+      crud: this.crud,
       dynamic: this
     };
   },
@@ -156,10 +145,7 @@ export default {
       return result;
     }
   },
-  inject: ["crud"],
   methods: {
-    getCellType,
-    getType,
     getComponent,
     getPlaceholder,
     vaildColumn (prop) {
@@ -249,23 +235,6 @@ export default {
     cellEditFlag (row, column) {
       return (
         row.$cellEdit &&
-        [
-          undefined,
-          "select",
-          "radio",
-          "checkbox",
-          "cascader",
-          "number",
-          "switch",
-          "input",
-          "tree",
-          "dates",
-          "date",
-          "datetime",
-          "week",
-          "month",
-          "year"
-        ].includes(column.type) &&
         column.slot !== true &&
         column.cell
       );
