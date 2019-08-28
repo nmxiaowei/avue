@@ -71,21 +71,14 @@ export default create({
     stopRecord () {
       this.videoObj.stopRecord();
     },
-    getRecord () {
-      this.videoObj.startRecord()
-      setTimeout(() => {
-        this.videoObj.stopRecord();
-      }, 100)
-
-    },
     getData () {
       const blob = new Blob(this.videoObj.chunks, {
-        type: 'video/webm'
+        type: 'video/mp4'
       });
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.addEventListener('loadend', () => {
-        var video_base64 = reader.result.split(',')[1];
+        var video_base64 = reader.result;
         this.$emit('data-change', video_base64)
       });
     }

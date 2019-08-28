@@ -18,7 +18,7 @@ let prototypes = {
   $Log,
   $NProgress
 };
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   permission(Vue);
@@ -77,6 +77,7 @@ const install = function(Vue, opts = {}) {
       SK: '',
       scope: '',
       url: '',
+      bucket: 'https://upload.qiniup.com',
       deadline: 1
     }, (opts.qiniu || {})),
     ali: Object.assign({

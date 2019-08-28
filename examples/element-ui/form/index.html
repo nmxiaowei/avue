@@ -209,18 +209,6 @@
             dicUrl: `${baseUrl}/getProvince`
           },
           {
-            label: '动态表单',
-            prop: 'dynamic',
-            type: 'dynamic',
-            rules: [
-              {
-                required: true,
-                message: '必填项测试',
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
             label: '图标选择器',
             prop: 'icon',
             type: 'icon-select',
@@ -257,8 +245,11 @@
 
     },
     methods: {
-      submit() {
-        this.$message.success(JSON.stringify(this.obj))
+      submit(form, done) {
+        this.$message.success('3s后关闭');
+        setTimeout(() => {
+          done()
+        }, 3000)
       }
     }
   })

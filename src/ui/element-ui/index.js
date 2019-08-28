@@ -24,6 +24,7 @@ import Radio from 'components/radio';
 import Select from 'components/select';
 import Cascader from 'components/cascader';
 import InputNumber from 'components/input-number';
+import Verifys from 'components/verify';
 import Switchs from 'components/switch';
 import Rate from 'components/rate';
 import Upload from 'components/upload';
@@ -86,6 +87,7 @@ export default [
   Queue,
   Dynamic,
   Video,
+  Verifys,
   IconSelect,
   BackTop,
   textEllipsis,

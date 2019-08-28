@@ -40,11 +40,11 @@ export default class RecordVideo {
             // 兼容旧的浏览器
             this.video.src = window.URL.createObjectURL(stream);
           }
+
           // 当视频的元数据已经加载时触发
           this.video.addEventListener('loadmetadata', () => {
             this.video.play();
           });
-
           this.mediaRecorder = new MediaRecorder(stream);
           this.mediaRecorder.addEventListener('dataavailable', e => {
             this.chunks.push(e.data);
