@@ -40,7 +40,6 @@ import { getObjValue } from "utils/util";
 import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
-import packages from "core/packages";
 export default create({
   name: "upload",
   mixins: [props(), event()],
