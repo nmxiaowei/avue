@@ -54,7 +54,6 @@
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
               :stripe="tableOption.stripe"
-              :selectable="tableOption.selectable"
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
@@ -122,7 +121,8 @@
       <!-- 选择框 -->
       <el-table-column v-if="tableOption.selection"
                        type="selection"
-                       :reserve-selection="vaildData(tableOption.reserveSelection,true)"
+                       :selectable="tableOption.selectable"
+                       :reserve-selection="vaildData(tableOption.reserveSelection,false)"
                        :width="tableOption.selectionWidth || config.selectionWidth"
                        :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
                        align="center"></el-table-column>
