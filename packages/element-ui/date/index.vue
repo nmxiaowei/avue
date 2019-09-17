@@ -55,7 +55,7 @@ import locale from "../../core/common/locale";
 export default create({
   name: "date",
   mixins: [props(), event(), locale],
-  data() {
+  data () {
     return {
       text: "",
       menu: [],
@@ -81,7 +81,7 @@ export default create({
     },
     pickerOptions: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     type: {
       type: String,
@@ -91,31 +91,24 @@ export default create({
     format: {}
   },
   computed: {
-    isDategroup() {
+    isDategroup () {
       return this.type === "dategroup";
     }
   },
   watch: {
-    datetime() {
+    datetime () {
       this.text = "";
       this.setCurrent((this.datetime || []).join(","));
     }
   },
-  created() {
+  created () {
     if (this.isDategroup) {
       this.init();
     }
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    handleChange(val) {
-      this.setCurrent(val);
-    },
-    setCurrent(val) {
-      this.$emit("input", val);
-      this.$emit("change", val);
-    },
-    init() {
+    init () {
       this.menu = [
         {
           label: this.t("date.t"),
