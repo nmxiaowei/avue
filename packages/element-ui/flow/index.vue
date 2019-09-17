@@ -2,42 +2,37 @@
   <div :class="b()"
        :style="styleName">
     <div :id="id"
-         :style="styleName"
-         @mousedown="handleMouseDown">
+         :style="styleName">
       <div class="avue-grid"></div>
-      <avue-draggable v-for="(node,index) in option.nodeList"
-                      :ref="node.id"
-                      :id="node.id"
-                      :left="node.left"
-                      :top="node.top"
-                      :key="index"
-                      disabled
-                      @change="handleChange"
-                      @postion="changeNodeSite"
-                      :mask="false">
-        <div :class="b('node',{'active':active===node.id})"
-             @click="handleClick(node)">
-          <div :class="b('node-header')">
-            <i class="el-icon-rank"
-               :class="b('node-drag')"></i>
-            <slot name="header"
-                  :node="node">
-            </slot>
-          </div>
-          <div :class="b('node-body')">
-            {{node.name}}
-          </div>
-        </div>
-      </avue-draggable>
+      <flow-node v-for="(node,index) in option.nodeList"
+                 :node="node"
+                 :id="node.id"
+                 @click.native="handleClick(node)"
+                 @changeNodeSite="changeNodeSite"
+                 :index="index"
+                 :active="active"
+                 :key="index">
+        <template slot="header"
+                  slot-scope="{node}">
+          <slot name="header"
+                :node="node">
+          </slot>
+        </template>
+      </flow-node>
+
     </div>
   </div>
 </template>
 
 <script>
 import create from "core/create";
+import flowNode from './node'
 import { randomId } from 'utils/util';
 export default create({
   name: "flow",
+  components: {
+    flowNode
+  },
   data () {
     return {
       active: '',
@@ -139,14 +134,6 @@ export default create({
     handleClick (node) {
       this.$emit('click', node)
     },
-    handleMouseDown () {
-      //调用内部方法取消选中，false取消，true激活
-      for (var i = 0; i < this.option.nodeList.length; i++) {
-        let node = this.option.nodeList[i]
-        this.$refs[node.id][0].setActive(false);
-      }
-
-    },
     // 是否具有该线
     hasLine (from, to) {
       for (var i = 0; i < this.data.lineList.length; i++) {
@@ -171,23 +158,13 @@ export default create({
     changeLine (oldFrom, oldTo) {
       this.deleteLine(oldFrom, oldTo)
     },
-    handleChange (zindex, index) {
-      for (var i = 0; i < this.option.nodeList.length; i++) {
-        let node = this.option.nodeList[i]
-        if (i === index) {
-          this.$refs[node.id][0].setActive(true);
-        } else {
-          this.$refs[node.id][0].setActive(false);
-        }
-      }
-    },
     // 改变节点的位置
     changeNodeSite ({ index, left, top }) {
       for (var i = 0; i < this.option.nodeList.length; i++) {
         let node = this.option.nodeList[i]
         if (i === index) {
-          node.left = left
-          node.top = top
+          this.$set(this.option.nodeList[i], 'left', left)
+          this.$set(this.option.nodeList[i], 'top', top)
         }
       }
     },

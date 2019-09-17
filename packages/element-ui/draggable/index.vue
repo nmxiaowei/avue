@@ -1,5 +1,5 @@
 <template>
-  <div :class="b({'active':(active || overActive),'move':moveActive,'click':disabled})"
+  <div :class="b({'active':((active || overActive)&&!readonly),'move':moveActive,'click':disabled})"
        @mouseover.stop="disabled?false:handleMouseOver($event)"
        @mouseout.stop="disabled?false:handleMouseOut($event)"
        @mousedown.stop="disabled?false:handleMouseDown($event)"
@@ -8,7 +8,7 @@
        :style="styleName">
     <div :class="b('wrapper')"
          ref="wrapper">
-      <template v-if="active || overActive || moveActive">
+      <template v-if="(active || overActive || moveActive)&&!readonly">
         <div :style="styleLineName"
              :class="b('line',['left'])"></div>
         <div :style="styleLineName"
@@ -16,7 +16,8 @@
         <div :class="b('line',['label'])"
              :style="styleLabelName">{{baseLeft}},{{baseTop}}</div>
       </template>
-      <template v-for="(item,index) in rangeList">
+      <template v-for="(item,index) in rangeList"
+                v-if="!readonly">
         <div :class="b('range',[item.classname])"
              :key="index"
              v-if="active"
@@ -55,6 +56,10 @@ export default create({
     scale: {
       type: Number,
       default: 1
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     },
     resize: {
       type: Boolean,
