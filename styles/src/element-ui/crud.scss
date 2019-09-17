@@ -1,6 +1,9 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
+  .el-checkbox:last-of-type {
+    margin-right: 0px;
+  }
   &__menu {
     display: flex;
     justify-content: space-between;
