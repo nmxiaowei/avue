@@ -150,11 +150,15 @@ export const findByValue = (dic, value, props, isTree) => {
   if (validatenull(dic)) return value;
   let result = '';
   props = props || DIC_PROPS;
-  if (value instanceof Array && isTree) {
+  if (value instanceof Array) {
     result = [];
     for (let i = 0; i < value.length; i++) {
       const dicvalue = value[i];
-      result.push(findLabelNode(dic, dicvalue, props) || dicvalue);
+      if (isTree) {
+        result.push(findLabelNode(dic, dicvalue, props) || dicvalue);
+      } else {
+        result.push(findArrayLabel(dic, dicvalue, props));
+      }
     }
     result = result.join(DIC_SPLIT).toString();
 
@@ -211,6 +215,16 @@ export const filterForm = (form) => {
  * 根据字典的value查找对应的index
  */
 
+export const findArrayLabel = (dic, value, props) => {
+  const valueKey = props.value || DIC_PROPS.value;
+  const labelKey = props.label || DIC_PROPS.label;
+  for (let i = 0; i < dic.length; i++) {
+    if (dic[i][valueKey] === value) {
+      return dic[i][labelKey];
+    }
+  }
+  return value;
+};
 export const findArray = (dic, value, valueKey) => {
   valueKey = valueKey || DIC_PROPS.value;
   for (let i = 0; i < dic.length; i++) {
