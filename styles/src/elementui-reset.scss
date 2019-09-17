@@ -64,7 +64,9 @@
     height:23px;
   }
 }
-
+.el-pagination__editor.el-input .el-input__inner {
+  line-height: 28px;
+}
 .el-drawer__body{
   height: 100%;
 }
