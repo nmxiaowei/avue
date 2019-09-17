@@ -39,7 +39,7 @@
                    :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
-                   :default-expanded-keys="keysList"
+                   :default-expanded-keys="defaultExpandAll?keysList:[]"
                    :default-checked-keys="keysList"
                    :default-expand-all="defaultExpandAll"
                    @node-click.self="handleNodeClick">
