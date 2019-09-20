@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="obj"></avue-form>
+    <avue-crud :option="option" :data="data"></avue-crud>
   </div>
 </body>
 <script>
@@ -27,7 +27,7 @@
     el: '#app',
     data() {
       return {
-        obj: {
+        data: [{
           dynamic: [{
             input: 1,
             select: 1,
@@ -37,7 +37,7 @@
             select: 2,
             radio: 1,
           }]
-        },
+        }],
         option: {
           labelWidth: 110,
           column: [{

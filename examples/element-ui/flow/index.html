@@ -23,6 +23,7 @@
     <el-button type="primary" @click="$refs.flow.addNode('测试节点')">添加节点</el-button>
     <el-button type="primary" @click="handleNext">下一个节点</el-button>
     <br /><br />
+    {{option}}
     <avue-flow :height="600" :width="1200" ref="flow" :option="option" v-model="form" @click="handleClick">
       <template slot-scope="scope" slot="header">
         <i class="el-icon-delete" @click="$refs.flow.deleteNode(scope.node.id)"></i>
