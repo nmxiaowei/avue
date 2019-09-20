@@ -54,7 +54,6 @@
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
               :stripe="tableOption.stripe"
-              :selectable="tableOption.selectable"
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
@@ -62,6 +61,9 @@
               @cell-mouse-enter="cellMouseEnter"
               @cell-mouse-leave="cellMouseLeave"
               @cell-click="cellClick"
+              @header-click="headerClick"
+              @row-contextmenu="rowContextmenu"
+              @header-contextmenu="headerContextmenu"
               @cell-dblclick="cellDblclick"
               :row-class-name="rowClassName"
               :cell-class-name="cellClassName"
@@ -122,7 +124,8 @@
       <!-- 选择框 -->
       <el-table-column v-if="tableOption.selection"
                        type="selection"
-                       :reserve-selection="vaildData(tableOption.reserveSelection,true)"
+                       :selectable="tableOption.selectable"
+                       :reserve-selection="vaildData(tableOption.reserveSelection,false)"
                        :width="tableOption.selectionWidth || config.selectionWidth"
                        :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
                        align="center"></el-table-column>
@@ -344,6 +347,7 @@ export default create({
       let result = [];
       const safe = this;
       function findProp (list) {
+        if (!Array.isArray(list)) return
         list.forEach(ele => {
           if (ele.prop) {
             result.push(ele);
@@ -646,6 +650,18 @@ export default create({
     //当某个单元格被点击时会触发该事件
     cellClick (row, column, cell, event) {
       this.$emit("cell-click", row, column, cell, event);
+    },
+    //	当某一列的表头被点击时会触发该事件
+    headerClick (column, event) {
+      this.$emit("header-click", column, event);
+    },
+    //当某一行被鼠标右键点击时会触发该事件
+    rowContextmenu (row, column, event) {
+      this.$emit("row-contextmenu", row, column, event);
+    },
+    //当某一列的表头被鼠标右键点击时触发该事件
+    headerContextmenu (column, event) {
+      this.$emit("header-contextmenu", column, event);
     },
     //当某个单元格被双击击时会触发该事件
     cellDblclick (row, column, cell, event) {

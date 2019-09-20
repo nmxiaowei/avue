@@ -12,8 +12,14 @@ const list = {
     version: '1.10.0-rc2',
     github: 'https://github.com/SortableJS/Sortable'
   },
+  'Screenshot': {
+    url: 'https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js',
+    title: '需要引入html2canvas依赖包',
+    version: '0.5.0-beta4',
+    github: 'https://github.com/niklasvh/html2canvas/'
+  },
   'CryptoJS': {
-    url: 'https://avuex.avue.top/cdn/CryptoJS.js',
+    url: 'https://avuejs.com/cdn/CryptoJS.js',
     title: '七牛云图片上传，需要引入CryptoJS',
     version: '3.1.2'
   },
@@ -69,7 +75,7 @@ const list = {
 
 export default (() => {
   return {
-    logs: function(name) {
+    logs: function (name) {
       if (__ENV__ === 'development') {
         const obj = list[name];
         $Log.capsule(

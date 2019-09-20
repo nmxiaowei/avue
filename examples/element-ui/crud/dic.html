@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :data="data" :option="option"></avue-crud>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: [
+          {
+            name: '张三',
+            sex: '男',
+            grade: 1,
+            cascader: [0, 1],
+            checkbox: [0, 1],
+            tree: 0,
+          }, {
+            name: '李四',
+            sex: '女',
+            grade: 0,
+            cascader: [0, 2],
+            checkbox: [0, 1],
+            tree: 1
+          }
+        ],
+        option: {
+          page: false,
+          align: 'center',
+          menuAlign: 'center',
+          column: [
+            {
+              label: '姓名',
+              prop: 'name',
+            }, {
+              label: '性别',
+              prop: 'sex'
+            }, {
+              label: '权限',
+              prop: 'grade',
+              type: 'select',
+              dicData: [
+                {
+                  label: '有权限',
+                  value: 1
+                }, {
+                  label: '无权限',
+                  value: 0
+                }, {
+                  label: '禁止项',
+                  disabled: true,
+                  value: -1
+                }
+              ]
+            }, {
+              label: '级别',
+              prop: 'cascader',
+              type: 'cascader',
+              dicData: [{
+                label: '一级',
+                value: 0,
+                children: [
+                  {
+                    label: '一级1',
+                    value: 1,
+                  }, {
+                    label: '一级2',
+                    value: 2,
+                  }
+                ]
+              }],
+            },
+            {
+              width: 120,
+              label: '多选',
+              prop: 'checkbox',
+              type: 'checkbox',
+              span: 24,
+              dicData: [{
+                label: '有权限',
+                value: 1
+              }, {
+                label: '无权限',
+                value: 0
+              }, {
+                label: '禁止项',
+                disabled: true,
+                value: -1
+              }]
+            },
+            {
+              label: '树型',
+              prop: 'tree',
+              type: 'tree',
+              dicData: [{
+                label: '一级',
+                value: 0,
+                children: [
+                  {
+                    label: '一级1',
+                    value: 1,
+                  }, {
+                    label: '一级2',
+                    value: 2,
+                  }
+                ]
+              }]
+            }
+          ]
+        }
+      }
+    }
+  })
+</script>
+
+</html>

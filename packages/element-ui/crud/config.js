@@ -68,5 +68,7 @@ export default {
   calcHeight: 300,
   title: '表格标题',
   width: '100%',
+  searchGutter: 20,
+  searchLabelWidth: 80,
   dateDefault: true
 };

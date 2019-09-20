@@ -9,6 +9,7 @@ import { watermark } from 'plugin/canvas/';
 import './utils/es6.js';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
+import $Screenshot from 'plugin/screenshot/';
 import $Clipboard from 'plugin/clipboard/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
@@ -16,7 +17,8 @@ import $ImagePreview from 'packages/core/components/image-preview/';
 let prototypes = {
   $Clipboard,
   $Log,
-  $NProgress
+  $NProgress,
+  $Screenshot
 };
 const install = function (Vue, opts = {}) {
   Vue.use(_export);

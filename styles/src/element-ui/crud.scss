@@ -1,6 +1,9 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
+  .el-checkbox:last-of-type {
+    margin-right: 0px;
+  }
   &__menu {
     display: flex;
     justify-content: space-between;
@@ -12,8 +15,10 @@ $space-width: 15px;
     margin-bottom: 5px;
   }
   &-search{
+    .el-form-item{
+      margin-bottom: 10px !important;
+    }
     &__menu {
-      padding-left: 20px;
       display: flex;
       align-items: center;
       height: 40px;

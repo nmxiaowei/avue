@@ -2,20 +2,21 @@
   <el-collapse-transition>
     <div v-show="searchShow && searchFlag"
          style="margin-bottom:10px;">
-      <el-form :class="b('search')"
+      <el-form :class="b()"
                :model="searchForm"
                label-suffix=":"
-               label-width="80px"
+               :label-width="setPx(crud.tableOption.searchLabelWidth || config.searchLabelWidth)"
                label-position="right"
                ref="searchForm">
         <!-- 循环列搜索框 -->
-        <el-row :gutter="10">
+        <el-row :gutter="crud.tableOption.searchGutter || config.searchGutter">
           <el-col :md="column.searchSpan || 6"
                   :xs="24"
                   v-for="(column,index) in crud.propOption"
                   :key="index"
                   v-if="column.search">
             <el-form-item :prop="column.prop"
+                          :label-width="setPx(column.searchLabelWidth || config.searchLabelWidth)"
                           :label="column.label">
               <el-tooltip :disabled="!column.searchTip"
                           :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"

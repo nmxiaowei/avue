@@ -52,6 +52,8 @@
     </el-tree>
     <el-dialog :title="obj[labelKey]"
                :visible.sync="box"
+               modal-append-to-body
+               append-to-body
                @close="hide"
                :width="vaildData(option.dialogWidth,'50%')">
       <avue-form v-model="form"
