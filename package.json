@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -80,13 +80,10 @@
     "dayjs": "^1.7.8",
     "deepmerge": "^3.1.0",
     "element-ui": "^2.11.0",
-    "file-saver": "^2.0.0",
-    "mockjs": "^1.0.1-beta3",
     "nprogress": "^0.2.0",
     "vant": "^1.4.8",
     "vue": "^2.5.17",
-    "vuedraggable": "^2.17.0",
-    "xlsx": "^0.14.1"
+    "vuedraggable": "^2.17.0"
   },
   "files": [
     "lib",
