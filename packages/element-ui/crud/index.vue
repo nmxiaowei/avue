@@ -347,6 +347,7 @@ export default create({
       let result = [];
       const safe = this;
       function findProp (list) {
+        if (!Array.isArray(list)) return
         list.forEach(ele => {
           if (ele.prop) {
             result.push(ele);
