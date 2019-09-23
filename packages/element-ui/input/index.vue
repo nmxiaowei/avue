@@ -235,6 +235,7 @@ export default create({
       return this.type === "tree";
     },
     labelShow () {
+      if (this.validatenull(this.value)) return '';
       if (this.multiple) {
         return (this.labelText || []).join(DIC_SPLIT).toString()
       }

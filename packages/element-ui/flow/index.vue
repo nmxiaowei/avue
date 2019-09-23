@@ -262,7 +262,7 @@ export default create({
           let from = evt.source.id
           let to = evt.target.id
           if (_this.loadEasyFlowFinish) {
-            _this.lineList.push({
+            _this.option.lineList.push({
               from: from,
               to: to
             })
