@@ -108,6 +108,9 @@ export default create({
   },
   mounted () { },
   methods: {
+    setCurrent(val){
+      this.$emit('input',val)
+    },
     init () {
       this.menu = [
         {
