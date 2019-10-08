@@ -15,17 +15,18 @@
                append-to-body
                :visible.sync="box"
                width="40%">
-      <avue-tabs :option="option"
-                 @change="handleTabs"></avue-tabs>
-      <div :class="b('list')">
-        <div :class="b('item',{'active':text===item})"
-             v-for="(item,index) in list"
-             :key="index">
-          <i :class="[b('icon'),item]"
-             @click="handleSubmit(item)"></i>
+      <el-scrollbar style="height:400px;overflow-x:hidden">
+        <avue-tabs :option="option"
+                   @change="handleTabs"></avue-tabs>
+        <div :class="b('list')">
+          <div :class="b('item',{'active':text===item})"
+               v-for="(item,index) in list"
+               :key="index">
+            <i :class="[b('icon'),item]"
+               @click="handleSubmit(item)"></i>
+          </div>
         </div>
-      </div>
-
+      </el-scrollbar>
     </el-dialog>
   </div>
 </template>
@@ -45,35 +46,35 @@ export default create({
       }
     }
   },
-  data() {
+  data () {
     return {
       box: false,
       tabs: {}
     };
   },
   computed: {
-    list() {
+    list () {
       return this.tabs.list || [];
     },
-    option() {
+    option () {
       return {
         column: this.iconList
       };
     }
   },
-  created() {
+  created () {
     this.tabs = this.iconList[0] || {};
   },
   methods: {
-    handleTabs(tabs) {
+    handleTabs (tabs) {
       this.tabs = tabs;
     },
-    handleSubmit(item) {
+    handleSubmit (item) {
       this.box = false;
       this.text = item;
       this.handleChange(item);
     },
-    handleShow() {
+    handleShow () {
       if (this.disabled || this.readonly) return;
       this.box = true;
     }

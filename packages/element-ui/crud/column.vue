@@ -14,7 +14,7 @@
                 :name="item.prop"></slot>
         </template>
       </dynamic-column>
-      <template v-else>
+      <template v-else-if="!['dynamic'].includes(column.type)">
         <el-table-column v-if="vaildColumn(column.prop)"
                          :key="column.prop"
                          :prop="column.prop"
@@ -33,38 +33,19 @@
                          :fixed="crud.isMobile?false:column.fixed">
           <template slot-scope="scope">
             <span>
-              <template v-if="cellEditFlag(scope.row,column)">
-                <component :is="getComponent(column.type)"
-                           size="mini"
-                           v-model="scope.row[column.prop]"
-                           :type="column.type"
-                           :disabled="column.disabled || crud.btnDisabled"
-                           :props="column.props || crud.tableOption.props"
-                           :format="column.format"
-                           :parent="column.parent"
-                           :change="column.change"
-                           :precision="column.precision"
-                           :remote="column.remote"
-                           :dicUrl="column.dicUrl"
-                           :focus="column.focus"
-                           :blur="column.blur"
-                           :click="column.click"
-                           :maxlength="column.maxlength"
-                           :prefix-icon="column.prefixIcon"
-                           :suffix-icon="column.suffixIcon"
-                           :defaultExpandAll="column.defaultExpandAll"
-                           :filterable="column.searchFilterable"
-                           :filter-method="column.searchFilterMethod"
-                           :value-format="column.valueFormat"
-                           :multiple="column.multiple"
-                           :allow-create="column.allowCreate"
-                           :default-first-option="column.defaultFirstOption"
-                           :readonly="column.readonly"
-                           :clearable="vaildData(column.clearable,false)"
-                           :placeholder="column.searchPlaceholder || column.label"
-                           @change="column.cascader?handleChange(index,scope.row):''"
-                           :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"></component>
-              </template>
+              <form-temp :column="column"
+                         v-if="cellEditFlag(scope.row,column)"
+                         size="mini"
+                         :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
+                         :t="t"
+                         :props="column.props || crud.tableOption.props"
+                         :disabled="column.disabled || crud.btnDisabled"
+                         :clearable="vaildData(column.clearable,false)"
+                         :upload-before="crud.uploadBefore"
+                         :upload-after="crud.uploadAfter"
+                         v-model="scope.row[column.prop]"
+                         @change="column.cascader?handleChange(index,scope.row):''">
+              </form-temp>
               <slot :row="scope.row"
                     :dic="crud.DIC[column.prop]"
                     :size="crud.isMediumSize"
@@ -116,12 +97,16 @@
 
 <script>
 import dynamicColumn from "./dynamic-column";
+import locale from "../../core/common/locale";
 import { sendDic } from "core/dic";
 import { getComponent, getPlaceholder } from "core/dataformat";
+import formTemp from '../../core/components/form/index'
 import { detail } from "core/detail";
 export default {
   name: "column",
+  mixins: [locale],
   components: {
+    formTemp,
     dynamicColumn
   },
   inject: ["crud"],
