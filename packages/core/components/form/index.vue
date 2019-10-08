@@ -64,7 +64,7 @@
              :prependClick="column.prependClick"
              :prop="column.prop"
              :props="column.props || props"
-             :propsHttp="column.propsHttp || spropsHttp"
+             :propsHttp="column.propsHttp || propsHttp"
              :range="column.range"
              :iconList="column.iconList"
              :readonly="column.readonly"
@@ -110,18 +110,30 @@ import { getComponent, getPlaceholder } from "core/dataformat";
 export default {
   name: 'form-temp',
   props: {
-    value: [Array, String, Number, Object],
+    value: [Array, String, Number, Object, Boolean],
     t: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     props: {
       type: Object
     },
+    clearable: {
+      type: Boolean
+    },
     propsHttp: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    props: {
       type: Object
     },
     dic: {
       type: Array
+    },
+    placeholder: {
+      type: String
     },
     size: {
       type: String
