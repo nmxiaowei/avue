@@ -70,7 +70,14 @@
               column: [{
                 width: 200,
                 label: '输入框',
-                prop: "input"
+                prop: "input",
+                rules: [
+                  {
+                    required: true,
+                    message: '必填项测试',
+                    trigger: 'blur'
+                  }
+                ]
               }, {
                 width: 200,
                 label: '密码框',
