@@ -151,7 +151,7 @@ export default {
   data () {
     return {
       first: false,
-      text: '',
+      text: undefined,
     }
   },
   watch: {
@@ -163,7 +163,6 @@ export default {
         } else {
           this.first = true;
         }
-
       }
     },
     value: {
