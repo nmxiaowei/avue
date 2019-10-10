@@ -52,6 +52,7 @@
                                :propsHttp="parentOption.propsHttp"
                                :upload-before="uploadBefore"
                                :upload-after="uploadAfter"
+                               :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                @change="column.cascader?handleChange(item.column,cindex):''">
                       <template :slot="column.prop+'Type'"
