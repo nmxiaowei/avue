@@ -302,61 +302,63 @@ export default create({
     },
 
     handleChange (item, index) {
-      const column = item[index]; //获取当前节点级联
-      const list = column.cascader;
-      const str = list.join(",");
-      const value = this.form[column.prop];
-      // 下一个节点
-      const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
-      const columnNextProp = columnNext.prop;
-      /**
-       * 1.判断当前节点是否有下级节点
-       * 2.判断当前节点是否有值
-       */
-      if (
-        this.validatenull(list) ||
-        this.validatenull(value) ||
-        this.validatenull(columnNext)
-      ) {
-        return;
-      }
-
-      // 如果不是首次加载则清空全部关联节点的属性值和字典值
-      if (this.formList.includes(str)) {
-        //清空子类字典列表和值
-        list.forEach(ele => {
-          this.form[ele] = "";
-          this.$set(this.DIC, ele, []);
-        });
-      }
-      // 根据当前节点值获取下一个节点的字典
-      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
-        res => {
-          const dic = Array.isArray(res) ? res : [];
-          // 修改字典
-          this.$set(this.DIC, columnNextProp, dic);
-          /**
-           * 1.是change多级默认联动
-           * 2.字典不为空
-           * 3.非首次加载
-           */
-          if (!this.validatenull(dic) && this.formList.includes(str)) {
-            //取字典的指定项或则第一项
-            let dicvalue = dic[columnNext.defaultIndex || 0];
-            if (!dicvalue) dicvalue = dic[0];
-            if (dicvalue) {
-              this.form[columnNext.prop] =
-                dicvalue[
-                (columnNext.props || this.parentOption.props || {}).value ||
-                "value"
-                ];
-              this.clearValidate();
-            }
-          }
-          //首次加载的放入队列记录
-          if (!this.formList.includes(str)) this.formList.push(str);
+      setTimeout(() => {
+        const column = item[index]; //获取当前节点级联
+        const list = column.cascader;
+        const str = list.join(",");
+        const value = this.form[column.prop];
+        // 下一个节点
+        const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
+        const columnNextProp = columnNext.prop;
+        /**
+         * 1.判断当前节点是否有下级节点
+         * 2.判断当前节点是否有值
+         */
+        if (
+          this.validatenull(list) ||
+          this.validatenull(value) ||
+          this.validatenull(columnNext)
+        ) {
+          return;
         }
-      );
+
+        // 如果不是首次加载则清空全部关联节点的属性值和字典值
+        if (this.formList.includes(str)) {
+          //清空子类字典列表和值
+          list.forEach(ele => {
+            this.form[ele] = "";
+            this.$set(this.DIC, ele, []);
+          });
+        }
+        // 根据当前节点值获取下一个节点的字典
+        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+          res => {
+            const dic = Array.isArray(res) ? res : [];
+            // 修改字典
+            this.$set(this.DIC, columnNextProp, dic);
+            /**
+             * 1.是change多级默认联动
+             * 2.字典不为空
+             * 3.非首次加载
+             */
+            if (!this.validatenull(dic) && this.formList.includes(str)) {
+              //取字典的指定项或则第一项
+              let dicvalue = dic[columnNext.defaultIndex || 0];
+              if (!dicvalue) dicvalue = dic[0];
+              if (dicvalue) {
+                this.form[columnNext.prop] =
+                  dicvalue[
+                  (columnNext.props || this.parentOption.props || {}).value ||
+                  "value"
+                  ];
+                this.clearValidate();
+              }
+            }
+            //首次加载的放入队列记录
+            if (!this.formList.includes(str)) this.formList.push(str);
+          }
+        );
+      }, 0)
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {
