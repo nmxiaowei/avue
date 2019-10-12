@@ -29,6 +29,8 @@
                     v-model="text"
                     :size="size"
                     :readonly="readonly"
+                    :default-value="defaultValue"
+                    :default-time="defaultTime"
                     :range-separator="t('date.tip')"
                     :start-placeholder="startPlaceholder"
                     :end-placeholder="endPlaceholder"
@@ -36,7 +38,6 @@
                     :clearable="disabled?false:clearable"
                     :picker-options="pickerOptions"
                     :value-format="valueFormat"
-                    :default-time="defaultTime"
                     :placeholder="placeholder"
                     @change="handleChange"
                     @blur="handleBlur"
@@ -76,6 +77,9 @@ export default create({
       type: String,
       default: "结束日期"
     },
+    defaultValue: {
+      type: String
+    },
     defaultTime: {
       type: String
     },
@@ -108,8 +112,8 @@ export default create({
   },
   mounted () { },
   methods: {
-    setCurrent(val){
-      this.$emit('input',val)
+    setCurrent (val) {
+      this.$emit('input', val)
     },
     init () {
       this.menu = [

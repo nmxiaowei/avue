@@ -35,6 +35,8 @@
              :filter="column.filter"
              :blur="column.blur"
              :focus="column.focus"
+             :default-value="column.defaultValue"
+             :default-time="column.defaultTime"
              :typeformat="column.typeformat"
              :filesize="column.filesize"
              :filterable="column.filterable"
