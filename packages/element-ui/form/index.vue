@@ -3,6 +3,7 @@
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
              status-icon
+             @submit.native.prevent
              :model="form"
              label-suffix=":"
              :label-position="parentOption.labelPosition"
@@ -32,6 +33,7 @@
                 <el-form-item :label="column.label"
                               :prop="column.prop"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
+                              :label-position="column.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
