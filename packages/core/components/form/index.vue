@@ -21,6 +21,7 @@
              :colors="column.colors"
              :canvasOption="column.canvasOption"
              :controls-position="column.controlsPosition"
+             :data="column.data"
              :dataType="column.dataType"
              :defaultExpandAll="column.defaultExpandAll"
              :defaultTime="column.defaultTime"
