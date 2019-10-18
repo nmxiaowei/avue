@@ -41,6 +41,7 @@ import Queue from 'components/queue';
 import IconSelect from 'components/icon-select';
 import BackTop from 'components/back-top';
 import Video from 'components/video';
+import Login from 'components/login';
 import textEllipsis from 'components/text-ellipsis';
 import packages from 'core/packages';
 if (!window.Element) {
@@ -93,6 +94,7 @@ export default [
   textEllipsis,
   Skeleton,
   Sign,
+  Login,
   ...AvueData,
   ...AvueEchart
 ];
