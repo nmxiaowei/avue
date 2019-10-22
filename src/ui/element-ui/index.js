@@ -30,6 +30,7 @@ import Rate from 'components/rate';
 import Upload from 'components/upload';
 import Sign from 'components/sign';
 import Slider from 'components/slider';
+import Keyboard from 'components/keyboard';
 import Img from 'components/img';
 import Group from 'components/group';
 import Tree from 'components/tree';
@@ -80,6 +81,7 @@ export default [
   Upload,
   Slider,
   Img,
+  Keyboard,
   Detail,
   Group,
   Tree,
