@@ -23,6 +23,8 @@
              :controls-position="column.controlsPosition"
              :data="column.data"
              :dataType="column.dataType"
+             :defaultCheckedKeys="column.defaultCheckedKeys"
+             :defaultExpandedKeys="column.defaultExpandedKeys"
              :defaultExpandAll="column.defaultExpandAll"
              :defaultTime="column.defaultTime"
              :dic="dic"
