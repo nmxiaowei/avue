@@ -106,5 +106,10 @@
   display: flex;
   justify-content: center
 }
-.el-tree-node.is-current>.el-tree-node__content { color: #409eff; background-color: #F5F7FA; }
-
+.el-tree-node.is-current>.el-tree-node__content {
+   color: #409eff; 
+   background-color: #F5F7FA; 
+}
+.el-transfer-panel__item{
+  width: 100%;
+}
