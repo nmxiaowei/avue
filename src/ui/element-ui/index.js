@@ -16,6 +16,7 @@ import Detail from 'components/detail';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
+import Notice from 'components/notice';
 import License from 'components/license';
 import Progress from 'components/progress';
 import Time from 'components/time';
@@ -68,6 +69,7 @@ export default [
   Draggable,
   Empty,
   Flow,
+  Notice,
   License,
   Progress,
   Time,

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+  <style>
+    #app,
+    html,
+    body {
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-notice :data="data" :option="option" @page-change="pageChange"></avue-notice>
+  </div>
+</body>
+<script>
+  let list = [{
+    img: 'https://avuejs.com/images/logo-bg.jpg',
+    title: '史蒂夫·乔布斯 关注了你',
+    subtitle: '05-08 15:08',
+    tag: '已经开始',
+    status: 0
+  }, {
+    img: 'https://avuejs.com/images/logo-bg.jpg',
+    title: '斯蒂夫·沃兹尼亚克 关注了你',
+    subtitle: '05-08 15:08',
+    tag: '未开始',
+    status: 1
+  }, {
+    img: 'https://avuejs.com/images/logo-bg.jpg',
+    title: '乔纳森·伊夫 关注了你',
+    subtitle: '05-08 15:08',
+    tag: '有警告',
+    status: 2
+  }, {
+    img: 'https://avuejs.com/images/logo-bg.jpg',
+    title: '蒂姆·库克 关注了你',
+    subtitle: '05-08 15:08',
+    status: 3,
+    tag: '有错误'
+  }, {
+    img: 'https://avuejs.com/images/logo-bg.jpg',
+    title: '比尔·费尔南德斯 关注了你',
+    subtitle: '05-08 15:08',
+    status: 4,
+    tag: '已完成'
+  }]
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          props: {
+            img: 'img',
+            title: 'title',
+            subtitle: 'subtitle',
+            tag: 'tag',
+            status: 'status'
+          },
+        },
+        data: list,
+      }
+    },
+    created() {
+
+    },
+    methods: {
+      pageChange(page, done) {
+        setTimeout(() => {
+          this.$message.success('页码' + page)
+          this.data = this.data.concat(list);
+          done();
+        }, 1000)
+
+      },
+    }
+  })
+</script>
+
+</html>
