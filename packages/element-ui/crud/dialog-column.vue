@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :class="b('dialog')"
+  <el-dialog :class="b('column')"
              lock-scroll
              :modal-append-to-body="false"
              append-to-body
@@ -8,7 +8,6 @@
              :width="crud.isMobile?'100%':'600px'"
              :visible.sync="columnBox">
     <avue-checkbox ref="transfer"
-                   border
                    size="small"
                    v-model="columnIndex"
                    :props="defaultProps"
@@ -23,6 +22,7 @@ import packages from "core/packages";
 import locale from "../../core/common/locale";
 import { validatenull } from "utils/validate";
 export default create({
+  name: 'crud',
   mixins: [locale],
   inject: ["crud"],
   data () {

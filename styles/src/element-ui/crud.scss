@@ -4,6 +4,12 @@ $space-width: 15px;
   .el-checkbox:last-of-type {
     margin-right: 0px;
   }
+  &__column{
+    .el-checkbox{
+      margin-bottom: 10px;
+      cursor: move;
+    }
+  }
   &__menu {
     display: flex;
     justify-content: space-between;
