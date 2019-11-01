@@ -127,11 +127,11 @@ export default create({
         },
         {
           label: this.t("date.n"),
-          value: GetDateStr(-7)
+          value: GetDateStr(-7) + ',' + GetDateStr(0)
         },
         {
           label: this.t("date.a"),
-          value: "-1"
+          value: ""
         }
       ];
       if (this.default) {
