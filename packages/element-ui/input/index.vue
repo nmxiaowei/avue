@@ -39,8 +39,8 @@
                    :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
-                   :default-expanded-keys="defaultExpandAll?keysList:[]"
-                   :default-checked-keys="keysList"
+                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?keysList:[])"
+                   :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
                    :default-expand-all="defaultExpandAll"
                    @node-click.self="handleNodeClick">
             <div style="width:100%;padding-right:10px;"
@@ -153,6 +153,12 @@ export default create({
     parent: {
       type: Boolean,
       default: true
+    },
+    defaultExpandedKeys: {
+      type: Array,
+    },
+    defaultCheckedKeys: {
+      type: Array,
     },
     defaultExpandAll: {
       type: Boolean,

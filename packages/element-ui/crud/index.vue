@@ -494,6 +494,12 @@ export default create({
     }
   },
   methods: {
+    refreshTable () {
+      this.doLayout = false;
+      this.$nextTick(() => {
+        this.doLayout = true;
+      })
+    },
     //开启排序
     setSort () {
       if (!window.Sortable) {

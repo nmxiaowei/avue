@@ -1,0 +1,15 @@
+.avue-login{
+  .el-form-item{
+    margin-bottom:18px;
+  }
+  .el-input-group__append{
+    padding: 0;
+  }
+  &__send{
+    min-width: 150px;
+    padding: 0 20px;
+  }
+  &__submit{
+    width: 100%;
+  }
+}

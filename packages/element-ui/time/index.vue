@@ -2,6 +2,7 @@
   <el-time-picker v-model="text"
                   :is-range="isRange"
                   :size="size"
+                  :default-value="defaultValue"
                   range-separator="至"
                   :start-placeholder="startPlaceholder"
                   :end-placeholder="endPlaceholder"
@@ -36,6 +37,9 @@ export default create({
     },
     value: {
       required: true
+    },
+    defaultValue: {
+      type: String
     },
     valueFormat: {
       default: ""

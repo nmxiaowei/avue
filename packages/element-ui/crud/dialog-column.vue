@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :class="b('dialog')"
+  <el-dialog :class="b('column')"
              lock-scroll
              :modal-append-to-body="false"
              append-to-body
@@ -7,44 +7,73 @@
              :title="t('crud.columnBtn')"
              :width="crud.isMobile?'100%':'600px'"
              :visible.sync="columnBox">
-    <el-transfer v-model="columnIndex"
-                 :data="columnList"
-                 :titles="[t('common.hide'), t('common.display')]"
-                 :props="defaultProps"></el-transfer>
-
+    <avue-checkbox ref="transfer"
+                   size="small"
+                   v-model="columnIndex"
+                   :props="defaultProps"
+                   :dic="columnList">
+    </avue-checkbox>
   </el-dialog>
 </template>
 <script>
 import config from "./config";
 import create from "core/create";
+import packages from "core/packages";
 import locale from "../../core/common/locale";
 import { validatenull } from "utils/validate";
 export default create({
+  name: 'crud',
   mixins: [locale],
   inject: ["crud"],
   data () {
     return {
       config: config,
       columnBox: false,
+      columnFirst: false,
       defaultProps: {
-        key: "prop"
+        value: 'prop'
       },
       columnList: [],
       columnIndex: []
     };
   },
-  created () { },
-  methods: {
-    handleChange () {
-      this.crud.doLayout = false;
-      this.$nextTick(() => {
-        this.crud.doLayout = true;
+  watch: {
+    columnIndex () {
+      this.crud.refreshTable();
+    },
+    columnBox (val) {
+      if (val) {
         this.$nextTick(() => {
-          this.crud.$refs.table.doLayout();
-        });
-      });
+          this.setSort()
+        })
+      }
+    }
+  },
+  methods: {
+    //开启排序
+    setSort () {
+      if (!window.Sortable) {
+        packages.logs("Sortable")
+        return
+      }
+      const el = this.$refs.transfer.$el.querySelectorAll('.el-checkbox-group')[0]
+      this.sortable = window.Sortable.create(el, {
+        sort: true,
+        handle: '.el-checkbox',
+        onEnd: evt => {
+          const oldindex = evt.oldIndex;
+          const newindex = evt.newIndex;
+          let targetRow = this.columnIndex.splice(oldindex, 1)[0]
+          this.columnIndex.splice(newindex, 0, targetRow)
+          let column = this.crud.columnOption;
+          targetRow = column.splice(oldindex, 1)[0]
+          column.splice(newindex, 0, targetRow)
+          this.crud.refreshTable();
+        }
+      })
     },
     columnInit () {
+      if (this.columnFirst) return
       this.columnIndex = [];
       this.columnList = [];
       this.crud.propOption.forEach((ele, index) => {
@@ -58,6 +87,7 @@ export default create({
           this.columnList.push(this.deepClone(obj));
         }
       });
+      this.columnFirst = true;
     }
   }
 });

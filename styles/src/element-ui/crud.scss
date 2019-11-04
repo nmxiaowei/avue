@@ -4,6 +4,15 @@ $space-width: 15px;
   .el-checkbox:last-of-type {
     margin-right: 0px;
   }
+  .el-range-editor--mini{
+    height: 28px;
+  }
+  &__column{
+    .el-checkbox{
+      margin-bottom: 10px;
+      cursor: move;
+    }
+  }
   &__menu {
     display: flex;
     justify-content: space-between;

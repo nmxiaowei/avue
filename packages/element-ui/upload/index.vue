@@ -79,6 +79,12 @@ export default create({
     };
   },
   props: {
+    data: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     value: {},
     onRemove: Function,
     showFileList: {
@@ -237,6 +243,10 @@ export default create({
       let oss_config = {};
       let client = {};
       let param = new FormData();
+      //附加属性
+      for (let o in this.data) {
+        param.append(o, this.data[o]);
+      }
       const done = () => {
         let url = this.action;
         param.append(this.fileName, file, file.name);

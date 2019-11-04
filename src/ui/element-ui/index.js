@@ -16,6 +16,7 @@ import Detail from 'components/detail';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
+import Notice from 'components/notice';
 import License from 'components/license';
 import Progress from 'components/progress';
 import Time from 'components/time';
@@ -30,6 +31,7 @@ import Rate from 'components/rate';
 import Upload from 'components/upload';
 import Sign from 'components/sign';
 import Slider from 'components/slider';
+import Keyboard from 'components/keyboard';
 import Img from 'components/img';
 import Group from 'components/group';
 import Tree from 'components/tree';
@@ -41,6 +43,7 @@ import Queue from 'components/queue';
 import IconSelect from 'components/icon-select';
 import BackTop from 'components/back-top';
 import Video from 'components/video';
+import Login from 'components/login';
 import textEllipsis from 'components/text-ellipsis';
 import packages from 'core/packages';
 if (!window.Element) {
@@ -66,6 +69,7 @@ export default [
   Draggable,
   Empty,
   Flow,
+  Notice,
   License,
   Progress,
   Time,
@@ -79,6 +83,7 @@ export default [
   Upload,
   Slider,
   Img,
+  Keyboard,
   Detail,
   Group,
   Tree,
@@ -93,6 +98,7 @@ export default [
   textEllipsis,
   Skeleton,
   Sign,
+  Login,
   ...AvueData,
   ...AvueEchart
 ];

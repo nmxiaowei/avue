@@ -3,6 +3,7 @@
     <div v-show="searchShow && searchFlag"
          style="margin-bottom:10px;">
       <el-form :class="b()"
+               @submit.native.prevent
                :model="searchForm"
                label-suffix=":"
                :label-width="setPx(crud.tableOption.searchLabelWidth || config.searchLabelWidth)"
@@ -16,6 +17,7 @@
                   :key="index"
                   v-if="column.search">
             <el-form-item :prop="column.prop"
+                          :label-position="column.searchLabelPosition"
                           :label-width="setPx(column.searchLabelWidth || config.searchLabelWidth)"
                           :label="column.label">
               <el-tooltip :disabled="!column.searchTip"

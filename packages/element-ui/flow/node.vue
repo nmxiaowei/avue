@@ -70,8 +70,8 @@ export default create({
       }
       this.$emit('changeNodeSite', {
         index: this.index,
-        left: this.$refs.node.style.left,
-        top: this.$refs.node.style.top,
+        left: Number(this.$refs.node.style.left.replace('px', '')),
+        top: Number(this.$refs.node.style.top.replace('px', '')),
       })
     }
   }
