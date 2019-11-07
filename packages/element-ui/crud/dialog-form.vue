@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { filterDefaultParams } from 'utils/util'
 import create from "core/create";
 import locale from "../../core/common/locale";
 import config from "./config";
@@ -195,7 +196,7 @@ export default create({
         this.keyBtn = true;
         this.crud.$emit(
           "row-save",
-          this.deepClone(this.tableForm),
+          filterDefaultParams(this.tableForm, this.crud.propOption.translate),
           this.closeDialog,
           () => {
             this.keyBtn = false;
@@ -211,7 +212,7 @@ export default create({
         const index = this.tableIndex;
         this.crud.$emit(
           "row-update",
-          this.deepClone(this.tableForm),
+          filterDefaultParams(this.tableForm, this.crud.propOption.translate),
           this.index,
           this.closeDialog,
           () => {
