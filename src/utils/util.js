@@ -168,6 +168,16 @@ export const findByValue = (dic, value, props, isTree) => {
   return result;
 };
 
+export const filterDefaultParams = (form, translate = true) => {
+  let data = deepClone(form);
+  if (translate) return data;
+  for (let o in data) {
+    if (o.indexOf('$') !== -1 || validatenull(data[o])) {
+      delete data[o];
+    }
+  }
+  return data;
+};
 export const findLabelNode = (dic, value, props) => {
   let result = '';
   let rev = (dic1, value1, props1) => {

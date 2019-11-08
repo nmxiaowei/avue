@@ -118,6 +118,7 @@ import init from "../../core/crud/init";
 import formTemp from '../../core/components/form/index'
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
+import { filterDefaultParams } from 'utils/util'
 import mock from "utils/mock";
 export default create({
   name: "form",
@@ -468,7 +469,7 @@ export default create({
       this.validate(valid => {
         if (valid) {
           this.show();
-          this.$emit("submit", this.form, this.hide);
+          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
         }
       });
     }
