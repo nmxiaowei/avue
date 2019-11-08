@@ -172,7 +172,7 @@ export const filterDefaultParams = (form, translate = true) => {
   let data = deepClone(form);
   if (translate) return data;
   for (let o in data) {
-    if (o.indexOf('$') !== -1) {
+    if (o.indexOf('$') !== -1 || validatenull(data[o])) {
       delete data[o];
     }
   }

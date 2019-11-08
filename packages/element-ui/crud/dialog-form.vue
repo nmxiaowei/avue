@@ -196,7 +196,7 @@ export default create({
         this.keyBtn = true;
         this.crud.$emit(
           "row-save",
-          filterDefaultParams(this.tableForm, this.crud.propOption.translate),
+          filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
           this.closeDialog,
           () => {
             this.keyBtn = false;
@@ -212,7 +212,7 @@ export default create({
         const index = this.tableIndex;
         this.crud.$emit(
           "row-update",
-          filterDefaultParams(this.tableForm, this.crud.propOption.translate),
+          filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
           this.index,
           this.closeDialog,
           () => {
