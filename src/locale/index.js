@@ -7,9 +7,9 @@ const Vue = window.Vue;
 const format = Format(Vue);
 let lang = zh;
 let merged = false;
-let i18nHandler = function () {
+let i18nHandler = function() {
   const vuei18n = Object.getPrototypeOf(this || Vue).$t;
-  if (typeof vuei18n === 'function' && !!Vue.locale) {
+  if (typeof vuei18n === 'function' && (Vue || {}).locale) {
     if (!merged) {
       merged = true;
       Vue.locale(
@@ -21,7 +21,7 @@ let i18nHandler = function () {
   }
 };
 
-export const t = function (path, options) {
+export const t = function(path, options) {
   let value = i18nHandler.apply(this, arguments);
   if (value !== null && value !== undefined) return value;
 
@@ -41,15 +41,13 @@ export const t = function (path, options) {
 export const locale = {
   zh,
   en
-}
+};
 
-export const use = function (l) {
+export const use = function(l) {
   lang = locale[l || 'zh'];
 };
 
-
-
-export const i18n = function (fn) {
+export const i18n = function(fn) {
   i18nHandler = fn || i18nHandler;
 };
 
