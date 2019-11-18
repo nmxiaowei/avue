@@ -6,7 +6,7 @@
     transition: background-color .2s ease-in-out;
     text-align: left;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   &__content{
     flex:1;
@@ -15,12 +15,16 @@
     width:38px;
     height: 38px;
     border-radius: 100%;
+    margin-top: 5px;
     margin-right: 10px;
     overflow: hidden;
     img{
       width: 100%;
       height: 100%;
     }
+  }
+  &__name{
+    line-height: 25px;
   }
   &__title{
     font-size: 14px;
@@ -29,15 +33,9 @@
     color: #515a6e;
     margin-bottom: 4px;
   }
-  &__name{
-    width:80%;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-  }
   &__tag{
     float: right;
-    margin-top: -2px;
+    margin-top: 2px;
   }
   &__subtitle{
     font-size: 12px;
