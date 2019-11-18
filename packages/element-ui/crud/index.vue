@@ -752,7 +752,7 @@ export default create({
     dialogFormFun () {
       let list = ['updateDic', 'rowSave', 'rowUpdate', 'closeDialog']
       list.forEach(ele => {
-        this[ele] = this.$refs.dialogForm[ele];
+        this[ele] = (this.$refs.dialogForm | {})[ele];
       })
     },
     //对象克隆
