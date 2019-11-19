@@ -12,6 +12,7 @@
              @click="item.click?item.click(item):''"
              :target="item.target">
             <avue-count-up :animation="animation"
+                           :decimals="decimals"
                            class="count"
                            :end="item.count"></avue-count-up>
             <span class="splitLine" />
@@ -34,6 +35,9 @@ export default create({
   computed: {
     animation () {
       return this.option.animation
+    },
+    decimals () {
+      return this.option.decimals || 0
     },
     span () {
       return this.option.span || 6;

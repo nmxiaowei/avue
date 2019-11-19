@@ -23,6 +23,7 @@
              :canvasOption="column.canvasOption"
              :controls-position="column.controlsPosition"
              :data="column.data"
+             :headers="column.headers"
              :dataType="column.dataType"
              :defaultCheckedKeys="column.defaultCheckedKeys"
              :defaultExpandedKeys="column.defaultExpandedKeys"
