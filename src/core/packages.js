@@ -30,7 +30,7 @@ const list = {
     gihub: 'https://github.com/vueComponent/ant-design-vue'
   },
   'element-ui': {
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js',
+    url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/index.js',
     title: '需要引入Element-ui框架包',
     version: '2.11.0',
     gihub: 'https://github.com/ElemeFE/element'
