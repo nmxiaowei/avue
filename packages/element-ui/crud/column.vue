@@ -68,6 +68,17 @@
                             :value="scope.row[column.prop]"
                             v-if="scope.row[column.prop]"></avue-img>
                 </template>
+                <span v-else-if="['img'].includes(column.type)">
+                  <el-image style="height: 40px"
+                            :src="scope.row[column.prop]"
+                            fit="contain"
+                            @click="openImg(scope.row[column.prop])"></el-image>
+                </span>
+                <span v-else-if="['url'].includes(column.type)">
+                  <el-link type="primary"
+                           :href="scope.row[column.prop]"
+                           :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
+                </span>
                 <span v-else-if="['color'].includes(column.type)">
                   <i class="avue-crud__color"
                      :style="{backgroundColor:scope.row[column.prop]}"></i>
@@ -137,6 +148,10 @@ export default {
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
         prop
       );
+    },
+    openImg (src) {
+      const list = [{ thumbUrl: src, url: src }]
+      this.$ImagePreview(list, 0);
     },
     menuText (value) {
       return this.menuType === "text" ? "text" : value;

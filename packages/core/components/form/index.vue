@@ -18,6 +18,7 @@
              :onRemove="column.onRemove"
              :showWordLimit="column.showWordLimit"
              :column="column"
+             :target="column.target"
              :colors="column.colors"
              :canvasOption="column.canvasOption"
              :controls-position="column.controlsPosition"

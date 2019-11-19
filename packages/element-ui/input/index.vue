@@ -56,7 +56,6 @@
         </el-scrollbar>
       </div>
     </div>
-
     <el-input v-else-if="type==='search'"
               :size="size"
               :clearable="disabled?false:clearable"
@@ -78,31 +77,41 @@
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
-    <el-input v-else
-              :size="size"
-              :clearable="disabled?false:clearable"
-              v-model="text"
-              @click.native="handleClick"
-              :type="typeParam"
-              :maxlength="maxlength"
-              :minlength="minlength"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :readonly="readonly"
-              :placeholder="placeholder"
-              :show-word-limit="showWordLimit"
-              @change="handleChange"
-              @focus="handleFocus"
-              @blur="handleBlur"
-              :disabled="disabled"
-              :autocomplete="autocomplete">
-      <template slot="prepend"
-                v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
-      </template>
-      <template slot="append"
-                v-if="append"><span @click="appendClick()">{{append}}</span></template>
-    </el-input>
+    <template v-else>
+      <el-image style="height: 120px"
+                :src="text"
+                @click="openImg"
+                v-if="type==='img'"
+                fit="cover"></el-image>
+      <el-link type="primary"
+               :href="text"
+               :target="target"
+               v-if="type==='url'">{{text}}</el-link>
+      <el-input :size="size"
+                :clearable="disabled?false:clearable"
+                v-model="text"
+                @click.native="handleClick"
+                :type="typeParam"
+                :maxlength="maxlength"
+                :minlength="minlength"
+                :autosize="{ minRows: minRows, maxRows: maxRows}"
+                :prefix-icon="prefixIcon"
+                :suffix-icon="suffixIcon"
+                :readonly="readonly"
+                :placeholder="placeholder"
+                :show-word-limit="showWordLimit"
+                @change="handleChange"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                :disabled="disabled"
+                :autocomplete="autocomplete">
+        <template slot="prepend"
+                  v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+        </template>
+        <template slot="append"
+                  v-if="append"><span @click="appendClick()">{{append}}</span></template>
+      </el-input>
+    </template>
   </div>
 </template>
 
@@ -149,6 +158,10 @@ export default create({
     accordion: {
       type: Boolean,
       default: false
+    },
+    target: {
+      type: String,
+      default: ' _blank'
     },
     parent: {
       type: Boolean,
@@ -273,6 +286,10 @@ export default create({
     this.init();
   },
   methods: {
+    openImg () {
+      const list = [{ thumbUrl: this.text, url: this.text }]
+      this.$ImagePreview(list, 0);
+    },
     closeBox () {
       this.box = false
     },
