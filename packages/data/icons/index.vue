@@ -18,6 +18,7 @@
               <div class="item-info">
                 <span>{{item.title}}</span>
                 <avue-count-up :animation="animation"
+                               :decimals="decimals"
                                :style="{color:color}"
                                class="count"
                                :end="item.count"></avue-count-up>
@@ -40,6 +41,9 @@ export default create({
   computed: {
     animation () {
       return this.option.animation
+    },
+    decimals () {
+      return this.option.decimals || false
     },
     span () {
       return this.option.span || 4;
