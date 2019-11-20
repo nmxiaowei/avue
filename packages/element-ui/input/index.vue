@@ -77,40 +77,46 @@
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
+    <template v-else-if="type==='img'">
+      <avue-array is-img
+                  :size="size"
+                  v-model="text"></avue-array>
+    </template>
     <template v-else>
-      <el-image style="height: 120px"
-                :src="text"
-                @click="openImg"
-                v-if="type==='img'"
-                fit="cover"></el-image>
-      <el-link type="primary"
-               :href="text"
-               :target="target"
-               v-if="type==='url'">{{text}}</el-link>
-      <el-input :size="size"
-                :clearable="disabled?false:clearable"
-                v-model="text"
-                @click.native="handleClick"
-                :type="typeParam"
-                :maxlength="maxlength"
-                :minlength="minlength"
-                :autosize="{ minRows: minRows, maxRows: maxRows}"
-                :prefix-icon="prefixIcon"
-                :suffix-icon="suffixIcon"
-                :readonly="readonly"
-                :placeholder="placeholder"
-                :show-word-limit="showWordLimit"
-                @change="handleChange"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                :disabled="disabled"
-                :autocomplete="autocomplete">
-        <template slot="prepend"
-                  v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
-        </template>
-        <template slot="append"
-                  v-if="append"><span @click="appendClick()">{{append}}</span></template>
-      </el-input>
+      <el-tooltip v-if="type==='url'"
+                  placement="bottom"
+                  :disabled="validatenull(text)">
+        <div slot="content">
+          <el-link type="primary"
+                   :href="text"
+                   :target="target">{{text}}</el-link>
+        </div>
+        <el-input :size="size"
+                  :clearable="disabled?false:clearable"
+                  v-model="text"
+                  @click.native="handleClick"
+                  :type="typeParam"
+                  :maxlength="maxlength"
+                  :minlength="minlength"
+                  :autosize="{ minRows: minRows, maxRows: maxRows}"
+                  :prefix-icon="prefixIcon"
+                  :suffix-icon="suffixIcon"
+                  :readonly="readonly"
+                  :placeholder="placeholder"
+                  :show-word-limit="showWordLimit"
+                  @change="handleChange"
+                  @focus="handleFocus"
+                  @blur="handleBlur"
+                  :disabled="disabled"
+                  :autocomplete="autocomplete">
+          <template slot="prepend"
+                    v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+          </template>
+          <template slot="append"
+                    v-if="append"><span @click="appendClick()">{{append}}</span></template>
+        </el-input>
+      </el-tooltip>
+
     </template>
   </div>
 </template>
@@ -286,10 +292,6 @@ export default create({
     this.init();
   },
   methods: {
-    openImg () {
-      const list = [{ thumbUrl: this.text, url: this.text }]
-      this.$ImagePreview(list, 0);
-    },
     closeBox () {
       this.box = false
     },

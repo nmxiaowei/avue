@@ -7,6 +7,15 @@ $space-width: 15px;
   .el-range-editor--mini{
     height: 28px;
   }
+  &__img{
+   display:flex;
+   justify-content:center;
+    img{
+      height: 40px;
+      margin-left:5px;
+      object-fit: contain;
+    }
+  }
   &__column{
     .el-checkbox{
       margin-bottom: 10px;

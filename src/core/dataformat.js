@@ -59,7 +59,7 @@ export const dateList = [
 export const initVal = ({ listType, type, multiple, dataType, value }) => {
   if (
     (['select', 'tree'].includes(type) && multiple) ||
-    ['checkbox', 'cascader', 'dynamic', 'upload'].includes(type)
+    ['checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
     // 头像框特殊处理
     if (listType === 'picture-img' && type === 'upload') {
@@ -126,6 +126,8 @@ export const getComponent = (type, component) => {
   let result = 'input';
   if (!validatenull(component)) {
     result = component;
+  } else if (type === 'array') {
+    result = 'array';
   } else if (type === 'select') {
     result = 'select';
   } else if (type === 'radio') {

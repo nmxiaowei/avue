@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
+    <avue-crud ref="crud" :option="option" v-model="user" :data="data"></avue-crud>
   </div>
 </body>
 <script>
@@ -28,9 +28,11 @@
     el: '#app',
     data() {
       return {
+        user: {},
         data: [{
+          array: '1, 2, 3',
           href: 'https://www.baidu.com',
-          img: 'http://demo.cssmoban.com/cssthemes5/twts_236_rage/assets/images/background/header.jpg'
+          img: 'http://demo.cssmoban.com/cssthemes5/twts_236_rage/assets/images/background/header.jpg,http://demo.cssmoban.com/cssthemes5/twts_236_rage/assets/images/background/header.jpg'
         }],
         option: {
           align: 'center',
@@ -43,7 +45,13 @@
           }, {
             label: '图片',
             prop: 'img',
+            dataType: 'string',
             type: 'img'
+          }, {
+            label: '数组',
+            prop: 'array',
+            dataType: 'number',
+            type: 'array'
           }]
         }
       }
