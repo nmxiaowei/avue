@@ -82,9 +82,8 @@
                   :size="size"
                   v-model="text"></avue-array>
     </template>
-    <template v-else>
-      <el-tooltip v-if="type==='url'"
-                  placement="bottom"
+    <template v-else-if="type==='url'">
+      <el-tooltip placement="bottom"
                   :disabled="validatenull(text)">
         <div slot="content">
           <el-link type="primary"
@@ -117,6 +116,32 @@
         </el-input>
       </el-tooltip>
 
+    </template>
+    <template v-else>
+      <el-input :size="size"
+                :clearable="disabled?false:clearable"
+                v-model="text"
+                @click.native="handleClick"
+                :type="typeParam"
+                :maxlength="maxlength"
+                :minlength="minlength"
+                :autosize="{ minRows: minRows, maxRows: maxRows}"
+                :prefix-icon="prefixIcon"
+                :suffix-icon="suffixIcon"
+                :readonly="readonly"
+                :placeholder="placeholder"
+                :show-word-limit="showWordLimit"
+                @change="handleChange"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                :disabled="disabled"
+                :autocomplete="autocomplete">
+        <template slot="prepend"
+                  v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+        </template>
+        <template slot="append"
+                  v-if="append"><span @click="appendClick()">{{append}}</span></template>
+      </el-input>
     </template>
   </div>
 </template>
