@@ -81,7 +81,7 @@
     "deepmerge": "^3.1.0",
     "element-ui": "^2.11.0",
     "nprogress": "^0.2.0",
-    "vant": "^1.4.8",
+    "vant": "^2.1.8",
     "vue": "^2.5.17",
     "vuedraggable": "^2.17.0"
   },
