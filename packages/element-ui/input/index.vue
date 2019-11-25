@@ -77,11 +77,6 @@
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
-    <template v-else-if="type==='img'">
-      <avue-array is-img
-                  :size="size"
-                  v-model="text"></avue-array>
-    </template>
     <template v-else-if="type==='url'">
       <el-tooltip placement="bottom"
                   :disabled="validatenull(text)">

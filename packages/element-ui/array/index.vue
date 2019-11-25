@@ -48,8 +48,14 @@ export default create({
     }
   },
   props: {
+    type: String,
     size: String,
-    isImg: Boolean,
+    isImg: {
+      type: Boolean,
+      default: function () {
+        return this.type === 'img'
+      }
+    },
     placeholder: String,
     disabled: Boolean,
     value: [Array, String],
