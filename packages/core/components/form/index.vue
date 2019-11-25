@@ -100,6 +100,7 @@
              v-model="text"
              :allow-create="column.allowCreate"
              :default-first-option="column.defaultFirstOption"
+             @keyup.enter.native="enterChange"
              @change="handleChange">
     <template :slot="column.prop+'Type'"
               slot-scope="{item,label,value}"
@@ -182,6 +183,9 @@ export default {
   methods: {
     getComponent,
     getPlaceholder,
+    enterChange () {
+      this.$emit('enter')
+    },
     handleChange (val) {
       this.$emit('change', val)
     }

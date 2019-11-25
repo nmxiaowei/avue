@@ -56,6 +56,7 @@
                                :upload-after="uploadAfter"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
+                               @enter="submit"
                                @change="column.cascader?handleChange(item.column,cindex):''">
                       <template :slot="column.prop+'Type'"
                                 slot-scope="{item,label,value}"
@@ -91,10 +92,11 @@
               <el-button type="primary"
                          @click="submit"
                          :size="controlSize"
-                         icon="el-icon-check"
+                         :icon="parentOption.submitIcon|| 'el-icon-check'"
                          :loading="allDisabled"
                          v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
+                         :icon="parentOption.emptyIcon|| 'el-icon-delete'"
                          :size="controlSize"
                          :loading="allDisabled"
                          v-if="vaildData(parentOption.emptyBtn,true)"

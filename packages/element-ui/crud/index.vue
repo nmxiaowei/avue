@@ -9,11 +9,25 @@
       <template slot="search">
         <slot name="search"></slot>
       </template>
-      <template slot="searchMenu">
-        <slot name="searchMenu"></slot>
+      <template slot="searchMenu"
+                slot-scope="{size}">
+        <slot name="searchMenu"
+              :size="size"></slot>
+      </template>
+      <template slot-scope="{value,column,dic,size,label,disabled}"
+                v-for="item in columnOption"
+                :slot="item.prop">
+        <slot :value="value"
+              :column="column"
+              :dic="dic"
+              :size="size"
+              :label="label"
+              :disabled="disabled"
+              :row="searchForm"
+              :name="item.prop+'Search'"
+              v-if="item.searchslot"></slot>
       </template>
     </header-search>
-
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
                  v-show="vaildData(tableOption.header,true)">

@@ -70,5 +70,6 @@ export default {
   width: '100%',
   searchGutter: 20,
   searchLabelWidth: 80,
+  searchSpan: 6,
   dateDefault: true
 };

@@ -116,7 +116,7 @@ export const getSearchType = type => {
   } else if (['number'].includes(type)) {
     result = 'input-number';
   }
-  return KEY_COMPONENT_NAME + result;
+  return result;
 };
 
 /**
