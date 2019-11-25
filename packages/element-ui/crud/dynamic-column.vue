@@ -78,9 +78,25 @@
                             :value="scope.row[column.prop]"
                             v-if="scope.row[column.prop]"></avue-img>
                 </template>
+                <span v-else-if="['img'].includes(column.type)">
+                  <div class="avue-crud__img">
+                    <img v-for="(item,index) in detailData(scope.row[column.prop],column.dataType)"
+                         :src="item"
+                         :key="index"
+                         @click="openImg(detailData(scope.row[column.prop],column.dataType),index)" />
+                  </div>
+                </span>
+                <span v-else-if="['url'].includes(column.type)">
+                  <el-link type="primary"
+                           :href="scope.row[column.prop]"
+                           :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
+                </span>
                 <span v-else-if="['color'].includes(column.type)">
                   <i class="avue-crud__color"
                      :style="{backgroundColor:scope.row[column.prop]}"></i>
+                </span>
+                <span v-else-if="['array'].includes(column.type)">
+                  {{detailData(scope.row[column.prop],column.dataType).join(' | ')}}
                 </span>
                 <span v-else-if="['icon-select'].includes(column.type)">
                   <i class="avue-crud__icon-select"
@@ -122,6 +138,8 @@ export default {
   },
   created () {
     const list = [
+      "detailData",
+      "openImg",
       "getComponent",
       "getPlaceholder",
       "vaildColumn",

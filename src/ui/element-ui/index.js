@@ -44,6 +44,7 @@ import IconSelect from 'components/icon-select';
 import BackTop from 'components/back-top';
 import Video from 'components/video';
 import Login from 'components/login';
+import Arrays from 'components/array';
 import textEllipsis from 'components/text-ellipsis';
 import packages from 'core/packages';
 if (!window.Element) {
@@ -52,6 +53,7 @@ if (!window.Element) {
 import AvueData from '../data/';
 import AvueEchart from '../echart/';
 export default [
+  Arrays,
   Affix,
   Avatar,
   Article,

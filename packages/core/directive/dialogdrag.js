@@ -48,19 +48,19 @@ export default (Vue) => {
           let finallyL = l + styL
           let finallyT = t + styT
 
-          // 边界值判定 注意clientWidth scrollWidth区别 要减去之前的top left值
-          // dragDom.offsetParent表示弹窗阴影部分
-          if (finallyL < 0) {
-            finallyL = 0
-          } else if (finallyL > dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft) {
-            finallyL = dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft
-          }
+          // // 边界值判定 注意clientWidth scrollWidth区别 要减去之前的top left值
+          // // dragDom.offsetParent表示弹窗阴影部分
+          // if (finallyL < 0) {
+          //   finallyL = 0
+          // } else if (finallyL > dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft) {
+          //   finallyL = dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft
+          // }
 
-          if (finallyT < 0) {
-            finallyT = 0
-          } else if (finallyT > dragDom.offsetParent.clientHeight - dragDom.clientHeight - dragDom.offsetParent.offsetLeft) (
-            finallyT = dragDom.offsetParent.clientHeight - dragDom.clientHeight - dragDom.offsetParent.offsetLeft
-          )
+          // if (finallyT < 0) {
+          //   finallyT = 0
+          // } else if (finallyT > dragDom.offsetParent.clientHeight - dragDom.clientHeight - dragDom.offsetParent.offsetLeft) (
+          //   finallyT = dragDom.offsetParent.clientHeight - dragDom.clientHeight - dragDom.offsetParent.offsetLeft
+          // )
 
           // 移动当前元素
           dragDom.style.left = `${finallyL}px`;

@@ -85,7 +85,7 @@ export const deepClone = data => {
         if (data[i] === 0) {
           return data[i];
         }
-        return data[i] || {};
+        return data[i];
       })();
       delete data[i].$parent;
       obj.push(deepClone(data[i]));

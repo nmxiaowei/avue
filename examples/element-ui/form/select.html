@@ -10,8 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/index.js"></script>
   <!-- 导入拖拽需要的包 -->
   <script src="https://cdn.bootcss.com/Sortable/1.10.0-rc2/Sortable.min.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
@@ -21,7 +21,7 @@
 <body>
   <div id="app">
     {{form}}
-    <avue-crud ref="crud" :option="option" :data="data" v-model="form">
+    <avue-crud v-if="flag" ref="crud" :option="option" :data="data" v-model="form">
     </avue-crud>
   </div>
 </body>
@@ -32,11 +32,18 @@
     data() {
       return {
         form: {},
+        flag: true,
         data: [{
           province: 110000,
           multipleSelect: []
         }],
-        option: {
+        option: {}
+      }
+    },
+    mounted() {
+      this.flag = false;
+      setTimeout(() => {
+        this.option = {
           column: [{
             label: '分组',
             prop: 'selects',
@@ -109,14 +116,7 @@
           }
           ]
         }
-      }
-    },
-    mounted() {
-      setTimeout(() => {
-        setInterval(() => {
-          console.log('更新字典')
-          this.$refs.crud.updateDic('province')
-        }, 1000)
+        this.flag = true;
       }, 2000)
     },
     methods: {

@@ -1,0 +1,14 @@
+.avue-array{
+  &__item{
+    margin-bottom: 5px;
+  }
+  &__input{
+    display: flex;
+    .el-input{
+      flex:1;
+    }
+    .el-button{
+      margin-left: 5px;
+    }
+  }
+}

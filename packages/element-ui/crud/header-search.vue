@@ -149,12 +149,12 @@ export default cteate({
     },
     // 搜索回调
     searchChange () {
-      this.crud.$emit("search-change", filterForm(this.searchForm));
+      this.crud.$emit("search-change", this.searchForm);
     },
     // 搜索清空
     searchReset () {
       this.$refs["searchForm"].resetFields();
-      this.crud.$emit("search-reset");
+      this.crud.$emit("search-reset", this.defaultForm.searchForm);
     },
     handleSearchShow () {
       this.searchShow = !this.searchShow;

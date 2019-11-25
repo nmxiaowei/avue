@@ -33,7 +33,7 @@ export default function () {
           }
         }
         this.text = result;
-        if ((this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader', 'dynamic'].includes(this.type))) {
+        if ((this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader', 'img', 'array'].includes(this.type))) {
           result = value.join(',')
         }
         if (typeof this.change === 'function') {
