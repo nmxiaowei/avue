@@ -58,6 +58,8 @@
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
               :size="controlSize"
+              :lazy="vaildData(tableOption.lazy,false)"
+              :load="treeload"
               :tree-props="tableOption.treeProps || {}"
               :expand-row-keys="tableOption.expandRowKeys"
               :default-expand-all="tableOption.defaultExpandAll"
@@ -532,6 +534,10 @@ export default create({
           this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
         }
       })
+    },
+    //树懒加载
+    treeload (tree, treeNode, resolve) {
+      this.$emit('tree-load', tree, treeNode, resolve)
     },
     // 格式化数据源
     formatData () {
