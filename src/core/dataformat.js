@@ -11,10 +11,13 @@ export const calcCascader = (list = []) => {
       list[index].cascader = [...cascader];
       cascader.forEach((citem, cindex) => {
         const columnIndex = index + cindex + 1;
-        list[columnIndex].parentProp = parentProp;
-        list[columnIndex].cascaderChange = ele.cascaderChange;
-        list[columnIndex].cascader = [...cascader].splice(cindex + 1);
-        parentProp = list[columnIndex].prop;
+        if (list[columnIndex]) {
+          list[columnIndex].parentProp = parentProp;
+          list[columnIndex].cascaderChange = ele.cascaderChange;
+          list[columnIndex].cascader = [...cascader].splice(cindex + 1);
+          parentProp = list[columnIndex].prop;
+        }
+
       });
     }
   });
@@ -126,7 +129,7 @@ export const getComponent = (type, component) => {
   let result = 'input';
   if (!validatenull(component)) {
     result = component;
-  } else if (type === 'array') {
+  } else if (['img', 'array'].includes(type)) {
     result = 'array';
   } else if (type === 'select') {
     result = 'select';
@@ -174,6 +177,8 @@ export const formInitVal = (list = []) => {
       ele.type === 'checkbox' ||
       ele.type === 'cascader' ||
       ele.type === 'dynamic' ||
+      ele.type === 'img' ||
+      ele.type === 'array' ||
       ele.type === 'dates' ||
       (ele.type === 'upload' && ele.listType !== 'picture-img') ||
       ele.multiple ||
@@ -209,7 +214,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {

@@ -33,13 +33,8 @@ $space-width: 15px;
     margin-bottom: 5px;
   }
   &-search{
-    .el-form-item{
-      margin-bottom: 10px !important;
-    }
-    &__menu {
-      display: flex;
-      align-items: center;
-      height: 40px;
+    .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
+      margin-bottom: 8px;
     }
   }
   .el-table--mini{

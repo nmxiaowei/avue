@@ -1,7 +1,7 @@
 <template>
   <el-collapse-transition>
-    <div v-show="searchShow && searchFlag"
-         style="margin-bottom:10px;">
+    <div :class="b()"
+         v-show="searchShow && searchFlag">
       <avue-form :option="option"
                  @submit="searchChange"
                  @reset-change="searchReset"
@@ -86,12 +86,10 @@ export default cteate({
     },
     option () {
       const option = this.crud.option;
-      const dataDetail = (list) => {
-        let result = this.deepClone(list);
+      const detailColumn = (list = []) => {
         let column = [];
-        (result.column || []).forEach(ele => {
+        list.forEach(ele => {
           if (ele.search) {
-            delete ele.rules;
             ele = Object.assign(ele, {
               type: getSearchType(ele.type),
               span: ele.searchSpan || this.config.searchSpan,
@@ -99,16 +97,33 @@ export default cteate({
               placeholder: getPlaceholder(ele, 'search'),
               filterable: ele.searchFilterable,
               filterMethod: ele.searchFilterMethod,
-              checkStrictly: ele.searchCheckStrictly,
+              checkStrictly: ele.searchCheckStrictly || option.searchCheckStrictly,
+              gutter: ele.searchGutter || option.searchGutter,
               tags: ele.searchTags,
+              row: ele.searchRow,
               formslot: ele.searchslot
             })
+            delete ele.rules;
+            delete ele.formslot;
             column.push(ele);
           }
         })
+        return column;
+      }
+      const dataDetail = (list) => {
+        let result = this.deepClone(list);
+        if (result.group) {
+          let groupcolumn = [];
+          let column = [];
+          result.group.forEach(ele => {
+            column = column.concat(detailColumn(ele.column))
+          });
+          delete result.group;
+          result.column = column;
+        } else {
+          result.column = detailColumn(result.column)
+        }
         result = Object.assign(result, {
-          column: column
-        }, {
           size: this.crud.isMediumSize,
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,

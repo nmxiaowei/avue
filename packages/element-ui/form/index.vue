@@ -80,7 +80,7 @@
 
         <el-col :span="24"
                 v-if="vaildData(parentOption.menuBtn,true)">
-          <el-form-item>
+          <el-form-item label-width="0px">
             <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPosition])">
               <el-button type="primary"
@@ -336,7 +336,7 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: columnNext.props.res || '' }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典
