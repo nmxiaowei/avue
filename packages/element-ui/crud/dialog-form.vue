@@ -25,6 +25,7 @@
         <avue-form v-model="tableForm"
                    v-if="boxVisible"
                    ref="tableForm"
+                   @submit="handleSubmit"
                    :disabled="keyBtn"
                    :uploadBefore="crud.uploadBefore"
                    :uploadAfter="crud.uploadAfter"
@@ -171,6 +172,13 @@ export default create({
     }
   },
   methods: {
+    handleSubmit () {
+      if (this.boxType === 'add') {
+        this.rowSave();
+      } else if (this.boxType === 'edit') {
+        this.rowUpdate();
+      }
+    },
     initFun () {
       this.crud.clearValidate = this.$refs.tableForm.clearValidate
       this.crud.validate = this.$refs.tableForm.validate
