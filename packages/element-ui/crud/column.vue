@@ -150,7 +150,10 @@ export default {
     getComponent,
     getPlaceholder,
     vaildColumn (item) {
-      return item.hide !== true
+      const prop = item.prop;
+      return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
+        prop
+      )
     },
     detailData (list, dataType) {
       if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
