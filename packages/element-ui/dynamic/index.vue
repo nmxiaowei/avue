@@ -5,14 +5,14 @@
                :data="text">
       <template slot-scope="scope"
                 slot="index">
-        <el-button v-if="hoverList[scope.row.$index]"
+        <el-button v-if="!delBtn&&hoverList[scope.row.$index]"
                    @mouseout.native="mouseoutRow(scope.row.$index)"
                    @click="delRow(scope.row.$index)"
                    type="danger"
                    size="mini"
                    icon="el-icon-delete"
                    circle></el-button>
-        <span v-else
+        <span v-else-if="delBtn || !hoverList[scope.row.$index]"
               @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
       </template>
     </avue-crud>
@@ -40,6 +40,12 @@ export default create({
     }
   },
   computed: {
+    viewBtn () {
+      return this.children.viewBtn === false
+    },
+    delBtn () {
+      return this.children.delBtn === false
+    },
     columnOption () {
       return this.children.column || []
     },
@@ -59,6 +65,9 @@ export default create({
           fixed: true,
           width: 50,
           renderHeader: (h, { column, $index }) => {
+            if (this.option.addBtn === false) {
+              return '序号';
+            }
             return h('el-button', {
               attrs: {
                 size: 'mini',
@@ -76,7 +85,7 @@ export default create({
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
             cell: true,
-            disabled:this.disabled
+            disabled: this.disabled || this.viewBtn
           }))
         })
         return {
@@ -102,10 +111,12 @@ export default create({
       })
     },
     mouseoverRow (index) {
+      if (this.delBtn) return
       this.flagList();
       this.$set(this.hoverList, index, true)
     },
     mouseoutRow (index) {
+      if (this.delBtn) return
       this.flagList();
       this.$set(this.hoverList, index, false)
     },
