@@ -104,7 +104,6 @@ export default cteate({
               formslot: ele.searchslot
             })
             delete ele.rules;
-            delete ele.formslot;
             column.push(ele);
           }
         })

@@ -21,7 +21,7 @@
                 :name="item.prop"></slot>
         </template></dynamic-column>
       <template v-else-if="!['dynamic'].includes(column.type)">
-        <el-table-column v-if="vaildColumn(column.prop)"
+        <el-table-column v-if="vaildColumn(column)"
                          :key="column.prop"
                          :prop="column.prop"
                          :label="column.label"
