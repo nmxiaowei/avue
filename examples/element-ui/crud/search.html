@@ -47,49 +47,52 @@
       }
     },
     mounted() {
-      this.option = {
-        emptyText: '自定义暂无数据提示语',
-        column: [{
-          label: '姓名',
-          prop: 'name',
-        }, {
-          label: '多选',
-          prop: 'checkbox',
-          type: 'checkbox',
-          searchslot: true,
-          formslot: true,
-          dicData: [{
-            label: 1,
-            value: 1
+      setTimeout(() => {
+        console.log('开始异步加载了')
+        this.option = {
+          index: true,
+          emptyText: '自定义暂无数据提示语',
+          column: [{
+            label: '姓名',
+            prop: 'name',
           }, {
-            label: 2,
-            value: 2
-          }],
-          search: true
-        }, {
-          label: '年龄',
-          prop: 'sex',
-          search: true
-        }, {
-          label: '日期',
-          prop: 'datetime',
-          type: 'datetime',
-          search: true
-        }, {
-          label: '测试',
-          prop: 'test',
-          search: true
-        }, {
-          label: '字典',
-          prop: 'dic',
-          type: 'select',
-          search: true,
-          dicData: [{
-            label: 1,
-            value: 1
+            label: '多选',
+            prop: 'checkbox',
+            type: 'checkbox',
+            search: true,
+            searchslot: true,
+            formslot: true,
+            dicData: [{
+              label: 1,
+              value: 1
+            }, {
+              label: 2,
+              value: 2
+            }],
+          }, {
+            label: '年龄',
+            prop: 'sex',
+            search: true
+          }, {
+            label: '日期',
+            prop: 'datetime',
+            type: 'datetime',
+          }, {
+            label: '测试',
+            prop: 'test',
+            search: true
+          }, {
+            label: '字典',
+            prop: 'dic',
+            type: 'select',
+            search: true,
+            dicData: [{
+              label: 1,
+              value: 1
+            }]
           }]
-        }]
-      }
+        }
+      }, 2000)
     },
     methods: {
       searchChange(params, done) {
