@@ -153,7 +153,7 @@
                        :index="indexMethod"
                        :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
                        align="center"></el-table-column>
-      <!-- <el-table-column width="0px"></el-table-column> -->
+      <el-table-column width="1px"></el-table-column>
       <column :columnOption="columnOption"
               :disabled="btnDisabled">
         <template v-for="(item,index) in propOption"

@@ -47,6 +47,7 @@
              :filesize="column.filesize"
              :filterable="column.filterable"
              :format="column.format"
+             :unlink-panels="column.unlinkPanels"
              :formatTooltip="column.formatTooltip"
              :iconClasses="column.iconClasses"
              :label="column.label"

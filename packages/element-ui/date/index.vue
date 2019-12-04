@@ -15,6 +15,7 @@
         <el-date-picker v-model="datetime"
                         type="daterange"
                         :size="size"
+                        :unlink-panels="unlinkPanels"
                         format="yyyy-MM-dd"
                         value-format="yyyy-MM-dd"
                         @focus="handleFocus"
@@ -28,6 +29,7 @@
                     :type="type"
                     v-model="text"
                     :size="size"
+                    :unlink-panels="unlinkPanels"
                     :readonly="readonly"
                     :default-value="defaultValue"
                     :default-time="defaultTime"
@@ -64,6 +66,10 @@ export default create({
     };
   },
   props: {
+    unlinkPanels: {
+      type: Boolean,
+      default: false
+    },
     default: {
       type: Boolean,
       default: false
