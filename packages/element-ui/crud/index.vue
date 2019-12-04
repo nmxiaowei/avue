@@ -667,6 +667,10 @@ export default create({
     rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
+    //清空排序
+    clearSort () {
+      this.$refs.table.clearSort();
+    },
     //当单元格 hover 进入时会触发该事件
     cellMouseEnter (row, column, cell, event) {
       this.$emit("cell-mouse-enter", row, column, cell, event);
