@@ -8,7 +8,7 @@
              :label-suffix="parentOption.labelSuffix || ':'"
              :label-position="parentOption.labelPosition"
              :size="controlSize"
-             :label-width="setPx(parentOption.labelWidth,90)"
+             :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
       <el-row :span="24">
         <avue-group v-for="(item,index) in columnOption"
@@ -130,6 +130,7 @@ export default create({
   },
   data () {
     return {
+      labelWidth: 90,
       allDisabled: false,
       optionIndex: [],
       optionBox: false,
@@ -252,9 +253,15 @@ export default create({
       });
     },
     getLabelWidth (column, item) {
-      const result =
-        column.labelWidth || item.labelWidth || this.parentOption.labelWidth;
-      return this.setPx(result);
+      let result;
+      if (!this.validatenull(column.labelWidth)) {
+        result = column.labelWidth
+      } else if (!this.validatenull(column.labelWidth)) {
+        result = item.labelWidth
+      } else {
+        result = this.parentOption.labelWidth;
+      }
+      return this.setPx(result, this.labelWidth);
     },
     //获取全部字段字典的label
     handleShowLabel (column, DIC) {
