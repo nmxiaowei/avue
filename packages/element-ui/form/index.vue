@@ -5,7 +5,7 @@
              status-icon
              @submit.native.prevent
              :model="form"
-             label-suffix=":"
+             :label-suffix="parentOption.labelSuffix || ':'"
              :label-position="parentOption.labelPosition"
              :size="controlSize"
              :label-width="setPx(parentOption.labelWidth,90)"
