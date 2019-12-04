@@ -29,10 +29,12 @@
                   v-if="filter"></el-input>
         <el-scrollbar style="height:180px;overflow-x:hidden">
           <el-tree :data="dicList"
+                   :lazy="lazy"
+                   :load="treeLoad"
                    :node-key="valueKey"
                    :accordion="accordion"
                    :show-checkbox="multiple"
-                   :props="props"
+                   :props="treeProps"
                    :check-strictly="checkStrictly"
                    ref="tree"
                    highlight-current
@@ -165,11 +167,16 @@ export default create({
   },
   props: {
     nodeClick: Function,
+    treeLoad: Function,
     checked: Function,
     value: {},
     maxlength: "",
     minlength: "",
     showWordLimit: {
+      type: Boolean,
+      default: false
+    },
+    lazy: {
       type: Boolean,
       default: false
     },
@@ -201,7 +208,7 @@ export default create({
     },
     defaultExpandAll: {
       type: Boolean,
-      default: true
+      default: false
     },
     prefixIcon: {
       type: String
@@ -257,6 +264,11 @@ export default create({
     }
   },
   computed: {
+    treeProps () {
+      return Object.assign(this.props, {
+        isLeaf: this.leafKey
+      })
+    },
     dicList () {
       function addParent (result, parent) {
         result.forEach(ele => {

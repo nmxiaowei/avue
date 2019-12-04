@@ -168,6 +168,9 @@ export default function () {
       valueKey: function () {
         return this.props.value || this.propsDefault.value;
       },
+      leafKey: function () {
+        return this.props.leaf || this.propsDefault.leaf;
+      },
       labelKey: function () {
         return this.props.label || this.propsDefault.label;
       },
