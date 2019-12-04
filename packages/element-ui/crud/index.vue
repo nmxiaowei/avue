@@ -324,6 +324,7 @@ export default create({
       list: [],
       expandList: [],
       tableForm: {},
+      tableHeight: undefined,
       tableIndex: -1,
       tableSelect: [],
       formIndexList: [],
@@ -352,6 +353,8 @@ export default create({
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
       this.$nextTick(() => {
+        //动态计算表格高度
+        this.getTableHeight();
         //是否开启表格排序
         if (this.isSortable) setTimeout(this.setSort(), 0)
       })
@@ -412,15 +415,6 @@ export default create({
     },
     rowKey () {
       return this.tableOption.rowKey || "id";
-    },
-    tableHeight () {
-      const clientHeight = document.documentElement.clientHeight;
-      const height =
-        this.tableOption.height == "auto"
-          ? clientHeight -
-          this.vaildData(this.tableOption.calcHeight, config.calcHeight)
-          : this.tableOption.height;
-      return height <= 300 ? 300 : height;
     },
     parentOption () {
       return this.tableOption || {};
@@ -512,6 +506,18 @@ export default create({
     }
   },
   methods: {
+    getTableHeight () {
+      const clientHeight = document.documentElement.clientHeight;
+      if (this.tableOption.height == "auto") {
+        this.$nextTick(() => {
+          const tableStyle = this.$refs.table.$el;
+          const pageStyle = this.$refs.tablePage.$el;
+          this.tableHeight = clientHeight - tableStyle.offsetTop - pageStyle.offsetHeight - 30
+        })
+      } else {
+        this.tableHeight = this.tableOption.height;
+      }
+    },
     refreshTable () {
       this.doLayout = false;
       this.$nextTick(() => {
