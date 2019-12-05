@@ -1,5 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME } from 'global/variable';
+import { detailDataType } from 'utils/util';
 /**
  * 计算级联属性
  */
@@ -60,27 +61,25 @@ export const dateList = [
  * 初始化数据格式
  */
 export const initVal = ({ listType, type, multiple, dataType, value }) => {
+  let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
     ['checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
-    // 头像框特殊处理
+    // 单个头像特殊处理
     if (listType === 'picture-img' && type === 'upload') {
-      return [value];
-    }
-    if (Array.isArray(value)) return value;
-    else if (!validatenull(value)) {
-      const list = (value || '').split(',') || [];
-      if (dataType === 'number') {
-        return list.map(ele => Number(ele));
+      list = [value];
+    } else if (!Array.isArray(value)) {
+      if (!validatenull(value)) {
+        list = (value || '').split(',') || [];
       } else {
-        return list;
+        list = [];
       }
-    } else {
-      return [];
     }
+    // 数据转化
+    list.map(ele => detailDataType(ele, dataType));
   }
-  return value;
+  return list;
 };
 
 /**
@@ -214,7 +213,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {

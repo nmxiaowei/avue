@@ -343,7 +343,7 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: columnNext.props.res || '' }).then(
+        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res || '' }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典

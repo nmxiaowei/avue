@@ -123,21 +123,28 @@ export const setPx = (val, defval = '') => {
   }
   return val;
 };
+
 /**
- * 转换数据类型
+ * 字符串数据类型转化
+ */
+export const detailDataType = (value, type) => {
+  if (type === 'number') {
+    return Number(value);
+  } else if (type === 'string') {
+    return value + '';
+  } else {
+    return value;
+  }
+};
+/**
+ * 数组的数据类型转化
  */
 export const detailDic = (list, props = {}, type) => {
   let valueKey = props.value || DIC_PROPS.value;
   let childrenKey = props.children || DIC_PROPS.children;
   list.forEach(ele => {
-    if (type === 'number') {
-      ele[valueKey] = Number(ele[valueKey]);
-    } else if (type === 'string') {
-      ele[valueKey] = ele[valueKey] + '';
-    }
-    if (ele[childrenKey]) {
-      detailDic(ele[childrenKey], props, type);
-    }
+    ele[valueKey] = detailDataType(ele[valueKey], type);
+    if (ele[childrenKey]) detailDic(ele[childrenKey], props, type);
   });
   return list;
 };
