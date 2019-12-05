@@ -77,7 +77,9 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
       }
     }
     // 数据转化
-    list.map(ele => detailDataType(ele, dataType));
+    list.map((ele, index) => {
+      list[index] = detailDataType(ele, dataType);
+    });
   }
   return list;
 };

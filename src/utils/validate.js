@@ -5,7 +5,7 @@ import { deepClone } from './util';
  */
 export function validatenull(val) {
   // 特殊判断
-  if (Number(val) === 0) return false;
+  if (val && parseInt(val) === 0) return false;
   const list = ['$parent'];
   if (typeof val === 'boolean') {
     return false;
