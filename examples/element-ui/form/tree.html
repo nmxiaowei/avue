@@ -30,7 +30,7 @@
     data() {
       return {
         data: {
-          shenfeng1: 6
+          shenfeng1: 32
         },
         option: {
           column: [{
@@ -141,7 +141,24 @@
                 "children": [],
                 "meta": "{i18n:\"permission\"}",
                 "text": "权限资源",
-                "label": "权限资源"
+                "label": "权限资源",
+                "children": [{
+                  "id": 232,
+                  "name": "删除角色",
+                  "permissionkey": "system:role:delete",
+                  "type": "FUNCTION",
+                  "enable": true,
+                  "descnote": "删除角色",
+                  "wiegth": 0,
+                  "path": "",
+                  "resource": "/system/role/delete",
+                  "component": null,
+                  "icon": null,
+                  "children": [],
+                  "meta": null,
+                  "text": "删除角色",
+                  "label": "删除角色"
+                }],
               }],
               "meta": "{i18n:\"systemconfig\"}",
               "text": "系统配制",

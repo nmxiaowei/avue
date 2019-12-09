@@ -31,7 +31,7 @@
 
 <script>
 import cteate from "core/create";
-import { vaildData, filterForm } from "utils/util";
+import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
 import locale from "../../core/common/locale";
 import {
@@ -93,6 +93,7 @@ export default cteate({
             ele = Object.assign(ele, {
               type: getSearchType(ele.type),
               span: ele.searchSpan || this.config.searchSpan,
+              labelWidth: ele.searchLabelWidth || option.searchSpan || this.config.searchLabelWidth,
               tip: ele.searchTip,
               placeholder: getPlaceholder(ele, 'search'),
               filterable: ele.searchFilterable,
@@ -101,9 +102,15 @@ export default cteate({
               gutter: ele.searchGutter || option.searchGutter,
               tags: ele.searchTags,
               row: ele.searchRow,
-              formslot: ele.searchslot
+              formslot: ele.searchslot,
+              disabled: ele.searchDisabled,
+              readonly: ele.searchReadonly,
+              readonly: ele.searchReadonly
             })
-            delete ele.rules;
+            let whiteList = ['rules']
+            whiteList.forEach(key => {
+              delete ele[key]
+            })
             column.push(ele);
           }
         })
@@ -112,16 +119,9 @@ export default cteate({
       const dataDetail = (list) => {
         let result = this.deepClone(list);
         if (result.group) {
-          let groupcolumn = [];
-          let column = [];
-          result.group.forEach(ele => {
-            column = column.concat(detailColumn(ele.column))
-          });
           delete result.group;
-          result.column = column;
-        } else {
-          result.column = detailColumn(result.column)
         }
+        result.column = detailColumn(result.column)
         result = Object.assign(result, {
           size: this.crud.isMediumSize,
           gutter: option.searchGutter || this.config.searchGutter,
