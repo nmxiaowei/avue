@@ -21,6 +21,9 @@ export function dataURLtoFile(dataurl, filename) {
     type: mime
   });
 }
+/**
+ * 生成随机数
+ */
 export function randomId() {
   let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let maxPos = $chars.length;
@@ -98,6 +101,9 @@ export const deepClone = data => {
   }
   return obj;
 };
+/**
+ * 根据字段数组排序
+ */
 export const sortArrys = (list, prop) => {
   list.sort(function(a, b) {
     if (a[prop] > b[prop]) {
@@ -112,7 +118,7 @@ export const sortArrys = (list, prop) => {
 };
 
 /**
- * 设置px
+ * 设置px像素
  */
 export const setPx = (val, defval = '') => {
   if (validatenull(val)) val = defval;
@@ -123,21 +129,28 @@ export const setPx = (val, defval = '') => {
   }
   return val;
 };
+
 /**
- * 转换数据类型
+ * 字符串数据类型转化
+ */
+export const detailDataType = (value, type) => {
+  if (type === 'number') {
+    return Number(value);
+  } else if (type === 'string') {
+    return value + '';
+  } else {
+    return value;
+  }
+};
+/**
+ * 数组的数据类型转化
  */
 export const detailDic = (list, props = {}, type) => {
   let valueKey = props.value || DIC_PROPS.value;
   let childrenKey = props.children || DIC_PROPS.children;
   list.forEach(ele => {
-    if (type === 'number') {
-      ele[valueKey] = Number(ele[valueKey]);
-    } else if (type === 'string') {
-      ele[valueKey] = ele[valueKey] + '';
-    }
-    if (ele[childrenKey]) {
-      detailDic(ele[childrenKey], props, type);
-    }
+    ele[valueKey] = detailDataType(ele[valueKey], type);
+    if (ele[childrenKey]) detailDic(ele[childrenKey], props, type);
   });
   return list;
 };
@@ -167,7 +180,9 @@ export const findByValue = (dic, value, props, isTree) => {
   }
   return result;
 };
-
+/**
+ * 过滤字典翻译字段和空字段
+ */
 export const filterDefaultParams = (form, translate = true) => {
   let data = deepClone(form);
   if (translate) return data;
@@ -178,7 +193,27 @@ export const filterDefaultParams = (form, translate = true) => {
   }
   return data;
 };
+/**
+ * 处理存在group分组的情况
+ */
+export const detailDicGroup = (dic) => {
+  dic = deepClone(dic);
+  let list = [];
+  if ((dic[0] || {}).groups) {
+    dic.forEach(ele => {
+      if (ele.groups) {
+        list = list.concat(ele.groups);
+      }
+    });
+    return list;
+  }
+  return dic;
+};
+/**
+ * 根据label去找到节点
+ */
 export const findLabelNode = (dic, value, props) => {
+  dic = detailDicGroup(dic);
   let result = '';
   let rev = (dic1, value1, props1) => {
     const labelKey = props1.label || DIC_PROPS.label;
@@ -197,6 +232,9 @@ export const findLabelNode = (dic, value, props) => {
   rev(dic, value, props);
   return result;
 };
+/**
+ * 获取多层data
+ */
 export const getDeepData = (res) => {
   return (Array.isArray(res) ? res : res.data) || [];
 };
@@ -212,20 +250,11 @@ export const getObjValue = (data, params = '', type) => {
   }
   return result;
 };
-export const filterForm = (form) => {
-  let obj = {};
-  Object.keys(form).forEach(ele => {
-    if (!validatenull(form[ele])) {
-      obj[ele] = form[ele];
-    }
-  });
-  return obj;
-};
 /**
  * 根据字典的value查找对应的index
  */
-
 export const findArrayLabel = (dic, value, props) => {
+  dic = detailDicGroup(dic);
   const valueKey = props.value || DIC_PROPS.value;
   const labelKey = props.label || DIC_PROPS.label;
   for (let i = 0; i < dic.length; i++) {
@@ -235,7 +264,11 @@ export const findArrayLabel = (dic, value, props) => {
   }
   return value;
 };
+/**
+ * 根据值查找对应的序号
+ */
 export const findArray = (dic, value, valueKey) => {
+  dic = detailDicGroup(dic);
   valueKey = valueKey || DIC_PROPS.value;
   for (let i = 0; i < dic.length; i++) {
     if (dic[i][valueKey] === value) {
@@ -244,7 +277,9 @@ export const findArray = (dic, value, valueKey) => {
   }
   return -1;
 };
-
+/**
+ * 根据位数获取*密码程度
+ */
 export const getPasswordChar = (result = '', char) => {
   let len = result.toString().length;
   result = '';
@@ -254,6 +289,9 @@ export const getPasswordChar = (result = '', char) => {
   return result;
 };
 
+/**
+ * 验证是否存在true/false
+ */
 export const vaildData = (val, dafult) => {
   if (typeof val === 'boolean') {
     return val;

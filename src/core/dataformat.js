@@ -1,5 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME } from 'global/variable';
+import { detailDataType } from 'utils/util';
 /**
  * 计算级联属性
  */
@@ -11,10 +12,13 @@ export const calcCascader = (list = []) => {
       list[index].cascader = [...cascader];
       cascader.forEach((citem, cindex) => {
         const columnIndex = index + cindex + 1;
-        list[columnIndex].parentProp = parentProp;
-        list[columnIndex].cascaderChange = ele.cascaderChange;
-        list[columnIndex].cascader = [...cascader].splice(cindex + 1);
-        parentProp = list[columnIndex].prop;
+        if (list[columnIndex]) {
+          list[columnIndex].parentProp = parentProp;
+          list[columnIndex].cascaderChange = ele.cascaderChange;
+          list[columnIndex].cascader = [...cascader].splice(cindex + 1);
+          parentProp = list[columnIndex].prop;
+        }
+
       });
     }
   });
@@ -57,27 +61,27 @@ export const dateList = [
  * 初始化数据格式
  */
 export const initVal = ({ listType, type, multiple, dataType, value }) => {
+  let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
     ['checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
-    // 头像框特殊处理
+    // 单个头像特殊处理
     if (listType === 'picture-img' && type === 'upload') {
-      return [value];
-    }
-    if (Array.isArray(value)) return value;
-    else if (!validatenull(value)) {
-      const list = (value || '').split(',') || [];
-      if (dataType === 'number') {
-        return list.map(ele => Number(ele));
+      list = [value];
+    } else if (!Array.isArray(value)) {
+      if (!validatenull(value)) {
+        list = (value || '').split(',') || [];
       } else {
-        return list;
+        list = [];
       }
-    } else {
-      return [];
     }
+    // 数据转化
+    list.map((ele, index) => {
+      list[index] = detailDataType(ele, dataType);
+    });
   }
-  return value;
+  return list;
 };
 
 /**
@@ -116,7 +120,7 @@ export const getSearchType = type => {
   } else if (['number'].includes(type)) {
     result = 'input-number';
   }
-  return KEY_COMPONENT_NAME + result;
+  return result;
 };
 
 /**
@@ -126,7 +130,7 @@ export const getComponent = (type, component) => {
   let result = 'input';
   if (!validatenull(component)) {
     result = component;
-  } else if (type === 'array') {
+  } else if (['img', 'array'].includes(type)) {
     result = 'array';
   } else if (type === 'select') {
     result = 'select';
@@ -174,6 +178,8 @@ export const formInitVal = (list = []) => {
       ele.type === 'checkbox' ||
       ele.type === 'cascader' ||
       ele.type === 'dynamic' ||
+      ele.type === 'img' ||
+      ele.type === 'array' ||
       ele.type === 'dates' ||
       (ele.type === 'upload' && ele.listType !== 'picture-img') ||
       ele.multiple ||

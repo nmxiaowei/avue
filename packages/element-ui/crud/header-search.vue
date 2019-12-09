@@ -1,84 +1,37 @@
 <template>
   <el-collapse-transition>
-    <div v-show="searchShow && searchFlag"
-         style="margin-bottom:10px;">
-      <el-form :class="b()"
-               @submit.native.prevent
-               :model="searchForm"
-               label-suffix=":"
-               :label-width="setPx(crud.tableOption.searchLabelWidth || config.searchLabelWidth)"
-               label-position="right"
-               ref="searchForm">
-        <!-- 循环列搜索框 -->
-        <el-row :gutter="crud.tableOption.searchGutter || config.searchGutter">
-          <el-col :md="column.searchSpan || 6"
-                  :xs="24"
-                  v-for="(column,index) in crud.propOption"
-                  :key="index"
-                  v-if="column.search">
-            <el-form-item :prop="column.prop"
-                          :label-position="column.searchLabelPosition"
-                          :label-width="setPx(column.searchLabelWidth || config.searchLabelWidth)"
-                          :label="column.label">
-              <el-tooltip :disabled="!column.searchTip"
-                          :content="vaildData(column.searchTip,getPlaceholder(column,'search'))"
-                          :placement="column.searchTipPlacement">
-                <component v-model="searchForm[column.prop]"
-                           :is="getSearchType(column.type)"
-                           :clearable="column.searchClearable"
-                           :defaultExpandAll="column.defaultExpandAll"
-                           :dic="crud.DIC[column.prop]"
-                           :filterable="column.searchFilterable"
-                           :filter-method="column.searchFilterMethod"
-                           :format="column.format"
-                           :checkStrictly="column.searchCheckStrictly || column.checkStrictly"
-                           :changeoOnSelect="column.changeoOnSelect"
-                           :separator="column.separator"
-                           :showAllLevels="column.showAllLevels"
-                           :multiple="column.multiple"
-                           :parent="column.parent"
-                           :placeholder="getPlaceholder(column,'search')"
-                           :props="column.props || crud.tableOption.props"
-                           :size="crud.isMediumSize"
-                           :type="getType(column)"
-                           :tags="column.searchTags"
-                           :value-format="column.valueFormat"
-                           @keyup.enter.native="searchChange"></component>
-              </el-tooltip>
-            </el-form-item>
-          </el-col>
-          <slot name="search"></slot>
-          <el-col :md="6"
-                  :xs="24">
-            <el-form-item label-width="0"
-                          label="">
-              <div :class="b('menu')">
-
-                <el-button type="primary"
-                           @click="searchChange"
-                           :icon="config.searchBtnIcon"
-                           v-if="vaildData(crud.tableOption.searchSubBtn,config.searchSubBtn)"
-                           :size="crud.isMediumSize">{{t('crud.searchBtn')}}
-                </el-button>
-                <el-button @click="searchReset"
-                           :icon="config.emptyBtnIcon"
-                           v-if="vaildData(crud.tableOption.searchResetBtn,config.searchResetBtn)"
-                           :size="crud.isMediumSize">{{t('crud.emptyBtn')}}
-                </el-button>
-                <slot name="searchMenu"></slot>
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-
+    <div :class="b()"
+         v-show="searchShow && searchFlag">
+      <avue-form :option="option"
+                 @submit="searchChange"
+                 @reset-change="searchReset"
+                 v-model="searchForm">
+        <template slot="menuForm"
+                  slot-scope="{size}">
+          <slot name="searchMenu"
+                :size="size"></slot>
+        </template>
+        <template :slot="item.prop"
+                  slot-scope="scope"
+                  v-for="item in columnOption">
+          <slot :value="scope.value"
+                :column="scope.column"
+                :dic="scope.dic"
+                :size="scope.size"
+                :label="scope.label"
+                :disabled="scope.disabled"
+                :row="searchForm"
+                :name="item.prop"
+                v-if="item.searchslot"></slot>
+        </template>
+      </avue-form>
     </div>
   </el-collapse-transition>
 </template>
 
 <script>
 import cteate from "core/create";
-import { vaildData, filterForm } from "utils/util";
+import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
 import locale from "../../core/common/locale";
 import {
@@ -128,6 +81,62 @@ export default cteate({
     this.init();
   },
   computed: {
+    columnOption () {
+      return this.option.column || []
+    },
+    option () {
+      const option = this.crud.option;
+      const detailColumn = (list = []) => {
+        let column = [];
+        list.forEach(ele => {
+          if (ele.search) {
+            ele = Object.assign(ele, {
+              type: getSearchType(ele.type),
+              span: ele.searchSpan || this.config.searchSpan,
+              labelWidth: ele.searchLabelWidth || option.searchSpan || this.config.searchLabelWidth,
+              tip: ele.searchTip,
+              placeholder: getPlaceholder(ele, 'search'),
+              filterable: ele.searchFilterable,
+              filterMethod: ele.searchFilterMethod,
+              checkStrictly: ele.searchCheckStrictly || option.searchCheckStrictly,
+              gutter: ele.searchGutter || option.searchGutter,
+              tags: ele.searchTags,
+              row: ele.searchRow,
+              formslot: ele.searchslot,
+              disabled: ele.searchDisabled,
+              readonly: ele.searchReadonly,
+              readonly: ele.searchReadonly
+            })
+            let whiteList = ['rules']
+            whiteList.forEach(key => {
+              delete ele[key]
+            })
+            column.push(ele);
+          }
+        })
+        return column;
+      }
+      const dataDetail = (list) => {
+        let result = this.deepClone(list);
+        if (result.group) {
+          delete result.group;
+        }
+        result.column = detailColumn(result.column)
+        result = Object.assign(result, {
+          size: this.crud.isMediumSize,
+          gutter: option.searchGutter || this.config.searchGutter,
+          labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,
+          submitText: '搜索',
+          submitBtn: option.searchSubBtn || this.config.searchSubBtn,
+          submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
+          emptyText: '清空',
+          emptyBtn: option.searchResetBtn || this.config.searchResetBtn,
+          emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
+        })
+        return result;
+      }
+      return dataDetail(option)
+    },
     searchSlot () {
       return !validatenull(this.$slots.search);
     },
@@ -139,21 +148,16 @@ export default cteate({
   methods: {
     //初始化
     init () {
-      this.getSearchType = getSearchType;
-      this.getPlaceholder = getPlaceholder;
-      this.getType = getType;
-      this.vaildData = vaildData;
       //扩展搜索的相关api
       this.crud.searchChange = this.searchChange;
       this.crud.searchReset = this.searchReset;
     },
     // 搜索回调
-    searchChange () {
-      this.crud.$emit("search-change", this.searchForm);
+    searchChange (form, done) {
+      this.crud.$emit("search-change", form, done);
     },
     // 搜索清空
     searchReset () {
-      this.$refs["searchForm"].resetFields();
       this.crud.$emit("search-reset", this.defaultForm.searchForm);
     },
     handleSearchShow () {

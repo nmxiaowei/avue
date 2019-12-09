@@ -29,7 +29,6 @@ export default create({
     return {
       config: config,
       columnBox: false,
-      columnFirst: false,
       defaultProps: {
         value: 'prop'
       },
@@ -73,7 +72,6 @@ export default create({
       })
     },
     columnInit () {
-      if (this.columnFirst) return
       this.columnIndex = [];
       this.columnList = [];
       this.crud.propOption.forEach((ele, index) => {
@@ -87,7 +85,6 @@ export default create({
           this.columnList.push(this.deepClone(obj));
         }
       });
-      this.columnFirst = true;
     }
   }
 });

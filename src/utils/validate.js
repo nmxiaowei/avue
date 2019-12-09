@@ -4,6 +4,8 @@ import { deepClone } from './util';
  * 判断是否为空
  */
 export function validatenull(val) {
+  // 特殊判断
+  if (val && parseInt(val) === 0) return false;
   const list = ['$parent'];
   if (typeof val === 'boolean') {
     return false;

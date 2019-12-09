@@ -28,20 +28,7 @@
     el: '#app',
     data() {
       return {
-        data1: [
-          {
-            name: '张三',
-            province: '110000',
-            city: '110100',
-            area: '110101'
-          },
-          {
-            name: '李四',
-            province: '140000',
-            city: '140600',
-            area: '140623'
-          }
-        ],
+        data1: [],
         option1: {
           props: {
             label: 'name',
@@ -56,8 +43,16 @@
             label: '省份',
             prop: 'province',
             type: 'select',
+            props: {
+              label: 'name',
+              value: 'code'
+            },
             cascaderItem: ['city', 'area'],
             dicUrl: `${baseUrl}/getProvince`,
+            // dicMethod: 'post',
+            // dicQuery: {
+            //   a: 1
+            // },
             rules: [
               {
                 required: true,
@@ -70,8 +65,11 @@
             label: '城市',
             prop: 'city',
             type: 'select',
+            props: {
+              label: 'name',
+              value: 'code'
+            },
             dicFlag: false,
-            hide: true,
             dicUrl: `${baseUrl}/getCity/{{key}}`,
             rules: [
               {
@@ -85,7 +83,10 @@
             label: '地区',
             prop: 'area',
             dicFlag: false,
-            hide: true,
+            props: {
+              label: 'name',
+              value: 'code'
+            },
             type: 'select',
             dicUrl: `${baseUrl}/getArea/{{key}}`,
             rules: [
@@ -95,10 +96,30 @@
                 trigger: 'blur'
               }
             ]
-          }
+          },
           ]
         }
       }
+    },
+    created() {
+      setTimeout(() => {
+        this.data1 = [
+          {
+            id: 1,
+            name: '张三',
+            province: '110000',
+            city: '110100',
+            area: '110101',
+          },
+          {
+            id: 2,
+            name: '李四',
+            province: '140000',
+            city: '140600',
+            area: '140623'
+          }
+        ]
+      }, 0)
     },
     methods: {
       submit() {

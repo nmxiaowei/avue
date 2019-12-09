@@ -15,7 +15,7 @@
         </template>
       </dynamic-column>
       <template v-else-if="!['dynamic'].includes(column.type)">
-        <el-table-column v-if="vaildColumn(column.prop)"
+        <el-table-column v-if="vaildColumn(column)"
                          :key="column.prop"
                          :prop="column.prop"
                          :label="column.label"
@@ -149,10 +149,11 @@ export default {
   methods: {
     getComponent,
     getPlaceholder,
-    vaildColumn (prop) {
+    vaildColumn (item) {
+      const prop = item.prop;
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
         prop
-      );
+      )
     },
     detailData (list, dataType) {
       if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {

@@ -20,6 +20,7 @@
 
 <body>
   <div id="app">
+    {{user}}
     <avue-crud ref="crud" :option="option" v-model="user" :data="data"></avue-crud>
   </div>
 </body>
@@ -30,6 +31,7 @@
       return {
         user: {},
         data: [{
+          select: 'Shanghai',
           array: '1,2,3',
           href: 'https://www.baidu.com',
           img: 'http://demo.cssmoban.com/cssthemes5/twts_236_rage/assets/images/background/header.jpg,http://demo.cssmoban.com/cssthemes5/twts_236_rage/assets/images/background/header.jpg'
@@ -52,6 +54,36 @@
             prop: 'array',
             dataType: 'number',
             type: 'array'
+          }, {
+            label: '分组',
+            prop: 'select',
+            type: 'select',
+            group: true,
+            dicData: [{
+              label: '热门城市',
+              groups: [{
+                value: 'Shanghai',
+                label: '上海'
+              }, {
+                value: 'Beijing',
+                label: '北京'
+              }]
+            }, {
+              label: '城市名',
+              groups: [{
+                value: 'Chengdu',
+                label: '成都'
+              }, {
+                value: 'Shenzhen',
+                label: '深圳'
+              }, {
+                value: 'Guangzhou',
+                label: '广州'
+              }, {
+                value: 'Dalian',
+                label: '大连',
+              }]
+            }]
           }]
         }
       }

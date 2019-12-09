@@ -7,6 +7,7 @@
              :appendClick="column.appendClick"
              :border="column.border"
              :button="column.button"
+             :lazy="column.lazy"
              :children="column.children"
              :group="column.group"
              :change="column.change"
@@ -46,11 +47,13 @@
              :filesize="column.filesize"
              :filterable="column.filterable"
              :format="column.format"
+             :unlink-panels="column.unlinkPanels"
              :formatTooltip="column.formatTooltip"
              :iconClasses="column.iconClasses"
              :label="column.label"
              :limit="column.limit"
              :listType="column.listType"
+             :tree-load="column.treeLoad"
              :loadText="column.loadText"
              :min="column.min"
              :max="column.max"
@@ -100,6 +103,7 @@
              v-model="text"
              :allow-create="column.allowCreate"
              :default-first-option="column.defaultFirstOption"
+             @keyup.enter.native="enterChange"
              @change="handleChange">
     <template :slot="column.prop+'Type'"
               slot-scope="{item,label,value}"
@@ -182,6 +186,9 @@ export default {
   methods: {
     getComponent,
     getPlaceholder,
+    enterChange () {
+      this.$emit('enter')
+    },
     handleChange (val) {
       this.$emit('change', val)
     }

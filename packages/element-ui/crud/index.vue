@@ -9,11 +9,25 @@
       <template slot="search">
         <slot name="search"></slot>
       </template>
-      <template slot="searchMenu">
-        <slot name="searchMenu"></slot>
+      <template slot="searchMenu"
+                slot-scope="{size}">
+        <slot name="searchMenu"
+              :size="size"></slot>
+      </template>
+      <template slot-scope="{value,column,dic,size,label,disabled}"
+                v-for="item in columnOption"
+                :slot="item.prop">
+        <slot :value="value"
+              :column="column"
+              :dic="dic"
+              :size="size"
+              :label="label"
+              :disabled="disabled"
+              :row="searchForm"
+              :name="item.prop+'Search'"
+              v-if="item.searchslot"></slot>
       </template>
     </header-search>
-
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
                  v-show="vaildData(tableOption.header,true)">
@@ -44,6 +58,8 @@
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
               :size="controlSize"
+              :lazy="vaildData(tableOption.lazy,false)"
+              :load="treeload"
               :tree-props="tableOption.treeProps || {}"
               :expand-row-keys="tableOption.expandRowKeys"
               :default-expand-all="tableOption.defaultExpandAll"
@@ -137,8 +153,7 @@
                        :index="indexMethod"
                        :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
                        align="center"></el-table-column>
-      <!-- 占位符号解决ele问题 -->
-      <el-table-column width="1"></el-table-column>
+      <el-table-column width="1px"></el-table-column>
       <column :columnOption="columnOption"
               :disabled="btnDisabled">
         <template v-for="(item,index) in propOption"
@@ -309,6 +324,7 @@ export default create({
       list: [],
       expandList: [],
       tableForm: {},
+      tableHeight: undefined,
       tableIndex: -1,
       tableSelect: [],
       formIndexList: [],
@@ -337,6 +353,8 @@ export default create({
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
       this.$nextTick(() => {
+        //动态计算表格高度
+        this.getTableHeight();
         //是否开启表格排序
         if (this.isSortable) setTimeout(this.setSort(), 0)
       })
@@ -398,15 +416,6 @@ export default create({
     rowKey () {
       return this.tableOption.rowKey || "id";
     },
-    tableHeight () {
-      const clientHeight = document.documentElement.clientHeight;
-      const height =
-        this.tableOption.height == "auto"
-          ? clientHeight -
-          this.vaildData(this.tableOption.calcHeight, config.calcHeight)
-          : this.tableOption.height;
-      return height <= 300 ? 300 : height;
-    },
     parentOption () {
       return this.tableOption || {};
     },
@@ -441,6 +450,9 @@ export default create({
     },
     propOption () {
       this.$refs.dialogColumn.columnInit();
+    },
+    list () {
+      this.refreshTable();
     },
     data () {
       this.dataInit();
@@ -494,6 +506,18 @@ export default create({
     }
   },
   methods: {
+    getTableHeight () {
+      const clientHeight = document.documentElement.clientHeight;
+      if (this.tableOption.height == "auto") {
+        this.$nextTick(() => {
+          const tableStyle = this.$refs.table.$el;
+          const pageStyle = this.$refs.tablePage.$el;
+          this.tableHeight = clientHeight - tableStyle.offsetTop - pageStyle.offsetHeight - 30
+        })
+      } else {
+        this.tableHeight = this.tableOption.height;
+      }
+    },
     refreshTable () {
       this.doLayout = false;
       this.$nextTick(() => {
@@ -518,6 +542,10 @@ export default create({
           this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
         }
       })
+    },
+    //树懒加载
+    treeload (tree, treeNode, resolve) {
+      this.$emit('tree-load', tree, treeNode, resolve)
     },
     // 格式化数据源
     formatData () {
@@ -644,6 +672,10 @@ export default create({
     // 行单机
     rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
+    },
+    //清空排序
+    clearSort () {
+      this.$refs.table.clearSort();
     },
     //当单元格 hover 进入时会触发该事件
     cellMouseEnter (row, column, cell, event) {

@@ -5,10 +5,10 @@
              status-icon
              @submit.native.prevent
              :model="form"
-             label-suffix=":"
+             :label-suffix="parentOption.labelSuffix || ':'"
              :label-position="parentOption.labelPosition"
              :size="controlSize"
-             :label-width="setPx(parentOption.labelWidth,90)"
+             :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
       <el-row :span="24">
         <avue-group v-for="(item,index) in columnOption"
@@ -56,6 +56,7 @@
                                :upload-after="uploadAfter"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
+                               @enter="submit"
                                @change="column.cascader?handleChange(item.column,cindex):''">
                       <template :slot="column.prop+'Type'"
                                 slot-scope="{item,label,value}"
@@ -79,7 +80,7 @@
 
         <el-col :span="24"
                 v-if="vaildData(parentOption.menuBtn,true)">
-          <el-form-item>
+          <el-form-item label-width="0px">
             <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPosition])">
               <el-button type="primary"
@@ -91,10 +92,11 @@
               <el-button type="primary"
                          @click="submit"
                          :size="controlSize"
-                         icon="el-icon-check"
+                         :icon="parentOption.submitIcon|| 'el-icon-check'"
                          :loading="allDisabled"
                          v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
+                         :icon="parentOption.emptyIcon|| 'el-icon-delete'"
                          :size="controlSize"
                          :loading="allDisabled"
                          v-if="vaildData(parentOption.emptyBtn,true)"
@@ -128,6 +130,7 @@ export default create({
   },
   data () {
     return {
+      labelWidth: 90,
       allDisabled: false,
       optionIndex: [],
       optionBox: false,
@@ -250,9 +253,15 @@ export default create({
       });
     },
     getLabelWidth (column, item) {
-      const result =
-        column.labelWidth || item.labelWidth || this.parentOption.labelWidth;
-      return this.setPx(result);
+      let result;
+      if (!this.validatenull(column.labelWidth)) {
+        result = column.labelWidth
+      } else if (!this.validatenull(column.labelWidth)) {
+        result = item.labelWidth
+      } else {
+        result = this.parentOption.labelWidth;
+      }
+      return this.setPx(result, this.labelWidth);
     },
     //获取全部字段字典的label
     handleShowLabel (column, DIC) {
@@ -334,7 +343,7 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res || '' }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典

@@ -29,17 +29,19 @@
                   v-if="filter"></el-input>
         <el-scrollbar style="height:180px;overflow-x:hidden">
           <el-tree :data="dicList"
+                   :lazy="lazy"
+                   :load="treeLoad"
                    :node-key="valueKey"
                    :accordion="accordion"
                    :show-checkbox="multiple"
-                   :props="props"
+                   :props="treeProps"
                    :check-strictly="checkStrictly"
                    ref="tree"
                    highlight-current
                    :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
-                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?keysList:[])"
+                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?defaultExpandAll:keysList)"
                    :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
                    :default-expand-all="defaultExpandAll"
                    @node-click.self="handleNodeClick">
@@ -77,11 +79,6 @@
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
-    <template v-else-if="type==='img'">
-      <avue-array is-img
-                  :size="size"
-                  v-model="text"></avue-array>
-    </template>
     <template v-else-if="type==='url'">
       <el-tooltip placement="bottom"
                   :disabled="validatenull(text)">
@@ -170,11 +167,16 @@ export default create({
   },
   props: {
     nodeClick: Function,
+    treeLoad: Function,
     checked: Function,
     value: {},
     maxlength: "",
     minlength: "",
     showWordLimit: {
+      type: Boolean,
+      default: false
+    },
+    lazy: {
       type: Boolean,
       default: false
     },
@@ -206,7 +208,7 @@ export default create({
     },
     defaultExpandAll: {
       type: Boolean,
-      default: true
+      default: false
     },
     prefixIcon: {
       type: String
@@ -262,6 +264,11 @@ export default create({
     }
   },
   computed: {
+    treeProps () {
+      return Object.assign(this.props, {
+        isLeaf: this.leafKey
+      })
+    },
     dicList () {
       function addParent (result, parent) {
         result.forEach(ele => {
@@ -279,7 +286,7 @@ export default create({
       return list;
     },
     keysList () {
-      return this.multiple ? this.text : [];
+      return [this.text];
     },
     isTree () {
       return this.type === "tree";
