@@ -154,7 +154,7 @@ export default create({
     fileList () {
       let list = [];
       const flag = this.isArray || this.isString;
-      this.text.forEach((ele, index) => {
+      (this.text || []).forEach((ele, index) => {
         let name;
         //处理单个url链接取最后为label
         if (flag) {
@@ -210,11 +210,11 @@ export default create({
     },
     delete (file) {
       if (this.isArray || this.isString) {
-        this.text.forEach((ele, index) => {
+        (this.text || []).forEach((ele, index) => {
           if (ele === file.url) this.text.splice(index, 1);
         });
       } else {
-        this.text.forEach((ele, index) => {
+        (this.text || []).forEach((ele, index) => {
           if (ele[this.valueKey] === file.url) this.text.splice(index, 1);
         });
       }
