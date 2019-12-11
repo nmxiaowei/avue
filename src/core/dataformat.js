@@ -108,7 +108,7 @@ export const getCellType = type => {
  * 搜索框获取动态组件
  */
 export const getSearchType = type => {
-  let result = 'input';
+  let result = type || 'input';
   if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (['time', 'timerange'].includes(type)) {

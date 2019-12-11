@@ -127,10 +127,10 @@ export default cteate({
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,
           submitText: '搜索',
-          submitBtn: option.searchSubBtn || this.config.searchSubBtn,
+          submitBtn: this.vaildData(option.searchSubBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
           emptyText: '清空',
-          emptyBtn: option.searchResetBtn || this.config.searchResetBtn,
+          emptyBtn: this.vaildData(option.searchResetBtn, this.config.searchResetBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
         })
         return result;
