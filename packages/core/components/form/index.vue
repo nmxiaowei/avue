@@ -1,5 +1,5 @@
 <template>
-  <component :is=" getComponent(column.type,column.component)"
+  <component :is="getComponent(column.type,column.component)"
              :action="column.action"
              :append="column.append"
              :accordion="column.accordion"
