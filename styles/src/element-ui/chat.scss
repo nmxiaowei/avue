@@ -8,10 +8,15 @@
   }
   li{
     list-style: none;
+    cursor: pointer;
+  }
+  .web__content{
+    height:100%;
+    display: flex;
   }
   .web__main {
     height: calc(100% - 200px);
-    padding: 15px 15px 5px;
+    padding: 15px 15px 20px;
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
@@ -20,7 +25,7 @@
     background-color: #409eff;
     display: flex;
     padding: 15px 12px;
-    margin: 20px auto;
+    margin: 0 auto;
     vertical-align: middle;
   }
   .web__logo-img{
@@ -224,27 +229,12 @@
   .web__msg-submit{
     float: right;
     display: block;
-    padding: 0;
-    margin-top: 4px;
-    margin-right: 10px;
-    width: 60px;
-    height: 30px;
-    line-height: 30px;
-    font-size: 13px;
-    border: 0;
     outline: none;
-    background-color: #f7f7f7;
-    border-radius: 3px;
-    color: #cfcfcf;
     cursor: pointer;
     text-align: center;
-    &--active{
-      background-color: #007aff;
-      color:#fff;
-    }
   }
   .web__dialog{
-    padding-top: 80px;
+    padding-top: 30px;
     position: fixed;
     top:0;
     left: 0;
