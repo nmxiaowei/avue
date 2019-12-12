@@ -1,4 +1,4 @@
-class NumberKeyboard {
+export default class NumberKeyboard {
   constructor(obj) {
     if (typeof obj !== 'object') {
       console.error('aKeyboard: The obj parameter needs to be an object <In "new aKeyboard()">');
@@ -33,7 +33,7 @@ class NumberKeyboard {
     el.innerHTML = html;
   }
 
-  inputOn(inputEle, type, fn) {
+  inputOn (inputEle, type, fn, customClick) {
     if (typeof inputEle !== 'string') {
       console.error('aKeyboard: The inputEle parameter needs to be a string <In "aKeyboard.inputOn()">');
       return;
@@ -49,27 +49,33 @@ class NumberKeyboard {
 
     for (let i = 0; i < elKeysEl.length; i++) {
       if (elKeysEl[i].innerHTML === 'Delete') {
-        elKeysEl[i].onclick = function() {
+        elKeysEl[i].onclick = function () {
           inputEl[type] = inputEl[type].substr(0, inputEl[type].length - 1);
+          fn('Delete', inputEl[type]);
         };
         continue;
       }
 
       if (elKeysEl[i].innerHTML === 'Enter') {
-        elKeysEl[i].onclick = function() {
+        elKeysEl[i].onclick = function () {
           inputEl[type] += '\n';
+          fn('Enter', inputEl[type]);
         };
         continue;
       }
 
-      elKeysEl[i].onclick = function() {
-        inputEl[type] += this.innerText;
-        fn(this.innerText);
-      };
+      if (customClick && typeof customClick == 'object' && Object.keys(customClick).length > 0 && customClick[elKeysEl[i].innerHTML]) {
+        elKeysEl[i].onclick = customClick[elKeysEl[i].innerHTML]
+      } else {
+        elKeysEl[i].onclick = function () {
+          inputEl[type] += this.innerText;
+          fn(this.innerText, inputEl[type]);
+        };
+      }
     }
   }
 
-  onclick(btn, fn) {
+  onclick (btn, fn) {
     if (typeof btn !== 'string') {
       console.error('aKeyboard: The btn parameter needs to be a string <In "aKeyboard.onclick()">');
       return;
@@ -80,13 +86,8 @@ class NumberKeyboard {
       return;
     }
 
-    let elKeysEl = document.querySelector(this.obj.el + ' .akeyboard-keyboard-keys-' + btn);
-    if (elKeysEl === null) {
-      elKeysEl = document.querySelector(this.obj.el + ' .akeyboard-numberKeyboard-keys-' + btn);
-    }
-
-    elKeysEl.onclick = fn;
+    let elKeysEl = document.querySelector(this.obj.el + ' .akeyboard-keyboard-keys-' + btn)
+    if (elKeysEl) elKeysEl.onclick = fn
+    else console.error("Can not find key: " + btn)
   }
 }
-
-module.exports = NumberKeyboard;

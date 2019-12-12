@@ -24,8 +24,10 @@
 
 <body>
   <div id="app">
-    {{text}}
-    <avue-keyboard text="text" @click="handleClick"></avue-keyboard>
+    <input id="text" v-model="text">
+    <input id="text2" v-model="text2">
+    <avue-keyboard ref="kb" :ele="ele" :keys="keys" @click="handleKeyboardClick" style="width: 800px; height: 300px">
+    </avue-keyboard>
   </div>
 </body>
 
@@ -34,12 +36,30 @@
     el: '#app',
     data() {
       return {
-        text: ''
+        keys: [
+          ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+          ['a', 'b', 'c', 'd', 'Shift', '清空']
+        ],
+        text: '',
+        text2: '',
+        ele: 'text'
       }
     },
+    mounted() {
+      // 自定义按键绑定click
+      this.$refs.kb.bindClick("清空", () => {
+        this[this.ele] = ''
+      })
+
+      // 模拟更换输入框
+      setTimeout(() => {
+        this.ele = "text2"
+      }, 5000);
+    },
     methods: {
-      handleClick(e) {
-        this.text = this.text + e;
+      // 键盘点击
+      handleKeyboardClick(key, val) {
+        this[this.ele] = val
       }
     }
   })
