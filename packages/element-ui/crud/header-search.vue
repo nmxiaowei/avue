@@ -91,7 +91,7 @@ export default cteate({
         list.forEach(ele => {
           if (ele.search) {
             ele = Object.assign(ele, {
-              type: getSearchType(ele.type),
+              type: getSearchType(ele),
               span: ele.searchSpan || this.config.searchSpan,
               labelWidth: ele.searchLabelWidth || option.searchSpan || this.config.searchLabelWidth,
               tip: ele.searchTip,
