@@ -85,42 +85,40 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
 };
 
 /**
- * 行编辑框获取动态组件
- */
-export const getCellType = type => {
-  let result = 'input';
-  if (['select', 'radio', 'checkbox'].includes(type)) {
-    result = 'select';
-  } else if (['time', 'timerange'].includes(type)) {
-    result = 'time';
-  } else if (dateList.includes(type)) {
-    result = 'date';
-  } else if (['cascader'].includes(type)) {
-    result = 'cascader';
-  } else if (['number'].includes(type)) {
-    result = 'input-number';
-  } else if (['switch'].includes(type)) {
-    result = 'switch';
-  }
-  return KEY_COMPONENT_NAME + result;
-};
-/**
  * 搜索框获取动态组件
  */
-export const getSearchType = type => {
-  let result = type || 'input';
+export const getSearchType = (column, component = false) => {
+  const type = column.type;
+  const range = column.searchRange;
+  let result = 'input';
   if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (['time', 'timerange'].includes(type)) {
     result = 'time';
   } else if (dateList.includes(type)) {
-    result = 'date';
+    if (range) {
+      if (type === 'date') {
+        result = 'daterange';
+      } else if (type === 'datetime') {
+        result = 'datetimerange';
+      } else if (type === 'time') {
+        result = 'timerange';
+      } else {
+        result = type;
+      }
+    } else {
+      result = 'date';
+    }
   } else if (['cascader'].includes(type)) {
     result = 'cascader';
   } else if (['number'].includes(type)) {
     result = 'input-number';
   }
+  if (component) {
+    result = KEY_COMPONENT_NAME + result;
+  }
   return result;
+
 };
 
 /**
@@ -181,8 +179,9 @@ export const formInitVal = (list = []) => {
       ele.type === 'img' ||
       ele.type === 'array' ||
       ele.type === 'dates' ||
+      (ele.type === 'tree' && ele.multiple) ||
+      (ele.type === 'select' && ele.multiple) ||
       (ele.type === 'upload' && ele.listType !== 'picture-img') ||
-      ele.multiple ||
       ele.range ||
       ele.dataType === 'array'
     ) {
@@ -201,12 +200,6 @@ export const formInitVal = (list = []) => {
       if (ele.search) {
         searchForm[ele.prop] = '';
       }
-    }
-    // 表单默认值设置
-    if (!validatenull(ele.valueDefault)) tableForm[ele.prop] = ele.valueDefault;
-    // 搜索表单默认值设置
-    if (!validatenull(ele.searchDefault)) {
-      searchForm[ele.prop] = ele.searchDefault;
     }
   });
   return {
@@ -234,24 +227,4 @@ export const getPlaceholder = function(column, type) {
   }
 
   return placeholder;
-};
-
-export const getType = column => {
-  const type = column.type;
-  const more = column.more || false;
-  if (more) {
-    if (type === 'date') {
-      return 'daterange';
-    } else if (type === 'datetime') {
-      return 'datetimerange';
-    } else if (type === 'time') {
-      return 'timerange';
-    } else {
-      return type;
-    }
-  }
-  if (type === 'textarea') {
-    return 'input';
-  }
-  return type;
 };

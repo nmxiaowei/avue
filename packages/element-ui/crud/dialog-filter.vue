@@ -40,20 +40,14 @@
                      :dic="symbolDic"
                      :clearable="false"
                      :size="$parent.isMediumSize"></avue-select>
-        <component v-model="column.value"
-                   :class="b('filter-value')"
-                   :clearable="false"
-                   :defaultExpandAll="columnList[index].defaultExpandAll"
-                   :dic="$parent.DIC[columnList[index].prop]"
-                   :format="columnList[index].format"
-                   :is="getSearchType(columnList[index].type)"
-                   multiple
-                   :placeholder="t('common.condition')"
-                   :parent="columnList[index].parent"
-                   :props="columnList[index].props || $parent.tableOption.props"
+        <form-temp :column="getColumnByIndex(columnList[index])"
                    :size="$parent.isMediumSize"
-                   :type="getType(columnList[index])"
-                   :value-format="columnList[index].valueFormat"></component>
+                   :class="b('filter-value')"
+                   :dic="$parent.DIC[columnList[index].prop]"
+                   :t="t"
+                   :props="columnList[index].props || $parent.tableOption.props"
+                   v-model="column.value">
+        </form-temp>
         <el-button type="danger"
                    :class="b('filter-icon')"
                    size="mini"
@@ -74,16 +68,21 @@
 </template>
 
 <script>
-import { getSearchType, getType } from "core/dataformat";
+import { getSearchType, formInitVal } from "core/dataformat";
 import locale from "../../core/common/locale";
 import create from "core/create";
 import { dateList } from "core/dataformat";
+import formTemp from '../../core/components/form/index'
 export default create({
   name: "crud",
   mixins: [locale],
-  data() {
+  components: {
+    formTemp
+  },
+  data () {
     return {
       box: false,
+      formDefault: {},
       list: [],
       columnList: [],
       dateList: dateList,
@@ -93,7 +92,7 @@ export default create({
     };
   },
   computed: {
-    symbolDic() {
+    symbolDic () {
       return [
         {
           label: "=",
@@ -129,7 +128,7 @@ export default create({
         }
       ];
     },
-    result() {
+    result () {
       let result = [];
       this.list.forEach(ele => {
         if (!this.validatenull(ele.value)) {
@@ -138,57 +137,59 @@ export default create({
       });
       return result;
     },
-    columnObj() {
+    columnObj () {
       return this.columnOption[0];
     },
-    columnOption() {
+    columnOption () {
       return this.$parent.propOption;
     }
   },
-  created() {
+  created () {
     this.getSearchType = getSearchType;
-    this.getType = getType;
+    this.formDefault = formInitVal(this.columnOption).tableForm;
   },
   methods: {
-    handleDelete(index) {
+    getColumnByIndex (column, index) {
+      const ele = this.deepClone(column)
+      ele.type = getSearchType(ele);
+      ele.multiple = ["checkbox"].includes(column.type)
+      return ele
+    },
+    handleDelete (index) {
       this.list.splice(index, 1);
       this.columnList.splice(index, 1);
     },
-    handleClear() {
+    handleClear () {
       this.list = [];
       this.columnList = [];
     },
-    handleValueClear() {
+    handleValueClear () {
       this.list.forEach((ele, index) => {
-        ele.value = "";
-        this.$set(this.list, index, ele);
+        this.$set(this.list[index], 'value', this.formDefault[ele.text]);
       });
     },
-    handleGetColumn(prop) {
-      return (
-        this.columnOption.filter(ele => {
-          return ele.prop === prop;
-        })[0] || {}
-      );
+    handleGetColumn (prop) {
+      return this.columnOption.find(ele => ele.prop === prop)
     },
-    handleSubmit() {
+    handleSubmit () {
       this.list.push({});
       this.list.splice(this.list.length - 1, 1);
       this.$parent.$emit("filter-change", this.result);
       this.box = false;
     },
-    handleChange(prop, index) {
+    handleChange (prop, index) {
       const column = this.handleGetColumn(prop);
       this.columnList[index] = column;
-      this.list[index].value = "";
+      this.list[index].value = this.formDefault[prop];
     },
-    handleAdd() {
+    handleAdd () {
       const len = this.list.length;
       const prop = this.columnObj.prop;
       const column = this.handleGetColumn(prop);
       this.columnList.push(column);
       this.list.push({
         text: prop,
+        value: this.formDefault[prop],
         symbol: this.symbolDic[0].value
       });
     }

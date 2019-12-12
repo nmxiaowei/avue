@@ -1,5 +1,5 @@
 <template>
-  <component :is="type || getComponent(column.type,column.component)"
+  <component :is=" getComponent(column.type,column.component)"
              :action="column.action"
              :append="column.append"
              :accordion="column.accordion"
@@ -91,7 +91,7 @@
              :suffixIcon="column.suffixIcon"
              :texts="column.texts"
              :tip="column.tip"
-             :type="column.type"
+             :type="type || column.type"
              :accept="column.accept"
              :tags="column.tags"
              :upload-before="uploadBefore"
