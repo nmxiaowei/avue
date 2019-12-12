@@ -36,7 +36,6 @@
           name: 'avue自助机器人',
           dept: '这是一个神奇的前端框架'
         },
-<<<<<<< HEAD
         keylist: [
           '您好，欢迎光临***品牌旗舰店，很高兴为您服务！/:^_^',
           '您好，/:^_^不好意思让您久等了，您看中这款是吗（截图发给客户看），要什么颜色的呢？',
@@ -45,8 +44,6 @@
           '您好，/:^_^不好意思让您久等了，您看中这款是吗（截图发给客户看），要什么颜色的呢？',
           '亲，这款是打特价的价格呢，已经是最低价了哦，现在全场三件（根据具体情况而定）包邮哦，您挑多一件了'
         ],
-=======
->>>>>>> sscfaith-master
         msg: '这是你想说的话～。～',
         list: [{
           "date": "2019-07-17 23:25:15",
@@ -71,13 +68,10 @@
       this.handleSubmit('如何贷款')
     },
     methods: {
-<<<<<<< HEAD
       handleAdd(msg) {
         this.keylist.push(msg);
         this.$message.success('快捷回复语添加成功')
       },
-=======
->>>>>>> sscfaith-master
       handleSubmit(msg) {
         this.msg = msg || this.msg
         this.$refs.chat.pushMsg({
@@ -99,11 +93,7 @@
           };
         } else if (msg === '如何贷款') {
           return {
-<<<<<<< HEAD
             text: '我行提供了如下贷款方式<img src="https://avuejs.com/images/logo-bg.jpg" />',
-=======
-            text: '我行提供了如下贷款方式',
->>>>>>> sscfaith-master
             list: [{
               text: "1.微信线上申请",
               ask: '微信线上申请'

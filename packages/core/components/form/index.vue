@@ -91,22 +91,20 @@
              :suffixIcon="column.suffixIcon"
              :texts="column.texts"
              :tip="column.tip"
-             <<<<<<<
-             HEAD
-             :type="type || column.type"=======:type="column.type">>>>>>> sscfaith-master
-    :accept="column.accept"
-    :tags="column.tags"
-    :upload-before="uploadBefore"
-    :upload-after="uploadAfter"
-    :value-format="column.valueFormat"
-    :voidIconClass="column.voidIconClass"
-    :remote="column.remote"
-    :autocomplete="column.autocomplete"
-    v-model="text"
-    :allow-create="column.allowCreate"
-    :default-first-option="column.defaultFirstOption"
-    @keyup.enter.native="enterChange"
-    @change="handleChange">
+             :type="type || column.type"
+             :accept="column.accept"
+             :tags="column.tags"
+             :upload-before="uploadBefore"
+             :upload-after="uploadAfter"
+             :value-format="column.valueFormat"
+             :voidIconClass="column.voidIconClass"
+             :remote="column.remote"
+             :autocomplete="column.autocomplete"
+             v-model="text"
+             :allow-create="column.allowCreate"
+             :default-first-option="column.defaultFirstOption"
+             @keyup.enter.native="enterChange"
+             @change="handleChange">
     <template :slot="column.prop+'Type'"
               slot-scope="{item,label,value}"
               v-if="column.typeslot">
