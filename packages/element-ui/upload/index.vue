@@ -24,6 +24,7 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
+             v-bind="preview"
              :class="b('avatar')">
         <i v-else
            class="el-icon-plus"
@@ -82,6 +83,12 @@ export default create({
     data: {
       type: Object,
       default: () => {
+        return {}
+      }
+    },
+    preview: {
+      type: Object,
+      default(){
         return {}
       }
     },
