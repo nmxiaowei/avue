@@ -1,5 +1,5 @@
 <template>
-  <component :is="getComponent(column.type,column.component)"
+  <component :is="type || getComponent(column.type,column.component)"
              :action="column.action"
              :append="column.append"
              :accordion="column.accordion"
@@ -130,6 +130,9 @@ export default {
     },
     clearable: {
       type: Boolean
+    },
+    type: {
+      type: String
     },
     propsHttp: {
       type: Object,
