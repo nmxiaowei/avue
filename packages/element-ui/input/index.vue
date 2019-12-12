@@ -41,7 +41,7 @@
                    :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
-                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?defaultExpandAll:keysList)"
+                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?[]:keysList)"
                    :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
                    :default-expand-all="defaultExpandAll"
                    @node-click.self="handleNodeClick">
