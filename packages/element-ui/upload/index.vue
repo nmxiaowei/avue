@@ -270,8 +270,9 @@ export default create({
       }
       const done = () => {
         let url = this.action;
-        param.append(this.fileName, file, file.name);
-        const callack = () => {
+        const callack = (newFile) => {
+          const uploadfile = newFile || file;
+          param.append(this.fileName, uploadfile);
           //七牛云oss存储
           if (this.isQiniuOss) {
             if (!window.CryptoJS) {
@@ -304,7 +305,7 @@ export default create({
           }
           (() => {
             if (this.isAliOss) {
-              return client.put(file.name, file);
+              return client.put(uploadfile.name, uploadfile);
             } else {
               return this.$httpajax.post(url, param, { headers });
             }
