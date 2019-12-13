@@ -7,7 +7,7 @@
                :on-remove="handleRemove"
                :before-remove="beforeRemove"
                :multiple="multiple"
-               :on-preview="handlePictureCardPreview"
+               :on-preview="handlePreview"
                :limit="limit"
                :http-request="httpRequest"
                :drag="drag"
@@ -24,10 +24,22 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
+             @mouseover="menu=disabled?false:true"
              :class="b('avatar')">
         <i v-else
            class="el-icon-plus"
            :class="b('icon')"></i>
+        <div class="el-upload-list__item-actions"
+             :class="b('menu')"
+             v-if="menu"
+             @mouseover="menu=true"
+             @mouseout="menu=false"
+             @click.stop="()=>{return false}">
+          <i class="el-icon-zoom-in"
+             @click.stop="handlePreview({url:imgUrl})"></i>
+          <i class="el-icon-delete"
+             @click.stop="handleDelete"></i>
+        </div>
       </template>
       <template v-else-if="drag">
         <i class="el-icon-upload"></i>
@@ -70,6 +82,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      menu: false,
       loading: false,
       dialogImageUrl: "",
       dialogImgType: true,
@@ -362,7 +375,7 @@ export default create({
         } 个文件，共上传了 ${files.length + fileList.length} 个文件`
       );
     },
-    handlePictureCardPreview (file) {
+    handlePreview (file) {
       if (this.disabled) return
       //判断是否为图片
       this.dialogImageUrl = file.url;
@@ -375,7 +388,14 @@ export default create({
         this.dialogVisible = true;
       }
     },
-    beforeRemove (file) {
+    handleDelete () {
+      this.beforeRemove().then(() => {
+        this.text[0] = '';
+        this.setVal();
+      }).catch(() => {
+      });
+    },
+    beforeRemove () {
       return this.$confirm(`是否确定移除该选项？`);
     }
   }
