@@ -168,18 +168,20 @@ export default create({
       let list = [];
       const flag = this.isArray || this.isString;
       (this.text || []).forEach((ele, index) => {
-        let name;
-        //处理单个url链接取最后为label
-        if (flag) {
-          let i = ele.lastIndexOf('/');
-          name = ele.substring(i + 1);
+        if (ele) {
+          let name;
+          //处理单个url链接取最后为label
+          if (flag) {
+            let i = ele.lastIndexOf('/');
+            name = ele.substring(i + 1);
+          }
+          list.push({
+            uid: index + '',
+            status: 'done',
+            name: flag ? name : ele[this.labelKey],
+            url: flag ? ele : ele[this.valueKey]
+          });
         }
-        list.push({
-          uid: index + '',
-          status: 'done',
-          name: flag ? name : ele[this.labelKey],
-          url: flag ? ele : ele[this.valueKey]
-        });
       });
       return list;
     }
