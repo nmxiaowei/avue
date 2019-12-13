@@ -24,6 +24,7 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
+             v-bind="preview"
              :class="b('avatar')">
         <i v-else
            class="el-icon-plus"
@@ -79,6 +80,10 @@ export default create({
     };
   },
   props: {
+    preview: {
+      type: Object,
+      default: () => {}
+    },
     value: {},
     onRemove: Function,
     showFileList: {

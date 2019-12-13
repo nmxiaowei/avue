@@ -66,6 +66,7 @@
                             :dataType="column.dataType"
                             :size="crud.isMediumSize"
                             :value="scope.row[column.prop]"
+                            v-bind="column.preview"
                             v-if="scope.row[column.prop]"></avue-img>
                 </template>
                 <span v-else-if="['color'].includes(column.type)">
