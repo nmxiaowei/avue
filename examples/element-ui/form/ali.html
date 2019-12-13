@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="form"> </avue-form>
+    <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
 <script>
@@ -62,6 +62,17 @@
       }
     },
     methods: {
+      uploadBefore(file, done, loading, column) {
+        // console.log(file, column)
+        var newFile = new File([file], '1234', { type: file.type });
+        done(newFile)
+        this.$message.success('上传前的方法')
+      },
+      uploadAfter(res, done, loading, column) {
+        // console.log(res, column)
+        done()
+        this.$message.success('上传后的方法')
+      },
     }
   })
 </script>
