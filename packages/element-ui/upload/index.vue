@@ -7,7 +7,7 @@
                :on-remove="handleRemove"
                :before-remove="beforeRemove"
                :multiple="multiple"
-               :on-preview="handlePictureCardPreview"
+               :on-preview="handlePreview"
                :limit="limit"
                :http-request="httpRequest"
                :drag="drag"
@@ -24,10 +24,22 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
+             @mouseover="menu=disabled?false:true"
              :class="b('avatar')">
         <i v-else
            class="el-icon-plus"
            :class="b('icon')"></i>
+        <div class="el-upload-list__item-actions"
+             :class="b('menu')"
+             v-if="menu"
+             @mouseover="menu=true"
+             @mouseout="menu=false"
+             @click.stop="()=>{return false}">
+          <i class="el-icon-zoom-in"
+             @click.stop="handlePreview({url:imgUrl})"></i>
+          <i class="el-icon-delete"
+             @click.stop="handleDelete"></i>
+        </div>
       </template>
       <template v-else-if="drag">
         <i class="el-icon-upload"></i>
@@ -70,6 +82,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      menu: false,
       loading: false,
       dialogImageUrl: "",
       dialogImgType: true,
@@ -155,18 +168,20 @@ export default create({
       let list = [];
       const flag = this.isArray || this.isString;
       (this.text || []).forEach((ele, index) => {
-        let name;
-        //处理单个url链接取最后为label
-        if (flag) {
-          let i = ele.lastIndexOf('/');
-          name = ele.substring(i + 1);
+        if (ele) {
+          let name;
+          //处理单个url链接取最后为label
+          if (flag) {
+            let i = ele.lastIndexOf('/');
+            name = ele.substring(i + 1);
+          }
+          list.push({
+            uid: index + '',
+            status: 'done',
+            name: flag ? name : ele[this.labelKey],
+            url: flag ? ele : ele[this.valueKey]
+          });
         }
-        list.push({
-          uid: index + '',
-          status: 'done',
-          name: flag ? name : ele[this.labelKey],
-          url: flag ? ele : ele[this.valueKey]
-        });
       });
       return list;
     }
@@ -255,8 +270,9 @@ export default create({
       }
       const done = () => {
         let url = this.action;
-        param.append(this.fileName, file, file.name);
-        const callack = () => {
+        const callack = (newFile) => {
+          const uploadfile = newFile || file;
+          param.append(this.fileName, uploadfile);
           //七牛云oss存储
           if (this.isQiniuOss) {
             if (!window.CryptoJS) {
@@ -289,7 +305,7 @@ export default create({
           }
           (() => {
             if (this.isAliOss) {
-              return client.put(file.name, file);
+              return client.put(uploadfile.name, uploadfile);
             } else {
               return this.$httpajax.post(url, param, { headers });
             }
@@ -362,7 +378,7 @@ export default create({
         } 个文件，共上传了 ${files.length + fileList.length} 个文件`
       );
     },
-    handlePictureCardPreview (file) {
+    handlePreview (file) {
       if (this.disabled) return
       //判断是否为图片
       this.dialogImageUrl = file.url;
@@ -375,7 +391,14 @@ export default create({
         this.dialogVisible = true;
       }
     },
-    beforeRemove (file) {
+    handleDelete () {
+      this.beforeRemove().then(() => {
+        this.text[0] = '';
+        this.setVal();
+      }).catch(() => {
+      });
+    },
+    beforeRemove () {
       return this.$confirm(`是否确定移除该选项？`);
     }
   }

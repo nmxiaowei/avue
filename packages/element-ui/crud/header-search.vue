@@ -91,7 +91,8 @@ export default cteate({
         list.forEach(ele => {
           if (ele.search) {
             ele = Object.assign(ele, {
-              type: getSearchType(ele.type),
+              type: getSearchType(ele),
+              multiple: ['checkbox'].includes(ele.type),
               span: ele.searchSpan || this.config.searchSpan,
               labelWidth: ele.searchLabelWidth || option.searchSpan || this.config.searchLabelWidth,
               tip: ele.searchTip,
@@ -127,10 +128,10 @@ export default cteate({
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,
           submitText: '搜索',
-          submitBtn: option.searchSubBtn || this.config.searchSubBtn,
+          submitBtn: this.vaildData(option.searchSubBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
           emptyText: '清空',
-          emptyBtn: option.searchResetBtn || this.config.searchResetBtn,
+          emptyBtn: this.vaildData(option.searchResetBtn, this.config.searchResetBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
         })
         return result;

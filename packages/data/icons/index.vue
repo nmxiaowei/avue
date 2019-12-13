@@ -43,7 +43,7 @@ export default create({
       return this.option.animation
     },
     decimals () {
-      return this.option.decimals || false
+      return this.option.decimals || 0
     },
     span () {
       return this.option.span || 4;

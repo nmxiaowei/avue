@@ -41,7 +41,7 @@
                    :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
-                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?defaultExpandAll:keysList)"
+                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?[]:keysList)"
                    :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
                    :default-expand-all="defaultExpandAll"
                    @node-click.self="handleNodeClick">
@@ -286,7 +286,7 @@ export default create({
       return list;
     },
     keysList () {
-      return [this.text];
+      return this.multiple ? this.text : [this.text];
     },
     isTree () {
       return this.type === "tree";
@@ -455,4 +455,3 @@ export default create({
   }
 });
 </script>
-

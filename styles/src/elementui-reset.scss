@@ -51,7 +51,6 @@
   .el-dropdown-menu__item {
     line-height: 25px;
   }
-
   .el-table-filter__list {
     width: 100%;
     height: 300px;
@@ -62,6 +61,11 @@
   .el-color-picker--mini,.el-color-picker--mini .el-color-picker__trigger{
     width: 23px;;
     height:23px;
+  }
+}
+.el-dropdown-menu{
+  .el-button--text{
+    width: 100% !important;
   }
 }
 .el-pagination__editor.el-input .el-input__inner {

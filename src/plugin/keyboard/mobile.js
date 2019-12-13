@@ -1,4 +1,4 @@
-export default class Keyboard {
+export default class MobileKeyboard {
   constructor(obj) {
     if (typeof obj !== 'object') {
       console.error('aKeyboard: The obj parameter needs to be an object <In "new aKeyboard()">');
@@ -16,9 +16,9 @@ export default class Keyboard {
       }
     }
 
-    let html = '<div class="akeyboard-keyboard' + (obj.fixedBottomCenter ? ' akeyboard-keyboard-fixedBottomCenter' : '') + '" style="' + keyboardStyle + '">';
+    let html = '<div class="akeyboard-mobileKeyboard' + (obj.fixedBottomCenter ? ' akeyboard-keyboard-fixedBottomCenter' : '') + '" style="' + keyboardStyle + '">';
 
-    // init keys
+    //init keys
     let numberKeys = [];
     for (let i = 1; i < 10; i++) {
       numberKeys.push(i.toString());
@@ -27,24 +27,21 @@ export default class Keyboard {
 
     const keys = obj.keys || [
       ['`'].concat(numberKeys).concat([
-        '-', '=', 'Delete'
+        '-', '='
       ]),
-      ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
-      ['Caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
-      ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'],
-      ['Space']
-    ];
+      ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\''],
+      ['⇧', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '⇦'],
+      ['Space', 'Enter']
+    ]
 
     let thisKeys;
-    const shiftKey = [],
-      capsKey = [];
+    const shiftKey = []
     for (let i = 0; i < keys.length; i++) {
       shiftKey.push([]);
-      capsKey.push([]);
       thisKeys = keys[i];
       for (let a = 0; a < thisKeys.length; a++) {
         if (thisKeys[a].length === 1) {
-          capsKey[i].push(thisKeys[a].toUpperCase());
           switch (thisKeys[a]) {
             case '`':
               shiftKey[i].push('~');
@@ -114,7 +111,6 @@ export default class Keyboard {
           continue;
         }
         shiftKey[i].push(thisKeys[a]);
-        capsKey[i].push(thisKeys[a]);
       }
     }
 
@@ -122,7 +118,7 @@ export default class Keyboard {
       thisKeys = keys[i];
       html += '<div class="akeyboard-keyboard-innerKeys">';
       for (let a = 0; a < thisKeys.length; a++) {
-        html += '<div class="akeyboard-keyboard-keys akeyboard-keyboard-keys-' + thisKeys[a] + '">' + thisKeys[a] + '</div>';
+        html += '<div class="akeyboard-mobileKeyboard-keys akeyboard-mobileKeyboard-keys-' + thisKeys[a] + '">' + thisKeys[a] + '</div>';
       }
       html += '</div>';
     }
@@ -131,29 +127,23 @@ export default class Keyboard {
 
     el.innerHTML = html;
 
-    let containShift = false;
+    let containShift = false
     keys.forEach(key => {
-      if (key.includes('Shift')) {
-        containShift = true;
-        return;
+      if (key.includes("Shift") || key.includes("⇧")) {
+        containShift = true
+        return
       }
-    });
+    })
+    //bind the shift
     if (containShift) {
-      // bind the shift and caps key
-      const elKeysEl = document.querySelectorAll(obj.el + ' .akeyboard-keyboard-keys-Shift');
+      const elKeysEl = document.querySelectorAll(obj.el + ' .akeyboard-mobileKeyboard-keys-⇧');
 
       elKeysEl.forEach(el => {
         el.onclick = function () {
           if (!this.isShift) {
-            const caps = document.querySelector(obj.el + ' .akeyboard-keyboard-keys-Caps');
-            if (caps && caps.isCaps) {
-              return;
-            }
-
-            // shift
+            //shift
+            el.classList.add('akeyboard-mobileKeyboard-keys-focus');
             el.isShift = true;
-            el.innerHTML = 'SHIFT';
-            this.classList.add('keyboard-keyboard-keys-focus');
 
             const keysInnerEl = document.querySelectorAll(obj.el + ' .akeyboard-keyboard-innerKeys');
 
@@ -161,9 +151,6 @@ export default class Keyboard {
             for (let i = 0; i < keysInnerEl.length; i++) {
               thisEl = keysInnerEl[i];
               for (let a = 0; a < thisEl.childNodes.length; a++) {
-                if (shiftKey[i][a] === 'Shift') {
-                  continue;
-                }
                 thisEl.childNodes[a].innerHTML = shiftKey[i][a];
               }
             }
@@ -171,8 +158,7 @@ export default class Keyboard {
             return;
           }
           el.isShift = false;
-          el.innerHTML = 'Shift';
-          this.classList.remove('keyboard-keyboard-keys-focus');
+          el.classList.remove('akeyboard-mobileKeyboard-keys-focus');
 
           const keysInnerEl = document.querySelectorAll(obj.el + ' .akeyboard-keyboard-innerKeys');
 
@@ -183,60 +169,8 @@ export default class Keyboard {
               thisEl.childNodes[a].innerHTML = keys[i][a];
             }
           }
-        };
-      });
-
-    }
-
-    let containCaps = false;
-    keys.forEach(key => {
-      if (key.includes('Caps')) {
-        containCaps = true;
-        return;
-      }
-    });
-    if (containCaps) {
-      const elCapsEl = document.querySelectorAll(obj.el + ' .akeyboard-keyboard-keys-Caps');
-
-      elCapsEl.forEach(el => {
-        el.onclick = function () {
-          if (!this.isCaps) {
-            const shift = document.querySelector(obj.el + ' .akeyboard-keyboard-keys-Shift');
-            if (shift && shift.isShift) {
-              return;
-            }
-
-            // caps
-            this.isCaps = true;
-            this.classList.add('keyboard-keyboard-keys-focus');
-
-            const keysInnerEl = document.querySelectorAll(obj.el + ' .akeyboard-keyboard-innerKeys');
-
-            let thisEl;
-            for (let i = 0; i < keysInnerEl.length; i++) {
-              thisEl = keysInnerEl[i];
-              for (let a = 0; a < thisEl.childNodes.length; a++) {
-                thisEl.childNodes[a].innerHTML = capsKey[i][a];
-              }
-            }
-
-            return;
-          }
-
-          this.isCaps = false;
-          this.classList.remove('keyboard-keyboard-keys-focus');
-
-          const keysInnerEl = document.querySelectorAll(obj.el + ' .akeyboard-keyboard-innerKeys');
-
-          let thisEl;
-          for (let i = 0; i < keysInnerEl.length; i++) {
-            thisEl = keysInnerEl[i];
-            for (let a = 0; a < thisEl.childNodes.length; a++) {
-              thisEl.childNodes[a].innerHTML = keys[i][a];
-            }
-          }
-        };
-      });
+        }
+      })
     }
   }
 
@@ -252,47 +186,37 @@ export default class Keyboard {
     }
 
     const inputEl = document.querySelector(inputEle),
-      elKeysEl = document.querySelectorAll(this.obj.el + ' .akeyboard-keyboard-keys');
+      elKeysEl = document.querySelectorAll(this.obj.el + ' .akeyboard-mobileKeyboard-keys');
 
     for (let i = 0; i < elKeysEl.length; i++) {
-      if (['Shift', 'Caps'].includes(elKeysEl[i].innerHTML)) {
-        continue;
+      switch (elKeysEl[i].innerHTML) {
+        case '⇧':
+          continue;
+
+        case '⇦':
+          elKeysEl[i].onclick = function () {
+            inputEl[type] = inputEl[type].substr(0, inputEl[type].length - 1);
+            fn('Delete', inputEl[type]);
+          }
+          continue;
+
+        case 'Enter':
+          elKeysEl[i].onclick = function () {
+            inputEl[type] += '\n';
+            fn('Enter', inputEl[type]);
+          }
+          continue;
+
+        case 'Space':
+          elKeysEl[i].onclick = function () {
+            inputEl[type] += ' ';
+            fn('Space', inputEl[type]);
+          }
+          continue;
       }
 
-      if (elKeysEl[i].innerHTML === 'Delete') {
-        elKeysEl[i].onclick = function () {
-          inputEl[type] = inputEl[type].substr(0, inputEl[type].length - 1);
-          fn('Delete', inputEl[type]);
-        };
-        continue;
-      }
-
-      if (elKeysEl[i].innerHTML === 'Tab') {
-        elKeysEl[i].onclick = function () {
-          inputEl[type] += '  ';
-          fn('Tab', inputEl[type]);
-        };
-        continue;
-      }
-
-      if (elKeysEl[i].innerHTML === 'Enter') {
-        elKeysEl[i].onclick = function () {
-          inputEl[type] += '\n';
-          fn('Enter', inputEl[type]);
-        };
-        continue;
-      }
-
-      if (elKeysEl[i].innerHTML === 'Space') {
-        elKeysEl[i].onclick = function () {
-          inputEl[type] += ' ';
-          fn('Space', inputEl[type]);
-        };
-        continue;
-      }
-
-      if (customClick && typeof customClick === 'object' && Object.keys(customClick).length > 0 && customClick[elKeysEl[i].innerHTML]) {
-        elKeysEl[i].onclick = customClick[elKeysEl[i].innerHTML];
+      if (customClick && typeof customClick == 'object' && Object.keys(customClick).length > 0 && customClick[elKeysEl[i].innerHTML]) {
+        elKeysEl[i].onclick = customClick[elKeysEl[i].innerHTML]
       } else {
         elKeysEl[i].onclick = function () {
           inputEl[type] += this.innerText;
@@ -312,10 +236,8 @@ export default class Keyboard {
       console.error('aKeyboard: The fn parameter needs to be a function <In "aKeyboard.onclick()">');
       return;
     }
-
-    let elKeysEl = document.querySelector(this.obj.el + ' .akeyboard-keyboard-keys-' + btn);
+    let elKeysEl = document.querySelector(this.obj.el + ' .akeyboard-mobileKeyboard-keys-' + btn);
     if (elKeysEl) elKeysEl.onclick = fn;
-    else console.error('Can not find key: ' + btn);
+    else console.error("Can not find key: " + btn)
   }
 }
-

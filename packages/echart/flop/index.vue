@@ -57,7 +57,7 @@ export default create({
       return Array.isArray(this.dataChart);
     },
     decimals () {
-      return this.option.decimals || 2
+      return this.option.decimals || 0
     },
     listData () {
       if (this.isArray) {

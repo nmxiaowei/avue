@@ -91,7 +91,7 @@
              :suffixIcon="column.suffixIcon"
              :texts="column.texts"
              :tip="column.tip"
-             :type="column.type"
+             :type="type || column.type"
              :accept="column.accept"
              :tags="column.tags"
              :upload-before="uploadBefore"
@@ -130,6 +130,9 @@ export default {
     },
     clearable: {
       type: Boolean
+    },
+    type: {
+      type: String
     },
     propsHttp: {
       type: Object,

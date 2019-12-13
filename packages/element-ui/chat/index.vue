@@ -1,13 +1,13 @@
 <template>
   <div :class="b()"
-       :style="styleName"
+       :style="heightStyleName"
        @keyup.enter="handleSend">
     <audio ref="chatAudio">
-      <source src="https://www.helloweba.net/demo/notifysound/notify.ogg"
+      <source :src="audio[0]"
               type="audio/ogg">
-      <source src="https://www.helloweba.net/demo/notifysound/notify.mp3"
+      <source :src="audio[1]"
               type="audio/mpeg">
-      <source src="https://www.helloweba.net/demo/notifysound/notify.wav"
+      <source :src="audio[2]"
               type="audio/wav">
     </audio>
     <div class="web__logo">
@@ -18,63 +18,113 @@
         <p class="web__logo-name">{{config.name}}</p>
         <p class="web__logo-dept">{{config.dept}}</p>
       </div>
+      <slot name="header"></slot>
     </div>
+    <div class="web__content">
+      <div :style="widthStyleName">
+        <div class="web__main"
+             ref="main">
+          <div class="web__main-item"
+               v-for="(item,index) in list"
+               :key="index"
+               :class="{'web__main-item--mine':item.mine}">
+            <div class="web__main-user">
+              <img :src="item.img">
+              <cite>
+                {{item.name}}
+                <i>{{item.date}}</i>
+              </cite>
+            </div>
+            <div class="web__main-text">
+              <div class="web__main-arrow"></div>
+              <span v-html="handleDetail(item.text.text)"
+                    @click="detailImg($event)"></span>
+              <ul class=" web__main-list"
+                  v-if="!validatenull(item.text.list)">
+                <li @click="handleItemMsg(citem)"
+                    v-for="(citem,cindex) in item.text.list"
+                    :key="cindex">{{citem.text}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="web__footer"
+             :style="widthStyleName">
+          <div class="web__msg">
+            <textarea v-model="msg"
+                      rows="2"
+                      placeholder="请输入..."
+                      class="web__msg-input"></textarea>
+            <div class="web__msg-menu">
+              <el-dropdown split-button
+                           class="web__msg-submit"
+                           type="primary"
+                           size="mini"
+                           @click="handleSend"
+                           trigger="click">
+                发送
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-popover placement="top"
+                                width="160"
+                                v-model="visible">
+                      <el-input size="mini"
+                                style="margin-bottom:10px"
+                                :rows="3"
+                                show-word-limit
+                                maxlength="50"
+                                placeholder="请输入快捷回复语"
+                                v-model="keys"
+                                type="textarea"></el-input>
+                      <div style="text-align: right; margin: 0">
+                        <el-button size="mini"
+                                   type="text"
+                                   @click="visible = false">取消</el-button>
+                        <el-button type="primary"
+                                   size="mini"
+                                   @click="addKey">确定</el-button>
+                      </div>
+                      <el-button slot="reference"
+                                 type="text"
+                                 icon="el-icon-plus"></el-button>
+                    </el-popover>
 
-    <div class="web__main"
-         ref="main">
-      <div class="web__main-item"
-           v-for="(item,index) in list"
-           :key="index"
-           :class="{'web__main-item--mine':item.mine}">
-        <div class="web__main-user">
-          <img :src="item.img">
-          <cite>
-            {{item.name}}
-            <i>{{item.date}}</i>
-          </cite>
-        </div>
-        <div class="web__main-text">
-          <div class="web__main-arrow"></div>
-          <span v-html="handleDetail(item.text.text)"
-                @click="detailImg($event)"></span>
-          <ul class=" web__main-list"
-              v-if="!validatenull(item.text.list)">
-            <li @click="handleItemMsg(citem)"
-                v-for="(citem,cindex) in item.text.list"
-                :key="cindex">{{citem.text}}</li>
-          </ul>
+                  </el-dropdown-item>
+                  <el-scrollbar style="height:100px">
+                    <el-dropdown-item v-for="(item,index) in keylist"
+                                      :key="index"
+                                      @click.native="sendKey(item)">
+                      <el-tooltip effect="dark"
+                                  :content="item"
+                                  placement="top">
+                        <span> {{item.substr(0,10)}}{{item.length>10?'...':''}}</span>
+                      </el-tooltip>
+
+                    </el-dropdown-item>
+                  </el-scrollbar>
+
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="web__footer">
-      <div class="web__msg">
-        <textarea v-model="msg"
-                  rows="2"
-                  placeholder="请输入..."
-                  class="web__msg-input"></textarea>
-        <div class="web__msg-menu">
-          <span class="web__msg-submit"
-                :class="{'web__msg-submit--active':msgActive}"
-                @click="handleSend">发送</span>
-        </div>
-      </div>
+      <slot></slot>
     </div>
     <div class="web__dialog"
          v-if="imgBox"
          @click="imgBox=false">
       <span class="web__dialog-close">x</span>
-      <img :src="imgSrc">
+      <el-scrollbar style="height:100%;">
+        <img :src="imgSrc"
+             style="display:block;margin:0 auto;width:50%;object-fit: cover;">
+      </el-scrollbar>
+
     </div>
   </div>
 </template>
 
 <script>
-const config = {
-  name: '云集汇通自助客服',
-  img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542538742&di=33c9b3d1ad6bdfe87eb19e44c8d0da04&imgtype=0&src=http%3A%2F%2Fcyjmw.shengyilu.com%2Fskin%2Findex%2Fimages_four%2Fpic_fi_32.png	',
-  myName: '我',
-  myImg: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542562834&di=4d469265c6847a8f29393fe1038c64c8&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FhFB4FUPIIlJSIN5vlQwX2OGlW03Oic9SdtXoOAgMmNBYxfpibmxyG6C0rf7Yml1YKQKrLbet5C4ebpmzGOJZ8icEQ%2F640%3Fwx_fmt%3Djpeg	'
-};
 import create from "core/create";
 import { dateFtt } from 'utils/date'
 export default create({
@@ -95,10 +145,26 @@ export default create({
       type: Boolean,
       default: true
     },
+    audio: {
+      type: Array,
+      default: () => {
+        return [
+          'https://www.helloweba.net/demo/notifysound/notify.ogg',
+          'https://www.helloweba.net/demo/notifysound/notify.mp3',
+          'https://www.helloweba.net/demo/notifysound/notify.wav'
+        ]
+      }
+    },
     config: {
       type: Object,
       default: () => {
         return {}
+      }
+    },
+    keylist: {
+      type: Array,
+      default: () => {
+        return []
       }
     },
     list: {
@@ -124,23 +190,40 @@ export default create({
   },
   data () {
     return {
+      visible: false,
       imgSrc: '',
+      keys: "",
       imgBox: false,
       msg: '',
     }
   },
   computed: {
-    styleName () {
+    heightStyleName () {
       return {
-        width: this.setPx(this.width),
         height: this.setPx(this.height)
       }
     },
+    widthStyleName () {
+      return {
+        width: this.setPx(this.width),
+      }
+    },
     msgActive () {
-      return !this.validatenull(this.msg)
+      return !this.validatenull(this.msg.replace(/[\r\n]/g, ""))
     }
   },
   methods: {
+    addKey () {
+      if (this.keys !== '') {
+        this.$emit('keyadd', this.keys)
+        this.keys = '';
+      }
+      this.visible = false
+
+    },
+    sendKey (key) {
+      this.$emit('keysend', key)
+    },
     getAudio () {
       this.$refs.chatAudio.play();
     },
@@ -199,8 +282,8 @@ export default create({
           return text
         })(),
         mine: mine,
-        img: mine ? config.myImg : config.img,
-        name: mine ? config.myName : config.name,
+        img: mine ? this.config.myImg : this.config.img,
+        name: mine ? this.config.myName : this.config.name,
       }
       this.list.push(textObj)
       //滚动条一直处于下方
@@ -211,9 +294,9 @@ export default create({
     },
     //用户主动发送
     handleSend () {
-      if (!this.msgActive) return
-      this.$emit('submit');
-
+      if (this.msgActive) {
+        this.$emit('submit');
+      }
     },
     //选择列表
     handleItemMsg (item) {
@@ -237,11 +320,10 @@ export default create({
         text: msg
       });
       if (this.notice) {
-        this.getNotification(msg.text);
+        this.getNotification(msg.text || msg);
       }
     }
   }
 });
 </script>
-
 
