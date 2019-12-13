@@ -90,7 +90,7 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
 export const getSearchType = (column, component = false) => {
   const type = column.type;
   const range = column.searchRange;
-  let result = 'input';
+  let result = type || 'input';
   if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (['time', 'timerange'].includes(type)) {
