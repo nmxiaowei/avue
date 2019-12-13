@@ -286,7 +286,7 @@ export default create({
       return list;
     },
     keysList () {
-      return [this.text];
+      return this.multiple ? this.text : [this.text];
     },
     isTree () {
       return this.type === "tree";
