@@ -20,7 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
+    <avue-form :option="option" v-model="form" :upload-delete="uploadDelete" :upload-before="uploadBefore"
+      :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
 <script>
@@ -39,7 +40,9 @@
     el: '#app',
     data() {
       return {
-        form: {},
+        form: {
+          imgUrl: 'https://avuejs.com/images/logo-bg.jpg',
+        },
         option: {
           labelWidth: 120,
           column: [
@@ -62,6 +65,10 @@
       }
     },
     methods: {
+      uploadDelete(column) {
+        console.log(column)
+        return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
+      },
       uploadBefore(file, done, loading, column) {
         // console.log(file, column)
         var newFile = new File([file], '1234', { type: file.type });

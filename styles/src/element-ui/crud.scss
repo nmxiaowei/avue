@@ -225,29 +225,14 @@ $space-width: 15px;
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
+    .el-dialog__body{
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-bottom: 15px;
+    }
     .el-dialog {
       border-radius: 5px;
     }
-    // .el-dialog__header {
-    //   border-top-left-radius: 5px;
-    //   border-top-right-radius: 5px;
-    //   padding: 12px 20px;
-    //   background-color: #409eff;
-    // }
-    // .el-dialog__close {
-    //   color: #fff;
-    //   font-size: 18px;
-    //   &:hover {
-    //     color: #ffddff;
-    //   }
-    // }
-    // .el-dialog__title {
-    //   color: #fff;
-    //   font-size: 16px;
-    // }
-    // .el-dialog__headerbtn {
-    //   top: 16px;
-    // }
   }
 }
 

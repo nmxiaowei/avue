@@ -143,7 +143,8 @@ export default create({
       default: ""
     },
     uploadBefore: Function,
-    uploadAfter: Function
+    uploadAfter: Function,
+    uploadDelete: Function
   },
   computed: {
     fileName () {
@@ -399,7 +400,11 @@ export default create({
       });
     },
     beforeRemove () {
-      return this.$confirm(`是否确定移除该选项？`);
+      if (typeof this.uploadDelete === "function") {
+        return this.uploadDelete(this.column);
+      } else {
+        return this.$confirm(`是否确定移除该选项？`);
+      }
     }
   }
 });

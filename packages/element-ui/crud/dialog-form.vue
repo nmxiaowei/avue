@@ -26,7 +26,9 @@
                    v-if="boxVisible"
                    ref="tableForm"
                    @submit="handleSubmit"
+                   @reset-change="handleReset"
                    :disabled="keyBtn"
+                   :uploadDelete="crud.uploadDelete"
                    :uploadBefore="crud.uploadBefore"
                    :uploadAfter="crud.uploadAfter"
                    :option="formOption">
@@ -44,30 +46,14 @@
                   :name="item.prop"
                   v-if="item.formslot"></slot>
           </template>
+          <template slot="menuForm"
+                    slot-scope="{size}">
+            <slot name="menuForm"
+                  :type="boxType"
+                  :size="size"></slot>
+          </template>
         </avue-form>
       </el-scrollbar>
-    </div>
-
-    <div class="el-dialog__footer">
-      <span class="dialog-footer">
-        <!-- 弹出框按钮组 -->
-        <slot name="menuForm"
-              :type="boxType"
-              :size="crud.controlSize"></slot>
-        <el-button type="primary"
-                   @click="rowUpdate"
-                   :size="crud.controlSize"
-                   v-if="boxType==='edit' && vaildData(crud.tableOption.updateBtn,config.updateBtn)"
-                   :loading="keyBtn">{{vaildData(crud.tableOption.updateBtnTitle,t('crud.updateBtn'))}}</el-button>
-        <el-button type="primary"
-                   @click="rowSave"
-                   :size="crud.controlSize"
-                   :loading="keyBtn"
-                   v-else-if="boxType==='add' && vaildData(crud.tableOption.saveBtn,config.saveBtn)">{{vaildData(crud.tableOption.saveBtnTitle,t('crud.saveBtn'))}}</el-button>
-        <el-button :size="crud.controlSize"
-                   v-if="vaildData(crud.tableOption.cancelBtn,config.cancelBtn)"
-                   @click="closeDialog">{{vaildData(crud.tableOption.cancelBtnTitle,t('crud.cancelBtn'))}}</el-button>
-      </span>
     </div>
   </component>
 </template>
@@ -126,6 +112,15 @@ export default create({
 
   },
   computed: {
+    isView () {
+      return this.boxType === 'view'
+    },
+    isAdd () {
+      return this.boxType === 'add'
+    },
+    isEdit () {
+      return this.boxType === 'edit'
+    },
     direction () {
       return this.crud.tableOption.dialogDirection
     },
@@ -145,18 +140,26 @@ export default create({
       if (this.isDrawer) {
         return 'calc(100% - 100px)';
       }
-      return this.setPx(
-        this.vaildData(
-          this.crud.tableOption.dialogHeight,
-          config.dialogHeight
-        )
-      );
+      return this.setPx(this.crud.tableOption.dialogHeight || config.dialogHeight);
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);
-      option.menuBtn = false;
       option.boxType = this.boxType;
       option.column = this.crud.propOption;
+      if (this.isView) {
+        option.menuBtn = false;
+      } else {
+        if (!option.menuPosition) option.menuPosition = 'right'
+        if (this.isAdd) {
+          option.submitText = option.saveBtnTitle || this.t('crud.saveBtn')
+          option.submitIcon = option.saveBtnIcon || 'el-icon-circle-plus-outline';
+        } else if (this.isEdit) {
+          option.submitText = option.updateBtnTitle || this.t('crud.updateBtn')
+          option.submitIcon = option.updateBtnIcon || 'el-icon-circle-check';
+        }
+        option.emptyIcon = 'el-icon-circle-close';
+        option.emptyText = option.cancelBtnTitle || this.t('crud.cancelBtn')
+      }
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
         option.dicFlag = false;
@@ -172,10 +175,13 @@ export default create({
     }
   },
   methods: {
+    handleReset () {
+      this.closeDialog();
+    },
     handleSubmit () {
-      if (this.boxType === 'add') {
+      if (this.isAdd) {
         this.rowSave();
-      } else if (this.boxType === 'edit') {
+      } else if (this.isEdit) {
         this.rowUpdate();
       }
     },
@@ -232,31 +238,36 @@ export default create({
     closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};
-      this.boxVisible = false;
       this.keyBtn = false;
       this.hide();
     },
     // 隐藏表单
     hide () {
-      const callack = () => {
-        this.$refs["tableForm"].resetForm();
+      const callback = () => {
+        this.$nextTick(() => {
+          this.boxVisible = false;
+        });
       };
-      if (typeof this.crud.beforeClose === "function")
-        this.crud.beforeClose(callack, this.boxType);
-      else callack();
+      if (typeof this.crud.beforeClose === "function") {
+        this.crud.beforeClose(callback, this.boxType);
+      } else {
+        callback();
+      }
     },
     // 显示表单
     show (type, index = -1) {
       this.index = index;
       this.boxType = type;
-      const callack = () => {
+      const callback = () => {
         this.$nextTick(() => {
           this.boxVisible = true;
         });
       };
-      if (typeof this.crud.beforeOpen === "function")
-        this.crud.beforeOpen(callack, this.boxType);
-      else callack();
+      if (typeof this.crud.beforeOpen === "function") {
+        this.crud.beforeOpen(callback, this.boxType);
+      } else {
+        callback();
+      }
     }
   }
 });

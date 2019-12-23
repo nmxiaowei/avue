@@ -96,6 +96,7 @@
              :tags="column.tags"
              :upload-before="uploadBefore"
              :upload-after="uploadAfter"
+             :upload-delete="uploadDelete"
              :value-format="column.valueFormat"
              :voidIconClass="column.voidIconClass"
              :remote="column.remote"
@@ -124,6 +125,7 @@ export default {
     value: [Array, String, Number, Object, Boolean],
     t: Function,
     uploadBefore: Function,
+    uploadDelete: Function,
     uploadAfter: Function,
     props: {
       type: Object

@@ -90,7 +90,7 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
 export const getSearchType = (column, component = false) => {
   const type = column.type;
   const range = column.searchRange;
-  let result = 'input';
+  let result = type || 'input';
   if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (['time', 'timerange'].includes(type)) {
@@ -170,7 +170,6 @@ export const getComponent = (type, component) => {
 
 export const formInitVal = (list = []) => {
   let tableForm = {};
-  let searchForm = {};
   list.forEach(ele => {
     if (
       ele.type === 'checkbox' ||
@@ -186,25 +185,21 @@ export const formInitVal = (list = []) => {
       ele.dataType === 'array'
     ) {
       tableForm[ele.prop] = [];
-      if (ele.search) searchForm[ele.prop] = [];
     } else if (
       ['number', 'rate', 'slider'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
       tableForm[ele.prop] = undefined;
-      if (ele.search) {
-        searchForm[ele.prop] = undefined;
-      }
     } else {
       tableForm[ele.prop] = '';
-      if (ele.search) {
-        searchForm[ele.prop] = '';
-      }
+    }
+    // 表单默认值设置
+    if (!validatenull(ele.value)) {
+      tableForm[ele.prop] = ele.value;
     }
   });
   return {
-    tableForm,
-    searchForm
+    tableForm
   };
 };
 

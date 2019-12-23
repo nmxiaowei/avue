@@ -54,6 +54,7 @@
                                :propsHttp="parentOption.propsHttp"
                                :upload-before="uploadBefore"
                                :upload-after="uploadAfter"
+                               :upload-delete="uploadDelete"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                @enter="submit"
@@ -92,11 +93,11 @@
               <el-button type="primary"
                          @click="submit"
                          :size="controlSize"
-                         :icon="parentOption.submitIcon|| 'el-icon-check'"
+                         :icon="parentOption.submitIcon || 'el-icon-check'"
                          :loading="allDisabled"
                          v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
               <el-button icon="el-icon-delete"
-                         :icon="parentOption.emptyIcon|| 'el-icon-delete'"
+                         :icon="parentOption.emptyIcon || 'el-icon-delete'"
                          :size="controlSize"
                          :loading="allDisabled"
                          v-if="vaildData(parentOption.emptyBtn,true)"
@@ -224,6 +225,7 @@ export default create({
     },
     uploadBefore: Function,
     uploadAfter: Function,
+    uploadDelete: Function,
     value: {
       type: Object,
       required: true,
