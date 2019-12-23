@@ -69,13 +69,13 @@ const list = {
     title: '使用网络字典需要引入以下包',
     url: 'https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js',
     version: '0.19.0-beta.1',
-    gihub: 'https://github.com/axios/axios'
+    github: 'https://github.com/axios/axios'
   }
 };
 
 export default (() => {
   return {
-    logs: function (name) {
+    logs: function(name) {
       if (__ENV__ === 'development') {
         const obj = list[name];
         $Log.capsule(
