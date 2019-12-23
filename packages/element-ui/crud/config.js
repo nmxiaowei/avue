@@ -47,7 +47,7 @@ export default {
   selectClearBtn: true,
   searchShow: true,
   tip: true,
-  dialogHeight: 400,
+  dialogHeight: 'auto',
   dialogWidth: '60%',
   dialogDrag: false,
   formFullscreen: false,
