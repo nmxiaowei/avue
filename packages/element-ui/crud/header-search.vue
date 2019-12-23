@@ -106,9 +106,9 @@ export default cteate({
               formslot: ele.searchslot,
               disabled: ele.searchDisabled,
               readonly: ele.searchReadonly,
-              readonly: ele.searchReadonly
+              value: ele.searchValue
             })
-            let whiteList = ['rules']
+            let whiteList = ['rules', 'value']
             whiteList.forEach(key => {
               delete ele[key]
             })
@@ -159,14 +159,14 @@ export default cteate({
     },
     // 搜索清空
     searchReset () {
-      this.crud.$emit("search-reset", this.defaultForm.searchForm);
+      this.crud.$emit("search-reset", this.defaultForm.tableForm);
     },
     handleSearchShow () {
       this.searchShow = !this.searchShow;
     },
     dataformat () {
-      this.defaultForm = formInitVal(this.crud.propOption);
-      this.searchForm = this.deepClone(this.defaultForm.searchForm);
+      this.defaultForm = formInitVal(this.option);
+      this.searchForm = this.deepClone(this.defaultForm.tableForm);
       this.searchShow = vaildData(
         this.crud.tableOption.searchShow,
         this.crud.config.searchShow
