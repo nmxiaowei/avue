@@ -18,18 +18,20 @@
                     :placeholder="placeholder"
                     :disabled="disabled" />
         </el-tooltip>
-        <el-button type="primary"
-                   icon="el-icon-plus"
-                   circle
-                   :size="size"
-                   v-if="index===0"
-                   @click="add()"></el-button>
-        <el-button type="danger"
-                   v-else
-                   icon="el-icon-minus"
-                   circle
-                   :size="size"
-                   @click="remove(index)"></el-button>
+        <template v-if="!(disabled ||readonly)">
+          <el-button type="primary"
+                     icon="el-icon-plus"
+                     circle
+                     :size="size"
+                     v-if="index===0"
+                     @click="add()"></el-button>
+          <el-button type="danger"
+                     v-else
+                     icon="el-icon-minus"
+                     circle
+                     :size="size"
+                     @click="remove(index)"></el-button>
+        </template>
       </div>
     </div>
   </div>
@@ -57,6 +59,7 @@ export default create({
       }
     },
     placeholder: String,
+    readonly: Boolean,
     disabled: Boolean,
     value: [Array, String],
   },
