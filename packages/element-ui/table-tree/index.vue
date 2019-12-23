@@ -7,6 +7,8 @@
             :stripe="option.stripe"
             :highlight-current-row="parentOption.highlightCurrentRow"
             :size="controlSize"
+            :fit="option.fit"
+            :empty-text="option.empty-text"
             :width="setPx(parentOption.width,'100%')"
             v-loading="tableLoading"
             :row-style="showRow"

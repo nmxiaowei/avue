@@ -70,6 +70,8 @@
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
               :stripe="tableOption.stripe"
+              :fit="tableOption.fit"
+              :empty-text="tableOption.empty-text"
               :show-header="tableOption.showHeader"
               :default-sort="tableOption.defaultSort"
               @row-click="rowClick"
