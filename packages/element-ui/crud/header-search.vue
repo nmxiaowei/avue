@@ -165,7 +165,7 @@ export default cteate({
       this.searchShow = !this.searchShow;
     },
     dataformat () {
-      this.defaultForm = formInitVal(this.option);
+      this.defaultForm = formInitVal(this.option.column);
       this.searchForm = this.deepClone(this.defaultForm.tableForm);
       this.searchShow = vaildData(
         this.crud.tableOption.searchShow,
