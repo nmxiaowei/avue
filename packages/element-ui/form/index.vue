@@ -54,6 +54,7 @@
                                :propsHttp="parentOption.propsHttp"
                                :upload-before="uploadBefore"
                                :upload-after="uploadAfter"
+                               :upload-delete="uploadDelete"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                @enter="submit"
@@ -224,6 +225,7 @@ export default create({
     },
     uploadBefore: Function,
     uploadAfter: Function,
+    uploadDelete: Function,
     value: {
       type: Object,
       required: true,

@@ -28,6 +28,7 @@
                    @submit="handleSubmit"
                    @reset-change="handleReset"
                    :disabled="keyBtn"
+                   :uploadDelete="crud.uploadDelete"
                    :uploadBefore="crud.uploadBefore"
                    :uploadAfter="crud.uploadAfter"
                    :option="formOption">

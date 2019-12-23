@@ -487,6 +487,7 @@ export default create({
     headerCellClassName: Function,
     uploadBefore: Function,
     uploadAfter: Function,
+    uploadDelete: Function,
     page: {
       type: Object,
       default () {
