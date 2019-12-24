@@ -1,7 +1,9 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       style="position:relative">
     <canvas id="canvas"
             ref="canvas"></canvas>
+    <slot></slot>
   </div>
 </template>
 
@@ -10,41 +12,24 @@ import create from "core/create";
 export default create({
   name: 'license',
   props: {
-    value: {
+    option: {
       type: Object,
       default: () => {
         return {}
       }
     }
   },
-  watch: {
-    data: {
-      handler (value) {
-        this.$emit("input", value);
-      },
-      immediate: true,
-      deep: true
-    },
-    value: {
-      handler (value) {
-        this.data = value;
-      },
-      immediate: true,
-      deep: true
-    }
-  },
   data () {
     return {
-      data: {},
       canvas: '',
     }
   },
   computed: {
     img () {
-      return this.data.img
+      return this.option.img
     },
     list () {
-      return this.data.list || []
+      return this.option.list || []
     }
   },
   mounted () {
@@ -58,26 +43,43 @@ export default create({
       const beauty = new Image();
       beauty.src = this.img;
       beauty.onload = () => {
-        this.$refs.canvas.width = beauty.width;
-        this.$refs.canvas.height = beauty.height;
-        context.drawImage(beauty, 0, 0);
+        const width = this.option.width || beauty.width;;
+        const height = this.option.width ? ((beauty.height / beauty.width) * this.option.width) : beauty.height;
+        this.$refs.canvas.width = width;
+        this.$refs.canvas.height = height
+        context.drawImage(beauty, 0, 0, width, height);
         this.list.forEach(ele => {
-          if (ele.bold) {
-            context.font = `bold ${ele.size}px ${ele.style}`
+          if (ele.img) {
+            const img = new Image();
+            img.src = ele.img
+            img.onload = () => {
+              const widths = ele.width || img.width;;
+              const heights = ele.width ? ((img.height / img.width) * ele.width) : img.height;
+              context.drawImage(img, ele.left, ele.top, widths, heights);
+            }
           } else {
-            context.font = `${ele.size}px ${ele.style}`
-          }
-          context.fillStyle = ele.color;
+            if (ele.bold) {
+              context.font = `bold ${ele.size}px ${ele.style}`
+            } else {
+              context.font = `${ele.size}px ${ele.style}`
+            }
+            context.fillStyle = ele.color;
 
-          context.fillText(ele.text, ele.left, ele.top);
-          context.stroke();
+            context.fillText(ele.text, ele.left, ele.top);
+            context.stroke();
+          }
+
         })
       };
     },
     getFile (name = new Date().getTime()) {
       const data = this.canvas.toDataURL('image/jpeg', 1.0);
-      const file = this.dataURLtoFile(data, name)
+      const file = this.optionURLtoFile(data, name)
       return file;
+    },
+    getBase64 () {
+      const data = this.canvas.toDataURL('image/jpeg', 1.0);
+      return data;
     },
     getPdf (name = new Date().getTime()) {
       const contentWidth = this.canvas.width;
