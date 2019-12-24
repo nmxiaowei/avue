@@ -88,6 +88,7 @@
               :sort-method="sortMethod"
               :sort-orders="sortOrders"
               :sort-by="sortBy"
+              :fit="tableOption.fit"
               :header-cell-class-name="headerCellClassName"
               :max-height="tableOption.maxHeight"
               :height="tableHeight"
