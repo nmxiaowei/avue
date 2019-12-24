@@ -108,7 +108,7 @@ export default cteate({
               readonly: ele.searchReadonly,
               value: ele.searchValue
             })
-            let whiteList = ['rules']
+            let whiteList = ['rules', 'display']
             whiteList.forEach(key => {
               delete ele[key]
             })
