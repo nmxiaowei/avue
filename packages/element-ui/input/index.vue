@@ -52,7 +52,8 @@
                     :value="valueKey"
                     :item="data"
                     v-if="typeslot"></slot>
-              <span v-else>{{data[labelKey]}}</span>
+              <span v-else
+                    :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
             </div>
           </el-tree>
         </el-scrollbar>
@@ -382,7 +383,7 @@ export default create({
             return;
           }
           //是否禁止父类
-          !this.parent && this.disabledParentNode(this.dic);
+          this.disabledParentNode(this.dic, this.parent);
           if (this.multiple) {
             this.labelText = [];
             if (!validatenull(this.text)) {
@@ -410,12 +411,14 @@ export default create({
         }, 500);
       }
     },
-    disabledParentNode (dic) {
+    disabledParentNode (dic, parent) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
         if (!validatenull(children)) {
-          ele.disabled = true;
-          this.disabledParentNode(children);
+          if (!parent) {
+            ele.disabled = true;
+          }
+          this.disabledParentNode(children, parent);
         }
       });
     },
@@ -424,6 +427,7 @@ export default create({
         this.box = false;
         this.node = data;
       };
+      if (data.disabled) return
       if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;
       if (

@@ -59,6 +59,7 @@
         "type": "FUNCTION",
         "enable": true,
         "descnote": "删除角色",
+        disabled: true,
         "wiegth": 0,
         "path": "",
         "resource": "/system/role/delete",
@@ -583,7 +584,7 @@
             lazy: true,
             treeLoad: function (node, resolve) {
               if (node.level === 0) {
-                return resolve([{ name: 'region', id: new Date().getTime() }]);
+                return resolve([{ disabled: true, name: 'region', id: new Date().getTime() }]);
               }
               if (node.level > 2) return resolve([]);
               setTimeout(() => {
@@ -605,7 +606,6 @@
               leaf: 'isend'
             },
             hide: false,
-            parent: false,
             rules: [{
               required: true,
               message: "请选择多选",
@@ -621,7 +621,6 @@
             label: '单选',
             prop: 'shenfeng1',
             type: 'tree',
-            parent: false,
             dicData: dic,
             props: {
               label: 'name',
