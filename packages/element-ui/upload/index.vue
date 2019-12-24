@@ -24,8 +24,10 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
-             @mouseover="menu=disabled?false:true"
-             :class="b('avatar')">
+             <<<<<<<
+             HEAD
+             @mouseover="menu=disabled?false:true"=======v-bind="preview">>>>>>> 26c1dd7681d78dfc65cd4d9961bd81b8b2ee460d
+        :class="b('avatar')">
         <i v-else
            class="el-icon-plus"
            :class="b('icon')"></i>
@@ -97,6 +99,10 @@ export default create({
       default: () => {
         return {}
       }
+    },
+    preview: {
+      type: Object,
+      default: () => { }
     },
     value: {},
     onRemove: Function,
