@@ -489,6 +489,7 @@ export default create({
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
+    uploadPreview: Function,
     page: {
       type: Object,
       default () {

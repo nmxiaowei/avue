@@ -28,9 +28,10 @@
                    @submit="handleSubmit"
                    @reset-change="handleReset"
                    :disabled="keyBtn"
-                   :uploadDelete="crud.uploadDelete"
-                   :uploadBefore="crud.uploadBefore"
-                   :uploadAfter="crud.uploadAfter"
+                   :upload-preview="crud.uploadPreview"
+                   :upload-delete="crud.uploadDelete"
+                   :upload-before="crud.uploadBefore"
+                   :upload-after="crud.uploadAfter"
                    :option="formOption">
           <template slot-scope="scope"
                     v-for="item in columnFormOption"

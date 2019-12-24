@@ -10,6 +10,7 @@
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
              :type="type || column.type"
+             :upload-preview="uploadPreview"
              :upload-before="uploadBefore"
              :upload-after="uploadAfter"
              :upload-delete="uploadDelete"
@@ -36,6 +37,7 @@ export default {
     uploadBefore: Function,
     uploadDelete: Function,
     uploadAfter: Function,
+    uploadPreview: Function,
     props: {
       type: Object
     },
