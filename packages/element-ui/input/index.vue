@@ -286,6 +286,9 @@ export default create({
       return list;
     },
     keysList () {
+      if (this.validatenull(this.text)) {
+        return [];
+      }
       return this.multiple ? this.text : [this.text];
     },
     isTree () {
