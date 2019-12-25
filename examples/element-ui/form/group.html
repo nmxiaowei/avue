@@ -52,10 +52,16 @@
       return {
         type: 1,
         obj: {
-          name: '11'
+          name: '11',
+          name1: '123'
         },
         option: {
-          card: true,
+          column: [
+            {
+              label: '姓名',
+              prop: 'name1'
+            }
+          ],
           group: [
             {
               label: '用户信息',

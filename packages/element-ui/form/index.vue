@@ -195,7 +195,12 @@ export default create({
           group: [this.deepClone(option)]
         });
       }
-      delete option.column;
+      if (group) {
+        //处理分组以外的部分
+        group.unshift({
+          column: option.column
+        })
+      }
       return option;
     },
     columnOption () {
