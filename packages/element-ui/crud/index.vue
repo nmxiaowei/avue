@@ -763,7 +763,7 @@ export default create({
       this.btnDisabled = true;
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
-          this.$refs.dialogForm.keyBtn = true;
+          this.$refs.dialogForm.$refs.tableForm.hide()
           this.$emit(
             "row-update",
             row,

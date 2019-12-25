@@ -27,7 +27,6 @@
                    ref="tableForm"
                    @submit="handleSubmit"
                    @reset-change="handleReset"
-                   :disabled="keyBtn"
                    :upload-preview="crud.uploadPreview"
                    :upload-delete="crud.uploadDelete"
                    :upload-before="crud.uploadBefore"
@@ -72,7 +71,6 @@ export default create({
     return {
       config: config,
       boxType: "",
-      keyBtn: false,
       boxVisible: false,
       boxHeight: 0,
       tableForm: {},
@@ -208,14 +206,11 @@ export default create({
     rowSave () {
       this.$refs["tableForm"].validate(vaild => {
         if (!vaild) return;
-        this.keyBtn = true;
         this.crud.$emit(
           "row-save",
           filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
           this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          }
+          this.$refs.tableForm.hide
         );
       });
     },
@@ -223,23 +218,19 @@ export default create({
     rowUpdate () {
       this.$refs["tableForm"].validate(vaild => {
         if (!vaild) return;
-        this.keyBtn = true;
         const index = this.tableIndex;
         this.crud.$emit(
           "row-update",
           filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
           this.index,
           this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          }
+          this.$refs.tableForm.hide
         );
       });
     },
     closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};
-      this.keyBtn = false;
       this.hide();
     },
     // 隐藏表单
