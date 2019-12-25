@@ -13,6 +13,13 @@ body {
 .avue--disabled{
   color:#ccc;
 }
+.avue--view{
+  .el-input.is-disabled .el-input__inner{
+    background-color: #fff;
+    border-color:rgb(220, 223, 230);
+    color: #606266;
+  }
+}
 
 .avue-grid {
   position: absolute;

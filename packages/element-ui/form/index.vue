@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()"
+  <div :class="[b(),{'avue--view':isView}]"
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
              status-icon
@@ -169,6 +169,15 @@ export default create({
     }
   },
   computed: {
+    isAdd () {
+      return this.boxType === "add"
+    },
+    isEdit () {
+      return this.boxType === "edit"
+    },
+    isView () {
+      return this.boxType === "view"
+    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -402,11 +411,11 @@ export default create({
       if (this.disabled) return true;
       if (!this.validatenull(column.disabled)) {
         return this.vaildData(column.disabled, false);
-      } else if (this.boxType === "add") {
+      } else if (this.isAdd) {
         return this.vaildData(column.addDisabled, false);
-      } else if (this.boxType === "edit") {
+      } else if (this.isEdit) {
         return this.vaildData(column.editDisabled, false);
-      } else if (this.boxType === "view") {
+      } else if (this.isView) {
         return true;
       } else {
         return false;
@@ -416,11 +425,11 @@ export default create({
     vaildDisplay (column) {
       if (!this.validatenull(column.display)) {
         return this.vaildData(column.display, true);
-      } else if (this.boxType === "add") {
+      } else if (this.isAdd) {
         return this.vaildData(column.addDisplay, true);
-      } else if (this.boxType === "edit") {
+      } else if (this.isEdit) {
         return this.vaildData(column.editDisplay, true);
-      } else if (this.boxType === "view") {
+      } else if (this.isView) {
         return this.vaildData(column.viewDisplay, true);
       } else {
         return true;
