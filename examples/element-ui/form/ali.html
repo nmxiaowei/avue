@@ -20,8 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="form" :upload-delete="uploadDelete" :upload-before="uploadBefore"
-      :upload-after="uploadAfter"> </avue-form>
+    <avue-form :option="option" v-model="form" :upload-preview="uploadPreview" :upload-delete="uploadDelete"
+      :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
 <script>
@@ -65,6 +65,10 @@
       }
     },
     methods: {
+      uploadPreview(file, column) {
+        console.log(file, column)
+        this.$message.success('自定义查看方法')
+      },
       uploadDelete(column) {
         console.log(column)
         return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
