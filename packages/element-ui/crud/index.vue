@@ -622,6 +622,9 @@ export default create({
       this.list = this.data;
       //初始化序列的参数
       this.list.forEach((ele, index) => {
+        if (ele.$cellEdit) {
+          this.formCascaderList[index] = this.deepClone(ele);
+        }
         ele.$index = index;
       });
     },
@@ -763,7 +766,6 @@ export default create({
       this.btnDisabled = true;
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
-          this.$refs.dialogForm.$refs.tableForm.hide()
           this.$emit(
             "row-update",
             row,
