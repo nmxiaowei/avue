@@ -41,7 +41,6 @@
                     :picker-options="pickerOptions"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
-                    @change="handleChange"
                     @blur="handleBlur"
                     @focus="handleFocus"
                     @click.native="handleClick"
@@ -106,6 +105,13 @@ export default create({
     }
   },
   watch: {
+    text: {
+      handler (val) {
+        this.handleChange(val);
+      },
+      deep: true,
+      immediate: true,
+    },
     datetime () {
       this.text = "";
       this.setCurrent((this.datetime || []).join(","));
