@@ -119,6 +119,7 @@ export default cteate({
       }
       const dataDetail = (list) => {
         let result = this.deepClone(list);
+        result.translate = false;
         if (result.group) {
           delete result.group;
         }

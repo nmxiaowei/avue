@@ -74,7 +74,7 @@ export default create({
     },
     getFile (name = new Date().getTime()) {
       const data = this.canvas.toDataURL('image/jpeg', 1.0);
-      const file = this.optionURLtoFile(data, name)
+      const file = this.dataURLtoFile(data, name)
       return file;
     },
     getBase64 () {
