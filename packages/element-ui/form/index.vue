@@ -77,37 +77,68 @@
                    :style="{width:(column.count/24*100)+'%'}"
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
+            <!-- 当option.isInlineBt为true时将btn写在avue-group中 -->
+             <div style="display: inline-block;"
+                v-if="vaildData(parentOption.menuBtn,true) && parentOption.isInlineBtn">
+              <el-form-item label-width="0px">
+                <!-- 菜单按钮组 -->
+                <div :class="b('menu',[menuPosition])" style="padding: 0;">
+                  <el-button type="primary"
+                            @click="handleMock"
+                            :size="controlSize"
+                            icon="el-icon-edit-outline"
+                            :loading="allDisabled"
+                            v-if="isMock">填充数据</el-button>
+                  <el-button type="primary"
+                            @click="submit"
+                            :size="controlSize"
+                            :icon="parentOption.submitIcon || 'el-icon-check'"
+                            :loading="allDisabled"
+                            v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
+                  <el-button icon="el-icon-delete"
+                            :icon="parentOption.emptyIcon || 'el-icon-delete'"
+                            :size="controlSize"
+                            :loading="allDisabled"
+                            v-if="vaildData(parentOption.emptyBtn,true)"
+                            @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
+                  <slot name="menuForm"
+                        :size="controlSize"></slot>
+                </div>
+              </el-form-item>
+            </div>
           </div>
+           
         </avue-group>
 
-        <el-col :span="24"
-                v-if="vaildData(parentOption.menuBtn,true)">
-          <el-form-item label-width="0px">
-            <!-- 菜单按钮组 -->
-            <div :class="b('menu',[menuPosition])">
-              <el-button type="primary"
-                         @click="handleMock"
-                         :size="controlSize"
-                         icon="el-icon-edit-outline"
-                         :loading="allDisabled"
-                         v-if="isMock">填充数据</el-button>
-              <el-button type="primary"
-                         @click="submit"
-                         :size="controlSize"
-                         :icon="parentOption.submitIcon || 'el-icon-check'"
-                         :loading="allDisabled"
-                         v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
-              <el-button icon="el-icon-delete"
-                         :icon="parentOption.emptyIcon || 'el-icon-delete'"
-                         :size="controlSize"
-                         :loading="allDisabled"
-                         v-if="vaildData(parentOption.emptyBtn,true)"
-                         @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
-              <slot name="menuForm"
-                    :size="controlSize"></slot>
-            </div>
-          </el-form-item>
-        </el-col>
+      <!-- 当option.isInlineBt为false或者不存在时将btn写在avue-group外,不影响原来的组件 -->
+       <el-col :span="24"
+                v-if="vaildData(parentOption.menuBtn,true) && !parentOption.isInlineBtn">
+              <el-form-item label-width="0px">
+                <!-- 菜单按钮组 -->
+                <div :class="b('menu',[menuPosition])" style="padding: 0;">
+                  <el-button type="primary"
+                            @click="handleMock"
+                            :size="controlSize"
+                            icon="el-icon-edit-outline"
+                            :loading="allDisabled"
+                            v-if="isMock">填充数据</el-button>
+                  <el-button type="primary"
+                            @click="submit"
+                            :size="controlSize"
+                            :icon="parentOption.submitIcon || 'el-icon-check'"
+                            :loading="allDisabled"
+                            v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
+                  <el-button icon="el-icon-delete"
+                            :icon="parentOption.emptyIcon || 'el-icon-delete'"
+                            :size="controlSize"
+                            :loading="allDisabled"
+                            v-if="vaildData(parentOption.emptyBtn,true)"
+                            @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
+                  <slot name="menuForm"
+                        :size="controlSize"></slot>
+                </div>
+              </el-form-item>
+            </el-col>
       </el-row>
     </el-form>
 

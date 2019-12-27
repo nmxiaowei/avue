@@ -11,6 +11,7 @@
           <slot name="searchMenu"
                 :size="size"></slot>
         </template>
+       
         <template :slot="item.prop"
                   slot-scope="scope"
                   v-for="item in columnOption">
@@ -133,6 +134,7 @@ export default cteate({
           emptyText: '清空',
           emptyBtn: this.vaildData(option.searchResetBtn, this.config.searchResetBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
+          isInlineBtn: true
         })
         return result;
       }
