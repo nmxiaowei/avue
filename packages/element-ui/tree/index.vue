@@ -15,13 +15,19 @@
         </template>
       </el-input>
     </div>
-
     <el-tree ref="tree"
              :data="list"
+             :lazy="lazy"
+             :load="treeLoad"
+             :props="treeProps"
+             highlight-current
+             :show-checkbox="multiple"
+             :accordion="accordion"
              :node-key="nodeKey"
              :check-strictly="checkStrictly"
              :filter-node-method="filterNode"
              :expand-on-click-node="false"
+             @check-change="handleCheckChange"
              :default-expand-all="defaultExpandAll">
       <div slot-scope="{ node,data }"
            :class="b('item')">
@@ -74,10 +80,6 @@ export default create({
   name: "tree",
   mixins: [locale],
   props: {
-    checkStrictly: {
-      type: Boolean,
-      default: false
-    },
     option: {
       type: Object,
       default: () => {
@@ -98,6 +100,26 @@ export default create({
     }
   },
   computed: {
+    treeProps () {
+      return Object.assign(this.props, {
+        isLeaf: this.leafKey
+      })
+    },
+    treeLoad () {
+      return this.option.treeLoad
+    },
+    checkStrictly () {
+      return this.option.checkStrictly
+    },
+    accordion () {
+      return this.option.accordion
+    },
+    multiple () {
+      return this.option.multiple
+    },
+    lazy () {
+      return this.option.lazy
+    },
     addText () {
       return this.addFlag ? this.t("crud.addBtn") : this.t("crud.editBtn");
     },
@@ -110,6 +132,9 @@ export default create({
     props () {
       return this.option.props || {};
     },
+    leafKey () {
+      return this.props.leaf || DIC_PROPS.leaf
+    },
     valueKey () {
       return this.props.value || DIC_PROPS.value;
     },
@@ -121,9 +146,6 @@ export default create({
     },
     childrenKey () {
       return this.props.children || DIC_PROPS.children;
-    },
-    defaultExpandAll () {
-      return this.vaildData(this.option.expandAll, true);
     },
     nodeKey () {
       return this.option.nodeKey || DIC_PROPS.nodeKey;
@@ -195,6 +217,9 @@ export default create({
   },
 
   methods: {
+    handleCheckChange (data, checked, indeterminate) {
+      this.$emit('check-change', data, checked, indeterminate)
+    },
     handleSubmit (form, done) {
       this.addFlag ? this.save(form, done) : this.update(form, done)
     },
