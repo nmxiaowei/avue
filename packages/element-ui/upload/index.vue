@@ -24,6 +24,7 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
+             v-bind="params"
              @mouseover="menu=disabled?false:true"
              :class="b('avatar')">
         <i v-else
@@ -98,6 +99,10 @@ export default create({
         return {}
       }
     },
+    preview: {
+      type: Object,
+      default: () => { }
+    },
     value: {},
     onRemove: Function,
     showFileList: {
@@ -144,7 +149,8 @@ export default create({
     },
     uploadBefore: Function,
     uploadAfter: Function,
-    uploadDelete: Function
+    uploadDelete: Function,
+    uploadPreview: Function
   },
   computed: {
     fileName () {
@@ -381,15 +387,19 @@ export default create({
     },
     handlePreview (file) {
       if (this.disabled) return
-      //判断是否为图片
-      this.dialogImageUrl = file.url;
-      if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
-        this.dialogImgType = false;
-        window.open(this.dialogImageUrl);
-        return;
+      if (typeof this.uploadPreview === "function") {
+        this.uploadPreview(file, this.column);
       } else {
-        this.dialogImgType = true;
-        this.dialogVisible = true;
+        //判断是否为图片
+        this.dialogImageUrl = file.url;
+        if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
+          this.dialogImgType = false;
+          window.open(this.dialogImageUrl);
+          return;
+        } else {
+          this.dialogImgType = true;
+          this.dialogVisible = true;
+        }
       }
     },
     handleDelete () {

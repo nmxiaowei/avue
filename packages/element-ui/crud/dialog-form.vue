@@ -6,7 +6,7 @@
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog')"
              :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
-             :fullscreen="crud.isMobile?true:crud.tableOption.dialogFullscreen"
+             :fullscreen="fullscreen?fullscreen:(crud.isMobile?true:crud.tableOption.dialogFullscreen)"
              :modal-append-to-body="false"
              append-to-body
              :top="setPx(crud.tableOption.dialogTop,100)"
@@ -19,6 +19,19 @@
              :size="size"
              :width="width"
              @close="closeDialog">
+    <div slot="title"
+         :class="b('dialog__menu')">
+      <span class="el-dialog__title">{{dialogTitle}}</span>
+      <div class="menu">
+        <i v-if="fullscreen"
+           @click="handleFullScreen"
+           class="el-dialog__close el-icon-full-screen"></i>
+        <i v-else
+           @click="handleFullScreen"
+           class="el-dialog__close el-icon-full-screen"></i>
+
+      </div>
+    </div>
     <div :style="{height:dialogHeight,overflow:'hidden'}"
          ref="content">
       <el-scrollbar style="height:100%">
@@ -27,10 +40,10 @@
                    ref="tableForm"
                    @submit="handleSubmit"
                    @reset-change="handleReset"
-                   :disabled="keyBtn"
-                   :uploadDelete="crud.uploadDelete"
-                   :uploadBefore="crud.uploadBefore"
-                   :uploadAfter="crud.uploadAfter"
+                   :upload-preview="crud.uploadPreview"
+                   :upload-delete="crud.uploadDelete"
+                   :upload-before="crud.uploadBefore"
+                   :upload-after="crud.uploadAfter"
                    :option="formOption">
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
@@ -71,7 +84,7 @@ export default create({
     return {
       config: config,
       boxType: "",
-      keyBtn: false,
+      fullscreen: false,
       boxVisible: false,
       boxHeight: 0,
       tableForm: {},
@@ -175,6 +188,13 @@ export default create({
     }
   },
   methods: {
+    handleFullScreen () {
+      if (this.fullscreen) {
+        this.fullscreen = false;
+      } else {
+        this.fullscreen = true;
+      }
+    },
     handleReset () {
       this.closeDialog();
     },
@@ -207,14 +227,11 @@ export default create({
     rowSave () {
       this.$refs["tableForm"].validate(vaild => {
         if (!vaild) return;
-        this.keyBtn = true;
         this.crud.$emit(
           "row-save",
           filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
           this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          }
+          this.$refs.tableForm.hide
         );
       });
     },
@@ -222,23 +239,19 @@ export default create({
     rowUpdate () {
       this.$refs["tableForm"].validate(vaild => {
         if (!vaild) return;
-        this.keyBtn = true;
         const index = this.tableIndex;
         this.crud.$emit(
           "row-update",
           filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
           this.index,
           this.closeDialog,
-          () => {
-            this.keyBtn = false;
-          }
+          this.$refs.tableForm.hide
         );
       });
     },
     closeDialog () {
       this.tableIndex = -1;
       this.tableForm = {};
-      this.keyBtn = false;
       this.hide();
     },
     // 隐藏表单

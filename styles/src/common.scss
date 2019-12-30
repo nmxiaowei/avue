@@ -10,6 +10,21 @@ body {
   opacity: 0.5;
   background: #c8ebfb;
 }
+.avue--disabled{
+  color:#ccc;
+}
+.avue--view{
+  .el-textarea.is-disabled .el-textarea__inner{
+    background-color: #fff;
+    border-color:rgb(220, 223, 230);
+    color: #606266;
+  }
+  .el-input.is-disabled .el-input__inner{
+    background-color: #fff;
+    border-color:rgb(220, 223, 230);
+    color: #606266;
+  }
+}
 
 .avue-grid {
   position: absolute;

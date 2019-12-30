@@ -1,6 +1,6 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
-import { getObjValue, detailDic } from 'utils/util'
+import { getObjValue, detailDic } from 'utils/util';
 
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
@@ -24,16 +24,16 @@ export const loadCascaderDic = (columnOption, list) => {
               sendDic(Object.assign({
                 url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
               }, {
-                  resKey: (column.props || {}).res,
-                  method: column.dicMethod,
-                  query: column.dicQuery,
-                })).then(res => {
-                  resolve({
-                    prop: column.prop,
-                    data: res,
-                    index: index
-                  });
+                resKey: (column.props || {}).res,
+                method: column.dicMethod,
+                query: column.dicQuery
+              })).then(res => {
+                resolve({
+                  prop: column.prop,
+                  data: res,
+                  index: index
                 });
+              });
             }
           })
         );
@@ -97,14 +97,14 @@ function createdDic(option) {
         props: ele.props,
         dataType: ele.dataType,
         resKey: (ele.props || {}).res || (props || {}).res,
-        query: ele.dicQuery,
+        query: ele.dicQuery
       });
     }
   });
   return {
     ajaxdic,
     locationdic
-  }
+  };
 }
 
 // 循环处理字典
@@ -138,11 +138,15 @@ export const sendDic = (params) => {
   let { url, query, method, resKey } = params;
   return new Promise(resolve => {
     const callback = (res) => {
-      const list = getObjValue(res.data, resKey)
-      resolve(list)
+      const list = getObjValue(res.data, resKey);
+      resolve(list);
+    };
+    if (!window.axios) {
+      packages.logs('axios');
+      resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, query).then(function (res) {
+      window.axios.post(url, query).then(function(res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -150,7 +154,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function (res) {
+      }).then(function(res) {
         callback(res);
       }).catch(() => [
         resolve([])

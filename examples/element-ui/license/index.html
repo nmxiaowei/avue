@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-license v-model="data"></avue-license>
+    <avue-license :option="option"></avue-license>
   </div>
 </body>
 <script>
@@ -27,7 +27,7 @@
     el: '#app',
     data() {
       return {
-        data: {
+        option: {
           img: "../../../images/sqstemp.jpg",
           list: [{
             left: 310,
@@ -50,6 +50,11 @@
             color: '#000',
             size: 26,
             style: '黑体'
+          }, {
+            left: 450,
+            top: 120,
+            img: "../../../images/logo.jpg",
+            width: 100,
           }]
         }
       }

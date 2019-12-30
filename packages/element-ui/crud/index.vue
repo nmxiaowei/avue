@@ -88,6 +88,7 @@
               :sort-method="sortMethod"
               :sort-orders="sortOrders"
               :sort-by="sortBy"
+              :fit="tableOption.fit"
               :header-cell-class-name="headerCellClassName"
               :max-height="tableOption.maxHeight"
               :height="tableHeight"
@@ -361,6 +362,9 @@ export default create({
     });
   },
   computed: {
+    calcHeight () {
+      return this.tableOption.calcHeight || 0
+    },
     propOption () {
       let result = [];
       const safe = this;
@@ -488,6 +492,7 @@ export default create({
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
+    uploadPreview: Function,
     page: {
       type: Object,
       default () {
@@ -513,7 +518,7 @@ export default create({
         this.$nextTick(() => {
           const tableStyle = this.$refs.table.$el;
           const pageStyle = this.$refs.tablePage.$el;
-          this.tableHeight = clientHeight - tableStyle.offsetTop - pageStyle.offsetHeight - 30
+          this.tableHeight = clientHeight - tableStyle.offsetTop - (pageStyle.offsetHeight * 3) - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
@@ -620,6 +625,9 @@ export default create({
       this.list = this.data;
       //初始化序列的参数
       this.list.forEach((ele, index) => {
+        if (ele.$cellEdit) {
+          this.formCascaderList[index] = this.deepClone(ele);
+        }
         ele.$index = index;
       });
     },
@@ -761,7 +769,6 @@ export default create({
       this.btnDisabled = true;
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
-          this.$refs.dialogForm.keyBtn = true;
           this.$emit(
             "row-update",
             row,

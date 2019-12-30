@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()"
+  <div :class="[b(),{'avue--view':isView}]"
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
              status-icon
@@ -55,6 +55,7 @@
                                :upload-before="uploadBefore"
                                :upload-after="uploadAfter"
                                :upload-delete="uploadDelete"
+                               :upload-preview="uploadPreview"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                @enter="submit"
@@ -76,11 +77,38 @@
                    :style="{width:(column.count/24*100)+'%'}"
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
+            <el-col :span="menuSpan"
+                    v-if="!isMenu && vaildData(parentOption.menuBtn,true)">
+              <el-form-item label-width="0px">
+                <!-- 菜单按钮组 -->
+                <div :class="b('menu',[menuPosition])">
+                  <el-button type="primary"
+                             @click="handleMock"
+                             :size="controlSize"
+                             icon="el-icon-edit-outline"
+                             :loading="allDisabled"
+                             v-if="isMock">填充数据</el-button>
+                  <el-button type="primary"
+                             @click="submit"
+                             :size="controlSize"
+                             :icon="parentOption.submitIcon || 'el-icon-check'"
+                             :loading="allDisabled"
+                             v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
+                  <el-button icon="el-icon-delete"
+                             :icon="parentOption.emptyIcon || 'el-icon-delete'"
+                             :size="controlSize"
+                             :loading="allDisabled"
+                             v-if="vaildData(parentOption.emptyBtn,true)"
+                             @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
+                  <slot name="menuForm"
+                        :size="controlSize"></slot>
+                </div>
+              </el-form-item>
+            </el-col>
           </div>
         </avue-group>
-
-        <el-col :span="24"
-                v-if="vaildData(parentOption.menuBtn,true)">
+        <el-col :span="menuSpan"
+                v-if="isMenu && vaildData(parentOption.menuBtn,true)">
           <el-form-item label-width="0px">
             <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPosition])">
@@ -107,6 +135,7 @@
             </div>
           </el-form-item>
         </el-col>
+
       </el-row>
     </el-form>
 
@@ -168,6 +197,18 @@ export default create({
     }
   },
   computed: {
+    isMenu () {
+      return this.columnOption.length != 1
+    },
+    isAdd () {
+      return this.boxType === "add"
+    },
+    isEdit () {
+      return this.boxType === "edit"
+    },
+    isView () {
+      return this.boxType === "view"
+    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -185,7 +226,12 @@ export default create({
           group: [this.deepClone(option)]
         });
       }
-      delete option.column;
+      if (group) {
+        //处理分组以外的部分
+        group.unshift({
+          column: option.column
+        })
+      }
       return option;
     },
     columnOption () {
@@ -216,7 +262,10 @@ export default create({
     },
     isMock () {
       return this.vaildData(this.parentOption.mock, false);
-    }
+    },
+    menuSpan () {
+      return this.parentOption.menuSpan || 24;
+    },
   },
   props: {
     disabled: {
@@ -226,6 +275,7 @@ export default create({
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
+    uploadPreview: Function,
     value: {
       type: Object,
       required: true,
@@ -400,11 +450,11 @@ export default create({
       if (this.disabled) return true;
       if (!this.validatenull(column.disabled)) {
         return this.vaildData(column.disabled, false);
-      } else if (this.boxType === "add") {
+      } else if (this.isAdd) {
         return this.vaildData(column.addDisabled, false);
-      } else if (this.boxType === "edit") {
+      } else if (this.isEdit) {
         return this.vaildData(column.editDisabled, false);
-      } else if (this.boxType === "view") {
+      } else if (this.isView) {
         return true;
       } else {
         return false;
@@ -414,11 +464,11 @@ export default create({
     vaildDisplay (column) {
       if (!this.validatenull(column.display)) {
         return this.vaildData(column.display, true);
-      } else if (this.boxType === "add") {
+      } else if (this.isAdd) {
         return this.vaildData(column.addDisplay, true);
-      } else if (this.boxType === "edit") {
+      } else if (this.isEdit) {
         return this.vaildData(column.editDisplay, true);
-      } else if (this.boxType === "view") {
+      } else if (this.isView) {
         return this.vaildData(column.viewDisplay, true);
       } else {
         return true;

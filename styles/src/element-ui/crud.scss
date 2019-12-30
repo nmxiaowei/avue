@@ -222,69 +222,26 @@ $space-width: 15px;
     }
   }
   &__dialog {
+    &__menu{
+      display: flex;
+      justify-content: space-between;
+      .menu{
+        padding-right: 25px;
+        color: #909399;
+      }
+    }
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
     .el-dialog__body{
-      padding-left: 15px;
-      padding-right: 15px;
-      padding-bottom: 15px;
+      padding:10px 15px 0 15px;
     }
     .el-dialog {
       border-radius: 5px;
     }
-  }
-}
-
-.avue-input{
-  &__content{
-    position: relative;
-  }
-  &__tree{
-    padding: 3px 5px;
-    border: 1px solid #e4e7ed;
-    border-radius: 4px;
-    background-color: #fff;
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    box-sizing: border-box;
-    margin: 5px 0;
-    min-width: 240px;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    min-width: 150px;
-    max-height: 250px;
-    background-color: #fff;
-    position: fixed;
-    z-index:2001;
-  }
-  &__arrow{
-    top:-6px;
-    left:35px;
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    margin-right: 3px;
-    border-width: 6px;
-    border-top-width: 0;
-    border-bottom-color: #ebeef5;
-    &::after{
-      content: " ";
-      top:1px;
-      left:0;
-      position: absolute;
-      display: block;
-      width: 0;
-      height: 0;
-      border-color: transparent;
-      border-style: solid;
-      margin-left: -6px;
-      border-width: 6px;
-      border-top-width: 0;
-      border-bottom-color: #fff;
+    .avue-form__menu{
+      padding-top: 15px;
     }
   }
 }
+

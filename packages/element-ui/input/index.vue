@@ -1,34 +1,31 @@
 <template>
   <div :class="b()">
-    <div v-if="type==='tree'"
-         v-clickout="closeBox"
-         :class="b('content')">
-      <el-input :size="size"
-                v-model="labelShow"
-                :type="typeParam"
-                :clearable="disabled?false:clearable"
-                :autosize="{ minRows: minRows, maxRows: maxRows}"
-                :prefix-icon="prefixIcon"
-                :suffix-icon="suffixIcon"
-                :placeholder="placeholder"
-                :show-word-limit="showWordLimit"
-                @change="handleChange"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                :disabled="disabled"
-                :readonly="true"
-                @click.native="disabled?'':open()" />
-      <div :class="b('tree')"
-           v-if="box"
-           :style="treeStyle">
-        <div :class="b('arrow')"></div>
-        <el-input size="mini"
-                  style="margin-bottom:8px;"
-                  placeholder="输入关键字进行过滤"
-                  v-model="filterText"
-                  v-if="filter"></el-input>
-        <el-scrollbar style="height:180px;overflow-x:hidden">
+    <div v-if="type==='tree'">
+      <el-select :size="size"
+                 ref="main"
+                 :value="labelShow"
+                 :type="typeParam"
+                 :clearable="disabled?false:clearable"
+                 :autosize="{ minRows: minRows, maxRows: maxRows}"
+                 :prefix-icon="prefixIcon"
+                 :suffix-icon="suffixIcon"
+                 :placeholder="placeholder"
+                 :show-word-limit="showWordLimit"
+                 @change="handleChange"
+                 @focus="handleFocus"
+                 @blur="handleBlur"
+                 :disabled="disabled"
+                 :readonly="true">
+        <div v-if="filter"
+             style="padding:0 10px;margin:5px 0 0 0;">
+          <el-input size="mini"
+                    placeholder="输入关键字进行过滤"
+                    v-model="filterText"></el-input>
+        </div>
+        <el-option :value="text">
           <el-tree :data="dicList"
+                   class="tree-option"
+                   style="padding:10px 0;"
                    :lazy="lazy"
                    :load="treeLoad"
                    :node-key="valueKey"
@@ -52,11 +49,13 @@
                     :value="valueKey"
                     :item="data"
                     v-if="typeslot"></slot>
-              <span v-else>{{data[labelKey]}}</span>
+              <span v-else
+                    :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
             </div>
           </el-tree>
-        </el-scrollbar>
-      </div>
+        </el-option>
+      </el-select>
+
     </div>
     <el-input v-else-if="type==='search'"
               :size="size"
@@ -155,10 +154,6 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
-      treeStyle: {
-        left: 0,
-        top: 0,
-      },
       node: {},
       filterText: "",
       box: false,
@@ -251,6 +246,9 @@ export default create({
   watch: {
     text: {
       handler (value) {
+        if (!value) {
+          this.clearHandle();
+        }
         this.handleChange(value);
       },
       immediate: true
@@ -286,6 +284,9 @@ export default create({
       return list;
     },
     keysList () {
+      if (this.validatenull(this.text)) {
+        return [];
+      }
       return this.multiple ? this.text : [this.text];
     },
     isTree () {
@@ -324,9 +325,6 @@ export default create({
     this.init();
   },
   methods: {
-    closeBox () {
-      this.box = false
-    },
     filterNode (value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
@@ -350,21 +348,6 @@ export default create({
       this.$emit("input", result);
       this.$emit("change", result);
     },
-    open () {
-      const height = this.$el.offsetHeight;
-      const width = this.$el.getBoundingClientRect().width;
-      const left = this.$el.getBoundingClientRect().left;
-      const top = this.$el.getBoundingClientRect().top;
-      this.treeStyle = {
-        top: this.setPx(height),
-        top: this.setPx(top + height),
-        left: this.setPx(left),
-        width: this.setPx(width),
-      }
-      this.treeStyle
-      this.box = true;
-      this.handleClick();
-    },
     init () {
       if (this.isTree) {
         if (this.multiple) {
@@ -379,7 +362,7 @@ export default create({
             return;
           }
           //是否禁止父类
-          !this.parent && this.disabledParentNode(this.dic);
+          this.disabledParentNode(this.dic, this.parent);
           if (this.multiple) {
             this.labelText = [];
             if (!validatenull(this.text)) {
@@ -407,20 +390,27 @@ export default create({
         }, 500);
       }
     },
-    disabledParentNode (dic) {
+    disabledParentNode (dic, parent) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
         if (!validatenull(children)) {
-          ele.disabled = true;
-          this.disabledParentNode(children);
+          if (!parent) {
+            ele.disabled = true;
+          }
+          this.disabledParentNode(children, parent);
         }
       });
     },
+    clearHandle () {
+      let allNode = document.querySelectorAll('.tree-option .el-tree-node')
+      allNode.forEach((element) => element.classList.remove('is-current'))
+    },
     handleNodeClick (data) {
       const callback = () => {
-        this.box = false;
         this.node = data;
+        this.$refs.main.blur();
       };
+      if (data.disabled) return
       if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;
       if (

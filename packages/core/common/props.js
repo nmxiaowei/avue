@@ -17,6 +17,10 @@ export default function () {
       change: Function,
       click: Function,
       typeformat: Function,
+      params: {
+        type: Object,
+        default: () => { }
+      },
       listType: {
         type: String,
         default: 'text'
