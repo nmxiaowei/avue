@@ -222,16 +222,25 @@ $space-width: 15px;
     }
   }
   &__dialog {
+    &__menu{
+      display: flex;
+      justify-content: space-between;
+      .menu{
+        padding-right: 25px;
+        color: #909399;
+      }
+    }
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
     .el-dialog__body{
-      padding-left: 15px;
-      padding-right: 15px;
-      padding-bottom: 15px;
+      padding:10px 15px 0 15px;
     }
     .el-dialog {
       border-radius: 5px;
+    }
+    .avue-form__menu{
+      padding-top: 15px;
     }
   }
 }
