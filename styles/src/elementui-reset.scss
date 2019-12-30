@@ -117,3 +117,26 @@
 .el-transfer-panel__item{
   width: 100%;
 }
+
+.el-select-dropdown .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
+  height: auto;
+  padding: 0;
+}
+.el-select-dropdown__item.selected {
+    font-weight: normal;
+}
+.el-select-dropdown ul li >>> .el-tree .el-tree-node__content {
+    height: auto;
+    padding: 0 20px;
+}
+.el-select-dropdown .el-tree-node__label {
+    font-weight: normal;
+}
+.el-select-dropdown .el-tree >>> .is-current .el-tree-node__label {
+    color: #409EFF;
+    font-weight: 700;
+}
+.el-select-dropdown .el-tree >>> .is-current .el-tree-node__children .el-tree-node__label {
+    color: #606266;
+    font-weight: normal;
+}
