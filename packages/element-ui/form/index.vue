@@ -77,11 +77,38 @@
                    :style="{width:(column.count/24*100)+'%'}"
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
+            <el-col :span="menuSpan"
+                    v-if="!isMenu && vaildData(parentOption.menuBtn,true)">
+              <el-form-item label-width="0px">
+                <!-- 菜单按钮组 -->
+                <div :class="b('menu',[menuPosition])">
+                  <el-button type="primary"
+                             @click="handleMock"
+                             :size="controlSize"
+                             icon="el-icon-edit-outline"
+                             :loading="allDisabled"
+                             v-if="isMock">填充数据</el-button>
+                  <el-button type="primary"
+                             @click="submit"
+                             :size="controlSize"
+                             :icon="parentOption.submitIcon || 'el-icon-check'"
+                             :loading="allDisabled"
+                             v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,'提 交')}}</el-button>
+                  <el-button icon="el-icon-delete"
+                             :icon="parentOption.emptyIcon || 'el-icon-delete'"
+                             :size="controlSize"
+                             :loading="allDisabled"
+                             v-if="vaildData(parentOption.emptyBtn,true)"
+                             @click="resetForm">{{vaildData(parentOption.emptyText,'清 空')}}</el-button>
+                  <slot name="menuForm"
+                        :size="controlSize"></slot>
+                </div>
+              </el-form-item>
+            </el-col>
           </div>
         </avue-group>
-
-        <el-col :span="24"
-                v-if="vaildData(parentOption.menuBtn,true)">
+        <el-col :span="menuSpan"
+                v-if="isMenu && vaildData(parentOption.menuBtn,true)">
           <el-form-item label-width="0px">
             <!-- 菜单按钮组 -->
             <div :class="b('menu',[menuPosition])">
@@ -108,6 +135,7 @@
             </div>
           </el-form-item>
         </el-col>
+
       </el-row>
     </el-form>
 
@@ -169,6 +197,9 @@ export default create({
     }
   },
   computed: {
+    isMenu () {
+      return this.columnOption.length != 1
+    },
     isAdd () {
       return this.boxType === "add"
     },
@@ -231,7 +262,10 @@ export default create({
     },
     isMock () {
       return this.vaildData(this.parentOption.mock, false);
-    }
+    },
+    menuSpan () {
+      return this.parentOption.menuSpan || 24;
+    },
   },
   props: {
     disabled: {
