@@ -128,12 +128,13 @@ export default cteate({
           size: this.crud.isMediumSize,
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,
-          submitText: '搜索',
+          submitText: this.vaildData(option.searchSubText, '查询'),
           submitBtn: this.vaildData(option.searchSubBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
-          emptyText: '清空',
+          emptyText: this.vaildData(option.searchResetText, '清空'),
           emptyBtn: this.vaildData(option.searchResetBtn, this.config.searchResetBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
+          menuSpan: option.searchMenuSpan
         })
         return result;
       }
