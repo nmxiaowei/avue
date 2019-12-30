@@ -362,6 +362,9 @@ export default create({
     });
   },
   computed: {
+    calcHeight () {
+      return this.tableOption.calcHeight || 0
+    },
     propOption () {
       let result = [];
       const safe = this;
@@ -515,7 +518,7 @@ export default create({
         this.$nextTick(() => {
           const tableStyle = this.$refs.table.$el;
           const pageStyle = this.$refs.tablePage.$el;
-          this.tableHeight = clientHeight - tableStyle.offsetTop - pageStyle.offsetHeight - 30
+          this.tableHeight = clientHeight - tableStyle.offsetTop - (pageStyle.offsetHeight * 3) - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
