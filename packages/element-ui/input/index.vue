@@ -34,7 +34,7 @@
                    :props="treeProps"
                    :check-strictly="checkStrictly"
                    ref="tree"
-                   highlight-current
+                   :highlight-current="!multiple"
                    :current-node-key="multiple?'':text"
                    @check="checkChange"
                    :filter-node-method="filterNode"
