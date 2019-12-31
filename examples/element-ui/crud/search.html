@@ -51,6 +51,7 @@
         console.log('开始异步加载了')
         this.option = {
           index: true,
+          searchMenuSpan: 6,
           emptyText: '自定义暂无数据提示语',
           column: [{
             label: '姓名',
@@ -85,14 +86,13 @@
             label: '字典',
             prop: 'dic',
             type: 'select',
-            search: true,
             dicData: [{
               label: 1,
               value: 1
             }]
           }]
         }
-      }, 2000)
+      }, 0)
     },
     methods: {
       searchChange(params, done) {

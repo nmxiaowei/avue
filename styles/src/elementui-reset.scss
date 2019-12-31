@@ -120,6 +120,11 @@
 
 .el-select-dropdown .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
   height: auto;
+  padding: 0;
+}
+
+.el-select-dropdown .el-scrollbar .el-scrollbar__view .el-select-dropdown__item>span{
+  padding: 0 20px;
 }
 .el-select-dropdown__item.selected {
     font-weight: normal;
@@ -139,3 +144,4 @@
     color: #606266;
     font-weight: normal;
 }
+
