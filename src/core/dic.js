@@ -26,6 +26,7 @@ export const loadCascaderDic = (columnOption, list) => {
               }, {
                 resKey: (column.props || {}).res,
                 method: column.dicMethod,
+                formatter: column.dicFormatter,
                 query: column.dicQuery
               })).then(res => {
                 resolve({
@@ -94,6 +95,7 @@ function createdDic(option) {
         url: dicUrl || url,
         name: dicData || prop,
         method: ele.dicMethod,
+        formatter: ele.dicFormatter,
         props: ele.props,
         dataType: ele.dataType,
         resKey: (ele.props || {}).res || (props || {}).res,
@@ -135,10 +137,15 @@ function handeDic(list) {
 
 // ajax获取字典
 export const sendDic = (params) => {
-  let { url, query, method, resKey } = params;
+  let { url, query, method, resKey, formatter } = params;
   return new Promise(resolve => {
     const callback = (res) => {
-      const list = getObjValue(res.data, resKey);
+      let list = [];
+      if (typeof formatter === 'function') {
+        list = formatter(res.data);
+      } else {
+        list = getObjValue(res.data, resKey);
+      }
       resolve(list);
     };
     if (!window.axios) {

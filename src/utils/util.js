@@ -145,7 +145,7 @@ export const detailDataType = (value, type) => {
 /**
  * 数组的数据类型转化
  */
-export const detailDic = (list, props = {}, type) => {
+export const detailDic = (list = [], props = {}, type) => {
   let valueKey = props.value || DIC_PROPS.value;
   let childrenKey = props.children || DIC_PROPS.children;
   list.forEach(ele => {
