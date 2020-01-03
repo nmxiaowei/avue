@@ -58,6 +58,7 @@
                                :upload-preview="uploadPreview"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
+                               :enter="parentOption.enter"
                                @enter="submit"
                                @change="column.cascader?handleChange(item.column,cindex):''">
                       <template :slot="column.prop+'Type'"

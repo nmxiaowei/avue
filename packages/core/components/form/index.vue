@@ -44,6 +44,10 @@ export default {
     clearable: {
       type: Boolean
     },
+    enter: {
+      type: Boolean,
+      default: true
+    },
     type: {
       type: String
     },
@@ -103,7 +107,10 @@ export default {
     getComponent,
     getPlaceholder,
     enterChange () {
-      this.$emit('enter')
+      if (this.enter) {
+        this.$emit('enter')
+      }
+
     },
     handleChange (val) {
       this.$emit('change', val)
