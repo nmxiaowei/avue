@@ -35,7 +35,7 @@
             <span>
               <form-temp :column="column"
                          v-if="cellEditFlag(scope.row,column)"
-                         size="mini"
+                         :size="crud.isMediumSize"
                          :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
                          :t="t"
                          :props="column.props || crud.tableOption.props"

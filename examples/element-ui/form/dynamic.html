@@ -19,6 +19,7 @@
 
 <body>
   <div id="app">
+
     <avue-form :option="option" v-model="obj"></avue-form>
   </div>
 </body>
@@ -64,6 +65,14 @@
             type: 'dynamic',
             span: 16,
             children: {
+              rowAdd: (done) => {
+                this.$message.success('新增回调')
+                done({ input: 3 })
+              },
+              rowDel: (row, done) => {
+                this.$message.success('删除回调' + JSON.stringify(row))
+                done();
+              },
               height: 300,
               align: 'center',
               headerAlign: 'center',

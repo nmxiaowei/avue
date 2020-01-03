@@ -40,6 +40,12 @@ export default create({
     }
   },
   computed: {
+    rowAdd () {
+      return this.children.rowAdd
+    },
+    rowDel () {
+      return this.children.rowDel
+    },
     viewBtn () {
       return this.children.viewBtn === false
     },
@@ -126,10 +132,25 @@ export default create({
       })
     },
     delRow (index) {
-      this.text.splice(index, 1);
+      const callback = () => {
+        this.text.splice(index, 1);
+      }
+      const row = this.text[index]
+      if (typeof this.rowDel === 'function') {
+        this.rowDel(row, callback);
+      } else {
+        callback();
+      }
     },
     addRow () {
-      this.$refs.crud.rowCellAdd({});
+      const callback = (obj = {}) => {
+        this.$refs.crud.rowCellAdd(obj);
+      }
+      if (typeof this.rowAdd === 'function') {
+        this.rowAdd(callback);
+      } else {
+        callback();
+      }
     }
   }
 });
