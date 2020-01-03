@@ -219,7 +219,7 @@ export default {
         });
       }
 
-      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
