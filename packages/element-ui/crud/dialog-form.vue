@@ -164,12 +164,15 @@ export default create({
       } else {
         if (!option.menuPosition) option.menuPosition = 'right'
         if (this.isAdd) {
+          option.submitBtn = option.saveBtn;
           option.submitText = option.saveBtnTitle || this.t('crud.saveBtn')
           option.submitIcon = option.saveBtnIcon || 'el-icon-circle-plus-outline';
         } else if (this.isEdit) {
+          option.submitBtn = option.updateBtn;
           option.submitText = option.updateBtnTitle || this.t('crud.updateBtn')
           option.submitIcon = option.updateBtnIcon || 'el-icon-circle-check';
         }
+        option.emptyBtn = option.cancelBtn;
         option.emptyIcon = 'el-icon-circle-close';
         option.emptyText = option.cancelBtnTitle || this.t('crud.cancelBtn')
       }
