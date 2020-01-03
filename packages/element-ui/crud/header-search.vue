@@ -3,6 +3,7 @@
     <div :class="b()"
          v-show="searchShow && searchFlag">
       <avue-form :option="option"
+                 ref="form"
                  @submit="searchChange"
                  @reset-change="searchReset"
                  v-model="searchForm">
@@ -161,6 +162,7 @@ export default cteate({
     },
     // 搜索清空
     searchReset () {
+      this.$refs.form.resetForm();
       this.crud.$emit("search-reset", this.defaultForm.tableForm);
     },
     handleSearchShow () {
