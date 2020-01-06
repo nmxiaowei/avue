@@ -73,7 +73,14 @@
           }, {
             label: '年龄',
             prop: 'sex',
-            search: true
+            search: true,
+            searchRules: [
+              {
+                required: true,
+                message: '请输入年龄',
+                trigger: 'blur'
+              }
+            ]
           }, {
             label: '日期',
             prop: 'datetime',

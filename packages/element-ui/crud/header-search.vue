@@ -3,6 +3,7 @@
     <div :class="b()"
          v-show="searchShow && searchFlag">
       <avue-form :option="option"
+                 ref="form"
                  @submit="searchChange"
                  @reset-change="searchReset"
                  v-model="searchForm">
@@ -104,11 +105,12 @@ export default cteate({
               tags: ele.searchTags,
               row: ele.searchRow,
               formslot: ele.searchslot,
+              rules: ele.searchRules,
               disabled: ele.searchDisabled,
               readonly: ele.searchReadonly,
               value: ele.searchValue
             })
-            let whiteList = ['rules', 'display']
+            let whiteList = ['display', 'disabled', 'readonly']
             whiteList.forEach(key => {
               delete ele[key]
             })
@@ -161,6 +163,7 @@ export default cteate({
     },
     // 搜索清空
     searchReset () {
+      this.$refs.form.resetForm();
       this.crud.$emit("search-reset", this.defaultForm.tableForm);
     },
     handleSearchShow () {

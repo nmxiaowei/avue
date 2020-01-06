@@ -35,7 +35,7 @@
             <span>
               <form-temp :column="column"
                          v-if="cellEditFlag(scope.row,column)"
-                         size="mini"
+                         :size="crud.isMediumSize"
                          :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
                          :t="t"
                          :props="column.props || crud.tableOption.props"
@@ -219,7 +219,7 @@ export default {
         });
       }
 
-      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
