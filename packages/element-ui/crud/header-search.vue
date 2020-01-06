@@ -163,7 +163,6 @@ export default cteate({
     },
     // 搜索清空
     searchReset () {
-      this.$refs.form.resetForm();
       this.crud.$emit("search-reset", this.defaultForm.tableForm);
     },
     handleSearchShow () {
