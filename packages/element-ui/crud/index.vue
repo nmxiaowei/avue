@@ -455,9 +455,6 @@ export default create({
     propOption () {
       this.$refs.dialogColumn.columnInit();
     },
-    list () {
-      this.refreshTable();
-    },
     data () {
       this.dataInit();
       //初始化级联字典
