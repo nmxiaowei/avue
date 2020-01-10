@@ -38,7 +38,7 @@
             <div class="web__main-text">
               <div class="web__main-arrow"></div>
               <span v-html="handleDetail(item.text.text)"
-                    @click="detailImg($event)"></span>
+                    ref="content"></span>
               <ul class=" web__main-list"
                   v-if="!validatenull(item.text.list)">
                 <li @click="handleItemMsg(citem)"
@@ -50,10 +50,21 @@
         </div>
         <div class="web__footer"
              :style="widthStyleName">
+          <div class="web__tools">
+            <i class="el-icon-picture-outline"
+               v-if="tools.img"
+               @click="handleUpload('img')"></i>
+            <i class="el-icon-video-camera"
+               v-if="tools.video"
+               @click="handleUpload('video')"></i>
+            <i class="el-icon-folder-opened"
+               v-if="tools.file"
+               @click="handleUpload('file')"></i>
+          </div>
           <div class="web__msg">
             <textarea v-model="msg"
                       rows="2"
-                      placeholder="请输入..."
+                      :placeholder="placeholder"
                       class="web__msg-input"></textarea>
             <div class="web__msg-menu">
               <el-dropdown split-button
@@ -72,7 +83,7 @@
                                 style="margin-bottom:10px"
                                 :rows="3"
                                 show-word-limit
-                                maxlength="50"
+                                maxlength="100"
                                 placeholder="请输入快捷回复语"
                                 v-model="keys"
                                 type="textarea"></el-input>
@@ -111,16 +122,47 @@
       </div>
       <slot></slot>
     </div>
-    <div class="web__dialog"
-         v-if="imgBox"
-         @click="imgBox=false">
-      <span class="web__dialog-close">x</span>
-      <el-scrollbar style="height:100%;">
-        <img :src="imgSrc"
-             style="display:block;margin:0 auto;width:50%;object-fit: cover;">
-      </el-scrollbar>
-
-    </div>
+    <el-dialog :title="upload.title"
+               :visible.sync="upload.box"
+               width="30%">
+      <el-form ref="form"
+               :model="upload">
+        <el-form-item prop="src"
+                      :rules="[
+      { required: true, message: '地址不能为空'},
+    ]">
+          <el-input size="mini"
+                    style="margin-bottom:10px"
+                    :rows="4"
+                    show-word-limit
+                    maxlength="100"
+                    placeholder="请输入地址"
+                    v-model="upload.src"
+                    type="textarea"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="upload.box=false"
+                   size="small">取 消</el-button>
+        <el-button type="primary"
+                   @click="uploadSubmit"
+                   size="small">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="show"
+               width="40%"
+               :before-close="handleClose"
+               class="web__dialog">
+      <img :src="imgSrc"
+           v-if="imgSrc"
+           style="width:100%;object-fit: cover;">
+      <video :src="videoSrc"
+             v-if="videoSrc"
+             style="width:100%;object-fit: cover;"
+             controls="controls">
+      </video>
+    </el-dialog>
   </div>
 </template>
 
@@ -129,7 +171,38 @@ import create from "core/create";
 import { dateFtt } from 'utils/date'
 export default create({
   name: "chat",
+  data () {
+    return {
+      upload: {
+        box: false,
+        src: "",
+        type: '',
+        title: '',
+      },
+      visible: false,
+      imgSrc: '',
+      videoSrc: '',
+      keys: "",
+      show: false,
+      msg: '',
+    }
+  },
   props: {
+    beforeOpen: Function,
+    tools: {
+      type: Object,
+      default: () => {
+        return {
+          img: true,
+          video: true,
+          file: true
+        }
+      }
+    },
+    placeholder: {
+      type: String,
+      default: '请输入...'
+    },
     width: {
       type: [String, Number],
       default: 320
@@ -175,6 +248,13 @@ export default create({
     }
   },
   watch: {
+    'upload.box' (val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.form.clearValidate()
+        })
+      }
+    },
     value: {
       handler () {
         this.msg = this.value;
@@ -186,15 +266,6 @@ export default create({
         this.$emit('input', this.msg);
       },
       immediate: true
-    }
-  },
-  data () {
-    return {
-      visible: false,
-      imgSrc: '',
-      keys: "",
-      imgBox: false,
-      msg: '',
     }
   },
   computed: {
@@ -213,6 +284,31 @@ export default create({
     }
   },
   methods: {
+    uploadSubmit () {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.upload.box = false;
+          this.$emit('submit', this.getDetail(this.upload));
+        }
+      });
+    },
+    handleUpload (type) {
+      this.upload.type = type;
+      this.upload.src = '';
+      if (type === 'img') {
+        this.upload.title = "图片上传"
+      } else if (type === 'video') {
+        this.upload.title = "视频上传"
+      } else if (type === 'file') {
+        this.upload.title = "文件上传"
+      }
+      this.upload.box = true;
+    },
+    handleClose (done) {
+      this.imgSrc = undefined;
+      this.videoSrc = undefined
+      done();
+    },
     addKey () {
       if (this.keys !== '') {
         this.$emit('keyadd', this.keys)
@@ -271,8 +367,9 @@ export default create({
     pushMsg (params = {}) {
       const mine = params.mine === true ? true : false;
       const text = params.text || {};
+      const date = params.date
       const textObj = {
-        date: dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
+        date: date || dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
         text: (() => {
           if (typeof (text) != 'object') {
             return {
@@ -286,11 +383,16 @@ export default create({
         name: mine ? this.config.myName : this.config.name,
       }
       this.list.push(textObj)
+      setTimeout(() => {
+        this.setScroll();
+      }, 50)
+
+    },
+    setScroll (count) {
       //滚动条一直处于下方
       this.$nextTick(() => {
-        this.$refs.main.scrollTop = this.$refs.main.scrollHeight
+        this.$refs.main.scrollTop = count || this.$refs.main.scrollHeight
       })
-
     },
     //用户主动发送
     handleSend () {
@@ -305,15 +407,67 @@ export default create({
     //处理排版
     handleDetail (html = '') {
       let result = html;
-      result = result.replace(/<img/g, '<br /><img width="100px" style="margin-top:20px;"');
+      setTimeout(() => {
+        const list = this.$refs.content;
+        list.forEach(ele => {
+          for (let i = 0; i < ele.children.length; i++) {
+            const child = ele.children[i];
+            if (child.getAttribute('data-flag') != 0) {
+              child.setAttribute('data-flag', 0)
+              child.onclick = () => {
+                this.handleEvent(child.dataset)
+              };
+              if (child.tagName === 'IMG') {
+                child.className = 'web__msg--img'
+                child.src = child.getAttribute('data-src')
+              } else if (child.tagName === 'VIDEO') {
+                child.className = 'web__msg--video'
+                child.src = child.getAttribute('data-src')
+              } else if (child.tagName === 'FILE') {
+                child.className = 'web__msg--file'
+                child.innerHTML = `<h2>File</h2><span>${child.getAttribute('data-name')}</span>`
+              } else if (child.tagName === 'MAP') {
+                child.className = 'web__msg--file web__msg--map'
+                child.innerHTML = `<h2>Map</h2><span>${child.getAttribute('data-longitude')} , ${child.getAttribute('data-latitude')}<br />${child.getAttribute('data-address')}</span>`
+              }
+              this.setScroll();
+            }
+          }
+        });
+      }, 0)
       return result;
     },
-    //处理图片
-    detailImg (e) {
-      if (e.target.nodeName === 'IMG') {
-        this.imgSrc = e.target.currentSrc;
-        this.imgBox = true;
-      };
+    getDetail (params = {}) {
+      const { type, src, name, longitude, latitude, address } = params;
+      if (type === 'img') {
+        return `<img data-type="IMG" data-src="${src}"  />`
+      } else if (type === 'video') {
+        return `<video data-type="VIDEO"  data-src="${src}"></video>`
+      } else if (type === 'file') {
+        return `<file data-type="FILE" data-name="${name}" data-src="${src}"></file>`
+      } else if (type === 'map') {
+        return `<map data-type="MAP" data-src="${src}" data-address="${address} "data-latitude="${latitude}" data-longitude="${longitude}"></map>`
+      }
+    },
+    //处理事件
+    handleEvent (params) {
+      const callback = () => {
+        if (params.type === 'IMG') {
+          this.imgSrc = params.src;
+          this.show = true;
+        } else if (params.type === 'VIDEO') {
+          this.videoSrc = params.src;
+          this.show = true;
+        } else if (params.type === 'FILE') {
+          window.open(params.src)
+        }
+      }
+      if (typeof this.beforeOpen === 'function') {
+        this.beforeOpen(params, callback)
+      } else {
+        callback();
+      }
+
     },
     rootSendMsg (msg) {
       this.pushMsg({

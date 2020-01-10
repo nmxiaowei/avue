@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-chat :keylist="keylist" @keysend="handleSubmit" @keyadd="handleAdd" :config="config" width="320" height="520"
+    <avue-chat :keylist="keylist" @keysend="handleSubmit" @keyadd="handleAdd" :config="config" width="500" height="520"
       ref="chat" @submit="handleSubmit" v-model="msg" :list="list">
       <div>这里是内容</div>
     </avue-chat>
@@ -48,7 +48,7 @@
         list: [{
           "date": "2019-07-17 23:25:15",
           "text": {
-            "text": "1111"
+            "text": '1111'
           },
           "mine": true,
           "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542562834&di=4d469265c6847a8f29393fe1038c64c8&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FhFB4FUPIIlJSIN5vlQwX2OGlW03Oic9SdtXoOAgMmNBYxfpibmxyG6C0rf7Yml1YKQKrLbet5C4ebpmzGOJZ8icEQ%2F640%3Fwx_fmt%3Djpeg\t",
@@ -93,7 +93,7 @@
           };
         } else if (msg === '如何贷款') {
           return {
-            text: '我行提供了如下贷款方式<img src="https://avuejs.com/images/logo-bg.jpg" />',
+            text: '我行提供了如下贷款方式<img data-type="IMG" data-src="https://avuejs.com/images/logo-bg.jpg" /><video data-type="VIDEO" data-src="https://www.w3school.com.cn/i/movie.ogg"></video><file data-type="FILE" data-name="小程序申诉文件.doc" data-src="https://www.w3school.com.cn/i/movie.ogg"></file><map data-type="MAP" data-longitude="116.307852" data-latitude="40.057031" data-address="这是一个很长很长这是一个很长很长的地址"></map>',
             list: [{
               text: "1.微信线上申请",
               ask: '微信线上申请'
