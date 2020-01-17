@@ -491,8 +491,9 @@
         this.data = data
         this.$message.success('page' + JSON.stringify(page))
       },
-      searchChange(params) {
+      searchChange(params,done) {
         this.$message.success('search callback' + JSON.stringify(Object.assign(params, this.searchForm)))
+        done()
       },
       searchReset() {
         this.searchForm = {};
