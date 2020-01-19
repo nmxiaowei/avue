@@ -150,6 +150,9 @@ export default create({
     nodeKey () {
       return this.option.nodeKey || DIC_PROPS.nodeKey;
     },
+    defaultExpandAll () {
+      return this.option.defaultExpandAll;
+    },
     columnOption () {
       return this.appednKey(deepClone(this.data || []));
     },
