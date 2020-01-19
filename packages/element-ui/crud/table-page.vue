@@ -2,7 +2,7 @@
   <div :class="b('pagination')"
        v-if="pageFlag">
     <el-pagination :small="crud.isMobile"
-                   :pager-count="crud.isMobile?5:7"
+                   :pager-count="crud.tableOption.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
                    :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
