@@ -5,7 +5,7 @@
       <avue-form :option="option"
                  ref="form"
                  @submit="searchChange"
-                 @reset-change="searchReset"
+                 @reset-change="resetChange"
                  v-model="searchForm">
         <template slot="menuForm"
                   slot-scope="{size}">
@@ -162,8 +162,12 @@ export default cteate({
       this.crud.$emit("search-change", form, done);
     },
     // 搜索清空
-    searchReset () {
+    resetChange () {
       this.crud.$emit("search-reset", this.defaultForm.tableForm);
+    },
+    // 搜索清空
+    searchReset () {
+      this.$refs.form.resetFields();
     },
     handleSearchShow () {
       this.searchShow = !this.searchShow;
