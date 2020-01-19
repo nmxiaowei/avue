@@ -266,6 +266,35 @@
               :name="item.prop+'Form'"
               v-if="item.formslot"></slot>
       </template>
+      <template slot-scope="{value,column,dic,size,label,disabled}"
+                v-for="item in columnFormOption"
+                :slot="item.prop+'Label'">
+        <slot :value="value"
+              :column="column"
+              :dic="dic"
+              :size="size"
+              :label="label"
+              :disabled="disabled"
+              :row="tableForm"
+              :index="tableIndex"
+              :name="item.prop+'Label'"
+              v-if="item.labelslot"></slot>
+      </template>
+      <template slot-scope="{error,value,column,dic,size,label,disabled}"
+                v-for="item in columnFormOption"
+                :slot="item.prop+'Error'">
+        <slot :value="value"
+              :column="column"
+              :dic="dic"
+              :size="size"
+              :label="label"
+              :disabled="disabled"
+              :row="tableForm"
+              :error="error"
+              :index="tableIndex"
+              :name="item.prop+'Error'"
+              v-if="item.errorslot"></slot>
+      </template>
       <template slot-scope="{tableForm,boxType,size}"
                 slot="menuForm">
         <slot name="menuForm"

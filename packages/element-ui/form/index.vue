@@ -30,11 +30,32 @@
                       :xs="24"
                       :offset="column.offset || 0"
                       :class="b('row')">
-                <el-form-item :label="column.label"
-                              :prop="column.prop"
+                <el-form-item :prop="column.prop"
+                              :label="column.label"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
                               :label-position="column.labelPosition"
                               :label-width="getLabelWidth(column,item)">
+                  <template slot="label"
+                            v-if="column.labelslot">
+                    <slot :name="column.prop+'Label'"
+                          :column="column"
+                          :value="form[column.prop]"
+                          :disabled="vaildDisabled(column)"
+                          :size="column.size || controlSize"
+                          :dic="DIC[column.prop]"></slot>
+                  </template>
+                  <template slot="error"
+                            slot-scope="{error}"
+                            v-if="column.errorslot">
+                    <slot :name="column.prop+'Error'"
+                          :column="column"
+                          :error="error"
+                          :value="form[column.prop]"
+                          :disabled="vaildDisabled(column)"
+                          :size="column.size || controlSize"
+                          :dic="DIC[column.prop]"></slot>
+                  </template>
+
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
                               :placement="column.tipPlacement">
