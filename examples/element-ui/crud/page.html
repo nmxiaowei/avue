@@ -20,8 +20,9 @@
 
 <body>
   <div id="app">
+    {{page}}
     <avue-crud ref="crud" :option="option" @size-change="sizeChange" @current-change="currentChange" :data="data"
-      :page="page" @on-load="onLoad"></avue-crud>
+      :page.sync="page" @on-load="onLoad"></avue-crud>
   </div>
 </body>
 <script>
@@ -36,6 +37,7 @@
         },
         data: [],
         option: {
+          index: true,
           height: 'auto',
           align: 'center',
           menuAlign: 'center',
@@ -62,23 +64,25 @@
       },
       onLoad(page) {
         this.$message.success('分页信息:' + JSON.stringify(page))
-        this.page.total = 40
-        //模拟分页
-        if (page.currentPage === 1) {
-          this.data = [
-            {
-              name: '张三',
-              sex: '男'
-            }
-          ]
-        } else if (page.currentPage == 2) {
-          this.data = [
-            {
-              name: '李四',
-              sex: '女'
-            }
-          ]
-        }
+        setTimeout(() => {
+          this.page.total = 40
+          //模拟分页
+          if (page.currentPage === 1) {
+            this.data = [
+              {
+                name: '张三',
+                sex: '男'
+              }
+            ]
+          } else if (page.currentPage == 2) {
+            this.data = [
+              {
+                name: '李四',
+                sex: '女'
+              }
+            ]
+          }
+        }, 2000)
       }
     }
   })
