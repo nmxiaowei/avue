@@ -462,25 +462,14 @@ export default create({
         });
       });
     },
-    /**
-     * 清空表单字段
-     * @param part:true 清空在column中字段,否则清空全部
-     */
-    resetForm (params = {}) {
-      const part = params.part;
-      if (part) {
-        this.columnOption.forEach(ele => {
-          ele.column.forEach(column => {
-            const prop = column.prop;
-            this.form[prop] = this.formDefault.tableForm[prop];
-          });
-        });
-      } else {
-        this.form = this.deepClone(this.formDefault.tableForm);
-      }
-      this.$emit("input", this.form);
+    resetForm () {
+      this.resetFields();
       this.$emit("reset-change");
+    },
+    resetFields () {
+      this.$refs.form.resetFields();
       this.clearValidate();
+      this.$emit("input", this.form);
     },
     validate (callback) {
       this.$refs["form"].validate(valid => callback(valid));
