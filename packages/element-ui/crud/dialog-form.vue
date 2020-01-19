@@ -22,7 +22,8 @@
     <div slot="title"
          :class="b('dialog__menu')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
-      <div class="menu">
+      <div class="menu"
+           v-if="!isDrawer">
         <i v-if="fullscreen"
            @click="handleFullScreen"
            class="el-dialog__close el-icon-full-screen"></i>
