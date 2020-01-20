@@ -50,46 +50,33 @@
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop">
-            <slot :value="scope.value"
-                  :column="scope.column"
-                  :dic="scope.dic"
-                  :size="scope.size"
-                  :label="scope.label"
-                  :disabled="scope.disabled"
-                  :row="tableForm"
-                  :index="tableIndex"
-                  :name="item.prop"
+            <slot v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:tableIndex,
+                  name:item.prop
+                })"
                   v-if="item.formslot"></slot>
           </template>
           <!-- 循环form表单错误卡槽 -->
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop+'Error'">
-            <slot :value="scope.value"
-                  :column="scope.column"
-                  :dic="scope.dic"
-                  :size="scope.size"
-                  :label="scope.label"
-                  :disabled="scope.disabled"
-                  :row="tableForm"
-                  :index="tableIndex"
-                  :name="item.prop+'Error'"
-                  :error="scope.error"
+            <slot v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:tableIndex,
+                  name:item.prop+'Error'
+                })"
                   v-if="item.errorslot"></slot>
           </template>
           <!-- 循环form表单标签卡槽 -->
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop+'Label'">
-            <slot :value="scope.value"
-                  :column="scope.column"
-                  :dic="scope.dic"
-                  :size="scope.size"
-                  :label="scope.label"
-                  :disabled="scope.disabled"
-                  :row="tableForm"
-                  :index="tableIndex"
-                  :name="item.prop+'Label'"
+            <slot v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:tableIndex,
+                  name:item.prop+'Label'
+                })"
                   v-if="item.labelslot"></slot>
           </template>
           <template slot="menuForm"
