@@ -48,6 +48,10 @@
     },
     mounted() {
       setTimeout(() => {
+        console.log('clear')
+        this.$refs.crud.searchReset()
+      }, 5000)
+      setTimeout(() => {
         console.log('开始异步加载了')
         this.option = {
           index: true,

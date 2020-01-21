@@ -19,7 +19,17 @@
 
 <body>
   <div id="app">
-    <avue-form v-model="form" :option="option" @submit="submit"></avue-form>
+    <avue-form v-model="form" :option="option" @submit="submit">
+      <template slot-scope="{}" slot="daterangeLabel">
+        <span>姓名&nbsp;&nbsp;</span>
+        <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
+          <i class="el-icon-warning"></i>
+        </el-tooltip>
+      </template>
+      <template slot-scope="{error}" slot="daterangeError">
+        <p style="color:green">自定义提示</p>
+      </template>
+    </avue-form>
   </div>
 </body>
 <script>
@@ -33,9 +43,18 @@
         option: {
           labelWidth: 110,
           column: [{
+            rules: [
+              {
+                required: true,
+                message: '请输入数字',
+                trigger: 'blur'
+              }
+            ],
             label: "日期范围",
             prop: "daterange",
             type: "daterange",
+            labelslot: true,
+            errorslot: true,
             startPlaceholder: '日期开始范围自定义',
             endPlaceholder: '日期结束范围自定义',
           }, {

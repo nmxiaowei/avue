@@ -183,7 +183,14 @@
               type: "datetime",
               format: "yyyy-MM-dd hh:mm:ss",
               valueFormat: "timestamp",
-              cell: true
+              cell: true,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择日期',
+                  trigger: 'blur'
+                }
+              ]
             }, {
               label: '地址',
               prop: 'textarea',
@@ -319,6 +326,7 @@
             area: '130202',
             datetime: '2019-01-01 00:00:00',
             switch1: false,
+            $cellEdit: true,
             switch2: false
           },
           {
@@ -334,6 +342,7 @@
             area: '110101',
             datetime: '2019-01-01 00:00:00',
             switch1: true,
+            $cellEdit: true,
             switch2: false
           }
         ]
