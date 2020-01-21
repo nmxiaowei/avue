@@ -36,7 +36,6 @@ export default {
   dateBtn: false,
   updateBtn: true,
   saveBtn: true,
-  cancelBtn: true,
   refreshBtn: true,
   columnBtn: true,
   filterBtn: false,

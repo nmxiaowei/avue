@@ -247,7 +247,8 @@
     </el-table>
 
     <!-- 分页 -->
-    <table-page ref="tablePage"></table-page>
+    <table-page ref="tablePage"
+                :page="page"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
                  :columnFormOption="columnFormOption"
@@ -265,6 +266,35 @@
               :index="tableIndex"
               :name="item.prop+'Form'"
               v-if="item.formslot"></slot>
+      </template>
+      <template slot-scope="{value,column,dic,size,label,disabled}"
+                v-for="item in columnFormOption"
+                :slot="item.prop+'Label'">
+        <slot :value="value"
+              :column="column"
+              :dic="dic"
+              :size="size"
+              :label="label"
+              :disabled="disabled"
+              :row="tableForm"
+              :index="tableIndex"
+              :name="item.prop+'Label'"
+              v-if="item.labelslot"></slot>
+      </template>
+      <template slot-scope="{error,value,column,dic,size,label,disabled}"
+                v-for="item in columnFormOption"
+                :slot="item.prop+'Error'">
+        <slot :value="value"
+              :column="column"
+              :dic="dic"
+              :size="size"
+              :label="label"
+              :disabled="disabled"
+              :row="tableForm"
+              :error="error"
+              :index="tableIndex"
+              :name="item.prop+'Error'"
+              v-if="item.errorslot"></slot>
       </template>
       <template slot-scope="{tableForm,boxType,size}"
                 slot="menuForm">
@@ -446,12 +476,6 @@ export default create({
       },
       deep: true
     },
-    page: {
-      handler () {
-        this.$refs.tablePage.pageInit();
-      },
-      deep: true
-    },
     propOption () {
       this.$refs.dialogColumn.columnInit();
     },
@@ -609,8 +633,8 @@ export default create({
       return (
         index +
         1 +
-        ((this.$refs.tablePage.defaultPage.currentPage || 1) - 1) *
-        (this.$refs.tablePage.defaultPage.pageSize || 10)
+        ((this.page.currentPage || 1) - 1) *
+        (this.page.pageSize || 10)
       );
     },
     formVal () {
@@ -640,7 +664,7 @@ export default create({
     //刷新事件
     refreshChange () {
       this.$emit("refresh-change", {
-        page: this.$refs.tablePage.defaultPage,
+        page: this.page.defaultPage,
         searchForm: this.$refs.headerSearch.searchForm
       });
     },

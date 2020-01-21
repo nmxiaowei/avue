@@ -17,8 +17,7 @@
                    :icon="formSafe.parentOption.submitIcon || 'el-icon-check'"
                    :loading="formSafe.allDisabled"
                    v-if="vaildData(formSafe.parentOption.submitBtn,true)">{{vaildData(formSafe.parentOption.submitText,'提 交')}}</el-button>
-        <el-button icon="el-icon-delete"
-                   :icon="formSafe.parentOption.emptyIcon || 'el-icon-delete'"
+        <el-button :icon="formSafe.parentOption.emptyIcon || 'el-icon-delete'"
                    :size="formSafe.controlSize"
                    :loading="formSafe.allDisabled"
                    v-if="vaildData(formSafe.parentOption.emptyBtn,true)"

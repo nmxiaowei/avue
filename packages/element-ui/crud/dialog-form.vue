@@ -22,7 +22,8 @@
     <div slot="title"
          :class="b('dialog__menu')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
-      <div class="menu">
+      <div class="menu"
+           v-if="!isDrawer">
         <i v-if="fullscreen"
            @click="handleFullScreen"
            class="el-dialog__close el-icon-full-screen"></i>
@@ -45,19 +46,38 @@
                    :upload-before="crud.uploadBefore"
                    :upload-after="crud.uploadAfter"
                    :option="formOption">
+          <!-- 循环form表单卡槽 -->
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop">
-            <slot :value="scope.value"
-                  :column="scope.column"
-                  :dic="scope.dic"
-                  :size="scope.size"
-                  :label="scope.label"
-                  :disabled="scope.disabled"
-                  :row="tableForm"
-                  :index="tableIndex"
-                  :name="item.prop"
+            <slot v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:tableIndex,
+                  name:item.prop
+                })"
                   v-if="item.formslot"></slot>
+          </template>
+          <!-- 循环form表单错误卡槽 -->
+          <template slot-scope="scope"
+                    v-for="item in columnFormOption"
+                    :slot="item.prop+'Error'">
+            <slot v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:tableIndex,
+                  name:item.prop+'Error'
+                })"
+                  v-if="item.errorslot"></slot>
+          </template>
+          <!-- 循环form表单标签卡槽 -->
+          <template slot-scope="scope"
+                    v-for="item in columnFormOption"
+                    :slot="item.prop+'Label'">
+            <slot v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:tableIndex,
+                  name:item.prop+'Label'
+                })"
+                  v-if="item.labelslot"></slot>
           </template>
           <template slot="menuForm"
                     slot-scope="{size}">

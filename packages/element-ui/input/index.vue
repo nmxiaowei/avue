@@ -3,6 +3,7 @@
     <div v-if="type==='tree'">
       <el-select :size="size"
                  ref="main"
+                 @click.native="initScroll"
                  :value="labelShow"
                  :type="typeParam"
                  :clearable="disabled?false:clearable"
@@ -325,6 +326,17 @@ export default create({
     this.init();
   },
   methods: {
+    // 初始化滚动条
+    initScroll () {
+      setTimeout(() => {
+        this.$nextTick(() => {
+          let scrollBar = document.querySelectorAll('.el-scrollbar .el-select-dropdown__wrap')
+          scrollBar.forEach(ele => {
+            ele.scrollTop = 0;
+          })
+        })
+      }, 0)
+    },
     filterNode (value, data) {
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;

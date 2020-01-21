@@ -150,6 +150,9 @@ export default create({
     nodeKey () {
       return this.option.nodeKey || DIC_PROPS.nodeKey;
     },
+    defaultExpandAll () {
+      return this.option.defaultExpandAll;
+    },
     columnOption () {
       return this.appednKey(deepClone(this.data || []));
     },
@@ -307,15 +310,7 @@ export default create({
         const index = children.findIndex(d => d.id === data.id);
         children.splice(index, 1);
       };
-      this.$confirm("是否删除改节点?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$emit("del", this.obj, this.node, callback);
-        })
-        .catch(() => { });
+      this.$emit("del", this.obj, this.node, callback);
     }
   }
 });
