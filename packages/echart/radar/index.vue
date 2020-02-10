@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-radar"
+  <div :class="b()"
        :style="styleSizeName">
     <div :ref="id"
          :style="styleChartName"></div>

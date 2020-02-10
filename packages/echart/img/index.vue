@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-img"
+  <div :class="b()"
        :style="styleSizeName"
        @click="handleClick">
     <img :style="[styleImgName,styleSizeName]"

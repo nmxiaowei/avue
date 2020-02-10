@@ -1,5 +1,5 @@
 <<template>
-  <div class="avue-echart avue-echart-map"
+  <div :class="b()"
        :style="styleSizeName" @mousewheel.prevent="handleMousewheel">
     <div :ref="id" :style="styleChartName" v-if="isEchart"></div>
       <div :class="b('map')" v-else >

@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-bar"
+  <div :class="b()"
        :style="styleSizeName">
     <div :ref="id"
          :style="styleChartName"></div>
@@ -38,11 +38,11 @@ export default create({
         tooltip: this.ishasprop(this.formatter, {
           formatter: name => { return this.formatter(name, this.dataChart) }
         }, {
-            textStyle: {
-              fontSize: this.option.tipFontSize,
-              color: this.option.tipColor || "#fff"
-            }
-          }),
+          textStyle: {
+            fontSize: this.option.tipFontSize,
+            color: this.option.tipColor || "#fff"
+          }
+        }),
         grid: {
           left: this.option.gridX || 20,
           top: this.option.gridY || 60,

@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-funnel"
+  <div :class="b()"
        :style="styleSizeName">
     <div :ref="id"
          :style="styleChartName"></div>
@@ -38,12 +38,12 @@ export default create({
         tooltip: this.ishasprop(this.formatter, {
           formatter: name => { return this.formatter(name, this.dataChart) }
         }, {
-            backgroundColor: this.option.tipBackgroundColor || 'rgba(50,50,50,0.7)',
-            textStyle: {
-              fontSize: this.option.tipFontSize,
-              color: this.option.tipColor || "#fff"
-            }
-          }),
+          backgroundColor: this.option.tipBackgroundColor || 'rgba(50,50,50,0.7)',
+          textStyle: {
+            fontSize: this.option.tipFontSize,
+            color: this.option.tipColor || "#fff"
+          }
+        }),
         grid: {
           left: this.option.gridX || 20,
           top: this.option.gridY || 60,
@@ -101,7 +101,7 @@ export default create({
                   shadowBlur: 10,
                   shadowOffsetX: 0,
                   shadowColor: "rgba(0, 0, 0, 0.5)"
-                }                })
+                }              })
             }
           ];
           return list;

@@ -1,7 +1,6 @@
-import {
-  setPx
-} from 'utils/util';
-import echartList from './list';
+import { setPx, getUrlParams } from 'utils/util';
+import config from './config';
+import packages from 'core/packages';
 export default (() => {
   return {
     props: {
@@ -66,7 +65,7 @@ export default (() => {
       },
       id: {
         type: String,
-        default: 'main_' + new Date()
+        default: 'main_' + new Date().getTime()
       },
       data: {
         type: [Object, String, Array]
@@ -99,7 +98,6 @@ export default (() => {
     },
     watch: {
       styleChartName() {
-
         this.$nextTick(() => {
           this.myChart && this.myChart.resize();
         });
@@ -144,14 +142,12 @@ export default (() => {
       dataChartLen() {
         return (this.dataChart || []).length;
       },
-      datetime() {
-        return this.option.datetime || 'datetime';
-      },
       switchTheme() {
         return this.vaildData(this.option.switchTheme, false);
       },
       name() {
-        return this.$el.className.replace('avue-echart-', '').replace('avue-echart', '').replace(' ', '');
+        const result = this.$el.className.replace(config.name, '');
+        return result;
       },
       minWidth() {
         const val = this.option.minWidth;
@@ -187,48 +183,50 @@ export default (() => {
       }
     },
     mounted() {
-      // console.log('我初始化');
-
       this.init();
     },
     methods: {
       init() {
-        if (this.$refs[this.id]) {
-          if (echartList.includes(this.name)) {
-            this.isChart = true;
-          } else {
-            this.isChart = false;
-          }
-          if (this.isChart) {
-            this.myChart = window.echarts.init(this.$refs[this.id], this.theme);
-          }
+        // 判断是否引入echart包
+        if (!window.echarts) {
+          packages.logs('echarts');
+          return;
+        }
+        const main = this.$refs[this.id];
+        if (main) {
+          // 判断是否图表去初始化
+          this.isChart = config.echart.includes(this.name);
+          if (this.isChart) this.myChart = window.echarts.init(main, this.theme);
         }
       },
       updateUrl(url) {
         this.dataUrl = url;
         this.updateData();
       },
+      // 更新数据核心方法
       updateData() {
         this.resetData && this.resetData();
         if (this.key) return;
         this.key = true;
         const callback = () => {
           this.key = false;
+          // 动态数据
           if (this.isApi) {
-            let dataUrl = this.dataUrl.replace('${HOME_URL}', this.homeUrl);
+            let dataUrl = this.dataUrl.replace(config.homeurl, this.homeUrl);
             const detail = (res) => {
-              const data = typeof (this.dataFormatter) === 'function' ? this.dataFormatter(res.data) : res.data;
-              const result = data.data || {};
+              // 处理返回的数据
+              const result = (() => {
+                if (typeof this.dataFormatter === 'function') this.dataFormatter(res.data);
+                return res.data || {};
+              })();
+              // 延迟效果数据逐步增加
               if (this.dataAppend) {
-                for (let i = 0; i < result.length; i++) {
-                  if (i === result.length - 1) {
-                    this.propQuery.datetime = result[i][this.datetime];
-                  }
+                result.forEach(ele => {
                   this.dataCount++;
                   setTimeout(() => {
-                    this.dataChart.unshift(result[i]);
+                    this.dataChart.unshift(ele);
                   }, this.dataCount * 1500);
-                }
+                });
               } else {
                 this.dataChart = result;
               }
@@ -238,31 +236,22 @@ export default (() => {
                 this.bindClick();
               }
             };
-            if (this.dataMethod === 'get') {
-              this.$httpajax.get(dataUrl, {
-                params: Object.assign(this.dataQuery, this.propQuery)
-              }).then(res => {
-                detail(res);
-              });
-            } else if (this.dataMethod === 'post') {
-              let params = {};
-              let url = dataUrl;
-              if (url.includes('?')) {
-                const index = url.indexOf('?');
-                url = url.substr(index + 1);
-                let list = url.split('&');
-                list.forEach(ele => {
-                  let dic = ele.split('=');
-                  let label = dic[0];
-                  let value = dic[1];
-                  params[label] = value;
-                });
+            let result = getUrlParams(dataUrl);
+            let url = result.url;
+            let params = Object.assign(this.dataQuery, result.params, this.propQuery);
+            this.$httpajax[this.dataMethod](url, (() => {
+              if (this.dataMethod === 'get') {
+                return {
+                  params: params
+                };
+              } else if (this.dataMethod === 'post') {
+                return params;
               }
-              this.$httpajax.post(dataUrl, Object.assign(this.dataQuery, params, this.propQuery)).then(res => {
-                detail(res);
-              });
-            }
+            })()).then(res => {
+              detail(res);
+            });
           } else {
+            // 静态数据
             this.dataChart = this.data || [];
             if (this.isChart && this.myChart) {
               this.myChart.clear();
@@ -280,7 +269,6 @@ export default (() => {
             }, this.time);
           }
         });
-
       },
       getLabelFormatter(name) {
         if (this.labelFormatter) {
@@ -288,6 +276,7 @@ export default (() => {
         }
         return name.value;
       },
+      // 绑定点击事件
       bindClick() {
         this.myChart.on('click', e => {
           if (e.marker) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-imgborder"
+  <div :class="b()"
        :style="styleSizeName">
     <div :style="styleImgName"></div>
   </div>
