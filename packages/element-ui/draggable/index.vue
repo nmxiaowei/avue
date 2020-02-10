@@ -49,6 +49,9 @@ import { getFixed } from "utils/util";
 export default create({
   name: "draggable",
   props: {
+    index: {
+      type: [String, Number],
+    },
     mask: {
       type: Boolean,
       default: true
@@ -74,11 +77,7 @@ export default create({
       default: 1
     },
     zIndex: {
-      type: Number,
-      default: 1
-    },
-    index: {
-      type: Number,
+      type: [Number, String],
       default: 1
     },
     left: {
@@ -227,15 +226,17 @@ export default create({
     }
   },
   mounted () {
-    this.children = this.$refs.item.firstChild;
-    this.baseWidth = this.width || this.children.offsetWidth;
-    this.baseHeight = this.height || this.children.offsetHeight;
-    this.baseLeft = getFixed(this.left);
-    this.baseTop = getFixed(this.top);
-    // this.children.style.overflow = "hidden";
+    this.init();
   },
 
   methods: {
+    init () {
+      this.children = this.$refs.item.firstChild;
+      this.baseWidth = this.width || this.children.offsetWidth;
+      this.baseHeight = this.height || this.children.offsetHeight;
+      this.baseLeft = getFixed(this.left);
+      this.baseTop = getFixed(this.top);
+    },
     setLeft (left) {
       this.baseLeft = left;
     },
@@ -264,13 +265,10 @@ export default create({
       this.$emit("focus");
       window.onmouseup = e => {
         window.onmousemove = undefined;
-        this.$emit("resize", {
+        this.$emit("change", {
           index: this.index,
           width: this.baseWidth,
-          height: this.baseHeight
-        });
-        this.$emit("postion", {
-          index: this.index,
+          height: this.baseHeight,
           left: this.baseLeft,
           top: this.baseTop
         });
@@ -370,7 +368,6 @@ export default create({
       this.overActive = true;
     },
     handleMouseDown (e) {
-      this.$emit("change", this.index);
       this.active = true;
       this.moveActive = true;
       this.x = e.clientX;
