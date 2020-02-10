@@ -1,8 +1,5 @@
 <template>
   <div :class="b()">
-    <!-- 头部组件 -->
-    <header-title ref="headerTitle"
-                  v-show="vaildData(tableOption.header,true)"></header-title>
     <!-- 搜索组件 -->
     <header-search v-model="searchForm"
                    ref="headerSearch">
@@ -253,46 +250,33 @@
     <dialog-form ref="dialogForm"
                  :columnFormOption="columnFormOption"
                  v-model="tableForm">
-      <template slot-scope="{value,column,dic,size,label,disabled}"
+      <template slot-scope="scope"
                 v-for="item in columnFormOption"
                 :slot="item.prop">
-        <slot :value="value"
-              :column="column"
-              :dic="dic"
-              :size="size"
-              :label="label"
-              :disabled="disabled"
-              :row="tableForm"
-              :index="tableIndex"
+        <slot v-bind="Object.assign(scope,{
+              row:tableForm,
+              index:tableIndex
+              })"
               :name="item.prop+'Form'"
               v-if="item.formslot"></slot>
       </template>
-      <template slot-scope="{value,column,dic,size,label,disabled}"
+      <template slot-scope="scope"
                 v-for="item in columnFormOption"
                 :slot="item.prop+'Label'">
-        <slot :value="value"
-              :column="column"
-              :dic="dic"
-              :size="size"
-              :label="label"
-              :disabled="disabled"
-              :row="tableForm"
-              :index="tableIndex"
+        <slot v-bind="Object.assign(scope,{
+              row:tableForm,
+              index:tableIndex
+              })"
               :name="item.prop+'Label'"
               v-if="item.labelslot"></slot>
       </template>
-      <template slot-scope="{error,value,column,dic,size,label,disabled}"
+      <template slot-scope="scope"
                 v-for="item in columnFormOption"
                 :slot="item.prop+'Error'">
-        <slot :value="value"
-              :column="column"
-              :dic="dic"
-              :size="size"
-              :label="label"
-              :disabled="disabled"
-              :row="tableForm"
-              :error="error"
-              :index="tableIndex"
+        <slot v-bind="Object.assign(scope,{
+              row:tableForm,
+              index:tableIndex
+              })"
               :name="item.prop+'Error'"
               v-if="item.errorslot"></slot>
       </template>
@@ -320,7 +304,6 @@ import headerSearch from "./header-search";
 import locale from "../../core/common/locale";
 import column from "./column";
 import headerMenu from "./header-menu";
-import headerTitle from "./header-title";
 import dialogColumn from "./dialog-column";
 import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
@@ -341,7 +324,6 @@ export default create({
     tablePage, //分页
     headerSearch, //搜索
     headerMenu, //菜单头部
-    headerTitle, //头部功能
     dialogColumn, //显隐列
     dialogFilter, //过滤器
     dialogForm //分页,

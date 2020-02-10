@@ -30,7 +30,14 @@
     </div>
     <div :class="b('right')">
       <slot name="menuRight"></slot>
-
+      <avue-date type="datetimerange"
+                 @change="dateChange"
+                 value-format="yyyy-MM-dd HH:mm:ss"
+                 format="yyyy-MM-dd HH:mm:ss"
+                 :pickerOptions="pickerOptions"
+                 style="display:inline-block;margin-right:5px;"
+                 v-if="vaildData(crud.tableOption.dateBtn,config.dateBtn)"
+                 :size="crud.isMediumSize"></avue-date>
       <el-tooltip effect="dark"
                   :content="t('crud.refreshBtn')"
                   placement="top">
@@ -88,6 +95,49 @@ export default create({
   inject: ["crud"],
   data () {
     return {
+      pickerOptions: {
+        shortcuts: [{
+          text: '今日',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime());
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '昨日',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一周',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
       config: config
     };
   },
@@ -108,6 +158,11 @@ export default create({
     }
   },
   methods: {
+
+    //日期组件回调
+    dateChange (val) {
+      this.crud.$emit("date-change", val);
+    },
     initFun () {
       this.vaildData = vaildData;
       this.crud.rowExcel = this.rowExcel;
