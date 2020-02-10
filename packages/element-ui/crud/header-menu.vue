@@ -88,6 +88,7 @@ import tableTemp from "../../util/tableTemp";
 import create from "core/create";
 import config from "./config";
 import packages from "core/packages";
+import { dateFtt } from 'utils/date'
 import { vaildData } from "utils/util";
 export default create({
   name: "crud",
@@ -158,10 +159,9 @@ export default create({
     }
   },
   methods: {
-
     //日期组件回调
     dateChange (val) {
-      this.crud.$emit("date-change", val);
+       this.crud.$emit("date-change", val);
     },
     initFun () {
       this.vaildData = vaildData;
@@ -179,7 +179,7 @@ export default create({
         return;
       }
       this.$export.excel({
-        title: this.crud.tableOption.title || new Date().getTime(),
+        title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd HH:mm:ss', new Date()),
         columns: (() => {
           let list = [];
           this.crud.propOption.forEach(ele => {

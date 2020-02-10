@@ -74,7 +74,6 @@ export default create({
         this.handleChange(val);
       },
       deep: true,
-      immediate: true,
     }
   },
 });
