@@ -142,6 +142,27 @@ export const detailDataType = (value, type) => {
     return value;
   }
 };
+// 获取url中的参数
+export const getUrlParams = (url) => {
+  let result = {
+    url: '',
+    params: []
+  };
+  result.url = url.split('?')[0];
+  if (url[1]) {
+    let str = url[1];
+    url = str.substr(1);
+    let list = url.split('&');
+    list.forEach(ele => {
+      let dic = ele.split('=');
+      let label = dic[0];
+      let value = dic[1];
+      result.params[label] = value;
+    });
+  }
+  return result;
+};
+
 /**
  * 数组的数据类型转化
  */

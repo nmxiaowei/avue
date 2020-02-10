@@ -381,29 +381,11 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res || '' }).then(
+        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典
             this.$set(this.DIC, columnNextProp, dic);
-            /**
-             * 1.是change多级默认联动
-             * 2.字典不为空
-             * 3.非首次加载
-             */
-            if (!this.validatenull(dic) && this.formList.includes(str)) {
-              //取字典的指定项或则第一项
-              let dicvalue = dic[columnNext.defaultIndex || 0];
-              if (!dicvalue) dicvalue = dic[0];
-              if (dicvalue) {
-                this.form[columnNext.prop] =
-                  dicvalue[
-                  (columnNext.props || this.parentOption.props || {}).value ||
-                  "value"
-                  ];
-                this.clearValidate();
-              }
-            }
             //首次加载的放入队列记录
             if (!this.formList.includes(str)) this.formList.push(str);
           }

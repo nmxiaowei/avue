@@ -1,12 +1,12 @@
-//获取当前日期
+// 获取当前日期
 export const getDayText = (date = new Date()) => {
   if (typeof (date) === 'number') {
     date = new Date(date);
   } else if (typeof (date) === 'string') {
-    date = new Date(date.replace(/-/g, "/").replace(/\./g, "/"))
+    date = new Date(date.replace(/-/g, '/').replace(/\./g, '/'));
   }
-  return "日一二三四五六".charAt(date.getDay());
-}
+  return '日一二三四五六'.charAt(date.getDay());
+};
 export const dateFtt = (fmt, date) => {
   // author: meizz
   var o = {
@@ -48,7 +48,7 @@ export const getDateValues = (value, format = 'yyyy/MM/dd hh:mm::ss') => {
   if (typeof (value) === 'number') {
     str = new Date(value);
   } else if (typeof (value) === 'string') {
-    str = new Date(value.replace(/-/g, "/").replace(/\./g, "/"))
+    str = new Date(value.replace(/-/g, '/').replace(/\./g, '/'));
   }
   let result = [];
   let year = str.getFullYear();
@@ -74,12 +74,14 @@ export const timeToSec = time => {
   s = Number(hour * 3600) + Number(min * 60) + Number(sec);
   return s;
 };
-export const GetDateStr = AddDayCount => {
+export const GetDateStr = (AddDayCount, type = 0) => {
   var dd = new Date();
   dd.setDate(dd.getDate() + AddDayCount); // 获取AddDayCount天后的日期
   var y = dd.getFullYear();
   var m =
     dd.getMonth() + 1 < 10 ? '0' + (dd.getMonth() + 1) : dd.getMonth() + 1; // 获取当前月份的日期，不足10补0
   var d = dd.getDate() < 10 ? '0' + dd.getDate() : dd.getDate(); // 获取当前几号，不足10补0
-  return y + '-' + m + '-' + d;
+  var result = y + '-' + m + '-' + d;
+  result = type === 0 ? result + ' 00:00:00' : result + ' 23:59:59';
+  return result;
 };
