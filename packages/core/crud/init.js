@@ -13,13 +13,21 @@ export default function (type) {
     },
     watch: {
       option: {
-        handler() {
+        handler () {
           this.init();
         },
         deep: true
-      }
+      },
+      //检测本地字典随时赋值
+      'option.dicData': {
+        handler (val) {
+          this.DIC = Object.assign(this.DIC, val);
+        },
+        deep: true,
+        immediate: true
+      },
     },
-    data() {
+    data () {
       return {
         DIC: {},
         cascaderDIC: {},
@@ -27,30 +35,30 @@ export default function (type) {
         isMobile: ''
       };
     },
-    created() {
+    created () {
       this.init();
     },
     computed: {
-      menuType() {
+      menuType () {
         return this.tableOption.menuType || this.$AVUE.menuType || 'button';
       },
-      isMediumSize() {
+      isMediumSize () {
         return this.controlSize === 'medium' ? 'small' : this.controlSize;
       },
-      controlSize() {
+      controlSize () {
         return this.tableOption.size || (this.$AVUE || {}).size || 'medium';
       }
     },
     methods: {
-      getKey(item = {}, props = {}, key) {
+      getKey (item = {}, props = {}, key) {
         return item[
           props[key] || (this.parentOption.props || {})[key] || key
         ];
       },
-      getIsMobile() {
+      getIsMobile () {
         this.isMobile = window.document.body.clientWidth <= 768;
       },
-      init() {
+      init () {
         this.tableOption = this.option;
         this.getIsMobile();
         window.onresize = () => {
@@ -67,7 +75,7 @@ export default function (type) {
         }, 0);
       },
       //检测本地字典
-      initDic() {
+      initDic () {
         if (isCrud) {
           // 表格赋值
           this.propOption.forEach(ele => {
@@ -87,7 +95,7 @@ export default function (type) {
         }
       },
       // 加载字典
-      handleLoadDic(option) {
+      handleLoadDic (option) {
         return new Promise((resolve) => {
           const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
           // 初始化字典
@@ -98,15 +106,11 @@ export default function (type) {
               });
               resolve();
             });
-            // 加载传进来的字典
-          } else {
-            const dicData = this.tableOption.dicData || [];
-            this.DIC = this.deepClone(dicData);
-            resolve();
           }
+          resolve();
         })
       },
-      handleLoadCascaderDic(option, data) {
+      handleLoadCascaderDic (option, data) {
         loadCascaderDic(option || (isCrud ? this.propOption : this.columnOption), this.data || [data]).then(res => {
           if (option) {
             Object.keys(res).forEach(ele => {
