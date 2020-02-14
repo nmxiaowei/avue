@@ -262,7 +262,7 @@ export default create({
       this[item[type]](e, item.classname);
     },
     docMouseUp () {
-      this.$emit("focus");
+      this.$emit("blur");
       window.onmouseup = e => {
         window.onmousemove = undefined;
         this.$emit("change", {
@@ -390,7 +390,7 @@ export default create({
       }
     },
     handleMouseUp () {
-      this.$emit("blur");
+      this.$emit("focus");
       this.moveActive = false;
     }
   }

@@ -219,31 +219,11 @@ export default {
         });
       }
 
-      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res }).then(
+      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
           this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
-          /**
-           * 1.是change多级默认联动
-           * 2.字典不为空
-           * 3.非首次加载
-           */
-          if (
-            !this.validatenull(dic) &&
-            this.crud.formIndexList.includes(rowIndex)
-          ) {
-            //取字典的指定项或则第一项
-            let dicvalue = dic[columnNext.defaultIndex || 0];
-            if (!dicvalue) dicvalue = dic[0];
-            if (dicvalue) {
-              row[columnNext.prop] =
-                dicvalue[
-                (columnNext.props || this.crud.parentOption.props || {})
-                  .value || "value"
-                ];
-            }
-          }
         }
       );
     },
