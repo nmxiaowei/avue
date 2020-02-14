@@ -17,8 +17,8 @@
   <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
   <script src="https://cdn.staticfile.org/xlsx/0.14.1/xlsx.full.min.js"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/theme-chalk/index.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.13.0/theme-chalk/index.css" />
+  <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -38,9 +38,6 @@
             <el-input placeholder="自定义搜索" size="small" v-model="searchForm.slot" />
           </el-form-item>
         </el-col>
-      </template>
-      <template slot="searchMenu">
-        <el-button size="small">自定义按钮</el-button>
       </template>
       <template slot-scope="scope" slot="nameForm">
         <el-tag :size="scope.size">{{ scope.label }}</el-tag>
