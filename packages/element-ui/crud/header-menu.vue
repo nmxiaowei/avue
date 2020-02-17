@@ -35,7 +35,7 @@
                  value-format="yyyy-MM-dd HH:mm:ss"
                  format="yyyy-MM-dd HH:mm:ss"
                  :pickerOptions="pickerOptions"
-                 style="display:inline-block;margin-right:5px;"
+                 style="display:inline-block;margin-right:20px;"
                  v-if="vaildData(crud.tableOption.dateBtn,config.dateBtn)"
                  :size="crud.isMediumSize"></avue-date>
       <el-tooltip effect="dark"
@@ -161,7 +161,7 @@ export default create({
   methods: {
     //日期组件回调
     dateChange (val) {
-       this.crud.$emit("date-change", val);
+      this.crud.$emit("date-change", val);
     },
     initFun () {
       this.vaildData = vaildData;

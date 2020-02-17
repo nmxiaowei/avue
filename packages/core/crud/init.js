@@ -43,10 +43,10 @@ export default function (type) {
         return this.tableOption.menuType || this.$AVUE.menuType || 'button';
       },
       isMediumSize () {
-        return this.controlSize === 'medium' ? 'small' : this.controlSize;
+        return this.controlSize;
       },
       controlSize () {
-        return this.tableOption.size || (this.$AVUE || {}).size || 'medium';
+        return this.tableOption.size || (this.$AVUE || {}).size || 'small';
       }
     },
     methods: {

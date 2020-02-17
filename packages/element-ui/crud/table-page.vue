@@ -2,6 +2,7 @@
   <div :class="b('pagination')"
        v-if="pageFlag">
     <el-pagination :small="crud.isMobile"
+                   hide-on-single-page
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
                    :background="vaildData(defaultPage.pageBackground,config.pageBackground)"

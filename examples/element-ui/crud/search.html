@@ -38,24 +38,8 @@
     el: '#app',
     data() {
       return {
-        option: {},
-        data: [{
-          name: '1'
-        }, {
-          name: '2'
-        }]
-      }
-    },
-    mounted() {
-      setTimeout(() => {
-        console.log('clear')
-        this.$refs.crud.searchReset()
-      }, 5000)
-      setTimeout(() => {
-        console.log('开始异步加载了')
-        this.option = {
+        option: {
           index: true,
-          searchMenuSpan: 6,
           emptyText: '自定义暂无数据提示语',
           column: [{
             label: '姓名',
@@ -97,13 +81,27 @@
             label: '字典',
             prop: 'dic',
             type: 'select',
-            dicData: [{
-              label: 1,
-              value: 1
-            }]
+            search: true,
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            dicUrl: 'https://cli.avuejs.com/api/area/getProvince',
           }]
-        }
-      }, 0)
+        },
+        data: [{
+          name: '1'
+        }, {
+          name: '2'
+        }]
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        console.log('clear')
+        this.$refs.crud.searchReset()
+      }, 5000)
+
     },
     methods: {
       searchChange(params, done) {

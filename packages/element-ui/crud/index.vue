@@ -865,7 +865,7 @@ export default create({
           } else if (currItem) {
             switch (currItem.type) {
               case "count":
-                sums[index] = "计数:" + data.length;
+                sums[index] = "计数：" + data.length;
                 break;
               case "avg":
                 let avgValues = data.map(item => Number(item[column.property]));
@@ -878,7 +878,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "平均:" + sums[index].toFixed(2);
+                sums[index] = "平均：" + sums[index].toFixed(2);
                 break;
               case "sum":
                 let values = data.map(item => Number(item[column.property]));
@@ -890,7 +890,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "合计:" + sums[index].toFixed(2);
+                sums[index] = "合计：" + sums[index].toFixed(2);
                 break;
             }
           } else {

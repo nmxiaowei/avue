@@ -60,7 +60,7 @@ const install = function(Vue, opts = {}) {
         };
       }
     })(),
-    size: opts.size || 'medium',
+    size: opts.size || 'small',
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
       text: 'avue.top',
