@@ -99,6 +99,7 @@ export default cteate({
               tip: ele.searchTip,
               placeholder: getPlaceholder(ele, 'search'),
               filterable: ele.searchFilterable,
+              tipPlacement: ele.searchTipPlacement,
               filterMethod: ele.searchFilterMethod,
               checkStrictly: ele.searchCheckStrictly || option.searchCheckStrictly,
               gutter: ele.searchGutter || option.searchGutter,
@@ -136,7 +137,9 @@ export default cteate({
           emptyText: this.vaildData(option.searchResetText, '清空'),
           emptyBtn: this.vaildData(option.searchResetBtn, this.config.searchResetBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
-          menuSpan: option.searchMenuSpan
+          menuSpan: option.searchMenuSpan,
+          dicFlag: false,
+          dicData: this.crud.DIC
         })
         return result;
       }

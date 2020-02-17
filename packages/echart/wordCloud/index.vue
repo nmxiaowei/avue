@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-wordCloud"
+  <div :class="b()"
        :style="styleSizeName">
     <div :ref="id"
          :style="styleChartName"></div>
@@ -9,9 +9,9 @@
 <script>
 import create from "core/echart/create";
 export default create({
-  name: "wordcloud",
+  name: "wordCloud",
   methods: {
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart) || [];
       const option = {
         series: [
@@ -49,7 +49,7 @@ export default create({
               normal: {
                 fontFamily: "sans-serif",
                 fontWeight: "bold",
-                color: function() {
+                color: function () {
                   return (
                     "rgb(" +
                     [

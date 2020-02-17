@@ -13,13 +13,13 @@ export default {
   viewBtnIcon: 'el-icon-view',
   editBtnIcon: 'el-icon-edit',
   addBtnIcon: 'el-icon-plus',
-  printBtnIcon: 'el-icon-plus',
-  excelBtnIcon: 'el-icon-plus',
+  printBtnIcon: 'el-icon-printer',
+  excelBtnIcon: 'el-icon-download',
   delBtnIcon: 'el-icon-delete',
   searchBtnIcon: 'el-icon-search',
   emptyBtnIcon: 'el-icon-delete',
   saveBtnIcon: 'el-icon-check',
-  columnBtnIcon: 'el-icon-menu',
+  columnBtnIcon: 'el-icon-s-operation',
   filterBtnIcon: 'el-icon-tickets',
   refreshBtnIcon: 'el-icon-refresh',
   searchBoxBtnIcon: 'el-icon-search',
@@ -70,5 +70,4 @@ export default {
   searchGutter: 20,
   searchLabelWidth: 80,
   searchSpan: 6,
-  dateDefault: true
 };

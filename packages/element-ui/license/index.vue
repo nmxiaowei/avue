@@ -19,9 +19,19 @@ export default create({
       }
     }
   },
+  watch: {
+    option: {
+      handler () {
+        this.init();
+      },
+      deep: true
+    }
+  },
   data () {
     return {
+      draw: false,
       canvas: '',
+      context: '',
     }
   },
   computed: {
@@ -33,13 +43,13 @@ export default create({
     }
   },
   mounted () {
+    this.canvas = document.getElementById("canvas");
+    this.context = canvas.getContext("2d");
     this.init();
   },
   methods: {
     init () {
-      this.canvas = document.getElementById("canvas");
-      const canvas = this.canvas;
-      const context = canvas.getContext("2d");
+      this.draw = false;
       const beauty = new Image();
       beauty.src = this.img;
       beauty.onload = () => {
@@ -47,39 +57,64 @@ export default create({
         const height = this.option.width ? ((beauty.height / beauty.width) * this.option.width) : beauty.height;
         this.$refs.canvas.width = width;
         this.$refs.canvas.height = height
-        context.drawImage(beauty, 0, 0, width, height);
-        this.list.forEach(ele => {
+        this.context.clearRect(0, 0, width, height);
+        this.context.drawImage(beauty, 0, 0, width, height);
+        this.list.forEach((ele, index) => {
+          const callback = () => {
+            if (index == this.list.length - 1) {
+              setTimeout(() => {
+                this.draw = true;
+              }, 0)
+            }
+          }
           if (ele.img) {
             const img = new Image();
             img.src = ele.img
             img.onload = () => {
               const widths = ele.width || img.width;;
               const heights = ele.width ? ((img.height / img.width) * ele.width) : img.height;
-              context.drawImage(img, ele.left, ele.top, widths, heights);
+              this.context.drawImage(img, ele.left, ele.top, widths, heights);
+              callback();
             }
           } else {
             if (ele.bold) {
-              context.font = `bold ${ele.size}px ${ele.style}`
+              this.context.font = `bold ${ele.size}px ${ele.style}`
             } else {
-              context.font = `${ele.size}px ${ele.style}`
+              this.context.font = `${ele.size}px ${ele.style}`
             }
-            context.fillStyle = ele.color;
+            this.context.fillStyle = ele.color;
 
-            context.fillText(ele.text, ele.left, ele.top);
-            context.stroke();
+            this.context.fillText(ele.text, ele.left, ele.top);
+            this.context.stroke();
+            callback();
           }
-
         })
+
       };
     },
     getFile (name = new Date().getTime()) {
-      const data = this.canvas.toDataURL('image/jpeg', 1.0);
-      const file = this.dataURLtoFile(data, name)
+      return new Promise((resolve) => {
+        const time = setInterval(() => {
+          if (this.draw) {
+            const data = this.canvas.toDataURL('image/jpeg', 1.0);
+            const file = this.dataURLtoFile(data, name)
+            clearInterval(time)
+            resolve(file)
+          }
+        }, 1000)
+      })
       return file;
     },
     getBase64 () {
-      const data = this.canvas.toDataURL('image/jpeg', 1.0);
-      return data;
+      return new Promise((resolve) => {
+        const time = setInterval(() => {
+          if (this.draw) {
+            const data = this.canvas.toDataURL('image/jpeg', 1.0);
+            clearInterval(time)
+            resolve(data)
+          }
+        }, 100)
+      })
     },
     getPdf (name = new Date().getTime()) {
       const contentWidth = this.canvas.width;

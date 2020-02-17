@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-line"
+  <div :class="b()"
        :style="styleSizeName">
     <div :ref="id"
          :style="styleChartName"></div>
@@ -44,13 +44,13 @@ export default create({
               }
               return {};
             })(), {
-              backgroundColor: "rgba(0,0,0,1)",
-              trigger: "axis",
-              textStyle: {
-                fontSize: this.option.tipFontSize,
-                color: this.option.tipColor || "#fff"
-              }
+            backgroundColor: "rgba(0,0,0,1)",
+            trigger: "axis",
+            textStyle: {
+              fontSize: this.option.tipFontSize,
+              color: this.option.tipColor || "#fff"
             }
+          }
           );
         })(),
         grid: {

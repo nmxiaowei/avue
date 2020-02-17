@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-bar"
+  <div :class="b()"
        :style="styleSizeName">
     <div :ref="id"
          :style="styleChartName"></div>
@@ -11,7 +11,7 @@ import create from "core/echart/create";
 export default create({
   name: "pictorialbar",
   methods: {
-    updateChart() {
+    updateChart () {
       const optionData = this.deepClone(this.dataChart);
       const symbol = this.validatenull(this.option.symbol)
         ? ""

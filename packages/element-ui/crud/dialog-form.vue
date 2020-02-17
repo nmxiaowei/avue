@@ -50,7 +50,8 @@
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop">
-            <slot v-bind="Object.assign(scope,{
+            <slot :name="item.prop"
+                  v-bind="Object.assign(scope,{
                   row:tableForm,
                   index:tableIndex,
                   name:item.prop
@@ -61,10 +62,10 @@
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop+'Error'">
-            <slot v-bind="Object.assign(scope,{
+            <slot :name="item.prop+'Error'"
+                  v-bind="Object.assign(scope,{
                   row:tableForm,
                   index:tableIndex,
-                  name:item.prop+'Error'
                 })"
                   v-if="item.errorslot"></slot>
           </template>
@@ -72,10 +73,10 @@
           <template slot-scope="scope"
                     v-for="item in columnFormOption"
                     :slot="item.prop+'Label'">
-            <slot v-bind="Object.assign(scope,{
+            <slot :name="item.prop+'Label'"
+                  v-bind="Object.assign(scope,{
                   row:tableForm,
                   index:tableIndex,
-                  name:item.prop+'Label'
                 })"
                   v-if="item.labelslot"></slot>
           </template>

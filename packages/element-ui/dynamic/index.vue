@@ -5,11 +5,12 @@
                :data="text">
       <template slot-scope="scope"
                 slot="index">
-        <el-button v-if="!delBtn&&hoverList[scope.row.$index]"
+        <el-button v-if="!delBtn&&hoverList[scope.row.$index]&&!disabled"
                    @mouseout.native="mouseoutRow(scope.row.$index)"
                    @click="delRow(scope.row.$index)"
                    type="danger"
                    size="mini"
+                   :disabled="disabled"
                    icon="el-icon-delete"
                    circle></el-button>
         <span v-else-if="delBtn || !hoverList[scope.row.$index]"
@@ -79,6 +80,7 @@ export default create({
                 size: 'mini',
                 type: 'primary',
                 icon: 'el-icon-plus',
+                disabled: this.disabled,
                 circle: true
               },
               on: {

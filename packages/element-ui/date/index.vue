@@ -1,32 +1,6 @@
 <template>
   <div :class="b()">
-    <div :class="b('group')"
-         v-if="isDategroup">
-      <div :class="b('radio')">
-        <el-radio-group :size="size"
-                        @change="handleChange"
-                        v-model="text">
-          <el-radio-button :label="item.value"
-                           v-for="(item,index) in menu"
-                           :key="index">{{item.label}}</el-radio-button>
-        </el-radio-group>
-      </div>
-      <div :class="b('date')">
-        <el-date-picker v-model="datetime"
-                        type="daterange"
-                        :size="size"
-                        :unlink-panels="unlinkPanels"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
-                        @focus="handleFocus"
-                        @change="handleChange"
-                        :range-separator="t('date.tip')"
-                        :start-placeholder="t('date.start')"
-                        :end-placeholder="t('date.end')"></el-date-picker>
-      </div>
-    </div>
-    <el-date-picker v-else
-                    :type="type"
+    <el-date-picker :type="type"
                     v-model="text"
                     :size="size"
                     :unlink-panels="unlinkPanels"
@@ -61,15 +35,10 @@ export default create({
     return {
       text: "",
       menu: [],
-      datetime: [GetDateStr(0), GetDateStr(30)]
     };
   },
   props: {
     unlinkPanels: {
-      type: Boolean,
-      default: false
-    },
-    default: {
       type: Boolean,
       default: false
     },
@@ -99,59 +68,14 @@ export default create({
     valueFormat: {},
     format: {}
   },
-  computed: {
-    isDategroup () {
-      return this.type === "dategroup";
-    }
-  },
   watch: {
     text: {
       handler (val) {
         this.handleChange(val);
       },
       deep: true,
-      immediate: true,
-    },
-    datetime () {
-      this.text = "";
-      this.setCurrent((this.datetime || []).join(","));
     }
   },
-  created () {
-    if (this.isDategroup) {
-      this.init();
-    }
-  },
-  mounted () { },
-  methods: {
-    setCurrent (val) {
-      this.$emit('input', val)
-    },
-    init () {
-      this.menu = [
-        {
-          label: this.t("date.t"),
-          value: GetDateStr(0)
-        },
-        {
-          label: this.t("date.y"),
-          value: GetDateStr(-1)
-        },
-        {
-          label: this.t("date.n"),
-          value: GetDateStr(-7) + ',' + GetDateStr(0)
-        },
-        {
-          label: this.t("date.a"),
-          value: ""
-        }
-      ];
-      if (this.default) {
-        this.text = GetDateStr(0);
-        this.setCurrent(this.text);
-      }
-    }
-  }
 });
 </script>
 

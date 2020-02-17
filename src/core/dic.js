@@ -12,32 +12,36 @@ export const loadCascaderDic = (columnOption, list) => {
     });
     list.forEach((ele, index) => {
       columnList.forEach(column => {
-        result.push(
-          new Promise(resolve => {
-            if (validatenull(ele[column.parentProp])) {
-              resolve({
-                prop: column.prop,
-                data: [],
-                index: index
-              });
-            } else {
-              sendDic(Object.assign({
-                url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
-              }, {
-                resKey: (column.props || {}).res,
-                method: column.dicMethod,
-                formatter: column.dicFormatter,
-                query: column.dicQuery
-              })).then(res => {
+        if (!column.hide) {
+          result.push(
+            new Promise(resolve => {
+              if (validatenull(ele[column.parentProp])) {
                 resolve({
                   prop: column.prop,
-                  data: res,
+                  data: [],
                   index: index
                 });
-              });
-            }
-          })
-        );
+              } else {
+                if (column.dicUrl) {
+                  sendDic(Object.assign({
+                    url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
+                  }, {
+                    resKey: (column.props || {}).res,
+                    method: column.dicMethod,
+                    formatter: column.dicFormatter,
+                    query: column.dicQuery
+                  })).then(res => {
+                    resolve({
+                      prop: column.prop,
+                      data: res,
+                      index: index
+                    });
+                  });
+                }
+              }
+            })
+          );
+        }
       });
     });
     Promise.all(result).then(data => {

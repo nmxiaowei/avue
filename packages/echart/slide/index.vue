@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-slide"
+  <div :class="b()"
        :style="styleSizeName">
     <div class="swiper-container">
       <div class="swiper-wrapper"

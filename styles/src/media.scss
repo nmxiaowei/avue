@@ -3,6 +3,9 @@
     display: flex;
     justify-content: center;
   }
+  .el-button+.el-button {
+    margin-left: 0;
+  }
   .el-upload-list--picture-card .el-upload-list__item,
   .avue-upload__avatar,
   .el-upload--picture-card,.avue-upload__icon {

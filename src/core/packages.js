@@ -6,14 +6,20 @@ const list = {
     version: '6.1.0',
     github: 'https://github.com/ali-sdk/ali-oss/'
   },
+  'echarts': {
+    url: 'https://cdn.staticfile.org/echarts/4.2.1-rc1/echarts.min.js',
+    title: '图表组件，需要引echart',
+    version: '4.2.1-rc1',
+    github: 'https://github.com/apache/incubator-echarts'
+  },
   'Sortable': {
-    url: 'https://cdn.bootcss.com/Sortable/1.10.0-rc2/Sortable.min.js',
+    url: 'https://cdn.staticfile.org/Sortable/1.10.0-rc2/Sortable.min.js',
     title: '表格拖拽，需要引sortableJs',
     version: '1.10.0-rc2',
     github: 'https://github.com/SortableJS/Sortable'
   },
   'Screenshot': {
-    url: 'https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js',
+    url: 'https://cdn.staticfile.org/html2canvas/0.5.0-beta4/html2canvas.min.js',
     title: '需要引入html2canvas依赖包',
     version: '0.5.0-beta4',
     github: 'https://github.com/niklasvh/html2canvas/'
@@ -48,26 +54,26 @@ const list = {
     gihub: 'https://github.com/youzan/vant'
   },
   'file-saver': {
-    url: 'https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js',
+    url: 'https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js',
     title: '需要引入文件操作包',
     version: '2014-11-29',
     gihub: 'https://github.com/eligrey/FileSaver.js'
   },
   'xlsx': {
-    url: 'https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js',
+    url: 'https://cdn.staticfile.org/xlsx/0.14.1/xlsx.full.min.js',
     title: '需要引入excel操作包',
     version: '0.14.1',
     gihub: 'https://github.com/SheetJS/js-xlsx'
   },
   'mock': {
-    url: 'https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js',
+    url: 'https://cdn.staticfile.org/Mock.js/1.0.1-beta3/mock-min.js',
     title: '需要引入mock模拟数据包',
     version: '1.0.1-beta3',
     gihub: 'https://github.com/Colingo/mock'
   },
   'axios': {
     title: '使用网络字典需要引入以下包',
-    url: 'https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js',
+    url: 'https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js',
     version: '0.19.0-beta.1',
     github: 'https://github.com/axios/axios'
   }

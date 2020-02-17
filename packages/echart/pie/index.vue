@@ -1,5 +1,5 @@
 <template>
-  <div class="avue-echart avue-echart-pie"
+  <div :class="b()"
        :style="styleSizeName">
     <div :class="b('title')"
          v-html="titleFormatter && titleFormatter(dataChart)"></div>
@@ -118,7 +118,7 @@ export default create({
                   shadowBlur: 10,
                   shadowOffsetX: 0,
                   shadowColor: "rgba(0, 0, 0, 0.5)"
-                }                }),
+                }              }),
             }
           ];
           return list;
