@@ -1,10 +1,10 @@
 <template>
   <div :class="b({'active':((active || overActive)&&!readonly),'move':moveActive,'click':disabled})"
-       @mouseover.stop="disabled?false:handleMouseOver($event)"
-       @mouseout.stop="disabled?false:handleMouseOut($event)"
-       @mousedown.stop="disabled?false:handleMouseDown($event)"
-       @mousemove="disabled?false:handleMouseMove($event)"
-       @mouseup="disabled?false:handleMouseUp($event)"
+       @mouseover.stop="handleMouseOver($event)"
+       @mouseout.stop="handleMouseOut($event)"
+       @mousedown.stop="handleMouseDown($event)"
+       @mousemove="handleMouseMove($event)"
+       @mouseup="handleMouseUp($event)"
        :style="styleName">
     <div :class="b('wrapper')"
          ref="wrapper">
@@ -261,26 +261,10 @@ export default create({
     goLink (item, type, e) {
       this[item[type]](e, item.classname);
     },
-    docMouseUp () {
-      this.$emit("blur");
-      window.onmouseup = e => {
-        window.onmousemove = undefined;
-        this.$emit("change", {
-          index: this.index,
-          width: this.baseWidth,
-          height: this.baseHeight,
-          left: this.baseLeft,
-          top: this.baseTop
-        });
-        this.rangeActive = false;
-        this.moveActive = false;
-      };
-    },
     rangeMouseDown (e) {
       this.rangeActive = true;
       this.rx = e.clientX;
       this.ry = e.clientY;
-      this.docMouseUp();
     },
     rangeMouseXMove (e, postion) {
       this.rangeMove(e, postion);
@@ -299,6 +283,7 @@ export default create({
       //移动的正负
       let xc, yc;
       if (this.rangeActive) {
+        //代理事件
         window.onmousemove = e => {
           this.moveActive = true;
           const startX = e.clientX;
@@ -354,29 +339,43 @@ export default create({
           }
           this.rx = startX;
           this.ry = startY;
+          window.onmouseup = () => {
+            window.onmousemove = null;
+            window.onmouseup = null;
+          }
         };
       }
     },
     rangeMouseUp () {
-      this.$emit("blur");
+
       this.rangeActive = false;
     },
     handleMouseOut () {
+      if (this.disabled) return
       this.overActive = false;
     },
     handleMouseOver () {
+      if (this.disabled) return
       this.overActive = true;
     },
     handleMouseDown (e) {
+      if (this.disabled) return
+      this.$emit("focus", {
+        index: this.index,
+        width: this.baseWidth,
+        height: this.baseHeight,
+        left: this.baseLeft,
+        top: this.baseTop
+      });
       this.active = true;
       this.moveActive = true;
       this.x = e.clientX;
       this.y = e.clientY;
-      this.docMouseUp();
     },
     handleMouseMove (e) {
+      if (this.disabled) return
       if (this.moveActive && !this.rangeActive) {
-        window.onmousemove = e => {
+        window.onmousemove = (e) => {
           this.overActive = false;
           const startX = e.clientX;
           const startY = e.clientY;
@@ -386,12 +385,23 @@ export default create({
           this.baseTop = getFixed(this.baseTop + (startY - this.y) * this.step);
           this.x = startX;
           this.y = startY;
-        };
+          window.onmouseup = () => {
+            window.onmousemove = null;
+            window.onmouseup = null;
+          }
+        }
       }
     },
     handleMouseUp () {
-      this.$emit("focus");
+      if (this.disabled) return
       this.moveActive = false;
+      this.$emit("blur", {
+        index: this.index,
+        width: this.baseWidth,
+        height: this.baseHeight,
+        left: this.baseLeft,
+        top: this.baseTop
+      });
     }
   }
 });

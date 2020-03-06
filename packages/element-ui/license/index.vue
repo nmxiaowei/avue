@@ -1,7 +1,7 @@
 <template>
   <div :class="b()"
        style="position:relative">
-    <canvas id="canvas"
+    <canvas :id="'canvas'+id"
             ref="canvas"></canvas>
     <slot></slot>
   </div>
@@ -12,6 +12,10 @@ import create from "core/create";
 export default create({
   name: 'license',
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     option: {
       type: Object,
       default: () => {
@@ -43,8 +47,8 @@ export default create({
     }
   },
   mounted () {
-    this.canvas = document.getElementById("canvas");
-    this.context = canvas.getContext("2d");
+    this.canvas = document.getElementById("canvas" + this.id);
+    this.context = this.canvas.getContext("2d");
     this.init();
   },
   methods: {
