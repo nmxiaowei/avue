@@ -3,7 +3,7 @@
        :style="styleSizeName"
        @click="handleClick">
     <img :style="[styleImgName,styleSizeName]"
-         :src="src"
+         :src="dataChart.value"
          :class="b({'rotate': rotate})"
          draggable="false" />
   </div>
@@ -14,9 +14,6 @@ import create from "core/echart/create";
 export default create({
   name: "img",
   computed: {
-    src () {
-      return this.validatenull(this.dataChart) ? "" : this.dataChart;
-    },
     styleImgName () {
       return Object.assign(
         (() => {

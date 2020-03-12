@@ -9,7 +9,7 @@
          :class="b('text')"
          :href="linkHref"
          :style="styleName"
-         :target="linkTarget">{{data}}</a>
+         :target="linkTarget">{{dataChart.value}}</a>
     </div>
 
   </div>
@@ -43,6 +43,9 @@ export default create({
     speed () {
       return this.option.speed || 100;
     },
+    lineHeight () {
+      return this.option.lineHeight || 40;
+    },
     fontSize () {
       return this.option.fontSize || 30;
     },
@@ -58,6 +61,7 @@ export default create({
         backgroundColor: this.option.backgroundColor,
         fontWeight: this.option.fontWeight || "normal",
         fontSize: this.fontSize + "px",
+        lineHeight: this.lineHeight + "px",
         color: this.option.color || "#333"
       };
     }
