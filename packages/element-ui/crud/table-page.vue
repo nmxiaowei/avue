@@ -1,8 +1,7 @@
 <template>
-  <div :class="b('pagination')"
-       v-if="pageFlag">
+  <div :class="b('pagination')">
     <el-pagination :small="crud.isMobile"
-                   hide-on-single-page
+                   :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
                    :background="vaildData(defaultPage.pageBackground,config.pageBackground)"

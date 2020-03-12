@@ -52,6 +52,7 @@ export default {
   formFullscreen: false,
   customClass: '',
   pageBackground: true,
+  simplePage: false,
   page: true,
   menu: true,
   indexLabel: '#',
