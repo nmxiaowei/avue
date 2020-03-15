@@ -162,6 +162,11 @@
              style="width:100%;object-fit: cover;"
              controls="controls">
       </video>
+      <audio :src="audioSrc"
+             v-if="audioSrc"
+             style="width:100%;object-fit: cover;"
+             controls="controls">
+      </audio>
     </el-dialog>
   </div>
 </template>
@@ -182,6 +187,7 @@ export default create({
       visible: false,
       imgSrc: '',
       videoSrc: '',
+      audioSrc: '',
       keys: "",
       show: false,
       msg: '',
@@ -306,7 +312,8 @@ export default create({
     },
     handleClose (done) {
       this.imgSrc = undefined;
-      this.videoSrc = undefined
+      this.videoSrc = undefined;
+      this.audioSrc = undefined;
       done();
     },
     addKey () {
@@ -423,6 +430,10 @@ export default create({
               } else if (child.tagName === 'VIDEO') {
                 child.className = 'web__msg--video'
                 child.src = child.getAttribute('data-src')
+              } else if (child.tagName === 'AUDIO') {
+                child.className = 'web__msg--audio'
+                child.controls = 'controls';
+                child.src = child.getAttribute('data-src')
               } else if (child.tagName === 'FILE') {
                 child.className = 'web__msg--file'
                 child.innerHTML = `<h2>File</h2><span>${child.getAttribute('data-name')}</span>`
@@ -443,6 +454,8 @@ export default create({
         return `<img data-type="IMG" data-src="${src}"  />`
       } else if (type === 'video') {
         return `<video data-type="VIDEO"  data-src="${src}"></video>`
+      } else if (type === 'audio') {
+        return `<audio data-type="AUDIO"  data-src="${src}"></audio>`
       } else if (type === 'file') {
         return `<file data-type="FILE" data-name="${name}" data-src="${src}"></file>`
       } else if (type === 'map') {
@@ -457,6 +470,9 @@ export default create({
           this.show = true;
         } else if (params.type === 'VIDEO') {
           this.videoSrc = params.src;
+          this.show = true;
+        } else if (params.type === 'AUDIO') {
+          this.audioSrc = params.src;
           this.show = true;
         } else if (params.type === 'FILE') {
           window.open(params.src)
