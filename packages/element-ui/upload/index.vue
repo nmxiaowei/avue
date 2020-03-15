@@ -39,7 +39,7 @@
           <i class="el-icon-zoom-in"
              @click.stop="handlePreview({url:imgUrl})"></i>
           <i class="el-icon-delete"
-             @click.stop="handleDelete"></i>
+             @click.stop="handleDelete(imgUrl)"></i>
         </div>
       </template>
       <template v-else-if="drag">
@@ -402,16 +402,16 @@ export default create({
         }
       }
     },
-    handleDelete () {
-      this.beforeRemove().then(() => {
+    handleDelete (file) {
+      this.beforeRemove(file).then(() => {
         this.text[0] = '';
         this.setVal();
       }).catch(() => {
       });
     },
-    beforeRemove () {
+    beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {
-        return this.uploadDelete(this.column);
+        return this.uploadDelete(this.column, file);
       } else {
         return this.$confirm(`是否确定移除该选项？`);
       }
