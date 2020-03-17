@@ -10,11 +10,29 @@
              :size="controlSize"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
+      <el-tabs v-model="activeName"
+               :type="tabsType"
+               v-if="isTabs">
+        <el-tab-pane v-for="(item,index) in columnOption"
+                     v-if="!item.display"
+                     :name="index+''">
+          <span slot="label">
+            <slot :name="item.prop+'Header'"
+                  v-if="$slots[item.prop+'Header']"></slot>
+            <template v-else>
+              <i :class="item.icon">&nbsp;</i>
+              {{item.label}}
+            </template>
+          </span>
+        </el-tab-pane>
+      </el-tabs>
       <el-row :span="24">
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
+                    v-show="isTabs?index==activeName:true"
                     :display="item.display"
                     :icon="item.icon"
+                    :header="!isTabs"
                     :card="parentOption.card"
                     :label="item.label">
           <template slot="header"
@@ -141,6 +159,7 @@ export default create({
   },
   data () {
     return {
+      activeName: '1',
       labelWidth: 90,
       allDisabled: false,
       optionIndex: [],
@@ -189,6 +208,12 @@ export default create({
     isAdd () {
       return this.boxType === "add"
     },
+    isTabs () {
+      return this.parentOption.tabs;
+    },
+    tabsType () {
+      return this.parentOption.tabsType;
+    },
     isEdit () {
       return this.boxType === "edit"
     },
@@ -233,7 +258,7 @@ export default create({
         });
         //处理级联属性
         ele.column = calcCascader(ele.column);
-      });
+      });;
       return list;
     },
     menuPosition: function () {

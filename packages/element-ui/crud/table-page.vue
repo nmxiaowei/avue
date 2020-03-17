@@ -1,8 +1,7 @@
 <template>
-  <div :class="b('pagination')"
-       v-if="pageFlag">
+  <div :class="b('pagination')">
     <el-pagination :small="crud.isMobile"
-                   hide-on-single-page
+                   :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
                    :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
@@ -53,6 +52,14 @@ export default create({
       },
       deep: true,
     },
+    //如果当前页面删除没数据了调用第一页
+    'defaultPage.total' (val) {
+      if (this.defaultPage.total === (this.defaultPage.currentPage - 1) * this.defaultPage.pageSize && this.defaultPage.total != 0) {
+        this.defaultPage.currentPage = this.defaultPage.currentPage - 1;
+        this.crud.$emit("on-load", this.defaultPage);
+        this.updateValue();
+      }
+    }
   },
   computed: {
     pageFlag () {

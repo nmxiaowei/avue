@@ -35,7 +35,7 @@ export default create({
     };
   },
   watch: {
-    mapList () {
+    mapData () {
       this.updateChart();
     },
     dataChartLen () {
@@ -90,6 +90,9 @@ export default create({
     zoom () {
       return this.option.zoom || 1;
     },
+    mapData () {
+      return this.option.mapData || {};
+    },
     borderWidth () {
       return this.option.borderWidth || 3;
     },
@@ -110,9 +113,6 @@ export default create({
     },
     fontSize () {
       return this.option.fontSize || 24;
-    },
-    mapList () {
-      return this.option.mapList || {};
     },
     isEchart () {
       return this.type === 0;
@@ -230,129 +230,133 @@ export default create({
       }
     },
     updateChart () {
-      const optionData = this.deepClone(this.mapList);
-      window.echarts.registerMap("HK", optionData);
-      const option = {
-        tooltip: (() => {
-          return Object.assign(
+      this.$httpajax(this.mapData).then(res => {
+        const data = res.data;
+        const optionData = this.deepClone(data);
+        window.echarts.registerMap("HK", optionData);
+        const option = {
+          tooltip: (() => {
+            return Object.assign(
+              (() => {
+                if (this.formatter) {
+                  return {
+                    formatter: name => {
+                      return this.formatter(name, this.dataChart);
+                    }
+                  };
+                }
+                return {};
+              })(),
+              {
+                backgroundColor: this.option.tipBackgroundColor || "rgba(0,0,0,1)",
+                textStyle: {
+                  fontSize: this.option.tipFontSize,
+                  color: this.option.tipColor || "red"
+                }
+              }
+            );
+          })(),
+          geo: Object.assign(
             (() => {
-              if (this.formatter) {
+              if (!this.validatenull(this.centerData)) {
                 return {
-                  formatter: name => {
-                    return this.formatter(name, this.dataChart);
-                  }
+                  center: this.centerData
                 };
               }
               return {};
             })(),
             {
-              backgroundColor: "rgba(0,0,0,1)",
-              textStyle: {
-                fontSize: this.option.tipFontSize,
-                color: this.option.tipColor || "#fff"
-              }
-            }
-          );
-        })(),
-        geo: Object.assign(
-          (() => {
-            if (!this.validatenull(this.centerData)) {
-              return {
-                center: this.centerData
-              };
-            }
-            return {};
-          })(),
-          {
-            map: "HK",
-            label: {
-              emphasis: {
-                show: false
-              }
-            },
-            zoom: this.zoomData,
-            layoutCenter: ["50%", "50%"],
-            layoutSize: 1200,
-            roam: true,
-            label: {
-              show: true,
-              fontSize: this.fontSize,
-              color: this.color
-            },
-            left: this.option.gridX,
-            top: this.option.gridY,
-            right: this.option.gridX2,
-            bottom: this.option.gridY2,
-            emphasis: {
+              map: "HK",
               label: {
-                color: this.empColor
+                emphasis: {
+                  show: false
+                }
               },
-              itemStyle: {
-                areaColor: this.empAreaColor
-              }
-            },
-            itemStyle: {
-              borderWidth: this.borderWidth,
-              borderColor: this.borderColor,
-              areaColor: this.areaColor
-            }
-          }
-        ),
-        series: [
-          {
-            type: "effectScatter",
-            coordinateSystem: "geo",
-            showEffectOn: "emphasis",
-            rippleEffect: {
-              brushType: "fill",
-              scale: 4
-            },
-            symbolSize: this.fontSize,
-            hoverAnimation: true,
-            data: this.locationData,
-            label: {
-              show: true,
-              position: ["130%", "0"],
-              fontSize: this.fontSize,
-              color: this.color,
-              formatter: params => {
-                return params.name;
-              }
-            },
-            itemStyle: {
-              color: this.color
-            },
-            emphasis: {
+              zoom: this.zoomData,
+              layoutCenter: ["50%", "50%"],
+              layoutSize: 1200,
+              roam: true,
               label: {
                 show: true,
-                fontSize: this.fontSize + 20,
-                color: this.option.empColor
+                fontSize: this.fontSize,
+                color: this.color
+              },
+              left: this.option.gridX,
+              top: this.option.gridY,
+              right: this.option.gridX2,
+              bottom: this.option.gridY2,
+              emphasis: {
+                label: {
+                  color: this.empColor
+                },
+                itemStyle: {
+                  areaColor: this.empAreaColor
+                }
               },
               itemStyle: {
-                color: this.option.empColor
+                borderWidth: this.borderWidth,
+                borderColor: this.borderColor,
+                areaColor: this.areaColor
               }
             }
-          }
-        ]
-      };
-      this.myChart.on("mouseover", () => {
-        clearInterval(this.bannerCheck);
-        this.resetBanner();
-      });
-      this.myChart.on("mouseout", () => {
-        this.bannerCount = 0;
-        this.setBanner();
-      });
-      this.myChart.on("georoam", e => {
-        const option = this.myChart.getOption();
-        const geo = option.geo[0];
-        this.centerData = geo.center;
-        this.zoomData = geo.zoom;
-        if (this.zoomData < 1) this.zoomData = 1;
-      });
+          ),
+          series: [
+            {
+              type: "effectScatter",
+              coordinateSystem: "geo",
+              showEffectOn: "emphasis",
+              rippleEffect: {
+                brushType: "fill",
+                scale: 4
+              },
+              symbolSize: this.fontSize,
+              hoverAnimation: true,
+              data: this.locationData,
+              label: {
+                show: true,
+                position: ["130%", "0"],
+                fontSize: this.fontSize,
+                color: this.color,
+                formatter: params => {
+                  return params.name;
+                }
+              },
+              itemStyle: {
+                color: this.color
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: this.fontSize + 20,
+                  color: this.option.empColor
+                },
+                itemStyle: {
+                  color: this.option.empColor
+                }
+              }
+            }
+          ]
+        };
+        this.myChart.on("mouseover", () => {
+          clearInterval(this.bannerCheck);
+          this.resetBanner();
+        });
+        this.myChart.on("mouseout", () => {
+          this.bannerCount = 0;
+          this.setBanner();
+        });
+        this.myChart.on("georoam", e => {
+          const option = this.myChart.getOption();
+          const geo = option.geo[0];
+          this.centerData = geo.center;
+          this.zoomData = geo.zoom;
+          if (this.zoomData < 1) this.zoomData = 1;
+        });
 
-      this.myChart.resize();
-      this.myChart.setOption(option, true);
+        this.myChart.resize();
+        this.myChart.setOption(option, true);
+      })
+
     }
   }
 });

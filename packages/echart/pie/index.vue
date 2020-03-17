@@ -73,10 +73,17 @@ export default create({
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendFontSize || 12
+            fontSize: this.option.legendFontSize || 12,
           },
           data: (() => {
-            return optionData.map((ele, index) => ele.name);
+            return optionData.map((ele, index) => {
+              return {
+                name: ele.name,
+                textStyle: this.ishasprop(!this.switchTheme, {
+                  color: this.getColor(index, true)
+                }, {})
+              }
+            });
           })()
         },
         series: (() => {

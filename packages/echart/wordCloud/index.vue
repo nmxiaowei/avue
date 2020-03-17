@@ -9,7 +9,7 @@
 <script>
 import create from "core/echart/create";
 export default create({
-  name: "wordCloud",
+  name: "wordcloud",
   methods: {
     updateChart () {
       const optionData = this.deepClone(this.dataChart) || [];

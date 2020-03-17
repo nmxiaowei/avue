@@ -252,7 +252,11 @@ export default (() => {
             });
           } else {
             // 静态数据
-            this.dataChart = this.data || [];
+            if (typeof this.dataFormatter === 'function') {
+              this.dataChart = this.dataFormatter(this.data);
+            } else {
+              this.dataChart = this.data;
+            }
             if (this.isChart && this.myChart) {
               this.myChart.clear();
               this.updateChart();

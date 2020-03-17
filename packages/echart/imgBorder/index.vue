@@ -17,6 +17,7 @@ export default create({
         backgroundColor:
           this.option.backgroundColor || "rgba(180, 181, 198, 0.1)",
         backgroundClip: "padding-box",
+        opacity: this.option.opacity || 1,
         filter: "blur(0px)"
       }, (() => {
         if (!this.validatenull(this.dataChart)) {

@@ -4,11 +4,11 @@
     <el-row span="24"
             :class="b('item')">
       <div :class="b('header')"
-           v-if="$slots.header">
+           v-if="$slots.header&&header">
         <slot name="header"></slot>
       </div>
       <div :class="b('header')"
-           v-else-if="label || icon">
+           v-else-if="(label || icon)&&header">
         <i :class="[icon,b('icon')]"
            v-if="icon"></i>
         <h1 :class="b('title')"
@@ -26,6 +26,10 @@ import create from "core/create";
 export default create({
   name: "group",
   props: {
+    header: {
+      type: Boolean,
+      default: true
+    },
     icon: {
       type: String
     },

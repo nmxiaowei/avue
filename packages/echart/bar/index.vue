@@ -51,10 +51,12 @@ export default create({
         },
         legend: {
           show: this.vaildData(this.option.legend, false),
+          orient: this.option.legendOrient || "vertical",
+          x: this.option.legendPostion || "left",
           top: 0,
           right: this.x2,
           textStyle: {
-            fontSize: this.option.legendFontSize || 12
+            fontSize: this.option.legendFontSize || 12,
           },
           data: (() => {
             return (optionData.series || []).map((ele, index) => {

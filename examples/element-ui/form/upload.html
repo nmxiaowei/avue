@@ -20,7 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
+    <avue-form :option="option" v-model="form" :upload-delete="uploadDelete" :upload-before="uploadBefore"
+      :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
 <script>
@@ -43,6 +44,7 @@
               type: 'upload',
               loadText: '附件上传中，请稍等',
               span: 24,
+              accept: ['jpg', 'png', 'jpeg'],
               propsHttp: {
                 res: 'data.0'
               },
@@ -136,6 +138,10 @@
       }
     },
     methods: {
+      uploadDelete(column, file) {
+        console.log(column, file)
+        return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
+      },
       uploadBefore(file, done, loading, column) {
         console.log(file, column)
         done()
