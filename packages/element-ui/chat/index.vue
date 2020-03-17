@@ -123,6 +123,7 @@
       <slot></slot>
     </div>
     <el-dialog :title="upload.title"
+               append-to-body
                :visible.sync="upload.box"
                width="30%">
       <el-form ref="form"
@@ -152,6 +153,7 @@
     </el-dialog>
     <el-dialog :visible.sync="show"
                width="40%"
+               append-to-body
                :before-close="handleClose"
                class="web__dialog">
       <img :src="imgSrc"

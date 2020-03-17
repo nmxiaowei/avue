@@ -20,7 +20,7 @@
 
 <body>
   <div id="app">
-    <avue-chat :keylist="keylist" @keysend="handleSubmit" @keyadd="handleAdd" :config="config" width="500" height="520"
+    <avue-chat :keylist="keylist" @keysend="handleSubmit" @keyadd="handleAdd" :config="config" width="500" height="720"
       ref="chat" @submit="handleSubmit" v-model="msg" :list="list">
       <div>这里是内容</div>
     </avue-chat>
@@ -93,7 +93,12 @@
           };
         } else if (msg === '如何贷款') {
           return {
-            text: '我行提供了如下贷款方式<img data-type="IMG" data-src="https://avuejs.com/images/logo-bg.jpg" /><video data-type="VIDEO" data-src="https://www.w3school.com.cn/i/movie.ogg"></video><file data-type="FILE" data-name="小程序申诉文件.doc" data-src="https://www.w3school.com.cn/i/movie.ogg"></file><map data-type="MAP" data-longitude="116.307852" data-latitude="40.057031" data-address="这是一个很长很长这是一个很长很长的地址"></map>',
+            text: `我行提供了如下贷款方式
+            <img data-type="IMG" data-src="https://avuejs.com/images/logo-bg.jpg" />
+            <video data-type="VIDEO" data-src="https://www.w3school.com.cn/i/movie.ogg"></video>
+            <audio data-type="AUDIO" data-src="https://www.w3school.com.cn/i/house.ogg"></audio>
+            <file data-type="FILE" data-name="小程序申诉文件.doc" data-src="https://www.w3school.com.cn/i/movie.ogg"></file>
+            <map data-type="MAP" data-longitude="116.307852" data-latitude="40.057031" data-address="这是一个很长很长这是一个很长很长的地址"></map>`,
             list: [{
               text: "1.微信线上申请",
               ask: '微信线上申请'
