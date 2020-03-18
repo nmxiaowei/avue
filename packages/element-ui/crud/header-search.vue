@@ -25,6 +25,9 @@
                 :name="item.prop"
                 v-if="item.searchslot"></slot>
         </template>
+        <template slot="search">
+          <slot name="search"></slot>
+        </template>
       </avue-form>
     </div>
   </el-collapse-transition>
