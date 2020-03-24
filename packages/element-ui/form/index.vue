@@ -117,6 +117,7 @@
                    :style="{width:(column.count/24*100)+'%'}"
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
+            <slot name="search"></slot>
             <form-menu v-if="!isMenu">
               <template slot-scope="{size}"
                         slot="menuForm">
