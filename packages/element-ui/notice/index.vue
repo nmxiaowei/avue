@@ -2,6 +2,7 @@
   <div :class="b()">
     <div :class="b('item')"
          :key="index"
+         @click="click(item)"
          v-for="(item,index) in data">
       <div :class="b('img')"
            v-if="item[imgKey]">
@@ -80,6 +81,9 @@ export default create({
     }
   },
   methods: {
+    click (item) {
+      this.$emit('click', item)
+    },
     handleClick () {
       this.loading = true;
       const done = () => {

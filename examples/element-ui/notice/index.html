@@ -25,7 +25,7 @@
 
 <body>
   <div id="app">
-    <avue-notice :data="data" :option="option" @page-change="pageChange"></avue-notice>
+    <avue-notice :data="data" :option="option" @page-change="pageChange" @click="handleClick"></avue-notice>
   </div>
 </body>
 <script>
@@ -80,6 +80,9 @@
 
     },
     methods: {
+      handleClick(item) {
+        this.$message.success(JSON.stringify(item))
+      },
       pageChange(page, done) {
         setTimeout(() => {
           this.$message.success('页码' + page)
