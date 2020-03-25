@@ -1,6 +1,7 @@
 <template>
   <div :class="b('pagination')">
-    <el-pagination :small="crud.isMobile"
+    <el-pagination v-show="pageFlag"
+                   :small="crud.isMobile"
                    :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
@@ -57,6 +58,7 @@ export default create({
       if (this.defaultPage.total === (this.defaultPage.currentPage - 1) * this.defaultPage.pageSize && this.defaultPage.total != 0) {
         this.defaultPage.currentPage = this.defaultPage.currentPage - 1;
         this.crud.$emit("on-load", this.defaultPage);
+        this.crud.$emit("current-change", this.defaultPage.currentPage);
         this.updateValue();
       }
     }
