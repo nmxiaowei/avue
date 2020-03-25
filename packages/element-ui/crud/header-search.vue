@@ -131,6 +131,7 @@ export default cteate({
         }
         result.column = detailColumn(result.column)
         result = Object.assign(result, {
+          tabs: false,
           size: this.crud.isMediumSize,
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,
