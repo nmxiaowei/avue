@@ -20,9 +20,9 @@
 <body>
   <div id="app">
     <avue-form :option="option" v-model="obj">
-      <div slot-scope="scope" slot="input">
+      <template slot-scope="scope" slot="input">
         <el-tag>{{scope.row.$index}}</el-tag>
-      </div>
+      </template>
     </avue-form>
   </div>
 </body>

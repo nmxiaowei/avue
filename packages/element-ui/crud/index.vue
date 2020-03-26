@@ -248,7 +248,6 @@
                 :page="page"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
-                 :columnFormOption="columnFormOption"
                  v-model="tableForm">
       <template slot-scope="scope"
                 v-for="item in columnFormOption"
@@ -257,8 +256,11 @@
               row:tableForm,
               index:tableIndex
               })"
-              :name="item.prop+'Form'"
-              v-if="item.formslot"></slot>
+              v-if="item.formslot"
+              :name="item.prop+'Form'"></slot>
+        <slot v-bind="scope"
+              v-if="item.slot"
+              :name="item.prop+'Form'"></slot>
       </template>
       <template slot-scope="scope"
                 v-for="item in columnFormOption"
@@ -409,6 +411,15 @@ export default create({
     isSortable () {
       return this.tableOption.sortable;
     },
+    dynamicOption () {
+      let list = [];
+      this.propOption.forEach(ele => {
+        if (ele.prop === 'dynamic') {
+          list = list.concat(ele.children.column);
+        }
+      })
+      return list;
+    },
     columnFormOption () {
       let list = [];
       if (this.isGroup) {
@@ -421,7 +432,7 @@ export default create({
       } else {
         list = this.propOption;
       }
-      return list;
+      return list.concat(this.dynamicOption);
     },
     expandLevel () {
       return this.parentOption.expandLevel || 0;

@@ -48,19 +48,21 @@
                    :option="formOption">
           <!-- 循环form表单卡槽 -->
           <template slot-scope="scope"
-                    v-for="item in columnFormOption"
+                    v-for="item in crud.columnFormOption"
                     :slot="item.prop">
             <slot :name="item.prop"
+                  v-if="item.formslot"
                   v-bind="Object.assign(scope,{
                   row:tableForm,
                   index:tableIndex,
-                  name:item.prop
-                })"
-                  v-if="item.formslot"></slot>
+                })"></slot>
+            <slot :name="item.prop"
+                  v-if="item.slot"
+                  v-bind="scope"></slot>
           </template>
           <!-- 循环form表单错误卡槽 -->
           <template slot-scope="scope"
-                    v-for="item in columnFormOption"
+                    v-for="item in crud.columnFormOption"
                     :slot="item.prop+'Error'">
             <slot :name="item.prop+'Error'"
                   v-bind="Object.assign(scope,{
@@ -71,7 +73,7 @@
           </template>
           <!-- 循环form表单标签卡槽 -->
           <template slot-scope="scope"
-                    v-for="item in columnFormOption"
+                    v-for="item in crud.columnFormOption"
                     :slot="item.prop+'Label'">
             <slot :name="item.prop+'Label'"
                   v-bind="Object.assign(scope,{
@@ -113,7 +115,6 @@ export default create({
     };
   },
   props: {
-    columnFormOption: {},
     value: {
       type: Object,
       default: () => {
