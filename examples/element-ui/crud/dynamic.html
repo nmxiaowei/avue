@@ -28,6 +28,8 @@
     data() {
       return {
         data: [{
+          input: 1,
+          tree: 1,
           dynamic: [{
             input: 1,
             select: 1,
@@ -63,6 +65,7 @@
             prop: 'dynamic',
             type: 'dynamic',
             span: 16,
+            span: 24,
             children: {
               height: 300,
               align: 'center',
@@ -139,13 +142,6 @@
                 type: 'number'
               }]
             },
-            rules: [
-              {
-                required: true,
-                message: '必填项测试',
-                trigger: 'blur'
-              }
-            ]
           },
 
           ]

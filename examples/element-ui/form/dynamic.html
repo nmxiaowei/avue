@@ -19,8 +19,11 @@
 
 <body>
   <div id="app">
-
-    <avue-form :option="option" v-model="obj"></avue-form>
+    <avue-form :option="option" v-model="obj">
+      <div slot-scope="scope" slot="input">
+        <el-tag>{{scope.row.$index}}</el-tag>
+      </div>
+    </avue-form>
   </div>
 </body>
 <script>
@@ -42,11 +45,6 @@
         option: {
           labelWidth: 110,
           column: [{
-            label: '输入框',
-            prop: "input",
-            span: 16,
-            row: true
-          }, {
             label: '树型',
             prop: "tree",
             type: 'tree',
@@ -79,7 +77,8 @@
               column: [{
                 width: 200,
                 label: '输入框',
-                prop: "input"
+                prop: "input",
+                slot: true,
               }, {
                 width: 200,
                 label: '密码框',

@@ -16,6 +16,16 @@
         <span v-else-if="delBtn || !hoverList[scope.row.$index]"
               @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
       </template>
+      <template v-for="(item,index) in columnOption"
+                slot-scope="scope"
+                :slot="item.prop">
+        <slot :row="scope.row"
+              :dic="scope.dic"
+              v-if="item.slot"
+              :size="scope.size"
+              :label="scope.label"
+              :name="item.prop"></slot>
+      </template>
     </avue-crud>
   </div>
 </template>

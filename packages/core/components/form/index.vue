@@ -24,6 +24,16 @@
             :value="value"
             :label="label"></slot>
     </template>
+    <template :slot="item.prop"
+              v-for="item in columnOption"
+              slot-scope="scope">
+      <slot :row="scope.row"
+            :dic="scope.dic"
+            v-if="item.slot"
+            :size="scope.size"
+            :name="item.prop"
+            :label="scope.label"></slot>
+    </template>
   </component>
 </template>
 
@@ -83,6 +93,11 @@ export default {
     return {
       first: false,
       text: undefined,
+    }
+  },
+  computed: {
+    columnOption () {
+      return ((this.column.children || []).column) || []
     }
   },
   watch: {

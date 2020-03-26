@@ -100,6 +100,16 @@
                                :enter="parentOption.enter"
                                @enter="submit"
                                @change="column.cascader?handleChange(item.column,cindex):''">
+                      <template :slot="citem.prop"
+                                slot-scope="scope"
+                                v-for="citem in ((column.children || {}).column || [])">
+                        <slot :row="scope.row"
+                              :dic="scope.dic"
+                              v-if="citem.slot"
+                              :size="scope.size"
+                              :name="citem.prop"
+                              :label="scope.label"></slot>
+                      </template>
                       <template :slot="column.prop+'Type'"
                                 slot-scope="{item,label,value}"
                                 v-if="column.typeslot">
@@ -117,7 +127,6 @@
                    :style="{width:(column.count/24*100)+'%'}"
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
-            <slot name="search"></slot>
             <form-menu v-if="!isMenu">
               <template slot-scope="{size}"
                         slot="menuForm">
