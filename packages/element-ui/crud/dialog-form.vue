@@ -40,6 +40,7 @@
                    v-if="boxVisible"
                    ref="tableForm"
                    @submit="handleSubmit"
+                   @error="handleError"
                    @reset-change="handleReset"
                    :upload-preview="crud.uploadPreview"
                    :upload-delete="crud.uploadDelete"
@@ -51,9 +52,10 @@
                     v-for="item in crud.columnFormOption"
                     :slot="item.prop">
             <slot :name="item.prop"
+                  v-if="item.formslot"
                   v-bind="Object.assign(scope,{
                   row:item.dynamic?scope.row:tableForm,
-                  index:item.dynamic?'':tableIndex,
+                  index:item.dynamic?scope.row.$index:crud.tableIndex,
                 })"></slot>
           </template>
           <!-- 循环form表单错误卡槽 -->
@@ -63,7 +65,7 @@
             <slot :name="item.prop+'Error'"
                   v-bind="Object.assign(scope,{
                   row:tableForm,
-                  index:tableIndex,
+                  index:crud.tableIndex,
                 })"
                   v-if="item.errorslot"></slot>
           </template>
@@ -74,7 +76,7 @@
             <slot :name="item.prop+'Label'"
                   v-bind="Object.assign(scope,{
                   row:tableForm,
-                  index:tableIndex,
+                  index:crud.tableIndex,
                 })"
                   v-if="item.labelslot"></slot>
           </template>
@@ -219,6 +221,9 @@ export default create({
     handleReset () {
       this.closeDialog();
     },
+    handleError (error) {
+      this.crud.$emit('error', error)
+    },
     handleSubmit () {
       if (this.isAdd) {
         this.rowSave();
@@ -260,7 +265,7 @@ export default create({
     rowUpdate () {
       this.$refs["tableForm"].validate(vaild => {
         if (!vaild) return;
-        const index = this.tableIndex;
+        const index = this.crud.tableIndex;
         this.crud.$emit(
           "row-update",
           filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
@@ -271,7 +276,7 @@ export default create({
       });
     },
     closeDialog () {
-      this.tableIndex = -1;
+      this.crud.tableIndex = -1;
       this.tableForm = {};
       this.hide();
     },

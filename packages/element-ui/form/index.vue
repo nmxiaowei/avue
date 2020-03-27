@@ -15,6 +15,7 @@
                v-if="isTabs">
         <el-tab-pane v-for="(item,index) in columnOption"
                      v-if="!item.display"
+                     :key="index"
                      :name="index+''">
           <span slot="label">
             <slot :name="item.prop+'Header'"
@@ -416,7 +417,7 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
+        sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典
@@ -524,6 +525,10 @@ export default create({
           this.show();
           this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
         }
+        this.asyncValidator(this.formRules, this.form).then(() => {
+        }).catch(err => {
+          this.$emit("error", err);
+        })
       });
     }
   }

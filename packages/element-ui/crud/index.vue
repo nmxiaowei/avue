@@ -254,8 +254,9 @@
                 :slot="item.prop">
         <slot v-bind="Object.assign(scope,{
               row:item.dynamic?scope.row:tableForm,
-              index:item.dynamic?scope.row:''
+              index:item.dynamic?scope.row.$index:tableIndex
               })"
+              v-if="item.formslot"
               :name="item.prop+'Form'"></slot>
       </template>
       <template slot-scope="scope"
@@ -411,8 +412,8 @@ export default create({
       let list = [];
       this.propOption.forEach(ele => {
         if (ele.prop === 'dynamic') {
-          list = list.concat(ele.children.column.map(ele => {
-            return Object.assign(ele, {
+          list = list.concat(ele.children.column.map(item => {
+            return Object.assign(item, {
               dynamic: true
             })
           }));
@@ -780,9 +781,9 @@ export default create({
     },
     //单元格更新
     rowCellUpdate (row, index) {
-      this.btnDisabled = true;
       this.asyncValidator(this.formCellRules, row)
         .then(res => {
+          this.btnDisabled = true;
           this.$emit(
             "row-update",
             row,
@@ -797,7 +798,7 @@ export default create({
           );
         })
         .catch(errors => {
-          this.$message.warning(errors[0]);
+          this.$message.error(`第${index + 1}行:${errors[0].message}`);
         });
     },
     rowAdd () {

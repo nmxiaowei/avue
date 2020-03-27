@@ -54,7 +54,7 @@ import { getObjType } from "utils/util";
 export default create({
   name: "form",
   mixins: [init(), locale],
-  data() {
+  data () {
     return {
       form: {},
       formList: [],
@@ -66,7 +66,7 @@ export default create({
   },
   watch: {
     form: {
-      handler() {
+      handler () {
         if (!this.formCreate) {
           this.$emit("input", this.form);
           this.$emit("change", this.form);
@@ -77,7 +77,7 @@ export default create({
       deep: true
     },
     value: {
-      handler() {
+      handler () {
         this.formOld = this.deepClone(this.value);
         if (!this.formCreate) {
           this.formVal();
@@ -87,7 +87,7 @@ export default create({
     }
   },
   computed: {
-    columnOption() {
+    columnOption () {
       let list = calcCascader([...this.tableOption.column] || []);
       return list;
     }
@@ -101,7 +101,7 @@ export default create({
       }
     }
   },
-  created() {
+  created () {
     // 规则初始化
     this.rulesInit();
     //初始化字典
@@ -112,20 +112,20 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
-    dataformat() {
+    dataformat () {
       this.formDefault = formInitVal(this.columnOption);
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
     },
     //搜索指定的属性配置
-    findColumnIndex(value) {
+    findColumnIndex (value) {
       let result = -1;
       this.columnOption.forEach(column => {
         result = this.findArray(column.column, value, "prop");
       });
       return result;
     },
-    handleChange(item, index) {
+    handleChange (item, index) {
       const column = item[index]; //获取当前节点级联
       const list = column.cascader;
       const str = list.join(",");
@@ -154,7 +154,7 @@ export default create({
         });
       }
       // 根据当前节点值获取下一个节点的字典
-      sendDic({ url: columnNext.dicUrl.replace("{{key}}", value) }).then(
+      sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value) }).then(
         res => {
           const dic = Array.isArray(res) ? res : [];
           // 修改字典
@@ -171,8 +171,8 @@ export default create({
             if (dicvalue) {
               this.form[columnNext.prop] =
                 dicvalue[
-                  (columnNext.props || this.parentOption.props || {}).value ||
-                    "value"
+                (columnNext.props || this.parentOption.props || {}).value ||
+                "value"
                 ];
               this.clearValidate();
             }
@@ -182,25 +182,25 @@ export default create({
         }
       );
     },
-    formVal() {
+    formVal () {
       Object.keys(this.value).forEach(ele => {
         this.form[ele] = this.value[ele];
       });
       this.$emit("input", this.form);
     },
 
-    rulesInit() {
+    rulesInit () {
       this.formRules = {};
       this.columnOption.forEach(ele => {
         if (ele.rules) this.formRules[ele.prop] = ele.rules;
       });
     },
-    resetForm() {
+    resetForm () {
       this.form = this.deepClone(this.formDefault.tableForm);
       this.$emit("input", this.form);
       this.$emit("reset-change");
     },
-    submit() {
+    submit () {
       let formRules = this.formRules;
       let form = this.form;
       Object.keys(formRules).forEach(ele => {
