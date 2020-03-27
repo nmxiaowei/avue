@@ -51,14 +51,10 @@
                     v-for="item in crud.columnFormOption"
                     :slot="item.prop">
             <slot :name="item.prop"
-                  v-if="item.formslot"
                   v-bind="Object.assign(scope,{
-                  row:tableForm,
-                  index:tableIndex,
+                  row:item.dynamic?scope.row:tableForm,
+                  index:item.dynamic?'':tableIndex,
                 })"></slot>
-            <slot :name="item.prop"
-                  v-if="item.slot"
-                  v-bind="scope"></slot>
           </template>
           <!-- 循环form表单错误卡槽 -->
           <template slot-scope="scope"

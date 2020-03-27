@@ -253,13 +253,9 @@
                 v-for="item in columnFormOption"
                 :slot="item.prop">
         <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
+              row:item.dynamic?scope.row:tableForm,
+              index:item.dynamic?scope.row:''
               })"
-              v-if="item.formslot"
-              :name="item.prop+'Form'"></slot>
-        <slot v-bind="scope"
-              v-if="item.slot"
               :name="item.prop+'Form'"></slot>
       </template>
       <template slot-scope="scope"
@@ -415,7 +411,11 @@ export default create({
       let list = [];
       this.propOption.forEach(ele => {
         if (ele.prop === 'dynamic') {
-          list = list.concat(ele.children.column);
+          list = list.concat(ele.children.column.map(ele => {
+            return Object.assign(ele, {
+              dynamic: true
+            })
+          }));
         }
       })
       return list;

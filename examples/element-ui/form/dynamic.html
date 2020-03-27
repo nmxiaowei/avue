@@ -78,12 +78,19 @@
                 width: 200,
                 label: '输入框',
                 prop: "input",
-                slot: true,
+                formslot: true,
               }, {
                 width: 200,
                 label: '密码框',
                 prop: "password",
-                type: 'password'
+                type: 'password',
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入密码',
+                    trigger: 'blur'
+                  }
+                ]
               }, {
                 width: 200,
                 label: '树型',

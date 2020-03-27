@@ -21,7 +21,6 @@
                 :slot="item.prop">
         <slot :row="scope.row"
               :dic="scope.dic"
-              v-if="item.slot"
               :size="scope.size"
               :label="scope.label"
               :name="item.prop"></slot>
@@ -103,6 +102,7 @@ export default create({
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
             cell: true,
+            slot: ele.formslot,
             disabled: this.disabled || this.viewBtn
           }))
         })
