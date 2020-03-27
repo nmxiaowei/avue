@@ -22,7 +22,7 @@
   <div id="app">
     {{page}}
     <avue-crud ref="crud" :option="option" @size-change="sizeChange" @current-change="currentChange" :data="data"
-      :page.sync="page" @on-load="onLoad"></avue-crud>
+      :page.sync="page" @on-load="onLoad" @error="error"></avue-crud>
   </div>
 </body>
 <script>
@@ -44,7 +44,14 @@
           border: true,
           column: [{
             label: '姓名',
-            prop: 'name'
+            prop: 'name',
+            rules: [
+              {
+                required: true,
+                message: '请选择地区',
+                trigger: 'blur'
+              }
+            ]
           }, {
             label: '年龄',
             prop: 'sex'
@@ -53,7 +60,9 @@
       }
     },
     methods: {
-
+      error(val) {
+        this.$message.error(val[0].message)
+      },
       sizeChange(val) {
 
         this.$message.success('行数' + val)
