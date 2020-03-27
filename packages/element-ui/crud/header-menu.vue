@@ -179,7 +179,7 @@ export default create({
         return;
       }
       this.$export.excel({
-        title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd HH:mm:ss', new Date()),
+        title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
         columns: (() => {
           let list = [];
           this.crud.propOption.forEach(ele => {
