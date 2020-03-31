@@ -17,6 +17,18 @@ export default function () {
       change: Function,
       click: Function,
       typeformat: Function,
+      typeslot: {
+        type: Boolean,
+        default: false
+      },
+      formslot: {
+        type: Boolean,
+        default: false
+      },
+      slot: {
+        type: Boolean,
+        default: false
+      },
       params: {
         type: Object,
         default: () => { }

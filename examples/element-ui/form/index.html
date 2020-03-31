@@ -27,6 +27,10 @@
       <template slot-scope="scope" slot="test">
         <el-tag>测试自定义内容</el-tag>
       </template>
+      <template slot="cascaderType" slot-scope="{node,data}">
+        <span>{{ data.label }}</span>
+        <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+      </template>
     </avue-form>
   </div>
 </body>
@@ -54,6 +58,10 @@
             prop: 'cascader',
             type: 'cascader',
             changeOnSelect: true,
+            // multiple: true,
+            // filterable: true,
+            // checkStrictly: true,
+            // typeslot: true,
             dicData: [{
               label: '一级',
               value: 0,

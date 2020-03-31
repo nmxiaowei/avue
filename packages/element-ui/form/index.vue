@@ -112,10 +112,12 @@
                               :label="scope.label"></slot>
                       </template>
                       <template :slot="column.prop+'Type'"
-                                slot-scope="{item,label,value}"
+                                slot-scope="{item,label,value,node,data}"
                                 v-if="column.typeslot">
                         <slot :name="column.prop+'Type'"
                               :item="item"
+                              :node="node"
+                              :data="data"
                               :value="value"
                               :label="label"></slot>
                       </template>

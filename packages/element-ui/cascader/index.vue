@@ -2,7 +2,7 @@
   <el-cascader :options="dic"
                v-model="text"
                :placeholder="placeholder"
-               :props="props"
+               :props="allProps"
                :readonly="readonly"
                :size="size"
                :change-on-select="changeOnSelect"
@@ -13,7 +13,14 @@
                :separator="separator"
                :disabled="disabled"
                @click.native="handleClick"
-               @change="handleChange"></el-cascader>
+               @change="handleChange">
+    <template slot-scope="{ node, data }"
+              v-if="typeslot">
+      <slot :name="prop+'Type'"
+            :data="data"
+            :node="node"></slot>
+    </template>
+  </el-cascader>
 </template>
 
 <script>
@@ -24,6 +31,10 @@ export default create({
   name: "cascader",
   mixins: [props(), event()],
   props: {
+    checkStrictly: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: Array,
       default: () => []
@@ -53,8 +64,17 @@ export default create({
     return {};
   },
   watch: {},
+  computed: {
+    allProps () {
+      return Object.assign(this.props, {
+        checkStrictly: this.checkStrictly,
+        multiple: this.multiple
+      })
+    }
+  },
   created () { },
   mounted () { },
-  methods: {}
+  methods: {
+  }
 });
 </script>
