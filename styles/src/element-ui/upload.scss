@@ -11,6 +11,16 @@
       border-color: #409eff;
     }
   }
+  &__dialog{
+    .el-dialog__header{
+      display: none;
+    }
+    .el-dialog__body{
+      padding:10px;
+      display: flex;
+      justify-content: center;
+    }
+  }
   &__menu{
     position: absolute;
     top:0;

@@ -31,7 +31,9 @@ export default function () {
       },
       params: {
         type: Object,
-        default: () => { }
+        default: () => {
+          return {}
+        }
       },
       listType: {
         type: String,
