@@ -508,6 +508,7 @@ export default create({
     uploadAfter: Function,
     uploadDelete: Function,
     uploadPreview: Function,
+    uploadError: Function,
     page: {
       type: Object,
       default () {

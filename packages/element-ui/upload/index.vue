@@ -150,7 +150,8 @@ export default create({
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
-    uploadPreview: Function
+    uploadPreview: Function,
+    uploadError: Function
   },
   computed: {
     fileName () {
@@ -226,9 +227,10 @@ export default create({
       this.$message.success("删除成功");
       this.setVal();
     },
-    handleError (msg) {
-      console.log(new Error(msg));
-      this.$message.error(msg || "上传失败");
+    handleError (error) {
+      if (typeof this.uploadError === "function") {
+        this.uploadError(error, this.column)
+      }
     },
     delete (file) {
       if (this.isArray || this.isString) {

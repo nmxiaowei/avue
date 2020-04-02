@@ -14,6 +14,7 @@
              :upload-before="uploadBefore"
              :upload-after="uploadAfter"
              :upload-delete="uploadDelete"
+             :upload-error="uploadError"
              @keyup.enter.native="enterChange"
              @change="handleChange">
     <template :slot="column.prop+'Type'"
@@ -50,6 +51,7 @@ export default {
     uploadDelete: Function,
     uploadAfter: Function,
     uploadPreview: Function,
+    uploadError: Function,
     props: {
       type: Object
     },

@@ -46,6 +46,7 @@
                    :upload-delete="crud.uploadDelete"
                    :upload-before="crud.uploadBefore"
                    :upload-after="crud.uploadAfter"
+                   :upload-error="crud.uploadError"
                    :option="formOption">
           <!-- 循环form表单卡槽 -->
           <template slot-scope="scope"

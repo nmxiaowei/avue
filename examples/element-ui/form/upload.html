@@ -20,8 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="form" :upload-delete="uploadDelete" :upload-before="uploadBefore"
-      :upload-after="uploadAfter"> </avue-form>
+    <avue-form :option="option" v-model="form" :upload-error="uploadError" :upload-delete="uploadDelete"
+      :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
 <script>
@@ -44,7 +44,7 @@
               type: 'upload',
               loadText: '附件上传中，请稍等',
               span: 24,
-              accept: ['jpg', 'png', 'jpeg'],
+              accept: [],
               propsHttp: {
                 res: 'data.0'
               },
@@ -146,6 +146,10 @@
         console.log(file, column)
         done()
         this.$message.success('上传前的方法')
+      },
+      uploadError(error, column) {
+        this.$message.success('上传失败')
+        console.log(error, column)
       },
       uploadAfter(res, done, loading, column) {
         console.log(res, column)

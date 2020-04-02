@@ -96,6 +96,7 @@
                                :upload-after="uploadAfter"
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
+                               :upload-error="uploadError"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
@@ -300,6 +301,7 @@ export default create({
     uploadAfter: Function,
     uploadDelete: Function,
     uploadPreview: Function,
+    uploadError: Function,
     value: {
       type: Object,
       required: true,
