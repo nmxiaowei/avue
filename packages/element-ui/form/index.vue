@@ -354,28 +354,12 @@ export default create({
     validateField (val) {
       return this.$refs.form.validateField(val);
     },
-    //搜索指定的属性配置
-    findColumnIndex (prop, group = false) {
-      let list = [];
-      let result;
-      this.columnOption.forEach((column, index) => {
-        const val = this.findArray(column.column, prop, "prop");
-        if (val !== -1) {
-          list.push(index);
-          list.push(val)
-          result = val;
-        }
-      });
-      return group ? list : result
-    },
     updateDic (prop, list) {
-      const columnList = this.findColumnIndex(prop, true);
-      const groupIndex = columnList[0];//分组序号
-      const columnIndex = columnList[1];//列序号
-      const column = this.columnOption[groupIndex].column[columnIndex];
+      const column = this.findObjct(this.columnOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           url: column.dicUrl,
+          formatter: column.dicFormatter,
           resKey: (column.props || {}).res
         }).then(list => {
           this.$set(this.DIC, prop, list);

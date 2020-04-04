@@ -117,14 +117,6 @@ export default create({
       this.form = this.deepClone(this.formDefault.tableForm);
       this.formVal();
     },
-    //搜索指定的属性配置
-    findColumnIndex (value) {
-      let result = -1;
-      this.columnOption.forEach(column => {
-        result = this.findArray(column.column, value, "prop");
-      });
-      return result;
-    },
     handleChange (item, index) {
       const column = item[index]; //获取当前节点级联
       const list = column.cascader;

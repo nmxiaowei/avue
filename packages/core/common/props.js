@@ -25,10 +25,6 @@ export default function () {
         type: Boolean,
         default: false
       },
-      slot: {
-        type: Boolean,
-        default: false
-      },
       params: {
         type: Object,
         default: () => {
