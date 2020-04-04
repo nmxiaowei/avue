@@ -276,7 +276,21 @@ export default create({
         );
       });
     },
-    closeDialog () {
+    closeDialog (row) {
+      if (row) {
+        if (this.isEdit) {
+          let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
+          obj = Object.assign(obj, row);
+        } else if (this.isAdd) {
+          if (this.crud.isTree) {
+            let obj = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+            if (obj) obj.children.push(row);
+          } else {
+            this.crud.data.push(row);
+          }
+
+        }
+      }
       this.crud.tableIndex = -1;
       this.tableForm = {};
       this.hide();

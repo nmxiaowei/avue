@@ -56,7 +56,7 @@
               :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
               :size="controlSize"
               :lazy="vaildData(tableOption.lazy,false)"
-              :load="treeload"
+              :load="treeLoad"
               :tree-props="tableOption.treeProps || {}"
               :expand-row-keys="tableOption.expandRowKeys"
               :default-expand-all="tableOption.defaultExpandAll"
@@ -399,6 +399,15 @@ export default create({
       }
       return result;
     },
+    isTree () {
+      let flag = false;
+      this.data.forEach(ele => {
+        if (ele.children) {
+          flag = true;
+        }
+      })
+      return flag;
+    },
     isGroup () {
       return !this.validatenull(this.tableOption.group);
     },
@@ -566,8 +575,12 @@ export default create({
       })
     },
     //树懒加载
-    treeload (tree, treeNode, resolve) {
-      this.$emit('tree-load', tree, treeNode, resolve)
+    treeLoad (tree, treeNode, resolve) {
+      this.$emit('tree-load', tree, treeNode, (data) => {
+        if (!tree.children) tree.children = [];
+        tree.children = data;
+        resolve(data);
+      })
     },
     // 格式化数据源
     formatData () {
@@ -846,7 +859,17 @@ export default create({
     },
     // 删除
     rowDel (row, index) {
-      this.$emit("row-del", row, index);
+      this.$emit("row-del", row, index, () => {
+        if (this.isTree) {
+          let obj = this.findObject(this.data, row.parentId, this.rowKey);
+          let index = this.findArray(obj.children, row[this.rowKey], this.rowKey)
+          if (obj) obj.children.splice(index, 1);
+        } else {
+          let index = this.findArray(this.data, row[this.rowKey], this.rowKey)
+          this.data.splice(index, 1);
+        }
+
+      });
     },
     //清空表单
     resetForm () {

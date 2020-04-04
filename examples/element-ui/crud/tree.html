@@ -24,8 +24,9 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" :table-loading="tableLoading" @tree-load="treeLoad"
-      @current-row-change="handleCurrentRowChange" @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
+    <avue-crud ref="crud" @row-save="rowSave" @row-update="rowUpdate" @row-del="rowDel" :option="option" :data="data"
+      :table-loading="tableLoading" @tree-load="treeLoad" @current-row-change="handleCurrentRowChange"
+      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
       <template slot="menu" slot-scope="scope">
         <el-button :size="scope.size" :type="scope.type" @click="tip(scope)">自定义菜单</el-button>
       </template>
@@ -80,10 +81,11 @@
         data: [
           {
             id: 0,
-            event: '事件1',
+            event: '事件',
             timeLine: 50,
             icon: 'el-icon-time',
-            comment: '无'
+            comment: '无',
+            hasChildren: true
           },
           {
             id: 1,
@@ -94,6 +96,7 @@
             children: [
               {
                 id: 2,
+                parentId: 1,
                 event: '事件2',
                 icon: 'el-icon-star-on',
                 timeLine: 10,
@@ -203,7 +206,33 @@
       tip(scope) {
         this.$message.success('查看控制台')
         console.log('行数据', scope);
-      }
+      },
+      rowDel(form, index, done) {
+        done(form);
+        this.$message.success('删除数据' + JSON.stringify(form));
+      },
+      rowSave(form, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待');
+          loading();
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success('新增数据' + JSON.stringify(form));
+          done(form);
+        }, 2000)
+      },
+      rowUpdate(form, index, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待');
+          loading();
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success('编辑数据' + JSON.stringify(form) + '数据序号' + index);
+          done(form);
+        }, 2000)
+      },
     }
   })
 </script>
