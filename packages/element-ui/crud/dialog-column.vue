@@ -25,6 +25,14 @@ export default create({
   name: 'crud',
   mixins: [locale],
   inject: ["crud"],
+  props: {
+    showColumn: {
+      type: Array,
+      default () {
+        return [];
+      }
+    },
+  },
   data () {
     return {
       config: config,
@@ -37,8 +45,12 @@ export default create({
     };
   },
   watch: {
-    columnIndex () {
+    showColumn () {
+      this.initData()
+    },
+    columnIndex (val) {
       this.crud.refreshTable();
+      this.crud.$emit('update:showColumn', val)
     },
     columnBox (val) {
       if (val) {
@@ -49,6 +61,11 @@ export default create({
     }
   },
   methods: {
+    initData () {
+      if (!this.validatenull(this.showColumn)) {
+        this.columnIndex = this.showColumn
+      }
+    },
     //开启排序
     setSort () {
       if (!window.Sortable) {
@@ -85,6 +102,7 @@ export default create({
           this.columnList.push(this.deepClone(obj));
         }
       });
+      this.initData();
     }
   }
 });

@@ -291,7 +291,8 @@
       </template>
     </dialog-form>
     <!-- 动态列 -->
-    <dialog-column ref="dialogColumn"></dialog-column>
+    <dialog-column ref="dialogColumn"
+                   :show-column="showColumn"></dialog-column>
     <!-- 过滤器 -->
     <keep-alive>
       <dialog-filter ref="dialogFilter"></dialog-filter>
@@ -493,18 +494,6 @@ export default create({
     }
   },
   props: {
-    permission: {
-      type: Object,
-      default: () => {
-        return {};
-      }
-    },
-    value: {
-      type: Object,
-      default: () => {
-        return {};
-      }
-    },
     sortBy: Function,
     sortOrders: Function,
     sortMethod: Function,
@@ -522,6 +511,24 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    permission: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    value: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    showColumn: {
+      type: Array,
+      default () {
+        return [];
+      }
+    },
     page: {
       type: Object,
       default () {
