@@ -3,12 +3,16 @@
     <!-- 搜索组件 -->
     <header-search v-model="searchForm"
                    ref="headerSearch">
-      <template slot="search">
-        <slot name="search"></slot>
+      <template slot="search"
+                slot-scope="{size,row}">
+        <slot name="search"
+              :row="row"
+              :size="size"></slot>
       </template>
       <template slot="searchMenu"
-                slot-scope="{size}">
+                slot-scope="{size,row}">
         <slot name="searchMenu"
+              :row="row"
               :size="size"></slot>
       </template>
       <template slot-scope="{value,column,dic,size,label,disabled}"

@@ -10,6 +10,7 @@
         <template slot="menuForm"
                   slot-scope="{size}">
           <slot name="searchMenu"
+                :row="searchForm"
                 :size="size"></slot>
         </template>
         <template :slot="item.prop"
@@ -25,8 +26,11 @@
                 :name="item.prop"
                 v-if="item.searchslot"></slot>
         </template>
-        <template slot="search">
-          <slot name="search"></slot>
+        <template slot="search"
+                  slot-scope="{size,row}">
+          <slot name="search"
+                :row="searchForm"
+                :size="size"></slot>
         </template>
       </avue-form>
     </div>
