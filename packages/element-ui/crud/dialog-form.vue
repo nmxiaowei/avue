@@ -276,19 +276,25 @@ export default create({
         );
       });
     },
-    closeDialog (row) {
+    closeDialog (row, index) {
       if (row) {
         if (this.isEdit) {
           let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
           obj = Object.assign(obj, row);
         } else if (this.isAdd) {
+          const detail = (list, index) => {
+            if (!this.validatenull(index)) {
+              list.splice(index, 0, row);
+            } else {
+              list.push(row);
+            }
+          }
           if (this.crud.isTree) {
             let obj = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
-            if (obj) obj.children.push(row);
+            if (obj) detail(obj.children, index)
           } else {
-            this.crud.data.push(row);
+            detail(this.crud.data, index)
           }
-
         }
       }
       this.crud.tableIndex = -1;

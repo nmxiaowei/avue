@@ -74,7 +74,7 @@
         }, 1000)
         setTimeout(() => {
           this.$message.success('新增数据' + JSON.stringify(form));
-          done(form);
+          done(form, 0);
         }, 2000)
       },
       rowUpdate(form, index, done, loading) {
