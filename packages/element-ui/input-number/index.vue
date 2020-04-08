@@ -8,6 +8,7 @@
                    :size="size"
                    :min="minRows"
                    :max="maxRows"
+                   :step="step"
                    :clearable="disabled?false:clearable"
                    :readonly="readonly"
                    :controls-position="controlsPosition"
