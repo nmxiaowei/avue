@@ -113,6 +113,8 @@ export const getSearchType = (column, component = false) => {
     result = 'cascader';
   } else if (['number'].includes(type)) {
     result = 'input-number';
+  } else if (['textarea'].includes(type)) {
+    result = 'input';
   }
   if (component) {
     result = KEY_COMPONENT_NAME + result;
