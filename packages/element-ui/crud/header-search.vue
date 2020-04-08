@@ -27,10 +27,10 @@
                 v-if="item.searchslot"></slot>
         </template>
         <template slot="search"
-                  slot-scope="{size,row}">
+                  slot-scope="{}">
           <slot name="search"
                 :row="searchForm"
-                :size="size"></slot>
+                :size="crud.controlSize"></slot>
         </template>
       </avue-form>
     </div>

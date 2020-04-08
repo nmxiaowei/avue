@@ -404,9 +404,7 @@ export default create({
     },
     handlePreview (file) {
       if (this.disabled) return
-      if (typeof this.uploadPreview === "function") {
-        this.uploadPreview(file, this.column);
-      } else {
+      const callback = () => {
         //判断是否为图片
         this.dialogUrl = file.url;
         if (this.typeList.img.test(file.url)) {
@@ -415,6 +413,11 @@ export default create({
         } else if (this.typeList.video.test(file.url)) {
           this.dialogVisible = true;
         }
+      }
+      if (typeof this.uploadPreview === "function") {
+        this.uploadPreview(file, this.column, callback);
+      } else {
+        callback();
       }
     },
     handleDelete (file) {
