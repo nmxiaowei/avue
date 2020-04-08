@@ -37,7 +37,7 @@ export default create({
   },
   computed: {
     decimals () {
-      return this.option.decimals || false
+      return this.option.decimals || 0
     },
     animation () {
       return this.option.animation
