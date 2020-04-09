@@ -176,6 +176,7 @@
                        :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
         <template slot-scope="scope">
           <el-dropdown v-if="menuType==='menu'"
+                       :size="isMediumSize"
                        style="margin-right:9px;">
             <el-button type="primary"
                        :size="isMediumSize">
@@ -630,7 +631,7 @@ export default create({
       });
     },
     menuIcon (value) {
-      return this.menuType === "icon" ? "" : this.t("crud." + value);
+      return this.menuType === "icon" ? "" : (this.tableOption[value + 'Text'] ? this.tableOption[value + 'Text'] : this.t("crud." + value));
     },
     menuText (value) {
       return this.menuType === "text" ? "text" : value;
