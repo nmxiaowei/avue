@@ -133,7 +133,8 @@ export default cteate({
         if (result.group) {
           delete result.group;
         }
-        result.column = detailColumn(result.column)
+        console.log(this.crud.propOption)
+        result.column = detailColumn(this.crud.propOption)
         result = Object.assign(result, {
           tabs: false,
           size: this.crud.isMediumSize,
