@@ -290,8 +290,12 @@ export default create({
             }
           }
           if (this.crud.isTree) {
-            let obj = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
-            if (obj) detail(obj.children, index)
+            if (!row.parentId || row.parentId == 0) {
+              detail(this.crud.data, index)
+            } else {
+              let obj = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              if (!this.validatenull(obj.children)) detail(obj.children, index)
+            }
           } else {
             detail(this.crud.data, index)
           }

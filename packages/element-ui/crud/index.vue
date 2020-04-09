@@ -588,7 +588,6 @@ export default create({
     //树懒加载
     treeLoad (tree, treeNode, resolve) {
       this.$emit('tree-load', tree, treeNode, (data) => {
-        if (!tree.children) tree.children = [];
         tree.children = data;
         resolve(data);
       })
