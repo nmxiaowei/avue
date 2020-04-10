@@ -137,7 +137,7 @@ export default create({
     },
     handleRemoteMethod (query) {
       sendDic({
-        url: this.dicUrl.replace("{{key}}", query),
+        url: (this.dicUrl || '').replace("{{key}}", query),
         method: this.dicMethod,
         query: this.dicQuery
       }).then(res => {

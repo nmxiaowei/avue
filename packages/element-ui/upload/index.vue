@@ -24,7 +24,7 @@
       <template v-else-if="listType=='picture-img'">
         <img v-if="imgUrl"
              :src="imgUrl"
-             v-bind="params"
+             v-bind="allParams"
              @mouseover="menu=disabled?false:true"
              :class="b('avatar')">
         <i v-else
@@ -57,14 +57,17 @@
            class="el-upload__tip">{{tip}}</div>
     </el-upload>
     <el-dialog append-to-body
+               :class="b('dialog')"
                :modal-append-to-body="false"
                :visible.sync="dialogVisible">
-      <div class="avue-dialog">
-        <img v-if="dialogImgType"
-             width="100%"
-             :src="dialogImageUrl"
-             alt>
-      </div>
+      <img v-if="typeList.img.test(dialogUrl)"
+           :src="dialogUrl"
+           style="max-width:100%"
+           alt>
+      <video v-else-if="typeList.video.test(dialogUrl)"
+             controls="controls"
+             style="max-width:100%"
+             :src="dialogUrl"></video>
     </el-dialog>
   </div>
 </template>
@@ -85,8 +88,12 @@ export default create({
     return {
       menu: false,
       loading: false,
-      dialogImageUrl: "",
-      dialogImgType: true,
+      typeList: {
+        img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
+        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg)/
+      },
+      dialogUrl: "",
+      dialogType: true,
       dialogVisible: false,
       text: [],
       file: {}
@@ -150,9 +157,18 @@ export default create({
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
-    uploadPreview: Function
+    uploadPreview: Function,
+    uploadError: Function
   },
   computed: {
+    allParams () {
+      if (this.typeList.video.test(this.imgUrl)) {
+        return Object.assign({
+          is: 'video'
+        }, this.params)
+      }
+      return this.params
+    },
     fileName () {
       return this.propsHttp.fileName || 'file'
     },
@@ -226,9 +242,10 @@ export default create({
       this.$message.success("删除成功");
       this.setVal();
     },
-    handleError (msg) {
-      console.log(new Error(msg));
-      this.$message.error(msg || "上传失败");
+    handleError (error) {
+      if (typeof this.uploadError === "function") {
+        this.uploadError(error, this.column)
+      }
     },
     delete (file) {
       if (this.isArray || this.isString) {
@@ -387,19 +404,20 @@ export default create({
     },
     handlePreview (file) {
       if (this.disabled) return
-      if (typeof this.uploadPreview === "function") {
-        this.uploadPreview(file, this.column);
-      } else {
+      const callback = () => {
         //判断是否为图片
-        this.dialogImageUrl = file.url;
-        if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(file.url)) {
-          this.dialogImgType = false;
-          window.open(this.dialogImageUrl);
+        this.dialogUrl = file.url;
+        if (this.typeList.img.test(file.url)) {
+          this.dialogVisible = true;
           return;
-        } else {
-          this.dialogImgType = true;
+        } else if (this.typeList.video.test(file.url)) {
           this.dialogVisible = true;
         }
+      }
+      if (typeof this.uploadPreview === "function") {
+        this.uploadPreview(file, this.column, callback);
+      } else {
+        callback();
       }
     },
     handleDelete (file) {

@@ -6,26 +6,26 @@
                  :icon="config.addBtnIcon"
                  :size="crud.isMediumSize"
                  v-permission="crud.permission.addBtn"
-                 v-if="vaildData(crud.tableOption.addBtn,config.addBtn)">{{t('crud.addBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.addBtn,config.addBtn)">{{crud.menuIcon('addBtn')}}</el-button>
       <el-button type="primary"
                  @click="crud.rowCellAdd"
                  :icon="config.addBtnIcon"
                  v-permission="crud.permission.addRowBtn"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.addRowBtn,config.addRowBtn)">{{t('crud.addBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.addRowBtn,config.addRowBtn)">{{crud.menuIcon('addBtn')}}</el-button>
 
       <el-button type="primary"
                  @click="rowPrint"
                  :icon="config.printBtnIcon"
                  v-permission="crud.permission.printBtn"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.printBtn,config.printBtn)">{{t('crud.printBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.printBtn,config.printBtn)">{{crud.menuIcon('printBtn')}}</el-button>
       <el-button type="primary"
                  @click="rowExcel"
                  :icon="config.excelBtnIcon"
                  v-permission="crud.permission.excelBtn"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.excelBtn,config.excelBtn)">{{t('crud.excelBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.excelBtn,config.excelBtn)">{{crud.menuIcon('excelBtn')}}</el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div :class="b('right')">
@@ -61,7 +61,7 @@
       <el-tooltip effect="dark"
                   :content="t('crud.searchBtn')"
                   placement="top">
-        <el-button :icon="config.searchBoxBtnIcon"
+        <el-button :icon="config.searchBtnIcon"
                    circle
                    :size="crud.isMediumSize"
                    @click="crud.$refs.headerSearch.handleSearchShow()"
@@ -179,7 +179,7 @@ export default create({
         return;
       }
       this.$export.excel({
-        title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd HH:mm:ss', new Date()),
+        title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
         columns: (() => {
           let list = [];
           this.crud.propOption.forEach(ele => {

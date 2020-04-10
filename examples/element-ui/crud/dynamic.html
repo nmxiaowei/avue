@@ -19,7 +19,11 @@
 
 <body>
   <div id="app">
-    <avue-crud :option="option" :data="data"></avue-crud>
+    <avue-crud :option="option" :data="data">
+      <div slot-scope="scope" slot="inputForm">
+        <el-tag>{{scope.row.$index}}</el-tag>
+      </div>
+    </avue-crud>
   </div>
 </body>
 <script>
@@ -28,6 +32,8 @@
     data() {
       return {
         data: [{
+          input: 1,
+          tree: 1,
           dynamic: [{
             input: 1,
             select: 1,
@@ -41,11 +47,6 @@
         option: {
           labelWidth: 110,
           column: [{
-            label: '输入框',
-            prop: "input",
-            span: 16,
-            row: true
-          }, {
             label: '树型',
             prop: "tree",
             type: 'tree',
@@ -63,6 +64,7 @@
             prop: 'dynamic',
             type: 'dynamic',
             span: 16,
+            span: 24,
             children: {
               height: 300,
               align: 'center',
@@ -71,6 +73,7 @@
                 width: 200,
                 label: '输入框',
                 prop: "input",
+                formslot: true,
                 rules: [
                   {
                     required: true,
@@ -139,13 +142,6 @@
                 type: 'number'
               }]
             },
-            rules: [
-              {
-                required: true,
-                message: '必填项测试',
-                trigger: 'blur'
-              }
-            ]
           },
 
           ]

@@ -40,43 +40,44 @@
                    v-if="boxVisible"
                    ref="tableForm"
                    @submit="handleSubmit"
+                   @error="handleError"
                    @reset-change="handleReset"
                    :upload-preview="crud.uploadPreview"
                    :upload-delete="crud.uploadDelete"
                    :upload-before="crud.uploadBefore"
                    :upload-after="crud.uploadAfter"
+                   :upload-error="crud.uploadError"
                    :option="formOption">
           <!-- 循环form表单卡槽 -->
           <template slot-scope="scope"
-                    v-for="item in columnFormOption"
+                    v-for="item in crud.columnFormOption"
                     :slot="item.prop">
             <slot :name="item.prop"
+                  v-if="item.formslot"
                   v-bind="Object.assign(scope,{
-                  row:tableForm,
-                  index:tableIndex,
-                  name:item.prop
-                })"
-                  v-if="item.formslot"></slot>
+                  row:item.dynamic?scope.row:tableForm,
+                  index:item.dynamic?scope.row.$index:crud.tableIndex,
+                })"></slot>
           </template>
           <!-- 循环form表单错误卡槽 -->
           <template slot-scope="scope"
-                    v-for="item in columnFormOption"
+                    v-for="item in crud.columnFormOption"
                     :slot="item.prop+'Error'">
             <slot :name="item.prop+'Error'"
                   v-bind="Object.assign(scope,{
                   row:tableForm,
-                  index:tableIndex,
+                  index:crud.tableIndex,
                 })"
                   v-if="item.errorslot"></slot>
           </template>
           <!-- 循环form表单标签卡槽 -->
           <template slot-scope="scope"
-                    v-for="item in columnFormOption"
+                    v-for="item in crud.columnFormOption"
                     :slot="item.prop+'Label'">
             <slot :name="item.prop+'Label'"
                   v-bind="Object.assign(scope,{
                   row:tableForm,
-                  index:tableIndex,
+                  index:crud.tableIndex,
                 })"
                   v-if="item.labelslot"></slot>
           </template>
@@ -113,7 +114,6 @@ export default create({
     };
   },
   props: {
-    columnFormOption: {},
     value: {
       type: Object,
       default: () => {
@@ -222,6 +222,9 @@ export default create({
     handleReset () {
       this.closeDialog();
     },
+    handleError (error) {
+      this.crud.$emit('error', error)
+    },
     handleSubmit () {
       if (this.isAdd) {
         this.rowSave();
@@ -263,7 +266,7 @@ export default create({
     rowUpdate () {
       this.$refs["tableForm"].validate(vaild => {
         if (!vaild) return;
-        const index = this.tableIndex;
+        const index = this.crud.tableIndex;
         this.crud.$emit(
           "row-update",
           filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
@@ -273,10 +276,38 @@ export default create({
         );
       });
     },
-    closeDialog () {
-      this.tableIndex = -1;
+    closeDialog (row, index) {
+      const callback = () => {
+        if (this.isEdit) {
+          let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
+          obj = Object.assign(obj, row);
+        } else if (this.isAdd) {
+          const callback = (list = [], index) => {
+            this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
+          }
+          if (this.crud.isTree) {
+            if (!row.children) row.children = []
+            if (this.crud.vaildParent(row)) {
+              callback(this.crud.data, index)
+            } else {
+              let parent = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              if (!parent.children) {
+                parent.hasChildren = true
+                parent.children = []
+              }
+              callback(parent.children, index)
+            }
+          } else {
+            callback(this.crud.data, index)
+          }
+        }
+      }
+      if (row) callback();
+      this.crud.tableIndex = -1;
       this.tableForm = {};
       this.hide();
+
+
     },
     // 隐藏表单
     hide () {

@@ -21,7 +21,7 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
-      <template slot="searchMenu" slot-scope="{size}">
+      <template slot="searchMenu" slot-scope="{size,row}">
         <el-button :size="size">测试</el-button>
       </template>
       <template slot-scope="scope" slot="checkboxSearch">

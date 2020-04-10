@@ -16,6 +16,7 @@
             <div class="item-info">
               <div class="item-title">{{item.title}}</div>
               <avue-count-up :animation="animation"
+                             :decimals="decimals"
                              class="item-count"
                              :end="item.count"></avue-count-up>
             </div>
@@ -35,6 +36,9 @@ export default create({
     return {};
   },
   computed: {
+    decimals () {
+      return this.option.decimals || 0
+    },
     animation () {
       return this.option.animation
     },

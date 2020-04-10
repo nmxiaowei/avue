@@ -1,6 +1,6 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
-import { deepClone, dataURLtoFile, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
+import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import permission from 'packages/core/directive/permission';
 import dialogdrag from 'packages/core/directive/dialogdrag';
 import _export from 'plugin/export/';
@@ -45,6 +45,7 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.validatenull = validatenull;
   Vue.prototype.watermark = watermark;
   Vue.prototype.asyncValidator = asyncValidator;
+  Vue.prototype.findObject = findObject;
   Vue.prototype.$AVUE = {
     ui: (() => {
       if (window.antd) {

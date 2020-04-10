@@ -216,7 +216,9 @@ export default (() => {
             const detail = (res) => {
               // 处理返回的数据
               const result = (() => {
-                if (typeof this.dataFormatter === 'function') this.dataFormatter(res.data);
+                if (typeof this.dataFormatter === 'function') {
+                  return this.dataFormatter(res.data);
+                };
                 return res.data || {};
               })();
               // 延迟效果数据逐步增加

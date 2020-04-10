@@ -67,7 +67,14 @@
                 {
                   label: '姓名',
                   prop: 'name',
-                  formslot: true
+                  formslot: true,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入姓名',
+                      trigger: 'blur'
+                    }
+                  ]
                 }
               ]
             }, {

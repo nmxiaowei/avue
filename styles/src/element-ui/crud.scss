@@ -216,6 +216,9 @@ $space-width: 15px;
     &-value {
       margin: 0 5px;
       width: 150px !important;
+      .el-date-editor.el-input, .el-date-editor.el-input__inner{
+        width: 100%;
+      }
     }
     &-icon {
       margin-left: 10px;

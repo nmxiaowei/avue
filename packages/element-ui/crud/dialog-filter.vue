@@ -132,7 +132,7 @@ export default create({
       let result = [];
       this.list.forEach(ele => {
         if (!this.validatenull(ele.value)) {
-          result.push(`${ele.text}${ele.symbol}${ele.value}`);
+          result.push([ele.text, ele.symbol, ele.value]);
         }
       });
       return result;

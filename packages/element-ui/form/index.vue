@@ -15,6 +15,7 @@
                v-if="isTabs">
         <el-tab-pane v-for="(item,index) in columnOption"
                      v-if="!item.display"
+                     :key="index"
                      :name="index+''">
           <span slot="label">
             <slot :name="item.prop+'Header'"
@@ -95,16 +96,29 @@
                                :upload-after="uploadAfter"
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
+                               :upload-error="uploadError"
                                :disabled="vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
                                @change="column.cascader?handleChange(item.column,cindex):''">
+                      <template :slot="citem.prop"
+                                slot-scope="scope"
+                                v-for="citem in ((column.children || {}).column || [])">
+                        <slot :row="scope.row"
+                              :dic="scope.dic"
+                              v-if="citem.slot"
+                              :size="scope.size"
+                              :name="citem.prop"
+                              :label="scope.label"></slot>
+                      </template>
                       <template :slot="column.prop+'Type'"
-                                slot-scope="{item,label,value}"
+                                slot-scope="{item,label,value,node,data}"
                                 v-if="column.typeslot">
                         <slot :name="column.prop+'Type'"
                               :item="item"
+                              :node="node"
+                              :data="data"
                               :value="value"
                               :label="label"></slot>
                       </template>
@@ -117,6 +131,7 @@
                    :style="{width:(column.count/24*100)+'%'}"
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
+            <slot name="search"></slot>
             <form-menu v-if="!isMenu">
               <template slot-scope="{size}"
                         slot="menuForm">
@@ -287,6 +302,7 @@ export default create({
     uploadAfter: Function,
     uploadDelete: Function,
     uploadPreview: Function,
+    uploadError: Function,
     value: {
       type: Object,
       required: true,
@@ -339,28 +355,12 @@ export default create({
     validateField (val) {
       return this.$refs.form.validateField(val);
     },
-    //搜索指定的属性配置
-    findColumnIndex (prop, group = false) {
-      let list = [];
-      let result;
-      this.columnOption.forEach((column, index) => {
-        const val = this.findArray(column.column, prop, "prop");
-        if (val !== -1) {
-          list.push(index);
-          list.push(val)
-          result = val;
-        }
-      });
-      return group ? list : result
-    },
     updateDic (prop, list) {
-      const columnList = this.findColumnIndex(prop, true);
-      const groupIndex = columnList[0];//分组序号
-      const columnIndex = columnList[1];//列序号
-      const column = this.columnOption[groupIndex].column[columnIndex];
+      const column = this.findObjct(this.columnOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           url: column.dicUrl,
+          formatter: column.dicFormatter,
           resKey: (column.props || {}).res
         }).then(list => {
           this.$set(this.DIC, prop, list);
@@ -406,7 +406,7 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: columnNext.dicUrl.replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
+        sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典
@@ -514,6 +514,10 @@ export default create({
           this.show();
           this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
         }
+        this.asyncValidator(this.formRules, this.form).then(() => {
+        }).catch(err => {
+          this.$emit("error", err);
+        })
       });
     }
   }

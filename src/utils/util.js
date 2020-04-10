@@ -9,17 +9,43 @@ export function getFixed(val, len = 2) {
   return Number(val.toFixed(len));
 }
 export function dataURLtoFile(dataurl, filename) {
-  let arr = dataurl.split(','),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
+  let arr = dataurl.split(',');
+  let mime = arr[0].match(/:(.*?);/)[1];
+  let bstr = atob(arr[1]);
+  let n = bstr.length;
+  let u8arr = new Uint8Array(n);
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new File([u8arr], filename, {
     type: mime
   });
+}
+
+export function findObject(list, value, key = 'prop') {
+  let result = -1;
+  let type = (() => {
+    let result;
+    list.forEach(ele => {
+      if (ele.column) {
+        result = 'group';
+      } else if (ele.children) {
+        result = 'tree';
+      }
+    });
+    return result;
+  })();
+  if (type === 'group') {
+    list.forEach(ele => {
+      const val = findArray(ele.column, value, key, true);
+      if (val !== -1) result = val;
+    });
+  } else if (type === 'tree') {
+    result = findLabelNode(list, value, { value: key }, true);
+  } else {
+    result = findArray(list, value, key, true);
+  }
+  return result;
 }
 /**
  * 生成随机数
@@ -233,9 +259,9 @@ export const detailDicGroup = (dic) => {
 /**
  * 根据label去找到节点
  */
-export const findLabelNode = (dic, value, props) => {
-  dic = detailDicGroup(dic);
-  let result = '';
+export const findLabelNode = (dic, value, props, obj) => {
+  let result;
+  if (!obj) dic = detailDicGroup(dic);
   let rev = (dic1, value1, props1) => {
     const labelKey = props1.label || DIC_PROPS.label;
     const valueKey = props1.value || DIC_PROPS.value;
@@ -244,7 +270,7 @@ export const findLabelNode = (dic, value, props) => {
       const ele = dic1[i];
       const children = ele[childrenKey] || [];
       if (ele[valueKey] === value1) {
-        result = ele[labelKey];
+        result = obj ? ele : ele[labelKey];
       } else {
         rev(children, value1, props1);
       }
@@ -288,12 +314,12 @@ export const findArrayLabel = (dic, value, props) => {
 /**
  * 根据值查找对应的序号
  */
-export const findArray = (dic, value, valueKey) => {
-  dic = detailDicGroup(dic);
+export const findArray = (dic, value, valueKey, obj) => {
+  if (!obj) dic = detailDicGroup(dic);
   valueKey = valueKey || DIC_PROPS.value;
   for (let i = 0; i < dic.length; i++) {
     if (dic[i][valueKey] === value) {
-      return i;
+      return obj ? dic[i] : i;
     }
   }
   return -1;
