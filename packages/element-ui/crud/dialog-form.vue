@@ -277,33 +277,37 @@ export default create({
       });
     },
     closeDialog (row, index) {
-      if (row) {
+      const callback = () => {
         if (this.isEdit) {
           let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
           obj = Object.assign(obj, row);
         } else if (this.isAdd) {
-          const detail = (list, index) => {
-            if (!this.validatenull(index)) {
-              list.splice(index, 0, row);
-            } else {
-              list.push(row);
-            }
+          const callback = (list = [], index) => {
+            this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
           }
           if (this.crud.isTree) {
-            if (!row.parentId || row.parentId == 0) {
-              detail(this.crud.data, index)
+            if (!row.children) row.children = []
+            if (this.crud.vaildParent(row)) {
+              callback(this.crud.data, index)
             } else {
-              let obj = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
-              if (!this.validatenull(obj.children)) detail(obj.children, index)
+              let parent = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              if (!parent.children) {
+                parent.hasChildren = true
+                parent.children = []
+              }
+              callback(parent.children, index)
             }
           } else {
-            detail(this.crud.data, index)
+            callback(this.crud.data, index)
           }
         }
       }
+      if (row) callback();
       this.crud.tableIndex = -1;
       this.tableForm = {};
       this.hide();
+
+
     },
     // 隐藏表单
     hide () {

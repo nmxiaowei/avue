@@ -412,7 +412,7 @@ export default create({
           flag = true;
         }
       })
-      return flag;
+      return this.vaildData(this.tableOption.tree, flag);
     },
     isGroup () {
       return !this.validatenull(this.tableOption.group);
@@ -868,16 +868,25 @@ export default create({
       this.tableIndex = index;
       this.$refs.dialogForm.show("view");
     },
+    vaildParent (row) {
+      return this.validatenull(row.parentId) || row.parentId == 0
+    },
     // 删除
     rowDel (row, index) {
       this.$emit("row-del", row, index, () => {
+        const callback = (list = []) => {
+          let index = list.findIndex(ele => ele[this.rowKey] === row[this.rowKey])
+          list.splice(index, 1);
+        }
         if (this.isTree) {
-          let obj = this.findObject(this.data, row.parentId, this.rowKey);
-          let index = this.findArray(obj.children, row[this.rowKey], this.rowKey)
-          if (obj) obj.children.splice(index, 1);
+          if (this.vaildParent(row)) {
+            callback(this.data)
+          } else {
+            let parent = this.findObject(this.data, row.parentId, this.rowKey);
+            callback(parent.children)
+          }
         } else {
-          let index = this.findArray(this.data, row[this.rowKey], this.rowKey)
-          this.data.splice(index, 1);
+          callback(this.data)
         }
 
       });
