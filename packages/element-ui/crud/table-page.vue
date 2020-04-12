@@ -1,5 +1,5 @@
 <template>
-  <div :class="b('pagination')">
+  <div :class="b('pagination')" v-if="!vaildData(crud.tableOption.simplePage,config.simplePage)">
     <el-pagination v-show="pageFlag"
                    :small="crud.isMobile"
                    :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
