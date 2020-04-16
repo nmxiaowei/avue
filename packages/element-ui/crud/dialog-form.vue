@@ -291,6 +291,9 @@ export default create({
               callback(this.crud.data, index)
             } else {
               let parent = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              if (parent === undefined) {
+                return callback(this.crud.data, index)
+              }
               if (!parent.children) {
                 parent.hasChildren = true
                 parent.children = []
