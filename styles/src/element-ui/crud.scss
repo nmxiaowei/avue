@@ -221,22 +221,27 @@ $space-width: 15px;
     }
   }
   &__dialog {
-    &__menu{
+    &__header{
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      .menu{
-        padding-right: 25px;
+    }
+    &__menu{
+      padding-top: 1px;
+      padding-right: 20px;
+      i{
         color: #909399;
+        font-size: 15px;
+        &:hover{
+          color:#409EFF;
+        }
       }
+    }
+    .el-dialog__body{
+      padding: 20px 20px 0 10px;
     }
     .el-scrollbar__wrap{
       overflow-x: hidden;
-    }
-    .el-dialog__body{
-      padding:10px 15px 0 15px;
-    }
-    .el-dialog {
-      border-radius: 5px;
     }
     .avue-form__menu{
       padding-top: 15px;

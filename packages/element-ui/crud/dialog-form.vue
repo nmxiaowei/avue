@@ -1,6 +1,7 @@
 <template>
   <component :is="dialogType"
              lock-scroll
+             class="avue-dialog"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
@@ -16,21 +17,15 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
-             :size="size"
-             :width="width"
+             :size="size?size:width"
+             :width="setPx(width)"
              @close="closeDialog">
     <div slot="title"
-         :class="b('dialog__menu')">
+         :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
-      <div class="menu"
-           v-if="!isDrawer">
-        <i v-if="fullscreen"
-           @click="handleFullScreen"
+      <div :class="b('dialog__menu')">
+        <i @click="handleFullScreen"
            class="el-dialog__close el-icon-full-screen"></i>
-        <i v-else
-           @click="handleFullScreen"
-           class="el-dialog__close el-icon-full-screen"></i>
-
       </div>
     </div>
     <div :style="{height:dialogHeight,overflow:'hidden'}"
@@ -107,6 +102,7 @@ export default create({
       config: config,
       boxType: "",
       fullscreen: false,
+      size: null,
       boxVisible: false,
       boxHeight: 0,
       tableForm: {},
@@ -159,9 +155,6 @@ export default create({
       return this.crud.tableOption.dialogDirection
     },
     width () {
-      return this.setPx(this.vaildData(this.crud.tableOption.dialogWidth, this.crud.isMobile ? '100%' : config.dialogWidth))
-    },
-    size () {
       return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
     },
     dialogType () {
@@ -213,11 +206,20 @@ export default create({
   },
   methods: {
     handleFullScreen () {
-      if (this.fullscreen) {
-        this.fullscreen = false;
+      if (this.isDrawer) {
+        if (this.validatenull(this.size)) {
+          this.size = '100%'
+        } else {
+          this.size = ''
+        }
       } else {
-        this.fullscreen = true;
+        if (this.fullscreen) {
+          this.fullscreen = false;
+        } else {
+          this.fullscreen = true;
+        }
       }
+
     },
     handleReset () {
       this.closeDialog();
