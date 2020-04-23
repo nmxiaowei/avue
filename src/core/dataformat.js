@@ -107,7 +107,7 @@ export const getSearchType = (column, component = false) => {
         result = type;
       }
     } else {
-      result = 'date';
+      result = type;
     }
   } else if (['cascader'].includes(type)) {
     result = 'cascader';
