@@ -869,7 +869,7 @@ export default create({
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {
-      return this.validatenull(row.parentId) || row.parentId == 0
+      return this.validatenull(row.parentId)
     },
     // 删除
     rowDel (row, index) {
@@ -883,7 +883,12 @@ export default create({
             callback(this.data)
           } else {
             let parent = this.findObject(this.data, row.parentId, this.rowKey);
-            callback(parent.children)
+
+            if (parent === undefined) {
+              callback(this.data)
+            } else {
+              callback(parent.children)
+            }
           }
         } else {
           callback(this.data)
