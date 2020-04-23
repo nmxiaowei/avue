@@ -100,7 +100,7 @@ export default cteate({
           if (ele.search) {
             ele = Object.assign(ele, {
               type: getSearchType(ele),
-              multiple: ['checkbox'].includes(ele.type),
+              multiple: ele.searchMultiple,
               span: ele.searchSpan || this.config.searchSpan,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
               tip: ele.searchTip,
