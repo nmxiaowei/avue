@@ -1,9 +1,3 @@
-@import './src/common.scss';
-@import './src/elementui-reset.scss';
-@import './src/vant-reset.scss';
-@import './src/media.scss';
-@import './src/nprogress.scss';
-
 //element-ui
 @import './src/element-ui/index.scss';
 //antd
@@ -12,3 +6,11 @@
 @import './src/data/index.scss';
 // 图表展示
 @import './src/echart/index.scss';
+
+@import './src/common.scss';
+@import './src/elementui-reset.scss';
+// @import './src/elementui-theme.scss';
+@import './src/vant-reset.scss';
+@import './src/media.scss';
+@import './src/nprogress.scss';
+
