@@ -10,37 +10,43 @@
              :size="controlSize"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
-      <el-tabs v-model="activeName"
-               :type="tabsType"
-               v-if="isTabs">
-        <el-tab-pane v-for="(item,index) in columnOption"
-                     v-if="!item.display"
-                     :key="index"
-                     :name="index+''">
-          <span slot="label">
-            <slot :name="item.prop+'Header'"
-                  v-if="$slots[item.prop+'Header']"></slot>
-            <template v-else>
-              <i :class="item.icon">&nbsp;</i>
-              {{item.label}}
-            </template>
-          </span>
-        </el-tab-pane>
-      </el-tabs>
-      <el-row :span="24">
+      <el-row :span="24"
+              :class="{'avue-form__tabs':isTabs}">
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
-                    v-show="isTabs?index==activeName:true"
+                    :tabs="isTabs"
                     :display="item.display"
                     :icon="item.icon"
+                    :index="index"
                     :header="!isTabs"
+                    :active="activeName"
                     :card="parentOption.card"
                     :label="item.label">
+          <el-tabs slot="tabs"
+                   v-model="activeName"
+                   :class="b('tabs')"
+                   :type="tabsType"
+                   v-if="isTabs&&index == 1">
+            <el-tab-pane v-for="(item,index) in columnOption"
+                         v-if="!item.display && index!=0"
+                         :key="index"
+                         :name="index+''">
+              <span slot="label">
+                <slot :name="item.prop+'Header'"
+                      v-if="$slots[item.prop+'Header']"></slot>
+                <template v-else>
+                  <i :class="item.icon">&nbsp;</i>
+                  {{item.label}}
+                </template>
+              </span>
+            </el-tab-pane>
+          </el-tabs>
           <template slot="header"
                     v-if="$slots[item.prop+'Header']">
             <slot :name="item.prop+'Header'"></slot>
           </template>
-          <div :class="b('group')">
+          <div :class="b('group')"
+               v-show="isGroupShow(item,index)">
             <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">
               <el-col :key="column.prop"
@@ -324,6 +330,13 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
+    isGroupShow (item, index) {
+      if (this.isTabs) {
+        return index == this.activeName || index == 0
+      } else {
+        return true;
+      }
+    },
     forEachLabel () {
       this.columnOption.forEach(ele => {
         ele.column.forEach(column => {
