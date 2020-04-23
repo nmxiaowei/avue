@@ -55,6 +55,7 @@
               <el-button type="primary"
                          :class="b('send')"
                          v-if="isPhone"
+                         :disabled="sendDisabled"
                          @click="onSend">{{text}}</el-button>
               <span v-if="isImg">
                 <img :src="codesrc"
@@ -123,7 +124,11 @@ export default create({
     },
     column () {
       return this.option.column || {};
+    },
+    sendDisabled () {
+      return !this.validatenull(this.check)
     }
+
   },
   data () {
     return {
@@ -149,11 +154,13 @@ export default create({
           if (this.nowtime === 0) {
             this.text = INIT_TEXT;
             clearInterval(this.check);
+            this.check = null;
           } else {
             this.text = TIP_TEXT.replace('{{time}}', this.nowtime);
           }
         }, 1000)
       }
+      if (this.sendDisabled) return
       this.$emit('send', callback)
     },
     onRefresh () {
