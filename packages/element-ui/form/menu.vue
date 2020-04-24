@@ -23,6 +23,7 @@
                    v-if="vaildData(formSafe.parentOption.emptyBtn,true)"
                    @click="formSafe.resetForm">{{vaildData(formSafe.parentOption.emptyText,'清 空')}}</el-button>
         <slot name="menuForm"
+              :disabled="formSafe.allDisabled"
               :size="formSafe.controlSize"></slot>
       </div>
     </el-form-item>

@@ -77,10 +77,11 @@
                   v-if="item.labelslot"></slot>
           </template>
           <template slot="menuForm"
-                    slot-scope="{size}">
+                    slot-scope="scope">
             <slot name="menuForm"
-                  :type="boxType"
-                  :size="size"></slot>
+                  v-bind="Object.assign(scope,{
+                    type:boxType
+                  }) "></slot>
           </template>
         </avue-form>
       </el-scrollbar>

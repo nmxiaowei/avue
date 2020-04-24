@@ -139,19 +139,19 @@
             </template>
             <slot name="search"></slot>
             <form-menu v-if="!isMenu">
-              <template slot-scope="{size}"
+              <template slot-scope="scope"
                         slot="menuForm">
                 <slot name="menuForm"
-                      :size="size"></slot>
+                      v-bind="scope"></slot>
               </template>
             </form-menu>
           </div>
         </avue-group>
         <form-menu v-if="isMenu">
-          <template slot-scope="{size}"
+          <template slot-scope="scope"
                     slot="menuForm">
             <slot name="menuForm"
-                  :size="size"></slot>
+                  v-bind="scope"></slot>
           </template>
         </form-menu>
       </el-row>

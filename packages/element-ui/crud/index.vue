@@ -284,11 +284,12 @@
               :name="item.prop+'Error'"
               v-if="item.errorslot"></slot>
       </template>
-      <template slot-scope="{tableForm,boxType,size}"
+      <template slot-scope="{tableForm,type,size,disabled}"
                 slot="menuForm">
         <slot name="menuForm"
               :size="size"
-              :type="boxType"></slot>
+              :disabled="disabled"
+              :type="type"></slot>
       </template>
     </dialog-form>
     <!-- 动态列 -->
@@ -365,8 +366,6 @@ export default create({
   mounted () {
     this.doLayout = false;
     this.$nextTick(() => {
-      //初始化dialogForm对外方法
-      this.dialogFormFun();
       this.doLayout = true;
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
@@ -830,11 +829,14 @@ export default create({
     rowAdd () {
       this.$refs.dialogForm.show("add");
     },
-    dialogFormFun () {
-      let list = ['rowSave', 'rowUpdate', 'closeDialog']
-      list.forEach(ele => {
-        this[ele] = (this.$refs.dialogForm || {})[ele];
-      })
+    rowSave () {
+      return this.$refs.dialogForm.$refs.tableForm.submit();
+    },
+    rowUpdate () {
+      return this.$refs.dialogForm.$refs.tableForm.submit();
+    },
+    closeDialog () {
+      return this.$refs.dialogForm.closeDialog()
     },
     //对象克隆
     rowClone (row) {
