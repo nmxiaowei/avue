@@ -179,16 +179,16 @@ export default create({
         if (!option.menuPosition) option.menuPosition = 'right'
         if (this.isAdd) {
           option.submitBtn = option.saveBtn;
-          option.submitText = option.saveBtnTitle || this.t('crud.saveBtn')
-          option.submitIcon = option.saveBtnIcon || 'el-icon-circle-plus-outline';
+          option.submitText = this.crud.menuIcon('saveBtn');
+          option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
         } else if (this.isEdit) {
           option.submitBtn = option.updateBtn;
-          option.submitText = option.updateBtnTitle || this.t('crud.updateBtn')
-          option.submitIcon = option.updateBtnIcon || 'el-icon-circle-check';
+          option.submitText = this.crud.menuIcon('updateBtn');
+          option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
         }
         option.emptyBtn = option.cancelBtn;
-        option.emptyIcon = 'el-icon-circle-close';
-        option.emptyText = option.cancelBtnTitle || this.t('crud.cancelBtn')
+        option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
+        option.emptyText = this.crud.menuIcon('cancelBtn')
       }
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
@@ -235,11 +235,9 @@ export default create({
       }
     },
     initFun () {
-      this.crud.clearValidate = this.$refs.tableForm.clearValidate
-      this.crud.validate = this.$refs.tableForm.validate
-    },
-    updateDic (prop, list) {
-      this.$refs.tableForm.updateDic(prop, list);
+      ['clearValidate', 'validate', 'updateDic'].forEach(ele => {
+        this.crud[ele] = this.$refs.tableForm[ele]
+      })
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {

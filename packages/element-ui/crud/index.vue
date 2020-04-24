@@ -438,6 +438,9 @@ export default create({
     },
     columnFormOption () {
       let list = [];
+      this.propOption.forEach(column => {
+        list.push(column);
+      });
       if (this.isGroup) {
         this.groupOption.forEach(ele => {
           if (!ele.column) return;
@@ -445,8 +448,6 @@ export default create({
             list.push(column);
           });
         });
-      } else {
-        list = this.propOption;
       }
       return list.concat(this.dynamicOption);
     },
@@ -631,7 +632,7 @@ export default create({
       });
     },
     menuIcon (value) {
-      return this.menuType === "icon" ? "" : (this.tableOption[value + 'Text'] ? this.tableOption[value + 'Text'] : this.t("crud." + value));
+      return this.menuType === "icon" ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
     },
     menuText (value) {
       return this.menuType === "text" ? "text" : value;
@@ -830,9 +831,9 @@ export default create({
       this.$refs.dialogForm.show("add");
     },
     dialogFormFun () {
-      let list = ['updateDic', 'rowSave', 'rowUpdate', 'closeDialog']
+      let list = ['rowSave', 'rowUpdate', 'closeDialog']
       list.forEach(ele => {
-        this[ele] = (this.$refs.dialogForm | {})[ele];
+        this[ele] = (this.$refs.dialogForm || {})[ele];
       })
     },
     //对象克隆

@@ -369,7 +369,7 @@ export default create({
       return this.$refs.form.validateField(val);
     },
     updateDic (prop, list) {
-      const column = this.findObjct(this.columnOption, prop);
+      const column = this.findObject(this.columnOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           url: column.dicUrl,
