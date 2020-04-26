@@ -1,6 +1,7 @@
 <template>
   <component :is="dialogType"
              lock-scroll
+             :destroy-on-close="crud.tableOption.dialogDestroy"
              class="avue-dialog"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
