@@ -169,7 +169,7 @@ import init from "../../core/crud/init";
 import formTemp from '../../core/components/form/index'
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams } from 'utils/util'
+import { filterDefaultParams, clearVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -506,12 +506,16 @@ export default create({
     },
     resetForm () {
       this.resetFields();
+      this.clearValidate();
+      this.clearVal();
+      this.$emit("input", this.form);
       this.$emit("reset-change");
+    },
+    clearVal () {
+      this.form = clearVal(this.form)
     },
     resetFields () {
       this.$refs.form.resetFields();
-      this.clearValidate();
-      this.$emit("input", this.form);
     },
     validate (callback) {
       this.$refs["form"].validate(valid => callback(valid));
