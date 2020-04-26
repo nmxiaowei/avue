@@ -10,14 +10,28 @@ import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Screenshot from 'plugin/screenshot/';
 import $Clipboard from 'plugin/clipboard/';
+import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 
 let prototypes = {
+  $Print,
   $Clipboard,
   $Log,
   $NProgress,
-  $Screenshot
+  $Screenshot,
+  deepClone,
+  dataURLtoFile,
+  isJson,
+  setPx,
+  vaildData,
+  sortArrys,
+  findArray,
+  validatenull,
+  watermark,
+  asyncValidator,
+  findObject
+
 };
 const install = function(Vue, opts = {}) {
   Vue.use(_export);
@@ -33,19 +47,9 @@ const install = function(Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   Vue.prototype.$httpajax = window.axios;
-  Vue.prototype.deepClone = deepClone;
-  Vue.prototype.dataURLtoFile = dataURLtoFile;
-  Vue.prototype.isJson = isJson;
-  Vue.prototype.setPx = setPx;
-  Vue.prototype.vaildData = vaildData;
-  Vue.prototype.sortArrys = sortArrys;
-  Vue.prototype.findArray = findArray;
-  Vue.prototype.validatenull = validatenull;
-  Vue.prototype.watermark = watermark;
-  Vue.prototype.asyncValidator = asyncValidator;
-  Vue.prototype.findObject = findObject;
+  Vue.prototype.$ImagePreview = $ImagePreview(Vue);
+
   Vue.prototype.$AVUE = {
     ui: (() => {
       if (window.antd) {

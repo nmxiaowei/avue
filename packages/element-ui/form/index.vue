@@ -52,6 +52,7 @@
               <el-col :key="column.prop"
                       :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
                       :md="column.span || itemSpanDefault"
+                      :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
                       :class="b('row')">

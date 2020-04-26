@@ -244,14 +244,10 @@ export default create({
           this.crud.tableOption
         );
       };
-
       this.$nextTick(() => {
-        var newstr = getTemplate();
-        var tab = window.open("", "打印");
-        tab.document.open();
-        tab.document.write(newstr);
-        tab.window.print();
-        tab.close();
+        this.$Print({
+          html: getTemplate()
+        })
       });
     }
   }
