@@ -293,8 +293,11 @@ export default create({
     boxType: function () {
       return this.parentOption.boxType;
     },
+    isPrint () {
+      return this.vaildData(this.parentOption.printBtn, false)
+    },
     isMock () {
-      return this.vaildData(this.parentOption.mock, false);
+      return this.vaildData(this.parentOption.mockBtn, false);
     },
     menuSpan () {
       return this.parentOption.menuSpan || 24;
@@ -437,6 +440,11 @@ export default create({
       });
       this.forEachLabel();
       this.$emit("input", this.form);
+    },
+    handlePrint () {
+      this.$Print({
+        html: this.$el.innerHTML
+      });
     },
     handleMock () {
       if (this.isMock) {

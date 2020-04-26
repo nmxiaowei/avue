@@ -17,6 +17,12 @@ export default {
     n: '近7天',
     a: '全部'
   },
+  form: {
+    printBtn: '打 印',
+    mockBtn: '模 拟',
+    submit: '提 交',
+    empty: '清 空'
+  },
   crud: {
     filter: {
       addBtn: '新增条件',
@@ -47,6 +53,7 @@ export default {
     saveBtn: '保 存',
     viewBtn: '查 看',
     editBtn: '编 辑',
-    delBtn: '删 除',
+    delBtn: '删 除'
   }
 }
+;

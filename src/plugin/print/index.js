@@ -10,7 +10,7 @@ export default function({ id, html }) {
     }
     domHtml = bodyHtmlStart + document.getElementById(id).innerHTML + bodyHtmlEnd;
   } else if (html) {
-    domHtml = html;
+    domHtml = bodyHtmlStart + html + bodyHtmlEnd;
   }
   var tab = window.open('', 'Avue打印插件');
   tab.document.open();
