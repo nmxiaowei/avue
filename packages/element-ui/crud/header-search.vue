@@ -50,7 +50,7 @@ import {
 } from "core/dataformat";
 import config from "./config";
 export default cteate({
-  name: "crud-search",
+  name: "crud__search",
   inject: ["crud"],
   mixins: [locale],
   data () {

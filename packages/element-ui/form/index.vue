@@ -51,6 +51,7 @@
                       v-for="(column,cindex) in item.column">
               <el-col :key="column.prop"
                       :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
+                      :span="column.span || itemSpanDefault"
                       :md="column.span || itemSpanDefault"
                       :sm="12"
                       :xs="24"
@@ -457,7 +458,7 @@ export default create({
             this.clearValidate();
           }
         });
-        this.$message.success("模拟数据填充成功");
+        this.$emit('mock-change', this.form);
       }
     },
     // 验证表单是否禁止

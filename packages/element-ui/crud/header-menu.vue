@@ -84,7 +84,6 @@
 
 <script>
 import locale from "../../core/common/locale";
-import tableTemp from "../../util/tableTemp";
 import create from "core/create";
 import config from "./config";
 import packages from "core/packages";
@@ -229,24 +228,9 @@ export default create({
     },
     //打印
     rowPrint () {
-      if (this.validatenull(this.data)) {
-        this.$message.warning("请勾选要打印的数据");
-        return;
-      }
-      let headerOption = [];
-      const getTemplate = () => {
-        headerOption = this.crud.propOption.filter(ele => {
-          return this.columnIndex.includes(ele.prop) && ele.type !== "upload";
-        });
-        return tableTemp(
-          headerOption,
-          this.handleSum(),
-          this.crud.tableOption
-        );
-      };
       this.$nextTick(() => {
         this.$Print({
-          html: getTemplate()
+          html: this.crud.$el.innerHTML
         })
       });
     }

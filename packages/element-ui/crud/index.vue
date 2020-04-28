@@ -168,7 +168,8 @@
                 :name="item.prop"></slot>
         </template>
       </column>
-      <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
+      <el-table-column :class="b('btn')"
+                       :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
                        v-if="vaildData(tableOption.menu,config.menu)"
                        :label="t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
