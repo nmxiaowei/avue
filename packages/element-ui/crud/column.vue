@@ -54,22 +54,7 @@
                     v-else-if="column.slot"></slot>
               <template v-else>
                 <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
-
-                <template v-else-if="['upload'].includes(column.type)">
-                  <avue-img :align="column.align"
-                            :listType="column.listType"
-                            :imgWidth="column.imgWidth"
-                            :fullscreen="column.imgFullscreen"
-                            :imgHeight="column.imgHeight"
-                            :imgType="column.imgType"
-                            :type="menuText()"
-                            :dataType="column.dataType"
-                            :size="crud.isMediumSize"
-                            :value="scope.row[column.prop]"
-                            v-bind="column.preview"
-                            v-if="scope.row[column.prop]"></avue-img>
-                </template>
-                <span v-else-if="['img'].includes(column.type)">
+                <span v-else-if="['img','upload'].includes(column.type)">
                   <div class="avue-crud__img">
                     <img v-for="(item,index) in detailData(scope.row[column.prop],column.dataType)"
                          :src="item"
