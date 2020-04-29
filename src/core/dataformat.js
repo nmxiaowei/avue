@@ -129,7 +129,7 @@ export const getSearchType = (column, component = false) => {
 export const getComponent = (type, component) => {
   let result = 'input';
   if (!validatenull(component)) {
-    result = component;
+    return component;
   } else if (['img', 'array'].includes(type)) {
     result = 'array';
   } else if (type === 'select') {
