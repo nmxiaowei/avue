@@ -1,4 +1,4 @@
-export default function({ id, html }) {
+export default function ({ id, html }) {
   const style = `
     <style>
     body{
@@ -20,8 +20,7 @@ export default function({ id, html }) {
   let allHtml = document.documentElement.innerHTML;
   let bodyHtmlStart = allHtml.substr(0, allHtml.indexOf('<body'));
   bodyHtmlStart = bodyHtmlStart + '<body >' + style;
-  let bodyHtmlEnd = allHtml.substr(allHtml.indexOf('</body>'));
-  bodyHtmlEnd = bodyHtmlEnd + '</body>';
+  let bodyHtmlEnd = '</body>';
   if (id) {
     let obj = document.getElementById(id);
     if (!obj) {
@@ -37,5 +36,5 @@ export default function({ id, html }) {
   setTimeout(() => {
     tab.window.print();
     tab.close();
-  }, 0);
+  }, 100);
 }

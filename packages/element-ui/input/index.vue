@@ -1,6 +1,6 @@
 <template>
   <el-tooltip placement="bottom"
-              :disabled="validatenull(text) && !isUrl">
+              :disabled="tipStatus">
     <div slot="content">
       <el-link type="primary"
                :href="text"
@@ -111,6 +111,12 @@ export default create({
     }
   },
   computed: {
+    tipStatus () {
+      if (this.isUrl) {
+        return this.validatenull(this.text)
+      }
+      return true;
+    },
     isSearch () {
       return this.type == 'search'
     },

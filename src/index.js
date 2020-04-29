@@ -49,7 +49,9 @@ const install = function(Vue, opts = {}) {
   locale.i18n(opts.i18n);
   Vue.prototype.$httpajax = window.axios;
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
-
+  if (opts.theme === 'dark') {
+    document.documentElement.className = 'avue-theme--dark';
+  }
   Vue.prototype.$AVUE = {
     ui: (() => {
       if (window.antd) {
