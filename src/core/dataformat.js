@@ -136,6 +136,8 @@ export const getComponent = (type, component) => {
     result = 'select';
   } else if (type === 'radio') {
     result = 'radio';
+  } else if (type === 'tree') {
+    result = 'input-tree';
   } else if (type === 'checkbox') {
     result = 'checkbox';
   } else if (['time', 'timerange'].includes(type)) {
