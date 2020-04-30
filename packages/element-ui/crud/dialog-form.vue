@@ -1,6 +1,8 @@
 <template>
   <component :is="dialogType"
              lock-scroll
+             :destroy-on-close="crud.tableOption.dialogDestroy"
+             class="avue-dialog"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
@@ -16,21 +18,15 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
-             :size="size"
-             :width="width"
+             :size="size?size:width"
+             :width="setPx(width)"
              @close="closeDialog">
     <div slot="title"
-         :class="b('dialog__menu')">
+         :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
-      <div class="menu"
-           v-if="!isDrawer">
-        <i v-if="fullscreen"
-           @click="handleFullScreen"
+      <div :class="b('dialog__menu')">
+        <i @click="handleFullScreen"
            class="el-dialog__close el-icon-full-screen"></i>
-        <i v-else
-           @click="handleFullScreen"
-           class="el-dialog__close el-icon-full-screen"></i>
-
       </div>
     </div>
     <div :style="{height:dialogHeight,overflow:'hidden'}"
@@ -82,10 +78,11 @@
                   v-if="item.labelslot"></slot>
           </template>
           <template slot="menuForm"
-                    slot-scope="{size}">
+                    slot-scope="scope">
             <slot name="menuForm"
-                  :type="boxType"
-                  :size="size"></slot>
+                  v-bind="Object.assign(scope,{
+                    type:boxType
+                  }) "></slot>
           </template>
         </avue-form>
       </el-scrollbar>
@@ -107,6 +104,7 @@ export default create({
       config: config,
       boxType: "",
       fullscreen: false,
+      size: null,
       boxVisible: false,
       boxHeight: 0,
       tableForm: {},
@@ -159,9 +157,6 @@ export default create({
       return this.crud.tableOption.dialogDirection
     },
     width () {
-      return this.setPx(this.vaildData(this.crud.tableOption.dialogWidth, this.crud.isMobile ? '100%' : config.dialogWidth))
-    },
-    size () {
       return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
     },
     dialogType () {
@@ -180,22 +175,24 @@ export default create({
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.crud.propOption;
+      option.printBtn = false;
+      option.mockBtn = false;
       if (this.isView) {
         option.menuBtn = false;
       } else {
         if (!option.menuPosition) option.menuPosition = 'right'
         if (this.isAdd) {
           option.submitBtn = option.saveBtn;
-          option.submitText = option.saveBtnTitle || this.t('crud.saveBtn')
-          option.submitIcon = option.saveBtnIcon || 'el-icon-circle-plus-outline';
+          option.submitText = this.crud.menuIcon('saveBtn');
+          option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
         } else if (this.isEdit) {
           option.submitBtn = option.updateBtn;
-          option.submitText = option.updateBtnTitle || this.t('crud.updateBtn')
-          option.submitIcon = option.updateBtnIcon || 'el-icon-circle-check';
+          option.submitText = this.crud.menuIcon('updateBtn');
+          option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
         }
         option.emptyBtn = option.cancelBtn;
-        option.emptyIcon = 'el-icon-circle-close';
-        option.emptyText = option.cancelBtnTitle || this.t('crud.cancelBtn')
+        option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
+        option.emptyText = this.crud.menuIcon('cancelBtn')
       }
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
@@ -213,11 +210,20 @@ export default create({
   },
   methods: {
     handleFullScreen () {
-      if (this.fullscreen) {
-        this.fullscreen = false;
+      if (this.isDrawer) {
+        if (this.validatenull(this.size)) {
+          this.size = '100%'
+        } else {
+          this.size = ''
+        }
       } else {
-        this.fullscreen = true;
+        if (this.fullscreen) {
+          this.fullscreen = false;
+        } else {
+          this.fullscreen = true;
+        }
       }
+
     },
     handleReset () {
       this.closeDialog();
@@ -233,11 +239,9 @@ export default create({
       }
     },
     initFun () {
-      this.crud.clearValidate = this.$refs.tableForm.clearValidate
-      this.crud.validate = this.$refs.tableForm.validate
-    },
-    updateDic (prop, list) {
-      this.$refs.tableForm.updateDic(prop, list);
+      ['clearValidate', 'validate', 'updateDic'].forEach(ele => {
+        this.crud[ele] = this.$refs.tableForm[ele]
+      })
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {
@@ -291,6 +295,9 @@ export default create({
               callback(this.crud.data, index)
             } else {
               let parent = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              if (parent === undefined) {
+                return callback(this.crud.data, index)
+              }
               if (!parent.children) {
                 parent.hasChildren = true
                 parent.children = []

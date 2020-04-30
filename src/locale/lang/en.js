@@ -17,6 +17,12 @@ export default {
     n: 'nearly 7',
     a: 'whole'
   },
+  form: {
+    printBtn: 'print',
+    mockBtn: 'mock',
+    submit: 'submit',
+    empty: 'empty'
+  },
   crud: {
     filter: {
       addBtn: 'add',
@@ -47,6 +53,7 @@ export default {
     saveBtn: 'save',
     viewBtn: 'view',
     editBtn: 'edit',
-    delBtn: 'del',
+    delBtn: 'del'
   }
 }
+;

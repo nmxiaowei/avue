@@ -36,6 +36,10 @@
       text-align: right;
     }
   }
+  &__tabs{
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
   &__group {
     display: flex;
     align-items: flex-start;

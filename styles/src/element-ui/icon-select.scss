@@ -1,5 +1,7 @@
 .avue-icon-select{
   &__item{
+    text-align: center;
+    max-width: 80px;
     padding: 20px;
     transition: all .2s;
     &:hover{
@@ -15,6 +17,6 @@
     flex-wrap: wrap;
   }
   &__icon{
-    font-size: 24px !important;
+    font-size: 32px !important;
   }
 }

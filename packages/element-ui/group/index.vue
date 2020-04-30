@@ -1,6 +1,7 @@
 <template>
   <div :class="[b(),{'avue-group--card':card}]"
        v-if="display">
+    <slot name="tabs"></slot>
     <el-row span="24"
             :class="b('item')">
       <div :class="b('header')"
@@ -13,9 +14,7 @@
            v-if="icon"></i>
         <h1 :class="b('title')"
             v-if="label">{{label}}</h1>
-
       </div>
-
       <slot></slot>
     </el-row>
   </div>
@@ -44,7 +43,7 @@ export default create({
     label: {
       type: String
     }
-  }
+  },
 });
 </script>
 

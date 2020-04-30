@@ -2,7 +2,7 @@
   <component :is="getComponent(column.type,column.component)"
              v-model="text"
              v-bind="column"
-             :column="column"
+             :column="Object.assign(column,params)"
              :dic="dic"
              :disabled="disabled"
              :placeholder="getPlaceholder(column)"
@@ -17,6 +17,8 @@
              :upload-error="uploadError"
              @keyup.enter.native="enterChange"
              @change="handleChange">
+    <span v-if="params.html"
+          v-html="params.html"></span>
     <template :slot="column.prop+'Type'"
               slot-scope="{item,label,value,node,data}"
               v-if="column.typeslot">
@@ -100,6 +102,9 @@ export default {
     }
   },
   computed: {
+    params () {
+      return this.column.params || {}
+    },
     columnOption () {
       return ((this.column.children || []).column) || []
     }

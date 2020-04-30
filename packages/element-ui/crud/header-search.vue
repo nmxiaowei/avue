@@ -50,7 +50,7 @@ import {
 } from "core/dataformat";
 import config from "./config";
 export default cteate({
-  name: "crud-search",
+  name: "crud__search",
   inject: ["crud"],
   mixins: [locale],
   data () {
@@ -100,9 +100,9 @@ export default cteate({
           if (ele.search) {
             ele = Object.assign(ele, {
               type: getSearchType(ele),
-              multiple: ['checkbox'].includes(ele.type),
+              multiple: ele.searchMultiple,
               span: ele.searchSpan || this.config.searchSpan,
-              labelWidth: ele.searchLabelWidth || option.searchSpan || this.config.searchLabelWidth,
+              labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
               tip: ele.searchTip,
               placeholder: getPlaceholder(ele, 'search'),
               filterable: ele.searchFilterable,
@@ -133,9 +133,11 @@ export default cteate({
         if (result.group) {
           delete result.group;
         }
-        result.column = detailColumn(this.deepClone(this.crud.propOption))
+        result.column = detailColumn(this.deepClone(this.crud.columnFormOption))
         result = Object.assign(result, {
           tabs: false,
+          printBtn: false,
+          mockBtn: false,
           size: this.crud.isMediumSize,
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,

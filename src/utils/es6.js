@@ -3,7 +3,7 @@ if (!Array.prototype.includes) {
     if (this === null) {
       throw new TypeError('"this" is null or not defined');
     }
-    let that = Object(this), len = that.length >>> 0, param = arguments, index = fromIndex | 0;
+    let that = Object(this), len = that.length >>> 0, param = arguments, index = fromIndex | 0, startIndex = 0;
 
     if (len === 0) { return false; }
 

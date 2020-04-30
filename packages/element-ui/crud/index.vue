@@ -168,7 +168,8 @@
                 :name="item.prop"></slot>
         </template>
       </column>
-      <el-table-column :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
+      <el-table-column :class="b('btn')"
+                       :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
                        v-if="vaildData(tableOption.menu,config.menu)"
                        :label="t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
@@ -284,11 +285,12 @@
               :name="item.prop+'Error'"
               v-if="item.errorslot"></slot>
       </template>
-      <template slot-scope="{tableForm,boxType,size}"
+      <template slot-scope="{tableForm,type,size,disabled}"
                 slot="menuForm">
         <slot name="menuForm"
               :size="size"
-              :type="boxType"></slot>
+              :disabled="disabled"
+              :type="type"></slot>
       </template>
     </dialog-form>
     <!-- 动态列 -->
@@ -365,8 +367,6 @@ export default create({
   mounted () {
     this.doLayout = false;
     this.$nextTick(() => {
-      //初始化dialogForm对外方法
-      this.dialogFormFun();
       this.doLayout = true;
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
@@ -438,6 +438,9 @@ export default create({
     },
     columnFormOption () {
       let list = [];
+      this.propOption.forEach(column => {
+        list.push(column);
+      });
       if (this.isGroup) {
         this.groupOption.forEach(ele => {
           if (!ele.column) return;
@@ -445,8 +448,6 @@ export default create({
             list.push(column);
           });
         });
-      } else {
-        list = this.propOption;
       }
       return list.concat(this.dynamicOption);
     },
@@ -631,7 +632,7 @@ export default create({
       });
     },
     menuIcon (value) {
-      return this.menuType === "icon" ? "" : (this.tableOption[value + 'Text'] ? this.tableOption[value + 'Text'] : this.t("crud." + value));
+      return this.menuType === "icon" ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
     },
     menuText (value) {
       return this.menuType === "text" ? "text" : value;
@@ -829,11 +830,14 @@ export default create({
     rowAdd () {
       this.$refs.dialogForm.show("add");
     },
-    dialogFormFun () {
-      let list = ['updateDic', 'rowSave', 'rowUpdate', 'closeDialog']
-      list.forEach(ele => {
-        this[ele] = (this.$refs.dialogForm | {})[ele];
-      })
+    rowSave () {
+      return this.$refs.dialogForm.$refs.tableForm.submit();
+    },
+    rowUpdate () {
+      return this.$refs.dialogForm.$refs.tableForm.submit();
+    },
+    closeDialog () {
+      return this.$refs.dialogForm.closeDialog()
     },
     //对象克隆
     rowClone (row) {
@@ -869,7 +873,7 @@ export default create({
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {
-      return this.validatenull(row.parentId) || row.parentId == 0
+      return this.validatenull(row.parentId)
     },
     // 删除
     rowDel (row, index) {
@@ -883,7 +887,12 @@ export default create({
             callback(this.data)
           } else {
             let parent = this.findObject(this.data, row.parentId, this.rowKey);
-            callback(parent.children)
+
+            if (parent === undefined) {
+              callback(this.data)
+            } else {
+              callback(parent.children)
+            }
           }
         } else {
           callback(this.data)

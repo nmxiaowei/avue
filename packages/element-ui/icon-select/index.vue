@@ -3,18 +3,18 @@
     <el-input :placeholder="placeholder"
               v-model="text"
               :size="size"
+              ref="main"
               :clearable="disabled?false:clearable"
               :disabled="disabled"
               @change="handleChange"
-              @click.native="handleShow"
-              readonly>
+              @focus="handleShow">
       <template slot="append"><i :class="text"></i></template>
     </el-input>
     <el-dialog :title="placeholder"
                :modal-append-to-body="false"
                append-to-body
                :visible.sync="box"
-               width="40%">
+               width="50%">
       <el-scrollbar style="height:400px;overflow-x:hidden">
         <avue-tabs :option="option"
                    @change="handleTabs"></avue-tabs>
@@ -22,8 +22,9 @@
           <div :class="b('item',{'active':text===item})"
                v-for="(item,index) in list"
                :key="index">
-            <i :class="[b('icon'),item]"
-               @click="handleSubmit(item)"></i>
+            <i :class="[b('icon'),item.value]"
+               @click="handleSubmit(item.value)"></i>
+            <p v-if="item.label">{{item.label}}</p>
           </div>
         </div>
       </el-scrollbar>
@@ -54,7 +55,15 @@ export default create({
   },
   computed: {
     list () {
-      return this.tabs.list || [];
+      let list = (this.tabs.list || []).map(ele => {
+        if (!ele.value) {
+          return {
+            value: ele
+          }
+        }
+        return ele
+      });
+      return list
     },
     option () {
       return {
@@ -75,6 +84,7 @@ export default create({
       this.handleChange(item);
     },
     handleShow () {
+      this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
       this.box = true;
     }

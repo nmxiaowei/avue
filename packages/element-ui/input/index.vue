@@ -1,170 +1,58 @@
 <template>
-  <div :class="b()">
-    <div v-if="type==='tree'">
-      <el-select :size="size"
-                 ref="main"
-                 @click.native="initScroll"
-                 :value="labelShow"
-                 :type="typeParam"
-                 :clearable="disabled?false:clearable"
-                 :autosize="{ minRows: minRows, maxRows: maxRows}"
-                 :prefix-icon="prefixIcon"
-                 :suffix-icon="suffixIcon"
-                 :placeholder="placeholder"
-                 :show-word-limit="showWordLimit"
-                 @change="handleChange"
-                 @focus="handleFocus"
-                 @blur="handleBlur"
-                 :disabled="disabled"
-                 :readonly="true">
-        <div v-if="filter"
-             style="padding:0 10px;margin:5px 0 0 0;">
-          <el-input size="mini"
-                    placeholder="输入关键字进行过滤"
-                    v-model="filterText"></el-input>
-        </div>
-        <el-option :value="text">
-          <el-tree :data="dicList"
-                   class="tree-option"
-                   style="padding:10px 0;"
-                   :lazy="lazy"
-                   :load="treeLoad"
-                   :node-key="valueKey"
-                   :accordion="accordion"
-                   :show-checkbox="multiple"
-                   :props="treeProps"
-                   :check-strictly="checkStrictly"
-                   ref="tree"
-                   :highlight-current="!multiple"
-                   :current-node-key="multiple?'':text"
-                   @check="checkChange"
-                   :filter-node-method="filterNode"
-                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?[]:keysList)"
-                   :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
-                   :default-expand-all="defaultExpandAll"
-                   @node-click.self="handleNodeClick">
-            <div style="width:100%;padding-right:10px;"
-                 slot-scope="{ data }">
-              <slot :name="prop+'Type'"
-                    :label="labelKey"
-                    :value="valueKey"
-                    :item="data"
-                    v-if="typeslot"></slot>
-              <span v-else
-                    :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
-            </div>
-          </el-tree>
-        </el-option>
-      </el-select>
-
+  <el-tooltip placement="bottom"
+              :disabled="tipStatus">
+    <div slot="content">
+      <el-link type="primary"
+               :href="text"
+               :target="target">{{text}}</el-link>
     </div>
-    <el-input v-else-if="type==='search'"
+    <el-input :class="b()"
               :size="size"
               :clearable="disabled?false:clearable"
               v-model="text"
+              @keyup.enter="isSearch?appendClick():''"
               @click.native="handleClick"
               :type="typeParam"
               :maxlength="maxlength"
+              :minlength="minlength"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
               :prefix-icon="prefixIcon"
               :suffix-icon="suffixIcon"
               :readonly="readonly"
-              @keyup.enter="appendClick()"
               :placeholder="placeholder"
               :show-word-limit="showWordLimit"
               @change="handleChange"
               @focus="handleFocus"
               @blur="handleBlur"
-              :disabled="disabled">
+              :disabled="disabled"
+              :autocomplete="autocomplete">
+      <template slot="prepend"
+                v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+      </template>
+      <template slot="append"
+                v-if="append"><span @click="appendClick()">{{append}}</span></template>
       <el-button slot="append"
+                 v-else-if="isSearch"
                  icon="el-icon-search"
                  @click="appendClick()"></el-button>
     </el-input>
-    <template v-else-if="type==='url'">
-      <el-tooltip placement="bottom"
-                  :disabled="validatenull(text)">
-        <div slot="content">
-          <el-link type="primary"
-                   :href="text"
-                   :target="target">{{text}}</el-link>
-        </div>
-        <el-input :size="size"
-                  :clearable="disabled?false:clearable"
-                  v-model="text"
-                  @click.native="handleClick"
-                  :type="typeParam"
-                  :maxlength="maxlength"
-                  :minlength="minlength"
-                  :autosize="{ minRows: minRows, maxRows: maxRows}"
-                  :prefix-icon="prefixIcon"
-                  :suffix-icon="suffixIcon"
-                  :readonly="readonly"
-                  :placeholder="placeholder"
-                  :show-word-limit="showWordLimit"
-                  @change="handleChange"
-                  @focus="handleFocus"
-                  @blur="handleBlur"
-                  :disabled="disabled"
-                  :autocomplete="autocomplete">
-          <template slot="prepend"
-                    v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
-          </template>
-          <template slot="append"
-                    v-if="append"><span @click="appendClick()">{{append}}</span></template>
-        </el-input>
-      </el-tooltip>
-
-    </template>
-    <template v-else>
-      <el-input :size="size"
-                :clearable="disabled?false:clearable"
-                v-model="text"
-                @click.native="handleClick"
-                :type="typeParam"
-                :maxlength="maxlength"
-                :minlength="minlength"
-                :autosize="{ minRows: minRows, maxRows: maxRows}"
-                :prefix-icon="prefixIcon"
-                :suffix-icon="suffixIcon"
-                :readonly="readonly"
-                :placeholder="placeholder"
-                :show-word-limit="showWordLimit"
-                @change="handleChange"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                :disabled="disabled"
-                :autocomplete="autocomplete">
-        <template slot="prepend"
-                  v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
-        </template>
-        <template slot="append"
-                  v-if="append"><span @click="appendClick()">{{append}}</span></template>
-      </el-input>
-    </template>
-  </div>
+  </el-tooltip>
 </template>
 
 <script>
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
-import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
-import { findLabelNode } from 'utils/util'
 import { validatenull } from "utils/validate";
 export default create({
   name: "input",
   mixins: [props(), event()],
   data () {
     return {
-      node: {},
-      filterText: "",
-      box: false,
-      labelText: this.multiple ? [] : ""
+
     };
   },
   props: {
-    nodeClick: Function,
-    treeLoad: Function,
-    checked: Function,
     value: {},
     maxlength: "",
     minlength: "",
@@ -172,39 +60,9 @@ export default create({
       type: Boolean,
       default: false
     },
-    lazy: {
-      type: Boolean,
-      default: false
-    },
-    filter: {
-      type: Boolean,
-      default: true
-    },
-    checkStrictly: {
-      type: Boolean,
-      default: false
-    },
-    accordion: {
-      type: Boolean,
-      default: false
-    },
     target: {
       type: String,
       default: ' _blank'
-    },
-    parent: {
-      type: Boolean,
-      default: true
-    },
-    defaultExpandedKeys: {
-      type: Array,
-    },
-    defaultCheckedKeys: {
-      type: Array,
-    },
-    defaultExpandAll: {
-      type: Boolean,
-      default: false
     },
     prefixIcon: {
       type: String
@@ -247,70 +105,23 @@ export default create({
   watch: {
     text: {
       handler (value) {
-        if (!value) {
-          this.clearHandle();
-        }
         this.handleChange(value);
       },
       immediate: true
-    },
-    value () {
-      this.initVal();
-      this.init();
-    },
-    filterText (val) {
-      this.$refs.tree.filter(val);
     }
   },
   computed: {
-    treeProps () {
-      return Object.assign(this.props, {
-        isLeaf: this.leafKey
-      })
-    },
-    dicList () {
-      function addParent (result, parent) {
-        result.forEach(ele => {
-          const children = ele.children;
-          if (children) {
-            addParent(children, ele);
-          }
-          if (parent) {
-            ele.$parent = parent;
-          }
-        });
+    tipStatus () {
+      if (this.isUrl) {
+        return this.validatenull(this.text)
       }
-      let list = this.dic;
-      addParent(list);
-      return list;
+      return true;
     },
-    keysList () {
-      if (this.validatenull(this.text)) {
-        return [];
-      }
-      return this.multiple ? this.text : [this.text];
+    isSearch () {
+      return this.type == 'search'
     },
-    isTree () {
-      return this.type === "tree";
-    },
-    labelShow () {
-      if (this.validatenull(this.value)) {
-        return ''
-      } else if (this.multiple) {
-        return (this.labelText || []).join(DIC_SPLIT).toString()
-      }
-      return this.getLabelText(this.node);
-    },
-    textShow () {
-      if (this.textLen === 11)
-        return `${this.text.substr(0, 3)} ${this.text.substr(
-          3,
-          4
-        )} ${this.text.substr(7, 4)}`;
-      return this.text;
-    },
-    textLen () {
-      return (this.text || "").length || 0;
+    isUrl () {
+      return this.type == 'url'
     },
     typeParam: function () {
       if (this.type === "textarea") {
@@ -322,132 +133,16 @@ export default create({
       }
     }
   },
-  mounted () {
-    this.init();
-  },
   methods: {
-    // 初始化滚动条
-    initScroll () {
-      setTimeout(() => {
-        this.$nextTick(() => {
-          let scrollBar = document.querySelectorAll('.el-scrollbar .el-select-dropdown__wrap')
-          scrollBar.forEach(ele => {
-            ele.scrollTop = 0;
-          })
-        })
-      }, 0)
-    },
-    filterNode (value, data) {
-      if (!value) return true;
-      return data[this.labelKey].indexOf(value) !== -1;
-    },
-    checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
-      this.text = [];
-      this.labelText = [];
-      const list = checkedKeys.checkedNodes;
-      list.forEach(node => {
-        if (validatenull(node[this.childrenKey]) && !this.checkStrictly) {
-          this.text.push(node[this.valueKey]);
-          this.labelText.push(node[this.labelKey]);
-        } else if (this.checkStrictly) {
-          this.text.push(node[this.valueKey]);
-          this.labelText.push(node[this.labelKey]);
-        }
-      });
-      if (typeof this.checked === "function") this.checked(checkedNodes);
-      const result =
-        this.isString && this.multiple ? this.text.join(",") : this.text;
-      this.$emit("input", result);
-      this.$emit("change", result);
-    },
-    init () {
-      if (this.isTree) {
-        if (this.multiple) {
-          this.labelText = [];
-        } else {
-          this.labelText = "";
-        }
-        const check = setInterval(() => {
-          if (validatenull(this.dic)) {
-            this.labelText = "";
-            clearInterval(check);
-            return;
-          }
-          //是否禁止父类
-          this.disabledParentNode(this.dic, this.parent);
-          if (this.multiple) {
-            this.labelText = [];
-            if (!validatenull(this.text)) {
-              this.text.forEach(ele => {
-                //特殊处理0
-                ele = validatenull(ele) ? 0 : ele;
-                const label = findLabelNode(this.dic, ele, this.props) || ele;
-                this.labelText.push(label)
-              });
-            }
-          } else {
-            this.labelText = "";
-            if (!validatenull(this.text)) {
-              this.labelText = this.text;
-              const label = findLabelNode(this.dic, this.text, this.props) || this.text;
-              this.node = {}
-              this.node[this.labelKey] = label
-              this.labelText = label
-            }
-          }
-          setTimeout(() => {
-            this.$partent && this.$partent.$parent.clearValidate();
-          }, 0);
-          clearInterval(check);
-        }, 500);
-      }
-    },
-    disabledParentNode (dic, parent) {
-      dic.forEach(ele => {
-        const children = ele[this.childrenKey];
-        if (!validatenull(children)) {
-          if (!parent) {
-            ele.disabled = true;
-          }
-          this.disabledParentNode(children, parent);
-        }
-      });
-    },
-    clearHandle () {
-      let allNode = document.querySelectorAll('.tree-option .el-tree-node')
-      allNode.forEach((element) => element.classList.remove('is-current'))
-    },
-    handleNodeClick (data) {
-      const callback = () => {
-        this.node = data;
-        this.$refs.main.blur();
-      };
-      if (data.disabled) return
-      if (typeof this.nodeClick === "function") this.nodeClick(data);
-      if (this.multiple) return;
-      if (
-        (validatenull(data[this.childrenKey]) && !this.multiple) ||
-        this.parent
-      ) {
-        const value = data[this.valueKey];
-        const label = data[this.labelKey];
-        const result = this.isString && this.multiple ? value.join(",") : value;
-        this.text = value;
-        this.labelText = label;
-        this.$emit("input", result);
-        this.$emit("change", result);
-        callback();
-      }
-    },
     handleClick () {
-      const result =
-        this.isString && this.multiple ? this.text.join(",") : this.text;
-      if (typeof this.click === "function")
+      const result = this.text;
+      if (typeof this.click === "function") {
         this.click({ value: result, column: this.column });
+      }
     },
     handleChange (value) {
       let text = this.text;
-      const result = this.isString && this.multiple ? value.join(",") : value;
+      const result = value;
       if (typeof this.change === "function") {
         this.change({ value: result, column: this.column });
       }

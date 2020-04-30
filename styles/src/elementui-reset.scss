@@ -25,21 +25,27 @@
     height: 38px;
     line-height: 38px;
   }
-
+  .el-range-editor--small{
+    height: 32px;
+    line-height: 32px;
+  }
+  .el-range-editor--mini{
+    height: 28px;
+    line-height: 28px;
+  }
   .el-input--small {
     input {
-      height: 32px !important;
-      line-height: 32px !important;
+      height: 32px;
+      line-height: 32px;
     }
   }
 
   .el-input--mini {
     input {
-      height: 28px !important;
-      line-height: 28px !important;
+      height: 28px;
+      line-height: 28px;
     }
   }
-
   .el-table--medium td {
     padding: 7px 0 !important;
   }

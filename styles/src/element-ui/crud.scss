@@ -32,7 +32,7 @@ $space-width: 15px;
     overflow: hidden;
     margin-bottom: 5px;
   }
-  &-search{
+  &__search{
     .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
       margin-bottom: 8px;
     }
@@ -149,14 +149,10 @@ $space-width: 15px;
   }
   &__pagination {
     position: relative;
-    height: 25px;
     margin-top: 15px;
     margin-bottom: 10px;
     padding: 10px 20px;
-    .el-pagination {
-      position: absolute;
-      right: 0;
-    }
+    text-align: right;
   }
   &__form {
     padding: 0 8px;
@@ -225,22 +221,27 @@ $space-width: 15px;
     }
   }
   &__dialog {
-    &__menu{
+    &__header{
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      .menu{
-        padding-right: 25px;
+    }
+    &__menu{
+      padding-top: 1px;
+      padding-right: 20px;
+      i{
         color: #909399;
+        font-size: 15px;
+        &:hover{
+          color:#409EFF;
+        }
       }
+    }
+    .el-dialog__body{
+      padding: 20px 20px 5px 10px;
     }
     .el-scrollbar__wrap{
       overflow-x: hidden;
-    }
-    .el-dialog__body{
-      padding:10px 15px 0 15px;
-    }
-    .el-dialog {
-      border-radius: 5px;
     }
     .avue-form__menu{
       padding-top: 15px;

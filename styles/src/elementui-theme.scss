@@ -1,0 +1,79 @@
+$background:#000;
+$active_border:#409EFF;
+$label:#9a9a9f;
+$success:#67C23A;
+$warning:#E6A23C;
+$danger:#F56C6C;
+$info:#909399;
+$input_background:#151518;
+$input_color:#999;
+$input_border:#313135;
+$input_placeholder:#525256;
+.avue-theme--dark{
+  body{
+    background:$background;
+  }
+  .el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li{
+    background-color:$input_background;
+    color: $input_placeholder;
+    box-sizing: border-box;
+    border:1px solid $input_border;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color:$input_background;
+    border-color:$active_border;
+  }
+  .el-cascader-menu{
+    border-right: solid 1px $input_border;
+  }
+  
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected
+  ,.el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover{
+    background-color: $input_background;
+  }
+  .el-input__inner,.el-range-input,.el-cascader__dropdown,.el-select-dropdown {
+    background-color: $input_background;
+    color:$input_color;
+    border:1px solid $input_border;
+    &:hover {
+      border-color: $active_border;
+    }
+    &::-webkit-input-placeholder{
+      color:$input_placeholder
+    }
+    &::-moz-placeholder{   /* Mozilla Firefox 19+ */
+        color:$input_placeholder
+    }
+    &:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+        color:$input_placeholder
+    }
+    &:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+        color:$input_placeholder
+    }
+  }
+  .el-form-item__label{
+    color:$label;
+  }
+  .el-switch__core{
+    background:$input_background;
+    border-color:$input_background;
+  }
+  .avue-group__item{
+    background-color: $background;
+  }
+  
+  .el-table--border, .el-table--group{
+    border-color:$input_border;
+  }
+  .el-table__body tr.current-row>td,.el-table__body tr.hover-row>td{
+    background-color: $input_background;
+  }
+  .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
+    border-color:$input_color;
+  }
+  .avue-crud .el-table th,.el-table th, .el-table tr,.el-table,.el-table__fixed-footer-wrapper tbody td,.el-table__footer-wrapper tbody td, .el-table__header-wrapper tbody td{
+    background-color: $input_background;
+    color:$input_color;
+    border-color:$input_color;
+  }
+}

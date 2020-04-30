@@ -172,13 +172,13 @@ export const detailDataType = (value, type) => {
 export const getUrlParams = (url) => {
   let result = {
     url: '',
-    params: []
+    params: {}
   };
-  result.url = url.split('?')[0];
-  if (url[1]) {
-    let str = url[1];
-    url = str.substr(1);
-    let list = url.split('&');
+  let list = url.split('?');
+  result.url = list[0];
+  let params = list[1];
+  if (params) {
+    let list = params.split('&');
     list.forEach(ele => {
       let dic = ele.split('=');
       let label = dic[0];
@@ -336,6 +336,19 @@ export const getPasswordChar = (result = '', char) => {
   return result;
 };
 
+export const clearVal = (obj) => {
+  if (!obj) return {};
+  Object.keys(obj).forEach(ele => {
+    if (Array.isArray(ele[obj])) {
+      obj[ele] = [];
+    } else if (typeof obj[ele] === 'object') {
+      obj[ele] = {};
+    } else {
+      obj[ele] = '';
+    }
+  });
+  return obj;
+};
 /**
  * 验证是否存在true/false
  */

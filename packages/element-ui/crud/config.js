@@ -9,7 +9,7 @@ export default {
   menuAlign: 'center',
   headerAlign: 'left',
   // 图标
-  cancelBtnIcon: 'el-icon-delete',
+  cancelBtnIcon: 'el-icon-circle-close',
   viewBtnIcon: 'el-icon-view',
   editBtnIcon: 'el-icon-edit',
   addBtnIcon: 'el-icon-plus',
@@ -18,7 +18,8 @@ export default {
   delBtnIcon: 'el-icon-delete',
   searchBtnIcon: 'el-icon-search',
   emptyBtnIcon: 'el-icon-delete',
-  saveBtnIcon: 'el-icon-check',
+  saveBtnIcon: 'el-icon-circle-plus-outline',
+  updateBtnIcon: 'el-icon-circle-check',
   columnBtnIcon: 'el-icon-s-operation',
   filterBtnIcon: 'el-icon-tickets',
   refreshBtnIcon: 'el-icon-refresh',

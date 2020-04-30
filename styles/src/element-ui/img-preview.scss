@@ -1,0 +1,41 @@
+.avue-img {
+  &--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &--fullscreen {
+    .el-dialog__body {
+      height: 100%;
+    }
+  }
+}
+
+.avue-image-preview{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height: 100%;
+  transition: all 0.5s;
+  z-index:9999;
+  &__mask{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background: rgba(0,0,0,.16);
+    z-index:-1;
+  }
+  &__box{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .el-carousel{
+      width: 80%;
+    }
+  }
+}
