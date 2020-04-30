@@ -175,6 +175,8 @@ export default create({
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.crud.propOption;
+      option.printBtn = false;
+      option.mockBtn = false;
       if (this.isView) {
         option.menuBtn = false;
       } else {

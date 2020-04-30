@@ -136,6 +136,8 @@ export default cteate({
         result.column = detailColumn(this.deepClone(this.crud.columnFormOption))
         result = Object.assign(result, {
           tabs: false,
+          printBtn: false,
+          mockBtn: false,
           size: this.crud.isMediumSize,
           gutter: option.searchGutter || this.config.searchGutter,
           labelWidth: option.searchLabelWidth || this.config.searchLabelWidth,
