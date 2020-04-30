@@ -16,7 +16,9 @@
             v-if="item.slot"></slot>
       <template v-if="!item.slot && vaildData(column.display,true)"
                 v-for="(column,cindex) in item.column">
-        <el-col :md="column.span || 8"
+        <el-col :span="column.span ||  itemSpanDefault"
+                :md="column.span || itemSpanDefault"
+                :sm="12"
                 :xs="24"
                 :key="column.prop">
           <div :class="b('box')">
