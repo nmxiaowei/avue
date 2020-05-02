@@ -13,6 +13,71 @@ body {
 .avue--disabled{
   color:#ccc;
 }
+.avue--detail{
+  .el-input.is-disabled .el-input__inner{
+    color: #606266;
+    background-color: #fff;
+  }
+  .el-checkbox__input.is-disabled+span.el-checkbox__label{
+    color: #606266;
+  }
+  .el-input__inner,.el-textarea__inner{
+    border: none;
+    &::-webkit-input-placeholder {
+      color:transparent !important;
+    }
+    &::-moz-placeholder {
+      color: transparent !important;
+    }
+    &::-moz-placeholder {
+      color:transparent !important;
+    }
+    &::-ms-input-placeholder { 
+      color: transparent !important;
+    }
+    &::-ms-input-placeholder { 
+      color:transparent !important;
+    }
+  }
+  .el-radio{
+    display: none;
+    .el-radio__inner{
+      display: none;
+    }
+    &.is-checked,.is-disabled.is-checked{
+      display: inline-block;
+      color: #606266;
+      .el-radio__label{
+        padding-left: 14px;
+        color: #606266;
+        font-weight: normal;
+        font-size: 14px;
+      }
+    }
+  }
+  .el-checkbox {
+    display: none;
+    .is-checked{
+      display: inline-block;
+      color: #606266;
+    }
+    .el-checkbox__label{
+      padding-left: 14px;
+      color: #606266;
+      font-weight: normal;
+      font-size: 14px;
+    }
+    .el-checkbox__inner{
+      display: none;
+    }
+  }
+  .el-input__suffix{
+    display: none;
+  }
+  .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before, .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before{
+    display: none;
+  }
+}
 .avue--view{
   .el-textarea.is-disabled .el-textarea__inner{
     background-color: #fff;

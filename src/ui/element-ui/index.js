@@ -12,7 +12,6 @@ import Comment from 'components/comment';
 import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
-import Detail from 'components/detail';
 import Draggable from 'components/draggable';
 import Empty from 'components/empty';
 import Flow from 'components/flow';
@@ -88,7 +87,6 @@ export default [
   Slider,
   Img,
   Keyboard,
-  Detail,
   Group,
   Tree,
   Search,
