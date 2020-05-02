@@ -44,7 +44,14 @@
               <i class="list-item-icon list-item--no"
                  v-else>x</i>
               <a :href="citem.href?citem.href:'javascript:void(0);'">
-                <span :class="{'list-item--link':citem.href}">{{citem.title}}</span>
+                <el-tooltip effect="dark"
+                            :disabled="!citem.tip"
+                            placement="top">
+                  <div slot="content"
+                       v-html="citem.tip"></div>
+                  <span :class="{'list-item--link':citem.href}">{{citem.title}}</span>
+                </el-tooltip>
+
               </a>
             </div>
           </div>
