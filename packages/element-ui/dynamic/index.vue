@@ -5,7 +5,7 @@
                :data="text">
       <template slot-scope="scope"
                 slot="index">
-        <el-button v-if="!delBtn&&hoverList[scope.row.$index]&&!disabled"
+        <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @mouseout.native="mouseoutRow(scope.row.$index)"
                    @click="delRow(scope.row.$index)"
                    type="danger"
@@ -13,7 +13,7 @@
                    :disabled="disabled"
                    icon="el-icon-delete"
                    circle></el-button>
-        <span v-else-if="delBtn || !hoverList[scope.row.$index]"
+        <span v-else
               @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
       </template>
       <template v-for="(item,index) in columnOption"
@@ -42,6 +42,12 @@ export default create({
     }
   },
   props: {
+    readonly: {
+      type: Boolean,
+    },
+    disabled: {
+      type: Boolean,
+    },
     children: {
       type: Object,
       default: () => {
@@ -70,6 +76,8 @@ export default create({
         border: true,
         header: false,
         menu: false,
+        readonly: this.readonly,
+        disabled: this.disabled
       }, (() => {
         let option = this.deepClone(this.children)
         delete option.column;
@@ -81,7 +89,7 @@ export default create({
           fixed: true,
           width: 50,
           renderHeader: (h, { column, $index }) => {
-            if (this.option.addBtn === false) {
+            if (this.option.addBtn === false || (this.readonly || this.disabled)) {
               return '序号';
             }
             return h('el-button', {

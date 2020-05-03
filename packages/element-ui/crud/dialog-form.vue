@@ -179,6 +179,7 @@ export default create({
       option.mockBtn = false;
       if (this.isView) {
         option.menuBtn = false;
+        option.detail = true;
       } else {
         if (!option.menuPosition) option.menuPosition = 'right'
         if (this.isAdd) {

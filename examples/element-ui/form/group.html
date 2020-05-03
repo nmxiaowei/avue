@@ -20,20 +20,7 @@
 <body>
   <div id="app">
     <el-button @click="handle" style="margin-left: 20px">{{title}}</el-button>
-    <component :is="name" :option="option" v-model="obj" @submit="submit">
-      <template slot-scope="scope" slot="name">
-        <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
-      </template>
-      <template slot-scope="scope" slot="names">
-        <div>
-          <span>{{obj.names}}</span>
-          <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.names"></avue-input>
-        </div>
-      </template>
-      <template slot="jbxxHeader">
-        自定义头部
-      </template>
-    </component>
+    <avue-form :option="option" v-model="obj" @submit="submit"></avue-form>
   </div>
 </body>
 <script>
@@ -44,9 +31,6 @@
       title() {
         return this.type === 0 ? '编辑' : '保存'
       },
-      name() {
-        return this.type === 0 ? 'avue-detail' : 'avue-form'
-      }
     },
     data() {
       return {
@@ -56,11 +40,107 @@
           name1: '123'
         },
         option: {
-          tabs: true,
-          // tabsType: 'card',
+          detail: false,
           column: [{
             label: '测试字段',
             prop: 'name'
+          }, {
+            label: '子表单',
+            prop: 'dynamic',
+            type: 'dynamic',
+            span: 24,
+            span: 16,
+            children: {
+              rowAdd: (done) => {
+                this.$message.success('新增回调')
+                done({ input: 3 })
+              },
+              rowDel: (row, done) => {
+                this.$message.success('删除回调' + JSON.stringify(row))
+                done();
+              },
+              height: 300,
+              align: 'center',
+              headerAlign: 'center',
+              column: [{
+                width: 200,
+                label: '输入框',
+                prop: "input",
+              }, {
+                width: 200,
+                label: '密码框',
+                prop: "password",
+                type: 'password',
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入密码',
+                    trigger: 'blur'
+                  }
+                ]
+              }, {
+                width: 200,
+                label: '树型',
+                prop: "tree",
+                type: 'tree',
+                dicData: [{
+                  label: '1-1',
+                  value: 0,
+                  children: [{
+                    label: "2-1",
+                    value: 1
+                  }]
+                }]
+              }, {
+                width: 200,
+                label: '选择框',
+                prop: "select",
+                type: 'select',
+                dicData: [{
+                  label: '测试1',
+                  value: 1
+                }, {
+                  label: '测试2',
+                  value: 2
+                }]
+              }, {
+                width: 200,
+                label: '多选',
+                prop: "checkbox",
+                type: 'checkbox',
+                dicData: [{
+                  label: '测试1',
+                  value: 1
+                }, {
+                  label: '测试2',
+                  value: 2
+                }]
+              }, {
+                width: 200,
+                label: '开关',
+                prop: "switch",
+                type: 'switch',
+                dicData: [{
+                  label: '测试1',
+                  value: 1
+                }, {
+                  label: '测试2',
+                  value: 2
+                }]
+              }, {
+                width: 200,
+                label: '数字框',
+                prop: "number",
+                type: 'number'
+              }]
+            },
+            rules: [
+              {
+                required: true,
+                message: '必填项测试',
+                trigger: 'blur'
+              }
+            ]
           }],
           group: [
             {
@@ -71,7 +151,6 @@
                 {
                   label: '姓名',
                   prop: 'name',
-                  formslot: true,
                   rules: [
                     {
                       required: true,
@@ -166,6 +245,17 @@
                   prop: 'len',
                   maxlength: 5,
                 }, {
+                  label: 'radio',
+                  prop: 'radio',
+                  type: 'radio',
+                  dicData: [{
+                    label: 1,
+                    value: 1
+                  }, {
+                    label: 2,
+                    value: 2
+                  }]
+                }, {
                   label: '测试自定义',
                   prop: 'names',
                   formslot: true
@@ -183,6 +273,16 @@
           province: '110000',
           city: '110100',
           area: '110101',
+          radio: 1,
+          dynamic: [{
+            input: 1,
+            select: 1,
+            radio: 1,
+          }, {
+            input: 2,
+            select: 2,
+            radio: 1,
+          }],
           checkbox: ['110000']
         }
       }, 100)
@@ -191,8 +291,10 @@
       handle() {
         if (this.type === 1) {
           this.type = 0;
+          this.option.detail = true
         } else {
           this.type = 1;
+          this.option.detail = false
         }
       },
       submit() {

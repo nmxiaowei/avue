@@ -1,5 +1,5 @@
 <template>
-  <div :class="[b(),{'avue--view':isView}]"
+  <div :class="[b(),{'avue--view':isView,'avue--detail':isDetail}]"
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
              status-icon
@@ -51,8 +51,8 @@
                       v-for="(column,cindex) in item.column">
               <el-col :key="column.prop"
                       :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
-                      :span="column.span || itemSpanDefault"
-                      :md="column.span || itemSpanDefault"
+                      :span="getSpan(column)"
+                      :md="getSpan(column)"
                       :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
@@ -90,7 +90,7 @@
                           :column="column"
                           :label="form['$'+column.prop]"
                           :size="column.size || controlSize"
-                          :disabled="vaildDisabled(column)"
+                          :disabled="isDetail || vaildDisabled(column) || allDisabled"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
                           v-if="column.formslot"></slot>
@@ -105,7 +105,7 @@
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
                                :upload-error="uploadError"
-                               :disabled="vaildDisabled(column) || allDisabled"
+                               :disabled="isDetail || vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
@@ -140,7 +140,7 @@
                    v-if="column.row && column.span!==24 && column.count"></div>
             </template>
             <slot name="search"></slot>
-            <form-menu v-if="!isMenu">
+            <form-menu v-if="!isDetail && !isMenu">
               <template slot-scope="scope"
                         slot="menuForm">
                 <slot name="menuForm"
@@ -149,7 +149,7 @@
             </form-menu>
           </div>
         </avue-group>
-        <form-menu v-if="isMenu">
+        <form-menu v-if="!isDetail && isMenu">
           <template slot-scope="scope"
                     slot="menuForm">
             <slot name="menuForm"
@@ -228,20 +228,29 @@ export default create({
     isMenu () {
       return this.columnOption.length != 1
     },
+    isDetail () {
+      return this.option.detail
+    },
     isAdd () {
       return this.boxType === "add"
     },
     isTabs () {
       return this.parentOption.tabs;
     },
-    tabsType () {
-      return this.parentOption.tabsType;
-    },
     isEdit () {
       return this.boxType === "edit"
     },
     isView () {
       return this.boxType === "view"
+    },
+    disabled () {
+      return this.parentOption.disabled
+    },
+    readonly () {
+      return this.parentOption.readonly
+    },
+    tabsType () {
+      return this.parentOption.tabsType;
     },
     propOption () {
       let list = [];
@@ -305,10 +314,6 @@ export default create({
     },
   },
   props: {
-    disabled: {
-      type: Boolean,
-      default: false
-    },
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
@@ -335,6 +340,9 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
+    getSpan (column) {
+      return this.parentOption.span || column.span || this.itemSpanDefault
+    },
     isGroupShow (item, index) {
       if (this.isTabs) {
         return index == this.activeName || index == 0

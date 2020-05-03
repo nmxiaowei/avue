@@ -56,10 +56,10 @@
                 <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
                 <span v-else-if="['img','upload'].includes(column.type)">
                   <div class="avue-crud__img">
-                    <img v-for="(item,index) in detailData(scope.row[column.prop],column.dataType)"
+                    <img v-for="(item,index) in getImgList(scope,column) "
                          :src="item"
                          :key="index"
-                         @click="openImg(detailData(scope.row[column.prop],column.dataType),index)" />
+                         @click="openImg(getImgList(scope,column),index)" />
                   </div>
                 </span>
                 <span v-else-if="['url'].includes(column.type)">
@@ -140,6 +140,12 @@ export default {
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
         prop
       )
+    },
+    getImgList (scope, column) {
+      if (column.listType == 'picture-img') {
+        return [scope.row[column.prop]]
+      }
+      return this.detailData(scope.row[column.prop], column.dataType)
     },
     detailData (list, dataType) {
       if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
