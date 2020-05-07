@@ -14,9 +14,13 @@ body {
   color:#ccc;
 }
 .avue--detail{
-  .el-input.is-disabled .el-input__inner{
+  .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner{
     color: #606266;
     background-color: #fff;
+  }
+  .el-input-group__append, .el-input-group__prepend{
+    background-color: transparent;
+    border:none;
   }
   .el-checkbox__input.is-disabled+span.el-checkbox__label{
     color: #606266;

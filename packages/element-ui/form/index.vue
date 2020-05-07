@@ -56,7 +56,7 @@
                       :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
-                      :class="b('row')">
+                      :class="[b('row'),{'avue--detail':column.detail}]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
@@ -67,7 +67,8 @@
                     <slot :name="column.prop+'Label'"
                           :column="column"
                           :value="form[column.prop]"
-                          :disabled="vaildDisabled(column)"
+                          :readonly="readonly || column.readonly"
+                          :disabled="column.detail || vaildDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
@@ -78,7 +79,8 @@
                           :column="column"
                           :error="error"
                           :value="form[column.prop]"
-                          :disabled="vaildDisabled(column)"
+                          :readonly="readonly || column.readonly"
+                          :disabled="column.detail || vaildDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
@@ -90,6 +92,7 @@
                           :column="column"
                           :label="form['$'+column.prop]"
                           :size="column.size || controlSize"
+                          :readonly="readonly || column.readonly"
                           :disabled="isDetail || vaildDisabled(column) || allDisabled"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
@@ -105,7 +108,8 @@
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
                                :upload-error="uploadError"
-                               :disabled="isDetail || vaildDisabled(column) || allDisabled"
+                               :readonly="readonly || column.readonly"
+                               :disabled="column.detail || isDetail || vaildDisabled(column) || allDisabled"
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
