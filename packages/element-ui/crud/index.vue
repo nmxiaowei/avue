@@ -374,7 +374,7 @@ export default create({
         //动态计算表格高度
         this.getTableHeight();
         //是否开启表格排序
-        if (this.isSortable) setTimeout(this.setSort(), 0)
+        this.setSort()
       })
     });
   },
@@ -570,22 +570,29 @@ export default create({
     },
     //开启排序
     setSort () {
-      if (!window.Sortable) {
-        packages.logs("Sortable")
-        return
-      }
-      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
-      this.sortable = window.Sortable.create(el, {
-        ghostClass: 'avue-crud__sortable',
-        handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
-        onEnd: evt => {
-          const oldindex = evt.oldIndex;
-          const newindex = evt.newIndex;
-          const targetRow = this.list.splice(oldindex, 1)[0]
-          this.list.splice(newindex, 0, targetRow)
-          this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
+      const callback = () => {
+        if (!window.Sortable) {
+          packages.logs("Sortable")
+          return
         }
-      })
+        const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+        this.sortable = window.Sortable.create(el, {
+          ghostClass: 'avue-crud__sortable',
+          handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
+          onEnd: evt => {
+            const oldindex = evt.oldIndex;
+            const newindex = evt.newIndex;
+            const targetRow = this.list.splice(oldindex, 1)[0]
+            this.list.splice(newindex, 0, targetRow)
+            this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
+          }
+        })
+      }
+      if (this.isSortable) {
+        this.$nextTick(() => {
+          callback()
+        })
+      }
     },
     //树懒加载
     treeLoad (tree, treeNode, resolve) {
@@ -764,21 +771,18 @@ export default create({
       }
     },
     //单元格新增
-    rowCellAdd (obj = {}) {
-      const len = this.list.length;
-      this.list.push(
-        this.deepClone(
-          Object.assign(
-            this.tableForm,
-            {
-              $cellEdit: true,
-              $index: len
-            },
-            obj
-          )
-        )
-      );
+    rowCellAdd (row = {}) {
+      row = this.deepClone(
+        Object.assign(
+          {
+            $cellEdit: true,
+            $index: this.list.length
+          },
+          row
+        ))
+      this.list.push(row);
       this.formIndexList.push(len);
+      this.setSort();
     },
     //行取消
     rowCanel (row, index) {

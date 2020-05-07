@@ -44,7 +44,7 @@
                          :upload-before="crud.uploadBefore"
                          :upload-after="crud.uploadAfter"
                          v-model="scope.row[column.prop]"
-                         @change="column.cascader?handleChange(index,scope.row):''">
+                         @change="column.cascader && handleChange(index,scope.row)">
               </form-temp>
               <slot :row="scope.row"
                     :dic="crud.DIC[column.prop]"
@@ -202,6 +202,7 @@ export default {
         this.$set(this.crud.cascaderDIC, rowIndex, {});
       }
       // 如果存在队列中则清空字典和值
+      console.log(this.crud.formIndexList)
       if (this.crud.formIndexList.includes(rowIndex)) {
         //清空子类字典
         list.forEach(ele => {
@@ -209,12 +210,13 @@ export default {
           list.forEach(ele => (row[ele] = ""));
         });
       }
-
       sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
           this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+          //首次加载的放入队列记录
+          if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
         }
       );
     },

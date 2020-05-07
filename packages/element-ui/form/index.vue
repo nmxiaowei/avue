@@ -68,7 +68,7 @@
                           :column="column"
                           :value="form[column.prop]"
                           :readonly="readonly || column.readonly"
-                          :disabled="column.detail || vaildDisabled(column)"
+                          :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
@@ -80,7 +80,7 @@
                           :error="error"
                           :value="form[column.prop]"
                           :readonly="readonly || column.readonly"
-                          :disabled="column.detail || vaildDisabled(column)"
+                          :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
@@ -93,7 +93,7 @@
                           :label="form['$'+column.prop]"
                           :size="column.size || controlSize"
                           :readonly="readonly || column.readonly"
-                          :disabled="isDetail || vaildDisabled(column) || allDisabled"
+                          :disabled="getDisabled(column)"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
                           v-if="column.formslot"></slot>
@@ -109,11 +109,11 @@
                                :upload-preview="uploadPreview"
                                :upload-error="uploadError"
                                :readonly="readonly || column.readonly"
-                               :disabled="column.detail || isDetail || vaildDisabled(column) || allDisabled"
+                               :disabled="getDisabled(column)"
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader?handleChange(item.column,cindex):''">
+                               @change="column.cascader && handleChange(item.column,cindex)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -344,6 +344,9 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
+    getDisabled (column) {
+      return column.detail || this.isDetail || this.vaildDisabled(column) || this.allDisabled
+    },
     getSpan (column) {
       return this.parentOption.span || column.span || this.itemSpanDefault
     },
