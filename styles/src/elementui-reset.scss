@@ -6,6 +6,9 @@
   .avue-input-number {
     width: 100% !important;
   }
+  .el-input-number .el-input__inner{
+    text-align: left;
+  }
   .avue-crud__left,.avue-crud__right{
     .el-button + .el-button {
       margin-left: 0;

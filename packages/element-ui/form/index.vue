@@ -56,7 +56,7 @@
                       :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
-                      :class="[b('row'),{'avue--detail':column.detail}]">
+                      :class="[b('row'),{'avue--detail':vaildDetail(column)}]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
@@ -345,7 +345,7 @@ export default create({
     getComponent,
     getPlaceholder,
     getDisabled (column) {
-      return column.detail || this.isDetail || this.vaildDisabled(column) || this.allDisabled
+      return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
     getSpan (column) {
       return this.parentOption.span || column.span || this.itemSpanDefault
@@ -474,6 +474,20 @@ export default create({
           }
         });
         this.$emit('mock-change', this.form);
+      }
+    },
+    vaildDetail (column) {
+      if (this.detail) return true;
+      if (!this.validatenull(column.detail)) {
+        return this.vaildData(column.detail, false);
+      } else if (this.isAdd) {
+        return this.vaildData(column.addDetail, false);
+      } else if (this.isEdit) {
+        return this.vaildData(column.editDetail, false);
+      } else if (this.isView) {
+        return true;
+      } else {
+        return false;
       }
     },
     // 验证表单是否禁止

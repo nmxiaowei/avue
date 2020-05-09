@@ -772,11 +772,12 @@ export default create({
     },
     //单元格新增
     rowCellAdd (row = {}) {
+      let len = this.list.length
       row = this.deepClone(
         Object.assign(
           {
             $cellEdit: true,
-            $index: this.list.length
+            $index: len,
           },
           row
         ))
