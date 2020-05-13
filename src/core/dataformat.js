@@ -67,17 +67,15 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
     ['checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
     // 单个头像特殊处理
-    if (listType === 'picture-img' && type === 'upload') {
-      list = [value];
-    } else if (!Array.isArray(value)) {
-      if (!validatenull(value)) {
-        list = (value || '').split(',') || [];
-      } else {
+    if (!Array.isArray(value)) {
+      if (validatenull(value)) {
         list = [];
+      } else {
+        list = (value || '').split(',') || [];
       }
     }
     // 数据转化
-    list.map((ele, index) => {
+    list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
   }

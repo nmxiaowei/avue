@@ -161,6 +161,9 @@ export default create({
     uploadError: Function
   },
   computed: {
+    homeUrl () {
+      return this.propsHttp.home || ''
+    },
     allParams () {
       if (this.typeList.video.test(this.imgUrl)) {
         return Object.assign({
@@ -184,7 +187,7 @@ export default create({
     //单个头像图片
     imgUrl () {
       if (!this.validatenull(this.text)) {
-        return this.text[0];
+        return this.homeUrl + this.text[0];
       }
     },
     fileList () {
@@ -202,7 +205,7 @@ export default create({
             uid: index + '',
             status: 'done',
             name: flag ? name : ele[this.labelKey],
-            url: flag ? ele : ele[this.valueKey]
+            url: this.homeUrl + (flag ? ele : ele[this.valueKey])
           });
         }
       });
@@ -226,7 +229,7 @@ export default create({
       if (this.isArray || this.isString) {
         this.text.push(file[this.urlKey]);
       } else if (this.isPictureImg) {
-        this.text.unshift(file[this.urlKey]);
+        this.text[0] = file[this.urlKey]
       } else {
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
@@ -422,7 +425,7 @@ export default create({
     },
     handleDelete (file) {
       this.beforeRemove(file).then(() => {
-        this.text[0] = '';
+        this.text = [];
         this.setVal();
       }).catch(() => {
       });
