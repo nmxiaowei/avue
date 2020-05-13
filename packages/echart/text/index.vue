@@ -24,7 +24,6 @@ export default create({
       check: "",
       date: new Date(),
       left: 0,
-      textWidth: 0
     };
   },
   computed: {
@@ -52,8 +51,13 @@ export default create({
     split () {
       return this.option.split;
     },
+    textWidth () {
+      const textLen = (this.dataChart.value || '').length;
+      return textLen * this.fontSize;
+    },
     styleName () {
       return {
+        width: this.scroll ? this.setPx(this.textWidth) : 'auto',
         transform: "translateX(" + this.left + "px)",
         textAlign: this.option.textAlign,
         letterSpacing: this.setPx(this.split),
@@ -91,8 +95,6 @@ export default create({
     move () {
       clearInterval(this.check);
       if (this.scroll) {
-        const textLen = this.data.length;
-        this.textWidth = textLen * this.fontSize;
         this.check = setInterval(() => {
           if (this.left < -this.textWidth) {
             this.left = this.width;

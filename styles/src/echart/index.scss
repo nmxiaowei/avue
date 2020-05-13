@@ -40,6 +40,7 @@
     }
   }
   &-text{
+    overflow: hidden;
     &__box{
       width: 100%;
       height: 100%;
@@ -214,11 +215,10 @@
     }
   }
   &-flop{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    &__flop{
+    .el-tooltip{
+      width: 100%;
+    }
+    &__count{
       flex:1;
       display: flex;
       flex-wrap: wrap;
@@ -226,35 +226,16 @@
     }
     &__item{
       font-family: "Microsoft Yahei";
-      font-size: 32px;
+      font-size: 28px;
       font-weight: normal;
       color: rgb(255, 255, 255);
-      margin-left: 3.2px;
-      margin-right: 3.2px;
-      padding: 0px 0.1em;
-      box-sizing: content-box;
-      width: 0.6em;
-      text-align: center;
-      display: flex;
+      box-sizing: border-box;
+      display: inline-block;
       &--img{
+        padding: 0 5px;
         border-image-slice: 10 16 15 10 fill;
         border-width: 10px 16px 15px 10px;
         border-style: solid;
-      }
-      &--row{
-        flex-direction: row !important;
-        span,div{
-          width:auto;
-        }
-      }
-      &--whole{
-        align-items: center;
-        flex-direction: column;
-        justify-content: space-around;
-        div,span{
-          display: block;
-          width: 100%;
-        }
       }
       &--none{
         padding: 0 !important;
