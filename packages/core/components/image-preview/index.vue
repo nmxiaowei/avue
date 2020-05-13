@@ -4,11 +4,14 @@
        @click="isShow=false">
     <div :class="b('mask')"></div>
     <div :class="b('box')">
-      <el-carousel :initial-index="index"
+      <el-carousel :height="height"
+                   :initial-index="index"
                    type="card">
         <el-carousel-item v-for="(item,index) in datas"
                           :key="index">
-          <el-image :src="item.url"></el-image>
+          <el-image :src="item.url"
+                    fit="contain"
+                    :style="{height:height}"></el-image>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -20,22 +23,12 @@ export default create({
   name: "image-preview",
   data () {
     return {
-      isShow: false,
       datas: [],
+      isShow: false,
       index: 0,
       onClose: null,
-      width: 200,
-      height: 200
+      height: '500px'
     };
-  },
-  watch: {
-    isShow () {
-      if (!this.isShow) {
-        this.close();
-        this.width = 200;
-        this.height = 200;
-      }
-    }
   },
   mounted () { },
   methods: {
