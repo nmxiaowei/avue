@@ -321,14 +321,7 @@ export default create({
               return;
             }
             oss_config = this.$AVUE.ali;
-            client = getClient({
-              region: oss_config.region,
-              endpoint: oss_config.endpoint,
-              stsToken: oss_config.stsToken,
-              accessKeyId: oss_config.accessKeyId,
-              accessKeySecret: oss_config.accessKeySecret,
-              bucket: oss_config.bucket
-            });
+            client = getClient(oss_config);
           }
           (() => {
             if (this.isAliOss) {
