@@ -148,7 +148,9 @@ export default {
       return this.detailData(scope.row[column.prop], column.dataType)
     },
     detailData (list, dataType) {
-      if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
+      if (this.validatenull(list)) {
+        return []
+      } else if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
         return list.split(',')
       }
       return list;
