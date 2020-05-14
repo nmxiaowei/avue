@@ -212,8 +212,6 @@ export default {
       if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
         this.$set(this.crud.cascaderDIC, rowIndex, {});
       }
-      // 如果存在队列中则清空字典和值
-      console.log(this.crud.formIndexList)
       if (this.crud.formIndexList.includes(rowIndex)) {
         //清空子类字典
         list.forEach(ele => {

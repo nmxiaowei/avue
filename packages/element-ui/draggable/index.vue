@@ -102,6 +102,7 @@ export default create({
       overActive: false,
       rangeActive: false,
       active: false,
+      keydown: null,
       rangeList: [
         {
           classname: "left",
@@ -184,7 +185,7 @@ export default create({
       if (val) {
         this.handleKeydown()
       } else {
-        document.onkeydown = null
+        document.onkeydown = this.keydown
       }
     },
     width (val) {
@@ -223,6 +224,7 @@ export default create({
       this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
       this.baseLeft = getFixed(this.left);
       this.baseTop = getFixed(this.top);
+      this.keydown = document.onkeydown
     },
     setLeft (left) {
       this.baseLeft = left;
@@ -362,6 +364,7 @@ export default create({
     },
     handleKeydown () {
       document.onkeydown = (event) => {
+        this.keydown(event);
         var e = event || window.event || arguments.callee.caller.arguments[0];
         let step = 1 * this.step;
         if (e && e.keyCode == 38) {//上
