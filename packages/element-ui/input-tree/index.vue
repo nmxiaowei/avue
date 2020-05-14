@@ -115,6 +115,9 @@ export default create({
         this.handleChange(value);
       },
     },
+    dic () {
+      this.init();
+    },
     value () {
       this.initVal();
       this.init();
