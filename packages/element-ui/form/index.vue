@@ -7,7 +7,7 @@
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
              :label-position="parentOption.labelPosition"
-             :size="controlSize"
+             :size="$AVUE.formSize || controlSize"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
       <el-row :span="24"

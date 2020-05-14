@@ -58,7 +58,7 @@
               :data="list"
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
-              :size="controlSize"
+              :size="$AVUE.tableSize || controlSize"
               :lazy="vaildData(tableOption.lazy,false)"
               :load="treeLoad"
               :tree-props="tableOption.treeProps || {}"

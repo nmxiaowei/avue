@@ -49,6 +49,9 @@
                          :clearable="vaildData(column.clearable,false)"
                          :upload-before="crud.uploadBefore"
                          :upload-after="crud.uploadAfter"
+                         :upload-preview="crud.uploadPreview"
+                         :upload-error="crud.uploadError"
+                         :upload-delete="crud.uploadDelete"
                          v-model="scope.row[column.prop]"
                          @change="column.cascader?handleChange(index,scope.row):''">
               </form-temp>
