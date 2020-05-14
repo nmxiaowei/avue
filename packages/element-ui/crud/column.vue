@@ -142,10 +142,15 @@ export default {
       )
     },
     getImgList (scope, column) {
+      let url = (column.propsHttp || {}).home || ''
       if (column.listType == 'picture-img') {
-        return [scope.row[column.prop]]
+        return [url + scope.row[column.prop]]
       }
-      return this.detailData(scope.row[column.prop], column.dataType)
+      let list = this.detailData(scope.row[column.prop], column.dataType);
+      list.forEach(ele => {
+        ele = url + ele;
+      })
+      return list;
     },
     detailData (list, dataType) {
       if (this.validatenull(list)) {
