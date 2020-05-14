@@ -54,7 +54,7 @@
       <slot name="tip"></slot>
     </el-tag>
     <slot name="header"></slot>
-    <el-table v-if="doLayout"
+    <el-table v-if="reload"
               :data="list"
               :row-key="handleGetRowKeys"
               :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
@@ -337,7 +337,7 @@ export default create({
   },
   data () {
     return {
-      doLayout: true,
+      reload: true,
       isChild: false,
       searchForm: {},
       config: config,
@@ -365,18 +365,14 @@ export default create({
     this.handleLoadDic();
   },
   mounted () {
-    this.doLayout = false;
-    this.$nextTick(() => {
-      this.doLayout = true;
+    this.refreshTable(() => {
       //如果有搜索激活搜索
       if (this.$refs.headerSearch) this.$refs.headerSearch.init();
-      this.$nextTick(() => {
-        //动态计算表格高度
-        this.getTableHeight();
-        //是否开启表格排序
-        this.setSort()
-      })
-    });
+      //动态计算表格高度
+      this.getTableHeight();
+      //是否开启表格排序
+      this.setSort()
+    })
   },
   computed: {
     calcHeight () {
@@ -562,10 +558,14 @@ export default create({
         this.tableHeight = this.tableOption.height;
       }
     },
-    refreshTable () {
-      this.doLayout = false;
+    doLayout () {
+      this.$refs.table.doLayout()
+    },
+    refreshTable (callback) {
+      this.reload = false;
       this.$nextTick(() => {
-        this.doLayout = true;
+        this.reload = true;
+        callback && callback()
       })
     },
     //开启排序
