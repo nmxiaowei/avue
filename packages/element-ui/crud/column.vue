@@ -59,10 +59,11 @@
                 <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
                 <span v-else-if="['img','upload'].includes(column.type)">
                   <div class="avue-crud__img">
-                    <img v-for="(item,index) in getImgList(scope,column) "
-                         :src="item"
-                         :key="index"
-                         @click="openImg(getImgList(scope,column),index)" />
+                    <el-image :preview-src-list="getImgList(scope,column)"
+                              v-for="(item,index) in getImgList(scope,column)"
+                              :src="item"
+                              fit="contain"
+                              :key="index"></el-image>
                   </div>
                 </span>
                 <span v-else-if="['url'].includes(column.type)">
@@ -101,6 +102,7 @@
 </template>
 
 <script>
+import { DIC_PROPS } from 'global/variable'
 import dynamicColumn from "./dynamic-column";
 import locale from "../../core/common/locale";
 import { sendDic } from "core/dic";
@@ -146,12 +148,17 @@ export default {
     },
     getImgList (scope, column) {
       let url = (column.propsHttp || {}).home || ''
+      let value = (column.props || {}).value || DIC_PROPS.value;
       if (column.listType == 'picture-img') {
         return [url + scope.row[column.prop]]
       }
       let list = this.detailData(scope.row[column.prop], column.dataType);
-      list.forEach(ele => {
-        ele = url + ele;
+      list.forEach((ele, index) => {
+        if (ele.constructor === Object) {
+          list[index] = url + ele[value];
+        } else {
+          list[index] = url + ele;
+        }
       })
       return list;
     },
@@ -162,12 +169,6 @@ export default {
         return list.split(',')
       }
       return list;
-    },
-    openImg (list, index) {
-      list = list.map(ele => {
-        return { thumbUrl: ele, url: ele }
-      })
-      this.$ImagePreview(list, index);
     },
     menuText (value) {
       return this.menuType === "text" ? "text" : value;
@@ -269,8 +270,8 @@ export default {
         (this.crud.DIC[column.prop] || []).forEach(ele => {
           const props = column.props || this.crud.tableOption.props || {};
           list.push({
-            text: ele[props.label || "label"],
-            value: ele[props.value || "value"]
+            text: ele[props.label || DIC_PROPS.label],
+            value: ele[props.value || DIC_PROPS.value]
           });
         });
         return list;

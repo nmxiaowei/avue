@@ -68,6 +68,8 @@ const install = function(Vue, opts = {}) {
       }
     })(),
     size: opts.size || 'small',
+    tableSize: opts.tableSize,
+    formSize: opts.formSize,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
       text: 'avue.top',
@@ -103,7 +105,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = {
-  version: '2.1.0',
+  version: '2.5.3',
   locale: locale.locale,
   install
 };
