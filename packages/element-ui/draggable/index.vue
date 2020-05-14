@@ -1,10 +1,8 @@
 <template>
   <div :class="b({'active':((active || overActive)&&!readonly),'move':moveActive,'click':disabled})"
-       @mouseover.stop="handleMouseOver($event)"
-       @mouseout.stop="handleMouseOut($event)"
-       @mousedown.stop="handleMouseDown($event)"
-       @mousemove="handleMouseMove($event)"
-       @mouseup="handleMouseUp($event)"
+       @mousedown.stop="handleMove"
+       @mouseover.stop="handleOver"
+       @mouseout.stop="handleOut"
        :style="styleName">
     <div :class="b('wrapper')"
          ref="wrapper">
@@ -22,9 +20,7 @@
              :key="index"
              v-if="active"
              :style="[styleRangeName,getRangeStyle(item.classname)]"
-             @mousedown.stop="goLink(item,'mousedown',$event)"
-             @mousemove.stop="goLink(item,'mousemove',$event)"
-             @mouseup="goLink(item,'mouseup',$event)"></div>
+             @mousedown.stop="rangeMove($event,item.classname)"></div>
       </template>
       <div :class="b('menu')"
            :style="styleMenuName"
@@ -97,10 +93,6 @@ export default create({
   },
   data () {
     return {
-      rx: 0,
-      ry: 0,
-      x: 0,
-      y: 0,
       baseWidth: 0,
       baseHeight: 0,
       baseLeft: 0,
@@ -113,51 +105,27 @@ export default create({
       rangeList: [
         {
           classname: "left",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseXMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "right",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseXMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "top",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseXMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "bottom",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseYMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "top-left",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "top-right",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "bottom-left",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseMove",
-          mouseup: "rangeMouseUp"
         },
         {
           classname: "bottom-right",
-          mousedown: "rangeMouseDown",
-          mousemove: "rangeMouseMove",
-          mouseup: "rangeMouseUp"
         }
       ]
     };
@@ -212,6 +180,26 @@ export default create({
     }
   },
   watch: {
+    active (val) {
+      if (val) {
+        this.handleKeydown()
+      } else {
+        document.onkeydown = null
+      }
+    },
+    width (val) {
+      this.baseWidth = getFixed(val) || this.children.offsetWidth;
+
+    },
+    height (val) {
+      this.baseHeight = getFixed(val) || this.children.offsetHeight;
+    },
+    left (val) {
+      this.baseLeft = getFixed(val);
+    },
+    top (val) {
+      this.baseTop = getFixed(val);
+    },
     baseWidth (val) {
       this.$refs.wrapper.style.width = this.setPx(val);
       if (this.resize && this.children.style) {
@@ -228,12 +216,11 @@ export default create({
   mounted () {
     this.init();
   },
-
   methods: {
     init () {
       this.children = this.$refs.item.firstChild;
-      this.baseWidth = this.width || this.children.offsetWidth;
-      this.baseHeight = this.height || this.children.offsetHeight;
+      this.baseWidth = getFixed(this.width) || this.children.offsetWidth;
+      this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
       this.baseLeft = getFixed(this.left);
       this.baseTop = getFixed(this.top);
     },
@@ -258,108 +245,145 @@ export default create({
     setActive (val) {
       this.active = val;
     },
-    goLink (item, type, e) {
-      this[item[type]](e, item.classname);
-    },
-    rangeMouseDown (e) {
-      this.rangeActive = true;
-      this.rx = e.clientX;
-      this.ry = e.clientY;
-    },
-    rangeMouseXMove (e, postion) {
-      this.rangeMove(e, postion);
-    },
-    rangeMouseYMove (e, postion) {
-      this.rangeMove(e, postion);
-    },
-    rangeMouseMove (e, postion) {
-      this.rangeMove(e, postion);
-    },
-    rangeMove (e, postion) {
+    rangeMove (e, position) {
+      if (this.disabled) return
       //移动的方向
       let x, y;
       //移动的位置
       let xp, yp;
       //移动的正负
       let xc, yc;
-      if (this.rangeActive) {
-        //代理事件
-        window.onmousemove = e => {
-          this.moveActive = true;
-          const startX = e.clientX;
-          const startY = e.clientY;
-          if (postion === "right") {
-            x = true;
-            y = false;
-          } else if (postion === "left") {
-            x = true;
-            xp = true;
-            xc = true;
-            y = false;
-          } else if (postion === "top") {
-            x = false;
-            y = true;
-            yp = true;
-            yc = true;
-          } else if (postion === "bottom") {
-            x = false;
-            y = true;
-          } else if (postion === "bottom-right") {
-            x = true;
-            y = true;
-          } else if (postion === "bottom-left") {
-            x = true;
-            y = true;
-            xp = true;
-            xc = true;
-          } else if (postion === "top-right") {
-            x = true;
-            y = true;
-            yp = true;
-            yc = true;
-          } else if (postion === "top-left") {
-            x = true;
-            y = true;
-            xp = true;
-            xc = true;
-            yp = true;
-            yc = true;
-          }
-          if (x) {
-            let calc = (startX - this.rx) * this.step;
-            if (xc) calc = -calc;
-            if (xp) this.baseLeft = getFixed(this.baseLeft - calc);
-            this.baseWidth = getFixed(this.baseWidth + calc);
-          }
-          if (y) {
-            let calc = (startY - this.ry) * this.step;
-            if (yc) calc = -calc;
-            if (yp) this.baseTop = getFixed(this.baseTop - calc);
-            this.baseHeight = getFixed(this.baseHeight + calc);
-          }
-          this.rx = startX;
-          this.ry = startY;
-          window.onmouseup = () => {
-            window.onmousemove = null;
-            window.onmouseup = null;
-          }
-        };
+      this.rangeActive = true;
+      this.handleMouseDown();
+      let disX = e.clientX;
+      let disY = e.clientY;
+      document.onmousemove = e => {
+        this.moveActive = true;
+        if (position === "right") {
+          x = true;
+          y = false;
+        } else if (position === "left") {
+          x = true;
+          xp = true;
+          xc = true;
+          y = false;
+        } else if (position === "top") {
+          x = false;
+          y = true;
+          yp = true;
+          yc = true;
+        } else if (position === "bottom") {
+          x = false;
+          y = true;
+        } else if (position === "bottom-right") {
+          x = true;
+          y = true;
+        } else if (position === "bottom-left") {
+          x = true;
+          y = true;
+          xp = true;
+          xc = true;
+        } else if (position === "top-right") {
+          x = true;
+          y = true;
+          yp = true;
+          yc = true;
+        } else if (position === "top-left") {
+          x = true;
+          y = true;
+          xp = true;
+          xc = true;
+          yp = true;
+          yc = true;
+        }
+        let left = e.clientX - disX;
+        let top = e.clientY - disY;
+        disX = e.clientX;
+        disY = e.clientY;
+        if (x) {
+          let calc = left * this.step;
+          if (xc) calc = -calc;
+          if (xp) this.baseLeft = getFixed(this.baseLeft - calc);
+          this.baseWidth = getFixed(this.baseWidth + calc);
+        }
+        if (y) {
+          let calc = top * this.step;
+          if (yc) calc = -calc;
+          if (yp) this.baseTop = getFixed(this.baseTop - calc);
+          this.baseHeight = getFixed(this.baseHeight + calc);
+        }
+      };
+      this.handleClear()
+
+    },
+    handleOut () {
+      this.overActive = false
+      this.$emit("out", {
+        index: this.index,
+        width: this.baseWidth,
+        height: this.baseHeight,
+        left: this.baseLeft,
+        top: this.baseTop
+      });
+    },
+    handleOver () {
+      this.overActive = true
+      this.$emit("over", {
+        index: this.index,
+        width: this.baseWidth,
+        height: this.baseHeight,
+        left: this.baseLeft,
+        top: this.baseTop
+      });
+    },
+    handleMove (e) {
+      if (this.disabled) return
+      this.active = true;
+      this.handleMouseDown();
+      let disX = e.clientX;
+      let disY = e.clientY;
+      document.onmousemove = (e) => {
+        let left = e.clientX - disX;
+        let top = e.clientY - disY;
+        disX = e.clientX;
+        disY = e.clientY;
+        this.baseLeft = getFixed(this.baseLeft + left * this.step);
+        this.baseTop = getFixed(this.baseTop + top * this.step);
+      };
+      this.handleClear()
+    },
+
+    handleClear () {
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+        this.handleMouseUp();
       }
     },
-    rangeMouseUp () {
-
-      this.rangeActive = false;
-    },
-    handleMouseOut () {
-      if (this.disabled) return
-      this.overActive = false;
-    },
-    handleMouseOver () {
-      if (this.disabled) return
-      this.overActive = true;
+    handleKeydown () {
+      document.onkeydown = (event) => {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        let step = 1 * this.step;
+        if (e && e.keyCode == 38) {//上
+          this.baseTop = getFixed(this.baseTop - step)
+        } else if (e && e.keyCode == 37) {//左
+          this.baseLeft = getFixed(this.baseLeft - step)
+        } else if (e && e.keyCode == 40) {//下
+          this.baseTop = getFixed(this.baseTop + step)
+        } else if (e && e.keyCode == 39) {//右
+          this.baseLeft = getFixed(this.baseLeft + step)
+        }
+        this.$emit("blur", {
+          index: this.index,
+          width: this.baseWidth,
+          height: this.baseHeight,
+          left: this.baseLeft,
+          top: this.baseTop
+        });
+      };
     },
     handleMouseDown (e) {
-      if (this.disabled) return
+      this.moveActive = true;
       this.$emit("focus", {
         index: this.index,
         width: this.baseWidth,
@@ -367,34 +391,10 @@ export default create({
         left: this.baseLeft,
         top: this.baseTop
       });
-      this.active = true;
-      this.moveActive = true;
-      this.x = e.clientX;
-      this.y = e.clientY;
-    },
-    handleMouseMove (e) {
-      if (this.disabled) return
-      if (this.moveActive && !this.rangeActive) {
-        window.onmousemove = (e) => {
-          this.overActive = false;
-          const startX = e.clientX;
-          const startY = e.clientY;
-          this.baseLeft = getFixed(
-            this.baseLeft + (startX - this.x) * this.step
-          );
-          this.baseTop = getFixed(this.baseTop + (startY - this.y) * this.step);
-          this.x = startX;
-          this.y = startY;
-          window.onmouseup = () => {
-            window.onmousemove = null;
-            window.onmouseup = null;
-          }
-        }
-      }
     },
     handleMouseUp () {
-      if (this.disabled) return
       this.moveActive = false;
+      this.rangeActive = false;
       this.$emit("blur", {
         index: this.index,
         width: this.baseWidth,
