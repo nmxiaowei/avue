@@ -44,7 +44,7 @@ export default create({
       required: true
     },
     defaultValue: {
-      type: String
+      type: [String, Array]
     },
     valueFormat: {
       default: ""

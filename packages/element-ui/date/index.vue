@@ -52,10 +52,10 @@ export default create({
       default: "结束日期"
     },
     defaultValue: {
-      type: String
+      type: [String, Array]
     },
     defaultTime: {
-      type: String
+      type: [String, Array]
     },
     pickerOptions: {
       type: Object,
