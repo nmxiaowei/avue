@@ -20,6 +20,7 @@
              :lazy="lazy"
              :load="treeLoad"
              :props="treeProps"
+             :icon-class="iconClass"
              highlight-current
              :show-checkbox="multiple"
              :accordion="accordion"
@@ -80,6 +81,9 @@ export default create({
   name: "tree",
   mixins: [locale],
   props: {
+    iconClass: {
+      type: String,
+    },
     option: {
       type: Object,
       default: () => {

@@ -220,7 +220,29 @@ $space-width: 15px;
       margin-left: 10px;
     }
   }
-  &__column{
+  &__dialog {
+    &--fullscreen{
+      .el-dialog{
+        left:0 !important;
+        top:0 !important;
+      }
+    }
+    &__header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &__menu{
+      padding-top: 1px;
+      padding-right: 20px;
+      i{
+        color: #909399;
+        font-size: 15px;
+        &:hover{
+          color:#409EFF;
+        }
+      }
+    }
     .el-transfer{
       padding: 0 20px;
       height:96%;
@@ -237,24 +259,6 @@ $space-width: 15px;
     .el-transfer-panel{
       min-width: 200px;
       width: 40%;
-    }
-  }
-  &__dialog {
-    &__header{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    &__menu{
-      padding-top: 1px;
-      padding-right: 20px;
-      i{
-        color: #909399;
-        font-size: 15px;
-        &:hover{
-          color:#409EFF;
-        }
-      }
     }
     .el-dialog__body{
       padding: 20px 20px 5px 10px;

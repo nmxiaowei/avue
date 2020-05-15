@@ -25,6 +25,7 @@
                :load="treeLoad"
                :node-key="valueKey"
                :accordion="accordion"
+               :icon-class="iconClass"
                :show-checkbox="multiple"
                :props="treeProps"
                :check-strictly="checkStrictly"
@@ -97,6 +98,9 @@ export default create({
     },
     defaultExpandedKeys: {
       type: Array,
+    },
+    iconClass: {
+      type: String,
     },
     defaultCheckedKeys: {
       type: Array,

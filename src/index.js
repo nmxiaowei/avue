@@ -2,7 +2,7 @@ import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
 import permission from 'packages/core/directive/permission';
-import dialogdrag from 'packages/core/directive/dialogdrag';
+import dialogDrag from 'packages/core/directive/dialog-drag';
 import _export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
 import './utils/es6.js';
@@ -36,8 +36,8 @@ let prototypes = {
 const install = function(Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
-  permission(Vue);
-  dialogdrag(Vue);
+  Vue.directive('dialogdrag', dialogDrag);
+  Vue.directive('permission', permission);
   components.map(component => {
     Vue.component(component.name, component);
   });
