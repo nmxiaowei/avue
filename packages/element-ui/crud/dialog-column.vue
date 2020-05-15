@@ -1,5 +1,5 @@
 <template>
-  <el-drawer :class="b('column')"
+  <el-drawer :class="[b('dialog'),b('column')]"
              lock-scroll
              :modal-append-to-body="false"
              append-to-body
