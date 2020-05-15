@@ -1,19 +1,33 @@
 .avue-tree {
-  &__item {
-      position: relative;
-      width: 100%;
-  }
-  &__title {
-      font-size: 14px;
-  }
-  &__icon {
-      transform: rotate(90deg);
-  }
+  position: relative;
   &__menu {
+      width:200px;
       position: absolute;
-      top: 2px;
-      right: 2px;
       z-index: 1024;
+      flex-wrap: wrap;
+      background-color: #fff;
+  }
+  &__dialog{
+    .el-dialog__body{
+      padding:30px 20px 0 20px;
+    }
+  }
+  &__item{
+    position: relative;
+    padding: 0 30px 0 20px;
+    height: 34px;
+    line-height: 34px;
+    outline: none;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:100%;
+    color:#666;
+    &:hover{
+      cursor: pointer;
+      color:#409eff
+    }
   }
   &__filter {
       margin-bottom: 15px;

@@ -10,55 +10,47 @@
                    @click="parentAdd"
                    icon="el-icon-plus"
                    v-if="vaildData(option.addBtn,true)"></el-button>
-        <template slot="append">
-          <slot name="addBtn"></slot>
-        </template>
       </el-input>
     </div>
     <el-tree ref="tree"
-             :data="list"
+             :data="data"
              :lazy="lazy"
              :load="treeLoad"
              :props="treeProps"
              :icon-class="iconClass"
-             highlight-current
+             :highlight-current="!multiple"
              :show-checkbox="multiple"
              :accordion="accordion"
-             :node-key="nodeKey"
+             :node-key="props.value"
              :check-strictly="checkStrictly"
              :filter-node-method="filterNode"
              :expand-on-click-node="false"
              @check-change="handleCheckChange"
+             @node-click="nodeClick"
+             @node-contextmenu="nodeContextmenu"
              :default-expand-all="defaultExpandAll">
-      <div slot-scope="{ node,data }"
-           :class="b('item')">
-        <div :class="b('title')"
-             @click.self="nodeClick(data)"
-             @mouseenter="data.is_show=true"
-             @mouseleave="data.is_show=false">{{ data[labelKey]}}
-          <div :class="b('menu')"
-               v-show="data.is_show && vaildData(option.menu,true)">
-            <el-dropdown trigger="click">
-              <i class="el-icon-more"
-                 :class="b('icon')"></i>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-if="vaildData(option.addBtn,true)"
-                                  @click.native="append(node,data)">新增</el-dropdown-item>
-                <el-dropdown-item v-if="vaildData(option.editBtn,true)"
-                                  @click.native="edit(node,data)">修改</el-dropdown-item>
-                <el-dropdown-item v-if="vaildData(option.delBtn,true)"
-                                  @click.native="remove(node,data)">删除</el-dropdown-item>
-                <slot name="menuBtn"
-                      :node="node"
-                      :data="data"></slot>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-        </div>
-      </div>
     </el-tree>
-    <el-dialog :title="obj[labelKey]"
+    <div class="el-cascader-panel is-bordered"
+         v-if="client.show"
+         @click="client.show=false"
+         :style="styleName"
+         :class="b('menu')">
+      <div :class="b('item')"
+           v-if="vaildData(option.addBtn,true)"
+           @click="rowAdd">新增</div>
+      <div :class="b('item')"
+           v-if="vaildData(option.editBtn,true)"
+           @click="rowEdit">修改</div>
+      <div :class="b('item')"
+           v-if="vaildData(option.delBtn,true)"
+           @click="rowRemove">删除</div>
+      <slot name="menu"
+            :node="node"></slot>
+    </div>
+    <el-dialog :title="node[labelKey] || title"
                :visible.sync="box"
+               :class="b('dialog')"
+               class="avue-dialog"
                modal-append-to-body
                append-to-body
                @close="hide"
@@ -103,11 +95,35 @@ export default create({
       }
     }
   },
+  data () {
+    return {
+      filterText: "",
+      client: {
+        x: 0,
+        y: 0,
+        show: false
+      },
+      box: false,
+      type: "",
+      node: {},
+      obj: {},
+      form: {},
+    };
+  },
   computed: {
+    styleName () {
+      return {
+        top: this.setPx(this.client.y - 10),
+        left: this.setPx(this.client.x - 10),
+      }
+    },
     treeProps () {
       return Object.assign(this.props, {
         isLeaf: this.leafKey
       })
+    },
+    title () {
+      return this.option.title
     },
     treeLoad () {
       return this.option.treeLoad
@@ -128,7 +144,7 @@ export default create({
       return this.addFlag ? this.t("crud.addBtn") : this.t("crud.editBtn");
     },
     addFlag () {
-      return this.type === "add" || this.type === "parentAdd";
+      return ["add", "parentAdd"].includes(this.type);
     },
     size () {
       return this.option.size || "small";
@@ -157,9 +173,6 @@ export default create({
     defaultExpandAll () {
       return this.option.defaultExpandAll;
     },
-    columnOption () {
-      return this.appednKey(deepClone(this.data || []));
-    },
     formColumnOption () {
       return (this.option.formOption || {}).column || [];
     },
@@ -167,19 +180,23 @@ export default create({
       return Object.assign(
         {
           submitText: this.addText,
-          column: [
-            {
-              label: this.labelText,
-              prop: this.labelKey,
-              rules: [
-                {
-                  required: true,
-                  message: `${this.t("tip.input")} ${this.labelText}`,
-                  trigger: "blur"
-                }
-              ]
-            },
-            ...this.formColumnOption
+          column: [{
+            label: this.valueKey,
+            prop: this.valueKey,
+            display: false
+          },
+          {
+            label: this.labelText,
+            prop: this.labelKey,
+            rules: [
+              {
+                required: true,
+                message: `${this.t("tip.input")} ${this.labelText}`,
+                trigger: "blur"
+              }
+            ]
+          },
+          ...this.formColumnOption
           ]
         },
         (() => {
@@ -190,25 +207,16 @@ export default create({
       );
     }
   },
-  data () {
-    return {
-      filterText: "",
-      box: false,
-      type: "",
-      node: {},
-      obj: {},
-      form: {},
-      list: []
-    };
-  },
   created () {
     this.vaildData = vaildData;
-    this.list = deepClone(this.columnOption);
+  },
+  mounted () {
+    document.addEventListener('click', (e) => {
+      if (!this.$el.contains(e.target)) this.client.show = false
+    })
+    this.initFun()
   },
   watch: {
-    columnOption () {
-      this.list = deepClone(this.columnOption);
-    },
     option () {
       this.init();
     },
@@ -222,22 +230,27 @@ export default create({
       this.$emit("input", val);
     }
   },
-
   methods: {
+    initFun () {
+      [
+        'filter', 'updateKeyChildren', 'getCheckedNodes', 'setCheckedNodes', 'getCheckedKeys',
+        'setCheckedKeys', 'setChecked', 'getHalfCheckedNodes', 'getHalfCheckedKeys', 'getCurrentKey', 'getCurrentNode',
+        'setCurrentKey', 'setCurrentNode', 'getNode', 'remove', 'append', 'insertBefore', 'insertAfter'
+      ].forEach(ele => {
+        this[ele] = this.$refs.tree[ele];
+      })
+    },
+    nodeContextmenu (e, data) {
+      this.node = this.deepClone(data);
+      this.client.x = e.clientX;
+      this.client.y = e.clientY;
+      this.client.show = true;
+    },
     handleCheckChange (data, checked, indeterminate) {
       this.$emit('check-change', data, checked, indeterminate)
     },
     handleSubmit (form, done) {
       this.addFlag ? this.save(form, done) : this.update(form, done)
-    },
-    appednKey (list) {
-      list.forEach(ele => {
-        ele.is_show = false;
-        if (ele[this.childrenKey]) {
-          this.appednKey(ele[this.childrenKey]);
-        }
-      });
-      return list;
     },
     nodeClick (data) {
       this.$emit("node-click", data);
@@ -248,73 +261,55 @@ export default create({
     },
     hide () {
       this.box = false;
-      this.node = {};
-      this.obj = {};
       this.$refs.form.resetForm();
       this.$refs.form.clearValidate();
     },
     save (data, done) {
       const callback = () => {
-        const form = deepClone(Object.assign(this.form, { is_show: false }));
+        let form = this.deepClone(this.form);
         if (this.type === "add") {
-          if (!this.obj[this.childrenKey]) {
-            this.$set(this.obj, "children", []);
-          }
-          this.obj.children.push(form);
-        } else if (this.type === "parentAdd") this.obj.push(form);
+          this.$refs.tree.append(form, this.node[this.valueKey])
+        } else if (this.type === "parentAdd") {
+          this.$refs.tree.append(form)
+        }
         this.hide();
-        done();
+        done()
       };
-      this.$emit("save", this.obj, this.node, callback, done);
+      this.$emit("save", data, callback, done);
     },
     update (data, done) {
       const callback = () => {
-        const parent = this.node.parent;
-        const children = parent.data[this.childrenKey] || parent.data;
-        const index = children.findIndex(
-          item => item[this.nodeKey] === this.form[this.nodeKey]
-        );
-        children.splice(index, 1, this.form);
+        let node = this.$refs.tree.getNode(this.node[this.valueKey]);
+        let form = this.deepClone(this.form);
+        node.data = form
         this.hide();
-        done();
+        done()
       };
-      this.$emit("update", this.obj, this.node, callback, done);
+      this.$emit("update", data, callback, done);
     },
-
-    edit (node, data) {
+    rowEdit (a) {
       this.type = "edit";
-      this.node = node;
-      this.obj = data;
-      this.form = deepClone(this.obj);
+      this.form = this.node;
       this.show();
     },
-    parentAdd (data) {
+    parentAdd () {
       this.type = "parentAdd";
-      this.obj = this.list;
       this.show();
     },
-    append (node, data) {
+    rowAdd () {
       this.type = "add";
-      this.obj = data;
-      this.node = node;
       this.show();
     },
     show () {
+      this.client.show = false;
       this.box = true;
-      setTimeout(() => {
-        this.$refs.form.clearValidate();
-      }, 0);
     },
-    remove (node, data) {
-      this.obj = data;
-      this.node = node;
+    rowRemove () {
+      this.client.show = false;
       const callback = () => {
-        const parent = node.parent;
-        const children = parent.data.children || parent.data;
-        const index = children.findIndex(d => d.id === data.id);
-        children.splice(index, 1);
-      };
-      this.$emit("del", this.obj, this.node, callback);
+        this.$refs.tree.remove(this.node[this.valueKey])
+      }
+      this.$emit("del", this.node, callback);
     }
   }
 });
