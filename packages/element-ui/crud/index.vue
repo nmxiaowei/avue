@@ -482,9 +482,6 @@ export default create({
       },
       deep: true
     },
-    propOption () {
-      this.$refs.dialogColumn.columnInit();
-    },
     data () {
       this.dataInit();
       //初始化级联字典

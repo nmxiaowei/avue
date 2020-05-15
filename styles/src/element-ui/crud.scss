@@ -220,6 +220,25 @@ $space-width: 15px;
       margin-left: 10px;
     }
   }
+  &__column{
+    .el-transfer{
+      padding: 0 20px;
+      height:96%;
+    }
+    .el-transfer__buttons{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .el-button{
+        margin: 5px 0;
+      }
+    }
+    .el-transfer-panel{
+      min-width: 200px;
+      width: 40%;
+    }
+  }
   &__dialog {
     &__header{
       display: flex;
