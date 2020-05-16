@@ -59,11 +59,10 @@
                 <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
                 <span v-else-if="['img','upload'].includes(column.type)">
                   <div class="avue-crud__img">
-                    <el-image :preview-src-list="getImgList(scope,column)"
-                              v-for="(item,index) in getImgList(scope,column)"
-                              :src="item"
-                              fit="contain"
-                              :key="index"></el-image>
+                    <img v-for="(item,index) in getImgList(scope,column) "
+                         :src="item"
+                         :key="index"
+                         @click="openImg(getImgList(scope,column),index)" />
                   </div>
                 </span>
                 <span v-else-if="['url'].includes(column.type)">
@@ -152,7 +151,7 @@ export default {
       if (column.listType == 'picture-img') {
         return [url + scope.row[column.prop]]
       }
-      let list = this.detailData(scope.row[column.prop], column.dataType);
+      let list = this.detailData(this.deepClone(scope.row[column.prop]), column.dataType);
       list.forEach((ele, index) => {
         if (ele.constructor === Object) {
           list[index] = url + ele[value];
@@ -228,6 +227,12 @@ export default {
           if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
         }
       );
+    },
+    openImg (list, index) {
+      list = list.map(ele => {
+        return { thumbUrl: ele, url: ele }
+      })
+      this.$ImagePreview(list, index);
     },
     cellEditFlag (row, column) {
       return (

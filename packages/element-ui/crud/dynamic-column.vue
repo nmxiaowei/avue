@@ -69,11 +69,10 @@
                       v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
                 <span v-else-if="['img','upload'].includes(column.type)">
                   <div class="avue-crud__img">
-                    <el-image :preview-src-list="getImgList(scope,column)"
-                              v-for="(item,index) in getImgList(scope,column)"
-                              :src="item"
-                              fit="contain"
-                              :key="index"></el-image>
+                    <img v-for="(item,index) in getImgList(scope,column) "
+                         :src="item"
+                         :key="index"
+                         @click="openImg(getImgList(scope,column),index)" />
                   </div>
                 </span>
                 <span v-else-if="['url'].includes(column.type)">
@@ -128,6 +127,7 @@ export default {
   },
   created () {
     const list = [
+      "openImg",
       "detailData",
       "getComponent",
       "getPlaceholder",
