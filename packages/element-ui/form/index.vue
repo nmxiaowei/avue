@@ -256,6 +256,9 @@ export default create({
     tabsType () {
       return this.parentOption.tabsType;
     },
+    columnLen () {
+      return this.columnOption.length
+    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -333,11 +336,7 @@ export default create({
   },
   created () {
     //初始化字典
-    this.columnOption.forEach(ele => {
-      this.handleLoadDic(ele).then(res => {
-        this.forEachLabel();
-      });
-    });
+    this.datadic()
     // 初始化表单
     this.dataformat();
   },
@@ -346,6 +345,17 @@ export default create({
     getPlaceholder,
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
+    },
+    datadic () {
+      let count = 0;
+      this.columnOption.forEach(ele => {
+        this.handleLoadDic(ele).then(() => {
+          count = count + 1;
+          if (count === this.columnLen) {
+            this.forEachLabel()
+          }
+        });
+      });
     },
     getSpan (column) {
       return this.parentOption.span || column.span || this.itemSpanDefault
@@ -360,7 +370,9 @@ export default create({
     forEachLabel () {
       this.columnOption.forEach(ele => {
         ele.column.forEach(column => {
-          this.handleShowLabel(column, this.DIC[column.prop]);
+          setTimeout(() => {
+            this.handleShowLabel(column, this.DIC[column.prop]);
+          }, 0)
         });
       });
     },
@@ -377,7 +389,7 @@ export default create({
     },
     //获取全部字段字典的label
     handleShowLabel (column, DIC) {
-      let result = "";
+      let result;
       if (!this.validatenull(DIC)) {
         result = detail(this.form, column, this.tableOption, DIC);
         this.$set(this.form, ["$" + column.prop], result);

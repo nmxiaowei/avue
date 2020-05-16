@@ -58,8 +58,6 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { DIC_SPLIT } from 'global/variable';
-import { findLabelNode } from 'utils/util'
-import { validatenull } from "utils/validate";
 export default create({
   name: "input-tree",
   mixins: [props(), event()],
@@ -68,7 +66,7 @@ export default create({
       node: {},
       filterText: "",
       box: false,
-      labelText: this.multiple ? [] : ""
+      labelText: []
     };
   },
   props: {
@@ -159,12 +157,7 @@ export default create({
       return this.multiple ? this.text : [this.text];
     },
     labelShow () {
-      if (this.validatenull(this.value)) {
-        return ''
-      } else if (this.multiple) {
-        return (this.labelText || []).join(DIC_SPLIT).toString()
-      }
-      return this.getLabelText(this.node);
+      return (this.labelText || []).join(DIC_SPLIT).toString()
     },
   },
   mounted () {
@@ -191,7 +184,7 @@ export default create({
       this.labelText = [];
       const list = checkedKeys.checkedNodes;
       list.forEach(node => {
-        if (validatenull(node[this.childrenKey]) && !this.checkStrictly) {
+        if (this.validatenull(node[this.childrenKey]) && !this.checkStrictly) {
           this.text.push(node[this.valueKey]);
           this.labelText.push(node[this.labelKey]);
         } else if (this.checkStrictly) {
@@ -206,49 +199,27 @@ export default create({
       this.$emit("change", result);
     },
     init () {
-      if (this.multiple) {
+      this.$nextTick(() => {
         this.labelText = [];
-      } else {
-        this.labelText = "";
-      }
-      const check = setInterval(() => {
-        if (validatenull(this.dic)) {
-          this.labelText = "";
-          clearInterval(check);
-          return;
-        }
-        //是否禁止父类
-        this.disabledParentNode(this.dic, this.parent);
         if (this.multiple) {
-          this.labelText = [];
-          if (!validatenull(this.text)) {
-            this.text.forEach(ele => {
-              //特殊处理0
-              ele = validatenull(ele) ? 0 : ele;
-              const label = findLabelNode(this.dic, ele, this.props) || ele;
-              this.labelText.push(label)
-            });
-          }
+          let list = this.$refs.tree.getCheckedNodes()
+          list.forEach(ele => {
+            this.labelText.push(ele[this.labelKey])
+          })
         } else {
-          this.labelText = "";
-          if (!validatenull(this.text)) {
-            this.labelText = this.text;
-            const label = findLabelNode(this.dic, this.text, this.props) || this.text;
-            this.node = {}
-            this.node[this.labelKey] = label
-            this.labelText = label
+          let node = this.$refs.tree.getNode(this.text)
+          if (node) {
+            this.labelText.push(node.data[this.labelKey])
           }
         }
-        setTimeout(() => {
-          this.$partent && this.$partent.$parent.clearValidate();
-        }, 0);
-        clearInterval(check);
-      }, 500);
+      })
+      //是否禁止父类
+      this.disabledParentNode(this.dic, this.parent);
     },
     disabledParentNode (dic, parent) {
       dic.forEach(ele => {
         const children = ele[this.childrenKey];
-        if (!validatenull(children)) {
+        if (!this.validatenull(children)) {
           if (!parent) {
             ele.disabled = true;
           }
@@ -270,14 +241,14 @@ export default create({
       if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;
       if (
-        (validatenull(data[this.childrenKey]) && !this.multiple) ||
+        (this.validatenull(data[this.childrenKey]) && !this.multiple) ||
         this.parent
       ) {
         const value = data[this.valueKey];
         const label = data[this.labelKey];
         const result = this.isString && this.multiple ? value.join(",") : value;
         this.text = value;
-        this.labelText = label;
+        this.labelText = [label];
         this.$emit("input", result);
         this.$emit("change", result);
         callback();
