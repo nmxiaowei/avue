@@ -49,6 +49,9 @@
                          :clearable="vaildData(column.clearable,false)"
                          :upload-before="crud.uploadBefore"
                          :upload-after="crud.uploadAfter"
+                         :upload-preview="crud.uploadPreview"
+                         :upload-error="crud.uploadError"
+                         :upload-delete="crud.uploadDelete"
                          v-model="scope.row[column.prop]"
                          @change="column.cascader?handleChange(index,scope.row):''">
               </form-temp>
@@ -66,7 +69,7 @@
                       v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
                 <span v-else-if="['img','upload'].includes(column.type)">
                   <div class="avue-crud__img">
-                    <img v-for="(item,index) in getImgList(scope,column)"
+                    <img v-for="(item,index) in getImgList(scope,column) "
                          :src="item"
                          :key="index"
                          @click="openImg(getImgList(scope,column),index)" />
@@ -124,8 +127,8 @@ export default {
   },
   created () {
     const list = [
-      "detailData",
       "openImg",
+      "detailData",
       "getComponent",
       "getPlaceholder",
       "vaildColumn",

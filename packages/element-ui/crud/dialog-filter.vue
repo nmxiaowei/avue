@@ -1,14 +1,12 @@
 <template>
-  <el-dialog :class="b('dialog')"
+  <el-drawer :class="[b('dialog'),b('filter')]"
              lock-scroll
              :modal-append-to-body="false"
              append-to-body
-             :fullscreen="$parent.isMobile"
              :title="t('crud.filterTitle')"
-             :width="$parent.isMobile?'100%':''"
+             :size="$parent.isMobile?'100%':'50%'"
              :visible.sync="box">
-    <el-row :span="24"
-            :class="b('dialog', ['overflow'])">
+    <el-row :span="24">
       <div :class="b('filter-menu')">
         <el-button-group>
           <el-button type="primary"
@@ -64,7 +62,7 @@
       <el-button @click="box = false"
                  :size="$parent.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
     </span>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>

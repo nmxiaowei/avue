@@ -46,7 +46,7 @@ export default function (type) {
         return this.controlSize;
       },
       controlSize () {
-        return this.tableOption.size || (this.$AVUE || {}).size || 'small';
+        return this.tableOption.size || this.$AVUE.size || 'small';
       }
     },
     methods: {

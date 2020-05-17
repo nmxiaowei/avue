@@ -32,7 +32,6 @@ import Upload from 'components/upload';
 import Sign from 'components/sign';
 import Slider from 'components/slider';
 import Keyboard from 'components/keyboard';
-import Img from 'components/img';
 import Group from 'components/group';
 import Tree from 'components/tree';
 import Search from 'components/search';
@@ -41,7 +40,6 @@ import Tabs from 'components/tabs';
 import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
 import IconSelect from 'components/icon-select';
-import BackTop from 'components/back-top';
 import Video from 'components/video';
 import Login from 'components/login';
 import Arrays from 'components/array';
@@ -85,7 +83,6 @@ export default [
   Rate,
   Upload,
   Slider,
-  Img,
   Keyboard,
   Group,
   Tree,
@@ -96,7 +93,6 @@ export default [
   Video,
   Verifys,
   IconSelect,
-  BackTop,
   textEllipsis,
   Skeleton,
   Sign,

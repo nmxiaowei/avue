@@ -64,20 +64,17 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
   let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
-    ['checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
+    ['daterange', 'datetimerange', 'monthrange', 'timerange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
-    // 单个头像特殊处理
-    if (listType === 'picture-img' && type === 'upload') {
-      list = [value];
-    } else if (!Array.isArray(value)) {
-      if (!validatenull(value)) {
-        list = (value || '').split(',') || [];
-      } else {
+    if (!Array.isArray(value)) {
+      if (validatenull(value)) {
         list = [];
+      } else {
+        list = (value || '').split(',') || [];
       }
     }
     // 数据转化
-    list.map((ele, index) => {
+    list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
   }
@@ -179,6 +176,10 @@ export const formInitVal = (list = []) => {
       ele.type === 'checkbox' ||
       ele.type === 'cascader' ||
       ele.type === 'dynamic' ||
+      ele.type === 'daterange' ||
+      ele.type === 'datetimerange' ||
+      ele.type === 'datas' ||
+      ele.type === 'timerange' ||
       ele.type === 'img' ||
       ele.type === 'array' ||
       ele.type === 'dates' ||

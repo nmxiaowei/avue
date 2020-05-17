@@ -221,6 +221,12 @@ $space-width: 15px;
     }
   }
   &__dialog {
+    &--fullscreen{
+      .el-dialog{
+        left:0 !important;
+        top:0 !important;
+      }
+    }
     &__header{
       display: flex;
       align-items: center;
@@ -236,6 +242,26 @@ $space-width: 15px;
           color:#409EFF;
         }
       }
+    }
+    .el-transfer{
+      padding: 0 20px;
+      height:96%;
+    }
+    .el-transfer-panel__body,.el-transfer-panel__list.is-filterable{
+      height:100% !important;
+    }
+    .el-transfer__buttons{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .el-button{
+        margin: 5px 0;
+      }
+    }
+    .el-transfer-panel{
+      min-width: 200px;
+      width: 40%;
     }
     .el-dialog__body{
       padding: 20px 20px 5px 10px;

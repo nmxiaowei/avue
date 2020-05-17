@@ -7,7 +7,7 @@
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
              :label-position="parentOption.labelPosition"
-             :size="controlSize"
+             :size="$AVUE.formSize || controlSize"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
       <el-row :span="24"
@@ -56,7 +56,7 @@
                       :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
-                      :class="b('row')">
+                      :class="[b('row'),{'avue--detail':vaildDetail(column)}]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
@@ -67,7 +67,8 @@
                     <slot :name="column.prop+'Label'"
                           :column="column"
                           :value="form[column.prop]"
-                          :disabled="vaildDisabled(column)"
+                          :readonly="readonly || column.readonly"
+                          :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
@@ -78,7 +79,8 @@
                           :column="column"
                           :error="error"
                           :value="form[column.prop]"
-                          :disabled="vaildDisabled(column)"
+                          :readonly="readonly || column.readonly"
+                          :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
@@ -90,7 +92,8 @@
                           :column="column"
                           :label="form['$'+column.prop]"
                           :size="column.size || controlSize"
-                          :disabled="isDetail || vaildDisabled(column) || allDisabled"
+                          :readonly="readonly || column.readonly"
+                          :disabled="getDisabled(column)"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
                           v-if="column.formslot"></slot>
@@ -105,11 +108,12 @@
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
                                :upload-error="uploadError"
-                               :disabled="isDetail || vaildDisabled(column) || allDisabled"
+                               :readonly="readonly || column.readonly"
+                               :disabled="getDisabled(column)"
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader?handleChange(item.column,cindex):''">
+                               @change="column.cascader && handleChange(item.column,cindex)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -252,6 +256,9 @@ export default create({
     tabsType () {
       return this.parentOption.tabsType;
     },
+    columnLen () {
+      return this.columnOption.length
+    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -329,17 +336,27 @@ export default create({
   },
   created () {
     //初始化字典
-    this.columnOption.forEach(ele => {
-      this.handleLoadDic(ele).then(res => {
-        this.forEachLabel();
-      });
-    });
+    this.datadic()
     // 初始化表单
     this.dataformat();
   },
   methods: {
     getComponent,
     getPlaceholder,
+    getDisabled (column) {
+      return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
+    },
+    datadic () {
+      let count = 0;
+      this.columnOption.forEach(ele => {
+        this.handleLoadDic(ele).then(() => {
+          count = count + 1;
+          if (count === this.columnLen) {
+            this.forEachLabel()
+          }
+        });
+      });
+    },
     getSpan (column) {
       return this.parentOption.span || column.span || this.itemSpanDefault
     },
@@ -353,7 +370,9 @@ export default create({
     forEachLabel () {
       this.columnOption.forEach(ele => {
         ele.column.forEach(column => {
-          this.handleShowLabel(column, this.DIC[column.prop]);
+          setTimeout(() => {
+            this.handleShowLabel(column, this.DIC[column.prop]);
+          }, 0)
         });
       });
     },
@@ -370,7 +389,7 @@ export default create({
     },
     //获取全部字段字典的label
     handleShowLabel (column, DIC) {
-      let result = "";
+      let result;
       if (!this.validatenull(DIC)) {
         result = detail(this.form, column, this.tableOption, DIC);
         this.$set(this.form, ["$" + column.prop], result);
@@ -467,6 +486,20 @@ export default create({
           }
         });
         this.$emit('mock-change', this.form);
+      }
+    },
+    vaildDetail (column) {
+      if (this.detail) return true;
+      if (!this.validatenull(column.detail)) {
+        return this.vaildData(column.detail, false);
+      } else if (this.isAdd) {
+        return this.vaildData(column.addDetail, false);
+      } else if (this.isEdit) {
+        return this.vaildData(column.editDetail, false);
+      } else if (this.isView) {
+        return true;
+      } else {
+        return false;
       }
     },
     // 验证表单是否禁止

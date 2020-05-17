@@ -43,8 +43,11 @@
                          :clearable="vaildData(column.clearable,false)"
                          :upload-before="crud.uploadBefore"
                          :upload-after="crud.uploadAfter"
+                         :upload-preview="crud.uploadPreview"
+                         :upload-error="crud.uploadError"
+                         :upload-delete="crud.uploadDelete"
                          v-model="scope.row[column.prop]"
-                         @change="column.cascader?handleChange(index,scope.row):''">
+                         @change="column.cascader && handleChange(index,scope.row)">
               </form-temp>
               <slot :row="scope.row"
                     :dic="crud.DIC[column.prop]"
@@ -98,6 +101,7 @@
 </template>
 
 <script>
+import { DIC_PROPS } from 'global/variable'
 import dynamicColumn from "./dynamic-column";
 import locale from "../../core/common/locale";
 import { sendDic } from "core/dic";
@@ -142,22 +146,28 @@ export default {
       )
     },
     getImgList (scope, column) {
+      let url = (column.propsHttp || {}).home || ''
+      let value = (column.props || {}).value || DIC_PROPS.value;
       if (column.listType == 'picture-img') {
-        return [scope.row[column.prop]]
+        return [url + scope.row[column.prop]]
       }
-      return this.detailData(scope.row[column.prop], column.dataType)
+      let list = this.detailData(this.deepClone(scope.row[column.prop]), column.dataType);
+      list.forEach((ele, index) => {
+        if (ele.constructor === Object) {
+          list[index] = url + ele[value];
+        } else {
+          list[index] = url + ele;
+        }
+      })
+      return list;
     },
     detailData (list, dataType) {
-      if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
+      if (this.validatenull(list)) {
+        return []
+      } else if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
         return list.split(',')
       }
       return list;
-    },
-    openImg (list, index) {
-      list = list.map(ele => {
-        return { thumbUrl: ele, url: ele }
-      })
-      this.$ImagePreview(list, index);
     },
     menuText (value) {
       return this.menuType === "text" ? "text" : value;
@@ -201,7 +211,6 @@ export default {
       if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
         this.$set(this.crud.cascaderDIC, rowIndex, {});
       }
-      // 如果存在队列中则清空字典和值
       if (this.crud.formIndexList.includes(rowIndex)) {
         //清空子类字典
         list.forEach(ele => {
@@ -209,14 +218,21 @@ export default {
           list.forEach(ele => (row[ele] = ""));
         });
       }
-
       sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
           this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+          //首次加载的放入队列记录
+          if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
         }
       );
+    },
+    openImg (list, index) {
+      list = list.map(ele => {
+        return { thumbUrl: ele, url: ele }
+      })
+      this.$ImagePreview(list, index);
     },
     cellEditFlag (row, column) {
       return (
@@ -257,8 +273,8 @@ export default {
         (this.crud.DIC[column.prop] || []).forEach(ele => {
           const props = column.props || this.crud.tableOption.props || {};
           list.push({
-            text: ele[props.label || "label"],
-            value: ele[props.value || "value"]
+            text: ele[props.label || DIC_PROPS.label],
+            value: ele[props.value || DIC_PROPS.value]
           });
         });
         return list;

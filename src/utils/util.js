@@ -5,7 +5,7 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
 export function hasOwn(obj, key) {
   return hasOwnProperty.call(obj, key);
 };
-export function getFixed(val, len = 2) {
+export function getFixed(val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
 export function dataURLtoFile(dataurl, filename) {

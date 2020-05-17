@@ -21,10 +21,10 @@
 
 <body>
   <div id="app">
-    <avue-tree :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del"
+    <avue-tree ref="tree" :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del"
       v-model="form">
-      <template slot-scope="scope" slot="menuBtn">
-        <el-dropdown-item @click.native="tip(scope.node,scope.data)">自定义按钮</el-dropdown-item>
+      <template slot-scope="scope" slot="menu">
+        <div class="avue-tree__item" @click.native="tip(scope.node,scope.data)">自定义按钮</di>
       </template>
     </avue-tree>
 
@@ -38,41 +38,35 @@
         form: {},
         data: [
           {
-            id: 0,
-            label: '一级部门',
             value: 0,
+            label: '一级部门',
             children: [
               {
-                id: 1,
+                value: 1,
                 label: '一级部门1',
-                value: 0,
               }, {
-                id: 2,
+                value: 2,
                 label: '一级部门2',
-                value: 0,
               }
             ]
           }, {
-            id: 3,
+            value: 3,
             label: '二级部门',
-            value: 0,
             children: [
               {
-                id: 4,
+                value: 4,
                 label: '二级部门1',
-                value: 0,
               }, {
-                id: 5,
+                value: 5,
                 label: '二级部门2',
-                value: 0,
               }
             ]
           }
         ],
         option: {
           defaultExpandAll: true,
-          nodeKey: 'id',
-          dialogWidth: '60%',
+          dialogWidth: '50%',
+          title: "新增部门",
           formOption: {
             labelWidth: 100,
             column: [{
@@ -93,19 +87,17 @@
       tip(node, data) {
         this.$message.success(JSON.stringify(data))
       },
-      del(data, node, done) {
+      del(data, done) {
         this.$message.success('删除回调')
         done();
       },
-      update(data, node, done, loadng) {
+      update(data, done, loading) {
         this.$message.success('更新回调')
         done();
       },
-      save(data, node, done, loadng) {
+      save(data, done, loading) {
         this.$message.success('新增回调')
-        this.form.id = new Date().getTime();
         this.form.value = new Date().getTime();
-        this.form.children = [];
         done();
       },
       nodeClick(data) {

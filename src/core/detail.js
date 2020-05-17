@@ -2,7 +2,7 @@ import { validatenull } from 'utils/validate';
 import { getPasswordChar, findByValue } from 'utils/util';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
-  let result = row[column.prop || column.value];
+  let result = row[column.prop];
   let type = column.type;
   if (validatenull(result)) result = '';
   // 自定义格式化
