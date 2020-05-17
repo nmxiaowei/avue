@@ -247,6 +247,9 @@ $space-width: 15px;
       padding: 0 20px;
       height:96%;
     }
+    .el-transfer-panel__body,.el-transfer-panel__list.is-filterable{
+      height:100% !important;
+    }
     .el-transfer__buttons{
       display: flex;
       flex-direction: column;

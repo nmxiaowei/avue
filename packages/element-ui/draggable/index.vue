@@ -364,7 +364,6 @@ export default create({
     },
     handleKeydown () {
       document.onkeydown = (event) => {
-        this.keydown(event);
         var e = event || window.event || arguments.callee.caller.arguments[0];
         let step = 1 * this.step;
         if (e && e.keyCode == 38) {//上
@@ -383,6 +382,8 @@ export default create({
           left: this.baseLeft,
           top: this.baseTop
         });
+        event.preventDefault();
+        this.keydown && this.keydown(event);
       };
     },
     handleMouseDown (e) {

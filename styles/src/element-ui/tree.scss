@@ -2,7 +2,7 @@
   position: relative;
   &__menu {
       width:200px;
-      position: absolute;
+      position: fixed;
       z-index: 1024;
       flex-wrap: wrap;
       background-color: #fff;

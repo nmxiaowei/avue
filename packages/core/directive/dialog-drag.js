@@ -2,7 +2,7 @@ export default {
   // v-dialog-drag: 弹窗拖拽 
   bind (el, binding, vnode, oldVnode) {
     const value = binding.value
-    if (!value) return
+    if (value == false) return
     // 获取拖拽内容头部
     const dialogHeaderEl = el.querySelector('.el-dialog__header');
     const dragDom = el.querySelector('.el-dialog');

@@ -31,7 +31,7 @@
              :default-expand-all="defaultExpandAll">
     </el-tree>
     <div class="el-cascader-panel is-bordered"
-         v-if="client.show"
+         v-if="client.show&&menu"
          @click="client.show=false"
          :style="styleName"
          :class="b('menu')">
@@ -121,6 +121,9 @@ export default create({
       return Object.assign(this.props, {
         isLeaf: this.leafKey
       })
+    },
+    menu () {
+      return this.vaildData(this.option.menu, true)
     },
     title () {
       return this.option.title
