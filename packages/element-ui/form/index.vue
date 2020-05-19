@@ -358,7 +358,7 @@ export default create({
       });
     },
     getSpan (column) {
-      return this.parentOption.span || column.span || this.itemSpanDefault
+      return column.span || this.parentOption.span || this.itemSpanDefault
     },
     isGroupShow (item, index) {
       if (this.isTabs) {
