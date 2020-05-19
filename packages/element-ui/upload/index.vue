@@ -5,6 +5,7 @@
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
+               :accept="acceptList"
                :before-remove="beforeRemove"
                :multiple="multiple"
                :on-preview="handlePreview"
@@ -140,7 +141,7 @@ export default create({
         return {};
       }
     },
-    filesize: {
+    fileSize: {
       type: Number
     },
     drag: {
@@ -162,6 +163,12 @@ export default create({
     uploadError: Function
   },
   computed: {
+    acceptList () {
+      if (Array.isArray(this.accept)) {
+        return this.accept.join(',')
+      }
+      return this.accept
+    },
     homeUrl () {
       return this.propsHttp.home || ''
     },
@@ -274,19 +281,20 @@ export default create({
       this.loading = true;
       let file = config.file;
       const accept = file.type;
-      const filesize = file.size;
-      let acceptList = Array.isArray(this.accept) ? this.accept : [this.accept];
-      acceptList = this.validatenull(acceptList[0]) ? undefined : acceptList;
+      const fileSize = file.size;
       this.file = config.file;
+      let acceptList = this.acceptList;
+      if (!Array.isArray(acceptList)) {
+        acceptList = acceptList.split(',')
+      }
       if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
         this.hide("文件类型不符合");
         return;
       }
-      if (!this.validatenull(filesize) && filesize > this.filesize) {
+      if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
       }
-
       const headers = Object.assign(this.headers, { "Content-Type": "multipart/form-data" });
       //oss配置属性
       let oss_config = {};
