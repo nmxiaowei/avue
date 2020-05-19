@@ -182,15 +182,10 @@ export default create({
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
       this.labelText = [];
-      const list = checkedKeys.checkedNodes;
+      const list = this.$refs.tree.getCheckedNodes();
       list.forEach(node => {
-        if (this.validatenull(node[this.childrenKey]) && !this.checkStrictly) {
-          this.text.push(node[this.valueKey]);
-          this.labelText.push(node[this.labelKey]);
-        } else if (this.checkStrictly) {
-          this.text.push(node[this.valueKey]);
-          this.labelText.push(node[this.labelKey]);
-        }
+        this.text.push(node[this.valueKey]);
+        this.labelText.push(node[this.labelKey]);
       });
       if (typeof this.checked === "function") this.checked(checkedNodes);
       const result =
