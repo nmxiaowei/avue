@@ -5,25 +5,25 @@
                  @click="crud.rowAdd"
                  :icon="config.addBtnIcon"
                  :size="crud.isMediumSize"
-                 v-permission="crud.permission.addBtn"
+                 v-permission="crud.getPermission('addBtn')"
                  v-if="vaildData(crud.tableOption.addBtn,config.addBtn)">{{crud.menuIcon('addBtn')}}</el-button>
       <el-button type="primary"
                  @click="crud.rowCellAdd"
                  :icon="config.addBtnIcon"
-                 v-permission="crud.permission.addRowBtn"
+                 v-permission="crud.getPermission('addRowBtn')"
                  :size="crud.isMediumSize"
                  v-if="vaildData(crud.tableOption.addRowBtn,config.addRowBtn)">{{crud.menuIcon('addBtn')}}</el-button>
 
       <el-button type="primary"
                  @click="rowPrint"
                  :icon="config.printBtnIcon"
-                 v-permission="crud.permission.printBtn"
+                 v-permission="crud.getPermission('printBtn')"
                  :size="crud.isMediumSize"
                  v-if="vaildData(crud.tableOption.printBtn,config.printBtn)">{{crud.menuIcon('printBtn')}}</el-button>
       <el-button type="primary"
                  @click="rowExcel"
                  :icon="config.excelBtnIcon"
-                 v-permission="crud.permission.excelBtn"
+                 v-permission="crud.getPermission('excelBtn')"
                  :size="crud.isMediumSize"
                  v-if="vaildData(crud.tableOption.excelBtn,config.excelBtn)">{{crud.menuIcon('excelBtn')}}</el-button>
       <slot name="menuLeft"></slot>
@@ -45,7 +45,7 @@
                    circle
                    :size="crud.isMediumSize"
                    @click="crud.refreshChange"
-                   v-permission="crud.permission.refreshBtn"
+                   v-permission="crud.getPermission('refreshBtn')"
                    v-if="vaildData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
@@ -55,7 +55,7 @@
                    circle
                    :size="crud.isMediumSize"
                    @click="crud.$refs.dialogColumn.columnBox=true"
-                   v-permission="crud.permission.columnBtn"
+                   v-permission="crud.getPermission('columnBtn')"
                    v-if="vaildData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
@@ -65,7 +65,7 @@
                    circle
                    :size="crud.isMediumSize"
                    @click="crud.$refs.headerSearch.handleSearchShow()"
-                   v-permission="crud.permission.searchBtn"
+                   v-permission="crud.getPermission('searchBtn')"
                    v-if="(crud.$refs.headerSearch || {}).searchFlag && vaildData(crud.tableOption.searchBtn,config.searchBtn)"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
@@ -75,7 +75,7 @@
                    circle
                    :size="crud.isMediumSize"
                    @click="crud.$refs.dialogFilter.box=true"
-                   v-permission="crud.permission.filterBtn"
+                   v-permission="crud.getPermission('filterBtn')"
                    v-if="vaildData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
       </el-tooltip>
     </div>
@@ -84,6 +84,7 @@
 
 <script>
 import locale from "../../core/common/locale";
+import permission from '../../core/directive/permission';
 import create from "core/create";
 import config from "./config";
 import packages from "core/packages";
@@ -92,6 +93,9 @@ import { vaildData } from "utils/util";
 export default create({
   name: "crud",
   mixins: [locale],
+  directives: {
+    permission
+  },
   inject: ["crud"],
   data () {
     return {
