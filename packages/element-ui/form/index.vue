@@ -45,7 +45,7 @@
                     v-if="$slots[item.prop+'Header']">
             <slot :name="item.prop+'Header'"></slot>
           </template>
-          <div :class="b('group',{'flex':item.flex})"
+          <div :class="b('group',{'flex':vaildData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
             <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">
