@@ -1,5 +1,5 @@
 <template>
-  <div :class="[b(),{'avue-group--card':card}]"
+  <div :class="[b({'card':card})]"
        v-if="display">
     <slot name="tabs"></slot>
     <el-row span="24"
