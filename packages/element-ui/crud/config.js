@@ -7,6 +7,7 @@ export default {
   menuFixed: 'right',
   menuXsWidth: 100,
   menuAlign: 'center',
+  menuHeaderAlign: 'center',
   headerAlign: 'left',
   // 图标
   cancelBtnIcon: 'el-icon-circle-close',

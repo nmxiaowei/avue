@@ -171,9 +171,9 @@
       <el-table-column :class="b('btn')"
                        :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
                        v-if="vaildData(tableOption.menu,config.menu)"
-                       :label="t('crud.menu')"
+                       :label="tableOption.menuTitle || t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
-                       :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
+                       :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
                        :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
         <template slot-scope="scope">
           <el-dropdown v-if="menuType==='menu'"
@@ -181,7 +181,7 @@
                        style="margin-right:9px;">
             <el-button type="primary"
                        :size="isMediumSize">
-              {{t('crud.menuBtn')}}
+              {{ tableOption.menuBtnTitle || t('crud.menuBtn')}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
