@@ -48,7 +48,7 @@ import { getComponent, getPlaceholder } from "core/dataformat";
 export default {
   name: 'form-temp',
   props: {
-    value: [Array, String, Number, Object, Boolean],
+    value: {},
     t: Function,
     uploadBefore: Function,
     uploadDelete: Function,
