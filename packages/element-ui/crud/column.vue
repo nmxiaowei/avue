@@ -218,7 +218,13 @@ export default {
           list.forEach(ele => (row[ele] = ""));
         });
       }
-      sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
+      sendDic({
+        url: (columnNext.dicUrl || '').replace("{{key}}", value),
+        method: columnNext.dicMethod,
+        query: columnNext.dicQuery,
+        formatter: columnNext.dicFormatter,
+        resKey: (columnNext.props || {}).res
+      }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];

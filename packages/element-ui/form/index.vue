@@ -405,8 +405,10 @@ export default create({
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           url: column.dicUrl,
-          formatter: column.dicFormatter,
-          resKey: (column.props || {}).res
+          method: column.dicMethod,
+          query: column.dicQuery,
+          resKey: (column.props || {}).res,
+          formatter: column.dicFormatter
         }).then(list => {
           this.$set(this.DIC, prop, list);
         });
@@ -451,7 +453,13 @@ export default create({
           });
         }
         // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
+        sendDic({
+          url: (columnNext.dicUrl || '').replace("{{key}}", value),
+          method: columnNext.dicMethod,
+          query: columnNext.dicQuery,
+          formatter: columnNext.dicFormatter,
+          resKey: (columnNext.props || {}).res,
+        }).then(
           res => {
             const dic = Array.isArray(res) ? res : [];
             // 修改字典

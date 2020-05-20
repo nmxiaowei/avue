@@ -139,7 +139,9 @@ export default create({
       sendDic({
         url: (this.dicUrl || '').replace("{{key}}", query),
         method: this.dicMethod,
-        query: this.dicQuery
+        query: this.dicQuery,
+        resKey: (this.props || {}).res,
+        formatter: this.dicFormatter,
       }).then(res => {
         this.netDic = res;
       });
