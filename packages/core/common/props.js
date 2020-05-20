@@ -83,6 +83,7 @@ export default function () {
         type: String,
         default: ''
       },
+      dicFormatter: Function,
       dicQuery: {
         type: Object,
         default: () => {
