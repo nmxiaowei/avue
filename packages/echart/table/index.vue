@@ -224,7 +224,7 @@ export default create({
       return (this.option.count || 10) + 1;
     },
     dataChartLen () {
-      return this.dataChart.length;
+      return (this.dataChart || []).length;
     },
     lineHeight () {
       return parseInt(this.height / this.count);
