@@ -19,41 +19,43 @@
                :on-exceed="handleExceed"
                :disabled="disabled"
                :file-list="fileList">
-      <template v-if="listType=='picture-card'">
-        <i class="el-icon-plus"></i>
-      </template>
-      <template v-else-if="listType=='picture-img'">
-        <el-image v-if="imgUrl"
-                  :src="imgUrl"
-                  :preview-src-list="[imgUrl]"
-                  v-bind="allParams"
-                  @mouseover="menu=disabled?false:true"
-                  :class="b('avatar')"></el-image>
-        <i v-else
-           class="el-icon-plus"
-           :class="b('icon')"></i>
-        <div class="el-upload-list__item-actions"
-             :class="b('menu')"
-             v-if="menu"
-             @mouseover="menu=true"
-             @mouseout="menu=false"
-             @click.stop="()=>{return false}">
-          <i class="el-icon-zoom-in"
-             @click.stop="handlePreview({url:imgUrl})"></i>
-          <i class="el-icon-delete"
-             @click.stop="handleDelete(imgUrl)"></i>
-        </div>
-      </template>
-      <template v-else-if="drag">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-        </div>
-      </template>
-      <template v-else>
-        <el-button size="small"
-                   type="primary">点击上传</el-button>
+      <template v-if="!disabled">
+        <template v-if="listType=='picture-card'">
+          <i class="el-icon-plus"></i>
+        </template>
+        <template v-else-if="listType=='picture-img'">
+          <el-image v-if="imgUrl"
+                    :src="imgUrl"
+                    :preview-src-list="[imgUrl]"
+                    v-bind="allParams"
+                    @mouseover="menu=disabled?false:true"
+                    :class="b('avatar')"></el-image>
+          <i v-else
+             class="el-icon-plus"
+             :class="b('icon')"></i>
+          <div class="el-upload-list__item-actions"
+               :class="b('menu')"
+               v-if="menu"
+               @mouseover="menu=true"
+               @mouseout="menu=false"
+               @click.stop="()=>{return false}">
+            <i class="el-icon-zoom-in"
+               @click.stop="handlePreview({url:imgUrl})"></i>
+            <i class="el-icon-delete"
+               @click.stop="handleDelete(imgUrl)"></i>
+          </div>
+        </template>
+        <template v-else-if="drag">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+        </template>
+        <template v-else>
+          <el-button size="small"
+                     type="primary">点击上传</el-button>
+        </template>
       </template>
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
