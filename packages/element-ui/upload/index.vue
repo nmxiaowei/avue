@@ -408,7 +408,6 @@ export default create({
       );
     },
     handlePreview (file) {
-      if (this.disabled) return
       const callback = () => {
         //判断是否为图片
         this.dialogUrl = file.url;
