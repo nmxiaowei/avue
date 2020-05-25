@@ -4,6 +4,7 @@
              v-bind="column"
              :column="Object.assign(column,params)"
              :dic="dic"
+             ref="temp"
              :disabled="disabled"
              :readonly="readonly"
              :placeholder="getPlaceholder(column)"

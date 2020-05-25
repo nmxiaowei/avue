@@ -68,6 +68,15 @@ export default create({
     delBtn () {
       return this.children.delBtn === false
     },
+    rulesOption () {
+      let rules = {};
+      this.columnOption.forEach(ele => {
+        if (ele.rules) {
+          rules[ele.prop] = ele.rules;
+        }
+      })
+      return rules;
+    },
     columnOption () {
       return this.children.column || []
     },
@@ -129,6 +138,32 @@ export default create({
     }
   },
   methods: {
+    validate () {
+      return new Promise(resolve => {
+        let list = [];
+        this.text.forEach((ele, index) => {
+          let callback = () => {
+            return new Promise(resolve => {
+              this.asyncValidator(this.rulesOption, ele).then(() => {
+                resolve();
+              }).catch(error => {
+                resolve(error)
+              })
+            })
+          }
+          list.push(callback())
+        })
+        Promise.all(list).then(error => {
+          let result = {}
+          error.forEach((ele, index) => {
+            if (!this.validatenull(ele)) {
+              result[index] = ele
+            }
+          })
+          resolve(result)
+        })
+      })
+    },
     initData () {
       this.text.forEach((ele, index) => {
         ele = Object.assign(ele, {

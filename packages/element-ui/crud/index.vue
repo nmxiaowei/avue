@@ -355,16 +355,12 @@ export default create({
       sumsList: [],
       cascaderDicList: {},
       formCascaderList: {},
-      formRules: {},
-      formCellRules: {},
       btnDisabled: false,
     };
   },
   created () {
     // 初始化数据
     this.dataInit();
-    // 规则初始化
-    this.rulesInit();
     //初始化字典
     this.handleLoadDic();
   },
@@ -636,13 +632,6 @@ export default create({
       const rowKey = row[this.rowKey];
       return rowKey;
     },
-    rulesInit () {
-      this.formRules = {};
-      this.propOption.forEach(ele => {
-        if (ele.rules) this.formRules[ele.prop] = ele.rules;
-        if (ele.rules && ele.cell) this.formCellRules[ele.prop] = ele.rules;
-      });
-    },
     menuIcon (value) {
       return this.menuType === "icon" ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
     },
@@ -817,7 +806,7 @@ export default create({
     },
     //单元格更新
     rowCellUpdate (row, index) {
-      this.asyncValidator(this.formCellRules, row)
+      this.asyncValidator(this.formRules, row)
         .then(res => {
           this.btnDisabled = true;
           this.$emit(

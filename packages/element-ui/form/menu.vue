@@ -40,8 +40,11 @@ export default {
   inject: ["formSafe"],
   mixins: [locale],
   computed: {
+    menuSpan () {
+      return this.formSafe.parentOption.menuSpan || 24;
+    },
     styleName () {
-      if (this.formSafe.menuSpan !== 24) {
+      if (this.menuSpan !== 24) {
         return {
           padding: 0
         }

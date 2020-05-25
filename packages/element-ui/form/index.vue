@@ -99,6 +99,7 @@
                           v-if="column.formslot"></slot>
                     <form-temp :column="column"
                                v-else
+                               :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :t="t"
                                :props="parentOption.props"
@@ -197,8 +198,7 @@ export default create({
       form: {},
       formList: [],
       formCreate: true,
-      formDefault: {},
-      formRules: {}
+      formDefault: {}
     };
   },
   provide () {
@@ -259,6 +259,15 @@ export default create({
     columnLen () {
       return this.columnOption.length
     },
+    dynamicOption () {
+      let list = []
+      this.propOption.forEach(ele => {
+        if (ele.type == 'dynamic') {
+          list.push(ele)
+        }
+      })
+      return list
+    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -315,10 +324,7 @@ export default create({
     },
     isMock () {
       return this.vaildData(this.parentOption.mockBtn, false);
-    },
-    menuSpan () {
-      return this.parentOption.menuSpan || 24;
-    },
+    }
   },
   props: {
     uploadBefore: Function,
@@ -539,15 +545,6 @@ export default create({
         return true;
       }
     },
-    rulesInit (option) {
-      (option || this.columnOption).forEach(ele => {
-        if (ele.rules && ele.display !== false)
-          this.$set(this.formRules, ele.prop, ele.rules);
-      });
-      this.$nextTick(() => {
-        this.clearValidate();
-      });
-    },
     clearValidate () {
       this.$refs.form.clearValidate();
     },
@@ -586,14 +583,45 @@ export default create({
     },
     submit () {
       this.validate(valid => {
+        let dynamicList = [];
+        let dynamicError = [];
         if (valid) {
-          this.show();
-          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          const callback = () => {
+            if (!this.validatenull(dynamicError)) {
+              this.$emit("error", dynamicError);
+              return
+            }
+            this.show();
+            this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          }
+          this.asyncValidator(this.formRules, this.form).then(() => {
+          }).catch(err => {
+            this.$emit("error", err.concat(dynamicError));
+          })
+          this.dynamicOption.forEach(ele => {
+            dynamicError.push({
+              field: ele.prop,
+              label: ele.label,
+              children: {}
+            });
+            dynamicList.push(this.$refs[ele.prop][0].$refs.temp.validate());
+          })
+          Promise.all(dynamicList).then(res => {
+            res.forEach((err, index) => {
+              let objKey = Object.keys(dynamicError);
+              if (this.validatenull(err)) {
+                dynamicError.splice(index, 1)
+                return
+              }
+              if (index == 0) {
+                let count = Object.keys(err)[0]
+                this.$message.error(`【${dynamicError[index].label}】第${Number(count) + 1}行:${err[count][0].message}`);
+              }
+              dynamicError[objKey[index]].children = err;
+            })
+            callback();
+          })
         }
-        this.asyncValidator(this.formRules, this.form).then(() => {
-        }).catch(err => {
-          this.$emit("error", err);
-        })
       });
     }
   }

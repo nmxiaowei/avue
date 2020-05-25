@@ -39,6 +39,14 @@ export default function (type) {
       this.init();
     },
     computed: {
+      formRules () {
+        let result = {};
+        this.propOption.forEach(ele => {
+          if (ele.rules && ele.display !== false)
+            result[ele.prop] = ele.rules
+        });
+        return result;
+      },
       menuType () {
         return this.tableOption.menuType || this.$AVUE.menuType || 'button';
       },
@@ -64,12 +72,6 @@ export default function (type) {
         window.onresize = () => {
           this.getIsMobile();
         };
-        // 规则初始化
-        if (this.rulesInit) {
-          (isCrud ? this.propOption : this.columnOption).forEach(ele => {
-            this.rulesInit(ele.column);
-          });
-        }
         setTimeout(() => {
           this.initDic();
         }, 0);
