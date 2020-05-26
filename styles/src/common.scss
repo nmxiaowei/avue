@@ -18,6 +18,9 @@ body {
     color: #606266;
     background-color: #fff;
   }
+  .hover-row td{
+    background-color: #fff !important;
+  }
   .el-input-group__append, .el-input-group__prepend{
     background-color: transparent;
     border:none;

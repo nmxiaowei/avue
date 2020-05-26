@@ -15,6 +15,8 @@
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
                     :tabs="isTabs"
+                    :arrow="item.arrow"
+                    :collapse="item.collapse"
                     :display="item.display"
                     :icon="item.icon"
                     :index="index"

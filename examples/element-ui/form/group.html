@@ -20,7 +20,11 @@
 <body>
   <div id="app">
     <el-button @click="handle" style="margin-left: 20px">{{title}}</el-button>
-    <avue-form :option="option" v-model="obj" @submit="submit"></avue-form>
+    <avue-form :option="option" v-model="obj" @submit="submit">
+      <template slot="names" slot-scope="{row,disabled}">
+        <avue-input v-model="obj.names" :disabled="disabled"></avue-input>
+      </template>
+    </avue-form>
   </div>
 </body>
 <script>
@@ -146,6 +150,7 @@
             {
               label: '用户信息',
               prop: 'jbxx',
+              collapse: false,
               icon: 'el-icon-edit-outline',
               column: [
                 {
@@ -163,6 +168,7 @@
             }, {
               label: '退款申请',
               prop: 'tksq',
+              arrow: false,
               icon: 'el-icon-view',
               column: [
                 {
