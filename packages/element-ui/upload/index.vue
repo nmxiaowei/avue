@@ -286,7 +286,7 @@ export default create({
       const fileSize = file.size;
       this.file = config.file;
       let acceptList = this.acceptList;
-      if (!Array.isArray(acceptList)) {
+      if (!Array.isArray(acceptList) && !this.validatenull(acceptList)) {
         acceptList = acceptList.split(',')
       }
       if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
@@ -338,6 +338,10 @@ export default create({
             if (this.isAliOss) {
               return client.put(uploadfile.name, uploadfile);
             } else {
+              if (!window.axios) {
+                packages.logs('axios');
+                return Promise.reject()
+              }
               return this.$httpajax.post(url, param, { headers });
             }
           })()

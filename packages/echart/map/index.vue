@@ -17,6 +17,7 @@
 
 <script>
 import create from "core/echart/create";
+import packages from "core/packages";
 export default create({
   name: "map",
   data () {
@@ -230,6 +231,10 @@ export default create({
       }
     },
     updateChart () {
+      if (!window.axios) {
+        packages.logs('axios');
+        return
+      }
       this.$httpajax(this.mapData).then(res => {
         const data = res.data;
         const optionData = this.deepClone(data);
