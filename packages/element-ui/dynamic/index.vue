@@ -68,6 +68,15 @@ export default create({
     delBtn () {
       return this.children.delBtn === false
     },
+    valueOption () {
+      let result = {};
+      this.columnOption.forEach(ele => {
+        if (ele.value) {
+          result[ele.prop] = ele.value;
+        }
+      })
+      return result;
+    },
     rulesOption () {
       let rules = {};
       this.columnOption.forEach(ele => {
@@ -199,6 +208,7 @@ export default create({
     },
     addRow () {
       const callback = (obj = {}) => {
+        obj = Object.assign(this.valueOption, obj);
         this.$refs.crud.rowCellAdd(obj);
       }
       if (typeof this.rowAdd === 'function') {

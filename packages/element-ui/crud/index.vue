@@ -156,8 +156,7 @@
                        :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
                        align="center"></el-table-column>
       <el-table-column width="1px"></el-table-column>
-      <column :columnOption="columnOption"
-              :disabled="btnDisabled">
+      <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
                   :slot="item.prop">
@@ -207,14 +206,14 @@
             <el-button :type="menuText('primary')"
                        :icon="scope.row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
                        :size="isMediumSize"
-                       :disabled="btnDisabled"
+                       :disabled="btnDisabledList[scope.$index]"
                        @click.stop="rowCell(scope.row,scope.$index)"
                        v-permission="getPermission('cellBtn',scope.row,scope.$index)"
                        v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.cancelBtnIcon"
                        :size="isMediumSize"
-                       :disabled="btnDisabled"
+                       :disabled="btnDisabledList[scope.$index]"
                        @click.stop="rowCanel(scope.row,scope.$index)"
                        v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">{{menuIcon('cancelBtn')}}</el-button>
             <el-button :type="menuText('success')"
@@ -317,7 +316,7 @@ import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
-import { calcCascader } from "core/dataformat";
+import { calcCascader, formInitVal } from "core/dataformat";
 
 export default create({
   name: "crud",
@@ -355,6 +354,7 @@ export default create({
       sumsList: [],
       cascaderDicList: {},
       formCascaderList: {},
+      btnDisabledList: {},
       btnDisabled: false,
     };
   },
@@ -767,12 +767,14 @@ export default create({
     //单元格新增
     rowCellAdd (row = {}) {
       let len = this.list.length
+      let formDefault = formInitVal(this.propOption).tableForm;
       row = this.deepClone(
         Object.assign(
           {
             $cellEdit: true,
             $index: len,
           },
+          formDefault,
           row
         ))
       this.list.push(row);
@@ -808,6 +810,7 @@ export default create({
     rowCellUpdate (row, index) {
       this.asyncValidator(this.formRules, row)
         .then(res => {
+          this.btnDisabledList[index] = true;
           this.btnDisabled = true;
           this.$emit(
             "row-update",
@@ -818,6 +821,7 @@ export default create({
               this.$set(this.list, index, row);
             },
             () => {
+              this.btnDisabledList[index] = false;
               this.btnDisabled = false
             }
           );

@@ -39,7 +39,7 @@
                          :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
                          :t="t"
                          :props="column.props || crud.tableOption.props"
-                         :disabled="column.disabled || crud.btnDisabled"
+                         :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
                          :clearable="vaildData(column.clearable,false)"
                          :upload-before="crud.uploadBefore"
                          :upload-after="crud.uploadAfter"
