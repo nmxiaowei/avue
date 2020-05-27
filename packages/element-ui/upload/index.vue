@@ -342,7 +342,7 @@ export default create({
                 packages.logs('axios');
                 return Promise.reject()
               }
-              return this.$httpajax.post(url, param, { headers });
+              return this.$axios.post(url, param, { headers });
             }
           })()
             .then(res => {

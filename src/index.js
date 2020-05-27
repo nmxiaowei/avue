@@ -45,7 +45,7 @@ const install = function(Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.prototype.$httpajax = window.axios;
+  Vue.prototype.$axios = window.axios;
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
@@ -70,7 +70,7 @@ const install = function(Vue, opts = {}) {
     formSize: opts.formSize,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
-      text: 'avue.top',
+      text: 'avuejs.com',
       fontFamily: 'microsoft yahei',
       color: '#999',
       fontSize: 16,
@@ -103,7 +103,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = {
-  version: '2.5.3',
+  version: '2.6.0',
   locale: locale.locale,
   install
 };

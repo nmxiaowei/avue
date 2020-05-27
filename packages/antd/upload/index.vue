@@ -253,7 +253,7 @@ export default create({
             if (this.isAliOss) {
               return client.put(file.name, file);
             } else {
-              return this.$httpajax.post(url, param, { headers });
+              return this.$axios.post(url, param, { headers });
             }
           })()
             .then(res => {

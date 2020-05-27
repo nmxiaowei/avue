@@ -235,7 +235,7 @@ export default create({
         packages.logs('axios');
         return
       }
-      this.$httpajax(this.mapData).then(res => {
+      this.$axios(this.mapData).then(res => {
         const data = res.data;
         const optionData = this.deepClone(data);
         window.echarts.registerMap("HK", optionData);

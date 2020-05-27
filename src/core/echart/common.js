@@ -245,7 +245,7 @@ export default (() => {
               packages.logs('axios');
               return;
             }
-            this.$httpajax[this.dataMethod](url, (() => {
+            this.$axios[this.dataMethod](url, (() => {
               if (this.dataMethod === 'get') {
                 return {
                   params: params
