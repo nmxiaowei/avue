@@ -1,6 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME } from 'global/variable';
-import { detailDataType } from 'utils/util';
+import { detailDataType, findObject } from 'utils/util';
 /**
  * 计算级联属性
  */
@@ -11,14 +11,11 @@ export const calcCascader = (list = []) => {
       let parentProp = ele.prop;
       list[index].cascader = [...cascader];
       cascader.forEach((citem, cindex) => {
-        const columnIndex = index + cindex + 1;
-        if (list[columnIndex]) {
-          list[columnIndex].parentProp = parentProp;
-          list[columnIndex].cascaderChange = ele.cascaderChange;
-          list[columnIndex].cascader = [...cascader].splice(cindex + 1);
-          parentProp = list[columnIndex].prop;
-        }
-
+        let column = findObject(list, citem);
+        if (!column) return;
+        column.parentProp = parentProp;
+        column.cascader = [...cascader].splice(cindex + 1);
+        parentProp = column.prop;
       });
     }
   });

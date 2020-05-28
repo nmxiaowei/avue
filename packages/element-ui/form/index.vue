@@ -116,7 +116,7 @@
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader && handleChange(item.column,cindex)">
+                               @change="column.cascader && handleChange(item.column,column)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -264,18 +264,20 @@ export default create({
     dynamicOption () {
       let list = []
       this.propOption.forEach(ele => {
-        if (ele.type == 'dynamic') {
-          list.push(ele)
-        }
+        if (ele.type == 'dynamic') list.push(ele)
       })
       return list
+    },
+    dicOption () {
+      return {
+        dicData: this.tableOption.dicData,
+        column: this.propOption
+      }
     },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
-        option.column.forEach(column => {
-          list.push(column);
-        });
+        option.column.forEach(column => list.push(column));
       });
       return list;
     },
@@ -344,9 +346,9 @@ export default create({
   },
   created () {
     //初始化字典
-    this.datadic()
+    this.dataDic()
     // 初始化表单
-    this.dataformat();
+    this.dataFormat();
   },
   methods: {
     getComponent,
@@ -354,15 +356,9 @@ export default create({
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
-    datadic () {
-      let count = 0;
-      this.columnOption.forEach(ele => {
-        this.handleLoadDic(ele).then(() => {
-          count = count + 1;
-          if (count === this.columnLen) {
-            this.forEachLabel()
-          }
-        });
+    dataDic () {
+      this.handleLoadDic(this.dicOption).then(() => {
+        this.forEachLabel()
       });
     },
     getSpan (column) {
@@ -424,59 +420,54 @@ export default create({
         this.$set(this.DIC, prop, list);
       }
     },
-    dataformat () {
+    dataFormat () {
       let formDefault = formInitVal(this.propOption);
       this.formDefault = formDefault;
       this.form = this.deepClone(formDefault.tableForm);
       this.formVal();
     },
 
-    handleChange (item, index) {
-      setTimeout(() => {
-        const column = item[index]; //获取当前节点级联
-        const list = column.cascader;
-        const str = list.join(",");
-        const value = this.form[column.prop];
-        // 下一个节点
-        const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
-        const columnNextProp = columnNext.prop;
-        /**
-         * 1.判断当前节点是否有下级节点
-         * 2.判断当前节点是否有值
-         */
-        if (
-          this.validatenull(list) ||
-          this.validatenull(value) ||
-          this.validatenull(columnNext)
-        ) {
-          return;
-        }
+    handleChange (list, column) {
+      const cascader = column.cascader;
+      const str = cascader.join(",");
+      const columnNextProp = cascader[0];
+      const value = this.form[column.prop];
+      // 下一个节点
+      const columnNext = this.findObject(list, columnNextProp)
+      /**
+       * 1.判断当前节点是否有下级节点
+       * 2.判断当前节点是否有值
+       */
+      if (
+        this.validatenull(cascader) ||
+        this.validatenull(value) ||
+        this.validatenull(columnNext)
+      ) {
+        return;
+      }
 
-        // 如果不是首次加载则清空全部关联节点的属性值和字典值
-        if (this.formList.includes(str)) {
-          //清空子类字典列表和值
-          list.forEach(ele => {
-            this.form[ele] = "";
-            this.$set(this.DIC, ele, []);
-          });
-        }
-        // 根据当前节点值获取下一个节点的字典
-        sendDic({
-          url: (columnNext.dicUrl || '').replace("{{key}}", value),
-          method: columnNext.dicMethod,
-          query: columnNext.dicQuery,
-          formatter: columnNext.dicFormatter,
-          resKey: (columnNext.props || {}).res,
-        }).then(
-          res => {
-            const dic = Array.isArray(res) ? res : [];
-            // 修改字典
-            this.$set(this.DIC, columnNextProp, dic);
-            //首次加载的放入队列记录
-            if (!this.formList.includes(str)) this.formList.push(str);
-          }
-        );
-      }, 0)
+      // 如果不是首次加载则清空全部关联节点的属性值和字典值
+      if (this.formList.includes(str)) {
+        //清空子类字典列表和值
+        cascader.forEach(ele => {
+          this.form[ele] = "";
+          this.$set(this.DIC, ele, []);
+        });
+      }
+      // 根据当前节点值获取下一个节点的字典
+      sendDic({
+        url: (columnNext.dicUrl || '').replace("{{key}}", value),
+        method: columnNext.dicMethod,
+        query: columnNext.dicQuery,
+        formatter: columnNext.dicFormatter,
+        resKey: (columnNext.props || {}).res,
+      }).then(res => {
+        const dic = Array.isArray(res) ? res : [];
+        //首次加载的放入队列记录
+        if (!this.formList.includes(str)) this.formList.push(str);
+        // 修改字典
+        this.$set(this.DIC, columnNextProp, dic);
+      });
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {
