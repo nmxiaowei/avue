@@ -94,7 +94,7 @@ export default create({
       loading: false,
       typeList: {
         img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
-        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg)/
+        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
       },
       dialogUrl: "",
       dialogType: true,
