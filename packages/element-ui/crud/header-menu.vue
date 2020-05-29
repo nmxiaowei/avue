@@ -65,8 +65,7 @@
                    circle
                    :size="crud.isMediumSize"
                    @click="crud.$refs.headerSearch.handleSearchShow()"
-                   v-permission="crud.getPermission('searchBtn')"
-                   v-if="(crud.$refs.headerSearch || {}).searchFlag && vaildData(crud.tableOption.searchBtn,config.searchBtn)"></el-button>
+                   v-if="(crud.$refs.headerSearch || {}).searchFlag"></el-button>
       </el-tooltip>
       <el-tooltip effect="dark"
                   :content="t('crud.filterBtn')"
