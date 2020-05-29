@@ -7,6 +7,7 @@
       <flow-node v-for="(node,index) in option.nodeList"
                  :node="node"
                  :id="node.id"
+                 v-if="!node.display"
                  @click.native="handleClick(node)"
                  @changeNodeSite="changeNodeSite"
                  :index="index"
@@ -18,8 +19,9 @@
                 :node="node">
           </slot>
         </template>
+        <slot :node="node">
+        </slot>
       </flow-node>
-
     </div>
   </div>
 </template>
@@ -116,10 +118,7 @@ export default create({
     this.jsplumbSetting.Container = this.id;
   },
   mounted () {
-    this.jsPlumb = jsPlumb.getInstance()
-    this.$nextTick(() => {
-      this.jsPlumbInit()
-    })
+    this.init();
   },
   computed: {
     styleName () {
@@ -131,6 +130,12 @@ export default create({
     }
   },
   methods: {
+    init () {
+      this.jsPlumb = jsPlumb.getInstance()
+      this.$nextTick(() => {
+        this.jsPlumbInit()
+      })
+    },
     handleClick (node) {
       this.$emit('click', node)
     },
@@ -176,11 +181,11 @@ export default create({
         type: 'warning',
         closeOnClickModal: false
       }).then(() => {
-
-        this.option.nodeList = this.option.nodeList.filter(function (node) {
-          return node.id !== nodeId
+        this.option.nodeList.forEach(node => {
+          if (node.id === nodeId) {
+            node.display = true;
+          }
         })
-
         this.$nextTick(function () {
           this.jsPlumb.removeAllEndpoints(nodeId);
         })

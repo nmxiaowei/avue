@@ -17,8 +17,10 @@
         </slot>
       </div>
       <div :class="b('node-body')">
-        {{node.name}}
+        <slot :node="node">
+        </slot>
       </div>
+
     </div>
   </div>
 </template>
