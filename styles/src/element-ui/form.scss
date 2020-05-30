@@ -40,11 +40,12 @@
     box-sizing: border-box;
   }
   &__group {
-    display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
     height: auto;
-    // overflow: hidden;
+    &--flex{
+      display: flex;
+    }
     .el-col {
       position: relative;
     }

@@ -15,6 +15,8 @@
         <avue-group v-for="(item,index) in columnOption"
                     :key="item.prop"
                     :tabs="isTabs"
+                    :arrow="item.arrow"
+                    :collapse="item.collapse"
                     :display="item.display"
                     :icon="item.icon"
                     :index="index"
@@ -45,7 +47,7 @@
                     v-if="$slots[item.prop+'Header']">
             <slot :name="item.prop+'Header'"></slot>
           </template>
-          <div :class="b('group')"
+          <div :class="b('group',{'flex':vaildData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
             <template v-if="vaildDisplay(column)"
                       v-for="(column,cindex) in item.column">
@@ -99,6 +101,7 @@
                           v-if="column.formslot"></slot>
                     <form-temp :column="column"
                                v-else
+                               :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :t="t"
                                :props="parentOption.props"
@@ -113,7 +116,7 @@
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader && handleChange(item.column,cindex)">
+                               @change="column.cascader && handleChange(item.column,column)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -197,8 +200,7 @@ export default create({
       form: {},
       formList: [],
       formCreate: true,
-      formDefault: {},
-      formRules: {}
+      formDefault: {}
     };
   },
   provide () {
@@ -259,12 +261,23 @@ export default create({
     columnLen () {
       return this.columnOption.length
     },
+    dynamicOption () {
+      let list = []
+      this.propOption.forEach(ele => {
+        if (ele.type == 'dynamic') list.push(ele)
+      })
+      return list
+    },
+    dicOption () {
+      return {
+        dicData: this.tableOption.dicData,
+        column: this.propOption
+      }
+    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
-        option.column.forEach(column => {
-          list.push(column);
-        });
+        option.column.forEach(column => list.push(column));
       });
       return list;
     },
@@ -315,10 +328,7 @@ export default create({
     },
     isMock () {
       return this.vaildData(this.parentOption.mockBtn, false);
-    },
-    menuSpan () {
-      return this.parentOption.menuSpan || 24;
-    },
+    }
   },
   props: {
     uploadBefore: Function,
@@ -336,9 +346,9 @@ export default create({
   },
   created () {
     //初始化字典
-    this.datadic()
+    this.dataDic()
     // 初始化表单
-    this.dataformat();
+    this.dataFormat();
   },
   methods: {
     getComponent,
@@ -346,19 +356,13 @@ export default create({
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
-    datadic () {
-      let count = 0;
-      this.columnOption.forEach(ele => {
-        this.handleLoadDic(ele).then(() => {
-          count = count + 1;
-          if (count === this.columnLen) {
-            this.forEachLabel()
-          }
-        });
+    dataDic () {
+      this.handleLoadDic(this.dicOption).then(() => {
+        this.forEachLabel()
       });
     },
     getSpan (column) {
-      return this.parentOption.span || column.span || this.itemSpanDefault
+      return column.span || this.parentOption.span || this.itemSpanDefault
     },
     isGroupShow (item, index) {
       if (this.isTabs) {
@@ -405,8 +409,10 @@ export default create({
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           url: column.dicUrl,
-          formatter: column.dicFormatter,
-          resKey: (column.props || {}).res
+          method: column.dicMethod,
+          query: column.dicQuery,
+          resKey: (column.props || {}).res,
+          formatter: column.dicFormatter
         }).then(list => {
           this.$set(this.DIC, prop, list);
         });
@@ -414,53 +420,54 @@ export default create({
         this.$set(this.DIC, prop, list);
       }
     },
-    dataformat () {
+    dataFormat () {
       let formDefault = formInitVal(this.propOption);
       this.formDefault = formDefault;
       this.form = this.deepClone(formDefault.tableForm);
       this.formVal();
     },
 
-    handleChange (item, index) {
-      setTimeout(() => {
-        const column = item[index]; //获取当前节点级联
-        const list = column.cascader;
-        const str = list.join(",");
-        const value = this.form[column.prop];
-        // 下一个节点
-        const columnNext = item[index + 1] || {}; //获取下一个联动节点属性
-        const columnNextProp = columnNext.prop;
-        /**
-         * 1.判断当前节点是否有下级节点
-         * 2.判断当前节点是否有值
-         */
-        if (
-          this.validatenull(list) ||
-          this.validatenull(value) ||
-          this.validatenull(columnNext)
-        ) {
-          return;
-        }
+    handleChange (list, column) {
+      const cascader = column.cascader;
+      const str = cascader.join(",");
+      const columnNextProp = cascader[0];
+      const value = this.form[column.prop];
+      // 下一个节点
+      const columnNext = this.findObject(list, columnNextProp)
+      /**
+       * 1.判断当前节点是否有下级节点
+       * 2.判断当前节点是否有值
+       */
+      if (
+        this.validatenull(cascader) ||
+        this.validatenull(value) ||
+        this.validatenull(columnNext)
+      ) {
+        return;
+      }
 
-        // 如果不是首次加载则清空全部关联节点的属性值和字典值
-        if (this.formList.includes(str)) {
-          //清空子类字典列表和值
-          list.forEach(ele => {
-            this.form[ele] = "";
-            this.$set(this.DIC, ele, []);
-          });
-        }
-        // 根据当前节点值获取下一个节点的字典
-        sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
-          res => {
-            const dic = Array.isArray(res) ? res : [];
-            // 修改字典
-            this.$set(this.DIC, columnNextProp, dic);
-            //首次加载的放入队列记录
-            if (!this.formList.includes(str)) this.formList.push(str);
-          }
-        );
-      }, 0)
+      // 如果不是首次加载则清空全部关联节点的属性值和字典值
+      if (this.formList.includes(str)) {
+        //清空子类字典列表和值
+        cascader.forEach(ele => {
+          this.form[ele] = "";
+          this.$set(this.DIC, ele, []);
+        });
+      }
+      // 根据当前节点值获取下一个节点的字典
+      sendDic({
+        url: (columnNext.dicUrl || '').replace("{{key}}", value),
+        method: columnNext.dicMethod,
+        query: columnNext.dicQuery,
+        formatter: columnNext.dicFormatter,
+        resKey: (columnNext.props || {}).res,
+      }).then(res => {
+        const dic = Array.isArray(res) ? res : [];
+        //首次加载的放入队列记录
+        if (!this.formList.includes(str)) this.formList.push(str);
+        // 修改字典
+        this.$set(this.DIC, columnNextProp, dic);
+      });
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {
@@ -531,15 +538,6 @@ export default create({
         return true;
       }
     },
-    rulesInit (option) {
-      (option || this.columnOption).forEach(ele => {
-        if (ele.rules && ele.display !== false)
-          this.$set(this.formRules, ele.prop, ele.rules);
-      });
-      this.$nextTick(() => {
-        this.clearValidate();
-      });
-    },
     clearValidate () {
       this.$refs.form.clearValidate();
     },
@@ -578,14 +576,45 @@ export default create({
     },
     submit () {
       this.validate(valid => {
+        let dynamicList = [];
+        let dynamicError = [];
         if (valid) {
-          this.show();
-          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          const callback = () => {
+            if (!this.validatenull(dynamicError)) {
+              this.$emit("error", dynamicError);
+              return
+            }
+            this.show();
+            this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          }
+          this.asyncValidator(this.formRules, this.form).then(() => {
+          }).catch(err => {
+            this.$emit("error", err.concat(dynamicError));
+          })
+          this.dynamicOption.forEach(ele => {
+            dynamicError.push({
+              field: ele.prop,
+              label: ele.label,
+              children: {}
+            });
+            dynamicList.push(this.$refs[ele.prop][0].$refs.temp.validate());
+          })
+          Promise.all(dynamicList).then(res => {
+            res.forEach((err, index) => {
+              let objKey = Object.keys(dynamicError);
+              if (this.validatenull(err)) {
+                dynamicError.splice(index, 1)
+                return
+              }
+              if (index == 0) {
+                let count = Object.keys(err)[0]
+                this.$message.error(`【${dynamicError[index].label}】第${Number(count) + 1}行:${err[count][0].message}`);
+              }
+              dynamicError[objKey[index]].children = err;
+            })
+            callback();
+          })
         }
-        this.asyncValidator(this.formRules, this.form).then(() => {
-        }).catch(err => {
-          this.$emit("error", err);
-        })
       });
     }
   }

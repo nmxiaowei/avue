@@ -4,6 +4,7 @@
              v-bind="column"
              :column="Object.assign(column,params)"
              :dic="dic"
+             ref="temp"
              :disabled="disabled"
              :readonly="readonly"
              :placeholder="getPlaceholder(column)"
@@ -48,7 +49,7 @@ import { getComponent, getPlaceholder } from "core/dataformat";
 export default {
   name: 'form-temp',
   props: {
-    value: [Array, String, Number, Object, Boolean],
+    value: {},
     t: Function,
     uploadBefore: Function,
     uploadDelete: Function,

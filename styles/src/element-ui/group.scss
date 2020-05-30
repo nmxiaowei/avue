@@ -1,4 +1,27 @@
 .avue-group{
+  .el-collapse,.el-collapse-item__wrap{
+    border:none;
+  }
+  .el-collapse-item__header{
+    height: inherit;
+    border:none;
+  }
+  .el-collapse-item__content{
+    padding-bottom: 0;
+  }
+  &--arrow{
+    .el-collapse-item__arrow{
+     display: none;
+    }
+  }
+  &--header{
+    .el-collapse-item__header{
+      display: none;
+    }
+  }
+  .el-collapse-item__arrow{
+    margin-top: -25px;
+  }
   &--card{
     padding: 0 20px;
     &:last-child{
@@ -21,6 +44,7 @@
   }
 
   &__header {
+    width: 100%;
     margin-bottom: 30px;
     display: flex;
     align-items: center;
@@ -32,6 +56,7 @@
   &__icon {
       margin-right: 8px;
       font-size: 20px;
+      color: rgba(0, 0, 0, 0.85);
   }
   &__title {
       font-size: 16px;

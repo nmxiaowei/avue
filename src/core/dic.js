@@ -65,7 +65,6 @@ export const loadDic = option => {
     const params = createdDic(option);
     locationdic = Object.assign(locationdic, params.locationdic);
     ajaxdic = params.ajaxdic;
-
     if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
     if (!window.axios && !validatenull(ajaxdic)) {
       packages.logs('axios');
@@ -91,10 +90,11 @@ function createdDic(option) {
     let dicData = ele.dicData;
     let dicUrl = ele.dicUrl;
     let prop = ele.prop;
+    let parentProp = ele.parentProp;
     if (ele.dicFlag === false) return;
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
-    } else if (!validatenull(dicUrl)) {
+    } else if (dicUrl && !parentProp) {
       ajaxdic.push({
         url: dicUrl || url,
         name: dicData || prop,

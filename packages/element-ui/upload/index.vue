@@ -5,6 +5,7 @@
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
+               :accept="acceptList"
                :before-remove="beforeRemove"
                :multiple="multiple"
                :on-preview="handlePreview"
@@ -18,41 +19,43 @@
                :on-exceed="handleExceed"
                :disabled="disabled"
                :file-list="fileList">
-      <template v-if="listType=='picture-card'">
-        <i class="el-icon-plus"></i>
-      </template>
-      <template v-else-if="listType=='picture-img'">
-        <el-image v-if="imgUrl"
-                  :src="imgUrl"
-                  :preview-src-list="[imgUrl]"
-                  v-bind="allParams"
-                  @mouseover="menu=disabled?false:true"
-                  :class="b('avatar')"></el-image>
-        <i v-else
-           class="el-icon-plus"
-           :class="b('icon')"></i>
-        <div class="el-upload-list__item-actions"
-             :class="b('menu')"
-             v-if="menu"
-             @mouseover="menu=true"
-             @mouseout="menu=false"
-             @click.stop="()=>{return false}">
-          <i class="el-icon-zoom-in"
-             @click.stop="handlePreview({url:imgUrl})"></i>
-          <i class="el-icon-delete"
-             @click.stop="handleDelete(imgUrl)"></i>
-        </div>
-      </template>
-      <template v-else-if="drag">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-        </div>
-      </template>
-      <template v-else>
-        <el-button size="small"
-                   type="primary">点击上传</el-button>
+      <template v-if="!disabled">
+        <template v-if="listType=='picture-card'">
+          <i class="el-icon-plus"></i>
+        </template>
+        <template v-else-if="listType=='picture-img'">
+          <el-image v-if="imgUrl"
+                    :src="imgUrl"
+                    :preview-src-list="[imgUrl]"
+                    v-bind="allParams"
+                    @mouseover="menu=disabled?false:true"
+                    :class="b('avatar')"></el-image>
+          <i v-else
+             class="el-icon-plus"
+             :class="b('icon')"></i>
+          <div class="el-upload-list__item-actions"
+               :class="b('menu')"
+               v-if="menu"
+               @mouseover="menu=true"
+               @mouseout="menu=false"
+               @click.stop="()=>{return false}">
+            <i class="el-icon-zoom-in"
+               @click.stop="handlePreview({url:imgUrl})"></i>
+            <i class="el-icon-delete"
+               @click.stop="handleDelete(imgUrl)"></i>
+          </div>
+        </template>
+        <template v-else-if="drag">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+        </template>
+        <template v-else>
+          <el-button size="small"
+                     type="primary">点击上传</el-button>
+        </template>
       </template>
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
@@ -91,7 +94,7 @@ export default create({
       loading: false,
       typeList: {
         img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
-        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg)/
+        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
       },
       dialogUrl: "",
       dialogType: true,
@@ -140,7 +143,7 @@ export default create({
         return {};
       }
     },
-    filesize: {
+    fileSize: {
       type: Number
     },
     drag: {
@@ -162,6 +165,12 @@ export default create({
     uploadError: Function
   },
   computed: {
+    acceptList () {
+      if (Array.isArray(this.accept)) {
+        return this.accept.join(',')
+      }
+      return this.accept
+    },
     homeUrl () {
       return this.propsHttp.home || ''
     },
@@ -274,19 +283,20 @@ export default create({
       this.loading = true;
       let file = config.file;
       const accept = file.type;
-      const filesize = file.size;
-      let acceptList = Array.isArray(this.accept) ? this.accept : [this.accept];
-      acceptList = this.validatenull(acceptList[0]) ? undefined : acceptList;
+      const fileSize = file.size;
       this.file = config.file;
+      let acceptList = this.acceptList;
+      if (!Array.isArray(acceptList) && !this.validatenull(acceptList)) {
+        acceptList = acceptList.split(',')
+      }
       if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
         this.hide("文件类型不符合");
         return;
       }
-      if (!this.validatenull(filesize) && filesize > this.filesize) {
+      if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
       }
-
       const headers = Object.assign(this.headers, { "Content-Type": "multipart/form-data" });
       //oss配置属性
       let oss_config = {};
@@ -328,7 +338,11 @@ export default create({
             if (this.isAliOss) {
               return client.put(uploadfile.name, uploadfile);
             } else {
-              return this.$httpajax.post(url, param, { headers });
+              if (!window.axios) {
+                packages.logs('axios');
+                return Promise.reject()
+              }
+              return this.$axios.post(url, param, { headers });
             }
           })()
             .then(res => {
@@ -400,7 +414,6 @@ export default create({
       );
     },
     handlePreview (file) {
-      if (this.disabled) return
       const callback = () => {
         //判断是否为图片
         this.dialogUrl = file.url;

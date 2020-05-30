@@ -1,7 +1,8 @@
 <template>
   <el-tooltip placement="bottom"
               :disabled="tipStatus">
-    <div slot="content">
+    <div slot="content"
+         v-if="!tipStatus">
       <el-link type="primary"
                :href="text"
                :target="target">{{text}}</el-link>

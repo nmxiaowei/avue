@@ -1,22 +1,26 @@
 <template>
-  <div :class="[b(),{'avue-group--card':card}]"
+  <div :class="[b({'card':card,'header':!isHeader,'arrow':!arrow})]"
        v-if="display">
     <slot name="tabs"></slot>
-    <el-row span="24"
-            :class="b('item')">
-      <div :class="b('header')"
-           v-if="$slots.header&&header">
-        <slot name="header"></slot>
-      </div>
-      <div :class="b('header')"
-           v-else-if="(label || icon)&&header">
-        <i :class="[icon,b('icon')]"
-           v-if="icon"></i>
-        <h1 :class="b('title')"
-            v-if="label">{{label}}</h1>
-      </div>
-      <slot></slot>
-    </el-row>
+    <el-collapse :value="text">
+      <el-collapse-item :name="1"
+                        :disabled="!arrow">
+        <div :class="b('header')"
+             slot="title"
+             v-if="$slots.header&&header">
+          <slot name="header"></slot>
+        </div>
+        <div :class="b('header')"
+             slot="title"
+             v-else-if="(label || icon)&&header">
+          <i :class="[icon,b('icon')]"
+             v-if="icon"></i>
+          <h1 :class="b('title')"
+              v-if="label">{{label}}</h1>
+        </div>
+        <slot></slot>
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
@@ -25,6 +29,14 @@ import create from "core/create";
 export default create({
   name: "group",
   props: {
+    arrow: {
+      type: Boolean,
+      default: true
+    },
+    collapse: {
+      type: Boolean,
+      default: true
+    },
     header: {
       type: Boolean,
       default: true
@@ -44,6 +56,14 @@ export default create({
       type: String
     }
   },
+  computed: {
+    text () {
+      return this.collapse ? 1 : 0
+    },
+    isHeader () {
+      return this.$slots.header && this.header || ((this.label || this.icon) && this.header)
+    }
+  }
 });
 </script>
 

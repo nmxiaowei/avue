@@ -49,7 +49,7 @@
       <el-button type="text"
                  size="small"
                  @click="selectClear"
-                 v-permission="permission.selectClearBtn"
+                 v-permission="getPermission('selectClearBtn')"
                  v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
       <slot name="tip"></slot>
     </el-tag>
@@ -156,8 +156,7 @@
                        :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
                        align="center"></el-table-column>
       <el-table-column width="1px"></el-table-column>
-      <column :columnOption="columnOption"
-              :disabled="btnDisabled">
+      <column :columnOption="columnOption">
         <template v-for="(item,index) in propOption"
                   slot-scope="scope"
                   :slot="item.prop">
@@ -171,9 +170,9 @@
       <el-table-column :class="b('btn')"
                        :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
                        v-if="vaildData(tableOption.menu,config.menu)"
-                       :label="t('crud.menu')"
+                       :label="tableOption.menuTitle || t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
-                       :header-align="tableOption.menuheaderAlign || config.menuheaderAlign"
+                       :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
                        :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
         <template slot-scope="scope">
           <el-dropdown v-if="menuType==='menu'"
@@ -181,20 +180,20 @@
                        style="margin-right:9px;">
             <el-button type="primary"
                        :size="isMediumSize">
-              {{t('crud.menuBtn')}}
+              {{ tableOption.menuBtnTitle || t('crud.menuBtn')}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
-                                v-permission="permission.viewBtn"
+                                v-permission="getPermission('viewBtn',scope.row,scope.$index)"
                                 @click.native="rowView(scope.row,scope.$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.editBtn,true)"
-                                v-permission="permission.editBtn"
+                                v-permission="getPermission('editBtn',scope.row,scope.$index)"
                                 @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
-                                v-permission="permission.delBtn"
+                                v-permission="getPermission('delBtn',scope.row,scope.$index)"
                                 @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
               <slot name="menuBtn"
                     :row="scope.row"
@@ -207,14 +206,14 @@
             <el-button :type="menuText('primary')"
                        :icon="scope.row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
                        :size="isMediumSize"
-                       :disabled="btnDisabled"
+                       :disabled="btnDisabledList[scope.$index]"
                        @click.stop="rowCell(scope.row,scope.$index)"
-                       v-permission="permission.cellBtn"
+                       v-permission="getPermission('cellBtn',scope.row,scope.$index)"
                        v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.cancelBtnIcon"
                        :size="isMediumSize"
-                       :disabled="btnDisabled"
+                       :disabled="btnDisabledList[scope.$index]"
                        @click.stop="rowCanel(scope.row,scope.$index)"
                        v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">{{menuIcon('cancelBtn')}}</el-button>
             <el-button :type="menuText('success')"
@@ -222,21 +221,21 @@
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowView(scope.row,scope.$index)"
-                       v-permission="permission.viewBtn"
+                       v-permission="getPermission('viewBtn',scope.row,scope.$index)"
                        v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon('viewBtn')}}</el-button>
             <el-button :type="menuText('primary')"
                        :icon="config.editBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowEdit(scope.row,scope.$index)"
-                       v-permission="permission.editBtn"
+                       v-permission="getPermission('editBtn',scope.row,scope.$index)"
                        v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon('editBtn')}}</el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.delBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowDel(scope.row,scope.$index)"
-                       v-permission="permission.delBtn"
+                       v-permission="getPermission('delBtn',scope.row,scope.$index)"
                        v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon('delBtn')}}</el-button>
           </template>
           <slot name="menu"
@@ -305,6 +304,7 @@
 <script>
 import create from "core/create";
 import packages from "core/packages";
+import permission from '../../core/directive/permission';
 import init from "../../core/crud/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
@@ -316,11 +316,14 @@ import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
-import { calcCascader } from "core/dataformat";
+import { calcCascader, formInitVal } from "core/dataformat";
 
 export default create({
   name: "crud",
   mixins: [init("crud"), locale],
+  directives: {
+    permission
+  },
   provide () {
     return {
       crud: this
@@ -351,16 +354,13 @@ export default create({
       sumsList: [],
       cascaderDicList: {},
       formCascaderList: {},
-      formRules: {},
-      formCellRules: {},
+      btnDisabledList: {},
       btnDisabled: false,
     };
   },
   created () {
     // 初始化数据
     this.dataInit();
-    // 规则初始化
-    this.rulesInit();
     //初始化字典
     this.handleLoadDic();
   },
@@ -506,12 +506,7 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
-    permission: {
-      type: Object,
-      default: () => {
-        return {};
-      }
-    },
+    permission: [Function, Object],
     value: {
       type: Object,
       default: () => {
@@ -543,6 +538,15 @@ export default create({
     }
   },
   methods: {
+    getPermission (key, row, index) {
+      if (this.validatenull(this.permission)) {
+        return true;
+      } else if (typeof this.permission === "function") {
+        return this.permission(key, row, index)
+      } else {
+        return this.permission[key]
+      }
+    },
     getTableHeight () {
       const clientHeight = document.documentElement.clientHeight;
       if (this.tableOption.height == "auto") {
@@ -627,13 +631,6 @@ export default create({
     handleGetRowKeys (row) {
       const rowKey = row[this.rowKey];
       return rowKey;
-    },
-    rulesInit () {
-      this.formRules = {};
-      this.propOption.forEach(ele => {
-        if (ele.rules) this.formRules[ele.prop] = ele.rules;
-        if (ele.rules && ele.cell) this.formCellRules[ele.prop] = ele.rules;
-      });
     },
     menuIcon (value) {
       return this.menuType === "icon" ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
@@ -770,12 +767,14 @@ export default create({
     //单元格新增
     rowCellAdd (row = {}) {
       let len = this.list.length
+      let formDefault = formInitVal(this.propOption).tableForm;
       row = this.deepClone(
         Object.assign(
           {
             $cellEdit: true,
             $index: len,
           },
+          formDefault,
           row
         ))
       this.list.push(row);
@@ -809,8 +808,9 @@ export default create({
     },
     //单元格更新
     rowCellUpdate (row, index) {
-      this.asyncValidator(this.formCellRules, row)
+      this.asyncValidator(this.formRules, row)
         .then(res => {
+          this.btnDisabledList[index] = true;
           this.btnDisabled = true;
           this.$emit(
             "row-update",
@@ -821,6 +821,7 @@ export default create({
               this.$set(this.list, index, row);
             },
             () => {
+              this.btnDisabledList[index] = false;
               this.btnDisabled = false
             }
           );

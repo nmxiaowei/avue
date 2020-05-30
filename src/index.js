@@ -1,7 +1,6 @@
 import components from 'ui/index';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson } from 'utils/util';
-import permission from 'packages/core/directive/permission';
 import dialogDrag from 'packages/core/directive/dialog-drag';
 import _export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
@@ -37,7 +36,6 @@ const install = function(Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
-  Vue.directive('permission', permission);
   components.map(component => {
     Vue.component(component.name, component);
   });
@@ -47,7 +45,7 @@ const install = function(Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.prototype.$httpajax = window.axios;
+  Vue.prototype.$axios = window.axios;
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
@@ -72,7 +70,7 @@ const install = function(Vue, opts = {}) {
     formSize: opts.formSize,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
-      text: 'avue.top',
+      text: 'avuejs.com',
       fontFamily: 'microsoft yahei',
       color: '#999',
       fontSize: 16,
@@ -105,7 +103,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = {
-  version: '2.5.3',
+  version: '2.6.0',
   locale: locale.locale,
   install
 };

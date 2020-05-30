@@ -29,6 +29,9 @@
         <i class="el-icon-delete" @click="$refs.flow.deleteNode(scope.node.id)"></i>
         自定义头部
       </template>
+      <div slot-scope="scope">
+        自定义身体{{scope.node.name}}
+      </div>
     </avue-flow>
   </div>
 </body>

@@ -68,6 +68,24 @@ export default create({
     delBtn () {
       return this.children.delBtn === false
     },
+    valueOption () {
+      let result = {};
+      this.columnOption.forEach(ele => {
+        if (ele.value) {
+          result[ele.prop] = ele.value;
+        }
+      })
+      return result;
+    },
+    rulesOption () {
+      let rules = {};
+      this.columnOption.forEach(ele => {
+        if (ele.rules) {
+          rules[ele.prop] = ele.rules;
+        }
+      })
+      return rules;
+    },
     columnOption () {
       return this.children.column || []
     },
@@ -129,6 +147,32 @@ export default create({
     }
   },
   methods: {
+    validate () {
+      return new Promise(resolve => {
+        let list = [];
+        this.text.forEach((ele, index) => {
+          let callback = () => {
+            return new Promise(resolve => {
+              this.asyncValidator(this.rulesOption, ele).then(() => {
+                resolve();
+              }).catch(error => {
+                resolve(error)
+              })
+            })
+          }
+          list.push(callback())
+        })
+        Promise.all(list).then(error => {
+          let result = {}
+          error.forEach((ele, index) => {
+            if (!this.validatenull(ele)) {
+              result[index] = ele
+            }
+          })
+          resolve(result)
+        })
+      })
+    },
     initData () {
       this.text.forEach((ele, index) => {
         ele = Object.assign(ele, {
@@ -164,6 +208,7 @@ export default create({
     },
     addRow () {
       const callback = (obj = {}) => {
+        obj = Object.assign(this.valueOption, obj);
         this.$refs.crud.rowCellAdd(obj);
       }
       if (typeof this.rowAdd === 'function') {

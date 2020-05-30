@@ -329,6 +329,7 @@ export default create({
       });
     },
     handleOver () {
+      if (this.disabled) return
       this.overActive = true
       this.$emit("over", {
         index: this.index,
@@ -375,6 +376,7 @@ export default create({
         } else if (e && e.keyCode == 39) {//右
           this.baseLeft = getFixed(this.baseLeft + step)
         }
+        event.stopPropagation();
         this.$emit("blur", {
           index: this.index,
           width: this.baseWidth,
@@ -382,7 +384,6 @@ export default create({
           left: this.baseLeft,
           top: this.baseTop
         });
-        event.preventDefault();
         this.keydown && this.keydown(event);
       };
     },

@@ -72,7 +72,7 @@ const list = {
     gihub: 'https://github.com/Colingo/mock'
   },
   'axios': {
-    title: '使用网络字典需要引入以下包',
+    title: '需要引入axios发送数据包',
     url: 'https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js',
     version: '0.19.0-beta.1',
     github: 'https://github.com/axios/axios'

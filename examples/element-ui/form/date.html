@@ -64,17 +64,22 @@
             startPlaceholder: '时间开始范围自定义',
             endPlaceholder: '时间结束范围自定义',
           }, {
+            label: '多行文本',
+            prop: 'textarea',
+            type: 'textarea',
+            minRows: 6,
+          }, {
             label: "时间日期范围",
             value: 'datetimerange',
+            span: 6,
             type: 'datetimerange',
-            span: 24,
-            row: true,
             startPlaceholder: '时间日期开始范围自定义',
             endPlaceholder: '时间日期结束范围自定义',
           }, {
             label: "日期",
             prop: "date",
             type: "date",
+            span: 6,
             pickerOptions: {
               disabledDate(time) {
                 return time.getTime() > Date.now();

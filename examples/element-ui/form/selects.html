@@ -44,7 +44,6 @@
               },
               cascaderItem: ['city', 'area'],
               dicUrl: `${baseUrl}/getProvince`,
-              dicData: 'province',
               rules: [
                 {
                   required: true,
@@ -52,6 +51,9 @@
                   trigger: 'blur'
                 }
               ]
+            }, {
+              label: '测试',
+              prop: 'text'
             },
             {
               label: '城市',
@@ -61,8 +63,6 @@
                 label: 'name',
                 value: 'code'
               },
-              row: true,
-              dicFlag: false,
               dicUrl: `${baseUrl}/getCity/{{key}}`,
               rules: [
                 {
@@ -71,6 +71,9 @@
                   trigger: 'blur'
                 }
               ]
+            }, {
+              label: '测试',
+              prop: 'text1'
             },
             {
               label: '地区',
@@ -80,7 +83,6 @@
                 label: 'name',
                 value: 'code'
               },
-              dicFlag: false,
               dicUrl: `${baseUrl}/getArea/{{key}}`,
               rules: [
                 {

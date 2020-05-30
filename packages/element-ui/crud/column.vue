@@ -39,7 +39,7 @@
                          :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
                          :t="t"
                          :props="column.props || crud.tableOption.props"
-                         :disabled="column.disabled || crud.btnDisabled"
+                         :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
                          :clearable="vaildData(column.clearable,false)"
                          :upload-before="crud.uploadBefore"
                          :upload-after="crud.uploadAfter"
@@ -218,7 +218,13 @@ export default {
           list.forEach(ele => (row[ele] = ""));
         });
       }
-      sendDic({ url: (columnNext.dicUrl || '').replace("{{key}}", value), resKey: (columnNext.props || {}).res, formatter: columnNext.dicFormatter }).then(
+      sendDic({
+        url: (columnNext.dicUrl || '').replace("{{key}}", value),
+        method: columnNext.dicMethod,
+        query: columnNext.dicQuery,
+        formatter: columnNext.dicFormatter,
+        resKey: (columnNext.props || {}).res
+      }).then(
         res => {
           // 修改字典
           const dic = Array.isArray(res) ? res : [];

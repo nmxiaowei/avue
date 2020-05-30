@@ -241,7 +241,11 @@ export default (() => {
             let result = getUrlParams(dataUrl);
             let url = result.url;
             let params = Object.assign(result.params, this.dataQuery, this.propQuery);
-            this.$httpajax[this.dataMethod](url, (() => {
+            if (!window.axios) {
+              packages.logs('axios');
+              return;
+            }
+            this.$axios[this.dataMethod](url, (() => {
               if (this.dataMethod === 'get') {
                 return {
                   params: params
