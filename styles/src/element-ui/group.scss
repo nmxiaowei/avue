@@ -6,6 +6,9 @@
     height: inherit;
     border:none;
   }
+  .el-collapse-item__content{
+    padding-bottom: 0;
+  }
   &--arrow{
     .el-collapse-item__arrow{
      display: none;

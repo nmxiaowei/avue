@@ -3,10 +3,10 @@ export default function () {
   return {
     methods: {
       handleFocus () {
-        typeof this.focus === 'function' && this.focus()
+        typeof this.focus === 'function' && this.focus({ value: this.text, column: this.column })
       },
       handleBlur () {
-        typeof this.blur === 'function' && this.blur()
+        typeof this.blur === 'function' && this.blur({ value: this.text, column: this.column })
       },
       getLabelText (item) {
         if (this.validatenull(item)) return ''
