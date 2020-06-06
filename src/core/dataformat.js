@@ -67,7 +67,13 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
       if (validatenull(value)) {
         list = [];
       } else {
-        list = (value || '').split(',') || [];
+        value = value || '';
+        if (listType === 'picture-img') {
+          list = [value];
+        } else {
+          list = value.split(',') || [];
+        }
+
       }
     }
     // 数据转化
@@ -205,7 +211,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
