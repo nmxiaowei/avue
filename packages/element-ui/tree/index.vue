@@ -264,6 +264,7 @@ export default create({
     },
     hide () {
       this.box = false;
+      this.node = {};
       this.$refs.form.resetForm();
       this.$refs.form.clearValidate();
     },

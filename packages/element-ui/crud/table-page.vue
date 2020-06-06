@@ -1,17 +1,18 @@
 <template>
-  <el-pagination :class="b('pagination')"
-                 v-show="pageFlag"
-                 :small="crud.isMobile"
-                 :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
-                 :pager-count="defaultPage.pagerCount"
-                 :current-page.sync="defaultPage.currentPage"
-                 :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
-                 :page-size="defaultPage.pageSize"
-                 :page-sizes="defaultPage.pageSizes"
-                 @size-change="sizeChange"
-                 @current-change="currentChange"
-                 layout="total, sizes, prev, pager, next, jumper"
-                 :total="defaultPage.total"></el-pagination>
+  <div :class="b('pagination')">
+    <el-pagination v-show="pageFlag"
+                   :small="crud.isMobile"
+                   :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
+                   :pager-count="defaultPage.pagerCount"
+                   :current-page.sync="defaultPage.currentPage"
+                   :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
+                   :page-size="defaultPage.pageSize"
+                   :page-sizes="defaultPage.pageSizes"
+                   @size-change="sizeChange"
+                   @current-change="currentChange"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="defaultPage.total"></el-pagination>
+  </div>
 </template>
 
 <script>
@@ -52,6 +53,9 @@ export default create({
       },
       deep: true,
     },
+    pageFlag () {
+      this.crud.getTableHeight();
+    },
     //如果当前页面删除没数据了调用第一页
     'defaultPage.total' (val) {
       if (this.defaultPage.total === (this.defaultPage.currentPage - 1) * this.defaultPage.pageSize && this.defaultPage.total != 0) {
@@ -69,7 +73,12 @@ export default create({
   },
   methods: {
     pageInit () {
-      this.defaultPage = Object.assign(this.defaultPage, this.page)
+      this.defaultPage = Object.assign(this.defaultPage, this.page, {
+        total: Number(this.page.total || this.defaultPage.total),
+        pagerCount: Number(this.page.pagerCount || this.defaultPage.pagerCount),
+        currentPage: Number(this.page.currentPage || this.defaultPage.currentPage),
+        pageSize: Number(this.page.pageSize || this.defaultPage.pageSize)
+      })
       this.updateValue();
     },
     updateValue () {

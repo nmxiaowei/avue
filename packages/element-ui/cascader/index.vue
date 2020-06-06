@@ -5,6 +5,7 @@
                :props="allProps"
                :readonly="readonly"
                :size="size"
+               :emit-path="emitPath"
                :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
@@ -34,6 +35,10 @@ export default create({
     checkStrictly: {
       type: Boolean,
       default: false
+    },
+    emitPath: {
+      type: Boolean,
+      default: true
     },
     value: {
       type: Array,

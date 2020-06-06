@@ -12,7 +12,7 @@ export const calcCascader = (list = []) => {
       list[index].cascader = [...cascader];
       cascader.forEach((citem, cindex) => {
         let column = findObject(list, citem);
-        if (!column) return;
+        if (column === -1) return;
         column.parentProp = parentProp;
         column.cascader = [...cascader].splice(cindex + 1);
         parentProp = column.prop;
@@ -67,7 +67,13 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
       if (validatenull(value)) {
         list = [];
       } else {
-        list = (value || '').split(',') || [];
+        value = value || '';
+        if (listType === 'picture-img') {
+          list = [value];
+        } else {
+          list = value.split(',') || [];
+        }
+
       }
     }
     // 数据转化

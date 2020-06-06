@@ -49,7 +49,7 @@ export default create({
       this.crud.$emit('update:showColumn', val)
     },
     columnBox (val) {
-      if (val) {
+      if (val && this.crud.isSortable) {
         this.$nextTick(() => {
           this.setSort()
         })

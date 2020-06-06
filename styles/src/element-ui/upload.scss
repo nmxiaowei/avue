@@ -1,4 +1,12 @@
 .avue-upload {
+  &--upload{
+    .el-upload,.el-upload__tip{
+      display: none;
+    }
+    .el-upload-list{
+      margin-top: -6px;
+    }
+  }
   &--list {
     .el-upload {
       border: 1px dashed #d9d9d9;

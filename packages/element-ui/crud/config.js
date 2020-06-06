@@ -1,5 +1,6 @@
 // crud配置文件
 export default {
+  clientHeight: document.documentElement.clientHeight,
   // 标题
   sumText: '合 计',
   // 尺寸
@@ -47,6 +48,7 @@ export default {
   selectClearBtn: true,
   searchShow: true,
   tip: true,
+  dialogTop: '100',
   dialogHeight: 'auto',
   dialogWidth: '60%',
   dialogDrag: false,

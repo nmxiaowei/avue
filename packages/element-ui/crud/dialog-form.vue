@@ -11,7 +11,7 @@
              :fullscreen="fullscreen?fullscreen:(crud.isMobile?true:crud.tableOption.dialogFullscreen)"
              :modal-append-to-body="false"
              append-to-body
-             :top="setPx(crud.tableOption.dialogTop,100)"
+             :top="setPx(dialogTop)"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
              :close-on-click-modal="crud.tableOption.dialogClickModal"
@@ -29,64 +29,63 @@
            class="el-dialog__close el-icon-full-screen"></i>
       </div>
     </div>
-    <div :style="{height:dialogHeight,overflow:'hidden'}"
-         ref="content">
-      <el-scrollbar style="height:100%">
-        <avue-form v-model="tableForm"
-                   v-if="boxVisible"
-                   ref="tableForm"
-                   @submit="handleSubmit"
-                   @error="handleError"
-                   @reset-change="handleReset"
-                   :upload-preview="crud.uploadPreview"
-                   :upload-delete="crud.uploadDelete"
-                   :upload-before="crud.uploadBefore"
-                   :upload-after="crud.uploadAfter"
-                   :upload-error="crud.uploadError"
-                   :option="formOption">
-          <!-- 循环form表单卡槽 -->
-          <template slot-scope="scope"
-                    v-for="item in crud.columnFormOption"
-                    :slot="item.prop">
-            <slot :name="item.prop"
-                  v-if="item.formslot"
-                  v-bind="Object.assign(scope,{
+    <el-scrollbar :style="styleName"
+                  :class="{'avue-dialog--scrollbar':isHeightAuto}"
+                  ref="content">
+      <avue-form v-model="tableForm"
+                 v-if="boxVisible"
+                 ref="tableForm"
+                 @submit="handleSubmit"
+                 @error="handleError"
+                 @reset-change="handleReset"
+                 :upload-preview="crud.uploadPreview"
+                 :upload-delete="crud.uploadDelete"
+                 :upload-before="crud.uploadBefore"
+                 :upload-after="crud.uploadAfter"
+                 :upload-error="crud.uploadError"
+                 :option="formOption">
+        <!-- 循环form表单卡槽 -->
+        <template slot-scope="scope"
+                  v-for="item in crud.columnFormOption"
+                  :slot="item.prop">
+          <slot :name="item.prop"
+                v-if="item.formslot"
+                v-bind="Object.assign(scope,{
                   row:item.dynamic?scope.row:tableForm,
                   index:item.dynamic?scope.row.$index:crud.tableIndex,
                 })"></slot>
-          </template>
-          <!-- 循环form表单错误卡槽 -->
-          <template slot-scope="scope"
-                    v-for="item in crud.columnFormOption"
-                    :slot="item.prop+'Error'">
-            <slot :name="item.prop+'Error'"
-                  v-bind="Object.assign(scope,{
+        </template>
+        <!-- 循环form表单错误卡槽 -->
+        <template slot-scope="scope"
+                  v-for="item in crud.columnFormOption"
+                  :slot="item.prop+'Error'">
+          <slot :name="item.prop+'Error'"
+                v-bind="Object.assign(scope,{
                   row:tableForm,
                   index:crud.tableIndex,
                 })"
-                  v-if="item.errorslot"></slot>
-          </template>
-          <!-- 循环form表单标签卡槽 -->
-          <template slot-scope="scope"
-                    v-for="item in crud.columnFormOption"
-                    :slot="item.prop+'Label'">
-            <slot :name="item.prop+'Label'"
-                  v-bind="Object.assign(scope,{
+                v-if="item.errorslot"></slot>
+        </template>
+        <!-- 循环form表单标签卡槽 -->
+        <template slot-scope="scope"
+                  v-for="item in crud.columnFormOption"
+                  :slot="item.prop+'Label'">
+          <slot :name="item.prop+'Label'"
+                v-bind="Object.assign(scope,{
                   row:tableForm,
                   index:crud.tableIndex,
                 })"
-                  v-if="item.labelslot"></slot>
-          </template>
-          <template slot="menuForm"
-                    slot-scope="scope">
-            <slot name="menuForm"
-                  v-bind="Object.assign(scope,{
+                v-if="item.labelslot"></slot>
+        </template>
+        <template slot="menuForm"
+                  slot-scope="scope">
+          <slot name="menuForm"
+                v-bind="Object.assign(scope,{
                     type:boxType
                   }) "></slot>
-          </template>
-        </avue-form>
-      </el-scrollbar>
-    </div>
+        </template>
+      </avue-form>
+    </el-scrollbar>
   </component>
 </template>
 
@@ -144,6 +143,12 @@ export default create({
 
   },
   computed: {
+    styleName () {
+      return {
+        height: this.dialogHeight,
+        overflow: 'hidden'
+      }
+    },
     isView () {
       return this.boxType === 'view'
     },
@@ -162,6 +167,12 @@ export default create({
     dialogType () {
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
+    dialogTop () {
+      return this.crud.tableOption.dialogTop || config.dialogTop
+    },
+    isHeightAuto () {
+      return this.validatenull(this.crud.tableOption.dialogHeight)
+    },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
     },
@@ -169,7 +180,10 @@ export default create({
       if (this.isDrawer) {
         return 'calc(100% - 100px)';
       }
-      return this.setPx(this.crud.tableOption.dialogHeight || config.dialogHeight);
+      if (this.crud.tableOption.dialogHeight === config.dialogHeight) {
+        return this.setPx(config.clientHeight - 3 * this.dialogTop);
+      }
+      return this.setPx(this.crud.tableOption.dialogHeight);
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);

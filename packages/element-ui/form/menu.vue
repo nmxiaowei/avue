@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="formSafe.menuSpan"
+  <el-col :span="menuSpan"
           :style="styleName"
           :class="formSafe.b('menu',[formSafe.menuPosition])"
           v-if="vaildData(formSafe.parentOption.menuBtn,true)">

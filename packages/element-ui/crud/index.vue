@@ -470,6 +470,12 @@ export default create({
     }
   },
   watch: {
+    tableOption: {
+      handler () {
+        this.$refs.dialogColumn.columnInit()
+      },
+      deep: true
+    },
     tableForm: {
       handler () {
         this.$emit("input", this.tableForm);
@@ -548,12 +554,13 @@ export default create({
       }
     },
     getTableHeight () {
-      const clientHeight = document.documentElement.clientHeight;
       if (this.tableOption.height == "auto") {
         this.$nextTick(() => {
-          const tableStyle = this.$refs.table.$el;
+          const tableStyle = this.$el;
           const pageStyle = this.$refs.tablePage.$el;
-          this.tableHeight = clientHeight - tableStyle.offsetTop - (pageStyle.offsetHeight * 3) - this.calcHeight
+          const menuStyle = this.$refs.headerMenu.$el;
+          const searchStyle = this.$refs.headerSearch.$el;
+          this.tableHeight = config.clientHeight - menuStyle.offsetTop - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
