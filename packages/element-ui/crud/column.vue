@@ -81,10 +81,6 @@
                   <i class="avue-crud__icon-select"
                      :class="scope.row[column.prop]"></i>
                 </span>
-                <span v-else-if="column.displayAs=='switch' && ['switch'].includes(column.type)">
-                  <el-switch v-model="scope.row[column.prop]"
-                             disabled />
-                </span>
                 <span v-else
                       v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
               </template>
