@@ -555,16 +555,8 @@ export default create({
         this.$refs.form.clearValidate();
       })
     },
-    validate () {
-      return new Promise((resolve, reject) => {
-        this.$refs.form.validate(valid => {
-          if (valid) {
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      });
+    validate (callback) {
+      this.$refs.form.validate(valid => callback(valid));
     },
     resetForm () {
       this.resetFields();

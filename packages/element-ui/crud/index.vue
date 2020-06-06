@@ -560,7 +560,7 @@ export default create({
           const pageStyle = this.$refs.tablePage.$el;
           const menuStyle = this.$refs.headerMenu.$el;
           const searchStyle = this.$refs.headerSearch.$el;
-          this.tableHeight = config.clientHeight - menuStyle.offsetTop - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight - 50
+          this.tableHeight = config.clientHeight - menuStyle.offsetTop - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
