@@ -189,50 +189,56 @@ export default {
       return result;
     },
     handleChange (index, row) {
-      const columnOption = [...this.crud.propOption];
-      //本节点;
-      const column = columnOption[index];
-      const list = column.cascader;
-      const value = row[column.prop];
-      const rowIndex = row.$index;
-      // 下一个节点
-      const columnNext = columnOption[index + 1];
-      const columnNextProp = columnNext.prop;
+      this.$nextTick(() => {
+        const columnOption = [...this.crud.propOption];
+        //本节点;
+        const column = columnOption[index];
+        const list = column.cascader;
+        const value = row[column.prop];
+        const rowIndex = row.$index;
+        // 下一个节点
+        const columnNext = columnOption[index + 1];
+        const columnNextProp = columnNext.prop;
 
-      //最后一级
-      if (
-        this.validatenull(list) ||
-        this.validatenull(value) ||
-        this.validatenull(columnNext)
-      ) {
-        return;
-      }
-      // 如果本节点没有字典则创建节点数组
-      if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
-        this.$set(this.crud.cascaderDIC, rowIndex, {});
-      }
-      if (this.crud.formIndexList.includes(rowIndex)) {
-        //清空子类字典
-        list.forEach(ele => {
-          this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
-          list.forEach(ele => (row[ele] = ""));
-        });
-      }
-      sendDic({
-        url: (columnNext.dicUrl || '').replace("{{key}}", value),
-        method: columnNext.dicMethod,
-        query: columnNext.dicQuery,
-        formatter: columnNext.dicFormatter,
-        resKey: (columnNext.props || {}).res
-      }).then(
-        res => {
-          // 修改字典
-          const dic = Array.isArray(res) ? res : [];
-          this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
-          //首次加载的放入队列记录
-          if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
+        //最后一级
+        if (
+          this.validatenull(list) ||
+          this.validatenull(value) ||
+          this.validatenull(columnNext)
+        ) {
+          return;
         }
-      );
+        // 如果本节点没有字典则创建节点数组
+        if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
+          this.$set(this.crud.cascaderDIC, rowIndex, {});
+        }
+        if (this.crud.formIndexList.includes(rowIndex)) {
+          //清空子类字典
+          list.forEach(ele => {
+            this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
+            list.forEach(ele => (row[ele] = ""));
+          });
+        }
+        sendDic({
+          url: (columnNext.dicUrl || '').replace("{{key}}", value),
+          method: columnNext.dicMethod,
+          query: columnNext.dicQuery,
+          formatter: columnNext.dicFormatter,
+          resKey: (columnNext.props || {}).res
+        }).then(
+          res => {
+            // 修改字典
+            this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+            //首次加载的放入队列记录
+            if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
+            const dic = Array.isArray(res) ? res : [];
+            if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
+              row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
+            }
+          }
+        );
+      })
+
     },
     openImg (list, index) {
       list = list.map(ele => {

@@ -175,6 +175,7 @@ import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/crud/init";
 import formTemp from '../../core/components/form/index'
+import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import { filterDefaultParams, clearVal } from 'utils/util'
@@ -434,46 +435,51 @@ export default create({
     },
 
     handleChange (list, column) {
-      const cascader = column.cascader;
-      const str = cascader.join(",");
-      const columnNextProp = cascader[0];
-      const value = this.form[column.prop];
-      // 下一个节点
-      const columnNext = this.findObject(list, columnNextProp)
-      /**
-       * 1.判断当前节点是否有下级节点
-       * 2.判断当前节点是否有值
-       */
-      if (
-        this.validatenull(cascader) ||
-        this.validatenull(value) ||
-        this.validatenull(columnNext)
-      ) {
-        return;
-      }
+      this.$nextTick(() => {
+        const cascader = column.cascader;
+        const str = cascader.join(",");
+        const columnNextProp = cascader[0];
+        const value = this.form[column.prop];
+        // 下一个节点
+        const columnNext = this.findObject(list, columnNextProp)
+        /**
+         * 1.判断当前节点是否有下级节点
+         * 2.判断当前节点是否有值
+         */
+        if (
+          this.validatenull(cascader) ||
+          this.validatenull(value) ||
+          this.validatenull(columnNext)
+        ) {
+          return;
+        }
 
-      // 如果不是首次加载则清空全部关联节点的属性值和字典值
-      if (this.formList.includes(str)) {
-        //清空子类字典列表和值
-        cascader.forEach(ele => {
-          this.form[ele] = "";
-          this.$set(this.DIC, ele, []);
+        // 如果不是首次加载则清空全部关联节点的属性值和字典值
+        if (this.formList.includes(str)) {
+          //清空子类字典列表和值
+          cascader.forEach(ele => {
+            this.form[ele] = "";
+            this.$set(this.DIC, ele, []);
+          });
+        }
+        // 根据当前节点值获取下一个节点的字典
+        sendDic({
+          url: (columnNext.dicUrl || '').replace("{{key}}", value),
+          method: columnNext.dicMethod,
+          query: columnNext.dicQuery,
+          formatter: columnNext.dicFormatter,
+          resKey: (columnNext.props || {}).res,
+        }).then(res => {
+          //首次加载的放入队列记录
+          if (!this.formList.includes(str)) this.formList.push(str);
+          // 修改字典
+          const dic = Array.isArray(res) ? res : [];
+          this.$set(this.DIC, columnNextProp, dic);
+          if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
+            this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
+          }
         });
-      }
-      // 根据当前节点值获取下一个节点的字典
-      sendDic({
-        url: (columnNext.dicUrl || '').replace("{{key}}", value),
-        method: columnNext.dicMethod,
-        query: columnNext.dicQuery,
-        formatter: columnNext.dicFormatter,
-        resKey: (columnNext.props || {}).res,
-      }).then(res => {
-        const dic = Array.isArray(res) ? res : [];
-        //首次加载的放入队列记录
-        if (!this.formList.includes(str)) this.formList.push(str);
-        // 修改字典
-        this.$set(this.DIC, columnNextProp, dic);
-      });
+      })
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {

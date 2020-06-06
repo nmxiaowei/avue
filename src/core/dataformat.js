@@ -12,7 +12,7 @@ export const calcCascader = (list = []) => {
       list[index].cascader = [...cascader];
       cascader.forEach((citem, cindex) => {
         let column = findObject(list, citem);
-        if (!column) return;
+        if (column === -1) return;
         column.parentProp = parentProp;
         column.cascader = [...cascader].splice(cindex + 1);
         parentProp = column.prop;
@@ -205,7 +205,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
