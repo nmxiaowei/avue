@@ -531,7 +531,7 @@ export default create({
       } else if (this.isAdd) {
         return this.vaildData(column.addDisplay, true);
       } else if (this.isEdit) {
-        return this.vaildData(column.editDisplay, true);
+        return this.dData(column.editDisplay, true);
       } else if (this.isView) {
         return this.vaildData(column.viewDisplay, true);
       } else {
@@ -564,9 +564,6 @@ export default create({
     },
     resetFields () {
       this.$refs.form.resetFields();
-    },
-    validate (callback) {
-      this.$refs["form"].validate(valid => callback(valid));
     },
     show () {
       this.allDisabled = true;
