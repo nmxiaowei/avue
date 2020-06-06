@@ -209,6 +209,12 @@ export default create({
     };
   },
   watch: {
+    formRules: {
+      handler () {
+        this.clearValidate();
+      },
+      deep: true
+    },
     form: {
       handler () {
         if (!this.formCreate) {
@@ -539,7 +545,9 @@ export default create({
       }
     },
     clearValidate () {
-      this.$refs.form.clearValidate();
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate();
+      })
     },
     validate () {
       return new Promise((resolve, reject) => {
