@@ -537,7 +537,7 @@ export default create({
       } else if (this.isAdd) {
         return this.vaildData(column.addDisplay, true);
       } else if (this.isEdit) {
-        return this.dData(column.editDisplay, true);
+        return this.vaildData(column.editDisplay, true);
       } else if (this.isView) {
         return this.vaildData(column.viewDisplay, true);
       } else {
