@@ -1,7 +1,7 @@
 <template>
   <div :class="b()"
        v-loading.lock="loading">
-    <el-upload :class="b({'list':listType=='picture-img'})"
+    <el-upload :class="b({'list':listType=='picture-img','upload':disabled})"
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
@@ -44,7 +44,7 @@
              @click.stop="handleDelete(imgUrl)"></i>
         </div>
       </template>
-      <template v-else-if="drag&&!disabled">
+      <template v-else-if="drag">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
           将文件拖到此处，或
@@ -52,8 +52,7 @@
         </div>
       </template>
       <template v-else>
-        <el-button v-show="!disabled"
-                   size="small"
+        <el-button size="small"
                    type="primary">点击上传</el-button>
       </template>
       <div slot="tip"
