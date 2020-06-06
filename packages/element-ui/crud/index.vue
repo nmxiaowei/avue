@@ -548,12 +548,13 @@ export default create({
       }
     },
     getTableHeight () {
-      const clientHeight = document.documentElement.clientHeight;
       if (this.tableOption.height == "auto") {
         this.$nextTick(() => {
-          const tableStyle = this.$refs.table.$el;
+          const tableStyle = this.$el;
           const pageStyle = this.$refs.tablePage.$el;
-          this.tableHeight = clientHeight - tableStyle.offsetTop - (pageStyle.offsetHeight * 3) - this.calcHeight
+          const menuStyle = this.$refs.headerMenu.$el;
+          const searchStyle = this.$refs.headerSearch.$el;
+          this.tableHeight = config.clientHeight - menuStyle.offsetTop - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight - 50
         })
       } else {
         this.tableHeight = this.tableOption.height;

@@ -1,5 +1,6 @@
 // crud配置文件
 export default {
+  clientHeight: document.documentElement.clientHeight,
   // 标题
   sumText: '合 计',
   // 尺寸

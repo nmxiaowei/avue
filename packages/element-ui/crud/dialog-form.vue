@@ -181,7 +181,7 @@ export default create({
         return 'calc(100% - 100px)';
       }
       if (this.crud.tableOption.dialogHeight === config.dialogHeight) {
-        return this.setPx(window.screen.height - 4 * this.dialogTop);
+        return this.setPx(config.clientHeight - 3 * this.dialogTop);
       }
       return this.setPx(this.crud.tableOption.dialogHeight);
     },
