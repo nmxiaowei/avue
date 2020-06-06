@@ -470,6 +470,12 @@ export default create({
     }
   },
   watch: {
+    tableOption: {
+      handler () {
+        this.$refs.dialogColumn.columnInit()
+      },
+      deep: true
+    },
     tableForm: {
       handler () {
         this.$emit("input", this.tableForm);
