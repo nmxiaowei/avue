@@ -73,7 +73,12 @@ export default create({
   },
   methods: {
     pageInit () {
-      this.defaultPage = Object.assign(this.defaultPage, this.page)
+      this.defaultPage = Object.assign(this.defaultPage, this.page, {
+        total: Number(this.page.total || this.defaultPage.total),
+        pagerCount: Number(this.page.pagerCount || this.defaultPage.pagerCount),
+        currentPage: Number(this.page.currentPage || this.defaultPage.currentPage),
+        pageSize: Number(this.page.pageSize || this.defaultPage.pageSize)
+      })
       this.updateValue();
     },
     updateValue () {
