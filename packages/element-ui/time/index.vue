@@ -2,9 +2,9 @@
   <el-time-picker v-model="text"
                   :is-range="isRange"
                   :size="size"
-                  :unlink-panels="unlinkPanels"
                   :default-value="defaultValue"
                   range-separator="至"
+                  :arrow-control="arrowControl"
                   :start-placeholder="startPlaceholder"
                   :end-placeholder="endPlaceholder"
                   :format="format"
@@ -28,10 +28,6 @@ export default create({
     return {};
   },
   props: {
-    unlinkPanels: {
-      type: Boolean,
-      default: false
-    },
     startPlaceholder: {
       type: String,
       default: "开始时间"
@@ -48,6 +44,10 @@ export default create({
     },
     valueFormat: {
       default: ""
+    },
+    arrowControl: {
+      type: Boolean,
+      default: false
     },
     type: {
       default: ""
