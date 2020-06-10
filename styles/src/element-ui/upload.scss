@@ -3,6 +3,9 @@
     .el-upload,.el-upload__tip{
       display: none;
     }
+    .el-upload--picture-img{
+      display: inline-block;
+    }
     .el-upload-list{
       margin-top: -6px;
     }

@@ -61,7 +61,7 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
   let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
-    ['daterange', 'datetimerange', 'monthrange', 'timerange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
+    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
     if (!Array.isArray(value)) {
       if (validatenull(value)) {
@@ -182,7 +182,6 @@ export const formInitVal = (list = []) => {
       ele.type === 'daterange' ||
       ele.type === 'datetimerange' ||
       ele.type === 'datas' ||
-      ele.type === 'timerange' ||
       ele.type === 'img' ||
       ele.type === 'array' ||
       ele.type === 'dates' ||
