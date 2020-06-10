@@ -3,6 +3,7 @@
              lock-scroll
              :modal-append-to-body="false"
              append-to-body
+             class="avue-dialog"
              :title="t('crud.showTitle')"
              :size="crud.isMobile?'100%':'50%'"
              :visible.sync="columnBox">
