@@ -603,12 +603,14 @@ export default create({
             dynamicList.push(this.$refs[ele.prop][0].$refs.temp.validate());
           })
           Promise.all(dynamicList).then(res => {
+            let count = 0;
             res.forEach((err, index) => {
               let objKey = Object.keys(dynamicError);
               if (this.validatenull(err)) {
-                dynamicError.splice(index, 1)
+                dynamicError.splice(count, 1)
                 return
               }
+              count = count + 1;
               if (index == 0) {
                 let count = Object.keys(err)[0]
                 this.$message.error(`【${dynamicError[index].label}】第${Number(count) + 1}行:${err[count][0].message}`);

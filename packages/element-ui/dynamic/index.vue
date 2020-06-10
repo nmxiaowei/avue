@@ -163,9 +163,10 @@ export default create({
           list.push(callback())
         })
         Promise.all(list).then(error => {
-          let result = {}
+          let result;
           error.forEach((ele, index) => {
             if (!this.validatenull(ele)) {
+              if (!result) result = {}
               result[index] = ele
             }
           })
