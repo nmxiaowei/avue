@@ -496,9 +496,11 @@ export default create({
       });
     },
     propChange (prop) {
-      setTimeout(() => {
-        this.validateField(prop)
-      })
+      if (!this.formCreate) {
+        setTimeout(() => {
+          this.validateField(prop)
+        })
+      }
     },
     handleMock () {
       if (this.isMock) {
