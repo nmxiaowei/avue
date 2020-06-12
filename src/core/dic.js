@@ -12,7 +12,7 @@ export const loadCascaderDic = (columnOption, list) => {
     });
     list.forEach((ele, index) => {
       columnList.forEach(column => {
-        if (column.hide === true && column.dicFlag === false) {
+        if (column.hide !== true && column.dicFlag !== false) {
           result.push(
             new Promise(resolve => {
               if (validatenull(ele[column.parentProp])) {
