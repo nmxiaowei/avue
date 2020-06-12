@@ -12,7 +12,7 @@ export const loadCascaderDic = (columnOption, list) => {
     });
     list.forEach((ele, index) => {
       columnList.forEach(column => {
-        if (!column.hide) {
+        if (column.hide !== true && column.dicFlag !== false) {
           result.push(
             new Promise(resolve => {
               if (validatenull(ele[column.parentProp])) {
@@ -86,12 +86,14 @@ function createdDic(option) {
   let { url = '', column = [], props = {} } = option;
   let ajaxdic = [];
   let locationdic = {};
+  let flagdic = [];
   column.forEach(ele => {
     let dicData = ele.dicData;
     let dicUrl = ele.dicUrl;
     let prop = ele.prop;
     let parentProp = ele.parentProp;
-    if (ele.dicFlag === false) return;
+    flagdic = flagdic.concat(ele.cascaderItem || []);
+    if (ele.dicFlag === false || flagdic.includes(prop)) return;
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     } else if (dicUrl && !parentProp) {

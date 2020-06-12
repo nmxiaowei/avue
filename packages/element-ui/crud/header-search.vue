@@ -115,6 +115,7 @@ export default cteate({
               row: ele.searchRow,
               size: ele.searchSize,
               formslot: ele.searchslot,
+              clearable: ele.searchClearable,
               rules: ele.searchRules,
               disabled: ele.searchDisabled,
               readonly: ele.searchReadonly,

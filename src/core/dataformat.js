@@ -48,6 +48,8 @@ export const dateList = [
   'datetime',
   'datetimerange',
   'daterange',
+  'time',
+  'timerange',
   'week',
   'month',
   'monthrange',
@@ -61,7 +63,7 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
   let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
-    ['daterange', 'datetimerange', 'monthrange', 'timerange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
+    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
     if (!Array.isArray(value)) {
       if (validatenull(value)) {
@@ -93,8 +95,6 @@ export const getSearchType = (column, component = false) => {
   let result = type || 'input';
   if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
-  } else if (['time', 'timerange'].includes(type)) {
-    result = 'time';
   } else if (dateList.includes(type)) {
     if (range) {
       if (type === 'date') {
@@ -107,7 +107,15 @@ export const getSearchType = (column, component = false) => {
         result = type;
       }
     } else {
-      result = type;
+      if (type === 'daterange') {
+        result = 'date';
+      } else if (type === 'datetimerange') {
+        result = 'datetime';
+      } else if (type === 'timerange') {
+        result = 'time';
+      } else {
+        result = type;
+      }
     }
   } else if (['cascader'].includes(type)) {
     result = 'cascader';
@@ -182,7 +190,6 @@ export const formInitVal = (list = []) => {
       ele.type === 'daterange' ||
       ele.type === 'datetimerange' ||
       ele.type === 'datas' ||
-      ele.type === 'timerange' ||
       ele.type === 'img' ||
       ele.type === 'array' ||
       ele.type === 'dates' ||

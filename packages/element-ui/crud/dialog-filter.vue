@@ -1,22 +1,23 @@
 <template>
   <el-drawer :class="[b('dialog'),b('filter')]"
              lock-scroll
+             class="avue-dialog"
              :modal-append-to-body="false"
              append-to-body
              :title="t('crud.filterTitle')"
-             :size="$parent.isMobile?'100%':'50%'"
+             :size="crud.isMobile?'100%':'60%'"
              :visible.sync="box">
     <el-row :span="24">
       <div :class="b('filter-menu')">
         <el-button-group>
           <el-button type="primary"
-                     :size="$parent.isMediumSize"
+                     :size="crud.isMediumSize"
                      @click="handleAdd">{{t('crud.filter.addBtn')}}</el-button>
           <el-button type="primary"
-                     :size="$parent.isMediumSize"
+                     :size="crud.isMediumSize"
                      @click="handleClear">{{t('crud.filter.resetBtn')}}</el-button>
           <el-button type="primary"
-                     :size="$parent.isMediumSize"
+                     :size="crud.isMediumSize"
                      @click="handleValueClear">{{t('crud.filter.clearBtn')}}</el-button>
         </el-button-group>
       </div>
@@ -31,19 +32,19 @@
                      :props="columnProps"
                      :clearable="false"
                      @change="handleChange(column.text,index)"
-                     :size="$parent.isMediumSize"
+                     :size="crud.isMediumSize"
                      :class="b('filter-label')"></avue-select>
         <avue-select :class="b('filter-symbol')"
                      v-model="column.symbol"
                      :dic="symbolDic"
                      :clearable="false"
-                     :size="$parent.isMediumSize"></avue-select>
+                     :size="crud.isMediumSize"></avue-select>
         <form-temp :column="getColumnByIndex(columnList[index])"
-                   :size="$parent.isMediumSize"
+                   :size="crud.isMediumSize"
                    :class="b('filter-value')"
-                   :dic="$parent.DIC[columnList[index].prop]"
+                   :dic="crud.DIC[columnList[index].prop]"
                    :t="t"
-                   :props="columnList[index].props || $parent.tableOption.props"
+                   :props="columnList[index].props || crud.tableOption.props"
                    v-model="column.value">
         </form-temp>
         <el-button type="danger"
@@ -53,15 +54,16 @@
                    circle
                    icon="el-icon-minus"></el-button>
       </el-col>
+      <el-col :span="24"
+              class="avue-form__menu avue-form__menu--right">
+        <el-button type="primary"
+                   :size="crud.isMediumSize"
+                   @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
+        <el-button @click="box = false"
+                   :size="crud.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
+      </el-col>
     </el-row>
-    <span slot="footer"
-          class="dialog-footer">
-      <el-button type="primary"
-                 :size="$parent.isMediumSize"
-                 @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
-      <el-button @click="box = false"
-                 :size="$parent.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
-    </span>
+
   </el-drawer>
 </template>
 
@@ -74,6 +76,7 @@ import formTemp from '../../core/components/form/index'
 export default create({
   name: "crud",
   mixins: [locale],
+  inject: ["crud"],
   components: {
     formTemp
   },
@@ -139,7 +142,7 @@ export default create({
       return this.columnOption[0];
     },
     columnOption () {
-      return this.$parent.propOption;
+      return this.crud.propOption;
     }
   },
   created () {
@@ -172,7 +175,7 @@ export default create({
     handleSubmit () {
       this.list.push({});
       this.list.splice(this.list.length - 1, 1);
-      this.$parent.$emit("filter-change", this.result);
+      this.crud.$emit("filter-change", this.result);
       this.box = false;
     },
     handleChange (prop, index) {

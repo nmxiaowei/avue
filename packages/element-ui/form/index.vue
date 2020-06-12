@@ -86,7 +86,6 @@
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
-
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
                               :placement="column.tipPlacement">
@@ -116,7 +115,7 @@
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader && handleChange(item.column,column)">
+                               @change="column.cascader ?handleChange(item.column,column):propChange(column.prop)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -411,6 +410,9 @@ export default create({
     validateField (val) {
       return this.$refs.form.validateField(val);
     },
+    getPropRef (prop) {
+      return this.$refs[prop][0];
+    },
     updateDic (prop, list) {
       const column = this.findObject(this.columnOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
@@ -493,6 +495,13 @@ export default create({
         html: this.$el.innerHTML
       });
     },
+    propChange (prop) {
+      if (!this.formCreate) {
+        setTimeout(() => {
+          this.validateField(prop)
+        })
+      }
+    },
     handleMock () {
       if (this.isMock) {
         this.columnOption.forEach(column => {
@@ -550,9 +559,9 @@ export default create({
         return true;
       }
     },
-    clearValidate () {
+    clearValidate (list) {
       this.$nextTick(() => {
-        this.$refs.form.clearValidate();
+        this.$refs.form.clearValidate(list);
       })
     },
     validate (callback) {
@@ -603,12 +612,14 @@ export default create({
             dynamicList.push(this.$refs[ele.prop][0].$refs.temp.validate());
           })
           Promise.all(dynamicList).then(res => {
+            let count = 0;
             res.forEach((err, index) => {
               let objKey = Object.keys(dynamicError);
               if (this.validatenull(err)) {
-                dynamicError.splice(index, 1)
+                dynamicError.splice(count, 1)
                 return
               }
+              count = count + 1;
               if (index == 0) {
                 let count = Object.keys(err)[0]
                 this.$message.error(`【${dynamicError[index].label}】第${Number(count) + 1}行:${err[count][0].message}`);

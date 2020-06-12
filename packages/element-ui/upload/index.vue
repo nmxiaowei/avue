@@ -27,7 +27,7 @@
                   :src="imgUrl"
                   :preview-src-list="[imgUrl]"
                   v-bind="allParams"
-                  @mouseover="menu=disabled?false:true"
+                  @mouseover="menu=true"
                   :class="b('avatar')"></el-image>
         <i v-else
            class="el-icon-plus"
@@ -41,6 +41,7 @@
           <i class="el-icon-zoom-in"
              @click.stop="handlePreview({url:imgUrl})"></i>
           <i class="el-icon-delete"
+             v-if="!disabled"
              @click.stop="handleDelete(imgUrl)"></i>
         </div>
       </template>

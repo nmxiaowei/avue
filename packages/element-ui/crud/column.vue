@@ -222,12 +222,13 @@ export default {
           formatter: columnNext.dicFormatter,
           resKey: (columnNext.props || {}).res
         }).then(
-          res => {
-            // 修改字典
-            this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+          res => {            
             //首次加载的放入队列记录
             if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
             const dic = Array.isArray(res) ? res : [];
+            // 修改字典
+            this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+
             if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
               row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
             }
