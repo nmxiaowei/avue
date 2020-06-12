@@ -12,7 +12,7 @@ export const loadCascaderDic = (columnOption, list) => {
     });
     list.forEach((ele, index) => {
       columnList.forEach(column => {
-        if (!column.hide) {
+        if (column.hide === true && column.dicFlag === false) {
           result.push(
             new Promise(resolve => {
               if (validatenull(ele[column.parentProp])) {
@@ -82,7 +82,7 @@ export const loadDic = option => {
 };
 
 // 创建字典区分本地字典和网络字典
-function createdDic(option) {
+function createdDic (option) {
   let { url = '', column = [], props = {} } = option;
   let ajaxdic = [];
   let locationdic = {};
@@ -114,7 +114,7 @@ function createdDic(option) {
 }
 
 // 循环处理字典
-function handeDic(list) {
+function handeDic (list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -157,7 +157,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, query).then(function(res) {
+      window.axios.post(url, query).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -165,7 +165,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function(res) {
+      }).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
