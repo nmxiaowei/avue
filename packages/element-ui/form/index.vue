@@ -411,6 +411,9 @@ export default create({
     validateField (val) {
       return this.$refs.form.validateField(val);
     },
+    getPropRef (prop) {
+      return this.$refs[prop][0];
+    },
     updateDic (prop, list) {
       const column = this.findObject(this.columnOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {

@@ -863,6 +863,9 @@ export default create({
     searchChange () {
       this.$refs.headerSearch.searchChange();
     },
+    getPropRef (prop) {
+      return this.$refs.dialogForm.$refs.tableForm.getPropRef(prop);
+    },
     //清空
     searchReset () {
       this.$refs.headerSearch.searchReset();
