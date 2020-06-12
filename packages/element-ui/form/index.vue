@@ -86,7 +86,6 @@
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
-
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
                               :placement="column.tipPlacement">
@@ -116,7 +115,7 @@
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader && handleChange(item.column,column)">
+                               @change="column.cascader ?handleChange(item.column,column):propChange(column.prop)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -496,6 +495,11 @@ export default create({
         html: this.$el.innerHTML
       });
     },
+    propChange (prop) {
+      setTimeout(() => {
+        this.validateField(prop)
+      })
+    },
     handleMock () {
       if (this.isMock) {
         this.columnOption.forEach(column => {
@@ -553,9 +557,9 @@ export default create({
         return true;
       }
     },
-    clearValidate () {
+    clearValidate (list) {
       this.$nextTick(() => {
-        this.$refs.form.clearValidate();
+        this.$refs.form.clearValidate(list);
       })
     },
     validate (callback) {

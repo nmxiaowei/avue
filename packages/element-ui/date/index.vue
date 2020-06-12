@@ -7,7 +7,7 @@
                     :readonly="readonly"
                     :default-value="defaultValue"
                     :default-time="defaultTime"
-                    :range-separator="t('date.tip')"
+                    :range-separator="rangeSeparator || t('date.tip')"
                     :start-placeholder="startPlaceholder"
                     :end-placeholder="endPlaceholder"
                     :format="format"
@@ -50,6 +50,9 @@ export default create({
     endPlaceholder: {
       type: String,
       default: "结束日期"
+    },
+    rangeSeparator: {
+      type: String
     },
     defaultValue: {
       type: [String, Array]
