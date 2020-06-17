@@ -40,6 +40,8 @@ export default {
     showTitle: 'showTitle',
     menu: 'menu',
     addBtn: 'add',
+    show: 'show',
+    hide: 'hide',
     showBtn: 'show',
     filterBtn: 'filter',
     refreshBtn: 'refresh',

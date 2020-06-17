@@ -1,6 +1,5 @@
 import { loadDic, loadCascaderDic } from 'core/dic';
-export default function (type) {
-  const isCrud = type === 'crud'
+export default function () {
   return {
     props: {
       option: {
@@ -39,6 +38,11 @@ export default function (type) {
       this.init();
     },
     computed: {
+      resultOption () {
+        return Object.assign(this.tableOption, {
+          column: this.propOption
+        })
+      },
       formRules () {
         let result = {};
         this.propOption.forEach(ele => {
@@ -76,51 +80,33 @@ export default function (type) {
           this.initDic();
         }, 0);
       },
-      //检测本地字典
+      //本地字典加载
       initDic () {
-        if (isCrud) {
-          // 表格赋值
-          this.propOption.forEach(ele => {
-            if (Array.isArray(ele.dicData)) {
-              this.$set(this.DIC, ele.prop, ele.dicData)
-            }
-          })
-        } else {
-          //表单赋值
-          this.columnOption.forEach(ele => {
-            (ele.column || []).forEach(item => {
-              if (Array.isArray(item.dicData)) {
-                this.$set(this.DIC, item.prop, item.dicData)
-              }
-            })
-          })
-        }
-      },
-      // 加载字典
-      handleLoadDic (option) {
-        return new Promise((resolve) => {
-          const dicFlag = this.vaildData(this.tableOption.dicFlag, true);
-          // 初始化字典
-          if (dicFlag) {
-            loadDic(option || this.tableOption).then((res = {}) => {
-              Object.keys(res).forEach(ele => {
-                this.$set(this.DIC, ele, res[ele])
-              });
-              resolve();
-            });
+        this.propOption.forEach(ele => {
+          if (Array.isArray(ele.dicData)) {
+            this.$set(this.DIC, ele.prop, ele.dicData)
           }
-          resolve();
         })
       },
-      handleLoadCascaderDic (option, data) {
-        loadCascaderDic(option || (isCrud ? this.propOption : this.columnOption), this.data || [data]).then(res => {
-          if (option) {
+      // 网络字典加载
+      handleLoadDic () {
+        return new Promise((resolve) => {
+          const dicFlag = this.vaildData(this.resultOption.dicFlag, true);
+          if (!dicFlag) resolve();
+          loadDic(this.resultOption).then((res = {}) => {
             Object.keys(res).forEach(ele => {
-              this.$set(this.cascaderDIC, ele, res)
+              this.$set(this.DIC, ele, res[ele])
             });
-          } else {
-            this.cascaderDIC = this.deepClone(res);
-          }
+            resolve();
+          });
+        })
+      },
+      //级联字典加载
+      handleLoadCascaderDic () {
+        loadCascaderDic(this.propOption, this.data).then(res => {
+          Object.keys(res).forEach(ele => {
+            this.$set(this.cascaderDIC, ele, res[ele])
+          });
         });
       }
     }

@@ -274,12 +274,6 @@ export default create({
       })
       return list
     },
-    dicOption () {
-      return {
-        dicData: this.tableOption.dicData,
-        column: this.propOption
-      }
-    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -363,7 +357,7 @@ export default create({
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
     dataDic () {
-      this.handleLoadDic(this.dicOption).then(() => {
+      this.handleLoadDic().then(() => {
         this.forEachLabel()
       });
     },

@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <!-- 搜索组件 -->
-    <header-search v-model="searchForm"
+    <header-search :search="search"
                    ref="headerSearch">
       <template slot="search"
                 slot-scope="{size,row}">
@@ -24,7 +24,7 @@
               :size="size"
               :label="label"
               :disabled="disabled"
-              :row="searchForm"
+              :row="search"
               :name="item.prop+'Search'"
               v-if="item.searchslot"></slot>
       </template>
@@ -342,7 +342,6 @@ export default create({
     return {
       reload: true,
       isChild: false,
-      searchForm: {},
       config: config,
       list: [],
       expandList: [],
@@ -525,6 +524,12 @@ export default create({
         return [];
       }
     },
+    search: {
+      type: Object,
+      default () {
+        return {};
+      }
+    },
     page: {
       type: Object,
       default () {
@@ -693,7 +698,7 @@ export default create({
     refreshChange () {
       this.$emit("refresh-change", {
         page: this.page.defaultPage,
-        searchForm: this.$refs.headerSearch.searchForm
+        search: this.search
       });
     },
     // 选中实例

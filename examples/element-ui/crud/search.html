@@ -20,7 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
+    {{search}}
+    <avue-crud ref="crud" :search.sync="search" :option="option" :data="data" @search-change="searchChange">
       <template slot="searchMenu" slot-scope="{size,row}">
         <el-button :size="size">测试</el-button>
       </template>
@@ -38,6 +39,7 @@
     el: '#app',
     data() {
       return {
+        search: {},
         option: {
           index: true,
           emptyText: '自定义暂无数据提示语',

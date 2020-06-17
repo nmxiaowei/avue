@@ -96,10 +96,11 @@
               label: '级别',
               prop: 'grade',
               type: 'select',
-              dicData: [{
-                label: '测试',
-                value: 1
-              }]
+              dicUrl: `https://cli.avuejs.com/api/area/getProvince`,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
             }]
           }, {
             label: '测试',
@@ -114,7 +115,7 @@
           id: 1,
           name: '张三',
           age: 14,
-          grade: 1,
+          grade: '110000',
           phone1: '17547400800',
           phone: '17547400800',
           icon: 'el-icon-time',

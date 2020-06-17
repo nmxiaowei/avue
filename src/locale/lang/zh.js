@@ -40,6 +40,8 @@ export default {
     showTitle: '列显隐',
     menu: '操作',
     addBtn: '新 增',
+    show: '显 示',
+    hide: '隐 藏',
     showBtn: '显 隐',
     filterBtn: '过 滤',
     refreshBtn: '刷 新',

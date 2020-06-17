@@ -90,13 +90,19 @@ export default create({
       this.defaultPage.pageSize = val;
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
-      this.crud.$emit("size-change", val);
+      this.crud.$emit("size-change", val, {
+        page: this.page.defaultPage,
+        search: this.crud.search
+      });
     },
     // 页码回调
     currentChange (val) {
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
-      this.crud.$emit("current-change", val);
+      this.crud.$emit("current-change", val, {
+        page: this.page.defaultPage,
+        search: this.crud.search
+      });
     }
   }
 });

@@ -7,7 +7,7 @@
              :title="t('crud.showTitle')"
              :size="crud.isMobile?'100%':'50%'"
              :visible.sync="columnBox">
-    <el-transfer :titles="[ '隐藏','显示',]"
+    <el-transfer :titles="[ t('crud.hide'),t('crud.show')]"
                  ref="transfer"
                  filterable
                  v-model="columnIndex"

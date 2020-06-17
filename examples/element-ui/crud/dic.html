@@ -37,6 +37,7 @@
             name: '张三',
             sex: '男',
             grade: 1,
+            address: '110000',
             cascader: [0, 1],
             checkbox: [0, 1],
             tree: 0,
@@ -44,6 +45,7 @@
             name: '李四',
             sex: '女',
             grade: 0,
+            address: '120000',
             cascader: [0, 2],
             checkbox: [0, 1],
             tree: 1
@@ -94,6 +96,15 @@
                   }
                 ]
               }],
+            }, {
+              label: '多选',
+              prop: 'address',
+              type: 'select',
+              dicUrl: `https://cli.avuejs.com/api/area/getProvince`,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
             },
             {
               width: 120,
