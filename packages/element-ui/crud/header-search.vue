@@ -64,10 +64,10 @@ export default cteate({
     };
   },
   props: {
-    value: {
+    search: {
       type: Object,
       default: () => {
-        return {};
+        return {}
       }
     }
   },
@@ -78,15 +78,23 @@ export default cteate({
       },
       immediate: true
     },
+    search: {
+      handler () {
+        this.searchInit();
+      },
+      deep: true,
+    },
     searchForm: {
       handler () {
         this.$emit("input", this.searchForm);
+
       },
       deep: true
     }
   },
   created () {
     this.init();
+    this.searchInit();
   },
   computed: {
     columnOption () {
@@ -167,6 +175,13 @@ export default cteate({
     }
   },
   methods: {
+    searchInit () {
+      this.searchForm = Object.assign(this.searchForm, this.search);
+      this.updateValue();
+    },
+    updateValue () {
+      this.crud.$emit('update:search', this.searchForm)
+    },
     //初始化
     init () {
       //扩展搜索的相关api
