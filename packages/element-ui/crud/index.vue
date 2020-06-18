@@ -67,6 +67,7 @@
               :highlight-current-row="tableOption.highlightCurrentRow"
               @current-change="currentRowChange"
               @expand-change="expandChange"
+              @header-dragend="headerDragend"
               :show-summary="tableOption.showSummary"
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
@@ -684,6 +685,10 @@ export default create({
         }
         ele.$index = index;
       });
+    },
+    //拖动表头事件
+    headerDragend (newWidth, oldWidth, column, event) {
+      this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     //展开或则关闭
     expandChange (row, expand) {
