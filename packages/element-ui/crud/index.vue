@@ -170,8 +170,7 @@
       </column>
       <el-table-column :class="b('btn')"
                        :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                       v-if="vaildData(tableOption.menu,config.menu)"
-                       v-permission="getPermission('menu')"
+                       v-if="vaildData(tableOption.menu,config.menu)&&getPermission('menu')"
                        :label="tableOption.menuTitle || t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
@@ -513,7 +512,12 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
-    permission: [Function, Object],
+    permission: {
+      type: [Function, Object],
+      default: () => {
+        return {};
+      }
+    },
     value: {
       type: Object,
       default: () => {
@@ -552,12 +556,12 @@ export default create({
   },
   methods: {
     getPermission (key, row, index) {
-      if (this.validatenull(this.permission)) {
-        return true;
-      } else if (typeof this.permission === "function") {
+      if (typeof this.permission === "function") {
         return this.permission(key, row, index)
-      } else {
+      } else if (!this.validatenull(this.permission[key])) {
         return this.permission[key]
+      } else {
+        return true;
       }
     },
     getTableHeight () {

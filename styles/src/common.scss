@@ -154,10 +154,7 @@ body {
   }
   &--scrollbar{
     .el-scrollbar__wrap{
-      overflow: hidden;
-    }
-    .el-scrollbar__bar{
-      display: none;
+      overflow-x: hidden;
     }
   }
   iframe {
