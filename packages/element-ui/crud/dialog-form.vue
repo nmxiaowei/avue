@@ -29,9 +29,7 @@
            class="el-dialog__close el-icon-full-screen"></i>
       </div>
     </div>
-    <el-scrollbar :style="styleName"
-                  :class="{'avue-dialog--scrollbar':isHeightAuto}"
-                  ref="content">
+    <el-scrollbar :style="styleName">
       <avue-form v-model="tableForm"
                  v-if="boxVisible"
                  ref="tableForm"
@@ -166,9 +164,6 @@ export default create({
     },
     dialogTop () {
       return this.crud.tableOption.dialogTop || config.dialogTop
-    },
-    isHeightAuto () {
-      return this.validatenull(this.crud.tableOption.dialogHeight)
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
