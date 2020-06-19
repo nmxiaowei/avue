@@ -36,8 +36,7 @@ export default create({
       default: "right"
     },
     precision: {
-      type: Number,
-      default: 0
+      type: Number
     },
     minRows: {
       type: Number,

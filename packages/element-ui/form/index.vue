@@ -489,10 +489,6 @@ export default create({
     },
     propChange (option, column) {
       if (column.cascader) this.handleChange(option, column)
-      if (column.type == 'number' && this.formCreate) {
-        console.log(this.form[column.prop])
-        this.validateField(column.prop)
-      }
     },
     handleMock () {
       if (this.isMock) {
