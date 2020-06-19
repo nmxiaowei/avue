@@ -189,7 +189,7 @@ export default create({
   },
   data () {
     return {
-      activeName: '1',
+      activeName: '',
       labelWidth: 90,
       allDisabled: false,
       optionIndex: [],
@@ -209,6 +209,12 @@ export default create({
     };
   },
   watch: {
+    tabsActive: {
+      handler (val) {
+        this.activeName = this.tabsActive
+      },
+      immediate: true
+    },
     formRules: {
       handler () {
         this.clearValidate();
@@ -323,6 +329,9 @@ export default create({
     },
     isPrint () {
       return this.vaildData(this.parentOption.printBtn, false)
+    },
+    tabsActive () {
+      return this.vaildData(this.tableOption.tabsActive + '', '1')
     },
     isMock () {
       return this.vaildData(this.parentOption.mockBtn, false);
