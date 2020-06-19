@@ -2,11 +2,13 @@ import dayjs from 'dayjs';
 export default function () {
   return {
     methods: {
-      handleFocus () {
+      handleFocus (event) {
         typeof this.focus === 'function' && this.focus({ value: this.text, column: this.column })
+        this.$emit('focus', event)
       },
-      handleBlur () {
+      handleBlur (event) {
         typeof this.blur === 'function' && this.blur({ value: this.text, column: this.column })
+        this.$emit('blur', event)
       },
       getLabelText (item) {
         if (this.validatenull(item)) return ''
