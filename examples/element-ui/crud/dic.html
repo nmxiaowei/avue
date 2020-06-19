@@ -24,7 +24,7 @@
 
 <body>
   <div id="app">
-    <avue-crud :data="data" :option="option"></avue-crud>
+    <avue-crud ref="crud" :data="data" :option="option"></avue-crud>
   </div>
 </body>
 <script>
@@ -37,14 +37,16 @@
             name: '张三',
             sex: '男',
             grade: 1,
-            cascader: [0, 1],
+            address: '110000',
+            cascader: [3, 1],
             checkbox: [0, 1],
             tree: 0,
           }, {
             name: '李四',
             sex: '女',
             grade: 0,
-            cascader: [0, 2],
+            address: '120000',
+            cascader: [3, 2],
             checkbox: [0, 1],
             tree: 1
           }
@@ -83,7 +85,7 @@
               type: 'cascader',
               dicData: [{
                 label: '一级',
-                value: 0,
+                value: 3,
                 children: [
                   {
                     label: '一级1',
@@ -94,6 +96,15 @@
                   }
                 ]
               }],
+            }, {
+              label: '多选',
+              prop: 'address',
+              type: 'select',
+              dicUrl: `https://cli.avuejs.com/api/area/getProvince`,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
             },
             {
               width: 120,
@@ -134,6 +145,21 @@
           ]
         }
       }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.$refs.crud.updateDic('checkbox', [{
+          label: '有权限1',
+          value: 1
+        }, {
+          label: '无权限1',
+          value: 0
+        }, {
+          label: '禁止项1',
+          disabled: true,
+          value: -1
+        }])
+      }, 3000)
     }
   })
 </script>

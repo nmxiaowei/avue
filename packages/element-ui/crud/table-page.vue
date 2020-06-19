@@ -2,15 +2,18 @@
   <div :class="b('pagination')">
     <el-pagination v-show="pageFlag"
                    :small="crud.isMobile"
+                   :disabled="defaultPage.disabled"
                    :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
-                   :background="vaildData(defaultPage.pageBackground,config.pageBackground)"
+                   :background="vaildData(defaultPage.background,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"
                    @size-change="sizeChange"
+                   @prev-click="prevClick"
+                   @next-click="nextClick"
                    @current-change="currentChange"
-                   layout="total, sizes, prev, pager, next, jumper"
+                   :layout="defaultPage.layout"
                    :total="defaultPage.total"></el-pagination>
   </div>
 </template>
@@ -38,6 +41,7 @@ export default create({
         currentPage: 1, // 当前页数
         pageSize: 10, // 每页显示多少条
         pageSizes: [10, 20, 30, 40, 50, 100],
+        layout: 'total, sizes, prev, pager, next, jumper',
         background: true // 背景颜色
       }
     };
@@ -84,19 +88,39 @@ export default create({
     updateValue () {
       this.crud.$emit('update:page', this.defaultPage)
     },
+    //下一页事件
+    nextClick (val) {
+      this.crud.$emit("next-click", val, {
+        page: this.page.defaultPage,
+        search: this.crud.search
+      })
+    },
+    //上一页事件
+    prevClick (val) {
+      this.crud.$emit("prev-click", val, {
+        page: this.page.defaultPage,
+        search: this.crud.search
+      })
+    },
     // 页大小回调
     sizeChange (val) {
       this.defaultPage.currentPage = 1;
       this.defaultPage.pageSize = val;
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
-      this.crud.$emit("size-change", val);
+      this.crud.$emit("size-change", val, {
+        page: this.page.defaultPage,
+        search: this.crud.search
+      });
     },
     // 页码回调
     currentChange (val) {
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
-      this.crud.$emit("current-change", val);
+      this.crud.$emit("current-change", val, {
+        page: this.page.defaultPage,
+        search: this.crud.search
+      });
     }
   }
 });

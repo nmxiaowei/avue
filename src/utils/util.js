@@ -339,7 +339,7 @@ export const getPasswordChar = (result = '', char) => {
 export const clearVal = (obj) => {
   if (!obj) return {};
   Object.keys(obj).forEach(ele => {
-    if (Array.isArray(ele[obj])) {
+    if (Array.isArray(obj[ele])) {
       obj[ele] = [];
     } else if (typeof obj[ele] === 'object') {
       obj[ele] = {};

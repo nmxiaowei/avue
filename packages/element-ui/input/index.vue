@@ -22,7 +22,6 @@
               :readonly="readonly"
               :placeholder="placeholder"
               :show-word-limit="showWordLimit"
-              @change="handleChange"
               @focus="handleFocus"
               @blur="handleBlur"
               :disabled="disabled"
@@ -103,14 +102,6 @@ export default create({
       type: String
     }
   },
-  watch: {
-    text: {
-      handler (value) {
-        this.handleChange(value);
-      },
-      immediate: true
-    }
-  },
   computed: {
     tipStatus () {
       if (this.isUrl) {
@@ -132,23 +123,6 @@ export default create({
       } else {
         return "text";
       }
-    }
-  },
-  methods: {
-    handleClick () {
-      const result = this.text;
-      if (typeof this.click === "function") {
-        this.click({ value: result, column: this.column });
-      }
-    },
-    handleChange (value) {
-      let text = this.text;
-      const result = value;
-      if (typeof this.change === "function") {
-        this.change({ value: result, column: this.column });
-      }
-      this.$emit("input", result);
-      this.$emit("change", result);
     }
   }
 });

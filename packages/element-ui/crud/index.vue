@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <!-- 搜索组件 -->
-    <header-search v-model="searchForm"
+    <header-search :search="search"
                    ref="headerSearch">
       <template slot="search"
                 slot-scope="{size,row}">
@@ -24,7 +24,7 @@
               :size="size"
               :label="label"
               :disabled="disabled"
-              :row="searchForm"
+              :row="search"
               :name="item.prop+'Search'"
               v-if="item.searchslot"></slot>
       </template>
@@ -67,6 +67,7 @@
               :highlight-current-row="tableOption.highlightCurrentRow"
               @current-change="currentRowChange"
               @expand-change="expandChange"
+              @header-dragend="headerDragend"
               :show-summary="tableOption.showSummary"
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
@@ -169,7 +170,7 @@
       </column>
       <el-table-column :class="b('btn')"
                        :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                       v-if="vaildData(tableOption.menu,config.menu)"
+                       v-if="vaildData(tableOption.menu,config.menu)&&getPermission('menu')"
                        :label="tableOption.menuTitle || t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
@@ -342,7 +343,6 @@ export default create({
     return {
       reload: true,
       isChild: false,
-      searchForm: {},
       config: config,
       list: [],
       expandList: [],
@@ -512,7 +512,12 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
-    permission: [Function, Object],
+    permission: {
+      type: [Function, Object],
+      default: () => {
+        return {};
+      }
+    },
     value: {
       type: Object,
       default: () => {
@@ -523,6 +528,12 @@ export default create({
       type: Array,
       default () {
         return [];
+      }
+    },
+    search: {
+      type: Object,
+      default () {
+        return {};
       }
     },
     page: {
@@ -545,12 +556,12 @@ export default create({
   },
   methods: {
     getPermission (key, row, index) {
-      if (this.validatenull(this.permission)) {
-        return true;
-      } else if (typeof this.permission === "function") {
+      if (typeof this.permission === "function") {
         return this.permission(key, row, index)
-      } else {
+      } else if (!this.validatenull(this.permission[key])) {
         return this.permission[key]
+      } else {
+        return true;
       }
     },
     getTableHeight () {
@@ -680,6 +691,10 @@ export default create({
         ele.$index = index;
       });
     },
+    //拖动表头事件
+    headerDragend (newWidth, oldWidth, column, event) {
+      this.$emit("header-dragend", newWidth, oldWidth, column, event);
+    },
     //展开或则关闭
     expandChange (row, expand) {
       this.expandList = [...expand];
@@ -693,7 +708,7 @@ export default create({
     refreshChange () {
       this.$emit("refresh-change", {
         page: this.page.defaultPage,
-        searchForm: this.$refs.headerSearch.searchForm
+        search: this.search
       });
     },
     // 选中实例

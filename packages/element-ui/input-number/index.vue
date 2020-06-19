@@ -1,6 +1,6 @@
 <template>
-  <el-input-number v-model="text"
-                   class="avue-input-number"
+  <el-input-number v-model.number="text"
+                   :class="b()"
                    @click.native="handleClick"
                    @focus="handleFocus"
                    @blur="handleBlur"
@@ -36,8 +36,7 @@ export default create({
       default: "right"
     },
     precision: {
-      type: Number,
-      default: 0
+      type: Number
     },
     minRows: {
       type: Number,
@@ -46,14 +45,6 @@ export default create({
     maxRows: {
       type: Number,
       default: Infinity
-    }
-  },
-  watch: {
-    text: {
-      handler () {
-        this.handleChange(this.text);
-      },
-      immediate: true
     }
   },
   created () { },

@@ -222,7 +222,7 @@ export default {
           formatter: columnNext.dicFormatter,
           resKey: (columnNext.props || {}).res
         }).then(
-          res => {            
+          res => {
             //首次加载的放入队列记录
             if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
             const dic = Array.isArray(res) ? res : [];

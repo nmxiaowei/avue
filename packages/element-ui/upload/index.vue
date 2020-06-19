@@ -15,7 +15,7 @@
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
-               :on-change="handleChange"
+               :on-change="handleFileChange"
                :on-exceed="handleExceed"
                :disabled="disabled"
                :file-list="fileList">
@@ -229,7 +229,7 @@ export default create({
       if (typeof this.click === "function")
         this.click({ value: this.text, column: this.column });
     },
-    handleChange (file, fileList) {
+    handleFileChange (file, fileList) {
       fileList.splice(fileList.length - 1, 1);
       if (typeof this.change === "function")
         this.change({ value: this.text, column: this.column });

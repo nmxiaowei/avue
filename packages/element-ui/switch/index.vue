@@ -1,6 +1,5 @@
 <template>
   <el-switch v-model="text"
-             @change="handleChange"
              @click.native="handleClick"
              :active-text="active[labelKey]"
              :active-value="active[valueKey]"

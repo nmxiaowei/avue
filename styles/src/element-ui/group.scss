@@ -1,6 +1,6 @@
 .avue-group{
   .el-collapse,.el-collapse-item__wrap{
-    border:none;
+    border-color:#fff;
   }
   .el-collapse-item__header{
     height: inherit;
@@ -21,6 +21,11 @@
   }
   .el-collapse-item__arrow{
     margin-top: -25px;
+  }
+  &--collapse{
+    .el-collapse-item__arrow,.el-collapse-item__header{
+      display: flex !important;
+    }
   }
   &--card{
     padding: 0 20px;

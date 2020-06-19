@@ -6,7 +6,7 @@ import { detailDataType, findObject } from 'utils/util';
  */
 export const calcCascader = (list = []) => {
   list.forEach((ele, index) => {
-    if (ele.cascaderItem) {
+    if (!validatenull(ele.cascaderItem)) {
       let cascader = [...ele.cascaderItem];
       let parentProp = ele.prop;
       list[index].cascader = [...cascader];
