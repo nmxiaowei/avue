@@ -87,7 +87,7 @@ export default cteate({
     searchForm: {
       handler () {
         this.$emit("input", this.searchForm);
-
+        this.updateValue();
       },
       deep: true
     }
@@ -177,7 +177,6 @@ export default cteate({
   methods: {
     searchInit () {
       this.searchForm = Object.assign(this.searchForm, this.search);
-      this.updateValue();
     },
     updateValue () {
       this.crud.$emit('update:search', this.searchForm)
