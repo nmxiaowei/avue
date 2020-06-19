@@ -171,6 +171,7 @@
       <el-table-column :class="b('btn')"
                        :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
                        v-if="vaildData(tableOption.menu,config.menu)"
+                       v-permission="getPermission('menu')"
                        :label="tableOption.menuTitle || t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
