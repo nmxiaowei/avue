@@ -296,6 +296,7 @@ export default create({
       if (group) {
         //处理分组以外的部分
         group.unshift({
+          arrow: false,
           column: option.column
         })
       }
