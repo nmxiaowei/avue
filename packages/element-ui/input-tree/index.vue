@@ -78,6 +78,14 @@ export default create({
       type: Boolean,
       default: false
     },
+    leafOnly: {
+      type: Boolean,
+      default: false
+    },
+    includeHalfChecked: {
+      type: Boolean,
+      default: false
+    },
     filter: {
       type: Boolean,
       default: true
@@ -197,7 +205,7 @@ export default create({
       this.$nextTick(() => {
         this.labelText = [];
         if (this.multiple) {
-          let list = this.$refs.tree.getCheckedNodes()
+          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked)
           list.forEach(ele => {
             this.labelText.push(ele[this.labelKey])
           })

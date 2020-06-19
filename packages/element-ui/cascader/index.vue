@@ -13,8 +13,7 @@
                :filterable="filterable"
                :separator="separator"
                :disabled="disabled"
-               @click.native="handleClick"
-               @change="handleChange">
+               @click.native="handleClick">
     <template slot-scope="{ node, data }"
               v-if="typeslot">
       <slot :name="prop+'Type'"

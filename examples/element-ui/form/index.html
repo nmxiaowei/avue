@@ -64,7 +64,7 @@
             // typeslot: true,
             dicData: [{
               label: '一级',
-              value: 0,
+              value: 3,
               children: [
                 {
                   label: '一级1',
@@ -106,19 +106,26 @@
             type: 'switch',
             dicData: [
               {
-                label: '开启',
-                value: '0'
+                label: '关闭',
+                value: 0
               },
               {
-                label: '关闭',
-                value: '1'
+                label: '开启',
+                value: 1
               }
             ]
           },
           {
             label: '默认值',
             prop: 'default',
-            value: '22'
+            value: '22',
+            rules: [
+              {
+                required: true,
+                message: '请输入数字',
+                trigger: 'blur'
+              }
+            ]
           },
           {
             label: '多选',
@@ -139,12 +146,11 @@
             prop: 'number',
             type: 'number',
             step: 10,
-            minRows: 1,
             rules: [
               {
                 required: true,
                 message: '请输入数字',
-                trigger: 'blur'
+                trigger: 'change'
               }
             ]
           },
@@ -215,6 +221,13 @@
               value: 'code'
             },
             span: 24,
+            rules: [
+              {
+                type: 'array',
+                required: true,
+                message: '请输入数字'
+              }
+            ],
             dicUrl: `${baseUrl}/getProvince`
           },
           {
@@ -236,20 +249,14 @@
         }
       }
     },
-    watch: {
-      'obj.selects'() {
-        console.log(1);
-      }
-    },
     mounted() {
       this.obj = {
-        switch: '1',
+        switch: 1,
         selects: '0,1',
         name: 'small',
-        cascader: [0, 1],
-        number: 1,
+        cascader: [3, 1],
+        default: 10,
         tree: [2],
-        checkbox: ['110000'],
         province: '220000',
         city: '220700',
         area: '220702',

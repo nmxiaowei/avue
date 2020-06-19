@@ -143,8 +143,14 @@ export default function () {
       }
     },
     watch: {
-      value: {
+      text: {
         handler (val) {
+          this.handleChange(val)
+        },
+        immediate: true
+      },
+      value: {
+        handler () {
           this.initVal();
         },
         immediate: true

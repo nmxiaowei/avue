@@ -262,7 +262,6 @@ export default create({
       Object.keys(this.value).forEach(ele => {
         this.tableForm[ele] = this.value[ele];
       });
-      this.$emit("input", this.tableForm);
     },
     //清空表单
     resetForm () {

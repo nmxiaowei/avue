@@ -115,7 +115,7 @@
                                v-model="form[column.prop]"
                                :enter="parentOption.enter"
                                @enter="submit"
-                               @change="column.cascader ?handleChange(item.column,column):propChange(column.prop)">
+                               @change="propChange(item.column,column)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
                                 v-for="citem in ((column.children || {}).column || [])">
@@ -196,11 +196,11 @@ export default create({
       optionBox: false,
       tableOption: {},
       itemSpanDefault: 12,
-      formOld: {},
       form: {},
       formList: [],
-      formCreate: true,
-      formDefault: {}
+      formCreate: false,
+      formDefault: {},
+      formVal: {}
     };
   },
   provide () {
@@ -216,24 +216,22 @@ export default create({
       deep: true
     },
     form: {
-      handler () {
-        if (!this.formCreate) {
-          this.$emit("input", this.form);
-          this.$emit("change", this.form);
-        } else {
-          this.formCreate = false;
-        }
+      handler (val) {
+        if (this.formCreate) this.setVal();
       },
       deep: true
     },
     value: {
-      handler () {
-        this.formOld = this.deepClone(this.value);
-        if (!this.formCreate) {
-          this.formVal();
+      handler (val) {
+        if (this.formCreate) {
+          this.setForm(val);
+        } else {
+          this.formVal = Object.assign(this.formVal, val || {});
         }
+
       },
-      deep: true
+      deep: true,
+      immediate: true
     }
   },
   computed: {
@@ -345,10 +343,13 @@ export default create({
     }
   },
   created () {
-    //初始化字典
     this.dataDic()
-    // 初始化表单
-    this.dataFormat();
+    this.$nextTick(() => {
+      this.dataFormat();
+      this.setVal();
+      this.clearValidate();
+      this.formCreate = true;
+    })
   },
   methods: {
     getComponent,
@@ -357,9 +358,7 @@ export default create({
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
     dataDic () {
-      this.handleLoadDic().then(() => {
-        this.forEachLabel()
-      });
+      this.handleLoadDic().then(() => this.forEachLabel());
     },
     getSpan (column) {
       return column.span || this.parentOption.span || this.itemSpanDefault
@@ -372,12 +371,8 @@ export default create({
       }
     },
     forEachLabel () {
-      this.columnOption.forEach(ele => {
-        ele.column.forEach(column => {
-          setTimeout(() => {
-            this.handleShowLabel(column, this.DIC[column.prop]);
-          }, 0)
-        });
+      this.propOption.forEach(column => {
+        this.handleShowLabel(column, this.DIC[column.prop]);
       });
     },
     getLabelWidth (column, item) {
@@ -423,13 +418,23 @@ export default create({
         this.$set(this.DIC, prop, list);
       }
     },
+    //初始化表单
     dataFormat () {
-      let formDefault = formInitVal(this.propOption);
-      this.formDefault = formDefault;
-      this.form = this.deepClone(formDefault.tableForm);
-      this.formVal();
+      this.formDefault = formInitVal(this.propOption);
+      let value = this.deepClone(this.formDefault.tableForm);
+      this.setForm(this.deepClone(Object.assign(value, this.formVal)))
     },
-
+    setVal () {
+      this.$emit("input", this.form);
+      this.$emit("change", this.form);
+    },
+    //表单赋值
+    setForm (value) {
+      Object.keys(value).forEach(ele => {
+        this.$set(this.form, ele, value[ele]);
+      });
+      this.forEachLabel();
+    },
     handleChange (list, column) {
       this.$nextTick(() => {
         const cascader = column.cascader;
@@ -477,23 +482,16 @@ export default create({
         });
       })
     },
-    formVal () {
-      Object.keys(this.value).forEach(ele => {
-        this.$set(this.form, ele, this.value[ele]);
-      });
-      this.forEachLabel();
-      this.$emit("input", this.form);
-    },
     handlePrint () {
       this.$Print({
         html: this.$el.innerHTML
       });
     },
-    propChange (prop) {
-      if (!this.formCreate) {
-        setTimeout(() => {
-          this.validateField(prop)
-        })
+    propChange (option, column) {
+      if (column.cascader) this.handleChange(option, column)
+      if (column.type == 'number' && this.formCreate) {
+        console.log(this.form[column.prop])
+        this.validateField(column.prop)
       }
     },
     handleMock () {
