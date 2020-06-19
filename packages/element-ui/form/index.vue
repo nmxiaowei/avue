@@ -402,8 +402,8 @@ export default create({
     getPropRef (prop) {
       return this.$refs[prop][0];
     },
-    updateDic (prop, list) {
-      const column = this.findObject(this.columnOption, prop);
+    updateDic (prop, list, callback) {
+      const column = this.findObject(this.propOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           url: column.dicUrl,
@@ -413,9 +413,11 @@ export default create({
           formatter: column.dicFormatter
         }).then(list => {
           this.$set(this.DIC, prop, list);
+          callback(list);
         });
       } else {
         this.$set(this.DIC, prop, list);
+        callback(list);
       }
     },
     //初始化表单

@@ -139,9 +139,6 @@ export default create({
       deep: true
     }
   },
-  mounted () {
-
-  },
   computed: {
     styleName () {
       return {
@@ -223,6 +220,9 @@ export default create({
       }
     }
   },
+  created () {
+    this.crud.updateDic = this.updateDic;
+  },
   methods: {
     handleFullScreen () {
       if (this.isDrawer) {
@@ -254,7 +254,7 @@ export default create({
       }
     },
     initFun () {
-      ['clearValidate', 'validate', 'updateDic'].forEach(ele => {
+      ['clearValidate', 'validate'].forEach(ele => {
         this.crud[ele] = this.$refs.tableForm[ele]
       })
     },
@@ -330,9 +330,27 @@ export default create({
 
 
     },
+
+    updateDic (prop, list) {
+      const column = this.findObject(this.crud.propOption, prop);
+      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+        sendDic({
+          url: column.dicUrl,
+          method: column.dicMethod,
+          query: column.dicQuery,
+          resKey: (column.props || {}).res,
+          formatter: column.dicFormatter
+        }).then(list => {
+          this.$set(this.crud.DIC, prop, list);
+        });
+      } else {
+        this.$set(this.crud.DIC, prop, list);
+      }
+    },
     // 隐藏表单
     hide () {
       const callback = () => {
+        this.crud.updateDic = this.updateDic;
         this.$nextTick(() => {
           this.boxVisible = false;
         });
@@ -350,6 +368,11 @@ export default create({
       const callback = () => {
         this.$nextTick(() => {
           this.boxVisible = true;
+          this.crud.updateDic = (prop, list) => {
+            this.$refs.tableForm.updateDic(prop, list, (res) => {
+              this.updateDic(prop, res)
+            })
+          }
         });
       };
       if (typeof this.crud.beforeOpen === "function") {
