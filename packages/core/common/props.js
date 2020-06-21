@@ -33,12 +33,13 @@ export default function () {
       },
       listType: {
         type: String,
-        default: 'text'
       },
       value: {},
       column: {
         type: Object,
-        default: () => { }
+        default: () => {
+          return {}
+        }
       },
       typeslot: {
         type: Boolean,
