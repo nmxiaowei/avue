@@ -40,7 +40,9 @@
     el: '#app',
     data() {
       return {
-        obj: {},
+        obj: {
+          checkbox: ["120000", "110000", "130000"]
+        },
         option: {
           card: false,
           labelWidth: 110,
@@ -216,6 +218,8 @@
             label: '多选',
             prop: 'checkbox',
             type: 'checkbox',
+            max: 5,
+            min: 2,
             props: {
               label: 'name',
               value: 'code'
