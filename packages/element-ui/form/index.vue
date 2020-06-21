@@ -6,7 +6,6 @@
              @submit.native.prevent
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
-             :label-position="parentOption.labelPosition"
              :size="$AVUE.formSize || controlSize"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
@@ -61,8 +60,8 @@
                       :class="[b('row'),{'avue--detail':vaildDetail(column)}]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
-                              :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
-                              :label-position="column.labelPosition"
+                              :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
+                              :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template slot="label"
                             v-if="column.labelslot">
