@@ -155,14 +155,11 @@ export default create({
     handleRemoteMethod (query) {
       this.loading = true;
       sendDic({
-        url: (this.dicUrl || '').replace("{{key}}", query),
-        method: this.dicMethod,
-        query: this.dicQuery,
-        resKey: (this.props || {}).res,
-        formatter: this.dicFormatter,
+        column: this.column,
+        value: query,
       }).then(res => {
         this.loading = false;
-        this.netDic = res;
+        this.netDic = this.dic.concat(res);
       });
     }
   }

@@ -76,17 +76,6 @@ export default function () {
         window.onresize = () => {
           this.getIsMobile();
         };
-        setTimeout(() => {
-          this.initDic();
-        }, 0);
-      },
-      //本地字典加载
-      initDic () {
-        this.propOption.forEach(ele => {
-          if (Array.isArray(ele.dicData)) {
-            this.$set(this.DIC, ele.prop, ele.dicData)
-          }
-        })
       },
       // 网络字典加载
       handleLoadDic () {

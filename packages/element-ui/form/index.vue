@@ -415,11 +415,7 @@ export default create({
       const column = this.findObject(this.propOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
-          url: column.dicUrl,
-          method: column.dicMethod,
-          query: column.dicQuery,
-          resKey: (column.props || {}).res,
-          formatter: column.dicFormatter
+          column: column
         }).then(list => {
           this.$set(this.DIC, prop, list);
           callback(list);
@@ -476,11 +472,8 @@ export default create({
         }
         // 根据当前节点值获取下一个节点的字典
         sendDic({
-          url: (columnNext.dicUrl || '').replace("{{key}}", value),
-          method: columnNext.dicMethod,
-          query: columnNext.dicQuery,
-          formatter: columnNext.dicFormatter,
-          resKey: (columnNext.props || {}).res,
+          column: columnNext,
+          value: value,
         }).then(res => {
           //首次加载的放入队列记录
           if (!this.formList.includes(str)) this.formList.push(str);

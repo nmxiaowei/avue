@@ -216,11 +216,8 @@ export default {
           });
         }
         sendDic({
-          url: (columnNext.dicUrl || '').replace("{{key}}", value),
-          method: columnNext.dicMethod,
-          query: columnNext.dicQuery,
-          formatter: columnNext.dicFormatter,
-          resKey: (columnNext.props || {}).res
+          column: columnNext,
+          value: value,
         }).then(
           res => {
             //首次加载的放入队列记录
