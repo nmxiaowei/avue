@@ -33,7 +33,7 @@
       return {
         form: {},
         form: {
-          province: 110000,
+          province: "110000",
           multipleSelect: []
         },
         option: {}
@@ -82,8 +82,7 @@
               label: 'name',
               value: 'code'
             },
-            dataType: 'number',
-            dicUrl: `${baseUrl}/getProvince`,
+            dicUrl: `${baseUrl}/getProvince?city={{key}}`,
             rules: [
               {
                 required: true,

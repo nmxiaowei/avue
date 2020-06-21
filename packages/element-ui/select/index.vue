@@ -3,10 +3,14 @@
              :class="b()"
              v-model="text"
              :size="size"
+             :loading="loading"
+             :loading-text="loadingText"
              :multiple="multiple"
              :filterable="remote?true:filterable"
              :remote="remote"
              :readonly="readonly"
+             :no-match-text="noMatchText"
+             :no-data-text="noDataText"
              :remote-method="handleRemoteMethod"
              :collapse-tags="tags"
              :clearable="disabled?false:clearable"
@@ -61,11 +65,21 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
-      netDic: []
+      netDic: [],
+      loading: false,
     };
   },
   props: {
     value: {},
+    loadingText: {
+      type: String,
+    },
+    noMatchText: {
+      type: String,
+    },
+    noDataText: {
+      type: String,
+    },
     drag: {
       type: Boolean,
       default: false
@@ -114,6 +128,9 @@ export default create({
     if (this.drag) {
       this.setSort()
     }
+    if (this.remote) {
+      this.handleRemoteMethod(this.text)
+    }
   },
   methods: {
     setSort () {
@@ -136,6 +153,7 @@ export default create({
       })
     },
     handleRemoteMethod (query) {
+      this.loading = true;
       sendDic({
         url: (this.dicUrl || '').replace("{{key}}", query),
         method: this.dicMethod,
@@ -143,6 +161,7 @@ export default create({
         resKey: (this.props || {}).res,
         formatter: this.dicFormatter,
       }).then(res => {
+        this.loading = false;
         this.netDic = res;
       });
     }
