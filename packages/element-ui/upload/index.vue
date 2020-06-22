@@ -246,13 +246,11 @@ export default create({
         this.text.push(obj);
       }
       this.$message.success("上传成功");
-      this.setVal();
     },
     handleRemove (file, fileList) {
       this.onRemove && this.onRemove(file, fileList);
       this.delete(file);
       this.$message.success("删除成功");
-      this.setVal();
     },
     handleError (error) {
       if (typeof this.uploadError === "function") {
@@ -393,18 +391,6 @@ export default create({
         done();
       }
     },
-    setVal () {
-      let result = "";
-      if (this.isString) {
-        result = this.text.join(",");
-      } else if (this.isPictureImg) {
-        result = this.text[0];
-      } else {
-        result = this.text;
-      }
-      this.$emit("input", result);
-      this.$emit("change", result);
-    },
     handleExceed (files, fileList) {
       this.$message.warning(
         `当前限制选择 ${this.limit} 个文件，本次选择了 ${
@@ -432,7 +418,6 @@ export default create({
     handleDelete (file) {
       this.beforeRemove(file).then(() => {
         this.text = [];
-        this.setVal();
       }).catch(() => {
       });
     },

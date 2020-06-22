@@ -6,7 +6,6 @@
              @submit.native.prevent
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
-             :label-position="parentOption.labelPosition"
              :size="$AVUE.formSize || controlSize"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
@@ -61,8 +60,8 @@
                       :class="[b('row'),{'avue--detail':vaildDetail(column)}]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
-                              :class="b('item--'+(column.labelPosition ||item.labelPosition || ''))"
-                              :label-position="column.labelPosition"
+                              :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
+                              :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template slot="label"
                             v-if="column.labelslot">
@@ -416,11 +415,7 @@ export default create({
       const column = this.findObject(this.propOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
-          url: column.dicUrl,
-          method: column.dicMethod,
-          query: column.dicQuery,
-          resKey: (column.props || {}).res,
-          formatter: column.dicFormatter
+          column: column
         }).then(list => {
           this.$set(this.DIC, prop, list);
           callback(list);
@@ -477,18 +472,15 @@ export default create({
         }
         // 根据当前节点值获取下一个节点的字典
         sendDic({
-          url: (columnNext.dicUrl || '').replace("{{key}}", value),
-          method: columnNext.dicMethod,
-          query: columnNext.dicQuery,
-          formatter: columnNext.dicFormatter,
-          resKey: (columnNext.props || {}).res,
+          column: columnNext,
+          value: value,
         }).then(res => {
           //首次加载的放入队列记录
           if (!this.formList.includes(str)) this.formList.push(str);
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
           this.$set(this.DIC, columnNextProp, dic);
-          if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
+          if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
             this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
           }
         });

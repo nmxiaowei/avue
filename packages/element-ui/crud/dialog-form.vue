@@ -330,11 +330,7 @@ export default create({
       const column = this.findObject(this.crud.propOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
-          url: column.dicUrl,
-          method: column.dicMethod,
-          query: column.dicQuery,
-          resKey: (column.props || {}).res,
-          formatter: column.dicFormatter
+          column: column
         }).then(list => {
           this.$set(this.crud.DIC, prop, list);
         });

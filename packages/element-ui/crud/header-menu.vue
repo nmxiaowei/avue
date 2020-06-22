@@ -163,7 +163,9 @@ export default create({
   methods: {
     //日期组件回调
     dateChange (val) {
-      this.crud.$emit("date-change", val);
+      if (!this.validatenull(val)) {
+        this.crud.$emit("date-change", val);
+      }
     },
     initFun () {
       this.vaildData = vaildData;

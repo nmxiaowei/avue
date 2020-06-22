@@ -38,6 +38,9 @@ export default function () {
         if (value && (this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader', 'img', 'array'].includes(this.type))) {
           result = value.join(',')
         }
+        if (this.listType === "picture-img") {
+          result = value[0];
+        }
         if (typeof this.change === 'function') {
           this.change({ value: result, column: this.column });
         }

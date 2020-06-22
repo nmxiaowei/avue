@@ -26,7 +26,7 @@ export const loadCascaderDic = (columnOption, list) => {
                   sendDic(Object.assign({
                     url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
                   }, {
-                    resKey: (column.props || {}).res,
+                    props: column.props,
                     method: column.dicMethod,
                     formatter: column.dicFormatter,
                     query: column.dicQuery
@@ -61,7 +61,6 @@ export const loadDic = option => {
   return new Promise((resolve, reject) => {
     // 本地字典赋值
     locationdic = option.dicData || {};
-
     const params = createdDic(option);
     locationdic = Object.assign(locationdic, params.locationdic);
     ajaxdic = params.ajaxdic;
@@ -73,7 +72,10 @@ export const loadDic = option => {
     handeDic(ajaxdic)
       .then((res) => {
         networkdic = res;
-        resolve(Object.assign(locationdic, networkdic));
+        Object.keys(locationdic).forEach(ele => {
+          networkdic[ele] = locationdic[ele].concat(networkdic[ele] || []);
+        });
+        resolve(networkdic);
       })
       .catch(err => {
         reject(err);
@@ -83,7 +85,7 @@ export const loadDic = option => {
 
 // 创建字典区分本地字典和网络字典
 function createdDic(option) {
-  let { url = '', column = [], props = {} } = option;
+  let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
   let flagdic = [];
@@ -96,15 +98,16 @@ function createdDic(option) {
     if (ele.dicFlag === false || flagdic.includes(prop)) return;
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
-    } else if (dicUrl && !parentProp) {
+    }
+    if (dicUrl && !parentProp) {
       ajaxdic.push({
-        url: dicUrl || url,
-        name: dicData || prop,
+        url: dicUrl,
+        name: prop,
         method: ele.dicMethod,
         formatter: ele.dicFormatter,
         props: ele.props,
         dataType: ele.dataType,
-        resKey: (ele.props || {}).res || (props || {}).res,
+        resKey: (ele.props || {}).res,
         query: ele.dicQuery
       });
     }
@@ -143,7 +146,16 @@ function handeDic(list) {
 
 // ajax获取字典
 export const sendDic = (params) => {
-  let { url, query, method, resKey, formatter } = params;
+  let { url, query, method, resKey, props, formatter, value, column } = params;
+  if (column) {
+    url = column.dicUrl;
+    method = column.dicMethod;
+    query = column.dicQuery;
+    formatter = column.dicFormatter;
+    props = column.props;
+  }
+  if (value) url = (url || '').replace('{{key}}', value);
+  if (props) resKey = (props || {}).res || resKey;
   return new Promise(resolve => {
     const callback = (res) => {
       let list = [];
