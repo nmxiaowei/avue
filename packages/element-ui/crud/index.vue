@@ -31,7 +31,7 @@
     </header-search>
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
-                 v-if="vaildData(tableOption.header,true)">
+                 v-show="vaildData(tableOption.header,true)">
       <template slot="menuLeft">
         <slot name="menuLeft"></slot>
       </template>
