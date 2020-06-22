@@ -115,12 +115,6 @@ export default create({
         this.netDic = val;
       },
       immediate: true
-    },
-    text: {
-      handler (val) {
-        this.handleChange(val);
-      },
-      immediate: true
     }
   },
   created () { },
