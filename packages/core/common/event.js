@@ -39,7 +39,7 @@ export default function () {
           result = value.join(',')
         }
         if (this.listType === "picture-img") {
-          result = value[0];
+          result = value.join(',')
         }
         if (typeof this.change === 'function') {
           this.change({ value: result, column: this.column });

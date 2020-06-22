@@ -238,7 +238,7 @@ export default create({
       if (this.isArray || this.isString) {
         this.text.push(file[this.urlKey]);
       } else if (this.isPictureImg) {
-        this.text[0] = file[this.urlKey]
+        this.text.splice(0, 1, file[this.urlKey])
       } else {
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
