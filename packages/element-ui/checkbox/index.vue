@@ -35,7 +35,7 @@ export default create({
   props: {
     all: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   mixins: [props(), event()],

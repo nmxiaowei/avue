@@ -15,16 +15,8 @@ export default function () {
         handler () {
           this.init();
         },
-        deep: true
-      },
-      //检测本地字典随时赋值
-      'option.dicData': {
-        handler (val) {
-          this.DIC = Object.assign(this.DIC, val);
-        },
         deep: true,
-        immediate: true
-      },
+      }
     },
     data () {
       return {
@@ -62,26 +54,22 @@ export default function () {
       }
     },
     methods: {
-      getKey (item = {}, props = {}, key) {
-        return item[
-          props[key] || (this.parentOption.props || {})[key] || key
-        ];
-      },
-      getIsMobile () {
-        this.isMobile = window.document.body.clientWidth <= 768;
-      },
       init () {
         this.tableOption = this.option;
         this.getIsMobile();
         window.onresize = () => {
           this.getIsMobile();
         };
+        this.handleLoadDic().then(() => {
+          this.forEachLabel && this.forEachLabel()
+        });
+      },
+      getIsMobile () {
+        this.isMobile = window.document.body.clientWidth <= 768;
       },
       // 网络字典加载
       handleLoadDic () {
         return new Promise((resolve) => {
-          const dicFlag = this.vaildData(this.resultOption.dicFlag, true);
-          if (!dicFlag) resolve();
           loadDic(this.resultOption).then((res = {}) => {
             Object.keys(res).forEach(ele => {
               this.$set(this.DIC, ele, res[ele])

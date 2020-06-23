@@ -206,6 +206,12 @@ export default create({
         option.dicFlag = false;
         option.dicData = this.crud.DIC;
       }
+      if (!this.validatenull(option.dicFlag)) {
+        option.column.forEach(ele => {
+          ele.dicFlag = ele.dicFlag || option.dicFlag
+        })
+      }
+
       return option;
     },
     dialogTitle () {

@@ -5,6 +5,7 @@
                    @focus="handleFocus"
                    @blur="handleBlur"
                    :precision="precision"
+                   :placeholder="placeholder"
                    :size="size"
                    :min="minRows"
                    :max="maxRows"

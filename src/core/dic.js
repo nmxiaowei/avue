@@ -1,6 +1,6 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
-import { getObjValue, detailDic, deepClone } from 'utils/util';
+import { getObjValue, detailDic } from 'utils/util';
 
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
@@ -73,7 +73,7 @@ export const loadDic = option => {
       .then((res) => {
         networkdic = res;
         Object.keys(locationdic).forEach(ele => {
-          networkdic[ele] = locationdic[ele].concat(deepClone(networkdic[ele] || []));
+          networkdic[ele] = locationdic[ele].concat(networkdic[ele] || []);
         });
         resolve(networkdic);
       })

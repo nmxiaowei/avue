@@ -352,7 +352,6 @@ export default create({
     }
   },
   created () {
-    this.dataDic()
     this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
@@ -365,9 +364,6 @@ export default create({
     getPlaceholder,
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
-    },
-    dataDic () {
-      this.handleLoadDic().then(() => this.forEachLabel());
     },
     getSpan (column) {
       return column.span || this.parentOption.span || this.itemSpanDefault

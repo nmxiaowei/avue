@@ -30,43 +30,52 @@ export default create({
     value: {}
   },
   computed: {
-    isCard() {
+    isCard () {
       return this.parentOption.card;
     },
-    parentOption() {
+    parentOption () {
       let option = this.deepClone(this.tableOption);
       return option;
     },
-    columnOption() {
+    propOption () {
+      let list = [];
+      this.columnOption.forEach(column => list.push(column));
+      return list;
+    },
+    columnOption () {
       let list = [...this.parentOption.column] || [];
       return list;
     }
   },
-  data() {
+  data () {
     return {
       form: {}
     };
   },
   watch: {
     value: {
-      handler() {
+      handler () {
         this.setVal();
         this.dataformat();
-      }
+      },
+      deep: true
     }
   },
-  created() {
-    this.handleLoadDic();
-    this.form = this.value;
+  created () {
     this.dataformat();
   },
   methods: {
-    setVal() {
+    setVal () {
       Object.keys(this.value).forEach(ele => {
         this.$set(this.form, ele, this.value[ele]);
       });
     },
-    dataformat() {
+    getKey (item = {}, props = {}, key) {
+      return item[
+        props[key] || (this.parentOption.props || {})[key] || key
+      ];
+    },
+    dataformat () {
       this.columnOption.forEach(ele => {
         const prop = ele.prop;
         if (this.validatenull(this.form[prop])) {
@@ -78,7 +87,7 @@ export default create({
         }
       });
     },
-    getActive(item, column) {
+    getActive (item, column) {
       const value = this.getKey(item, column.props, "value");
       if (column.multiple === false) {
         return this.form[column.prop] === value;
@@ -86,7 +95,7 @@ export default create({
         return this.form[column.prop].includes(value);
       }
     },
-    handleClick(column, item) {
+    handleClick (column, item) {
       const value = this.getKey(item, column.props, "value");
       //单选
       if (column.multiple === false) {
