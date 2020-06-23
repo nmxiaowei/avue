@@ -81,7 +81,10 @@ export default function () {
       handleLoadDic () {
         return new Promise((resolve) => {
           const dicFlag = this.vaildData(this.resultOption.dicFlag, true);
-          if (!dicFlag) resolve();
+          if (!dicFlag) {
+            resolve();
+            return
+          }
           loadDic(this.resultOption).then((res = {}) => {
             Object.keys(res).forEach(ele => {
               this.$set(this.DIC, ele, res[ele])
