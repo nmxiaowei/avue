@@ -361,6 +361,8 @@ export default create({
   created () {
     // 初始化数据
     this.dataInit();
+    //初始化级联
+    this.handleLoadCascaderDic()
   },
   mounted () {
     this.refreshTable(() => {
@@ -486,11 +488,12 @@ export default create({
       },
       deep: true
     },
-    data () {
-      this.dataInit();
-      //初始化级联字典
-      this.handleLoadCascaderDic();
-    }
+    data: {
+      handler () {
+        this.dataInit();
+      },
+      deep: true
+    },
   },
   props: {
     sortBy: Function,

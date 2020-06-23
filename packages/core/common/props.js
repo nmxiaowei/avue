@@ -147,14 +147,12 @@ export default function () {
       text: {
         handler (val) {
           this.handleChange(val)
-        },
-        immediate: true
+        }
       },
       value: {
         handler () {
           this.initVal();
-        },
-        immediate: true
+        }
       }
     },
     computed: {
@@ -205,6 +203,9 @@ export default function () {
       idKey: function () {
         return this.props.id || this.propsDefault.id;
       }
+    },
+    created () {
+      this.initVal();
     },
     methods: {
       initVal () {
