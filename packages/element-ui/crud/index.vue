@@ -361,8 +361,6 @@ export default create({
   created () {
     // 初始化数据
     this.dataInit();
-    //初始化级联
-    this.handleLoadCascaderDic()
   },
   mounted () {
     this.refreshTable(() => {
@@ -491,6 +489,7 @@ export default create({
     data: {
       handler () {
         this.dataInit();
+        this.handleLoadCascaderDic()
       },
       deep: true
     },
