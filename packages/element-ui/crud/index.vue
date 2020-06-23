@@ -361,8 +361,6 @@ export default create({
   created () {
     // 初始化数据
     this.dataInit();
-    //初始化字典
-    this.handleLoadDic();
   },
   mounted () {
     this.refreshTable(() => {

@@ -76,6 +76,9 @@ export default function () {
         window.onresize = () => {
           this.getIsMobile();
         };
+        this.handleLoadDic().then(() => {
+          this.forEachLabel && this.forEachLabel()
+        });
       },
       // 网络字典加载
       handleLoadDic () {
