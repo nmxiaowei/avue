@@ -110,6 +110,7 @@ export default cteate({
               type: getSearchType(ele),
               multiple: ele.searchMultiple,
               detail: false,
+              dicFlag: false,
               span: ele.searchSpan || option.searchSpan || this.config.searchSpan,
               gutter: ele.searchGutter || option.searchGutter || this.config.searchGutter,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
