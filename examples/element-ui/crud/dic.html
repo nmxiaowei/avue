@@ -24,7 +24,7 @@
 
 <body>
   <div id="app">
-    <avue-crud :data="data" :option="option"></avue-crud>
+    <avue-crud ref="crud" :data="data" :option="option"></avue-crud>
   </div>
 </body>
 <script>
@@ -38,7 +38,7 @@
             sex: '男',
             grade: 1,
             address: '110000',
-            cascader: [0, 1],
+            cascader: [3, 1],
             checkbox: [0, 1],
             tree: 0,
           }, {
@@ -46,7 +46,7 @@
             sex: '女',
             grade: 0,
             address: '120000',
-            cascader: [0, 2],
+            cascader: [3, 2],
             checkbox: [0, 1],
             tree: 1
           }
@@ -85,7 +85,7 @@
               type: 'cascader',
               dicData: [{
                 label: '一级',
-                value: 0,
+                value: 3,
                 children: [
                   {
                     label: '一级1',
@@ -145,6 +145,21 @@
           ]
         }
       }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.$refs.crud.updateDic('checkbox', [{
+          label: '有权限1',
+          value: 1
+        }, {
+          label: '无权限1',
+          value: 0
+        }, {
+          label: '禁止项1',
+          disabled: true,
+          value: -1
+        }])
+      }, 3000)
     }
   })
 </script>

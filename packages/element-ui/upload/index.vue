@@ -15,7 +15,7 @@
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
-               :on-change="handleChange"
+               :on-change="handleFileChange"
                :on-exceed="handleExceed"
                :disabled="disabled"
                :file-list="fileList">
@@ -229,7 +229,7 @@ export default create({
       if (typeof this.click === "function")
         this.click({ value: this.text, column: this.column });
     },
-    handleChange (file, fileList) {
+    handleFileChange (file, fileList) {
       fileList.splice(fileList.length - 1, 1);
       if (typeof this.change === "function")
         this.change({ value: this.text, column: this.column });
@@ -238,7 +238,7 @@ export default create({
       if (this.isArray || this.isString) {
         this.text.push(file[this.urlKey]);
       } else if (this.isPictureImg) {
-        this.text[0] = file[this.urlKey]
+        this.text.splice(0, 1, file[this.urlKey])
       } else {
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
@@ -246,13 +246,11 @@ export default create({
         this.text.push(obj);
       }
       this.$message.success("上传成功");
-      this.setVal();
     },
     handleRemove (file, fileList) {
       this.onRemove && this.onRemove(file, fileList);
       this.delete(file);
       this.$message.success("删除成功");
-      this.setVal();
     },
     handleError (error) {
       if (typeof this.uploadError === "function") {
@@ -393,18 +391,6 @@ export default create({
         done();
       }
     },
-    setVal () {
-      let result = "";
-      if (this.isString) {
-        result = this.text.join(",");
-      } else if (this.isPictureImg) {
-        result = this.text[0];
-      } else {
-        result = this.text;
-      }
-      this.$emit("input", result);
-      this.$emit("change", result);
-    },
     handleExceed (files, fileList) {
       this.$message.warning(
         `当前限制选择 ${this.limit} 个文件，本次选择了 ${
@@ -432,7 +418,6 @@ export default create({
     handleDelete (file) {
       this.beforeRemove(file).then(() => {
         this.text = [];
-        this.setVal();
       }).catch(() => {
       });
     },

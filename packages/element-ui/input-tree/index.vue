@@ -63,7 +63,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
-      node: {},
+      node: [],
       filterText: "",
       box: false,
       labelText: []
@@ -75,6 +75,14 @@ export default create({
     checked: Function,
     value: {},
     lazy: {
+      type: Boolean,
+      default: false
+    },
+    leafOnly: {
+      type: Boolean,
+      default: false
+    },
+    includeHalfChecked: {
       type: Boolean,
       default: false
     },
@@ -157,6 +165,13 @@ export default create({
       return this.multiple ? this.text : [this.text];
     },
     labelShow () {
+      if (this.typeformat) {
+        let list = [];
+        this.node.forEach(ele => {
+          list.push(this.getLabelText(ele))
+        })
+        return list.join(DIC_SPLIT).toString()
+      }
       return (this.labelText || []).join(DIC_SPLIT).toString()
     },
   },
@@ -181,9 +196,11 @@ export default create({
     },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
+      this.node = [];
       this.labelText = [];
       const list = this.$refs.tree.getCheckedNodes();
       list.forEach(node => {
+        this.node.push(node)
         this.text.push(node[this.valueKey]);
         this.labelText.push(node[this.labelKey]);
       });
@@ -196,15 +213,18 @@ export default create({
     init () {
       this.$nextTick(() => {
         this.labelText = [];
+        this.node = [];
         if (this.multiple) {
-          let list = this.$refs.tree.getCheckedNodes()
+          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked)
           list.forEach(ele => {
             this.labelText.push(ele[this.labelKey])
+            this.node.push(ele);
           })
         } else {
           let node = this.$refs.tree.getNode(this.text)
           if (node) {
             this.labelText.push(node.data[this.labelKey])
+            this.node.push(node.data);
           }
         }
       })
@@ -228,10 +248,6 @@ export default create({
       this.$refs.tree.setCheckedKeys([]);
     },
     handleNodeClick (data) {
-      const callback = () => {
-        this.node = data;
-        this.$refs.main.blur();
-      };
       if (data.disabled) return
       if (typeof this.nodeClick === "function") this.nodeClick(data);
       if (this.multiple) return;
@@ -243,10 +259,11 @@ export default create({
         const label = data[this.labelKey];
         const result = this.isString && this.multiple ? value.join(",") : value;
         this.text = value;
+        this.node = [data];
         this.labelText = [label];
+        this.$refs.main.blur();
         this.$emit("input", result);
         this.$emit("change", result);
-        callback();
       }
     },
     handleClick () {

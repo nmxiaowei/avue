@@ -29,6 +29,16 @@
              @node-click="nodeClick"
              @node-contextmenu="nodeContextmenu"
              :default-expand-all="defaultExpandAll">
+      <span slot-scope="{ node, data }"
+            v-if="$scopedSlots.default">
+        <slot :node="node"
+              :data="data"></slot>
+      </span>
+      <span class="el-tree-node__label"
+            slot-scope="{node}"
+            v-else>
+        <span>{{node.label}}</span>
+      </span>
     </el-tree>
     <div class="el-cascader-panel is-bordered"
          v-if="client.show&&menu"
@@ -67,7 +77,6 @@
 <script>
 import { DIC_PROPS } from 'global/variable';
 import locale from "../../core/common/locale";
-import { deepClone, vaildData } from "utils/util";
 import create from "core/create";
 export default create({
   name: "tree",
@@ -209,9 +218,6 @@ export default create({
         })()
       );
     }
-  },
-  created () {
-    this.vaildData = vaildData;
   },
   mounted () {
     document.addEventListener('click', (e) => {

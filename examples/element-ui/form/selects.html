@@ -59,6 +59,7 @@
               label: '城市',
               prop: 'city',
               type: 'select',
+              cascaderIndex: 1,
               props: {
                 label: 'name',
                 value: 'code'
@@ -83,6 +84,7 @@
                 label: 'name',
                 value: 'code'
               },
+              cascaderIndex: 1,
               dicUrl: `${baseUrl}/getArea/{{key}}`,
               rules: [
                 {
@@ -111,7 +113,7 @@
         checkbox: ['110000'],
         province: '220000',
         city: '220700',
-        area: '220702',
+        area: '220701',
         icon: 'el-icon-error',
       }
     },

@@ -2,11 +2,13 @@ import dayjs from 'dayjs';
 export default function () {
   return {
     methods: {
-      handleFocus () {
+      handleFocus (event) {
         typeof this.focus === 'function' && this.focus({ value: this.text, column: this.column })
+        this.$emit('focus', event)
       },
-      handleBlur () {
+      handleBlur (event) {
         typeof this.blur === 'function' && this.blur({ value: this.text, column: this.column })
+        this.$emit('blur', event)
       },
       getLabelText (item) {
         if (this.validatenull(item)) return ''
@@ -33,7 +35,10 @@ export default function () {
           }
         }
         this.text = result;
-        if ((this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader', 'img', 'array'].includes(this.type))) {
+        if (value && (this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader', 'img', 'array'].includes(this.type))) {
+          result = value.join(',')
+        }
+        if (this.listType === "picture-img") {
           result = value.join(',')
         }
         if (typeof this.change === 'function') {

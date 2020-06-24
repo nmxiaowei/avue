@@ -3,7 +3,6 @@
                v-model="text"
                :placeholder="placeholder"
                :props="allProps"
-               :readonly="readonly"
                :size="size"
                :emit-path="emitPath"
                :change-on-select="changeOnSelect"
@@ -13,8 +12,8 @@
                :filterable="filterable"
                :separator="separator"
                :disabled="disabled"
-               @click.native="handleClick"
-               @change="handleChange">
+               :collapse-tags="tags"
+               @click.native="handleClick">
     <template slot-scope="{ node, data }"
               v-if="typeslot">
       <slot :name="prop+'Type'"
@@ -40,6 +39,10 @@ export default create({
       type: Boolean,
       default: true
     },
+    tags: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: Array,
       default: () => []
@@ -56,9 +59,18 @@ export default create({
       type: Boolean,
       default: true
     },
+    lazy: {
+      type: Boolean,
+      default: false
+    },
+    lazyLoad: Function,
     filterable: {
       type: Boolean,
       default: false
+    },
+    expandTrigger: {
+      type: String,
+      default: 'click'
     },
     separator: {
       type: String,
@@ -71,10 +83,16 @@ export default create({
   watch: {},
   computed: {
     allProps () {
-      return Object.assign(this.props, {
+      return {
+        label: this.labelKey,
+        value: this.valueKey,
+        children: this.childrenKey,
         checkStrictly: this.checkStrictly,
-        multiple: this.multiple
-      })
+        multiple: this.multiple,
+        lazy: this.lazy,
+        lazyLoad: this.lazyLoad,
+        expandTrigger: this.expandTrigger
+      }
     }
   },
   created () { },

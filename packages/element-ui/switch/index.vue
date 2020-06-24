@@ -1,11 +1,15 @@
 <template>
   <el-switch v-model="text"
-             @change="handleChange"
              @click.native="handleClick"
              :active-text="active[labelKey]"
              :active-value="active[valueKey]"
              :inactive-value="inactive[valueKey]"
              :inactive-text="inactive[labelKey]"
+             :active-icon-class="activeIconClass"
+             :inactive-icon-class="inactiveIconClass"
+             :active-color="activeColor"
+             :inactive-color="inactiveColor"
+             :width="len"
              :disabled="disabled"
              :readonly="readonly"
              :size="size"></el-switch>
@@ -19,7 +23,12 @@ export default create({
   name: "switch",
   mixins: [props(), event()],
   props: {
-    value: {}
+    value: {},
+    activeIconClass: String,
+    inactiveIconClass: String,
+    activeColor: String,
+    inactiveColor: String,
+    len: Number
   },
   data () {
     return {};

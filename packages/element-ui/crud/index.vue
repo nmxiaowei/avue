@@ -31,7 +31,7 @@
     </header-search>
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
-                 v-if="vaildData(tableOption.header,true)">
+                 v-show="vaildData(tableOption.header,true)">
       <template slot="menuLeft">
         <slot name="menuLeft"></slot>
       </template>
@@ -67,6 +67,7 @@
               :highlight-current-row="tableOption.highlightCurrentRow"
               @current-change="currentRowChange"
               @expand-change="expandChange"
+              @header-dragend="headerDragend"
               :show-summary="tableOption.showSummary"
               :summary-method="tableSummaryMethod"
               :span-method="tableSpanMethod"
@@ -169,7 +170,7 @@
       </column>
       <el-table-column :class="b('btn')"
                        :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                       v-if="vaildData(tableOption.menu,config.menu)"
+                       v-if="vaildData(tableOption.menu,config.menu)&&getPermission('menu')"
                        :label="tableOption.menuTitle || t('crud.menu')"
                        :align="tableOption.menuAlign || config.menuAlign"
                        :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
@@ -360,8 +361,6 @@ export default create({
   created () {
     // 初始化数据
     this.dataInit();
-    //初始化字典
-    this.handleLoadDic();
   },
   mounted () {
     this.refreshTable(() => {
@@ -487,11 +486,13 @@ export default create({
       },
       deep: true
     },
-    data () {
-      this.dataInit();
-      //初始化级联字典
-      this.handleLoadCascaderDic();
-    }
+    data: {
+      handler () {
+        this.dataInit();
+        this.handleLoadCascaderDic()
+      },
+      deep: true
+    },
   },
   props: {
     sortBy: Function,
@@ -511,7 +512,12 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
-    permission: [Function, Object],
+    permission: {
+      type: [Function, Object],
+      default: () => {
+        return {};
+      }
+    },
     value: {
       type: Object,
       default: () => {
@@ -550,12 +556,12 @@ export default create({
   },
   methods: {
     getPermission (key, row, index) {
-      if (this.validatenull(this.permission)) {
-        return true;
-      } else if (typeof this.permission === "function") {
+      if (typeof this.permission === "function") {
         return this.permission(key, row, index)
-      } else {
+      } else if (!this.validatenull(this.permission[key])) {
         return this.permission[key]
+      } else {
+        return true;
       }
     },
     getTableHeight () {
@@ -684,6 +690,10 @@ export default create({
         }
         ele.$index = index;
       });
+    },
+    //拖动表头事件
+    headerDragend (newWidth, oldWidth, column, event) {
+      this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     //展开或则关闭
     expandChange (row, expand) {

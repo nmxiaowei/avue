@@ -33,12 +33,13 @@ export default function () {
       },
       listType: {
         type: String,
-        default: 'text'
       },
       value: {},
       column: {
         type: Object,
-        default: () => { }
+        default: () => {
+          return {}
+        }
       },
       typeslot: {
         type: Boolean,
@@ -143,11 +144,15 @@ export default function () {
       }
     },
     watch: {
-      value: {
+      text: {
         handler (val) {
+          this.handleChange(val)
+        }
+      },
+      value: {
+        handler () {
           this.initVal();
-        },
-        immediate: true
+        }
       }
     },
     computed: {
@@ -198,6 +203,9 @@ export default function () {
       idKey: function () {
         return this.props.id || this.propsDefault.id;
       }
+    },
+    created () {
+      this.initVal();
     },
     methods: {
       initVal () {
