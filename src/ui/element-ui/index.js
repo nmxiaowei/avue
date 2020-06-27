@@ -25,6 +25,7 @@ import Select from 'components/select';
 import Cascader from 'components/cascader';
 import InputNumber from 'components/input-number';
 import InputTree from 'components/input-tree';
+import InputTable from 'components/input-table';
 import Verifys from 'components/verify';
 import Switchs from 'components/switch';
 import Rate from 'components/rate';
@@ -79,6 +80,7 @@ export default [
   Cascader,
   InputNumber,
   InputTree,
+  InputTable,
   Switchs,
   Rate,
   Upload,
