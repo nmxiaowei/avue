@@ -1,22 +1,24 @@
 <template>
-  <el-select :class="b()"
-             :size="size"
-             :value="labelShow"
-             :clearable="disabled?false:clearable"
-             :placeholder="placeholder"
-             @focus="handleFocus"
-             @blur="handleBlur"
-             :disabled="disabled"
-             readonly>
-    <el-option :value="text">
-      <avue-crud :class="b('crud')"
-                 :option="option"
-                 :data="data"
-                 @on-load="onList"
-                 @current-row-change="handleCurrentRowChange"
-                 :page.sync="page"></avue-crud>
-    </el-option>
-  </el-select>
+  <el-popover v-model="show">
+    <el-input slot="reference"
+              :class="b()"
+              :size="size"
+              :value="labelShow"
+              :clearable="disabled?false:clearable"
+              :placeholder="placeholder"
+              @focus="handleFocus"
+              @blur="handleBlur"
+              @clear="handleClear"
+              :disabled="disabled"
+              readonly>
+    </el-input>
+    <avue-crud :class="b('crud')"
+               :option="option"
+               :data="data"
+               @on-load="onList"
+               @current-row-change="handleCurrentRowChange"
+               :page.sync="page"></avue-crud>
+  </el-popover>
 </template>
 
 <script>
@@ -30,6 +32,7 @@ export default create({
     return {
       active: {},
       page: {},
+      show: false,
       created: false,
       data: []
     };
@@ -52,7 +55,7 @@ export default create({
       if (typeof this.formatter == 'function') {
         return this.formatter(this.active)
       }
-      return this.active[this.labelKey]
+      return this.active[this.labelKey] || ''
     },
     option () {
       return Object.assign({
@@ -61,14 +64,18 @@ export default create({
         size: 'mini',
         headerAlign: 'center',
         align: 'center',
-      }, this.column.option)
+      }, this.column.children)
     }
   },
   methods: {
+    handleClear () {
+      this.handleCurrentRowChange({})
+    },
     handleCurrentRowChange (val) {
       this.active = val;
-      this.text = this.active[this.valueKey]
+      this.text = this.active[this.valueKey] || ''
       this.handleChange(this.text)
+      this.show = false;
     },
     onList (callback) {
       if (typeof this.onLoad == 'function') {

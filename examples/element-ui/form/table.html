@@ -37,7 +37,7 @@
               label: '表格',
               prop: 'table',
               type: 'table',
-              option: {
+              children: {
                 border: true,
                 column: [{
                   label: '姓名',
@@ -49,6 +49,9 @@
                 }],
               },
               formatter: (row) => {
+                if (!row.name) {
+                  return ''
+                }
                 return row.name + '-' + row.sex
               },
               onLoad: ({ page, value }, callback) => {
@@ -63,7 +66,7 @@
                   })
                 }
                 callback({
-                  total: 2,
+                  total: 40,
                   data: [{
                     id: '0',
                     name: '张三',
