@@ -172,6 +172,8 @@ export const getComponent = (type, component) => {
     result = 'icon-select';
   } else if (type === 'color') {
     result = 'color';
+  } else if (type === 'table') {
+    result = 'input-table';
   }
   return KEY_COMPONENT_NAME + result;
 };
