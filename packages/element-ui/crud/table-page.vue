@@ -90,17 +90,11 @@ export default create({
     },
     //下一页事件
     nextClick (val) {
-      this.crud.$emit("next-click", val, {
-        page: this.page.defaultPage,
-        search: this.crud.search
-      })
+      this.crud.$emit("next-click", val)
     },
     //上一页事件
     prevClick (val) {
-      this.crud.$emit("prev-click", val, {
-        page: this.page.defaultPage,
-        search: this.crud.search
-      })
+      this.crud.$emit("prev-click", val)
     },
     // 页大小回调
     sizeChange (val) {
@@ -108,19 +102,13 @@ export default create({
       this.defaultPage.pageSize = val;
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
-      this.crud.$emit("size-change", val, {
-        page: this.page.defaultPage,
-        search: this.crud.search
-      });
+      this.crud.$emit("size-change", val);
     },
     // 页码回调
     currentChange (val) {
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
-      this.crud.$emit("current-change", val, {
-        page: this.page.defaultPage,
-        search: this.crud.search
-      });
+      this.crud.$emit("current-change", val);
     }
   }
 });
