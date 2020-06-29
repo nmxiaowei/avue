@@ -21,6 +21,7 @@ export default function () {
     data () {
       return {
         DIC: {},
+        dicCreate: false,
         cascaderDIC: {},
         tableOption: {},
         isMobile: ''
@@ -70,10 +71,11 @@ export default function () {
       // 网络字典加载
       handleLoadDic () {
         return new Promise((resolve) => {
-          loadDic(this.resultOption).then((res = {}) => {
+          loadDic(this.resultOption, this.dicCreate).then((res = {}) => {
             Object.keys(res).forEach(ele => {
               this.$set(this.DIC, ele, res[ele])
             });
+            this.dicCreate = true;
             resolve();
           });
         })

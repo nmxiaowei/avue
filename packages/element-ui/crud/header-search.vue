@@ -196,7 +196,7 @@ export default cteate({
     },
     // 搜索清空
     searchReset () {
-      this.$refs.form.resetFields();
+      this.$refs.form.resetForm();
     },
     handleSearchShow () {
       this.searchShow = !this.searchShow;

@@ -42,6 +42,7 @@
                 column: [{
                   label: '姓名',
                   width: 120,
+                  search: true,
                   prop: 'name'
                 }, {
                   label: '性别',
@@ -54,7 +55,8 @@
                 }
                 return row.name + '-' + row.sex
               },
-              onLoad: ({ page, value }, callback) => {
+              onLoad: ({ page, value, data }, callback) => {
+                console.log(data);
                 if (value) {
                   callback({
                     total: 2,

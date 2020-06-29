@@ -16,6 +16,8 @@
                :option="option"
                :data="data"
                @on-load="onList"
+               @search-change="handleSearchChange"
+               @search-reset="handleSearchChange"
                @current-row-change="handleCurrentRowChange"
                :page.sync="page"></avue-crud>
   </el-popover>
@@ -76,6 +78,13 @@ export default create({
       this.text = this.active[this.valueKey] || ''
       this.handleChange(this.text)
       this.show = false;
+    },
+    handleSearchChange (form, done) {
+      this.onLoad({ page: this.page, data: form }, data => {
+        this.page.total = data.total;
+        this.data = data.data;
+      })
+      done && done()
     },
     onList (callback) {
       if (typeof this.onLoad == 'function') {

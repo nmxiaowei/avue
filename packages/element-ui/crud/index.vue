@@ -706,10 +706,7 @@ export default create({
     },
     //刷新事件
     refreshChange () {
-      this.$emit("refresh-change", {
-        page: this.page.defaultPage,
-        search: this.search
-      });
+      this.$emit("refresh-change");
     },
     // 选中实例
     toggleSelection (rows) {

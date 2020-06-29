@@ -75,6 +75,15 @@
             label: '日期',
             prop: 'datetime',
             type: 'datetime',
+            search: true,
+            rules: [
+              {
+                required: true,
+                message: '请选择省份',
+                trigger: 'blur'
+              }
+            ],
+            searchSpan: 12,
           }, {
             label: '测试',
             prop: 'test',

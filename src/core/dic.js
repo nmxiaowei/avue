@@ -54,16 +54,14 @@ export const loadCascaderDic = (columnOption, list) => {
   });
 };
 // 初始化方法
-export const loadDic = option => {
+export const loadDic = (option, flag) => {
   let locationdic = {}; // 本地字典
   let networkdic = {}; // 网络字典
   let ajaxdic = []; // 发送ajax的字典
   return new Promise((resolve, reject) => {
-    // 本地字典赋值
-    locationdic = option.dicData || {};
     const params = createdDic(option);
-    locationdic = Object.assign(locationdic, params.locationdic);
-    ajaxdic = params.ajaxdic;
+    locationdic = Object.assign(cacheDic(option), params.locationdic);
+    ajaxdic = flag ? [] : params.ajaxdic;
     if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
     if (!window.axios && !validatenull(ajaxdic)) {
       packages.logs('axios');
@@ -83,6 +81,17 @@ export const loadDic = option => {
   });
 };
 
+function cacheDic(option) {
+  let locationdic = {};
+  let alldic = option.dicData || {};
+  option.column.forEach(ele => {
+    let prop = ele.prop;
+    if (ele.dicFlag !== true && alldic[prop]) {
+      locationdic[prop] = alldic[prop];
+    }
+  });
+  return locationdic;
+}
 // 创建字典区分本地字典和网络字典
 function createdDic(option) {
   let column = option.column || [];
@@ -95,10 +104,10 @@ function createdDic(option) {
     let prop = ele.prop;
     let parentProp = ele.parentProp;
     flagdic = flagdic.concat(ele.cascaderItem || []);
-    if (ele.dicFlag === false || flagdic.includes(prop)) return;
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
+    if (ele.dicFlag === false || flagdic.includes(prop)) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
         url: dicUrl,
@@ -131,6 +140,8 @@ function handeDic(list) {
           })).then(res => {
             res = detailDic(res, ele.props, ele.dataType);
             resolve(res);
+          }).catch(() => {
+            resolve([]);
           });
         })
       );
