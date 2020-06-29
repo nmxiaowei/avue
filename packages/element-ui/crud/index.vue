@@ -1,7 +1,5 @@
 <template>
   <div :class="b()">
-    {{page}}
-    {{search}}
     <!-- 搜索组件 -->
     <header-search :search="search"
                    ref="headerSearch">
