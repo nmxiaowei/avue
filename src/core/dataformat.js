@@ -62,7 +62,7 @@ export const dateList = [
 export const initVal = ({ listType, type, multiple, dataType, value }) => {
   let list = value;
   if (
-    (['select', 'tree'].includes(type) && multiple) ||
+    (['select', 'tree', 'img', 'array'].includes(type) && multiple) ||
     ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
   ) {
     if (!Array.isArray(value)) {
