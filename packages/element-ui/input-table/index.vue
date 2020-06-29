@@ -60,17 +60,13 @@ export default create({
       return this.active[this.labelKey] || ''
     },
     option () {
-      let option = Object.assign({
+      return Object.assign({
         menu: false,
         header: false,
         size: 'mini',
         headerAlign: 'center',
         align: 'center',
       }, this.column.children)
-      option.column.forEach(ele => {
-        ele.searchSpan = 12
-      })
-      return option
     }
   },
   methods: {
