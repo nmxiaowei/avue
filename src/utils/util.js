@@ -339,14 +339,14 @@ export const getPasswordChar = (result = '', char) => {
 export const clearVal = (obj) => {
   if (!obj) return {};
   Object.keys(obj).forEach(ele => {
-    if (!validatenull(obj[ele])) {
-      if (Array.isArray(obj[ele])) {
-        obj[ele] = [];
-      } else if (typeof obj[ele] === 'object') {
-        obj[ele] = {};
-      } else {
-        obj[ele] = '';
-      }
+    if (Array.isArray(obj[ele])) {
+      obj[ele] = [];
+    } else if (obj[ele] !== null && typeof obj[ele] === 'object') {
+      obj[ele] = {};
+    } else if (['number', 'boolean'].includes(typeof obj[ele])) {
+      obj[ele] = undefined;
+    } else {
+      obj[ele] = '';
     }
   });
   return obj;
