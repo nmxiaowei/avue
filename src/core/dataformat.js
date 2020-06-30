@@ -63,7 +63,7 @@ export const initVal = ({ listType, type, multiple, dataType, value }) => {
   let list = value;
   if (
     (['select', 'tree', 'img', 'array'].includes(type) && multiple) ||
-    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
+    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array', 'map'].includes(type)
   ) {
     if (!Array.isArray(value)) {
       if (validatenull(value)) {
@@ -174,6 +174,8 @@ export const getComponent = (type, component) => {
     result = 'color';
   } else if (type === 'table') {
     result = 'input-table';
+  } else if (type === 'map') {
+    result = 'input-map';
   }
   return KEY_COMPONENT_NAME + result;
 };
