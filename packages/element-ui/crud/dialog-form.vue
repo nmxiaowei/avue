@@ -20,7 +20,7 @@
              :visible.sync="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
-             @close="closeDialog">
+             :before-close="beforeClose">
     <div slot="title"
          :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -35,7 +35,7 @@
                  ref="tableForm"
                  @submit="handleSubmit"
                  @error="handleError"
-                 @reset-change="handleReset"
+                 @reset-change="hide"
                  :upload-preview="crud.uploadPreview"
                  :upload-delete="crud.uploadDelete"
                  :upload-before="crud.uploadBefore"
@@ -241,9 +241,6 @@ export default create({
       }
 
     },
-    handleReset () {
-      this.closeDialog();
-    },
     handleError (error) {
       this.crud.$emit('error', error)
     },
@@ -325,11 +322,7 @@ export default create({
         }
       }
       if (row) callback();
-      this.crud.tableIndex = -1;
-      this.tableForm = {};
       this.hide();
-
-
     },
 
     updateDic (prop, list) {
@@ -344,9 +337,15 @@ export default create({
         this.$set(this.crud.DIC, prop, list);
       }
     },
+    beforeClose (done) {
+      this.hide(done);
+    },
     // 隐藏表单
-    hide () {
+    hide (done) {
       const callback = () => {
+        done && done();
+        this.crud.tableIndex = -1;
+        this.tableForm = {};
         this.crud.updateDic = this.updateDic;
         this.$nextTick(() => {
           this.boxVisible = false;
