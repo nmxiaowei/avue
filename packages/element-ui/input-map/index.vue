@@ -36,6 +36,7 @@
   </div>
 </template>
 <script>
+import packages from "core/packages";
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
@@ -175,6 +176,10 @@ export default create({
       });
     },
     init (callback) {
+      if (!window.AMap) {
+        packages.logs('Map')
+        return
+      }
       this.map = new window.AMap.Map("map__container", {
         zoom: 13,
         center: (() => {
@@ -188,6 +193,10 @@ export default create({
       callback();
     },
     initPoip () {
+      if (!window.AMapUI) {
+        packages.logs('MapUi')
+        return
+      }
       window.AMapUI.loadUI(["misc/PoiPicker"], PoiPicker => {
         var poiPicker = new PoiPicker({
           input: "map__input",
