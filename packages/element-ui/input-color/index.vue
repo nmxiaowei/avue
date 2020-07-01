@@ -22,7 +22,7 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 export default create({
-  name: "color",
+  name: "input-color",
   mixins: [props(), event()],
   props: {
     iconList: {
@@ -32,7 +32,7 @@ export default create({
       }
     }
   },
-  data() {
+  data () {
     return {
       predefineColors: [
         "#ff4500",

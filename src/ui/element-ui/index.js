@@ -6,7 +6,6 @@ import Carousel from 'components/carousel';
 import Crud from 'components/crud';
 import Card from 'components/card';
 import Code from 'components/code';
-import Color from 'components/color';
 import Chat from 'components/chat';
 import Comment from 'components/comment';
 import Form from 'components/form';
@@ -23,6 +22,7 @@ import Input from 'components/input';
 import Radio from 'components/radio';
 import Select from 'components/select';
 import Cascader from 'components/cascader';
+import InputColor from 'components/input-color';
 import InputNumber from 'components/input-number';
 import InputTree from 'components/input-tree';
 import InputMap from 'components/input-map';
@@ -60,7 +60,6 @@ export default [
   Carousel,
   Crud,
   Code,
-  Color,
   Card,
   Chat,
   Comment,
@@ -79,6 +78,7 @@ export default [
   Radio,
   Select,
   Cascader,
+  InputColor,
   InputNumber,
   InputTree,
   InputIcon,

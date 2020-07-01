@@ -171,7 +171,7 @@ export const getComponent = (type, component) => {
   } else if (type === 'icon') {
     result = 'input-icon';
   } else if (type === 'color') {
-    result = 'color';
+    result = 'input-color';
   } else if (type === 'table') {
     result = 'input-table';
   } else if (type === 'map') {
