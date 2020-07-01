@@ -1,19 +1,19 @@
 <template>
   <div :class="b()">
-    <el-input readonly
-              :size="size"
+    <el-input :size="size"
+              @clear="handleClear"
+              :clearable="disabled?false:clearable"
               :disabled="disabled"
+              ref="main"
               v-model="formattedAddress"
+              @focus="handleShow"
               :placeholder="placeholder">
-      <el-button @click="handleOpen"
-                 slot="append">{{title}}</el-button>
     </el-input>
 
     <el-dialog class="avue-dialog"
                width="80%"
                append-to-body
-               modal-append-to-body
-               :title="label"
+               :title="placeholder"
                @close="handleClose"
                :visible.sync="box">
       <div :class="b('content')"
@@ -52,6 +52,11 @@ export default create({
     };
   },
   watch: {
+    value (val) {
+      if (this.validatenull(val)) {
+        this.poi = {}
+      }
+    },
     formattedAddress () {
       this.address = this.formattedAddress;
     },
@@ -91,16 +96,23 @@ export default create({
       return this.poi.latitude
     },
     title () {
-      return this.disabled ? "查看坐标" : '选择坐标'
+      return this.disabled ? "查看" : '选择'
     }
   },
   methods: {
+    handleClear () {
+      this.text = [];
+      this.poi = {};
+      this.handleChange(this.text)
+    },
     setVal () {
       this.text = [this.poi.longitude, this.poi.latitude, this.poi.formattedAddress]
       this.handleChange(this.text)
     },
-    handleOpen () {
-      this.box = true
+    handleShow () {
+      this.$refs.main.blur();
+      if (this.disabled || this.readonly) return;
+      this.box = true;
     },
     //新增坐标
     addMarker (R, P) {

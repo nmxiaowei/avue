@@ -10,11 +10,11 @@
               @focus="handleShow">
       <template slot="append"><i :class="text"></i></template>
     </el-input>
-    <el-dialog :title="placeholder"
-               :modal-append-to-body="false"
+    <el-dialog class="avue-dialog"
+               :title="placeholder"
                append-to-body
                :visible.sync="box"
-               width="50%">
+               width="80%">
       <el-scrollbar style="height:400px;overflow-x:hidden">
         <avue-tabs :option="option"
                    @change="handleTabs"></avue-tabs>
@@ -37,7 +37,7 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 export default create({
-  name: "icon-select",
+  name: "input-icon",
   mixins: [props(), event()],
   props: {
     iconList: {

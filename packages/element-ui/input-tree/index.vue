@@ -9,8 +9,7 @@
              @change="handleChange"
              @focus="handleFocus"
              @blur="handleBlur"
-             :disabled="disabled"
-             :readonly="true">
+             :disabled="disabled">
     <div v-if="filter"
          style="padding:0 10px;margin:5px 0 0 0;">
       <el-input size="mini"

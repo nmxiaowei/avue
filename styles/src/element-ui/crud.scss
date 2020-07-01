@@ -42,7 +42,7 @@ $space-width: 15px;
       width: 20px;
       height: 20px;
     }
-    .avue-crud__icon-select{
+    .avue-crud__icon{
       font-size: 22px;
     }
   }
@@ -51,7 +51,7 @@ $space-width: 15px;
       width: 30px;
       height: 30px;
     }
-    .avue-crud__icon-select{
+    .avue-crud__icon{
       font-size: 22px;
     }
   }
@@ -138,7 +138,7 @@ $space-width: 15px;
     border-radius: 5px;
     display: block;
   }
-  &__icon-select{
+  &__icon{
     font-size: 28px;
   }
   &__sortable{

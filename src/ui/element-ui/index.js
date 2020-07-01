@@ -26,6 +26,7 @@ import Cascader from 'components/cascader';
 import InputNumber from 'components/input-number';
 import InputTree from 'components/input-tree';
 import InputMap from 'components/input-map';
+import InputIcon from 'components/input-icon';
 import InputTable from 'components/input-table';
 import Verifys from 'components/verify';
 import Switchs from 'components/switch';
@@ -41,7 +42,6 @@ import Skeleton from 'components/skeleton';
 import Tabs from 'components/tabs';
 import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
-import IconSelect from 'components/icon-select';
 import Video from 'components/video';
 import Login from 'components/login';
 import Arrays from 'components/array';
@@ -81,6 +81,7 @@ export default [
   Cascader,
   InputNumber,
   InputTree,
+  InputIcon,
   InputMap,
   InputTable,
   Switchs,
@@ -96,7 +97,6 @@ export default [
   Dynamic,
   Video,
   Verifys,
-  IconSelect,
   textEllipsis,
   Skeleton,
   Sign,

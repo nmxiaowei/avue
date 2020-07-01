@@ -62,7 +62,7 @@ export const dateList = [
 export const initVal = ({ listType, type, multiple, dataType, value }) => {
   let list = value;
   if (
-    (['select', 'tree', 'img', 'array'].includes(type) && multiple) ||
+    (['select', 'tree'].includes(type) && multiple) ||
     ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array', 'map'].includes(type)
   ) {
     if (!Array.isArray(value)) {
@@ -168,8 +168,8 @@ export const getComponent = (type, component) => {
     result = 'slider';
   } else if (type === 'dynamic') {
     result = 'dynamic';
-  } else if (type === 'icon-select') {
-    result = 'icon-select';
+  } else if (type === 'icon') {
+    result = 'input-icon';
   } else if (type === 'color') {
     result = 'color';
   } else if (type === 'table') {
@@ -233,7 +233,7 @@ export const getPlaceholder = function(column, type) {
       return label;
     }
   } else if (validatenull(placeholder)) {
-    if (['select', 'checkbox', 'radio', 'tree'].includes(column.type)) {
+    if (['select', 'checkbox', 'radio', 'cascader', 'tree', 'color', 'icon', 'table', 'map'].includes(column.type)) {
       return `${this.t('tip.select')} ${label}`;
     } else {
       return `${this.t('tip.input')} ${label}`;
