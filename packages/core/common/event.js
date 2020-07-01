@@ -36,8 +36,8 @@ export default function () {
           }
         }
         this.text = result;
-        if (value && (this.isString || this.isNumber || this.stringMode) && (this.multiple || ['checkbox', 'cascader', 'map', 'array', 'img'].includes(this.type))) {
-          result = value.join(',')
+        if (this.isString || this.isNumber || this.stringMode || this.multiple || ['checkbox', 'cascader', 'map', 'array', 'img'].includes(this.type)) {
+          if (Array.isArray(value)) result = value.join(',')
         }
         if (this.listType === "picture-img") {
           result = value.join(',')

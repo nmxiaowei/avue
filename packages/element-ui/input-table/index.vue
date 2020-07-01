@@ -54,10 +54,12 @@ export default create({
     },
     text (val) {
       if (this.create || this.validatenull(val)) return
-      this.onList(val => {
-        this.active = val
-        this.create = true;
-      });
+      if (typeof this.onLoad == 'function') {
+        this.onLoad({ value: this.text }, data => {
+          this.active = data
+          this.create = true;
+        })
+      }
     }
   },
   computed: {
@@ -104,13 +106,9 @@ export default create({
     },
     onList (callback) {
       if (typeof this.onLoad == 'function') {
-        this.onLoad({ page: this.page, value: this.text }, data => {
-          if (typeof callback == 'function') {
-            callback(data.data[0])
-          } else {
-            this.page.total = data.total;
-            this.data = data.data;
-          }
+        this.onLoad({ page: this.page }, data => {
+          this.page.total = data.total;
+          this.data = data.data;
         })
       }
     }

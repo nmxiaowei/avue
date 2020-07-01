@@ -273,7 +273,9 @@ export default create({
     dynamicOption () {
       let list = []
       this.propOption.forEach(ele => {
-        if (ele.type == 'dynamic') list.push(ele)
+        if (ele.type == 'dynamic' && this.vaildDisplay(ele)) {
+          list.push(ele)
+        }
       })
       return list
     },
