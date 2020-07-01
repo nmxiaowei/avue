@@ -5,6 +5,7 @@ export default function () {
   return {
     data () {
       return {
+        stringMode: false,
         name: '',
         text: undefined,
         propsHttpDefault: DIC_HTTP_PROPS,
@@ -214,7 +215,10 @@ export default function () {
           listType: this.listType,
           multiple: this.multiple,
           dataType: this.dataType,
-          value: this.value
+          value: this.value,
+          callback: () => {
+            this.stringMode = true;
+          }
         });
       }
     }
