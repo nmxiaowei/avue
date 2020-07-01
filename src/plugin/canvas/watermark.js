@@ -85,11 +85,15 @@ class waterMark {
   }
 
   Repaint(opt = {}) {
-    this.isOberserve = true;
+    this.remove();
     this.init(opt);
+    this.drawCanvas();
+  }
+
+  remove() {
+    this.isOberserve = true;
     let _wm = document.querySelector(`#${this.CONTAINERID}`);
     _wm.parentNode.removeChild(_wm);
-    this.drawCanvas();
   }
 }
 export default waterMark;
