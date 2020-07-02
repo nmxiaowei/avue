@@ -81,7 +81,7 @@ export const loadDic = (option, flag) => {
   });
 };
 
-function cacheDic(option) {
+function cacheDic (option) {
   let locationdic = {};
   let alldic = option.dicData || {};
   option.column.forEach(ele => {
@@ -93,7 +93,7 @@ function cacheDic(option) {
   return locationdic;
 }
 // 创建字典区分本地字典和网络字典
-function createdDic(option) {
+function createdDic (option) {
   let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
@@ -107,7 +107,7 @@ function createdDic(option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    if (ele.dicFlag === false || flagdic.includes(prop)) return;
+    if (ele.dicFlag === false || ele.remote === true || flagdic.includes(prop)) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
         url: dicUrl,
@@ -128,7 +128,7 @@ function createdDic(option) {
 }
 
 // 循环处理字典
-function handeDic(list) {
+function handeDic (list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -182,7 +182,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, query).then(function(res) {
+      window.axios.post(url, query).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -190,7 +190,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function(res) {
+      }).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
