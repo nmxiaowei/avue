@@ -54,14 +54,14 @@ export const loadCascaderDic = (columnOption, list) => {
   });
 };
 // 初始化方法
-export const loadDic = (option, flag) => {
+export const loadDic = (option, ) => {
   let locationdic = {}; // 本地字典
   let networkdic = {}; // 网络字典
   let ajaxdic = []; // 发送ajax的字典
   return new Promise((resolve, reject) => {
     const params = createdDic(option);
     locationdic = Object.assign(cacheDic(option), params.locationdic);
-    ajaxdic = flag ? [] : params.ajaxdic;
+    ajaxdic = params.ajaxdic;
     if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
     if (!window.axios && !validatenull(ajaxdic)) {
       packages.logs('axios');
