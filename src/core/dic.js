@@ -54,14 +54,14 @@ export const loadCascaderDic = (columnOption, list) => {
   });
 };
 // 初始化方法
-export const loadDic = (option, ) => {
+export const loadDic = (option, flag) => {
   let locationdic = {}; // 本地字典
   let networkdic = {}; // 网络字典
   let ajaxdic = []; // 发送ajax的字典
   return new Promise((resolve, reject) => {
     const params = createdDic(option);
     locationdic = Object.assign(cacheDic(option), params.locationdic);
-    ajaxdic = params.ajaxdic;
+    ajaxdic = flag ? [] : params.ajaxdic;
     if (validatenull(locationdic) && validatenull(ajaxdic)) resolve();
     if (!window.axios && !validatenull(ajaxdic)) {
       packages.logs('axios');
@@ -81,7 +81,7 @@ export const loadDic = (option, ) => {
   });
 };
 
-function cacheDic (option) {
+function cacheDic(option) {
   let locationdic = {};
   let alldic = option.dicData || {};
   option.column.forEach(ele => {
@@ -93,7 +93,7 @@ function cacheDic (option) {
   return locationdic;
 }
 // 创建字典区分本地字典和网络字典
-function createdDic (option) {
+function createdDic(option) {
   let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
@@ -128,7 +128,7 @@ function createdDic (option) {
 }
 
 // 循环处理字典
-function handeDic (list) {
+function handeDic(list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -182,7 +182,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, query).then(function (res) {
+      window.axios.post(url, query).then(function(res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -190,7 +190,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function (res) {
+      }).then(function(res) {
         callback(res);
       }).catch(() => [
         resolve([])
