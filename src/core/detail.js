@@ -1,5 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { getPasswordChar, findByValue } from 'utils/util';
+import { DIC_SPLIT } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
@@ -22,10 +23,12 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   if (['password'].includes(type)) {
     result = getPasswordChar(result, '*');
   }
-
+  if (['array', 'img'].includes(type) && Array.isArray(result)) {
+    result = result.join(column.separator || DIC_SPLIT);
+  }
   // 字典处理
   if (!validatenull(dic)) {
-    result = findByValue(dic, result, column.props || option.props, ['cascader', 'tree'].includes(column.type));
+    result = findByValue(dic, result, column.props || option.props, ['cascader', 'tree'].includes(column.type), column);
   }
   return result;
 };

@@ -65,23 +65,19 @@ export const initVal = ({ listType, type, multiple, dataType, value, callback })
     (['select', 'tree'].includes(type) && multiple) ||
     ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array', 'map'].includes(type)
   ) {
-    if (!Array.isArray(value)) {
-      if (validatenull(value)) {
+    if (!Array.isArray(list)) {
+      if (validatenull(list)) {
         list = [];
       } else {
-        value = value || '';
-        if (listType === 'picture-img') {
-          list = [value];
-        } else {
-          list = value.split(',') || [];
-          callback && callback();
-        }
+        list = list.split(',') || [];
+        callback && callback();
       }
     }
     // 数据转化
     list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
+    if (['array', 'img'].includes(type) && validatenull(list)) list = [''];
   }
   return list;
 };

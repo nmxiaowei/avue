@@ -25,7 +25,6 @@ export default function () {
         }
       },
       handleChange (value) {
-        if (['img', 'array'].includes(this.type)) return
         let result = value;
         if (this.$AVUE.ui.name == 'antd') {
           if (['date', 'time'].includes(this.type)) {
@@ -35,8 +34,7 @@ export default function () {
             result = value.target.value;
           }
         }
-        this.text = result;
-        if (this.isString || this.isNumber || this.stringMode || this.multiple || ['checkbox', 'cascader', 'map', 'array', 'img'].includes(this.type)) {
+        if (this.isString || this.isNumber || this.stringMode) {
           if (Array.isArray(value)) result = value.join(',')
         }
         if (this.listType === "picture-img") {

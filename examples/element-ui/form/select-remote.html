@@ -30,7 +30,7 @@
     data() {
       return {
         form: {
-          province: '110000',
+          province: ['110000', '130000', '120000', '140000'],
         },
         option: {
           column: [
@@ -39,6 +39,7 @@
               prop: 'province',
               type: 'select',
               remote: true,
+              multiple: true,
               props: {
                 label: 'name',
                 value: 'code'

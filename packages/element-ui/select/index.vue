@@ -113,8 +113,9 @@ export default create({
   watch: {
     value (val) {
       if (!this.validatenull(val)) {
-        if (this.remote) {
-          this.handleRemoteMethod(this.text)
+        if (this.remote && !this.created) {
+          this.created = true
+          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
         }
       }
     },
@@ -158,12 +159,7 @@ export default create({
         value: query,
       }).then(res => {
         this.loading = false;
-        if (!this.created) {
-          this.netDic = this.dic.concat(res);
-          this.created = true
-        } else {
-          this.netDic = res;
-        }
+        this.netDic = res;
       });
     }
   }

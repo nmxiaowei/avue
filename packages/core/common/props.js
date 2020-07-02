@@ -1,5 +1,5 @@
 import { initVal } from 'core/dataformat';
-import { DIC_PROPS, DIC_HTTP_PROPS } from 'global/variable';
+import { DIC_PROPS, DIC_SPLIT, DIC_HTTP_PROPS } from 'global/variable';
 export default function () {
 
   return {
@@ -21,6 +21,10 @@ export default function () {
       typeslot: {
         type: Boolean,
         default: false
+      },
+      separator: {
+        type: String,
+        default: DIC_SPLIT
       },
       formslot: {
         type: Boolean,

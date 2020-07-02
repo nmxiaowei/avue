@@ -84,9 +84,6 @@
                 <i class="avue-crud__color"
                    :style="{backgroundColor:scope.row[column.prop]}"></i>
               </span>
-              <span v-else-if="['array'].includes(column.type)">
-                {{detailData(scope.row[column.prop],column.dataType).join(' | ')}}
-              </span>
               <span v-else-if="['icon'].includes(column.type)">
                 <i class="avue-crud__icon"
                    :class="scope.row[column.prop]"></i>

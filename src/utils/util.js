@@ -2,13 +2,13 @@ import { validatenull } from './validate';
 import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
-export function hasOwn (obj, key) {
+export function hasOwn(obj, key) {
   return hasOwnProperty.call(obj, key);
 };
-export function getFixed (val = 0, len = 2) {
+export function getFixed(val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
-export function dataURLtoFile (dataurl, filename) {
+export function dataURLtoFile(dataurl, filename) {
   let arr = dataurl.split(',');
   let mime = arr[0].match(/:(.*?);/)[1];
   let bstr = atob(arr[1]);
@@ -22,7 +22,7 @@ export function dataURLtoFile (dataurl, filename) {
   });
 }
 
-export function findObject (list, value, key = 'prop') {
+export function findObject(list, value, key = 'prop') {
   let result = -1;
   let type = (() => {
     let result;
@@ -50,7 +50,7 @@ export function findObject (list, value, key = 'prop') {
 /**
  * 生成随机数
  */
-export function randomId () {
+export function randomId() {
   let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let maxPos = $chars.length;
   let id = '';
@@ -131,7 +131,7 @@ export const deepClone = data => {
  * 根据字段数组排序
  */
 export const sortArrys = (list, prop) => {
-  list.sort(function (a, b) {
+  list.sort(function(a, b) {
     if (a[prop] > b[prop]) {
       return -1;
     }
@@ -205,7 +205,7 @@ export const detailDic = (list = [], props = {}, type) => {
  * 根据字典的value显示label
  */
 
-export const findByValue = (dic, value, props, isTree) => {
+export const findByValue = (dic, value, props, isTree, column) => {
   // 如果为空直接返回
   if (validatenull(dic)) return value;
   let result = '';
@@ -220,7 +220,7 @@ export const findByValue = (dic, value, props, isTree) => {
         result.push(findArrayLabel(dic, dicvalue, props));
       }
     }
-    result = result.join(DIC_SPLIT).toString();
+    result = result.join(column.separator || DIC_SPLIT).toString();
 
   } else if (['string', 'number', 'boolean'].includes(typeof value)) {
     result = findLabelNode(dic, value, props) || value;
