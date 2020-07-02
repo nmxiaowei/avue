@@ -176,7 +176,7 @@
                        :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
                        :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
         <template slot-scope="scope">
-          <el-dropdown v-if="menuType==='menu'"
+          <el-dropdown v-if="isMenu"
                        :size="isMediumSize"
                        style="margin-right:9px;">
             <el-button type="primary"
@@ -210,34 +210,54 @@
                        :disabled="btnDisabledList[scope.$index]"
                        @click.stop="rowCell(scope.row,scope.$index)"
                        v-permission="getPermission('cellBtn',scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">{{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}</el-button>
+                       v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">
+              <template v-if="!isIconMenu">
+                {{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}
+              </template>
+            </el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.cancelBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabledList[scope.$index]"
-                       @click.stop="rowCanel(scope.row,scope.$index)"
-                       v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">{{menuIcon('cancelBtn')}}</el-button>
+                       @click.stop="rowCancel(scope.row,scope.$index)"
+                       v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">
+              <template v-if="!isIconMenu">
+                {{menuIcon('cancelBtn')}}
+              </template>
+            </el-button>
             <el-button :type="menuText('success')"
                        :icon="config.viewBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowView(scope.row,scope.$index)"
                        v-permission="getPermission('viewBtn',scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.viewBtn,config.viewBtn)">{{menuIcon('viewBtn')}}</el-button>
+                       v-if="vaildData(tableOption.viewBtn,config.viewBtn)">
+              <template v-if="!isIconMenu">
+                {{menuIcon('viewBtn')}}
+              </template>
+            </el-button>
             <el-button :type="menuText('primary')"
                        :icon="config.editBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowEdit(scope.row,scope.$index)"
                        v-permission="getPermission('editBtn',scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.editBtn,config.editBtn)">{{menuIcon('editBtn')}}</el-button>
+                       v-if="vaildData(tableOption.editBtn,config.editBtn)">
+              <template v-if="!isIconMenu">
+                {{menuIcon('editBtn')}}
+              </template>
+            </el-button>
             <el-button :type="menuText('danger')"
                        :icon="config.delBtnIcon"
                        :size="isMediumSize"
                        :disabled="btnDisabled"
                        @click.stop="rowDel(scope.row,scope.$index)"
                        v-permission="getPermission('delBtn',scope.row,scope.$index)"
-                       v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">{{menuIcon('delBtn')}}</el-button>
+                       v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">
+              <template v-if="!isIconMenu">
+                {{menuIcon('delBtn')}}
+              </template>
+            </el-button>
           </template>
           <slot name="menu"
                 :row="scope.row"
@@ -373,6 +393,15 @@ export default create({
     })
   },
   computed: {
+    isIconMenu () {
+      return this.menuType === "icon"
+    },
+    isTextMenu () {
+      return this.menuType === "text"
+    },
+    isMenu () {
+      return this.menuType === "menu"
+    },
     calcHeight () {
       return this.tableOption.calcHeight || 0
     },
@@ -587,6 +616,20 @@ export default create({
         callback && callback()
       })
     },
+    updateDic (prop, list) {
+      let column = this.findObject(this.propOption, prop);
+      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+        sendDic({
+          column: column
+        }).then(list => {
+          this.$set(this.DIC, prop, list);
+          column.dicData = list;
+        });
+      } else {
+        this.$set(this.DIC, prop, list);
+        column.dicData = list;
+      }
+    },
     //开启排序
     setSort () {
       const callback = () => {
@@ -651,10 +694,10 @@ export default create({
       return rowKey;
     },
     menuIcon (value) {
-      return this.menuType === "icon" ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
+      return this.isIconMenu ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
     },
     menuText (value) {
-      return this.menuType === "text" ? "text" : value;
+      return this.isTextMenu ? "text" : value;
     },
     selectClear () {
       this.$refs.table.clearSelection();
@@ -685,7 +728,7 @@ export default create({
       this.list = this.data;
       //初始化序列的参数
       this.list.forEach((ele, index) => {
-        if (ele.$cellEdit) {
+        if (ele.$cellEdit && !this.formCascaderList[index]) {
           this.formCascaderList[index] = this.deepClone(ele);
         }
         ele.$index = index;
@@ -801,7 +844,7 @@ export default create({
       this.setSort();
     },
     //行取消
-    rowCanel (row, index) {
+    rowCancel (row, index) {
       if (this.validatenull(row[this.rowKey])) {
         this.list.splice(index, 1);
         return;
@@ -809,6 +852,7 @@ export default create({
       this.formCascaderList[index].$cellEdit = false;
       //设置行数据
       this.$set(this.list, index, this.formCascaderList[index]);
+      delete this.formCascaderList[index]
       //设置级联字典
       this.$set(this.cascaderDIC, index, this.cascaderDicList[index]);
       this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
@@ -836,12 +880,14 @@ export default create({
             row,
             index,
             () => {
+              this.btnDisabledList[index] = false;
+              this.btnDisabled = false;
               row.$cellEdit = false;
               this.$set(this.list, index, row);
+              delete this.formCascaderList[index]
             },
             () => {
               this.btnDisabledList[index] = false;
-              this.btnDisabled = false
             }
           );
         })

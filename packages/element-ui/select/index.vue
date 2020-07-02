@@ -65,6 +65,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      created: false,
       netDic: [],
       loading: false,
     };
@@ -110,6 +111,14 @@ export default create({
     }
   },
   watch: {
+    value (val) {
+      if (!this.validatenull(val)) {
+        if (this.remote && !this.created) {
+          this.created = true
+          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+        }
+      }
+    },
     dic: {
       handler (val) {
         this.netDic = val;
@@ -121,9 +130,6 @@ export default create({
   mounted () {
     if (this.drag) {
       this.setSort()
-    }
-    if (this.remote) {
-      this.handleRemoteMethod(this.text)
     }
   },
   methods: {
@@ -153,7 +159,7 @@ export default create({
         value: query,
       }).then(res => {
         this.loading = false;
-        this.netDic = this.dic.concat(res);
+        this.netDic = res;
       });
     }
   }

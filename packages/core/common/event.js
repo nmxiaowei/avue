@@ -1,7 +1,21 @@
 import dayjs from 'dayjs';
+import { initVal } from 'core/dataformat';
 export default function () {
   return {
     methods: {
+      initVal () {
+        this.text = initVal({
+          type: this.type,
+          listType: this.listType,
+          multiple: this.multiple,
+          dataType: this.dataType,
+          value: this.value,
+          separator: this.separator,
+          callback: () => {
+            this.stringMode = true;
+          }
+        });
+      },
       handleFocus (event) {
         typeof this.focus === 'function' && this.focus({ value: this.text, column: this.column })
         this.$emit('focus', event)
@@ -25,7 +39,6 @@ export default function () {
         }
       },
       handleChange (value) {
-        if (['img', 'array'].includes(this.type)) return
         let result = value;
         if (this.$AVUE.ui.name == 'antd') {
           if (['date', 'time'].includes(this.type)) {
@@ -35,9 +48,8 @@ export default function () {
             result = value.target.value;
           }
         }
-        this.text = result;
-        if (value && (this.isString || this.isNumber) && (this.multiple || ['checkbox', 'cascader'].includes(this.type))) {
-          result = value.join(',')
+        if (this.isString || this.isNumber || this.stringMode) {
+          if (Array.isArray(value)) result = value.join(',')
         }
         if (this.listType === "picture-img") {
           result = value.join(',')

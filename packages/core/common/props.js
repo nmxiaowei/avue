@@ -1,10 +1,10 @@
-import { initVal } from 'core/dataformat';
-import { DIC_PROPS, DIC_HTTP_PROPS } from 'global/variable';
+import { DIC_PROPS, DIC_SPLIT, DIC_HTTP_PROPS } from 'global/variable';
 export default function () {
 
   return {
     data () {
       return {
+        stringMode: false,
         name: '',
         text: undefined,
         propsHttpDefault: DIC_HTTP_PROPS,
@@ -20,6 +20,10 @@ export default function () {
       typeslot: {
         type: Boolean,
         default: false
+      },
+      separator: {
+        type: String,
+        default: DIC_SPLIT
       },
       formslot: {
         type: Boolean,
@@ -206,17 +210,6 @@ export default function () {
     },
     created () {
       this.initVal();
-    },
-    methods: {
-      initVal () {
-        this.text = initVal({
-          type: this.type,
-          listType: this.listType,
-          multiple: this.multiple,
-          dataType: this.dataType,
-          value: this.value
-        });
-      }
     }
   };
 }

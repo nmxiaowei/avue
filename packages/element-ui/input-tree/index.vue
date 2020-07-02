@@ -9,8 +9,7 @@
              @change="handleChange"
              @focus="handleFocus"
              @blur="handleBlur"
-             :disabled="disabled"
-             :readonly="true">
+             :disabled="disabled">
     <div v-if="filter"
          style="padding:0 10px;margin:5px 0 0 0;">
       <el-input size="mini"
@@ -57,7 +56,6 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
-import { DIC_SPLIT } from 'global/variable';
 export default create({
   name: "input-tree",
   mixins: [props(), event()],
@@ -170,9 +168,9 @@ export default create({
         this.node.forEach(ele => {
           list.push(this.getLabelText(ele))
         })
-        return list.join(DIC_SPLIT).toString()
+        return list.join(this.separator).toString()
       }
-      return (this.labelText || []).join(DIC_SPLIT).toString()
+      return (this.labelText || []).join(this.separator).toString()
     },
   },
   mounted () {

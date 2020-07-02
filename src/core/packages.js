@@ -12,6 +12,16 @@ const list = {
     version: '4.2.1-rc1',
     github: 'https://github.com/apache/incubator-echarts'
   },
+  'Map': {
+    url: 'https://webapi.amap.com/maps?v=1.4.11&key=xxxxx&plugin=AMap.PlaceSearch,https://webapi.amap.com/ui/1.0/main.js?v=1.0.11',
+    title: '地图组件，需要引高德SDK',
+    version: '1.4.11'
+  },
+  'MapUi': {
+    url: 'https://webapi.amap.com/ui/1.0/main.js?v=1.0.11',
+    title: '地图组件，需要引高德UISDK',
+    version: '1.0.11'
+  },
   'Sortable': {
     url: 'https://cdn.staticfile.org/Sortable/1.10.0-rc2/Sortable.min.js',
     title: '表格拖拽，需要引sortableJs',

@@ -8,11 +8,13 @@
   <title></title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script
+    src="https://webapi.amap.com/maps?v=1.4.11&key=7ab53b28352e55dc5754699add0ad862&plugin=AMap.PlaceSearch"></script>
+  <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
   <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
   <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
   <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.13.0/theme-chalk/index.css" />
   <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
-
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -29,35 +31,24 @@
     data() {
       return {
         obj: {
-          checkbox: 'authorizedGrantTypes,password,refresh_token'
+          map: '113.12209610000252,41.03928506034977, 内蒙古自治区乌兰察布市集宁区前进路街道新体大街航天小区'
         },
-        data: [],
         option: {
-          column: [{
-            label: '多选',
-            prop: 'checkbox',
-            type: 'checkbox',
-            dicData: [{
-              label: '授权模式',
-              value: 'authorizedGrantTypes'
-            }, {
-              label: '密码模式',
-              value: 'password'
-            }, {
-              label: '刷新token模式',
-              value: 'refresh_token'
-            }, {
-              label: '其他',
-              value: 'default'
+          column: [
+            {
+              label: '地图',
+              prop: 'map',
+              type: 'map',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地图',
+                  trigger: 'change'
+                }
+              ]
             }]
-          }]
         }
       }
-    },
-    mounted() {
-
-    },
-    methods: {
     }
   })
 </script>

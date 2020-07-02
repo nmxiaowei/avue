@@ -6,26 +6,41 @@
                  :icon="config.addBtnIcon"
                  :size="crud.isMediumSize"
                  v-permission="crud.getPermission('addBtn')"
-                 v-if="vaildData(crud.tableOption.addBtn,config.addBtn)">{{crud.menuIcon('addBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.addBtn,config.addBtn)">
+        <template v-if="!crud.isIconMenu">
+          {{crud.menuIcon('addBtn')}}
+        </template>
+      </el-button>
       <el-button type="primary"
                  @click="crud.rowCellAdd"
                  :icon="config.addBtnIcon"
                  v-permission="crud.getPermission('addRowBtn')"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.addRowBtn,config.addRowBtn)">{{crud.menuIcon('addBtn')}}</el-button>
-
+                 v-if="vaildData(crud.tableOption.addRowBtn,config.addRowBtn)">
+        <template v-if="!crud.isIconMenu">
+          {{crud.menuIcon('addBtn')}}
+        </template>
+      </el-button>
       <el-button type="primary"
                  @click="rowPrint"
                  :icon="config.printBtnIcon"
                  v-permission="crud.getPermission('printBtn')"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.printBtn,config.printBtn)">{{crud.menuIcon('printBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.printBtn,config.printBtn)">
+        <template v-if="!crud.isIconMenu">
+          {{crud.menuIcon('printBtn')}}
+        </template>
+      </el-button>
       <el-button type="primary"
                  @click="rowExcel"
                  :icon="config.excelBtnIcon"
                  v-permission="crud.getPermission('excelBtn')"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.excelBtn,config.excelBtn)">{{crud.menuIcon('excelBtn')}}</el-button>
+                 v-if="vaildData(crud.tableOption.excelBtn,config.excelBtn)">
+        <template v-if="!crud.isIconMenu">
+          {{crud.menuIcon('excelBtn')}}
+        </template>
+      </el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div :class="b('right')">

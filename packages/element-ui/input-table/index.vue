@@ -1,26 +1,29 @@
 <template>
-  <el-popover v-model="show">
-    <el-input slot="reference"
-              :class="b()"
-              :size="size"
+  <div :class="b()">
+    <el-input :size="size"
               :value="labelShow"
               :clearable="disabled?false:clearable"
               :placeholder="placeholder"
-              @focus="handleFocus"
-              @blur="handleBlur"
+              ref="main"
               @clear="handleClear"
-              :disabled="disabled"
-              readonly>
+              @focus="handleShow"
+              :disabled="disabled">
     </el-input>
-    <avue-crud :class="b('crud')"
-               :option="option"
-               :data="data"
-               @on-load="onList"
-               @search-change="handleSearchChange"
-               @search-reset="handleSearchChange"
-               @current-row-change="handleCurrentRowChange"
-               :page.sync="page"></avue-crud>
-  </el-popover>
+    <el-dialog class="avue-dialog"
+               width="80%"
+               append-to-body
+               :title="placeholder"
+               :visible.sync="box">
+      <avue-crud :class="b('crud')"
+                 :option="option"
+                 :data="data"
+                 @on-load="onList"
+                 @search-change="handleSearchChange"
+                 @search-reset="handleSearchChange"
+                 @current-row-change="handleCurrentRowChange"
+                 :page.sync="page"></avue-crud>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -34,7 +37,7 @@ export default create({
     return {
       active: {},
       page: {},
-      show: false,
+      box: false,
       created: false,
       data: []
     };
@@ -44,15 +47,25 @@ export default create({
     onLoad: Function
   },
   watch: {
+    value (val) {
+      if (this.validatenull(val)) {
+        this.active = {}
+      }
+    },
     text (val) {
       if (this.create || this.validatenull(val)) return
-      this.onList(val => {
-        this.active = val
-        this.create = true;
-      });
+      if (typeof this.onLoad == 'function') {
+        this.onLoad({ value: this.text }, data => {
+          this.active = data
+          this.create = true;
+        })
+      }
     }
   },
   computed: {
+    title () {
+      return this.disabled ? "查看" : '选择'
+    },
     labelShow () {
       if (typeof this.formatter == 'function') {
         return this.formatter(this.active)
@@ -73,11 +86,16 @@ export default create({
     handleClear () {
       this.handleCurrentRowChange({})
     },
+    handleShow () {
+      this.$refs.main.blur();
+      if (this.disabled || this.readonly) return;
+      this.box = true;
+    },
     handleCurrentRowChange (val) {
       this.active = val;
       this.text = this.active[this.valueKey] || ''
       this.handleChange(this.text)
-      this.show = false;
+      this.box = false;
     },
     handleSearchChange (form, done) {
       this.onLoad({ page: this.page, data: form }, data => {
@@ -88,13 +106,9 @@ export default create({
     },
     onList (callback) {
       if (typeof this.onLoad == 'function') {
-        this.onLoad({ page: this.page, value: this.text }, data => {
-          if (typeof callback == 'function') {
-            callback(data.data[0])
-          } else {
-            this.page.total = data.total;
-            this.data = data.data;
-          }
+        this.onLoad({ page: this.page }, data => {
+          this.page.total = data.total;
+          this.data = data.data;
         })
       }
     }

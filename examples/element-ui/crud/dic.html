@@ -24,7 +24,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :data="data" :option="option"></avue-crud>
+    {{form}}
+    <avue-crud v-model="form" ref="crud" :data="data" :option="option"></avue-crud>
   </div>
 </body>
 <script>
@@ -32,6 +33,7 @@
     el: '#app',
     data() {
       return {
+        form: {},
         data: [
           {
             name: '张三',

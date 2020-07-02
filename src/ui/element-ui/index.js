@@ -6,7 +6,6 @@ import Carousel from 'components/carousel';
 import Crud from 'components/crud';
 import Card from 'components/card';
 import Code from 'components/code';
-import Color from 'components/color';
 import Chat from 'components/chat';
 import Comment from 'components/comment';
 import Form from 'components/form';
@@ -23,8 +22,11 @@ import Input from 'components/input';
 import Radio from 'components/radio';
 import Select from 'components/select';
 import Cascader from 'components/cascader';
+import InputColor from 'components/input-color';
 import InputNumber from 'components/input-number';
 import InputTree from 'components/input-tree';
+import InputMap from 'components/input-map';
+import InputIcon from 'components/input-icon';
 import InputTable from 'components/input-table';
 import Verifys from 'components/verify';
 import Switchs from 'components/switch';
@@ -40,7 +42,6 @@ import Skeleton from 'components/skeleton';
 import Tabs from 'components/tabs';
 import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
-import IconSelect from 'components/icon-select';
 import Video from 'components/video';
 import Login from 'components/login';
 import Arrays from 'components/array';
@@ -59,7 +60,6 @@ export default [
   Carousel,
   Crud,
   Code,
-  Color,
   Card,
   Chat,
   Comment,
@@ -78,8 +78,11 @@ export default [
   Radio,
   Select,
   Cascader,
+  InputColor,
   InputNumber,
   InputTree,
+  InputIcon,
+  InputMap,
   InputTable,
   Switchs,
   Rate,
@@ -94,7 +97,6 @@ export default [
   Dynamic,
   Video,
   Verifys,
-  IconSelect,
   textEllipsis,
   Skeleton,
   Sign,

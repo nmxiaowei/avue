@@ -1,0 +1,22 @@
+.avue-input-icon{
+  &__item{
+    text-align: center;
+    max-width: 80px;
+    padding: 20px;
+    transition: all .2s;
+    &:hover{
+      transform: scale(1.4);
+    }
+    &--active{
+      transform: scale(1.4);
+      color:#409EFF;
+    }
+  }
+  &__list{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__icon{
+    font-size: 32px !important;
+  }
+}

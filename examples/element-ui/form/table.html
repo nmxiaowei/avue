@@ -59,13 +59,11 @@
                 console.log(data);
                 if (value) {
                   callback({
-                    total: 2,
-                    data: [{
-                      id: '0',
-                      name: '张三',
-                      sex: '男'
-                    }]
+                    id: '0',
+                    name: '张三',
+                    sex: '男'
                   })
+                  return
                 }
                 callback({
                   total: 40,
@@ -88,7 +86,7 @@
                 {
                   required: true,
                   message: '请选择省份',
-                  trigger: 'blur'
+                  trigger: 'change'
                 }
               ]
             }]

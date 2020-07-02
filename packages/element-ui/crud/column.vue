@@ -69,17 +69,6 @@
                          :href="scope.row[column.prop]"
                          :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
               </span>
-              <span v-else-if="['color'].includes(column.type)">
-                <i class="avue-crud__color"
-                   :style="{backgroundColor:scope.row[column.prop]}"></i>
-              </span>
-              <span v-else-if="['array'].includes(column.type)">
-                {{detailData(scope.row[column.prop],column.dataType).join(' | ')}}
-              </span>
-              <span v-else-if="['icon-select'].includes(column.type)">
-                <i class="avue-crud__icon-select"
-                   :class="scope.row[column.prop]"></i>
-              </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
             </template>

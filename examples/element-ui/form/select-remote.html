@@ -19,45 +19,43 @@
 
 <body>
   <div id="app">
-    {{obj}}
-    <avue-form :option="option" v-model="obj"></avue-form>
+    {{form}}
+    <avue-form :option="option" v-model="form"></avue-form>
   </div>
 </body>
 <script>
+  let baseUrl = 'https://cli.avuejs.com/api/area'
   new Vue({
     el: '#app',
     data() {
       return {
-        obj: {
-          checkbox: 'authorizedGrantTypes,password,refresh_token'
+        form: {
+          province: ['110000', '130000', '120000', '140000'],
         },
-        data: [],
         option: {
-          column: [{
-            label: '多选',
-            prop: 'checkbox',
-            type: 'checkbox',
-            dicData: [{
-              label: '授权模式',
-              value: 'authorizedGrantTypes'
-            }, {
-              label: '密码模式',
-              value: 'password'
-            }, {
-              label: '刷新token模式',
-              value: 'refresh_token'
-            }, {
-              label: '其他',
-              value: 'default'
-            }]
-          }]
+          column: [
+            {
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              remote: true,
+              multiple: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicUrl: `${baseUrl}/getProvince?id={{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            }
+          ]
         }
       }
-    },
-    mounted() {
-
-    },
-    methods: {
     }
   })
 </script>

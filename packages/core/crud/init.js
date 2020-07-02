@@ -58,9 +58,6 @@ export default function () {
       init () {
         this.tableOption = this.option;
         this.getIsMobile();
-        window.onresize = () => {
-          this.getIsMobile();
-        };
         this.handleLoadDic().then(() => {
           this.forEachLabel && this.forEachLabel()
         });

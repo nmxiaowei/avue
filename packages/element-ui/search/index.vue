@@ -56,13 +56,13 @@ export default create({
     value: {
       handler () {
         this.setVal();
-        this.dataformat();
       },
       deep: true
     }
   },
   created () {
     this.dataformat();
+    this.setVal();
   },
   methods: {
     setVal () {

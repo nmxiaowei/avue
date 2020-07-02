@@ -59,29 +59,25 @@ export const dateList = [
 /**
  * 初始化数据格式
  */
-export const initVal = ({ listType, type, multiple, dataType, value }) => {
+export const initVal = ({ listType, type, multiple, dataType, value, callback, separator }) => {
   let list = value;
   if (
-    (['select', 'tree', 'img', 'array'].includes(type) && multiple) ||
-    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array'].includes(type)
+    (['select', 'tree'].includes(type) && multiple) ||
+    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array', 'map'].includes(type)
   ) {
-    if (!Array.isArray(value)) {
-      if (validatenull(value)) {
+    if (!Array.isArray(list)) {
+      if (validatenull(list)) {
         list = [];
       } else {
-        value = value || '';
-        if (listType === 'picture-img') {
-          list = [value];
-        } else {
-          list = value.split(',') || [];
-        }
-
+        list = list.split(separator || ',') || [];
+        callback && callback();
       }
     }
     // 数据转化
     list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
+    if (['array', 'img'].includes(type) && validatenull(list)) list = [''];
   }
   return list;
 };
@@ -168,12 +164,14 @@ export const getComponent = (type, component) => {
     result = 'slider';
   } else if (type === 'dynamic') {
     result = 'dynamic';
-  } else if (type === 'icon-select') {
-    result = 'icon-select';
+  } else if (type === 'icon') {
+    result = 'input-icon';
   } else if (type === 'color') {
-    result = 'color';
+    result = 'input-color';
   } else if (type === 'table') {
     result = 'input-table';
+  } else if (type === 'map') {
+    result = 'input-map';
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -231,7 +229,7 @@ export const getPlaceholder = function(column, type) {
       return label;
     }
   } else if (validatenull(placeholder)) {
-    if (['select', 'checkbox', 'radio', 'tree'].includes(column.type)) {
+    if (['select', 'checkbox', 'radio', 'cascader', 'tree', 'color', 'icon', 'table', 'map'].includes(column.type)) {
       return `${this.t('tip.select')} ${label}`;
     } else {
       return `${this.t('tip.input')} ${label}`;

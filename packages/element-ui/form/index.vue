@@ -273,7 +273,9 @@ export default create({
     dynamicOption () {
       let list = []
       this.propOption.forEach(ele => {
-        if (ele.type == 'dynamic') list.push(ele)
+        if (ele.type == 'dynamic' && this.vaildDisplay(ele)) {
+          list.push(ele)
+        }
       })
       return list
     },
@@ -407,18 +409,18 @@ export default create({
     getPropRef (prop) {
       return this.$refs[prop][0];
     },
-    updateDic (prop, list, callback) {
-      const column = this.findObject(this.propOption, prop);
+    updateDic (prop, list) {
+      let column = this.findObject(this.propOption, prop);
       if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
         sendDic({
           column: column
         }).then(list => {
           this.$set(this.DIC, prop, list);
-          callback(list);
+          column.dicData = list;
         });
       } else {
         this.$set(this.DIC, prop, list);
-        callback(list);
+        column.dicData = list;
       }
     },
     //初始化表单

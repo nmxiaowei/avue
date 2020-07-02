@@ -20,7 +20,7 @@
              :visible.sync="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
-             @close="closeDialog">
+             :before-close="beforeClose">
     <div slot="title"
          :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -35,7 +35,7 @@
                  ref="tableForm"
                  @submit="handleSubmit"
                  @error="handleError"
-                 @reset-change="handleReset"
+                 @reset-change="hide"
                  :upload-preview="crud.uploadPreview"
                  :upload-delete="crud.uploadDelete"
                  :upload-before="crud.uploadBefore"
@@ -221,9 +221,6 @@ export default create({
       }
     }
   },
-  created () {
-    this.crud.updateDic = this.updateDic;
-  },
   methods: {
     handleFullScreen () {
       if (this.isDrawer) {
@@ -240,9 +237,6 @@ export default create({
         }
       }
 
-    },
-    handleReset () {
-      this.closeDialog();
     },
     handleError (error) {
       this.crud.$emit('error', error)
@@ -325,29 +319,17 @@ export default create({
         }
       }
       if (row) callback();
-      this.crud.tableIndex = -1;
-      this.tableForm = {};
       this.hide();
-
-
     },
-
-    updateDic (prop, list) {
-      const column = this.findObject(this.crud.propOption, prop);
-      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-        sendDic({
-          column: column
-        }).then(list => {
-          this.$set(this.crud.DIC, prop, list);
-        });
-      } else {
-        this.$set(this.crud.DIC, prop, list);
-      }
+    beforeClose (done) {
+      this.hide(done);
     },
     // 隐藏表单
-    hide () {
+    hide (done) {
       const callback = () => {
-        this.crud.updateDic = this.updateDic;
+        done && done();
+        this.crud.tableIndex = -1;
+        this.tableForm = {};
         this.$nextTick(() => {
           this.boxVisible = false;
         });
@@ -365,11 +347,6 @@ export default create({
       const callback = () => {
         this.$nextTick(() => {
           this.boxVisible = true;
-          this.crud.updateDic = (prop, list) => {
-            this.$refs.tableForm.updateDic(prop, list, (res) => {
-              this.updateDic(prop, res)
-            })
-          }
         });
       };
       if (typeof this.crud.beforeOpen === "function") {
