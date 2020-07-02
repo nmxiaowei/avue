@@ -1,7 +1,21 @@
 import dayjs from 'dayjs';
+import { initVal } from 'core/dataformat';
 export default function () {
   return {
     methods: {
+      initVal () {
+        this.text = initVal({
+          type: this.type,
+          listType: this.listType,
+          multiple: this.multiple,
+          dataType: this.dataType,
+          value: this.value,
+          separator: this.separator,
+          callback: () => {
+            this.stringMode = true;
+          }
+        });
+      },
       handleFocus (event) {
         typeof this.focus === 'function' && this.focus({ value: this.text, column: this.column })
         this.$emit('focus', event)

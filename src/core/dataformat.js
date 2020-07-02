@@ -59,7 +59,7 @@ export const dateList = [
 /**
  * 初始化数据格式
  */
-export const initVal = ({ listType, type, multiple, dataType, value, callback }) => {
+export const initVal = ({ listType, type, multiple, dataType, value, callback, separator }) => {
   let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
@@ -69,7 +69,7 @@ export const initVal = ({ listType, type, multiple, dataType, value, callback })
       if (validatenull(list)) {
         list = [];
       } else {
-        list = list.split(',') || [];
+        list = list.split(separator || ',') || [];
         callback && callback();
       }
     }

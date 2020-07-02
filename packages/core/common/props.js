@@ -1,4 +1,3 @@
-import { initVal } from 'core/dataformat';
 import { DIC_PROPS, DIC_SPLIT, DIC_HTTP_PROPS } from 'global/variable';
 export default function () {
 
@@ -211,20 +210,6 @@ export default function () {
     },
     created () {
       this.initVal();
-    },
-    methods: {
-      initVal () {
-        this.text = initVal({
-          type: this.type,
-          listType: this.listType,
-          multiple: this.multiple,
-          dataType: this.dataType,
-          value: this.value,
-          callback: () => {
-            this.stringMode = true;
-          }
-        });
-      }
     }
   };
 }
