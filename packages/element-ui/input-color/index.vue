@@ -3,12 +3,15 @@
     <el-input :placeholder="placeholder"
               v-model="text"
               :size="size"
+              ref="main"
+              @focus="$refs.main.blur()"
               @change="handleChange"
               :clearable="disabled?false:clearable"
               :disabled="disabled">
       <template slot="append">
         <el-color-picker size="mini"
                          v-model="text"
+                         :disabled="disabled"
                          show-alpha
                          @change="handleChange"
                          :predefine="predefineColors"></el-color-picker>

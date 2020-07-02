@@ -8,7 +8,12 @@
               :disabled="disabled"
               @change="handleChange"
               @focus="handleShow">
-      <template slot="append"><i :class="text"></i></template>
+      <span slot="append"
+            @click="handleShow">
+        <i class="avue-crud__icon--small"
+           :class="text"></i>
+      </span>
+
     </el-input>
     <el-dialog class="avue-dialog"
                :title="placeholder"

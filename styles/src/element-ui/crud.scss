@@ -43,7 +43,7 @@ $space-width: 15px;
       height: 20px;
     }
     .avue-crud__icon{
-      font-size: 22px;
+      font-size: 25px;
     }
   }
   .el-table--small{
@@ -52,7 +52,7 @@ $space-width: 15px;
       height: 30px;
     }
     .avue-crud__icon{
-      font-size: 22px;
+      font-size: 35px;
     }
   }
   margin: 0 auto;
@@ -133,13 +133,17 @@ $space-width: 15px;
     background-color: #fafafa;
   }
   &__color{
+    margin: 0 auto;
     width: 40px;
     height: 40px;
     border-radius: 5px;
     display: block;
   }
   &__icon{
-    font-size: 28px;
+    font-size: 45px;
+    &--small{
+      font-size: 25px;
+    }
   }
   &__sortable{
     opacity: 0.2;
