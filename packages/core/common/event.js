@@ -47,11 +47,8 @@ export default function () {
             result = value.target.value;
           }
         }
-        if (this.isString || this.isNumber || this.stringMode) {
+        if (this.isString || this.isNumber || this.stringMode || this.listType === "picture-img") {
           if (Array.isArray(value)) result = value.join(',')
-        }
-        if (this.listType === "picture-img") {
-          result = value.join(',')
         }
         if (typeof this.change === 'function') {
           this.change({ value: result, column: this.column });
