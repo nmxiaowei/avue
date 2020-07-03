@@ -6,7 +6,6 @@ export default function () {
       initVal () {
         this.text = initVal({
           type: this.type,
-          listType: this.listType,
           multiple: this.multiple,
           dataType: this.dataType,
           value: this.value,
@@ -48,11 +47,8 @@ export default function () {
             result = value.target.value;
           }
         }
-        if (this.isString || this.isNumber || this.stringMode) {
+        if (this.isString || this.isNumber || this.stringMode || this.listType === "picture-img") {
           if (Array.isArray(value)) result = value.join(',')
-        }
-        if (this.listType === "picture-img") {
-          result = value.join(',')
         }
         if (typeof this.change === 'function') {
           this.change({ value: result, column: this.column });

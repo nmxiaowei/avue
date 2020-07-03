@@ -23,7 +23,7 @@ export default function () {
       },
       separator: {
         type: String,
-        default: DIC_SPLIT
+        default: ','
       },
       formslot: {
         type: Boolean,

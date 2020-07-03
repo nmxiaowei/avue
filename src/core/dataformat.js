@@ -59,7 +59,7 @@ export const dateList = [
 /**
  * 初始化数据格式
  */
-export const initVal = ({ listType, type, multiple, dataType, value, callback, separator }) => {
+export const initVal = ({ type, multiple, dataType, value, callback, separator = ',' }) => {
   let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||
@@ -69,7 +69,7 @@ export const initVal = ({ listType, type, multiple, dataType, value, callback, s
       if (validatenull(list)) {
         list = [];
       } else {
-        list = list.split(separator || ',') || [];
+        list = list.split(separator) || [];
         callback && callback();
       }
     }
@@ -218,7 +218,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
