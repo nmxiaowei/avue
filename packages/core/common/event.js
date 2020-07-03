@@ -6,7 +6,6 @@ export default function () {
       initVal () {
         this.text = initVal({
           type: this.type,
-          listType: this.listType,
           multiple: this.multiple,
           dataType: this.dataType,
           value: this.value,

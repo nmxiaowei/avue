@@ -201,7 +201,7 @@ export default create({
     },
     fileList () {
       let list = [];
-      const flag = this.isArray || this.isString;
+      const flag = this.isArray || this.isString || this.stringMode;
       (this.text || []).forEach((ele, index) => {
         if (ele) {
           let name;
@@ -235,7 +235,7 @@ export default create({
         this.change({ value: this.text, column: this.column });
     },
     handleSuccess (file) {
-      if (this.isArray || this.isString) {
+      if (this.isArray || this.isString || this.stringMode) {
         this.text.push(file[this.urlKey]);
       } else if (this.isPictureImg) {
         this.text.splice(0, 1, file[this.urlKey])
@@ -258,7 +258,7 @@ export default create({
       }
     },
     delete (file) {
-      if (this.isArray || this.isString) {
+      if (this.isArray || this.isString || this.stringMode) {
         (this.text || []).forEach((ele, index) => {
           if (ele === file.url) this.text.splice(index, 1);
         });
