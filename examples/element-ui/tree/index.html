@@ -97,11 +97,13 @@
         this.$message.success('删除回调')
         done();
       },
-      update(data, done, loading) {
+      update(parent, data, done, loading) {
+        console.log(parent);
         this.$message.success('更新回调')
         done();
       },
-      save(data, done, loading) {
+      save(parent, data, done, loading) {
+        console.log(parent);
         this.$message.success('新增回调')
         this.form.value = new Date().getTime();
         done();
