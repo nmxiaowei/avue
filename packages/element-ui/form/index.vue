@@ -555,43 +555,21 @@ export default create({
       })
     },
     validate (callback) {
-      this.$refs.form.validate(valid => callback(valid));
-    },
-    resetForm () {
-      this.resetFields();
-      this.clearValidate();
-      this.clearVal();
-      this.$emit("input", this.form);
-      this.$emit("reset-change");
-    },
-    clearVal () {
-      this.form = clearVal(this.form)
-    },
-    resetFields () {
-      this.$refs.form.resetFields();
-    },
-    show () {
-      this.allDisabled = true;
-    },
-    hide () {
-      this.allDisabled = false;
-    },
-    submit () {
-      this.validate(valid => {
-        let dynamicList = [];
-        let dynamicError = [];
+      this.$refs.form.validate(valid => {
         if (valid) {
-          const callback = () => {
+          let dynamicList = [];
+          let dynamicError = [];
+          const cb = () => {
             if (!this.validatenull(dynamicError)) {
-              this.$emit("error", dynamicError);
+              callback(false, dynamicError)
               return
             }
             this.show();
-            this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+            callback(true, this.hide)
           }
           this.asyncValidator(this.formRules, this.form).then(() => {
           }).catch(err => {
-            this.$emit("error", err.concat(dynamicError));
+            callback(false, err.concat(dynamicError))
           })
           this.dynamicOption.forEach(ele => {
             dynamicError.push({
@@ -616,8 +594,36 @@ export default create({
               }
               dynamicError[objKey[index]].children = err;
             })
-            callback();
+            cb();
           })
+        } else callback(valid)
+      });
+    },
+    resetForm () {
+      this.resetFields();
+      this.clearValidate();
+      this.clearVal();
+      this.$emit("input", this.form);
+      this.$emit("reset-change");
+    },
+    clearVal () {
+      this.form = clearVal(this.form)
+    },
+    resetFields () {
+      this.$refs.form.resetFields();
+    },
+    show () {
+      this.allDisabled = true;
+    },
+    hide () {
+      this.allDisabled = false;
+    },
+    submit () {
+      this.validate((valid, msg) => {
+        if (valid) {
+          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+        } else {
+          this.$emit("error", msg);
         }
       });
     }
