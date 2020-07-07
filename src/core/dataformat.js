@@ -65,13 +65,16 @@ export const initVal = ({ type, multiple, dataType, value, callback, separator =
     (['select', 'tree'].includes(type) && multiple) ||
     ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array', 'map'].includes(type)
   ) {
+
     if (!Array.isArray(list)) {
       if (validatenull(list)) {
         list = [];
       } else {
         list = list.split(separator) || [];
-        callback && callback();
+        callback && callback(true);
       }
+    } else {
+      callback && callback(false);
     }
     // 数据转化
     list.forEach((ele, index) => {
