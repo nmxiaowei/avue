@@ -16,4 +16,6 @@ export const DIC_HTTP_PROPS = {
   fileName: 'file',
   res: ''
 };
-export const DIC_SPLIT = ' | ';
+
+export const DIC_SHOW_SPLIT = ' | ';
+export const DIC_SPLIT = ',';

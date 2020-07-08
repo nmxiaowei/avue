@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
   let type = column.type;
+  let separator = column.separator || DIC_SPLIT;
   if (validatenull(result)) result = '';
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {
@@ -19,11 +20,12 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     }
   }
 
-  // 密码处理
-  if (['password'].includes(type)) {
+  if (['array', 'img'].includes(type) && Array.isArray(result)) {
+    result = result.join(separator);
+  } else if (['string', 'number'].includes(column.dataType) && !Array.isArray(result)) {
+    result = result.split(separator);
+  } else if (['password'].includes(type)) {
     result = getPasswordChar(result, '*');
-  } else if (['array', 'img'].includes(type) && Array.isArray(result)) {
-    result = result.join(column.separator || DIC_SPLIT);
   } else if (['color'].includes(type)) {
     result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
   } else if (['icon'].includes(type)) {

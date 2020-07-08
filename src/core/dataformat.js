@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { KEY_COMPONENT_NAME } from 'global/variable';
+import { KEY_COMPONENT_NAME, DIC_SPLIT } from 'global/variable';
 import { detailDataType, findObject } from 'utils/util';
 /**
  * 计算级联属性
@@ -59,7 +59,7 @@ export const dateList = [
 /**
  * 初始化数据格式
  */
-export const initVal = ({ type, multiple, dataType, value, callback, separator = ',' }) => {
+export const initVal = ({ type, multiple, dataType, value, callback, separator = DIC_SPLIT }) => {
   let list = value;
   if (
     (['select', 'tree'].includes(type) && multiple) ||

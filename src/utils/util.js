@@ -1,5 +1,5 @@
 import { validatenull } from './validate';
-import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
+import { DIC_PROPS, DIC_SHOW_SPLIT } from 'global/variable';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 export function hasOwn(obj, key) {
@@ -220,7 +220,7 @@ export const findByValue = (dic, value, props, isTree, column) => {
         result.push(findArrayLabel(dic, dicvalue, props));
       }
     }
-    result = result.join(column.separator || DIC_SPLIT).toString();
+    result = result.join(column.separator || DIC_SHOW_SPLIT).toString();
 
   } else if (['string', 'number', 'boolean'].includes(typeof value)) {
     result = findLabelNode(dic, value, props) || value;
