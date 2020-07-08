@@ -1,11 +1,11 @@
 import { validatenull } from 'utils/validate';
 import { getPasswordChar, findByValue } from 'utils/util';
-import { DIC_SPLIT } from 'global/variable';
+import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
   let type = column.type;
-  let separator = column.separator || DIC_SPLIT;
+  let separator = column.separator;
   if (validatenull(result)) result = '';
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {
@@ -14,16 +14,20 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
 
   if (!validatenull(result)) {
     // 日期处理
-    if (['date', 'time', 'datetime'].includes(type) && column.format) {
+    if (DATE_LIST.includes(type) && column.format) {
       const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
       result = dayjs(result).format(format);
     }
   }
 
-  if (['array', 'img'].includes(type) && Array.isArray(result)) {
-    result = result.join(separator);
+  if (['array'].includes(type)) {
+    if (Array.isArray(result)) {
+      result = result.join(separator || DIC_SHOW_SPLIT);
+    } else {
+      result = result.split(separator || DIC_SPLIT).join(separator || DIC_SHOW_SPLIT);
+    }
   } else if (['string', 'number'].includes(column.dataType) && !Array.isArray(result)) {
-    result = result.split(separator);
+    result = result.split(separator || DIC_SPLIT);
   } else if (['password'].includes(type)) {
     result = getPasswordChar(result, '*');
   } else if (['color'].includes(type)) {

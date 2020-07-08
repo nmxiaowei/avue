@@ -59,16 +59,18 @@
               <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
               <span v-else-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
-                  <img v-for="(item,index) in getImgList(scope,column) "
+                  <img v-for="(item,index) in getImgList(scope,column)"
                        :src="item"
                        :key="index"
                        @click="openImg(getImgList(scope,column),index)" />
                 </div>
               </span>
               <span v-else-if="['url'].includes(column.type)">
-                <el-link type="primary"
-                         :href="scope.row[column.prop]"
-                         :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
+                <el-link v-for="(item,index) in corArray(scope.row[column.prop],column.separator)"
+                         type="primary"
+                         :key="index"
+                         :href="item"
+                         :target="column.target || '_blank'">{{item}}</el-link>
               </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
@@ -84,7 +86,7 @@
 </template>
 
 <script>
-import { DIC_PROPS } from 'global/variable'
+import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
 import dynamicColumn from "./dynamic-column";
 import locale from "../../core/common/locale";
 import { sendDic } from "core/dic";
@@ -127,6 +129,12 @@ export default {
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(
         prop
       )
+    },
+    corArray (list, separator) {
+      if (!Array.isArray(list)) {
+        return list.split(separator || DIC_SPLIT);
+      }
+      return list
     },
     getImgList (scope, column) {
       let url = (column.propsHttp || {}).home || ''

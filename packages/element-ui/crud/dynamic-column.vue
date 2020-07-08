@@ -77,9 +77,11 @@
                 </div>
               </span>
               <span v-else-if="['url'].includes(column.type)">
-                <el-link type="primary"
-                         :href="scope.row[column.prop]"
-                         :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
+                <el-link v-for="(item,index) in corArray(scope.row[column.prop],column.separator)"
+                         type="primary"
+                         :key="index"
+                         :href="item"
+                         :target="column.target || '_blank'">{{item}}</el-link>
               </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
@@ -110,6 +112,7 @@ export default {
   },
   created () {
     const list = [
+      "corArray",
       "openImg",
       "detailData",
       "getComponent",

@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { KEY_COMPONENT_NAME, DIC_SPLIT } from 'global/variable';
+import { KEY_COMPONENT_NAME, DIC_SPLIT, ARRAY_LIST, DATE_LIST, INPUT_LIST, ARRAY_VALUE_LIST, MULTIPLE_LIST, SELECT_LIST } from 'global/variable';
 import { detailDataType, findObject } from 'utils/util';
 /**
  * 计算级联属性
@@ -39,31 +39,15 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
   }
   return ele;
 };
-/**
-* 日期控件集合
-*/
-export const dateList = [
-  'dates',
-  'date',
-  'datetime',
-  'datetimerange',
-  'daterange',
-  'time',
-  'timerange',
-  'week',
-  'month',
-  'monthrange',
-  'dategrpup',
-  'year'
-];
+
 /**
  * 初始化数据格式
  */
 export const initVal = ({ type, multiple, dataType, value, callback, separator = DIC_SPLIT }) => {
   let list = value;
   if (
-    (['select', 'tree'].includes(type) && multiple) ||
-    ['daterange', 'datetimerange', 'monthrange', 'datas', 'checkbox', 'cascader', 'dynamic', 'upload', 'img', 'array', 'map'].includes(type)
+    (MULTIPLE_LIST.includes(type) && multiple) ||
+    ARRAY_VALUE_LIST.includes(type)
   ) {
 
     if (!Array.isArray(list)) {
@@ -80,7 +64,7 @@ export const initVal = ({ type, multiple, dataType, value, callback, separator =
     list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
-    if (['array', 'img'].includes(type) && validatenull(list)) list = [''];
+    if (ARRAY_LIST.includes(type) && validatenull(list)) list = [''];
   }
   return list;
 };
@@ -88,93 +72,37 @@ export const initVal = ({ type, multiple, dataType, value, callback, separator =
 /**
  * 搜索框获取动态组件
  */
-export const getSearchType = (column, component = false) => {
+export const getSearchType = (column) => {
   const type = column.type;
   const range = column.searchRange;
-  let result = type || 'input';
-  if (['select', 'radio', 'checkbox', 'switch'].includes(type)) {
+  let result = type;
+  if (['radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
-  } else if (dateList.includes(type)) {
-    if (range) {
-      if (type === 'date') {
-        result = 'daterange';
-      } else if (type === 'datetime') {
-        result = 'datetimerange';
-      } else if (type === 'time') {
-        result = 'timerange';
-      } else {
-        result = type;
-      }
-    } else {
-      if (type === 'daterange') {
-        result = 'date';
-      } else if (type === 'datetimerange') {
-        result = 'datetime';
-      } else if (type === 'timerange') {
-        result = 'time';
-      } else {
-        result = type;
-      }
-    }
-  } else if (['cascader'].includes(type)) {
-    result = 'cascader';
-  } else if (['number'].includes(type)) {
-    result = 'input-number';
+  } else if (DATE_LIST.includes(type)) {
+    let rangeKey = 'range';
+    if (range) result = type + rangeKey;
+    else result = type.replace(rangeKey, '');
   } else if (['textarea'].includes(type)) {
     result = 'input';
   }
-  if (component) {
-    result = KEY_COMPONENT_NAME + result;
-  }
   return result;
-
 };
 
 /**
  * 动态获取组件
  */
 export const getComponent = (type, component) => {
-  let result = 'input';
+  let result = type || 'input';
   if (!validatenull(component)) {
     return component;
-  } else if (['img', 'array'].includes(type)) {
+  } else if (ARRAY_LIST.includes(type)) {
     result = 'array';
-  } else if (type === 'select') {
-    result = 'select';
-  } else if (type === 'radio') {
-    result = 'radio';
-  } else if (type === 'tree') {
-    result = 'input-tree';
-  } else if (type === 'checkbox') {
-    result = 'checkbox';
   } else if (['time', 'timerange'].includes(type)) {
     result = 'time';
-  } else if (dateList.includes(type)) {
+  } else if (DATE_LIST.includes(type)) {
     result = 'date';
-  } else if (type === 'cascader') {
-    result = 'cascader';
-  } else if (type === 'number') {
-    result = 'input-number';
-  } else if (type === 'password') {
-    result = 'input';
-  } else if (type === 'switch') {
-    result = 'switch';
-  } else if (type === 'rate') {
-    result = 'rate';
-  } else if (type === 'upload') {
-    result = 'upload';
-  } else if (type === 'slider') {
-    result = 'slider';
-  } else if (type === 'dynamic') {
-    result = 'dynamic';
-  } else if (type === 'icon') {
-    result = 'input-icon';
-  } else if (type === 'color') {
-    result = 'input-color';
-  } else if (type === 'table') {
-    result = 'input-table';
-  } else if (type === 'map') {
-    result = 'input-map';
+  } else if (INPUT_LIST.includes(type)) {
+    result = 'input-' + type;
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -187,20 +115,9 @@ export const formInitVal = (list = []) => {
   let tableForm = {};
   list.forEach(ele => {
     if (
-      ele.type === 'checkbox' ||
-      ele.type === 'cascader' ||
-      ele.type === 'dynamic' ||
-      ele.type === 'daterange' ||
-      ele.type === 'datetimerange' ||
-      ele.type === 'datas' ||
-      ele.type === 'img' ||
-      ele.type === 'array' ||
-      ele.type === 'dates' ||
-      (ele.type === 'tree' && ele.multiple) ||
-      (ele.type === 'select' && ele.multiple) ||
-      (ele.type === 'upload' && ele.listType !== 'picture-img') ||
-      ele.range ||
-      ele.dataType === 'array'
+      ARRAY_VALUE_LIST.includes(ele.type) ||
+      (MULTIPLE_LIST.includes(ele.type) && ele.multiple) ||
+      ele.range || ele.dataType === 'array'
     ) {
       tableForm[ele.prop] = [];
     } else if (
@@ -232,7 +149,7 @@ export const getPlaceholder = function(column, type) {
       return label;
     }
   } else if (validatenull(placeholder)) {
-    if (['select', 'checkbox', 'radio', 'cascader', 'tree', 'color', 'icon', 'table', 'map'].includes(column.type)) {
+    if (SELECT_LIST.includes(column.type)) {
       return `${this.t('tip.select')} ${label}`;
     } else {
       return `${this.t('tip.input')} ${label}`;

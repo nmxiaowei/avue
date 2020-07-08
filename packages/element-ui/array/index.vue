@@ -5,19 +5,23 @@
          :key="index">
       <div :class="b('input')">
         <el-tooltip placement="bottom"
-                    :disabled="!isImg || validatenull(item)">
+                    :disabled="(!isImg && !isUrl) || validatenull(item)">
           <div slot="content">
             <el-image style="width: 150px"
                       :src="item"
                       @click="openImg(index)"
                       fit="cover"
                       v-if="isImg"></el-image>
+            <el-link type="primary"
+                     :href="item"
+                     v-else-if="isUrl"
+                     :target="target">{{item}}</el-link>
           </div>
           <el-input v-model="text[index]"
                     :placeholder="placeholder"
                     :disabled="disabled"></el-input>
         </el-tooltip>
-        <template v-if="!(disabled ||readonly)">
+        <template v-if="!(disabled ||readonly || alone)">
           <el-button type="primary"
                      icon="el-icon-plus"
                      circle
@@ -48,15 +52,18 @@ export default create({
       text: []
     }
   },
+  computed: {
+    isImg () {
+      return this.type === 'img'
+    },
+    isUrl () {
+      return this.type === 'url'
+    },
+  },
   props: {
+    alone: Boolean,
     type: String,
     size: String,
-    isImg: {
-      type: Boolean,
-      default: function () {
-        return this.type === 'img'
-      }
-    },
     placeholder: String,
     readonly: Boolean,
     disabled: Boolean,

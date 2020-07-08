@@ -84,7 +84,6 @@ export default create({
       return this.children.column || []
     },
     option () {
-      console.log(this)
       return Object.assign({
         border: true,
         header: false,
