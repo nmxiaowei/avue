@@ -31,7 +31,7 @@
     </header-search>
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
-                 v-show="vaildData(tableOption.header,true)">
+                 v-if="vaildData(tableOption.header,true)">
       <template slot="menuLeft">
         <slot name="menuLeft"></slot>
       </template>
@@ -598,9 +598,9 @@ export default create({
         this.$nextTick(() => {
           const tableStyle = this.$el;
           const pageStyle = this.$refs.tablePage.$el;
-          const menuStyle = this.$refs.headerMenu.$el;
+          const menuStyle = this.$refs.headerMenu ? this.$refs.headerMenu.$el.offsetTop : 0;
           const searchStyle = this.$refs.headerSearch.$el;
-          this.tableHeight = config.clientHeight - menuStyle.offsetTop - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight
+          this.tableHeight = config.clientHeight - menuStyle - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
