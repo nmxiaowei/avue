@@ -109,10 +109,11 @@
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
                                :upload-error="uploadError"
-                               :readonly="readonly || column.readonly"
                                :disabled="getDisabled(column)"
-                               v-model="form[column.prop]"
+                               :readonly="readonly"
                                :enter="parentOption.enter"
+                               :size="parentOption.size"
+                               v-model="form[column.prop]"
                                @enter="submit"
                                @change="propChange(item.column,column)">
                       <template :slot="citem.prop"
