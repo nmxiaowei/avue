@@ -449,7 +449,7 @@ export default create({
     dynamicOption () {
       let list = [];
       this.propOption.forEach(ele => {
-        if (ele.prop === 'dynamic') {
+        if (ele.type === 'dynamic') {
           list = list.concat(ele.children.column.map(item => {
             return Object.assign(item, {
               dynamic: true
