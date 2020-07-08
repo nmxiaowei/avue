@@ -345,6 +345,10 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    reset: {
+      type: Boolean,
+      default: true
+    },
     value: {
       type: Object,
       required: true,
@@ -600,9 +604,11 @@ export default create({
       });
     },
     resetForm () {
-      this.resetFields();
       this.clearValidate();
-      this.clearVal();
+      if (this.reset) {
+        this.resetFields();
+        this.clearVal();
+      }
       this.$emit("input", this.form);
       this.$emit("reset-change");
     },

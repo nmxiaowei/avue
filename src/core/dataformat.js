@@ -70,7 +70,7 @@ export const initVal = ({ type, multiple, dataType, value, callback, separator =
       if (validatenull(list)) {
         list = [];
       } else {
-        list = list.split(separator) || [];
+        list = (list + '').split(separator) || [];
         callback && callback(true);
       }
     } else {
@@ -221,7 +221,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
