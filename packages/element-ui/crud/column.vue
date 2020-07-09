@@ -130,9 +130,11 @@ export default {
         prop
       )
     },
-    corArray (list, separator) {
-      if (!Array.isArray(list)) {
-        return list.split(separator || DIC_SPLIT);
+    corArray (list, separator = DIC_SPLIT) {
+      if (this.validatenull(list)) {
+        return []
+      } else if (!Array.isArray(list)) {
+        return list.split(separator);
       }
       return list
     },
@@ -142,22 +144,14 @@ export default {
       if (column.listType == 'picture-img') {
         return [url + scope.row[column.prop]]
       }
-      let list = this.detailData(this.deepClone(scope.row[column.prop]), column.dataType);
+      let list = this.corArray(this.deepClone(scope.row[column.prop]), column.separator);
       list.forEach((ele, index) => {
-        if (ele.constructor === Object) {
+        if (typeof ele === 'object') {
           list[index] = url + ele[value];
         } else {
           list[index] = url + ele;
         }
       })
-      return list;
-    },
-    detailData (list, dataType) {
-      if (this.validatenull(list)) {
-        return []
-      } else if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
-        return list.split(',')
-      }
       return list;
     },
     menuText (value) {
