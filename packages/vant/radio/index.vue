@@ -6,7 +6,7 @@
       <van-tag class="avue-cell__tags"
                plain
                v-for="(item,index) in dic"
-               :type="text===item[valueKey]?'primary':''"
+               :type="text===item[valueKey]?'primary':'default'"
                :key="index"
                @click.native="handleRadioClick(item[valueKey])">{{item[labelKey]}}</van-tag>
     </van-cell>
@@ -45,15 +45,15 @@ export default create({
       default: false
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
   computed: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleRadioClick(value) {
+    handleRadioClick (value) {
       if (this.disabled) return;
       this.text = value;
       this.handleClick();

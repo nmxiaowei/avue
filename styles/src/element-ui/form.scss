@@ -81,36 +81,3 @@
     padding: 0 20px;
   }
 }
-
-.avue-form__mobile {
-  padding-bottom: 20px;
-  background-color: #f0f0f0;
-  &-menu {
-    margin-top: 30px;
-    padding: 0 20px;
-  }
-  .van-cell {
-    padding: 10px 15px 10px 20px;
-  }
-  .van-cell--required::before {
-    top: 12px;
-  }
-  .van-cell:not(:last-child)::after {
-    display: none;
-  }
-
-  .van-cell-group {
-    background-color: transparent;
-  }
-  .van-switch {
-    display: block;
-    float: right;
-  }
-  .van-cell__title {
-    flex: 0.8;
-  }
-  .van-cell__value {
-    font-size: 13px;
-    color: #333;
-  }
-}
