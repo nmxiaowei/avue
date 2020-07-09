@@ -101,6 +101,8 @@ export const getComponent = (type, component) => {
     result = 'time';
   } else if (DATE_LIST.includes(type)) {
     result = 'date';
+  } else if (['password', 'textarea'].includes(type)) {
+    result = 'input';
   } else if (INPUT_LIST.includes(type)) {
     result = 'input-' + type;
   }
