@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { getPasswordChar, findByValue } from 'utils/util';
+import { getPasswordChar, findByValue, getAsVal } from 'utils/util';
 import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
@@ -34,6 +34,9 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
   } else if (['icon'].includes(type)) {
     result = `<i class="avue-crud__icon ${result}" ></i>`;
+  }
+  if (column.bind) {
+    result = getAsVal(row, column.bind);
   }
   // 字典处理
   if (!validatenull(dic)) {

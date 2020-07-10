@@ -177,7 +177,7 @@ import formTemp from '../../core/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams, clearVal } from 'utils/util'
+import { filterDefaultParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -196,6 +196,7 @@ export default create({
       optionBox: false,
       tableOption: {},
       itemSpanDefault: 12,
+      bindList: {},
       form: {},
       formList: [],
       formCreate: false,
@@ -234,7 +235,6 @@ export default create({
         } else {
           this.formVal = Object.assign(this.formVal, val || {});
         }
-
       },
       deep: true,
       immediate: true
@@ -440,8 +440,20 @@ export default create({
     },
     //表单赋值
     setForm (value) {
-      Object.keys(value).forEach(ele => {
-        this.$set(this.form, ele, value[ele]);
+      Object.keys(value).forEach((ele, index) => {
+        let result = value[ele];
+        this.$set(this.form, ele, result);
+        let column = this.propOption[index] || {};
+        let bind = column.bind
+        if (bind) {
+          if (!this.bindList[column.prop]) {
+            this.bindList[column.prop] = true;
+            result = getAsVal(value, bind)
+          } else {
+            setAsVal(this.form, bind, result);
+          }
+          this.$set(this.form, ele, result);
+        }
       });
       this.forEachLabel();
     },

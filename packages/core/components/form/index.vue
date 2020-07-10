@@ -5,7 +5,7 @@
              :column="Object.assign(column,params)"
              :dic="dic"
              ref="temp"
-             :disabled="column.disabled"
+             :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
              :placeholder="getPlaceholder(column)"
              :props="column.props || props"

@@ -271,6 +271,7 @@
 
     <!-- 分页 -->
     <table-page ref="tablePage"
+                v-if="vaildData(tableOption.page,true)"
                 :page="page"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
@@ -403,7 +404,7 @@ export default create({
       return this.menuType === "menu"
     },
     calcHeight () {
-      return this.tableOption.calcHeight || 0
+      return this.tableOption.calcHeight || 10
     },
     propOption () {
       let result = [];
@@ -596,11 +597,9 @@ export default create({
     getTableHeight () {
       if (this.tableOption.height == "auto") {
         this.$nextTick(() => {
-          const tableStyle = this.$el;
-          const pageStyle = this.$refs.tablePage.$el;
-          const menuStyle = this.$refs.headerMenu ? this.$refs.headerMenu.$el.offsetTop : 0;
-          const searchStyle = this.$refs.headerSearch.$el;
-          this.tableHeight = config.clientHeight - menuStyle - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight
+          const tableStyle = this.$refs.table.$el;
+          const pageStyle = this.$refs.tablePage ? this.$refs.tablePage.$el.offsetHeight : 0;
+          this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;

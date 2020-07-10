@@ -1,6 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME, DIC_SPLIT, ARRAY_LIST, DATE_LIST, INPUT_LIST, ARRAY_VALUE_LIST, MULTIPLE_LIST, SELECT_LIST } from 'global/variable';
-import { detailDataType, findObject } from 'utils/util';
+import { detailDataType, findObject, createObj } from 'utils/util';
 /**
  * 计算级联属性
  */
@@ -129,6 +129,9 @@ export const formInitVal = (list = []) => {
       tableForm[ele.prop] = undefined;
     } else {
       tableForm[ele.prop] = '';
+    }
+    if (ele.bind) {
+      tableForm = createObj(tableForm, ele.bind);
     }
     // 表单默认值设置
     if (!validatenull(ele.value)) {
