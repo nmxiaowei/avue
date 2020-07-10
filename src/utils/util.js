@@ -83,7 +83,7 @@ export function createObj(obj, bind) {
 }
 export function setAsVal(obj, bind = '', value) {
   if (!validatenull(value)) {
-    eval('obj.' + bind + '=' + value + '');
+    eval('obj.' + bind + '="' + value + '"');
   }
   return obj;
 }
