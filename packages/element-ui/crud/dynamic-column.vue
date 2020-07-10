@@ -63,10 +63,7 @@
                   :name="column.prop"
                   v-else-if="column.slot"></slot>
             <template v-else>
-              <span v-if="[undefined,'number'].includes(column.type)">
-                {{scope.row[column.prop]}}
-              </span>
-              <span v-else-if="column.parentProp"
+              <span v-if="column.parentProp"
                     v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
               <span v-else-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
@@ -84,7 +81,7 @@
                          :target="column.target || '_blank'">{{item}}</el-link>
               </span>
               <span v-else
-                    v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
+                    v-html="handleDetail(scope.row,column,crud.DIC[column.prop])">1</span>
             </template>
           </span>
         </el-table-column>
