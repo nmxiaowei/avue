@@ -56,6 +56,7 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import { DIC_SHOW_SPLIT } from 'global/variable';
 export default create({
   name: "input-tree",
   mixins: [props(), event()],
@@ -168,9 +169,9 @@ export default create({
         this.node.forEach(ele => {
           list.push(this.getLabelText(ele))
         })
-        return list.join(this.separator).toString()
+        return list.join(DIC_SHOW_SPLIT).toString()
       }
-      return (this.labelText || []).join(this.separator).toString()
+      return (this.labelText || []).join(DIC_SHOW_SPLIT).toString()
     },
   },
   mounted () {

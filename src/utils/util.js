@@ -17,7 +17,13 @@ export function getAsVal(obj, bind = '') {
   });
   return result;
 }
-function extend() {
+export function strCorNum(list) {
+  list.forEach((ele, index) => {
+    list[index] = Number(ele);
+  });
+  return list;
+}
+export function extend() {
   var target = arguments[0] || {};
   var deep = false;
   var arr = Array.prototype.slice.call(arguments);
@@ -293,7 +299,7 @@ export const findByValue = (dic, value, props, isTree, column) => {
         result.push(findArrayLabel(dic, dicvalue, props));
       }
     }
-    result = result.join(column.separator || DIC_SHOW_SPLIT).toString();
+    result = result.join(DIC_SHOW_SPLIT).toString();
 
   } else if (['string', 'number', 'boolean'].includes(typeof value)) {
     result = findLabelNode(dic, value, props) || value;

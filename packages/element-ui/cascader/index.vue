@@ -73,8 +73,7 @@ export default create({
       default: 'click'
     },
     separator: {
-      type: String,
-      default: "/"
+      type: String
     }
   },
   data () {

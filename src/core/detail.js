@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { getPasswordChar, findByValue, getAsVal } from 'utils/util';
+import { getPasswordChar, findByValue, getAsVal, strCorNum } from 'utils/util';
 import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
@@ -28,6 +28,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     }
   } else if (['string', 'number'].includes(column.dataType) && !Array.isArray(result)) {
     result = result.split(separator || DIC_SPLIT);
+    if (column.dataType === 'number') result = strCorNum(result);
   } else if (['password'].includes(type)) {
     result = getPasswordChar(result, '*');
   } else if (['color'].includes(type)) {
@@ -35,9 +36,8 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   } else if (['icon'].includes(type)) {
     result = `<i class="avue-crud__icon ${result}" ></i>`;
   }
-  if (column.bind) {
-    result = getAsVal(row, column.bind);
-  }
+  // 深结构绑定处理
+  if (column.bind) result = getAsVal(row, column.bind);
   // 字典处理
   if (!validatenull(dic)) {
     result = findByValue(dic, result, column.props || option.props, ['cascader', 'tree'].includes(column.type), column);
