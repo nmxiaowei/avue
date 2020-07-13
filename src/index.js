@@ -36,7 +36,8 @@ const install = function(Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
-  components.map(component => {
+  Object.keys(components).map(ele => {
+    let component = components[ele];
     Vue.component(component.name, component);
   });
   Object.keys(prototypes).forEach((key) => {
@@ -45,7 +46,7 @@ const install = function(Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.prototype.$axios = window.axios;
+  Vue.prototype.$axios = opts.axios || window.axios;
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
@@ -102,11 +103,11 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-const Avue = {
-  version: '2.6.1',
+const Avue = Object.assign({
+  version: '2.6.11',
   locale: locale.locale,
   install
-};
+}, components);
 
 module.exports = Avue;
 module.exports.default = module.exports;

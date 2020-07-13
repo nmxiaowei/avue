@@ -16,7 +16,7 @@ import packages from 'core/packages';
 if (!window.antd) {
   packages.logs('ant-design-vue');
 }
-export default [
+export default {
   Cascader,
   Crud,
   Slider,
@@ -31,5 +31,5 @@ export default [
   Switch,
   InputNumber,
   Input
-];
+};
 

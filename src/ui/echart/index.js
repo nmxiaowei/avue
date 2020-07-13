@@ -21,4 +21,4 @@ import Radar from 'packages/echart/radar';
 import Funnel from 'packages/echart/funnel';
 import Scatter from 'packages/echart/scatter';
 
-export default [Radar, Scatter, Funnel, Slide, Tabs, Video, WordCloud, PictorialBar, Maps, Img, ImgBorder, Bar, Gauge, Iframe, Swiper, Table, Pie, Text, Line, Flop, Datetime, Progress];
+export default { Radar, Scatter, Funnel, Slide, Tabs, Video, WordCloud, PictorialBar, Maps, Img, ImgBorder, Bar, Gauge, Iframe, Swiper, Table, Pie, Text, Line, Flop, Datetime, Progress };

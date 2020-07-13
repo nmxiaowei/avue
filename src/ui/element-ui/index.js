@@ -52,7 +52,7 @@ if (!window.Element) {
 }
 import AvueData from '../data/';
 import AvueEchart from '../echart/';
-export default [
+export default Object.assign(AvueData, AvueEchart, {
   Arrays,
   Affix,
   Avatar,
@@ -100,7 +100,5 @@ export default [
   textEllipsis,
   Skeleton,
   Sign,
-  Login,
-  ...AvueData,
-  ...AvueEchart
-];
+  Login
+});
