@@ -109,10 +109,11 @@
                                :upload-delete="uploadDelete"
                                :upload-preview="uploadPreview"
                                :upload-error="uploadError"
-                               :readonly="readonly || column.readonly"
                                :disabled="getDisabled(column)"
-                               v-model="form[column.prop]"
+                               :readonly="readonly"
                                :enter="parentOption.enter"
+                               :size="parentOption.size"
+                               v-model="form[column.prop]"
                                @enter="submit"
                                @change="propChange(item.column,column)">
                       <template :slot="citem.prop"
@@ -176,7 +177,7 @@ import formTemp from '../../core/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams, clearVal } from 'utils/util'
+import { filterDefaultParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -195,6 +196,7 @@ export default create({
       optionBox: false,
       tableOption: {},
       itemSpanDefault: 12,
+      bindList: {},
       form: {},
       formList: [],
       formCreate: false,
@@ -233,7 +235,6 @@ export default create({
         } else {
           this.formVal = Object.assign(this.formVal, val || {});
         }
-
       },
       deep: true,
       immediate: true
@@ -345,6 +346,10 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    reset: {
+      type: Boolean,
+      default: true
+    },
     value: {
       type: Object,
       required: true,
@@ -435,8 +440,23 @@ export default create({
     },
     //表单赋值
     setForm (value) {
-      Object.keys(value).forEach(ele => {
-        this.$set(this.form, ele, value[ele]);
+      Object.keys(value).forEach((ele, index) => {
+        let result = value[ele];
+        let column = this.propOption[index] || {};
+        let prop = column.prop
+        let bind = column.bind
+        if (bind && !this.bindList[prop]) {
+          this.$watch('form.' + prop, (n, o) => {
+            if (n != o) setAsVal(this.form, bind, n);
+          })
+          this.$watch('form.' + bind, (n, o) => {
+            if (n != o) this.$set(this.form, prop, n);
+          })
+          this.bindList[prop] = true;
+        } else {
+          this.$set(this.form, ele, result);
+        }
+
       });
       this.forEachLabel();
     },
@@ -555,43 +575,21 @@ export default create({
       })
     },
     validate (callback) {
-      this.$refs.form.validate(valid => callback(valid));
-    },
-    resetForm () {
-      this.resetFields();
-      this.clearValidate();
-      this.clearVal();
-      this.$emit("input", this.form);
-      this.$emit("reset-change");
-    },
-    clearVal () {
-      this.form = clearVal(this.form)
-    },
-    resetFields () {
-      this.$refs.form.resetFields();
-    },
-    show () {
-      this.allDisabled = true;
-    },
-    hide () {
-      this.allDisabled = false;
-    },
-    submit () {
-      this.validate(valid => {
-        let dynamicList = [];
-        let dynamicError = [];
+      this.$refs.form.validate(valid => {
         if (valid) {
-          const callback = () => {
+          let dynamicList = [];
+          let dynamicError = [];
+          const cb = () => {
             if (!this.validatenull(dynamicError)) {
-              this.$emit("error", dynamicError);
+              callback(false, dynamicError)
               return
             }
             this.show();
-            this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+            callback(true, this.hide)
           }
           this.asyncValidator(this.formRules, this.form).then(() => {
           }).catch(err => {
-            this.$emit("error", err.concat(dynamicError));
+            callback(false, err.concat(dynamicError))
           })
           this.dynamicOption.forEach(ele => {
             dynamicError.push({
@@ -616,8 +614,38 @@ export default create({
               }
               dynamicError[objKey[index]].children = err;
             })
-            callback();
+            cb();
           })
+        } else callback(valid)
+      });
+    },
+    resetForm () {
+      this.clearValidate();
+      if (this.reset) {
+        this.resetFields();
+        this.clearVal();
+      }
+      this.$emit("input", this.form);
+      this.$emit("reset-change");
+    },
+    clearVal () {
+      this.form = clearVal(this.form)
+    },
+    resetFields () {
+      this.$refs.form.resetFields();
+    },
+    show () {
+      this.allDisabled = true;
+    },
+    hide () {
+      this.allDisabled = false;
+    },
+    submit () {
+      this.validate((valid, msg) => {
+        if (valid) {
+          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+        } else {
+          this.$emit("error", msg);
         }
       });
     }

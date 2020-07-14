@@ -285,7 +285,7 @@ export default create({
         this.hide();
         done()
       };
-      this.$emit("save", Object.assign(this.node, data), callback, done);
+      this.$emit("save",this.node, data, callback, done);
     },
     update (data, done) {
       const callback = () => {
@@ -295,7 +295,7 @@ export default create({
         this.hide();
         done()
       };
-      this.$emit("update", Object.assign(this.node, data), callback, done);
+      this.$emit("update", this.node,data, callback, done);
     },
     rowEdit (a) {
       this.type = "edit";

@@ -64,7 +64,7 @@ export default create({
   },
   computed: {
     title () {
-      return this.disabled ? "查看" : '选择'
+      return (this.disabled || this.readonly) ? "查看" : '选择'
     },
     labelShow () {
       if (typeof this.formatter == 'function') {

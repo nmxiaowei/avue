@@ -42,12 +42,6 @@ export default create({
     }
   },
   props: {
-    readonly: {
-      type: Boolean,
-    },
-    disabled: {
-      type: Boolean,
-    },
     children: {
       type: Object,
       default: () => {
@@ -94,6 +88,7 @@ export default create({
         border: true,
         header: false,
         menu: false,
+        size: this.size,
         readonly: this.readonly,
         disabled: this.disabled
       }, (() => {

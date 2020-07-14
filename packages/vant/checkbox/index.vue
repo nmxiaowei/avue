@@ -6,7 +6,7 @@
       <van-tag class="avue-cell__tags"
                plain
                v-for="(item,index) in dic"
-               :type="text.includes(item[valueKey])?'primary':''"
+               :type="text.includes(item[valueKey])?'primary':'default'"
                :key="index"
                @click.native="handleCheckboxClick(index)">{{item[labelKey]}}</van-tag>
     </van-cell>
@@ -47,15 +47,15 @@ export default create({
       default: false
     }
   },
-  data() {
+  data () {
     return {};
   },
   watch: {},
   computed: {},
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    handleCheckboxClick(index) {
+    handleCheckboxClick (index) {
       this.$refs.checkbox[index].toggle();
       this.handleClick();
     }

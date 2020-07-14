@@ -58,7 +58,6 @@ export default create({
   watch: {
     value: {
       handler () {
-        this.initVal();
         this.init();
       },
       immediate: true
@@ -117,6 +116,9 @@ export default create({
         this.textIndex = this.columns.findIndex(
           ele => ele.text === this.textLabel
         );
+      } else {
+        this.textLabel = '';
+        this.textIndex = -1;
       }
     }
   }

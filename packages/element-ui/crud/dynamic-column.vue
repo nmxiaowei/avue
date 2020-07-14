@@ -45,6 +45,7 @@
                        :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
                        :t="t"
                        :props="column.props || crud.tableOption.props"
+                       :readonly="column.readonly"
                        :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
                        :upload-before="crud.uploadBefore"
@@ -62,10 +63,7 @@
                   :name="column.prop"
                   v-else-if="column.slot"></slot>
             <template v-else>
-              <span v-if="[undefined,'number'].includes(column.type)">
-                {{scope.row[column.prop]}}
-              </span>
-              <span v-else-if="column.parentProp"
+              <span v-if="column.parentProp"
                     v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
               <span v-else-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
@@ -76,12 +74,14 @@
                 </div>
               </span>
               <span v-else-if="['url'].includes(column.type)">
-                <el-link type="primary"
-                         :href="scope.row[column.prop]"
-                         :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
+                <el-link v-for="(item,index) in corArray(scope.row[column.prop],column.separator)"
+                         type="primary"
+                         :key="index"
+                         :href="item"
+                         :target="column.target || '_blank'">{{item}}</el-link>
               </span>
               <span v-else
-                    v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
+                    v-html="handleDetail(scope.row,column,crud.DIC[column.prop])">1</span>
             </template>
           </span>
         </el-table-column>
@@ -109,6 +109,7 @@ export default {
   },
   created () {
     const list = [
+      "corArray",
       "openImg",
       "detailData",
       "getComponent",

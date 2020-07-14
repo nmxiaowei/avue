@@ -14,10 +14,10 @@
                :label="label" />
     <van-popup v-model="box"
                position="bottom">
-      <van-datetime-picker ref="picker"
+      <van-datetime-picker v-model="date"
                            :title="label"
                            type="time"
-                           @cancel="handleCancel"
+                           @cancel="hide"
                            @confirm="handleConfirm" />
     </van-popup>
   </div>
@@ -37,91 +37,55 @@ export default create({
   mixins: [props(), event()],
   props: {
     valueFormat: {
-      default: function() {
+      default: function () {
         return formatDafault[this.type];
       }
     },
     format: {
-      default: function() {
+      default: function () {
         return formatDafault[this.type];
       }
     },
-    prefixIcon: {
-      type: String
-    },
-    suffixIcon: {
-      type: String
-    },
-    minRows: {
-      type: Number,
-      default: 3
-    },
-    maxRows: {
-      type: Number,
-      default: 4
-    }
   },
-  data() {
+  data () {
     return {
+      date: "",
       box: false,
       textLabel: ""
     };
   },
   watch: {
-    value: {
-      handler() {
-        this.initVal();
-        this.init();
+    text: {
+      handler (val) {
+        this.getLabelShow(val);
       },
       immediate: true
-    },
-    box() {
-      if (this.box) {
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.$refs.picker.$refs.picker.setValues(
-              getDateValues("2019-01-01 " + this.text, this.valueFormat)
-            );
-          }, 0);
-        });
-      }
-    },
-    text() {
-      this.handleChange(this.value);
     }
   },
-  computed: {},
-  created() {},
-  mounted() {},
   methods: {
-    init() {
-      this.handleSetLabel(this.text);
-    },
-    handleSetLabel(value) {
-      const date = new Date("2019-01-01 " + value);
-      if (!this.validatenull(date)) {
+    getLabelShow (val) {
+      let value = val || this.date
+      if (!this.validatenull(value)) {
+        const date = new Date("2020/02/02 " + value);
         this.textLabel = dayjs(date).format(this.format);
+        this.text = dayjs(date).format(this.valueFormat);
       }
     },
-    handleDateClick() {
+    handleDateClick () {
       this.show();
       this.handleClick();
     },
-    handleConfirm(value) {
-      const date = new Date("2019-01-01 " + value);
-      this.handleSetLabel(date);
-      this.text = dayjs(date).format(this.valueFormat);
-      this.handleChange(this.text);
+    handleConfirm (value) {
+      this.getLabelShow();
       this.hide();
     },
-    show() {
+    show () {
       this.box = true;
+      this.date = this.text;
     },
-    hide() {
+    hide () {
       this.box = false;
-    },
-    handleCancel() {
-      this.hide();
+      this.date = ''
     }
   }
 });

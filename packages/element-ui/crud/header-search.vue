@@ -4,6 +4,7 @@
          v-show="searchShow && searchFlag">
       <avue-form :option="option"
                  ref="form"
+                 v-if="flag"
                  @submit="searchChange"
                  @reset-change="resetChange"
                  v-model="searchForm">
@@ -55,6 +56,7 @@ export default cteate({
   mixins: [locale],
   data () {
     return {
+      flag: false,
       config: config,
       defaultForm: {
         searchForm: {}
@@ -163,7 +165,9 @@ export default cteate({
         })
         return result;
       }
-      return dataDetail(option)
+      let result = dataDetail(option)
+      this.flag = !this.validatenull(result.column);
+      return result;
     },
     searchSlot () {
       return !validatenull(this.$slots.search);

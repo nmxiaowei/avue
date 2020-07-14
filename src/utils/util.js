@@ -1,5 +1,5 @@
 import { validatenull } from './validate';
-import { DIC_PROPS, DIC_SPLIT } from 'global/variable';
+import { DIC_PROPS, DIC_SHOW_SPLIT } from 'global/variable';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 export function hasOwn(obj, key) {
@@ -7,6 +7,85 @@ export function hasOwn(obj, key) {
 };
 export function getFixed(val = 0, len = 2) {
   return Number(val.toFixed(len));
+}
+export function getAsVal(obj, bind = '') {
+  let result = deepClone(obj);
+  bind.split('.').forEach(ele => {
+    if (!validatenull(result)) {
+      result = result[ele];
+    }
+  });
+  return result;
+}
+export function strCorNum(list) {
+  list.forEach((ele, index) => {
+    list[index] = Number(ele);
+  });
+  return list;
+}
+export function extend() {
+  var target = arguments[0] || {};
+  var deep = false;
+  var arr = Array.prototype.slice.call(arguments);
+  var i = 1;
+  var options, src, key, copy;
+  var isArray = false;
+  if (typeof target === 'boolean') {
+    deep = target;
+    i++;
+    target = arguments[1];
+  }
+  for (; i < arr.length; i++) { // 循环传入的对象数组
+    if ((options = arr[i]) != null) { // 如果当前值不是null，如果是null不做处理
+      for (key in options) { // for in循环对象中key
+        copy = options[key];
+        src = target[key];
+        // 如果对象中value值任然是一个引用类型
+        if (deep && (toString.call(copy) === '[object Object]' || (isArray = toString.call(copy) == '[object Array]'))) {
+          if (isArray) { // 如果引用类型是数组
+            // 如果目标对象target存在当前key，且数据类型是数组，那就还原此值，如果不是就定义成一个空数组;
+            src = toString.call(src) === '[object Array]' ? src : [];
+          } else {
+            // 如果目标对象target存在当前key，且数据类型是对象，那就还原此值，如果不是就定义成一个空对象;
+            src = toString.call(src) === '[object Object]' ? src : {};
+          }
+          // 引用类型就再次调用extend，递归，直到此时copy是一个基本类型的值。
+          target[key] = extend(deep, src, copy);
+        } else if (copy !== undefined && copy !== src) { // 如果这个值是基本值类型，且不是undefined
+          target[key] = copy;
+        }
+      }
+    }
+  }
+  return target;
+}
+export function createObj(obj, bind) {
+  let list = bind.split('.');
+  let first = list.splice(0, 1)[0];
+  let deep = {};
+  deep[first] = {};
+  if (list.length >= 2) {
+    let start = '{';
+    let end = '}';
+    let result = '';
+    list.forEach(ele => {
+      result = `${result}${start}"${ele}":`;
+    });
+    result = `${result}""`;
+    for (let i = 0; i < list.length; i++) {
+      result = `${result}${end}`;
+    }
+    result = JSON.parse(result);
+    deep[first] = result;
+  }
+  obj = extend(true, obj, deep);
+  return obj;
+}
+export function setAsVal(obj, bind = '', value) {
+  if (!validatenull(value)) {
+    eval('obj.' + bind + '="' + value + '"');
+  }
+  return obj;
 }
 export function dataURLtoFile(dataurl, filename) {
   let arr = dataurl.split(',');
@@ -220,7 +299,7 @@ export const findByValue = (dic, value, props, isTree, column) => {
         result.push(findArrayLabel(dic, dicvalue, props));
       }
     }
-    result = result.join(column.separator || DIC_SPLIT).toString();
+    result = result.join(DIC_SHOW_SPLIT).toString();
 
   } else if (['string', 'number', 'boolean'].includes(typeof value)) {
     result = findLabelNode(dic, value, props) || value;

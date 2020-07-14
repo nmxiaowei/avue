@@ -12,17 +12,8 @@
   <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
 
   <!-- 引入vant组件 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@1.5.0-beta2/lib/index.css" />
-  <script src="https://cdn.jsdelivr.net/npm/vant@1.5.0-beta2/lib/vant.min.js"></script>
-
-  <!-- 引入ele组件 -->
-
-  <!-- <link
-      rel="stylesheet"
-      href="https://cdn.staticfile.org/element-ui/2.13.0/theme-chalk/index.css"
-    />
-    <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script> -->
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.9/lib/vant.min.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue-mobile.js"></script>
 </head>
@@ -34,21 +25,6 @@
 </body>
 <script>
   let baseUrl = 'https://cli.avuejs.com/api/area'
-  Vue.use(AVUE, {
-    ali: {
-      region: 'oss-cn-beijing',
-      endpoint: 'oss-cn-beijing.aliyuncs.com',
-      accessKeyId: 'DVVDfw5e3GK53rxt',
-      accessKeySecret: 'T3xEVl1BPOOmBSEfz8w0Qpp9lqmyHa',
-      bucket: 'avue',
-    },
-    qiniu: {
-      AK: 'BLEIUCkTJhUKfb7Yl4wa2X-5B6uecKNxoCd93IlG',
-      SK: '1_Falie5zL2BH7IBuZSZi1EJqm_5_G1-Gdjz-DS4',
-      scope: 'test',
-      url: 'http://pm7cc17lu.bkt.clouddn.com/',
-    }
-  })
   new Vue({
     el: '#app',
     data() {
@@ -57,53 +33,7 @@
           name: '11'
         },
         option: {
-          disabled: true,
           column: [
-            {
-              label: '七牛上传',
-              prop: 'imgUrl',
-              type: 'upload',
-              listType: 'picture-img',
-              propsHttp: {
-                name: 'hash',
-                url: "key"
-              },
-              oss: 'qiniu',
-              loadText: '附件上传中，请稍等',
-              span: 24,
-              tip: '只能上传jpg/png文件，且不超过500kb',
-            },
-            {
-              label: '阿里上传',
-              prop: 'imgUrl',
-              type: 'upload',
-              listType: 'picture-img',
-              canvasOption: {
-                text: 'avue',
-                ratio: 0.1
-              },
-              oss: 'ali',
-              loadText: '附件上传中，请稍等',
-              span: 24,
-              tip: '只能上传jpg/png文件，且不超过500kb',
-            },
-            {
-              label: '图片上传',
-              prop: 'img',
-              type: 'upload',
-              limit: 3,
-              row: true,
-              listType: 'picture-card',
-              dataType: 'array',
-              action: 'https://jsonplaceholder.typicode.com/posts/',
-              rules: [
-                {
-                  required: true,
-                  message: '请选择图片上传',
-                  trigger: 'blur'
-                }
-              ]
-            },
             {
               // prefixIcon: 'contact',
               // suffixIcon: 'question',
@@ -155,8 +85,6 @@
                 label: 'name',
                 value: 'code'
               },
-              defaultIndex: 1,
-              dicFlag: false,
               dicUrl: `${baseUrl}/getCity/{{key}}`,
               rules: [
                 {
@@ -174,10 +102,7 @@
                 label: 'name',
                 value: 'code'
               },
-              defaultIndex: 1,
-              dicFlag: false,
               dicUrl: `${baseUrl}/getArea/{{key}}`,
-              row: true,
               rules: [
                 {
                   required: true,

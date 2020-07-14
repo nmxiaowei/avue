@@ -20,7 +20,7 @@
              :visible.sync="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
-             :before-close="beforeClose">
+             :before-close="hide">
     <div slot="title"
          :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -35,6 +35,7 @@
                  ref="tableForm"
                  @submit="handleSubmit"
                  @error="handleError"
+                 :reset="false"
                  @reset-change="hide"
                  :upload-preview="crud.uploadPreview"
                  :upload-delete="crud.uploadDelete"
@@ -320,9 +321,6 @@ export default create({
       }
       if (row) callback();
       this.hide();
-    },
-    beforeClose (done) {
-      this.hide(done);
     },
     // 隐藏表单
     hide (done) {

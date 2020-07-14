@@ -31,7 +31,7 @@
     </header-search>
     <!-- 表格功能列 -->
     <header-menu ref="headerMenu"
-                 v-show="vaildData(tableOption.header,true)">
+                 v-if="vaildData(tableOption.header,true)">
       <template slot="menuLeft">
         <slot name="menuLeft"></slot>
       </template>
@@ -271,6 +271,7 @@
 
     <!-- 分页 -->
     <table-page ref="tablePage"
+                v-if="vaildData(tableOption.page,true)"
                 :page="page"></table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
@@ -403,7 +404,7 @@ export default create({
       return this.menuType === "menu"
     },
     calcHeight () {
-      return this.tableOption.calcHeight || 0
+      return this.tableOption.calcHeight || 10
     },
     propOption () {
       let result = [];
@@ -449,7 +450,7 @@ export default create({
     dynamicOption () {
       let list = [];
       this.propOption.forEach(ele => {
-        if (ele.prop === 'dynamic') {
+        if (ele.type === 'dynamic') {
           list = list.concat(ele.children.column.map(item => {
             return Object.assign(item, {
               dynamic: true
@@ -596,11 +597,9 @@ export default create({
     getTableHeight () {
       if (this.tableOption.height == "auto") {
         this.$nextTick(() => {
-          const tableStyle = this.$el;
-          const pageStyle = this.$refs.tablePage.$el;
-          const menuStyle = this.$refs.headerMenu.$el;
-          const searchStyle = this.$refs.headerSearch.$el;
-          this.tableHeight = config.clientHeight - menuStyle.offsetTop - searchStyle.offsetTop - tableStyle.offsetTop - pageStyle.offsetHeight - this.calcHeight
+          const tableStyle = this.$refs.table.$el;
+          const pageStyle = this.$refs.tablePage ? this.$refs.tablePage.$el.offsetHeight : 0;
+          this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;

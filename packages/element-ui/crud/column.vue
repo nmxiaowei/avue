@@ -38,6 +38,7 @@
                        :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
                        :t="t"
                        :props="column.props || crud.tableOption.props"
+                       :readonly="column.readonly"
                        :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
                        :upload-before="crud.uploadBefore"
@@ -58,16 +59,18 @@
               <span v-if="column.parentProp">{{handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])}}</span>
               <span v-else-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
-                  <img v-for="(item,index) in getImgList(scope,column) "
+                  <img v-for="(item,index) in getImgList(scope,column)"
                        :src="item"
                        :key="index"
                        @click="openImg(getImgList(scope,column),index)" />
                 </div>
               </span>
               <span v-else-if="['url'].includes(column.type)">
-                <el-link type="primary"
-                         :href="scope.row[column.prop]"
-                         :target="column.target || '_blank'">{{scope.row[column.prop]}}</el-link>
+                <el-link v-for="(item,index) in corArray(scope.row[column.prop],column.separator)"
+                         type="primary"
+                         :key="index"
+                         :href="item"
+                         :target="column.target || '_blank'">{{item}}</el-link>
               </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
@@ -83,7 +86,7 @@
 </template>
 
 <script>
-import { DIC_PROPS } from 'global/variable'
+import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
 import dynamicColumn from "./dynamic-column";
 import locale from "../../core/common/locale";
 import { sendDic } from "core/dic";
@@ -127,28 +130,28 @@ export default {
         prop
       )
     },
+    corArray (list, separator = DIC_SPLIT) {
+      if (this.validatenull(list)) {
+        return []
+      } else if (!Array.isArray(list)) {
+        return list.split(separator);
+      }
+      return list
+    },
     getImgList (scope, column) {
       let url = (column.propsHttp || {}).home || ''
       let value = (column.props || {}).value || DIC_PROPS.value;
       if (column.listType == 'picture-img') {
         return [url + scope.row[column.prop]]
       }
-      let list = this.detailData(this.deepClone(scope.row[column.prop]), column.dataType);
+      let list = this.corArray(this.deepClone(scope.row[column.prop]), column.separator);
       list.forEach((ele, index) => {
-        if (ele.constructor === Object) {
+        if (typeof ele === 'object') {
           list[index] = url + ele[value];
         } else {
           list[index] = url + ele;
         }
       })
-      return list;
-    },
-    detailData (list, dataType) {
-      if (this.validatenull(list)) {
-        return []
-      } else if (!Array.isArray(list) && ['string', 'number'].includes(dataType)) {
-        return list.split(',')
-      }
       return list;
     },
     menuText (value) {

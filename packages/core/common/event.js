@@ -10,8 +10,8 @@ export default function () {
           dataType: this.dataType,
           value: this.value,
           separator: this.separator,
-          callback: () => {
-            this.stringMode = true;
+          callback: (result) => {
+            this.stringMode = result;
           }
         });
       },

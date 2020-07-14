@@ -62,7 +62,13 @@ export default create({
       default: ""
     }
   },
-  watch: {},
+  watch: {
+    text () {
+      if (Array.isArray(this.text) && this.validatenull(this.text)) {
+        this.text = this.text.join(',')
+      }
+    }
+  },
   created () { },
   mounted () { },
   computed: {
