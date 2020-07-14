@@ -27,7 +27,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       result = result.split(separator || DIC_SPLIT).join(separator || DIC_SHOW_SPLIT);
     }
   } else if (['string', 'number'].includes(column.dataType) && !Array.isArray(result)) {
-    result = result.split(separator || DIC_SPLIT);
+    result = (result + '').split(separator || DIC_SPLIT);
     if (column.dataType === 'number') result = strCorNum(result);
   } else if (['password'].includes(type)) {
     result = getPasswordChar(result, '*');
