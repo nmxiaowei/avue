@@ -442,18 +442,21 @@ export default create({
     setForm (value) {
       Object.keys(value).forEach((ele, index) => {
         let result = value[ele];
-        this.$set(this.form, ele, result);
         let column = this.propOption[index] || {};
+        let prop = column.prop
         let bind = column.bind
-        if (bind) {
-          if (!this.bindList[column.prop]) {
-            this.bindList[column.prop] = true;
-            result = getAsVal(value, bind)
-          } else {
-            setAsVal(this.form, bind, result);
-          }
+        if (bind && !this.bindList[prop]) {
+          this.$watch('form.' + prop, (n, o) => {
+            if (n != o) setAsVal(this.form, bind, n);
+          })
+          this.$watch('form.' + bind, (n, o) => {
+            if (n != o) this.$set(this.form, prop, n);
+          })
+          this.bindList[prop] = true;
+        } else {
           this.$set(this.form, ele, result);
         }
+
       });
       this.forEachLabel();
     },
