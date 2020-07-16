@@ -149,12 +149,14 @@ export default function () {
     },
     watch: {
       text: {
-        handler (val) {
-          this.handleChange(val)
+        handler (n, o) {
+          if (n == o) return
+          this.handleChange(n)
         }
       },
       value: {
-        handler () {
+        handler (n, o) {
+          if (n == o) return
           this.initVal();
         }
       }

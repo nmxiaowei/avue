@@ -70,15 +70,7 @@ export default create({
     },
     valueFormat: {},
     format: {}
-  },
-  watch: {
-    text: {
-      handler (val) {
-        this.handleChange(val);
-      },
-      deep: true,
-    }
-  },
+  }
 });
 </script>
 
