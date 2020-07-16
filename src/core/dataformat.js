@@ -80,8 +80,13 @@ export const getSearchType = (column) => {
     result = 'select';
   } else if (DATE_LIST.includes(type)) {
     let rangeKey = 'range';
-    if (range) result = type + rangeKey;
-    else result = type.replace(rangeKey, '');
+    if (range) {
+      if (!type.includes(rangeKey)) {
+        result = type + rangeKey;
+      } else {
+        result = type;
+      }
+    } else result = type.replace(rangeKey, '');
   } else if (['textarea'].includes(type)) {
     result = 'input';
   }

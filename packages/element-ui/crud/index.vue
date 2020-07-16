@@ -339,7 +339,7 @@ import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
-
+import { sendDic } from "core/dic";
 export default create({
   name: "crud",
   mixins: [init("crud"), locale],
