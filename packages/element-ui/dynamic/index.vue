@@ -2,19 +2,19 @@
   <div :class="b()">
     <avue-crud ref="crud"
                :option="option"
+               @cell-mouse-enter="cellMouseenter"
+               @cell-mouse-leave="cellMouseLeave"
                :data="text">
       <template slot-scope="scope"
                 slot="index">
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
-                   @mouseout.native="mouseoutRow(scope.row.$index)"
                    @click="delRow(scope.row.$index)"
                    type="danger"
                    size="mini"
                    :disabled="disabled"
                    icon="el-icon-delete"
                    circle></el-button>
-        <span v-else
-              @mouseover="mouseoverRow(scope.row.$index)">{{scope.row.$index+1}}</span>
+        <div v-else>{{scope.row.$index+1}}</div>
       </template>
       <template v-for="(item,index) in columnOption"
                 slot-scope="scope"
@@ -122,7 +122,7 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: true,
+            cell: ele.cell || true,
             slot: ele.formslot,
             disabled: this.disabled || this.viewBtn
           }))
@@ -142,6 +142,14 @@ export default create({
     }
   },
   methods: {
+    cellMouseenter (row) {
+      let index = row.$index;
+      this.mouseoverRow(index);
+    },
+    cellMouseLeave (row, column, cell, event) {
+      let index = row.$index;
+      this.mouseoutRow(index)
+    },
     validate () {
       return new Promise(resolve => {
         let list = [];

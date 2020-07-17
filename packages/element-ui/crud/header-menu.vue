@@ -113,6 +113,7 @@ export default create({
   inject: ["crud"],
   data () {
     return {
+      dateCreate: false,
       pickerOptions: {
         shortcuts: [{
           text: '今日',
@@ -178,7 +179,12 @@ export default create({
   methods: {
     //日期组件回调
     dateChange (val) {
-      this.crud.$emit("date-change", val);
+      if (this.dateCreate) {
+        this.crud.$emit("date-change", val);
+      } else {
+        this.dateCreate = true;
+      }
+
     },
     initFun () {
       this.vaildData = vaildData;
