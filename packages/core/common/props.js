@@ -150,13 +150,11 @@ export default function () {
     watch: {
       text: {
         handler (n, o) {
-          if (n == o) return
           this.handleChange(n)
         }
       },
       value: {
         handler (n, o) {
-          if (n == o) return
           this.initVal();
         }
       }

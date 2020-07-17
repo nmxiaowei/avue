@@ -24,7 +24,7 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
+    <avue-crud ref="crud" :option="option" :data="data" @date-change="dateChange"></avue-crud>
   </div>
 </body>
 <script>
@@ -49,6 +49,11 @@
             prop: 'sex'
           }]
         }
+      }
+    },
+    methods: {
+      dateChange(val) {
+        console.log(val)
       }
     }
   })
