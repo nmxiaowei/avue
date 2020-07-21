@@ -122,7 +122,7 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: ele.cell || true,
+            detail: ele.cell || true,
             slot: ele.formslot,
             disabled: this.disabled || this.viewBtn
           }))
