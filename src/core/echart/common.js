@@ -10,6 +10,7 @@ export default (() => {
       labelFormatter: Function,
       clickFormatter: Function,
       formatter: Function,
+      echartFormatter: Function,
       width: {
         type: [Number, String],
         default: 600
@@ -97,6 +98,9 @@ export default (() => {
       };
     },
     watch: {
+      echartFormatter() {
+        this.updateChart();
+      },
       styleChartName() {
         this.$nextTick(() => {
           this.myChart && this.myChart.resize();
