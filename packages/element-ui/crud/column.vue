@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <template v-for="(column,index) in list">
       <dynamic-column v-if="column.children && column.children.length"
                       :columnOption="column"
@@ -31,7 +31,7 @@
                          :header-align="column.headerAlign || crud.tableOption.headerAlign"
                          :width="column.width"
                          :fixed="crud.isMobile?false:column.fixed">
-          <div slot-scope="scope">
+          <span slot-scope="scope">
             <form-temp :column="column"
                        v-if="cellEditFlag(scope.row,column)"
                        :size="crud.isMediumSize"
@@ -75,13 +75,13 @@
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
             </template>
-          </div>
+          </span>
 
         </el-table-column>
       </template>
     </template>
 
-  </div>
+  </span>
 
 </template>
 
