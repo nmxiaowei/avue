@@ -121,7 +121,6 @@ export default create({
         if (this.validatenull(value)) {
           this.clearHandle();
         }
-        this.handleChange(value);
       },
     },
     dic () {
@@ -222,8 +221,10 @@ export default create({
         } else {
           let node = this.$refs.tree.getNode(this.text)
           if (node) {
-            this.labelText.push(node.data[this.labelKey])
-            this.node.push(node.data);
+            let data = node.data
+            this.$refs.tree.setCurrentKey(data[this.valueKey])
+            this.labelText.push(data[this.labelKey])
+            this.node.push(data);
           }
         }
       })
@@ -242,8 +243,7 @@ export default create({
       });
     },
     clearHandle () {
-      let allNode = document.querySelectorAll('.tree-option .el-tree-node')
-      allNode.forEach((element) => element.classList.remove('is-current'))
+      this.$refs.tree.setCurrentKey(null)
       this.$refs.tree.setCheckedKeys([]);
     },
     handleNodeClick (data) {
