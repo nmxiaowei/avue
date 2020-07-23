@@ -34,6 +34,7 @@ export default {
     tipStartTitle: '当前表格已选择',
     tipEndTitle: '项',
     editTitle: '编 辑',
+    copyTitle: '复 制',
     addTitle: '新 增',
     viewTitle: '查 看',
     filterTitle: '过滤条件',
@@ -55,6 +56,7 @@ export default {
     saveBtn: '保 存',
     viewBtn: '查 看',
     editBtn: '编 辑',
+    copyBtn: '复 制',
     delBtn: '删 除'
   }
 }

@@ -34,6 +34,7 @@ export default {
     tipStartTitle: 'Currently selected',
     tipEndTitle: 'term',
     editTitle: 'edit',
+    copyTitle: 'copy',
     addTitle: 'add',
     viewTitle: 'view',
     filterTitle: 'filter',
@@ -55,6 +56,7 @@ export default {
     saveBtn: 'save',
     viewBtn: 'view',
     editBtn: 'edit',
+    copyBtn: 'copy',
     delBtn: 'del'
   }
 }
