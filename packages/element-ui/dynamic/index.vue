@@ -121,11 +121,20 @@ export default create({
           slot: true
         }];
         this.columnOption.forEach(ele => {
-          list.push(Object.assign(ele, {
-            detail: ele.cell || true,
+          list.push(Object.assign(ele, Object.assign((() => {
+            let boxType = this.boxType;
+            if (ele.disabled || (ele.editDisabled && boxType === 'edit') || (ele.addDisabled && boxType === 'add')) {
+              return {
+                cell: false
+              }
+            }
+            return {
+              cell: true
+            };
+          })(), {
             slot: ele.formslot,
             disabled: this.disabled || this.viewBtn
-          }))
+          })))
         })
         return {
           column: list

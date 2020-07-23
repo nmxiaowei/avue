@@ -61,6 +61,10 @@ export default function () {
         type: String,
         default: ''
       },
+      boxType: {
+        type: String,
+        default: ''
+      },
       tip: {
         type: String,
         default: ''
