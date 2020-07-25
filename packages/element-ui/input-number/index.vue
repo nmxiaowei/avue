@@ -13,6 +13,7 @@
                    :clearable="disabled?false:clearable"
                    :readonly="readonly"
                    :controls-position="controlsPosition"
+                   :controls="controls"
                    :label="placeholder"
                    :disabled="disabled"></el-input-number>
 </template>
@@ -28,6 +29,10 @@ export default create({
     return {};
   },
   props: {
+    controls: {
+      type: Boolean,
+      default: true
+    },
     step: {
       type: Number,
       default: 1
