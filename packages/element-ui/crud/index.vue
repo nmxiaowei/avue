@@ -193,6 +193,10 @@
                                 v-permission="getPermission('editBtn',scope.row,scope.$index)"
                                 @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
+                                v-if="vaildData(tableOption.copyBtn,true)"
+                                v-permission="getPermission('copyBtn',scope.row,scope.$index)"
+                                @click.native="rowCopy(scope.row)">{{t('crud.copyBtn')}}</el-dropdown-item>
+              <el-dropdown-item divided
                                 v-if="vaildData(tableOption.delBtn,true)"
                                 v-permission="getPermission('delBtn',scope.row,scope.$index)"
                                 @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
@@ -245,6 +249,17 @@
                        v-if="vaildData(tableOption.editBtn,config.editBtn)">
               <template v-if="!isIconMenu">
                 {{menuIcon('editBtn')}}
+              </template>
+            </el-button>
+            <el-button :type="menuText('primary')"
+                       :icon="config.copyBtnIcon"
+                       :size="isMediumSize"
+                       :disabled="btnDisabled"
+                       @click.stop="rowCopy(scope.row)"
+                       v-permission="getPermission('copyBtn',scope.row,scope.$index)"
+                       v-if="vaildData(tableOption.copyBtn,config.copyBtn)">
+              <template v-if="!isIconMenu">
+                {{menuIcon('copyBtn')}}
               </template>
             </el-button>
             <el-button :type="menuText('danger')"
@@ -934,7 +949,14 @@ export default create({
       this.tableIndex = index;
       this.$refs.dialogForm.show("edit", index);
     },
-
+    //复制
+    rowCopy (row) {
+      this.tableForm = this.rowClone(row);
+      delete this.tableForm[this.rowKey]
+      this.$emit("input", this.tableForm);
+      this.tableIndex = -1;
+      this.$refs.dialogForm.show("add");
+    },
     //查看
     rowView (row, index) {
       this.tableForm = this.rowClone(row);

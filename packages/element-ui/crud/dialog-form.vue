@@ -209,6 +209,7 @@ export default create({
       }
       if (!this.validatenull(option.dicFlag)) {
         option.column.forEach(ele => {
+          ele.boxType = this.boxType;
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }

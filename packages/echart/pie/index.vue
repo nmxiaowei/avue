@@ -100,8 +100,13 @@ export default create({
                 return Math.random() * 200;
               },
               label: {
-                show: this.labelShow,
-                fontSize: this.fontSize
+                normal: {
+                  show: this.labelShow,
+                  formatter: '{b}:{c}({d}%)',
+                  textStyle: {
+                    fontSize: this.fontSize
+                  }
+                }
               },
               data: (() => {
                 let list = optionData;

@@ -14,6 +14,7 @@ export default {
   cancelBtnIcon: 'el-icon-circle-close',
   viewBtnIcon: 'el-icon-view',
   editBtnIcon: 'el-icon-edit',
+  copyBtnIcon: 'el-icon-document-add',
   addBtnIcon: 'el-icon-plus',
   printBtnIcon: 'el-icon-printer',
   excelBtnIcon: 'el-icon-download',
@@ -28,6 +29,7 @@ export default {
   // 显隐
   viewBtn: false,
   editBtn: true,
+  copyBtn: false,
   cancelBtn: true,
   addBtn: true,
   addRowBtn: false,
