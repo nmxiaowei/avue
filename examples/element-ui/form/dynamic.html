@@ -71,6 +71,10 @@
                 this.$message.success('删除回调' + JSON.stringify(row))
                 done();
               },
+              selection: true,
+              selectionChange: (val) => {
+                console.log(val)
+              },
               height: 300,
               align: 'center',
               headerAlign: 'center',

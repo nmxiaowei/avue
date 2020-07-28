@@ -4,6 +4,7 @@
                :option="option"
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
+               @selection-change="handleSelectionChange"
                :data="text">
       <template slot-scope="scope"
                 slot="index">
@@ -50,6 +51,9 @@ export default create({
     }
   },
   computed: {
+    selectionChange () {
+      return this.children.selectionChange
+    },
     rowAdd () {
       return this.children.rowAdd
     },
@@ -151,6 +155,9 @@ export default create({
     }
   },
   methods: {
+    handleSelectionChange (val) {
+      this.selectionChange && this.selectionChange(val);
+    },
     cellMouseenter (row) {
       let index = row.$index;
       this.mouseoverRow(index);
