@@ -32,6 +32,7 @@
     data() {
       return {
         obj: {
+          title: '二、我是大标题',
           dynamic: [{
             input: 1,
             select: 1,
@@ -56,13 +57,23 @@
                 value: 1
               }]
             }]
+          }, {
+            label: '',
+            prop: 'title',
+            type: "title",
+            labelWidth: 40,
+            styles: {
+              color: 'red',
+            },
+            span: 24
           },
           {
             label: '子表单',
             prop: 'dynamic',
             type: 'dynamic',
-            span: 16,
+            span: 24,
             children: {
+              type: "form",
               rowAdd: (done) => {
                 this.$message.success('新增回调')
                 done({ input: 3 })
