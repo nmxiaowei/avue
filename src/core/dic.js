@@ -157,7 +157,7 @@ function handeDic(list) {
 
 // ajax获取字典
 export const sendDic = (params) => {
-  let { url, query, method, resKey, props, formatter, value, column } = params;
+  let { url, query, method, resKey, props, formatter, value, column, form } = params;
   if (column) {
     url = column.dicUrl;
     method = column.dicMethod;
@@ -165,7 +165,13 @@ export const sendDic = (params) => {
     formatter = column.dicFormatter;
     props = column.props;
   }
-  if (value) url = (url || '').replace('{{key}}', value);
+  url = url || '';
+  let list = url.match(/[^\{\}]+(?=\})/g);
+  list = list || [];
+  list.forEach(ele => {
+    if (ele === 'key') url = url.replace('{{key}}', value);
+    else url = url.replace('{{' + ele + '}}', form[ele]);
+  });
   if (props) resKey = (props || {}).res || resKey;
   return new Promise(resolve => {
     const callback = (res) => {

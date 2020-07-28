@@ -207,6 +207,7 @@ export default {
         sendDic({
           column: columnNext,
           value: value,
+          form: row
         }).then(
           res => {
             //首次加载的放入队列记录

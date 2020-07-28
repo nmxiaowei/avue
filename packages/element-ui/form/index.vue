@@ -492,6 +492,7 @@ export default create({
         sendDic({
           column: columnNext,
           value: value,
+          form: this.form
         }).then(res => {
           //首次加载的放入队列记录
           if (!this.formList.includes(str)) this.formList.push(str);
