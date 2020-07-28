@@ -1,13 +1,57 @@
 <template>
   <div :class="b()">
-    <avue-crud ref="crud"
+    <template v-if="isForm">
+      <div :class="b('header')">
+        <el-button size="mini"
+                   circle
+                   v-if="!readonly && !disabled && !addBtn"
+                   :disabled="disabled"
+                   type="primary"
+                   icon="el-icon-plus"
+                   @click="addRow"></el-button>
+      </div>
+      <div>
+        <div v-for="(item,index) in text"
+             :class="b('row')"
+             @mouseenter="cellMouseenter({$index:index})"
+             @mouseleave="cellMouseLeave({$index:index})">
+          <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[index]"
+                     @click="delRow(item.$index)"
+                     type="danger"
+                     :class="b('menu')"
+                     size="mini"
+                     :disabled="disabled"
+                     icon="el-icon-delete"
+                     circle></el-button>
+          <avue-form :key="index"
+                     :option="option"
+                     v-model="text[index]">
+            <div slot-scope="scope"
+                 slot="$index">
+              <span>{{item.$index+1}}</span>
+            </div>
+            <template v-for="column in columnOption"
+                      slot-scope="scope"
+                      :slot="column.prop">
+              <slot :row="text[index]"
+                    :dic="scope.dic"
+                    :size="scope.size"
+                    :label="scope.label"
+                    :name="column.prop"></slot>
+            </template>
+          </avue-form>
+        </div>
+      </div>
+    </template>
+    <avue-crud v-else-if="isCrud"
+               ref="crud"
                :option="option"
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"
                :data="text">
       <template slot-scope="scope"
-                slot="index">
+                slot="$index">
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @click="delRow(scope.row.$index)"
                    type="danger"
@@ -51,6 +95,15 @@ export default create({
     }
   },
   computed: {
+    showType () {
+      return this.children.type || 'crud'
+    },
+    isForm () {
+      return this.showType === 'form'
+    },
+    isCrud () {
+      return this.showType === 'crud'
+    },
     selectionChange () {
       return this.children.selectionChange
     },
@@ -62,6 +115,9 @@ export default create({
     },
     viewBtn () {
       return this.children.viewBtn === false
+    },
+    addBtn () {
+      return this.children.addBtn === false
     },
     delBtn () {
       return this.children.delBtn === false
@@ -94,19 +150,22 @@ export default create({
         menu: false,
         size: this.size,
         readonly: this.readonly,
-        disabled: this.disabled
+        disabled: this.disabled,
+        emptyBtn: false,
+        submitBtn: false,
       }, (() => {
         let option = this.deepClone(this.children)
         delete option.column;
         return option;
       })(), (() => {
         let list = [{
-          label: '#',
-          prop: 'index',
+          label: '序号',
+          prop: '$index',
+          detail: true,
           fixed: true,
           width: 50,
           renderHeader: (h, { column, $index }) => {
-            if (this.option.addBtn === false || (this.readonly || this.disabled)) {
+            if (this.addBtn || this.readonly) {
               return '序号';
             }
             return h('el-button', {
@@ -122,7 +181,8 @@ export default create({
               }
             })
           },
-          slot: true
+          slot: true,
+          formslot: true
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, Object.assign((() => {
@@ -197,6 +257,7 @@ export default create({
       this.text.forEach((ele, index) => {
         ele = Object.assign(ele, {
           $cellEdit: true,
+          $index: index,
         })
       })
     },
@@ -229,7 +290,11 @@ export default create({
     addRow () {
       const callback = (obj = {}) => {
         obj = Object.assign(this.valueOption, obj);
-        this.$refs.crud.rowCellAdd(obj);
+        if (this.isCrud) {
+          this.$refs.crud.rowCellAdd(obj);
+        } else if (this.isForm) {
+          this.text.push(obj)
+        }
       }
       if (typeof this.rowAdd === 'function') {
         this.rowAdd(callback);
