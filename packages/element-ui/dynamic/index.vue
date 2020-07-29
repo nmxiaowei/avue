@@ -95,6 +95,9 @@ export default create({
     }
   },
   computed: {
+    showIndex () {
+      return this.vaildData(this.children.index, true)
+    },
     showType () {
       return this.children.type || 'crud'
     },
@@ -161,6 +164,7 @@ export default create({
         let list = [{
           label: '序号',
           prop: '$index',
+          display: this.showIndex,
           detail: true,
           fixed: true,
           width: 50,

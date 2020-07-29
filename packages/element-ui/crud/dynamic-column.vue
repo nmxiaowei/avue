@@ -80,6 +80,10 @@
                          :href="item"
                          :target="column.target || '_blank'">{{item}}</el-link>
               </span>
+              <span v-else-if="['rate'].includes(column.type)">
+                <avue-rate readonly
+                           v-model="scope.row[column.prop]" />
+              </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])">1</span>
             </template>
