@@ -89,5 +89,5 @@ log.warning = function(text) {
 log.danger = function(text) {
   log.colorful([{ text, type: 'danger' }]);
 };
-
+window.$Log = log;
 export default log;
