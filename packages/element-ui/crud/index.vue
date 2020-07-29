@@ -979,7 +979,6 @@ export default create({
             callback(this.data)
           } else {
             let parent = this.findObject(this.data, row.parentId, this.rowKey);
-
             if (parent === undefined) {
               callback(this.data)
             } else {

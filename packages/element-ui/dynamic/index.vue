@@ -162,15 +162,16 @@ export default create({
         return option;
       })(), (() => {
         let list = [{
-          label: '序号',
+          label: '#',
           prop: '$index',
           display: this.showIndex,
           detail: true,
           fixed: true,
+          span: 24,
           width: 50,
           renderHeader: (h, { column, $index }) => {
             if (this.addBtn || this.readonly) {
-              return '序号';
+              return
             }
             return h('el-button', {
               attrs: {

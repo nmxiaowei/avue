@@ -107,7 +107,7 @@ function createdDic(option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    if (ele.dicFlag === false || ele.remote === true || flagdic.includes(prop)) return;
+    if (ele.dicFlag === false || flagdic.includes(prop)) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
         url: dicUrl,
@@ -169,7 +169,7 @@ export const sendDic = (params) => {
   let list = url.match(/[^\{\}]+(?=\})/g);
   list = list || [];
   list.forEach(ele => {
-    if (ele === 'key') url = url.replace('{{key}}', value);
+    if (ele === 'key') url = url.replace('{{key}}', value || '');
     else url = url.replace('{{' + ele + '}}', form[ele] || '');
   });
   if (props) resKey = (props || {}).res || resKey;

@@ -295,7 +295,7 @@ export default create({
       const callback = () => {
         if (this.isEdit) {
           let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
-          obj = Object.assign(obj, row);
+          obj = Object.assign(obj || {}, row);
         } else if (this.isAdd) {
           const callback = (list = [], index) => {
             this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
