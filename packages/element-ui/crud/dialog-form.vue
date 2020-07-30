@@ -305,7 +305,7 @@ export default create({
             if (this.crud.vaildParent(row)) {
               callback(this.crud.data, index)
             } else {
-              let parent = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              let parent = this.findObject(this.crud.data, row[this.crud.rowParentKey], this.crud.rowKey);
               if (parent === undefined) {
                 return callback(this.crud.data, index)
               }

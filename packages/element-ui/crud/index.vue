@@ -499,6 +499,9 @@ export default create({
     rowKey () {
       return this.tableOption.rowKey || "id";
     },
+    rowParentKey () {
+      return this.tableOption.rowParentKey || "parentId";
+    },
     parentOption () {
       return this.tableOption || {};
     },
@@ -965,7 +968,7 @@ export default create({
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {
-      return this.validatenull(row.parentId)
+      return this.validatenull(row[this.rowParentKey])
     },
     // 删除
     rowDel (row, index) {
@@ -978,7 +981,7 @@ export default create({
           if (this.vaildParent(row)) {
             callback(this.data)
           } else {
-            let parent = this.findObject(this.data, row.parentId, this.rowKey);
+            let parent = this.findObject(this.data, row[this.rowParentKey], this.rowKey);
             if (parent === undefined) {
               callback(this.data)
             } else {
