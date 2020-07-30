@@ -17,6 +17,14 @@ export function getAsVal(obj, bind = '') {
   });
   return result;
 }
+export function downFile(data, name) {
+  var saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+  saveLink.href = data;
+  saveLink.download = name;
+  var event = document.createEvent('MouseEvents');
+  event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  saveLink.dispatchEvent(event);
+}
 export function strCorNum(list) {
   list.forEach((ele, index) => {
     list[index] = Number(ele);
