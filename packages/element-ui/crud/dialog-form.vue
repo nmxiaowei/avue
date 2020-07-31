@@ -181,7 +181,7 @@ export default create({
     formOption () {
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
-      option.column = this.crud.propOption;
+      option.column = this.deepClone(this.crud.propOption);
       option.printBtn = false;
       option.mockBtn = false;
       if (this.isView) {
