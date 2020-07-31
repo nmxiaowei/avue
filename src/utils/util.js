@@ -203,12 +203,16 @@ export const deepClone = data => {
         }
         return data[i];
       })();
-      delete data[i].$parent;
+      if (data[i]) {
+        delete data[i].$parent;
+      }
       obj.push(deepClone(data[i]));
     }
   } else if (type === 'object') {
     for (var key in data) {
-      delete data.$parent;
+      if (data) {
+        delete data.$parent;
+      }
       obj[key] = deepClone(data[key]);
     }
   }
