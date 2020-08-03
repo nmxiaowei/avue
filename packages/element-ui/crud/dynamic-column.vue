@@ -81,7 +81,7 @@
                          :target="column.target || '_blank'">{{item}}</el-link>
               </span>
               <span v-else-if="['rate'].includes(column.type)">
-                <avue-rate readonly
+                <avue-rate disabled
                            v-model="scope.row[column.prop]" />
               </span>
               <span v-else
