@@ -145,9 +145,8 @@ export default {
     getImgList (scope, column) {
       let url = (column.propsHttp || {}).home || ''
       let value = (column.props || {}).value || DIC_PROPS.value;
-      if (column.listType == 'picture-img') {
-        return [url + scope.row[column.prop]]
-      }
+      if (this.validatenull(scope.row[column.prop])) return []
+      if (column.listType == 'picture-img') return [url + scope.row[column.prop]]
       let list = this.corArray(this.deepClone(scope.row[column.prop]), column.separator);
       list.forEach((ele, index) => {
         if (typeof ele === 'object') {
