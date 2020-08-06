@@ -401,7 +401,7 @@ export default create({
   mounted () {
     this.refreshTable(() => {
       //如果有搜索激活搜索
-      if (this.$refs.headerSearch) this.$refs.headerSearch.init();
+       this.$refs.headerSearch.init();
       //动态计算表格高度
       this.getTableHeight();
       //是否开启表格排序

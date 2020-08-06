@@ -131,7 +131,7 @@ export const formInitVal = (list = []) => {
       ['number', 'rate', 'slider'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
-      tableForm[ele.prop] = undefined;
+      tableForm[ele.prop] = 'undefined';
     } else {
       tableForm[ele.prop] = '';
     }

@@ -20,7 +20,10 @@ export function validatenull(val) {
     list.forEach(ele => {
       delete val[ele];
     });
-    if (JSON.stringify(val) === '{}') return true;
+    for (var o in val) {
+      return false;
+    }
+    return true;
   } else {
     if (
       val === 'null' ||
