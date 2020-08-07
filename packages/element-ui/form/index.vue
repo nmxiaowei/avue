@@ -588,10 +588,6 @@ export default create({
             this.show();
             callback(true, this.hide)
           }
-          this.asyncValidator(this.formRules, this.form).then(() => {
-          }).catch(err => {
-            callback(false, err.concat(dynamicError))
-          })
           this.dynamicOption.forEach(ele => {
             dynamicError.push({
               field: ele.prop,
