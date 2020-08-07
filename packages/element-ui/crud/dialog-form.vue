@@ -243,11 +243,11 @@ export default create({
     handleError (error) {
       this.crud.$emit('error', error)
     },
-    handleSubmit () {
+    handleSubmit (form, hide) {
       if (this.isAdd) {
-        this.rowSave();
+        this.rowSave(hide);
       } else if (this.isEdit) {
-        this.rowUpdate();
+        this.rowUpdate(hide);
       }
     },
     initFun () {
@@ -266,30 +266,24 @@ export default create({
       this.$emit("input", this.tableForm);
     },
     // 保存
-    rowSave () {
-      this.$refs["tableForm"].validate(vaild => {
-        if (!vaild) return;
-        this.crud.$emit(
-          "row-save",
-          filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
-          this.closeDialog,
-          this.$refs.tableForm.hide
-        );
-      });
+    rowSave (hide) {
+      this.crud.$emit(
+        "row-save",
+        filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
+        this.closeDialog,
+        hide
+      );
     },
     // 更新
-    rowUpdate () {
-      this.$refs["tableForm"].validate(vaild => {
-        if (!vaild) return;
-        const index = this.crud.tableIndex;
-        this.crud.$emit(
-          "row-update",
-          filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
-          this.index,
-          this.closeDialog,
-          this.$refs.tableForm.hide
-        );
-      });
+    rowUpdate (hide) {
+      const index = this.crud.tableIndex;
+      this.crud.$emit(
+        "row-update",
+        filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
+        this.index,
+        this.closeDialog,
+        hide
+      );
     },
     closeDialog (row, index) {
       const callback = () => {
