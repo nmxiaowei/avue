@@ -155,7 +155,7 @@
 
 <script>
 import locale from "../../core/common/locale";
-import init from "../../core/crud/init";
+import init from "../../core/common/init";
 import create from "core/create";
 import { detail } from "core/detail";
 import { formInitVal } from "core/dataformat";

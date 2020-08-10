@@ -1,4 +1,4 @@
-import { loadDic, loadCascaderDic } from 'core/dic';
+import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
 export default function () {
   return {
     props: {
@@ -21,7 +21,6 @@ export default function () {
     data () {
       return {
         DIC: {},
-        dicCreate: false,
         cascaderDIC: {},
         tableOption: {},
         isMobile: ''
@@ -29,6 +28,7 @@ export default function () {
     },
     created () {
       this.init();
+      this.handleLoadDic()
     },
     computed: {
       resultOption () {
@@ -58,32 +58,48 @@ export default function () {
       init () {
         this.tableOption = this.option;
         this.getIsMobile();
-        this.handleLoadDic().then(() => {
-          this.forEachLabel && this.forEachLabel()
-        });
+        this.handleLocalDic();
       },
       getIsMobile () {
         this.isMobile = window.document.body.clientWidth <= 768;
       },
+      updateDic (prop, list) {
+        let column = this.findObject(this.propOption, prop);
+        if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+          sendDic({
+            column: column
+          }).then(list => {
+            this.$set(this.DIC, prop, list);
+          });
+        } else if (!this.validatenull(list)) {
+          this.$set(this.DIC, prop, list);
+        } else {
+          this.handleLoadDic();
+        }
+      },
+      handleSetDic (list, res = {}) {
+        Object.keys(res).forEach(ele => {
+          this.$set(list, ele, res[ele])
+        });
+        this.forEachLabel && this.forEachLabel()
+      },
+      //本地字典
+      handleLocalDic () {
+        let res = loadLocalDic(this.resultOption)
+        this.handleSetDic(this.DIC, res);
+      },
       // 网络字典加载
       handleLoadDic () {
         return new Promise((resolve) => {
-          loadDic(this.resultOption, this.dicCreate).then((res = {}) => {
-            Object.keys(res).forEach(ele => {
-              this.$set(this.DIC, ele, res[ele])
-            });
-            this.dicCreate = true;
+          loadDic(this.resultOption).then(res => {
+            this.handleSetDic(this.DIC, res);
             resolve();
           });
         })
       },
       //级联字典加载
       handleLoadCascaderDic () {
-        loadCascaderDic(this.propOption, this.data).then(res => {
-          Object.keys(res).forEach(ele => {
-            this.$set(this.cascaderDIC, ele, res[ele])
-          });
-        });
+        loadCascaderDic(this.propOption, this.data).then(res => this.handleSetDic(this.cascaderDIC, res));
       }
     }
   };

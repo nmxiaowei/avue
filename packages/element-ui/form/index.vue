@@ -172,7 +172,7 @@
 import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
-import init from "../../core/crud/init";
+import init from "../../core/common/init";
 import formTemp from '../../core/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
@@ -413,20 +413,6 @@ export default create({
     },
     getPropRef (prop) {
       return this.$refs[prop][0];
-    },
-    updateDic (prop, list) {
-      let column = this.findObject(this.propOption, prop);
-      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-        sendDic({
-          column: column
-        }).then(list => {
-          this.$set(this.DIC, prop, list);
-          column.dicData = list;
-        });
-      } else {
-        this.$set(this.DIC, prop, list);
-        column.dicData = list;
-      }
     },
     //初始化表单
     dataFormat () {

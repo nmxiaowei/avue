@@ -342,7 +342,7 @@
 import create from "core/create";
 import packages from "core/packages";
 import permission from '../../core/directive/permission';
-import init from "../../core/crud/init.js";
+import init from "../../core/common/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
 import locale from "../../core/common/locale";
@@ -354,10 +354,9 @@ import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
-import { sendDic } from "core/dic";
 export default create({
   name: "crud",
-  mixins: [init("crud"), locale],
+  mixins: [init(), locale],
   directives: {
     permission
   },
@@ -401,7 +400,7 @@ export default create({
   mounted () {
     this.refreshTable(() => {
       //如果有搜索激活搜索
-       this.$refs.headerSearch.init();
+      this.$refs.headerSearch.init();
       //动态计算表格高度
       this.getTableHeight();
       //是否开启表格排序
@@ -632,20 +631,6 @@ export default create({
         this.reload = true;
         callback && callback()
       })
-    },
-    updateDic (prop, list) {
-      let column = this.findObject(this.propOption, prop);
-      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-        sendDic({
-          column: column
-        }).then(list => {
-          this.$set(this.DIC, prop, list);
-          column.dicData = list;
-        });
-      } else {
-        this.$set(this.DIC, prop, list);
-        column.dicData = list;
-      }
     },
     //开启排序
     setSort () {
