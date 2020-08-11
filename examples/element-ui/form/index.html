@@ -20,7 +20,7 @@
 <body>
   <div id="app">
     {{obj}}
-    <avue-crud :option="option" :data="[obj]" @submit="submit">
+    <avue-form :option="option" v-model="obj" @submit="submit">
       <template slot-scope="scope" slot="name">
         <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
       </template>
@@ -37,7 +37,7 @@
           {{ item.label }}
         </span>
       </span>
-    </avue-crud>
+    </avue-form>
   </div>
 </body>
 <script>
@@ -173,7 +173,6 @@
             },
             cascaderItem: ['city', 'area'],
             dicUrl: `${baseUrl}/getProvince`,
-            dicData: 'province',
             rules: [
               {
                 required: true,
