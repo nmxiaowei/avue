@@ -20,7 +20,7 @@
 <body>
   <div id="app">
     {{obj}}
-    <avue-form :option="option" v-model="obj" @submit="submit">
+    <avue-crud :option="option" :data="[obj]" @submit="submit">
       <template slot-scope="scope" slot="name">
         <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
       </template>
@@ -31,7 +31,13 @@
         <span>{{ data.label }}</span>
         <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
       </template>
-    </avue-form>
+      <span class="el-tree-node__label" slot-scope="{ item }" slot="treeType">
+        <span>
+          <i class="el-icon-user-solid"></i>
+          {{ item.label }}
+        </span>
+      </span>
+    </avue-crud>
   </div>
 </body>
 <script>
@@ -63,7 +69,7 @@
             // multiple: true,
             // filterable: true,
             // checkStrictly: true,
-            // typeslot: true,
+            typeslot: true,
             dicData: [{
               label: '一级',
               value: 3,
@@ -83,6 +89,7 @@
             prop: 'tree',
             type: 'tree',
             multiple: true,
+            typeslot: true,
             checked: (data) => {
               console.log(data)
             },

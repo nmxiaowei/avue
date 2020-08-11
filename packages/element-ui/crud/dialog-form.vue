@@ -65,6 +65,17 @@
                 })"
                 v-if="item.errorslot"></slot>
         </template>
+        <!-- 循环form表单组件自定义卡槽 -->
+        <template slot-scope="scope"
+                  v-for="item in crud.columnFormOption"
+                  :slot="item.prop+'Type'">
+          <slot :name="item.prop+'Type'"
+                v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:crud.tableIndex,
+                })"
+                v-if="item.typeslot"></slot>
+        </template>
         <!-- 循环form表单标签卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.columnFormOption"

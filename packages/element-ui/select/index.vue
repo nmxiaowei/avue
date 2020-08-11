@@ -34,7 +34,13 @@
           <slot :name="prop+'Type'"
                 :label="labelKey"
                 :value="valueKey"
-                :item="citem"></slot>
+                :item="citem"
+                v-if="$scopedSlots[prop+'Type']"></slot>
+          <slot :label="labelKey"
+                :value="valueKey"
+                :item="item"
+                v-else-if="$scopedSlots.default">
+          </slot>
         </el-option>
       </el-option-group>
     </template>
@@ -47,7 +53,13 @@
         <slot :name="prop+'Type'"
               :label="labelKey"
               :value="valueKey"
-              :item="item"></slot>
+              :item="item"
+              v-if="typeslot"></slot>
+        <slot :label="labelKey"
+              :value="valueKey"
+              :item="item"
+              v-else-if="$scopedSlots.default">
+        </slot>
       </el-option>
     </template>
 

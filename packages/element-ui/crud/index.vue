@@ -321,6 +321,16 @@
               :name="item.prop+'Error'"
               v-if="item.errorslot"></slot>
       </template>
+      <template slot-scope="scope"
+                v-for="item in columnFormOption"
+                :slot="item.prop+'Type'">
+        <slot v-bind="Object.assign(scope,{
+              row:tableForm,
+              index:tableIndex
+              })"
+              :name="item.prop+'Type'"
+              v-if="item.typeslot"></slot>
+      </template>
       <template slot-scope="{tableForm,type,size,disabled}"
                 slot="menuForm">
         <slot name="menuForm"
