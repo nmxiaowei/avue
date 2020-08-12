@@ -27,7 +27,7 @@
                      :option="option"
                      v-model="text[index]">
             <div slot-scope="scope"
-                 slot="$index">
+                 slot="_index">
               <span>{{item.$index+1}}</span>
             </div>
             <template v-for="column in columnOption"
@@ -51,7 +51,7 @@
                @selection-change="handleSelectionChange"
                :data="text">
       <template slot-scope="scope"
-                slot="$index">
+                slot="_index">
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @click="delRow(scope.row.$index)"
                    type="danger"
@@ -163,10 +163,12 @@ export default create({
       })(), (() => {
         let list = [{
           label: '#',
-          prop: '$index',
+          prop: '_index',
           display: this.showIndex,
           detail: true,
           fixed: true,
+          align: 'center',
+          headerAlign: 'center',
           span: 24,
           width: 50,
           renderHeader: (h, { column, $index }) => {
@@ -215,6 +217,9 @@ export default create({
     this.initData();
   },
   watch: {
+    textLen () {
+      return this.text.length;
+    },
     text () {
       this.initData();
     }
@@ -294,7 +299,9 @@ export default create({
     },
     addRow () {
       const callback = (obj = {}) => {
-        obj = Object.assign(this.valueOption, obj);
+        obj = Object.assign(this.valueOption, obj, {
+          $index: this.textLen
+        });
         if (this.isCrud) {
           this.$refs.crud.rowCellAdd(obj);
         } else if (this.isForm) {
