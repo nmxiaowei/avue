@@ -39,7 +39,7 @@
                        :t="t"
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
-                       :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
+                       :disabled="crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
                        :upload-before="crud.uploadBefore"
                        :upload-after="crud.uploadAfter"

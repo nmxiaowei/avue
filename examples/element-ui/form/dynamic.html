@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="obj">
+    <avue-form :option="option" v-model="obj" @submit="submit">
       <template slot-scope="scope" slot="input">
         <el-tag>{{scope.row.$index}}</el-tag>
       </template>
@@ -73,7 +73,6 @@
             type: 'dynamic',
             span: 24,
             children: {
-              type: "form",
               rowAdd: (done) => {
                 this.$message.success('新增回调')
                 done({ input: 3 })
@@ -166,6 +165,11 @@
 
           ]
         }
+      }
+    },
+    methods: {
+      submit(form, done) {
+        setTimeout(() => { done() }, 2000)
       }
     }
   })

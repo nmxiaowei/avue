@@ -192,20 +192,10 @@ export default create({
           formslot: true
         }];
         this.columnOption.forEach(ele => {
-          list.push(Object.assign(ele, Object.assign((() => {
-            let boxType = this.boxType;
-            if (ele.disabled || (ele.editDisabled && boxType === 'edit') || (ele.addDisabled && boxType === 'add')) {
-              return {
-                cell: false
-              }
-            }
-            return {
-              cell: true
-            };
-          })(), {
-            slot: ele.formslot,
-            disabled: this.disabled || this.viewBtn
-          })))
+          list.push(Object.assign(ele, {
+            cell: this.vaildData(ele.cell, true),
+            slot: ele.formslot
+          }))
         })
         return {
           column: list
