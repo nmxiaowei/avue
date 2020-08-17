@@ -200,7 +200,7 @@ export default create({
       this.text = [];
       this.node = [];
       this.labelText = [];
-      const list = this.$refs.tree.getCheckedNodes();
+      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked);
       list.forEach(node => {
         this.node.push(node)
         this.text.push(node[this.valueKey]);
