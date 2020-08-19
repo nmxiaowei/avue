@@ -92,18 +92,15 @@ const list = {
 export default (() => {
   return {
     logs: function(name) {
-      if (__ENV__ === 'development') {
-        const obj = list[name];
-        $Log.capsule(
-          name,
-          obj.title,
-          'warning'
-        );
-        $Log.warning('版本:' + (obj.version || '-'));
-        $Log.warning('CDN:' + (obj.url || '-'));
-        $Log.warning('GITHUB:' + (obj.github || '-'));
-
-      }
+      const obj = list[name];
+      $Log.capsule(
+        name,
+        obj.title,
+        'warning'
+      );
+      $Log.warning('版本:' + (obj.version || '-'));
+      $Log.warning('CDN:' + (obj.url || '-'));
+      $Log.warning('GITHUB:' + (obj.github || '-'));
     }
   };
 })();

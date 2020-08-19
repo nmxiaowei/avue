@@ -9,6 +9,7 @@
 
 <script>
 import create from "core/create";
+import { downFile } from 'utils/util';
 export default create({
   name: 'license',
   props: {
@@ -33,6 +34,7 @@ export default create({
   },
   data () {
     return {
+      base64: '',
       draw: false,
       canvas: '',
       context: '',
@@ -109,11 +111,15 @@ export default create({
       })
       return file;
     },
+    downFile (filename = new Date().getTime()) {
+      downFile(this.base64, filename)
+    },
     getBase64 () {
       return new Promise((resolve) => {
         const time = setInterval(() => {
           if (this.draw) {
             const data = this.canvas.toDataURL('image/jpeg', 1.0);
+            this.base64 = data;
             clearInterval(time)
             resolve(data)
           }

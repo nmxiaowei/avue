@@ -150,6 +150,7 @@ body {
   }
   .el-dialog__header{
     padding: 16px 24px;
+    min-height: 20px;
     border-bottom: 1px solid #f0f0f0;
   }
   iframe {
@@ -165,11 +166,11 @@ body {
   display: inline-block;
 }
 
-.avuex-opacity {
+.avue-opacity {
   opacity: 0
 }
 
-.avuex-opacity--active {
+.avue-opacity--active {
   opacity: 1
 }
 

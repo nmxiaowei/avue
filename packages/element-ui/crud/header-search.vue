@@ -169,12 +169,8 @@ export default cteate({
       this.flag = !this.validatenull(result.column);
       return result;
     },
-    searchSlot () {
-      return !validatenull(this.$slots.search);
-    },
     searchFlag () {
-      if (this.searchSlot) return true;
-      else return !validatenull(this.searchForm);
+      return !validatenull(this.searchForm);
     }
   },
   methods: {

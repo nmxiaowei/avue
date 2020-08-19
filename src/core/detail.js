@@ -19,16 +19,16 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       result = dayjs(result).format(format);
     }
   }
-
+  if (['string', 'number'].includes(column.dataType) && !Array.isArray(result) && !validatenull(result)) {
+    result = (result + '').split(separator || DIC_SPLIT);
+    if (column.dataType === 'number') result = strCorNum(result);
+  }
   if (['array'].includes(type)) {
     if (Array.isArray(result)) {
       result = result.join(separator || DIC_SHOW_SPLIT);
     } else {
       result = result.split(separator || DIC_SPLIT).join(separator || DIC_SHOW_SPLIT);
     }
-  } else if (['string', 'number'].includes(column.dataType) && !Array.isArray(result)) {
-    result = (result + '').split(separator || DIC_SPLIT);
-    if (column.dataType === 'number') result = strCorNum(result);
   } else if (['password'].includes(type)) {
     result = getPasswordChar(result, '*');
   } else if (['color'].includes(type)) {

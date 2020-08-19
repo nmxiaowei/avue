@@ -17,6 +17,42 @@ export function getAsVal(obj, bind = '') {
   });
   return result;
 }
+export const loadScript = (type = 'js', url) => {
+  let flag = false;
+  return new Promise((resolve) => {
+    const head = document.getElementsByTagName('head')[0];
+    head.children.forEach(ele => {
+      if ((ele.src || '').indexOf(url) !== -1) {
+        flag = true;
+        resolve();
+      }
+    });
+    if (flag) return;
+    let script;
+    if (type === 'js') {
+      script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = url;
+    } else if (type === 'css') {
+      script = document.createElement('link');
+      script.rel = 'stylesheet';
+      script.type = 'text/css';
+      script.src = url;
+    }
+    head.appendChild(script);
+    script.onload = function() {
+      resolve();
+    };
+  });
+};
+export function downFile(data, name) {
+  var saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+  saveLink.href = data;
+  saveLink.download = name;
+  var event = document.createEvent('MouseEvents');
+  event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  saveLink.dispatchEvent(event);
+}
 export function strCorNum(list) {
   list.forEach((ele, index) => {
     list[index] = Number(ele);
@@ -195,12 +231,16 @@ export const deepClone = data => {
         }
         return data[i];
       })();
-      delete data[i].$parent;
+      if (data[i]) {
+        delete data[i].$parent;
+      }
       obj.push(deepClone(data[i]));
     }
   } else if (type === 'object') {
     for (var key in data) {
-      delete data.$parent;
+      if (data) {
+        delete data.$parent;
+      }
       obj[key] = deepClone(data[key]);
     }
   }

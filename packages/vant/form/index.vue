@@ -48,7 +48,7 @@
 <script>
 import locale from "../../core/common/locale";
 import create from "core/create";
-import init from "../../core/crud/init";
+import init from "../../core/common/init";
 import { detail } from "core/detail";
 import { getComponent, getPlaceholder, formInitVal, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";

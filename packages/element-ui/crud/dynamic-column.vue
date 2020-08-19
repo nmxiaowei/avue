@@ -46,7 +46,7 @@
                        :t="t"
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
-                       :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
+                       :disabled="crud.tableOption.disabled || column.disabled || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
                        :upload-before="crud.uploadBefore"
                        :upload-after="crud.uploadAfter"
@@ -79,6 +79,10 @@
                          :key="index"
                          :href="item"
                          :target="column.target || '_blank'">{{item}}</el-link>
+              </span>
+              <span v-else-if="['rate'].includes(column.type)">
+                <avue-rate disabled
+                           v-model="scope.row[column.prop]" />
               </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])">1</span>

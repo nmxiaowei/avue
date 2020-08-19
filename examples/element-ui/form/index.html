@@ -31,6 +31,12 @@
         <span>{{ data.label }}</span>
         <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
       </template>
+      <span class="el-tree-node__label" slot-scope="{ item }" slot="treeType">
+        <span>
+          <i class="el-icon-user-solid"></i>
+          {{ item.label }}
+        </span>
+      </span>
     </avue-form>
   </div>
 </body>
@@ -63,7 +69,7 @@
             // multiple: true,
             // filterable: true,
             // checkStrictly: true,
-            // typeslot: true,
+            typeslot: true,
             dicData: [{
               label: '一级',
               value: 3,
@@ -83,6 +89,7 @@
             prop: 'tree',
             type: 'tree',
             multiple: true,
+            typeslot: true,
             checked: (data) => {
               console.log(data)
             },
@@ -166,7 +173,6 @@
             },
             cascaderItem: ['city', 'area'],
             dicUrl: `${baseUrl}/getProvince`,
-            dicData: 'province',
             rules: [
               {
                 required: true,

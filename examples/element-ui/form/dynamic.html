@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="obj">
+    <avue-form :option="option" v-model="obj" @submit="submit">
       <template slot-scope="scope" slot="input">
         <el-tag>{{scope.row.$index}}</el-tag>
       </template>
@@ -32,6 +32,7 @@
     data() {
       return {
         obj: {
+          title: '二、我是大标题',
           dynamic: [{
             input: 1,
             select: 1,
@@ -56,12 +57,21 @@
                 value: 1
               }]
             }]
+          }, {
+            label: '',
+            prop: 'title',
+            type: "title",
+            labelWidth: 40,
+            styles: {
+              color: 'red',
+            },
+            span: 24
           },
           {
             label: '子表单',
             prop: 'dynamic',
             type: 'dynamic',
-            span: 16,
+            span: 24,
             children: {
               rowAdd: (done) => {
                 this.$message.success('新增回调')
@@ -70,6 +80,10 @@
               rowDel: (row, done) => {
                 this.$message.success('删除回调' + JSON.stringify(row))
                 done();
+              },
+              selection: true,
+              selectionChange: (val) => {
+                console.log(val)
               },
               height: 300,
               align: 'center',
@@ -151,6 +165,11 @@
 
           ]
         }
+      }
+    },
+    methods: {
+      submit(form, done) {
+        setTimeout(() => { done() }, 2000)
       }
     }
   })

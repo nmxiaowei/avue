@@ -37,6 +37,7 @@ import Slider from 'components/slider';
 import Keyboard from 'components/keyboard';
 import Group from 'components/group';
 import Tree from 'components/tree';
+import Title from 'components/title';
 import Search from 'components/search';
 import Skeleton from 'components/skeleton';
 import Tabs from 'components/tabs';
@@ -91,6 +92,7 @@ export default Object.assign(AvueData, AvueEchart, {
   Keyboard,
   Group,
   Tree,
+  Title,
   Search,
   Tabs,
   Queue,

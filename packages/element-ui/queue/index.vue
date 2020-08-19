@@ -30,20 +30,20 @@ export default create({
       default: 0
     }
   },
-  data() {
+  data () {
     return {
       isFixed: 0,
       animate: []
     };
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       addEventListener("scroll", this.handleAnimate);
       this.handleAnimate();
     });
   },
   methods: {
-    handleAnimate() {
+    handleAnimate () {
       let top =
         pageYOffset ||
         document.documentElement.scrollTop ||
@@ -52,14 +52,14 @@ export default create({
       let v = this.$refs.queue;
       if (top + vh > v.offsetTop) {
         setTimeout(() => {
-          this.animate = [this.enter, "avuex-opacity--active"];
+          this.animate = [this.enter, "avue-opacity--active"];
         }, this.delay);
       } else {
-        this.animate = ["avuex-opacity"];
+        this.animate = ["avue-opacity"];
       }
     }
   },
-  destroyed() {
+  destroyed () {
     removeEventListener("scroll", this.handleAnimate);
   }
 });

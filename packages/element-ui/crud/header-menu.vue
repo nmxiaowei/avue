@@ -103,7 +103,7 @@ import create from "core/create";
 import config from "./config";
 import packages from "core/packages";
 import { dateFtt } from 'utils/date'
-import { vaildData } from "utils/util";
+import { vaildData, getAsVal } from "utils/util";
 export default create({
   name: "crud",
   mixins: [locale],
@@ -232,8 +232,17 @@ export default create({
       const option = this.crud.tableOption;
       const columnOption = this.crud.propOption;
       let count = 0;
-      let data = [...this.data];
       let sumsList = [...this.crud.sumsList];
+      let data = []
+      this.data.forEach(ele => {
+        let obj = this.deepClone(ele);
+        columnOption.forEach(column => {
+          if (column.bind) {
+            obj[column.prop] = getAsVal(obj, column.bind);
+          }
+        })
+        data.push(obj);
+      })
       if (option.index) count++;
       if (option.selection) count++;
       if (option.expand) count++;

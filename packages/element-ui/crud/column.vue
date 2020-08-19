@@ -39,7 +39,7 @@
                        :t="t"
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
-                       :disabled="column.disabled || crud.btnDisabledList[scope.row.$index]"
+                       :disabled="crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
                        :upload-before="crud.uploadBefore"
                        :upload-after="crud.uploadAfter"
@@ -71,6 +71,10 @@
                          :key="index"
                          :href="item"
                          :target="column.target || '_blank'">{{item}}</el-link>
+              </span>
+              <span v-else-if="['rate'].includes(column.type)">
+                <avue-rate disabled
+                           v-model="scope.row[column.prop]" />
               </span>
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])"></span>
@@ -141,9 +145,8 @@ export default {
     getImgList (scope, column) {
       let url = (column.propsHttp || {}).home || ''
       let value = (column.props || {}).value || DIC_PROPS.value;
-      if (column.listType == 'picture-img') {
-        return [url + scope.row[column.prop]]
-      }
+      if (this.validatenull(scope.row[column.prop])) return []
+      if (column.listType == 'picture-img') return [url + scope.row[column.prop]]
       let list = this.corArray(this.deepClone(scope.row[column.prop]), column.separator);
       list.forEach((ele, index) => {
         if (typeof ele === 'object') {
@@ -207,6 +210,7 @@ export default {
         sendDic({
           column: columnNext,
           value: value,
+          form: row
         }).then(
           res => {
             //首次加载的放入队列记录

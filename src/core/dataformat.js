@@ -128,10 +128,12 @@ export const formInitVal = (list = []) => {
     ) {
       tableForm[ele.prop] = [];
     } else if (
-      ['number', 'rate', 'slider'].includes(ele.type) ||
+      ['rate', 'slider'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
       tableForm[ele.prop] = undefined;
+    } else if (['number'].includes(ele.type)) {
+      tableForm[ele.prop] = 'undefined';
     } else {
       tableForm[ele.prop] = '';
     }

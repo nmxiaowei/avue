@@ -245,12 +245,10 @@ export default create({
         obj[this.valueKey] = file[this.urlKey];
         this.text.push(obj);
       }
-      this.$message.success("上传成功");
     },
     handleRemove (file, fileList) {
       this.onRemove && this.onRemove(file, fileList);
       this.delete(file);
-      this.$message.success("删除成功");
     },
     handleError (error) {
       if (typeof this.uploadError === "function") {

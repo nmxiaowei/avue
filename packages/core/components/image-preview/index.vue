@@ -38,9 +38,9 @@
     <div class="el-image-viewer__btn el-image-viewer__actions">
       <div class="el-image-viewer__actions__inner">
         <i class="el-icon-zoom-out"
-           @click="scale=scale-0.2"></i>
+           @click="subScale"></i>
         <i class="el-icon-zoom-in"
-           @click="scale=scale+0.2"></i>
+           @click="addScale"></i>
         <!-- <i class="el-image-viewer__actions__divider"></i> -->
         <!-- <i class="el-icon-full-screen"></i> -->
         <!-- <i class="el-image-viewer__actions__divider"></i> -->
@@ -93,6 +93,14 @@ export default create({
     }
   },
   methods: {
+    subScale () {
+      if (this.scale != 0.2) {
+        this.scale = parseFloat((this.scale - 0.2).toFixed(2))
+      }
+    },
+    addScale () {
+      this.scale = parseFloat((this.scale + 0.2).toFixed(2))
+    },
     handleChange () {
       this.scale = 1;
       this.rotate = 0;

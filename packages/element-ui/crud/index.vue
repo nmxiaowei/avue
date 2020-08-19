@@ -321,6 +321,16 @@
               :name="item.prop+'Error'"
               v-if="item.errorslot"></slot>
       </template>
+      <template slot-scope="scope"
+                v-for="item in columnFormOption"
+                :slot="item.prop+'Type'">
+        <slot v-bind="Object.assign(scope,{
+              row:tableForm,
+              index:tableIndex
+              })"
+              :name="item.prop+'Type'"
+              v-if="item.typeslot"></slot>
+      </template>
       <template slot-scope="{tableForm,type,size,disabled}"
                 slot="menuForm">
         <slot name="menuForm"
@@ -342,7 +352,7 @@
 import create from "core/create";
 import packages from "core/packages";
 import permission from '../../core/directive/permission';
-import init from "../../core/crud/init.js";
+import init from "../../core/common/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
 import locale from "../../core/common/locale";
@@ -354,10 +364,9 @@ import dialogForm from "./dialog-form";
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
-import { sendDic } from "core/dic";
 export default create({
   name: "crud",
-  mixins: [init("crud"), locale],
+  mixins: [init(), locale],
   directives: {
     permission
   },
@@ -401,7 +410,7 @@ export default create({
   mounted () {
     this.refreshTable(() => {
       //如果有搜索激活搜索
-      if (this.$refs.headerSearch) this.$refs.headerSearch.init();
+      this.$refs.headerSearch.init();
       //动态计算表格高度
       this.getTableHeight();
       //是否开启表格排序
@@ -498,6 +507,9 @@ export default create({
     },
     rowKey () {
       return this.tableOption.rowKey || "id";
+    },
+    rowParentKey () {
+      return this.tableOption.rowParentKey || "parentId";
     },
     parentOption () {
       return this.tableOption || {};
@@ -629,20 +641,6 @@ export default create({
         this.reload = true;
         callback && callback()
       })
-    },
-    updateDic (prop, list) {
-      let column = this.findObject(this.propOption, prop);
-      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-        sendDic({
-          column: column
-        }).then(list => {
-          this.$set(this.DIC, prop, list);
-          column.dicData = list;
-        });
-      } else {
-        this.$set(this.DIC, prop, list);
-        column.dicData = list;
-      }
     },
     //开启排序
     setSort () {
@@ -965,7 +963,7 @@ export default create({
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {
-      return this.validatenull(row.parentId)
+      return this.validatenull(row[this.rowParentKey])
     },
     // 删除
     rowDel (row, index) {
@@ -978,8 +976,7 @@ export default create({
           if (this.vaildParent(row)) {
             callback(this.data)
           } else {
-            let parent = this.findObject(this.data, row.parentId, this.rowKey);
-
+            let parent = this.findObject(this.data, row[this.rowParentKey], this.rowKey);
             if (parent === undefined) {
               callback(this.data)
             } else {
@@ -1018,7 +1015,7 @@ export default create({
           } else if (currItem) {
             switch (currItem.type) {
               case "count":
-                sums[index] = "计数：" + data.length;
+                sums[index] = (currItem.label || "计数：") + data.length;
                 break;
               case "avg":
                 let avgValues = data.map(item => Number(item[column.property]));
@@ -1031,7 +1028,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "平均：" + sums[index].toFixed(2);
+                sums[index] = (currItem.label || "平均：") + sums[index].toFixed(2);
                 break;
               case "sum":
                 let values = data.map(item => Number(item[column.property]));
@@ -1043,7 +1040,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = "合计：" + sums[index].toFixed(2);
+                sums[index] = (currItem.label || "合计：") + sums[index].toFixed(2);
                 break;
             }
           } else {

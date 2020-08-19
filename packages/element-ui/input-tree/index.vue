@@ -44,6 +44,10 @@
                 :value="valueKey"
                 :item="data"
                 v-if="typeslot"></slot>
+          <slot v-else-if="$scopedSlots.default"
+                :label="labelKey"
+                :value="valueKey"
+                :item="data"></slot>
           <span v-else
                 :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
         </div>
@@ -196,7 +200,7 @@ export default create({
       this.text = [];
       this.node = [];
       this.labelText = [];
-      const list = this.$refs.tree.getCheckedNodes();
+      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked);
       list.forEach(node => {
         this.node.push(node)
         this.text.push(node[this.valueKey]);

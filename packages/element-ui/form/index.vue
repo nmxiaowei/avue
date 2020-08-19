@@ -172,7 +172,7 @@
 import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
-import init from "../../core/crud/init";
+import init from "../../core/common/init";
 import formTemp from '../../core/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
@@ -414,20 +414,6 @@ export default create({
     getPropRef (prop) {
       return this.$refs[prop][0];
     },
-    updateDic (prop, list) {
-      let column = this.findObject(this.propOption, prop);
-      if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-        sendDic({
-          column: column
-        }).then(list => {
-          this.$set(this.DIC, prop, list);
-          column.dicData = list;
-        });
-      } else {
-        this.$set(this.DIC, prop, list);
-        column.dicData = list;
-      }
-    },
     //初始化表单
     dataFormat () {
       this.formDefault = formInitVal(this.propOption);
@@ -492,6 +478,7 @@ export default create({
         sendDic({
           column: columnNext,
           value: value,
+          form: this.form
         }).then(res => {
           //首次加载的放入队列记录
           if (!this.formList.includes(str)) this.formList.push(str);
@@ -587,10 +574,6 @@ export default create({
             this.show();
             callback(true, this.hide)
           }
-          this.asyncValidator(this.formRules, this.form).then(() => {
-          }).catch(err => {
-            callback(false, err.concat(dynamicError))
-          })
           this.dynamicOption.forEach(ele => {
             dynamicError.push({
               field: ele.prop,

@@ -65,6 +65,17 @@
                 })"
                 v-if="item.errorslot"></slot>
         </template>
+        <!-- 循环form表单组件自定义卡槽 -->
+        <template slot-scope="scope"
+                  v-for="item in crud.columnFormOption"
+                  :slot="item.prop+'Type'">
+          <slot :name="item.prop+'Type'"
+                v-bind="Object.assign(scope,{
+                  row:tableForm,
+                  index:crud.tableIndex,
+                })"
+                v-if="item.typeslot"></slot>
+        </template>
         <!-- 循环form表单标签卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.columnFormOption"
@@ -181,7 +192,7 @@ export default create({
     formOption () {
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
-      option.column = this.crud.propOption;
+      option.column = this.deepClone(this.crud.propOption);
       option.printBtn = false;
       option.mockBtn = false;
       if (this.isView) {
@@ -243,11 +254,11 @@ export default create({
     handleError (error) {
       this.crud.$emit('error', error)
     },
-    handleSubmit () {
+    handleSubmit (form, hide) {
       if (this.isAdd) {
-        this.rowSave();
+        this.rowSave(hide);
       } else if (this.isEdit) {
-        this.rowUpdate();
+        this.rowUpdate(hide);
       }
     },
     initFun () {
@@ -266,36 +277,30 @@ export default create({
       this.$emit("input", this.tableForm);
     },
     // 保存
-    rowSave () {
-      this.$refs["tableForm"].validate(vaild => {
-        if (!vaild) return;
-        this.crud.$emit(
-          "row-save",
-          filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
-          this.closeDialog,
-          this.$refs.tableForm.hide
-        );
-      });
+    rowSave (hide) {
+      this.crud.$emit(
+        "row-save",
+        filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
+        this.closeDialog,
+        hide
+      );
     },
     // 更新
-    rowUpdate () {
-      this.$refs["tableForm"].validate(vaild => {
-        if (!vaild) return;
-        const index = this.crud.tableIndex;
-        this.crud.$emit(
-          "row-update",
-          filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
-          this.index,
-          this.closeDialog,
-          this.$refs.tableForm.hide
-        );
-      });
+    rowUpdate (hide) {
+      const index = this.crud.tableIndex;
+      this.crud.$emit(
+        "row-update",
+        filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
+        this.index,
+        this.closeDialog,
+        hide
+      );
     },
     closeDialog (row, index) {
       const callback = () => {
         if (this.isEdit) {
           let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
-          obj = Object.assign(obj, row);
+          obj = Object.assign(obj || {}, row);
         } else if (this.isAdd) {
           const callback = (list = [], index) => {
             this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
@@ -305,7 +310,7 @@ export default create({
             if (this.crud.vaildParent(row)) {
               callback(this.crud.data, index)
             } else {
-              let parent = this.findObject(this.crud.data, row.parentId, this.crud.rowKey);
+              let parent = this.findObject(this.crud.data, row[this.crud.rowParentKey], this.crud.rowKey);
               if (parent === undefined) {
                 return callback(this.crud.data, index)
               }
