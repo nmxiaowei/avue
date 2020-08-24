@@ -37,7 +37,7 @@ export const loadScript = (type = 'js', url) => {
       script = document.createElement('link');
       script.rel = 'stylesheet';
       script.type = 'text/css';
-      script.src = url;
+      script.href = url;
     }
     head.appendChild(script);
     script.onload = function() {
