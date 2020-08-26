@@ -46,6 +46,7 @@
     <avue-crud v-else-if="isCrud"
                ref="crud"
                :option="option"
+               :disabled="disabled"
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"
@@ -153,7 +154,6 @@ export default create({
         menu: false,
         size: this.size,
         readonly: this.readonly,
-        disabled: this.disabled,
         emptyBtn: false,
         submitBtn: false,
       }, (() => {

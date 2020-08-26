@@ -603,6 +603,10 @@ export default create({
       type: Boolean,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Array,
       required: true,
