@@ -246,11 +246,12 @@ $space-width: 15px;
       }
     }
     .el-transfer{
+      position: relative;
       padding: 0 20px;
-      height:96%;
+      height:80%;
     }
     .el-transfer-panel__body,.el-transfer-panel__list.is-filterable{
-      height:100% !important;
+      height:90% !important;
     }
     .el-transfer__buttons{
       display: flex;
