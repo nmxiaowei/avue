@@ -321,7 +321,6 @@ export default create({
         ele.column = ele.column.sort((a, b) => {
           return (b.order || 0) - (a.order || 0)
         })
-        console.log(ele.column)
       });;
       return list;
     },
