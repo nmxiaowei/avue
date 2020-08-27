@@ -99,6 +99,7 @@
                           v-if="column.formslot"></slot>
                     <form-temp :column="column"
                                v-else
+                               :class="column.className"
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :t="t"
