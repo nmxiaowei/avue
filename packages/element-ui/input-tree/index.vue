@@ -26,6 +26,7 @@
                :accordion="accordion"
                :icon-class="iconClass"
                :show-checkbox="multiple"
+               :expand-on-click-node="expandOnClickNode"
                :props="treeProps"
                :check-strictly="checkStrictly"
                ref="tree"
@@ -84,6 +85,10 @@ export default create({
     leafOnly: {
       type: Boolean,
       default: false
+    },
+    expandOnClickNode: {
+      type: Boolean,
+      default: true
     },
     includeHalfChecked: {
       type: Boolean,
