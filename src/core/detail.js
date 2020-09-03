@@ -7,10 +7,6 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let type = column.type;
   let separator = column.separator;
   if (validatenull(result)) result = '';
-  // 自定义格式化
-  if (column.formatter && typeof column.formatter === 'function') {
-    result = column.formatter(row, row[column.prop], result, column);
-  }
 
   if (!validatenull(result)) {
     // 日期处理
@@ -41,6 +37,10 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   // 字典处理
   if (!validatenull(dic)) {
     result = findByValue(dic, result, column.props || option.props, ['cascader', 'tree'].includes(column.type), column);
+  }
+  // 自定义格式化
+  if (column.formatter && typeof column.formatter === 'function') {
+    result = column.formatter(row, row[column.prop], result, column);
   }
   return result;
 };
