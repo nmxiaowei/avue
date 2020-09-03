@@ -24,6 +24,7 @@
              :node-key="props.value"
              :check-strictly="checkStrictly"
              :filter-node-method="filterNode"
+             v-loading="loading"
              :expand-on-click-node="expandOnClickNode"
              @check-change="handleCheckChange"
              @node-click="nodeClick"
@@ -84,6 +85,10 @@ export default create({
   props: {
     iconClass: {
       type: String,
+    },
+    loading: {
+      type: Boolean,
+      default: false
     },
     expandOnClickNode: {
       type: Boolean,
