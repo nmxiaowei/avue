@@ -105,11 +105,7 @@
                                :t="t"
                                :props="parentOption.props"
                                :propsHttp="parentOption.propsHttp"
-                               :upload-before="uploadBefore"
-                               :upload-after="uploadAfter"
-                               :upload-delete="uploadDelete"
-                               :upload-preview="uploadPreview"
-                               :upload-error="uploadError"
+                               v-bind="$uploadFun()"
                                :disabled="getDisabled(column)"
                                :readonly="readonly"
                                :enter="parentOption.enter"
@@ -351,6 +347,7 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    uploadExceed: Function,
     reset: {
       type: Boolean,
       default: true

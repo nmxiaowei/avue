@@ -161,7 +161,8 @@ export default create({
     uploadAfter: Function,
     uploadDelete: Function,
     uploadPreview: Function,
-    uploadError: Function
+    uploadError: Function,
+    uploadExceed: Function
   },
   computed: {
     acceptList () {
@@ -251,9 +252,7 @@ export default create({
       this.delete(file);
     },
     handleError (error) {
-      if (typeof this.uploadError === "function") {
-        this.uploadError(error, this.column)
-      }
+      this.uploadError && this.uploadError(error, this.column)
     },
     delete (file) {
       if (this.isArray || this.isString || this.stringMode) {
@@ -390,11 +389,7 @@ export default create({
       }
     },
     handleExceed (files, fileList) {
-      this.$message.warning(
-        `当前限制选择 ${this.limit} 个文件，本次选择了 ${
-        files.length
-        } 个文件，共上传了 ${files.length + fileList.length} 个文件`
-      );
+      this.uploadExceed && this.uploadExceed(this.limit, files, fileList, this.column);
     },
     handlePreview (file) {
       const callback = () => {
@@ -421,9 +416,9 @@ export default create({
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {
-        return this.uploadDelete(this.column, file);
+        return this.uploadDelete(file, this.column);
       } else {
-        return this.$confirm(`是否确定移除该选项？`);
+        return Promise, resolve()
       }
     }
   }

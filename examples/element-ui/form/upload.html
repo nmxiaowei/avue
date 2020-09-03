@@ -22,7 +22,7 @@
   <div id="app">
     {{form}}
     <avue-form :option="option" v-model="form" :upload-error="uploadError" :upload-delete="uploadDelete"
-      :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
+      :upload-before="uploadBefore" :upload-exceed="uploadExceed" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
 <script>
@@ -75,6 +75,7 @@
               label: '照片墙',
               prop: 'imgUrl',
               type: 'upload',
+              limit: 1,
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
@@ -138,9 +139,13 @@
       }
     },
     methods: {
-      uploadDelete(column, file) {
-        console.log(column, file)
+      uploadDelete(file, column) {
+        console.log(file, column)
         return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
+      },
+      uploadExceed(limit, files, fileList, column) {
+        console.log(limit, files, fileList, column)
+        this.$message.success('达到文件限制了' + limit)
       },
       uploadBefore(file, done, loading, column) {
         console.log(file, column)

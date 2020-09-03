@@ -1,7 +1,7 @@
 <template>
   <component :is="getComponent(column.type,column.component)"
              v-model="text"
-             v-bind="column"
+             v-bind="Object.assign(column,$uploadFun())"
              :column="Object.assign(column,params)"
              :dic="dic"
              ref="temp"
@@ -12,11 +12,6 @@
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
              :type="type || column.type"
-             :upload-preview="uploadPreview"
-             :upload-before="uploadBefore"
-             :upload-after="uploadAfter"
-             :upload-delete="uploadDelete"
-             :upload-error="uploadError"
              @keyup.enter.native="enterChange"
              @change="handleChange">
     <span v-if="params.html"
@@ -56,6 +51,7 @@ export default {
     uploadAfter: Function,
     uploadPreview: Function,
     uploadError: Function,
+    uploadExceed: Function,
     props: {
       type: Object
     },

@@ -569,6 +569,7 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    uploadExceed: Function,
     permission: {
       type: [Function, Object],
       default: () => {

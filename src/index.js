@@ -53,6 +53,15 @@ const install = function(Vue, opts = {}) {
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
   }
+  Vue.prototype.$uploadFun = function(safe) {
+    safe = safe || this;
+    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
+    let result = {};
+    list.forEach(ele => {
+      result[ele] = safe[ele];
+    });
+    return result;
+  };
   Vue.prototype.$AVUE = {
     ui: (() => {
       if (window.antd) {

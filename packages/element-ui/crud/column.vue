@@ -41,11 +41,7 @@
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
-                       :upload-before="crud.uploadBefore"
-                       :upload-after="crud.uploadAfter"
-                       :upload-preview="crud.uploadPreview"
-                       :upload-error="crud.uploadError"
-                       :upload-delete="crud.uploadDelete"
+                       v-bind="$uploadFun(crud)"
                        v-model="scope.row[column.prop]"
                        @change="column.cascader && handleChange(index,scope.row)">
             </form-temp>
