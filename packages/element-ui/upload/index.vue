@@ -275,18 +275,10 @@ export default create({
     },
     httpRequest (config) {
       this.loading = true;
-      let file = config.file;
-      const accept = file.type;
+      let file = config.file;      
       const fileSize = file.size;
       this.file = config.file;
-      let acceptList = this.acceptList;
-      if (!Array.isArray(acceptList) && !this.validatenull(acceptList)) {
-        acceptList = acceptList.split(',')
-      }
-      if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
-        this.hide("文件类型不符合");
-        return;
-      }
+
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
