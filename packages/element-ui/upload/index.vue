@@ -418,7 +418,7 @@ export default create({
       if (typeof this.uploadDelete === "function") {
         return this.uploadDelete(file, this.column);
       } else {
-        return Promise, resolve()
+        return Promise.resolve()
       }
     }
   }
