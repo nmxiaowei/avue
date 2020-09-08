@@ -2,6 +2,7 @@
   <component :is="getComponent(column.type,column.component)"
              v-model="text"
              v-bind="Object.assign(column,$uploadFun())"
+             v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"
              ref="temp"
@@ -105,6 +106,9 @@ export default {
   computed: {
     params () {
       return this.column.params || {}
+    },
+    event () {
+      return this.column.event || {}
     },
     columnOption () {
       return ((this.column.children || []).column) || []
