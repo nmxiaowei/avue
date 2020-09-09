@@ -34,6 +34,7 @@
                  v-if="boxVisible"
                  ref="tableForm"
                  @submit="handleSubmit"
+                 @tab-click="handleTabClick"
                  @error="handleError"
                  :reset="false"
                  @reset-change="hide"
@@ -231,6 +232,9 @@ export default create({
     }
   },
   methods: {
+    handleTabClick (tab, event) {
+      this.crud.$emit('tab-click', tab, event)
+    },
     handleFullScreen () {
       if (this.isDrawer) {
         if (this.validatenull(this.size)) {

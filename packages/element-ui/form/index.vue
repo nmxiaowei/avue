@@ -25,6 +25,7 @@
                     :label="item.label">
           <el-tabs slot="tabs"
                    v-model="activeName"
+                   @tab-click="handleTabClick"
                    :class="b('tabs')"
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
@@ -388,6 +389,9 @@ export default create({
       this.propOption.forEach(column => {
         this.handleShowLabel(column, this.DIC[column.prop]);
       });
+    },
+    handleTabClick (tab, event) {
+      this.$emit('tab-click', tab, event)
     },
     getLabelWidth (column, item) {
       let result;
