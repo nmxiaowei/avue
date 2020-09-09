@@ -462,7 +462,7 @@ export const clearVal = (obj) => {
       obj[ele] = [];
     } else if (obj[ele] !== null && typeof obj[ele] === 'object') {
       obj[ele] = {};
-    } else if (['number', 'boolean'].includes(typeof obj[ele])) {
+    } else if (['number', 'boolean'].includes(typeof obj[ele]) || undefined === obj[ele]) {
       obj[ele] = undefined;
     } else {
       obj[ele] = '';
