@@ -87,8 +87,7 @@
       overflow: hidden;
     }
     &__menu{
-      position: absolute;
-      left: 0;
+      padding: 0 5px;
       i{
         margin-right: 20px;
         font-size: 24px;
@@ -160,13 +159,6 @@
       border-style: solid;
       font-size: 16px;
       font-weight: 300;
-    }
-
-    &--line{
-      border:none !important;
-      th,td{
-        border:none !important;
-      }
     }
   }
   &-header{
