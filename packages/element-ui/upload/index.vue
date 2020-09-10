@@ -59,19 +59,6 @@
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
     </el-upload>
-    <el-dialog append-to-body
-               :class="b('dialog')"
-               :modal-append-to-body="false"
-               :visible.sync="dialogVisible">
-      <img v-if="typeList.img.test(dialogUrl)"
-           :src="dialogUrl"
-           style="max-width:100%"
-           alt>
-      <video v-else-if="typeList.video.test(dialogUrl)"
-             controls="controls"
-             style="max-width:100%"
-             :src="dialogUrl"></video>
-    </el-dialog>
   </div>
 </template>
 
@@ -91,13 +78,6 @@ export default create({
     return {
       menu: false,
       loading: false,
-      typeList: {
-        img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
-        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
-      },
-      dialogUrl: "",
-      dialogType: true,
-      dialogVisible: false,
       text: [],
       file: {}
     };
@@ -149,6 +129,10 @@ export default create({
       type: Boolean,
       default: false
     },
+    isVideo: {
+      type: Boolean,
+      default: false
+    },
     loadText: {
       type: String,
       default: "文件上传中,请稍等"
@@ -175,7 +159,7 @@ export default create({
       return this.propsHttp.home || ''
     },
     allParams () {
-      if (this.typeList.video.test(this.imgUrl)) {
+      if (this.$typeList.video.test(this.imgUrl) || this.isVideo) {
         return Object.assign({
           is: 'video'
         }, this.params)
@@ -275,7 +259,7 @@ export default create({
     },
     httpRequest (config) {
       this.loading = true;
-      let file = config.file;      
+      let file = config.file;
       const fileSize = file.size;
       this.file = config.file;
 
@@ -385,14 +369,14 @@ export default create({
     },
     handlePreview (file) {
       const callback = () => {
-        //判断是否为图片
-        this.dialogUrl = file.url;
-        if (this.typeList.img.test(file.url)) {
-          this.dialogVisible = true;
-          return;
-        } else if (this.typeList.video.test(file.url)) {
-          this.dialogVisible = true;
-        }
+        let url = file.url
+        let list = this.fileList.map(ele => Object.assign(ele, {
+          type: (this.$typeList.video.test(ele.url) || this.isVideo) ? 'video' : ''
+        }))
+        let index = this.fileList.findIndex(ele => {
+          return ele.url === url;
+        })
+        this.$ImagePreview(list, index);
       }
       if (typeof this.uploadPreview === "function") {
         this.uploadPreview(file, this.column, callback);
