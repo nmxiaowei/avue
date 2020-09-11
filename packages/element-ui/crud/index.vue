@@ -711,7 +711,7 @@ export default create({
       return rowKey;
     },
     menuIcon (value) {
-      return this.isIconMenu ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
+      return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
     },
     menuText (value) {
       return this.isTextMenu ? "text" : value;
