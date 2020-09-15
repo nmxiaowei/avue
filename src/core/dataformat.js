@@ -128,12 +128,10 @@ export const formInitVal = (list = []) => {
     ) {
       tableForm[ele.prop] = [];
     } else if (
-      ['rate', 'slider'].includes(ele.type) ||
+      ['rate', 'slider', 'number'].includes(ele.type) ||
       ele.dataType === 'number'
     ) {
       tableForm[ele.prop] = undefined;
-    } else if (['number'].includes(ele.type)) {
-      tableForm[ele.prop] = 'undefined';
     } else {
       tableForm[ele.prop] = '';
     }
@@ -150,7 +148,7 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {

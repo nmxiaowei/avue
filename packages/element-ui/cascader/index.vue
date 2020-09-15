@@ -90,7 +90,22 @@ export default create({
         checkStrictly: this.checkStrictly,
         multiple: this.multiple,
         lazy: this.lazy,
-        lazyLoad: this.lazyLoad,
+        lazyLoad: (node, resolve) => {
+          let callback = (list) => {
+            let findDic = (list, value, children) => {
+              list.forEach(ele => {
+                if (ele[this.valueKey] == value) {
+                  ele[this.childrenKey] = children
+                } else if (ele[this.childrenKey]) {
+                  findDic(ele[this.childrenKey])
+                }
+              })
+            }
+            findDic(this.dic, node[this.valueKey], list)
+            resolve(list);
+          }
+          this.lazyLoad && this.lazyLoad(node, callback)
+        },
         expandTrigger: this.expandTrigger
       }
     }

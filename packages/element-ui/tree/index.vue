@@ -24,7 +24,8 @@
              :node-key="props.value"
              :check-strictly="checkStrictly"
              :filter-node-method="filterNode"
-             :expand-on-click-node="false"
+             v-loading="loading"
+             :expand-on-click-node="expandOnClickNode"
              @check-change="handleCheckChange"
              @node-click="nodeClick"
              @node-contextmenu="nodeContextmenu"
@@ -84,6 +85,14 @@ export default create({
   props: {
     iconClass: {
       type: String,
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    expandOnClickNode: {
+      type: Boolean,
+      default: false
     },
     option: {
       type: Object,
@@ -285,7 +294,7 @@ export default create({
         this.hide();
         done()
       };
-      this.$emit("save",this.node, data, callback, done);
+      this.$emit("save", this.node, data, callback, done);
     },
     update (data, done) {
       const callback = () => {
@@ -295,7 +304,7 @@ export default create({
         this.hide();
         done()
       };
-      this.$emit("update", this.node,data, callback, done);
+      this.$emit("update", this.node, data, callback, done);
     },
     rowEdit (a) {
       this.type = "edit";

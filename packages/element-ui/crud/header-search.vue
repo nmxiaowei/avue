@@ -111,6 +111,7 @@ export default cteate({
             ele = Object.assign(ele, {
               type: getSearchType(ele),
               multiple: ele.searchMultiple,
+              order: ele.searchOrder,
               detail: false,
               dicFlag: false,
               span: ele.searchSpan || option.searchSpan || this.config.searchSpan,

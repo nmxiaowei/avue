@@ -28,7 +28,7 @@
          @click="listVisible=true"></i>
     </div>
     <div :style="styleTdName"
-         :class="b('table',{'line':!line})">
+         :class="b('table')">
       <div :class="b('tr')">
         <div :class="b('td')"
              :style="[styleThName,{width:setPx(indexWidth)}]"
@@ -48,13 +48,13 @@
       <div :class="b('tr')"
            v-if="totalFlag">
         <div :class="b('td')"
-             :style="[styleThName,{width:setPx(indexWidth)}]"
+             :style="[{width:setPx(indexWidth)}]"
              v-if="index">
           合计
         </div>
         <template v-for="(item,index) in columnOption">
           <div :class="b('td')"
-               :style="[styleThName,styleWidth(item)]"
+               :style="[styleWidth(item)]"
                v-if="columnData.includes(item.prop)"
                :key="index">
             {{totalData[item.prop]}}
@@ -73,7 +73,7 @@
                :class="b('tr',['line'])"
                :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]">
             <div :class="b('td')"
-                 :style="[styleThName,styleWidth(citem)]"
+                 :style="[styleWidth(citem)]"
                  :key="index"
                  v-if="index">
               <div :class="b('index',[(cindex+1)+''])"> {{(cindex+1)}}</div>
@@ -241,9 +241,6 @@ export default create({
     indexLabel () {
       return this.option.indexLabel || "排名";
     },
-    line () {
-      return this.option.line;
-    },
     fontSize () {
       return this.option.fontSize || 14;
     },
@@ -256,7 +253,6 @@ export default create({
     styleThName () {
       return {
         fontSize: this.setPx(this.fontSize),
-        textAlign: this.option.headerTextAlign || "center",
         background: this.option.headerBackground || "rgba(0, 0, 0, 0.01)",
         color: this.option.headerColor || "rgba(154, 168, 212, 1)"
       };
@@ -268,8 +264,6 @@ export default create({
       return {
         fontSize: this.setPx(this.fontSize),
         lineHeight: this.setPx(this.lineHeight),
-        textAlign: this.option.bodyTextAlign || "center",
-        background: this.option.bodyBackground || "rgba(0, 0, 0, 0.01)",
         color: this.option.bodyColor || "rgba(154, 168, 212, 1)",
         borderColor: this.option.borderColor || "rgba(51, 65, 107, 1)"
       };

@@ -25,6 +25,7 @@
                     :label="item.label">
           <el-tabs slot="tabs"
                    v-model="activeName"
+                   @tab-click="handleTabClick"
                    :class="b('tabs')"
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
@@ -99,16 +100,13 @@
                           v-if="column.formslot"></slot>
                     <form-temp :column="column"
                                v-else
+                               :class="column.className"
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :t="t"
                                :props="parentOption.props"
                                :propsHttp="parentOption.propsHttp"
-                               :upload-before="uploadBefore"
-                               :upload-after="uploadAfter"
-                               :upload-delete="uploadDelete"
-                               :upload-preview="uploadPreview"
-                               :upload-error="uploadError"
+                               v-bind="$uploadFun()"
                                :disabled="getDisabled(column)"
                                :readonly="readonly"
                                :enter="parentOption.enter"
@@ -317,6 +315,10 @@ export default create({
         });
         //处理级联属性
         ele.column = calcCascader(ele.column);
+        //根据order排序
+        ele.column = ele.column.sort((a, b) => {
+          return (b.order || 0) - (a.order || 0)
+        })
       });;
       return list;
     },
@@ -346,6 +348,7 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    uploadExceed: Function,
     reset: {
       type: Boolean,
       default: true
@@ -386,6 +389,9 @@ export default create({
       this.propOption.forEach(column => {
         this.handleShowLabel(column, this.DIC[column.prop]);
       });
+    },
+    handleTabClick (tab, event) {
+      this.$emit('tab-click', tab, event)
     },
     getLabelWidth (column, item) {
       let result;

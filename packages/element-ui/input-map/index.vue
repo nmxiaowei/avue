@@ -6,7 +6,7 @@
               :disabled="disabled"
               ref="main"
               v-model="formattedAddress"
-              @focus="handleShow"
+              @click.native="handleShow"
               :placeholder="placeholder">
     </el-input>
 
@@ -112,7 +112,6 @@ export default create({
     },
     handleShow () {
       this.$refs.main.blur();
-      if (this.disabled || this.readonly) return;
       this.box = true;
     },
     //新增坐标

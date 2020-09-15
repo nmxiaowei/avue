@@ -34,14 +34,11 @@
                  v-if="boxVisible"
                  ref="tableForm"
                  @submit="handleSubmit"
+                 @tab-click="handleTabClick"
                  @error="handleError"
                  :reset="false"
                  @reset-change="hide"
-                 :upload-preview="crud.uploadPreview"
-                 :upload-delete="crud.uploadDelete"
-                 :upload-before="crud.uploadBefore"
-                 :upload-after="crud.uploadAfter"
-                 :upload-error="crud.uploadError"
+                 v-bind="$uploadFun(crud)"
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
         <template slot-scope="scope"
@@ -235,6 +232,9 @@ export default create({
     }
   },
   methods: {
+    handleTabClick (tab, event) {
+      this.crud.$emit('tab-click', tab, event)
+    },
     handleFullScreen () {
       if (this.isDrawer) {
         if (this.validatenull(this.size)) {

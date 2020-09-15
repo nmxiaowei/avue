@@ -65,16 +65,16 @@ export default function () {
       },
       updateDic (prop, list) {
         let column = this.findObject(this.propOption, prop);
-        if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+        if (this.validatenull(list) && this.validatenull(prop)) {
+          this.handleLoadDic();
+        } else if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
           sendDic({
             column: column
           }).then(list => {
             this.$set(this.DIC, prop, list);
           });
-        } else if (!this.validatenull(list)) {
-          this.$set(this.DIC, prop, list);
         } else {
-          this.handleLoadDic();
+          this.$set(this.DIC, prop, list);
         }
       },
       handleSetDic (list, res = {}) {

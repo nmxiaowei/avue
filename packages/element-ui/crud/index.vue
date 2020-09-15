@@ -185,19 +185,19 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-if="vaildData(tableOption.viewBtn,true)"
+              <el-dropdown-item v-if="vaildData(tableOption.viewBtn,config.viewBtn)"
                                 v-permission="getPermission('viewBtn',scope.row,scope.$index)"
                                 @click.native="rowView(scope.row,scope.$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
-                                v-if="vaildData(tableOption.editBtn,true)"
+                                v-if="vaildData(tableOption.editBtn,config.editBtn)"
                                 v-permission="getPermission('editBtn',scope.row,scope.$index)"
                                 @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
-                                v-if="vaildData(tableOption.copyBtn,true)"
+                                v-if="vaildData(tableOption.copyBtn,config.copyBtn)"
                                 v-permission="getPermission('copyBtn',scope.row,scope.$index)"
                                 @click.native="rowCopy(scope.row)">{{t('crud.copyBtn')}}</el-dropdown-item>
               <el-dropdown-item divided
-                                v-if="vaildData(tableOption.delBtn,true)"
+                                v-if="vaildData(tableOption.delBtn,config.delBtn)"
                                 v-permission="getPermission('delBtn',scope.row,scope.$index)"
                                 @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
               <slot name="menuBtn"
@@ -569,6 +569,7 @@ export default create({
     uploadDelete: Function,
     uploadPreview: Function,
     uploadError: Function,
+    uploadExceed: Function,
     permission: {
       type: [Function, Object],
       default: () => {
@@ -600,6 +601,10 @@ export default create({
       }
     },
     tableLoading: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -706,7 +711,7 @@ export default create({
       return rowKey;
     },
     menuIcon (value) {
-      return this.isIconMenu ? "" : (this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value)));
+      return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
     },
     menuText (value) {
       return this.isTextMenu ? "text" : value;

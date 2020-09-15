@@ -4,7 +4,7 @@
               v-model="text"
               :size="size"
               ref="main"
-              @focus="$refs.main.blur()"
+              :readonly="readonly"
               @change="handleChange"
               :clearable="disabled?false:clearable"
               :disabled="disabled">

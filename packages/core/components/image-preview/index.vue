@@ -31,6 +31,8 @@
           <img :src="item.url"
                :style="styleName"
                @mousedown="move"
+               controls="controls"
+               v-bind="getIsVideo(item)"
                ondragstart="return false"></img>
         </el-carousel-item>
       </el-carousel>
@@ -93,6 +95,12 @@ export default create({
     }
   },
   methods: {
+    getIsVideo (item) {
+      if (this.$typeList.video.test(item.url) || item.type == 'video') {
+        return { is: 'video' }
+      }
+      return {}
+    },
     subScale () {
       if (this.scale != 0.2) {
         this.scale = parseFloat((this.scale - 0.2).toFixed(2))

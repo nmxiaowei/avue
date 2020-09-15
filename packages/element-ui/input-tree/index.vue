@@ -21,11 +21,12 @@
                class="tree-option"
                style="padding:10px 0;"
                :lazy="lazy"
-               :load="treeLoad"
+               :load="handleTreeLoad"
                :node-key="valueKey"
                :accordion="accordion"
                :icon-class="iconClass"
                :show-checkbox="multiple"
+               :expand-on-click-node="expandOnClickNode"
                :props="treeProps"
                :check-strictly="checkStrictly"
                ref="tree"
@@ -84,6 +85,10 @@ export default create({
     leafOnly: {
       type: Boolean,
       default: false
+    },
+    expandOnClickNode: {
+      type: Boolean,
+      default: true
     },
     includeHalfChecked: {
       type: Boolean,
@@ -181,6 +186,22 @@ export default create({
     this.init();
   },
   methods: {
+    handleTreeLoad (node, resolve) {
+      let callback = (list) => {
+        let findDic = (list, value, children) => {
+          list.forEach(ele => {
+            if (ele[this.valueKey] == value) {
+              ele[this.childrenKey] = children
+            } else if (ele[this.childrenKey]) {
+              findDic(ele[this.childrenKey])
+            }
+          })
+        }
+        findDic(this.dic, node.key, list)
+        resolve(list);
+      }
+      this.treeLoad && this.treeLoad(node, callback)
+    },
     // 初始化滚动条
     initScroll () {
       setTimeout(() => {

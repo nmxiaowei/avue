@@ -59,19 +59,6 @@
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
     </el-upload>
-    <el-dialog append-to-body
-               :class="b('dialog')"
-               :modal-append-to-body="false"
-               :visible.sync="dialogVisible">
-      <img v-if="typeList.img.test(dialogUrl)"
-           :src="dialogUrl"
-           style="max-width:100%"
-           alt>
-      <video v-else-if="typeList.video.test(dialogUrl)"
-             controls="controls"
-             style="max-width:100%"
-             :src="dialogUrl"></video>
-    </el-dialog>
   </div>
 </template>
 
@@ -91,13 +78,6 @@ export default create({
     return {
       menu: false,
       loading: false,
-      typeList: {
-        img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
-        video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
-      },
-      dialogUrl: "",
-      dialogType: true,
-      dialogVisible: false,
       text: [],
       file: {}
     };
@@ -149,6 +129,10 @@ export default create({
       type: Boolean,
       default: false
     },
+    isVideo: {
+      type: Boolean,
+      default: false
+    },
     loadText: {
       type: String,
       default: "文件上传中,请稍等"
@@ -161,7 +145,8 @@ export default create({
     uploadAfter: Function,
     uploadDelete: Function,
     uploadPreview: Function,
-    uploadError: Function
+    uploadError: Function,
+    uploadExceed: Function
   },
   computed: {
     acceptList () {
@@ -174,7 +159,7 @@ export default create({
       return this.propsHttp.home || ''
     },
     allParams () {
-      if (this.typeList.video.test(this.imgUrl)) {
+      if (this.$typeList.video.test(this.imgUrl) || this.isVideo) {
         return Object.assign({
           is: 'video'
         }, this.params)
@@ -251,9 +236,7 @@ export default create({
       this.delete(file);
     },
     handleError (error) {
-      if (typeof this.uploadError === "function") {
-        this.uploadError(error, this.column)
-      }
+      this.uploadError && this.uploadError(error, this.column)
     },
     delete (file) {
       if (this.isArray || this.isString || this.stringMode) {
@@ -277,17 +260,9 @@ export default create({
     httpRequest (config) {
       this.loading = true;
       let file = config.file;
-      const accept = file.type;
       const fileSize = file.size;
       this.file = config.file;
-      let acceptList = this.acceptList;
-      if (!Array.isArray(acceptList) && !this.validatenull(acceptList)) {
-        acceptList = acceptList.split(',')
-      }
-      if (!this.validatenull(acceptList) && !acceptList.includes(accept)) {
-        this.hide("文件类型不符合");
-        return;
-      }
+
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
@@ -390,22 +365,18 @@ export default create({
       }
     },
     handleExceed (files, fileList) {
-      this.$message.warning(
-        `当前限制选择 ${this.limit} 个文件，本次选择了 ${
-        files.length
-        } 个文件，共上传了 ${files.length + fileList.length} 个文件`
-      );
+      this.uploadExceed && this.uploadExceed(this.limit, files, fileList, this.column);
     },
     handlePreview (file) {
       const callback = () => {
-        //判断是否为图片
-        this.dialogUrl = file.url;
-        if (this.typeList.img.test(file.url)) {
-          this.dialogVisible = true;
-          return;
-        } else if (this.typeList.video.test(file.url)) {
-          this.dialogVisible = true;
-        }
+        let url = file.url
+        let list = this.fileList.map(ele => Object.assign(ele, {
+          type: (this.$typeList.video.test(ele.url) || this.isVideo) ? 'video' : ''
+        }))
+        let index = this.fileList.findIndex(ele => {
+          return ele.url === url;
+        })
+        this.$ImagePreview(list, index);
       }
       if (typeof this.uploadPreview === "function") {
         this.uploadPreview(file, this.column, callback);
@@ -421,9 +392,9 @@ export default create({
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {
-        return this.uploadDelete(this.column, file);
+        return this.uploadDelete(file, this.column);
       } else {
-        return this.$confirm(`是否确定移除该选项？`);
+        return Promise.resolve()
       }
     }
   }
