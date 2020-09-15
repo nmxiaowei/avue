@@ -23,6 +23,7 @@
                  :style="{color:item.color}">
                 <span>¥</span>
                 <avue-count-up class="b"
+                               :decimals="decimals"
                                :animation="animation"
                                :end="item.dismoney"></avue-count-up>
                 <s>{{item.money}}</s>
@@ -74,6 +75,9 @@ export default create({
   computed: {
     animation () {
       return this.option.animation
+    },
+    decimals () {
+      return this.option.decimals || 0
     },
     span () {
       return this.option.span || 6;

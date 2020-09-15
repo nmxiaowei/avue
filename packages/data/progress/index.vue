@@ -13,6 +13,7 @@
             <div class="item-header">
               <avue-count-up class="item-count"
                              :animation="animation"
+                             :decimals="decimals"
                              :end="item.count"></avue-count-up>
               <div class="item-title"
                    v-text="item.title"></div>
@@ -44,6 +45,9 @@ export default create({
   computed: {
     animation () {
       return this.option.animation
+    },
+    decimals () {
+      return this.option.decimals || 0
     },
     span () {
       return this.option.span || 8;
