@@ -160,9 +160,9 @@ export const getPlaceholder = function (column, type) {
     }
   } else if (validatenull(placeholder)) {
     if (SELECT_LIST.includes(column.type)) {
-      return `${this.t('tip.select')} ${label}`;
+      return `${this.t('tip.select')}${label}`;
     } else {
-      return `${this.t('tip.input')} ${label}`;
+      return `${this.t('tip.input')}${label}`;
     }
   }
 
