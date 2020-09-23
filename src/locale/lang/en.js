@@ -8,6 +8,10 @@ export default {
     select: 'please select',
     input: 'please input'
   },
+  upload: {
+    upload: 'upload',
+    tip: 'Drag files here，/'
+  },
   date: {
     start: 'Start date',
     end: 'End date',

@@ -8,6 +8,10 @@ export default {
     select: '请选择',
     input: '请输入'
   },
+  upload: {
+    upload: '点击上传',
+    tip: '将文件拖到此处，或'
+  },
   date: {
     start: '开始日期',
     end: '结束日期',
