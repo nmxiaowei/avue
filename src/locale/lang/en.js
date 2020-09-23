@@ -28,6 +28,11 @@ export default {
     empty: 'empty'
   },
   crud: {
+    summary: {
+      count: 'count:',
+      avg: 'avg:',
+      sum: 'sum:'
+    },
     filter: {
       addBtn: 'add',
       clearBtn: 'clear',

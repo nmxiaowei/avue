@@ -28,6 +28,11 @@ export default {
     empty: '清 空'
   },
   crud: {
+    summary: {
+      count: '计数:',
+      avg: '平均:',
+      sum: '合计:'
+    },
     filter: {
       addBtn: '新增条件',
       clearBtn: '清空数据',
