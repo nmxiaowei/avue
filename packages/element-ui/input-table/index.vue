@@ -15,6 +15,7 @@
                :title="placeholder"
                :visible.sync="box">
       <avue-crud :class="b('crud')"
+                 ref="crud"
                  :option="option"
                  :data="data"
                  @on-load="onList"
@@ -22,6 +23,13 @@
                  @search-reset="handleSearchChange"
                  @current-row-change="handleCurrentRowChange"
                  :page.sync="page"></avue-crud>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   :size="size"
+                   icon="el-icon-check"
+                   @click="setVal">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -35,6 +43,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      object: {},
       active: {},
       page: {},
       box: false,
@@ -50,6 +59,15 @@ export default create({
     value (val) {
       if (this.validatenull(val)) {
         this.active = {}
+        this.object = {}
+      }
+    },
+    box (val) {
+      if (val) {
+        setTimeout(() => {
+          let active = this.data.find(ele => ele[this.valueKey] == this.object[this.valueKey])
+          this.$refs.crud.setCurrentRow(active);
+        })
       }
     },
     text (val) {
@@ -57,6 +75,7 @@ export default create({
       if (typeof this.onLoad == 'function') {
         this.onLoad({ value: this.text }, data => {
           this.active = data
+          this.object = data
           this.create = true;
         })
       }
@@ -68,9 +87,9 @@ export default create({
     },
     labelShow () {
       if (typeof this.formatter == 'function') {
-        return this.formatter(this.active)
+        return this.formatter(this.object)
       }
-      return this.active[this.labelKey] || ''
+      return this.object[this.labelKey] || ''
     },
     option () {
       return Object.assign({
@@ -79,23 +98,28 @@ export default create({
         size: 'mini',
         headerAlign: 'center',
         align: 'center',
+        highlightCurrentRow: true,
       }, this.column.children)
     }
   },
   methods: {
     handleClear () {
-      this.handleCurrentRowChange({})
+      this.active = {}
+      this.setVal()
     },
     handleShow () {
       this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
       this.box = true;
     },
-    handleCurrentRowChange (val) {
-      this.active = val;
+    setVal () {
+      this.object = this.active
       this.text = this.active[this.valueKey] || ''
       this.handleChange(this.text)
-      this.box = false;
+      this.box = false
+    },
+    handleCurrentRowChange (val) {
+      this.active = val;
     },
     handleSearchChange (form, done) {
       this.onLoad({ page: this.page, data: form }, data => {
@@ -108,7 +132,7 @@ export default create({
       if (typeof this.onLoad == 'function') {
         this.onLoad({ page: this.page }, data => {
           this.page.total = data.total;
-          this.data = data.data;
+          this.data = data.data
         })
       }
     }
