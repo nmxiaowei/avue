@@ -20,6 +20,8 @@
            v-if="box">
         <el-input :class="b('content-input')"
                   id="map__input"
+                  :size="size"
+                  @clear="clear"
                   :readonly="disabled"
                   v-model="formattedAddress"
                   clearable
@@ -35,6 +37,8 @@
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
+                   :size="size"
+                   icon="el-icon-check"
                    v-if="!(disabled || readonly)"
                    @click="handleSubmit">确 定</el-button>
       </span>
@@ -51,6 +55,8 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      formattedAddress: '',
+      address: '',
       poi: {},
       marker: null,
       map: null,
@@ -58,6 +64,9 @@ export default create({
     };
   },
   watch: {
+    poi (val) {
+      this.formattedAddress = val.formattedAddress
+    },
     value (val) {
       if (this.validatenull(val)) {
         this.poi = {}
@@ -70,6 +79,7 @@ export default create({
           latitude: val[1],
           formattedAddress: val[2],
         }
+        this.address = val[2];
       }
     },
     box: {
@@ -89,12 +99,6 @@ export default create({
     }
   },
   computed: {
-    address () {
-      return this.text[2]
-    },
-    formattedAddress () {
-      return this.poi.formattedAddress
-    },
     longitude () {
       return this.text[0]
     },
@@ -106,6 +110,10 @@ export default create({
     }
   },
   methods: {
+    clear () {
+      this.poi = {};
+      this.clearMarker();
+    },
     handleSubmit () {
       this.setVal()
       this.box = false;
