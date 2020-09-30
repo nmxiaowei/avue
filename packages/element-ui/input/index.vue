@@ -8,6 +8,7 @@
             :type="typeParam"
             :maxlength="maxlength"
             :minlength="minlength"
+            :show-password="showPassword"
             :autosize="{ minRows: minRows, maxRows: maxRows}"
             :prefix-icon="prefixIcon"
             :suffix-icon="suffixIcon"
@@ -47,6 +48,10 @@ export default create({
     value: {},
     maxlength: "",
     minlength: "",
+    showPassword: {
+      type: Boolean,
+      default: true
+    },
     showWordLimit: {
       type: Boolean,
       default: false
