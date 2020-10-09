@@ -68,6 +68,8 @@ export default create({
   data () {
     return {
       node: [],
+      halfList: [],
+      halfParentList: [],
       filterText: "",
       box: false,
       labelText: []
@@ -221,7 +223,8 @@ export default create({
       this.text = [];
       this.node = [];
       this.labelText = [];
-      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked);
+      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, false);
+      this.getHalfList()
       list.forEach(node => {
         this.node.push(node)
         this.text.push(node[this.valueKey]);
@@ -233,12 +236,33 @@ export default create({
       this.$emit("input", result);
       this.$emit("change", result);
     },
+    getHalfValue () {
+      let list = [];
+      this.halfList.forEach((ele, index) => {
+        let count = this.halfParentList.findIndex(item => item === ele);
+        if (count === -1) list.push(ele)
+      })
+      return list;
+    },
+    getHalfList () {
+      let list = this.$refs.tree.getCheckedNodes(false, false)
+      let halfList = this.$refs.tree.getCheckedNodes(false, true)
+      list = list.map(ele => ele[this.valueKey])
+      halfList = halfList.map(ele => ele[this.valueKey])
+      this.halfList = this.deepClone(halfList);
+      list.forEach((ele, index) => {
+        let count = halfList.findIndex(item => item === ele);
+        if (count !== -1) halfList.splice(count, 1)
+      })
+      this.halfParentList = halfList
+    },
     init () {
       this.$nextTick(() => {
         this.labelText = [];
         this.node = [];
         if (this.multiple) {
-          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked)
+          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
+          this.getHalfList();
           list.forEach(ele => {
             this.labelText.push(ele[this.labelKey])
             this.node.push(ele);
@@ -295,15 +319,6 @@ export default create({
         this.isString && this.multiple ? this.text.join(",") : this.text;
       if (typeof this.click === "function")
         this.click({ value: result, column: this.column });
-    },
-    handleChange (value) {
-      let text = this.text;
-      const result = this.isString && this.multiple ? value.join(",") : value;
-      if (typeof this.change === "function") {
-        this.change({ value: result, column: this.column });
-      }
-      this.$emit("input", result);
-      this.$emit("change", result);
     }
   }
 });
