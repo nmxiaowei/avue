@@ -292,6 +292,7 @@ export default (() => {
       },
       // 绑定点击事件
       bindClick() {
+        this.myChart.off('click');
         this.myChart.on('click', e => {
           if (e.marker) {
             if (this.clickFormatter) {

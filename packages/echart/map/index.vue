@@ -342,6 +342,10 @@ export default create({
             }
           ]
         };
+        this.myChart.off("mouseover");
+        this.myChart.off("mouseout");
+        this.myChart.off("georoam");
+
         this.myChart.on("mouseover", () => {
           clearInterval(this.bannerCheck);
           this.resetBanner();
