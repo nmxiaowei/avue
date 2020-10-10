@@ -5,7 +5,7 @@
               :clearable="disabled?false:clearable"
               :disabled="disabled"
               ref="main"
-              v-model="formattedAddress"
+              v-model="address"
               @click.native="handleShow"
               :placeholder="placeholder">
     </el-input>
@@ -20,8 +20,10 @@
            v-if="box">
         <el-input :class="b('content-input')"
                   id="map__input"
+                  :size="size"
+                  @clear="clear"
                   :readonly="disabled"
-                  v-model="address"
+                  v-model="formattedAddress"
                   clearable
                   placeholder="输入关键字选取地点"></el-input>
         <div :class="b('content-box')">
@@ -32,6 +34,14 @@
                :class="b('content-result')"></div>
         </div>
       </div>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   :size="size"
+                   icon="el-icon-check"
+                   v-if="!(disabled || readonly)"
+                   @click="handleSubmit">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -45,6 +55,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      formattedAddress: '',
       address: '',
       poi: {},
       marker: null,
@@ -53,13 +64,13 @@ export default create({
     };
   },
   watch: {
+    poi (val) {
+      this.formattedAddress = val.formattedAddress
+    },
     value (val) {
       if (this.validatenull(val)) {
         this.poi = {}
       }
-    },
-    formattedAddress () {
-      this.address = this.formattedAddress;
     },
     text (val) {
       if (!this.validatenull(val)) {
@@ -68,6 +79,7 @@ export default create({
           latitude: val[1],
           formattedAddress: val[2],
         }
+        this.address = val[2];
       }
     },
     box: {
@@ -87,20 +99,25 @@ export default create({
     }
   },
   computed: {
-    formattedAddress () {
-      return this.poi.formattedAddress
-    },
     longitude () {
-      return this.poi.longitude
+      return this.text[0]
     },
     latitude () {
-      return this.poi.latitude
+      return this.text[1]
     },
     title () {
       return (this.disabled || this.readonly) ? "查看" : '选择'
     }
   },
   methods: {
+    clear () {
+      this.poi = {};
+      this.clearMarker();
+    },
+    handleSubmit () {
+      this.setVal()
+      this.box = false;
+    },
     handleClear () {
       this.text = [];
       this.poi = {};
@@ -141,7 +158,6 @@ export default create({
               longitude: R,
               latitude: P
             });
-            this.setVal();
             // 自定义点标记内容
             var markerContent = document.createElement("div");
 
@@ -221,7 +237,6 @@ export default create({
           longitude: poi.location.R,
           latitude: poi.location.P || poi.location.Q
         });
-        this.setVal()
         if (source !== "search") {
           poiPicker.searchByKeyword(poi.name);
         }

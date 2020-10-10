@@ -1016,11 +1016,13 @@ export default create({
             item => item.name === column.property
           );
           if (index === 0) {
-            sums[index] = this.tableOption.sumText || config.sumText;
+            sums[index] = ''
           } else if (currItem) {
+            let decimals = currItem.decimals || 2;
+            let label = currItem.label;
             switch (currItem.type) {
               case "count":
-                sums[index] = (currItem.label || "计数：") + data.length;
+                sums[index] = (label || this.t('crud.summary.count')) + data.length;
                 break;
               case "avg":
                 let avgValues = data.map(item => Number(item[column.property]));
@@ -1033,7 +1035,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = (currItem.label || "平均：") + sums[index].toFixed(2);
+                sums[index] = (label || this.t('crud.summary.avg')) + sums[index].toFixed(decimals);
                 break;
               case "sum":
                 let values = data.map(item => Number(item[column.property]));
@@ -1045,7 +1047,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = (currItem.label || "合计：") + sums[index].toFixed(2);
+                sums[index] = (label || this.t('crud.summary.sum')) + sums[index].toFixed(decimals);
                 break;
             }
           } else {

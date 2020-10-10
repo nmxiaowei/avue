@@ -605,7 +605,7 @@ export default create({
             })
             cb();
           })
-        } else callback(valid)
+        } else callback(valid, this.hide)
       });
     },
     resetForm () {

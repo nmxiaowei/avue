@@ -8,6 +8,10 @@ export default {
     select: 'please select',
     input: 'please input'
   },
+  upload: {
+    upload: 'upload',
+    tip: 'Drag files here，/'
+  },
   date: {
     start: 'Start date',
     end: 'End date',
@@ -24,6 +28,11 @@ export default {
     empty: 'empty'
   },
   crud: {
+    summary: {
+      count: 'count:',
+      avg: 'avg:',
+      sum: 'sum:'
+    },
     filter: {
       addBtn: 'add',
       clearBtn: 'clear',

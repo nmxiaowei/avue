@@ -90,10 +90,6 @@ export default create({
       type: Boolean,
       default: true
     },
-    includeHalfChecked: {
-      type: Boolean,
-      default: false
-    },
     filter: {
       type: Boolean,
       default: true
@@ -166,10 +162,9 @@ export default create({
       return list;
     },
     keysList () {
-      if (this.validatenull(this.text)) {
-        return [];
-      }
-      return this.multiple ? this.text : [this.text];
+      if (this.validatenull(this.text)) return [];
+      let list = Array.isArray(this.text) ? this.text : this.text.split(this.separator);
+      return list
     },
     labelShow () {
       if (this.typeformat) {
@@ -221,7 +216,7 @@ export default create({
       this.text = [];
       this.node = [];
       this.labelText = [];
-      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked);
+      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, false);
       list.forEach(node => {
         this.node.push(node)
         this.text.push(node[this.valueKey]);
@@ -233,12 +228,17 @@ export default create({
       this.$emit("input", result);
       this.$emit("change", result);
     },
+    getHalfList () {
+      let list = this.$refs.tree.getCheckedNodes(false, true)
+      list = list.map(ele => ele[this.valueKey])
+      return list;
+    },
     init () {
       this.$nextTick(() => {
         this.labelText = [];
         this.node = [];
         if (this.multiple) {
-          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked)
+          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
           list.forEach(ele => {
             this.labelText.push(ele[this.labelKey])
             this.node.push(ele);
@@ -295,15 +295,6 @@ export default create({
         this.isString && this.multiple ? this.text.join(",") : this.text;
       if (typeof this.click === "function")
         this.click({ value: result, column: this.column });
-    },
-    handleChange (value) {
-      let text = this.text;
-      const result = this.isString && this.multiple ? value.join(",") : value;
-      if (typeof this.change === "function") {
-        this.change({ value: result, column: this.column });
-      }
-      this.$emit("input", result);
-      this.$emit("change", result);
     }
   }
 });

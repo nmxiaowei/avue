@@ -48,13 +48,13 @@
       <template v-else-if="drag">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
+          {{t('upload.tip')}}
+          <em>{{t('upload.upload')}}</em>
         </div>
       </template>
       <template v-else>
         <el-button size="small"
-                   type="primary">点击上传</el-button>
+                   type="primary">{{t('upload.upload')}}</el-button>
       </template>
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
@@ -66,6 +66,7 @@
 import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
+import locale from "../../core/common/locale";
 import { getObjValue } from "utils/util";
 import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
@@ -73,7 +74,7 @@ import { getClient } from "plugin/ali/";
 import packages from "core/packages";
 export default create({
   name: "upload",
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   data () {
     return {
       menu: false,
