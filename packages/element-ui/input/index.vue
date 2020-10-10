@@ -8,7 +8,7 @@
             :type="typeParam"
             :maxlength="maxlength"
             :minlength="minlength"
-            :show-password="showPassword"
+            :show-password="typeParam=='password'?showPassword:false"
             :autosize="{ minRows: minRows, maxRows: maxRows}"
             :prefix-icon="prefixIcon"
             :suffix-icon="suffixIcon"
