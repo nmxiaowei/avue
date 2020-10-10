@@ -68,8 +68,6 @@ export default create({
   data () {
     return {
       node: [],
-      halfList: [],
-      halfParentList: [],
       filterText: "",
       box: false,
       labelText: []
@@ -91,10 +89,6 @@ export default create({
     expandOnClickNode: {
       type: Boolean,
       default: true
-    },
-    includeHalfChecked: {
-      type: Boolean,
-      default: false
     },
     filter: {
       type: Boolean,
@@ -168,10 +162,9 @@ export default create({
       return list;
     },
     keysList () {
-      if (this.validatenull(this.text)) {
-        return [];
-      }
-      return this.multiple ? this.text : [this.text];
+      if (this.validatenull(this.text)) return [];
+      let list = Array.isArray(this.text) ? this.text : this.text.split(this.separator);
+      return list
     },
     labelShow () {
       if (this.typeformat) {
@@ -224,7 +217,6 @@ export default create({
       this.node = [];
       this.labelText = [];
       const list = this.$refs.tree.getCheckedNodes(this.leafOnly, false);
-      this.getHalfList()
       list.forEach(node => {
         this.node.push(node)
         this.text.push(node[this.valueKey]);
@@ -236,25 +228,10 @@ export default create({
       this.$emit("input", result);
       this.$emit("change", result);
     },
-    getHalfValue () {
-      let list = [];
-      this.halfList.forEach((ele, index) => {
-        let count = this.halfParentList.findIndex(item => item === ele);
-        if (count === -1) list.push(ele)
-      })
-      return list;
-    },
     getHalfList () {
-      let list = this.$refs.tree.getCheckedNodes(false, false)
-      let halfList = this.$refs.tree.getCheckedNodes(false, true)
+      let list = this.$refs.tree.getCheckedNodes(false, true)
       list = list.map(ele => ele[this.valueKey])
-      halfList = halfList.map(ele => ele[this.valueKey])
-      this.halfList = this.deepClone(halfList);
-      list.forEach((ele, index) => {
-        let count = halfList.findIndex(item => item === ele);
-        if (count !== -1) halfList.splice(count, 1)
-      })
-      this.halfParentList = halfList
+      return list;
     },
     init () {
       this.$nextTick(() => {
@@ -262,7 +239,6 @@ export default create({
         this.node = [];
         if (this.multiple) {
           let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
-          this.getHalfList();
           list.forEach(ele => {
             this.labelText.push(ele[this.labelKey])
             this.node.push(ele);

@@ -4,13 +4,11 @@ export default function () {
   return {
     methods: {
       initVal () {
-        let value = this.value;
-        if (this.includeHalfChecked) value = this.getHalfValue()
         this.text = initVal({
           type: this.type,
           multiple: this.multiple,
           dataType: this.dataType,
-          value: value,
+          value: this.value,
           separator: this.separator,
           callback: (result) => {
             this.stringMode = result;
@@ -54,9 +52,6 @@ export default function () {
         }
         if (typeof this.change === 'function') {
           this.change({ value: result, column: this.column });
-        }
-        if (this.includeHalfChecked) {
-          result = this.halfList;
         }
         this.$emit('input', result);
         this.$emit('change', result);
