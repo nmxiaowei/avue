@@ -206,7 +206,7 @@ export default create({
       this.treeLoad && this.treeLoad(node, callback)
     },
     // 初始化滚动条
-    initScroll () {
+    initScroll (event) {
       setTimeout(() => {
         this.$nextTick(() => {
           let scrollBar = document.querySelectorAll('.el-scrollbar .el-select-dropdown__wrap')
@@ -215,6 +215,7 @@ export default create({
           })
         })
       }, 0)
+      this.handleClick(event);
     },
     filterNode (value, data) {
       if (!value) return true;
