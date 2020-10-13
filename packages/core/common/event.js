@@ -15,14 +15,6 @@ export default function () {
           }
         });
       },
-      handleFocus (event) {
-        typeof this.focus === 'function' && this.focus({ value: this.text, column: this.column })
-        this.$emit('focus', event)
-      },
-      handleBlur (event) {
-        typeof this.blur === 'function' && this.blur({ value: this.text, column: this.column })
-        this.$emit('blur', event)
-      },
       getLabelText (item) {
         if (this.validatenull(item)) return ''
         if (typeof this.typeformat === 'function') {
@@ -30,12 +22,17 @@ export default function () {
         }
         return item[this.labelKey]
       },
-      handleClick () {
-        const result =
-          this.isString && this.multiple ? this.text.join(',') : this.text;
-        if (typeof this.click === 'function') {
-          this.click({ value: result, column: this.column });
-        }
+      handleFocus (event) {
+        typeof this.focus === 'function' && this.focus({ value: this.value, column: this.column })
+        this.$emit('focus', this.value, event)
+      },
+      handleBlur (event) {
+        typeof this.blur === 'function' && this.blur({ value: this.value, column: this.column })
+        this.$emit('blur', this.value, event)
+      },
+      handleClick (event) {
+        typeof this.click === 'function' && this.click({ value: this.value, column: this.column });
+        this.$emit('click', this.value, event)
       },
       handleChange (value) {
         let result = value;
