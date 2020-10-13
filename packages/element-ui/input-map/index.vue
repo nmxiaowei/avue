@@ -195,14 +195,12 @@ export default create({
         packages.logs('Map')
         return
       }
-      this.map = new window.AMap.Map("map__container", {
+      this.map = new window.AMap.Map("map__container", Object.assign({
         zoom: 13,
         center: (() => {
-          if (this.longitude && this.latitude) {
-            return [this.longitude, this.latitude];
-          }
+          if (this.longitude && this.latitude) return [this.longitude, this.latitude];
         })()
-      });
+      }, this.params));
       this.initPoip();
       this.addClick();
       callback();

@@ -67,7 +67,7 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import locale from "../../core/common/locale";
-import { getObjValue } from "utils/util";
+import { getAsVal } from "utils/util";
 import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
@@ -77,6 +77,7 @@ export default create({
   mixins: [props(), event(), locale],
   data () {
     return {
+      res: '',
       menu: false,
       loading: false,
       text: [],
@@ -221,10 +222,10 @@ export default create({
         this.change({ value: this.text, column: this.column });
     },
     handleSuccess (file) {
-      if (this.isArray || this.isString || this.stringMode) {
-        this.text.push(file[this.urlKey]);
-      } else if (this.isPictureImg) {
+      if (this.isPictureImg) {
         this.text.splice(0, 1, file[this.urlKey])
+      } else if (this.isArray || this.isString || this.stringMode) {
+        this.text.push(file[this.urlKey]);
       } else {
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
@@ -252,7 +253,7 @@ export default create({
     },
     show (data) {
       this.loading = false;
-      this.handleSuccess(data);
+      this.handleSuccess(data || this.res);
     },
     hide (msg) {
       this.loading = false;
@@ -317,29 +318,27 @@ export default create({
             }
           })()
             .then(res => {
-              let list = {};
+              this.res = {};
               if (this.isQiniuOss) {
                 res.data.key = oss_config.url + res.data.key;
               }
 
               if (this.isAliOss) {
-                list = getObjValue(res, this.resKey, "object");
+                this.res = getAsVal(res, this.resKey);
               } else {
-                list = getObjValue(res.data, this.resKey, "object");
+                this.res = getAsVal(res.data, this.resKey);
               }
 
               if (typeof this.uploadAfter === "function")
                 this.uploadAfter(
-                  list,
-                  () => {
-                    this.show(list);
-                  },
+                  this.res,
+                  this.show,
                   () => {
                     this.loading = false;
                   },
                   this.column
                 );
-              else this.show(list);
+              else this.show(this.res);
             })
             .catch(error => {
               if (typeof this.uploadAfter === "function")
@@ -388,6 +387,7 @@ export default create({
     handleDelete (file) {
       this.beforeRemove(file).then(() => {
         this.text = [];
+        this.menu = false;
       }).catch(() => {
       });
     },

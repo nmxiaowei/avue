@@ -62,6 +62,7 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { DIC_SHOW_SPLIT } from 'global/variable';
+import { detailDataType } from 'utils/util';
 export default create({
   name: "input-tree",
   mixins: [props(), event()],
@@ -163,7 +164,14 @@ export default create({
     },
     keysList () {
       if (this.validatenull(this.text)) return [];
-      let list = Array.isArray(this.text) ? this.text : this.text.split(this.separator);
+      let list = []
+      if (Array.isArray(this.text)) {
+        list = this.text;
+      }
+      else {
+        list = (this.text + '').split(this.separator)
+        list = list.map(ele => detailDataType(ele, this.dataType))
+      }
       return list
     },
     labelShow () {
@@ -198,7 +206,7 @@ export default create({
       this.treeLoad && this.treeLoad(node, callback)
     },
     // 初始化滚动条
-    initScroll () {
+    initScroll (event) {
       setTimeout(() => {
         this.$nextTick(() => {
           let scrollBar = document.querySelectorAll('.el-scrollbar .el-select-dropdown__wrap')
@@ -207,6 +215,7 @@ export default create({
           })
         })
       }, 0)
+      this.handleClick(event);
     },
     filterNode (value, data) {
       if (!value) return true;
@@ -223,10 +232,6 @@ export default create({
         this.labelText.push(node[this.labelKey]);
       });
       if (typeof this.checked === "function") this.checked(checkedNodes);
-      const result =
-        this.isString && this.multiple ? this.text.join(",") : this.text;
-      this.$emit("input", result);
-      this.$emit("change", result);
     },
     getHalfList () {
       let list = this.$refs.tree.getCheckedNodes(false, true)
@@ -281,20 +286,11 @@ export default create({
       ) {
         const value = data[this.valueKey];
         const label = data[this.labelKey];
-        const result = this.isString && this.multiple ? value.join(",") : value;
         this.text = value;
         this.node = [data];
         this.labelText = [label];
         this.$refs.main.blur();
-        this.$emit("input", result);
-        this.$emit("change", result);
       }
-    },
-    handleClick () {
-      const result =
-        this.isString && this.multiple ? this.text.join(",") : this.text;
-      if (typeof this.click === "function")
-        this.click({ value: result, column: this.column });
     }
   }
 });
