@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 import { initVal } from 'core/dataformat';
+function bindEvent (safe, name, event) {
+  typeof safe[name] === 'function' && safe[name]({ value: safe.value, column: safe.column })
+  safe.$emit(name, safe.value, event)
+}
 export default function () {
   return {
     methods: {
@@ -23,16 +27,13 @@ export default function () {
         return item[this.labelKey]
       },
       handleFocus (event) {
-        typeof this.focus === 'function' && this.focus({ value: this.value, column: this.column })
-        this.$emit('focus', this.value, event)
+        bindEvent(this, 'focus', event)
       },
       handleBlur (event) {
-        typeof this.blur === 'function' && this.blur({ value: this.value, column: this.column })
-        this.$emit('blur', this.value, event)
+        bindEvent(this, 'blur', event)
       },
       handleClick (event) {
-        typeof this.click === 'function' && this.click({ value: this.value, column: this.column });
-        this.$emit('click', this.value, event)
+        bindEvent(this, 'click', event)
       },
       handleChange (value) {
         let result = value;

@@ -53,20 +53,6 @@ import event from "../../core/common/event.js";
 export default create({
   name: "input-map",
   mixins: [props(), event()],
-  props: {
-    zoomValue: {
-      type: [Number, String],
-      default: 13
-    },
-    zoom: {
-      type: Boolean,
-      default: true
-    },
-    drag: {
-      type: Boolean,
-      default: true
-    }
-  },
   data () {
     return {
       formattedAddress: '',
@@ -209,16 +195,12 @@ export default create({
         packages.logs('Map')
         return
       }
-      this.map = new window.AMap.Map("map__container", {
-        zoom: this.zoomValue,
-        zoomEnable: this.zoom,
-        dragEnable: this.drag,
+      this.map = new window.AMap.Map("map__container", Object.assign({
+        zoom: 13,
         center: (() => {
-          if (this.longitude && this.latitude) {
-            return [this.longitude, this.latitude];
-          }
+          if (this.longitude && this.latitude) return [this.longitude, this.latitude];
         })()
-      });
+      }, this.params));
       this.initPoip();
       this.addClick();
       callback();
