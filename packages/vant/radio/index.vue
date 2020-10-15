@@ -1,35 +1,37 @@
 <template>
-  <div class="avue-cell">
-    <van-cell :title="label"
-              :class="{'van-cell--required':required}"
-              v-if="tags">
-      <van-tag class="avue-cell__tags"
-               plain
-               v-for="(item,index) in dic"
-               :type="text===item[valueKey]?'primary':'default'"
-               :key="index"
-               @click.native="handleRadioClick(item[valueKey])">{{item[labelKey]}}</van-tag>
-    </van-cell>
-    <van-radio-group v-model="text"
-                     @change="handleChange"
-                     v-else>
-      <p :class="['avue-cell__title',{'avue-cell__title--required':required}]">
-        {{label}}
-        <small class="avue-cell__tip"
-               v-if="tip">{{tip}}</small>
-      </p>
-      <van-cell-group>
-        <van-cell v-for="(item,index) in dic "
-                  :key="index"
-                  :title="item[labelKey]"
-                  clickable
-                  :disabled="disabled"
-                  @click="handleRadioClick(item[valueKey])">
-          <van-radio :name="item[valueKey]" />
-        </van-cell>
-      </van-cell-group>
-    </van-radio-group>
-  </div>
+  <van-field :placeholder="placeholder"
+             :rules="rules"
+             :clearable="clearable"
+             :disabled="disabled"
+             :input-align="inputAlign"
+             :required="required"
+             @click.native="handleClick"
+             readonly
+             :label="label">
+    <template slot="input">
+      <template v-if="tags">
+        <van-tag class="avue__tag"
+                 :plain="text!==item[valueKey]"
+                 size="medium"
+                 v-for="(item,index) in dic"
+                 :type="text===item[valueKey]?'primary':'default'"
+                 :key="index"
+                 @click.native="text=item[valueKey]">{{item[labelKey]}}</van-tag>
+      </template>
+      <van-radio-group v-show="!tags"
+                       v-model="text"
+                       slot="input"
+                       :disabled="disabled"
+                       :direction="direction">
+        <van-radio v-for="(item,index) in dic "
+                   :key="index"
+                   :name="item[valueKey]">
+          {{item[labelKey]}}
+        </van-radio>
+      </van-radio-group>
+    </template>
+
+  </van-field>
 </template>
 
 <script>
@@ -40,6 +42,10 @@ export default create({
   name: "radio",
   mixins: [props(), event()],
   props: {
+    direction: {
+      type: String,
+      default: 'horizontal'
+    },
     tags: {
       type: Boolean,
       default: false
@@ -53,11 +59,6 @@ export default create({
   created () { },
   mounted () { },
   methods: {
-    handleRadioClick (value) {
-      if (this.disabled) return;
-      this.text = value;
-      this.handleClick();
-    }
   }
 });
 </script>

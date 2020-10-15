@@ -1,19 +1,18 @@
 <template>
-  <div class="avue-cell">
-    <van-field v-model="text"
-               :placeholder="placeholder"
-               :clearable="clearable"
-               :left-icon="prefixIcon"
-               :input-align="inputAlign"
-               :type="typeParam"
-               :required="required"
-               :autosize="{ minHeight: minRows*50, maxHeight: maxRows*50}"
-               @click.native="handleClick"
-               :readonly="readonly"
-               :disabled="disabled"
-               :icon="suffixIcon"
-               :label="label" />
-  </div>
+  <van-field v-model="text"
+             :rules="rules"
+             :placeholder="placeholder"
+             :clearable="clearable"
+             :left-icon="prefixIcon"
+             :input-align="inputAlign"
+             :type="typeParam"
+             :required="required"
+             :autosize="{ minHeight: minRows*50, maxHeight: maxRows*50}"
+             @click.native="handleClick"
+             :readonly="readonly"
+             :disabled="disabled"
+             :icon="suffixIcon"
+             :label="label" />
 </template>
 
 <script>
@@ -25,14 +24,14 @@ export default create({
   name: "input",
   mixins: [props(), event()],
   props: {
+    inputType: {
+      type: String
+    },
     prefixIcon: {
       type: String
     },
     suffixIcon: {
       type: String
-    },
-    rules: {
-      type: Array
     },
     labelPosition: {
       type: String
@@ -46,33 +45,29 @@ export default create({
       default: 4
     }
   },
-  data() {
+  data () {
     return {};
   },
   computed: {
-    typeParam: function() {
-      if (this.type === "textarea") {
+    typeParam: function () {
+      if (this.inputType) {
+        return this.inputType
+      } else if (this.type === "textarea") {
         return "textarea";
       } else if (this.type === "password") {
         return "password";
       } else {
         return "text";
       }
-    },
-    inputAlign() {
-      if (this.typeParam === "textarea") {
-        return "left";
-      }
-      return "right";
     }
   },
   watch: {
-    text() {
+    text () {
       this.handleChange(this.text);
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {}
 });
 </script>

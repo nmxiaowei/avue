@@ -5,10 +5,13 @@ import Radio from 'components/radio';
 import Checkbox from 'components/checkbox';
 import Switch from 'components/switch';
 import Date from 'components/date';
-import Time from 'components/time';
+import Time from 'components/date';
 import Upload from 'components/upload';
+import InputNumber from 'components/input-number';
+import Slider from 'components/slider';
+import Rate from 'components/rate';
 import packages from 'core/packages';
 if (!window.vant) {
   packages.logs('vant');
 }
-export default { Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload };
+export default { InputNumber, Slider, Rate, Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload };

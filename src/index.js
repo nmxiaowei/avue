@@ -40,7 +40,9 @@ const install = function(Vue, opts = {}) {
   Vue.directive('dialogdrag', dialogDrag);
   Object.keys(components).map(ele => {
     let component = components[ele];
-    Vue.component(component.name, component);
+    let name = component.name;
+    name = name.substr(name.length - 1, 1) === '-' ? (name.substr(0, name.length - 1)) + ele : name;
+    Vue.component(name, component);
   });
   Object.keys(prototypes).forEach((key) => {
     Vue.prototype[key] = prototypes[key];

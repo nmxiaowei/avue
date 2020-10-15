@@ -8,15 +8,9 @@
              @click.native="handleClick"
              readonly
              :label="label">
-    <van-switch slot="input"
-                v-model="text"
-                :size="setPx(len)"
-                :active-color="activeColor"
-                :inactive-color="inactiveColor"
-                :active-value="active[valueKey]"
-                :inactive-value="inactive[valueKey]"
-                :readonly="readonly"
-                :disabled="disabled" />
+    <van-stepper v-model="text"
+                 :button-size="setPx(len)"
+                 slot="input"></van-stepper>
   </van-field>
 </template>
 
@@ -25,14 +19,12 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 export default create({
-  name: "switch",
+  name: "input-number",
   mixins: [props(), event()],
   props: {
-    activeColor: String,
-    inactiveColor: String,
     len: {
-      type: Number,
-      default: 20
+      type: [String, Number],
+      default: 24
     }
   },
   data () {
@@ -41,12 +33,7 @@ export default create({
   },
   watch: {},
   computed: {
-    active () {
-      return this.dic[1] || {};
-    },
-    inactive () {
-      return this.dic[0] || {};
-    }
+
   }
 });
 </script>

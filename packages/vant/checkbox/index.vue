@@ -1,37 +1,38 @@
 <template>
-  <div class="avue-cell">
-    <van-cell :title="label"
-              :class="{'van-cell--required':required}"
-              v-if="tags">
-      <van-tag class="avue-cell__tags"
-               plain
-               v-for="(item,index) in dic"
-               :type="text.includes(item[valueKey])?'primary':'default'"
-               :key="index"
-               @click.native="handleCheckboxClick(index)">{{item[labelKey]}}</van-tag>
-    </van-cell>
-    <van-checkbox-group v-show="!tags"
-                        v-model="text"
-                        @change="handleChange"
-                        :max="max">
-      <p :class="['avue-cell__title',{'avue-cell__title--required':required}]">
-        {{label}}
-        <small class="avue-cell__tip"
-               v-if="tip">{{tip}}</small>
-      </p>
-      <van-cell-group>
-        <van-cell v-for="(item,index) in dic "
-                  :key="index"
-                  :title="item[labelKey]"
-                  clickable
-                  :disabled="disabled"
-                  @click="handleCheckboxClick(index)">
-          <van-checkbox :name="item[valueKey]"
-                        ref="checkbox" />
-        </van-cell>
-      </van-cell-group>
-    </van-checkbox-group>
-  </div>
+  <van-field :placeholder="placeholder"
+             :rules="rules"
+             :clearable="clearable"
+             :disabled="disabled"
+             :input-align="inputAlign"
+             :required="required"
+             @click.native="handleClick"
+             readonly
+             :label="label">
+    <template slot="input">
+      <template v-if="tags">
+        <van-tag class="avue__tag"
+                 :plain="!text.includes(item[valueKey])"
+                 size="medium"
+                 v-for="(item,index) in dic"
+                 :type="text.includes(item[valueKey])?'primary':'default'"
+                 :key="index"
+                 @click.native="handleCheckboxClick(index)">{{item[labelKey]}}</van-tag>
+      </template>
+      <van-checkbox-group v-show="!tags"
+                          v-model="text"
+                          :disabled="disabled"
+                          :direction="direction">
+        <van-checkbox ref="checkbox"
+                      v-for="(item,index) in dic "
+                      :key="index"
+                      shape="square"
+                      :name="item[valueKey]">
+          {{item[labelKey]}}
+        </van-checkbox>
+      </van-checkbox-group>
+    </template>
+
+  </van-field>
 </template>
 
 <script>
@@ -42,6 +43,10 @@ export default create({
   name: "checkbox",
   mixins: [props(), event()],
   props: {
+    direction: {
+      type: String,
+      default: 'horizontal'
+    },
     tags: {
       type: Boolean,
       default: false
