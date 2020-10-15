@@ -1,23 +1,8 @@
 .avue-form__mobile{
-  &_header{
-    .van-sticky{
-      background-color: #fff;
-    }
-    .van-hairline--bottom::after{
-      border:none
-    }
-  }
-  &_title{
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: 500;
-  }
-  &_subtitle{
-    padding: 0 16px;
-  }
   .avue__tag{
     margin-right: 5px;
+  }
+  .van-cell::after{
+    display: block;
   }
 }

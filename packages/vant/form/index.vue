@@ -1,49 +1,27 @@
 <template>
   <div :class="b('mobile')"
        :style="{width:setPx(tableOption.formWidth,'100%')}">
-    <van-sticky :class="b('mobile_header')"
-                v-if="header">
-      <van-nav-bar :right-text="vaildData(parentOption.submitBtn,true)?vaildData(parentOption.submitText,t('form.submit')):''"
-                   @click-right="$refs.form.submit()">
-        <div :class="b('mobile_title')"
-             slot="left">
-          <img :src="img"
-               v-if="img"
-               style="margin-right:5px"
-               width="30px">
-          <span v-if="title">{{title}}</span>
-        </div>
-      </van-nav-bar>
-      <div :class="b('mobile_subtitle')"
-           v-if="subtitle">
-        <van-tag type="success">
-          {{subtitle}}
-        </van-tag>
-      </div>
-    </van-sticky>
     <van-form @submit="submit"
               ref="form">
       <div :key="index"
            v-for="(item,index) in columnOption">
-        <van-sticky :offset-top="header?64:0">
-          <van-tabs v-model="activeName"
-                    color="#1989fa"
-                    v-if="isTabs&&index == 1">
-            <van-tab v-for="(item,index) in columnOption"
-                     v-if="!item.display && index!=0"
-                     :key="index"
-                     :name="index+''">
-              <span slot="title">
-                <slot :name="item.prop+'Header'"
-                      v-if="$slots[item.prop+'Header']"></slot>
-                <template v-else>
-                  <i :class="'van-icon '+item.icon">&nbsp;</i>
-                  {{item.label}}
-                </template>
-              </span>
-            </van-tab>
-          </van-tabs>
-        </van-sticky>
+        <van-tabs v-model="activeName"
+                  v-if="isTabs&&index == 1"
+                  color="#1989fa">
+          <van-tab v-for="(item,index) in columnOption"
+                   v-if="!item.display && index!=0"
+                   :key="index"
+                   :name="index+''">
+            <span slot="title">
+              <slot :name="item.prop+'Header'"
+                    v-if="$slots[item.prop+'Header']"></slot>
+              <template v-else>
+                <i :class="'van-icon '+item.icon">&nbsp;</i>
+                {{item.label}}
+              </template>
+            </span>
+          </van-tab>
+        </van-tabs>
         <div v-for="(column,cindex) in item.column"
              :key="cindex"
              v-show="isGroupShow(item,index)">
@@ -74,11 +52,11 @@
           </form-temp>
         </div>
       </div>
-      <div style="margin-top:16px;">
+      <div style="margin:16px 0 30px 0;padding:0 10px">
         <van-button block
                     native-type="submit"
                     type="info"
-                    v-if="vaildData(parentOption.submitBtn,true)&&!header">{{vaildData(parentOption.submitText,t("form.submit"))}}</van-button>
+                    v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,t("form.submit"))}}</van-button>
       </div>
     </van-form>
   </div>
@@ -141,18 +119,6 @@ export default create({
     }
   },
   computed: {
-    img () {
-      return this.parentOption.img
-    },
-    header () {
-      return this.parentOption.header
-    },
-    title () {
-      return this.parentOption.title
-    },
-    subtitle () {
-      return this.parentOption.subtitle
-    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
