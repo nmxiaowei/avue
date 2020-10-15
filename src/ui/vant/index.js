@@ -10,8 +10,9 @@ import Upload from 'components/upload';
 import InputNumber from 'components/input-number';
 import Slider from 'components/slider';
 import Rate from 'components/rate';
+import Cell from 'components/cell'
 import packages from 'core/packages';
 if (!window.vant) {
   packages.logs('vant');
 }
-export default { InputNumber, Slider, Rate, Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload };
+export default { Cell, InputNumber, Slider, Rate, Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload };

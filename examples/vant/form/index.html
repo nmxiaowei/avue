@@ -16,10 +16,6 @@
   <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue-mobile.js"></script>
-  <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.13.0/theme-chalk/index.css" />
-  <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
-  <script src="../../../lib/avue.js"></script>
-  <link rel="stylesheet" href="../../../lib/index.css" /> -->
 </head>
 
 <body>
@@ -37,14 +33,19 @@
 
         },
         option: {
-          tabs: true,
+          // tabs: true,
           header: true,
           img: 'https://avuejs.com/images/logo-bg.jpg',
           title: '我是标题',
           subtitle: '我是副标题',
+          column: [{
+            label: '主表单',
+            prop: 'text'
+          }],
           group: [{
             label: '选项卡1',
             icon: 'van-icon-location-o',
+            arrow: false,
             column: [
               {
                 // prefixIcon: 'contact',
@@ -316,6 +317,7 @@
           }, {
             label: '选项卡2',
             icon: 'van-icon-like-o',
+            collapse: false,
             column: [{
               label: '输入框',
               prop: 'text'

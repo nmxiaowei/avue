@@ -3,9 +3,20 @@
        :style="{width:setPx(tableOption.formWidth,'100%')}">
     <van-form @submit="submit"
               ref="form">
-      <div :key="index"
-           v-for="(item,index) in columnOption">
-        <van-tabs v-model="activeName"
+      <avue-group v-for="(item,index) in columnOption"
+                  :key="item.prop"
+                  :tabs="isTabs"
+                  :arrow="item.arrow"
+                  :collapse="item.collapse"
+                  :display="item.display"
+                  :icon="item.icon"
+                  :index="index"
+                  :header="!isTabs"
+                  :active="activeName"
+                  :card="parentOption.card"
+                  :label="item.label">
+        <van-tabs slot="tabs"
+                  v-model="activeName"
                   v-if="isTabs&&index == 1"
                   color="#1989fa">
           <van-tab v-for="(item,index) in columnOption"
@@ -16,12 +27,16 @@
               <slot :name="item.prop+'Header'"
                     v-if="$slots[item.prop+'Header']"></slot>
               <template v-else>
-                <i :class="'van-icon '+item.icon">&nbsp;</i>
+                <i :class="'van-icon' +item.icon">&nbsp;</i>
                 {{item.label}}
               </template>
             </span>
           </van-tab>
         </van-tabs>
+        <template slot="header"
+                  v-if="$slots[item.prop+'Header']">
+          <slot :name="item.prop+'Header'"></slot>
+        </template>
         <div v-for="(column,cindex) in item.column"
              :key="cindex"
              v-show="isGroupShow(item,index)">
@@ -51,7 +66,7 @@
                      @change="propChange(item.column,column)">
           </form-temp>
         </div>
-      </div>
+      </avue-group>
       <div style="margin:16px 0 30px 0;padding:0 10px">
         <van-button block
                     native-type="submit"

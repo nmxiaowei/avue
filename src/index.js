@@ -12,6 +12,7 @@ import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
+import $Group from 'packages/core/components/group/';
 
 let prototypes = {
   $Print,
@@ -40,7 +41,7 @@ const install = function(Vue, opts = {}) {
   Vue.directive('dialogdrag', dialogDrag);
   Object.keys(components).map(ele => {
     let component = components[ele];
-    let name = component.name;
+    let name = component.name || '';
     name = name.substr(name.length - 1, 1) === '-' ? (name.substr(0, name.length - 1)) + ele : name;
     Vue.component(name, component);
   });
@@ -55,6 +56,7 @@ const install = function(Vue, opts = {}) {
     img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
     video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
   };
+  Vue.component($Group.name, $Group);
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
@@ -76,10 +78,15 @@ const install = function(Vue, opts = {}) {
           name: 'antd',
           type: 'a'
         };
-      } else if (window.Element) {
+      } else if (window.ELEMENT) {
         return {
           name: 'element-ui',
           type: 'el'
+        };
+      } else if (window.vant) {
+        return {
+          name: 'vant',
+          type: 'van'
         };
       }
     })(),
