@@ -293,7 +293,9 @@ export default function () {
           let index = this.fileList.findIndex(ele => {
             return ele.url === url;
           })
-          this.$ImagePreview(list, index);
+          if (!this.$isVan) {
+            this.$ImagePreview(list, index);
+          }
         }
         if (typeof this.uploadPreview === "function") {
           this.uploadPreview(file, this.column, callback);

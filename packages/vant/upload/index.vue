@@ -9,6 +9,7 @@
              readonly
              :label="label">
     <van-uploader slot="input"
+                  ref="upload"
                   v-model="fileList"
                   :max-count="limit"
                   :max-size="fileSize"

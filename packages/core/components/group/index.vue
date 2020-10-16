@@ -8,15 +8,15 @@
       <component :is="collapseItemName"
                  :name="1"
                  :disabled="!arrow">
-        <div :class="[b('header'),b({'none':isVant})]"
+        <div :class="[b('header'),b({'none':$isVan})]"
              slot="title"
              v-if="$slots.header&&header">
           <slot name="header"></slot>
         </div>
-        <div :class="[b('header'),b({'none':isVant})]"
+        <div :class="[b('header'),b({'none':$isVan})]"
              slot="title"
              v-else-if="(label || icon)&&header">
-          <i :class="[isVant?'van-icon':'',icon,b('icon')]"
+          <i :class="[$isVan?'van-icon':'',icon,b('icon')]"
              v-if="icon"></i>
           <h1 :class="b('title')"
               v-if="label">{{label}}</h1>
@@ -70,17 +70,11 @@ export default create({
     },
   },
   computed: {
-    isVant () {
-      return this.type === 'van'
-    },
-    type () {
-      return this.$AVUE.ui.type
-    },
     collapseName () {
-      return `${this.type}Collapse`
+      return `${this.$AVUE.ui.type}Collapse`
     },
     collapseItemName () {
-      return `${this.type}CollapseItem`
+      return `${this.$AVUE.ui.type}CollapseItem`
     },
     text () {
       return this.collapse ? 1 : 0

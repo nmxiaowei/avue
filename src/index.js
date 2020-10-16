@@ -74,16 +74,19 @@ const install = function(Vue, opts = {}) {
     ui: (() => {
       if (window.antd) {
         Vue.prototype.moment = window.moment;
+        Vue.prototype.$isAnt = true;
         return {
           name: 'antd',
           type: 'a'
         };
       } else if (window.ELEMENT) {
+        Vue.prototype.$isEle = true;
         return {
           name: 'element-ui',
           type: 'el'
         };
       } else if (window.vant) {
+        Vue.prototype.$isVan = true;
         return {
           name: 'vant',
           type: 'van'
