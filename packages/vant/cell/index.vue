@@ -107,10 +107,8 @@ export default create({
     }
   },
   methods: {
-    handelClick (item = {}) {
-      if (item.click) {
-        item.click(item)
-      }
+    handleClick (item) {
+      this.$emit('click', item)
     }
   }
 });

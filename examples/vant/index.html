@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <van-search v-model="value" placeholder="请输入搜索关键词"></van-search>
+    <avue-swipe :option="option" @click="handleClick"></avue-swipe>
+    <avue-grid :option="option1" @click="handleClick"></avue-grid>
+    <avue-cell :option="option2" empty-text="没有发现数据" @click="handleClick"></avue-cell>
+    <avue-tabbar :option="option3" @click="handleClick"></avue-tabbar>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        search: '',
+        option: {
+          // autoplay:5000,
+          // loop:false,
+          list: [{
+            title: '这是标题2',
+            url: '/vant/mobile.htm',
+            value: 'https://img.yzcdn.cn/vant/apple-1.jpg',
+          }, {
+            title: '这是标题3',
+            url: '/vant/mobile.htm',
+            value: 'https://img.yzcdn.cn/vant/apple-2.jpg',
+          }]
+        },
+        option1: {
+          // span: 12,
+          // round: 10,
+          list: [{
+            url: '/vant/mobile.htm',
+            title: '我是菜单1',
+            color: '#67C23A',
+            url: '/vant/mobile.htm',
+            icon: 'like-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单2',
+            color: '#409EFF',
+            url: '/vant/mobile.htm',
+            icon: 'star-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单3',
+            color: '#E6A23C',
+            url: '/vant/mobile.htm',
+            icon: 'phone-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单4',
+            color: '#F56C6C',
+            url: '/vant/mobile.htm',
+            icon: 'flag-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单5',
+            color: '#F56C6C',
+            url: '/vant/mobile.htm',
+            icon: 'flower-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单6',
+            color: '#E6A23C',
+            url: '/vant/mobile.htm',
+            icon: 'brush-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单7',
+            color: '#67C23A',
+            url: '/vant/mobile.htm',
+            icon: 'bulb-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '我是菜单8',
+            color: '#409EFF',
+            url: '/vant/mobile.htm',
+            icon: 'user-o'
+          }]
+        },
+        option2: {
+          size: 'large',
+          list: [{
+            label: '分组1',
+            prop: 'group1',
+            column: [{
+              title: '菜单1',
+              prop: 'text1',
+              value: '内容1',
+              children: {
+                span: 24,
+                column: [{
+                  title: '创建日期',
+                  value: '2020-02-02 02:02:02',
+                }, {
+                  title: '创建日期',
+                  value: '2020-02-02 02:02:02',
+                }]
+              },
+              // isLink: true,
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }, {
+              title: '菜单2',
+              value: '内容2',
+              isLink: true,
+              prop: 'text2',
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }]
+          }, {
+            label: '分组2',
+            prop: 'group2',
+            column: [{
+              title: '菜单3',
+              value: '内容3',
+              isLink: true,
+              prop: 'text3',
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }, {
+              title: '菜单4',
+              value: '内容4',
+              isLink: true,
+              prop: 'text4',
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }]
+          }]
+        },
+        option3: {
+          // span: 12,
+          // round: 10,
+          list: [{
+            url: '/vant/mobile.htm',
+            title: '菜单1',
+            color: '#67C23A',
+            url: '/vant/mobile.htm',
+            icon: 'like-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '菜单2',
+            color: '#409EFF',
+            url: '/vant/mobile.htm',
+            icon: 'star-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '菜单3',
+            color: '#E6A23C',
+            url: '/vant/mobile.htm',
+            icon: 'phone-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '菜单4',
+            color: '#F56C6C',
+            url: '/vant/mobile.htm',
+            icon: 'flag-o'
+          }]
+        }
+      }
+    },
+    methods: {
+      handleClick(item) {
+        console.log(item)
+      }
+    }
+  })
+</script>
+
+</html>

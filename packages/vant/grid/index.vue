@@ -46,10 +46,10 @@ export default create({
   },
   methods: {
     handleClick (item) {
-      if (item.click) {
-        item.click(item)
-      } else {
+      if (item.url) {
         window.location.href = item.url
+      } else {
+        this.$emit('click', item)
       }
     }
   }

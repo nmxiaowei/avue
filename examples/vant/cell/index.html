@@ -25,7 +25,7 @@
 
 <body>
   <div id="app">
-    <avue-cell :option="option" empty-text="没有发现数据"></avue-cell>
+    <avue-cell :option="option" empty-text="没有发现数据" @click="handleClick"></avue-cell>
   </div>
 </body>
 <script>
@@ -83,6 +83,11 @@
             }]
           }]
         }
+      }
+    },
+    methods: {
+      handleClick(item) {
+        console.log(item)
       }
     }
   })
