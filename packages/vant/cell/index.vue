@@ -14,7 +14,8 @@
                 :arrow-direction="citem.arrowDirection || arrowDirection"
                 :title="citem.title"
                 :label="citem.label"
-                :value="citem.value">
+                :value="citem.value"
+                @click="handelClick(citem)">
         <slot :name="citem.prop"
               :item="citem"></slot>
         <slot :name="citem.prop+'Title'"
@@ -64,6 +65,13 @@ export default create({
         }]
       }
       return list
+    }
+  },
+  methods: {
+    handelClick (item = {}) {
+      if (item.click) {
+        item.click(item)
+      }
     }
   }
 });

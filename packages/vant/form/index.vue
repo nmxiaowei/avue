@@ -1,7 +1,7 @@
 <template>
   <div :class="b('mobile')"
        :style="{width:setPx(tableOption.formWidth,'100%')}">
-    <van-form @submit="submit"
+    <van-form @submit="handleSubmit"
               ref="form">
       <avue-group v-for="(item,index) in columnOption"
                   :key="item.prop"
@@ -299,6 +299,9 @@ export default create({
       this.$emit("reset-change");
     },
     submit () {
+      this.$refs.form.submit()
+    },
+    handleSubmit () {
       this.$emit("submit", this.form);
     }
   }
