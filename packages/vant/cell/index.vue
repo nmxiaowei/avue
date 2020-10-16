@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <van-cell-group v-for="(item,index) in list"
+  <div style="background-color: #f7f8fa;">
+    <van-empty v-if="validatenull(list)"
+               style="padding:50px 0;"
+               image="search"
+               :description="emptyText" />
+    <van-cell-group v-else
+                    v-for="(item,index) in list"
                     :key="index"
                     :title="item.label">
       <slot :name="prop"
@@ -54,6 +59,7 @@
       </div>
 
     </van-cell-group>
+
   </div>
 </template>
 
@@ -62,6 +68,10 @@ import create from "core/create";
 export default create({
   name: "cell",
   props: {
+    emptyText: {
+      type: String,
+      default: '没有发现相关数据'
+    },
     option: {
       type: Object,
       default: () => {
@@ -84,10 +94,14 @@ export default create({
     },
     list () {
       let list = this.option.list || [];
-      if (!list[0].label) {
-        return [{
-          column: list
-        }]
+      if (!(list[0] || {}).label) {
+        if (!this.validatenull(list)) {
+          return [{
+            column: list
+          }]
+        } else {
+          return []
+        }
       }
       return list
     }
