@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-cell :option="option"></avue-cell>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          list: [{
+            label: '分组1',
+            prop: 'group1',
+            column: [{
+              title: '菜单1',
+              prop: 'text1',
+              value: '内容1',
+              isLink: true,
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }, {
+              title: '菜单2',
+              value: '内容2',
+              isLink: true,
+              prop: 'text2',
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }]
+          }, {
+            label: '分组2',
+            prop: 'group2',
+            column: [{
+              title: '菜单3',
+              value: '内容3',
+              isLink: true,
+              prop: 'text3',
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }, {
+              title: '菜单4',
+              value: '内容4',
+              isLink: true,
+              prop: 'text4',
+              url: '/vant/mobile.htm',
+              icon: 'location-o'
+            }]
+          }]
+        }
+      }
+    }
+  })
+</script>
+
+</html>
