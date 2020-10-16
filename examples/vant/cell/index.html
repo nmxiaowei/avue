@@ -34,6 +34,7 @@
     data() {
       return {
         option: {
+          // size: 'large',
           list: [{
             label: '分组1',
             prop: 'group1',
@@ -41,7 +42,17 @@
               title: '菜单1',
               prop: 'text1',
               value: '内容1',
-              isLink: true,
+              children: {
+                span: 24,
+                column: [{
+                  title: '创建日期',
+                  value: '2020-02-02 02:02:02',
+                }, {
+                  title: '创建日期',
+                  value: '2020-02-02 02:02:02',
+                }]
+              },
+              // isLink: true,
               url: '/vant/mobile.htm',
               icon: 'location-o'
             }, {

@@ -5,32 +5,54 @@
                     :title="item.label">
       <slot :name="prop"
             :item="item"></slot>
-      <van-cell v-for="(citem,cindex) in item.column"
-                :key="cindex"
-                :icon="citem.icon"
-                :url="citem.url"
-                :is-link="citem.isLink || isLink"
-                :center="citem.center || center"
-                :arrow-direction="citem.arrowDirection || arrowDirection"
-                :title="citem.title"
-                :label="citem.label"
-                :value="citem.value"
-                @click="handelClick(citem)">
-        <slot :name="citem.prop"
-              :item="citem"></slot>
-        <slot :name="citem.prop+'Title'"
-              slot="title"
-              :item="citem"></slot>
-        <slot :name="citem.prop+'Label'"
-              slot="label"
-              :item="citem"></slot>
-        <slot :name="citem.prop+'Icon'"
-              slot="icon"
-              :item="citem"></slot>
-        <slot :name="citem.prop+'rightIcon'"
-              slot="right-icon"
-              :item="citem"></slot>
-      </van-cell>
+      <div v-for="(citem,cindex) in item.column"
+           :key="cindex">
+        <van-cell :icon="citem.icon"
+                  :url="citem.url"
+                  :size="item.size || size"
+                  :is-link="citem.isLink || isLink"
+                  :center="citem.center || center"
+                  :arrow-direction="citem.arrowDirection || arrowDirection"
+                  :title="citem.title"
+                  :label="citem.label"
+                  :value="citem.value"
+                  @click="handelClick(citem)">
+          <slot :name="citem.prop+'Value'"
+                :item="citem"
+                v-if="$scopedSlots[citem.prop+'Value']">
+          </slot>
+          <slot :name="citem.prop+'Title'"
+                slot="title"
+                :item="citem"
+                v-if="$scopedSlots[citem.prop+'Title']"></slot>
+          <slot :name="citem.prop+'Label'"
+                slot="label"
+                :item="citem"
+                v-if="$scopedSlots[citem.prop+'Label']"></slot>
+          <slot :name="citem.prop+'Icon'"
+                slot="icon"
+                :item="citem"
+                v-if="$scopedSlots[citem.prop+'Icon']"></slot>
+          <slot :name="citem.prop+'rightIcon'"
+                slot="right-icon"
+                :item="citem"
+                v-if="$scopedSlots[citem.prop+'rightIcon']"></slot>
+        </van-cell>
+        <slot :name="item.prop"
+              v-if="$scopedSlots[citem.prop]"></slot>
+        <van-row v-else-if="!validatenull((citem.children || {}).column)"
+                 style="padding:0 5px;">
+          <van-col :span="(citem.children || {}).span || 12"
+                   v-for="(column,nindex) in (citem.children || {}).column"
+                   :key="nindex">
+            <van-cell :title="column.title"
+                      :label="column.label"
+                      :value="column.value"></van-cell>
+          </van-col>
+        </van-row>
+
+      </div>
+
     </van-cell-group>
   </div>
 </template>
@@ -48,6 +70,9 @@ export default create({
     }
   },
   computed: {
+    size () {
+      return this.option.size
+    },
     arrowDirection () {
       return this.option.arrowDirection
     },
