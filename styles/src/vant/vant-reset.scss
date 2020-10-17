@@ -1,6 +1,6 @@
 
 .van-cell::after{
-  display: block;
+  display: block !important;
 }
 .van-image-preview{
   z-index:9999 !important;

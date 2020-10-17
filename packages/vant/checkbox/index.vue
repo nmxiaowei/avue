@@ -1,5 +1,6 @@
 <template>
-  <van-field :placeholder="placeholder"
+  <van-field :class="b('mobile')"
+             :placeholder="placeholder"
              :rules="rules"
              :clearable="clearable"
              :disabled="disabled"
