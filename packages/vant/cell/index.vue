@@ -1,5 +1,6 @@
 <template>
-  <div style="background-color: #f7f8fa;">
+  <div style="background-color: #f7f8fa;"
+       :class="b('mobile')">
     <van-empty v-if="validatenull(list)"
                style="padding:50px 0;"
                image="search"
@@ -15,44 +16,63 @@
         <van-cell :icon="citem.icon"
                   :url="citem.url"
                   :size="item.size || size"
-                  :is-link="citem.isLink || isLink"
-                  :center="citem.center || center"
+                  :is-link="vaildData(citem.isLink,isLink)"
+                  :center="vaildData(citem.center, center)"
                   :arrow-direction="citem.arrowDirection || arrowDirection"
                   :title="citem.title"
                   :label="citem.label"
                   :value="citem.value"
-                  @click="handelClick(citem)">
-          <slot :name="citem.prop+'Value'"
-                :item="citem"
-                v-if="$scopedSlots[citem.prop+'Value']">
-          </slot>
-          <slot :name="citem.prop+'Title'"
-                slot="title"
-                :item="citem"
-                v-if="$scopedSlots[citem.prop+'Title']"></slot>
-          <slot :name="citem.prop+'Label'"
-                slot="label"
-                :item="citem"
-                v-if="$scopedSlots[citem.prop+'Label']"></slot>
-          <slot :name="citem.prop+'Icon'"
-                slot="icon"
-                :item="citem"
-                v-if="$scopedSlots[citem.prop+'Icon']"></slot>
-          <slot :name="citem.prop+'rightIcon'"
-                slot="right-icon"
-                :item="citem"
-                v-if="$scopedSlots[citem.prop+'rightIcon']"></slot>
+                  @click="handleClick(citem)">
+          <template slot="Value"
+                    slot-scope="{}">
+            <slot :name="citem.prop+'Value'"
+                  :item="citem"
+                  v-if="$scopedSlots[citem.prop+'Value']"></slot>
+            <span v-else-if="citem.value"> {{citem.value}}</span>
+          </template>
+          <template slot="title"
+                    slot-scope="{}">
+            <slot :name="citem.prop+'Title'"
+                  :item="citem"
+                  v-if="$scopedSlots[citem.prop+'Title']"></slot>
+            <span v-else-if="citem.title"> {{citem.title}}</span>
+          </template>
+          <template slot="label"
+                    slot-scope="{}">
+            <slot :name="citem.prop+'Label'"
+                  :item="citem"
+                  v-if="$scopedSlots[citem.prop+'Label']"></slot>
+            <span v-else-if="citem.label"> {{citem.label}}</span>
+          </template>
+          <template slot="icon"
+                    slot-scope="{}">
+            <slot :name="citem.prop+'Icon'"
+                  :item="citem"
+                  v-if="$scopedSlots[citem.prop+'Icon']"></slot>
+            <van-icon :name="citem.icon"
+                      :class="b('icon',{'color':citem.color})"
+                      :style="{background:citem.color,color:color}"
+                      v-else></van-icon>
+          </template>
         </van-cell>
-        <slot :name="item.prop"
+        <slot :name="citem.prop"
+              :item="citem"
               v-if="$scopedSlots[citem.prop]"></slot>
         <van-row v-else-if="!validatenull((citem.children || {}).column)"
                  style="padding:0 5px;">
-          <van-col :span="(citem.children || {}).span || 12"
+          <van-col :span="column.span || (citem.children || {}).span || 12"
                    v-for="(column,nindex) in (citem.children || {}).column"
                    :key="nindex">
-            <van-cell :title="column.title"
-                      :label="column.label"
-                      :value="column.value"></van-cell>
+            <div class="van-cell"
+                 v-if="column.slot">
+              <slot :name="column.prop"
+                    :row="column"></slot>
+            </div>
+            <van-cell v-else
+                      :title="column.title"
+                      :label="column.labelDisplay?'':column.label"
+                      :value="column.value">
+            </van-cell>
           </van-col>
         </van-row>
 
@@ -80,6 +100,9 @@ export default create({
     }
   },
   computed: {
+    color () {
+      return this.option.color
+    },
     size () {
       return this.option.size
     },
@@ -93,16 +116,7 @@ export default create({
       return this.option.center
     },
     list () {
-      let list = this.option.list || [];
-      if (!(list[0] || {}).label) {
-        if (!this.validatenull(list)) {
-          return [{
-            column: list
-          }]
-        } else {
-          return []
-        }
-      }
+      let list = this.option.data
       return list
     }
   },

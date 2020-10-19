@@ -8,7 +8,8 @@
         <div v-if="item.icon"
              :style="{background:item.color,borderRadius:round+'%'}"
              :class="b('icon')">
-          <van-icon :name="item.icon"
+          <van-icon :style="{color:color,fontSize:setPx(size)}"
+                    :name="item.icon"
                     :badge="item.badge"
                     :dot="item.dot"></van-icon>
         </div>
@@ -31,6 +32,12 @@ export default create({
     }
   },
   computed: {
+    color () {
+      return this.option.color || '#fff'
+    },
+    size () {
+      return this.option.size || 26;
+    },
     round () {
       return this.option.round || 100
     },

@@ -25,7 +25,29 @@
 
 <body>
   <div id="app">
-    <avue-cell :option="option" empty-text="没有发现数据" @click="handleClick"></avue-cell>
+    <avue-cell :option="option" @click="handleClick">
+      <div slot="text2" slot-scope="{item}" style="padding:30px;text-align: center;">
+        自定义内容
+      </div>
+      <div slot="text2Value" slot-scope="{item}">
+        自定义Value
+      </div>
+      <div slot="text2Title" slot-scope="{item}">
+        自定义Title
+      </div>
+      <div slot="text2Label" slot-scope="{item}">
+        自定义Label
+      </div>
+      <div slot="text2Icon" slot-scope="{item}">
+        自定义Icon
+      </div>
+      <van-tag type="success" slot="label1" slot-scope="{row}">
+        {{row.title}} - {{row.value}}
+      </van-tag>
+      <van-tag type="danger" slot="label2" slot-scope="{row}">
+        {{row.title}} - {{row.value}}
+      </van-tag>
+    </avue-cell>
   </div>
 </body>
 <script>
@@ -34,52 +56,98 @@
     data() {
       return {
         option: {
-          size: 'large',
-          list: [{
-            label: '分组1',
+          // size: 'large',
+          center: true,
+          data: [{
+            label: '内容展示',
             prop: 'group1',
             column: [{
-              title: '菜单1',
+              title: '我是标题',
               prop: 'text1',
-              value: '内容1',
+              value: '我是内容',
+              center: false,
+              label: '我是描述信息',
               children: {
                 span: 24,
                 column: [{
-                  title: '创建日期',
-                  value: '2020-02-02 02:02:02',
+                  title: '我是label1',
+                  prop: 'label1',
+                  slot: true,
+                  value: '我是value1',
                 }, {
-                  title: '创建日期',
-                  value: '2020-02-02 02:02:02',
+                  title: '我是label2',
+                  slot: true,
+                  prop: 'label2',
+                  value: '我是value2',
+                }, {
+                  title: '我是label3',
+                  prop: 'label3',
+                  value: '我是value3',
                 }]
               },
-              // isLink: true,
-              url: '/vant/mobile.htm',
-              icon: 'location-o'
-            }, {
-              title: '菜单2',
-              value: '内容2',
-              isLink: true,
-              prop: 'text2',
-              url: '/vant/mobile.htm',
-              icon: 'location-o'
             }]
           }, {
-            label: '分组2',
+            label: '颜色菜单',
             prop: 'group2',
             column: [{
               title: '菜单3',
               value: '内容3',
               isLink: true,
+              color: '#409EFF',
               prop: 'text3',
               url: '/vant/mobile.htm',
-              icon: 'location-o'
+              icon: 'star-o'
             }, {
               title: '菜单4',
               value: '内容4',
               isLink: true,
+              color: '#E6A23C',
               prop: 'text4',
               url: '/vant/mobile.htm',
-              icon: 'location-o'
+              icon: 'phone-o'
+            }, {
+              title: '菜单5',
+              value: '内容5',
+              isLink: true,
+              color: '#F56C6C',
+              prop: 'text5',
+              url: '/vant/mobile.htm',
+              icon: 'flag-o'
+            }]
+          }, {
+            label: '简约图标',
+            prop: 'group3',
+            column: [{
+              title: '菜单6',
+              value: '内容6',
+              isLink: true,
+              prop: 'text6',
+              url: '/vant/mobile.htm',
+              icon: 'star-o'
+            }, {
+              title: '菜单7',
+              value: '内容7',
+              isLink: true,
+              prop: 'text7',
+              url: '/vant/mobile.htm',
+              icon: 'phone-o'
+            }, {
+              title: '菜单8',
+              value: '内容8',
+              isLink: true,
+              prop: 'text8',
+              url: '/vant/mobile.htm',
+              icon: 'flag-o'
+            }]
+          }, {
+            label: '自定义内容',
+            prop: 'group4',
+            column: [{
+              title: '菜单',
+              value: '内容',
+              label: '描述',
+              prop: 'text2',
+              icon: 'star-o'
             }]
           }]
         }

@@ -5,6 +5,7 @@ export const DIC_PROPS = {
   label: 'label',
   value: 'value',
   groups: 'groups',
+  title: 'title',
   leaf: 'leaf',
   children: 'children',
   labelText: '名称',
