@@ -7,6 +7,7 @@
              :input-align="inputAlign"
              :type="typeParam"
              :required="required"
+             :show-word-limit="showWordLimit"
              :autosize="{ minHeight: minRows*50, maxHeight: maxRows*50}"
              @click.native="handleClick"
              :readonly="readonly"
@@ -24,6 +25,10 @@ export default create({
   name: "input",
   mixins: [props(), event()],
   props: {
+    showWordLimit: {
+      type: Boolean,
+      default: false
+    },
     inputType: {
       type: String
     },

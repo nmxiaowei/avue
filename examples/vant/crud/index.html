@@ -26,7 +26,12 @@
 <body>
   <div id="app">
     <avue-crud :option="option" :data="data" :page.sync="page" @on-load="onLoad">
-
+      <div slot="createdDate" slot-scope="{row,column,index}" style="width:100%">
+        {{column.label}}:<van-tag style="float:right" type="success">{{row.createdDate}}</van-tag>
+      </div>
+      <div slot="sex" slot-scope="{row,label,index}">
+        <van-tag type="danger">{{row.sex}}</van-tag>
+      </div>
     </avue-crud>
   </div>
 </body>
@@ -80,6 +85,7 @@
           }, {
             label: '创建日期',
             prop: 'createdDate',
+            slot: true,
             span: 24
           }, {
             label: '更新日期',
@@ -92,44 +98,15 @@
     methods: {
       onLoad() {
         this.page.total = 40;
-        if (this.page.currentPage == 1) {
-          this.data = [{
-            name: 'smallwei',
-            sex: '男',
-            select1: 0,
-            select2: 1,
-            phone: '17547400800',
-            createdDate: '2020-02-02 02:02:02',
-            updateDate: '2020-02-02 02:02:02'
-          }, {
-            name: 'smallwei',
-            sex: '男',
-            select1: 0,
-            select2: 1,
-            phone: '17547400800',
-            createdDate: '2020-02-02 02:02:02',
-            updateDate: '2020-02-02 02:02:02'
-          }]
-        } else if (this.page.currentPage == 2) {
-          this.data = [{
-            name: 'smallwei1',
-            sex: '男',
-            select1: 0,
-            select2: 1,
-            phone: '17547400800',
-            createdDate: '2020-02-02 02:02:02',
-            updateDate: '2020-02-02 02:02:02'
-          }, {
-            name: 'smallwei1',
-            sex: '男',
-            select1: 0,
-            select2: 1,
-            phone: '17547400800',
-            createdDate: '2020-02-02 02:02:02',
-            updateDate: '2020-02-02 02:02:02'
-          }]
-        }
-
+        this.data = new Array(10).fill({
+          name: 'smallwei1',
+          sex: '男',
+          select1: 0,
+          select2: 1,
+          phone: '17547400800',
+          createdDate: '2020-02-02 02:02:02',
+          updateDate: '2020-02-02 02:02:02'
+        })
       }
     }
   })

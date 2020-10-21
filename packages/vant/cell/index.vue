@@ -23,8 +23,7 @@
                   :label="citem.label"
                   :value="citem.value"
                   @click="handleClick(citem)">
-          <template slot="Value"
-                    slot-scope="{}">
+          <template slot-scope="{}">
             <slot :name="citem.prop+'Value'"
                   :item="citem"
                   v-if="$scopedSlots[citem.prop+'Value']"></slot>
@@ -66,7 +65,8 @@
             <div class="van-cell"
                  v-if="column.slot">
               <slot :name="column.prop"
-                    :row="column"></slot>
+                    :index="index"
+                    :item="column"></slot>
             </div>
             <van-cell v-else
                       :title="column.title"

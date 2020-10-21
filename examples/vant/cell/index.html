@@ -41,11 +41,11 @@
       <div slot="text2Icon" slot-scope="{item}">
         自定义Icon
       </div>
-      <van-tag type="success" slot="label1" slot-scope="{row}">
-        {{row.title}} - {{row.value}}
+      <van-tag type="success" slot="label1" slot-scope="{item}">
+        {{item.title}} - {{item.value}}
       </van-tag>
-      <van-tag type="danger" slot="label2" slot-scope="{row}">
-        {{row.title}} - {{row.value}}
+      <van-tag type="danger" slot="label2" slot-scope="{item}">
+        {{item.title}} - {{item.value}}
       </van-tag>
     </avue-cell>
   </div>
