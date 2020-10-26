@@ -71,12 +71,12 @@ export default create({
       }
     },
     text (val) {
-      if (this.create || this.validatenull(val)) return
+      if (this.created || this.validatenull(val)) return
       if (typeof this.onLoad == 'function') {
         this.onLoad({ value: this.text }, data => {
           this.active = data
           this.object = data
-          this.create = true;
+          this.created = true;
         })
       }
     }

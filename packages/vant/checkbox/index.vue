@@ -50,7 +50,7 @@ export default create({
     },
     tags: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data () {
