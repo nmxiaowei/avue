@@ -13,6 +13,17 @@
           <slot name="searchMenu"
                 :row="searchForm"
                 :size="size"></slot>
+          <template v-if="isSearchIcon">
+            <el-button type="text"
+                       v-if="show===false"
+                       @click="show=true"
+                       icon="el-icon-arrow-down">展 开</el-button>
+            <el-button type="text"
+                       v-if="show===true"
+                       @click="show=false"
+                       icon="el-icon-arrow-up">收 缩</el-button>
+          </template>
+
         </template>
         <template :slot="item.prop"
                   slot-scope="scope"
@@ -57,6 +68,7 @@ export default cteate({
   data () {
     return {
       flag: false,
+      show: false,
       config: config,
       defaultForm: {
         searchForm: {}
@@ -99,6 +111,12 @@ export default cteate({
     this.searchInit();
   },
   computed: {
+    isSearchIcon () {
+      return this.crud.option.searchIcon !== false
+    },
+    searchIndex () {
+      return this.crud.option.searchIndex || 2
+    },
     columnOption () {
       return this.option.column || []
     },
@@ -106,8 +124,10 @@ export default cteate({
       const option = this.crud.option;
       const detailColumn = (list = []) => {
         let column = [];
+        let count = 0;
         list.forEach(ele => {
           if (ele.search) {
+            let isCount = count < this.searchIndex
             ele = Object.assign(ele, {
               type: getSearchType(ele),
               multiple: ele.searchMultiple,
@@ -132,13 +152,15 @@ export default cteate({
               rules: ele.searchRules,
               disabled: ele.searchDisabled,
               readonly: ele.searchReadonly,
-              value: ele.searchValue
+              value: ele.searchValue,
+              display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
-            let whiteList = ['display', 'disabled', 'readonly']
+            let whiteList = ['disabled', 'readonly']
             whiteList.forEach(key => {
               delete ele[key]
             })
             column.push(ele);
+            count = count + 1;
           }
         })
         return column;
@@ -160,7 +182,13 @@ export default cteate({
           emptyText: this.vaildData(option.emptyBtnText, this.t('crud.emptyBtn')),
           emptyBtn: this.vaildData(option.emptyBtn, this.config.emptyBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
-          menuSpan: option.searchMenuSpan,
+          menuSpan: (() => {
+            if (this.show || !this.isSearchIcon) {
+              return option.searchMenuSpan
+            } else {
+              return 6
+            }
+          })(),
           dicFlag: false,
           dicData: this.crud.DIC
         })

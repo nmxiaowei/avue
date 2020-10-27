@@ -1,4 +1,5 @@
 import components from 'ui/index';
+import config from 'ui/config';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
@@ -35,7 +36,7 @@ let prototypes = {
   findObject
 
 };
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
@@ -61,7 +62,7 @@ const install = function(Vue, opts = {}) {
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
   }
-  Vue.prototype.$uploadFun = function(safe) {
+  Vue.prototype.$uploadFun = function (safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
     let result = {};
@@ -72,26 +73,8 @@ const install = function(Vue, opts = {}) {
   };
   Vue.prototype.$AVUE = {
     ui: (() => {
-      if (window.antd) {
-        Vue.prototype.moment = window.moment;
-        Vue.prototype.$isAnt = true;
-        return {
-          name: 'antd',
-          type: 'a'
-        };
-      } else if (window.ELEMENT) {
-        Vue.prototype.$isEle = true;
-        return {
-          name: 'element-ui',
-          type: 'el'
-        };
-      } else if (window.vant) {
-        Vue.prototype.$isVan = true;
-        return {
-          name: 'vant',
-          type: 'van'
-        };
-      }
+      Vue.prototype[config.is] = true;
+      return config
     })(),
     size: opts.size || 'small',
     tableSize: opts.tableSize,
