@@ -17,16 +17,13 @@
   <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
-  <script src="./option.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <avue-tabs ref="tabs" :option="option" v-model="form" @change="handleChange" @submit="handleSubmit">
-      <template slot-scope="scope" slot="test">
-        <el-tag>测试自定义内容</el-tag>
-      </template>
-    </avue-tabs>
+    <avue-tabs ref="tabs" :option="option" @change="handleChange"></avue-tabs>
+    <span v-if="type.prop==='tab1'">选项卡内容1</span>
+    <span v-else-if="type.prop==='tab2'">选项卡内容2</span>
   </div>
 </body>
 <script>
@@ -34,34 +31,26 @@
     el: '#app',
     data() {
       return {
-        tabs: {},
+        type: {},
         option: {
-          type: 'border-card', //card|border-card
           // position: 'left',//left|right|top|bottom
           column: [{
             label: '选项卡1',
-            prop: 'user',
+            prop: 'tab1',
             icon: 'el-icon-edit',
-            option: userOption,//正常的form表单配置
           }, {
             label: '选项卡2',
-            prop: 'info',
+            prop: 'tab2',
             icon: 'el-icon-date',
-            option: infoOption,//正常的form表单配置
           }]
-        },
-        form: {
-          name: '张三',
-          checkbox: 0,
-          jtgj: [0, 1, 2, 3]
-        },
+        }
       }
     },
     created() {
-      this.tabs = this.columnOption[0];
+      this.type = this.columnOption[0]
     },
     mounted() {
-      this.$refs.tabs.changeTabs(1);
+      // this.$refs.tabs.changeTabs(1);
     },
     computed: {
       columnOption() {
@@ -70,11 +59,7 @@
     },
     methods: {
       handleChange(tabs) {
-        this.tabs = tabs;
-      },
-      handleSubmit(form) {
-        console.log(this.form);
-        this.$message.success(JSON.stringify(form));
+        this.type = tabs
       }
     }
   })
