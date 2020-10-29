@@ -6,7 +6,8 @@
               :disabled="disabled"
               ref="main"
               v-model="address"
-              @click.native="handleShow"
+              @focus="handleShow"
+              @click.native="handleClick"
               :placeholder="placeholder">
     </el-input>
 

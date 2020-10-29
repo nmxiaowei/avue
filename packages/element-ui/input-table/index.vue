@@ -7,6 +7,7 @@
               ref="main"
               @clear="handleClear"
               @focus="handleShow"
+              @click.native="handleClick"
               :disabled="disabled">
     </el-input>
     <el-dialog class="avue-dialog"
