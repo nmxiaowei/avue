@@ -181,6 +181,7 @@ export default cteate({
         result.column = detailColumn(this.deepClone(this.crud.columnFormOption))
         result = Object.assign(result, {
           tabs: false,
+          enter: this.vaildData(option.searchEnter, true),
           printBtn: false,
           mockBtn: false,
           submitText: this.vaildData(option.searchBtnText, this.t('crud.searchBtn')),
