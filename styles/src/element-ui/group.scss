@@ -6,16 +6,34 @@
     height: inherit;
     border:none;
   }
-  .el-collapse-item__content{
+  .el-collapse-item__content,.van-collapse-item__content{
     padding-bottom: 0;
   }
+  .van-collapse-item__content{
+    padding: 0 2px;
+  }
   &--arrow{
-    .el-collapse-item__arrow{
+    .el-collapse-item__arrow,.van-icon-arrow {
      display: none;
     }
   }
+  .van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after{
+    display: none;
+  }
+  .van-collapse-item__title{
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    &::after{
+      left:0 !important;
+    }
+  }
+  &--none{
+    margin: 0 !important;
+    border:none !important;
+  }
   &--header{
-    .el-collapse-item__header{
+    .el-collapse-item__header,.van-collapse-item__title{
       display: none;
     }
   }

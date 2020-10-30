@@ -7,6 +7,7 @@
               :clearable="disabled?false:clearable"
               :disabled="disabled"
               @change="handleChange"
+              @click.native="handleClick"
               @focus="handleShow">
       <span slot="append"
             @click="handleShow">

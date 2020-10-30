@@ -13,6 +13,7 @@
       <div>
         <div v-for="(item,index) in text"
              :class="b('row')"
+             :key="index"
              @mouseenter="cellMouseenter({$index:index})"
              @mouseleave="cellMouseLeave({$index:index})">
           <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[index]"
@@ -26,7 +27,7 @@
           <avue-form :key="index"
                      :option="option"
                      v-model="text[index]">
-            <div slot-scope="scope"
+            <div slot-scope="{}"
                  slot="_index">
               <span>{{item.$index+1}}</span>
             </div>
@@ -278,11 +279,12 @@ export default create({
     },
     delRow (index) {
       const callback = () => {
-        this.text.splice(index, 1);
+        let list = this.deepClone(this.text)
+        list.splice(index, 1);
+        this.text = list;
       }
-      const row = this.text[index]
       if (typeof this.rowDel === 'function') {
-        this.rowDel(row, callback);
+        this.rowDel(this.text[index], callback);
       } else {
         callback();
       }

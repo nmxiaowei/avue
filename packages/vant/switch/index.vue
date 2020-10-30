@@ -1,13 +1,23 @@
 <template>
-  <div class="avue-cell">
-    <van-cell :title="label"
-              :class="{'van-cell--required':required}">
-      <van-switch v-model="textLabel"
-                  size="20px"
-                  :disabled="disabled"
-                  @change="handleSwitchChange" />
-    </van-cell>
-  </div>
+  <van-field :placeholder="placeholder"
+             :rules="rules"
+             :clearable="clearable"
+             :disabled="disabled"
+             :input-align="inputAlign"
+             :required="required"
+             @click.native="handleClick"
+             readonly
+             :label="label">
+    <van-switch slot="input"
+                v-model="text"
+                :size="setPx(len)"
+                :active-color="activeColor"
+                :inactive-color="inactiveColor"
+                :active-value="active[valueKey]"
+                :inactive-value="inactive[valueKey]"
+                :readonly="readonly"
+                :disabled="disabled" />
+  </van-field>
 </template>
 
 <script>
@@ -17,34 +27,25 @@ import event from "../../core/common/event.js";
 export default create({
   name: "switch",
   mixins: [props(), event()],
-  props: {},
-  data() {
-    return {
-      textLabel: false,
-      textIndex: 0
-    };
-  },
-  watch: {
-    dic() {
-      this.init();
+  props: {
+    activeColor: String,
+    inactiveColor: String,
+    len: {
+      type: Number,
+      default: 20
     }
   },
-  computed: {},
-  created() {},
-  mounted() {
-    this.init();
+  data () {
+    return {
+    };
   },
-  methods: {
-    init() {
-      if (!this.validatenull(this.text)) {
-        this.textIndex = this.dic.findIndex(ele => ele.text === this.textLabel);
-        this.textLabel = this.textIndex === 0 ? false : true;
-      }
+  watch: {},
+  computed: {
+    active () {
+      return this.dic[1] || {};
     },
-    handleSwitchChange(value) {
-      this.textIndex = this.textLabel ? 1 : 0;
-      this.text = this.dic[this.textIndex][this.valueKey];
-      this.handleChange(this.text);
+    inactive () {
+      return this.dic[0] || {};
     }
   }
 });

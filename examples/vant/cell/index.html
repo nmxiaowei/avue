@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-cell :option="option" @click="handleClick">
+      <div slot="text2" slot-scope="{item}" style="padding:30px;text-align: center;">
+        自定义内容
+      </div>
+      <div slot="text2Value" slot-scope="{item}">
+        自定义Value
+      </div>
+      <div slot="text2Title" slot-scope="{item}">
+        自定义Title
+      </div>
+      <div slot="text2Label" slot-scope="{item}">
+        自定义Label
+      </div>
+      <div slot="text2Icon" slot-scope="{item}">
+        自定义Icon
+      </div>
+      <van-tag type="success" slot="label1" slot-scope="{item}">
+        {{item.title}} - {{item.value}}
+      </van-tag>
+      <van-tag type="danger" slot="label2" slot-scope="{item}">
+        {{item.title}} - {{item.value}}
+      </van-tag>
+    </avue-cell>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          // size: 'large',
+          center: true,
+          data: [{
+            label: '内容展示',
+            prop: 'group1',
+            column: [{
+              title: '我是标题',
+              prop: 'text1',
+              value: '我是内容',
+              center: false,
+              label: '我是描述信息',
+              children: {
+                span: 24,
+                column: [{
+                  title: '我是label1',
+                  prop: 'label1',
+                  slot: true,
+                  value: '我是value1',
+                }, {
+                  title: '我是label2',
+                  slot: true,
+                  prop: 'label2',
+                  value: '我是value2',
+                }, {
+                  title: '我是label3',
+                  prop: 'label3',
+                  value: '我是value3',
+                }]
+              },
+            }]
+          }, {
+            label: '颜色菜单',
+            prop: 'group2',
+            column: [{
+              title: '菜单3',
+              value: '内容3',
+              isLink: true,
+              color: '#409EFF',
+              prop: 'text3',
+              url: '/vant/mobile.htm',
+              icon: 'star-o'
+            }, {
+              title: '菜单4',
+              value: '内容4',
+              isLink: true,
+              color: '#E6A23C',
+              prop: 'text4',
+              url: '/vant/mobile.htm',
+              icon: 'phone-o'
+            }, {
+              title: '菜单5',
+              value: '内容5',
+              isLink: true,
+              color: '#F56C6C',
+              prop: 'text5',
+              url: '/vant/mobile.htm',
+              icon: 'flag-o'
+            }]
+          }, {
+            label: '简约图标',
+            prop: 'group3',
+            column: [{
+              title: '菜单6',
+              value: '内容6',
+              isLink: true,
+              prop: 'text6',
+              url: '/vant/mobile.htm',
+              icon: 'star-o'
+            }, {
+              title: '菜单7',
+              value: '内容7',
+              isLink: true,
+              prop: 'text7',
+              url: '/vant/mobile.htm',
+              icon: 'phone-o'
+            }, {
+              title: '菜单8',
+              value: '内容8',
+              isLink: true,
+              prop: 'text8',
+              url: '/vant/mobile.htm',
+              icon: 'flag-o'
+            }]
+          }, {
+            label: '自定义内容',
+            prop: 'group4',
+            column: [{
+              title: '菜单',
+              value: '内容',
+              label: '描述',
+              prop: 'text2',
+              icon: 'star-o'
+            }]
+          }]
+        }
+      }
+    },
+    methods: {
+      handleClick(item) {
+        console.log(item)
+      }
+    }
+  })
+</script>
+
+</html>

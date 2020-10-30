@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-tabbar :option="option" @click="handleClick"></avue-tabbar>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          // span: 12,
+          // round: 10,
+          list: [{
+            url: '/vant/mobile.htm',
+            title: '菜单1',
+            color: '#67C23A',
+            url: '/vant/mobile.htm',
+            icon: 'like-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '菜单2',
+            color: '#409EFF',
+            url: '/vant/mobile.htm',
+            icon: 'star-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '菜单3',
+            color: '#E6A23C',
+            url: '/vant/mobile.htm',
+            icon: 'phone-o'
+          }, {
+            url: '/vant/mobile.htm',
+            title: '菜单4',
+            color: '#F56C6C',
+            url: '/vant/mobile.htm',
+            icon: 'flag-o'
+          }]
+        }
+      }
+    },
+    methods: {
+      handleClick(item) {
+        console.log(item)
+      }
+    }
+  })
+</script>
+
+</html>

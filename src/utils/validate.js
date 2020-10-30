@@ -7,12 +7,7 @@ export function validatenull(val) {
   // 特殊判断
   if (val && parseInt(val) === 0) return false;
   const list = ['$parent'];
-  if (typeof val === 'boolean') {
-    return false;
-  }
-  if (typeof val === 'number') {
-    return false;
-  }
+  if (val instanceof Date || typeof val === 'boolean' || typeof val === 'number') return false;
   if (val instanceof Array) {
     if (val.length === 0) return true;
   } else if (val instanceof Object) {

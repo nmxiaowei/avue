@@ -35,7 +35,6 @@ import Upload from 'components/upload';
 import Sign from 'components/sign';
 import Slider from 'components/slider';
 import Keyboard from 'components/keyboard';
-import Group from 'components/group';
 import Tree from 'components/tree';
 import Title from 'components/title';
 import Search from 'components/search';
@@ -90,7 +89,6 @@ export default Object.assign(AvueData, AvueEchart, {
   Upload,
   Slider,
   Keyboard,
-  Group,
   Tree,
   Title,
   Search,

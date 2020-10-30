@@ -1,4 +1,5 @@
 import components from 'ui/index';
+import config from 'ui/config';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
@@ -12,6 +13,7 @@ import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
+import $Group from 'packages/core/components/group/';
 
 let prototypes = {
   $Print,
@@ -34,13 +36,15 @@ let prototypes = {
   findObject
 
 };
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   Vue.use(_export);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
   Object.keys(components).map(ele => {
     let component = components[ele];
-    Vue.component(component.name, component);
+    let name = component.name || '';
+    name = name.substr(name.length - 1, 1) === '-' ? (name.substr(0, name.length - 1)) + ele : name;
+    Vue.component(name, component);
   });
   Object.keys(prototypes).forEach((key) => {
     Vue.prototype[key] = prototypes[key];
@@ -53,11 +57,12 @@ const install = function(Vue, opts = {}) {
     img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
     video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
   };
+  Vue.component($Group.name, $Group);
   Vue.prototype.$ImagePreview = $ImagePreview(Vue);
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
   }
-  Vue.prototype.$uploadFun = function(safe) {
+  Vue.prototype.$uploadFun = function (safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
     let result = {};
@@ -68,18 +73,8 @@ const install = function(Vue, opts = {}) {
   };
   Vue.prototype.$AVUE = {
     ui: (() => {
-      if (window.antd) {
-        Vue.prototype.moment = window.moment;
-        return {
-          name: 'antd',
-          type: 'a'
-        };
-      } else if (window.Element) {
-        return {
-          name: 'element-ui',
-          type: 'el'
-        };
-      }
+      Vue.prototype[config.is] = true;
+      return config
     })(),
     size: opts.size || 'small',
     tableSize: opts.tableSize,

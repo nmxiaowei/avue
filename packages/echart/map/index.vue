@@ -112,6 +112,9 @@ export default create({
     color () {
       return this.option.color || "#fff";
     },
+    roam () {
+      return this.vaildData(this.option.roam, true)
+    },
     fontSize () {
       return this.option.fontSize || 24;
     },
@@ -280,7 +283,7 @@ export default create({
               zoom: this.zoomData,
               layoutCenter: ["50%", "50%"],
               layoutSize: 1200,
-              roam: true,
+              roam: this.roam,
               label: {
                 show: true,
                 fontSize: this.fontSize,

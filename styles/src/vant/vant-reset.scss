@@ -1,0 +1,11 @@
+
+.van-cell::after{
+  display: block !important;
+}
+.van-image-preview{
+  z-index:9999 !important;
+}
+
+.van-field__control{
+  flex-wrap: wrap;
+}

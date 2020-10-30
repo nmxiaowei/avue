@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :option="option" :data="data" :page.sync="page" @on-load="onLoad">
+      <div slot="createdDate" slot-scope="{row,column,index}" style="width:100%">
+        {{column.label}}:<van-tag style="float:right" type="success">{{row.createdDate}}</van-tag>
+      </div>
+      <div slot="sex" slot-scope="{row,label,index}">
+        <van-tag type="danger">{{row.sex}}</van-tag>
+      </div>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        page: {
+          total: 0
+        },
+        data: [],
+        option: {
+          // emptyText: "没有发现数据",
+          props: {
+            title: 'name',
+            value: 'sex',
+            label: 'phone'
+          },
+          column: [{
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '性别',
+            prop: 'sex'
+          }, {
+            label: '手机号',
+            prop: 'phone'
+          }, {
+            label: '字典测试1',
+            prop: 'select1',
+            type: 'select',
+            dicData: [{
+              label: '字典1',
+              value: 0
+            }, {
+              label: '字典2',
+              value: 1
+            }]
+          }, {
+            label: '字典测试2',
+            prop: 'select2',
+            type: 'select',
+            dicData: [{
+              label: '字典1',
+              value: 0
+            }, {
+              label: '字典2',
+              value: 1
+            }]
+          }, {
+            label: '创建日期',
+            prop: 'createdDate',
+            slot: true,
+            span: 24
+          }, {
+            label: '更新日期',
+            prop: 'updateDate',
+            span: 24
+          }]
+        }
+      }
+    },
+    methods: {
+      onLoad() {
+        this.page.total = 40;
+        this.data = new Array(10).fill({
+          name: 'smallwei1',
+          sex: '男',
+          select1: 0,
+          select2: 1,
+          phone: '17547400800',
+          createdDate: '2020-02-02 02:02:02',
+          updateDate: '2020-02-02 02:02:02'
+        })
+      }
+    }
+  })
+</script>
+
+</html>

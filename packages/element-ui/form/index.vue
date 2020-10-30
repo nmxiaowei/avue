@@ -108,7 +108,6 @@
                                :propsHttp="parentOption.propsHttp"
                                v-bind="$uploadFun()"
                                :disabled="getDisabled(column)"
-                               :readonly="readonly"
                                :enter="parentOption.enter"
                                :size="parentOption.size"
                                v-model="form[column.prop]"

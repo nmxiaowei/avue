@@ -1,0 +1,16 @@
+.avue-cell__mobile{
+  .avue-cell{
+    &__icon{
+      margin-right: 5px;
+      font-size: 20px;
+      &--color{
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height:30px;
+        border-radius: 3px;
+        color:#fff;
+      }
+    }
+  }
+}

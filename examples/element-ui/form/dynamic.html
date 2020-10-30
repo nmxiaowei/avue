@@ -37,10 +37,17 @@
             input: 1,
             select: 1,
             radio: 1,
+            number: 11
           }, {
             input: 2,
             select: 2,
             radio: 1,
+            number: 22
+          }, {
+            input: 2,
+            select: 2,
+            radio: 1,
+            number: 33
           }]
         },
         option: {
@@ -73,6 +80,7 @@
             type: 'dynamic',
             span: 24,
             children: {
+              type: 'form',
               rowAdd: (done) => {
                 this.$message.success('新增回调')
                 done({ input: 3 })

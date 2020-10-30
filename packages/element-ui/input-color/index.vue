@@ -6,6 +6,7 @@
               ref="main"
               :readonly="readonly"
               @change="handleChange"
+              @click.native="handleClick"
               :clearable="disabled?false:clearable"
               :disabled="disabled">
       <template slot="append">

@@ -1,47 +1,79 @@
 <template>
   <div :class="b('mobile')"
        :style="{width:setPx(tableOption.formWidth,'100%')}">
-    <van-cell-group class="avue-cell-group"
-                    :key="index"
-                    v-for="(item,index) in columnOption">
-      <template v-for="(column,cindex) in item.column">
-        <component :key="cindex"
-                   v-model="form[column.prop]"
-                   :class="{'avue-cell--row':column.row}"
-                   :is="getComponent(column.type,column.component)"
-                   :label="column.label"
-                   :placeholder="getPlaceholder(column)"
-                   :dataType="column.dataType"
-                   :action="column.action"
-                   :limit='column.limit'
-                   :listType="column.listType"
-                   :prefixIcon="column.prefixIcon"
-                   :suffixIcon="column.suffixIcon"
-                   :oss="column.oss"
-                   :type="column.type"
-                   :readonly="column.readonly"
-                   :tip="column.tip"
-                   :disabled="column.disabled || tableOption.disabled"
-                   :minRows="column.minRows"
-                   :rules="column.rules"
-                   :tags="column.tags"
-                   :valueFormat="column.valueFormat"
-                   :format="column.format"
-                   :propsHttp="column.propsHttp"
-                   :canvasOption="column.canvasOption"
-                   :maxRows="column.maxRows"
-                   :props="column.props || tableOption.props"
-                   :dic="DIC[column.prop]"
-                   :clearable="column.clearable"
-                   @change="propChange(item.column,column)"></component>
-      </template>
-      <div :class="b('mobile-menu')">
+    <van-form @submit="handleSubmit"
+              ref="form">
+      <avue-group v-for="(item,index) in columnOption"
+                  :key="item.prop"
+                  :tabs="isTabs"
+                  :arrow="item.arrow"
+                  :collapse="item.collapse"
+                  :display="item.display"
+                  :icon="item.icon"
+                  :index="index"
+                  :header="!isTabs"
+                  :active="activeName"
+                  :card="parentOption.card"
+                  :label="item.label">
+        <van-tabs slot="tabs"
+                  v-model="activeName"
+                  v-if="isTabs&&index == 1"
+                  color="#1989fa">
+          <van-tab v-for="(item,index) in columnOption"
+                   v-if="!item.display && index!=0"
+                   :key="index"
+                   :name="index+''">
+            <span slot="title">
+              <slot :name="item.prop+'Header'"
+                    v-if="$slots[item.prop+'Header']"></slot>
+              <template v-else>
+                <i :class="'van-icon' +item.icon">&nbsp;</i>
+                {{item.label}}
+              </template>
+            </span>
+          </van-tab>
+        </van-tabs>
+        <template slot="header"
+                  v-if="$slots[item.prop+'Header']">
+          <slot :name="item.prop+'Header'"></slot>
+        </template>
+        <div v-for="(column,cindex) in item.column"
+             :key="cindex"
+             v-show="isGroupShow(item,index)">
+          <slot :value="form[column.prop]"
+                :column="column"
+                :label="form['$'+column.prop]"
+                :size="column.size || controlSize"
+                :readonly="readonly || column.readonly"
+                :disabled="column.disabled || item.disabled"
+                :dic="DIC[column.prop]"
+                :name="column.prop"
+                v-if="column.formslot"></slot>
+          <form-temp v-else
+                     :column="column"
+                     :class="column.className"
+                     :ref="column.prop"
+                     :dic="DIC[column.prop]"
+                     :t="t"
+                     :props="parentOption.props"
+                     :propsHttp="parentOption.propsHttp"
+                     :disabled="column.disabled || item.disabled"
+                     :readonly="readonly"
+                     :enter="parentOption.enter"
+                     :size="parentOption.size"
+                     v-model="form[column.prop]"
+                     @enter="submit"
+                     @change="propChange(item.column,column)">
+          </form-temp>
+        </div>
+      </avue-group>
+      <div style="margin:16px 0 30px 0;padding:0 10px">
         <van-button block
-                    type="primary"
-                    v-if="vaildData(tableOption.submitBtn,true)"
-                    @click="submit">{{vaildData(tableOption.submitText,'提 交')}}</van-button>
+                    native-type="submit"
+                    type="info"
+                    v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,t("form.submit"))}}</van-button>
       </div>
-    </van-cell-group>
+    </van-form>
   </div>
 </template>
 
@@ -50,6 +82,7 @@ import locale from "../../core/common/locale";
 import create from "core/create";
 import init from "../../core/common/init";
 import { detail } from "core/detail";
+import formTemp from '../../core/components/form/index'
 import { getComponent, getPlaceholder, formInitVal, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 export default create({
@@ -57,6 +90,7 @@ export default create({
   mixins: [init(), locale],
   data () {
     return {
+      activeName: '',
       tableOption: {},
       form: {},
       formList: [],
@@ -65,7 +99,16 @@ export default create({
       formVal: {}
     };
   },
+  components: {
+    formTemp
+  },
   watch: {
+    tabsActive: {
+      handler (val) {
+        this.activeName = this.tabsActive
+      },
+      immediate: true
+    },
     formRules: {
       handler () {
         this.clearValidate();
@@ -85,7 +128,6 @@ export default create({
         } else {
           this.formVal = Object.assign(this.formVal, val || {});
         }
-
       },
       deep: true,
       immediate: true
@@ -125,6 +167,18 @@ export default create({
       });;
       return list;
     },
+    disabled () {
+      return this.parentOption.disabled
+    },
+    readonly () {
+      return this.parentOption.readonly
+    },
+    isTabs () {
+      return this.parentOption.tabs;
+    },
+    tabsActive () {
+      return this.vaildData(this.tableOption.tabsActive + '', '1')
+    },
   },
   props: {
     value: {
@@ -155,6 +209,13 @@ export default create({
       this.formDefault = formInitVal(this.propOption);
       let value = this.deepClone(this.formDefault.tableForm);
       this.setForm(this.deepClone(Object.assign(value, this.formVal)))
+    },
+    isGroupShow (item, index) {
+      if (this.isTabs) {
+        return index == this.activeName || index == 0
+      } else {
+        return true;
+      }
     },
     //表单赋值
     setForm (value) {
@@ -238,16 +299,10 @@ export default create({
       this.$emit("reset-change");
     },
     submit () {
-      this.asyncValidator(this.formRules, this.form, { firstFields: true })
-        .then(res => {
-          this.$emit("submit", this.form);
-        })
-        .catch(err => {
-          this.$notify({
-            message: err[0].message,
-            duration: 1500
-          });
-        });
+      this.$refs.form.submit()
+    },
+    handleSubmit () {
+      this.$emit("submit", this.form);
     }
   }
 });

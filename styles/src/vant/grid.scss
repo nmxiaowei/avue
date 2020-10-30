@@ -1,0 +1,30 @@
+.avue-grid__mobile{
+  padding: 30px 0 0 0;
+  .avue-grid{
+   &__icon{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    i{
+      line-height: 50px;
+      font-size: 26px;
+      color:#fff;
+    }
+   }
+   &__item{
+     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+   }
+   &__img{
+    width: 50px;
+    height: 50px;
+   }
+   &__title{
+     line-height: 30px;
+      font-size: 13px;
+   }
+  }
+}

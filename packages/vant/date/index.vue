@@ -1,26 +1,45 @@
 <template>
-  <div class="avue-cell">
-    <van-field v-model="textLabel"
-               :placeholder="placeholder"
-               :clearable="clearable"
-               :left-icon="prefixIcon"
-               is-link
-               :disabled="disabled"
-               input-align="right"
-               :required="required"
-               @click.native="handleDateClick"
-               readonly
-               :icon="suffixIcon"
-               :label="label" />
+  <van-field v-model="textLabel"
+             :rules="rules"
+             :placeholder="placeholder"
+             :clearable="clearable"
+             :left-icon="prefixIcon"
+             :disabled="disabled"
+             :input-align="inputAlign"
+             :required="required"
+             @click.native="handleDateClick"
+             readonly
+             :icon="suffixIcon"
+             :label="label">
     <van-popup v-model="box"
                position="bottom">
-      <van-datetime-picker :title="label"
+      <van-datetime-picker v-if="isTimeType"
+                           :title="label"
+                           v-model="time"
+                           :type="type"
+                           @cancel="hide"
+                           :min-date="minDate"
+                           :max-date="maxDate"
+                           :min-hour="minHour"
+                           :max-hour="maxHour"
+                           :min-minute="minMinute"
+                           :max-minute="maxMinute"
+                           @confirm="handleConfirm" />
+      <van-datetime-picker v-else
+                           :title="label"
                            v-model="date"
                            :type="type"
                            @cancel="hide"
+                           :min-date="minDate"
+                           :max-date="maxDate"
+                           :min-hour="minHour"
+                           :max-hour="maxHour"
+                           :min-minute="minMinute"
+                           :max-minute="maxMinute"
                            @confirm="handleConfirm" />
     </van-popup>
-  </div>
+  </van-field>
+
 </template>
 
 <script>
@@ -29,13 +48,22 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 const formatDafault = {
-  datetime: "yyyy-MM-dd hh:mm:ss",
-  date: "yyyy-MM-dd"
+  datetime: "YYYY-MM-DD hh:mm:ss",
+  date: "YYYY-MM-DD",
+  time: 'hh:mm:ss'
 };
+function formatDetail (val) {
+  return val.replace("dd", "DD").replace("yyyy", "YYYY");
+}
 export default create({
-  name: "date",
   mixins: [props(), event()],
   props: {
+    minDate: Date,
+    maxDate: Date,
+    minHour: [String, Number],
+    maxHour: [String, Number],
+    minMinute: [String, Number],
+    maxMinute: [String, Number],
     valueFormat: {
       default: function () {
         return formatDafault[this.type];
@@ -50,14 +78,15 @@ export default create({
   data () {
     return {
       date: '',
+      time: '',
+      oldDate: '',
       box: false,
-      textLabel: "",
     };
   },
   watch: {
     text: {
-      handler (val) {
-        this.getLabelShow(val);
+      handler () {
+        this.setDate();
       },
       immediate: true
     }
@@ -65,38 +94,55 @@ export default create({
   computed: {
     isTimestamp () {
       return this.valueFormat === "timestamp";
+    },
+    isTimeType () {
+      return this.type === "time"
+    },
+    textLabel () {
+      if (this.validatenull(this.oldDate)) {
+        return ''
+      }
+      return dayjs(this.oldDate).format(formatDetail(this.format));
     }
   },
   methods: {
-    getLabelShow (val) {
-      let value = val || this.date
-      if (!this.validatenull(value)) {
-        const date = new Date(value);
-        const format = this.format.replace("dd", "DD").replace("yyyy", "YYYY");
-        const valueFormat = this.valueFormat.replace("dd", "DD").replace("yyyy", "YYYY");
-        this.textLabel = dayjs(date).format(format);
-        if (this.isTimestamp) {
-          this.text = new Date(value).getTime();
-        } else {
-          this.text = dayjs(value).format(valueFormat);
-        }
+    setDate () {
+      let value = this.text;
+      if (this.validatenull(value)) {
+        return new Date()
+      }
+      if (this.isTimeType) {
+        this.time = value;
+        value = dayjs().format(formatDafault.date) + ` ${value}`
+      }
+      this.date = dayjs(value).toDate()
+      this.oldDate = dayjs(value).toDate()
+    },
+    setVal () {
+      this.oldDate = this.date;
+      if (this.isTimeType) {
+        this.text = this.time;
+      } else if (this.isTimestamp) {
+        this.text = new Date(this.oldDate).getTime();
+      } else {
+        this.text = dayjs(this.oldDate).format(formatDetail(this.valueFormat));
       }
     },
     handleDateClick () {
-      this.show();
       this.handleClick();
+      if (this.disabled || this.readonly) return
+      this.setDate();
+      this.show();
     },
-    handleConfirm (value) {
-      this.getLabelShow();
+    handleConfirm () {
+      this.setVal()
       this.hide();
     },
     show () {
       this.box = true;
-      this.date = this.text;
     },
     hide () {
       this.box = false;
-      this.date = ''
     }
   }
 });
