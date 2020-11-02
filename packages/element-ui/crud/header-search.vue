@@ -112,10 +112,10 @@ export default cteate({
   },
   computed: {
     isSearchIcon () {
-      return this.crud.option.searchIcon !== false && this.columnLen > this.searchIndex
+      return this.crud.option.searchIcon === true && this.columnLen > this.searchIndex
     },
     searchIndex () {
-      return this.crud.option.searchIndex || 2
+      return this.crud.option.searchIndex || 3
     },
     columnLen () {
       let count = 0;
