@@ -1,25 +1,27 @@
 <template>
-  <van-field v-model="textLabel"
-             :placeholder="placeholder"
-             :disabled="disabled"
-             :clearable="clearable"
-             :left-icon="prefixIcon"
-             :rules="rules"
-             :input-align="inputAlign"
-             :required="required"
-             @click.native="handleSelectClick"
-             readonly
-             :icon="suffixIcon"
-             :label="label" />
-  <van-popup v-model="box"
-             position="bottom">
-    <van-picker ref="picker"
-                show-toolbar
-                :title="label"
-                :columns="columns"
-                @cancel="handleCancel"
-                @confirm="handleConfirm" />
-  </van-popup>
+  <div>
+    <van-field v-model="textLabel"
+               :placeholder="placeholder"
+               :disabled="disabled"
+               :clearable="clearable"
+               :left-icon="prefixIcon"
+               :rules="rules"
+               :input-align="inputAlign"
+               :required="required"
+               @click.native="handleSelectClick"
+               readonly
+               :icon="suffixIcon"
+               :label="label"></van-field>
+    <van-popup v-model="box"
+               position="bottom">
+      <van-picker ref="picker"
+                  show-toolbar
+                  :title="label"
+                  :columns="columns"
+                  @cancel="handleCancel"
+                  @confirm="handleConfirm"></van-picker>
+    </van-popup>
+  </div>
 </template>
 
 <script>
