@@ -431,9 +431,11 @@ export default create({
     },
     //表单赋值
     setForm (value) {
-      Object.keys(value).forEach((ele, index) => {
+      Object.keys(value).forEach(ele => {
         let result = value[ele];
-        let column = this.propOption[index] || {};
+        let column = this.propOption.find(column => column.prop == ele)
+        this.$set(this.form, ele, result);
+        if (!column) return
         let prop = column.prop
         let bind = column.bind
         if (bind && !this.bindList[prop]) {
@@ -443,11 +445,9 @@ export default create({
           this.$watch('form.' + bind, (n, o) => {
             if (n != o) this.$set(this.form, prop, n);
           })
+          this.$set(this.form, prop, eval('value.' + bind));
           this.bindList[prop] = true;
-        } else {
-          this.$set(this.form, ele, result);
         }
-
       });
       this.forEachLabel();
     },
