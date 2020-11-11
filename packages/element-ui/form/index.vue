@@ -29,19 +29,20 @@
                    :class="b('tabs')"
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
-            <el-tab-pane v-for="(item,index) in columnOption"
-                         v-if="!item.display && index!=0"
-                         :key="index"
-                         :name="index+''">
-              <span slot="label">
-                <slot :name="item.prop+'Header'"
-                      v-if="$slots[item.prop+'Header']"></slot>
-                <template v-else>
-                  <i :class="item.icon">&nbsp;</i>
-                  {{item.label}}
-                </template>
-              </span>
-            </el-tab-pane>
+            <template v-if="!item.display && index!=0">
+              <el-tab-pane v-for="(item,index) in columnOption"
+                           :key="index"
+                           :name="index+''">
+                <span slot="label">
+                  <slot :name="item.prop+'Header'"
+                        v-if="$slots[item.prop+'Header']"></slot>
+                  <template v-else>
+                    <i :class="item.icon">&nbsp;</i>
+                    {{item.label}}
+                  </template>
+                </span>
+              </el-tab-pane>
+            </template>
           </el-tabs>
           <template slot="header"
                     v-if="$slots[item.prop+'Header']">
@@ -49,9 +50,9 @@
           </template>
           <div :class="b('group',{'flex':vaildData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
-            <template v-if="vaildDisplay(column)"
-                      v-for="(column,cindex) in item.column">
-              <el-col :key="column.prop"
+            <template v-for="(column,cindex) in item.column">
+              <el-col v-if="vaildDisplay(column)"
+                      :key="cindex"
                       :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
@@ -138,9 +139,9 @@
                 </el-form-item>
               </el-col>
               <div :class="b('line')"
+                   v-if="vaildDisplay(column)&&column.row && column.span!==24 && column.count"
                    :key="cindex"
-                   :style="{width:(column.count/24*100)+'%'}"
-                   v-if="column.row && column.span!==24 && column.count"></div>
+                   :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
             <slot name="search"></slot>
             <form-menu v-if="!isDetail && !isMenu">
