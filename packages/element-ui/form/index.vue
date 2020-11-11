@@ -29,8 +29,8 @@
                    :class="b('tabs')"
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
-            <template v-if="!item.display && index!=0">
-              <el-tab-pane v-for="(item,index) in columnOption"
+            <template v-for="(item,index) in columnOption">
+              <el-tab-pane v-if="!item.display && index!=0"
                            :key="index"
                            :name="index+''">
                 <span slot="label">
