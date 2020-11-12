@@ -7,6 +7,7 @@
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
              :size="$AVUE.formSize || controlSize"
+             :label-position="parentOption.labelPosition"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
       <el-row :span="24"
@@ -59,7 +60,7 @@
                       :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
-                      :class="[b('row'),{'avue--detail':vaildDetail(column)}]">
+                      :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
@@ -101,7 +102,6 @@
                           v-if="column.formslot"></slot>
                     <form-temp :column="column"
                                v-else
-                               :class="column.className"
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :t="t"
