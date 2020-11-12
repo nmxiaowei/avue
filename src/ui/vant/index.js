@@ -16,8 +16,9 @@ import Swipe from 'components/swipe';
 import Tabbar from 'components/tabbar';
 import Refresh from 'components/refresh';
 import Crud from 'components/crud';
+import Card from 'components/card';
 import packages from 'core/packages';
 if (!window.vant) {
   packages.logs('vant');
 }
-export default { Cell, Refresh, Crud, Tabbar, Swipe, Grid, InputNumber, Slider, Rate, Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload };
+export default { Card, Cell, Refresh, Crud, Tabbar, Swipe, Grid, InputNumber, Slider, Rate, Form, Select, Input, Radio, Checkbox, Date, Time, Switch, Upload };
