@@ -31,7 +31,7 @@
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
             <template v-for="(item,index) in columnOption">
-              <el-tab-pane v-if="!item.display && index!=0"
+              <el-tab-pane v-if="vaildData(item.display,true) && index!=0"
                            :key="index"
                            :name="index+''">
                 <span slot="label">
