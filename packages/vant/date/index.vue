@@ -1,16 +1,18 @@
 <template>
-  <van-field v-model="textLabel"
-             :rules="rules"
-             :placeholder="placeholder"
-             :clearable="clearable"
-             :left-icon="prefixIcon"
-             :disabled="disabled"
-             :input-align="inputAlign"
-             :required="required"
-             @click.native="handleDateClick"
-             readonly
-             :icon="suffixIcon"
-             :label="label">
+  <div>
+    <van-field v-model="textLabel"
+               :rules="rules"
+               :placeholder="placeholder"
+               :clearable="clearable"
+               :left-icon="prefixIcon"
+               :disabled="disabled"
+               :input-align="inputAlign"
+               :required="required"
+               @click.native="handleDateClick"
+               readonly
+               :icon="suffixIcon"
+               :label="label">
+    </van-field>
     <van-popup v-model="box"
                position="bottom">
       <van-datetime-picker v-if="isTimeType"
@@ -38,8 +40,8 @@
                            :max-minute="maxMinute"
                            @confirm="handleConfirm" />
     </van-popup>
-  </van-field>
 
+  </div>
 </template>
 
 <script>
