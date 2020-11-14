@@ -436,7 +436,7 @@ export default create({
       function findProp (list) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          if (ele.prop) {
+          if (ele.prop || !ele.children) {
             result.push(ele);
           }
           if (ele.children) {
