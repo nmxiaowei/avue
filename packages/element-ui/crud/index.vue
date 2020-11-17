@@ -905,6 +905,7 @@ export default create({
             },
             () => {
               this.btnDisabledList[index] = false;
+              this.btnDisabled = false;
             }
           );
         })
