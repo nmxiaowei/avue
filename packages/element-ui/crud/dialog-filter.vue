@@ -142,7 +142,7 @@ export default create({
       return this.columnOption[0];
     },
     columnOption () {
-      return this.crud.propOption;
+      return this.crud.propOption.filter(ele => ele.filter !== false);
     }
   },
   created () {
