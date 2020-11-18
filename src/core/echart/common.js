@@ -84,7 +84,7 @@ export default (() => {
         }
       }
     },
-    data() {
+    data () {
       return {
         propQuery: {},
         dataCount: 0,
@@ -98,42 +98,42 @@ export default (() => {
       };
     },
     watch: {
-      echartFormatter() {
+      echartFormatter () {
         this.updateChart();
       },
-      styleChartName() {
+      styleChartName () {
         this.$nextTick(() => {
           this.myChart && this.myChart.resize();
         });
       },
       url: {
-        handler(val) {
+        handler (val) {
           this.dataUrl = val || '';
         },
         deep: true,
         immediate: true
       },
       data: {
-        handler() {
+        handler () {
           this.updateData();
         },
         deep: true,
         immediate: true
       },
-      width() {
+      width () {
         this.updateData();
       },
-      height() {
+      height () {
         this.updateData();
       },
-      theme() {
+      theme () {
         // 这三句一句都不能少
         this.myChart.dispose();
         this.init();
         this.updateData();
       },
       option: {
-        handler() {
+        handler () {
           if (this.myChart && this.isChart) {
             this.updateData();
           }
@@ -143,35 +143,35 @@ export default (() => {
       }
     },
     computed: {
-      dataChartLen() {
+      dataChartLen () {
         return (this.dataChart || []).length;
       },
-      switchTheme() {
+      switchTheme () {
         return this.vaildData(this.option.switchTheme, false);
       },
-      name() {
+      name () {
         const result = this.$el.className.replace(config.name, '');
         return result;
       },
-      minWidth() {
+      minWidth () {
         const val = this.option.minWidth;
         if (val > this.width) return val;
 
       },
-      isApi() {
+      isApi () {
         return this.dataType === 1;
       },
-      style() {
+      style () {
         return this.component.style || {};
       },
-      styleChartName() {
+      styleChartName () {
         const obj = {
           width: setPx(this.minWidth || this.width),
           height: setPx(this.height)
         };
         return obj;
       },
-      styleSizeName() {
+      styleSizeName () {
         return Object.assign({
           width: setPx((this.width)),
           height: setPx((this.height))
@@ -186,11 +186,11 @@ export default (() => {
         })());
       }
     },
-    mounted() {
+    mounted () {
       this.init();
     },
     methods: {
-      init() {
+      init () {
         // 判断是否引入echart包
         if (!window.echarts) {
           packages.logs('echarts');
@@ -203,12 +203,12 @@ export default (() => {
           if (this.isChart) this.myChart = window.echarts.init(main, this.theme);
         }
       },
-      updateUrl(url) {
+      updateUrl (url) {
         this.dataUrl = url;
         this.updateData();
       },
       // 更新数据核心方法
-      updateData() {
+      updateData () {
         this.resetData && this.resetData();
         if (this.key) return;
         this.key = true;
@@ -237,7 +237,6 @@ export default (() => {
                 this.dataChart = result;
               }
               if (this.isChart && this.myChart) {
-                this.myChart.clear();
                 this.updateChart();
                 this.bindClick();
               }
@@ -268,7 +267,6 @@ export default (() => {
               this.dataChart = this.data;
             }
             if (this.isChart && this.myChart) {
-              this.myChart.clear();
               this.updateChart();
               this.bindClick();
             }
@@ -284,14 +282,14 @@ export default (() => {
           }
         });
       },
-      getLabelFormatter(name) {
+      getLabelFormatter (name) {
         if (this.labelFormatter) {
           return this.labelFormatter(name, this.dataChart);
         }
         return name.value;
       },
       // 绑定点击事件
-      bindClick() {
+      bindClick () {
         this.myChart.off('click');
         this.myChart.on('click', e => {
           if (e.marker) {
@@ -307,7 +305,7 @@ export default (() => {
         });
       },
       // 下面俩都是chart的公共的方法,就放这里面共用
-      getColor(index, first) {
+      getColor (index, first) {
         const barColor = this.option.barColor || [];
         if (barColor[index]) {
           const color1 = barColor[index].color1;
@@ -334,7 +332,7 @@ export default (() => {
           return color1;
         }
       },
-      ishasprop(condition, isprop, alwaysObj) {
+      ishasprop (condition, isprop, alwaysObj) {
         return Object.assign((() => {
           return condition ? isprop : {};
         })(), alwaysObj);

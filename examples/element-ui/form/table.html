@@ -57,26 +57,28 @@
               },
               onLoad: ({ page, value, data }, callback) => {
                 console.log(data);
-                if (value) {
+                setTimeout(() => {
+                  if (value) {
+                    callback({
+                      id: '0',
+                      name: '张三',
+                      sex: '男'
+                    })
+                    return
+                  }
                   callback({
-                    id: '0',
-                    name: '张三',
-                    sex: '男'
+                    total: 40,
+                    data: [{
+                      id: '0',
+                      name: '张三',
+                      sex: '男'
+                    }, {
+                      id: '1',
+                      name: '李四',
+                      sex: '女'
+                    }]
                   })
-                  return
-                }
-                callback({
-                  total: 40,
-                  data: [{
-                    id: '0',
-                    name: '张三',
-                    sex: '男'
-                  }, {
-                    id: '1',
-                    name: '李四',
-                    sex: '女'
-                  }]
-                })
+                }, 1000)
               },
               props: {
                 label: 'name',

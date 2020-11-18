@@ -231,7 +231,7 @@ export default create({
         this.text.push(node[this.valueKey]);
         this.labelText.push(node[this.labelKey]);
       });
-      if (typeof this.checked === "function") this.checked(checkedNodes);
+      if (typeof this.checked === "function") this.checked(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
     },
     getHalfList () {
       let list = this.$refs.tree.getCheckedNodes(false, true)

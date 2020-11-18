@@ -7,6 +7,7 @@
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
              :size="$AVUE.formSize || controlSize"
+             :label-position="parentOption.labelPosition"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
              :rules="formRules">
       <el-row :span="24"
@@ -29,19 +30,20 @@
                    :class="b('tabs')"
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
-            <el-tab-pane v-for="(item,index) in columnOption"
-                         v-if="!item.display && index!=0"
-                         :key="index"
-                         :name="index+''">
-              <span slot="label">
-                <slot :name="item.prop+'Header'"
-                      v-if="$slots[item.prop+'Header']"></slot>
-                <template v-else>
-                  <i :class="item.icon">&nbsp;</i>
-                  {{item.label}}
-                </template>
-              </span>
-            </el-tab-pane>
+            <template v-for="(item,index) in columnOption">
+              <el-tab-pane v-if="vaildData(item.display,true) && index!=0"
+                           :key="index"
+                           :name="index+''">
+                <span slot="label">
+                  <slot :name="item.prop+'Header'"
+                        v-if="$slots[item.prop+'Header']"></slot>
+                  <template v-else>
+                    <i :class="item.icon">&nbsp;</i>
+                    {{item.label}}
+                  </template>
+                </span>
+              </el-tab-pane>
+            </template>
           </el-tabs>
           <template slot="header"
                     v-if="$slots[item.prop+'Header']">
@@ -49,16 +51,16 @@
           </template>
           <div :class="b('group',{'flex':vaildData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
-            <template v-if="vaildDisplay(column)"
-                      v-for="(column,cindex) in item.column">
-              <el-col :key="column.prop"
+            <template v-for="(column,cindex) in item.column">
+              <el-col v-if="vaildDisplay(column)"
+                      :key="cindex"
                       :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
                       :sm="12"
                       :xs="24"
                       :offset="column.offset || 0"
-                      :class="[b('row'),{'avue--detail':vaildDetail(column)}]">
+                      :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
@@ -100,7 +102,6 @@
                           v-if="column.formslot"></slot>
                     <form-temp :column="column"
                                v-else
-                               :class="column.className"
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :t="t"
@@ -138,9 +139,9 @@
                 </el-form-item>
               </el-col>
               <div :class="b('line')"
+                   v-if="vaildDisplay(column)&&column.row && column.span!==24 && column.count"
                    :key="cindex"
-                   :style="{width:(column.count/24*100)+'%'}"
-                   v-if="column.row && column.span!==24 && column.count"></div>
+                   :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
             <slot name="search"></slot>
             <form-menu v-if="!isDetail && !isMenu">
@@ -431,9 +432,11 @@ export default create({
     },
     //表单赋值
     setForm (value) {
-      Object.keys(value).forEach((ele, index) => {
+      Object.keys(value).forEach(ele => {
         let result = value[ele];
-        let column = this.propOption[index] || {};
+        let column = this.propOption.find(column => column.prop == ele)
+        this.$set(this.form, ele, result);
+        if (!column) return
         let prop = column.prop
         let bind = column.bind
         if (bind && !this.bindList[prop]) {
@@ -443,11 +446,9 @@ export default create({
           this.$watch('form.' + bind, (n, o) => {
             if (n != o) this.$set(this.form, prop, n);
           })
+          this.$set(this.form, prop, eval('value.' + bind));
           this.bindList[prop] = true;
-        } else {
-          this.$set(this.form, ele, result);
         }
-
       });
       this.forEachLabel();
     },

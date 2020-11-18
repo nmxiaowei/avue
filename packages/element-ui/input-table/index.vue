@@ -19,6 +19,7 @@
                  ref="crud"
                  :option="option"
                  :data="data"
+                 v-loading="loading"
                  @on-load="onList"
                  @search-change="handleSearchChange"
                  @search-reset="handleSearchChange"
@@ -47,6 +48,7 @@ export default create({
       object: {},
       active: {},
       page: {},
+      loading: false,
       box: false,
       created: false,
       data: []
@@ -130,10 +132,12 @@ export default create({
       done && done()
     },
     onList (callback) {
+      this.loading = true;
       if (typeof this.onLoad == 'function') {
         this.onLoad({ page: this.page }, data => {
           this.page.total = data.total;
           this.data = data.data
+          this.loading = false;
         })
       }
     }

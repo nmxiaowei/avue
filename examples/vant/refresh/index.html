@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-refresh :page.sync="page" @on-load="onLoad" success-text="刷新成功" finished-text="没有更多了">
+      <van-cell v-for="item in list" :key="item" :title="item" />
+    </avue-refresh>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        list: [],
+        page: 1
+      }
+    },
+    methods: {
+      onLoad(loading, done) {
+        setTimeout(() => {
+          for (let i = 0; i < 10; i++) {
+            this.list.push(this.list.length + 1);
+          }
+          loading()
+          // 数据全部加载完成
+          if (this.list.length >= 40) {
+            done();
+          }
+        }, 1000);
+      }
+    }
+  })
+</script>
+
+</html>

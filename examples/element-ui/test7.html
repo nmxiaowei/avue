@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.13.0/theme-chalk/index.css" />
+  <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :option="option" :data="tabelList"></avue-crud>
+  </div>
+</body>
+<script>
+  let column = [{
+    labelWidth: 0,
+    component: "elDivider", //ele分割线
+    span: 24,
+    hide: true,
+    params: {
+      html: "<span>基本信息</span>",
+      contentPosition: "left",
+    },
+  }, {
+    label: "合同编号",
+    prop: "contractNo",
+    sortable: true,
+    rules: [
+      {
+        required: true,
+        message: '合同编号必须填写'
+      }
+    ]
+  }, {
+    label: "合同名称",
+    prop: "contractTitle",
+    search: true,
+    rules: [
+      {
+        required: true,
+        message: '合同名称必须填写'
+      }
+    ]
+  }, {
+    label: "使用单位",
+    prop: "useUnitName",
+    type: "select",
+    search: true,
+    formslot: true,
+
+    rules: [
+      {
+        required: true,
+        message: '使用单位必须填写'
+      }
+    ]
+  }, {
+    label: "业务员",
+    prop: "maintainUserName",
+    type: "select",
+    search: true,
+    rules: [
+      {
+        required: true,
+        message: '业务员必须填写'
+      }
+    ]
+  }, {
+    label: "项目来源",
+    prop: "source",
+    type: "select",
+    rules: [
+      {
+        required: true,
+        message: '项目来源必须填写'
+      }
+    ]
+  }, {
+    label: "省市区",
+    prop: "location",
+    type: "select",
+
+  }, {
+    label: "联系地址",
+    prop: "contactAddress",
+
+  }, {
+    label: "客户联系人",
+    prop: "contactName",
+
+  }, {
+    label: "联系电话",
+    prop: "contactMobileNo",
+
+  }, {
+    labelWidth: 0,
+    component: "elDivider", //ele分割线
+    span: 24,
+    hide: true,
+    params: {
+      html: "<span>合同内容</span>",
+      contentPosition: "left",
+    },
+  },
+  {
+    label: "开始时间",
+    prop: "startTime",
+    type: "date",
+    rules: [{
+      required: true,
+      message: "请选择下次保养日期",
+      trigger: "blur"
+    }]
+  },
+  {
+    label: "截止时间",
+    prop: "endTime",
+    type: "date",
+    rules: [{
+      required: true,
+      message: "请选择下次保养日期",
+      trigger: "blur"
+    }]
+  },
+  {
+    label: "保险形式",
+    prop: "insuranceType",
+    type: "select",
+
+  },
+  {
+    label: "电梯数量",
+    prop: "elevatorNum",
+
+  },
+  {
+    label: "合同总额",
+    prop: "contractAmount",
+  },
+  {
+    label: "开票类型",
+    prop: "invoiceType",
+  },
+
+  {
+    label: "结算方式",
+    prop: "settlementType",
+    type: "select",
+    rules: [{
+      required: true,
+      message: "请选择结算方式",
+      trigger: "blur"
+    }]
+  },
+  {
+    label: "支付方式",
+    prop: "paymentType",
+    type: "select",
+    rules: [{
+      required: true,
+      message: "请选择支付方式",
+      trigger: "blur"
+    }]
+  },
+  {
+    label: "结算前N天提醒",
+    prop: "remindDay",
+    labelWidth: 120,
+  },
+  {
+    label: "开户行",
+    prop: "bankName",
+    type: "select",
+  },
+  {
+    label: "开户名",
+    prop: "accountName",
+    type: "select",
+  },
+  {
+    label: "银行账号",
+    prop: "bankAccount",
+    type: "select",
+  },
+  {
+    labelWidth: 0,
+    component: "elDivider", //ele分割线
+    span: 24,
+    hide: true,
+    params: {
+      html: "<span>基本信息</span>",
+      contentPosition: "left",
+    },
+  },
+  {
+    labelWidth: 0,
+    formslot: true,
+    prop: "generate",
+    span: 24,
+  },
+  {
+    label: '',
+    labelWidth: 0,
+    prop: 'dynamic',
+    type: 'dynamic',
+    span: 24,
+    row: true,
+    children: {
+      column: [{
+        width: 200,
+        label: '输入框',
+        prop: "input",
+      }]
+    }
+  },
+
+  ];
+
+  column.forEach(item => {
+    if (!item.component && !item.span) {
+      item.span = 8
+      if (!item.labelWidth) item.labelWidth = 100;
+      if (!item.minWidth) item.minWidth = 120
+    }
+  })
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        tabelList: [],
+        option: {
+          server: {
+            url: "wb/elevator/list",
+            params: {},
+          },
+          addRequest: {
+            url: "wb/elevator",
+            params: {},
+          },
+          dialogWidth: "80%",
+          dialogTop: 20,
+          addTitle: "新增合同/电梯",
+          align: "center",
+          menuPosition: 'center',
+          saveBtn: true,
+          updateBtn: true,
+          cancelBtn: true,
+          column
+        }
+      }
+    }
+  })
+</script>
+
+</html>

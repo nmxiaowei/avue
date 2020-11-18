@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+
+  <!-- 引入vant组件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.10.9/lib/vant.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue-mobile.js"></script>
+  <style>
+    body {
+      background-color: #f7f8fa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-card :data="data" @click="handleClick" @click-thumb="clickThumb">
+      <div slot="tags" slot-scope="{row}">
+        <van-tag plain type="danger" v-if="row.tag1">{{row.tag1}}</van-tag>
+        &nbsp;
+        <van-tag plain type="danger" v-if="row.tag2">{{row.tag2}}</van-tag>
+      </div>
+      <div slot="footer" slot-scope="{row}">
+        <van-button size="mini">按钮</van-button>
+        <van-button size="mini">按钮</van-button>
+      </div>
+    </avue-card>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: [{
+          price: "2.00",
+          desc: "描述信息",
+          title: "商品标题",
+          tag1: '标签1',
+          tag2: '标签2',
+          thumb: "https://img.yzcdn.cn/vant/ipad.jpeg"
+        }, {
+          price: "2.00",
+          desc: "描述信息",
+          title: "商品标题",
+          tag1: '标签1',
+          thumb: "https://img.yzcdn.cn/vant/ipad.jpeg"
+        }, {
+          price: "2.00",
+          desc: "描述信息",
+          title: "商品标题",
+          thumb: "https://img.yzcdn.cn/vant/ipad.jpeg"
+        }],
+      }
+    },
+    methods: {
+      handleClickThumb(item) {
+        console.log(item)
+      },
+      handleClick(item) {
+        console.log(item)
+      }
+    }
+  })
+</script>
+
+</html>

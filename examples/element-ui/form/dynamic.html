@@ -21,7 +21,7 @@
   <div id="app">
     <avue-form :option="option" v-model="obj" @submit="submit">
       <template slot-scope="scope" slot="input">
-        <el-tag>{{scope.row.$index}}</el-tag>
+        <el-tag>{{scope.row}}</el-tag>
       </template>
     </avue-form>
   </div>
