@@ -107,7 +107,7 @@
                                :t="t"
                                :props="parentOption.props"
                                :propsHttp="parentOption.propsHttp"
-                               v-bind="$uploadFun()"
+                               v-bind="$uploadFun(column)"
                                :disabled="getDisabled(column)"
                                :enter="parentOption.enter"
                                :size="parentOption.size"

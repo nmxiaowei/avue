@@ -38,7 +38,7 @@
                  @error="handleError"
                  :reset="false"
                  @reset-change="hide"
-                 v-bind="$uploadFun(crud)"
+                 v-bind="$uploadFun(column,crud)"
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
         <template slot-scope="scope"

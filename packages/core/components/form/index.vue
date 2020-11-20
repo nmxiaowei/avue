@@ -1,7 +1,7 @@
 <template>
   <component :is="getComponent(column.type,column.component)"
              v-model="text"
-             v-bind="Object.assign(column,$uploadFun())"
+             v-bind="Object.assign(column,$uploadFun(column))"
              v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"
