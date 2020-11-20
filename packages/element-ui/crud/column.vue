@@ -95,6 +95,11 @@ import formTemp from '../../core/components/form/index'
 import { detail } from "core/detail";
 export default {
   name: "column",
+  data () {
+    return {
+      count: {}
+    }
+  },
   mixins: [locale],
   components: {
     formTemp,
@@ -173,9 +178,11 @@ export default {
       return result;
     },
     columnChange (index, row, column) {
+      if (this.validatenull(this.count[column.prop])) this.count[column.prop] = 0
+      this.count[column.prop] = this.count[column.prop] + 1;
       if (column.cascader) this.handleChange(index, row)
-      if (typeof column.change === 'function' && column.cell === true) {
-        column.change({ row, column, index: row.$index })
+      if (this.count[column.prop] % 3 === 0 && typeof column.change === 'function' && column.cell === true) {
+        column.change({ row, column, index: row.$index, value: row[column.prop] })
       }
     },
     handleChange (index, row) {
