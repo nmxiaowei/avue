@@ -41,9 +41,9 @@
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
-                       v-bind="$uploadFun(crud)"
+                       v-bind="$uploadFun(column,crud)"
                        v-model="scope.row[column.prop]"
-                       @change="column.cascader && handleChange(index,scope.row)">
+                       @change="columnChange(index,scope.row,column)">
             </form-temp>
             <slot :row="scope.row"
                   :dic="crud.DIC[column.prop]"
@@ -171,6 +171,12 @@ export default {
         row["$" + column.prop] = result;
       }
       return result;
+    },
+    columnChange (index, row, column) {
+      if (column.cascader) this.handleChange(index, row)
+      if (typeof column.change === 'function' && column.cell === true) {
+        column.change({ row, column, index: row.$index })
+      }
     },
     handleChange (index, row) {
       this.$nextTick(() => {
