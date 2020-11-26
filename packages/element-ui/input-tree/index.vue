@@ -280,9 +280,9 @@ export default create({
       this.$refs.tree.setCurrentKey(null)
       this.$refs.tree.setCheckedKeys([]);
     },
-    handleNodeClick (data) {
+    handleNodeClick (data, node, nodeComp) {
       if (data.disabled) return
-      if (typeof this.nodeClick === "function") this.nodeClick(data);
+      if (typeof this.nodeClick === "function") this.nodeClick(data, node, nodeComp);
       if (this.multiple) return;
       if (
         (this.validatenull(data[this.childrenKey]) && !this.multiple) ||

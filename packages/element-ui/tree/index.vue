@@ -270,8 +270,8 @@ export default create({
     handleSubmit (form, done) {
       this.addFlag ? this.save(form, done) : this.update(form, done)
     },
-    nodeClick (data) {
-      this.$emit("node-click", data);
+    nodeClick (data, node, nodeComp) {
+      this.$emit("node-click", data, node, nodeComp);
     },
     filterNode (value, data) {
       if (!value) return true;
