@@ -235,9 +235,6 @@ export default create({
     this.initFun()
   },
   watch: {
-    option () {
-      this.init();
-    },
     filterValue (val) {
       this.$refs.tree.filter(val);
     },
