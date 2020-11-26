@@ -2,9 +2,9 @@
   <div :class="b()">
     <div :class="b('filter')"
          v-if="vaildData(option.filter,true)">
-      <el-input placeholder="输入关键字进行过滤"
+      <el-input :placeholder="vaildData(option.filterText,'输入关键字进行过滤')"
                 :size="size"
-                v-model="filterText">
+                v-model="filterValue">
         <el-button slot="append"
                    :size="size"
                    @click="parentAdd"
@@ -115,7 +115,7 @@ export default create({
   },
   data () {
     return {
-      filterText: "",
+      filterValue: "",
       client: {
         x: 0,
         y: 0,
@@ -238,7 +238,7 @@ export default create({
     option () {
       this.init();
     },
-    filterText (val) {
+    filterValue (val) {
       this.$refs.tree.filter(val);
     },
     value (val) {

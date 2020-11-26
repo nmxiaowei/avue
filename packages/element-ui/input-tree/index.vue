@@ -13,8 +13,8 @@
     <div v-if="filter"
          style="padding:0 10px;margin:5px 0 0 0;">
       <el-input size="mini"
-                placeholder="输入关键字进行过滤"
-                v-model="filterText"></el-input>
+                :placeholder="filterText"
+                v-model="filterValue"></el-input>
     </div>
     <el-option :value="text">
       <el-tree :data="dicList"
@@ -69,7 +69,7 @@ export default create({
   data () {
     return {
       node: [],
-      filterText: "",
+      filterValue: "",
       box: false,
       labelText: []
     };
@@ -94,6 +94,10 @@ export default create({
     filter: {
       type: Boolean,
       default: true
+    },
+    filterText: {
+      type: String,
+      default: '输入关键字进行过滤'
     },
     checkStrictly: {
       type: Boolean,
@@ -136,7 +140,7 @@ export default create({
       this.initVal();
       this.init();
     },
-    filterText (val) {
+    filterValue (val) {
       this.$refs.tree.filter(val);
     }
   },
