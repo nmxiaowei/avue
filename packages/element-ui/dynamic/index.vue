@@ -155,6 +155,7 @@ export default create({
         menu: false,
         size: this.size,
         readonly: this.readonly,
+        disabled: this.disabled,
         emptyBtn: false,
         submitBtn: false,
       }, (() => {
