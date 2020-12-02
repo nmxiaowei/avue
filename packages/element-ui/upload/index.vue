@@ -15,6 +15,7 @@
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
+               :on-change="handleFileChange"
                :on-exceed="handleExceed"
                :disabled="disabled"
                :file-list="fileList">

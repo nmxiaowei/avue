@@ -176,6 +176,9 @@ export default function () {
         this.loading = false;
         this.handleError(msg);
       },
+      handleFileChange (file, fileList) {
+        fileList.splice(fileList.length - 1, 1);
+      },
       httpRequest (config) {
         this.loading = true;
         let file = config.file;
