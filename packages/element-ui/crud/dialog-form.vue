@@ -37,8 +37,7 @@
                  @tab-click="handleTabClick"
                  @error="handleError"
                  :reset="false"
-                 @reset-change="hide"
-                 v-bind="$uploadFun(column,crud)"
+                 @reset-change="hide" 
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
         <template slot-scope="scope"
