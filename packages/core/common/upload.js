@@ -176,6 +176,9 @@ export default function () {
         this.loading = false;
         this.handleError(msg);
       },
+      handleFileChange (file, fileList) {
+        fileList.splice(fileList.length - 1, 1);
+      },
       httpRequest (config) {
         this.loading = true;
         let file = config.file;
@@ -191,13 +194,13 @@ export default function () {
         let oss_config = {};
         let client = {};
         let param = new FormData();
-        //附加属性
-        for (let o in this.data) {
-          param.append(o, this.data[o]);
-        }
         const done = () => {
-          let url = this.action;
-          const callack = (newFile) => {
+          const callback = (newFile) => {
+            let url = this.action;
+            //附加属性
+            for (let o in this.data) {
+              param.append(o, this.data[o]);
+            }
             const uploadfile = newFile || file;
             param.append(this.fileName, uploadfile);
             //七牛云oss存储
@@ -266,10 +269,10 @@ export default function () {
               });
           };
           if (typeof this.uploadBefore === "function")
-            this.uploadBefore(this.file, callack, () => {
+            this.uploadBefore(this.file, callback, () => {
               this.loading = false;
             }, this.column);
-          else callack();
+          else callback();
         };
         //是否开启水印
         if (!this.validatenull(this.canvasOption)) {

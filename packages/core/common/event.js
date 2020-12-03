@@ -40,7 +40,7 @@ export default function () {
         if (this.isString || this.isNumber || this.stringMode || this.listType === "picture-img") {
           if (Array.isArray(value)) result = value.join(',')
         }
-        if (typeof this.change === 'function') {
+        if (typeof this.change === 'function' && this.column.cell !== true) {
           this.change({ value: result, column: this.column });
         }
         this.$emit('input', result);

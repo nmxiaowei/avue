@@ -192,6 +192,9 @@
             }, {
               label: '地址',
               prop: 'textarea',
+              change: ({ index, row, column }) => {
+                console.log(index, row, column)
+              },
               cell: true,
             }, {
               label: '远程搜索',

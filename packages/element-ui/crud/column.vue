@@ -41,9 +41,9 @@
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
-                       v-bind="$uploadFun(crud)"
+                       v-bind="$uploadFun(column,crud)"
                        v-model="scope.row[column.prop]"
-                       @change="column.cascader && handleChange(index,scope.row)">
+                       @change="columnChange(index,scope.row,column)">
             </form-temp>
             <slot :row="scope.row"
                   :dic="crud.DIC[column.prop]"
@@ -95,6 +95,11 @@ import formTemp from '../../core/components/form/index'
 import { detail } from "core/detail";
 export default {
   name: "column",
+  data () {
+    return {
+      count: {}
+    }
+  },
   mixins: [locale],
   components: {
     formTemp,
@@ -171,6 +176,14 @@ export default {
         row["$" + column.prop] = result;
       }
       return result;
+    },
+    columnChange (index, row, column) {
+      if (this.validatenull(this.count[column.prop])) this.count[column.prop] = 0
+      this.count[column.prop] = this.count[column.prop] + 1;
+      if (column.cascader) this.handleChange(index, row)
+      if (this.count[column.prop] % 3 === 0 && typeof column.change === 'function' && column.cell === true) {
+        column.change({ row, column, index: row.$index, value: row[column.prop] })
+      }
     },
     handleChange (index, row) {
       this.$nextTick(() => {

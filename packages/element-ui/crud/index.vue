@@ -553,7 +553,7 @@ export default create({
   },
   props: {
     sortBy: Function,
-    sortOrders: Function,
+    sortOrders: Array,
     sortMethod: Function,
     spanMethod: Function,
     summaryMethod: Function,

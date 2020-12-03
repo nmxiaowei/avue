@@ -19,7 +19,8 @@
                 :size="scope.size"
                 :label="scope.label"
                 :name="item.prop"></slot>
-        </template></dynamic-column>
+        </template>
+      </dynamic-column>
       <template v-else-if="!['dynamic'].includes(column.type)">
         <el-table-column v-if="vaildColumn(column)"
                          :key="column.prop"
@@ -48,9 +49,9 @@
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[scope.row.$index]"
                        :clearable="vaildData(column.clearable,false)"
-                       v-bind="$uploadFun(crud)"
+                       v-bind="$uploadFun(column,crud)"
                        v-model="scope.row[column.prop]"
-                       @change="column.cascader?handleChange(index,scope.row):''">
+                       @change="columnChange(index,scope.row,column)">
             </form-temp>
             <slot :row="scope.row"
                   :dic="crud.DIC[column.prop]"
@@ -119,6 +120,7 @@ export default {
       "handleDetail",
       "handleShowLabel",
       "handleChange",
+      "columnChange",
       "cellEditFlag",
       "iconShow",
       "getImgList",
