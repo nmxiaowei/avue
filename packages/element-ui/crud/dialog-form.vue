@@ -8,7 +8,7 @@
              v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog',{'fullscreen':fullscreen})"
              :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
-             :fullscreen="fullscreen?fullscreen:(crud.isMobile?true:crud.tableOption.dialogFullscreen)"
+             :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
              :top="setPx(dialogTop)"
@@ -350,6 +350,7 @@ export default create({
       this.boxType = type;
       const callback = () => {
         this.$nextTick(() => {
+          this.fullscreen = this.crud.tableOption.dialogFullscreen
           this.boxVisible = true;
         });
       };
