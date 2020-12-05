@@ -72,6 +72,10 @@ const install = function (Vue, opts = {}) {
           result[ele] = safe[ele];
         }
       });
+    } else {
+      list.forEach(ele => {
+        result[ele] = safe[ele];
+      });
     }
     return result;
   };
