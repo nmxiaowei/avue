@@ -428,7 +428,7 @@ export default create({
       return this.menuType === "menu"
     },
     calcHeight () {
-      return this.tableOption.calcHeight || 10
+      return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
     },
     propOption () {
       let result = [];

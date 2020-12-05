@@ -85,6 +85,7 @@ const install = function (Vue, opts = {}) {
       return config
     })(),
     size: opts.size || 'small',
+    calcHeight: opts.calcHeight || 0,
     tableSize: opts.tableSize,
     formSize: opts.formSize,
     menuType: opts.menuType || 'text',
