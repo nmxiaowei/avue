@@ -72,6 +72,10 @@ const install = function (Vue, opts = {}) {
           result[ele] = safe[ele];
         }
       });
+    } else {
+      list.forEach(ele => {
+        result[ele] = safe[ele];
+      });
     }
     return result;
   };
@@ -81,6 +85,7 @@ const install = function (Vue, opts = {}) {
       return config
     })(),
     size: opts.size || 'small',
+    calcHeight: opts.calcHeight || 0,
     tableSize: opts.tableSize,
     formSize: opts.formSize,
     menuType: opts.menuType || 'text',

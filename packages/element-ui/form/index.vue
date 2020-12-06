@@ -140,7 +140,7 @@
               </el-col>
               <div :class="b('line')"
                    v-if="vaildDisplay(column)&&column.row && column.span!==24 && column.count"
-                   :key="cindex"
+                   :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
             <slot name="search"></slot>

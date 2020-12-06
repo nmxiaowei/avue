@@ -23,12 +23,11 @@
         <i class="el-icon-plus"></i>
       </template>
       <template v-else-if="listType=='picture-img'">
-        <el-image v-if="imgUrl"
-                  :src="imgUrl"
-                  :preview-src-list="[imgUrl]"
-                  v-bind="allParams"
-                  @mouseover="menu=true"
-                  :class="b('avatar')"></el-image>
+        <img v-if="imgUrl"
+             :src="imgUrl"
+             v-bind="allParams"
+             @mouseover="menu=true"
+             :class="b('avatar')" />
         <i v-else
            class="el-icon-plus"
            :class="b('icon')"></i>
