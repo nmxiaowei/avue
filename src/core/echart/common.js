@@ -4,13 +4,48 @@ import packages from 'core/packages';
 export default (() => {
   return {
     props: {
-      click: Function,
-      dataFormatter: Function,
-      titleFormatter: Function,
-      labelFormatter: Function,
-      clickFormatter: Function,
-      formatter: Function,
-      echartFormatter: Function,
+      click: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
+      dataFormatter: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
+      titleFormatter: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
+      labelFormatter: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
+      clickFormatter: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
+      formatter: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
+      echartFormatter: {
+        type: Function,
+        default: () => {
+          return () => { }
+        }
+      },
       width: {
         type: [Number, String],
         default: 600
@@ -201,6 +236,9 @@ export default (() => {
           // 判断是否图表去初始化
           this.isChart = config.echart.includes(this.name);
           if (this.isChart) this.myChart = window.echarts.init(main, this.theme);
+          if (this.name == 'datav') {
+            this.updateChart()
+          }
         }
       },
       updateUrl (url) {
