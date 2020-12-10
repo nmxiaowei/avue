@@ -171,7 +171,7 @@ export default create({
             // 点标记中的文本
             var markerSpan = document.createElement("span");
             markerSpan.className = "avue-input-map__marker";
-            markerSpan.innerHTML = this.formattedAddress;
+            markerSpan.innerHTML = this.poi.formattedAddress;
             markerContent.appendChild(markerSpan);
             this.marker.setContent(markerContent); //更新点标记内容
           }
