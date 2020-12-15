@@ -16,7 +16,7 @@
               :size="size"></slot>
       </template>
       <template slot-scope="{value,column,dic,size,label,disabled}"
-                v-for="item in columnOption"
+                v-for="item in columnFormOption"
                 :slot="item.prop">
         <slot :value="value"
               :column="column"
