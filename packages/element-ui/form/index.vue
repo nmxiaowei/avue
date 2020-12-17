@@ -397,7 +397,7 @@ export default create({
       let result;
       if (!this.validatenull(column.labelWidth)) {
         result = column.labelWidth
-      } else if (!this.validatenull(column.labelWidth)) {
+      } else if (!this.validatenull(item.labelWidth)) {
         result = item.labelWidth
       } else {
         result = this.parentOption.labelWidth;
