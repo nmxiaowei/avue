@@ -30,7 +30,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
     if (type.indexOf('range') !== -1) {
       let date1 = result[0], date2 = result[1]
-      result = [dayjs().format(date1), dayjs(date2).format(format)].join(column.separator || '~')
+      result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~')
     } else {
       result = dayjs(result).format(format);
     }
