@@ -4,6 +4,9 @@
        @mouseover.stop="handleOver"
        @mouseout.stop="handleOut"
        :style="styleName">
+    <el-input ref="input"
+              :class="b('focus')"
+              v-model="value"></el-input>
     <div :class="b('wrapper')"
          ref="wrapper">
       <template v-if="(active || overActive || moveActive)&&!readonly">
@@ -93,6 +96,7 @@ export default create({
   },
   data () {
     return {
+      value: '',
       baseWidth: 0,
       baseHeight: 0,
       baseLeft: 0,
@@ -102,6 +106,7 @@ export default create({
       overActive: false,
       rangeActive: false,
       active: false,
+      keyDown: null,
       rangeList: [
         {
           classname: "left",
@@ -180,9 +185,15 @@ export default create({
     }
   },
   watch: {
+    active (val) {
+      if (val) {
+        this.handleKeydown()
+      } else {
+        document.onkeydown = this.keyDown
+      }
+    },
     width (val) {
       this.baseWidth = getFixed(val) || this.children.offsetWidth;
-
     },
     height (val) {
       this.baseHeight = getFixed(val) || this.children.offsetHeight;
@@ -216,6 +227,7 @@ export default create({
       this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
       this.baseLeft = getFixed(this.left);
       this.baseTop = getFixed(this.top);
+      this.keyDown = document.onkeydown
     },
     setLeft (left) {
       this.baseLeft = left;
@@ -332,6 +344,9 @@ export default create({
     },
     handleMove (e) {
       if (this.disabled) return
+      setTimeout(() => {
+        this.$refs.input.focus()
+      })
       this.active = true;
       this.handleMouseDown();
       let disX = e.clientX;
@@ -346,13 +361,39 @@ export default create({
       };
       this.handleClear()
     },
-
     handleClear () {
       document.onmouseup = () => {
         document.onmousemove = null;
         document.onmouseup = null;
         this.handleMouseUp();
       }
+    },
+    handleKeydown () {
+      document.onkeydown = (event) => {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        let step = 1 * this.step;
+        if (this.$refs.input.focused) {
+          if (e && e.keyCode == 38) {//上
+            this.baseTop = getFixed(this.baseTop - step)
+          } else if (e && e.keyCode == 37) {//左
+            this.baseLeft = getFixed(this.baseLeft - step)
+          } else if (e && e.keyCode == 40) {//下
+            this.baseTop = getFixed(this.baseTop + step)
+          } else if (e && e.keyCode == 39) {//右
+            this.baseLeft = getFixed(this.baseLeft + step)
+          }
+          event.stopPropagation()
+          event.preventDefault();
+          this.$emit("blur", {
+            index: this.index,
+            width: this.baseWidth,
+            height: this.baseHeight,
+            left: this.baseLeft,
+            top: this.baseTop
+          });
+          this.keyDown && this.keyDown(event);
+        }
+      };
     },
     handleMouseDown (e) {
       this.moveActive = true;

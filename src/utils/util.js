@@ -117,10 +117,8 @@ export function createObj (obj, bind) {
   obj = extend(true, obj, deep);
   return obj;
 }
-export function setAsVal (obj, bind = '', value) {
-  if (!validatenull(value)) {
-    eval('obj.' + bind + '="' + value + '"');
-  }
+export function setAsVal (obj, bind = '', value = '') {
+  eval('obj.' + bind + '="' + value + '"');
   return obj;
 }
 export function dataURLtoFile (dataurl, filename) {

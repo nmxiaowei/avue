@@ -8,13 +8,6 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let separator = column.separator;
   if (validatenull(result)) result = '';
 
-  if (!validatenull(result)) {
-    // 日期处理
-    if (DATE_LIST.includes(type) && column.format) {
-      const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
-      result = dayjs(result).format(format);
-    }
-  }
   if (['string', 'number'].includes(column.dataType) && !Array.isArray(result) && !validatenull(result)) {
     result = (result + '').split(separator || DIC_SPLIT);
     if (column.dataType === 'number') result = strCorNum(result);
@@ -31,6 +24,16 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
   } else if (['icon'].includes(type)) {
     result = `<i class="avue-crud__icon ${result}" ></i>`;
+  }
+  // 日期处理
+  if (DATE_LIST.includes(type) && column.format && !validatenull(result)) {
+    const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
+    if (type.indexOf('range') !== -1) {
+      let date1 = result[0], date2 = result[1]
+      result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~')
+    } else {
+      result = dayjs(result).format(format);
+    }
   }
   // 深结构绑定处理
   if (column.bind) result = getAsVal(row, column.bind);

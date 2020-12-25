@@ -168,7 +168,7 @@ export default create({
             }).map((item, cindex) => {
               let value = detail(ele, item, this.tableOption, this.DIC[item.prop]);
               if (value !== ele[item.prop]) this.$set(ele, '$' + item.prop, value)
-              return Object.assign(item, {
+              return Object.assign(this.deepClone(item), {
                 title: item.label,
                 labelDisplay: true,
                 value: value

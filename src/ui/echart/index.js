@@ -21,5 +21,6 @@ import EchartRadar from 'packages/echart/radar';
 import EchartFunnel from 'packages/echart/funnel';
 import EchartScatter from 'packages/echart/scatter';
 import EchartCommon from 'packages/echart/common';
+import EchartDatav from 'packages/echart/datav';
 
-export default { EchartRadar, EchartScatter, EchartFunnel, EchartSlide, EchartTabs, EchartVideo, EchartWordCloud, EchartPictorialBar, EchartMaps, EchartImg, EchartImgBorder, EchartBar, EchartGauge, EchartIframe, EchartSwiper, EchartTable, EchartPie, EchartText, EchartLine, EchartFlop, EchartDatetime, EchartProgress, EchartCommon };
+export default { EchartRadar, EchartScatter, EchartFunnel, EchartSlide, EchartTabs, EchartVideo, EchartWordCloud, EchartPictorialBar, EchartMaps, EchartImg, EchartImgBorder, EchartBar, EchartGauge, EchartIframe, EchartSwiper, EchartTable, EchartPie, EchartText, EchartLine, EchartFlop, EchartDatetime, EchartProgress, EchartCommon, EchartDatav };

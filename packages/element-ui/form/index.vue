@@ -2,7 +2,7 @@
   <div :class="[b(),{'avue--view':isView,'avue--detail':isDetail}]"
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
-             status-icon
+             :status-icon="parentOption.statusIcon"
              @submit.native.prevent
              :model="form"
              :label-suffix="parentOption.labelSuffix || ':'"
@@ -397,7 +397,7 @@ export default create({
       let result;
       if (!this.validatenull(column.labelWidth)) {
         result = column.labelWidth
-      } else if (!this.validatenull(column.labelWidth)) {
+      } else if (!this.validatenull(item.labelWidth)) {
         result = item.labelWidth
       } else {
         result = this.parentOption.labelWidth;
