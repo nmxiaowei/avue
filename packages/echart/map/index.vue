@@ -71,12 +71,6 @@ export default create({
       },
       immediate: true
     },
-    zoomData: {
-      handler () {
-        this.updateData();
-      },
-      immediate: true
-    },
     scale: {
       handler (val) {
         this.baseScale = val;
