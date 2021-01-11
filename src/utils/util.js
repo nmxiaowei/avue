@@ -11,7 +11,7 @@ export function getFixed (val = 0, len = 2) {
 export function getAsVal (obj, bind = '') {
   let result = deepClone(obj);
   bind.split('.').forEach(ele => {
-    if (!validatenull(ele)) {
+    if (!validatenull(result[ele])) {
       result = result[ele];
     }
   });
