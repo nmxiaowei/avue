@@ -761,8 +761,8 @@ export default create({
       this.$emit("expand-change", row, expand);
     },
     //设置单选
-    currentRowChange (val) {
-      this.$emit("current-row-change", val);
+    currentRowChange (currentRow, oldCurrentRow) {
+      this.$emit("current-row-change", currentRow, oldCurrentRow);
     },
     //刷新事件
     refreshChange () {

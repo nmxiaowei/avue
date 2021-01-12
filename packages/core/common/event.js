@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { initVal } from 'core/dataformat';
 function bindEvent (safe, name, event) {
   typeof safe[name] === 'function' && safe[name]({ value: safe.value, column: safe.column })
