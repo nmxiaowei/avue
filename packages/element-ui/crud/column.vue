@@ -1,10 +1,11 @@
 <template>
-  <span>
+  <div>
+    <slot name="header"></slot>
     <template v-for="(column,index) in list">
       <dynamic-column v-if="column.children && column.children.length"
                       :columnOption="column"
                       :key="column.label">
-        <template v-for="(item,index) in crud.propOption"
+        <template v-for="item in crud.propOption"
                   slot-scope="scope"
                   :slot="item.prop">
           <slot :row="scope.row"
@@ -80,8 +81,8 @@
         </el-table-column>
       </template>
     </template>
-
-  </span>
+    <slot name="footer"></slot>
+  </div>
 
 </template>
 
