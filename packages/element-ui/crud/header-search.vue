@@ -119,7 +119,7 @@ export default cteate({
     },
     columnLen () {
       let count = 0;
-      this.crud.option.column.forEach(ele => {
+      this.crud.propOption.forEach(ele => {
         if (ele.search) count++
       })
       return count

@@ -1,8 +1,7 @@
 <template>
   <div :class="b('mobile')"
        :style="{width:setPx(tableOption.formWidth,'100%')}">
-    <van-form @submit="handleSubmit"
-              ref="form">
+    <van-form ref="form">
       <avue-group v-for="(item,index) in columnOption"
                   :key="item.prop"
                   :tabs="isTabs"
@@ -69,7 +68,7 @@
       </avue-group>
       <div style="margin:16px 0 30px 0;padding:0 10px">
         <van-button block
-                    native-type="submit"
+                    @click="handleSubmit"
                     type="info"
                     v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,t("form.submit"))}}</van-button>
       </div>
@@ -302,7 +301,9 @@ export default create({
       this.$refs.form.submit()
     },
     handleSubmit () {
-      this.$emit("submit", this.form);
+      this.$refs.form.validate().then(() => {
+        this.$emit("submit", this.form);
+      });
     }
   }
 });

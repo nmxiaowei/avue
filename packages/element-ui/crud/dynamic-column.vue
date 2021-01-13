@@ -6,12 +6,12 @@
                    :render-header="columnOption.renderHeader"
                    :align="columnOption.align || crud.tableOption.align"
                    :header-align="columnOption.headerAlign || crud.tableOption.headerAlign"
-                   :prop="columnOption.key">
+                   :prop="columnOption.prop">
     <template v-for="column in columnOption.children">
       <dynamic-column v-if="column.children && column.children.length"
                       :key="column.label"
                       :columnOption="column">
-        <template v-for="(item,index) in crud.propOption"
+        <template v-for="item in crud.propOption"
                   slot-scope="scope"
                   :slot="item.prop">
           <slot :row="scope.row"

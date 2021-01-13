@@ -10,12 +10,7 @@ export default (() => {
           return () => { }
         }
       },
-      dataFormatter: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
+      dataFormatter: Function,
       titleFormatter: {
         type: Function,
         default: () => {

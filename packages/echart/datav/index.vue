@@ -4,9 +4,8 @@
     <component :is="option.is"
                :ref="id"
                v-if="reload"
-               :config="config"
                :style="styleChartName"
-               v-bind="option.bind"></component>
+               v-bind="config"></component>
   </div>
 </template>
 
