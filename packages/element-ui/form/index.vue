@@ -5,7 +5,7 @@
              :status-icon="parentOption.statusIcon"
              @submit.native.prevent
              :model="form"
-             :label-suffix="parentOption.labelSuffix || ':'"
+             :label-suffix="labelSuffix"
              :size="$AVUE.formSize || controlSize"
              :label-position="parentOption.labelPosition"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
@@ -85,7 +85,7 @@
                            v-html="column.labelTip"></div>
                       <i class="el-icon-info"></i>
                     </el-tooltip>
-                    <span> {{column.label}}{{parentOption.labelSuffix || ':'}}</span>
+                    <span> {{column.label}}{{labelSuffix}}</span>
                   </template>
                   <template slot="error"
                             slot-scope="{error}"
@@ -250,6 +250,9 @@ export default create({
     }
   },
   computed: {
+    labelSuffix () {
+      return this.parentOption.labelSuffix || ':'
+    },
     isMenu () {
       return this.columnOption.length != 1
     },
