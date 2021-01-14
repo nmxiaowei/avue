@@ -41,10 +41,10 @@ body {
     &::-moz-placeholder {
       color:transparent !important;
     }
-    &::-ms-input-placeholder { 
+    &::-ms-input-placeholder {
       color: transparent !important;
     }
-    &::-ms-input-placeholder { 
+    &::-ms-input-placeholder {
       color:transparent !important;
     }
   }
@@ -92,11 +92,20 @@ body {
     background-color: #fff;
     border-color:rgb(220, 223, 230);
     color: #606266;
+    resize: none;
   }
   .el-input.is-disabled .el-input__inner{
     background-color: #fff;
     border-color:rgb(220, 223, 230);
     color: #606266;
+  }
+  .el-input-number.is-disabled{
+    .el-input__inner{
+      padding-left: 15px;
+    }
+    .el-input-number__decrease,.el-input-number__increase{
+      display: none;
+    }
   }
 }
 
@@ -132,7 +141,7 @@ body {
   }
   .el-dialog__title,.el-drawer__header{
     color: rgba(0,0,0,.85);
-    font-weight: 500; 
+    font-weight: 500;
     word-wrap: break-word;
   }
   .el-drawer__header{
