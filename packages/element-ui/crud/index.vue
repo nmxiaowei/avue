@@ -509,9 +509,6 @@ export default create({
     expandAll () {
       return this.parentOption.expandAll || false;
     },
-    rowKey () {
-      return this.tableOption.rowKey || "id";
-    },
     rowParentKey () {
       return this.tableOption.rowParentKey || "parentId";
     },

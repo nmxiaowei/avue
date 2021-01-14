@@ -453,17 +453,19 @@ export const getPasswordChar = (result = '', char) => {
   return result;
 };
 
-export const clearVal = (obj) => {
+export const clearVal = (obj, list = []) => {
   if (!obj) return {};
   Object.keys(obj).forEach(ele => {
-    if (Array.isArray(obj[ele])) {
-      obj[ele] = [];
-    } else if (obj[ele] !== null && typeof obj[ele] === 'object') {
-      obj[ele] = {};
-    } else if (['number', 'boolean'].includes(typeof obj[ele]) || undefined === obj[ele]) {
-      obj[ele] = undefined;
-    } else {
-      obj[ele] = '';
+    if (!list.includes(ele)) {
+      if (Array.isArray(obj[ele])) {
+        obj[ele] = [];
+      } else if (obj[ele] !== null && typeof obj[ele] === 'object') {
+        obj[ele] = {};
+      } else if (['number', 'boolean'].includes(typeof obj[ele]) || undefined === obj[ele]) {
+        obj[ele] = undefined;
+      } else {
+        obj[ele] = '';
+      }
     }
   });
   return obj;

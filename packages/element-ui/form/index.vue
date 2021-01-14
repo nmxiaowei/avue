@@ -625,14 +625,13 @@ export default create({
     resetForm () {
       this.clearValidate();
       if (this.reset) {
-        this.resetFields();
         this.clearVal();
       }
       this.$emit("input", this.form);
       this.$emit("reset-change");
     },
     clearVal () {
-      this.form = clearVal(this.form)
+      this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
     },
     resetFields () {
       this.$refs.form.resetFields();

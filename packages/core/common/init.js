@@ -36,6 +36,9 @@ export default function () {
           column: this.propOption
         })
       },
+      rowKey () {
+        return this.tableOption.rowKey || "id";
+      },
       formRules () {
         let result = {};
         this.propOption.forEach(ele => {
