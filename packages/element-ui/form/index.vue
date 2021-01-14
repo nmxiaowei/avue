@@ -76,6 +76,17 @@
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
+                  <template slot="label"
+                            v-else-if="column.labelTip">
+                    <el-tooltip class="item"
+                                effect="dark"
+                                :placement="column.labelTipPlacement || 'top-start'">
+                      <div slot="content"
+                           v-html="column.labelTip"></div>
+                      <i class="el-icon-info"></i>
+                    </el-tooltip>
+                    <span> {{column.label}}{{parentOption.labelSuffix || ':'}}</span>
+                  </template>
                   <template slot="error"
                             slot-scope="{error}"
                             v-if="column.errorslot">
