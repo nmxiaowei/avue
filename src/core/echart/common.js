@@ -4,43 +4,13 @@ import packages from 'core/packages';
 export default (() => {
   return {
     props: {
-      click: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
+      click: Function,
       dataFormatter: Function,
-      titleFormatter: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
-      labelFormatter: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
-      clickFormatter: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
-      formatter: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
-      echartFormatter: {
-        type: Function,
-        default: () => {
-          return () => { }
-        }
-      },
+      titleFormatter: Function,
+      labelFormatter: Function,
+      clickFormatter: Function,
+      formatter: Function,
+      echartFormatter: Function,
       width: {
         type: [Number, String],
         default: 600
