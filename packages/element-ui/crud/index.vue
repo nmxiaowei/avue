@@ -151,7 +151,7 @@
                            :width="tableOption.selectionWidth || config.selectionWidth"
                            align="center"></el-table-column>
           <!-- 序号 -->
-          <el-table-column v-if="this.vaildData(tableOption.index,false)"
+          <el-table-column v-if="vaildData(tableOption.index,false)"
                            :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
                            :label="tableOption.indexLabel || config.indexLabel"
                            type="index"
