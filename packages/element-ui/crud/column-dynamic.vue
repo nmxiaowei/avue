@@ -8,19 +8,16 @@
                    :header-align="columnOption.headerAlign || crud.tableOption.headerAlign"
                    :prop="columnOption.prop">
     <template v-for="column in columnOption.children">
-      <dynamic-column v-if="column.children && column.children.length"
+      <column-dynamic v-if="column.children && column.children.length"
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.propOption"
                   slot-scope="scope"
                   :slot="item.prop">
-          <slot :row="scope.row"
-                :dic="scope.dic"
-                :size="scope.size"
-                :label="scope.label"
+          <slot v-bind="scope"
                 :name="item.prop"></slot>
         </template>
-      </dynamic-column>
+      </column-dynamic>
       <template v-else-if="!['dynamic'].includes(column.type)">
         <el-table-column v-if="vaildColumn(column)"
                          :key="column.prop"
@@ -39,39 +36,40 @@
                          :width="column.width"
                          :fixed="crud.isMobile?false:column.fixed">
 
-          <span slot-scope="scope">
+          <span slot-scope="{row,$index}">
             <form-temp :column="column"
-                       v-if="cellEditFlag(scope.row,column)"
+                       v-if="cellEditFlag(row,column)"
                        size="mini"
-                       :dic="(crud.cascaderDIC[scope.row.$index] || {})[column.prop] || crud.DIC[column.prop]"
+                       :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
                        :t="t"
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
-                       :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[scope.row.$index]"
+                       :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[$index]"
                        :clearable="vaildData(column.clearable,false)"
                        v-bind="$uploadFun(column,crud)"
-                       v-model="scope.row[column.prop]"
-                       @change="columnChange(index,scope.row,column)">
+                       v-model="row[column.prop]"
+                       @change="columnChange(index,row,column)">
             </form-temp>
-            <slot :row="scope.row"
+            <slot :row="row"
+                  :index="$index"
                   :dic="crud.DIC[column.prop]"
                   :size="crud.isMediumSize"
-                  :label="handleShowLabel(scope.row,column,crud.DIC[column.prop])"
+                  :label="handleShowLabel(row,column,crud.DIC[column.prop])"
                   :name="column.prop"
                   v-else-if="column.slot"></slot>
             <template v-else>
               <span v-if="column.parentProp"
-                    v-html="handleDetail(scope.row,column,(crud.cascaderDIC[scope.row.$index] || {})[column.prop])"></span>
+                    v-html="handleDetail(row,column,(crud.cascaderDIC[row.$index] || {})[column.prop])"></span>
               <span v-else-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
-                  <img v-for="(item,index) in getImgList(scope,column) "
+                  <img v-for="(item,index) in getImgList(row,column) "
                        :src="item"
                        :key="index"
-                       @click="openImg(getImgList(scope,column),index)" />
+                       @click="openImg(getImgList(row,column),index)" />
                 </div>
               </span>
               <span v-else-if="['url'].includes(column.type)">
-                <el-link v-for="(item,index) in corArray(scope.row[column.prop],column.separator)"
+                <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
                          type="primary"
                          :key="index"
                          :href="item"
@@ -79,10 +77,10 @@
               </span>
               <span v-else-if="['rate'].includes(column.type)">
                 <avue-rate disabled
-                           v-model="scope.row[column.prop]" />
+                           v-model="row[column.prop]" />
               </span>
               <span v-else
-                    v-html="handleDetail(scope.row,column,crud.DIC[column.prop])">1</span>
+                    v-html="handleDetail(row,column,crud.DIC[column.prop])">1</span>
             </template>
           </span>
         </el-table-column>
@@ -96,7 +94,7 @@
 import formTemp from '../../core/components/form/index'
 import locale from "../../core/common/locale";
 export default {
-  name: "dynamic-column",
+  name: 'column-dynamic',
   mixins: [locale],
   components: {
     formTemp
@@ -113,18 +111,13 @@ export default {
       "corArray",
       "openImg",
       "detailData",
-      "getComponent",
-      "getPlaceholder",
       "vaildColumn",
-      "menuText",
       "handleDetail",
       "handleShowLabel",
       "handleChange",
       "columnChange",
       "cellEditFlag",
-      "iconShow",
       "getImgList",
-      "toggleExpanded",
       "handleFiltersMethod",
       "handleFilters"
     ];

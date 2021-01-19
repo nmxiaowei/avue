@@ -47,9 +47,6 @@ export default function () {
         });
         return result;
       },
-      menuType () {
-        return this.tableOption.menuType || this.$AVUE.menuType || 'button';
-      },
       isMediumSize () {
         return this.controlSize;
       },
