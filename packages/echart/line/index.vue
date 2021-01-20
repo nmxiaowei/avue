@@ -126,7 +126,7 @@ export default create({
           const list = (optionData.series || []).map((ele, index) => {
             return Object.assign(ele, {
               type: "line",
-              smooth: true,
+              smooth: this.vaildData(this.option.smooth, true),
               symbolSize: this.option.symbolSize || 10,
               areaStyle: (() => {
                 if (this.option.areaStyle) {
