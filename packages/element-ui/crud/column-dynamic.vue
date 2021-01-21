@@ -58,9 +58,7 @@
                   :name="column.prop"
                   v-else-if="column.slot"></slot>
             <template v-else>
-              <span v-if="column.parentProp"
-                    v-html="handleDetail(row,column,(crud.cascaderDIC[row.$index] || {})[column.prop])"></span>
-              <span v-else-if="['img','upload'].includes(column.type)">
+              <span v-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
                   <img v-for="(item,index) in getImgList(row,column) "
                        :src="item"
@@ -80,7 +78,7 @@
                            v-model="row[column.prop]" />
               </span>
               <span v-else
-                    v-html="handleDetail(row,column,crud.DIC[column.prop])">1</span>
+                    v-html="handleDetail(row,column)"></span>
             </template>
           </span>
         </el-table-column>
