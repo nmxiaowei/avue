@@ -505,7 +505,7 @@ export default create({
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
           this.$set(this.DIC, columnNextProp, dic);
-          if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
+          if (!this.validatenull(dic) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
             this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
           }
         });

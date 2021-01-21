@@ -234,7 +234,7 @@ export default create({
             // 修改字典
             this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
 
-            if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
+            if (!this.validatenull(dic[columnNext.cascaderIndex]) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
               row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
             }
           }
