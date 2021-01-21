@@ -474,6 +474,15 @@ export default create({
         const value = this.form[column.prop];
         // 下一个节点
         const columnNext = this.findObject(list, columnNextProp)
+
+        // 如果不是首次加载则清空全部关联节点的属性值和字典值
+        if (this.formList.includes(str)) {
+          //清空子类字典列表和值
+          cascader.forEach(ele => {
+            this.form[ele] = "";
+            this.$set(this.DIC, ele, []);
+          });
+        }
         /**
          * 1.判断当前节点是否有下级节点
          * 2.判断当前节点是否有值
@@ -484,15 +493,6 @@ export default create({
           this.validatenull(columnNext)
         ) {
           return;
-        }
-
-        // 如果不是首次加载则清空全部关联节点的属性值和字典值
-        if (this.formList.includes(str)) {
-          //清空子类字典列表和值
-          cascader.forEach(ele => {
-            this.form[ele] = "";
-            this.$set(this.DIC, ele, []);
-          });
         }
         // 根据当前节点值获取下一个节点的字典
         sendDic({

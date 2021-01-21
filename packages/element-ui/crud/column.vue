@@ -203,14 +203,6 @@ export default create({
         const columnNext = columnOption[index + 1];
         const columnNextProp = columnNext.prop;
 
-        //最后一级
-        if (
-          this.validatenull(list) ||
-          this.validatenull(value) ||
-          this.validatenull(columnNext)
-        ) {
-          return;
-        }
         // 如果本节点没有字典则创建节点数组
         if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
           this.$set(this.crud.cascaderDIC, rowIndex, {});
@@ -221,6 +213,14 @@ export default create({
             this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
             list.forEach(ele => (row[ele] = ""));
           });
+        }
+        //最后一级
+        if (
+          this.validatenull(list) ||
+          this.validatenull(value) ||
+          this.validatenull(columnNext)
+        ) {
+          return;
         }
         sendDic({
           column: columnNext,
