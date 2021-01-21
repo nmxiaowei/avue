@@ -330,9 +330,7 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = ele.column.sort((a, b) => {
-          return (b.order || 0) - (a.order || 0)
-        })
+        ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });;
       return list;
     },
