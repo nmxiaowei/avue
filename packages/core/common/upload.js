@@ -3,6 +3,9 @@ import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
+function getFileUrl (home, uri) {
+  return !uri || !home || uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
+};
 export default function () {
   return {
     data () {
@@ -111,7 +114,7 @@ export default function () {
       //单个头像图片
       imgUrl () {
         if (!this.validatenull(this.text)) {
-          return this.homeUrl + this.text[0];
+          return getFileUrl(this.homeUrl, this.text[0]);
         }
       },
       fileList () {
@@ -130,7 +133,7 @@ export default function () {
               status: 'done',
               isImage: this.isImage,
               name: flag ? name : ele[this.labelKey],
-              url: this.homeUrl + (flag ? ele : ele[this.valueKey])
+              url: getFileUrl(this.homeUrl, flag ? ele : ele[this.valueKey])
             });
           }
         });
