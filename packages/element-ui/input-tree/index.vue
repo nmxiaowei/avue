@@ -277,6 +277,7 @@ export default create({
       });
     },
     clearHandle () {
+      this.filterValue = '';
       this.$refs.tree.setCurrentKey(null)
       this.$refs.tree.setCheckedKeys([]);
     },
