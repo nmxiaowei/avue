@@ -10,26 +10,26 @@
                    :width="crud.isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
     <template slot-scope="{row,$index}">
       <el-dropdown v-if="isMenu"
-                   :size="crud.isMediumSize"
-                   style="margin-right:9px;">
-        <el-button type="primary"
+                   :size="crud.isMediumSize">
+        <el-button type="text"
                    :size="crud.isMediumSize">
           {{ tableOption.menuBtnTitle || t('crud.menuBtn')}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-if="vaildData(tableOption.viewBtn,config.viewBtn)"
+          <el-dropdown-item :icon="config.viewBtnIcon"
+                            v-if="vaildData(tableOption.viewBtn,config.viewBtn)"
                             v-permission="crud.getPermission('viewBtn',row,$index)"
                             @click.native="crud.rowView(row,$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
-          <el-dropdown-item divided
+          <el-dropdown-item :icon="config.editBtnIcon"
                             v-if="vaildData(tableOption.editBtn,config.editBtn)"
                             v-permission="crud.getPermission('editBtn',row,$index)"
                             @click.native="crud.rowEdit(row,$index)">{{t('crud.editBtn')}}</el-dropdown-item>
-          <el-dropdown-item divided
+          <el-dropdown-item :icon="config.copyBtnIcon"
                             v-if="vaildData(tableOption.copyBtn,config.copyBtn)"
                             v-permission="crud.getPermission('copyBtn',row,$index)"
                             @click.native="crud.rowCopy(row)">{{t('crud.copyBtn')}}</el-dropdown-item>
-          <el-dropdown-item divided
+          <el-dropdown-item :icon="config.delBtnIcon"
                             v-if="vaildData(tableOption.delBtn,config.delBtn)"
                             v-permission="crud.getPermission('delBtn',row,$index)"
                             @click.native="crud.rowDel(row,$index)">{{t('crud.delBtn')}}</el-dropdown-item>
