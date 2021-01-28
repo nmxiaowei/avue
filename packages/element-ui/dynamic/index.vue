@@ -163,7 +163,7 @@ export default create({
         return option;
       })(), (() => {
         let list = [{
-          label: '#',
+          label: option.indexLabel || '#',
           prop: '_index',
           display: this.showIndex,
           detail: true,
