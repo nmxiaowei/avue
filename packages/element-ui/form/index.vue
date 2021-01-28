@@ -579,45 +579,44 @@ export default create({
         this.$refs.form.clearValidate(list);
       })
     },
+    validateCellForm () {
+      return new Promise(resolve => {
+        this.$refs.form.validate((valid, msg) => {
+          resolve(msg)
+        });
+      })
+    },
     validate (callback) {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          let dynamicList = [];
-          let dynamicError = [];
-          const cb = () => {
-            if (!this.validatenull(dynamicError)) {
-              callback(false, dynamicError)
-              return
-            }
-            this.show();
-            callback(true, this.hide)
-          }
-          this.dynamicOption.forEach(ele => {
-            dynamicError.push({
-              field: ele.prop,
-              label: ele.label,
-              children: {}
-            });
-            dynamicList.push(this.$refs[ele.prop][0].$refs.temp.validate());
-          })
-          Promise.all(dynamicList).then(res => {
-            let count = 0;
-            res.forEach((err, index) => {
-              let objKey = Object.keys(dynamicError);
-              if (this.validatenull(err)) {
-                dynamicError.splice(count, 1)
-                return
-              }
-              count = count + 1;
-              if (index == 0) {
-                let count = Object.keys(err)[0]
-                this.$message.error(`【${dynamicError[index].label}】第${Number(count) + 1}行:${err[count][0].message}`);
-              }
-              dynamicError[objKey[index]].children = err;
+      this.$refs.form.validate((valid, msg) => {
+        let dynamicList = [];
+        let dynamicError = {};
+        this.dynamicOption.forEach(ele => {
+          let isForm = ele.children.type === 'form'
+          if (isForm) {
+            this.$refs[ele.prop][0].$refs.temp.$refs.main.forEach(ele => {
+              dynamicList.push(ele.validateCellForm());
             })
-            cb();
+          } else {
+            dynamicList.push(this.$refs[ele.prop][0].$refs.temp.$refs.main.validateCellForm());
+          }
+        })
+        Promise.all(dynamicList).then(res => {
+          let count = 0;
+          res.forEach(res => {
+            console.log(res);
+            if (!res) {
+              dynamicError.push(res)
+            }
           })
-        } else callback(valid, this.hide)
+          let result = Object.assign(dynamicError, msg);
+          if (this.validatenull(result)) {
+            this.show();
+            callback(true)
+          } else {
+            callback(false, result)
+          }
+
+        })
       });
     },
     resetForm () {

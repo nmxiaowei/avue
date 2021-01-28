@@ -37,51 +37,54 @@
                   v-bind="Object.assign(scope,{column})"></slot>
             <template v-else>{{column.label}}</template>
           </template>
-          <span slot-scope="{row,$index}">
-            <form-temp :column="column"
-                       v-if="cellEditFlag(row,column)"
-                       :size="crud.isMediumSize"
-                       :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                       :t="t"
-                       :props="column.props || tableOption.props"
-                       :readonly="column.readonly"
-                       :disabled="crud.disabled || tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
-                       :clearable="vaildData(column.clearable,false)"
-                       v-bind="$uploadFun(column,crud)"
-                       v-model="row[column.prop]"
-                       @change="columnChange(index,row,column)">
-            </form-temp>
-            <slot :row="row"
-                  :index="$index"
-                  :dic="crud.DIC[column.prop]"
-                  :size="crud.isMediumSize"
-                  :label="handleShowLabel(row,column,crud.DIC[column.prop])"
-                  :name="column.prop"
-                  v-else-if="column.slot"></slot>
-            <template v-else>
-              <span v-if="['img','upload'].includes(column.type)">
-                <div class="avue-crud__img">
-                  <img v-for="(item,index) in getImgList(row,column)"
-                       :src="item"
-                       :key="index"
-                       @click="openImg(getImgList(row,column),index)" />
-                </div>
-              </span>
-              <span v-else-if="['url'].includes(column.type)">
-                <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
-                         type="primary"
+          <template slot-scope="{row,$index}">
+            <el-form-item :prop="'list.' + $index + '.'+column.prop"
+                          :rules='column.rules'>
+              <form-temp :column="column"
+                         v-if="cellEditFlag(row,column)"
+                         :size="crud.isMediumSize"
+                         :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
+                         :t="t"
+                         :props="column.props || tableOption.props"
+                         :readonly="column.readonly"
+                         :disabled="crud.disabled || tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
+                         :clearable="vaildData(column.clearable,false)"
+                         v-bind="$uploadFun(column,crud)"
+                         v-model="row[column.prop]"
+                         @change="columnChange(index,row,column)">
+              </form-temp>
+              <slot :row="row"
+                    :index="$index"
+                    :dic="crud.DIC[column.prop]"
+                    :size="crud.isMediumSize"
+                    :label="handleShowLabel(row,column,crud.DIC[column.prop])"
+                    :name="column.prop"
+                    v-else-if="column.slot"></slot>
+              <template v-else>
+                <span v-if="['img','upload'].includes(column.type)">
+                  <div class="avue-crud__img">
+                    <img v-for="(item,index) in getImgList(row,column)"
+                         :src="item"
                          :key="index"
-                         :href="item"
-                         :target="column.target || '_blank'">{{item}}</el-link>
-              </span>
-              <span v-else-if="['rate'].includes(column.type)">
-                <avue-rate disabled
-                           v-model="row[column.prop]" />
-              </span>
-              <span v-else
-                    v-html="handleDetail(row,column)"></span>
-            </template>
-          </span>
+                         @click="openImg(getImgList(row,column),index)" />
+                  </div>
+                </span>
+                <span v-else-if="['url'].includes(column.type)">
+                  <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
+                           type="primary"
+                           :key="index"
+                           :href="item"
+                           :target="column.target || '_blank'">{{item}}</el-link>
+                </span>
+                <span v-else-if="['rate'].includes(column.type)">
+                  <avue-rate disabled
+                             v-model="row[column.prop]" />
+                </span>
+                <span v-else
+                      v-html="handleDetail(row,column)"></span>
+              </template>
+            </el-form-item>
+          </template>
 
         </el-table-column>
       </template>

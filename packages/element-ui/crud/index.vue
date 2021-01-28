@@ -54,106 +54,108 @@
       <slot name="tip"></slot>
     </el-tag>
     <slot name="header"></slot>
-    <el-table v-if="reload"
-              :data="list"
-              :row-key="handleGetRowKeys"
-              :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
-              :size="$AVUE.tableSize || controlSize"
-              :lazy="vaildData(tableOption.lazy,false)"
-              :load="treeLoad"
-              :tree-props="tableOption.treeProps || {}"
-              :expand-row-keys="tableOption.expandRowKeys"
-              :default-expand-all="tableOption.defaultExpandAll"
-              :highlight-current-row="tableOption.highlightCurrentRow"
-              @current-change="currentRowChange"
-              @expand-change="expandChange"
-              @header-dragend="headerDragend"
-              :show-summary="tableOption.showSummary"
-              :summary-method="tableSummaryMethod"
-              :span-method="tableSpanMethod"
-              :stripe="tableOption.stripe"
-              :show-header="tableOption.showHeader"
-              :default-sort="tableOption.defaultSort"
-              @row-click="rowClick"
-              @row-dblclick="rowDblclick"
-              @cell-mouse-enter="cellMouseEnter"
-              @cell-mouse-leave="cellMouseLeave"
-              @cell-click="cellClick"
-              @header-click="headerClick"
-              @row-contextmenu="rowContextmenu"
-              @header-contextmenu="headerContextmenu"
-              @cell-dblclick="cellDblclick"
-              :row-class-name="rowClassName"
-              :cell-class-name="cellClassName"
-              :row-style="rowStyle"
-              :cell-style="cellStyle"
-              :sort-method="sortMethod"
-              :sort-orders="sortOrders"
-              :sort-by="sortBy"
-              :fit="tableOption.fit"
-              :header-cell-class-name="headerCellClassName"
-              :max-height="tableOption.maxHeight"
-              :height="tableHeight"
-              ref="table"
-              :width="setPx(tableOption.width,config.width)"
-              :border="tableOption.border"
-              v-loading="tableLoading"
-              @selection-change="selectionChange"
-              @select="select"
-              @select-all="selectAll"
-              @sort-change="sortChange">
-      <!-- 暂无数据提醒 -->
-      <template slot="empty">
-        <div :class="b('empty')">
-          <slot name="empty"
-                v-if="$slots.empty"></slot>
-          <avue-empty v-else
-                      size="50"
-                      image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                      :desc="tableOption.emptyText || 暂无数据"></avue-empty>
-        </div>
-      </template>
-      <column :columnOption="columnOption"
-              :tableOption="tableOption">
-        <column-default ref="columnDefault"
-                        :tableOption="tableOption"
-                        slot="header">
-          <template slot-scope="{row,index}"
-                    slot="expand">
-            <slot :row="row"
-                  :index="index"
-                  name="expand"></slot>
-          </template>
-        </column-default>
-        <template v-for="item in propOption"
-                  slot-scope="scope"
-                  :slot="item.prop">
-          <slot v-bind="scope"
-                :name="item.prop"></slot>
+    <el-form :model="cellForm"
+             ref="cellForm">
+      <el-table v-if="reload"
+                :data="cellForm.list"
+                :row-key="handleGetRowKeys"
+                :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
+                :size="$AVUE.tableSize || controlSize"
+                :lazy="vaildData(tableOption.lazy,false)"
+                :load="treeLoad"
+                :tree-props="tableOption.treeProps || {}"
+                :expand-row-keys="tableOption.expandRowKeys"
+                :default-expand-all="tableOption.defaultExpandAll"
+                :highlight-current-row="tableOption.highlightCurrentRow"
+                @current-change="currentRowChange"
+                @expand-change="expandChange"
+                @header-dragend="headerDragend"
+                :show-summary="tableOption.showSummary"
+                :summary-method="tableSummaryMethod"
+                :span-method="tableSpanMethod"
+                :stripe="tableOption.stripe"
+                :show-header="tableOption.showHeader"
+                :default-sort="tableOption.defaultSort"
+                @row-click="rowClick"
+                @row-dblclick="rowDblclick"
+                @cell-mouse-enter="cellMouseEnter"
+                @cell-mouse-leave="cellMouseLeave"
+                @cell-click="cellClick"
+                @header-click="headerClick"
+                @row-contextmenu="rowContextmenu"
+                @header-contextmenu="headerContextmenu"
+                @cell-dblclick="cellDblclick"
+                :row-class-name="rowClassName"
+                :cell-class-name="cellClassName"
+                :row-style="rowStyle"
+                :cell-style="cellStyle"
+                :sort-method="sortMethod"
+                :sort-orders="sortOrders"
+                :sort-by="sortBy"
+                :fit="tableOption.fit"
+                :header-cell-class-name="headerCellClassName"
+                :max-height="tableOption.maxHeight"
+                :height="tableHeight"
+                ref="table"
+                :width="setPx(tableOption.width,config.width)"
+                :border="tableOption.border"
+                v-loading="tableLoading"
+                @selection-change="selectionChange"
+                @select="select"
+                @select-all="selectAll"
+                @sort-change="sortChange">
+        <!-- 暂无数据提醒 -->
+        <template slot="empty">
+          <div :class="b('empty')">
+            <slot name="empty"
+                  v-if="$slots.empty"></slot>
+            <avue-empty v-else
+                        size="50"
+                        image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
+                        :desc="tableOption.emptyText || 暂无数据"></avue-empty>
+          </div>
         </template>
-        <template v-for="item in propOption"
-                  slot-scope="scope"
-                  :slot="item.prop+'Header'">
-          <slot v-bind="scope"
-                v-if="item.headerslot"
-                :name="item.prop+'Header'"></slot>
-        </template>
-        <column-menu :tableOption="tableOption"
-                     slot="footer">
-          <template slot="menu"
-                    slot-scope="scope">
-            <slot name="menu"
-                  v-bind="scope"></slot>
+        <column :columnOption="columnOption"
+                :tableOption="tableOption">
+          <column-default ref="columnDefault"
+                          :tableOption="tableOption"
+                          slot="header">
+            <template slot-scope="{row,index}"
+                      slot="expand">
+              <slot :row="row"
+                    :index="index"
+                    name="expand"></slot>
+            </template>
+          </column-default>
+          <template v-for="item in propOption"
+                    slot-scope="scope"
+                    :slot="item.prop">
+            <slot v-bind="scope"
+                  :name="item.prop"></slot>
           </template>
-          <template slot="menuBtn"
-                    slot-scope="scope">
-            <slot name="menuBtn"
-                  v-bind="scope"></slot>
+          <template v-for="item in propOption"
+                    slot-scope="scope"
+                    :slot="item.prop+'Header'">
+            <slot v-bind="scope"
+                  v-if="item.headerslot"
+                  :name="item.prop+'Header'"></slot>
           </template>
-        </column-menu>
-      </column>
-    </el-table>
-
+          <column-menu :tableOption="tableOption"
+                       slot="footer">
+            <template slot="menu"
+                      slot-scope="scope">
+              <slot name="menu"
+                    v-bind="scope"></slot>
+            </template>
+            <template slot="menuBtn"
+                      slot-scope="scope">
+              <slot name="menuBtn"
+                    v-bind="scope"></slot>
+            </template>
+          </column-menu>
+        </column>
+      </el-table>
+    </el-form>
     <!-- 分页 -->
     <table-page ref="tablePage"
                 v-if="vaildData(tableOption.page,true)"
@@ -289,6 +291,11 @@ export default create({
     })
   },
   computed: {
+    cellForm () {
+      return {
+        list: this.list
+      }
+    },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
     },
@@ -704,32 +711,50 @@ export default create({
         this.formIndexList.push(index);
       }, 1000);
     },
-    //单元格更新
-    rowCellUpdate (row, index) {
-      this.asyncValidator(this.formRules, row)
-        .then(res => {
-          this.btnDisabledList[index] = true;
-          this.btnDisabled = true;
-          this.$emit(
-            "row-update",
-            row,
-            index,
-            () => {
-              this.btnDisabledList[index] = false;
-              this.btnDisabled = false;
-              row.$cellEdit = false;
-              this.$set(this.list, index, row);
-              delete this.formCascaderList[index]
-            },
-            () => {
-              this.btnDisabledList[index] = false;
-              this.btnDisabled = false;
-            }
-          );
-        })
-        .catch(errors => {
-          this.$message.error(`第${index + 1}行:${errors[0].message}`);
+    // 对部分表单字段进行校验
+    validateCellForm (cb) {
+      return new Promise(resolve => {
+        this.$refs.cellForm.validate((valid, msg) => {
+          resolve(msg)
         });
+      })
+    },
+    validateCellField (index) {
+      let result = true
+      for (const item of this.$refs.cellForm.fields) {
+        if (item.prop.split('.')[1] == index) {
+          this.$refs.cellForm.validateField(item.prop, (error) => {
+            if (error) {
+              result = false
+            }
+          })
+        }
+        if (!result) break
+      }
+      return result
+    },
+    rowCellUpdate (row, index) {
+      var result = this.validateCellField(index)
+      if (result) {
+        this.btnDisabledList[index] = true;
+        this.btnDisabled = true;
+        this.$emit(
+          "row-update",
+          row,
+          index,
+          () => {
+            this.btnDisabledList[index] = false;
+            this.btnDisabled = false;
+            row.$cellEdit = false;
+            this.$set(this.list, index, row);
+            delete this.formCascaderList[index]
+          },
+          () => {
+            this.btnDisabledList[index] = false;
+            this.btnDisabled = false;
+          }
+        );
+      }
     },
     rowAdd () {
       this.$refs.dialogForm.show("add");

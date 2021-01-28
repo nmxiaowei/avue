@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-form :option="option" v-model="obj" @submit="submit">
+    <avue-form :option="option" v-model="obj" @submit="submit" @error="error">
       <template slot-scope="scope" slot="input">
         <el-tag>{{scope.row}}</el-tag>
       </template>
@@ -56,6 +56,13 @@
             label: '树型',
             prop: "tree",
             type: 'tree',
+            rules: [
+              {
+                required: true,
+                message: '请输入密码',
+                trigger: 'blur'
+              }
+            ],
             dicData: [{
               label: '1-1',
               value: 0,
@@ -176,6 +183,9 @@
       }
     },
     methods: {
+      error(msg) {
+        console.log(msg)
+      },
       submit(form, done) {
         setTimeout(() => { done() }, 2000)
       }

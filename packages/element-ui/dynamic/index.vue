@@ -25,6 +25,7 @@
                      icon="el-icon-delete"
                      circle></el-button>
           <avue-form :key="index"
+                     ref="main"
                      :option="option"
                      v-model="text[index]">
             <div slot-scope="{}"
@@ -45,7 +46,7 @@
       </div>
     </template>
     <avue-crud v-else-if="isCrud"
-               ref="crud"
+               ref="main"
                :option="option"
                :disabled="disabled"
                @cell-mouse-enter="cellMouseenter"
@@ -63,7 +64,7 @@
                    circle></el-button>
         <div v-else>{{scope.row.$index+1}}</div>
       </template>
-      <template v-for="(item,index) in columnOption"
+      <template v-for="item in columnOption"
                 slot-scope="scope"
                 :slot="item.prop">
         <slot :row="scope.row"
@@ -154,6 +155,7 @@ export default create({
         header: false,
         menu: false,
         size: this.size,
+        disabled: this.disabled,
         readonly: this.readonly,
         emptyBtn: false,
         submitBtn: false,
