@@ -159,7 +159,7 @@ export default create({
   },
   methods: {
     menuText (value) {
-      return this.menuType === "text" ? "text" : value;
+      return ['text', 'menu'].includes(this.menuType) ? "text" : value;
     },
   }
 })
