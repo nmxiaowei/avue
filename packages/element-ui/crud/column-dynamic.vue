@@ -37,7 +37,7 @@
                          :fixed="crud.isMobile?false:column.fixed">
 
           <template slot-scope="{row,$index}">
-            <el-form-item :prop="'list.' + $index + '.'+column.prop"
+            <el-form-item :prop="crud.isTree?'':'list.' + $index + '.'+column.prop"
                           :rules='column.rules'>
               <form-temp :column="column"
                          v-if="cellEditFlag(row,column)"
