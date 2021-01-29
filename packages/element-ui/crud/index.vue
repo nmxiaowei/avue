@@ -54,240 +54,108 @@
       <slot name="tip"></slot>
     </el-tag>
     <slot name="header"></slot>
-    <el-table v-if="reload"
-              :data="list"
-              :row-key="handleGetRowKeys"
-              :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
-              :size="$AVUE.tableSize || controlSize"
-              :lazy="vaildData(tableOption.lazy,false)"
-              :load="treeLoad"
-              :tree-props="tableOption.treeProps || {}"
-              :expand-row-keys="tableOption.expandRowKeys"
-              :default-expand-all="tableOption.defaultExpandAll"
-              :highlight-current-row="tableOption.highlightCurrentRow"
-              @current-change="currentRowChange"
-              @expand-change="expandChange"
-              @header-dragend="headerDragend"
-              :show-summary="tableOption.showSummary"
-              :summary-method="tableSummaryMethod"
-              :span-method="tableSpanMethod"
-              :stripe="tableOption.stripe"
-              :show-header="tableOption.showHeader"
-              :default-sort="tableOption.defaultSort"
-              @row-click="rowClick"
-              @row-dblclick="rowDblclick"
-              @cell-mouse-enter="cellMouseEnter"
-              @cell-mouse-leave="cellMouseLeave"
-              @cell-click="cellClick"
-              @header-click="headerClick"
-              @row-contextmenu="rowContextmenu"
-              @header-contextmenu="headerContextmenu"
-              @cell-dblclick="cellDblclick"
-              :row-class-name="rowClassName"
-              :cell-class-name="cellClassName"
-              :row-style="rowStyle"
-              :cell-style="cellStyle"
-              :sort-method="sortMethod"
-              :sort-orders="sortOrders"
-              :sort-by="sortBy"
-              :fit="tableOption.fit"
-              :header-cell-class-name="headerCellClassName"
-              :max-height="tableOption.maxHeight"
-              :height="tableHeight"
-              ref="table"
-              :width="setPx(tableOption.width,config.width)"
-              :border="tableOption.border"
-              v-loading="tableLoading"
-              @selection-change="selectionChange"
-              @select="select"
-              @select-all="selectAll"
-              @sort-change="sortChange">
-      <!-- 暂无数据提醒 -->
-      <template slot="empty">
-        <div :class="b('empty')">
-          <slot name="empty"
-                v-if="$slots.empty"></slot>
-          <avue-empty v-else
-                      size="50"
-                      image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                      :desc="tableOption.emptyText || 暂无数据"></avue-empty>
-        </div>
-      </template>
-      <column :columnOption="columnOption">
-        <template slot="header">
-          <el-table-column width="1px"></el-table-column>
-          <!-- 折叠面板  -->
-          <el-table-column type="expand"
-                           :width="tableOption.expandWidth || config.expandWidth"
-                           :fixed="vaildData(tableOption.expandFixed,config.expandFixed)"
-                           align="center"
-                           v-if="tableOption.expand">
-            <template slot-scope="props">
-              <slot :row="props.row"
+    <el-form :model="cellForm"
+             ref="cellForm">
+      <el-table v-if="reload"
+                :data="cellForm.list"
+                :row-key="handleGetRowKeys"
+                :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
+                :size="$AVUE.tableSize || controlSize"
+                :lazy="vaildData(tableOption.lazy,false)"
+                :load="treeLoad"
+                :tree-props="tableOption.treeProps || {}"
+                :expand-row-keys="tableOption.expandRowKeys"
+                :default-expand-all="tableOption.defaultExpandAll"
+                :highlight-current-row="tableOption.highlightCurrentRow"
+                @current-change="currentRowChange"
+                @expand-change="expandChange"
+                @header-dragend="headerDragend"
+                :show-summary="tableOption.showSummary"
+                :summary-method="tableSummaryMethod"
+                :span-method="tableSpanMethod"
+                :stripe="tableOption.stripe"
+                :show-header="tableOption.showHeader"
+                :default-sort="tableOption.defaultSort"
+                @row-click="rowClick"
+                @row-dblclick="rowDblclick"
+                @cell-mouse-enter="cellMouseEnter"
+                @cell-mouse-leave="cellMouseLeave"
+                @cell-click="cellClick"
+                @header-click="headerClick"
+                @row-contextmenu="rowContextmenu"
+                @header-contextmenu="headerContextmenu"
+                @cell-dblclick="cellDblclick"
+                :row-class-name="rowClassName"
+                :cell-class-name="cellClassName"
+                :row-style="rowStyle"
+                :cell-style="cellStyle"
+                :sort-method="sortMethod"
+                :sort-orders="sortOrders"
+                :sort-by="sortBy"
+                :fit="tableOption.fit"
+                :header-cell-class-name="headerCellClassName"
+                :max-height="tableOption.maxHeight"
+                :height="tableHeight"
+                ref="table"
+                :width="setPx(tableOption.width,config.width)"
+                :border="tableOption.border"
+                v-loading="tableLoading"
+                @selection-change="selectionChange"
+                @select="select"
+                @select-all="selectAll"
+                @sort-change="sortChange">
+        <!-- 暂无数据提醒 -->
+        <template slot="empty">
+          <div :class="b('empty')">
+            <slot name="empty"
+                  v-if="$slots.empty"></slot>
+            <avue-empty v-else
+                        size="50"
+                        image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
+                        :desc="tableOption.emptyText || 暂无数据"></avue-empty>
+          </div>
+        </template>
+        <column :columnOption="columnOption"
+                :tableOption="tableOption">
+          <column-default ref="columnDefault"
+                          :tableOption="tableOption"
+                          slot="header">
+            <template slot-scope="{row,index}"
+                      slot="expand">
+              <slot :row="row"
+                    :index="index"
                     name="expand"></slot>
             </template>
-          </el-table-column>
-          <!-- 拖动排序  -->
-          <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
-                           :width="tableOption.sortableWidth || config.sortableWidth"
-                           :fixed="vaildData(tableOption.sortableFixed,config.sortableFixed)"
-                           align="center">
-            <template slot="header"
-                      slot-scope="{}">
-              <i class="el-icon-sort" />
-            </template>
-            <template slot-scope="{}">
-              <span class="avue-crud__drag-handler">
-                <i class="el-icon-rank" />
-              </span>
-            </template>
-          </el-table-column>
-          <!-- 选择框 -->
-          <el-table-column v-if="tableOption.selection"
-                           :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
-                           type="selection"
-                           :selectable="tableOption.selectable"
-                           :reserve-selection="vaildData(tableOption.reserveSelection,false)"
-                           :width="tableOption.selectionWidth || config.selectionWidth"
-                           align="center"></el-table-column>
-          <!-- 序号 -->
-          <el-table-column v-if="this.vaildData(tableOption.index,false)"
-                           :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
-                           :label="tableOption.indexLabel || config.indexLabel"
-                           type="index"
-                           :width="tableOption.indexWidth || config.indexWidth"
-                           :index="indexMethod"
-                           align="center"></el-table-column>
-        </template>
-        <template v-for="item in propOption"
-                  slot-scope="scope"
-                  :slot="item.prop">
-          <slot :row="scope.row"
-                :dic="scope.dic"
-                :size="scope.size"
-                :label="scope.label"
-                :name="item.prop"></slot>
-        </template>
-        <template slot="footer">
-          <el-table-column :class="b('btn')"
-                           prop="menu"
-                           :fixed="vaildData(tableOption.menuFixed,config.menuFixed)"
-                           v-if="vaildData(tableOption.menu,config.menu)&&getPermission('menu')"
-                           :label="tableOption.menuTitle || t('crud.menu')"
-                           :align="tableOption.menuAlign || config.menuAlign"
-                           :header-align="tableOption.menuHeaderAlign || config.menuHeaderAlign"
-                           :width="isMobile?(tableOption.menuXsWidth || config.menuXsWidth):( tableOption.menuWidth || config.menuWidth)">
-            <template slot-scope="scope">
-              <el-dropdown v-if="isMenu"
-                           :size="isMediumSize"
-                           style="margin-right:9px;">
-                <el-button type="primary"
-                           :size="isMediumSize">
-                  {{ tableOption.menuBtnTitle || t('crud.menuBtn')}}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-if="vaildData(tableOption.viewBtn,config.viewBtn)"
-                                    v-permission="getPermission('viewBtn',scope.row,scope.$index)"
-                                    @click.native="rowView(scope.row,scope.$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
-                  <el-dropdown-item divided
-                                    v-if="vaildData(tableOption.editBtn,config.editBtn)"
-                                    v-permission="getPermission('editBtn',scope.row,scope.$index)"
-                                    @click.native="rowEdit(scope.row,scope.$index)">{{t('crud.editBtn')}}</el-dropdown-item>
-                  <el-dropdown-item divided
-                                    v-if="vaildData(tableOption.copyBtn,config.copyBtn)"
-                                    v-permission="getPermission('copyBtn',scope.row,scope.$index)"
-                                    @click.native="rowCopy(scope.row)">{{t('crud.copyBtn')}}</el-dropdown-item>
-                  <el-dropdown-item divided
-                                    v-if="vaildData(tableOption.delBtn,config.delBtn)"
-                                    v-permission="getPermission('delBtn',scope.row,scope.$index)"
-                                    @click.native="rowDel(scope.row,scope.$index)">{{t('crud.delBtn')}}</el-dropdown-item>
-                  <slot name="menuBtn"
-                        :row="scope.row"
-                        :dic="scope.dic"
-                        :label="scope.label"
-                        :index="scope.$index"></slot>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <template v-else-if="['button','text','icon'].includes(menuType)">
-                <el-button :type="menuText('primary')"
-                           :icon="scope.row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
-                           :size="isMediumSize"
-                           :disabled="btnDisabledList[scope.$index]"
-                           @click.stop="rowCell(scope.row,scope.$index)"
-                           v-permission="getPermission('cellBtn',scope.row,scope.$index)"
-                           v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">
-                  <template v-if="!isIconMenu">
-                    {{menuIcon(scope.row.$cellEdit?'saveBtn':'editBtn')}}
-                  </template>
-                </el-button>
-                <el-button :type="menuText('danger')"
-                           :icon="config.cancelBtnIcon"
-                           :size="isMediumSize"
-                           :disabled="btnDisabledList[scope.$index]"
-                           @click.stop="rowCancel(scope.row,scope.$index)"
-                           v-if="scope.row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">
-                  <template v-if="!isIconMenu">
-                    {{menuIcon('cancelBtn')}}
-                  </template>
-                </el-button>
-                <el-button :type="menuText('success')"
-                           :icon="config.viewBtnIcon"
-                           :size="isMediumSize"
-                           :disabled="btnDisabled"
-                           @click.stop="rowView(scope.row,scope.$index)"
-                           v-permission="getPermission('viewBtn',scope.row,scope.$index)"
-                           v-if="vaildData(tableOption.viewBtn,config.viewBtn)">
-                  <template v-if="!isIconMenu">
-                    {{menuIcon('viewBtn')}}
-                  </template>
-                </el-button>
-                <el-button :type="menuText('primary')"
-                           :icon="config.editBtnIcon"
-                           :size="isMediumSize"
-                           :disabled="btnDisabled"
-                           @click.stop="rowEdit(scope.row,scope.$index)"
-                           v-permission="getPermission('editBtn',scope.row,scope.$index)"
-                           v-if="vaildData(tableOption.editBtn,config.editBtn)">
-                  <template v-if="!isIconMenu">
-                    {{menuIcon('editBtn')}}
-                  </template>
-                </el-button>
-                <el-button :type="menuText('primary')"
-                           :icon="config.copyBtnIcon"
-                           :size="isMediumSize"
-                           :disabled="btnDisabled"
-                           @click.stop="rowCopy(scope.row)"
-                           v-permission="getPermission('copyBtn',scope.row,scope.$index)"
-                           v-if="vaildData(tableOption.copyBtn,config.copyBtn)">
-                  <template v-if="!isIconMenu">
-                    {{menuIcon('copyBtn')}}
-                  </template>
-                </el-button>
-                <el-button :type="menuText('danger')"
-                           :icon="config.delBtnIcon"
-                           :size="isMediumSize"
-                           :disabled="btnDisabled"
-                           @click.stop="rowDel(scope.row,scope.$index)"
-                           v-permission="getPermission('delBtn',scope.row,scope.$index)"
-                           v-if="vaildData(tableOption.delBtn,config.delBtn) && !scope.row.$cellEdit">
-                  <template v-if="!isIconMenu">
-                    {{menuIcon('delBtn')}}
-                  </template>
-                </el-button>
-              </template>
+          </column-default>
+          <template v-for="item in propOption"
+                    slot-scope="scope"
+                    :slot="item.prop">
+            <slot v-bind="scope"
+                  :name="item.prop"></slot>
+          </template>
+          <template v-for="item in propOption"
+                    slot-scope="scope"
+                    :slot="item.prop+'Header'">
+            <slot v-bind="scope"
+                  v-if="item.headerslot"
+                  :name="item.prop+'Header'"></slot>
+          </template>
+          <column-menu :tableOption="tableOption"
+                       slot="footer">
+            <template slot="menu"
+                      slot-scope="scope">
               <slot name="menu"
-                    :row="scope.row"
-                    :type="menuText('primary')"
-                    :disabled="btnDisabled"
-                    :size="isMediumSize"
-                    :index="scope.$index"></slot>
+                    v-bind="scope"></slot>
             </template>
-          </el-table-column>
-        </template>
-      </column>
-    </el-table>
-
+            <template slot="menuBtn"
+                      slot-scope="scope">
+              <slot name="menuBtn"
+                    v-bind="scope"></slot>
+            </template>
+          </column-menu>
+        </column>
+      </el-table>
+    </el-form>
     <!-- 分页 -->
     <table-page ref="tablePage"
                 v-if="vaildData(tableOption.page,true)"
@@ -335,12 +203,10 @@
               :name="item.prop+'Type'"
               v-if="item.typeslot"></slot>
       </template>
-      <template slot-scope="{tableForm,type,size,disabled}"
+      <template slot-scope="scope"
                 slot="menuForm">
         <slot name="menuForm"
-              :size="size"
-              :disabled="disabled"
-              :type="type"></slot>
+              v-bind="scope"></slot>
       </template>
     </dialog-form>
     <!-- 动态列 -->
@@ -365,6 +231,8 @@ import headerMenu from "./header-menu";
 import dialogColumn from "./dialog-column";
 import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
+import columnMenu from './column-menu'
+import columnDefault from './column-default'
 import config from "./config.js";
 import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
@@ -381,6 +249,8 @@ export default create({
   },
   components: {
     column,
+    columnDefault,//其它列,
+    columnMenu,//操作栏，
     tablePage, //分页
     headerSearch, //搜索
     headerMenu, //菜单头部
@@ -394,7 +264,6 @@ export default create({
       isChild: false,
       config: config,
       list: [],
-      expandList: [],
       tableForm: {},
       tableHeight: undefined,
       tableIndex: -1,
@@ -418,18 +287,14 @@ export default create({
       //动态计算表格高度
       this.getTableHeight();
       //是否开启表格排序
-      this.setSort()
+      setTimeout(() => this.$refs.columnDefault.setSort())
     })
   },
   computed: {
-    isIconMenu () {
-      return this.menuType === "icon"
-    },
-    isTextMenu () {
-      return this.menuType === "text"
-    },
-    isMenu () {
-      return this.menuType === "menu"
+    cellForm () {
+      return {
+        list: this.list
+      }
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
@@ -472,9 +337,6 @@ export default create({
     groupOption () {
       return this.parentOption.group;
     },
-    isSortable () {
-      return this.tableOption.sortable;
-    },
     dynamicOption () {
       let list = [];
       this.propOption.forEach(ele => {
@@ -509,9 +371,6 @@ export default create({
     expandAll () {
       return this.parentOption.expandAll || false;
     },
-    rowKey () {
-      return this.tableOption.rowKey || "id";
-    },
     rowParentKey () {
       return this.tableOption.rowParentKey || "parentId";
     },
@@ -526,7 +385,7 @@ export default create({
     },
     selectLen () {
       return this.tableSelect ? this.tableSelect.length : 0;
-    }
+    },
   },
   watch: {
     tableOption: {
@@ -651,32 +510,6 @@ export default create({
         callback && callback()
       })
     },
-    //开启排序
-    setSort () {
-      const callback = () => {
-        if (!window.Sortable) {
-          packages.logs("Sortable")
-          return
-        }
-        const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
-        this.sortable = window.Sortable.create(el, {
-          ghostClass: 'avue-crud__sortable',
-          handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
-          onEnd: evt => {
-            const oldindex = evt.oldIndex;
-            const newindex = evt.newIndex;
-            const targetRow = this.list.splice(oldindex, 1)[0]
-            this.list.splice(newindex, 0, targetRow)
-            this.$emit('sortable-change', oldindex, newindex, targetRow, this.list)
-          }
-        })
-      }
-      if (this.isSortable) {
-        this.$nextTick(() => {
-          callback()
-        })
-      }
-    },
     //树懒加载
     treeLoad (tree, treeNode, resolve) {
       this.$emit('tree-load', tree, treeNode, (data) => {
@@ -706,6 +539,9 @@ export default create({
         ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
         : "display:none;";
     },
+    menuIcon (value) {
+      return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
+    },
     //对部分表单字段进行校验的方法
     validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
@@ -713,12 +549,6 @@ export default create({
     handleGetRowKeys (row) {
       const rowKey = row[this.rowKey];
       return rowKey;
-    },
-    menuIcon (value) {
-      return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
-    },
-    menuText (value) {
-      return this.isTextMenu ? "text" : value;
     },
     selectClear () {
       this.$refs.table.clearSelection();
@@ -731,14 +561,6 @@ export default create({
     },
     setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
-    },
-    indexMethod (index) {
-      return (
-        index +
-        1 +
-        ((this.page.currentPage || 1) - 1) *
-        (this.page.pageSize || 10)
-      );
     },
     formVal () {
       Object.keys(this.value).forEach(ele => {
@@ -761,7 +583,6 @@ export default create({
     },
     //展开或则关闭
     expandChange (row, expand) {
-      this.expandList = [...expand];
       this.$emit("expand-change", row, expand);
     },
     //设置单选
@@ -862,7 +683,7 @@ export default create({
         ))
       this.list.push(row);
       this.formIndexList.push(len);
-      this.setSort();
+      setTimeout(() => this.$refs.columnDefault.setSort())
     },
     //行取消
     rowCancel (row, index) {
@@ -890,32 +711,50 @@ export default create({
         this.formIndexList.push(index);
       }, 1000);
     },
-    //单元格更新
-    rowCellUpdate (row, index) {
-      this.asyncValidator(this.formRules, row)
-        .then(res => {
-          this.btnDisabledList[index] = true;
-          this.btnDisabled = true;
-          this.$emit(
-            "row-update",
-            row,
-            index,
-            () => {
-              this.btnDisabledList[index] = false;
-              this.btnDisabled = false;
-              row.$cellEdit = false;
-              this.$set(this.list, index, row);
-              delete this.formCascaderList[index]
-            },
-            () => {
-              this.btnDisabledList[index] = false;
-              this.btnDisabled = false;
-            }
-          );
-        })
-        .catch(errors => {
-          this.$message.error(`第${index + 1}行:${errors[0].message}`);
+    // 对部分表单字段进行校验
+    validateCellForm (cb) {
+      return new Promise(resolve => {
+        this.$refs.cellForm.validate((valid, msg) => {
+          resolve(msg)
         });
+      })
+    },
+    validateCellField (index) {
+      let result = true
+      for (const item of this.$refs.cellForm.fields) {
+        if (item.prop.split('.')[1] == index) {
+          this.$refs.cellForm.validateField(item.prop, (error) => {
+            if (error) {
+              result = false
+            }
+          })
+        }
+        if (!result) break
+      }
+      return result
+    },
+    rowCellUpdate (row, index) {
+      var result = this.validateCellField(index)
+      if (result) {
+        this.btnDisabledList[index] = true;
+        this.btnDisabled = true;
+        this.$emit(
+          "row-update",
+          row,
+          index,
+          () => {
+            this.btnDisabledList[index] = false;
+            this.btnDisabled = false;
+            row.$cellEdit = false;
+            this.$set(this.list, index, row);
+            delete this.formCascaderList[index]
+          },
+          () => {
+            this.btnDisabledList[index] = false;
+            this.btnDisabled = false;
+          }
+        );
+      }
     },
     rowAdd () {
       this.$refs.dialogForm.show("add");

@@ -205,6 +205,7 @@ export default create({
         title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
         columns: (() => {
           let list = [];
+          console.log(this.crud.propOption);
           this.crud.propOption.forEach(ele => {
             if (this.columnIndex.includes(ele.prop)) {
               list.push({
@@ -212,7 +213,7 @@ export default create({
                 prop: (() => {
                   if (
                     !this.validatenull(this.crud.DIC[ele.prop]) ||
-                    !this.validatenull(this.crud.cascaderDIC[ele.prop])
+                    !this.validatenull(ele.parentProp)
                   ) {
                     return "$" + ele.prop;
                   }

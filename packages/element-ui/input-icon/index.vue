@@ -30,7 +30,7 @@
                :key="index">
             <i :class="[b('icon'),item.value]"
                @click="handleSubmit(item.value)"></i>
-            <p v-if="item.label">{{item.label}}</p>
+            <p>{{item.label || item.value}}</p>
           </div>
         </div>
       </el-scrollbar>

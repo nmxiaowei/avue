@@ -5,7 +5,7 @@
              :status-icon="parentOption.statusIcon"
              @submit.native.prevent
              :model="form"
-             :label-suffix="parentOption.labelSuffix || ':'"
+             :label-suffix="labelSuffix"
              :size="$AVUE.formSize || controlSize"
              :label-position="parentOption.labelPosition"
              :label-width="setPx(parentOption.labelWidth,labelWidth)"
@@ -75,6 +75,17 @@
                           :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
+                  </template>
+                  <template slot="label"
+                            v-else-if="column.labelTip">
+                    <el-tooltip class="item"
+                                effect="dark"
+                                :placement="column.labelTipPlacement || 'top-start'">
+                      <div slot="content"
+                           v-html="column.labelTip"></div>
+                      <i class="el-icon-info"></i>
+                    </el-tooltip>
+                    <span> {{column.label}}{{labelSuffix}}</span>
                   </template>
                   <template slot="error"
                             slot-scope="{error}"
@@ -239,6 +250,9 @@ export default create({
     }
   },
   computed: {
+    labelSuffix () {
+      return this.parentOption.labelSuffix || ':'
+    },
     isMenu () {
       return this.columnOption.length != 1
     },
@@ -316,9 +330,7 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = ele.column.sort((a, b) => {
-          return (b.order || 0) - (a.order || 0)
-        })
+        ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });;
       return list;
     },
@@ -460,6 +472,15 @@ export default create({
         const value = this.form[column.prop];
         // 下一个节点
         const columnNext = this.findObject(list, columnNextProp)
+
+        // 如果不是首次加载则清空全部关联节点的属性值和字典值
+        if (this.formList.includes(str)) {
+          //清空子类字典列表和值
+          cascader.forEach(ele => {
+            this.form[ele] = "";
+            this.$set(this.DIC, ele, []);
+          });
+        }
         /**
          * 1.判断当前节点是否有下级节点
          * 2.判断当前节点是否有值
@@ -470,15 +491,6 @@ export default create({
           this.validatenull(columnNext)
         ) {
           return;
-        }
-
-        // 如果不是首次加载则清空全部关联节点的属性值和字典值
-        if (this.formList.includes(str)) {
-          //清空子类字典列表和值
-          cascader.forEach(ele => {
-            this.form[ele] = "";
-            this.$set(this.DIC, ele, []);
-          });
         }
         // 根据当前节点值获取下一个节点的字典
         sendDic({
@@ -491,7 +503,7 @@ export default create({
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
           this.$set(this.DIC, columnNextProp, dic);
-          if (!this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
+          if (!this.validatenull(dic) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
             this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
           }
         });
@@ -567,58 +579,56 @@ export default create({
         this.$refs.form.clearValidate(list);
       })
     },
+    validateCellForm () {
+      return new Promise(resolve => {
+        this.$refs.form.validate((valid, msg) => {
+          resolve(msg)
+        });
+      })
+    },
     validate (callback) {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          let dynamicList = [];
-          let dynamicError = [];
-          const cb = () => {
-            if (!this.validatenull(dynamicError)) {
-              callback(false, dynamicError)
-              return
-            }
-            this.show();
-            callback(true, this.hide)
-          }
-          this.dynamicOption.forEach(ele => {
-            dynamicError.push({
-              field: ele.prop,
-              label: ele.label,
-              children: {}
-            });
-            dynamicList.push(this.$refs[ele.prop][0].$refs.temp.validate());
-          })
-          Promise.all(dynamicList).then(res => {
-            let count = 0;
-            res.forEach((err, index) => {
-              let objKey = Object.keys(dynamicError);
-              if (this.validatenull(err)) {
-                dynamicError.splice(count, 1)
-                return
-              }
-              count = count + 1;
-              if (index == 0) {
-                let count = Object.keys(err)[0]
-                this.$message.error(`【${dynamicError[index].label}】第${Number(count) + 1}行:${err[count][0].message}`);
-              }
-              dynamicError[objKey[index]].children = err;
+      this.$refs.form.validate((valid, msg) => {
+        let dynamicList = [];
+        let dynamicError = {};
+        this.dynamicOption.forEach(ele => {
+          let isForm = ele.children.type === 'form'
+          if (isForm) {
+            this.$refs[ele.prop][0].$refs.temp.$refs.main.forEach(ele => {
+              dynamicList.push(ele.validateCellForm());
             })
-            cb();
+          } else {
+            dynamicList.push(this.$refs[ele.prop][0].$refs.temp.$refs.main.validateCellForm());
+          }
+        })
+        Promise.all(dynamicList).then(res => {
+          let count = 0;
+          res.forEach(res => {
+            console.log(res);
+            if (!res) {
+              dynamicError.push(res)
+            }
           })
-        } else callback(valid, this.hide)
+          let result = Object.assign(dynamicError, msg);
+          if (this.validatenull(result)) {
+            this.show();
+            callback(true)
+          } else {
+            callback(false, result)
+          }
+
+        })
       });
     },
     resetForm () {
       this.clearValidate();
       if (this.reset) {
-        this.resetFields();
         this.clearVal();
       }
       this.$emit("input", this.form);
       this.$emit("reset-change");
     },
     clearVal () {
-      this.form = clearVal(this.form)
+      this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
     },
     resetFields () {
       this.$refs.form.resetFields();

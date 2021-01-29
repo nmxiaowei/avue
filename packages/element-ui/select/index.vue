@@ -35,12 +35,17 @@
                 :label="labelKey"
                 :value="valueKey"
                 :item="citem"
-                v-if="$scopedSlots[prop+'Type']"></slot>
+                v-if="typeslot"></slot>
           <slot :label="labelKey"
                 :value="valueKey"
-                :item="item"
+                :item="citem"
                 v-else-if="$scopedSlots.default">
           </slot>
+          <template v-else>
+            <span>{{ getLabelText(citem) }}</span>
+            <span v-if="citem.desc"
+                  :class="b('desc')">{{ citem.desc }}</span>
+          </template>
         </el-option>
       </el-option-group>
     </template>
@@ -48,7 +53,7 @@
       <el-option v-for="(item,index) in netDic"
                  :key="index"
                  :disabled="item[disabledKey]"
-                 :label="getLabelText(item)"
+                 :label="getLabelText(item) "
                  :value="item[valueKey]">
         <slot :name="prop+'Type'"
               :label="labelKey"
@@ -60,6 +65,11 @@
               :item="item"
               v-else-if="$scopedSlots.default">
         </slot>
+        <template v-else>
+          <span>{{ getLabelText(item) }}</span>
+          <span v-if="item.desc"
+                :class="b('desc')">{{ item.desc }}</span>
+        </template>
       </el-option>
     </template>
 
@@ -138,7 +148,6 @@ export default create({
       immediate: true
     }
   },
-  created () { },
   mounted () {
     if (this.drag) {
       this.setSort()

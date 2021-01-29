@@ -24,7 +24,17 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
+    <avue-crud ref="crud" :option="option" :data="data">
+      <template slot="nameHeader" slot-scope="{column}">
+        <el-tag>{{column.label}}({{column.prop}})</el-tag>
+      </template>
+      <template slot="sexHeader" slot-scope="{column}">
+        <el-tag>{{column.label}}({{column.prop}})</el-tag>
+      </template>
+      <!-- <template slot="empty">
+        自定义提示
+      </template> -->
+    </avue-crud>
   </div>
 </body>
 <script>
@@ -32,9 +42,7 @@
     el: '#app',
     data() {
       return {
-        data: [{
-          name: 'smallwei'
-        }],
+        data: [],
         option: {
           dialogType: 'drawer',
           excelBtn: true,
@@ -50,10 +58,12 @@
           border: true,
           column: [{
             label: '姓名',
-            prop: 'name'
+            prop: 'name',
+            headerslot: true,
           }, {
             label: '年龄',
             prop: 'sex',
+            headerslot: true,
             formatter: () => {
               return 123;
             }

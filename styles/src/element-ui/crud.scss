@@ -1,6 +1,19 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
+  .el-form-item{
+    margin-bottom: 0;
+  }
+  .el-form-item__content{
+    line-height: inherit;
+    font-size: inherit;
+  }
+  .el-form-item__error{
+    position: relative;
+  }
+  .el-dropdown+.el-button {
+    margin-left: 10px;
+   }
   .el-checkbox:last-of-type {
     margin-right: 0px;
   }

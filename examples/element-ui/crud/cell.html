@@ -24,8 +24,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" :table-loading="loading" v-model="obj" @on-load="onLoad"
-      @row-update="rowUpdate" @row-del="rowDel">
+    <avue-crud @row-click="handleRowClick" ref="crud" :option="option" :data="data" :table-loading="loading"
+      v-model="obj" @on-load="onLoad" @row-update="rowUpdate" @row-del="rowDel">
       <template slot="menuLeft" slot-scope="scope">
         <el-button @click="addRow" size="small">添加10条</el-button>
       </template>
@@ -158,7 +158,7 @@
               dicUrl: 'https://cli.avuejs.com/api/area/getProvince'
             },
             {
-              width: 120,
+              width: 150,
               label: '开关',
               prop: 'switch',
               type: 'switch',
@@ -195,6 +195,13 @@
               change: ({ index, row, column }) => {
                 console.log(index, row, column)
               },
+              rules: [
+                {
+                  required: true,
+                  message: '请输入地址',
+                  trigger: 'blur'
+                }
+              ],
               cell: true,
             }, {
               label: '远程搜索',
@@ -230,6 +237,13 @@
       }, 1000)
     },
     methods: {
+      handleRowClick(row, event, column) {
+        this.$message({
+          showClose: true,
+          message: '序号' + row.$index,
+          type: 'success',
+        });
+      },
       addRow() {
         this.$message.success('正在添加，请稍后')
         setTimeout(() => {

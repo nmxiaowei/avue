@@ -28,13 +28,15 @@ export default function () {
     },
     created () {
       this.init();
-      this.handleLoadDic()
     },
     computed: {
       resultOption () {
         return Object.assign(this.deepClone(this.tableOption), {
           column: this.propOption
         })
+      },
+      rowKey () {
+        return this.tableOption.rowKey || "id";
       },
       formRules () {
         let result = {};
@@ -43,9 +45,6 @@ export default function () {
             result[ele.prop] = ele.rules
         });
         return result;
-      },
-      menuType () {
-        return this.tableOption.menuType || this.$AVUE.menuType || 'button';
       },
       isMediumSize () {
         return this.controlSize;
@@ -59,6 +58,7 @@ export default function () {
         this.tableOption = this.option;
         this.getIsMobile();
         this.handleLocalDic();
+        this.handleLoadDic()
       },
       getIsMobile () {
         this.isMobile = window.document.body.clientWidth <= 768;
