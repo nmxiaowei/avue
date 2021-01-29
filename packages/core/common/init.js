@@ -28,7 +28,6 @@ export default function () {
     },
     created () {
       this.init();
-      this.handleLoadDic()
     },
     computed: {
       resultOption () {
@@ -59,6 +58,7 @@ export default function () {
         this.tableOption = this.option;
         this.getIsMobile();
         this.handleLocalDic();
+        this.handleLoadDic()
       },
       getIsMobile () {
         this.isMobile = window.document.body.clientWidth <= 768;
