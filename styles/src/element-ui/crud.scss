@@ -4,6 +4,10 @@ $space-width: 15px;
   .el-form-item{
     margin-bottom: 0;
   }
+  .el-form-item__content{
+    line-height: inherit;
+    font-size: inherit;
+  }
   .el-form-item__error{
     position: relative;
   }

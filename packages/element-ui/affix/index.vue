@@ -24,7 +24,7 @@ export default create({
       type: Number
     }
   },
-  data() {
+  data () {
     return {
       affix: false,
       styles: {},
@@ -33,7 +33,7 @@ export default create({
     };
   },
   computed: {
-    parent() {
+    parent () {
       if (this.validatenull(this.id)) {
         return window;
       } else {
@@ -41,7 +41,7 @@ export default create({
         else return window.document.getElementById(this.id);
       }
     },
-    offsetType() {
+    offsetType () {
       let type = "top";
       if (this.offsetBottom >= 0) {
         type = "bottom";
@@ -50,16 +50,16 @@ export default create({
       return type;
     }
   },
-  mounted() {
+  mounted () {
     this.parent.addEventListener("scroll", this.handleScroll, false);
     this.parent.addEventListener("resize", this.handleScroll, false);
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.parent.removeEventListener("scroll", this.handleScroll, false);
     this.parent.removeEventListener("resize", this.handleScroll, false);
   },
   methods: {
-    getScroll(target, top) {
+    getScroll (target, top) {
       const prop = top ? "pageYOffset" : "pageXOffset";
       const method = top ? "scrollTop" : "scrollLeft";
 
@@ -72,7 +72,7 @@ export default create({
       return ret;
     },
 
-    getOffset(element) {
+    getOffset (element) {
       const rect = element.getBoundingClientRect();
 
       const scrollTop = this.getScroll(this.parent, true);
@@ -87,7 +87,7 @@ export default create({
         left: rect.left + scrollLeft - clientLeft
       };
     },
-    handleScroll() {
+    handleScroll () {
       const affix = this.affix;
       const scrollTop = this.getScroll(window, true);
       const elOffset = this.getOffset(this.$el);
@@ -129,7 +129,7 @@ export default create({
       // Fixed Bottom
       if (
         elOffset.top + this.offsetBottom + elHeight >
-          scrollTop + windowHeight &&
+        scrollTop + windowHeight &&
         this.offsetType == "bottom" &&
         !affix
       ) {
@@ -143,7 +143,7 @@ export default create({
         this.$emit("on-change", true);
       } else if (
         elOffset.top + this.offsetBottom + elHeight <
-          scrollTop + windowHeight &&
+        scrollTop + windowHeight &&
         this.offsetType == "bottom" &&
         affix
       ) {
