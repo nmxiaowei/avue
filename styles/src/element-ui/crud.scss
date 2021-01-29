@@ -3,6 +3,7 @@ $space-width: 15px;
 .avue-crud {
   .el-form-item{
     margin-bottom: 0;
+    display: inline-block;
   }
   .el-form-item__content{
     line-height: inherit;

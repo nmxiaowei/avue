@@ -297,7 +297,7 @@ export default create({
           $index: this.textLen
         });
         if (this.isCrud) {
-          this.$refs.crud.rowCellAdd(obj);
+          this.$refs.main.rowCellAdd(obj);
         } else if (this.isForm) {
           this.text.push(obj)
         }
