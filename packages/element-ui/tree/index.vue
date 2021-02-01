@@ -29,7 +29,8 @@
              @check-change="handleCheckChange"
              @node-click="nodeClick"
              @node-contextmenu="nodeContextmenu"
-             :default-expand-all="defaultExpandAll">
+             :default-expand-all="defaultExpandAll"
+             :default-expanded-keys="defaultExpandedKeys">
       <span slot-scope="{ node, data }"
             v-if="$scopedSlots.default">
         <slot :node="node"
@@ -193,6 +194,9 @@ export default create({
     },
     defaultExpandAll () {
       return this.option.defaultExpandAll;
+    },
+    defaultExpandedKeys () {
+      return this.option.defaultExpandedKeys;
     },
     formColumnOption () {
       return (this.option.formOption || {}).column || [];
