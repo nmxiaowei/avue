@@ -1,5 +1,6 @@
 <template>
   <div :class="b('pagination')">
+    <slot name="page"></slot>
     <el-pagination v-show="pageFlag"
                    :small="crud.isMobile"
                    :disabled="defaultPage.disabled"

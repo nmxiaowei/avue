@@ -1,6 +1,20 @@
 $color-blue: #2196f3;
 $space-width: 15px;
 .avue-crud {
+  .el-card+.el-card {
+    margin-top: 8px;
+  }
+  &--card{
+    .el-card{
+      border:none;
+    }
+    .el-card__body{
+      padding: 0;
+    }
+    .el-card+.el-card {
+      margin-top: 0;
+    }
+  }
   .el-table{
     .el-form-item{
       margin-bottom: 0;
@@ -82,7 +96,7 @@ $space-width: 15px;
     }
   }
   margin: 0 auto;
-  width: 99%;
+  width: 100%;
   th {
     word-break: break-word;
     color: rgba(0, 0, 0, 0.85);
@@ -181,6 +195,9 @@ $space-width: 15px;
     position: relative;
     padding: 25px 0 20px 20px;
     text-align: right;
+    .el-pagination {
+      display: inline-block;
+    }
   }
   &__form {
     padding: 0 8px;

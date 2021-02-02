@@ -45,16 +45,6 @@
       display: flex !important;
     }
   }
-  &--card{
-    padding: 0 20px;
-    &:last-child{
-      margin-bottom: 50px;
-    }
-    .avue-group__item{
-      border-radius: 5px;
-      box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.15);
-    }
-  }
   &__item {
     margin-bottom: 10px;
     background-color: #fff;

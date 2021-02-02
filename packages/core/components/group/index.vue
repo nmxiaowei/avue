@@ -1,5 +1,5 @@
 <template>
-  <div :class="[b({'card':card,'header':!isHeader,'arrow':!arrow})]"
+  <div :class="[b({'header':!isHeader,'arrow':!arrow})]"
        v-if="display">
     <slot name="tabs"></slot>
     <component :is="collapseName"

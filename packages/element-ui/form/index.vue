@@ -22,7 +22,6 @@
                     :index="index"
                     :header="!isTabs"
                     :active="activeName"
-                    :card="parentOption.card"
                     :label="item.label">
           <el-tabs slot="tabs"
                    v-model="activeName"

@@ -1,7 +1,8 @@
 <template>
   <el-collapse-transition>
-    <div :class="b()"
-         v-show="searchShow && searchFlag">
+    <el-card :shadow="crud.isCard"
+             :class="b()"
+             v-show="searchShow && searchFlag">
       <avue-form :option="option"
                  ref="form"
                  v-if="flag"
@@ -45,7 +46,7 @@
                 :size="crud.controlSize"></slot>
         </template>
       </avue-form>
-    </div>
+    </el-card>
   </el-collapse-transition>
 </template>
 
