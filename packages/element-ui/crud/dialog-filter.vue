@@ -43,7 +43,6 @@
                    :size="crud.isMediumSize"
                    :class="b('filter-value')"
                    :dic="crud.DIC[columnList[index].prop]"
-                   :t="t"
                    :props="columnList[index].props || crud.tableOption.props"
                    v-model="column.value">
         </form-temp>

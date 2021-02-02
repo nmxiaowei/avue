@@ -140,6 +140,13 @@
                   v-if="item.headerslot"
                   :name="item.prop+'Header'"></slot>
           </template>
+          <template v-for="item in propOption"
+                    slot-scope="scope"
+                    :slot="item.prop+'Form'">
+            <slot v-bind="scope"
+                  v-if="item.formslot"
+                  :name="item.prop+'Form'"></slot>
+          </template>
           <column-menu :tableOption="tableOption"
                        slot="footer">
             <template slot="menu"

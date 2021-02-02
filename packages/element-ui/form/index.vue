@@ -115,7 +115,6 @@
                                v-else
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
-                               :t="t"
                                :props="parentOption.props"
                                :propsHttp="parentOption.propsHttp"
                                v-bind="$uploadFun(column)"
@@ -178,7 +177,6 @@
 </template>
 
 <script>
-import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/common/init";
@@ -191,7 +189,7 @@ import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
   name: "form",
-  mixins: [init(), locale],
+  mixins: [init()],
   components: {
     formTemp,
     formMenu
