@@ -196,7 +196,7 @@ export default create({
         option.menuBtn = false;
         option.detail = true;
       } else {
-        if (!option.dialogMenuPosition) option.menuPosition = 'right'
+        option.menuPosition = option.dialogMenuPosition || 'right'
         if (this.isAdd) {
           option.submitBtn = option.saveBtn;
           option.submitText = this.crud.menuIcon('saveBtn');
