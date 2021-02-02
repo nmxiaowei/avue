@@ -199,6 +199,7 @@ export default cteate({
               return 6
             }
           })(),
+          menuPosition: option.searchMenuPosition || 'center',
           dicFlag: false,
           dicData: this.crud.DIC
         })
