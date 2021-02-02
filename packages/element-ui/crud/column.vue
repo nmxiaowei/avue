@@ -39,6 +39,8 @@
           </template>
           <template slot-scope="{row,$index}">
             <el-form-item :prop="crud.isTree?'':'list.' + $index + '.'+column.prop"
+                          :label="vaildLabel(column,row,' ')"
+                          :label-width="vaildLabel(column,row,'1px')"
                           :rules='column.rules'>
               <form-temp :column="column"
                          v-if="cellEditFlag(row,column)"
@@ -143,6 +145,11 @@ export default create({
     }
   },
   methods: {
+    vaildLabel (column, row, val) {
+      if (column.rules && row.$cellEdit) {
+        return val
+      }
+    },
     vaildColumn (item) {
       return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(item.prop)
     },

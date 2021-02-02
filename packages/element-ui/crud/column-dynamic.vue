@@ -38,6 +38,8 @@
 
           <template slot-scope="{row,$index}">
             <el-form-item :prop="crud.isTree?'':'list.' + $index + '.'+column.prop"
+                          :label="vaildLabel(column,row,' ')"
+                          :label-width="vaildLabel(column,row,'1px')"
                           :rules='column.rules'>
               <form-temp :column="column"
                          v-if="cellEditFlag(row,column)"
@@ -112,6 +114,7 @@ export default {
       "corArray",
       "openImg",
       "detailData",
+      "vaildLabel",
       "vaildColumn",
       "handleDetail",
       "handleShowLabel",

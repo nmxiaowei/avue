@@ -5,11 +5,17 @@ $space-width: 15px;
     margin-bottom: 0;
     display: inline-block;
   }
+  .el-form-item__label{
+    position: absolute;
+    left: 2px;
+  }
   .el-form-item__content{
     line-height: inherit;
     font-size: inherit;
   }
   .el-form-item__error{
+    width: 100%;
+    text-align: left;
     position: relative;
   }
   .el-dropdown+.el-button {
