@@ -61,6 +61,7 @@
                       dic:crud.DIC[column.prop],
                       size:crud.isMediumSize,
                       index:$index,
+                      disabled:crud.btnDisabledList[$index],
                       label:handleShowLabel(row,column,crud.DIC[column.prop]),
                       '$cell':row.$cellEdit
                     }"
