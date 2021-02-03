@@ -75,13 +75,13 @@ export const loadLocalDic = (option) => {
   let locationdic = {};
   let alldic = option.dicData || {};
   option.column.forEach(ele => {
-    if (!validatenull(ele.dicData)) {
+    if (ele.dicData) {
       locationdic[ele.prop] = ele.dicData;
     }
   });
   return Object.assign(alldic, locationdic);
 };
-function createdDic(option) {
+function createdDic (option) {
   let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
@@ -116,7 +116,7 @@ function createdDic(option) {
 }
 
 // 循环处理字典
-function handeDic(list) {
+function handeDic (list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -176,7 +176,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, query).then(function(res) {
+      window.axios.post(url, query).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -184,7 +184,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function(res) {
+      }).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])

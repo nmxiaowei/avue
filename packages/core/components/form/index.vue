@@ -46,7 +46,6 @@ export default {
   name: 'form-temp',
   props: {
     value: {},
-    t: Function,
     uploadBefore: Function,
     uploadDelete: Function,
     uploadAfter: Function,

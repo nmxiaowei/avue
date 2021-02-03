@@ -17,6 +17,20 @@
           <slot v-bind="scope"
                 :name="item.prop"></slot>
         </template>
+        <template v-for="item in crud.propOption"
+                  slot-scope="scope"
+                  :slot="item.prop+'Header'">
+          <slot v-bind="scope"
+                v-if="item.headerslot"
+                :name="item.prop+'Header'"></slot>
+        </template>
+        <template v-for="item in crud.propOption"
+                  slot-scope="scope"
+                  :slot="item.prop+'Form'">
+          <slot v-bind="scope"
+                v-if="item.formslot"
+                :name="item.prop+'Form'"></slot>
+        </template>
       </column-dynamic>
       <template v-else-if="!['dynamic'].includes(column.type)">
         <el-table-column v-if="vaildColumn(column)"
@@ -38,12 +52,25 @@
 
           <template slot-scope="{row,$index}">
             <el-form-item :prop="crud.isTree?'':'list.' + $index + '.'+column.prop"
+                          v-if="row.$cellEdit && column.cell"
+                          :label="vaildLabel(column,row,' ')"
+                          :label-width="vaildLabel(column,row,'1px')"
                           :rules='column.rules'>
-              <form-temp :column="column"
-                         v-if="cellEditFlag(row,column)"
-                         size="mini"
+              <slot v-bind="{
+                      row:row,
+                      dic:crud.DIC[column.prop],
+                      size:crud.isMediumSize,
+                      index:$index,
+                      disabled:crud.btnDisabledList[$index],
+                      label:handleShowLabel(row,column,crud.DIC[column.prop]),
+                      '$cell':row.$cellEdit
+                    }"
+                    :name="column.prop+'Form'"
+                    v-if="column.formslot"></slot>
+              <form-temp v-else
+                         :column="column"
+                         :size="crud.isMediumSize"
                          :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                         :t="t"
                          :props="column.props || crud.tableOption.props"
                          :readonly="column.readonly"
                          :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[$index]"
@@ -52,37 +79,37 @@
                          v-model="row[column.prop]"
                          @change="columnChange(index,row,column)">
               </form-temp>
-              <slot :row="row"
-                    :index="$index"
-                    :dic="crud.DIC[column.prop]"
-                    :size="crud.isMediumSize"
-                    :label="handleShowLabel(row,column,crud.DIC[column.prop])"
-                    :name="column.prop"
-                    v-else-if="column.slot"></slot>
-              <template v-else>
-                <span v-if="['img','upload'].includes(column.type)">
-                  <div class="avue-crud__img">
-                    <img v-for="(item,index) in getImgList(row,column) "
-                         :src="item"
-                         :key="index"
-                         @click="openImg(getImgList(row,column),index)" />
-                  </div>
-                </span>
-                <span v-else-if="['url'].includes(column.type)">
-                  <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
-                           type="primary"
-                           :key="index"
-                           :href="item"
-                           :target="column.target || '_blank'">{{item}}</el-link>
-                </span>
-                <span v-else-if="['rate'].includes(column.type)">
-                  <avue-rate disabled
-                             v-model="row[column.prop]" />
-                </span>
-                <span v-else
-                      v-html="handleDetail(row,column)"></span>
-              </template>
             </el-form-item>
+            <slot :row="row"
+                  :index="$index"
+                  :dic="crud.DIC[column.prop]"
+                  :size="crud.isMediumSize"
+                  :label="handleShowLabel(row,column,crud.DIC[column.prop])"
+                  :name="column.prop"
+                  v-else-if="column"></slot>
+            <template v-else>
+              <span v-if="['img','upload'].includes(column.type)">
+                <div class="avue-crud__img">
+                  <img v-for="(item,index) in getImgList(row,column) "
+                       :src="item"
+                       :key="index"
+                       @click="openImg(getImgList(row,column),index)" />
+                </div>
+              </span>
+              <span v-else-if="['url'].includes(column.type)">
+                <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
+                         type="primary"
+                         :key="index"
+                         :href="item"
+                         :target="column.target || '_blank'">{{item}}</el-link>
+              </span>
+              <span v-else-if="['rate'].includes(column.type)">
+                <avue-rate disabled
+                           v-model="row[column.prop]" />
+              </span>
+              <span v-else
+                    v-html="handleDetail(row,column)"></span>
+            </template>
           </template>
         </el-table-column>
       </template>
@@ -93,15 +120,14 @@
 
 <script>
 import formTemp from '../../core/components/form/index'
-import locale from "../../core/common/locale";
 export default {
   name: 'column-dynamic',
-  mixins: [locale],
   components: {
     formTemp
   },
   inject: ["dynamic", 'crud'],
   props: {
+    t: Function,
     columnOption: {
       type: Object,
       required: true
@@ -112,12 +138,12 @@ export default {
       "corArray",
       "openImg",
       "detailData",
+      "vaildLabel",
       "vaildColumn",
       "handleDetail",
       "handleShowLabel",
       "handleChange",
       "columnChange",
-      "cellEditFlag",
       "getImgList",
       "handleFiltersMethod",
       "handleFilters"

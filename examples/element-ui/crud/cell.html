@@ -29,6 +29,15 @@
       <template slot="menuLeft" slot-scope="scope">
         <el-button @click="addRow" size="small">添加10条</el-button>
       </template>
+      <template slot="name" slot-scope="{row,size,$cell}">
+        <el-tag>{{row.name}}</el-tag>
+      </template>
+      <template slot="nameHeader" slot-scope="{column}">
+        <el-tag>{{column.label}}</el-tag>
+      </template>
+      <template slot="nameForm" slot-scope="{row,size,$cell}">
+        <el-input v-model="row.name" :size="size"></el-input>
+      </template>
     </avue-crud>
   </div>
 </body>
@@ -66,6 +75,8 @@
               type: 'select',
               fixed: 'left',
               formslot: true,
+              headerslot: true,
+              slot: true,
               cell: true,
               rules: [
                 {

@@ -1,6 +1,7 @@
 import { validatenull } from 'utils/validate';
 import { KEY_COMPONENT_NAME, DIC_SPLIT, ARRAY_LIST, DATE_LIST, INPUT_LIST, ARRAY_VALUE_LIST, MULTIPLE_LIST, SELECT_LIST } from 'global/variable';
 import { detailDataType, findObject, createObj } from 'utils/util';
+import { t } from 'locale';
 /**
  * 计算级联属性
  */
@@ -160,9 +161,9 @@ export const getPlaceholder = function (column, type) {
     }
   } else if (validatenull(placeholder)) {
     if (SELECT_LIST.includes(column.type)) {
-      return `${this.t('tip.select')} ${label}`;
+      return `${t('tip.select')} ${label}`;
     } else {
-      return `${this.t('tip.input')} ${label}`;
+      return `${t('tip.input')} ${label}`;
     }
   }
 

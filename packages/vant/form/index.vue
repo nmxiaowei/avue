@@ -53,7 +53,6 @@
                      :class="column.className"
                      :ref="column.prop"
                      :dic="DIC[column.prop]"
-                     :t="t"
                      :props="parentOption.props"
                      :propsHttp="parentOption.propsHttp"
                      :disabled="column.disabled || item.disabled"
@@ -77,7 +76,6 @@
 </template>
 
 <script>
-import locale from "../../core/common/locale";
 import create from "core/create";
 import init from "../../core/common/init";
 import { detail } from "core/detail";
@@ -86,7 +84,7 @@ import { getComponent, getPlaceholder, formInitVal, calcCascader } from "core/da
 import { sendDic } from "core/dic";
 export default create({
   name: "form",
-  mixins: [init(), locale],
+  mixins: [init()],
   data () {
     return {
       activeName: '',

@@ -20,8 +20,9 @@
 
 <body>
   <div id="app">
-    {{search}}
-    <avue-crud ref="crud" :search.sync="search" :option="option" :data="data" @search-change="searchChange">
+    <avue-crud ref="crud" :page.sync="page" :search.sync="search" :option="option" :data="data"
+      @search-change="searchChange">
+      <el-tag slot="header">头部</el-tag>
       <template slot="searchMenu" slot-scope="{size,row}">
         <el-button :size="size">测试</el-button>
       </template>
@@ -31,6 +32,8 @@
       <template slot-scope="scope" slot="checkboxForm">
         <span> 123456</span>
       </template>
+      <el-tag slot="footer">尾部</el-tag>
+      <el-tag slot="page">分页</el-tag>
     </avue-crud>
   </div>
 </body>
@@ -39,6 +42,11 @@
     el: '#app',
     data() {
       return {
+        page: {
+          pageSize: 20,
+          pageSizes: [20, 100, 150, 200],
+          total: 40
+        },
         search: {},
         option: {
           index: true,

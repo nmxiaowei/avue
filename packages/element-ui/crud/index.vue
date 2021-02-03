@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()">
+  <div :class="b({'card':!option.card})">
     <!-- 搜索组件 -->
     <header-search :search="search"
                    ref="headerSearch">
@@ -29,137 +29,151 @@
               v-if="item.searchslot"></slot>
       </template>
     </header-search>
-    <!-- 表格功能列 -->
-    <header-menu ref="headerMenu"
-                 v-if="vaildData(tableOption.header,true)">
-      <template slot="menuLeft">
-        <slot name="menuLeft"></slot>
-      </template>
-      <template slot="menuRight">
-        <slot name="menuRight"></slot>
-      </template>
-    </header-menu>
-    <el-tag class="avue-crud__tip"
-            v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
-      <span class="avue-crud__tip-name">
-        {{t('crud.tipStartTitle')}}
-        <span class="avue-crud__tip-count">{{selectLen}}</span>
-        {{t('crud.tipEndTitle')}}
-      </span>
-      <el-button type="text"
-                 size="small"
-                 @click="selectClear"
-                 v-permission="getPermission('selectClearBtn')"
-                 v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
-      <slot name="tip"></slot>
-    </el-tag>
-    <slot name="header"></slot>
-    <el-form :model="cellForm"
-             ref="cellForm">
-      <el-table v-if="reload"
-                :data="cellForm.list"
-                :row-key="handleGetRowKeys"
-                :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
-                :size="$AVUE.tableSize || controlSize"
-                :lazy="vaildData(tableOption.lazy,false)"
-                :load="treeLoad"
-                :tree-props="tableOption.treeProps || {}"
-                :expand-row-keys="tableOption.expandRowKeys"
-                :default-expand-all="tableOption.defaultExpandAll"
-                :highlight-current-row="tableOption.highlightCurrentRow"
-                @current-change="currentRowChange"
-                @expand-change="expandChange"
-                @header-dragend="headerDragend"
-                :show-summary="tableOption.showSummary"
-                :summary-method="tableSummaryMethod"
-                :span-method="tableSpanMethod"
-                :stripe="tableOption.stripe"
-                :show-header="tableOption.showHeader"
-                :default-sort="tableOption.defaultSort"
-                @row-click="rowClick"
-                @row-dblclick="rowDblclick"
-                @cell-mouse-enter="cellMouseEnter"
-                @cell-mouse-leave="cellMouseLeave"
-                @cell-click="cellClick"
-                @header-click="headerClick"
-                @row-contextmenu="rowContextmenu"
-                @header-contextmenu="headerContextmenu"
-                @cell-dblclick="cellDblclick"
-                :row-class-name="rowClassName"
-                :cell-class-name="cellClassName"
-                :row-style="rowStyle"
-                :cell-style="cellStyle"
-                :sort-method="sortMethod"
-                :sort-orders="sortOrders"
-                :sort-by="sortBy"
-                :fit="tableOption.fit"
-                :header-cell-class-name="headerCellClassName"
-                :max-height="tableOption.maxHeight"
-                :height="tableHeight"
-                ref="table"
-                :width="setPx(tableOption.width,config.width)"
-                :border="tableOption.border"
-                v-loading="tableLoading"
-                @selection-change="selectionChange"
-                @select="select"
-                @select-all="selectAll"
-                @sort-change="sortChange">
-        <!-- 暂无数据提醒 -->
-        <template slot="empty">
-          <div :class="b('empty')">
-            <slot name="empty"
-                  v-if="$slots.empty"></slot>
-            <avue-empty v-else
-                        size="50"
-                        image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                        :desc="tableOption.emptyText || 暂无数据"></avue-empty>
-          </div>
+    <el-card :shadow="isCard">
+      <!-- 表格功能列 -->
+      <header-menu ref="headerMenu"
+                   v-if="vaildData(tableOption.header,true)">
+        <template slot="menuLeft">
+          <slot name="menuLeft"></slot>
         </template>
-        <column :columnOption="columnOption"
-                :tableOption="tableOption">
-          <column-default ref="columnDefault"
-                          :tableOption="tableOption"
-                          slot="header">
-            <template slot-scope="{row,index}"
-                      slot="expand">
-              <slot :row="row"
-                    :index="index"
-                    name="expand"></slot>
-            </template>
-          </column-default>
-          <template v-for="item in propOption"
-                    slot-scope="scope"
-                    :slot="item.prop">
-            <slot v-bind="scope"
-                  :name="item.prop"></slot>
+        <template slot="menuRight">
+          <slot name="menuRight"></slot>
+        </template>
+      </header-menu>
+      <el-tag class="avue-crud__tip"
+              v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
+        <span class="avue-crud__tip-name">
+          {{t('crud.tipStartTitle')}}
+          <span class="avue-crud__tip-count">{{selectLen}}</span>
+          {{t('crud.tipEndTitle')}}
+        </span>
+        <el-button type="text"
+                   size="small"
+                   @click="selectClear"
+                   v-permission="getPermission('selectClearBtn')"
+                   v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
+        <slot name="tip"></slot>
+      </el-tag>
+      <slot name="header"></slot>
+      <el-form :model="cellForm"
+               ref="cellForm">
+        <el-table v-if="reload"
+                  :data="cellForm.list"
+                  :row-key="handleGetRowKeys"
+                  :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
+                  :size="$AVUE.tableSize || controlSize"
+                  :lazy="vaildData(tableOption.lazy,false)"
+                  :load="treeLoad"
+                  :tree-props="tableOption.treeProps || {}"
+                  :expand-row-keys="tableOption.expandRowKeys"
+                  :default-expand-all="tableOption.defaultExpandAll"
+                  :highlight-current-row="tableOption.highlightCurrentRow"
+                  @current-change="currentRowChange"
+                  @expand-change="expandChange"
+                  @header-dragend="headerDragend"
+                  :show-summary="tableOption.showSummary"
+                  :summary-method="tableSummaryMethod"
+                  :span-method="tableSpanMethod"
+                  :stripe="tableOption.stripe"
+                  :show-header="tableOption.showHeader"
+                  :default-sort="tableOption.defaultSort"
+                  @row-click="rowClick"
+                  @row-dblclick="rowDblclick"
+                  @cell-mouse-enter="cellMouseEnter"
+                  @cell-mouse-leave="cellMouseLeave"
+                  @cell-click="cellClick"
+                  @header-click="headerClick"
+                  @row-contextmenu="rowContextmenu"
+                  @header-contextmenu="headerContextmenu"
+                  @cell-dblclick="cellDblclick"
+                  :row-class-name="rowClassName"
+                  :cell-class-name="cellClassName"
+                  :row-style="rowStyle"
+                  :cell-style="cellStyle"
+                  :sort-method="sortMethod"
+                  :sort-orders="sortOrders"
+                  :sort-by="sortBy"
+                  :fit="tableOption.fit"
+                  :header-cell-class-name="headerCellClassName"
+                  :max-height="tableOption.maxHeight"
+                  :height="tableHeight"
+                  ref="table"
+                  :width="setPx(tableOption.width,config.width)"
+                  :border="tableOption.border"
+                  v-loading="tableLoading"
+                  @selection-change="selectionChange"
+                  @select="select"
+                  @select-all="selectAll"
+                  @sort-change="sortChange">
+          <!-- 暂无数据提醒 -->
+          <template slot="empty">
+            <div :class="b('empty')">
+              <slot name="empty"
+                    v-if="$slots.empty"></slot>
+              <avue-empty v-else
+                          size="50"
+                          image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
+                          :desc="tableOption.emptyText || 暂无数据"></avue-empty>
+            </div>
           </template>
-          <template v-for="item in propOption"
-                    slot-scope="scope"
-                    :slot="item.prop+'Header'">
-            <slot v-bind="scope"
-                  v-if="item.headerslot"
-                  :name="item.prop+'Header'"></slot>
-          </template>
-          <column-menu :tableOption="tableOption"
-                       slot="footer">
-            <template slot="menu"
-                      slot-scope="scope">
-              <slot name="menu"
-                    v-bind="scope"></slot>
+          <column :columnOption="columnOption"
+                  :tableOption="tableOption">
+            <column-default ref="columnDefault"
+                            :tableOption="tableOption"
+                            slot="header">
+              <template slot-scope="{row,index}"
+                        slot="expand">
+                <slot :row="row"
+                      :index="index"
+                      name="expand"></slot>
+              </template>
+            </column-default>
+            <template v-for="item in propOption"
+                      slot-scope="scope"
+                      :slot="item.prop">
+              <slot v-bind="scope"
+                    :name="item.prop"></slot>
             </template>
-            <template slot="menuBtn"
-                      slot-scope="scope">
-              <slot name="menuBtn"
-                    v-bind="scope"></slot>
+            <template v-for="item in propOption"
+                      slot-scope="scope"
+                      :slot="item.prop+'Header'">
+              <slot v-bind="scope"
+                    v-if="item.headerslot"
+                    :name="item.prop+'Header'"></slot>
             </template>
-          </column-menu>
-        </column>
-      </el-table>
-    </el-form>
-    <!-- 分页 -->
-    <table-page ref="tablePage"
-                v-if="vaildData(tableOption.page,true)"
-                :page="page"></table-page>
+            <template v-for="item in propOption"
+                      slot-scope="scope"
+                      :slot="item.prop+'Form'">
+              <slot v-bind="scope"
+                    v-if="item.formslot"
+                    :name="item.prop+'Form'"></slot>
+            </template>
+            <column-menu :tableOption="tableOption"
+                         slot="footer">
+              <template slot="menu"
+                        slot-scope="scope">
+                <slot name="menu"
+                      v-bind="scope"></slot>
+              </template>
+              <template slot="menuBtn"
+                        slot-scope="scope">
+                <slot name="menuBtn"
+                      v-bind="scope"></slot>
+              </template>
+            </column-menu>
+          </column>
+        </el-table>
+      </el-form>
+      <slot name="footer"></slot>
+      <!-- 分页 -->
+      <table-page ref="tablePage"
+                  v-if="vaildData(tableOption.page,true)"
+                  :page="page">
+        <template slot="page">
+          <slot name="page"></slot>
+        </template>
+      </table-page>
+    </el-card>
     <!-- 表单 -->
     <dialog-form ref="dialogForm"
                  v-model="tableForm">
@@ -330,6 +344,9 @@ export default create({
         }
       })
       return this.vaildData(this.tableOption.tree, flag);
+    },
+    isCard () {
+      return this.option.card ? 'always' : 'never'
     },
     isGroup () {
       return !this.validatenull(this.tableOption.group);

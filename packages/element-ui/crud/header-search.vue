@@ -1,7 +1,8 @@
 <template>
   <el-collapse-transition>
-    <div :class="b()"
-         v-show="searchShow && searchFlag">
+    <el-card :shadow="crud.isCard"
+             :class="b()"
+             v-show="searchShow && searchFlag">
       <avue-form :option="option"
                  ref="form"
                  v-if="flag"
@@ -45,7 +46,7 @@
                 :size="crud.controlSize"></slot>
         </template>
       </avue-form>
-    </div>
+    </el-card>
   </el-collapse-transition>
 </template>
 
@@ -155,7 +156,7 @@ export default cteate({
               checkStrictly: ele.searchCheckStrictly || option.searchCheckStrictly,
               tags: ele.searchTags,
               row: ele.searchRow,
-              size: ele.searchSize,
+              size: ele.searchSize || option.searchSize || this.crud.controlSize,
               formslot: ele.searchslot,
               clearable: ele.searchClearable,
               rules: ele.searchRules,
@@ -186,6 +187,7 @@ export default cteate({
           enter: this.vaildData(option.searchEnter, true),
           printBtn: false,
           mockBtn: false,
+          size: option.searchSize,
           submitText: this.vaildData(option.searchBtnText, this.t('crud.searchBtn')),
           submitBtn: this.vaildData(option.searchBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
@@ -199,6 +201,7 @@ export default cteate({
               return 6
             }
           })(),
+          menuPosition: option.searchMenuPosition || 'center',
           dicFlag: false,
           dicData: this.crud.DIC
         })

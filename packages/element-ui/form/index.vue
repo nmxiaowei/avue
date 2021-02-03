@@ -22,7 +22,6 @@
                     :index="index"
                     :header="!isTabs"
                     :active="activeName"
-                    :card="parentOption.card"
                     :label="item.label">
           <el-tabs slot="tabs"
                    v-model="activeName"
@@ -115,7 +114,6 @@
                                v-else
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
-                               :t="t"
                                :props="parentOption.props"
                                :propsHttp="parentOption.propsHttp"
                                v-bind="$uploadFun(column)"
@@ -178,7 +176,6 @@
 </template>
 
 <script>
-import locale from "../../core/common/locale";
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "../../core/common/init";
@@ -191,7 +188,7 @@ import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
   name: "form",
-  mixins: [init(), locale],
+  mixins: [init()],
   components: {
     formTemp,
     formMenu
@@ -330,7 +327,8 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
+        let orderDefault = 1024;
+        ele.column = ele.column.sort((a, b) => (a.order || orderDefault) - (b.order || orderDefault))
       });;
       return list;
     },
