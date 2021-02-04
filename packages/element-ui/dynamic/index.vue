@@ -52,6 +52,7 @@
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"
+               @sortable-change="handleSortableChange"
                :data="text">
       <template slot-scope="scope"
                 slot="_index">
@@ -112,6 +113,9 @@ export default create({
     },
     selectionChange () {
       return this.children.selectionChange
+    },
+    sortableChange () {
+      return this.children.sortableChange
     },
     rowAdd () {
       return this.children.rowAdd
@@ -220,6 +224,9 @@ export default create({
   methods: {
     handleSelectionChange (val) {
       this.selectionChange && this.selectionChange(val);
+    },
+    handleSortableChange (oldindex, newindex, row, list) {
+      this.sortableChange && this.sortableChange(oldindex, newindex, row, list);
     },
     cellMouseenter (row) {
       let index = row.$index;
