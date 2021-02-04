@@ -1,11 +1,13 @@
 export default {
   data () {
     return {
-      slotList: {}
+      slotList: {},
+      slotReload: false
     }
   },
   mounted () {
     this.getSlotList()
+    setTimeout(() => this.slotReload = true)
   },
   methods: {
     getSlotName (item = {}, type = 'D') {
@@ -21,6 +23,7 @@ export default {
       return item.prop + result[type]
     },
     getSlotList () {
+      this.slotList = {};
       Object.keys(this.$scopedSlots).forEach(ele => {
         this.$set(this.slotList, ele, true);
       })

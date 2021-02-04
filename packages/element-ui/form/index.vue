@@ -112,7 +112,7 @@
                           :name="column.prop"
                           v-if="slotList[column.prop]"></slot>
                     <form-temp :column="column"
-                               v-else
+                               v-else-if="slotReload"
                                :ref="column.prop"
                                :dic="DIC[column.prop]"
                                :props="parentOption.props"
@@ -123,21 +123,18 @@
                                :size="parentOption.size"
                                v-model="form[column.prop]"
                                @enter="submit"
+                               :column-slot="getChildrenColumn(column)"
                                @change="propChange(item.column,column)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
-                                v-for="citem in (column.children || {}).column || []">
-                        <slot :row="scope.row"
-                              :dic="scope.dic"
-                              v-if="citem.slot"
-                              :size="scope.size"
-                              :name="citem.prop"
-                              :label="scope.label"></slot>
+                                v-for="citem in getChildrenColumn(column)">
+                        <slot v-bind="scope"
+                              :name="citem.prop"></slot>
                       </template>
-                      <template :slot="`${column.prop}Type`"
+                      <template :slot="getSlotName(column,'T')"
                                 slot-scope="scope"
-                                v-if="slotList[`${column.prop}Type`]">
-                        <slot :name="`${column.prop}Type`"
+                                v-if="slotList[getSlotName(column,'T')]">
+                        <slot :name="getSlotName(column,'T')"
                               v-bind="scope"></slot>
                       </template>
                     </form-temp>
@@ -382,6 +379,9 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
+    getChildrenColumn (column) {
+      return ((column.children || {}).column || []).filter(ele => this.slotList[ele.prop])
+    },
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },

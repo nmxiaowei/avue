@@ -50,15 +50,10 @@
                  :disabled="item[disabledKey]"
                  :label="getLabelText(item) "
                  :value="item[valueKey]">
-        <slot :name="`${prop}Type`"
-              :label="labelKey"
-              :value="valueKey"
-              :item="item"
-              v-if="slotList[`${prop}Type`]"></slot>
         <slot :label="labelKey"
               :value="valueKey"
               :item="item"
-              v-else-if="$scopedSlots.default">
+              v-if="slotList.default">
         </slot>
         <template v-else>
           <span>{{ getLabelText(item) }}</span>
