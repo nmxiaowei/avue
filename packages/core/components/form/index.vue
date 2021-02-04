@@ -17,15 +17,10 @@
              @change="handleChange">
     <span v-if="params.html"
           v-html="params.html"></span>
-    <template :slot="column.prop+'Type'"
-              slot-scope="{item,label,value,node,data}"
-              v-if="column.typeslot">
-      <slot :name="column.prop+'Type'"
-            :item="item"
-            :node="node"
-            :data="data"
-            :value="value"
-            :label="label"></slot>
+    <template slot-scope="scope"
+              v-if="slotList[getSlotName(column,'T')]">
+      <slot :name="getSlotName(column,'T')"
+            v-bind="scope"></slot>
     </template>
     <template :slot="item.prop"
               v-for="item in columnOption"
@@ -42,8 +37,10 @@
 
 <script>
 import { getComponent, getPlaceholder } from "core/dataformat";
+import slot from 'core/slot'
 export default {
   name: 'form-temp',
+  mixins: [slot],
   props: {
     value: {},
     uploadBefore: Function,

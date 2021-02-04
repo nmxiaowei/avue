@@ -14,11 +14,10 @@
                :disabled="disabled"
                :collapse-tags="tags"
                @click.native="handleClick">
-    <template slot-scope="{ node, data }">
-      <slot :name="prop+'Type'"
-            :data="data"
-            v-if="typeslot"
-            :node="node"></slot>
+    <template slot-scope="scope">
+      <slot :name="`${prop}Type`"
+            v-if="slotList[`${prop}Type`]"
+            v-bind="scope"></slot>
       <span v-else>{{data[labelKey]}}</span>
     </template>
   </el-cascader>

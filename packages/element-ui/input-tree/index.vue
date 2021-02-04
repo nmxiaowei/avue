@@ -40,12 +40,7 @@
                @node-click.self="handleNodeClick">
         <div style="width:100%;padding-right:10px;"
              slot-scope="{ data }">
-          <slot :name="prop+'Type'"
-                :label="labelKey"
-                :value="valueKey"
-                :item="data"
-                v-if="typeslot"></slot>
-          <slot v-else-if="$scopedSlots.default"
+          <slot v-if="slotList.default"
                 :label="labelKey"
                 :value="valueKey"
                 :item="data"></slot>

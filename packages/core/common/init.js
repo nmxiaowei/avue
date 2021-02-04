@@ -1,6 +1,8 @@
 import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
+import slot from 'core/slot'
 export default function () {
   return {
+    mixins: [slot],
     props: {
       option: {
         type: Object,
