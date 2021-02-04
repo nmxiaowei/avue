@@ -95,8 +95,8 @@
                   :sort-by="sortBy"
                   :fit="tableOption.fit"
                   :header-cell-class-name="headerCellClassName"
-                  :max-height="tableOption.maxHeight"
-                  :height="tableHeight"
+                  :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
+                  :height="isAutoHeight?undefined:tableHeight"
                   ref="table"
                   :width="setPx(tableOption.width,config.width)"
                   :border="tableOption.border"
@@ -305,6 +305,9 @@ export default create({
     })
   },
   computed: {
+    isAutoHeight() {
+      return this.tableOption.height === "auto"
+    },
     cellForm () {
       return {
         list: this.list
@@ -509,9 +512,16 @@ export default create({
     getTableHeight () {
       if (this.tableOption.height == "auto") {
         this.$nextTick(() => {
-          const tableStyle = this.$refs.table.$el;
-          const pageStyle = this.$refs.tablePage ? this.$refs.tablePage.$el.offsetHeight : 0;
-          this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          const tableRef = this.$refs.table
+          const tablePageRef = this.$refs.tablePage
+          if (!tableRef) return
+          const tableStyle = tableRef.$el;
+          const pageStyle = tablePageRef ? tablePageRef.$el.offsetHeight : 0;
+          let calcHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          if (config.clientHeight <= 768 || this.isMobile) {
+            calcHeight = config.clientHeight - this.calcHeight - pageStyle
+          }
+          this.tableHeight = calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
