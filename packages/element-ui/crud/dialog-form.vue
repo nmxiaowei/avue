@@ -42,47 +42,39 @@
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
         <template slot-scope="scope"
-                  v-for="item in crud.columnFormOption"
+                  v-for="item in crud.formSlot"
                   :slot="item.prop">
           <slot :name="item.prop"
-                v-if="item.formslot"
                 v-bind="Object.assign(scope,{
-                  row:item.dynamic?scope.row:tableForm,
-                  index:item.dynamic?scope.row.$index:crud.tableIndex,
+                  form:tableForm
                 })"></slot>
         </template>
         <!-- 循环form表单错误卡槽 -->
         <template slot-scope="scope"
-                  v-for="item in crud.columnFormOption"
-                  :slot="item.prop+'Error'">
-          <slot :name="item.prop+'Error'"
+                  v-for="item in crud.errorSlot"
+                  :slot="crud.getSlotName(item,'E')">
+          <slot :name="crud.getSlotName(item,'E')"
                 v-bind="Object.assign(scope,{
-                  row:tableForm,
-                  index:crud.tableIndex,
-                })"
-                v-if="item.errorslot"></slot>
+                  form:tableForm
+                })"></slot>
         </template>
         <!-- 循环form表单组件自定义卡槽 -->
         <template slot-scope="scope"
-                  v-for="item in crud.columnFormOption"
-                  :slot="item.prop+'Type'">
-          <slot :name="item.prop+'Type'"
+                  v-for="item in crud.typeSlot"
+                  :slot="crud.getSlotName(item,'T')">
+          <slot :name="crud.getSlotName(item,'T')"
                 v-bind="Object.assign(scope,{
-                  row:tableForm,
-                  index:crud.tableIndex,
-                })"
-                v-if="item.typeslot"></slot>
+                  form:tableForm
+                })"></slot>
         </template>
         <!-- 循环form表单标签卡槽 -->
         <template slot-scope="scope"
-                  v-for="item in crud.columnFormOption"
-                  :slot="item.prop+'Label'">
-          <slot :name="item.prop+'Label'"
+                  v-for="item in crud.labelSlot"
+                  :slot="crud.getSlotName(item,'L')">
+          <slot :name="crud.getSlotName(item,'L')"
                 v-bind="Object.assign(scope,{
-                  row:tableForm,
-                  index:crud.tableIndex,
-                })"
-                v-if="item.labelslot"></slot>
+                  form:tableForm
+                })"></slot>
         </template>
         <template slot="menuForm"
                   slot-scope="scope">

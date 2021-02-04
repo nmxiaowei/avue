@@ -66,8 +66,8 @@
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template slot="label"
-                            v-if="column.labelslot">
-                    <slot :name="column.prop+'Label'"
+                            v-if="slotList[`${column.prop}Label`]">
+                    <slot :name="`${column.prop}Label`"
                           :column="column"
                           :value="form[column.prop]"
                           :readonly="readonly || column.readonly"
@@ -87,16 +87,17 @@
                     <span> {{column.label}}{{labelSuffix}}</span>
                   </template>
                   <template slot="error"
-                            slot-scope="{error}"
-                            v-if="column.errorslot">
+                            slot-scope="scope"
+                            v-if="slotList[`${column.prop}Error`]">
                     <slot :name="column.prop+'Error'"
-                          :column="column"
-                          :error="error"
-                          :value="form[column.prop]"
-                          :readonly="readonly || column.readonly"
-                          :disabled="getDisabled(column)"
-                          :size="column.size || controlSize"
-                          :dic="DIC[column.prop]"></slot>
+                          v-bind="Object.assign(scope,{
+                            column,
+                            value:form[column.prop],
+                            readonly:column.readonly || readonly,
+                            disabled:getDisabled(column),
+                            size:column.size || controlSize,
+                            dic:DIC[column.prop]
+                          })"></slot>
                   </template>
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
@@ -109,7 +110,7 @@
                           :disabled="getDisabled(column)"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
-                          v-if="column.formslot"></slot>
+                          v-if="slotList[column.prop]"></slot>
                     <form-temp :column="column"
                                v-else
                                :ref="column.prop"
@@ -125,7 +126,7 @@
                                @change="propChange(item.column,column)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
-                                v-for="citem in ((column.children || {}).column || [])">
+                                v-for="citem in (column.children || {}).column || []">
                         <slot :row="scope.row"
                               :dic="scope.dic"
                               v-if="citem.slot"
@@ -133,15 +134,11 @@
                               :name="citem.prop"
                               :label="scope.label"></slot>
                       </template>
-                      <template :slot="column.prop+'Type'"
-                                slot-scope="{item,label,value,node,data}"
-                                v-if="column.typeslot">
-                        <slot :name="column.prop+'Type'"
-                              :item="item"
-                              :node="node"
-                              :data="data"
-                              :value="value"
-                              :label="label"></slot>
+                      <template :slot="`${column.prop}Type`"
+                                slot-scope="scope"
+                                v-if="slotList[`${column.prop}Type`]">
+                        <slot :name="`${column.prop}Type`"
+                              v-bind="scope"></slot>
                       </template>
                     </form-temp>
                   </el-tooltip>
@@ -171,7 +168,6 @@
         </form-menu>
       </el-row>
     </el-form>
-
   </div>
 </template>
 
@@ -362,6 +358,10 @@ export default create({
     reset: {
       type: Boolean,
       default: true
+    },
+    isCrud: {
+      type: Boolean,
+      default: false
     },
     value: {
       type: Object,

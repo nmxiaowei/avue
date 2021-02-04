@@ -11,25 +11,23 @@
       <column-dynamic v-if="column.children && column.children.length"
                       :key="column.label"
                       :columnOption="column">
-        <template v-for="item in crud.propOption"
+        <template v-for="item in crud.mainSlot"
                   slot-scope="scope"
                   :slot="item.prop">
           <slot v-bind="scope"
                 :name="item.prop"></slot>
         </template>
-        <template v-for="item in crud.propOption"
+        <template v-for="item in crud.headerSlot"
                   slot-scope="scope"
-                  :slot="item.prop+'Header'">
+                  :slot="crud.getSlotName(item,'H')">
           <slot v-bind="scope"
-                v-if="item.headerslot"
-                :name="item.prop+'Header'"></slot>
+                :name="crud.getSlotName(item,'H')"></slot>
         </template>
-        <template v-for="item in crud.propOption"
+        <template v-for="item in crud.mainSlot"
                   slot-scope="scope"
-                  :slot="item.prop+'Form'">
+                  :slot="crud.getSlotName(item,'F')">
           <slot v-bind="scope"
-                v-if="item.formslot"
-                :name="item.prop+'Form'"></slot>
+                :name="crud.getSlotName(item,'F')"></slot>
         </template>
       </column-dynamic>
       <template v-else-if="!['dynamic'].includes(column.type)">
@@ -51,7 +49,7 @@
                          :fixed="crud.isMobile?false:column.fixed">
 
           <template slot-scope="{row,$index}">
-            <el-form-item :prop="crud.isTree?'':'list.' + $index + '.'+column.prop"
+            <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                           v-if="row.$cellEdit && column.cell"
                           :label="vaildLabel(column,row,' ')"
                           :label-width="vaildLabel(column,row,'1px')"
@@ -65,8 +63,8 @@
                       label:handleShowLabel(row,column,crud.DIC[column.prop]),
                       '$cell':row.$cellEdit
                     }"
-                    :name="column.prop+'Form'"
-                    v-if="column.formslot"></slot>
+                    :name="crud.getSlotName(column,'F')"
+                    v-if="crud.slotList[crud.getSlotName(column,'F')]"></slot>
               <form-temp v-else
                          :column="column"
                          :size="crud.isMediumSize"
@@ -86,7 +84,7 @@
                   :size="crud.isMediumSize"
                   :label="handleShowLabel(row,column,crud.DIC[column.prop])"
                   :name="column.prop"
-                  v-else-if="column"></slot>
+                  v-else-if="crud.slotList[column.prop]"></slot>
             <template v-else>
               <span v-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">
