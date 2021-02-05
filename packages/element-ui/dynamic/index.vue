@@ -66,7 +66,7 @@
       </template>
       <template v-for="item in columnOption"
                 slot-scope="scope"
-                :slot="item.prop">
+                :slot="item.prop+'Form'">
         <slot :row="scope.row"
               :dic="scope.dic"
               :size="scope.size"
@@ -228,33 +228,6 @@ export default create({
     cellMouseLeave (row, column, cell, event) {
       let index = row.$index;
       this.mouseoutRow(index)
-    },
-    validate () {
-      return new Promise(resolve => {
-        let list = [];
-        this.text.forEach((ele, index) => {
-          let callback = () => {
-            return new Promise(resolve => {
-              this.asyncValidator(this.rulesOption, ele).then(() => {
-                resolve();
-              }).catch(error => {
-                resolve(error)
-              })
-            })
-          }
-          list.push(callback())
-        })
-        Promise.all(list).then(error => {
-          let result;
-          error.forEach((ele, index) => {
-            if (!this.validatenull(ele)) {
-              if (!result) result = {}
-              result[index] = ele
-            }
-          })
-          resolve(result)
-        })
-      })
     },
     initData () {
       this.text.forEach((ele, index) => {

@@ -587,9 +587,11 @@ export default create({
     validate (callback) {
       this.$refs.form.validate((valid, msg) => {
         let dynamicList = [];
+        let dynamicName = [];
         let dynamicError = {};
         this.dynamicOption.forEach(ele => {
           let isForm = ele.children.type === 'form'
+          dynamicName.push(ele.prop);
           if (isForm) {
             this.$refs[ele.prop][0].$refs.temp.$refs.main.forEach(ele => {
               dynamicList.push(ele.validateCellForm());
@@ -600,10 +602,9 @@ export default create({
         })
         Promise.all(dynamicList).then(res => {
           let count = 0;
-          res.forEach(res => {
-            console.log(res);
-            if (!res) {
-              dynamicError.push(res)
+          res.forEach((error, index) => {
+            if (!this.validatenull(error)) {
+              dynamicError[dynamicName[index]] = error;
             }
           })
           let result = Object.assign(dynamicError, msg);
