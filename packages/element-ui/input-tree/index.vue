@@ -2,11 +2,13 @@
   <el-select :class="b()"
              :size="size"
              ref="main"
+             :multiple="multiple"
+             :multiple-limit="limit"
+             :collapse-tags="tags"
              @click.native="initScroll"
-             :value="labelShow"
+             v-model="labelShow"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
-             @change="handleChange"
              @focus="handleFocus"
              @blur="handleBlur"
              :disabled="disabled">
@@ -66,7 +68,6 @@ export default create({
       node: [],
       filterValue: "",
       box: false,
-      labelText: []
     };
   },
   props: {
@@ -81,6 +82,14 @@ export default create({
     leafOnly: {
       type: Boolean,
       default: false
+    },
+    tags: {
+      type: Boolean,
+      default: false
+    },
+    limit: {
+      type: Number,
+      default: 0
     },
     expandOnClickNode: {
       type: Boolean,
@@ -174,15 +183,19 @@ export default create({
       return list
     },
     labelShow () {
+      let result = [];
+      let list = this.deepClone(this.node);
       if (this.typeformat) {
-        let list = [];
-        this.node.forEach(ele => {
-          list.push(this.getLabelText(ele))
-        })
-        return list.join(DIC_SHOW_SPLIT).toString()
+        result = list.map(ele => this.getLabelText(ele))
+      } else {
+        result = list.map(ele => ele[this.labelKey])
       }
-      return (this.labelText || []).join(DIC_SHOW_SPLIT).toString()
-    },
+      if (this.multiple) {
+        return result
+      } else {
+        return result.join('')
+      }
+    }
   },
   mounted () {
     this.init();
@@ -223,12 +236,10 @@ export default create({
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
       this.node = [];
-      this.labelText = [];
       const list = this.$refs.tree.getCheckedNodes(this.leafOnly, false);
       list.forEach(node => {
         this.node.push(node)
         this.text.push(node[this.valueKey]);
-        this.labelText.push(node[this.labelKey]);
       });
       if (typeof this.checked === "function") this.checked(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
     },
@@ -239,12 +250,10 @@ export default create({
     },
     init () {
       this.$nextTick(() => {
-        this.labelText = [];
         this.node = [];
         if (this.multiple) {
           let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
           list.forEach(ele => {
-            this.labelText.push(ele[this.labelKey])
             this.node.push(ele);
           })
         } else {
@@ -252,7 +261,6 @@ export default create({
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])
-            this.labelText.push(data[this.labelKey])
             this.node.push(data);
           }
         }
@@ -288,7 +296,6 @@ export default create({
         const label = data[this.labelKey];
         this.text = value;
         this.node = [data];
-        this.labelText = [label];
         this.$refs.main.blur();
       }
     }
