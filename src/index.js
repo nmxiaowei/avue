@@ -123,7 +123,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = Object.assign({
-  version: '2.6.11',
+  version: '2.7.9',
   locale: locale.locale,
   install
 }, components);

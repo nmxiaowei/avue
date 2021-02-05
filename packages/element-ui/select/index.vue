@@ -117,7 +117,7 @@ export default create({
     },
     limit: {
       type: Number,
-      default: 99
+      default: 0
     },
     filterable: {
       type: Boolean,

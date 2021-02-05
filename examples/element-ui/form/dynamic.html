@@ -56,13 +56,6 @@
             label: '树型',
             prop: "tree",
             type: 'tree',
-            rules: [
-              {
-                required: true,
-                message: '请输入密码',
-                trigger: 'blur'
-              }
-            ],
             dicData: [{
               label: '1-1',
               value: 0,
@@ -87,7 +80,100 @@
             type: 'dynamic',
             span: 24,
             children: {
-              type: 'form',
+              rowAdd: (done) => {
+                this.$message.success('新增回调')
+                done({ input: 3 })
+              },
+              rowDel: (row, done) => {
+                this.$message.success('删除回调' + JSON.stringify(row))
+                done();
+              },
+              selection: true,
+              selectionChange: (val) => {
+                console.log(val)
+              },
+              height: 300,
+              align: 'center',
+              headerAlign: 'center',
+              column: [{
+                width: 200,
+                label: '输入框',
+                prop: "input",
+                formslot: true,
+              }, {
+                width: 200,
+                label: '密码框',
+                prop: "password",
+                type: 'password',
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入密码',
+                    trigger: 'blur'
+                  }
+                ]
+              }, {
+                width: 200,
+                label: '树型',
+                prop: "tree",
+                type: 'tree',
+                dicData: [{
+                  label: '1-1',
+                  value: 0,
+                  children: [{
+                    label: "2-1",
+                    value: 1
+                  }]
+                }]
+              }, {
+                width: 200,
+                label: '选择框',
+                prop: "select",
+                type: 'select',
+                dicData: [{
+                  label: '测试1',
+                  value: 1
+                }, {
+                  label: '测试2',
+                  value: 2
+                }]
+              }, {
+                width: 200,
+                label: '多选',
+                prop: "checkbox",
+                type: 'checkbox',
+                dicData: [{
+                  label: '测试1',
+                  value: 1
+                }, {
+                  label: '测试2',
+                  value: 2
+                }]
+              }, {
+                width: 200,
+                label: '开关',
+                prop: "switch",
+                type: 'switch',
+                dicData: [{
+                  label: '测试1',
+                  value: 1
+                }, {
+                  label: '测试2',
+                  value: 2
+                }]
+              }, {
+                width: 200,
+                label: '数字框',
+                prop: "number",
+                type: 'number'
+              }]
+            }
+          }, {
+            label: '子表单',
+            prop: 'dynamic1',
+            type: 'dynamic',
+            span: 24,
+            children: {
               rowAdd: (done) => {
                 this.$message.success('新增回调')
                 done({ input: 3 })
