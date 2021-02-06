@@ -4,6 +4,7 @@ export const DIC_PROPS = {
   nodeKey: 'id',
   label: 'label',
   value: 'value',
+  desc: 'desc',
   groups: 'groups',
   title: 'title',
   leaf: 'leaf',

@@ -181,6 +181,9 @@ export default function () {
       valueKey: function () {
         return this.props.value || this.propsDefault.value;
       },
+      descKey: function () {
+        return this.props.desc || this.propsDefault.desc;
+      },
       leafKey: function () {
         return this.props.leaf || this.propsDefault.leaf;
       },
