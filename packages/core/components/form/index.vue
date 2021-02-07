@@ -19,8 +19,8 @@
     <span v-if="params.html"
           v-html="params.html"></span>
     <template slot-scope="scope"
-              v-if="slotList[getSlotName(column,'T')]">
-      <slot :name="getSlotName(column,'T')"
+              v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+      <slot :name="getSlotName(item,'T')"
             v-bind="scope"></slot>
     </template>
     <template :slot="item.prop"
@@ -127,9 +127,6 @@ export default {
       },
       immediate: true
     }
-  },
-  mounted () {
-    console.log(this)
   },
   methods: {
     getComponent,

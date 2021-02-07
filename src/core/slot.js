@@ -2,12 +2,10 @@ export default {
   data () {
     return {
       slotList: {},
-      slotReload: false
     }
   },
   mounted () {
-    this.getSlotList()
-    setTimeout(() => this.slotReload = true)
+    setTimeout(() => this.getSlotList())
   },
   methods: {
     getSlotName (item = {}, type = 'D') {

@@ -301,25 +301,25 @@ export default create({
       }
     },
     formSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Form`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Form`])
     },
     errorSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Error`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Error`])
     },
     labelSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Label`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Label`])
     },
     typeSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Type`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Type`])
     },
     searchSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Search`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Search`])
     },
     headerSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Header`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Header`])
     },
     mainSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[ele.prop])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[ele.prop])
     },
     cellForm () {
       return {
