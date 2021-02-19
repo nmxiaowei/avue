@@ -42,27 +42,40 @@
         </el-dropdown-menu>
       </el-dropdown>
       <template v-else-if="['button','text','icon'].includes(menuType)">
-        <el-button :type="menuText('primary')"
-                   :icon="row.$cellEdit?config.saveBtnIcon:config.editBtnIcon"
-                   :size="crud.isMediumSize"
-                   :disabled="crud.btnDisabledList[$index]"
-                   @click.stop="crud.rowCell(row,$index)"
-                   v-permission="crud.getPermission('cellBtn',row,$index)"
-                   v-if="vaildData(tableOption.cellBtn ,config.cellBtn)">
-          <template v-if="!isIconMenu">
-            {{crud.menuIcon(row.$cellEdit?'saveBtn':'editBtn')}}
-          </template>
-        </el-button>
-        <el-button :type="menuText('danger')"
-                   :icon="config.cancelBtnIcon"
-                   :size="crud.isMediumSize"
-                   :disabled="crud.btnDisabledList[$index]"
-                   @click.stop="crud.rowCancel(row,$index)"
-                   v-if="row.$cellEdit && vaildData(tableOption.cancelBtn,config.cancelBtn)">
-          <template v-if="!isIconMenu">
-            {{crud.menuIcon('cancelBtn')}}
-          </template>
-        </el-button>
+        <template v-if="vaildData(tableOption.cellBtn,config.cellBtn)">
+          <el-button :type="menuText('primary')"
+                     :icon="config.editBtnIcon"
+                     :size="crud.isMediumSize"
+                     :disabled="crud.btnDisabledList[$index]"
+                     @click.stop="crud.rowCell(row,$index)"
+                     v-if="vaildData(tableOption.editBtn,config.editBtn)&&!row.$cellEdit"
+                     v-permission="crud.getPermission('editBtn',row,$index)">
+            <template v-if="!isIconMenu">
+              {{crud.menuIcon('editBtn')}}
+            </template>
+          </el-button>
+          <el-button :type="menuText('primary')"
+                     :icon="config.saveBtnIcon"
+                     :size="crud.isMediumSize"
+                     :disabled="crud.btnDisabledList[$index]"
+                     @click.stop="crud.rowCell(row,$index)"
+                     v-else-if="vaildData(tableOption.saveBtn,config.saveBtn)&&row.$cellEdit"
+                     v-permission="crud.getPermission('saveBtn',row,$index)">
+            <template v-if="!isIconMenu">
+              {{crud.menuIcon('saveBtn')}}
+            </template>
+          </el-button>
+          <el-button :type="menuText('danger')"
+                     :icon="config.cancelBtnIcon"
+                     :size="crud.isMediumSize"
+                     :disabled="crud.btnDisabledList[$index]"
+                     @click.stop="crud.rowCancel(row,$index)"
+                     v-if="row.$cellEdit">
+            <template v-if="!isIconMenu">
+              {{crud.menuIcon('cancelBtn')}}
+            </template>
+          </el-button>
+        </template>
         <el-button :type="menuText('success')"
                    :icon="config.viewBtnIcon"
                    :size="crud.isMediumSize"
@@ -80,7 +93,7 @@
                    :disabled="btnDisabled"
                    @click.stop="crud.rowEdit(row,$index)"
                    v-permission="crud.getPermission('editBtn',row,$index)"
-                   v-if="vaildData(tableOption.editBtn,config.editBtn)">
+                   v-if="vaildData(tableOption.editBtn,config.editBtn)&&!tableOption.cellBtn">
           <template v-if="!isIconMenu">
             {{crud.menuIcon('editBtn')}}
           </template>
@@ -107,6 +120,7 @@
             {{crud.menuIcon('delBtn')}}
           </template>
         </el-button>
+
       </template>
       <slot name="menu"
             :row="row"
