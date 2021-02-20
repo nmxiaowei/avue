@@ -174,7 +174,7 @@ export default create({
     handleSubmit () {
       this.list.push({});
       this.list.splice(this.list.length - 1, 1);
-      this.crud.$emit("filter-change", this.result);
+      this.crud.$emit("filter", this.result);
       this.box = false;
     },
     handleChange (prop, index) {
