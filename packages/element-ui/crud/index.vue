@@ -94,6 +94,7 @@
                   :width="setPx(tableOption.width,config.width)"
                   :border="tableOption.border"
                   v-loading="tableLoading"
+                  @filter-change="filterChange"
                   @selection-change="selectionChange"
                   @select="select"
                   @select-all="selectAll"
@@ -651,6 +652,10 @@ export default create({
     // 点击勾选全选 Checkbox
     selectAll (selection) {
       this.$emit("select-all", selection);
+    },
+    //筛选回调用
+    filterChange (filters) {
+      this.$emit("filter-change", filters);
     },
     // 排序回调
     sortChange (val) {
