@@ -202,7 +202,8 @@ export default (() => {
           this.isChart = config.echart.includes(this.name);
           if (this.isChart) this.myChart = window.echarts.init(main, this.theme);
           if (this.name == 'datav') {
-            this.updateChart()
+            this.isChart = true;
+            this.updateData()
           }
         }
       },
@@ -239,10 +240,8 @@ export default (() => {
               } else {
                 this.dataChart = result;
               }
-              if (this.isChart && this.myChart) {
-                this.updateChart();
-                this.bindClick();
-              }
+              if (this.isChart) this.updateChart();
+              if (this.myChart) this.bindClick();
             };
             let result = getUrlParams(dataUrl);
             let url = result.url;
@@ -269,10 +268,8 @@ export default (() => {
             } else {
               this.dataChart = this.data;
             }
-            if (this.isChart && this.myChart) {
-              this.updateChart();
-              this.bindClick();
-            }
+            if (this.isChart) this.updateChart();
+            if (this.myChart) this.bindClick();
           }
         };
         this.$nextTick(() => {
