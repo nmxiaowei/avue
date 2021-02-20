@@ -134,7 +134,7 @@ export default cteate({
         let column = [];
         let count = 0;
         //根据order排序
-        list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
+        list = list.filter(item => item.searchOrder != undefined).sort((a, b) => (a.searchOrder || 0) - (b.searchOrder || 0)).concat(list.filter(item => item.searchOrder === undefined))
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex
