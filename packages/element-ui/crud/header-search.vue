@@ -5,7 +5,6 @@
              v-show="searchShow && searchFlag">
       <avue-form :option="option"
                  ref="form"
-                 v-if="reload"
                  @submit="searchChange"
                  @reset-change="resetChange"
                  v-model="searchForm">
@@ -51,6 +50,7 @@ import cteate from "core/create";
 import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
 import locale from "../../core/common/locale";
+import slot from 'core/slot'
 import {
   formInitVal,
   getSearchType,
@@ -61,7 +61,7 @@ import config from "./config";
 export default cteate({
   name: "crud__search",
   inject: ["crud"],
-  mixins: [locale],
+  mixins: [locale, slot],
   data () {
     return {
       show: false,
@@ -123,7 +123,6 @@ export default cteate({
       return count
     },
     option () {
-      this.reload = false;
       const option = this.crud.option;
       const detailColumn = (list = []) => {
         let column = [];
@@ -202,7 +201,6 @@ export default cteate({
         return result;
       }
       let result = dataDetail(option)
-      setTimeout(() => this.reload = true)
       return result;
     },
     searchFlag () {

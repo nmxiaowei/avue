@@ -20,7 +20,20 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" v-model="form" :before-close="beforeClose" :option="option" :data="data"></avue-crud>
+    <avue-crud ref="crud" v-model="form" :before-close="beforeClose" :option="option" :data="data">
+      <el-tag slot="name" slot-scope="{row}">
+        {{row}}
+      </el-tag>
+      <el-tag slot="nameHeader" slot-scope="{column}">
+        {{column}}
+      </el-tag>
+      <el-tag slot="nameSearch" slot-scope="{column}">
+        123
+      </el-tag>
+      <el-tag slot="nameForm" slot-scope="{column}">
+        456
+      </el-tag>
+    </avue-crud>
   </div>
 </body>
 <script>
@@ -46,6 +59,7 @@
           column: [{
             label: '姓名',
             prop: 'name',
+            search: true,
             rules: [
               {
                 required: true,
@@ -55,7 +69,8 @@
             ]
           }, {
             label: '年龄',
-            prop: 'sex'
+            prop: 'sex',
+            search: true
           }]
         }
       }

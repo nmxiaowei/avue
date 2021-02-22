@@ -34,7 +34,7 @@
           <slot :label="labelKey"
                 :value="valueKey"
                 :item="citem"
-                v-if="slotList.default">
+                v-if="$scopedSlots.default">
           </slot>
           <template v-else>
             <span>{{ getLabelText(citem) }}</span>
@@ -50,15 +50,10 @@
                  :disabled="item[disabledKey]"
                  :label="getLabelText(item) "
                  :value="item[valueKey]">
-        <slot :name="`${prop}Type`"
-              :label="labelKey"
-              :value="valueKey"
-              :item="item"
-              v-if="slotList[`${prop}Type`]"></slot>
         <slot :label="labelKey"
               :value="valueKey"
               :item="item"
-              v-else-if="$scopedSlots.default">
+              v-if="$scopedSlots.default">
         </slot>
         <template v-else>
           <span>{{ getLabelText(item) }}</span>

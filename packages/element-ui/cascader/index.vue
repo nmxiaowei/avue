@@ -15,8 +15,7 @@
                :collapse-tags="tags"
                @click.native="handleClick">
     <template slot-scope="scope">
-      <slot :name="`${prop}Type`"
-            v-if="slotList[`${prop}Type`]"
+      <slot v-if="$scopedSlots.default"
             v-bind="scope"></slot>
       <span v-else>{{data[labelKey]}}</span>
     </template>

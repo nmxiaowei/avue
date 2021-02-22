@@ -107,7 +107,7 @@
               <avue-empty v-else
                           size="50"
                           image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                          :desc="tableOption.emptyText || 暂无数据"></avue-empty>
+                          :desc="tableOption.emptyText || '暂无数据'"></avue-empty>
             </div>
           </template>
           <column :columnOption="columnOption"
@@ -134,7 +134,7 @@
               <slot v-bind="scope"
                     :name="getSlotName(item,'H')"></slot>
             </template>
-            <template v-for="item in mainSlot"
+            <template v-for="item in formSlot"
                       slot-scope="scope"
                       :slot="getSlotName(item,'F')">
               <slot v-bind="scope"
@@ -302,25 +302,25 @@ export default create({
       }
     },
     formSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Form`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Form`])
     },
     errorSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Error`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Error`])
     },
     labelSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Label`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Label`])
     },
     typeSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Type`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Type`])
     },
     searchSlot () {
-      return this.columnFormOption.filter(ele => this.slotList[`${ele.prop}Search`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Search`])
     },
     headerSlot () {
-      return this.propOption.filter(ele => this.slotList[`${ele.prop}Header`])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Header`])
     },
     mainSlot () {
-      return this.columnOption.filter(ele => this.slotList[ele.prop])
+      return this.columnFormOption.filter(ele => this.$scopedSlots[ele.prop])
     },
     cellForm () {
       return {

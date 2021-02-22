@@ -64,7 +64,7 @@
                       '$cell':row.$cellEdit
                     }"
                     :name="crud.getSlotName(column,'F')"
-                    v-if="crud.slotList[crud.getSlotName(column,'F')]"></slot>
+                    v-if="crud.$scopedSlots[crud.getSlotName(column,'F')]"></slot>
               <form-temp v-else
                          :column="column"
                          :size="crud.isMediumSize"
@@ -84,7 +84,7 @@
                   :size="crud.isMediumSize"
                   :label="handleShowLabel(row,column,crud.DIC[column.prop])"
                   :name="column.prop"
-                  v-else-if="crud.slotList[column.prop]"></slot>
+                  v-else-if="crud.$scopedSlots[column.prop]"></slot>
             <template v-else>
               <span v-if="['img','upload'].includes(column.type)">
                 <div class="avue-crud__img">

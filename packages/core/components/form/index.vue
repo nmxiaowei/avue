@@ -13,24 +13,21 @@
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
              :type="type || column.type"
+             :column-slot="columnSlot"
              @keyup.enter.native="enterChange"
              @change="handleChange">
     <span v-if="params.html"
           v-html="params.html"></span>
     <template slot-scope="scope"
-              v-if="slotList[getSlotName(column,'T')]">
-      <slot :name="getSlotName(column,'T')"
+              v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+      <slot :name="getSlotName(item,'T')"
             v-bind="scope"></slot>
     </template>
     <template :slot="item.prop"
-              v-for="item in columnOption"
+              v-for="item in columnSlot"
               slot-scope="scope">
-      <slot :row="scope.row"
-            :dic="scope.dic"
-            v-if="item.slot"
-            :size="scope.size"
-            :name="item.prop"
-            :label="scope.label"></slot>
+      <slot v-bind="scope"
+            :name="item.prop"></slot>
     </template>
   </component>
 </template>
@@ -49,6 +46,12 @@ export default {
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    columnSlot: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     props: {
       type: Object
     },
@@ -105,9 +108,6 @@ export default {
     },
     event () {
       return this.column.event || {}
-    },
-    columnOption () {
-      return ((this.column.children || []).column) || []
     }
   },
   watch: {
