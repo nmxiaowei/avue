@@ -5,15 +5,15 @@
              v-show="searchShow && searchFlag">
       <avue-form :option="option"
                  ref="form"
-                 v-if="flag"
                  @submit="searchChange"
                  @reset-change="resetChange"
                  v-model="searchForm">
         <template slot="menuForm"
-                  slot-scope="{size}">
+                  slot-scope="scope">
           <slot name="searchMenu"
-                :row="searchForm"
-                :size="size"></slot>
+                v-bind="Object.assign(scope,{
+                  search:searchForm
+                })"></slot>
           <template v-if="isSearchIcon">
             <el-button type="text"
                        v-if="show===false"
@@ -26,23 +26,18 @@
           </template>
 
         </template>
-        <template :slot="item.prop"
-                  slot-scope="scope"
-                  v-for="item in columnOption">
-          <slot :value="scope.value"
-                :column="scope.column"
-                :dic="scope.dic"
-                :size="scope.size"
-                :label="scope.label"
-                :disabled="scope.disabled"
-                :row="searchForm"
-                :name="item.prop"
-                v-if="item.searchslot"></slot>
+        <template slot-scope="scope"
+                  v-for="item in crud.searchSlot"
+                  :slot="item.prop">
+          <slot :name="item.prop"
+                v-bind="Object.assign(scope,{
+                  search:searchForm
+                })"></slot>
         </template>
         <template slot="search"
                   slot-scope="{}">
           <slot name="search"
-                :row="searchForm"
+                :search="searchForm"
                 :size="crud.controlSize"></slot>
         </template>
       </avue-form>
@@ -55,6 +50,7 @@ import cteate from "core/create";
 import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
 import locale from "../../core/common/locale";
+import slot from 'core/slot'
 import {
   formInitVal,
   getSearchType,
@@ -65,11 +61,12 @@ import config from "./config";
 export default cteate({
   name: "crud__search",
   inject: ["crud"],
-  mixins: [locale],
+  mixins: [locale, slot],
   data () {
     return {
-      flag: false,
       show: false,
+      flag: false,
+      reload: false,
       config: config,
       defaultForm: {
         searchForm: {}
@@ -125,9 +122,6 @@ export default cteate({
       })
       return count
     },
-    columnOption () {
-      return this.option.column || []
-    },
     option () {
       const option = this.crud.option;
       const detailColumn = (list = []) => {
@@ -157,7 +151,6 @@ export default cteate({
               tags: ele.searchTags,
               row: ele.searchRow,
               size: ele.searchSize || option.searchSize || this.crud.controlSize,
-              formslot: ele.searchslot,
               clearable: ele.searchClearable,
               rules: ele.searchRules,
               disabled: ele.searchDisabled,
@@ -208,7 +201,6 @@ export default cteate({
         return result;
       }
       let result = dataDetail(option)
-      this.flag = !this.validatenull(result.column);
       return result;
     },
     searchFlag () {

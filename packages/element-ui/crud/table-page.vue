@@ -59,7 +59,9 @@ export default create({
       deep: true,
     },
     pageFlag () {
-      this.crud.getTableHeight();
+      this.$nextTick(() => {
+        this.crud.getTableHeight();
+      })
     },
     //如果当前页面删除没数据了调用第一页
     'defaultPage.total' (val) {

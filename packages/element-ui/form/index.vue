@@ -29,24 +29,24 @@
                    :class="b('tabs')"
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
-            <template v-for="(item,index) in columnOption">
-              <el-tab-pane v-if="vaildData(item.display,true) && index!=0"
+            <template v-for="(tabs,index) in columnOption">
+              <el-tab-pane v-if="vaildData(tabs.display,true) && index!=0"
                            :key="index"
                            :name="index+''">
                 <span slot="label">
-                  <slot :name="item.prop+'Header'"
-                        v-if="$slots[item.prop+'Header']"></slot>
+                  <slot :name="getSlotName(tabs,'H')"
+                        v-if="$slots[getSlotName(tabs,'H')]"></slot>
                   <template v-else>
-                    <i :class="item.icon">&nbsp;</i>
-                    {{item.label}}
+                    <i :class="tabs.icon">&nbsp;</i>
+                    {{tabs.label}}
                   </template>
                 </span>
               </el-tab-pane>
             </template>
           </el-tabs>
           <template slot="header"
-                    v-if="$slots[item.prop+'Header']">
-            <slot :name="item.prop+'Header'"></slot>
+                    v-if="$slots[getSlotName(item,'H')]">
+            <slot :name="getSlotName(item,'H')"></slot>
           </template>
           <div :class="b('group',{'flex':vaildData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
@@ -66,8 +66,8 @@
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template slot="label"
-                            v-if="column.labelslot">
-                    <slot :name="column.prop+'Label'"
+                            v-if="$scopedSlots[getSlotName(column,'L')]">
+                    <slot :name="getSlotName(column,'L')"
                           :column="column"
                           :value="form[column.prop]"
                           :readonly="readonly || column.readonly"
@@ -87,16 +87,17 @@
                     <span> {{column.label}}{{labelSuffix}}</span>
                   </template>
                   <template slot="error"
-                            slot-scope="{error}"
-                            v-if="column.errorslot">
+                            slot-scope="scope"
+                            v-if="$scopedSlots[`${column.prop}Error`]">
                     <slot :name="column.prop+'Error'"
-                          :column="column"
-                          :error="error"
-                          :value="form[column.prop]"
-                          :readonly="readonly || column.readonly"
-                          :disabled="getDisabled(column)"
-                          :size="column.size || controlSize"
-                          :dic="DIC[column.prop]"></slot>
+                          v-bind="Object.assign(scope,{
+                            column,
+                            value:form[column.prop],
+                            readonly:column.readonly || readonly,
+                            disabled:getDisabled(column),
+                            size:column.size || controlSize,
+                            dic:DIC[column.prop]
+                          })"></slot>
                   </template>
                   <el-tooltip :disabled="!column.tip || column.type==='upload'"
                               :content="vaildData(column.tip,getPlaceholder(column))"
@@ -109,7 +110,7 @@
                           :disabled="getDisabled(column)"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
-                          v-if="column.formslot"></slot>
+                          v-if="$scopedSlots[column.prop]"></slot>
                     <form-temp :column="column"
                                v-else
                                :ref="column.prop"
@@ -122,26 +123,19 @@
                                :size="parentOption.size"
                                v-model="form[column.prop]"
                                @enter="submit"
+                               :column-slot="getChildrenColumn(column)"
                                @change="propChange(item.column,column)">
                       <template :slot="citem.prop"
                                 slot-scope="scope"
-                                v-for="citem in ((column.children || {}).column || [])">
-                        <slot :row="scope.row"
-                              :dic="scope.dic"
-                              v-if="citem.slot"
-                              :size="scope.size"
-                              :name="citem.prop"
-                              :label="scope.label"></slot>
+                                v-for="citem in getChildrenColumn(column)">
+                        <slot v-bind="scope"
+                              :name="citem.prop"></slot>
                       </template>
-                      <template :slot="column.prop+'Type'"
-                                slot-scope="{item,label,value,node,data}"
-                                v-if="column.typeslot">
-                        <slot :name="column.prop+'Type'"
-                              :item="item"
-                              :node="node"
-                              :data="data"
-                              :value="value"
-                              :label="label"></slot>
+                      <template :slot="getSlotName(column,'T')"
+                                slot-scope="scope"
+                                v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+                        <slot :name="getSlotName(item,'T')"
+                              v-bind="scope"></slot>
                       </template>
                     </form-temp>
                   </el-tooltip>
@@ -171,7 +165,6 @@
         </form-menu>
       </el-row>
     </el-form>
-
   </div>
 </template>
 
@@ -363,6 +356,10 @@ export default create({
       type: Boolean,
       default: true
     },
+    isCrud: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: Object,
       required: true,
@@ -382,6 +379,9 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
+    getChildrenColumn (column) {
+      return ((column.children || {}).column || []).filter(ele => this.$scopedSlots[ele.prop])
+    },
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },

@@ -6,11 +6,12 @@
              :multiple-limit="limit"
              :collapse-tags="tags"
              @click.native="initScroll"
-             v-model="labelShow"
+             :value="labelShow"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
              @focus="handleFocus"
              @blur="handleBlur"
+             @clear="handleClear"
              :disabled="disabled">
     <div v-if="filter"
          style="padding:0 10px;margin:5px 0 0 0;">
@@ -42,12 +43,7 @@
                @node-click.self="handleNodeClick">
         <div style="width:100%;padding-right:10px;"
              slot-scope="{ data }">
-          <slot :name="prop+'Type'"
-                :label="labelKey"
-                :value="valueKey"
-                :item="data"
-                v-if="typeslot"></slot>
-          <slot v-else-if="$scopedSlots.default"
+          <slot v-if="$scopedSlots.default"
                 :label="labelKey"
                 :value="valueKey"
                 :item="data"></slot>
@@ -206,6 +202,10 @@ export default create({
     this.init();
   },
   methods: {
+    handleClear () {
+      this.text = [];
+      this.node = [];
+    },
     handleTreeLoad (node, resolve) {
       let callback = (list) => {
         let findDic = (list, value, children) => {
@@ -262,7 +262,7 @@ export default create({
             this.node.push(ele);
           })
         } else {
-          let node = this.$refs.tree.getNode(this.text)
+          let node = this.$refs.tree.getNode(this.text || '')
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])

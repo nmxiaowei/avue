@@ -1,7 +1,8 @@
 import { DIC_PROPS, DIC_SPLIT, DIC_HTTP_PROPS } from 'global/variable';
+import slot from 'core/slot'
 export default function () {
-
   return {
+    mixins: [slot],
     data () {
       return {
         stringMode: false,
@@ -17,17 +18,9 @@ export default function () {
       change: Function,
       click: Function,
       typeformat: Function,
-      typeslot: {
-        type: Boolean,
-        default: false
-      },
       separator: {
         type: String,
         default: DIC_SPLIT
-      },
-      formslot: {
-        type: Boolean,
-        default: false
       },
       params: {
         type: Object,
@@ -44,10 +37,6 @@ export default function () {
         default: () => {
           return {}
         }
-      },
-      typeslot: {
-        type: Boolean,
-        default: false
       },
       label: {
         type: String,
@@ -191,6 +180,9 @@ export default function () {
       },
       valueKey: function () {
         return this.props.value || this.propsDefault.value;
+      },
+      descKey: function () {
+        return this.props.desc || this.propsDefault.desc;
       },
       leafKey: function () {
         return this.props.leaf || this.propsDefault.leaf;

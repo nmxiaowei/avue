@@ -32,13 +32,12 @@
                  slot="_index">
               <span>{{item.$index+1}}</span>
             </div>
-            <template v-for="column in columnOption"
+            <template v-for="column in columnSlot"
                       slot-scope="scope"
                       :slot="column.prop">
-              <slot :row="text[index]"
-                    :dic="scope.dic"
-                    :size="scope.size"
-                    :label="scope.label"
+              <slot v-bind="Object.assign(scope,{
+                  row:text[index]
+                })"
                     :name="column.prop"></slot>
             </template>
           </avue-form>
@@ -52,6 +51,7 @@
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"
+               @sortable-change="handleSortableChange"
                :data="text">
       <template slot-scope="scope"
                 slot="_index">
@@ -64,13 +64,10 @@
                    circle></el-button>
         <div v-else>{{scope.row.$index+1}}</div>
       </template>
-      <template v-for="item in columnOption"
+      <template v-for="item in columnSlot"
                 slot-scope="scope"
-                :slot="item.prop+'Form'">
-        <slot :row="scope.row"
-              :dic="scope.dic"
-              :size="scope.size"
-              :label="scope.label"
+                :slot="getSlotName(item,'F')">
+        <slot v-bind="scope"
               :name="item.prop"></slot>
       </template>
     </avue-crud>
@@ -90,6 +87,12 @@ export default create({
     }
   },
   props: {
+    columnSlot: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     children: {
       type: Object,
       default: () => {
@@ -112,6 +115,9 @@ export default create({
     },
     selectionChange () {
       return this.children.selectionChange
+    },
+    sortableChange () {
+      return this.children.sortableChange
     },
     rowAdd () {
       return this.children.rowAdd
@@ -191,13 +197,10 @@ export default create({
               }
             })
           },
-          slot: true,
-          formslot: true
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: this.vaildData(ele.cell, true),
-            slot: ele.formslot
+            cell: this.vaildData(ele.cell, true)
           }))
         })
         return {
@@ -220,6 +223,9 @@ export default create({
   methods: {
     handleSelectionChange (val) {
       this.selectionChange && this.selectionChange(val);
+    },
+    handleSortableChange (oldindex, newindex, row, list) {
+      this.sortableChange && this.sortableChange(oldindex, newindex, row, list);
     },
     cellMouseenter (row) {
       let index = row.$index;

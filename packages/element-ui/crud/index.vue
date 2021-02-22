@@ -15,18 +15,11 @@
               :row="row"
               :size="size"></slot>
       </template>
-      <template slot-scope="{value,column,dic,size,label,disabled}"
-                v-for="item in columnFormOption"
+      <template slot-scope="scope"
+                v-for="item in searchSlot"
                 :slot="item.prop">
-        <slot :value="value"
-              :column="column"
-              :dic="dic"
-              :size="size"
-              :label="label"
-              :disabled="disabled"
-              :row="search"
-              :name="item.prop+'Search'"
-              v-if="item.searchslot"></slot>
+        <slot v-bind="scope"
+              :name="getSlotName(item,'S')"></slot>
       </template>
     </header-search>
     <el-card :shadow="isCard">
@@ -95,12 +88,13 @@
                   :sort-by="sortBy"
                   :fit="tableOption.fit"
                   :header-cell-class-name="headerCellClassName"
-                  :max-height="tableOption.maxHeight"
+                  :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
                   :height="tableHeight"
                   ref="table"
                   :width="setPx(tableOption.width,config.width)"
                   :border="tableOption.border"
                   v-loading="tableLoading"
+                  @filter-change="filterChange"
                   @selection-change="selectionChange"
                   @select="select"
                   @select-all="selectAll"
@@ -113,7 +107,7 @@
               <avue-empty v-else
                           size="50"
                           image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                          :desc="tableOption.emptyText || 暂无数据"></avue-empty>
+                          :desc="tableOption.emptyText || '暂无数据'"></avue-empty>
             </div>
           </template>
           <column :columnOption="columnOption"
@@ -128,25 +122,23 @@
                       name="expand"></slot>
               </template>
             </column-default>
-            <template v-for="item in propOption"
+            <template v-for="item in mainSlot"
                       slot-scope="scope"
                       :slot="item.prop">
               <slot v-bind="scope"
                     :name="item.prop"></slot>
             </template>
-            <template v-for="item in propOption"
+            <template v-for="item in headerSlot"
                       slot-scope="scope"
-                      :slot="item.prop+'Header'">
+                      :slot="getSlotName(item,'H')">
               <slot v-bind="scope"
-                    v-if="item.headerslot"
-                    :name="item.prop+'Header'"></slot>
+                    :name="getSlotName(item,'H')"></slot>
             </template>
-            <template v-for="item in propOption"
+            <template v-for="item in formSlot"
                       slot-scope="scope"
-                      :slot="item.prop+'Form'">
+                      :slot="getSlotName(item,'F')">
               <slot v-bind="scope"
-                    v-if="item.formslot"
-                    :name="item.prop+'Form'"></slot>
+                    :name="getSlotName(item,'F')"></slot>
             </template>
             <column-menu :tableOption="tableOption"
                          slot="footer">
@@ -178,44 +170,40 @@
     <dialog-form ref="dialogForm"
                  v-model="tableForm">
       <template slot-scope="scope"
-                v-for="item in columnFormOption"
+                v-for="item in formSlot"
                 :slot="item.prop">
         <slot v-bind="Object.assign(scope,{
               row:item.dynamic?scope.row:tableForm,
               index:item.dynamic?scope.row.$index:tableIndex
               })"
-              v-if="item.formslot"
-              :name="item.prop+'Form'"></slot>
+              :name="getSlotName(item,'F')"></slot>
       </template>
       <template slot-scope="scope"
-                v-for="item in columnFormOption"
-                :slot="item.prop+'Label'">
+                v-for="item in labelSlot"
+                :slot="getSlotName(item,'L')">
         <slot v-bind="Object.assign(scope,{
               row:tableForm,
               index:tableIndex
               })"
-              :name="item.prop+'Label'"
-              v-if="item.labelslot"></slot>
+              :name="getSlotName(item,'L')"></slot>
       </template>
       <template slot-scope="scope"
-                v-for="item in columnFormOption"
-                :slot="item.prop+'Error'">
+                v-for="item in errorSlot"
+                :slot="getSlotName(item,'E')">
         <slot v-bind="Object.assign(scope,{
               row:tableForm,
               index:tableIndex
               })"
-              :name="item.prop+'Error'"
-              v-if="item.errorslot"></slot>
+              :name="getSlotName(item,'E')"></slot>
       </template>
       <template slot-scope="scope"
-                v-for="item in columnFormOption"
-                :slot="item.prop+'Type'">
+                v-for="item in typeSlot"
+                :slot="getSlotName(item,'T')">
         <slot v-bind="Object.assign(scope,{
               row:tableForm,
               index:tableIndex
               })"
-              :name="item.prop+'Type'"
-              v-if="item.typeslot"></slot>
+              :name="getSlotName(item,'T')"></slot>
       </template>
       <template slot-scope="scope"
                 slot="menuForm">
@@ -252,7 +240,7 @@ import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
 export default create({
   name: "crud",
-  mixins: [init(), locale],
+  mixins: [init(), locale,],
   directives: {
     permission
   },
@@ -305,6 +293,35 @@ export default create({
     })
   },
   computed: {
+    isAutoHeight () {
+      return this.tableOption.height === "auto"
+    },
+    cellForm () {
+      return {
+        list: this.list
+      }
+    },
+    formSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Form`])
+    },
+    errorSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Error`])
+    },
+    labelSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Label`])
+    },
+    typeSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Type`])
+    },
+    searchSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Search`])
+    },
+    headerSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Header`])
+    },
+    mainSlot () {
+      return this.columnFormOption.filter(ele => this.$scopedSlots[ele.prop])
+    },
     cellForm () {
       return {
         list: this.list
@@ -507,10 +524,13 @@ export default create({
       }
     },
     getTableHeight () {
-      if (this.tableOption.height == "auto") {
+      if (this.isAutoHeight) {
         this.$nextTick(() => {
-          const tableStyle = this.$refs.table.$el;
-          const pageStyle = this.$refs.tablePage ? this.$refs.tablePage.$el.offsetHeight : 0;
+          const tableRef = this.$refs.table
+          const tablePageRef = this.$refs.tablePage
+          if (!tableRef) return
+          const tableStyle = tableRef.$el;
+          const pageStyle = tablePageRef ? tablePageRef.$el.offsetHeight : 0;
           this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
@@ -632,6 +652,10 @@ export default create({
     // 点击勾选全选 Checkbox
     selectAll (selection) {
       this.$emit("select-all", selection);
+    },
+    //筛选回调用
+    filterChange (filters) {
+      this.$emit("filter-change", filters);
     },
     // 排序回调
     sortChange (val) {
