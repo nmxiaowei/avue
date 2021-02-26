@@ -14,9 +14,10 @@
                :disabled="disabled"
                :collapse-tags="tags"
                @click.native="handleClick">
-    <template slot-scope="scope">
+    <template slot-scope="{data,node}">
       <slot v-if="$scopedSlots.default"
-            v-bind="scope"></slot>
+            :data="data"
+            :node="node"></slot>
       <span v-else>{{data[labelKey]}}</span>
     </template>
   </el-cascader>

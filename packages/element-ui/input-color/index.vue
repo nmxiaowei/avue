@@ -12,6 +12,7 @@
       <template slot="append">
         <el-color-picker size="mini"
                          v-model="text"
+                         :color-format="colorFormat"
                          :disabled="disabled"
                          show-alpha
                          @change="handleChange"
@@ -29,6 +30,7 @@ export default create({
   name: "input-color",
   mixins: [props(), event()],
   props: {
+    colorFormat: String,
     iconList: {
       type: Array,
       default: () => {

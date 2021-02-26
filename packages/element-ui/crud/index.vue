@@ -57,7 +57,7 @@
                   :size="$AVUE.tableSize || controlSize"
                   :lazy="vaildData(tableOption.lazy,false)"
                   :load="treeLoad"
-                  :tree-props="tableOption.treeProps || {}"
+                  :tree-props="treeProps"
                   :expand-row-keys="tableOption.expandRowKeys"
                   :default-expand-all="tableOption.defaultExpandAll"
                   :highlight-current-row="tableOption.highlightCurrentRow"
@@ -293,6 +293,9 @@ export default create({
     })
   },
   computed: {
+    treeProps () {
+      return this.tableOption.treeProps || {}
+    },
     isAutoHeight () {
       return this.tableOption.height === "auto"
     },
