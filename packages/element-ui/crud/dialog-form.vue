@@ -298,7 +298,9 @@ export default create({
             this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
           }
           if (this.crud.isTree) {
-            if (!row.children) row.children = []
+            let childrenKey = this.crud.treeProps['children'] || 'children'
+            let hasChildrenKey = this.crud.treeProps['hasChildren'] || 'hasChildren'
+            if (!row[childrenKey]) row[childrenKey] = []
             if (this.crud.vaildParent(row)) {
               callback(this.crud.data, index)
             } else {
@@ -306,11 +308,11 @@ export default create({
               if (parent === undefined) {
                 return callback(this.crud.data, index)
               }
-              if (!parent.children) {
-                parent.hasChildren = true
-                parent.children = []
+              if (!parent[childrenKey]) {
+                parent[hasChildrenKey] = true
+                parent[childrenKey] = []
               }
-              callback(parent.children, index)
+              callback(parent[childrenKey], index)
             }
           } else {
             callback(this.crud.data, index)
