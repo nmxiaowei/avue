@@ -294,7 +294,7 @@ export default create({
   },
   computed: {
     treeProps () {
-      return tableOption.treeProps || {}
+      return this.tableOption.treeProps || {}
     },
     isAutoHeight () {
       return this.tableOption.height === "auto"
