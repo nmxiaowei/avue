@@ -610,9 +610,9 @@ export default create({
           let result = Object.assign(dynamicError, msg);
           if (this.validatenull(result)) {
             this.show();
-            callback(true)
+            callback(true, this.hide)
           } else {
-            callback(false, result)
+            callback(false, this.hide, result)
           }
 
         })
