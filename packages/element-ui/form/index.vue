@@ -99,9 +99,10 @@
                             dic:DIC[column.prop]
                           })"></slot>
                   </template>
-                  <el-tooltip :disabled="!column.tip || column.type==='upload'"
-                              :content="vaildData(column.tip,getPlaceholder(column))"
-                              :placement="column.tipPlacement">
+                  <component :is="validTip(column)?'div':'elTooltip'"
+                             :disabled="validTip(column)"
+                             :content="vaildData(column.tip,getPlaceholder(column))"
+                             :placement="column.tipPlacement">
                     <slot :value="form[column.prop]"
                           :column="column"
                           :label="form['$'+column.prop]"
@@ -138,7 +139,7 @@
                               v-bind="scope"></slot>
                       </template>
                     </form-temp>
-                  </el-tooltip>
+                  </component>
                 </el-form-item>
               </el-col>
               <div :class="b('line')"
@@ -426,6 +427,9 @@ export default create({
     //对部分表单字段进行校验的方法
     validateField (val) {
       return this.$refs.form.validateField(val);
+    },
+    validTip (column) {
+      return !column.tip || column.type === 'upload'
     },
     getPropRef (prop) {
       return this.$refs[prop][0];
