@@ -12,7 +12,8 @@
                   slot-scope="scope">
           <slot name="searchMenu"
                 v-bind="Object.assign(scope,{
-                  search:searchForm
+                  search:searchForm,
+                  row:searchForm
                 })"></slot>
           <template v-if="isSearchIcon">
             <el-button type="text"
@@ -31,12 +32,14 @@
                   :slot="item.prop">
           <slot :name="item.prop"
                 v-bind="Object.assign(scope,{
-                  search:searchForm
+                  search:searchForm,
+                  row:searchForm
                 })"></slot>
         </template>
         <template slot="search"
                   slot-scope="{}">
           <slot name="search"
+                :row="searchForm"
                 :search="searchForm"
                 :size="crud.controlSize"></slot>
         </template>

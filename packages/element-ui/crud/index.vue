@@ -4,16 +4,14 @@
     <header-search :search="search"
                    ref="headerSearch">
       <template slot="search"
-                slot-scope="{size,row}">
+                slot-scope="scope">
         <slot name="search"
-              :row="row"
-              :size="size"></slot>
+              v-bind="scope"></slot>
       </template>
       <template slot="searchMenu"
-                slot-scope="{size,row}">
+                slot-scope="scope">
         <slot name="searchMenu"
-              :row="row"
-              :size="size"></slot>
+              v-bind="scope"></slot>
       </template>
       <template slot-scope="scope"
                 v-for="item in searchSlot"
