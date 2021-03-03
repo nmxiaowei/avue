@@ -4,7 +4,7 @@
                     :is-range="isRange"
                     :size="size"
                     :default-value="defaultValue"
-                    :range-separator="rangeSeparator || t('date.tip')"
+                    :range-separator="rangeSeparator"
                     :arrow-control="arrowControl"
                     :start-placeholder="startPlaceholder"
                     :end-placeholder="endPlaceholder"

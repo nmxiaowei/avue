@@ -15,7 +15,6 @@ export default {
   date: {
     start: 'Start date',
     end: 'End date',
-    tip: 'to',
     t: 'today',
     y: 'yesterday',
     n: 'nearly 7',
@@ -69,4 +68,4 @@ export default {
     delBtn: 'del'
   }
 }
-;
+  ;
