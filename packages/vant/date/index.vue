@@ -50,9 +50,9 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 const formatDafault = {
-  datetime: "YYYY-MM-DD hh:mm:ss",
+  datetime: "YYYY-MM-DD hh:mm",
   date: "YYYY-MM-DD",
-  time: 'hh:mm:ss'
+  time: 'hh:mm'
 };
 function formatDetail (val) {
   return val.replace("dd", "DD").replace("yyyy", "YYYY");

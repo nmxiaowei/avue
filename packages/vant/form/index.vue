@@ -69,7 +69,7 @@
         <van-button block
                     @click="handleSubmit"
                     type="info"
-                    v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,t("form.submit"))}}</van-button>
+                    v-if="vaildData(parentOption.submitBtn,true)">{{vaildData(parentOption.submitText,this.t("form.submit"))}}</van-button>
       </div>
     </van-form>
   </div>
@@ -77,6 +77,7 @@
 
 <script>
 import create from "core/create";
+import locale from "../../core/common/locale";
 import init from "../../core/common/init";
 import { detail } from "core/detail";
 import formTemp from '../../core/components/form/index'
@@ -84,7 +85,7 @@ import { getComponent, getPlaceholder, formInitVal, calcCascader } from "core/da
 import { sendDic } from "core/dic";
 export default create({
   name: "form",
-  mixins: [init()],
+  mixins: [init(), locale],
   data () {
     return {
       activeName: '',
