@@ -7,7 +7,7 @@
                     :readonly="readonly"
                     :default-value="defaultValue"
                     :default-time="defaultTime"
-                    :range-separator="rangeSeparator || t('date.tip')"
+                    :range-separator="rangeSeparator"
                     :start-placeholder="startPlaceholder"
                     :end-placeholder="endPlaceholder"
                     :format="format"

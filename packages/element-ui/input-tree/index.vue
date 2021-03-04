@@ -203,7 +203,11 @@ export default create({
   },
   methods: {
     handleClear () {
-      this.text = [];
+      if (this.multiple) {
+        this.text = [];
+      } else {
+        this.text = '';
+      }
       this.node = [];
     },
     handleTreeLoad (node, resolve) {

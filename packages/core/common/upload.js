@@ -3,8 +3,8 @@ import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
-function getFileUrl (home, uri) {
-  return !uri || !home || uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
+function getFileUrl (home, uri = '') {
+  return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
 export default function () {
   return {
@@ -82,6 +82,9 @@ export default function () {
       uploadExceed: Function
     },
     computed: {
+      isMultiple () {
+        return this.isArray || this.isString || this.stringMode
+      },
       acceptList () {
         if (Array.isArray(this.accept)) {
           return this.accept.join(',')
@@ -119,12 +122,11 @@ export default function () {
       },
       fileList () {
         let list = [];
-        const flag = this.isArray || this.isString || this.stringMode;
         (this.text || []).forEach((ele, index) => {
           if (ele) {
             let name;
             //处理单个url链接取最后为label
-            if (flag) {
+            if (this.isMultiple) {
               let i = ele.lastIndexOf('/');
               name = ele.substring(i + 1);
             }
@@ -132,8 +134,8 @@ export default function () {
               uid: index + '',
               status: 'done',
               isImage: this.isImage,
-              name: flag ? name : ele[this.labelKey],
-              url: getFileUrl(this.homeUrl, flag ? ele : ele[this.valueKey])
+              name: this.isMultiple ? name : ele[this.labelKey],
+              url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
             });
           }
         });
@@ -144,7 +146,7 @@ export default function () {
       handleSuccess (file) {
         if (this.isPictureImg) {
           this.text.splice(0, 1, file[this.urlKey])
-        } else if (this.isArray || this.isString || this.stringMode) {
+        } else if (this.isMultiple) {
           this.text.push(file[this.urlKey]);
         } else {
           let obj = {};
@@ -161,15 +163,11 @@ export default function () {
         this.uploadError && this.uploadError(error, this.column)
       },
       delete (file) {
-        if (this.isArray || this.isString || this.stringMode) {
-          (this.text || []).forEach((ele, index) => {
-            if (ele === file.url) this.text.splice(index, 1);
-          });
-        } else {
-          (this.text || []).forEach((ele, index) => {
-            if (ele[this.valueKey] === file.url.replace(this.homeUrl, '')) this.text.splice(index, 1);
-          });
-        }
+        (this.text || []).forEach((ele, index) => {
+          if ((this.isMultiple ? ele : ele[this.valueKey]) === file.url.replace(this.homeUrl, '')) {
+            this.text.splice(index, 1);
+          }
+        });
       },
       show (data) {
         this.loading = false;

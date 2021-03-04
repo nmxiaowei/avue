@@ -15,7 +15,6 @@ export default {
   date: {
     start: '开始日期',
     end: '结束日期',
-    tip: '至',
     t: '今日',
     y: '昨日',
     n: '近7天',
@@ -69,4 +68,4 @@ export default {
     delBtn: '删 除'
   }
 }
-;
+  ;

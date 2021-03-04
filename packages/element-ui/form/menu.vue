@@ -39,7 +39,6 @@
 <script>
 import locale from "../../core/common/locale";
 export default {
-  form: '1',
   inject: ["formSafe"],
   mixins: [locale],
   computed: {
