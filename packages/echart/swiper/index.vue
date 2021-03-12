@@ -47,7 +47,7 @@ export default create({
   mounted () { },
   methods: {
     handleClick (item, index) {
-      this.clickFormatter({
+      this.clickFormatter && this.clickFormatter({
         type: index,
         value: item,
         data: this.dataChart

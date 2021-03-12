@@ -20,7 +20,7 @@ export default create({
   mounted () { },
   methods: {
     handleClick () {
-      this.clickFormatter({
+      this.clickFormatter && this.clickFormatter({
         data: this.dataChart
       });
     }
