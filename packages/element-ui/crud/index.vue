@@ -905,10 +905,10 @@ export default create({
             sums[index] = ''
           } else if (currItem) {
             let decimals = currItem.decimals || 2;
-            let label = currItem.label;
+            let label = currItem.label || '';
             switch (currItem.type) {
               case "count":
-                sums[index] = (label || this.t('crud.summary.count')) + data.length;
+                sums[index] = label + data.length;
                 break;
               case "avg":
                 let avgValues = data.map(item => Number(item[column.property]));
@@ -921,7 +921,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = (label || this.t('crud.summary.avg')) + sums[index].toFixed(decimals);
+                sums[index] = label + sums[index].toFixed(decimals);
                 break;
               case "sum":
                 let values = data.map(item => Number(item[column.property]));
@@ -933,7 +933,7 @@ export default create({
                     return perv;
                   }
                 }, 0);
-                sums[index] = (label || this.t('crud.summary.sum')) + sums[index].toFixed(decimals);
+                sums[index] = label + sums[index].toFixed(decimals);
                 break;
             }
           } else {
