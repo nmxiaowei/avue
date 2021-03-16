@@ -9,7 +9,10 @@
                    :size="size"
                    @click="parentAdd"
                    icon="el-icon-plus"
-                   v-if="vaildData(option.addBtn,true)"></el-button>
+                   v-if="vaildData(option.addBtn,true)&&!$slots.addBtn"></el-button>
+        <slot v-else
+              name="addBtn"
+              slot="append"></slot>
       </el-input>
     </div>
     <el-tree ref="tree"
@@ -180,9 +183,6 @@ export default create({
     valueKey () {
       return this.props.value || DIC_PROPS.value;
     },
-    labelText () {
-      return this.props.labelText || DIC_PROPS.labelText;
-    },
     labelKey () {
       return this.props.label || DIC_PROPS.label;
     },
@@ -209,17 +209,6 @@ export default create({
             label: this.valueKey,
             prop: this.valueKey,
             display: false
-          },
-          {
-            label: this.labelText,
-            prop: this.labelKey,
-            rules: [
-              {
-                required: true,
-                message: `${this.t("tip.input")} ${this.labelText}`,
-                trigger: "blur"
-              }
-            ]
           },
           ...this.formColumnOption
           ]
