@@ -171,9 +171,6 @@ export default create({
       } else {
         return this.crud.list;
       }
-    },
-    columnIndex () {
-      return this.crud.$refs.dialogColumn.columnIndex;
     }
   },
   methods: {
@@ -205,9 +202,8 @@ export default create({
         title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
         columns: (() => {
           let list = [];
-          console.log(this.crud.propOption);
           this.crud.propOption.forEach(ele => {
-            if (this.columnIndex.includes(ele.prop)) {
+            if (this.crud.default[ele.prop].display !== false && ele.showColumn !== false) {
               list.push({
                 label: ele.label,
                 prop: (() => {

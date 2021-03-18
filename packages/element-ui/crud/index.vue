@@ -210,8 +210,7 @@
       </template>
     </dialog-form>
     <!-- 动态列 -->
-    <dialog-column ref="dialogColumn"
-                   :show-column="showColumn"></dialog-column>
+    <dialog-column ref="dialogColumn"></dialog-column>
     <!-- 过滤器 -->
     <keep-alive>
       <dialog-filter ref="dialogFilter"></dialog-filter>
@@ -274,11 +273,15 @@ export default create({
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
+      defaultColumn: config.defaultColumn,
+      default: {},
     };
   },
   created () {
     // 初始化数据
     this.dataInit();
+    // 初始化列
+    this.columnInit();
   },
   mounted () {
     this.refreshTable(() => {
@@ -286,8 +289,6 @@ export default create({
       this.$refs.headerSearch.init();
       //动态计算表格高度
       this.getTableHeight();
-      //是否开启表格排序
-      setTimeout(() => this.$refs.columnDefault.setSort())
     })
   },
   computed: {
@@ -298,8 +299,21 @@ export default create({
       return this.tableOption.height === "auto"
     },
     cellForm () {
+      let list = this.list
+      list = list.filter(ele => {
+        let result = [];
+        for (var o in this.default) {
+          if (!this.validatenull(this.default[o].screenValue)) {
+            result.push(ele[o].indexOf(this.default[o].screenValue) !== -1);
+          }
+        }
+        if (this.validatenull(result)) {
+          return true;
+        }
+        return eval(result.join('&&'));
+      })
       return {
-        list: this.list
+        list: list
       }
     },
     formSlot () {
@@ -322,11 +336,6 @@ export default create({
     },
     mainSlot () {
       return this.columnFormOption.filter(ele => this.$scopedSlots[ele.prop])
-    },
-    cellForm () {
-      return {
-        list: this.list
-      }
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
@@ -423,9 +432,9 @@ export default create({
     },
   },
   watch: {
-    tableOption: {
-      handler () {
-        this.$refs.dialogColumn.columnInit()
+    default: {
+      handler (val) {
+        this.$emit('update:defaults', val)
       },
       deep: true
     },
@@ -480,10 +489,10 @@ export default create({
         return {};
       }
     },
-    showColumn: {
-      type: Array,
+    defaults: {
+      type: Object,
       default () {
-        return [];
+        return {};
       }
     },
     search: {
@@ -545,6 +554,8 @@ export default create({
       this.reload = false;
       this.$nextTick(() => {
         this.reload = true;
+        //是否开启表格排序
+        setTimeout(() => this.$refs.columnDefault.setSort())
         callback && callback()
       })
     },
@@ -605,6 +616,18 @@ export default create({
         this.$set(this.tableForm, ele, this.value[ele]);
       });
     },
+    columnInit () {
+      this.propOption.forEach(column => {
+        let obj = {}
+        this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
+        this.$set(this.default, column.prop, Object.assign(obj, { order: undefined, label: column.label }, this.defaults[column.prop]))
+        this.defaultColumn.forEach(ele => {
+          if (['hide', 'filters'].includes(ele.prop)) {
+            this.$watch(`default.${column.prop}.${ele.prop}`, () => this.refreshTable())
+          }
+        })
+      })
+    },
     dataInit () {
       this.list = this.data;
       //初始化序列的参数
@@ -617,6 +640,7 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
+      this.default[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     //展开或则关闭

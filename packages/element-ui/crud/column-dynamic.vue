@@ -36,18 +36,32 @@
                          :prop="column.prop"
                          :label="column.label"
                          filter-placement="bottom-end"
-                         :filters="handleFilters(column)"
-                         :filter-method="column.filter? handleFiltersMethod : undefined"
+                         :filters="getColumnProp(column,'filters')"
+                         :filter-method="crud.default[column.prop].filters?handleFiltersMethod:undefined"
                          :filter-multiple="vaildData(column.filterMultiple,true)"
                          :show-overflow-tooltip="column.overHidden"
                          :min-width="column.minWidth"
-                         :sortable="column.sortable"
+                         :sortable="getColumnProp(column,'sortable')"
                          :render-header="column.renderHeader"
                          :align="column.align || crud.tableOption.align"
                          :header-align="column.headerAlign || crud.tableOption.headerAlign"
-                         :width="column.width"
-                         :fixed="crud.isMobile?false:column.fixed">
-
+                         :width="getColumnProp(column,'width')"
+                         :fixed="getColumnProp(column,'fixed')">
+          <template slot="header"
+                    slot-scope="scope">
+            <slot :name="crud.getSlotName(column,'H')"
+                  v-if="crud.$scopedSlots[crud.getSlotName(column,'H')]"
+                  v-bind="Object.assign(scope,{column})"></slot>
+            <template v-else>
+              <span>{{column.label}}</span>
+              <div v-if="crud.default[column.prop].screen">
+                <el-input type="text"
+                          :placeholder="`请输入 ${column.label} 筛选关键字`"
+                          v-model="crud.default[column.prop].screenValue"
+                          size="mini"></el-input>
+              </div>
+            </template>
+          </template>
           <template slot-scope="{row,$index}">
             <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                           v-if="row.$cellEdit && column.cell"
@@ -133,6 +147,7 @@ export default {
   },
   created () {
     const list = [
+      'getColumnProp',
       "corArray",
       "openImg",
       "detailData",

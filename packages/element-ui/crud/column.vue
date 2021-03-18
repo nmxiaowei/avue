@@ -31,23 +31,31 @@
                          :prop="column.prop"
                          :label="column.label"
                          filter-placement="bottom-end"
-                         :filters="handleFilters(column)"
-                         :filter-method="column.filter? handleFiltersMethod : undefined"
+                         :filters="getColumnProp(column,'filters')"
+                         :filter-method="crud.default[column.prop].filters?handleFiltersMethod:undefined"
                          :filter-multiple="vaildData(column.filterMultiple,true)"
                          :show-overflow-tooltip="column.overHidden"
                          :min-width="column.minWidth"
-                         :sortable="column.sortable"
+                         :sortable="getColumnProp(column,'sortable')"
                          :render-header="column.renderHeader"
                          :align="column.align || tableOption.align"
                          :header-align="column.headerAlign || tableOption.headerAlign"
-                         :width="column.width"
-                         :fixed="crud.isMobile?false:column.fixed">
+                         :width="getColumnProp(column,'width')"
+                         :fixed="getColumnProp(column,'fixed')">
           <template slot="header"
                     slot-scope="scope">
             <slot :name="crud.getSlotName(column,'H')"
                   v-if="crud.$scopedSlots[crud.getSlotName(column,'H')]"
                   v-bind="Object.assign(scope,{column})"></slot>
-            <template v-else>{{column.label}}</template>
+            <template v-else>
+              <span>{{column.label}}</span>
+              <div v-if="crud.default[column.prop].screen">
+                <el-input type="text"
+                          :placeholder="`请输入 ${column.label} 筛选关键字`"
+                          v-model="crud.default[column.prop].screenValue"
+                          size="mini"></el-input>
+              </div>
+            </template>
           </template>
           <template slot-scope="{row,$index}">
             <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
@@ -161,17 +169,24 @@ export default create({
   computed: {
     list () {
       let result = [...this.columnOption];
+      result = result.sort((a, b) => (this.crud.default[a.prop].order || 0) - (this.crud.default[b.prop].order || 0));
       return result;
     }
   },
   methods: {
+    getColumnProp (column, type) {
+      if (this.crud.isMobile && ['fixed'].includes(type)) return false;
+      let result = this.crud.default[column.prop][type]
+      if (type == 'filters') return this.handleFilters(column, result)
+      else return result;
+    },
     vaildLabel (column, row, val) {
       if (column.rules && row.$cellEdit) {
         return val
       }
     },
     vaildColumn (item) {
-      return ((this.crud.$refs.dialogColumn || {}).columnIndex || []).includes(item.prop)
+      return this.crud.default[item.prop].hide !== true;
     },
     corArray (list, separator = DIC_SPLIT) {
       if (this.validatenull(list)) {
@@ -290,20 +305,29 @@ export default create({
       }
     },
     //表格筛选字典
-    handleFilters (column) {
-      if (column.filter !== true) return undefined;
-      if (this.validatenull(column.dicFilters)) {
-        let list = [];
-        (this.crud.DIC[column.prop] || []).forEach(ele => {
+    handleFilters (column, flag) {
+      if (flag !== true) return undefined;
+      let DIC = this.crud.DIC[column.prop] || []
+      let list = [];
+      if (!this.validatenull(DIC)) {
+        DIC.forEach(ele => {
           const props = column.props || this.tableOption.props || {};
           list.push({
             text: ele[props.label || DIC_PROPS.label],
             value: ele[props.value || DIC_PROPS.value]
           });
         });
-        return list;
+      } else {
+        this.crud.cellForm.list.forEach(ele => {
+          if (!list.map(item => item.text).includes(ele[column.prop])) {
+            list.push({
+              text: ele[column.prop],
+              value: ele[column.prop]
+            });
+          }
+        });
       }
-      return column.dicFilters;
+      return list;
     }
   }
 });
