@@ -4,6 +4,8 @@
   box-sizing: border-box;
   &__item{
     &--top{
+      display: flex;
+      flex-direction: column;
       .el-form-item__label{
         width:100% !important;
         text-align: left !important;
