@@ -23,26 +23,30 @@
         <i class="el-icon-plus"></i>
       </template>
       <template v-else-if="listType=='picture-img'">
-        <img v-if="imgUrl"
-             :src="imgUrl"
-             v-bind="allParams"
-             @mouseover="menu=true"
-             :class="b('avatar')" />
-        <i v-else
-           class="el-icon-plus"
-           :class="b('icon')"></i>
-        <div class="el-upload-list__item-actions"
-             :class="b('menu')"
-             v-if="menu"
-             @mouseover="menu=true"
-             @mouseout="menu=false"
-             @click.stop="()=>{return false}">
-          <i class="el-icon-zoom-in"
-             @click.stop="handlePreview({url:imgUrl})"></i>
-          <i class="el-icon-delete"
-             v-if="!disabled"
-             @click.stop="handleDelete(imgUrl)"></i>
-        </div>
+        <slot v-if="$scopedSlots.default"
+              :file="{url:imgUrl}"></slot>
+        <template v-else>
+          <img v-if="imgUrl"
+               :src="imgUrl"
+               v-bind="allParams"
+               @mouseover="menu=true"
+               :class="b('avatar')" />
+          <i v-else
+             class="el-icon-plus"
+             :class="b('icon')"></i>
+          <div class="el-upload-list__item-actions"
+               :class="b('menu')"
+               v-if="menu"
+               @mouseover="menu=true"
+               @mouseout="menu=false"
+               @click.stop="()=>{return false}">
+            <i class="el-icon-zoom-in"
+               @click.stop="handlePreview({url:imgUrl})"></i>
+            <i class="el-icon-delete"
+               v-if="!disabled"
+               @click.stop="handleDelete(imgUrl)"></i>
+          </div>
+        </template>
       </template>
       <template v-else-if="drag">
         <i class="el-icon-upload"></i>
@@ -57,6 +61,11 @@
       </template>
       <div slot="tip"
            class="el-upload__tip">{{tip}}</div>
+      <template v-if="$scopedSlots.default"
+                slot="file"
+                slot-scope="scope">
+        <slot v-bind="scope"></slot>
+      </template>
     </el-upload>
   </div>
 </template>

@@ -177,6 +177,7 @@ export default create({
     getColumnProp (column, type) {
       if (this.crud.isMobile && ['fixed'].includes(type)) return false;
       let result = this.crud.default[column.prop][type]
+      if (type == 'width' && result == 0) { return undefined }
       if (type == 'filters') return this.handleFilters(column, result)
       else return result;
     },
