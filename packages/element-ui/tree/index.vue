@@ -52,12 +52,15 @@
          :class="b('menu')">
       <div :class="b('item')"
            v-if="vaildData(option.addBtn,true)"
+           v-permission="getPermission('addBtn')"
            @click="rowAdd">新增</div>
       <div :class="b('item')"
            v-if="vaildData(option.editBtn,true)"
+           v-permission="getPermission('editBtn')"
            @click="rowEdit">修改</div>
       <div :class="b('item')"
            v-if="vaildData(option.delBtn,true)"
+           v-permission="getPermission('delBtn')"
            @click="rowRemove">删除</div>
       <slot name="menu"
             :node="node"></slot>
@@ -83,10 +86,20 @@
 import { DIC_PROPS } from 'global/variable';
 import locale from "../../core/common/locale";
 import create from "core/create";
+import permission from '../../core/directive/permission';
 export default create({
   name: "tree",
   mixins: [locale],
+  directives: {
+    permission
+  },
   props: {
+    permission: {
+      type: [Function, Object],
+      default: () => {
+        return {};
+      }
+    },
     iconClass: {
       type: String,
     },
@@ -239,6 +252,15 @@ export default create({
     }
   },
   methods: {
+    getPermission (key) {
+      if (typeof this.permission === "function") {
+        return this.permission(key, this.node)
+      } else if (!this.validatenull(this.permission[key])) {
+        return this.permission[key]
+      } else {
+        return true;
+      }
+    },
     initFun () {
       [
         'filter', 'updateKeyChildren', 'getCheckedNodes', 'setCheckedNodes', 'getCheckedKeys',
