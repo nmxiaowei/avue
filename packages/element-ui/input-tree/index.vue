@@ -133,16 +133,13 @@ export default create({
   watch: {
     text: {
       handler (value) {
+        this.init();
         if (this.validatenull(value)) {
           this.clearHandle();
         }
       },
     },
     dic () {
-      this.init();
-    },
-    value () {
-      this.initVal();
       this.init();
     },
     filterValue (val) {
@@ -198,9 +195,6 @@ export default create({
       }
     }
   },
-  mounted () {
-    this.init();
-  },
   methods: {
     handleClear () {
       if (this.multiple) {
@@ -244,12 +238,8 @@ export default create({
     },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
-      this.node = [];
       const list = this.$refs.tree.getCheckedNodes(this.leafOnly, false);
-      list.forEach(node => {
-        this.node.push(node)
-        this.text.push(node[this.valueKey]);
-      });
+      list.forEach(node => this.text.push(node[this.valueKey]));
       if (typeof this.checked === "function") this.checked(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
     },
     getHalfList () {
@@ -266,7 +256,7 @@ export default create({
             this.node.push(ele);
           })
         } else {
-          let node = this.$refs.tree.getNode(this.text || '')
+          let node = this.$refs.tree.getNode(this.text)
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])
@@ -301,10 +291,7 @@ export default create({
         (this.validatenull(data[this.childrenKey]) && !this.multiple) ||
         this.parent
       ) {
-        const value = data[this.valueKey];
-        const label = data[this.labelKey];
-        this.text = value;
-        this.node = [data];
+        this.text = data[this.valueKey];
         this.$refs.main.blur();
       }
     }
