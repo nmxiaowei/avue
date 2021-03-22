@@ -1,5 +1,8 @@
 <template>
   <div :class="b({'card':!option.card})">
+    <component :is="tableOption.titleSize || 'h2'"
+               :style="tableOption.titleStyle"
+               v-if="tableOption.title">{{tableOption.title}}</component>
     <!-- 搜索组件 -->
     <header-search :search="search"
                    ref="headerSearch">
