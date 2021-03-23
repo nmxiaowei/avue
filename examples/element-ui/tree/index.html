@@ -21,8 +21,8 @@
 
 <body>
   <div id="app">
-    <avue-tree ref="tree" :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del"
-      v-model="form">
+    <avue-tree ref="tree" :permission="getPermission" :option="option" :data="data" @node-click="nodeClick"
+      @update="update" @save="save" @del="del" v-model="form">
       <span class="el-tree-node__label" slot-scope="{ node, data }">
         <span>
           <i class="el-icon-user-solid"></i>
@@ -90,6 +90,10 @@
       }
     },
     methods: {
+      getPermission(key, data) {
+        if (key == "addBtn") { return false; }
+        return true;
+      },
       tip(node, data) {
         this.$message.success(JSON.stringify(data))
       },

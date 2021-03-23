@@ -6,7 +6,8 @@
                append-to-body
                title="数据显隐"
                width="30%">
-      <avue-checkbox :dic="columnList"
+      <avue-checkbox :dic="columnOption"
+                     :props="{value:'prop'}"
                      v-model="columnData"></avue-checkbox>
     </el-dialog>
     <el-dialog :visible.sync="listVisible"
@@ -18,27 +19,26 @@
       <avue-crud :option="listOption"
                  :data="dataTabel"></avue-crud>
     </el-dialog>
-    <div :class="b('menu')"
-         :style="styleMenuName">
-      <i class="el-icon-menu"
-         v-if="columnShow"
-         @click="visible=true"></i>
-      <i class="el-icon-view"
-         v-if="columnListShow"
-         @click="listVisible=true"></i>
-    </div>
     <div :style="styleTdName"
          :class="b('table')">
       <div :class="b('tr')">
         <div :class="b('td')"
-             :style="[styleThName,{width:setPx(indexWidth)}]"
+             :style="[styleThName,styleWidth(indexWidth)]"
              v-if="index">
-          {{indexLabel}}
+          <div :class="b('menu')"
+               :style="styleMenuName">
+            <i class="el-icon-menu"
+               v-if="columnShow"
+               @click="visible=true"></i>
+            <i class="el-icon-view"
+               v-if="columnViews"
+               @click="listVisible=true"></i>
+          </div>
         </div>
         <template v-for="(item,index) in columnOption">
           <div :class="b('td')"
-               :style="[styleThName,styleWidth(item)]"
-               v-if="columnData.includes(item.prop)"
+               :style="[styleThName,styleWidth(item.width)]"
+               v-if="(columnData || []).includes(item.prop)"
                :key="index"
                @click="handleSortable(item.prop)">
             {{item.label}}
@@ -47,15 +47,15 @@
       </div>
       <div :class="b('tr')"
            v-if="totalFlag">
-        <div :class="b('td')"
-             :style="[{width:setPx(indexWidth)}]"
+        <div :class="[b('td')]"
+             :style="[styleWidth(indexWidth)]"
              v-if="index">
           合计
         </div>
         <template v-for="(item,index) in columnOption">
           <div :class="b('td')"
-               :style="[styleWidth(item)]"
-               v-if="columnData.includes(item.prop)"
+               :style="[styleWidth(item.width)]"
+               v-if="(columnData || []).includes(item.prop)"
                :key="index">
             {{totalData[item.prop]}}
           </div>
@@ -73,17 +73,22 @@
                :class="b('tr',['line'])"
                :style="[styleTrName(cindex),{ top:setPx(cindex * lineHeight +top)}]">
             <div :class="b('td')"
-                 :style="[styleWidth(citem)]"
+                 :style="[styleWidth(indexWidth)]"
                  :key="index"
                  v-if="index">
               <div :class="b('index',[(cindex+1)+''])"> {{(cindex+1)}}</div>
             </div>
             <template v-for="(item,index) in columnOption">
               <div :class="b('td')"
-                   v-if="columnData.includes(item.prop)"
-                   :style="[styleTdName,styleWidth(item)]"
+                   v-if="(columnData ||[]).includes(item.prop)"
+                   :style="[styleTdName,styleWidth(item.width)]"
                    :key="index">
-                <span v-html="citem[item.prop]"></span>
+                <el-tooltip class="item"
+                            effect="dark"
+                            :content="citem[item.prop]"
+                            placement="top">
+                  <span v-html="citem[item.prop]"></span>
+                </el-tooltip>
               </div>
             </template>
           </div>
@@ -102,7 +107,7 @@ export default create({
       visible: false,
       listVisible: false,
       columnData: [],
-      indexWidth: 50,
+      indexWidth: 80,
       top: 0,
       prop: "",
       scrollCheck: "",
@@ -111,6 +116,17 @@ export default create({
     };
   },
   watch: {
+    columnOption: {
+      handler () {
+        this.columnData = [];
+        this.columnOption.forEach(ele => {
+          if (ele.hide != true) {
+            this.columnData.push(ele.prop);
+          }
+        });
+      },
+      immediate: true
+    },
     scrollCount () {
       this.setTime();
     },
@@ -129,13 +145,6 @@ export default create({
       },
       immediate: true
     }
-  },
-  created () {
-    this.columnList.forEach(ele => {
-      if (!this.columnShowList.includes(ele.value)) {
-        this.columnData.push(ele.value);
-      }
-    });
   },
   computed: {
     listOption () {
@@ -179,25 +188,11 @@ export default create({
       });
       return obj;
     },
-    columnList () {
-      let list = this.columnOption.map(ele => {
-        if (!this.columnShowWhite.includes(ele.prop)) {
-          return {
-            label: ele.label,
-            value: ele.prop
-          };
-        }
-        return false;
-      });
-      return list.filter(ele => {
-        return ele.value;
-      });
-    },
     columnShow () {
       return this.option.columnShow;
     },
-    columnListShow () {
-      return this.option.columnListShow;
+    columnViews () {
+      return this.option.columnViews;
     },
     columnShowWhite () {
       return this.option.columnShowWhite || [];
@@ -238,9 +233,6 @@ export default create({
     scrollTime () {
       return this.option.scrollTime || 5000;
     },
-    indexLabel () {
-      return this.option.indexLabel || "排名";
-    },
     fontSize () {
       return this.option.fontSize || 14;
     },
@@ -264,12 +256,14 @@ export default create({
       return {
         fontSize: this.setPx(this.fontSize),
         lineHeight: this.setPx(this.lineHeight),
+        height: this.setPx(this.lineHeight),
         color: this.option.bodyColor || "rgba(154, 168, 212, 1)",
         borderColor: this.option.borderColor || "rgba(51, 65, 107, 1)"
       };
     },
     styleMenuName () {
       return {
+        lineHeight: this.setPx(this.lineHeight),
         color: this.option.headerColor || "rgba(154, 168, 212, 1)"
       };
     },
@@ -294,10 +288,10 @@ export default create({
     }
   },
   methods: {
-    styleWidth (item) {
+    styleWidth (width) {
       return {
-        width: this.setPx(item.width),
-        flex: item.width ? "auto" : 1
+        width: this.setPx(width),
+        flex: width ? "initial" : 1
       };
     },
     resetData () {
@@ -334,7 +328,7 @@ export default create({
       return result;
     },
     rowClick (item, index) {
-      this.clickFormatter({
+      this.clickFormatter && this.clickFormatter({
         type: index,
         value: item,
         data: this.dataChart

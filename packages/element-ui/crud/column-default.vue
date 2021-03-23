@@ -84,31 +84,49 @@ export default create({
         (this.crud.page.pageSize || 10)
       );
     },
-    //开启排序
     setSort () {
-      const callback = () => {
+      if (this.isSortable) {
         if (!window.Sortable) {
           packages.logs("Sortable")
           return
         }
-        const el = this.crud.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
-        this.sortable = window.Sortable.create(el, {
-          ghostClass: 'avue-crud__sortable',
-          handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
-          onEnd: evt => {
-            const oldindex = evt.oldIndex;
-            const newindex = evt.newIndex;
-            const targetRow = this.crud.list.splice(oldindex, 1)[0]
-            this.crud.list.splice(newindex, 0, targetRow)
-            this.crud.$emit('sortable-change', oldindex, newindex, targetRow, this.crud.list)
-          }
-        })
+        this.rowDrop()
+        this.columnDrop()
       }
-      if (this.isSortable) {
-        this.$nextTick(() => {
-          callback()
-        })
-      }
+    },
+    //行排序
+    rowDrop () {
+      const el = this.crud.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = window.Sortable.create(el, {
+        ghostClass: 'avue-crud__sortable',
+        handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
+        onEnd: evt => {
+          const oldindex = evt.oldIndex;
+          const newindex = evt.newIndex;
+          const targetRow = this.crud.list.splice(oldindex, 1)[0]
+          this.crud.list.splice(newindex, 0, targetRow)
+          this.crud.$emit('sortable-change', oldindex, newindex, targetRow, this.crud.list)
+        }
+      })
+    },
+    //列排序
+    columnDrop () {
+      const wrapperTr = this.crud.$refs.table.$el.querySelector('.el-table__header-wrapper tr');
+      window.Sortable.create(wrapperTr, {
+        animation: 180,
+        delay: 0,
+        onEnd: evt => {
+          const oldIndex = evt.oldIndex - 1;
+          const newIndex = evt.newIndex - 1;
+          let column = this.crud.propOption;
+          let targetRow = column.splice(oldIndex, 1)[0]
+          column.splice(newIndex, 0, targetRow)
+          this.crud.refreshTable()
+          this.crud.propOption.forEach((ele, index) => {
+            this.crud.default[ele.prop].order = index;
+          })
+        }
+      });
     },
   }
 })

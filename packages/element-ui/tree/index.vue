@@ -9,7 +9,10 @@
                    :size="size"
                    @click="parentAdd"
                    icon="el-icon-plus"
-                   v-if="vaildData(option.addBtn,true)"></el-button>
+                   v-if="vaildData(option.addBtn,true)&&!$slots.addBtn"></el-button>
+        <slot v-else
+              name="addBtn"
+              slot="append"></slot>
       </el-input>
     </div>
     <el-tree ref="tree"
@@ -49,12 +52,15 @@
          :class="b('menu')">
       <div :class="b('item')"
            v-if="vaildData(option.addBtn,true)"
+           v-permission="getPermission('addBtn')"
            @click="rowAdd">新增</div>
       <div :class="b('item')"
            v-if="vaildData(option.editBtn,true)"
+           v-permission="getPermission('editBtn')"
            @click="rowEdit">修改</div>
       <div :class="b('item')"
            v-if="vaildData(option.delBtn,true)"
+           v-permission="getPermission('delBtn')"
            @click="rowRemove">删除</div>
       <slot name="menu"
             :node="node"></slot>
@@ -80,10 +86,20 @@
 import { DIC_PROPS } from 'global/variable';
 import locale from "../../core/common/locale";
 import create from "core/create";
+import permission from '../../core/directive/permission';
 export default create({
   name: "tree",
   mixins: [locale],
+  directives: {
+    permission
+  },
   props: {
+    permission: {
+      type: [Function, Object],
+      default: () => {
+        return {};
+      }
+    },
     iconClass: {
       type: String,
     },
@@ -180,9 +196,6 @@ export default create({
     valueKey () {
       return this.props.value || DIC_PROPS.value;
     },
-    labelText () {
-      return this.props.labelText || DIC_PROPS.labelText;
-    },
     labelKey () {
       return this.props.label || DIC_PROPS.label;
     },
@@ -209,17 +222,6 @@ export default create({
             label: this.valueKey,
             prop: this.valueKey,
             display: false
-          },
-          {
-            label: this.labelText,
-            prop: this.labelKey,
-            rules: [
-              {
-                required: true,
-                message: `${this.t("tip.input")} ${this.labelText}`,
-                trigger: "blur"
-              }
-            ]
           },
           ...this.formColumnOption
           ]
@@ -250,6 +252,15 @@ export default create({
     }
   },
   methods: {
+    getPermission (key) {
+      if (typeof this.permission === "function") {
+        return this.permission(key, this.node)
+      } else if (!this.validatenull(this.permission[key])) {
+        return this.permission[key]
+      } else {
+        return true;
+      }
+    },
     initFun () {
       [
         'filter', 'updateKeyChildren', 'getCheckedNodes', 'setCheckedNodes', 'getCheckedKeys',

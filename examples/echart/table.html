@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+<!-- sdf -->
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.15.0/index.js"></script>
+  <script src="https://cdn.staticfile.org/echarts/4.2.1-rc1/echarts.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.15.0/theme-chalk/index.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    <avue-echart-table height="200" :option='option' :data="data"></avue-echart-table>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: [{
+          "type1": '数据1数据1数据1数据1数据1数据1数据1数据1数据1数据1数据1数据1数据1数据1数据1',
+          "type2": '数据2',
+          "type3": '数据3'
+        }, {
+          "type1": '数据1',
+          "type2": '数据2',
+          "type3": '数据3'
+        }, {
+          "type1": '数据1',
+          "type2": '数据2',
+          "type3": '数据3'
+        }, {
+          "type1": '数据1',
+          "type2": '数据2',
+          "type3": '数据3'
+        }, {
+          "type1": '数据1',
+          "type2": '数据2',
+          "type3": '数据3'
+        }, {
+          "type1": '数据1',
+          "type2": '数据2',
+          "type3": '数据3'
+        }],
+        "option": {
+          "columnShow": true,
+          "columnViews": true,
+          "headerBackground": "rgba(30, 144, 255, 1)",
+          "headerColor": "rgba(241, 242, 245, 1)",
+          "headerTextAlign": "center",
+          "bodyBackground": "rgba(0, 0, 0, 0.01)",
+          "bodyColor": "rgba(0, 0, 0, 1)",
+          "borderColor": "rgba(51, 65, 107, 1)",
+          "bodyTextAlign": "center",
+          "column": [{
+            "label": "车牌号",
+            "prop": "type1",
+            "width": "10",
+          }, {
+            "label": "驾驶员",
+            "prop": "type2",
+            "width": "10",
+          }, {
+            "label": "里程",
+            "prop": "type3",
+            "width": "10",
+          }, {
+            "label": "油耗",
+            "prop": "type4",
+            "width": "10",
+          }],
+          "align": "center",
+          "headerAlign": "center",
+          "header": false,
+          "scroll": true,
+          "scrollTime": 10000,
+          "fontSize": 15,
+          "count": 4,
+          "nthColor": "rgba(127, 185, 242, 1)",
+          "othColor": "rgba(164, 205, 244, 1)",
+          "index": true,
+          "scrollCount": 1
+        }
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.option.column.push(
+          {
+            "label": "类型3",
+            "prop": "type3"
+          })
+      }, 2000)
+    }
+  })
+
+</script>
+
+</html>

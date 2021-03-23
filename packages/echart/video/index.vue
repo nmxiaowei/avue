@@ -26,7 +26,7 @@ export default create({
   mounted () { },
   methods: {
     handleClick () {
-      this.clickFormatter({
+      this.clickFormatter && this.clickFormatter({
         type: index,
         value: item,
         data: this.dataChart

@@ -4,6 +4,7 @@
     <slot name="tabs"></slot>
     <component :is="collapseName"
                :value="text"
+               @change="handleChange"
                v-model="activeName">
       <component :is="collapseItemName"
                  :name="1"
@@ -85,6 +86,11 @@ export default create({
   },
   created () {
     this.activeName = [this.text]
+  },
+  methods: {
+    handleChange (activeNames) {
+      this.$emit('change', activeNames)
+    },
   }
 });
 </script>

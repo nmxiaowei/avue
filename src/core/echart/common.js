@@ -9,6 +9,7 @@ export default (() => {
       titleFormatter: Function,
       labelFormatter: Function,
       clickFormatter: Function,
+      sqlFormatter: Function,
       formatter: Function,
       echartFormatter: Function,
       width: {
@@ -31,6 +32,9 @@ export default (() => {
         default: () => {
           return {};
         }
+      },
+      sql: {
+        type: String
       },
       time: {
         type: Number,
@@ -94,7 +98,7 @@ export default (() => {
         dataChart: [],
         dataUrl: '',
         key: false,
-        isChart: true
+        isChart: false
       };
     },
     watch: {
@@ -161,6 +165,9 @@ export default (() => {
       isApi () {
         return this.dataType === 1;
       },
+      isSql () {
+        return this.dataType === 2;
+      },
       style () {
         return this.component.style || {};
       },
@@ -213,74 +220,90 @@ export default (() => {
       },
       // 更新数据核心方法
       updateData () {
-        this.resetData && this.resetData();
-        if (this.key) return;
-        this.key = true;
-        const callback = () => {
-          this.key = false;
-          // 动态数据
-          if (this.isApi) {
-            let dataUrl = this.dataUrl.replace(config.homeurl, this.homeUrl);
-            const detail = (res) => {
-              // 处理返回的数据
-              const result = (() => {
-                if (typeof this.dataFormatter === 'function') {
-                  return this.dataFormatter(res.data);
-                };
-                return res.data || {};
-              })();
-              // 延迟效果数据逐步增加
-              if (this.dataAppend) {
-                result.forEach(ele => {
-                  this.dataCount++;
-                  setTimeout(() => {
-                    this.dataChart.unshift(ele);
-                  }, this.dataCount * 1500);
-                });
-              } else {
-                this.dataChart = result;
-              }
+        return new Promise((resolve, reject) => {
+          this.resetData && this.resetData();
+          if (this.key) return;
+          this.key = true;
+          const callback = () => {
+            this.key = false;
+            const bindEvent = () => {
               if (this.isChart) this.updateChart();
               if (this.myChart) this.bindClick();
-            };
-            let result = getUrlParams(dataUrl);
-            let url = result.url;
-            let params = Object.assign(result.params, this.dataQuery, this.propQuery);
-            if (!window.axios) {
-              packages.logs('axios');
-              return;
+              resolve(this.dataChart);
             }
-            this.$axios[this.dataMethod](url, (() => {
-              if (this.dataMethod === 'get') {
-                return {
-                  params: params
-                };
-              } else if (this.dataMethod === 'post') {
-                return params;
+            // 动态数据
+            if (this.isApi) {
+              let dataUrl = this.dataUrl.replace(config.homeurl, this.homeUrl);
+              const detail = (res) => {
+                // 处理返回的数据
+                const result = (() => {
+                  if (typeof this.dataFormatter === 'function') {
+                    return this.dataFormatter(res.data);
+                  };
+                  return res.data || {};
+                })();
+                // 延迟效果数据逐步增加
+                if (this.dataAppend) {
+                  result.forEach(ele => {
+                    this.dataCount++;
+                    setTimeout(() => {
+                      this.dataChart.unshift(ele);
+                    }, this.dataCount * 1500);
+                  });
+                } else {
+                  this.dataChart = result;
+                }
+                bindEvent();
+              };
+              let result = getUrlParams(dataUrl);
+              let url = result.url;
+              let params = Object.assign(result.params, this.dataQuery, this.propQuery);
+              if (!window.axios) {
+                packages.logs('axios');
+                return;
               }
-            })()).then(res => {
-              detail(res);
-            });
-          } else {
-            // 静态数据
-            if (typeof this.dataFormatter === 'function') {
-              this.dataChart = this.dataFormatter(this.data);
+              this.$axios[this.dataMethod](url, (() => {
+                if (this.dataMethod === 'get') {
+                  return {
+                    params: params
+                  };
+                } else if (this.dataMethod === 'post') {
+                  return params;
+                }
+              })()).then(res => {
+                detail(res);
+              });
+            } else if (this.isSql) {
+              this.sqlFormatter(this.sql).then(res => {
+                // 静态数据
+                if (typeof this.dataFormatter === 'function') {
+                  this.dataChart = this.dataFormatter(res.data.data);
+                } else {
+                  this.dataChart = res.data.data;
+                }
+                bindEvent();
+              })
             } else {
-              this.dataChart = this.data;
+              // 静态数据
+              if (typeof this.dataFormatter === 'function') {
+                this.dataChart = this.dataFormatter(this.data);
+              } else {
+                this.dataChart = this.data;
+              }
+              bindEvent();
             }
-            if (this.isChart) this.updateChart();
-            if (this.myChart) this.bindClick();
-          }
-        };
-        this.$nextTick(() => {
-          callback();
-          clearInterval(this.checkChart);
-          if (this.time !== 0 && this.disabled) {
-            this.checkChart = setInterval(() => {
-              callback();
-            }, this.time);
-          }
-        });
+          };
+          this.$nextTick(() => {
+            callback();
+            clearInterval(this.checkChart);
+            if (this.time !== 0 && this.disabled) {
+              this.checkChart = setInterval(() => {
+                callback();
+              }, this.time);
+            }
+          });
+        })
+
       },
       getLabelFormatter (name) {
         if (this.labelFormatter) {
@@ -293,14 +316,13 @@ export default (() => {
         this.myChart.off('click');
         this.myChart.on('click', e => {
           if (e.marker) {
-            if (this.clickFormatter) {
-              this.clickFormatter({
-                type: this.name,
-                name: e.name,
-                value: e.value[2] || e.value,
-                data: this.dataChart
-              });
-            }
+            this.clickFormatter && this.clickFormatter({
+              type: this.name,
+              name: e.name,
+              value: e.value[2] || e.value,
+              data: this.dataChart
+            });
+
           }
         });
       },

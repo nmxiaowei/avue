@@ -7,6 +7,7 @@
              :range="range"
              :show-stops="showStops"
              :show-input="showInput"
+             :marks="marks"
              :format-tooltip="formatTooltip"
              @click.native="handleClick"
              @change="handleChange"></el-slider>
@@ -29,6 +30,9 @@ export default create({
     },
     max: {
       type: Number
+    },
+    marks: {
+      type: Object
     },
     range: {
       type: Boolean,

@@ -13,6 +13,7 @@
       <el-row :span="24"
               :class="{'avue-form__tabs':isTabs}">
         <avue-group v-for="(item,index) in columnOption"
+                    @change="handleGroupClick"
                     :key="item.prop"
                     :tabs="isTabs"
                     :arrow="item.arrow"
@@ -399,6 +400,9 @@ export default create({
       this.propOption.forEach(column => {
         this.handleShowLabel(column, this.DIC[column.prop]);
       });
+    },
+    handleGroupClick (activeNames) {
+      this.$emit('tab-click', activeNames)
     },
     handleTabClick (tab, event) {
       this.$emit('tab-click', tab, event)

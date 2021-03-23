@@ -22,7 +22,11 @@
   <div id="app">
     {{form}}
     <avue-form :option="option" v-model="form" :upload-error="uploadError" :upload-delete="uploadDelete"
-      :upload-before="uploadBefore" :upload-exceed="uploadExceed" :upload-after="uploadAfter"> </avue-form>
+      :upload-before="uploadBefore" :upload-exceed="uploadExceed" :upload-after="uploadAfter">
+      <template slot="imgUrlType" slot-scope="{file}">
+        {{file}}
+      </template>
+    </avue-form>
   </div>
 </body>
 <script>

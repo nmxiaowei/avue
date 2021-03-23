@@ -7,12 +7,35 @@
              :title="t('crud.showTitle')"
              :size="crud.isMobile?'100%':'50%'"
              :visible.sync="columnBox">
-    <el-transfer :titles="[ t('crud.hide'),t('crud.show')]"
-                 ref="transfer"
-                 filterable
-                 v-model="columnIndex"
-                 :data="columnList">
-    </el-transfer>
+    <el-scrollbar style="height:calc(100% - 100px)">
+      <el-table :data="list"
+                size="small"
+                border>
+        <el-table-column align="center"
+                         width="100"
+                         header-align="center"
+                         prop="label"
+                         label="列名">
+        </el-table-column>
+        <el-table-column :prop="item.prop"
+                         :key="index"
+                         align="center"
+                         header-align="center"
+                         :width="item.width|| 50"
+                         v-for="(item,index) in crud.defaultColumn"
+                         :label="item.label">
+          <template slot-scope="{row}">
+            <el-slider :min="0"
+                       :max="2000"
+                       size="small"
+                       v-if="item.prop=='width'"
+                       v-model="crud.default[row.prop][item.prop]"></el-slider>
+            <el-checkbox v-else
+                         v-model="crud.default[row.prop][item.prop]"></el-checkbox>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-scrollbar>
   </el-drawer>
 </template>
 <script>
@@ -23,82 +46,44 @@ export default create({
   name: 'crud',
   mixins: [locale],
   inject: ["crud"],
-  props: {
-    showColumn: {
-      type: Array,
-      default () {
-        return [];
-      }
-    },
-  },
   data () {
     return {
       columnBox: false,
-      defaultProps: {
-        value: 'prop'
-      },
       columnList: [],
-      columnIndex: []
     };
   },
-  watch: {
-    showColumn () {
-      this.initData()
-    },
-    columnIndex (val) {
-      this.crud.refreshTable();
-      this.crud.$emit('update:showColumn', val)
-    },
-    columnBox (val) {
-      if (val && this.crud.isSortable) {
-        this.$nextTick(() => {
-          this.setSort()
-        })
+  computed: {
+    list () {
+      let list = [];
+      for (var o in this.crud.default) {
+        list.push(Object.assign(this.crud.default[o], { prop: o }))
       }
+      return list;
     }
+  },
+  watch: {
+    'crud.tableOption': {
+      handler () {
+        this.columnInit()
+      },
+      deep: true
+    },
   },
   created () {
     this.columnInit()
   },
   methods: {
-    initData () {
-      if (!this.validatenull(this.showColumn)) this.columnIndex = this.showColumn
-    },
-    //开启排序
-    setSort () {
-      if (!window.Sortable) {
-        packages.logs("Sortable")
-        return
-      }
-      const el = this.$refs.transfer.$el.querySelectorAll('.el-checkbox-group')[1]
-      this.sortable = window.Sortable.create(el, {
-        sort: true,
-        handle: '.el-checkbox',
-        onEnd: evt => {
-          const oldIndex = evt.oldIndex;
-          const newIndex = evt.newIndex;
-          let column = this.crud.propOption;
-          let targetRow = column.splice(oldIndex, 1)[0]
-          column.splice(newIndex, 0, targetRow)
-          this.crud.refreshTable()
-        }
-      })
-    },
     columnInit () {
-      this.columnIndex = [];
       this.columnList = [];
       this.crud.propOption.forEach((ele, index) => {
         if (ele.showColumn !== false) {
-          if (ele.hide !== true) this.columnIndex.push(ele.prop);
-          let obj = {
+          this.columnList.push(this.deepClone({
             label: ele.label,
-            key: ele.prop,
+            prop: ele.prop,
             index: index
-          };
-          this.columnList.push(this.deepClone(obj));
+          }));
         }
       });
-      this.initData();
     }
   }
 });

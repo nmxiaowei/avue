@@ -87,10 +87,12 @@
       overflow: hidden;
     }
     &__menu{
+      position: absolute;
       padding: 0 5px;
+      text-align: right;
       i{
-        margin-right: 20px;
-        font-size: 24px;
+        margin-right: 10px;
+        font-size: 20px;
       }
     }
     &__allview{
@@ -108,6 +110,10 @@
       }
     }
     &__td{
+      overflow:hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      -o-text-overflow:ellipsis;
       flex:1;
       display: flex;
       align-items: center;

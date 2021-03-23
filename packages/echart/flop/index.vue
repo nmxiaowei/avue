@@ -178,7 +178,7 @@ export default create({
   created () { },
   methods: {
     handleClick (item, index) {
-      this.clickFormatter({
+      this.clickFormatter && this.clickFormatter({
         type: index,
         value: item,
         data: this.dataChart
