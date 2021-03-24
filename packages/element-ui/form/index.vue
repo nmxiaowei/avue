@@ -600,9 +600,11 @@ export default create({
           let isForm = ele.children.type === 'form'
           dynamicName.push(ele.prop);
           if (isForm) {
-            this.$refs[ele.prop][0].$refs.temp.$refs.main.forEach(ele => {
-              dynamicList.push(ele.validateCellForm());
-            })
+            if (typeof this.$refs[ele.prop][0].$refs.temp.$refs.main != 'undefined') {
+              this.$refs[ele.prop][0].$refs.temp.$refs.main.forEach(ele => {
+                dynamicList.push(ele.validateCellForm());
+              })
+            }
           } else {
             dynamicList.push(this.$refs[ele.prop][0].$refs.temp.$refs.main.validateCellForm());
           }
