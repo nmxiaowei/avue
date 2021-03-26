@@ -49,41 +49,18 @@ export default create({
   data () {
     return {
       columnBox: false,
-      columnList: [],
     };
   },
   computed: {
     list () {
       let list = [];
       for (var o in this.crud.default) {
-        list.push(Object.assign(this.crud.default[o], { prop: o }))
+        const ele = this.crud.default[o]
+        if (ele.showColumn != false) {
+          list.push(Object.assign(ele, { prop: o }))
+        }
       }
       return list;
-    }
-  },
-  watch: {
-    'crud.tableOption': {
-      handler () {
-        this.columnInit()
-      },
-      deep: true
-    },
-  },
-  created () {
-    this.columnInit()
-  },
-  methods: {
-    columnInit () {
-      this.columnList = [];
-      this.crud.propOption.forEach((ele, index) => {
-        if (ele.showColumn !== false) {
-          this.columnList.push(this.deepClone({
-            label: ele.label,
-            prop: ele.prop,
-            index: index
-          }));
-        }
-      });
     }
   }
 });

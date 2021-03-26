@@ -623,7 +623,7 @@ export default create({
       this.propOption.forEach(column => {
         let obj = {}
         this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
-        this.$set(this.default, column.prop, Object.assign(obj, { order: undefined, label: column.label }, this.defaults[column.prop]))
+        this.$set(this.default, column.prop, Object.assign(obj, { order: undefined, label: column.label, showColumn: column.showColumn }, this.defaults[column.prop]))
         this.defaultColumn.forEach(ele => {
           if (['hide', 'filters'].includes(ele.prop)) {
             this.$watch(`default.${column.prop}.${ele.prop}`, () => this.refreshTable())
