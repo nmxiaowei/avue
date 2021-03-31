@@ -203,7 +203,7 @@ export default create({
         columns: (() => {
           let list = [];
           this.crud.propOption.forEach(ele => {
-            if (this.crud.default[ele.prop].display !== false && ele.showColumn !== false) {
+            if (this.crud.default[ele.prop]?.display !== false && ele.showColumn !== false) {
               list.push({
                 label: ele.label,
                 prop: (() => {

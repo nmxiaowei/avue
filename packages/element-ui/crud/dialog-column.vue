@@ -56,7 +56,7 @@ export default create({
       let list = [];
       for (var o in this.crud.default) {
         const ele = this.crud.default[o]
-        if (ele.showColumn != false) {
+        if (ele?.showColumn != false) {
           list.push(Object.assign(ele, { prop: o }))
         }
       }
