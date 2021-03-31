@@ -183,7 +183,7 @@ export default function () {
       httpRequest (config) {
         this.loading = true;
         let file = config.file;
-        const fileSize = file.size / 1000;
+        const fileSize = file.size / 1024;
         this.file = config.file;
         if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
           this.hide("文件太大不符合");
