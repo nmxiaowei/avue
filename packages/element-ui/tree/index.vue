@@ -15,36 +15,39 @@
               slot="append"></slot>
       </el-input>
     </div>
-    <el-tree ref="tree"
-             :data="data"
-             :lazy="lazy"
-             :load="treeLoad"
-             :props="treeProps"
-             :icon-class="iconClass"
-             :highlight-current="!multiple"
-             :show-checkbox="multiple"
-             :accordion="accordion"
-             :node-key="props.value"
-             :check-strictly="checkStrictly"
-             :filter-node-method="filterNode"
-             v-loading="loading"
-             :expand-on-click-node="expandOnClickNode"
-             @check-change="handleCheckChange"
-             @node-click="nodeClick"
-             @node-contextmenu="nodeContextmenu"
-             :default-expand-all="defaultExpandAll"
-             :default-expanded-keys="defaultExpandedKeys">
-      <span slot-scope="{ node, data }"
-            v-if="$scopedSlots.default">
-        <slot :node="node"
-              :data="data"></slot>
-      </span>
-      <span class="el-tree-node__label"
-            slot-scope="{node}"
-            v-else>
-        <span>{{node.label}}</span>
-      </span>
-    </el-tree>
+    <el-scrollbar :class="b('content')">
+      <el-tree ref="tree"
+               :data="data"
+               :lazy="lazy"
+               :load="treeLoad"
+               :props="treeProps"
+               :icon-class="iconClass"
+               :highlight-current="!multiple"
+               :show-checkbox="multiple"
+               :accordion="accordion"
+               :node-key="props.value"
+               :check-strictly="checkStrictly"
+               :filter-node-method="filterNode"
+               v-loading="loading"
+               :expand-on-click-node="expandOnClickNode"
+               @check-change="handleCheckChange"
+               @node-click="nodeClick"
+               @node-contextmenu="nodeContextmenu"
+               :default-expand-all="defaultExpandAll"
+               :default-expanded-keys="defaultExpandedKeys">
+        <span slot-scope="{ node, data }"
+              v-if="$scopedSlots.default">
+          <slot :node="node"
+                :data="data"></slot>
+        </span>
+        <span class="el-tree-node__label"
+              slot-scope="{node}"
+              v-else>
+          <span>{{node.label}}</span>
+        </span>
+      </el-tree>
+    </el-scrollbar>
+
     <div class="el-cascader-panel is-bordered"
          v-if="client.show&&menu"
          @click="client.show=false"
@@ -94,6 +97,7 @@ export default create({
     permission
   },
   props: {
+    filterNodeMethod: Function,
     permission: {
       type: [Function, Object],
       default: () => {
@@ -286,6 +290,9 @@ export default create({
       this.$emit("node-click", data, node, nodeComp);
     },
     filterNode (value, data) {
+      if (typeof this.filterNodeMethod === 'function') {
+        return this.filterNodeMethod(value, data);
+      }
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },

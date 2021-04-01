@@ -21,8 +21,8 @@
 
 <body>
   <div id="app">
-    <avue-tree ref="tree" :permission="getPermission" :option="option" :data="data" @node-click="nodeClick"
-      @update="update" @save="save" @del="del" v-model="form">
+    <avue-tree ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission" :option="option"
+      :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
       <span class="el-tree-node__label" slot-scope="{ node, data }">
         <span>
           <i class="el-icon-user-solid"></i>
@@ -111,6 +111,10 @@
         this.$message.success('新增回调')
         this.form.value = new Date().getTime();
         done();
+      },
+      filterNodeMethod(value, data) {
+        if (!value) return true;
+        return data.label.indexOf(value) !== -1;
       },
       nodeClick(data) {
         this.$message.success(JSON.stringify(data))

@@ -34,4 +34,7 @@
       display: flex;
       align-items: center;
   }
+  &__content{
+      height: calc(100% - 32px);
+  }
 }
