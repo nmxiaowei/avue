@@ -37,7 +37,7 @@
                          :label="column.label"
                          filter-placement="bottom-end"
                          :filters="getColumnProp(column,'filters')"
-                         :filter-method="crud.default[column.prop].filters?handleFiltersMethod:undefined"
+                         :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
                          :filter-multiple="vaildData(column.filterMultiple,true)"
                          :show-overflow-tooltip="column.overHidden"
                          :min-width="column.minWidth"
@@ -54,11 +54,11 @@
                   v-bind="Object.assign(scope,{column})"></slot>
             <el-popover placement="bottom"
                         v-else
-                        :disabled="crud.default[column.prop].screen!==true"
+                        :disabled="(crud.default[column.prop] || {}).screen!==true"
                         trigger="hover">
               <el-input type="text"
                         :placeholder="`请输入 ${column.label} 筛选关键字`"
-                        v-model="crud.default[column.prop].screenValue"
+                        v-model="(crud.default[column.prop] || {}).screenValue"
                         size="mini"></el-input>
               <span slot="reference">{{column.label}}</span>
             </el-popover>

@@ -32,7 +32,7 @@
                          :label="column.label"
                          filter-placement="bottom-end"
                          :filters="getColumnProp(column,'filters')"
-                         :filter-method="crud.default[column.prop].filters?handleFiltersMethod:undefined"
+                         :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
                          :filter-multiple="vaildData(column.filterMultiple,true)"
                          :show-overflow-tooltip="column.overHidden"
                          :min-width="column.minWidth"
@@ -49,11 +49,11 @@
                   v-bind="Object.assign(scope,{column})"></slot>
             <el-popover placement="bottom"
                         v-else
-                        :disabled="crud.default[column.prop].screen!==true"
+                        :disabled="(crud.default[column.prop] || {}).screen!==true"
                         trigger="hover">
               <el-input type="text"
                         :placeholder="`请输入 ${column.label} 筛选关键字`"
-                        v-model="crud.default[column.prop].screenValue"
+                        v-model="(crud.default[column.prop] || {}).screenValue"
                         size="mini"></el-input>
               <span slot="reference">{{column.label}}</span>
             </el-popover>
@@ -170,14 +170,15 @@ export default create({
   computed: {
     list () {
       let result = [...this.columnOption];
-      result = result.sort((a, b) => ((this.crud.default[a.prop] || {}).order || 0) - ((this.crud.default[b.prop] || {}).order || 0));
+      result = result.sort((a, b) => (this.crud.default[a.prop]?.order || 0) - (this.crud.default[b.prop]?.order || 0));
       return result;
     }
   },
   methods: {
     getColumnProp (column, type) {
+      if (type === 'filterMethod') return this.crud.default[column.prop]?.filters
       if (this.crud.isMobile && ['fixed'].includes(type)) return false;
-      let result = this.crud.default[column.prop][type]
+      let result = this.crud.default[column.prop]?.[type]
       if (type == 'width' && result == 0) { return undefined }
       if (type == 'filters') return this.handleFilters(column, result)
       else return result;
@@ -188,7 +189,7 @@ export default create({
       }
     },
     vaildColumn (item) {
-      return this.crud.default[item.prop].hide !== true;
+      return this.crud.default[item.prop]?.hide !== true;
     },
     corArray (list, separator = DIC_SPLIT) {
       if (this.validatenull(list)) {

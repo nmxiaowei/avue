@@ -123,10 +123,9 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = Object.assign({
-  version: '2.7.9',
+  version: '2.8.5',
   locale: locale.locale,
   install
 }, components);
 
-module.exports = Avue;
-module.exports.default = module.exports;
+export default Avue

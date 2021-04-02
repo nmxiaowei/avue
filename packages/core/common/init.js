@@ -15,7 +15,7 @@ export default function () {
     watch: {
       option: {
         handler () {
-          this.init();
+          this.init(false);
         },
         deep: true,
       }
@@ -56,11 +56,18 @@ export default function () {
       }
     },
     methods: {
-      init () {
+      init (type) {
         this.tableOption = this.option;
         this.getIsMobile();
         this.handleLocalDic();
-        this.handleLoadDic()
+        if (type !== false) this.handleLoadDic()
+      },
+      dicInit (type) {
+        if (type === 'cascader') {
+          this.handleLoadCascaderDic()
+        } else {
+          this.handleLoadDic();
+        }
       },
       getIsMobile () {
         this.isMobile = window.document.body.clientWidth <= 768;
@@ -92,12 +99,7 @@ export default function () {
       },
       // 网络字典加载
       handleLoadDic () {
-        return new Promise((resolve) => {
-          loadDic(this.resultOption).then(res => {
-            this.handleSetDic(this.DIC, res);
-            resolve();
-          });
-        })
+        loadDic(this.resultOption).then(res => this.handleSetDic(this.DIC, res))
       },
       //级联字典加载
       handleLoadCascaderDic () {

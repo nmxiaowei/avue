@@ -278,6 +278,7 @@ export default create({
       btnDisabled: false,
       defaultColumn: config.defaultColumn,
       default: {},
+      defaultBind: {}
     };
   },
   created () {
@@ -456,10 +457,9 @@ export default create({
     data: {
       handler () {
         this.dataInit();
-        this.handleLoadCascaderDic()
       },
       deep: true
-    },
+    }
   },
   props: {
     sortBy: Function,
@@ -620,15 +620,18 @@ export default create({
       });
     },
     columnInit () {
+      this.default = {};
       this.propOption.forEach(column => {
         let obj = {}
         this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
         this.$set(this.default, column.prop, Object.assign(obj, { order: undefined, label: column.label, showColumn: column.showColumn }, this.defaults[column.prop]))
+        if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
           if (['hide', 'filters'].includes(ele.prop)) {
             this.$watch(`default.${column.prop}.${ele.prop}`, () => this.refreshTable())
           }
         })
+        this.defaultBind[column.prop] = true;
       })
     },
     dataInit () {

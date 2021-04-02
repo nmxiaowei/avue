@@ -2,7 +2,6 @@ const path = require('path');
 const aliases = require('./alias');
 const webpack = require('webpack');
 const version = process.env.VERSION || require('../package.json').version;
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const banner =
   ' Avue.js v' +
   version +
@@ -74,7 +73,7 @@ const builds = {
     externals: externals
   }
 };
-function genConfig(name) {
+function genConfig (name) {
   const opts = builds[name];
   const config = {
     entry: {
@@ -102,17 +101,7 @@ function genConfig(name) {
     );
   }
   const isProd = /min\.js$/.test(opts.filename);
-  if (isProd) {
-    config.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        },
-        sourceMap: false
-      })
-    );
-    // config.plugins.push(new BundleAnalyzerPlugin())
-  }
+  config.mode = isProd ? 'production' : 'development';
   return config;
 }
 

@@ -1,5 +1,6 @@
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const { VueLoaderPlugin } = require('vue-loader')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const alias = require('./alias');
 let config = require('./config');
@@ -12,7 +13,7 @@ module.exports = merge(config, {
   module: {
     rules: [
       {
-        test: /\.(jsx?|babel|es6)$/,
+        test: /\.js$/,
         include: process.cwd(),
         exclude: /node_modules/,
         loader: 'babel-loader'
@@ -27,6 +28,7 @@ module.exports = merge(config, {
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new ProgressBarPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true

@@ -145,7 +145,7 @@ function handeDic (list) {
 
 // ajax获取字典
 export const sendDic = (params) => {
-  let { url, query, method, resKey, props, formatter, value, column, form = {} } = params;
+  let { url, query, method, resKey, props, formatter, value = '', column, form = {} } = params;
   if (column) {
     url = column.dicUrl;
     method = column.dicMethod;
@@ -153,13 +153,30 @@ export const sendDic = (params) => {
     formatter = column.dicFormatter;
     props = column.props;
   }
+  let key = "key"
   url = url || '';
-  let list = url.match(/[^\{\}]+(?=\})/g);
-  list = list || [];
-  list.forEach(ele => {
-    if (ele === 'key') url = url.replace('{{key}}', value || '');
-    else url = url.replace('{{' + ele + '}}', form[ele] || '');
-  });
+  let list = [];
+  let data = {};
+  if (method === 'post') {
+    list = Object.keys(query);
+    list.forEach(ele => {
+      let eleKey = query[ele] + '';
+      let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
+      if (eleKey.match(/\{{|}}/g)) {
+        data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
+      } else {
+        data[ele] = eleKey;
+      }
+    });
+  } else {
+    list = url.match(/[^\{\}]+(?=\})/g) || [];
+    list.forEach(ele => {
+      let eleKey = `{{${ele}}}`;
+      let eleValue = form[ele];
+      if (ele === key) url = url.replace(eleKey, value);
+      else url = url.replace(eleKey, eleValue);
+    })
+  }
   if (props) resKey = (props || {}).res || resKey;
   return new Promise(resolve => {
     const callback = (res) => {
@@ -176,7 +193,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, query).then(function (res) {
+      window.axios.post(url, data).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
