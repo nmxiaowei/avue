@@ -459,12 +459,6 @@ export default create({
         this.dataInit();
       },
       deep: true
-    },
-    propOption: {
-      handler () {
-        this.columnInit();
-      },
-      deep: true
     }
   },
   props: {
