@@ -30,11 +30,12 @@
     }
   }
   &__filter {
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
   }
   &__content{
+      padding: 5px 0;
       height: calc(100% - 32px);
   }
 }
