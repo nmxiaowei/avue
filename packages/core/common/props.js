@@ -18,6 +18,7 @@ export default function () {
       change: Function,
       click: Function,
       typeformat: Function,
+      control: Function,
       separator: {
         type: String,
         default: DIC_SPLIT
