@@ -18,6 +18,7 @@ export default function () {
       change: Function,
       click: Function,
       typeformat: Function,
+      control: Function,
       separator: {
         type: String,
         default: DIC_SPLIT
@@ -138,12 +139,12 @@ export default function () {
     },
     watch: {
       text: {
-        handler (n, o) {
+        handler (n) {
           this.handleChange(n)
         }
       },
       value: {
-        handler (n, o) {
+        handler () {
           this.initVal();
         }
       }

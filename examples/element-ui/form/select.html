@@ -33,15 +33,10 @@
       return {
         form: {},
         form: {
-          province: "110000",
+          province: "120000",
           multipleSelect: []
         },
-        option: {}
-      }
-    },
-    mounted() {
-      setTimeout(() => {
-        this.option = {
+        option: {
           column: [{
             label: '分组',
             prop: 'selects',
@@ -74,13 +69,38 @@
             }]
           },
           {
+            label: '动态',
+            prop: 'text',
+            rules: [
+              {
+                required: true,
+                message: '请输入动态',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
             label: '省份',
             prop: 'province',
             type: 'select',
-            remote: true,
             props: {
               label: 'name',
               value: 'code'
+            },
+            control(val, form, callback) {
+              if (val == '110000') {
+                return {
+                  selects: {
+                    display: false
+                  }
+                }
+              } else {
+                return {
+                  selects: {
+                    display: true
+                  }
+                }
+              }
             },
             dicUrl: `${baseUrl}/getProvince?city={{key}}`,
             rules: [
@@ -113,7 +133,10 @@
           }
           ]
         }
-      }, 2000)
+      }
+    },
+    mounted() {
+
     },
     methods: {
     }

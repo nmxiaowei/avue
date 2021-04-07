@@ -98,8 +98,7 @@ export default {
   },
   data () {
     return {
-      first: false,
-      text: undefined,
+      text: undefined
     }
   },
   computed: {
@@ -111,33 +110,23 @@ export default {
     }
   },
   watch: {
-    text: {
-      handler (val) {
-        if (this.first || !this.validatenull(val)) {
-          this.first = true;
-          this.$emit('input', val);
-        } else {
-          this.first = true;
-        }
-      }
-    },
     value: {
       handler (val) {
         this.text = val;
-      },
-      immediate: true
+      }
     }
+  },
+  created () {
+    this.text = this.value;
   },
   methods: {
     getComponent,
     getPlaceholder,
     enterChange () {
-      if (this.enter) {
-        this.$emit('enter')
-      }
-
+      if (this.enter) this.$emit('enter')
     },
     handleChange (val) {
+      this.$emit('input', val);
       this.$emit('change', val)
     }
   }

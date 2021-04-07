@@ -83,9 +83,11 @@ function genConfig (name) {
       filename: opts.filename,
       path: opts.dest,
       chunkFilename: '[id].js',
+      libraryExport: "default",
       libraryTarget: 'umd',
       library: 'AVUE',
-      umdNamedDefine: true
+      umdNamedDefine: true,
+      globalObject: 'this'
     },
     externals: opts.externals,
     plugins: [

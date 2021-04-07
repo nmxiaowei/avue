@@ -13,6 +13,8 @@
                :separator="separator"
                :disabled="disabled"
                :collapse-tags="tags"
+               @focus="handleFocus"
+               @blur="handleBlur"
                @click.native="handleClick">
     <template slot-scope="{data,node}">
       <slot v-if="$scopedSlots.default"

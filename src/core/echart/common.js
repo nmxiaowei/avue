@@ -5,6 +5,7 @@ export default (() => {
   return {
     props: {
       click: Function,
+      stylesFormatter: Function,
       dataFormatter: Function,
       titleFormatter: Function,
       labelFormatter: Function,
@@ -98,7 +99,8 @@ export default (() => {
         dataChart: [],
         dataUrl: '',
         key: false,
-        isChart: false
+        isChart: false,
+        styles: {}
       };
     },
     watch: {
@@ -190,7 +192,7 @@ export default (() => {
             };
           }
           return {};
-        })());
+        })(), this.styles);
       }
     },
     mounted () {
@@ -229,7 +231,11 @@ export default (() => {
             const bindEvent = () => {
               if (this.isChart) this.updateChart();
               if (this.myChart) this.bindClick();
+              if (typeof this.stylesFormatter === 'function') {
+                this.styles = this.stylesFormatter(this.dataChart) || {};
+              }
               resolve(this.dataChart);
+
             }
             // 动态数据
             if (this.isApi) {

@@ -8,8 +8,7 @@
              :label-suffix="labelSuffix"
              :size="$AVUE.formSize || controlSize"
              :label-position="parentOption.labelPosition"
-             :label-width="setPx(parentOption.labelWidth,labelWidth)"
-             :rules="formRules">
+             :label-width="setPx(parentOption.labelWidth,labelWidth)">
       <el-row :span="24"
               :class="{'avue-form__tabs':isTabs}">
         <avue-group v-for="(item,index) in columnOption"
@@ -18,7 +17,7 @@
                     :tabs="isTabs"
                     :arrow="item.arrow"
                     :collapse="item.collapse"
-                    :display="item.display"
+                    :display="vaildDisplay(item)"
                     :icon="item.icon"
                     :index="index"
                     :header="!isTabs"
@@ -31,7 +30,7 @@
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
             <template v-for="(tabs,index) in columnOption">
-              <el-tab-pane v-if="vaildData(tabs.display,true) && index!=0"
+              <el-tab-pane v-if="vaildDisplay(tabs) && index!=0"
                            :key="index"
                            :name="index+''">
                 <span slot="label">
@@ -63,6 +62,7 @@
                       :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
+                              :rules="column.rules"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
@@ -217,12 +217,6 @@ export default create({
       },
       immediate: true
     },
-    formRules: {
-      handler () {
-        this.clearValidate();
-      },
-      deep: true
-    },
     form: {
       handler (val) {
         if (this.formCreate) this.setVal();
@@ -283,6 +277,18 @@ export default create({
         }
       })
       return list
+    },
+    controlOption () {
+      let list = [];
+      this.propOption.forEach(ele => {
+        if (ele.control) list.push(ele);
+      });
+      return list;
+    },
+    objectOption () {
+      let obj = {};
+      this.propOption.forEach(ele => obj[ele.prop] = ele);
+      return obj;
     },
     propOption () {
       let list = [];
@@ -444,8 +450,17 @@ export default create({
       this.setForm(this.deepClone(Object.assign(value, this.formVal)))
     },
     setVal () {
+      this.setControl();
       this.$emit("input", this.form);
       this.$emit("change", this.form);
+    },
+    setControl () {
+      this.controlOption.forEach(ele => {
+        let control = ele.control(this.form[ele.prop], this.form);
+        Object.keys(control).forEach(item => {
+          this.objectOption[item] = Object.assign(this.objectOption[item], control[item])
+        })
+      })
     },
     //表单赋值
     setForm (value) {
@@ -520,6 +535,7 @@ export default create({
       });
     },
     propChange (option, column) {
+      this.$refs.form.validateField(column.prop)
       if (column.cascader) this.handleChange(option, column)
     },
     handleMock () {
