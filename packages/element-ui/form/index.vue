@@ -457,8 +457,9 @@ export default create({
     setControl () {
       this.controlOption.forEach(ele => {
         let control = ele.control(this.form[ele.prop], this.form);
-        (control?.hide || []).forEach(item => this.objectOption[item].display = false);
-        (control?.show || []).forEach(item => this.objectOption[item].display = true);
+        Object.keys(control).forEach(item => {
+          this.objectOption[item] = Object.assign(this.objectOption[item], control[item])
+        })
       })
     },
     //表单赋值

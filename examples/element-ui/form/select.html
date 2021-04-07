@@ -90,11 +90,15 @@
             control(val, form, callback) {
               if (val == '110000') {
                 return {
-                  hide: ['selects']
+                  selects: {
+                    display: false
+                  }
                 }
               } else {
                 return {
-                  show: ['selects']
+                  selects: {
+                    display: true
+                  }
                 }
               }
             },
