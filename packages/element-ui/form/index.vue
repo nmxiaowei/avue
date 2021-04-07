@@ -17,7 +17,7 @@
                     :tabs="isTabs"
                     :arrow="item.arrow"
                     :collapse="item.collapse"
-                    :display="item.display"
+                    :display="vaildDisplay(item)"
                     :icon="item.icon"
                     :index="index"
                     :header="!isTabs"
@@ -30,7 +30,7 @@
                    :type="tabsType"
                    v-if="isTabs&&index == 1">
             <template v-for="(tabs,index) in columnOption">
-              <el-tab-pane v-if="vaildData(tabs.display,true) && index!=0"
+              <el-tab-pane v-if="vaildDisplay(tabs) && index!=0"
                            :key="index"
                            :name="index+''">
                 <span slot="label">
