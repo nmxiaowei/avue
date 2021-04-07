@@ -139,12 +139,12 @@ export default function () {
     },
     watch: {
       text: {
-        handler (n, o) {
+        handler (n) {
           this.handleChange(n)
         }
       },
       value: {
-        handler (n, o) {
+        handler () {
           this.initVal();
         }
       }
