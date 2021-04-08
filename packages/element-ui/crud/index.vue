@@ -442,6 +442,12 @@ export default create({
       },
       deep: true
     },
+    defaults: {
+      handler (val) {
+        this.default = this.defaults;
+      },
+      deep: true
+    },
     tableForm: {
       handler () {
         this.$emit("input", this.tableForm);
