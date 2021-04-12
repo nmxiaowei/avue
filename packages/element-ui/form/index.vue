@@ -535,7 +535,7 @@ export default create({
       });
     },
     propChange (option, column) {
-      this.$refs.form.validateField(column.prop)
+      if (this.$refs.form) this.$refs.form.validateField(column.prop)
       if (column.cascader) this.handleChange(option, column)
     },
     handleMock () {
