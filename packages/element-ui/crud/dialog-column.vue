@@ -9,6 +9,8 @@
              :visible.sync="columnBox">
     <el-scrollbar style="height:calc(100% - 100px)">
       <el-table :data="list"
+                ref="table"
+                :key="Math.random()"
                 size="small"
                 border>
         <el-table-column align="center"
@@ -17,23 +19,26 @@
                          prop="label"
                          label="列名">
         </el-table-column>
-        <el-table-column :prop="item.prop"
-                         :key="index"
-                         align="center"
-                         header-align="center"
-                         :width="item.width|| 50"
-                         v-for="(item,index) in crud.defaultColumn"
-                         :label="item.label">
-          <template slot-scope="{row}">
-            <el-slider :min="0"
-                       :max="2000"
-                       size="small"
-                       v-if="item.prop=='width'"
-                       v-model="crud.default[row.prop][item.prop]"></el-slider>
-            <el-checkbox v-else
-                         v-model="crud.default[row.prop][item.prop]"></el-checkbox>
-          </template>
-        </el-table-column>
+        <template v-for="(item,index) in crud.defaultColumn">
+          <el-table-column :prop="item.prop"
+                           :key="index"
+                           align="center"
+                           header-align="center"
+                           :width="item.width|| 50"
+                           v-if="!['order'].includes(crud.defaultColumn.prop)"
+                           :label="item.label">
+            <template slot-scope="{row}">
+              <el-slider :min="0"
+                         :max="2000"
+                         size="small"
+                         v-if="item.prop=='width'"
+                         v-model="crud.default[row.prop][item.prop]"></el-slider>
+              <el-checkbox v-else
+                           v-model="crud.default[row.prop][item.prop]"></el-checkbox>
+            </template>
+          </el-table-column>
+        </template>
+
       </el-table>
     </el-scrollbar>
   </el-drawer>
@@ -60,8 +65,31 @@ export default create({
           list.push(Object.assign(ele, { prop: o }))
         }
       }
+      list = list.filter(item => !this.validatenull(item.order)).sort((a, b) => (a.order || 0) - (b.order || 0)).concat(list.filter(item => this.validatenull(item.order)))
       return list;
     }
+  },
+  watch: {
+    columnBox (val) {
+      if (val) this.$nextTick(() => this.rowDrop())
+    }
+  },
+  methods: {
+    //行排序
+    rowDrop () {
+      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = window.Sortable.create(el, {
+        ghostClass: 'el-table__row',
+        animation: 180,
+        delay: 0,
+        onEnd: evt => {
+          const oldIndex = evt.oldIndex;
+          const newIndex = evt.newIndex;
+          this.crud.headerSort(oldIndex, newIndex)
+          this.$nextTick(() => this.rowDrop())
+        }
+      })
+    },
   }
 });
 </script>

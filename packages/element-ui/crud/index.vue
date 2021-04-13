@@ -633,7 +633,7 @@ export default create({
         this.$set(this.default, column.prop, Object.assign(obj, { order: undefined, label: column.label, showColumn: column.showColumn }, this.defaults[column.prop]))
         if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
-          if (['hide', 'filters'].includes(ele.prop)) {
+          if (['hide', 'filters', 'order'].includes(ele.prop)) {
             this.$watch(`default.${column.prop}.${ele.prop}`, () => this.refreshTable())
           }
         })
@@ -654,6 +654,15 @@ export default create({
     headerDragend (newWidth, oldWidth, column, event) {
       this.default[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
+    },
+    headerSort (oldIndex, newIndex) {
+      let column = this.propOption;
+      let targetRow = column.splice(oldIndex, 1)[0]
+      column.splice(newIndex, 0, targetRow)
+      this.refreshTable()
+      this.propOption.forEach((ele, index) => {
+        this.default[ele.prop].order = index;
+      })
     },
     //展开或则关闭
     expandChange (row, expand) {
