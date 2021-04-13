@@ -44,7 +44,8 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
 /**
  * 初始化数据格式
  */
-export const initVal = ({ type, multiple, dataType, value, callback, separator = DIC_SPLIT }) => {
+export const initVal = (value, column, callback) => {
+  let { type, multiple, dataType, separator = DIC_SPLIT, alone } = column
   let list = value;
   if (
     (MULTIPLE_LIST.includes(type) && multiple) ||
@@ -65,7 +66,7 @@ export const initVal = ({ type, multiple, dataType, value, callback, separator =
     list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
-    if (ARRAY_LIST.includes(type) && validatenull(list)) list = [''];
+    if (ARRAY_LIST.includes(type) && validatenull(list) && alone) list = [''];
   }
   return list;
 };
