@@ -1,5 +1,12 @@
 <template>
   <div :class="b()">
+    <el-button type="primary"
+               icon="el-icon-plus"
+               circle
+               :size="size"
+               v-if="validatenull(text)"
+               :disabled="disabled"
+               @click="add()"></el-button>
     <div :class="b('item')"
          v-for="(item,index) in text"
          :key="index">
@@ -18,6 +25,7 @@
                      :target="target">{{item}}</el-link>
           </div>
           <el-input v-model="text[index]"
+                    :size="size"
                     :placeholder="placeholder"
                     :disabled="disabled"></el-input>
         </el-tooltip>
@@ -26,13 +34,13 @@
                      icon="el-icon-plus"
                      circle
                      :size="size"
-                     v-if="index===0"
-                     @click="add()"></el-button>
+                     :disabled="disabled"
+                     @click="add(index)"></el-button>
           <el-button type="danger"
-                     v-else
                      icon="el-icon-minus"
                      circle
                      :size="size"
+                     :disabled="disabled"
                      @click="remove(index)"></el-button>
         </template>
       </div>
@@ -70,8 +78,8 @@ export default create({
     value: [Array, String],
   },
   methods: {
-    add () {
-      this.text.push('')
+    add (index) {
+      this.text.splice(index + 1, 0, '');
     },
     remove (index) {
       this.text.splice(index, 1)
