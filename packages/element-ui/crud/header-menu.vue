@@ -258,11 +258,7 @@ export default create({
     },
     //打印
     rowPrint () {
-      this.$nextTick(() => {
-        this.$Print({
-          html: this.crud.$el.innerHTML
-        })
-      });
+      this.$Print(this.crud.$refs.table)
     }
   }
 });

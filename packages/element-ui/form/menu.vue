@@ -4,7 +4,7 @@
           :sm="12"
           :xs="24"
           :style="styleName"
-          :class="formSafe.b('menu',[formSafe.menuPosition])"
+          :class="[formSafe.b('menu',[formSafe.menuPosition]),'no-print']"
           v-if="vaildData(formSafe.parentOption.menuBtn,true)">
     <el-form-item label-width="0px">
       <el-button type="primary"

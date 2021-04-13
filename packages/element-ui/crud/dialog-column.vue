@@ -25,7 +25,7 @@
                            align="center"
                            header-align="center"
                            :width="item.width|| 50"
-                           v-if="!['order'].includes(crud.defaultColumn.prop)"
+                           v-if="!['order'].includes(item.prop)"
                            :label="item.label">
             <template slot-scope="{row}">
               <el-slider :min="0"

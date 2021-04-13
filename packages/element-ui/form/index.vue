@@ -376,7 +376,7 @@ export default create({
     }
   },
   created () {
-    this.$nextTick(() => {
+    setTimeout(() => {
       this.dataFormat();
       this.setVal();
       this.clearValidate();
@@ -530,9 +530,7 @@ export default create({
       })
     },
     handlePrint () {
-      this.$Print({
-        html: this.$el.innerHTML
-      });
+      this.$Print(this.$el);
     },
     propChange (option, column) {
       if (this.$refs.form) this.$refs.form.validateField(column.prop)
