@@ -99,6 +99,15 @@ export default cteate({
       },
       deep: true,
     },
+    searchShow: {
+      handler () {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.crud.getTableHeight()
+          }, 300)
+        })
+      }
+    },
     searchForm: {
       handler () {
         this.$emit("input", this.searchForm);
