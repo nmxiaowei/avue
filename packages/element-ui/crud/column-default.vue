@@ -99,6 +99,8 @@ export default create({
       const el = this.crud.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = window.Sortable.create(el, {
         ghostClass: 'avue-crud__sortable',
+        animation: 180,
+        delay: 0,
         handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
         onEnd: evt => {
           const oldindex = evt.oldIndex;
@@ -111,20 +113,17 @@ export default create({
     },
     //列排序
     columnDrop () {
+      let headerLen = this.crud.$refs.table.$el.querySelector('.el-table__header-wrapper tr');
+      headerLen = headerLen.children.length
+      headerLen = headerLen - this.crud.columnOption.length - 2;
       const wrapperTr = this.crud.$refs.table.$el.querySelector('.el-table__header-wrapper tr');
       window.Sortable.create(wrapperTr, {
         animation: 180,
         delay: 0,
         onEnd: evt => {
-          const oldIndex = evt.oldIndex - 1;
-          const newIndex = evt.newIndex - 1;
-          let column = this.crud.propOption;
-          let targetRow = column.splice(oldIndex, 1)[0]
-          column.splice(newIndex, 0, targetRow)
-          this.crud.refreshTable()
-          this.crud.propOption.forEach((ele, index) => {
-            this.crud.default[ele.prop].order = index;
-          })
+          const oldIndex = evt.oldIndex - headerLen;
+          const newIndex = evt.newIndex - headerLen;
+          this.crud.headerSort(oldIndex, newIndex)
         }
       });
     },

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html class="no-js">
+<html>
 
 <head>
   <meta charset="utf-8" />
@@ -31,14 +30,10 @@
     el: '#app',
     methods: {
       handlePrint1() {
-        this.$Print({
-          id: 'test'
-        });
+        this.$Print('#test');
       },
       handlePrint() {
-        this.$Print({
-          html: document.body.innerHTML
-        });
+        this.$Print('#app');
       }
     }
   })

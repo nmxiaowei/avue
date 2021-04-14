@@ -99,6 +99,15 @@ export default cteate({
       },
       deep: true,
     },
+    searchShow: {
+      handler () {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.crud.getTableHeight()
+          }, 300)
+        })
+      }
+    },
     searchForm: {
       handler () {
         this.$emit("input", this.searchForm);
@@ -132,7 +141,7 @@ export default cteate({
         let count = 0;
         //根据order排序
         list.forEach(ele => {
-          if (ele.search) {
+          if (ele.search && this.crud.default[ele.prop]?.hide !== true) {
             let isCount = count < this.searchIndex
             ele = Object.assign(ele, {
               type: getSearchType(ele),

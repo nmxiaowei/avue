@@ -7,15 +7,8 @@ export default function () {
   return {
     methods: {
       initVal () {
-        this.text = initVal({
-          type: this.type,
-          multiple: this.multiple,
-          dataType: this.dataType,
-          value: this.value,
-          separator: this.separator,
-          callback: (result) => {
-            this.stringMode = result;
-          }
+        this.text = initVal(this.value, this.column, (result) => {
+          this.stringMode = result;
         });
       },
       getLabelText (item) {

@@ -16,6 +16,9 @@ export default {
     label: '排序',
     prop: 'sortable'
   }, {
+    label: '顺序',
+    prop: 'order'
+  }, {
     label: '宽度',
     prop: 'width',
     width: 'auto'
