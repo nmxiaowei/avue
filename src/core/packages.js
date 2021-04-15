@@ -43,43 +43,43 @@ const list = {
     url: '',
     title: '需要引入ant-design-vue框架包',
     version: '1.3.14',
-    gihub: 'https://github.com/vueComponent/ant-design-vue'
+    github: 'https://github.com/vueComponent/ant-design-vue'
   },
   'element-ui': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/index.js',
     title: '需要引入Element-ui框架包',
     version: '2.11.0',
-    gihub: 'https://github.com/ElemeFE/element'
+    github: 'https://github.com/ElemeFE/element'
   },
   'hljs': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js',
     title: '需要引入hljs框架包',
     version: '9.15.6',
-    gihub: 'https://github.com/highlightjs/highlight.js'
+    github: 'https://github.com/highlightjs/highlight.js'
   },
   'vant': {
     url: 'https://cdn.jsdelivr.net/npm/vant@1.6/lib/vant.min.js',
     title: '需要引入Vant框架包',
     version: '1.6',
-    gihub: 'https://github.com/youzan/vant'
+    github: 'https://github.com/youzan/vant'
   },
   'file-saver': {
     url: 'https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js',
     title: '需要引入文件操作包',
     version: '2014-11-29',
-    gihub: 'https://github.com/eligrey/FileSaver.js'
+    github: 'https://github.com/eligrey/FileSaver.js'
   },
   'xlsx': {
-    url: 'https://cdn.staticfile.org/xlsx/0.14.1/xlsx.full.min.js',
+    url: 'https://avuejs.com/cdn/xlsx.full.min.js',
     title: '需要引入excel操作包',
-    version: '0.14.1',
-    gihub: 'https://github.com/SheetJS/js-xlsx'
+    version: '0.8.3',
+    github: 'https://github.com/protobi/js-xlsx/tree/beta'
   },
   'mock': {
     url: 'https://cdn.staticfile.org/Mock.js/1.0.1-beta3/mock-min.js',
     title: '需要引入mock模拟数据包',
     version: '1.0.1-beta3',
-    gihub: 'https://github.com/Colingo/mock'
+    github: 'https://github.com/Colingo/mock'
   },
   'axios': {
     title: '需要引入axios发送数据包',
@@ -91,7 +91,7 @@ const list = {
 
 export default (() => {
   return {
-    logs: function(name) {
+    logs: function (name) {
       const obj = list[name];
       $Log.capsule(
         name,

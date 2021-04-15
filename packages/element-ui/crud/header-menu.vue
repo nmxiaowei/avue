@@ -102,7 +102,6 @@ import permission from '../../core/directive/permission';
 import create from "core/create";
 import config from "./config";
 import packages from "core/packages";
-import { dateFtt } from 'utils/date'
 import { vaildData, getAsVal } from "utils/util";
 export default create({
   name: "crud",
@@ -189,37 +188,13 @@ export default create({
       this.crud.rowPrint = this.rowPrint;
     },
     rowExcel () {
-      if (!window.saveAs || !window.XLSX) {
-        packages.logs("file-saver");
-        packages.logs("xlsx");
-        return;
-      }
       if (this.validatenull(this.data)) {
         this.$message.warning("请勾选要导出的数据");
         return;
       }
-      this.$export.excel({
-        title: (this.crud.tableOption.title || '') + dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
-        columns: (() => {
-          let list = [];
-          this.crud.propOption.forEach(ele => {
-            if (this.crud.default[ele.prop]?.display !== false && ele.showColumn !== false) {
-              list.push({
-                label: ele.label,
-                prop: (() => {
-                  if (
-                    !this.validatenull(this.crud.DIC[ele.prop]) ||
-                    !this.validatenull(ele.parentProp)
-                  ) {
-                    return "$" + ele.prop;
-                  }
-                  return ele.prop;
-                })()
-              });
-            }
-          });
-          return list;
-        })(),
+      this.$Export.excel({
+        title: this.crud.tableOption.title,
+        columns: this.crud.columnOption,
         data: this.handleSum()
       });
       this.crud.setCurrentRow();
@@ -236,6 +211,9 @@ export default create({
         columnOption.forEach(column => {
           if (column.bind) {
             obj[column.prop] = getAsVal(obj, column.bind);
+          }
+          if (!this.validatenull(obj['$' + column.prop])) {
+            obj[column.prop] = obj['$' + column.prop];
           }
         })
         data.push(obj);

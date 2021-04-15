@@ -3,7 +3,7 @@ import config from 'ui/config';
 import { validatenull, asyncValidator } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
-import _export from 'plugin/export/';
+import $Export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
@@ -16,6 +16,7 @@ import $Group from 'packages/core/components/group/';
 import $Echart from 'core/echart/common';
 
 let prototypes = {
+  $Export,
   $Print,
   $Clipboard,
   $Log,
@@ -37,7 +38,6 @@ let prototypes = {
 
 };
 const install = function (Vue, opts = {}) {
-  Vue.use(_export);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
   Object.keys(components).map(ele => {

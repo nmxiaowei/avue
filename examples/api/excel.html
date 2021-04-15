@@ -38,7 +38,7 @@
     },
     methods: {
       handleChange(file, fileLis) {
-        this.$export.xlsx(file.raw)
+        this.$Export.xlsx(file.raw)
           .then(data => {
             console.log(data)
           })
@@ -56,7 +56,7 @@
             title: "测试数据2"
           }]
         }
-        this.$export.excel({
+        this.$Export.excel({
           title: opt.title || new Date().getTime(),
           columns: opt.column,
           data: opt.data
