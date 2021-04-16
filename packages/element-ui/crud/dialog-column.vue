@@ -88,8 +88,8 @@ export default create({
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]
       this.sortable = window.Sortable.create(el, {
-        ghostClass: this.config.ghostClass,
-        chosenClass: this.config.ghostClass,
+        ghostClass: config.ghostClass,
+        chosenClass: config.ghostClass,
         animation: 500,
         delay: 0,
         onEnd: evt => {

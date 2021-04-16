@@ -445,7 +445,7 @@ export default create({
     },
     defaults: {
       handler (val) {
-        this.default = this.defaults;
+        this.default = val;
       },
       deep: true
     },
