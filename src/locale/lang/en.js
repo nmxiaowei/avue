@@ -60,7 +60,7 @@ export default {
     viewBtn: 'view',
     editBtn: 'edit',
     copyBtn: 'copy',
-    delBtn: 'del'
+    delBtn: 'delete'
   }
 }
   ;
