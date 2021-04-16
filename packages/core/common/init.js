@@ -59,6 +59,7 @@ export default function () {
       init (type) {
         this.tableOption = this.option;
         this.getIsMobile();
+        this.columnInit && this.columnInit();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },

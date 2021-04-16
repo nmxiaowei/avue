@@ -31,9 +31,11 @@
     el: '#app',
     data() {
       return {
+        dicData: [],
         data: [{
           input: 1,
           tree: 1,
+          dic: "110000",
           dynamic: [{
             input: 1,
             select: 1,
@@ -44,19 +46,47 @@
             radio: 1,
           }]
         }],
-        option: {
+      }
+    },
+    computed: {
+      option() {
+        let callback = (value) => {
+          if (value == 0) {
+            this.dicData = [{
+              label: 0,
+              value: 0
+            }]
+          } else {
+            this.dicData = [{
+              label: 1,
+              value: 1
+            }]
+          }
+        }
+        return {
           labelWidth: 110,
           column: [{
+            label: '网络字典',
+            prop: 'dic',
+            type: 'select',
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            dicUrl: 'https://cli.avuejs.com/api/area/getProvince',
+          }, {
             label: '树型',
             prop: "tree",
-            type: 'tree',
+            type: 'select',
+            change: ({ value }) => {
+              callback(value);
+            },
             dicData: [{
               label: '1-1',
               value: 0,
-              children: [{
-                label: "2-1",
-                value: 1
-              }]
+            }, {
+              label: "2-1",
+              value: 1
             }]
           },
           {
@@ -73,7 +103,6 @@
                 width: 200,
                 label: '输入框',
                 prop: "input",
-                formslot: true,
                 rules: [
                   {
                     required: true,
@@ -85,65 +114,16 @@
                 width: 200,
                 label: '密码框',
                 prop: "password",
-                type: 'password'
+                type: 'password',
               }, {
                 width: 200,
-                label: '树型',
-                prop: "tree",
-                type: 'tree',
-                dicData: [{
-                  label: '1-1',
-                  value: 0,
-                  children: [{
-                    label: "2-1",
-                    value: 1
-                  }]
-                }]
-              }, {
-                width: 200,
-                label: '选择框',
+                label: '字典',
                 prop: "select",
                 type: 'select',
-                dicData: [{
-                  label: '测试1',
-                  value: 1
-                }, {
-                  label: '测试2',
-                  value: 2
-                }]
-              }, {
-                width: 200,
-                label: '多选',
-                prop: "checkbox",
-                type: 'checkbox',
-                dicData: [{
-                  label: '测试1',
-                  value: 1
-                }, {
-                  label: '测试2',
-                  value: 2
-                }]
-              }, {
-                width: 200,
-                label: '开关',
-                prop: "switch",
-                type: 'switch',
-                dicData: [{
-                  label: '测试1',
-                  value: 1
-                }, {
-                  label: '测试2',
-                  value: 2
-                }]
-              }, {
-                width: 200,
-                label: '数字框',
-                prop: "number",
-                type: 'number'
+                dicData: this.dicData
               }]
             },
           },
-
           ]
         }
       }

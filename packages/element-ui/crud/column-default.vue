@@ -13,21 +13,7 @@
               name="expand"></slot>
       </template>
     </el-table-column>
-    <!-- 拖动排序  -->
-    <el-table-column v-if="tableOption.sortable && tableOption.dragHandler"
-                     :width="tableOption.sortableWidth || config.sortableWidth"
-                     :fixed="vaildData(tableOption.sortableFixed,config.sortableFixed)"
-                     align="center">
-      <template slot="header"
-                slot-scope="{}">
-        <i class="el-icon-sort" />
-      </template>
-      <template slot-scope="{}">
-        <span class="avue-crud__drag-handler">
-          <i class="el-icon-rank" />
-        </span>
-      </template>
-    </el-table-column>
+
     <!-- 选择框 -->
     <el-table-column v-if="tableOption.selection"
                      :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
@@ -51,6 +37,7 @@
 
 import create from "core/create";
 import config from "./config.js";
+import packages from "core/packages";
 import locale from "../../core/common/locale";
 import permission from '../../core/directive/permission';
 export default create({
@@ -70,11 +57,6 @@ export default create({
       }
     }
   },
-  computed: {
-    isSortable () {
-      return this.tableOption.sortable;
-    }
-  },
   methods: {
     indexMethod (index) {
       return (
@@ -85,7 +67,7 @@ export default create({
       );
     },
     setSort () {
-      if (this.isSortable) {
+      if (this.crud.isSortable) {
         if (!window.Sortable) {
           packages.logs("Sortable")
           return
@@ -94,31 +76,30 @@ export default create({
         this.columnDrop()
       }
     },
-    //行排序
     rowDrop () {
-      const el = this.crud.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
       this.sortable = window.Sortable.create(el, {
-        ghostClass: 'avue-crud__sortable',
-        animation: 180,
+        ghostClass: this.config.ghostClass,
+        chosenClass: this.config.ghostClass,
+        animation: 500,
         delay: 0,
-        handle: this.tableOption.dragHandler ? '.avue-crud__drag-handler' : undefined,
         onEnd: evt => {
-          const oldindex = evt.oldIndex;
-          const newindex = evt.newIndex;
-          const targetRow = this.crud.list.splice(oldindex, 1)[0]
-          this.crud.list.splice(newindex, 0, targetRow)
-          this.crud.$emit('sortable-change', oldindex, newindex, targetRow, this.crud.list)
+          const oldIndex = evt.oldIndex;
+          const newIndex = evt.newIndex;
+          const targetRow = this.crud.list.splice(oldIndex, 1)[0]
+          this.crud.list.splice(newIndex, 0, targetRow)
+          this.crud.$emit('sortable-change', oldIndex, newIndex, targetRow, this.crud.list)
         }
       })
     },
-    //列排序
     columnDrop () {
-      let headerLen = this.crud.$refs.table.$el.querySelector('.el-table__header-wrapper tr');
-      headerLen = headerLen.children.length
+      let headerObj = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
+      let headerLen = headerObj.children.length
       headerLen = headerLen - this.crud.columnOption.length - 2;
-      const wrapperTr = this.crud.$refs.table.$el.querySelector('.el-table__header-wrapper tr');
-      window.Sortable.create(wrapperTr, {
-        animation: 180,
+      window.Sortable.create(headerObj, {
+        ghostClass: this.config.ghostClass,
+        chosenClass: this.config.ghostClass,
+        animation: 500,
         delay: 0,
         onEnd: evt => {
           const oldIndex = evt.oldIndex - headerLen;

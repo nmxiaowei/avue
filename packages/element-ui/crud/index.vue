@@ -284,8 +284,6 @@ export default create({
   created () {
     // 初始化数据
     this.dataInit();
-    // 初始化列
-    this.columnInit();
   },
   mounted () {
     this.refreshTable(() => {
@@ -296,6 +294,9 @@ export default create({
     })
   },
   computed: {
+    isSortable () {
+      return this.tableOption.sortable;
+    },
     treeProps () {
       return this.tableOption.treeProps || {}
     },
@@ -630,7 +631,11 @@ export default create({
       this.propOption.forEach(column => {
         let obj = {}
         this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
-        this.$set(this.default, column.prop, Object.assign(obj, { order: undefined, label: column.label, showColumn: column.showColumn }, this.defaults[column.prop]))
+        this.$set(this.default, column.prop, Object.assign(obj, {
+          order: undefined,
+          label: column.label,
+          showColumn: column.showColumn
+        }, this.defaults[column.prop]))
         if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
           if (['hide', 'filters', 'order'].includes(ele.prop)) {
