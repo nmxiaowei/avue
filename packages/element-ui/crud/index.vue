@@ -993,6 +993,21 @@ export default create({
       }
       this.sumsList = sums;
       return sums;
+    },
+    tableDrop (el, callback) {
+      if (this.isSortable) {
+        if (!window.Sortable) {
+          packages.logs("Sortable")
+          return
+        }
+        window.Sortable.create(el, {
+          ghostClass: config.ghostClass,
+          chosenClass: config.ghostClass,
+          animation: 500,
+          delay: 0,
+          onEnd: evt => callback(evt)
+        })
+      }
     }
   }
 });

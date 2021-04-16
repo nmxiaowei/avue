@@ -73,31 +73,17 @@ export default create({
   watch: {
     columnBox (val) {
       if (!val) return
-      this.$nextTick(() => {
-        if (this.crud.isSortable) {
-          if (!window.Sortable) {
-            packages.logs("Sortable")
-            return
-          }
-          this.rowDrop()
-        }
-      })
+      this.$nextTick(() => this.rowDrop())
     }
   },
   methods: {
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]
-      this.sortable = window.Sortable.create(el, {
-        ghostClass: config.ghostClass,
-        chosenClass: config.ghostClass,
-        animation: 500,
-        delay: 0,
-        onEnd: evt => {
-          const oldIndex = evt.oldIndex;
-          const newIndex = evt.newIndex;
-          this.crud.headerSort(oldIndex, newIndex)
-          this.$nextTick(() => this.rowDrop())
-        }
+      this.crud.tableDrop(el, evt => {
+        const oldIndex = evt.oldIndex;
+        const newIndex = evt.newIndex;
+        this.crud.headerSort(oldIndex, newIndex)
+        this.$nextTick(() => this.rowDrop())
       })
     },
   }

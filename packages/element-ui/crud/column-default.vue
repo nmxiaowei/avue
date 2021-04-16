@@ -78,35 +78,23 @@ export default create({
     },
     rowDrop () {
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
-      this.sortable = window.Sortable.create(el, {
-        ghostClass: this.config.ghostClass,
-        chosenClass: this.config.ghostClass,
-        animation: 500,
-        delay: 0,
-        onEnd: evt => {
-          const oldIndex = evt.oldIndex;
-          const newIndex = evt.newIndex;
-          const targetRow = this.crud.list.splice(oldIndex, 1)[0]
-          this.crud.list.splice(newIndex, 0, targetRow)
-          this.crud.$emit('sortable-change', oldIndex, newIndex, targetRow, this.crud.list)
-        }
+      this.crud.tableDrop(el, evt => {
+        const oldIndex = evt.oldIndex;
+        const newIndex = evt.newIndex;
+        const targetRow = this.crud.list.splice(oldIndex, 1)[0]
+        this.crud.list.splice(newIndex, 0, targetRow)
+        this.crud.$emit('sortable-change', oldIndex, newIndex, targetRow, this.crud.list)
       })
     },
     columnDrop () {
-      let headerObj = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
-      let headerLen = headerObj.children.length
+      let el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
+      let headerLen = el.children.length
       headerLen = headerLen - this.crud.columnOption.length - 2;
-      window.Sortable.create(headerObj, {
-        ghostClass: this.config.ghostClass,
-        chosenClass: this.config.ghostClass,
-        animation: 500,
-        delay: 0,
-        onEnd: evt => {
-          const oldIndex = evt.oldIndex - headerLen;
-          const newIndex = evt.newIndex - headerLen;
-          this.crud.headerSort(oldIndex, newIndex)
-        }
-      });
+      this.crud.tableDrop(el, evt => {
+        const oldIndex = evt.oldIndex - headerLen;
+        const newIndex = evt.newIndex - headerLen;
+        this.crud.headerSort(oldIndex, newIndex)
+      })
     },
   }
 })
