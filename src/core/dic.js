@@ -1,6 +1,6 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
-import { getObjValue, detailDic } from 'utils/util';
+import { getObjValue } from 'utils/util';
 
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
@@ -126,7 +126,6 @@ function handeDic (list) {
           sendDic(Object.assign(ele, {
             url: `${ele.url.replace('{{key}}', '')}`
           })).then(res => {
-            res = detailDic(res, ele.props, ele.dataType);
             resolve(res);
           }).catch(() => {
             resolve([]);
