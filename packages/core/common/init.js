@@ -1,5 +1,6 @@
 import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
 import slot from 'core/slot'
+import { detailDic } from 'utils/util';
 export default function () {
   return {
     mixins: [slot],
@@ -32,6 +33,11 @@ export default function () {
       this.init();
     },
     computed: {
+      objectOption () {
+        let obj = {};
+        this.propOption.forEach(ele => obj[ele.prop] = ele);
+        return obj;
+      },
       resultOption () {
         return Object.assign(this.deepClone(this.tableOption), {
           column: this.propOption
@@ -59,6 +65,7 @@ export default function () {
       init (type) {
         this.tableOption = this.option;
         this.getIsMobile();
+        this.columnInit && this.columnInit();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },
@@ -88,8 +95,10 @@ export default function () {
       },
       handleSetDic (list, res = {}) {
         Object.keys(res).forEach(ele => {
-          this.$set(list, ele, res[ele])
+          let obj = this.objectOption[ele]
+          this.$set(list, ele, detailDic(res[ele], obj.props || this.tableOption.props, obj.dataType))
         });
+        ;
         this.forEachLabel && this.forEachLabel()
       },
       //本地字典

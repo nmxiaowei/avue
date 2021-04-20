@@ -285,11 +285,6 @@ export default create({
       });
       return list;
     },
-    objectOption () {
-      let obj = {};
-      this.propOption.forEach(ele => obj[ele.prop] = ele);
-      return obj;
-    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {

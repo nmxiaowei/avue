@@ -169,6 +169,7 @@ export default cteate({
               value: ele.searchValue,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
+            delete ele.bind
             let whiteList = ['disabled', 'readonly']
             whiteList.forEach(key => {
               delete ele[key]

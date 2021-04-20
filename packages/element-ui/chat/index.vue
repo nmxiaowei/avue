@@ -175,7 +175,7 @@
 
 <script>
 import create from "core/create";
-import { dateFtt } from 'utils/date'
+import dayjs from 'dayjs'
 export default create({
   name: "chat",
   data () {
@@ -378,7 +378,7 @@ export default create({
       const text = params.text || {};
       const date = params.date
       const textObj = {
-        date: date || dateFtt('yyyy-MM-dd hh:mm:ss', new Date()),
+        date: date || dayjs().format('YYYY-MM-DD HH:mm:ss'),
         text: (() => {
           if (typeof (text) != 'object') {
             return {

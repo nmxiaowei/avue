@@ -45,6 +45,7 @@
 </template>
 <script>
 import create from "core/create";
+import config from "./config.js";
 import packages from "core/packages";
 import locale from "../../core/common/locale";
 export default create({
@@ -71,23 +72,18 @@ export default create({
   },
   watch: {
     columnBox (val) {
-      if (val) this.$nextTick(() => this.rowDrop())
+      if (!val) return
+      this.$nextTick(() => this.rowDrop())
     }
   },
   methods: {
-    //行排序
     rowDrop () {
-      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
-      this.sortable = window.Sortable.create(el, {
-        ghostClass: 'el-table__row',
-        animation: 180,
-        delay: 0,
-        onEnd: evt => {
-          const oldIndex = evt.oldIndex;
-          const newIndex = evt.newIndex;
-          this.crud.headerSort(oldIndex, newIndex)
-          this.$nextTick(() => this.rowDrop())
-        }
+      const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]
+      this.crud.tableDrop(el, evt => {
+        const oldIndex = evt.oldIndex;
+        const newIndex = evt.newIndex;
+        this.crud.headerSort(oldIndex, newIndex)
+        this.$nextTick(() => this.rowDrop())
       })
     },
   }

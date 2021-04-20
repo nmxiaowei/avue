@@ -186,11 +186,9 @@ $space-width: 15px;
       font-size: 20px;
     }
   }
-  &__sortable{
-    opacity: 0.2;
-  }
-  &__drag-handler{
-    cursor: pointer;
+  &__ghost{
+    cursor: move;
+    opacity: 0.4;
   }
   &__pagination {
     position: relative;

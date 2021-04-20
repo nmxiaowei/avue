@@ -88,8 +88,6 @@ export default {
   selectionFixed: 'left',
   expandWidth: 60,
   expandFixed: 'left',
-  sortableWidth: 50,
-  sortableFixed: false,
   filterMultiple: true,
   calcHeight: 300,
   title: '表格标题',
@@ -97,4 +95,7 @@ export default {
   searchGutter: 20,
   searchLabelWidth: 80,
   searchSpan: 6,
+  dropRowClass: '.el-table__body-wrapper > table > tbody',
+  dropColClass: '.el-table__header-wrapper tr',
+  ghostClass: 'avue-crud__ghost',
 };

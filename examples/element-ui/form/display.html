@@ -29,40 +29,48 @@
       return {
         form: {
           text1: 0,
-          text2: '文本2',
         },
         option: {
           column: [{
-            label: '内容0',
-            prop: 'text',
-            type: 'number',
-          }, {
             label: '内容1',
             prop: 'text1',
             type: 'radio',
+            control: (val, form) => {
+              if (val === 0) {
+                return {
+                  text2: {
+                    display: true
+                  },
+                  text3: {
+                    label: '内容3'
+                  }
+                }
+              } else {
+                return {
+                  text2: {
+                    display: false
+                  },
+                  text3: {
+                    label: '有没有发现我变了'
+                  }
+                }
+              }
+            },
             dicData: [{
-              label: '隐藏',
+              label: '显示',
               value: 0
             }, {
-              label: '显示',
+              label: '隐藏',
               value: 1,
             }]
           }, {
             label: '内容2',
             prop: 'text2',
-            display: true,
+            display: true
+          }, {
+            label: '内容3',
+            prop: 'text3'
           }]
-        }
-      }
-    },
-    watch: {
-      'form.text1'() {
-        var index = this.$refs.form.findColumnIndex('text2')
-        var column = this.option.column[index];
-        if (this.form.text1 === 0) {
-          column.display = true
-        } else {
-          column.display = false
         }
       }
     }
