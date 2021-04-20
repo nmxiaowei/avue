@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.8.7",
+  "version": "2.8.8",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -60,7 +60,7 @@
     "async-validator": "^1.10.0",
     "axios": "^0.18.0",
     "countup.js": "^1.9.3",
-    "dayjs": "^1.7.8",
+    "dayjs": "^1.10.4",
     "deepmerge": "^3.1.0",
     "element-ui": "^2.11.0",
     "nprogress": "^0.2.0",
