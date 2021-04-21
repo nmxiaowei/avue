@@ -46,6 +46,8 @@ export default {
     addBtn: '新 增',
     show: '显 示',
     hide: '隐 藏',
+    open: '展 开',
+    shrink: '收 缩',
     showBtn: '显 隐',
     filterBtn: '过 滤',
     refreshBtn: '刷 新',

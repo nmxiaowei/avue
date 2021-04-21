@@ -95,10 +95,9 @@ export default function () {
       },
       handleSetDic (list, res = {}) {
         Object.keys(res).forEach(ele => {
-          let obj = this.objectOption[ele]
+          let obj = this.objectOption[ele] || {}
           this.$set(list, ele, detailDic(res[ele], obj.props || this.tableOption.props, obj.dataType))
         });
-        ;
         this.forEachLabel && this.forEachLabel()
       },
       //本地字典

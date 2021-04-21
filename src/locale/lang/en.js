@@ -46,6 +46,8 @@ export default {
     addBtn: 'add',
     show: 'show',
     hide: 'hide',
+    open: 'open',
+    shrink: 'shrink',
     showBtn: 'show',
     filterBtn: 'filter',
     refreshBtn: 'refresh',

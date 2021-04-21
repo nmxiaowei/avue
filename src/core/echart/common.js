@@ -365,6 +365,9 @@ export default (() => {
           return condition ? isprop : {};
         })(), alwaysObj);
       }
+    },
+    beforeDestroy () {
+      clearInterval(this.checkChart);
     }
   };
 })();

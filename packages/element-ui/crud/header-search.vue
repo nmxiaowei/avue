@@ -19,11 +19,11 @@
             <el-button type="text"
                        v-if="show===false"
                        @click="show=true"
-                       icon="el-icon-arrow-down">展 开</el-button>
+                       icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
             <el-button type="text"
                        v-if="show===true"
                        @click="show=false"
-                       icon="el-icon-arrow-up">收 缩</el-button>
+                       icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
           </template>
 
         </template>
@@ -141,7 +141,7 @@ export default cteate({
         let count = 0;
         //根据order排序
         list.forEach(ele => {
-          if (ele.search && this.crud.default[ele.prop]?.hide !== true) {
+          if (ele.search) {
             let isCount = count < this.searchIndex
             ele = Object.assign(ele, {
               type: getSearchType(ele),
