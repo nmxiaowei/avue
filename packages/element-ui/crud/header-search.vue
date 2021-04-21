@@ -141,7 +141,7 @@ export default cteate({
         let count = 0;
         //根据order排序
         list.forEach(ele => {
-          if (ele.search && this.crud.default[ele.prop]?.hide !== true) {
+          if (ele.search) {
             let isCount = count < this.searchIndex
             ele = Object.assign(ele, {
               type: getSearchType(ele),
