@@ -234,7 +234,7 @@ export default create({
     },
     filterNode (value, data) {
       if (!value) return true;
-      return data[this.labelKey].indexOf(value) !== -1;
+      return (data[this.labelKey].indexOf(value.toUpperCase()) !== -1 || data[this.labelKey].indexOf(value.toLowerCase()) !== -1);
     },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text = [];
