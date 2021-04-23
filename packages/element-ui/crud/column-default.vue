@@ -67,14 +67,8 @@ export default create({
       );
     },
     setSort () {
-      if (this.crud.isSortable) {
-        if (!window.Sortable) {
-          packages.logs("Sortable")
-          return
-        }
-        this.rowDrop()
-        this.columnDrop()
-      }
+      this.rowDrop()
+      this.columnDrop()
     },
     rowDrop () {
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
