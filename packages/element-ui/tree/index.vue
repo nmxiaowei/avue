@@ -35,11 +35,12 @@
                @node-contextmenu="nodeContextmenu"
                :default-expand-all="defaultExpandAll"
                :default-expanded-keys="defaultExpandedKeys">
-        <span slot-scope="{ node, data }"
-              v-if="$scopedSlots.default">
-          <slot :node="node"
-                :data="data"></slot>
-        </span>
+
+        <slot slot-scope="{ node, data }"
+              :node="node"
+              v-if="$scopedSlots.default"
+              :data="data"></slot>
+
         <span class="el-tree-node__label"
               slot-scope="{node}"
               v-else>
