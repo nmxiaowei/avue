@@ -371,7 +371,7 @@ export default create({
     }
   },
   created () {
-    setTimeout(() => {
+    this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
       this.clearValidate();
