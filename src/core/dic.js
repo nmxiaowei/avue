@@ -1,7 +1,6 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
-import { getObjValue } from 'utils/util';
-
+import { getObjValue, detailDic } from 'utils/util';
 export const loadCascaderDic = (columnOption, list) => {
   return new Promise((resolve, reject) => {
     let columnList = [];
@@ -62,7 +61,7 @@ export const loadDic = (option) => {
       packages.logs('axios');
       resolve();
     }
-    handeDic(ajaxdic)
+    handleDic(ajaxdic)
       .then((res) => {
         resolve(res);
       })
@@ -75,9 +74,7 @@ export const loadLocalDic = (option) => {
   let locationdic = {};
   let alldic = option.dicData || {};
   option.column.forEach(ele => {
-    if (ele.dicData) {
-      locationdic[ele.prop] = ele.dicData;
-    }
+    if (ele.dicData) locationdic[ele.prop] = detailDic(ele.dicData, ele.props, ele.dataType);
   });
   return Object.assign(alldic, locationdic);
 };
@@ -116,7 +113,7 @@ function createdDic (option) {
 }
 
 // 循环处理字典
-function handeDic (list) {
+function handleDic (list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -126,6 +123,7 @@ function handeDic (list) {
           sendDic(Object.assign(ele, {
             url: `${ele.url.replace('{{key}}', '')}`
           })).then(res => {
+            res = detailDic(res, ele.props, ele.dataType);
             resolve(res);
           }).catch(() => {
             resolve([]);

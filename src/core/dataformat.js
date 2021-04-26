@@ -67,6 +67,8 @@ export const initVal = (value, column, callback) => {
       list[index] = detailDataType(ele, dataType);
     });
     if (ARRAY_LIST.includes(type) && validatenull(list) && alone) list = [''];
+  } else {
+    list = detailDataType(list, dataType)
   }
   return list;
 };

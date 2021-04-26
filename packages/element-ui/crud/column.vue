@@ -242,27 +242,28 @@ export default create({
         const columnOption = [...this.crud.propOption];
         //本节点;
         const column = columnOption[index];
-        const list = column.cascader;
+        const cascader = column.cascader;
+        const str = cascader.join(",");
+        const columnNextProp = cascader[0];
         const value = row[column.prop];
         const rowIndex = row.$index;
         // 下一个节点
-        const columnNext = columnOption[index + 1];
-        const columnNextProp = columnNext.prop;
-
+        const columnNext = this.findObject(this.columnOption, columnNextProp)
+        if (this.validatenull(columnNext)) return
         // 如果本节点没有字典则创建节点数组
         if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
           this.$set(this.crud.cascaderDIC, rowIndex, {});
         }
         if (this.crud.formIndexList.includes(rowIndex)) {
           //清空子类字典
-          list.forEach(ele => {
+          cascader.forEach(ele => {
             this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
-            list.forEach(ele => (row[ele] = ""));
+            cascader.forEach(ele => (row[ele] = ""));
           });
         }
         //最后一级
         if (
-          this.validatenull(list) ||
+          this.validatenull(cascader) ||
           this.validatenull(value) ||
           this.validatenull(columnNext)
         ) {
