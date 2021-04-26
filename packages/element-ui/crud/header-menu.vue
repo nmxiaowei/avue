@@ -41,10 +41,12 @@
           {{crud.menuIcon('excelBtn')}}
         </template>
       </el-button>
-      <slot name="menuLeft"></slot>
+      <slot name="menuLeft"
+            :size="crud.isMediumSize"></slot>
     </div>
     <div :class="b('right')">
-      <slot name="menuRight"></slot>
+      <slot name="menuRight"
+            :size="crud.isMediumSize"></slot>
       <avue-date type="datetimerange"
                  @change="dateChange"
                  value-format="yyyy-MM-dd HH:mm:ss"

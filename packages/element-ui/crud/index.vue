@@ -27,11 +27,15 @@
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="vaildData(tableOption.header,true)">
-        <template slot="menuLeft">
-          <slot name="menuLeft"></slot>
+        <template slot="menuLeft"
+                  slot-scope="scope">
+          <slot name="menuLeft"
+                v-bind="scope"></slot>
         </template>
-        <template slot="menuRight">
-          <slot name="menuRight"></slot>
+        <template slot="menuRight"
+                  slot-scope="scope">
+          <slot name="menuRight"
+                v-bind="scope"></slot>
         </template>
       </header-menu>
       <el-tag class="avue-crud__tip"
