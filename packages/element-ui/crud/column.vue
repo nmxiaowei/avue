@@ -3,7 +3,7 @@
     <slot name="header"></slot>
     <!-- 动态列 -->
     <template v-for="(column,index) in list">
-      <column-dynamic v-if="column.children && column.children.length"
+      <column-dynamic v-if="column.children "
                       :columnOption="column"
                       :key="column.label">
         <template v-for="item in crud.mainSlot"
@@ -25,7 +25,7 @@
                 :name="crud.getSlotName(item,'F')"></slot>
         </template>
       </column-dynamic>
-      <el-table-column v-if="vaildColumn(column)"
+      <el-table-column v-else-if="vaildColumn(column)"
                        :key="column.prop"
                        :prop="column.prop"
                        :label="column.label"
@@ -168,7 +168,7 @@ export default create({
   computed: {
     list () {
       let result = [...this.columnOption];
-      result = result.sort((a, b) => (this.crud.default[a.prop]?.order || 0) - (this.crud.default[b.prop]?.order || 0));
+      //result = result.sort((a, b) => (this.crud.default[a.prop]?.order || 0) - (this.crud.default[b.prop]?.order || 0));
       return result;
     }
   },

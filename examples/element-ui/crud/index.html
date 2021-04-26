@@ -482,6 +482,9 @@
           }
         ]
         this.data = data
+        this.$nextTick(() => {
+          this.$refs.crud.dicInit('cascader')
+        })
         this.$message.success('page' + JSON.stringify(page))
       },
       searchChange(params, done) {
