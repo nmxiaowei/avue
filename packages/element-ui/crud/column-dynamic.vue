@@ -8,7 +8,7 @@
                    :header-align="columnOption.headerAlign || crud.tableOption.headerAlign"
                    :prop="columnOption.prop">
     <template v-for="column in columnOption.children">
-      <column-dynamic v-if="column.children && column.children.length"
+      <column-dynamic v-if="column.children"
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.mainSlot"
@@ -30,7 +30,7 @@
                 :name="crud.getSlotName(item,'F')"></slot>
         </template>
       </column-dynamic>
-      <el-table-column v-if="vaildColumn(column)"
+      <el-table-column v-else-if="vaildColumn(column)"
                        :key="column.prop"
                        :prop="column.prop"
                        :label="column.label"

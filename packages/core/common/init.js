@@ -1,6 +1,5 @@
 import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
 import slot from 'core/slot'
-import { detailDic } from 'utils/util';
 export default function () {
   return {
     mixins: [slot],
@@ -95,15 +94,13 @@ export default function () {
       },
       handleSetDic (list, res = {}) {
         Object.keys(res).forEach(ele => {
-          let obj = this.objectOption[ele] || {}
-          this.$set(list, ele, detailDic(res[ele], obj.props || this.tableOption.props, obj.dataType))
+          this.$set(list, ele, res[ele])
         });
         this.forEachLabel && this.forEachLabel()
       },
       //本地字典
       handleLocalDic () {
-        let res = loadLocalDic(this.resultOption)
-        this.handleSetDic(this.DIC, res);
+        this.handleSetDic(this.DIC, loadLocalDic(this.resultOption));
       },
       // 网络字典加载
       handleLoadDic () {

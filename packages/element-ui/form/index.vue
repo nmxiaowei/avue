@@ -371,7 +371,7 @@ export default create({
     }
   },
   created () {
-    setTimeout(() => {
+    this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
       this.clearValidate();
@@ -487,7 +487,7 @@ export default create({
         const value = this.form[column.prop];
         // 下一个节点
         const columnNext = this.findObject(list, columnNextProp)
-
+        if (this.validatenull(columnNext)) return
         // 如果不是首次加载则清空全部关联节点的属性值和字典值
         if (this.formList.includes(str)) {
           //清空子类字典列表和值
