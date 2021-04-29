@@ -318,9 +318,8 @@ export default create({
     },
     update (data, done) {
       const callback = () => {
-        let node = this.$refs.tree.getNode(this.node[this.valueKey]);
-        let form = this.deepClone(this.form);
-        node.data = form
+        let node = this.$refs.tree.getNode(this.node[this.valueKey]) || {};
+        node.data = this.deepClone(this.form)
         this.hide();
         done()
       };
