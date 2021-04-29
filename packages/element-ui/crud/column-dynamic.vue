@@ -8,7 +8,7 @@
                    :header-align="columnOption.headerAlign || crud.tableOption.headerAlign"
                    :prop="columnOption.prop">
     <template v-for="column in columnOption.children">
-      <column-dynamic v-if="column.children"
+      <column-dynamic v-if="column.children && column.children.length>0"
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.mainSlot"
