@@ -15,7 +15,7 @@ import { isDom } from "utils/vdom";
 export default create({
   name: "affix",
   props: {
-    id: {},
+    id: String,
     offsetTop: {
       type: Number,
       default: 0
@@ -89,21 +89,16 @@ export default create({
     },
     handleScroll () {
       const affix = this.affix;
-      const scrollTop = this.getScroll(window, true);
+      const scrollTop = this.getScroll(this.parent, true);
       const elOffset = this.getOffset(this.$el);
-      const windowHeight = window.innerHeight;
-      const elHeight = this.$el.getElementsByTagName("div")[0].offsetHeight;
+      const windowHeight = this.parent.innerHeight;
+      const elHeight = this.$el.getElementsByTagName('div')[0].offsetHeight;
 
-      // Fixed Top
-      if (
-        elOffset.top - this.offsetTop < scrollTop &&
-        this.offsetType == "top" &&
-        !affix
-      ) {
+      if ((elOffset.top - this.offsetTop) < scrollTop && this.offsetType == 'top' && !affix) {
         this.affix = true;
         this.slotStyle = {
-          width: this.$refs.point.clientWidth + "px",
-          height: this.$refs.point.clientHeight + "px"
+          width: this.$refs.point.clientWidth + 'px',
+          height: this.$refs.point.clientHeight + 'px'
         };
         this.slot = true;
         this.styles = {
@@ -112,27 +107,17 @@ export default create({
           width: `${this.$el.offsetWidth}px`
         };
 
-        this.$emit("on-change", true);
-      } else if (
-        elOffset.top - this.offsetTop > scrollTop &&
-        this.offsetType == "top" &&
-        affix
-      ) {
+        this.$emit('on-change', true);
+      } else if ((elOffset.top - this.offsetTop) > scrollTop && this.offsetType == 'top' && affix) {
         this.slot = false;
         this.slotStyle = {};
         this.affix = false;
         this.styles = null;
 
-        this.$emit("on-change", false);
+        this.$emit('on-change', false);
       }
 
-      // Fixed Bottom
-      if (
-        elOffset.top + this.offsetBottom + elHeight >
-        scrollTop + windowHeight &&
-        this.offsetType == "bottom" &&
-        !affix
-      ) {
+      if ((elOffset.top + this.offsetBottom + elHeight) > (scrollTop + windowHeight) && this.offsetType == 'bottom' && !affix) {
         this.affix = true;
         this.styles = {
           bottom: `${this.offsetBottom}px`,
@@ -140,17 +125,12 @@ export default create({
           width: `${this.$el.offsetWidth}px`
         };
 
-        this.$emit("on-change", true);
-      } else if (
-        elOffset.top + this.offsetBottom + elHeight <
-        scrollTop + windowHeight &&
-        this.offsetType == "bottom" &&
-        affix
-      ) {
+        this.$emit('on-change', true);
+      } else if ((elOffset.top + this.offsetBottom + elHeight) < (scrollTop + windowHeight) && this.offsetType == 'bottom' && affix) {
         this.affix = false;
         this.styles = null;
 
-        this.$emit("on-change", false);
+        this.$emit('on-change', false);
       }
     }
   }
