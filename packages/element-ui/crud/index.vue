@@ -313,7 +313,7 @@ export default create({
         let result = [];
         for (var o in this.default) {
           if (!this.validatenull(this.default[o].screenValue)) {
-            result.push(ele[o].indexOf(this.default[o].screenValue) !== -1);
+            result.push((ele[o] + '').indexOf(this.default[o].screenValue) !== -1);
           }
         }
         if (this.validatenull(result)) {
