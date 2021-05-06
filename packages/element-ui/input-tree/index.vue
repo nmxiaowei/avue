@@ -232,7 +232,6 @@ export default create({
     },
     handleTreeLoad (node, resolve) {
       let callback = (list) => {
-        this.loading = false;
         let findDic = (list, value, children) => {
           list.forEach(ele => {
             if (ele[this.valueKey] == value) {
@@ -245,7 +244,6 @@ export default create({
         findDic(this.netDic, node.key, list)
         resolve(list);
       }
-      this.loading = true;
       this.treeLoad && this.treeLoad(node, callback)
     },
     // 初始化滚动条

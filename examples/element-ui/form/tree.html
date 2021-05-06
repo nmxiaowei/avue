@@ -33,7 +33,7 @@
         data: {
           shenfeng: [8, 9, 10],
           shenfeng1: 32,
-          id: "110000"
+          id: "110101,110102,120000"
         },
         option: {
           column: [{
@@ -1104,6 +1104,7 @@
           }, {
             label: '懒加载',
             prop: 'id',
+            multiple: true,
             type: 'tree',
             props: {
               label: 'name',
@@ -1124,7 +1125,13 @@
                   })
                 }));
               }
-              if (level == 1) {
+              console.log(code);
+              if (level == 0) {
+                axios.get(`${baseUrl}/getProvince`).then(res => {
+                  list = res.data.data;
+                  callback()
+                })
+              } else if (level == 1) {
                 axios.get(`${baseUrl}/getCity/${code}`).then(res => {
                   list = res.data.data;
                   callback()
