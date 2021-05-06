@@ -164,7 +164,6 @@
       <slot name="footer"></slot>
       <!-- 分页 -->
       <table-page ref="tablePage"
-                  v-if="vaildData(tableOption.page,true)"
                   :page="page">
         <template slot="page">
           <slot name="page"></slot>
