@@ -14,8 +14,7 @@
              :size="column.size || size"
              :type="type || column.type"
              :column-slot="columnSlot"
-             @keyup.enter.native="enterChange"
-             @change="handleChange">
+             @keyup.enter.native="enterChange">
     <span v-if="params.html"
           v-html="params.html"></span>
     <template slot-scope="scope"
@@ -124,10 +123,6 @@ export default {
     getPlaceholder,
     enterChange () {
       if (this.enter) this.$emit('enter')
-    },
-    handleChange (val) {
-      this.$emit('input', val);
-      this.$emit('change', val)
     }
   }
 }
