@@ -97,7 +97,8 @@ export default {
   },
   data () {
     return {
-      text: undefined
+      first: false,
+      text: undefined,
     }
   },
   computed: {
@@ -109,14 +110,23 @@ export default {
     }
   },
   watch: {
+    text: {
+      handler (val) {
+        if (this.first || !this.validatenull(val)) {
+          this.first = true;
+          this.$emit('input', val);
+          this.$emit('change', val)
+        } else {
+          this.first = true;
+        }
+      }
+    },
     value: {
       handler (val) {
         this.text = val;
-      }
+      },
+      immediate: true
     }
-  },
-  created () {
-    this.text = this.value;
   },
   methods: {
     getComponent,
