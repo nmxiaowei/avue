@@ -14,8 +14,7 @@
              :size="column.size || size"
              :type="type || column.type"
              :column-slot="columnSlot"
-             @keyup.enter.native="enterChange"
-             @change="handleChange">
+             @keyup.enter.native="enterChange">
     <span v-if="params.html"
           v-html="params.html"></span>
     <template slot-scope="scope"
@@ -98,7 +97,8 @@ export default {
   },
   data () {
     return {
-      text: undefined
+      first: false,
+      text: undefined,
     }
   },
   computed: {
@@ -110,24 +110,29 @@ export default {
     }
   },
   watch: {
+    text: {
+      handler (val) {
+        if (this.first || !this.validatenull(val)) {
+          this.first = true;
+          this.$emit('input', val);
+          this.$emit('change', val)
+        } else {
+          this.first = true;
+        }
+      }
+    },
     value: {
       handler (val) {
         this.text = val;
-      }
+      },
+      immediate: true
     }
-  },
-  created () {
-    this.text = this.value;
   },
   methods: {
     getComponent,
     getPlaceholder,
     enterChange () {
       if (this.enter) this.$emit('enter')
-    },
-    handleChange (val) {
-      this.$emit('input', val);
-      this.$emit('change', val)
     }
   }
 }

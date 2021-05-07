@@ -2,6 +2,8 @@
   <el-select :class="b()"
              :size="size"
              ref="main"
+             :loading="loading"
+             :loading-text="loadingText"
              :multiple="multiple"
              :multiple-limit="limit"
              :collapse-tags="tags"
@@ -61,6 +63,7 @@ import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { DIC_SHOW_SPLIT } from 'global/variable';
 import { detailDataType } from 'utils/util';
+import { sendDic } from "core/dic";
 export default create({
   name: "input-tree",
   mixins: [props(), event()],
@@ -69,6 +72,9 @@ export default create({
       node: [],
       filterValue: "",
       box: false,
+      created: false,
+      netDic: [],
+      loading: false,
     };
   },
   props: {
@@ -76,6 +82,9 @@ export default create({
     treeLoad: Function,
     checked: Function,
     value: {},
+    loadingText: {
+      type: String,
+    },
     lazy: {
       type: Boolean,
       default: false
@@ -139,8 +148,25 @@ export default create({
         }
       },
     },
-    dic () {
-      this.init();
+    value (val) {
+      if (!this.validatenull(val)) {
+        if (this.lazy && !this.created) {
+          this.created = true
+          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+        }
+      }
+    },
+    dic: {
+      handler (val) {
+        this.netDic = val;
+      },
+      immediate: true
+    },
+    netDic: {
+      handler () {
+        this.init();
+      },
+      immediate: true
     },
     filterValue (val) {
       this.$refs.tree.filter(val);
@@ -164,7 +190,7 @@ export default create({
           }
         });
       }
-      let list = this.dic;
+      let list = this.netDic;
       addParent(list);
       return list;
     },
@@ -215,7 +241,7 @@ export default create({
             }
           })
         }
-        findDic(this.dic, node.key, list)
+        findDic(this.netDic, node.key, list)
         resolve(list);
       }
       this.treeLoad && this.treeLoad(node, callback)
@@ -294,6 +320,16 @@ export default create({
         this.text = data[this.valueKey];
         this.$refs.main.blur();
       }
+    },
+    handleRemoteMethod (query) {
+      this.loading = true;
+      sendDic({
+        column: this.column,
+        value: query,
+      }).then(res => {
+        this.loading = false;
+        this.netDic = res;
+      });
     }
   }
 });

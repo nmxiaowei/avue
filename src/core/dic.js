@@ -92,7 +92,8 @@ function createdDic (option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    if (ele.dicFlag === false || flagdic.includes(prop)) return;
+    let result = ele.dicFlag === false || ele.remote === true || ele.lazy === true || flagdic.includes(prop)
+    if (result) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
         url: dicUrl,
@@ -146,7 +147,7 @@ export const sendDic = (params) => {
   if (column) {
     url = column.dicUrl;
     method = column.dicMethod;
-    query = column.dicQuery;
+    query = column.dicQuery || {};
     formatter = column.dicFormatter;
     props = column.props;
   }

@@ -195,7 +195,7 @@ export default {
       };
       // 从参数中派生数据
       _params.header = this.buildHeader(params.columns);
-      _params.title = dayjs().format('YYYY-MM-DD HH:mm:ss');
+      _params.title = params.title || dayjs().format('YYYY-MM-DD HH:mm:ss');
       const callback = (list) => {
         list.forEach(ele => {
           if (ele.children) {

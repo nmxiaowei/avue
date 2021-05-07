@@ -3,7 +3,7 @@
     <slot name="header"></slot>
     <!-- 动态列 -->
     <template v-for="(column,index) in list">
-      <column-dynamic v-if="column.children "
+      <column-dynamic v-if="column.children && column.children.length>0"
                       :columnOption="column"
                       :key="column.label">
         <template v-for="item in crud.mainSlot"
