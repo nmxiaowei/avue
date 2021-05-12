@@ -22,6 +22,7 @@
                :load="treeLoad"
                :props="treeProps"
                :icon-class="iconClass"
+               :indent="indent"
                :highlight-current="!multiple"
                :show-checkbox="multiple"
                :accordion="accordion"
@@ -98,6 +99,7 @@ export default create({
     permission
   },
   props: {
+    indent: Number,
     filterNodeMethod: Function,
     permission: {
       type: [Function, Object],
