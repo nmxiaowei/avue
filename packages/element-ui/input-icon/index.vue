@@ -20,7 +20,7 @@
                :title="placeholder"
                append-to-body
                :visible.sync="box"
-               width="80%">
+               :width="dialogWidth">
       <el-scrollbar style="height:400px;overflow-x:hidden">
         <avue-tabs :option="option"
                    @change="handleTabs"></avue-tabs>
@@ -46,6 +46,10 @@ export default create({
   name: "input-icon",
   mixins: [props(), event()],
   props: {
+    dialogWidth: {
+      type: [String, Number],
+      default: '80%'
+    },
     iconList: {
       type: Array,
       default: () => {

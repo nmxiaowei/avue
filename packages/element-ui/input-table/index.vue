@@ -11,7 +11,7 @@
               :disabled="disabled">
     </el-input>
     <el-dialog class="avue-dialog"
-               width="80%"
+               :width="dialogWidth"
                append-to-body
                :title="placeholder"
                :visible.sync="box">
@@ -56,7 +56,11 @@ export default create({
   },
   props: {
     formatter: Function,
-    onLoad: Function
+    onLoad: Function,
+    dialogWidth: {
+      type: [String, Number],
+      default: '80%'
+    },
   },
   watch: {
     value (val) {

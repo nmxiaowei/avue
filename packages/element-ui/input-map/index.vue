@@ -12,7 +12,7 @@
     </el-input>
 
     <el-dialog class="avue-dialog"
-               width="80%"
+               :width="dialogWidth"
                append-to-body
                :title="placeholder"
                @close="handleClose"
@@ -54,6 +54,12 @@ import event from "../../core/common/event.js";
 export default create({
   name: "input-map",
   mixins: [props(), event()],
+  props: {
+    dialogWidth: {
+      type: [String, Number],
+      default: '80%'
+    },
+  },
   data () {
     return {
       formattedAddress: '',
