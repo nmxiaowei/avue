@@ -122,7 +122,7 @@ export default cteate({
   },
   computed: {
     isSearchIcon () {
-      return this.crud.option.searchIcon === true && this.columnLen > this.searchIndex
+      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
     },
     searchIndex () {
       return this.crud.option.searchIndex || 2

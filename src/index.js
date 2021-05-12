@@ -79,15 +79,13 @@ const install = function (Vue, opts = {}) {
     }
     return result;
   };
-  Vue.prototype.$AVUE = {
+  Vue.prototype.$AVUE = Object.assign(opts, {
     ui: (() => {
       Vue.prototype[config.is] = true;
       return config
     })(),
     size: opts.size || 'small',
     calcHeight: opts.calcHeight || 0,
-    tableSize: opts.tableSize,
-    formSize: opts.formSize,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
       text: 'avuejs.com',
@@ -115,7 +113,7 @@ const install = function (Vue, opts = {}) {
       accessKeySecret: '',
       bucket: ''
     }, (opts.ali || {}))
-  };
+  });
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
