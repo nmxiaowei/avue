@@ -53,12 +53,12 @@
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
                       :key="cindex"
-                      :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
+                      :style="{paddingLeft:setPx((parentOption.gutter || 20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
-                      :sm="12"
-                      :xs="24"
-                      :offset="column.offset || 0"
+                      :sm="column.smSpan || item.smSpan || 12"
+                      :xs="column.xsSpan || item.xmSpan ||  24"
+                      :offset="column.offset || item.offset ||  0"
                       :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
