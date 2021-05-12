@@ -58,7 +58,7 @@ export default create({
     formatter: Function,
     onLoad: Function,
     dialogWidth: {
-      type: [String, Number],
+      type: String,
       default: '80%'
     },
   },

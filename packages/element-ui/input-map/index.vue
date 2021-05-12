@@ -56,7 +56,7 @@ export default create({
   mixins: [props(), event()],
   props: {
     dialogWidth: {
-      type: [String, Number],
+      type: String,
       default: '80%'
     },
   },
