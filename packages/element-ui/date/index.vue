@@ -3,6 +3,7 @@
     <el-date-picker :type="type"
                     v-model="text"
                     :size="size"
+                    :editable="editable"
                     :unlink-panels="unlinkPanels"
                     :readonly="readonly"
                     :default-value="defaultValue"
@@ -38,6 +39,7 @@ export default create({
     };
   },
   props: {
+    editable: Boolean,
     unlinkPanels: {
       type: Boolean,
       default: false
