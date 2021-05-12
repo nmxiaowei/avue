@@ -289,6 +289,7 @@ export const setPx = (val, defval = '') => {
  * 字符串数据类型转化
  */
 export const detailDataType = (value, type) => {
+  if (validatenull(value)) return value
   if (type === 'number') {
     return Number(value);
   } else if (type === 'string') {
