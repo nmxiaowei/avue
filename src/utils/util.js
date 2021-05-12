@@ -465,6 +465,9 @@ export const getPasswordChar = (result = '', char) => {
   return result;
 };
 
+export const arraySort = (list = [], prop, callback) => {
+  return list.filter(ele => !validatenull(ele[prop])).sort((a, b) => callback(a, b)).concat(list.filter(ele => validatenull(ele[prop])));
+}
 export const clearVal = (obj, list = []) => {
   if (!obj) return {};
   Object.keys(obj).forEach(ele => {

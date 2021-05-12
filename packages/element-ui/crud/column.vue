@@ -133,6 +133,7 @@ import { sendDic } from "core/dic";
 import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
 import columnDynamic from "./column-dynamic";
 import formTemp from '../../core/components/form/index'
+import { arraySort } from 'utils/util'
 export default create({
   name: "crud",
   data () {
@@ -168,7 +169,7 @@ export default create({
   computed: {
     list () {
       let result = [...this.columnOption];
-      result = result.sort((a, b) => (this.crud.default[a.prop]?.order || 0) - (this.crud.default[b.prop]?.order || 0));
+      result = arraySort(result, 'order', (a, b) => this.crud.default[a.prop]?.order - this.crud.default[b.prop]?.order)
       return result;
     }
   },
