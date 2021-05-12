@@ -68,7 +68,7 @@ export default create({
     },
     setSort () {
       this.rowDrop()
-      this.columnDrop()
+      // this.columnDrop()
     },
     rowDrop () {
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
