@@ -635,7 +635,7 @@ export default create({
         let obj = {}
         this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
         this.$set(this.default, column.prop, Object.assign(obj, {
-          order: undefined,
+          order: column.order,
           label: column.label,
           showColumn: column.showColumn
         }, this.defaults[column.prop]))
