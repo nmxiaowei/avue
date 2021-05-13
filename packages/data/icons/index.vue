@@ -17,8 +17,8 @@
               </div>
               <div class="item-info">
                 <span>{{item.title}}</span>
-                <avue-count-up :animation="animation"
-                               :decimals="decimals"
+                <avue-count-up :animation="item.animation || animation"
+                               :decimals="item.decimals || decimals"
                                :style="{color:color}"
                                class="count"
                                :end="item.count"></avue-count-up>

@@ -15,8 +15,8 @@
               <i :class="item.icon"></i>
             </div>
             <div class="item-info">
-              <avue-count-up :animation="animation"
-                             :decimals="decimals"
+              <avue-count-up :animation="item.animation || animation"
+                             :decimals="item.decimals || decimals"
                              :style="{color:item.color}"
                              class="title"
                              :end="item.count"></avue-count-up>

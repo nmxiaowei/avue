@@ -10,8 +10,8 @@
              :style="{backgroundColor:item.color}">
           <div class="item-box">
             <avue-count-up class="item-count"
-                           :decimals="decimals"
-                           :animation="animation"
+                           :decimals="item.decimals || decimals"
+                           :animation="item.animation || animation"
                            :end="item.count"></avue-count-up>
             <span class="item-title">{{item.title}}</span>
             <i class="item-icon"

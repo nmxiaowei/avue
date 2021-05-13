@@ -17,8 +17,8 @@
             </div>
             <div class="item-body">
               <avue-count-up class="h2"
-                             :decimals="decimals"
-                             :animation="animation"
+                             :decimals="item.decimals || decimals"
+                             :animation="item.animation || animation"
                              :end="item.count"></avue-count-up>
             </div>
             <div class="item-footer">

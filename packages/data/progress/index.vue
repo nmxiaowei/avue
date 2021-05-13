@@ -12,8 +12,8 @@
              :target="item.target">
             <div class="item-header">
               <avue-count-up class="item-count"
-                             :animation="animation"
-                             :decimals="decimals"
+                             :animation="item.animation || animation"
+                             :decimals="item.decimals || decimals"
                              :end="item.count"></avue-count-up>
               <div class="item-title"
                    v-text="item.title"></div>

@@ -11,8 +11,8 @@
           <a :href="item.href?item.href:'javascript:void(0);'"
              @click="item.click?item.click(item):''"
              :target="item.target">
-            <avue-count-up :animation="animation"
-                           :decimals="decimals"
+            <avue-count-up :animation="item.animation || animation"
+                           :decimals="item.decimals || decimals"
                            class="count"
                            :end="item.count"></avue-count-up>
             <span class="splitLine" />
