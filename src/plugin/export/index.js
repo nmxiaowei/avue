@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { isJson, downFile } from 'utils/util';
+import { isJson, downFile, vaildData } from 'utils/util';
 import packages from "core/packages";
 import dayjs from 'dayjs'
 export default {
@@ -129,7 +129,7 @@ export default {
         }
         /// 这里生成cell的时候，使用上面定义的默认样式
         const cell = {
-          v: data[R][C] || '',
+          v: vaildData(data[R][C], ''),
           s: {
             font: { name: "宋体", sz: 11, color: { auto: 1, rgb: '000000' }, bold: true },
             alignment: {
