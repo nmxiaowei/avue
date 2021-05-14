@@ -171,8 +171,7 @@
       </table-page>
     </el-card>
     <!-- 表单 -->
-    <dialog-form ref="dialogForm"
-                 v-model="tableForm">
+    <dialog-form ref="dialogForm">
       <template slot-scope="scope"
                 v-for="item in formSlot"
                 :slot="item.prop">
@@ -290,8 +289,6 @@ export default create({
   },
   mounted () {
     this.refreshTable(() => {
-      //如果有搜索激活搜索
-      this.$refs.headerSearch.init();
       //动态计算表格高度
       this.getTableHeight();
     })
@@ -312,7 +309,8 @@ export default create({
         let result = [];
         for (var o in this.default) {
           if (!this.validatenull(this.default[o].screenValue)) {
-            result.push((ele[o] + '').indexOf(this.default[o].screenValue) !== -1);
+            let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
+            result.push(value.indexOf(this.default[o].screenValue) !== -1);
           }
         }
         if (this.validatenull(result)) {
@@ -321,7 +319,7 @@ export default create({
         return eval(result.join('&&'));
       })
       return {
-        list: list
+        list
       }
     },
     formSlot () {
@@ -452,16 +450,11 @@ export default create({
       },
       deep: true
     },
-    tableForm: {
-      handler () {
-        this.$emit("input", this.tableForm);
-      },
-      deep: true
-    },
     value: {
       handler () {
-        this.formVal();
+        this.tableForm = this.value;
       },
+      immediate: true,
       deep: true
     },
     data: {
@@ -623,11 +616,6 @@ export default create({
     },
     setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
-    },
-    formVal () {
-      Object.keys(this.value).forEach(ele => {
-        this.$set(this.tableForm, ele, this.value[ele]);
-      });
     },
     columnInit () {
       this.default = {};
@@ -873,21 +861,12 @@ export default create({
       });
       return rowData;
     },
-    //搜索
-    searchChange () {
-      this.$refs.headerSearch.searchChange();
-    },
     getPropRef (prop) {
       return this.$refs.dialogForm.$refs.tableForm.getPropRef(prop);
-    },
-    //清空
-    searchReset () {
-      this.$refs.headerSearch.searchReset();
     },
     // 编辑
     rowEdit (row, index) {
       this.tableForm = this.rowClone(row);
-      this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("edit", index);
     },
@@ -895,14 +874,12 @@ export default create({
     rowCopy (row) {
       this.tableForm = this.rowClone(row);
       delete this.tableForm[this.rowKey]
-      this.$emit("input", this.tableForm);
       this.tableIndex = -1;
       this.$refs.dialogForm.show("add");
     },
     //查看
     rowView (row, index) {
       this.tableForm = this.rowClone(row);
-      this.$emit("input", this.tableForm);
       this.tableIndex = index;
       this.$refs.dialogForm.show("view");
     },
@@ -932,11 +909,6 @@ export default create({
         }
 
       });
-    },
-    //清空表单
-    resetForm () {
-      this.$refs.dialogForm.resetForm();
-      this.$emit("input", this.tableForm);
     },
     //合并行
     tableSpanMethod (param) {

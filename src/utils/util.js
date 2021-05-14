@@ -225,14 +225,9 @@ export const isJson = str => {
 export const deepClone = data => {
   var type = getObjType(data);
   var obj;
-  if (type === 'array') {
-    obj = [];
-  } else if (type === 'object') {
-    obj = {};
-  } else {
-    // 不再具有下一层次
-    return data;
-  }
+  if (type === 'array') obj = [];
+  else if (type === 'object') obj = {};
+  else return data;
   if (type === 'array') {
     for (var i = 0, len = data.length; i < len; i++) {
       data[i] = (() => {
@@ -472,16 +467,13 @@ export const arraySort = (list = [], prop, callback) => {
 export const clearVal = (obj, list = []) => {
   if (!obj) return {};
   Object.keys(obj).forEach(ele => {
-    if (!list.includes(ele)) {
-      if (Array.isArray(obj[ele])) {
-        obj[ele] = [];
-      } else if (obj[ele] !== null && typeof obj[ele] === 'object') {
-        obj[ele] = {};
-      } else if (['number', 'boolean'].includes(typeof obj[ele]) || undefined === obj[ele]) {
-        obj[ele] = undefined;
-      } else {
-        obj[ele] = '';
-      }
+    if (list.includes(ele)) return
+    else if (!validatenull(obj[ele])) {
+      let type = getObjType(obj[ele])
+      if (type === 'array') obj[ele] = [];
+      else if (type === 'object') obj[ele] = {};
+      else if (['number', 'boolean'].includes(type)) obj[ele] = undefined;
+      else obj[ele] = '';
     }
   });
   return obj;
