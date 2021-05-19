@@ -585,9 +585,7 @@ export default create({
       }
     },
     clearValidate (list) {
-      this.$nextTick(() => {
-        this.$refs.form.clearValidate(list);
-      })
+      this.$refs.form.clearValidate(list);
     },
     validateCellForm () {
       return new Promise(resolve => {

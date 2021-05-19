@@ -868,6 +868,7 @@ export default create({
     rowEdit (row, index) {
       this.tableForm = this.rowClone(row);
       this.tableIndex = index;
+      this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("edit", index);
     },
     //复制
@@ -875,12 +876,14 @@ export default create({
       this.tableForm = this.rowClone(row);
       delete this.tableForm[this.rowKey]
       this.tableIndex = -1;
+      this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("add");
     },
     //查看
     rowView (row, index) {
       this.tableForm = this.rowClone(row);
       this.tableIndex = index;
+      this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {

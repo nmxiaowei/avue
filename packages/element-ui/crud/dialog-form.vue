@@ -97,7 +97,6 @@ export default create({
       size: null,
       boxVisible: false,
       boxHeight: 0,
-      tableForm: {},
       index: -1
     };
   },
@@ -300,11 +299,11 @@ export default create({
     hide (done) {
       const callback = () => {
         done && done();
-        this.crud.tableIndex = -1;
-        this.boxVisible = false;
         Object.keys(this.crud.tableForm).forEach(ele => {
           this.$delete(this.crud.tableForm, ele);
         })
+        this.crud.tableIndex = -1;
+        this.boxVisible = false;
       };
       if (typeof this.crud.beforeClose === "function") {
         this.crud.beforeClose(callback, this.boxType);
