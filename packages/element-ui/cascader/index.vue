@@ -4,7 +4,6 @@
                :placeholder="placeholder"
                :props="allProps"
                :size="size"
-               :emit-path="emitPath"
                :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :expand-trigger="expandTrigger"
@@ -90,6 +89,7 @@ export default create({
         children: this.childrenKey,
         checkStrictly: this.checkStrictly,
         multiple: this.multiple,
+        emitPath: this.emitPath,
         lazy: this.lazy,
         lazyLoad: (node, resolve) => {
           let callback = (list) => {
