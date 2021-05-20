@@ -6,7 +6,6 @@
                :size="size"
                :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
-               :expand-trigger="expandTrigger"
                :show-all-levels="showAllLevels"
                :filterable="filterable"
                :separator="separator"
