@@ -546,7 +546,7 @@ export default create({
           const tablePageRef = this.$refs.tablePage
           if (!tableRef) return
           const tableStyle = tableRef.$el;
-          const pageStyle = tablePageRef ? tablePageRef.$el.offsetHeight : 0;
+          const pageStyle = tablePageRef.$el.offsetHeight || 20;
           this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
