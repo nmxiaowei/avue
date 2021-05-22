@@ -25,7 +25,7 @@
                 :name="crud.getSlotName(item,'F')"></slot>
         </template>
       </column-dynamic>
-      <el-table-column v-else-if="vaildColumn(column)"
+      <el-table-column v-else-if="getColumnProp(column,'hide')"
                        :key="column.prop"
                        :prop="column.prop"
                        :label="column.label"
@@ -37,8 +37,8 @@
                        :min-width="column.minWidth"
                        :sortable="getColumnProp(column,'sortable')"
                        :render-header="column.renderHeader"
-                       :align="column.align || tableOption.align"
-                       :header-align="column.headerAlign || tableOption.headerAlign"
+                       :align="column.align || crud.tableOption.align"
+                       :header-align="column.headerAlign || crud.tableOption.headerAlign"
                        :width="getColumnProp(column,'width')"
                        :fixed="getColumnProp(column,'fixed')">
         <template slot="header"
@@ -48,11 +48,11 @@
                 v-bind="Object.assign(scope,{column})"></slot>
           <el-popover placement="bottom"
                       v-else
-                      :disabled="(crud.default[column.prop] || {}).screen!==true"
+                      :disabled="(crud.objectOption[column.prop] || {}).screen!==true"
                       trigger="hover">
             <el-input type="text"
                       :placeholder="`请输入 ${column.label} 筛选关键字`"
-                      v-model="(crud.default[column.prop] || {}).screenValue"
+                      v-model="(crud.objectOption[column.prop] || {}).screenValue"
                       size="mini"></el-input>
             <span slot="reference">{{column.label}}</span>
           </el-popover>
@@ -78,9 +78,9 @@
                        :column="column"
                        :size="crud.isMediumSize"
                        :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                       :props="column.props || tableOption.props"
+                       :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
-                       :disabled="crud.disabled || tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
+                       :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
                        :clearable="vaildData(column.clearable,false)"
                        v-bind="$uploadFun(column,crud)"
                        v-model="row[column.prop]"
@@ -153,12 +153,6 @@ export default create({
     };
   },
   props: {
-    tableOption: {
-      type: Object,
-      default: () => {
-        return {};
-      }
-    },
     columnOption: {
       type: Array,
       default: () => {
@@ -169,26 +163,24 @@ export default create({
   computed: {
     list () {
       let result = [...this.columnOption];
-      result = arraySort(result, 'order', (a, b) => this.crud.default[a.prop]?.order - this.crud.default[b.prop]?.order)
+      result = arraySort(result, 'order', (a, b) => this.crud.objectOption[a.prop]?.order - this.crud.objectOption[b.prop]?.order)
       return result;
     }
   },
   methods: {
     getColumnProp (column, type) {
-      if (type === 'filterMethod') return this.crud.default[column.prop]?.filters
+      if (type === 'filterMethod') return this.crud.objectOption[column.prop]?.filters
       if (this.crud.isMobile && ['fixed'].includes(type)) return false;
-      let result = this.crud.default[column.prop]?.[type]
+      let result = this.crud.objectOption[column.prop]?.[type]
       if (type == 'width' && result == 0) { return undefined }
       if (type == 'filters') return this.handleFilters(column, result)
+      if (type == 'hide') return column.hide !== true
       else return result;
     },
     vaildLabel (column, row, val) {
       if (column.rules && row.$cellEdit) {
         return val
       }
-    },
-    vaildColumn (item) {
-      return this.crud.default[item.prop]?.hide !== true;
     },
     corArray (list, separator = DIC_SPLIT) {
       if (this.validatenull(list)) {
@@ -216,7 +208,7 @@ export default create({
     handleDetail (row, column) {
       let result = row[column.prop];
       let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
-      result = detail(row, column, this.tableOption, DIC);
+      result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC)) {
         row["$" + column.prop] = result;
       }
@@ -225,7 +217,7 @@ export default create({
     handleShowLabel (row, column, DIC) {
       let result = "";
       if (!this.validatenull(DIC)) {
-        result = detail(row, column, this.tableOption, DIC);
+        result = detail(row, column, this.crud.tableOption, DIC);
         row["$" + column.prop] = result;
       }
       return result;
@@ -314,7 +306,7 @@ export default create({
       let list = [];
       if (!this.validatenull(DIC)) {
         DIC.forEach(ele => {
-          const props = column.props || this.tableOption.props || {};
+          const props = column.props || this.crud.tableOption.props || {};
           list.push({
             text: ele[props.label || DIC_PROPS.label],
             value: ele[props.value || DIC_PROPS.value]

@@ -115,10 +115,8 @@
                           :desc="tableOption.emptyText || '暂无数据'"></avue-empty>
             </div>
           </template>
-          <column :columnOption="columnOption"
-                  :tableOption="tableOption">
+          <column :columnOption="columnOption">
             <column-default ref="columnDefault"
-                            :tableOption="tableOption"
                             slot="header">
               <template slot-scope="{row,index}"
                         slot="expand">
@@ -145,8 +143,7 @@
               <slot v-bind="scope"
                     :name="getSlotName(item,'F')"></slot>
             </template>
-            <column-menu :tableOption="tableOption"
-                         slot="footer">
+            <column-menu slot="footer">
               <template slot="menu"
                         slot-scope="scope">
                 <slot name="menu"
@@ -307,10 +304,10 @@ export default create({
       let list = this.list
       list = list.filter(ele => {
         let result = [];
-        for (var o in this.default) {
-          if (!this.validatenull(this.default[o].screenValue)) {
+        for (var o in this.objectOption) {
+          if (!this.validatenull(this.objectOption[o].screenValue)) {
             let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
-            result.push(value.indexOf(this.default[o].screenValue) !== -1);
+            result.push(value.indexOf(this.objectOption[o].screenValue) !== -1);
           }
         }
         if (this.validatenull(result)) {
@@ -438,18 +435,6 @@ export default create({
     },
   },
   watch: {
-    default: {
-      handler (val) {
-        this.$emit('update:defaults', val)
-      },
-      deep: true
-    },
-    defaults: {
-      handler (val) {
-        this.default = val;
-      },
-      deep: true
-    },
     value: {
       handler () {
         this.tableForm = this.value;
@@ -492,12 +477,6 @@ export default create({
     value: {
       type: Object,
       default: () => {
-        return {};
-      }
-    },
-    defaults: {
-      type: Object,
-      default () {
         return {};
       }
     },
@@ -618,19 +597,11 @@ export default create({
       this.$refs.table.setCurrentRow(row);
     },
     columnInit () {
-      this.default = {};
       this.propOption.forEach(column => {
-        let obj = {}
-        this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
-        this.$set(this.default, column.prop, Object.assign(obj, {
-          order: column.order,
-          label: column.label,
-          showColumn: column.showColumn
-        }, this.defaults[column.prop]))
         if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
           if (['hide', 'filters', 'order'].includes(ele.prop)) {
-            this.$watch(`default.${column.prop}.${ele.prop}`, () => this.refreshTable())
+            this.$watch(`objectOption.${column.prop}.${ele.prop}`, () => this.refreshTable())
           }
         })
         this.defaultBind[column.prop] = true;
@@ -648,7 +619,7 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
-      this.default[column.property].width = newWidth
+      this.objectOption[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
@@ -657,7 +628,7 @@ export default create({
       column.splice(newIndex, 0, targetRow)
       this.refreshTable()
       this.propOption.forEach((ele, index) => {
-        this.default[ele.prop].order = index;
+        this.objectOption[ele.prop].order = index;
       })
     },
     //展开或则关闭

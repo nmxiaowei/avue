@@ -13,30 +13,45 @@ export default function () {
       }
     },
     watch: {
+      defaults: {
+        handler (val) {
+          this.objectOption = val;
+        },
+        deep: true
+      },
+      objectOption: {
+        handler (val) {
+          this.$emit('update:defaults', val)
+        },
+        deep: true
+      },
+      propOption: {
+        handler (val) {
+          this.objectOption = {};
+          val.forEach(ele => this.objectOption[ele.prop] = ele);
+        },
+        deep: true,
+      },
       option: {
         handler () {
           this.init(false);
         },
         deep: true,
-      }
+      },
     },
     data () {
       return {
         DIC: {},
         cascaderDIC: {},
         tableOption: {},
-        isMobile: ''
+        isMobile: '',
+        objectOption: {}
       };
     },
     created () {
       this.init();
     },
     computed: {
-      objectOption () {
-        let obj = {};
-        this.propOption.forEach(ele => obj[ele.prop] = ele);
-        return obj;
-      },
       resultOption () {
         return Object.assign(this.deepClone(this.tableOption), {
           column: this.propOption
