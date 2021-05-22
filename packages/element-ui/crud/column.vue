@@ -169,9 +169,10 @@ export default create({
   },
   methods: {
     getColumnProp (column, type) {
-      if (type === 'filterMethod') return this.crud.objectOption[column.prop]?.filters
+      let obj = this.crud.objectOption[column.prop] || {}
+      if (type === 'filterMethod') return obj?.filters
       if (this.crud.isMobile && ['fixed'].includes(type)) return false;
-      let result = this.crud.objectOption[column.prop]?.[type]
+      let result = obj?.[type]
       if (type == 'width' && result == 0) { return undefined }
       if (type == 'filters') return this.handleFilters(column, result)
       if (type == 'hide') return column.hide !== true
