@@ -370,7 +370,7 @@ export default create({
     this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
-      this.clearValidate();
+      this.$nextTick(() => this.clearValidate())
       this.formCreate = true;
     })
   },
