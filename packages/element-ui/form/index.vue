@@ -53,12 +53,12 @@
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
                       :key="cindex"
-                      :style="{paddingLeft:setPx((parentOption.gutter ||20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
+                      :style="{paddingLeft:setPx((parentOption.gutter || 20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
-                      :sm="12"
-                      :xs="24"
-                      :offset="column.offset || 0"
+                      :sm="column.smSpan || item.smSpan || 12"
+                      :xs="column.xsSpan || item.xmSpan ||  24"
+                      :offset="column.offset || item.offset ||  0"
                       :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
@@ -178,7 +178,7 @@ import formTemp from '../../core/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { filterDefaultParams, clearVal, getAsVal, setAsVal, arraySort } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -323,7 +323,7 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = ele.column.filter(item => !this.validatenull(item.order)).sort((a, b) => (a.order || 0) - (b.order || 0)).concat(ele.column.filter(item => this.validatenull(item.order)))
+        ele.column = arraySort(ele.column, 'order', (a, b) => a.order - b.order)
       });
       return list;
     },
@@ -354,10 +354,6 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    reset: {
-      type: Boolean,
-      default: true
-    },
     isCrud: {
       type: Boolean,
       default: false
@@ -374,7 +370,7 @@ export default create({
     this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
-      this.clearValidate();
+      this.$nextTick(() => this.clearValidate())
       this.formCreate = true;
     })
   },
@@ -532,18 +528,18 @@ export default create({
       if (column.cascader) this.handleChange(option, column)
     },
     handleMock () {
-      if (this.isMock) {
-        this.columnOption.forEach(column => {
-          const form = mock(column.column, this.DIC, this.form, this.isMock);
-          if (!this.validatenull(form)) {
-            Object.keys(form).forEach(ele => {
-              this.form[ele] = form[ele];
-            });
-            this.clearValidate();
-          }
-        });
-        this.$emit('mock-change', this.form);
-      }
+      if (!this.isMock) return
+      this.columnOption.forEach(column => {
+        const form = mock(column.column, this.DIC, this.form, this.isMock);
+        if (!this.validatenull(form)) {
+          Object.keys(form).forEach(ele => {
+            this.form[ele] = form[ele];
+          });
+
+        }
+      });
+      this.clearValidate();
+      this.$emit('mock-change', this.form);
     },
     vaildDetail (column) {
       if (this.detail) return true;
@@ -589,9 +585,7 @@ export default create({
       }
     },
     clearValidate (list) {
-      this.$nextTick(() => {
-        this.$refs.form.clearValidate(list);
-      })
+      this.$refs.form.clearValidate(list);
     },
     validateCellForm () {
       return new Promise(resolve => {
@@ -637,15 +631,14 @@ export default create({
       });
     },
     resetForm () {
+      this.clearVal();
       this.clearValidate();
-      if (this.reset) {
-        this.clearVal();
-      }
-      this.$emit("input", this.form);
       this.$emit("reset-change");
     },
     clearVal () {
       this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
+      this.$emit("input", this.form);
+      this.$emit("change", this.form);
     },
     resetFields () {
       this.$refs.form.resetFields();

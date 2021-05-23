@@ -3,10 +3,10 @@
     <el-table-column width="1px"></el-table-column>
     <!-- 折叠面板  -->
     <el-table-column type="expand"
-                     :width="tableOption.expandWidth || config.expandWidth"
-                     :fixed="vaildData(tableOption.expandFixed,config.expandFixed)"
+                     :width="crud.tableOption.expandWidth || config.expandWidth"
+                     :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
                      align="center"
-                     v-if="tableOption.expand">
+                     v-if="crud.tableOption.expand">
       <template slot-scope="{row}">
         <slot :row="row"
               :index="row.$index"
@@ -15,19 +15,19 @@
     </el-table-column>
 
     <!-- 选择框 -->
-    <el-table-column v-if="tableOption.selection"
-                     :fixed="vaildData(tableOption.selectionFixed,config.selectionFixed)"
+    <el-table-column v-if="crud.tableOption.selection"
+                     :fixed="vaildData(crud.tableOption.selectionFixed,config.selectionFixed)"
                      type="selection"
-                     :selectable="tableOption.selectable"
-                     :reserve-selection="vaildData(tableOption.reserveSelection)"
-                     :width="tableOption.selectionWidth || config.selectionWidth"
+                     :selectable="crud.tableOption.selectable"
+                     :reserve-selection="vaildData(crud.tableOption.reserveSelection)"
+                     :width="crud.tableOption.selectionWidth || config.selectionWidth"
                      align="center"></el-table-column>
     <!-- 序号 -->
-    <el-table-column v-if="vaildData(tableOption.index)"
-                     :fixed="vaildData(tableOption.indexFixed,config.indexFixed)"
-                     :label="tableOption.indexLabel || config.indexLabel"
+    <el-table-column v-if="vaildData(crud.tableOption.index)"
+                     :fixed="vaildData(crud.tableOption.indexFixed,config.indexFixed)"
+                     :label="crud.tableOption.indexLabel || config.indexLabel"
                      type="index"
-                     :width="tableOption.indexWidth || config.indexWidth"
+                     :width="crud.tableOption.indexWidth || config.indexWidth"
                      :index="indexMethod"
                      align="center"></el-table-column>
   </div>
@@ -49,14 +49,6 @@ export default create({
   },
   mixins: [locale],
   inject: ["crud"],
-  props: {
-    tableOption: {
-      type: Object,
-      default: () => {
-        return {};
-      }
-    }
-  },
   methods: {
     indexMethod (index) {
       return (
@@ -68,7 +60,7 @@ export default create({
     },
     setSort () {
       this.rowDrop()
-      this.columnDrop()
+      // this.columnDrop()
     },
     rowDrop () {
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]

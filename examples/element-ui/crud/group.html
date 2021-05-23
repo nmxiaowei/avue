@@ -19,7 +19,9 @@
 
 <body>
   <div id="app">
-    <avue-crud :option="option" v-model="obj" :data="data">
+    {{obj}}
+    {{search}}
+    <avue-crud :option="option" v-model="obj" :data="data" :search.sync="search">
       <template slot-scope="scope" slot="namesForm">
         <div>
           <span>{{obj.names}}</span>
@@ -35,9 +37,8 @@
     el: '#app',
     data() {
       return {
-        obj: {
-          name: '11'
-        },
+        obj: {},
+        search: {},
         data: [],
         option: {
           column: [{
@@ -77,7 +78,6 @@
                   },
                   cascaderItem: ['city', 'area'],
                   dicUrl: `${baseUrl}/getProvince`,
-                  dicData: 'province',
                   rules: [
                     {
                       required: true,
@@ -95,8 +95,6 @@
                     label: 'name',
                     value: 'code'
                   },
-                  defaultIndex: 1,
-                  dicFlag: false,
                   dicUrl: `${baseUrl}/getCity/{{key}}`,
                   rules: [
                     {
@@ -114,8 +112,6 @@
                     label: 'name',
                     value: 'code'
                   },
-                  defaultIndex: 1,
-                  dicFlag: false,
                   dicUrl: `${baseUrl}/getArea/{{key}}`,
                   rules: [
                     {
@@ -162,6 +158,7 @@
     },
     mounted() {
       this.data = [{
+        id: 1,
         name: '111',
         province: '110000',
         city: '110100',

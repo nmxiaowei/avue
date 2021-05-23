@@ -32,9 +32,9 @@
                          :max="2000"
                          size="small"
                          v-if="item.prop=='width'"
-                         v-model="crud.default[row.prop][item.prop]"></el-slider>
+                         v-model="crud.objectOption[row.prop][item.prop]"></el-slider>
               <el-checkbox v-else
-                           v-model="crud.default[row.prop][item.prop]"></el-checkbox>
+                           v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
             </template>
           </el-table-column>
         </template>
@@ -60,8 +60,8 @@ export default create({
   computed: {
     list () {
       let list = [];
-      for (var o in this.crud.default) {
-        const ele = this.crud.default[o] || {}
+      for (var o in this.crud.objectOption) {
+        const ele = this.crud.objectOption[o]
         if (ele.showColumn != false) {
           list.push(Object.assign(ele, { prop: o }))
         }

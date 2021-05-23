@@ -115,10 +115,8 @@
                           :desc="tableOption.emptyText || '暂无数据'"></avue-empty>
             </div>
           </template>
-          <column :columnOption="columnOption"
-                  :tableOption="tableOption">
+          <column :columnOption="columnOption">
             <column-default ref="columnDefault"
-                            :tableOption="tableOption"
                             slot="header">
               <template slot-scope="{row,index}"
                         slot="expand">
@@ -145,8 +143,7 @@
               <slot v-bind="scope"
                     :name="getSlotName(item,'F')"></slot>
             </template>
-            <column-menu :tableOption="tableOption"
-                         slot="footer">
+            <column-menu slot="footer">
               <template slot="menu"
                         slot-scope="scope">
                 <slot name="menu"
@@ -171,8 +168,7 @@
       </table-page>
     </el-card>
     <!-- 表单 -->
-    <dialog-form ref="dialogForm"
-                 v-model="tableForm">
+    <dialog-form ref="dialogForm">
       <template slot-scope="scope"
                 v-for="item in formSlot"
                 :slot="item.prop">
@@ -290,8 +286,6 @@ export default create({
   },
   mounted () {
     this.refreshTable(() => {
-      //如果有搜索激活搜索
-      this.$refs.headerSearch.init();
       //动态计算表格高度
       this.getTableHeight();
     })
@@ -310,9 +304,10 @@ export default create({
       let list = this.list
       list = list.filter(ele => {
         let result = [];
-        for (var o in this.default) {
-          if (!this.validatenull(this.default[o].screenValue)) {
-            result.push((ele[o] + '').indexOf(this.default[o].screenValue) !== -1);
+        for (var o in this.objectOption) {
+          if (!this.validatenull(this.objectOption[o].screenValue)) {
+            let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
+            result.push(value.indexOf(this.objectOption[o].screenValue) !== -1);
           }
         }
         if (this.validatenull(result)) {
@@ -321,7 +316,7 @@ export default create({
         return eval(result.join('&&'));
       })
       return {
-        list: list
+        list
       }
     },
     formSlot () {
@@ -440,28 +435,11 @@ export default create({
     },
   },
   watch: {
-    default: {
-      handler (val) {
-        this.$emit('update:defaults', val)
-      },
-      deep: true
-    },
-    defaults: {
-      handler (val) {
-        this.default = val;
-      },
-      deep: true
-    },
-    tableForm: {
-      handler () {
-        this.$emit("input", this.tableForm);
-      },
-      deep: true
-    },
     value: {
       handler () {
-        this.formVal();
+        this.tableForm = this.value;
       },
+      immediate: true,
       deep: true
     },
     data: {
@@ -499,12 +477,6 @@ export default create({
     value: {
       type: Object,
       default: () => {
-        return {};
-      }
-    },
-    defaults: {
-      type: Object,
-      default () {
         return {};
       }
     },
@@ -553,7 +525,7 @@ export default create({
           const tablePageRef = this.$refs.tablePage
           if (!tableRef) return
           const tableStyle = tableRef.$el;
-          const pageStyle = tablePageRef ? tablePageRef.$el.offsetHeight : 0;
+          const pageStyle = tablePageRef.$el.offsetHeight || 20;
           this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
@@ -624,25 +596,12 @@ export default create({
     setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
     },
-    formVal () {
-      Object.keys(this.value).forEach(ele => {
-        this.$set(this.tableForm, ele, this.value[ele]);
-      });
-    },
     columnInit () {
-      this.default = {};
       this.propOption.forEach(column => {
-        let obj = {}
-        this.defaultColumn.forEach(ele => obj[ele.prop] = column[ele.prop])
-        this.$set(this.default, column.prop, Object.assign(obj, {
-          order: undefined,
-          label: column.label,
-          showColumn: column.showColumn
-        }, this.defaults[column.prop]))
         if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
           if (['hide', 'filters', 'order'].includes(ele.prop)) {
-            this.$watch(`default.${column.prop}.${ele.prop}`, () => this.refreshTable())
+            this.$watch(`objectOption.${column.prop}.${ele.prop}`, () => this.refreshTable())
           }
         })
         this.defaultBind[column.prop] = true;
@@ -660,7 +619,7 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
-      this.default[column.property].width = newWidth
+      this.objectOption[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
@@ -669,7 +628,7 @@ export default create({
       column.splice(newIndex, 0, targetRow)
       this.refreshTable()
       this.propOption.forEach((ele, index) => {
-        this.default[ele.prop].order = index;
+        this.objectOption[ele.prop].order = index;
       })
     },
     //展开或则关闭
@@ -873,37 +832,29 @@ export default create({
       });
       return rowData;
     },
-    //搜索
-    searchChange () {
-      this.$refs.headerSearch.searchChange();
-    },
     getPropRef (prop) {
       return this.$refs.dialogForm.$refs.tableForm.getPropRef(prop);
-    },
-    //清空
-    searchReset () {
-      this.$refs.headerSearch.searchReset();
     },
     // 编辑
     rowEdit (row, index) {
       this.tableForm = this.rowClone(row);
-      this.$emit("input", this.tableForm);
       this.tableIndex = index;
+      this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("edit", index);
     },
     //复制
     rowCopy (row) {
       this.tableForm = this.rowClone(row);
       delete this.tableForm[this.rowKey]
-      this.$emit("input", this.tableForm);
       this.tableIndex = -1;
+      this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("add");
     },
     //查看
     rowView (row, index) {
       this.tableForm = this.rowClone(row);
-      this.$emit("input", this.tableForm);
       this.tableIndex = index;
+      this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {
@@ -932,11 +883,6 @@ export default create({
         }
 
       });
-    },
-    //清空表单
-    resetForm () {
-      this.$refs.dialogForm.resetForm();
-      this.$emit("input", this.tableForm);
     },
     //合并行
     tableSpanMethod (param) {

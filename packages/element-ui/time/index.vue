@@ -3,6 +3,7 @@
     <el-time-picker v-model="text"
                     :is-range="isRange"
                     :size="size"
+                    :editable="editable"
                     :default-value="defaultValue"
                     :range-separator="rangeSeparator"
                     :arrow-control="arrowControl"
@@ -31,6 +32,7 @@ export default create({
     return {};
   },
   props: {
+    editable: Boolean,
     startPlaceholder: {
       type: String,
       default: "开始时间"

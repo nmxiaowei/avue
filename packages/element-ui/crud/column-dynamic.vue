@@ -30,7 +30,7 @@
                 :name="crud.getSlotName(item,'F')"></slot>
         </template>
       </column-dynamic>
-      <el-table-column v-else-if="vaildColumn(column)"
+      <el-table-column v-else-if="getColumnProp(column,'hide')"
                        :key="column.prop"
                        :prop="column.prop"
                        :label="column.label"
@@ -53,11 +53,11 @@
                 v-bind="Object.assign(scope,{column})"></slot>
           <el-popover placement="bottom"
                       v-else
-                      :disabled="(crud.default[column.prop] || {}).screen!==true"
+                      :disabled="(crud.objectOption[column.prop] || {}).screen!==true"
                       trigger="hover">
             <el-input type="text"
                       :placeholder="`请输入 ${column.label} 筛选关键字`"
-                      v-model="(crud.default[column.prop] || {}).screenValue"
+                      v-model="(crud.objectOption[column.prop] || {}).screenValue"
                       size="mini"></el-input>
             <span slot="reference">{{column.label}}</span>
           </el-popover>

@@ -6,6 +6,7 @@
       <avue-form :option="option"
                  ref="form"
                  @submit="searchChange"
+                 @change="handleChange"
                  @reset-change="resetChange"
                  v-model="searchForm">
         <template slot="menuForm"
@@ -89,15 +90,16 @@ export default cteate({
   watch: {
     'crud.propOption': {
       handler () {
-        this.dataformat();
+        this.dataFormat();
       },
       immediate: true
     },
     search: {
       handler () {
-        this.searchInit();
+        this.searchForm = Object.assign(this.searchForm, this.search);
       },
-      deep: true,
+      immediate: true,
+      deep: true
     },
     searchShow: {
       handler () {
@@ -107,22 +109,14 @@ export default cteate({
           }, 300)
         })
       }
-    },
-    searchForm: {
-      handler () {
-        this.$emit("input", this.searchForm);
-        this.updateValue();
-      },
-      deep: true
     }
   },
   created () {
-    this.init();
-    this.searchInit();
+    this.initFun();
   },
   computed: {
     isSearchIcon () {
-      return this.crud.option.searchIcon === true && this.columnLen > this.searchIndex
+      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
     },
     searchIndex () {
       return this.crud.option.searchIndex || 2
@@ -148,7 +142,7 @@ export default cteate({
               multiple: ele.searchMultiple,
               order: ele.searchOrder,
               detail: false,
-              dicFlag: false,
+              dicFlag: ele.cascaderItem ? true : this.vaildData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || this.config.searchSpan,
               gutter: ele.searchGutter || option.searchGutter || this.config.searchGutter,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
@@ -193,11 +187,11 @@ export default cteate({
           printBtn: false,
           mockBtn: false,
           size: option.searchSize,
-          submitText: this.vaildData(option.searchBtnText, this.t('crud.searchBtn')),
+          submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.vaildData(option.searchBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
-          emptyText: this.vaildData(option.emptyBtnText, this.t('crud.emptyBtn')),
-          emptyBtn: this.vaildData(option.emptyBtn, this.config.emptyBtn),
+          emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
+          emptyBtn: option.emptyBtn || this.config.emptyBtn,
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
@@ -220,17 +214,11 @@ export default cteate({
     }
   },
   methods: {
-    searchInit () {
-      this.searchForm = Object.assign(this.searchForm, this.search);
+    initFun () {
+      ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
     },
-    updateValue () {
+    handleChange () {
       this.crud.$emit('update:search', this.searchForm)
-    },
-    //初始化
-    init () {
-      //扩展搜索的相关api
-      this.crud.searchChange = this.searchChange;
-      this.crud.searchReset = this.searchReset;
     },
     // 搜索回调
     searchChange (form, done) {
@@ -247,7 +235,7 @@ export default cteate({
     handleSearchShow () {
       this.searchShow = !this.searchShow;
     },
-    dataformat () {
+    dataFormat () {
       this.defaultForm = formInitVal(this.option.column);
       this.searchForm = this.deepClone(this.defaultForm.tableForm);
       this.searchShow = vaildData(

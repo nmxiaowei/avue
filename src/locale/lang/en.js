@@ -5,8 +5,8 @@ export default {
     hide: 'hide'
   },
   tip: {
-    select: 'please select',
-    input: 'please input'
+    select: 'Please select',
+    input: 'Please input'
   },
   upload: {
     upload: 'upload',

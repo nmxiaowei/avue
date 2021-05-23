@@ -14,7 +14,7 @@
              :top="setPx(dialogTop)"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
-             :close-on-click-modal="crud.tableOption.dialogClickModal"
+             :close-on-click-modal="vaildData(crud.tableOption.dialogClickModal,false)"
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
@@ -30,14 +30,14 @@
       </div>
     </div>
     <el-scrollbar :style="styleName">
-      <avue-form v-model="tableForm"
+      <avue-form v-model="crud.tableForm"
                  v-if="boxVisible"
                  ref="tableForm"
+                 @change="handleChange"
                  @submit="handleSubmit"
+                 @reset-change="hide"
                  @tab-click="handleTabClick"
                  @error="handleError"
-                 :reset="false"
-                 @reset-change="hide"
                  v-bind="$uploadFun({},crud)"
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
@@ -45,36 +45,28 @@
                   v-for="item in crud.formSlot"
                   :slot="item.prop">
           <slot :name="item.prop"
-                v-bind="Object.assign(scope,{
-                  form:tableForm
-                })"></slot>
+                v-bind="scope"></slot>
         </template>
         <!-- 循环form表单错误卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.errorSlot"
                   :slot="crud.getSlotName(item,'E')">
           <slot :name="crud.getSlotName(item,'E')"
-                v-bind="Object.assign(scope,{
-                  form:tableForm
-                })"></slot>
+                v-bind="scope"></slot>
         </template>
         <!-- 循环form表单组件自定义卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.typeSlot"
                   :slot="crud.getSlotName(item,'T')">
           <slot :name="crud.getSlotName(item,'T')"
-                v-bind="Object.assign(scope,{
-                  form:tableForm
-                })"></slot>
+                v-bind="scope"></slot>
         </template>
         <!-- 循环form表单标签卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.labelSlot"
                   :slot="crud.getSlotName(item,'L')">
           <slot :name="crud.getSlotName(item,'L')"
-                v-bind="Object.assign(scope,{
-                  form:tableForm
-                })"></slot>
+                v-bind="scope"></slot>
         </template>
         <template slot="menuForm"
                   slot-scope="scope">
@@ -105,7 +97,6 @@ export default create({
       size: null,
       boxVisible: false,
       boxHeight: 0,
-      tableForm: {},
       index: -1
     };
   },
@@ -124,18 +115,6 @@ export default create({
           this.initFun()
         })
       }
-    },
-    value: {
-      handler () {
-        this.formVal();
-      },
-      deep: true
-    },
-    tableForm: {
-      handler () {
-        this.$emit("input", this.tableForm);
-      },
-      deep: true
     }
   },
   computed: {
@@ -224,6 +203,10 @@ export default create({
     }
   },
   methods: {
+    handleChange () {
+      this.crud.$emit('input', this.crud.tableForm)
+      this.crud.$emit('change', this.crud.tableForm)
+    },
     handleTabClick (tab, event) {
       this.crud.$emit('tab-click', tab, event)
     },
@@ -254,25 +237,15 @@ export default create({
       }
     },
     initFun () {
-      ['clearValidate', 'validate'].forEach(ele => {
+      ['clearValidate', 'validate', 'resetForm'].forEach(ele => {
         this.crud[ele] = this.$refs.tableForm[ele]
       })
-    },
-    formVal () {
-      Object.keys(this.value).forEach(ele => {
-        this.tableForm[ele] = this.value[ele];
-      });
-    },
-    //清空表单
-    resetForm () {
-      this.$refs["tableForm"].resetForm();
-      this.$emit("input", this.tableForm);
     },
     // 保存
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
+        filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
         this.closeDialog,
         hide
       );
@@ -282,7 +255,7 @@ export default create({
       const index = this.crud.tableIndex;
       this.crud.$emit(
         "row-update",
-        filterDefaultParams(this.tableForm, this.crud.tableOption.translate),
+        filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
         this.index,
         this.closeDialog,
         hide
@@ -326,11 +299,11 @@ export default create({
     hide (done) {
       const callback = () => {
         done && done();
+        Object.keys(this.crud.tableForm).forEach(ele => {
+          this.$delete(this.crud.tableForm, ele);
+        })
         this.crud.tableIndex = -1;
-        this.tableForm = {};
-        this.$nextTick(() => {
-          this.boxVisible = false;
-        });
+        this.boxVisible = false;
       };
       if (typeof this.crud.beforeClose === "function") {
         this.crud.beforeClose(callback, this.boxType);

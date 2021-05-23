@@ -23,8 +23,8 @@
                  :style="{color:item.color}">
                 <span>¥</span>
                 <avue-count-up class="b"
-                               :decimals="decimals"
-                               :animation="animation"
+                               :decimals="item.decimals || decimals"
+                               :animation="item.animation || animation"
                                :end="item.dismoney"></avue-count-up>
                 <s>{{item.money}}</s>
                 <em>{{item.tip}}</em>
