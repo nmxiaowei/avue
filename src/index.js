@@ -116,12 +116,13 @@ const install = function (Vue, opts = {}) {
   });
 };
 
+
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
 const Avue = Object.assign({
-  version: '2.8.12',
+  version: '3.0.0',
   locale: locale.locale,
   $Echart,
   install

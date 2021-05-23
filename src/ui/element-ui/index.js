@@ -1,6 +1,4 @@
-import Affix from 'components/affix';
 import CountUp from 'components/count-up';
-import Avatar from 'components/avatar';
 import Article from 'components/article';
 import Carousel from 'components/carousel';
 import Crud from 'components/crud';
@@ -12,7 +10,6 @@ import Form from 'components/form';
 import Checkbox from 'components/checkbox';
 import Date from 'components/date';
 import Draggable from 'components/draggable';
-import Empty from 'components/empty';
 import Flow from 'components/flow';
 import Notice from 'components/notice';
 import License from 'components/license';
@@ -38,7 +35,6 @@ import Keyboard from 'components/keyboard';
 import Tree from 'components/tree';
 import Title from 'components/title';
 import Search from 'components/search';
-import Skeleton from 'components/skeleton';
 import Tabs from 'components/tabs';
 import Dynamic from 'components/dynamic';
 import Queue from 'components/queue';
@@ -54,8 +50,6 @@ import AvueData from '../data/';
 import AvueEchart from '../echart/';
 export default Object.assign(AvueData, AvueEchart, {
   Arrays,
-  Affix,
-  Avatar,
   Article,
   Carousel,
   Crud,
@@ -68,7 +62,6 @@ export default Object.assign(AvueData, AvueEchart, {
   Date,
   CountUp,
   Draggable,
-  Empty,
   Flow,
   Notice,
   License,
@@ -98,7 +91,6 @@ export default Object.assign(AvueData, AvueEchart, {
   Video,
   Verifys,
   textEllipsis,
-  Skeleton,
   Sign,
   Login
 });

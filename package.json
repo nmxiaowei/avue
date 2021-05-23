@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.8.12",
+  "version": "3.0.0",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -18,7 +18,7 @@
   },
   "keywords": [
     "vue",
-    "element-ui",
+    "element-plus",
     "vant",
     "ant-design-vue",
     "avue"
@@ -36,6 +36,8 @@
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
+    "@vue/compiler-sfc": "^3.0.9",
+    "@vue/component-compiler-utils": "^3.2.0",
     "babel-loader": "^8.2.2",
     "cross-env": "^3.1.3",
     "css-loader": "^5.2.0",
@@ -50,7 +52,7 @@
     "gulp-postcss": "^6.1.1",
     "gulp-sass": "^4.1.0",
     "progress-bar-webpack-plugin": "^1.11.0",
-    "vue-loader": "^15.9.6",
+    "vue-loader": "^16.1.2",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.27.0",
     "webpack-bundle-analyzer": "^3.0.3",
@@ -62,10 +64,10 @@
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
     "deepmerge": "^3.1.0",
-    "element-ui": "^2.11.0",
+    "element-plus": "^1.0.2-beta.44",
     "nprogress": "^0.2.0",
     "vant": "^2.10.9",
-    "vue": "^2.5.17",
+    "vue": "^3.0.11",
     "vuedraggable": "^2.17.0"
   },
   "files": [
