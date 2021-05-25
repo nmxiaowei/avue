@@ -91,43 +91,43 @@ export default create({
     evalFunc: Function,
     evalArgs: Array
   },
-  data() {
+  data () {
     return {
       list: []
     };
   },
   watch: {
     data: {
-      handler() {
+      handler () {
         this.formatData();
       },
       immediate: true
     }
   },
-  created() {
+  created () {
     //初始化字典
     this.handleLoadDic(this.tableOption);
   },
   computed: {
-    parentOption() {
+    parentOption () {
       return this.tableOption || [];
     },
-    columnOption() {
+    columnOption () {
       return this.option.column || [];
     },
-    expandLevel() {
+    expandLevel () {
       return this.option.expandLevel;
     },
-    expandAll() {
+    expandAll () {
       return this.option.expandAll;
     },
-    border() {
+    border () {
       return this.option.border || true;
     }
   },
   methods: {
     // 格式化数据源
-    formatData() {
+    formatData () {
       let tmp = Array.isArray(this.data) ? this.data : [this.data];
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
@@ -135,7 +135,7 @@ export default create({
         : [this.expandLevel, tmp, this.expandAll];
       this.list = [...func.apply(null, args)];
     },
-    handleDetail(row, column, DIC) {
+    handleDetail (row, column, DIC) {
       if (!this.validatenull(DIC)) {
         const result = this.detail(row, column, this.tableOption, DIC);
         row["$" + column.prop] = result;
@@ -143,7 +143,7 @@ export default create({
       }
       return row[column.prop];
     },
-    showRow(row) {
+    showRow (row) {
       const index = row.rowIndex;
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
@@ -154,28 +154,28 @@ export default create({
         : "display:none;";
     },
     // 切换下级是否展开
-    toggleExpanded(row, index) {
+    toggleExpanded (row, index) {
       row._expanded = !row._expanded;
-      this.$set(this.list, index, row);
+      this.list[index] = row;
     },
     // 图标显示
-    iconShow(index, record) {
+    iconShow (index, record) {
       return index === 0 && record.children && record.children.length > 0;
     },
     // 行双击
-    rowDblclick(row, event) {
+    rowDblclick (row, event) {
       this.$emit("row-dblclick", row, event);
     },
     // 行单机
-    rowClick(row, event, column) {
+    rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
     // 排序回调
-    sortChange(val) {
+    sortChange (val) {
       this.$emit("sort-change", val);
     },
     //设置单选
-    currentRowChange(val) {
+    currentRowChange (val) {
       this.$emit("current-row-change", val);
     }
   }

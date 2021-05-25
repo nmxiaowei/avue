@@ -14,7 +14,7 @@
                :width="dialogWidth"
                append-to-body
                :title="placeholder"
-               :visible.sync="box">
+               v-model="box">
       <avue-crud :class="b('crud')"
                  ref="crud"
                  :option="option"
@@ -24,14 +24,16 @@
                  @search-change="handleSearchChange"
                  @search-reset="handleSearchChange"
                  @current-row-change="handleCurrentRowChange"
-                 :page.sync="page"></avue-crud>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   :size="size"
-                   icon="el-icon-check"
-                   @click="setVal">确 定</el-button>
-      </span>
+                 v-model:page="page"></avue-crud>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary"
+                     :size="size"
+                     icon="el-icon-check"
+                     @click="setVal">确 定</el-button>
+        </span>
+      </template>
+
     </el-dialog>
   </div>
 </template>

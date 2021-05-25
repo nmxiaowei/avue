@@ -46,9 +46,8 @@ import packages from 'core/packages';
 if (!window.Element) {
   packages.logs('element-ui');
 }
-import AvueData from '../data/';
-import AvueEchart from '../echart/';
-export default Object.assign(AvueData, AvueEchart, {
+
+export default {
   Arrays,
   Article,
   Carousel,
@@ -93,4 +92,4 @@ export default Object.assign(AvueData, AvueEchart, {
   textEllipsis,
   Sign,
   Login
-});
+}

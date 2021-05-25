@@ -22,7 +22,7 @@
   <div id="app">
     {{page}}
     <avue-crud ref="crud" :option="option" @size-change="sizeChange" @current-change="currentChange" :data="data"
-      :page.sync="page" @on-load="onLoad" @error="error"></avue-crud>
+      v-model:page="page" @on-load="onLoad" @error="error"></avue-crud>
   </div>
 </body>
 <script>

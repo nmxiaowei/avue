@@ -22,7 +22,7 @@
 <body>
   <div id="app">
     <avue-search :option="option" v-model="form" @change="handleChange">
-      <template slot="zdy" slot-scope="scope">
+      <template #zdy="scope">
         <el-tag>自定义</el-tag>
       </template>
     </avue-search>

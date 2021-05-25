@@ -14,11 +14,11 @@
              :size="column.size || size"
              :type="type || column.type"
              :column-slot="columnSlot"
-             @keyup.enter.native="enterChange">
+             @keyup.enter="enterChange">
     <span v-if="params.html"
           v-html="params.html"></span>
     <template slot-scope="scope"
-              v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+              v-for="item in $slots[getSlotName(column,'T')]?[column]:[]">
       <slot :name="getSlotName(item,'T')"
             v-bind="scope"></slot>
     </template>
@@ -38,7 +38,7 @@ export default {
   name: 'form-temp',
   mixins: [slot],
   props: {
-    value: {},
+    modelValue: {},
     uploadBefore: Function,
     uploadDelete: Function,
     uploadAfter: Function,
@@ -114,7 +114,7 @@ export default {
       handler (val) {
         if (this.first || !this.validatenull(val)) {
           this.first = true;
-          this.$emit('input', val);
+          this.$emit('update:modelValue', val);
           this.$emit('change', val)
         } else {
           this.first = true;

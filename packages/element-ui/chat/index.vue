@@ -74,47 +74,52 @@
                            @click="handleSend"
                            trigger="click">
                 发送
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>
-                    <el-popover placement="top"
-                                width="160"
-                                v-model="visible">
-                      <el-input size="mini"
-                                style="margin-bottom:10px"
-                                :rows="3"
-                                show-word-limit
-                                maxlength="100"
-                                placeholder="请输入快捷回复语"
-                                v-model="keys"
-                                type="textarea"></el-input>
-                      <div style="text-align: right; margin: 0">
-                        <el-button size="mini"
-                                   type="text"
-                                   @click="visible = false">取消</el-button>
-                        <el-button type="primary"
-                                   size="mini"
-                                   @click="addKey">确定</el-button>
-                      </div>
-                      <el-button slot="reference"
-                                 type="text"
-                                 icon="el-icon-plus"></el-button>
-                    </el-popover>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
+                      <el-popover placement="top"
+                                  width="160"
+                                  v-model="visible">
+                        <el-input size="mini"
+                                  style="margin-bottom:10px"
+                                  :rows="3"
+                                  show-word-limit
+                                  maxlength="100"
+                                  placeholder="请输入快捷回复语"
+                                  v-model="keys"
+                                  type="textarea"></el-input>
+                        <div style="text-align: right; margin: 0">
+                          <el-button size="mini"
+                                     type="text"
+                                     @click="visible = false">取消</el-button>
+                          <el-button type="primary"
+                                     size="mini"
+                                     @click="addKey">确定</el-button>
+                        </div>
+                        <template #>
+                          <el-button type="text"
+                                     icon="el-icon-plus"></el-button>
+                        </template>
 
-                  </el-dropdown-item>
-                  <el-scrollbar style="height:100px">
-                    <el-dropdown-item v-for="(item,index) in keylist"
-                                      :key="index"
-                                      @click.native="sendKey(item)">
-                      <el-tooltip effect="dark"
-                                  :content="item"
-                                  placement="top">
-                        <span> {{item.substr(0,10)}}{{item.length>10?'...':''}}</span>
-                      </el-tooltip>
+                      </el-popover>
 
                     </el-dropdown-item>
-                  </el-scrollbar>
+                    <el-scrollbar style="height:100px">
+                      <el-dropdown-item v-for="(item,index) in keylist"
+                                        :key="index"
+                                        @click="sendKey(item)">
+                        <el-tooltip effect="dark"
+                                    :content="item"
+                                    placement="top">
+                          <span> {{item.substr(0,10)}}{{item.length>10?'...':''}}</span>
+                        </el-tooltip>
 
-                </el-dropdown-menu>
+                      </el-dropdown-item>
+                    </el-scrollbar>
+
+                  </el-dropdown-menu>
+                </template>
+
               </el-dropdown>
             </div>
           </div>
@@ -124,7 +129,7 @@
     </div>
     <el-dialog :title="upload.title"
                append-to-body
-               :visible.sync="upload.box"
+               v-model="upload.box"
                width="30%">
       <el-form ref="form"
                :model="upload">
@@ -142,16 +147,18 @@
                     type="textarea"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button @click="upload.box=false"
-                   size="small">取 消</el-button>
-        <el-button type="primary"
-                   @click="uploadSubmit"
-                   size="small">确 定</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="upload.box=false"
+                     size="small">取 消</el-button>
+          <el-button type="primary"
+                     @click="uploadSubmit"
+                     size="small">确 定</el-button>
+        </span>
+      </template>
+
     </el-dialog>
-    <el-dialog :visible.sync="show"
+    <el-dialog v-model="show"
                width="40%"
                append-to-body
                :before-close="handleClose"
@@ -219,7 +226,7 @@ export default create({
       type: [String, Number],
       default: 520
     },
-    value: {
+    modelValue: {
       type: String
     },
     notice: {
@@ -263,7 +270,7 @@ export default create({
         })
       }
     },
-    value: {
+    modelValue: {
       handler () {
         this.msg = this.value;
       },
@@ -271,7 +278,7 @@ export default create({
     },
     msg: {
       handler () {
-        this.$emit('input', this.msg);
+        this.$emit('update:modelValue', this.msg);
       },
       immediate: true
     }

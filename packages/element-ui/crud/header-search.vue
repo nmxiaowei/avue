@@ -9,8 +9,7 @@
                  @change="handleChange"
                  @reset-change="resetChange"
                  v-model="searchForm">
-        <template slot="menuForm"
-                  slot-scope="scope">
+        <template #menuForm="scope">
           <slot name="searchMenu"
                 v-bind="Object.assign(scope,{
                   search:searchForm,
@@ -37,8 +36,7 @@
                   row:searchForm
                 })"></slot>
         </template>
-        <template slot="search"
-                  slot-scope="{}">
+        <template #search="{}">
           <slot name="search"
                 :row="searchForm"
                 :search="searchForm"

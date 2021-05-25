@@ -24,7 +24,7 @@
       <el-button @click="textarea=''">清 空</el-button>
     </p>
     <el-input placeholder="内容" v-model="text">
-      <template slot="append">
+      <template #append>
         <el-button @click="copyText" color="primary">复制</el-button>
       </template>
     </el-input>

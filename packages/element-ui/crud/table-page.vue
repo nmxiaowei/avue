@@ -6,7 +6,7 @@
                    :disabled="defaultPage.disabled"
                    :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
-                   :current-page.sync="defaultPage.currentPage"
+                   v-model="defaultPage.currentPage"
                    :background="vaildData(defaultPage.background,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"

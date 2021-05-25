@@ -6,13 +6,11 @@
     <!-- 搜索组件 -->
     <header-search :search="search"
                    ref="headerSearch">
-      <template slot="search"
-                slot-scope="scope">
+      <template #search="scope">
         <slot name="search"
               v-bind="scope"></slot>
       </template>
-      <template slot="searchMenu"
-                slot-scope="scope">
+      <template #searchMenu="scope">
         <slot name="searchMenu"
               v-bind="scope"></slot>
       </template>
@@ -105,7 +103,7 @@
                   @select-all="selectAll"
                   @sort-change="sortChange">
           <!-- 暂无数据提醒 -->
-          <template slot="empty">
+          <template #empty>
             <div :class="b('empty')">
               <slot name="empty"
                     v-if="$slots.empty"></slot>
@@ -116,15 +114,16 @@
             </div>
           </template>
           <column :columnOption="columnOption">
-            <column-default ref="columnDefault"
-                            slot="header">
-              <template slot-scope="{row,index}"
-                        slot="expand">
-                <slot :row="row"
-                      :index="index"
-                      name="expand"></slot>
-              </template>
-            </column-default>
+            <template #header>
+              <column-default ref="columnDefault">
+                <template #expand="{row,index}">
+                  <slot :row="row"
+                        :index="index"
+                        name="expand"></slot>
+                </template>
+              </column-default>
+            </template>
+
             <template v-for="item in mainSlot"
                       slot-scope="scope"
                       :slot="item.prop">
@@ -143,18 +142,18 @@
               <slot v-bind="scope"
                     :name="getSlotName(item,'F')"></slot>
             </template>
-            <column-menu slot="footer">
-              <template slot="menu"
-                        slot-scope="scope">
-                <slot name="menu"
-                      v-bind="scope"></slot>
-              </template>
-              <template slot="menuBtn"
-                        slot-scope="scope">
-                <slot name="menuBtn"
-                      v-bind="scope"></slot>
-              </template>
-            </column-menu>
+            <template #footer>
+              <column-menu>
+                <template #menu="scope">
+                  <slot name="menu"
+                        v-bind="scope"></slot>
+                </template>
+                <template #menuBtn="scope">
+                  <slot name="menuBtn"
+                        v-bind="scope"></slot>
+                </template>
+              </column-menu>
+            </template>
           </column>
         </el-table>
       </el-form>
@@ -162,7 +161,7 @@
       <!-- 分页 -->
       <table-page ref="tablePage"
                   :page="page">
-        <template slot="page">
+        <template #page>
           <slot name="page"></slot>
         </template>
       </table-page>
@@ -205,8 +204,7 @@
               })"
               :name="getSlotName(item,'T')"></slot>
       </template>
-      <template slot-scope="scope"
-                slot="menuForm">
+      <template #menuForm>
         <slot name="menuForm"
               v-bind="scope"></slot>
       </template>
@@ -320,25 +318,25 @@ export default create({
       }
     },
     formSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Form`])
+      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Form`])
     },
     errorSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Error`])
+      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Error`])
     },
     labelSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Label`])
+      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Label`])
     },
     typeSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Type`])
+      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Type`])
     },
     searchSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Search`])
+      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Search`])
     },
     headerSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Header`])
+      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Header`])
     },
     mainSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[ele.prop])
+      return this.columnFormOption.filter(ele => this.$slots[ele.prop])
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
@@ -435,7 +433,7 @@ export default create({
     },
   },
   watch: {
-    value: {
+    modelValue: {
       handler () {
         this.tableForm = this.value;
       },
@@ -474,7 +472,7 @@ export default create({
         return {};
       }
     },
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
         return {};
@@ -747,16 +745,16 @@ export default create({
       }
       this.formCascaderList[index].$cellEdit = false;
       //设置行数据
-      this.$set(this.list, index, this.formCascaderList[index]);
+      this.list[index] = this.formCascaderList[index]
       delete this.formCascaderList[index]
       //设置级联字典
-      this.$set(this.cascaderDIC, index, this.cascaderDicList[index]);
+      this.cascaderDIC[index] = this.cascaderDicList[index]
       this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
     },
     // 单元格编辑
     rowCellEdit (row, index) {
       row.$cellEdit = true;
-      this.$set(this.list, index, row);
+      this.list[index] = row;
       //缓冲行数据
       this.formCascaderList[index] = this.deepClone(row);
       //缓冲级联字典
@@ -793,7 +791,7 @@ export default create({
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
         row.$cellEdit = false;
-        this.$set(this.list, index, row);
+        this.list[index] = row;
         delete this.formCascaderList[index]
       }
       const loading = () => {
@@ -839,7 +837,7 @@ export default create({
     rowEdit (row, index) {
       this.tableForm = this.rowClone(row);
       this.tableIndex = index;
-      this.$emit("input", this.tableForm);
+      this.$emit('update:modelValue', this.tableForm);
       this.$refs.dialogForm.show("edit", index);
     },
     //复制
@@ -847,14 +845,14 @@ export default create({
       this.tableForm = this.rowClone(row);
       delete this.tableForm[this.rowKey]
       this.tableIndex = -1;
-      this.$emit("input", this.tableForm);
+      this.$emit('update:modelValue', this.tableForm);
       this.$refs.dialogForm.show("add");
     },
     //查看
     rowView (row, index) {
       this.tableForm = this.rowClone(row);
       this.tableIndex = index;
-      this.$emit("input", this.tableForm);
+      this.$emit('update:modelValue', this.tableForm);
       this.$refs.dialogForm.show("view");
     },
     vaildParent (row) {

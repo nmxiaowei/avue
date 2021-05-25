@@ -20,10 +20,10 @@
 <body>
   <div id="app">
     <avue-detail v-model="form" :option="option">
-      <template slot="slot">
+      <template #slot>
         自定义内容
       </template>
-      <template slot="textForm" slot-scope="scope">
+      <template #textForm="scope">
         <span>自定义内容1</span>
       </template>
     </avue-detail>

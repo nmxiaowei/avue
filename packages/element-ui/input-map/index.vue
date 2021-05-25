@@ -16,7 +16,7 @@
                append-to-body
                :title="placeholder"
                @close="handleClose"
-               :visible.sync="box">
+               v-model="box">
       <div :class="b('content')"
            v-if="box">
         <el-input :class="b('content-input')"
@@ -35,14 +35,16 @@
                :class="b('content-result')"></div>
         </div>
       </div>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   :size="size"
-                   icon="el-icon-check"
-                   v-if="!(disabled || readonly)"
-                   @click="handleSubmit">确 定</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary"
+                     :size="size"
+                     icon="el-icon-check"
+                     v-if="!(disabled || readonly)"
+                     @click="handleSubmit">确 定</el-button>
+        </span>
+      </template>
+
     </el-dialog>
   </div>
 </template>

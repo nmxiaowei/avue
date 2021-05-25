@@ -29,7 +29,7 @@
           {{ node.label }}
         </span>
       </span>
-      <template slot-scope="scope" slot="menu">
+      <template #menu="scope">
         <div class="avue-tree__item" @click.native="tip(scope.node,scope.data)">自定义按钮</di>
       </template>
     </avue-tree>

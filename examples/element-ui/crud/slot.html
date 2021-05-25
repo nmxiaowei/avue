@@ -20,16 +20,16 @@
 <body>
   <div id="app">
     <avue-crud :data="data" :option="option" v-model="user">
-      <template slot-scope="scope" slot="nameForm">
+      <template #nameForm="scope">
         <el-tag>{{scope.row}}暂时没有内容</el-tag>
       </template>
-      <template slot-scope="{}" slot="nameLabel">
+      <template #nameLabel="scope">
         <span>姓名&nbsp;&nbsp;</span>
         <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
           <i class="el-icon-warning"></i>
         </el-tooltip>
       </template>
-      <template slot-scope="{error}" slot="nameError">
+      <template #nameError="{error}">
         <p style="color:green">自定义提示</p>
       </template>
     </avue-crud>

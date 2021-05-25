@@ -45,7 +45,7 @@
                @node-click.self="handleNodeClick">
         <div style="width:100%;padding-right:10px;"
              slot-scope="{ data }">
-          <slot v-if="$scopedSlots.default"
+          <slot v-if="$slots.default"
                 :label="labelKey"
                 :value="valueKey"
                 :item="data"></slot>
@@ -81,7 +81,7 @@ export default create({
     nodeClick: Function,
     treeLoad: Function,
     checked: Function,
-    value: {},
+    modelValue: {},
     loadingText: {
       type: String,
     },

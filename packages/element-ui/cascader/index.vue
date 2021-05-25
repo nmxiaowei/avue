@@ -15,7 +15,7 @@
                @blur="handleBlur"
                @click.native="handleClick">
     <template slot-scope="{data,node}">
-      <slot v-if="$scopedSlots.default"
+      <slot v-if="$slots.default"
             :data="data"
             :node="node"></slot>
       <span v-else>{{data[labelKey]}}</span>
@@ -43,7 +43,7 @@ export default create({
       type: Boolean,
       default: false
     },
-    value: {
+    modelValue: {
       type: Array,
       default: () => []
     },

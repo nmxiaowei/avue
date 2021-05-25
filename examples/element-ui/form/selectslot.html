@@ -21,19 +21,19 @@
   <div id="app">
     {{obj}}
     <avue-form :option="option" v-model="obj">
-      <template slot="provinceType" slot-scope="{item,value,label}">
+      <template #provinceType="{item,value,label}">
         <div>
           <span style="float: left">{{ item[value] }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
         </div>
       </template>
-      <template slot="codeType" slot-scope="{item,value,label}">
+      <template #name="{item,value,label}">
         <div>
           <span style="float: left">{{ item[value] }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
         </div>
       </template>
-      <template slot="codesType" slot-scope="{item,value,label}">
+      <template #codesType="{item,value,label}">
         <div style="padding-left:5px;">
           <span style="float: left">{{ item[value] }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>

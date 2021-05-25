@@ -5,14 +5,14 @@
       <el-input :placeholder="vaildData(option.filterText,'输入关键字进行过滤')"
                 :size="size"
                 v-model="filterValue">
-        <el-button slot="append"
+        <el-button #append
                    :size="size"
                    @click="parentAdd"
                    icon="el-icon-plus"
                    v-if="vaildData(option.addBtn,true)&&!$slots.addBtn"></el-button>
         <slot v-else
               name="addBtn"
-              slot="append"></slot>
+              #append></slot>
       </el-input>
     </div>
     <el-scrollbar :class="b('content')">
@@ -39,7 +39,7 @@
 
         <slot slot-scope="{ node, data }"
               :node="node"
-              v-if="$scopedSlots.default"
+              v-if="$slots.default"
               :data="data"></slot>
 
         <span class="el-tree-node__label"
@@ -71,7 +71,7 @@
             :node="node"></slot>
     </div>
     <el-dialog :title="node[labelKey] || title"
-               :visible.sync="box"
+               v-model="box"
                :class="b('dialog')"
                class="avue-dialog"
                modal-append-to-body
@@ -130,7 +130,7 @@ export default create({
         return [];
       }
     },
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
         return {};
@@ -255,7 +255,7 @@ export default create({
       this.form = val;
     },
     form (val) {
-      this.$emit("input", val);
+      this.$emit('update:modelValue', val);
     }
   },
   methods: {

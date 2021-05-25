@@ -23,28 +23,31 @@
                     :header="!isTabs"
                     :active="activeName"
                     :label="item.label">
-          <el-tabs slot="tabs"
-                   v-model="activeName"
-                   @tab-click="handleTabClick"
-                   :class="b('tabs')"
-                   :type="tabsType"
-                   v-if="isTabs&&index == 1">
-            <template v-for="(tabs,index) in columnOption">
-              <el-tab-pane v-if="vaildDisplay(tabs) && index!=0"
-                           :key="index"
-                           :name="index+''">
-                <span slot="label">
-                  <slot :name="getSlotName(tabs,'H')"
-                        v-if="$slots[getSlotName(tabs,'H')]"></slot>
-                  <template v-else>
-                    <i :class="tabs.icon">&nbsp;</i>
-                    {{tabs.label}}
+          <template #tabs>
+            <el-tabs v-model="activeName"
+                     @tab-click="handleTabClick"
+                     :class="b('tabs')"
+                     :type="tabsType"
+                     v-if="isTabs&&index == 1">
+              <template v-for="(tabs,index) in columnOption">
+                <el-tab-pane v-if="vaildDisplay(tabs) && index!=0"
+                             :key="index"
+                             :name="index+''">
+                  <template #label>
+                    <span>
+                      <slot :name="getSlotName(tabs,'H')"
+                            v-if="$slots[getSlotName(tabs,'H')]"></slot>
+                      <template v-else>
+                        <i :class="tabs.icon">&nbsp;</i>
+                        {{tabs.label}}
+                      </template>
+                    </span>
                   </template>
-                </span>
-              </el-tab-pane>
-            </template>
-          </el-tabs>
-          <template slot="header"
+                </el-tab-pane>
+              </template>
+            </el-tabs>
+          </template>
+          <template #header
                     v-if="$slots[getSlotName(item,'H')]">
             <slot :name="getSlotName(item,'H')"></slot>
           </template>
@@ -66,8 +69,8 @@
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
-                  <template slot="label"
-                            v-if="$scopedSlots[getSlotName(column,'L')]">
+                  <template #label
+                            v-if="$slots[getSlotName(column,'L')]">
                     <slot :name="getSlotName(column,'L')"
                           :column="column"
                           :value="form[column.prop]"
@@ -76,20 +79,20 @@
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
                   </template>
-                  <template slot="label"
+                  <template #label
                             v-else-if="column.labelTip">
                     <el-tooltip class="item"
                                 effect="dark"
                                 :placement="column.labelTipPlacement || 'top-start'">
-                      <div slot="content"
-                           v-html="column.labelTip"></div>
+                      <template #content>
+                        <div v-html="column.labelTip"></div>
+                      </template>
                       <i class="el-icon-info"></i>
                     </el-tooltip>
                     <span> {{column.label}}{{labelSuffix}}</span>
                   </template>
-                  <template slot="error"
-                            slot-scope="scope"
-                            v-if="$scopedSlots[`${column.prop}Error`]">
+                  <template #error="scope"
+                            v-if="$slots[`${column.prop}Error`]">
                     <slot :name="column.prop+'Error'"
                           v-bind="Object.assign(scope,{
                             column,
@@ -112,7 +115,7 @@
                           :disabled="getDisabled(column)"
                           :dic="DIC[column.prop]"
                           :name="column.prop"
-                          v-if="$scopedSlots[column.prop]"></slot>
+                          v-if="$slots[column.prop]"></slot>
                     <form-temp :column="column"
                                v-else
                                :ref="column.prop"
@@ -127,15 +130,14 @@
                                @enter="submit"
                                :column-slot="getChildrenColumn(column)"
                                @change="propChange(item.column,column)">
-                      <template :slot="citem.prop"
-                                slot-scope="scope"
+                      <template #[citem.prop]="scope"
                                 v-for="citem in getChildrenColumn(column)">
                         <slot v-bind="scope"
                               :name="citem.prop"></slot>
                       </template>
                       <template :slot="getSlotName(column,'T')"
                                 slot-scope="scope"
-                                v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+                                v-for="item in $slots[getSlotName(column,'T')]?[column]:[]">
                         <slot :name="getSlotName(item,'T')"
                               v-bind="scope"></slot>
                       </template>
@@ -150,8 +152,7 @@
             </template>
             <slot name="search"></slot>
             <form-menu v-if="!isDetail && !isMenu">
-              <template slot-scope="scope"
-                        slot="menuForm">
+              <template #menuForm="scope">
                 <slot name="menuForm"
                       v-bind="scope"></slot>
               </template>
@@ -159,8 +160,7 @@
           </div>
         </avue-group>
         <form-menu v-if="!isDetail && isMenu">
-          <template slot-scope="scope"
-                    slot="menuForm">
+          <template #menuForm="scope">
             <slot name="menuForm"
                   v-bind="scope"></slot>
           </template>
@@ -223,7 +223,7 @@ export default create({
       },
       deep: true
     },
-    value: {
+    modelValue: {
       handler (val) {
         if (this.formCreate) {
           this.setForm(val);
@@ -358,7 +358,7 @@ export default create({
       type: Boolean,
       default: false
     },
-    value: {
+    modelValue: {
       type: Object,
       required: true,
       default: () => {
@@ -378,7 +378,7 @@ export default create({
     getComponent,
     getPlaceholder,
     getChildrenColumn (column) {
-      return ((column.children || {}).column || []).filter(ele => this.$scopedSlots[ele.prop])
+      return ((column.children || {}).column || []).filter(ele => this.$slots[ele.prop])
     },
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
@@ -420,7 +420,7 @@ export default create({
       let result;
       if (!this.validatenull(DIC)) {
         result = detail(this.form, column, this.tableOption, DIC);
-        this.$set(this.form, ["$" + column.prop], result);
+        this.form["$" + column.prop] = result;
       }
       return result;
     },
@@ -442,7 +442,7 @@ export default create({
     },
     setVal () {
       this.setControl();
-      this.$emit("input", this.form);
+      this.$emit('update:modelValue', this.form);
       this.$emit("change", this.form);
     },
     setControl () {
@@ -458,7 +458,7 @@ export default create({
       Object.keys(value).forEach(ele => {
         let result = value[ele];
         let column = this.propOption.find(column => column.prop == ele)
-        this.$set(this.form, ele, result);
+        this.form[ele] = result;
         if (!column) return
         let prop = column.prop
         let bind = column.bind
@@ -467,9 +467,9 @@ export default create({
             if (n != o) setAsVal(this.form, bind, n);
           })
           this.$watch('form.' + bind, (n, o) => {
-            if (n != o) this.$set(this.form, prop, n);
+            if (n != o) this.form[prop] = n
           })
-          this.$set(this.form, prop, eval('value.' + bind));
+          this.form[prop] = eval('value.' + bind)
           this.bindList[prop] = true;
         }
       });
@@ -489,7 +489,7 @@ export default create({
           //清空子类字典列表和值
           cascader.forEach(ele => {
             this.form[ele] = "";
-            this.$set(this.DIC, ele, []);
+            this.DIC[ele] = []
           });
         }
         /**
@@ -513,7 +513,7 @@ export default create({
           if (!this.formList.includes(str)) this.formList.push(str);
           // 修改字典
           const dic = Array.isArray(res) ? res : [];
-          this.$set(this.DIC, columnNextProp, dic);
+          this.DIC[columnNextProp] = dic;
           if (!this.validatenull(dic) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
             this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
           }
@@ -542,7 +542,7 @@ export default create({
       this.$emit('mock-change', this.form);
     },
     vaildDetail (column) {
-      if (this.detail) return true;
+      if (this.option.detail) return true;
       if (!this.validatenull(column.detail)) {
         return this.vaildData(column.detail, false);
       } else if (this.isAdd) {
@@ -637,7 +637,7 @@ export default create({
     },
     clearVal () {
       this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
-      this.$emit("input", this.form);
+      this.$emit('update:modelValue', this.form);
       this.$emit("change", this.form);
     },
     resetFields () {

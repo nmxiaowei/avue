@@ -6,21 +6,15 @@
   "unpkg": "lib/avue.min.js",
   "jsdelivr": "lib/avue.min.js",
   "scripts": {
-    "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org ",
-    "dev": "cross-env TARGET=dev UINAME=element-ui gulp watch",
-    "build": "cross-env TARGET=prod UINAME=element-ui gulp build",
-    "analyz": "NODE_ENV=production npm_config_report=true npm run build",
-    "dev:vant": "cross-env TARGET=dev-vant UINAME=vant gulp watch",
-    "build:vant": "cross-env TARGET=prod-vant UINAME=vant gulp build",
-    "dev:antd": "cross-env TARGET=dev-antd UINAME=antd gulp watch",
-    "build:antd": "cross-env TARGET=prod-antd UINAME=antd gulp build",
-    "build:all": "npm run build && npm run build:vant && npm run build:antd"
+    "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org && yarn gen:version",
+    "dev": "yarn gen:version && cross-env TARGET=dev gulp watch",
+    "gen:version": "node build/version.js",
+    "build": "yarn gen:version && cross-env TARGET=prod  gulp build",
+    "analyz": "NODE_ENV=production npm_config_report=true npm run build"
   },
   "keywords": [
     "vue",
     "element-plus",
-    "vant",
-    "ant-design-vue",
     "avue"
   ],
   "repository": {
@@ -34,8 +28,10 @@
   },
   "homepage": "https://gitee.com/smallweigit/avue/blob/master/README.md",
   "devDependencies": {
-    "@babel/core": "^7.13.14",
-    "@babel/preset-env": "^7.13.12",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/plugin-transform-runtime": "^7.12.1",
     "@vue/compiler-sfc": "^3.0.9",
     "@vue/component-compiler-utils": "^3.2.0",
     "babel-loader": "^8.2.2",

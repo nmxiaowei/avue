@@ -51,7 +51,7 @@
                     :placeholder="code.placeholder || '请输入验证码'"
                     :autocomplete="code.autocomplete">
 
-            <template slot="append">
+            <template #append>
               <el-button type="primary"
                          :class="b('send')"
                          v-if="isPhone"

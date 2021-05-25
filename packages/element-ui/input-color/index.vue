@@ -6,10 +6,10 @@
               ref="main"
               :readonly="readonly"
               @change="handleChange"
-              @click.native="handleClick"
+              @click="handleClick"
               :clearable="disabled?false:clearable"
               :disabled="disabled">
-      <template slot="append">
+      <template #append>
         <el-color-picker size="mini"
                          v-model="text"
                          :color-format="colorFormat"

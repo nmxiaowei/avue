@@ -20,7 +20,7 @@
 <body>
   <div id="app">
     <avue-crud :option="option" :data="data">
-      <template slot="shenfengSearch" slot-scope="{}">
+      <template #shenfengSearch="{}">
         <avue-input type="tree" :dic="dic" :props="props" size="small"></avue-input>
       </template>
     </avue-crud>

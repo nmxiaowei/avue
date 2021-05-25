@@ -25,10 +25,10 @@
 <body>
   <div id="app">
     <avue-crud :data="data" :option="option" ref="crud" @row-save="handleSave" @row-update="handleUpdate">
-      <template slot-scope="scope" slot="menuLeft">
+      <template #menuLeft="scope">
         <el-button type="danger" icon="el-icon-plus" size="small" plain @click.stop="handleAdd()">新增</el-button>
       </template>
-      <template slot-scope="{disabled,type}" slot="menuForm">
+      <template #menuForm="{disabled,type}">
         <div>
           <el-button type="primary" icon="el-icon-check" :loading="disabled" size="small" plain v-if="type=='add'"
             @click="$refs.crud.rowSave()">自定义新增</el-button>
@@ -38,7 +38,7 @@
           </el-button>
         </div>
       </template>
-      <template slot-scope="scope" slot="menu">
+      <template #menu="scope">
         <el-button type="primary" icon="el-icon-check" size="small" plain
           @click.stop="handleEdit(scope.row,scope.index)">编辑</el-button>
       </template>

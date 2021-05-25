@@ -18,7 +18,7 @@ export default create({
       type: [Number, String],
       default: 50,
     },
-    value: [Number, String],
+    modelValue: [Number, String],
     len: {
       type: [Number, String],
       default: 6,
@@ -36,7 +36,7 @@ export default create({
     }
   },
   watch: {
-    value: {
+    modelValue: {
       handler (val) {
         if (this.validatenull(val)) {
           this.randomn();
@@ -48,7 +48,7 @@ export default create({
     },
     data: {
       handler (val) {
-        this.$emit('input', val);
+        this.$emit('update:modelValue', val);
       },
       immediate: true,
     }

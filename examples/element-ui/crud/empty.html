@@ -25,13 +25,13 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data">
-      <template slot="nameHeader" slot-scope="{column}">
+      <template #nameHeader="{column}">
         <el-tag>{{column.label}}({{column.prop}})</el-tag>
       </template>
-      <template slot="sexHeader" slot-scope="{column}">
+      <template #sexHeader="{column}">
         <el-tag>{{column.label}}({{column.prop}})</el-tag>
       </template>
-      <!-- <template slot="empty">
+      <!-- <template #empty>
         自定义提示
       </template> -->
     </avue-crud>

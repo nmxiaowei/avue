@@ -101,15 +101,15 @@ export default function () {
           sendDic({
             column: column
           }).then(list => {
-            this.$set(this.DIC, prop, list);
+            this.DIC[prop] = list;
           });
         } else {
-          this.$set(this.DIC, prop, list);
+          this.DIC[prop] = list;
         }
       },
       handleSetDic (list, res = {}) {
         Object.keys(res).forEach(ele => {
-          this.$set(list, ele, res[ele])
+          list[ele] = res[ele]
         });
         this.forEachLabel && this.forEachLabel()
       },

@@ -29,7 +29,7 @@ export default create({
     };
   },
   props: {
-    value: {}
+    modelValue: {}
   },
   watch: {},
   created () { },

@@ -21,7 +21,7 @@
 <body>
   <div id="app">
     <avue-card :option="option" :data="data" @row-click="tip" @row-add="tip">
-      <template slot="menu" slot-scope="scope">
+      <template #menu="scope">
         <span @click.stop="tip(scope.row,scope.index)">操作1</span>
         <span @click.stop="tip(scope.row,scope.index)">操作2</span>
       </template>

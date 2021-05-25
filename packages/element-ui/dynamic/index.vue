@@ -28,13 +28,11 @@
                      ref="main"
                      :option="option"
                      v-model="text[index]">
-            <div slot-scope="{}"
-                 slot="_index">
+            <template #_index="{}">
               <span>{{item.$index+1}}</span>
-            </div>
+            </template>
             <template v-for="column in columnSlot"
-                      slot-scope="scope"
-                      :slot="column.prop">
+                      #[column.prop]="scope">
               <slot v-bind="Object.assign(scope,{
                   row:text[index]
                 })"
@@ -53,8 +51,7 @@
                @selection-change="handleSelectionChange"
                @sortable-change="handleSortableChange"
                :data="text">
-      <template slot-scope="scope"
-                slot="_index">
+      <template #_index="scope">
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @click="delRow(scope.row.$index)"
                    type="danger"
@@ -65,8 +62,7 @@
         <div v-else>{{scope.row.$index+1}}</div>
       </template>
       <template v-for="item in columnSlot"
-                slot-scope="scope"
-                :slot="getSlotName(item,'F')">
+                #[getSlotName(item,'F')]="scope">
         <slot v-bind="scope"
               :name="item.prop"></slot>
       </template>
@@ -246,12 +242,12 @@ export default create({
     mouseoverRow (index) {
       if (this.delBtn) return
       this.flagList();
-      this.$set(this.hoverList, index, true)
+      this.hoverList[index] = true;
     },
     mouseoutRow (index) {
       if (this.delBtn) return
       this.flagList();
-      this.$set(this.hoverList, index, false)
+      this.hoverList[index] = false
     },
     flagList () {
       this.hoverList.forEach((ele, index) => {

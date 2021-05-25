@@ -9,8 +9,9 @@
                   :style="[styleParentName,{
                backgroundColor: item.backgroundColor || option.backgroundColor,
            }]">
-        <div slot="content"
-             v-html="item.formatter && item.formatter()"></div>
+        <template #content>
+          <div v-html="item.formatter && item.formatter()"></div>
+        </template>
         <div :class="b('item',{'none':(statusDIC.includes(item) || type===''),'whole':isWhole,'img':isWhole&&(isImg || isBorder)})"
              :style="!isWhole?'':styleName"
              @click="handleClick(item,index)">

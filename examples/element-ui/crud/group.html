@@ -21,8 +21,8 @@
   <div id="app">
     {{obj}}
     {{search}}
-    <avue-crud :option="option" v-model="obj" :data="data" :search.sync="search">
-      <template slot-scope="scope" slot="namesForm">
+    <avue-crud :option="option" v-model="obj" :data="data" v-model:search="search">
+      <template #namesForm="scope">
         <div>
           <span>{{obj.names}}</span>
           <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.names"></avue-input>

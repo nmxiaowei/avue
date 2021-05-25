@@ -32,7 +32,7 @@ export default function () {
       listType: {
         type: String,
       },
-      value: {},
+      modelValue: {},
       column: {
         type: Object,
         default: () => {
@@ -143,7 +143,7 @@ export default function () {
           this.handleChange(n)
         }
       },
-      value: {
+      modelValue: {
         handler () {
           this.initVal();
         }
@@ -151,7 +151,7 @@ export default function () {
     },
     computed: {
       componentName () {
-        const type = this.$AVUE.ui.type;
+        const type = 'el'
         const result = `${type}-${this.name}${this.button ? '-button' : ''}`
         return result
       },

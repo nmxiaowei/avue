@@ -44,7 +44,7 @@ export default create({
       type: Boolean,
       default: false
     },
-    value: {},
+    modelValue: {},
     startPlaceholder: {
       type: String,
       default: "开始日期"

@@ -8,12 +8,12 @@
               :disabled="disabled"
               @change="handleChange"
               @focus="handleShow">
-      <template slot="append"><i :class="text"></i></template>
+      <template #append><i :class="text"></i></template>
     </el-input>
     <el-dialog :title="placeholder"
                :modal-append-to-body="false"
                append-to-body
-               :visible.sync="box"
+               v-model="box"
                width="50%">
       <el-scrollbar style="height:400px;overflow-x:hidden">
         <avue-tabs :option="option"

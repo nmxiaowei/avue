@@ -19,27 +19,26 @@
     <div :class="b('box')"
          ref="box"
          :style="styleBoxName">
-      <component :is="carouselName"
-                 ref="carousel"
-                 :show-indicators="false"
-                 :initial-index="index"
-                 :initial-swipe="index"
-                 :interval="0"
-                 arrow="never"
-                 @change="handleChange"
-                 indicator-position="none"
-                 :height="height">
-        <component :is="carouselItemName"
-                   v-for="(item,index) in datas"
-                   :key="index">
+      <el-carousel ref="carousel"
+                   :show-indicators="false"
+                   :initial-index="index"
+                   :initial-swipe="index"
+                   :interval="0"
+                   arrow="never"
+                   @change="handleChange"
+                   indicator-position="none"
+                   :height="height">
+        <el-carousel-item :is="carouselItemName"
+                          v-for="(item,index) in datas"
+                          :key="index">
           <img :src="item.url"
                :style="styleName"
                @mousedown="move"
                controls="controls"
                v-bind="getIsVideo(item)"
                ondragstart="return false"></img>
-        </component>
-      </component>
+        </el-carousel-item>
+      </el-carousel>
     </div>
     <div class="el-image-viewer__btn el-image-viewer__actions">
       <div class="el-image-viewer__actions__inner">
@@ -75,14 +74,6 @@ export default create({
     };
   },
   computed: {
-    carouselName () {
-      if (this.$isVan) return `${this.$AVUE.ui.type}Swipe`
-      return `${this.$AVUE.ui.type}Carousel`
-    },
-    carouselItemName () {
-      if (this.$isVan) return `${this.$AVUE.ui.type}SwipeItem`
-      return `${this.$AVUE.ui.type}CarouselItem`
-    },
     styleBoxName () {
       return {
         marginLeft: this.setPx(this.left),

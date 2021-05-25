@@ -12,9 +12,7 @@ const banner =
   ' Released under the MIT License.\n';
 const externals = {
   'vue': 'Vue',
-  'vant': 'vant',
   'mockjs': 'Mock',
-  'ant-design-vue': 'antd',
   'file-saver': 'file-saver',
   'xlsx': 'xlsx',
   'axios': 'axios',
@@ -41,34 +39,6 @@ const builds = {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue.js',
-    env: 'development',
-    externals: externals
-  },
-  'prod-vant': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-mobile.min.js',
-    env: 'production',
-    externals: externals
-  },
-  'dev-vant': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-mobile.js',
-    env: 'development',
-    externals: externals
-  },
-  'prod-antd': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-antd.min.js',
-    env: 'production',
-    externals: externals
-  },
-  'dev-antd': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-antd.js',
     env: 'development',
     externals: externals
   }

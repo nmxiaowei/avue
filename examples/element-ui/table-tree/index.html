@@ -23,10 +23,10 @@
   <div id="app">
     <avue-tree-table :option="option" :data="data" @current-row-change="handleCurrentRowChange"
       @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
-      <template slot="icon" slot-scope="scope">
+      <template #icon="scope">
         <i :class="scope.row.icon" style="font-size:24px"></i>
       </template>
-      <template slot="menu" slot-scope="scope">
+      <template #menu="scope">
         <el-button :size="scope.size" @click="tip(scope)">自定义菜单</el-button>
       </template>
     </avue-tree-table>

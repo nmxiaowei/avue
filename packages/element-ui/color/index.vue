@@ -6,7 +6,7 @@
               @change="handleChange"
               :clearable="disabled?false:clearable"
               :disabled="disabled">
-      <template slot="append">
+      <template #append>
         <el-color-picker size="mini"
                          v-model="text"
                          show-alpha
@@ -32,7 +32,7 @@ export default create({
       }
     }
   },
-  data() {
+  data () {
     return {
       predefineColors: [
         "#ff4500",

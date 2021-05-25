@@ -1,7 +1,7 @@
 <template>
   <div :class="b()"
        :style="[styleSizeName,{overflow:(scroll?'hidden':'inherit')}]">
-    <el-dialog :visible.sync="visible"
+    <el-dialog v-model="visible"
                modal-append-to-body
                append-to-body
                title="数据显隐"
@@ -10,7 +10,7 @@
                      :props="{value:'prop'}"
                      v-model="columnData"></avue-checkbox>
     </el-dialog>
-    <el-dialog :visible.sync="listVisible"
+    <el-dialog v-model="listVisible"
                modal-append-to-body
                :class="b('allview')"
                title="详细数据"

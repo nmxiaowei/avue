@@ -21,7 +21,7 @@
   <div id="app">
     <el-button @click="handle" style="margin-left: 20px">{{title}}</el-button>
     <avue-form :option="option" v-model="obj" @submit="submit">
-      <template slot="names" slot-scope="{row,disabled}">
+      <template #name="{row,disabled}">
         <avue-input v-model="obj.names" :disabled="disabled"></avue-input>
       </template>
     </avue-form>

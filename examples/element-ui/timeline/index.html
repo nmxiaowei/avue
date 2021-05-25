@@ -55,28 +55,33 @@
         长春
       </avue-timeline-item>
       <avue-timeline-item>
-        <div slot="time">2012-12-23</div>
-        <div slot="content">到达呼伦贝尔</div>
+        <template #time>
+          <div>2012-12-23</div>
+        </template>
+        <template #content>
+          <div>到达呼伦贝尔</div>
+        </template>
+
       </avue-timeline-item>
       <avue-timeline-item icon="el-icon-wallet">
-        <div slot="time">
+        <template #time>
           <p>2012-12-23</p>
           <p>天气晴</p>
-        </div>
-        <div slot="content">蒙古的草原</div>
+        </template>
+        <template #content>蒙古的草原</template>
       </avue-timeline-item>
       <avue-timeline-item icon="el-icon-shopping-cart-2" color="green">
-        <div slot="time">
+        <template #="time">
           <p>2012-12-23</p>
           <p>小雨</p>
-        </div>
-        <div slot="content">
+        </template>
+        <template #content>
           <h3>春夜洛城闻笛</h3>
           <p>谁家玉笛暗飞声</p>
           <p>散入春风满洛城</p>
           <p>此夜曲中闻折柳</p>
           <p>何人不起故园情</p>
-        </div>
+        </template>
       </avue-timeline-item>
       <avue-timeline-item>
         <a href="#" class="link">加载更多</a>

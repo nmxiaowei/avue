@@ -25,13 +25,13 @@
     <br /><br />
     {{option}}
     <avue-flow :height="600" :width="1200" ref="flow" :option="option" v-model="form" @click="handleClick">
-      <template slot-scope="scope" slot="header">
+      <template #header="scope">
         <i class="el-icon-delete" @click="$refs.flow.deleteNode(scope.node.id)"></i>
         自定义头部
       </template>
-      <div slot-scope="scope">
+      <template #default="scop">
         自定义身体{{scope.node.name}}
-      </div>
+      </template>
     </avue-flow>
   </div>
 </body>

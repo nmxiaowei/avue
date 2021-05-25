@@ -5,19 +5,22 @@
     <el-collapse :value="text">
       <el-collapse-item :name="1"
                         :disabled="!arrow">
-        <div :class="b('header')"
-             slot="title"
-             v-if="$slots.header&&header">
-          <slot name="header"></slot>
-        </div>
-        <div :class="b('header')"
-             slot="title"
-             v-else-if="(label || icon)&&header">
-          <i :class="[icon,b('icon')]"
-             v-if="icon"></i>
-          <h1 :class="b('title')"
-              v-if="label">{{label}}</h1>
-        </div>
+        <template #title
+                  v-if="$slots.header&&header">
+          <div :class="b('header')">
+            <slot name="header"></slot>
+          </div>
+        </template>
+        <template #title
+                  v-else-if="(label || icon)&&header">
+          <div :class="b('header')">
+            <i :class="[icon,b('icon')]"
+               v-if="icon"></i>
+            <h1 :class="b('title')"
+                v-if="label">{{label}}</h1>
+          </div>
+        </template>
+
         <slot></slot>
       </el-collapse-item>
     </el-collapse>

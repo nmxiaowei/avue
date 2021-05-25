@@ -23,7 +23,7 @@ export default create({
   name: "switch",
   mixins: [props(), event()],
   props: {
-    value: {},
+    modelValue: {},
     activeIconClass: String,
     inactiveIconClass: String,
     activeColor: String,

@@ -19,15 +19,18 @@
             @blur="handleBlur"
             :disabled="disabled"
             :autocomplete="autocomplete">
-    <template slot="prepend"
+    <template #prepend
               v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
     </template>
-    <template slot="append"
-              v-if="append"><span @click="appendClick()">{{append}}</span></template>
-    <el-button slot="append"
-               v-else-if="isSearch"
-               icon="el-icon-search"
-               @click="appendClick()"></el-button>
+    <template #append
+              v-if="append">
+      <span @click="appendClick()">{{append}}</span>
+    </template>
+    <template #append
+              v-else-if="isSearch">
+      <el-button icon="el-icon-search"
+                 @click="appendClick()"></el-button>
+    </template>
   </el-input>
 </template>
 
@@ -45,7 +48,7 @@ export default create({
     };
   },
   props: {
-    value: {},
+    modelValue: {},
     maxlength: "",
     minlength: "",
     showPassword: {

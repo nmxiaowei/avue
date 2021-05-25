@@ -22,10 +22,10 @@
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" :page="page" @on-load="onLoad" @expand-change="expandChange"
       @sort-change="sortChange">
-      <template slot="expand" slot-scope="scope">
+      <template #expand="scope">
         {{scope}}
       </template>
-      <template slot-scope="scope" slot="switch">
+      <template #switch="scope">
         <el-switch v-model="scope.row.switch" active-color="#13ce66" inactive-color="#ff4949" :active-value="0"
           :inactive-value="1">
         </el-switch>

@@ -20,7 +20,7 @@
 <body>
   <div id="app">
     <avue-form v-model="form" :option="option">
-      <template slot="cascader3Type" slot-scope="{node,data}">
+      <template #cascader3Type="{node,data}">
         <span></span>
         <span v-if="!node.isLeaf">{{data.label}}({{data.children.length}}) </span>
       </template>

@@ -21,7 +21,7 @@
 <body>
   <div id="app">
     <avue-crud :option="option" :data="data" v-model="form">
-      <template slot="infoForm" slot-scope="scope">
+      <template #infoForm="scope">
         <avue-crud :option="infoOption" :data="infoData">
         </avue-crud>
       </template>

@@ -77,39 +77,31 @@ export default create({
           this.duration,
           this.options
         );
-        this.c.start(() => {
-          this.callback(this.c);
-        });
+        this.c.start();
+      }
+    },
+    pauseResume () {
+      if (this.c && this.c.pauseResume) {
+        this.c.pauseResume();
+      }
+    },
+    reset () {
+      if (this.c && this.c.reset) {
+        this.c.reset();
+      }
+    },
+    update (newEndVal) {
+      if (this.c && this.c.update) {
+        this.c.update(newEndVal);
       }
     },
     destroy () {
       this.c = null;
     }
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.destroy();
   },
-  start (callback) {
-    if (this.c && this.c.start) {
-      this.c.start(() => {
-        callback && callback(this.c);
-      });
-    }
-  },
-  pauseResume () {
-    if (this.c && this.c.pauseResume) {
-      this.c.pauseResume();
-    }
-  },
-  reset () {
-    if (this.c && this.c.reset) {
-      this.c.reset();
-    }
-  },
-  update (newEndVal) {
-    if (this.c && this.c.update) {
-      this.c.update(newEndVal);
-    }
-  }
+
 });
 </script>

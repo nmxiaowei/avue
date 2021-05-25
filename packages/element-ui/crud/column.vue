@@ -41,10 +41,9 @@
                        :header-align="column.headerAlign || crud.tableOption.headerAlign"
                        :width="getColumnProp(column,'width')"
                        :fixed="getColumnProp(column,'fixed')">
-        <template slot="header"
-                  slot-scope="scope">
+        <template #header="scope">
           <slot :name="crud.getSlotName(column,'H')"
-                v-if="crud.$scopedSlots[crud.getSlotName(column,'H')]"
+                v-if="crud.$slots[crud.getSlotName(column,'H')]"
                 v-bind="Object.assign(scope,{column})"></slot>
           <el-popover placement="bottom"
                       v-else
@@ -54,10 +53,13 @@
                       :placeholder="`请输入 ${column.label} 筛选关键字`"
                       v-model="(crud.objectOption[column.prop] || {}).screenValue"
                       size="mini"></el-input>
-            <span slot="reference">{{column.label}}</span>
+            <template #reference>
+              <span>{{column.label}}</span>
+            </template>
+
           </el-popover>
         </template>
-        <template slot-scope="{row,$index}">
+        <template #default="{row,$index}">
           <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                         :label="vaildLabel(column,row,' ')"
                         v-if="row.$cellEdit && column.cell"
@@ -73,7 +75,7 @@
                       '$cell':row.$cellEdit
                     }"
                   :name="crud.getSlotName(column,'F')"
-                  v-if="crud.$scopedSlots[crud.getSlotName(column,'F')]"></slot>
+                  v-if="crud.$slots[crud.getSlotName(column,'F')]"></slot>
             <form-temp v-else
                        :column="column"
                        :size="crud.isMediumSize"
@@ -93,7 +95,7 @@
                 :size="crud.isMediumSize"
                 :label="handleShowLabel(row,column,crud.DIC[column.prop])"
                 :name="column.prop"
-                v-else-if="crud.$scopedSlots[column.prop]"></slot>
+                v-else-if="crud.$slots[column.prop]"></slot>
           <template v-else>
             <span v-if="['img','upload'].includes(column.type)">
               <div class="avue-crud__img">
@@ -246,12 +248,12 @@ export default create({
         if (this.validatenull(columnNext)) return
         // 如果本节点没有字典则创建节点数组
         if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
-          this.$set(this.crud.cascaderDIC, rowIndex, {});
+          this.crud.cascaderDIC[rowIndex] = {}
         }
         if (this.crud.formIndexList.includes(rowIndex)) {
           //清空子类字典
           cascader.forEach(ele => {
-            this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
+            this.crud.cascaderDIC[rowIndex][ele.prop] = []
             cascader.forEach(ele => (row[ele] = ""));
           });
         }
@@ -273,7 +275,7 @@ export default create({
             if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
             const dic = Array.isArray(res) ? res : [];
             // 修改字典
-            this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+            this.crud.cascaderDIC[rowIndex][columnNextProp] = dic;
 
             if (!this.validatenull(dic[columnNext.cascaderIndex]) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
               row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]

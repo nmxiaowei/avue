@@ -4,24 +4,25 @@
     <div :id="id"
          :style="styleName">
       <div class="avue-grid"></div>
-      <flow-node v-for="(node,index) in option.nodeList"
-                 :node="node"
-                 :id="node.id"
-                 v-if="!node.display"
-                 @click.native="handleClick(node)"
-                 @changeNodeSite="changeNodeSite"
-                 :index="index"
-                 :active="active"
-                 :key="index">
-        <template slot="header"
-                  slot-scope="{node}">
-          <slot name="header"
-                :node="node">
+      <template v-for="(node,index) in option.nodeList">
+        <flow-node :node="node"
+                   :id="node.id"
+                   v-if="!node.display"
+                   @click="handleClick(node)"
+                   @changeNodeSite="changeNodeSite"
+                   :index="index"
+                   :active="active"
+                   :key="index">
+          <template #header="{node}">
+            <slot name="header"
+                  :node="node">
+            </slot>
+          </template>
+          <slot :node="node">
           </slot>
-        </template>
-        <slot :node="node">
-        </slot>
-      </flow-node>
+        </flow-node>
+      </template>
+
     </div>
   </div>
 </template>
@@ -87,7 +88,7 @@ export default create({
     }
   },
   props: {
-    value: {
+    valumodelValuee: {
       type: String,
     },
     option: {
@@ -103,14 +104,14 @@ export default create({
     }
   },
   watch: {
-    value: {
+    modelValue: {
       handler () {
         this.active = this.value;
       },
       immediate: true
     },
     active (val) {
-      this.$emit('input', val)
+      this.$emit('update:modelValue', val)
     }
   },
   created () {
@@ -168,8 +169,8 @@ export default create({
       for (var i = 0; i < this.option.nodeList.length; i++) {
         let node = this.option.nodeList[i]
         if (i === index) {
-          this.$set(this.option.nodeList[i], 'left', left)
-          this.$set(this.option.nodeList[i], 'top', top)
+          this.option.nodeList[i].left = left;
+          this.option.nodeList[i].top = top
         }
       }
     },

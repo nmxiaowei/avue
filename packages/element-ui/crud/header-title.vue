@@ -1,7 +1,5 @@
-<template>
-  <div slot="header"
-       :class="b('title')"
-       v-if="vaildData($parent.tableOption.title,false) || vaildData($parent.tableOption.dateBtn,config.dateBtn)">
+<template #header  v-if="vaildData($parent.tableOption.title,false) || vaildData($parent.tableOption.dateBtn,config.dateBtn)">
+  <div :class="b('title')">
     <p>{{$parent.tableOption.title}}</p>
     <avue-date type="dategroup"
                @change="dateChange"
@@ -17,17 +15,17 @@ import config from "./config";
 import { vaildData } from "utils/util";
 export default create({
   name: "crud",
-  data() {
+  data () {
     return {
       config: config
     };
   },
-  created() {
+  created () {
     this.vaildData = vaildData;
   },
   methods: {
     //日期组件回调
-    dateChange(val) {
+    dateChange (val) {
       this.$parent.$emit("date-change", val);
     }
   }

@@ -22,8 +22,8 @@ export default {
     },
     getSlotList () {
       this.slotList = {};
-      Object.keys(this.$scopedSlots).forEach(ele => {
-        this.$set(this.slotList, ele, true);
+      Object.keys(this.$slots).forEach(ele => {
+        this.slotList[ele] = true
       })
     }
   }

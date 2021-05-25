@@ -35,7 +35,7 @@ export default function () {
         if (typeof this.change === 'function' && this.column.cell !== true) {
           this.change({ value: result, column: this.column });
         }
-        this.$emit('input', result);
+        this.$emit('update:modelValue', result);
         this.$emit('change', result);
       }
     }

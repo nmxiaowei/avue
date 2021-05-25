@@ -17,18 +17,20 @@
              :close-on-click-modal="vaildData(crud.tableOption.dialogClickModal,false)"
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
-             :visible.sync="boxVisible"
+             v-model="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
              :before-close="hide">
-    <div slot="title"
-         :class="b('dialog__header')">
-      <span class="el-dialog__title">{{dialogTitle}}</span>
-      <div :class="b('dialog__menu')">
-        <i @click="handleFullScreen"
-           class="el-dialog__close el-icon-full-screen"></i>
+    <template #title>
+      <div :class="b('dialog__header')">
+        <span class="el-dialog__title">{{dialogTitle}}</span>
+        <div :class="b('dialog__menu')">
+          <i @click="handleFullScreen"
+             class="el-dialog__close el-icon-full-screen"></i>
+        </div>
       </div>
-    </div>
+    </template>
+
     <el-scrollbar :style="styleName">
       <avue-form v-model="crud.tableForm"
                  v-if="boxVisible"
@@ -68,8 +70,7 @@
           <slot :name="crud.getSlotName(item,'L')"
                 v-bind="scope"></slot>
         </template>
-        <template slot="menuForm"
-                  slot-scope="scope">
+        <template #menuForm="scope">
           <slot name="menuForm"
                 v-bind="Object.assign(scope,{
                     type:boxType
@@ -101,7 +102,7 @@ export default create({
     };
   },
   props: {
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
         return {};
@@ -204,7 +205,7 @@ export default create({
   },
   methods: {
     handleChange () {
-      this.crud.$emit('input', this.crud.tableForm)
+      this.crud.$emit('update:modelValue', this.crud.tableForm)
       this.crud.$emit('change', this.crud.tableForm)
     },
     handleTabClick (tab, event) {

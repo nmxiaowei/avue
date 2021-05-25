@@ -21,16 +21,16 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" v-model="form" :before-close="beforeClose" :option="option" :data="data">
-      <el-tag slot="name" slot-scope="{row}">
+      <el-tag #name="{row}">
         {{row}}
       </el-tag>
-      <el-tag slot="nameHeader" slot-scope="{column}">
+      <el-tag #nameHeader="{column}">
         {{column}}
       </el-tag>
-      <el-tag slot="nameSearch" slot-scope="{column}">
+      <el-tag #nameSearch="{column}">
         123
       </el-tag>
-      <el-tag slot="nameForm" slot-scope="{column}">
+      <el-tag #nameForm="{column}">
         456
       </el-tag>
     </avue-crud>

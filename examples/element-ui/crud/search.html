@@ -20,20 +20,27 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :page.sync="page" :search.sync="search" :option="option" :data="data"
+    <avue-crud ref="crud" v-model:page="page" v-model:search="search" :option="option" :data="data"
       @search-change="searchChange">
-      <el-tag slot="header">头部</el-tag>
-      <template slot="searchMenu" slot-scope="{size,row}">
+      <template #header>
+        <el-tag>头部</el-tag>
+      </template>
+
+      <template #searchMenu="{size,row}">
         <el-button :size="size">测试</el-button>
       </template>
-      <template slot-scope="scope" slot="checkboxSearch">
+      <template #checkboxSearch="scope">
         <span>123456</span>
       </template>
-      <template slot-scope="scope" slot="checkboxForm">
+      <template #checkboxForm="scope">
         <span> 123456</span>
       </template>
-      <el-tag slot="footer">尾部</el-tag>
-      <el-tag slot="page">分页</el-tag>
+      <template #footer>
+        <el-tag>尾部</el-tag>
+      </template>
+      <template #page>
+        <el-tag>分页</el-tag>
+      </template>
     </avue-crud>
   </div>
 </body>

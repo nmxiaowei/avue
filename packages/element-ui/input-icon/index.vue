@@ -7,19 +7,20 @@
               :clearable="disabled?false:clearable"
               :disabled="disabled"
               @change="handleChange"
-              @click.native="handleClick"
+              @click="handleClick"
               @focus="handleShow">
-      <span slot="append"
-            @click="handleShow">
-        <i class="avue-crud__icon--small"
-           :class="text"></i>
-      </span>
+      <template #append>
+        <span @click="handleShow">
+          <i class="avue-crud__icon--small"
+             :class="text"></i>
+        </span>
+      </template>
 
     </el-input>
     <el-dialog class="avue-dialog"
                :title="placeholder"
                append-to-body
-               :visible.sync="box"
+               v-model="box"
                :width="dialogWidth">
       <el-scrollbar style="height:400px;overflow-x:hidden">
         <avue-tabs :option="option"

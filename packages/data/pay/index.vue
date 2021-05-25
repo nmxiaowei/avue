@@ -38,6 +38,7 @@
           </div>
           <div class="list">
             <div class="list-item"
+                 :key="cindex"
                  v-for="(citem,cindex) in item.list">
               <i class="list-item-icon list-item--check"
                  :style="{color:item.color}"
@@ -48,9 +49,11 @@
                 <el-tooltip effect="dark"
                             :disabled="!citem.tip"
                             placement="top">
-                  <div slot="content"
-                       v-html="citem.tip"></div>
-                  <span :class="{'list-item--link':citem.href}">{{citem.title}}</span>
+                  <template #content>
+                    <div v-html="citem.tip"></div>
+                    <span :class="{'list-item--link':citem.href}">{{citem.title}}</span>
+                  </template>
+
                 </el-tooltip>
 
               </a>

@@ -27,7 +27,7 @@ export default create({
   name: "search",
   mixins: [init()],
   props: {
-    value: {}
+    modelValue: {}
   },
   computed: {
     isCard () {
@@ -53,7 +53,7 @@ export default create({
     };
   },
   watch: {
-    value: {
+    modelValue: {
       handler () {
         this.setVal();
       },
@@ -67,7 +67,7 @@ export default create({
   methods: {
     setVal () {
       Object.keys(this.value).forEach(ele => {
-        this.$set(this.form, ele, this.value[ele]);
+        this.form[ele] = this.value[ele]
       });
     },
     getKey (item = {}, props = {}, key) {
@@ -80,9 +80,9 @@ export default create({
         const prop = ele.prop;
         if (this.validatenull(this.form[prop])) {
           if (ele.multiple === false) {
-            this.$set(this.form, prop, "");
+            this.form[prop] = ''
           } else {
-            this.$set(this.form, prop, []);
+            this.form[prop] = []
           }
         }
       });
@@ -110,7 +110,7 @@ export default create({
         }
       }
       this.$emit("change", this.form);
-      this.$emit("input", this.form);
+      this.$emit('update:modelValue', this.form);
     }
   }
 });

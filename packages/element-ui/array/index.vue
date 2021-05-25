@@ -13,7 +13,7 @@
       <div :class="b('input')">
         <el-tooltip placement="bottom"
                     :disabled="(!isImg && !isUrl) || validatenull(item)">
-          <div slot="content">
+          <template #content>
             <el-image style="width: 150px"
                       :src="item"
                       @click="openImg(index)"
@@ -23,7 +23,7 @@
                      :href="item"
                      v-else-if="isUrl"
                      :target="target">{{item}}</el-link>
-          </div>
+          </template>
           <el-input v-model="text[index]"
                     :size="size"
                     :placeholder="placeholder"
@@ -75,7 +75,7 @@ export default create({
     placeholder: String,
     readonly: Boolean,
     disabled: Boolean,
-    value: [Array, String],
+    modelValue: [Array, String],
   },
   methods: {
     add (index) {

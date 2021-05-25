@@ -6,7 +6,7 @@
              append-to-body
              :title="t('crud.filterTitle')"
              :size="crud.isMobile?'100%':'60%'"
-             :visible.sync="box">
+             v-model="box">
     <el-row :span="24">
       <div :class="b('filter-menu')">
         <el-button-group>
@@ -165,7 +165,7 @@ export default create({
     },
     handleValueClear () {
       this.list.forEach((ele, index) => {
-        this.$set(this.list[index], 'value', this.formDefault[ele.text]);
+        this.list[index].value = this.formDefault[ele.text]
       });
     },
     handleGetColumn (prop) {

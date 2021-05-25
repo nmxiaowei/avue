@@ -6,7 +6,7 @@
              class="avue-dialog"
              :title="t('crud.showTitle')"
              :size="crud.isMobile?'100%':'50%'"
-             :visible.sync="columnBox">
+             v-model="columnBox">
     <el-scrollbar style="height:calc(100% - 100px)">
       <el-table :data="list"
                 ref="table"

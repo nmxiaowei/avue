@@ -7,10 +7,10 @@
                    :disabled="column.disabled"
                    v-for="(column,index) in columnOption"
                    :key="index">
-        <span slot="label">
+        <template #label>
           <i :class="column.icon"></i>&nbsp;
           {{column.label}}
-        </span>
+        </template>
       </el-tab-pane>
     </el-tabs>
 

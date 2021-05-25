@@ -3,8 +3,8 @@ import { isVNode } from 'utils/vdom';
 let instance;
 let instances = [];
 let seed = 1;
-const ImagePreview = function (Vue) {
-  let MessageConstructor = Vue.extend(Main);
+const ImagePreview = function () {
+  let MessageConstructor = Main;
   const obj = function (datas = [], index = 0) {
     let id = 'imagePreview_' + seed++;
     let options = {

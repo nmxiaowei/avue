@@ -8,7 +8,7 @@
                    :align="crud.tableOption.menuAlign || config.menuAlign"
                    :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
                    :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
-    <template slot-scope="{row,$index}">
+    <template #default="{row,$index}">
       <el-dropdown v-if="isMenu"
                    :size="crud.isMediumSize">
         <el-button type="text"
@@ -16,30 +16,33 @@
           {{ crud.tableOption.menuBtnTitle || t('crud.menuBtn')}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :icon="config.viewBtnIcon"
-                            v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)"
-                            v-permission="crud.getPermission('viewBtn',row,$index)"
-                            @click.native="crud.rowView(row,$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
-          <el-dropdown-item :icon="config.editBtnIcon"
-                            v-if="vaildData(crud.tableOption.editBtn,config.editBtn)"
-                            v-permission="crud.getPermission('editBtn',row,$index)"
-                            @click.native="crud.rowEdit(row,$index)">{{t('crud.editBtn')}}</el-dropdown-item>
-          <el-dropdown-item :icon="config.copyBtnIcon"
-                            v-if="vaildData(crud.tableOption.copyBtn,config.copyBtn)"
-                            v-permission="crud.getPermission('copyBtn',row,$index)"
-                            @click.native="crud.rowCopy(row)">{{t('crud.copyBtn')}}</el-dropdown-item>
-          <el-dropdown-item :icon="config.delBtnIcon"
-                            v-if="vaildData(crud.tableOption.delBtn,config.delBtn)"
-                            v-permission="crud.getPermission('delBtn',row,$index)"
-                            @click.native="crud.rowDel(row,$index)">{{t('crud.delBtn')}}</el-dropdown-item>
-          <slot name="menuBtn"
-                :row="row"
-                :type="menuText('primary')"
-                :disabled="crud.btnDisabled"
-                :size="crud.isMediumSize"
-                :index="$index"></slot>
-        </el-dropdown-menu>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item :icon="config.viewBtnIcon"
+                              v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)"
+                              v-permission="crud.getPermission('viewBtn',row,$index)"
+                              @click="crud.rowView(row,$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
+            <el-dropdown-item :icon="config.editBtnIcon"
+                              v-if="vaildData(crud.tableOption.editBtn,config.editBtn)"
+                              v-permission="crud.getPermission('editBtn',row,$index)"
+                              @click="crud.rowEdit(row,$index)">{{t('crud.editBtn')}}</el-dropdown-item>
+            <el-dropdown-item :icon="config.copyBtnIcon"
+                              v-if="vaildData(crud.tableOption.copyBtn,config.copyBtn)"
+                              v-permission="crud.getPermission('copyBtn',row,$index)"
+                              @click="crud.rowCopy(row)">{{t('crud.copyBtn')}}</el-dropdown-item>
+            <el-dropdown-item :icon="config.delBtnIcon"
+                              v-if="vaildData(crud.tableOption.delBtn,config.delBtn)"
+                              v-permission="crud.getPermission('delBtn',row,$index)"
+                              @click="crud.rowDel(row,$index)">{{t('crud.delBtn')}}</el-dropdown-item>
+            <slot name="menuBtn"
+                  :row="row"
+                  :type="menuText('primary')"
+                  :disabled="crud.btnDisabled"
+                  :size="crud.isMediumSize"
+                  :index="$index"></slot>
+          </el-dropdown-menu>
+        </template>
+
       </el-dropdown>
       <template v-else-if="['button','text','icon'].includes(menuType)">
         <template v-if="vaildData(crud.tableOption.cellBtn,config.cellBtn)">

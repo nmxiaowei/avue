@@ -34,7 +34,7 @@
           <slot :label="labelKey"
                 :value="valueKey"
                 :item="citem"
-                v-if="$scopedSlots.default">
+                v-if="$slots.default">
           </slot>
           <template v-else>
             <span>{{ getLabelText(citem) }}</span>
@@ -53,7 +53,7 @@
         <slot :label="labelKey"
               :value="valueKey"
               :item="item"
-              v-if="$scopedSlots.default">
+              v-if="$slots.default">
         </slot>
         <template v-else>
           <span>{{ getLabelText(item) }}</span>
@@ -83,7 +83,7 @@ export default create({
     };
   },
   props: {
-    value: {},
+    modelValue: {},
     loadingText: {
       type: String,
     },

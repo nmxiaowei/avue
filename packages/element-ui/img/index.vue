@@ -9,7 +9,7 @@
                :size="size"
                :type="type"
                @click="handleViews">查 看</el-button>
-    <el-dialog :visible.sync="box"
+    <el-dialog v-model="box"
                width="60%"
                :class="{'avue-img--fullscreen':fullscreen}"
                :fullscreen="fullscreen"

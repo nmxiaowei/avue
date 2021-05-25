@@ -22,13 +22,13 @@
 <body>
   <div id="app">
     <avue-form :option="option" v-model="obj">
-      <template slot="provinceType" slot-scope="{item,value,label}">
+      <template #provinceType="{item,value,label}">
         <span>{{item}}</span>
       </template>
-      <template slot="codeType" slot-scope="{item,value,label}">
+      <template #codeType="{item,value,label}">
         <span>{{item}}</span>
       </template>
-      <template slot="codesType" slot-scope="{item,value,label}">
+      <template #codesType="{item,value,label}">
         <span>{{item}}</span>
       </template>
     </avue-form>

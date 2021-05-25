@@ -20,9 +20,9 @@
 <body>
   <div id="app">
     <avue-crud :option="option" :data="data">
-      <div slot-scope="scope" slot="inputForm">
+      <template #inputForm="scope">
         <el-tag>{{scope.row.$index}}</el-tag>
-      </div>
+      </template>
     </avue-crud>
   </div>
 </body>

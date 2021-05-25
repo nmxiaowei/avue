@@ -31,24 +31,40 @@
 <body>
   <div id="app">
     <avue-text-ellipsis :text="text" :height="50" :width="200">
-      <small slot="more">...</small>
+      <template #more>
+        <small>...</small>
+      </template>
     </avue-text-ellipsis>
     <div class="demo-line"></div>
     <avue-text-ellipsis :text="text" :height="100" :width="200">
-      <small slot="more">...</small>
-      <el-tag slot="before" size="small">new</el-tag>
-      <small slot="after">[09/14]</small>
+      <template #more>
+        <small>...</small>
+      </template>
+      <template #before>
+        <el-tag size="small">new</el-tag>
+      </template>
+      <template #after>
+        <small>[09/14]</small>
+      </template>
     </avue-text-ellipsis>
     <div class="demo-line"></div>
     <avue-text-ellipsis :text="text" :height="100" :width="200" use-tooltip :is-limit-height="isLimitHeight"
       @show="show" @hide="hide">
-      <el-tag slot="before" size="small">new</el-tag>
-      <small slot="more"><span>...</span><span class="link" @click="isLimitHeight=false">查看更多</span></small>
-      <small slot="after" class="link" v-if="!isLimitHeight" @click="isLimitHeight=true">收起</small>
+      <template #before>
+        <el-tag size="small">new</el-tag>
+      </template>
+      <template #more>
+        <small><span>...</span><span class="link" @click="isLimitHeight=false">查看更多</span></small>
+      </template>
+      <template #after>
+        <small class="link" v-if="!isLimitHeight" @click="isLimitHeight=true">收起</small>
+      </template>
     </avue-text-ellipsis>
     <div class="demo-line"></div>
     <avue-text-ellipsis :key="text" :text="text" :height="40" :width="200" use-tooltip placement="top">
-      <small slot="more">...</small>
+      <template #more>
+        <small>...</small>
+      </template>
     </avue-text-ellipsis>
   </div>
 </body>

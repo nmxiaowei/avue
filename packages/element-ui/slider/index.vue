@@ -21,7 +21,7 @@ export default create({
   name: "slider",
   mixins: [props(), event()],
   props: {
-    value: {},
+    modelValue: {},
     step: {
       type: Number
     },

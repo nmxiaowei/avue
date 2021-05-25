@@ -21,10 +21,10 @@
 <body>
   <div id="app">
     <avue-detail :option="option" v-model="form">
-      <template slot="text1" slot-scope="scope">
+      <template #text1="scope">
         <el-tag>{{scope.row.text1}}</el-tag>
       </template>
-      <template slot="test" slot-scope="scope">
+      <template #test="scope">
         <span>{{scope.row}}</span>
       </template>
     </avue-detail>

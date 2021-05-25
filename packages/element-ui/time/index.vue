@@ -44,7 +44,7 @@ export default create({
     rangeSeparator: {
       type: String
     },
-    value: {
+    modelValue: {
       required: true
     },
     defaultValue: {

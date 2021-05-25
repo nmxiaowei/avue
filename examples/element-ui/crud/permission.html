@@ -24,7 +24,7 @@
       inactive-color="#ff4949">
     </el-switch>
     <avue-crud ref="crud" :permission="permission" :option="option" :data="data" @expand-change="expandChange">
-      <template slot="expand" slot-scope="scope">
+      <template #expand="scope">
         {{scope}}
       </template>
     </avue-crud>

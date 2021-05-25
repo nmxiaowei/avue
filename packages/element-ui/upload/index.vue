@@ -23,7 +23,7 @@
         <i class="el-icon-plus"></i>
       </template>
       <template v-else-if="listType=='picture-img'">
-        <slot v-if="$scopedSlots.default"
+        <slot v-if="$slots.default"
               :file="{url:imgUrl}"></slot>
         <template v-else>
           <img v-if="imgUrl"
@@ -59,11 +59,10 @@
         <el-button size="small"
                    type="primary">{{t('upload.upload')}}</el-button>
       </template>
-      <div slot="tip"
+      <div #tip
            class="el-upload__tip">{{tip}}</div>
-      <template v-if="$scopedSlots.default"
-                slot="file"
-                slot-scope="scope">
+      <template v-if="$slots.default"
+                #file="scope">
         <slot v-bind="scope"></slot>
       </template>
     </el-upload>

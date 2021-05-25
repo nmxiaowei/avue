@@ -21,13 +21,13 @@
   <div id="app">
     {{form}}
     <avue-form v-model="form" :option="option" @submit="submit">
-      <template slot-scope="{}" slot="daterangeLabel">
+      <template #daterangeLabel="{}">
         <span>姓名&nbsp;&nbsp;</span>
         <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
           <i class="el-icon-warning"></i>
         </el-tooltip>
       </template>
-      <template slot-scope="{error}" slot="daterangeError">
+      <template #daterangeError="{error}">
         <p style="color:green">自定义提示</p>
       </template>
     </avue-form>
