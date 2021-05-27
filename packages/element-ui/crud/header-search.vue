@@ -191,7 +191,7 @@ export default cteate({
           submitBtn: this.vaildData(option.searchBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
           emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
-          emptyBtn: option.emptyBtn || this.config.emptyBtn,
+          emptyBtn: this.vaildData(option.emptyBtn, this.config.emptyBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
