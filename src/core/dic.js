@@ -6,53 +6,75 @@ export const loadCascaderDic = (columnOption, list) => {
     let columnList = [];
     let result = [];
     let networkdic = {};
+    let dicResult = [];
+    let dicUrlMapping = [];
     columnOption.forEach(ele => {
       if (ele.parentProp) columnList.push(ele);
     });
     list.forEach((ele, index) => {
       columnList.forEach(column => {
         if (column.hide !== true && column.dicFlag !== false) {
-          result.push(
-            new Promise(resolve => {
-              if (validatenull(ele[column.parentProp])) {
-                resolve({
-                  prop: column.prop,
-                  data: [],
-                  index: index
-                });
-              } else {
-                if (column.dicUrl) {
-                  sendDic(Object.assign({
-                    url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
-                  }, {
-                    props: column.props,
-                    method: column.dicMethod,
-                    formatter: column.dicFormatter,
-                    query: column.dicQuery
-                  })).then(res => {
-                    resolve({
-                      prop: column.prop,
-                      data: res,
-                      index: index
-                    });
+          let url = `${column.dicUrl.replace(
+            '{{key}}',
+            ele[column.parentProp]
+          )}`;
+          dicUrlMapping.push({
+            url: url,
+            prop: column.prop,
+            index: index
+          });
+          if (dicResult.findIndex(t => t.url === url) < 0) {
+            dicResult.push({ url: url });
+            result.push(
+              new Promise(resolve => {
+                if (validatenull(ele[column.parentProp])) {
+                  resolve({
+                    prop: column.prop,
+                    data: [],
+                    index: index
                   });
+                } else {
+                  if (column.dicUrl) {
+                    sendDic(
+                      Object.assign(
+                        {
+                          url: url
+                        },
+                        {
+                          props: column.props,
+                          method: column.dicMethod,
+                          formatter: column.dicFormatter,
+                          query: column.dicQuery
+                        }
+                      )
+                    ).then(res => {
+                      resolve({
+                        url: url,
+                        data: res
+                      });
+                    });
+                  }
                 }
-              }
-            })
-          );
+              })
+            );
+          }
         }
       });
     });
     Promise.all(result).then(data => {
-      data.forEach(ele => {
-        if (validatenull(networkdic[ele.index])) networkdic[ele.index] = {};
-        networkdic[ele.index][ele.prop] = ele.data;
+      dicUrlMapping.forEach(ele => {
+        if (validatenull(networkdic[ele.index])) {
+          networkdic[ele.index] = {};
+        }
+        let _data = data.find(t => t.url === ele.url);
+        networkdic[ele.index][ele.prop] = _data.data;
       });
+
       resolve(networkdic);
     });
   });
 };
-export const loadDic = (option) => {
+export const loadDic = option => {
   let ajaxdic = []; // 发送ajax的字典
   return new Promise((resolve, reject) => {
     const params = createdDic(option);
@@ -62,7 +84,7 @@ export const loadDic = (option) => {
       resolve();
     }
     handleDic(ajaxdic)
-      .then((res) => {
+      .then(res => {
         resolve(res);
       })
       .catch(err => {
@@ -70,15 +92,17 @@ export const loadDic = (option) => {
       });
   });
 };
-export const loadLocalDic = (option) => {
+export const loadLocalDic = option => {
   let locationdic = {};
   let alldic = option.dicData || {};
   option.column.forEach(ele => {
-    if (ele.dicData) locationdic[ele.prop] = detailDic(ele.dicData, ele.props, ele.dataType);
+    if (ele.dicData) {
+      locationdic[ele.prop] = detailDic(ele.dicData, ele.props, ele.dataType);
+    }
   });
   return Object.assign(alldic, locationdic);
 };
-function createdDic (option) {
+function createdDic(option) {
   let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
@@ -92,7 +116,11 @@ function createdDic (option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    let result = ele.dicFlag === false || ele.remote === true || ele.lazy === true || flagdic.includes(prop)
+    let result =
+      ele.dicFlag === false ||
+      ele.remote === true ||
+      ele.lazy === true ||
+      flagdic.includes(prop);
     if (result) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
@@ -114,21 +142,25 @@ function createdDic (option) {
 }
 
 // 循环处理字典
-function handleDic (list) {
+function handleDic(list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
     list.forEach(ele => {
       result.push(
         new Promise(resolve => {
-          sendDic(Object.assign(ele, {
-            url: `${ele.url.replace('{{key}}', '')}`
-          })).then(res => {
-            res = detailDic(res, ele.props, ele.dataType);
-            resolve(res);
-          }).catch(() => {
-            resolve([]);
-          });
+          sendDic(
+            Object.assign(ele, {
+              url: `${ele.url.replace('{{key}}', '')}`
+            })
+          )
+            .then(res => {
+              res = detailDic(res, ele.props, ele.dataType);
+              resolve(res);
+            })
+            .catch(() => {
+              resolve([]);
+            });
         })
       );
     });
@@ -142,8 +174,18 @@ function handleDic (list) {
 }
 
 // ajax获取字典
-export const sendDic = (params) => {
-  let { url, query, method, resKey, props, formatter, value = '', column, form = {} } = params;
+export const sendDic = params => {
+  let {
+    url,
+    query,
+    method,
+    resKey,
+    props,
+    formatter,
+    value = '',
+    column,
+    form = {}
+  } = params;
   if (column) {
     url = column.dicUrl;
     method = column.dicMethod;
@@ -151,7 +193,7 @@ export const sendDic = (params) => {
     formatter = column.dicFormatter;
     props = column.props;
   }
-  let key = "key"
+  let key = 'key';
   url = url || '';
   let list = [];
   let data = {};
@@ -161,7 +203,10 @@ export const sendDic = (params) => {
       let eleKey = query[ele] + '';
       let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
       if (eleKey.match(/\{{|}}/g)) {
-        data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
+        data[ele] = eleKey.replace(
+          eleKey,
+          eleKey.indexOf(key) !== -1 ? value : eleValue
+        );
       } else {
         data[ele] = eleKey;
       }
@@ -173,11 +218,11 @@ export const sendDic = (params) => {
       let eleValue = form[ele];
       if (ele === key) url = url.replace(eleKey, value);
       else url = url.replace(eleKey, eleValue);
-    })
+    });
   }
   if (props) resKey = (props || {}).res || resKey;
   return new Promise(resolve => {
-    const callback = (res) => {
+    const callback = res => {
       let list = [];
       if (typeof formatter === 'function') {
         list = formatter(res.data);
@@ -191,19 +236,21 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, data).then(function (res) {
-        callback(res);
-      }).catch(() => [
-        resolve([])
-      ]);
+      window.axios
+        .post(url, data)
+        .then(function(res) {
+          callback(res);
+        })
+        .catch(() => [resolve([])]);
     } else {
-      window.axios.get(url, {
-        params: query
-      }).then(function (res) {
-        callback(res);
-      }).catch(() => [
-        resolve([])
-      ]);
+      window.axios
+        .get(url, {
+          params: query
+        })
+        .then(function(res) {
+          callback(res);
+        })
+        .catch(() => [resolve([])]);
     }
   });
 };
