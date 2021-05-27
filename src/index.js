@@ -1,6 +1,6 @@
 import components from 'ui/index';
 import config from 'ui/config';
-import { validatenull, asyncValidator } from 'utils/validate.js';
+import { validatenull } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
 import $Export from 'plugin/export/';
@@ -33,7 +33,6 @@ let prototypes = {
   downFile,
   loadScript,
   watermark,
-  asyncValidator,
   findObject
 
 };

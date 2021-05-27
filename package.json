@@ -57,14 +57,12 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "async-validator": "^1.10.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
     "deepmerge": "^3.1.0",
-    "element-ui": "^2.11.0",
+    "element-ui": "^2.15.1",
     "nprogress": "^0.2.0",
-    "vant": "^2.10.9",
     "vue": "^2.5.17",
     "vuedraggable": "^2.17.0"
   },
