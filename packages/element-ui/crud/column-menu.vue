@@ -8,7 +8,7 @@
                    :align="crud.tableOption.menuAlign || config.menuAlign"
                    :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
                    :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
-    <template #default="{row,$index}">
+    <template #="{row,$index}">
       <el-dropdown v-if="isMenu"
                    :size="crud.isMediumSize">
         <el-button type="text"

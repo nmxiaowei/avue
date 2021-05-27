@@ -4,7 +4,7 @@
             :clearable="disabled?false:clearable"
             v-model="text"
             @keyup.enter="isSearch?appendClick():''"
-            @click.native="handleClick"
+            @click.="handleClick"
             :type="typeParam"
             :maxlength="maxlength"
             :minlength="minlength"

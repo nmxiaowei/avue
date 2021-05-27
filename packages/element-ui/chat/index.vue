@@ -272,7 +272,7 @@ export default create({
     },
     modelValue: {
       handler () {
-        this.msg = this.value;
+        this.msg = this.modelValue;
       },
       immediate: true
     },

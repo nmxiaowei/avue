@@ -13,7 +13,7 @@
   <link rel="stylesheet"
     href="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.44/theme-chalk/index.min.css" />
   <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.44/index.full.min.js"></script>
-
+  <link rel="stylesheet" href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css" />
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
 </head>
@@ -22,7 +22,7 @@
   <div id="app">
     {{obj}}
     <avue-form :option="option" v-model="obj" @submit="submit">
-      <template #names="scope">
+      <template slot-scope="scope" slot="name">
         <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
       </template>
       <template #test="scope">
@@ -32,49 +32,48 @@
         <span>{{ data.label }}</span>
         <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
       </template>
-      <template #treeType="{ item }">
+      <!-- <template #treeType="{ item }">
         <span class="el-tree-node__label">
           <span>
             <i class="el-icon-user-solid"></i>
             {{ item.label }}
           </span>
         </span>
-      </template>
-
+      </template> -->
     </avue-form>
   </div>
 </body>
 <script>
   let baseUrl = 'https://cli.avuejs.com/api/area'
-  var app = Vue.createApp({
-    setup() {
-      const obj = Vue.reactive({
-        checkbox: ["120000", "110000", "130000"]
-      });
-      const option = Vue.reactive({
-        card: false,
-        printBtn: true,
-        labelWidth: 110,
-        column: [{
-          label: '自定义测试',
-          prop: 'test',
+  let app = Vue.createApp({
+    data() {
+      return {
+        obj: {
+          name: 'small',
+          checkbox: ["120000", "110000", "130000"]
         },
-        {
-          label: '姓名',
-          prop: 'name',
-          formslot: true,
-          order: 3
-        },
-          //{
+        option: {
+          card: false,
+          printBtn: true,
+          labelWidth: 110,
+          column: [{
+            label: '自定义测试',
+            prop: 'test',
+          },
+          {
+            label: '姓名',
+            prop: 'name',
+            formslot: true,
+            order: 3
+          },
+          // {
           //   label: '级别',
           //   prop: 'cascader',
           //   type: 'cascader',
-          //   changeOnSelect: true,
           //   // multiple: true,
           //   // filterable: true,
           //   // checkStrictly: true,
           //   order: 4,
-          //   typeslot: true,
           //   dicData: [{
           //     label: '一级',
           //     value: 3,
@@ -113,184 +112,182 @@
           //     value: 1
           //   }]
           // },
-          // {
-          //   width: 120,
-          //   label: '开关',
-          //   prop: 'switch',
-          //   type: 'switch',
-          //   dicData: [
-          //     {
-          //       label: '关闭',
-          //       value: 0
-          //     },
-          //     {
-          //       label: '开启',
-          //       value: 1
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: '默认值',
-          //   prop: 'default',
-          //   value: '22',
-          //   rules: [
-          //     {
-          //       required: true,
-          //       message: '请输入数字',
-          //       trigger: 'blur'
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: '多选',
-          //   prop: 'selects',
-          //   multiple: true,
-          //   type: 'select',
-          //   dataType: 'number',
-          //   dicData: [{
-          //     label: '选项1',
-          //     value: 0
-          //   }, {
-          //     label: '选项2',
-          //     value: 1
-          //   }]
-          // },
-          // {
-          //   label: '数字',
-          //   prop: 'number',
-          //   type: 'number',
-          //   step: 10,
-          //   rules: [
-          //     {
-          //       required: true,
-          //       type: 'number',
-          //       message: '请输入数字'
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: '省份',
-          //   prop: 'province',
-          //   type: 'select',
-          //   props: {
-          //     label: 'name',
-          //     value: 'code'
-          //   },
-          //   cascaderItem: ['city', 'area'],
-          //   dicUrl: `${baseUrl}/getProvince`,
-          //   rules: [
-          //     {
-          //       required: true,
-          //       message: '请选择省份',
-          //       trigger: 'blur'
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: '城市',
-          //   prop: 'city',
-          //   type: 'select',
-          //   props: {
-          //     label: 'name',
-          //     value: 'code'
-          //   },
-          //   row: true,
-          //   defaultIndex: 1,
-          //   dicFlag: false,
-          //   dicUrl: `${baseUrl}/getCity/{{key}}`,
-          //   rules: [
-          //     {
-          //       required: true,
-          //       message: '请选择城市',
-          //       trigger: 'blur'
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: '地区',
-          //   prop: 'area',
-          //   type: 'select',
-          //   props: {
-          //     label: 'name',
-          //     value: 'code'
-          //   },
-          //   defaultIndex: 1,
-          //   dicFlag: false,
-          //   dicUrl: `${baseUrl}/getArea/{{key}}`,
-          //   rules: [
-          //     {
-          //       required: true,
-          //       message: '请选择地区',
-          //       trigger: 'blur'
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: '多选',
-          //   prop: 'checkbox',
-          //   type: 'checkbox',
-          //   max: 5,
-          //   min: 2,
-          //   props: {
-          //     label: 'name',
-          //     value: 'code'
-          //   },
-          //   span: 24,
-          //   rules: [
-          //     {
-          //       type: 'array',
-          //       required: true,
-          //       message: '请输入数字'
-          //     }
-          //   ],
-          //   dicUrl: `${baseUrl}/getProvince`
-          // },
-          // {
-          //   label: '图标选择器',
-          //   prop: 'icon',
-          //   type: 'icon',
-          //   iconList: [{
-          //     label: '基本图标',
-          //     list: ['el-icon-info', 'el-icon-error', 'el-icon-error', 'el-icon-success', 'el-icon-warning', 'el-icon-question']
-          //   }, {
-          //     label: '方向图标',
-          //     list: ['el-icon-back', 'el-icon-arrow-left', 'el-icon-arrow-down', 'el-icon-arrow-right', 'el-icon-arrow-up']
-          //   }, {
-          //     label: '符号图标',
-          //     list: ['el-icon-plus', 'el-icon-minus', 'el-icon-close', 'el-icon-check']
-          //   }]
-          // }
-        ]
-      })
-      Vue.onMounted(() => {
-        obj.value = {
-          switch: 1,
-          selects: '0,1',
-          name: 'small',
-          cascader: [3, 1],
-          default: 10,
-          tree: [2],
-          province: '220000',
-          city: '220700',
-          area: '220702',
-          icon: 'el-icon-error',
+          {
+            width: 120,
+            label: '开关',
+            prop: 'switch',
+            type: 'switch',
+            dicData: [
+              {
+                label: '关闭',
+                value: 0
+              },
+              {
+                label: '开启',
+                value: 1
+              }
+            ]
+          },
+          {
+            label: '默认值',
+            prop: 'default1',
+            value: '22',
+            rules: [
+              {
+                required: true,
+                message: '请输入数字',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '多选',
+            prop: 'selects',
+            multiple: true,
+            type: 'select',
+            dataType: 'number',
+            dicData: [{
+              label: '选项1',
+              value: 0
+            }, {
+              label: '选项2',
+              value: 1
+            }]
+          },
+          {
+            label: '数字',
+            prop: 'number',
+            type: 'number',
+            step: 10,
+            rules: [
+              {
+                required: true,
+                type: 'number',
+                message: '请输入数字'
+              }
+            ]
+          },
+          {
+            label: '省份',
+            prop: 'province',
+            type: 'select',
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            cascaderItem: ['city', 'area'],
+            dicUrl: `${baseUrl}/getProvince`,
+            rules: [
+              {
+                required: true,
+                message: '请选择省份',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '城市',
+            prop: 'city',
+            type: 'select',
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            row: true,
+            defaultIndex: 1,
+            dicFlag: false,
+            dicUrl: `${baseUrl}/getCity/{{key}}`,
+            rules: [
+              {
+                required: true,
+                message: '请选择城市',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '地区',
+            prop: 'area',
+            type: 'select',
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            defaultIndex: 1,
+            dicFlag: false,
+            dicUrl: `${baseUrl}/getArea/{{key}}`,
+            rules: [
+              {
+                required: true,
+                message: '请选择地区',
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: '多选',
+            prop: 'checkbox',
+            type: 'checkbox',
+            max: 5,
+            min: 2,
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            span: 24,
+            rules: [
+              {
+                type: 'array',
+                required: true,
+                message: '请输入数字'
+              }
+            ],
+            dicUrl: `${baseUrl}/getProvince`
+          },
+          {
+            label: '图标选择器',
+            prop: 'icon',
+            type: 'icon',
+            iconList: [{
+              label: '基本图标',
+              list: ['el-icon-info', 'el-icon-error', 'el-icon-error', 'el-icon-success', 'el-icon-warning', 'el-icon-question']
+            }, {
+              label: '方向图标',
+              list: ['el-icon-back', 'el-icon-arrow-left', 'el-icon-arrow-down', 'el-icon-arrow-right', 'el-icon-arrow-up']
+            }, {
+              label: '符号图标',
+              list: ['el-icon-plus', 'el-icon-minus', 'el-icon-close', 'el-icon-check']
+            }]
+          }
+          ]
         }
-      })
-      const submit = (form, done) => {
+      }
+    },
+    mounted() {
+      this.obj = {
+        switch: 1,
+        selects: '0,1',
+        name: 'small',
+        cascader: [3, 1],
+        default: 10,
+        tree: [2],
+        province: '220000',
+        city: '220700',
+        area: '220702',
+        icon: 'el-icon-error',
+      }
+    },
+    methods: {
+      submit(form, done) {
         this.$message.success('3s后关闭');
         setTimeout(() => {
           done()
         }, 3000)
       }
-      return {
-        obj,
-        option,
-        submit
-      }
     }
   })
-  app.use(AVUE)
   app.use(ElementPlus)
+  app.use(AVUE)
   app.mount('#app')
 </script>
 

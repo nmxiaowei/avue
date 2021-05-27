@@ -66,8 +66,8 @@ export default create({
   },
   methods: {
     setVal () {
-      Object.keys(this.value).forEach(ele => {
-        this.form[ele] = this.value[ele]
+      Object.keys(this.modelValue).forEach(ele => {
+        this.form[ele] = this.modelValue[ele]
       });
     },
     getKey (item = {}, props = {}, key) {

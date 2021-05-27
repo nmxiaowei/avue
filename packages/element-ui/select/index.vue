@@ -158,8 +158,8 @@ export default create({
           // Detail see : https://github.com/RubaXa/Sortable/issues/1012
         },
         onEnd: evt => {
-          const targetRow = this.value.splice(evt.oldIndex, 1)[0]
-          this.value.splice(evt.newIndex, 0, targetRow)
+          const targetRow = this.modelValue.splice(evt.oldIndex, 1)[0]
+          this.modelValue.splice(evt.newIndex, 0, targetRow)
         }
       })
     },

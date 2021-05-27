@@ -7,7 +7,7 @@ export default function () {
   return {
     methods: {
       initVal () {
-        this.text = initVal(this.value, this.column, (result) => {
+        this.text = initVal(this.modelValue, this.column, (result) => {
           this.stringMode = result;
         });
       },

@@ -27,9 +27,8 @@
           </template>
 
         </template>
-        <template slot-scope="scope"
-                  v-for="item in crud.searchSlot"
-                  :slot="item.prop">
+        <template v-for="item in crud.searchSlot"
+                  #[item.prop]="scope">
           <slot :name="item.prop"
                 v-bind="Object.assign(scope,{
                   search:searchForm,

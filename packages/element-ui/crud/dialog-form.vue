@@ -43,30 +43,26 @@
                  v-bind="$uploadFun({},crud)"
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.formSlot"
-                  :slot="item.prop">
+        <template #[item.prop]="scope"
+                  v-for="item in crud.formSlot">
           <slot :name="item.prop"
                 v-bind="scope"></slot>
         </template>
         <!-- 循环form表单错误卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.errorSlot"
-                  :slot="crud.getSlotName(item,'E')">
+        <template #[crud.getSlotName(item,'E')]="scope"
+                  v-for="item in crud.errorSlot">
           <slot :name="crud.getSlotName(item,'E')"
                 v-bind="scope"></slot>
         </template>
         <!-- 循环form表单组件自定义卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.typeSlot"
-                  :slot="crud.getSlotName(item,'T')">
+        <template #[crud.getSlotName(item,'T')]="scope"
+                  v-for="item in crud.typeSlot">
           <slot :name="crud.getSlotName(item,'T')"
                 v-bind="scope"></slot>
         </template>
         <!-- 循环form表单标签卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.labelSlot"
-                  :slot="crud.getSlotName(item,'L')">
+        <template #[crud.getSlotName(item,'L')]="scope"
+                  v-for="item in crud.labelSlot">
           <slot :name="crud.getSlotName(item,'L')"
                 v-bind="scope"></slot>
         </template>

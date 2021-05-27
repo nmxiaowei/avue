@@ -3,7 +3,7 @@
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
              :status-icon="parentOption.statusIcon"
-             @submit.native.prevent
+             @submit.prevent
              :model="form"
              :label-suffix="labelSuffix"
              :size="$AVUE.formSize || controlSize"
@@ -116,6 +116,7 @@
                           :dic="DIC[column.prop]"
                           :name="column.prop"
                           v-if="$slots[column.prop]"></slot>
+
                     <form-temp :column="column"
                                v-else
                                :ref="column.prop"
@@ -135,12 +136,11 @@
                         <slot v-bind="scope"
                               :name="citem.prop"></slot>
                       </template>
-                      <template :slot="getSlotName(column,'T')"
-                                slot-scope="scope"
+                      <!-- <template #[getSlotName(column,'T')]="scope"
                                 v-for="item in $slots[getSlotName(column,'T')]?[column]:[]">
                         <slot :name="getSlotName(item,'T')"
                               v-bind="scope"></slot>
-                      </template>
+                      </template> -->
                     </form-temp>
                   </component>
                 </el-form-item>

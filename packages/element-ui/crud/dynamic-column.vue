@@ -12,8 +12,7 @@
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.propOption"
-                  slot-scope="scope"
-                  :slot="item.prop">
+                  #[item.prop]="scope">
           <slot :row="scope.row"
                 :dic="scope.dic"
                 :size="scope.size"

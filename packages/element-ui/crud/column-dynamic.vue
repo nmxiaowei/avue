@@ -12,20 +12,17 @@
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.mainSlot"
-                  slot-scope="scope"
-                  :slot="item.prop">
+                  #[item.prop]="scope">
           <slot v-bind="scope"
                 :name="item.prop"></slot>
         </template>
         <template v-for="item in crud.headerSlot"
-                  slot-scope="scope"
-                  :slot="crud.getSlotName(item,'H')">
+                  #[crud.getSlotName(item,'H')]="scope">
           <slot v-bind="scope"
                 :name="crud.getSlotName(item,'H')"></slot>
         </template>
         <template v-for="item in crud.mainSlot"
-                  slot-scope="scope"
-                  :slot="crud.getSlotName(item,'F')">
+                  #[crud.getSlotName(item,'F')]="scope">
           <slot v-bind="scope"
                 :name="crud.getSlotName(item,'F')"></slot>
         </template>
@@ -64,7 +61,7 @@
 
           </el-popover>
         </template>
-        <template #default="{row,$index}">
+        <template #="{row,$index}">
           <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                         v-if="row.$cellEdit && column.cell"
                         :label="vaildLabel(column,row,' ')"

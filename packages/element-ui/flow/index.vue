@@ -105,8 +105,8 @@ export default create({
   },
   watch: {
     modelValue: {
-      handler () {
-        this.active = this.value;
+      handler (val) {
+        this.active = val;
       },
       immediate: true
     },

@@ -4,7 +4,6 @@
                :placeholder="placeholder"
                :props="allProps"
                :size="size"
-               :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :show-all-levels="showAllLevels"
                :filterable="filterable"
@@ -13,8 +12,8 @@
                :collapse-tags="tags"
                @focus="handleFocus"
                @blur="handleBlur"
-               @click.native="handleClick">
-    <template slot-scope="{data,node}">
+               @click="handleClick">
+    <template #="{data,node}">
       <slot v-if="$slots.default"
             :data="data"
             :node="node"></slot>
@@ -44,7 +43,7 @@ export default create({
       default: false
     },
     modelValue: {
-      type: Array,
+      type: [Array, String],
       default: () => []
     },
     changeOnSelect: {

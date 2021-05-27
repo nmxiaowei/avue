@@ -29,7 +29,7 @@
         <i class="el-icon-delete" @click="$refs.flow.deleteNode(scope.node.id)"></i>
         自定义头部
       </template>
-      <template #default="scop">
+      <template #="scop">
         自定义身体{{scope.node.name}}
       </template>
     </avue-flow>

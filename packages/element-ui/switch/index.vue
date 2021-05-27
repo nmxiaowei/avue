@@ -1,18 +1,18 @@
 <template>
-  <el-switch v-model="text"
-             @click.native="handleClick"
-             :active-text="active[labelKey]"
-             :active-value="active[valueKey]"
-             :inactive-value="inactive[valueKey]"
-             :inactive-text="inactive[labelKey]"
-             :active-icon-class="activeIconClass"
-             :inactive-icon-class="inactiveIconClass"
-             :active-color="activeColor"
-             :inactive-color="inactiveColor"
-             :width="len"
-             :disabled="disabled"
-             :readonly="readonly"
-             :size="size"></el-switch>
+  <div>
+    <el-switch v-model="text"
+               @click="handleClick"
+               :active-text="active[labelKey]"
+               :active-value="active[valueKey]"
+               :inactive-value="inactive[valueKey]"
+               :inactive-text="inactive[labelKey]"
+               :active-icon-class="activeIconClass"
+               :inactive-icon-class="inactiveIconClass"
+               :active-color="activeColor"
+               :inactive-color="inactiveColor"
+               :width="len"
+               :disabled="disabled"></el-switch>
+  </div>
 </template>
 
 <script>

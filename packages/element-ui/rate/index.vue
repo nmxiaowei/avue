@@ -21,7 +21,7 @@ export default create({
   name: "rate",
   mixins: [props(), event()],
   props: {
-    value: {
+    modelValue: {
       type: Number,
       default: 0
     },

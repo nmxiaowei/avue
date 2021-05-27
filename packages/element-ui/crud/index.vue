@@ -14,9 +14,8 @@
         <slot name="searchMenu"
               v-bind="scope"></slot>
       </template>
-      <template slot-scope="scope"
-                v-for="item in searchSlot"
-                :slot="item.prop">
+      <template v-for="item in searchSlot"
+                #[item.prop]="scope">
         <slot v-bind="scope"
               :name="getSlotName(item,'S')"></slot>
       </template>
@@ -25,13 +24,11 @@
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="vaildData(tableOption.header,true)">
-        <template slot="menuLeft"
-                  slot-scope="scope">
+        <template #menuLeft="scope">
           <slot name="menuLeft"
                 v-bind="scope"></slot>
         </template>
-        <template slot="menuRight"
-                  slot-scope="scope">
+        <template #menuRight="scope">
           <slot name="menuRight"
                 v-bind="scope"></slot>
         </template>
@@ -125,20 +122,17 @@
             </template>
 
             <template v-for="item in mainSlot"
-                      slot-scope="scope"
-                      :slot="item.prop">
+                      #[item.prop]="scope">
               <slot v-bind="scope"
                     :name="item.prop"></slot>
             </template>
             <template v-for="item in headerSlot"
-                      slot-scope="scope"
-                      :slot="getSlotName(item,'H')">
+                      #[getSlotName(item,'H')]="scope">
               <slot v-bind="scope"
                     :name="getSlotName(item,'H')"></slot>
             </template>
             <template v-for="item in formSlot"
-                      slot-scope="scope"
-                      :slot="getSlotName(item,'F')">
+                      #[getSlotName(item,'F')]="scope">
               <slot v-bind="scope"
                     :name="getSlotName(item,'F')"></slot>
             </template>
@@ -168,36 +162,32 @@
     </el-card>
     <!-- 表单 -->
     <dialog-form ref="dialogForm">
-      <template slot-scope="scope"
-                v-for="item in formSlot"
-                :slot="item.prop">
+      <template v-for="item in formSlot"
+                #[item.prop]="scope">
         <slot v-bind="Object.assign(scope,{
               row:item.dynamic?scope.row:tableForm,
               index:item.dynamic?scope.row.$index:tableIndex
               })"
               :name="getSlotName(item,'F')"></slot>
       </template>
-      <template slot-scope="scope"
-                v-for="item in labelSlot"
-                :slot="getSlotName(item,'L')">
+      <template #[getSlotName(item,'L')]="scope"
+                v-for="item in labelSlot">
         <slot v-bind="Object.assign(scope,{
               row:tableForm,
               index:tableIndex
               })"
               :name="getSlotName(item,'L')"></slot>
       </template>
-      <template slot-scope="scope"
-                v-for="item in errorSlot"
-                :slot="getSlotName(item,'E')">
+      <template #[getSlotName(item,'E')]="scope"
+                v-for="item in errorSlot">
         <slot v-bind="Object.assign(scope,{
               row:tableForm,
               index:tableIndex
               })"
               :name="getSlotName(item,'E')"></slot>
       </template>
-      <template slot-scope="scope"
-                v-for="item in typeSlot"
-                :slot="getSlotName(item,'T')">
+      <template #[getSlotName(item,'T')]="scope"
+                v-for="item in typeSlot">
         <slot v-bind="Object.assign(scope,{
               row:tableForm,
               index:tableIndex
@@ -434,8 +424,8 @@ export default create({
   },
   watch: {
     modelValue: {
-      handler () {
-        this.tableForm = this.value;
+      handler (val) {
+        this.tableForm = val;
       },
       immediate: true,
       deep: true

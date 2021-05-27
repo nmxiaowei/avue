@@ -62,7 +62,7 @@ export default create({
       type: String,
       default: ""
     },
-    value: {},
+    modelValue: {},
     imgWidth: {},
     imgHeight: {}
   },
