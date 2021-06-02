@@ -162,7 +162,7 @@
                width="40%"
                append-to-body
                :before-close="handleClose"
-               class="web__dialog">
+               custom-class="web__dialog">
       <img :src="imgSrc"
            v-if="imgSrc"
            style="width:100%;object-fit: cover;">

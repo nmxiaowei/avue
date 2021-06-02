@@ -17,7 +17,7 @@
       </template>
 
     </el-input>
-    <el-dialog class="avue-dialog"
+    <el-dialog custom-class="avue-dialog"
                :title="placeholder"
                append-to-body
                v-model="box"

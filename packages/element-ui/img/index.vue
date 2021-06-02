@@ -11,7 +11,7 @@
                @click="handleViews">查 看</el-button>
     <el-dialog v-model="box"
                width="60%"
-               :class="{'avue-img--fullscreen':fullscreen}"
+               :custom-class="{'avue-img--fullscreen':fullscreen}"
                :fullscreen="fullscreen"
                modal-append-to-body
                append-to-body>

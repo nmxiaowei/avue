@@ -12,7 +12,7 @@
     </el-dialog>
     <el-dialog v-model="listVisible"
                modal-append-to-body
-               :class="b('allview')"
+               :custom-class="b('allview')"
                title="详细数据"
                append-to-body
                width="80%">

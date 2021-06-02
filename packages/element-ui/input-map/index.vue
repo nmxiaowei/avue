@@ -7,11 +7,11 @@
               ref="main"
               v-model="address"
               @focus="handleShow"
-              @click.native="handleClick"
+              @click.="handleClick"
               :placeholder="placeholder">
     </el-input>
 
-    <el-dialog class="avue-dialog"
+    <el-dialog custom-class="avue-dialog"
                :width="dialogWidth"
                append-to-body
                :title="placeholder"
