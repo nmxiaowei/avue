@@ -40,7 +40,7 @@
                        :fixed="getColumnProp(column,'fixed')">
         <template #header="scope">
           <slot :name="crud.getSlotName(column,'H')"
-                v-if="crud.$slots[crud.getSlotName(column,'H')]"
+                v-if="crud.getSlotName(column,'H',crud.$slots)"
                 v-bind="Object.assign(scope,{column})"></slot>
           <el-popover placement="bottom"
                       v-else
@@ -72,7 +72,7 @@
                       '$cell':row.$cellEdit
                     }"
                   :name="crud.getSlotName(column,'F')"
-                  v-if="crud.$slots[crud.getSlotName(column,'F')]"></slot>
+                  v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
             <form-temp v-else
                        :column="column"
                        :size="crud.isMediumSize"

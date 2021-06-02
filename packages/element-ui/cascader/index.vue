@@ -1,25 +1,27 @@
 <template>
-  <el-cascader :options="dic"
-               v-model="text"
-               :placeholder="placeholder"
-               :props="allProps"
-               :size="size"
-               :clearable="disabled?false:clearable"
-               :show-all-levels="showAllLevels"
-               :filterable="filterable"
-               :separator="separator"
-               :disabled="disabled"
-               :collapse-tags="tags"
-               @focus="handleFocus"
-               @blur="handleBlur"
-               @click="handleClick">
-    <template #="{data,node}">
-      <slot v-if="$slots.default"
-            :data="data"
-            :node="node"></slot>
-      <span v-else>{{data[labelKey]}}</span>
-    </template>
-  </el-cascader>
+  <div :class="b()"
+       @click="handleClick">
+    <el-cascader :options="dic"
+                 v-model="text"
+                 :placeholder="placeholder"
+                 :props="allProps"
+                 :size="size"
+                 :clearable="disabled?false:clearable"
+                 :show-all-levels="showAllLevels"
+                 :filterable="filterable"
+                 :separator="separator"
+                 :disabled="disabled"
+                 :collapse-tags="tags"
+                 @focus="handleFocus"
+                 @blur="handleBlur">
+      <template #="{data,node}">
+        <slot v-if="$slots.default"
+              :data="data"
+              :node="node"></slot>
+        <span v-else>{{data[labelKey]}}</span>
+      </template>
+    </el-cascader>
+  </div>
 </template>
 
 <script>

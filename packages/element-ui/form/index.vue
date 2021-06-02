@@ -36,7 +36,7 @@
                   <template #label>
                     <span>
                       <slot :name="getSlotName(tabs,'H')"
-                            v-if="$slots[getSlotName(tabs,'H')]"></slot>
+                            v-if="getSlotName(tabs,'H',$slots)"></slot>
                       <template v-else>
                         <i :class="tabs.icon">&nbsp;</i>
                         {{tabs.label}}
@@ -48,7 +48,7 @@
             </el-tabs>
           </template>
           <template #header
-                    v-if="$slots[getSlotName(item,'H')]">
+                    v-if="getSlotName(item,'H',$slots)">
             <slot :name="getSlotName(item,'H')"></slot>
           </template>
           <div :class="b('group',{'flex':vaildData(item.flex,true)})"
@@ -70,7 +70,7 @@
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template #label
-                            v-if="$slots[getSlotName(column,'L')]">
+                            v-if="getSlotName(column,'L',$slots)">
                     <slot :name="getSlotName(column,'L')"
                           :column="column"
                           :value="form[column.prop]"
@@ -116,7 +116,6 @@
                           :dic="DIC[column.prop]"
                           :name="column.prop"
                           v-if="$slots[column.prop]"></slot>
-
                     <form-temp :column="column"
                                v-else
                                :ref="column.prop"
@@ -129,18 +128,12 @@
                                :size="parentOption.size"
                                v-model="form[column.prop]"
                                @enter="submit"
-                               :column-slot="getChildrenColumn(column)"
                                @change="propChange(item.column,column)">
-                      <template #[citem.prop]="scope"
-                                v-for="citem in getChildrenColumn(column)">
-                        <slot v-bind="scope"
-                              :name="citem.prop"></slot>
-                      </template>
-                      <!-- <template #[getSlotName(column,'T')]="scope"
-                                v-for="item in $slots[getSlotName(column,'T')]?[column]:[]">
-                        <slot :name="getSlotName(item,'T')"
+                      <template #="scope"
+                                v-if="getSlotName(column,'T',$slots)">
+                        <slot :name="getSlotName(column,'T')"
                               v-bind="scope"></slot>
-                      </template> -->
+                      </template>
                     </form-temp>
                   </component>
                 </el-form-item>

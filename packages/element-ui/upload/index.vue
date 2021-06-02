@@ -2,7 +2,7 @@
   <div :class="b()"
        v-loading.lock="loading">
     <el-upload :class="b({'list':listType=='picture-img','upload':disabled})"
-               @click.native="handleClick"
+               @click="handleClick"
                :action="action"
                :on-remove="handleRemove"
                :accept="acceptList"

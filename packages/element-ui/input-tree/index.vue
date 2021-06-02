@@ -7,7 +7,7 @@
              :multiple="multiple"
              :multiple-limit="limit"
              :collapse-tags="tags"
-             @click.native="initScroll"
+             @click="initScroll"
              :value="labelShow"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
@@ -43,15 +43,17 @@
                :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
                :default-expand-all="defaultExpandAll"
                @node-click.self="handleNodeClick">
-        <div style="width:100%;padding-right:10px;"
-             slot-scope="{ data }">
-          <slot v-if="$slots.default"
-                :label="labelKey"
-                :value="valueKey"
-                :item="data"></slot>
-          <span v-else
-                :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
-        </div>
+        <template #="{data}">
+          <div style="width:100%;padding-right:10px;">
+            <slot v-if="$slots.default"
+                  :label="labelKey"
+                  :value="valueKey"
+                  :item="data"></slot>
+            <span v-else
+                  :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
+          </div>
+        </template>
+
       </el-tree>
     </el-option>
   </el-select>
@@ -274,7 +276,7 @@ export default create({
       return list;
     },
     init () {
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.node = [];
         if (this.multiple) {
           let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
@@ -289,7 +291,7 @@ export default create({
             this.node.push(data);
           }
         }
-      })
+      }, 0)
       //是否禁止父类
       this.disabledParentNode(this.dic, this.parent);
     },
@@ -306,8 +308,10 @@ export default create({
     },
     clearHandle () {
       this.filterValue = '';
-      this.$refs.tree.setCurrentKey(null)
-      this.$refs.tree.setCheckedKeys([]);
+      this.$nextTick(() => {
+        this.$refs.tree.setCurrentKey(null)
+        this.$refs.tree.setCheckedKeys([]);
+      })
     },
     handleNodeClick (data, node, nodeComp) {
       if (data.disabled) return

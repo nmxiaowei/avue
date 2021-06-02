@@ -13,8 +13,8 @@ import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
-import $Group from 'packages/core/components/group/';
-let prototypes = {
+let plugins = {
+  $ImagePreview,
   $Export,
   $Print,
   $Clipboard,
@@ -36,46 +36,7 @@ let prototypes = {
 
 };
 const install = function (Vue, opts = {}) {
-  Object.keys(components).map(ele => {
-    let component = components[ele];
-    let name = component.name || '';
-    name = name.substr(name.length - 1, 1) === '-' ? (name.substr(0, name.length - 1)) + ele : name;
-    Vue.component(name, component);
-  });
-  Object.keys(prototypes).forEach((key) => {
-    Vue.config.globalProperties[key] = prototypes[key];
-  });
-  if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
-  // 国际化
-  locale.use(opts.locale);
-  locale.i18n(opts.i18n);
-  // 初始化指令
-  Vue.directive('dialogdrag', dialogDrag);
-  Vue.config.globalProperties.$axios = opts.axios || window.axios;
-  Vue.config.globalProperties.$typeList = {
-    img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
-    video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
-  };
-  Vue.component($Group.name, $Group);
-  Vue.config.globalProperties.$ImagePreview = $ImagePreview;
-  Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
-    safe = safe || this;
-    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
-    let result = {};
-    if (column.type === 'upload') {
-      list.forEach(ele => {
-        if (!column[ele]) {
-          result[ele] = safe[ele];
-        }
-      });
-    } else {
-      list.forEach(ele => {
-        result[ele] = safe[ele];
-      });
-    }
-    return result;
-  };
-  Vue.config.globalProperties.$AVUE = Object.assign(opts, {
+  const defaultOption = {
     size: opts.size || 'small',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
@@ -105,7 +66,42 @@ const install = function (Vue, opts = {}) {
       accessKeySecret: '',
       bucket: ''
     }, (opts.ali || {}))
+  }
+  Vue.config.globalProperties.$AVUE = Object.assign(opts, defaultOption);
+  components.forEach(component => {
+    Vue.component(component.name, component);
   });
+  Object.keys(plugins).forEach((key) => {
+    Vue.config.globalProperties[key] = plugins[key];
+  });
+  if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
+  // 国际化
+  locale.use(opts.locale);
+  locale.i18n(opts.i18n);
+  // 初始化指令
+  Vue.directive('dialogdrag', dialogDrag);
+  Vue.config.globalProperties.$axios = opts.axios || window.axios;
+  Vue.config.globalProperties.$typeList = {
+    img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
+    video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
+  };
+  Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
+    safe = safe || this;
+    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
+    let result = {};
+    if (column.type === 'upload') {
+      list.forEach(ele => {
+        if (!column[ele]) {
+          result[ele] = safe[ele];
+        }
+      });
+    } else {
+      list.forEach(ele => {
+        result[ele] = safe[ele];
+      });
+    }
+    return result;
+  };
 };
 export default {
   version,

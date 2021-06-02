@@ -29,11 +29,12 @@
                      :header-align="column.headerAlign || parentOption.headerAlign"
                      :label="column.label"
                      :width="column.width">
-      <template slot-scope="scope">
-        <span v-if="index === 0"
-              v-for="space in scope.row._level"
-              class="ms-tree-space"
-              :key="space"></span>
+      <template #="scope">
+        <template v-for="space in scope.row._level">
+          <span v-if="index === 0"
+                class="ms-tree-space"
+                :key="space"></span>
+        </template>
         <span class="tree-ctrl"
               v-if="iconShow(index,scope.row)"
               @click="toggleExpanded(scope.row,scope.$index)">
@@ -58,7 +59,7 @@
                      :width="isMobile?80:( tableOption.menuWidth || '200')"
                      :align="tableOption.menuAlign || 'center'"
                      :header-align="tableOption.menuheaderAlign">
-      <template slot-scope="scope">
+      <template #="scope">
         <slot name="menu"
               :row="scope.row"
               :size="isMediumSize"

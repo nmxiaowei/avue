@@ -15,7 +15,7 @@
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     @change="handleChange"
-                    @click.native="handleClick"
+                    @click="handleClick"
                     :disabled="disabled"></el-time-picker>
   </div>
 </template>

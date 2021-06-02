@@ -36,17 +36,17 @@
                @node-contextmenu="nodeContextmenu"
                :default-expand-all="defaultExpandAll"
                :default-expanded-keys="defaultExpandedKeys">
-
-        <slot slot-scope="{ node, data }"
-              :node="node"
-              v-if="$slots.default"
-              :data="data"></slot>
-
-        <span class="el-tree-node__label"
-              slot-scope="{node}"
-              v-else>
-          <span>{{node.label}}</span>
-        </span>
+        <template #="{ node, data }"
+                  v-if="$slots.default">
+          <slot :node="node"
+                :data="data"></slot>
+        </template>
+        <template #="{ node }"
+                  v-else>
+          <slot :node="node"
+                :data="data"></slot>
+          <span class="el-tree-node__label">{{node.label}}</span>
+        </template>
       </el-tree>
     </el-scrollbar>
 

@@ -11,6 +11,7 @@ import Checkbox from 'packages/element-ui/checkbox';
 import Date from 'packages/element-ui/date';
 import Draggable from 'packages/element-ui/draggable';
 import Flow from 'packages/element-ui/flow';
+import Group from 'packages/element-ui/group';
 import Notice from 'packages/element-ui/notice';
 import License from 'packages/element-ui/license';
 import Progress from 'packages/element-ui/progress';
@@ -46,8 +47,7 @@ import packages from 'core/packages';
 if (!window.ElementPlus) {
   packages.logs('element-ui');
 }
-
-export default {
+export default [
   Arrays,
   Article,
   Carousel,
@@ -62,6 +62,7 @@ export default {
   CountUp,
   Draggable,
   Flow,
+  Group,
   Notice,
   License,
   Progress,
@@ -92,4 +93,4 @@ export default {
   textEllipsis,
   Sign,
   Login
-}
+]

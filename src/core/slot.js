@@ -8,7 +8,7 @@ export default {
     setTimeout(() => this.getSlotList())
   },
   methods: {
-    getSlotName (item = {}, type = 'D') {
+    getSlotName (item = {}, type = 'D', slot) {
       let result = {
         F: 'Form',
         H: 'Header',
@@ -18,7 +18,9 @@ export default {
         T: 'Type',
         D: ''
       }
-      return item.prop + result[type]
+      let name = (item.prop + result[type]).toLowerCase()
+      if (slot) return slot[name]
+      return name
     },
     getSlotList () {
       this.slotList = {};

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import cteate from "core/create";
+import create from "core/create";
 import { vaildData } from "utils/util";
 import { validatenull } from "utils/validate";
 import locale from "../../core/common/locale";
@@ -59,7 +59,7 @@ import {
   getPlaceholder
 } from "core/dataformat";
 import config from "./config";
-export default cteate({
+export default create({
   name: "crud__search",
   inject: ["crud"],
   mixins: [locale, slot],

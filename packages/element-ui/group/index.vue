@@ -1,8 +1,9 @@
 <template>
-  <div :class="[b({'card':card,'header':!isHeader,'arrow':!arrow})]"
+  <div :class="[b({'header':!isHeader,'arrow':!arrow})]"
        v-if="display">
     <slot name="tabs"></slot>
-    <el-collapse :value="text">
+    <el-collapse @change="handleChange"
+                 v-model="activeName">
       <el-collapse-item :name="1"
                         :disabled="!arrow">
         <template #title
@@ -20,7 +21,6 @@
                 v-if="label">{{label}}</h1>
           </div>
         </template>
-
         <slot></slot>
       </el-collapse-item>
     </el-collapse>
@@ -31,6 +31,11 @@
 import create from "core/create";
 export default create({
   name: "group",
+  data () {
+    return {
+      activeName: '',
+    }
+  },
   props: {
     arrow: {
       type: Boolean,
@@ -59,6 +64,11 @@ export default create({
       type: String
     }
   },
+  watch: {
+    text (val) {
+      this.activeName = [val]
+    },
+  },
   computed: {
     text () {
       return this.collapse ? 1 : 0
@@ -66,6 +76,14 @@ export default create({
     isHeader () {
       return this.$slots.header && this.header || ((this.label || this.icon) && this.header)
     }
+  },
+  created () {
+    this.activeName = [this.text]
+  },
+  methods: {
+    handleChange (activeNames) {
+      this.$emit('change', activeNames)
+    },
   }
 });
 </script>

@@ -27,7 +27,7 @@
                            :width="item.width|| 50"
                            v-if="!['order'].includes(item.prop)"
                            :label="item.label">
-            <template slot-scope="{row}">
+            <template #="{row}">
               <el-slider :min="0"
                          :max="2000"
                          size="small"

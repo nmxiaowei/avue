@@ -7,7 +7,7 @@
                      :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
                      align="center"
                      v-if="crud.tableOption.expand">
-      <template slot-scope="{row}">
+      <template #="{row}">
         <slot :row="row"
               :index="row.$index"
               name="expand"></slot>

@@ -38,7 +38,7 @@
                          :width="column.width"
                          :fixed="crud.isMobile?false:column.fixed">
 
-          <span slot-scope="scope">
+          <template #="scope">
             <form-temp :column="column"
                        v-if="cellEditFlag(scope.row,column)"
                        size="mini"
@@ -83,7 +83,7 @@
               <span v-else
                     v-html="handleDetail(scope.row,column,crud.DIC[column.prop])">1</span>
             </template>
-          </span>
+          </template>
         </el-table-column>
       </template>
 

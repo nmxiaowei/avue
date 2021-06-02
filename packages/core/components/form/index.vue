@@ -13,19 +13,14 @@
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
              :type="type || column.type"
-             :column-slot="columnSlot"
              @keyup.enter="enterChange">
-    <span v-if="params.html"
-          v-html="params.html"></span>
     <template #="scope"
-              v-for="item in $slots[getSlotName(column,'T')]?[column]:[]">
-      <slot :name="getSlotName(item,'T')"
-            v-bind="scope"></slot>
+              v-if="$slots.default">
+      <slot v-bind="scope"></slot>
     </template>
-    <template v-for="item in columnSlot"
-              #[item.prop]="scope">
-      <slot v-bind="scope"
-            :name="item.prop"></slot>
+    <template #
+              v-else-if="params.html">
+      <span v-html="params.html"></span>
     </template>
   </component>
 </template>
@@ -44,12 +39,6 @@ export default {
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    columnSlot: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
     props: {
       type: Object
     },

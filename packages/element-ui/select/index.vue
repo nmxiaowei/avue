@@ -17,7 +17,7 @@
              :placeholder="placeholder"
              @focus="handleFocus"
              @blur="handleBlur"
-             @click.native="handleClick"
+             @click="handleClick"
              :multiple-limit="limit"
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"

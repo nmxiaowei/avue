@@ -45,7 +45,7 @@
                        :fixed="getColumnProp(column,'fixed')">
         <template #header="scope">
           <slot :name="crud.getSlotName(column,'H')"
-                v-if="crud.$slots[crud.getSlotName(column,'H')]"
+                v-if="crud.getSlotName(column,'H',crud.$slots)"
                 v-bind="Object.assign(scope,{column})"></slot>
           <el-popover placement="bottom"
                       v-else
@@ -77,7 +77,7 @@
                       '$cell':row.$cellEdit
                     }"
                   :name="crud.getSlotName(column,'F')"
-                  v-if="crud.$slots[crud.getSlotName(column,'F')]"></slot>
+                  v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
             <form-temp v-else
                        :column="column"
                        :size="crud.isMediumSize"
@@ -97,7 +97,7 @@
                 :size="crud.isMediumSize"
                 :label="handleShowLabel(row,column,crud.DIC[column.prop])"
                 :name="column.prop"
-                v-else-if="crud.$slots[column.prop]"></slot>
+                v-else-if="column.prop,crud.$slots"></slot>
           <template v-else>
             <span v-if="['img','upload'].includes(column.type)">
               <div class="avue-crud__img">
