@@ -54,10 +54,11 @@
 </body>
 <script>
 
-  new Vue({
-    el: '#app',
-
+  var app = Vue.createApp({
   })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
 </script>
 
 </html>
