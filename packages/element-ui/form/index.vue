@@ -92,8 +92,8 @@
                     <span> {{column.label}}{{labelSuffix}}</span>
                   </template>
                   <template #error="scope"
-                            v-if="$slots[`${column.prop}Error`]">
-                    <slot :name="column.prop+'Error'"
+                            v-if="getSlotName(column,'E')">
+                    <slot :name="getSlotName(column,'E')"
                           v-bind="Object.assign(scope,{
                             column,
                             value:form[column.prop],

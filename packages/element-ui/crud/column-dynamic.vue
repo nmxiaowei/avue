@@ -12,19 +12,9 @@
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.mainSlot"
-                  #[item.prop]="scope">
+                  #[item]="scope">
           <slot v-bind="scope"
-                :name="item.prop"></slot>
-        </template>
-        <template v-for="item in crud.headerSlot"
-                  #[crud.getSlotName(item,'H')]="scope">
-          <slot v-bind="scope"
-                :name="crud.getSlotName(item,'H')"></slot>
-        </template>
-        <template v-for="item in crud.mainSlot"
-                  #[crud.getSlotName(item,'F')]="scope">
-          <slot v-bind="scope"
-                :name="crud.getSlotName(item,'F')"></slot>
+                :name="item"></slot>
         </template>
       </column-dynamic>
       <el-table-column v-else-if="getColumnProp(column,'hide')"
@@ -44,9 +34,9 @@
                        :width="getColumnProp(column,'width')"
                        :fixed="getColumnProp(column,'fixed')">
         <template #header="scope">
-          <slot :name="crud.getSlotName(column,'H')"
-                v-if="crud.getSlotName(column,'H',crud.$slots)"
-                v-bind="Object.assign(scope,{column})"></slot>
+          <slot v-bind="{...column,...{$index}}"
+                :name="crud.getSlotName(column,'H')"
+                v-if="crud.getSlotName(column,'H',crud.$slots)"></slot>
           <el-popover placement="bottom"
                       v-else
                       :disabled="(crud.objectOption[column.prop] || {}).screen!==true"

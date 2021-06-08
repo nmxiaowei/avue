@@ -1,9 +1,7 @@
 <template>
-  <el-drawer :class="[b('dialog'),b('column')]"
-             lock-scroll
-             :modal-append-to-body="false"
+  <el-drawer lock-scroll
              append-to-body
-             class="avue-dialog"
+             :class="['avue-dialog',b('dialog'),b('column')]"
              :title="t('crud.showTitle')"
              :size="crud.isMobile?'100%':'50%'"
              v-model="columnBox">

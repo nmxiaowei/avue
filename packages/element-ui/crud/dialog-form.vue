@@ -1,12 +1,11 @@
 <template>
   <component :is="dialogType"
              lock-scroll
+             :class="['avue-dialog',b('dialog',{'fullscreen':fullscreen})]"
              :destroy-on-close="crud.tableOption.dialogDestroy"
-             class="avue-dialog"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :class="b('dialog',{'fullscreen':fullscreen})"
              :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
@@ -43,34 +42,14 @@
                  v-bind="$uploadFun({},crud)"
                  :option="formOption">
         <!-- 循环form表单卡槽 -->
-        <template #[item.prop]="scope"
-                  v-for="item in crud.formSlot">
-          <slot :name="item.prop"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单错误卡槽 -->
-        <template #[crud.getSlotName(item,'E')]="scope"
-                  v-for="item in crud.errorSlot">
-          <slot :name="crud.getSlotName(item,'E')"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单组件自定义卡槽 -->
-        <template #[crud.getSlotName(item,'T')]="scope"
-                  v-for="item in crud.typeSlot">
-          <slot :name="crud.getSlotName(item,'T')"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单标签卡槽 -->
-        <template #[crud.getSlotName(item,'L')]="scope"
-                  v-for="item in crud.labelSlot">
-          <slot :name="crud.getSlotName(item,'L')"
-                v-bind="scope"></slot>
+        <template v-for="item in crud.formSlot"
+                  #[getSlotName(item)]="scope">
+          <slot v-bind="scope"
+                :name="item"></slot>
         </template>
         <template #menuForm="scope">
           <slot name="menuForm"
-                v-bind="Object.assign(scope,{
-                    type:boxType
-                  }) "></slot>
+                v-bind="{...scope,...{type:boxType}}"></slot>
         </template>
       </avue-form>
     </el-scrollbar>
@@ -200,6 +179,9 @@ export default create({
     }
   },
   methods: {
+    getSlotName (item) {
+      return item.replace('form', '')
+    },
     handleChange () {
       this.crud.$emit('update:modelValue', this.crud.tableForm)
       this.crud.$emit('change', this.crud.tableForm)
@@ -297,7 +279,7 @@ export default create({
       const callback = () => {
         done && done();
         Object.keys(this.crud.tableForm).forEach(ele => {
-          this.$delete(this.crud.tableForm, ele);
+          delete this.crud.tableForm[ele];
         })
         this.crud.tableIndex = -1;
         this.boxVisible = false;

@@ -55,45 +55,29 @@
                  style="display:inline-block;margin-right:20px;"
                  v-if="vaildData(crud.tableOption.dateBtn,config.dateBtn)"
                  :size="crud.isMediumSize"></avue-date>
-      <el-tooltip effect="dark"
-                  :content="t('crud.refreshBtn')"
-                  placement="top">
-        <el-button :icon="config.refreshBtnIcon"
-                   circle
-                   :size="crud.isMediumSize"
-                   @click="crud.refreshChange"
-                   v-permission="crud.getPermission('refreshBtn')"
-                   v-if="vaildData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
-      </el-tooltip>
-      <el-tooltip effect="dark"
-                  :content="t('crud.showBtn')"
-                  placement="top">
-        <el-button :icon="config.columnBtnIcon"
-                   circle
-                   :size="crud.isMediumSize"
-                   @click="crud.$refs.dialogColumn.columnBox=true"
-                   v-permission="crud.getPermission('columnBtn')"
-                   v-if="vaildData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
-      </el-tooltip>
-      <el-tooltip effect="dark"
-                  :content="t('crud.searchBtn')"
-                  placement="top">
-        <el-button :icon="config.searchBtnIcon"
-                   circle
-                   :size="crud.isMediumSize"
-                   @click="crud.$refs.headerSearch.handleSearchShow()"
-                   v-if="(crud.$refs.headerSearch || {}).searchFlag&&vaildData(crud.tableOption.searchShowBtn,true)"></el-button>
-      </el-tooltip>
-      <el-tooltip effect="dark"
-                  :content="t('crud.filterBtn')"
-                  placement="top">
-        <el-button :icon="config.filterBtnIcon"
-                   circle
-                   :size="crud.isMediumSize"
-                   @click="crud.$refs.dialogFilter.box=true"
-                   v-permission="crud.getPermission('filterBtn')"
-                   v-if="vaildData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
-      </el-tooltip>
+      <el-button :icon="config.refreshBtnIcon"
+                 circle
+                 :size="crud.isMediumSize"
+                 @click="crud.refreshChange"
+                 v-permission="crud.getPermission('refreshBtn')"
+                 v-if="vaildData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
+      <el-button :icon="config.columnBtnIcon"
+                 circle
+                 :size="crud.isMediumSize"
+                 @click="crud.$refs.dialogColumn.columnBox=true"
+                 v-permission="crud.getPermission('columnBtn')"
+                 v-if="vaildData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
+      <el-button :icon="config.searchBtnIcon"
+                 circle
+                 :size="crud.isMediumSize"
+                 @click="crud.$refs.headerSearch.handleSearchShow()"
+                 v-if="(crud.$refs.headerSearch || {}).searchFlag&&vaildData(crud.tableOption.searchShowBtn,true)"></el-button>
+      <el-button :icon="config.filterBtnIcon"
+                 circle
+                 :size="crud.isMediumSize"
+                 @click="crud.$refs.dialogFilter.box=true"
+                 v-permission="crud.getPermission('filterBtn')"
+                 v-if="vaildData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
     </div>
   </div>
 </template>

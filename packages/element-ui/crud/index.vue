@@ -15,9 +15,9 @@
               v-bind="scope"></slot>
       </template>
       <template v-for="item in searchSlot"
-                #[item.prop]="scope">
+                #[item]="scope">
         <slot v-bind="scope"
-              :name="getSlotName(item,'S')"></slot>
+              :name="item"></slot>
       </template>
     </header-search>
     <el-card :shadow="isCard">
@@ -104,14 +104,13 @@
             <div :class="b('empty')">
               <slot name="empty"
                     v-if="$slots.empty"></slot>
-              <avue-empty v-else
-                          size="50"
-                          image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                          :desc="tableOption.emptyText || '暂无数据'"></avue-empty>
+              <el-empty :image-size="100"
+                        v-else
+                        :description="tableOption.emptyText || '暂无数据'"></el-empty>
             </div>
           </template>
           <column :columnOption="columnOption">
-            <template #header>
+            <template #$header>
               <column-default ref="columnDefault">
                 <template #expand="{row,index}">
                   <slot :row="row"
@@ -120,23 +119,12 @@
                 </template>
               </column-default>
             </template>
-
             <template v-for="item in mainSlot"
-                      #[item.prop]="scope">
+                      #[item]="scope">
               <slot v-bind="scope"
-                    :name="item.prop"></slot>
+                    :name="item"></slot>
             </template>
-            <template v-for="item in headerSlot"
-                      #[getSlotName(item,'H')]="scope">
-              <slot v-bind="scope"
-                    :name="getSlotName(item,'H')"></slot>
-            </template>
-            <template v-for="item in formSlot"
-                      #[getSlotName(item,'F')]="scope">
-              <slot v-bind="scope"
-                    :name="getSlotName(item,'F')"></slot>
-            </template>
-            <template #footer>
+            <template #$footer>
               <column-menu>
                 <template #menu="scope">
                   <slot name="menu"
@@ -163,36 +151,9 @@
     <!-- 表单 -->
     <dialog-form ref="dialogForm">
       <template v-for="item in formSlot"
-                #[item.prop]="scope">
-        <slot v-bind="Object.assign(scope,{
-              row:item.dynamic?scope.row:tableForm,
-              index:item.dynamic?scope.row.$index:tableIndex
-              })"
-              :name="getSlotName(item,'F')"></slot>
-      </template>
-      <template #[getSlotName(item,'L')]="scope"
-                v-for="item in labelSlot">
-        <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
-              })"
-              :name="getSlotName(item,'L')"></slot>
-      </template>
-      <template #[getSlotName(item,'E')]="scope"
-                v-for="item in errorSlot">
-        <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
-              })"
-              :name="getSlotName(item,'E')"></slot>
-      </template>
-      <template #[getSlotName(item,'T')]="scope"
-                v-for="item in typeSlot">
-        <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
-              })"
-              :name="getSlotName(item,'T')"></slot>
+                #[item]="scope">
+        <slot v-bind="scope"
+              :name="item"></slot>
       </template>
       <template #menuForm>
         <slot name="menuForm"
@@ -202,9 +163,7 @@
     <!-- 动态列 -->
     <dialog-column ref="dialogColumn"></dialog-column>
     <!-- 过滤器 -->
-    <keep-alive>
-      <dialog-filter ref="dialogFilter"></dialog-filter>
-    </keep-alive>
+    <dialog-filter ref="dialogFilter"></dialog-filter>
   </div>
 </template>
 <script>
@@ -308,25 +267,17 @@ export default create({
       }
     },
     formSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Form`])
-    },
-    errorSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Error`])
-    },
-    labelSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Label`])
-    },
-    typeSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Type`])
+      return Object.keys(this.$slots).filter(ele => ele.includes('error') || ele.includes('label') || ele.includes('type') || ele.includes('form'))
     },
     searchSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Search`])
-    },
-    headerSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[`${ele.prop}Header`])
+      return Object.keys(this.$slots).filter(ele => ele.includes('search'))
     },
     mainSlot () {
-      return this.columnFormOption.filter(ele => this.$slots[ele.prop])
+      let result = [];
+      this.columnFormOption.forEach(item => {
+        if (this.$slots[item.prop]) result.push(item.prop)
+      })
+      return Object.keys(this.$slots).filter(ele => ele.includes('header') || ele.includes('form')).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
@@ -528,7 +479,7 @@ export default create({
       this.$nextTick(() => {
         this.reload = true;
         //是否开启表格排序
-        setTimeout(() => this.$refs.columnDefault.setSort())
+        // setTimeout(() => this.$refs.columnDefault.setSort())
         callback && callback()
       })
     },
@@ -725,7 +676,7 @@ export default create({
         ))
       this.list.push(row);
       this.formIndexList.push(len);
-      setTimeout(() => this.$refs.columnDefault.setSort())
+      // setTimeout(() => this.$refs.columnDefault.setSort())
     },
     //行取消
     rowCancel (row, index) {

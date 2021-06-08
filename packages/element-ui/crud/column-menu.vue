@@ -82,7 +82,7 @@
         <el-button :type="menuText('success')"
                    :icon="config.viewBtnIcon"
                    :size="crud.isMediumSize"
-                   :disabled="btnDisabled"
+                   :disabled="crud.btnDisabled"
                    @click.stop="crud.rowView(row,$index)"
                    v-permission="crud.getPermission('viewBtn',row,$index)"
                    v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)">
@@ -93,7 +93,7 @@
         <el-button :type="menuText('primary')"
                    :icon="config.editBtnIcon"
                    :size="crud.isMediumSize"
-                   :disabled="btnDisabled"
+                   :disabled="crud.btnDisabled"
                    @click.stop="crud.rowEdit(row,$index)"
                    v-permission="crud.getPermission('editBtn',row,$index)"
                    v-if="vaildData(crud.tableOption.editBtn,config.editBtn)&&!crud.tableOption.cellBtn">
@@ -104,7 +104,7 @@
         <el-button :type="menuText('primary')"
                    :icon="config.copyBtnIcon"
                    :size="crud.isMediumSize"
-                   :disabled="btnDisabled"
+                   :disabled="crud.btnDisabled"
                    @click.stop="crud.rowCopy(row)"
                    v-permission="crud.getPermission('copyBtn',row,$index)"
                    v-if="vaildData(crud.tableOption.copyBtn,config.copyBtn)">
@@ -115,7 +115,7 @@
         <el-button :type="menuText('danger')"
                    :icon="config.delBtnIcon"
                    :size="crud.isMediumSize"
-                   :disabled="btnDisabled"
+                   :disabled="crud.btnDisabled"
                    @click.stop="crud.rowDel(row,$index)"
                    v-permission="crud.getPermission('delBtn',row,$index)"
                    v-if="vaildData(crud.tableOption.delBtn,config.delBtn) && !row.$cellEdit">

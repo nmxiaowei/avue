@@ -28,12 +28,9 @@
 
         </template>
         <template v-for="item in crud.searchSlot"
-                  #[item.prop]="scope">
-          <slot :name="item.prop"
-                v-bind="Object.assign(scope,{
-                  search:searchForm,
-                  row:searchForm
-                })"></slot>
+                  #[getSlotName(item)]="scope">
+          <slot v-bind="scope"
+                :name="item"></slot>
         </template>
         <template #search="{}">
           <slot name="search"
@@ -213,6 +210,9 @@ export default create({
   methods: {
     initFun () {
       ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
+    },
+    getSlotName (item) {
+      return item.replace('search', '')
     },
     handleChange () {
       this.crud.$emit('update:search', this.searchForm)
