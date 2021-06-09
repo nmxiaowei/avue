@@ -7,7 +7,7 @@
              :direction="direction"
              v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog',{'fullscreen':fullscreen})"
-             :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
+             :custom-class="crud.tableOption.dialogCustomClass"
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
