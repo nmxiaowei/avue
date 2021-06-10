@@ -32,7 +32,10 @@ export default create({
     return {};
   },
   props: {
-    editable: Boolean,
+    editable: {
+      type: Boolean,
+      default: true
+    },
     startPlaceholder: {
       type: String,
       default: "开始时间"
