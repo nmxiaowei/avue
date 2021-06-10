@@ -626,7 +626,6 @@ export default create({
       let column = this.propOption;
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
-      this.refreshTable()
       this.propOption.forEach((ele, index) => {
         this.objectOption[ele.prop].order = index;
       })

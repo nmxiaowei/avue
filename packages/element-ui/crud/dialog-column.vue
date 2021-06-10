@@ -5,6 +5,7 @@
              append-to-body
              class="avue-dialog"
              :title="t('crud.showTitle')"
+             @opened="rowDrop"
              :size="crud.isMobile?'100%':'50%'"
              :visible.sync="columnBox">
     <el-scrollbar style="height:calc(100% - 100px)">
@@ -68,12 +69,6 @@ export default create({
       }
       list = list.filter(item => !this.validatenull(item.order)).sort((a, b) => (a.order || 0) - (b.order || 0)).concat(list.filter(item => this.validatenull(item.order)))
       return list;
-    }
-  },
-  watch: {
-    columnBox (val) {
-      if (!val) return
-      this.$nextTick(() => this.rowDrop())
     }
   },
   methods: {

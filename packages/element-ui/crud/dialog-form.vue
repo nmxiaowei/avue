@@ -20,7 +20,8 @@
              :visible.sync="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
-             :before-close="hide">
+             :before-close="hide"
+             @opened="handleOpened">
     <div slot="title"
          :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -105,15 +106,6 @@ export default create({
       type: Object,
       default: () => {
         return {};
-      }
-    }
-  },
-  watch: {
-    boxVisible (val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.initFun()
-        })
       }
     }
   },
@@ -203,6 +195,9 @@ export default create({
     }
   },
   methods: {
+    handleOpened () {
+      this.$nextTick(() => this.initFun())
+    },
     handleChange () {
       this.crud.$emit('input', this.crud.tableForm)
       this.crud.$emit('change', this.crud.tableForm)
