@@ -1,7 +1,9 @@
 <template>
   <div :class="b()"
        v-if="isShow">
-    <div :class="b('mask')"></div>
+    <div :class="b('mask')"
+         v-if="ops.modal"
+         @click="close"></div>
     <span class="el-image-viewer__btn el-image-viewer__close"
           @click="close">
       <i class="el-icon-circle-close"></i>
@@ -30,6 +32,7 @@
                  indicator-position="none"
                  :height="height">
         <component :is="carouselItemName"
+                   @click.native.self="ops.closeOnClickModal?close():''"
                    v-for="(item,indexs) in datas"
                    :key="indexs">
           <img :src="item.url"

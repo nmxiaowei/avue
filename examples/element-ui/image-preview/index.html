@@ -52,7 +52,9 @@
     },
     methods: {
       openPreview(index = 0) {
-        this.$ImagePreview(this.datas, index);
+        this.$ImagePreview(this.datas, index, {
+          closeOnClickModal: true
+        });
       }
     }
   })
