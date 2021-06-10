@@ -7,12 +7,12 @@
       <i class="el-icon-circle-close"></i>
     </span>
     <span class="el-image-viewer__btn el-image-viewer__prev"
-          @click="$refs.carousel.prev()"
+          @click="handlePrev()"
           v-if="isRrrow">
       <i class="el-icon-arrow-left"></i>
     </span>
     <span class="el-image-viewer__btn el-image-viewer__next"
-          @click="$refs.carousel.next()"
+          @click="handleNext()"
           v-if="isRrrow">
       <i class="el-icon-arrow-right"></i>
     </span>
@@ -30,10 +30,11 @@
                  indicator-position="none"
                  :height="height">
         <component :is="carouselItemName"
-                   v-for="(item,index) in datas"
-                   :key="index">
+                   v-for="(item,indexs) in datas"
+                   :key="indexs">
           <img :src="item.url"
                :style="styleName"
+               ref="item"
                @mousedown="move"
                controls="controls"
                v-bind="getIsVideo(item)"
@@ -107,6 +108,21 @@ export default create({
     }
   },
   methods: {
+    handlePrev () {
+      this.$refs.carousel.prev()
+      this.index = this.$refs.carousel.activeIndex
+      this.stopItem()
+    },
+    handleNext () {
+      this.$refs.carousel.next()
+      this.index = this.$refs.carousel.activeIndex
+      this.stopItem()
+    },
+    stopItem () {
+      this.$refs.item.forEach(ele => {
+        ele.pause && ele.pause()
+      })
+    },
     getIsVideo (item) {
       if (this.$typeList.video.test(item.url) || item.type == 'video') {
         return { is: 'video' }
