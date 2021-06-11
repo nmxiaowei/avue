@@ -109,6 +109,21 @@ export default create({
     this.initFun();
   },
   computed: {
+    isGroup () {
+      return !this.validatenull(this.crud.tableOption.group);
+    },
+    propOption () {
+      let list = [];
+      let groupList = this.crud.tableOption.group;
+      if (groupList) {
+        groupList.forEach(ele => {
+          (ele.column || []).forEach(column => {
+            list.push(column);
+          });
+        });
+      }
+      return [...list, ...this.crud.columnOption]
+    },
     isSearchIcon () {
       return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
     },
@@ -174,7 +189,7 @@ export default create({
         if (result.group) {
           delete result.group;
         }
-        result.column = detailColumn(this.deepClone(this.crud.columnFormOption))
+        result.column = detailColumn(this.deepClone(this.propOption))
         result = Object.assign(result, {
           tabs: false,
           enter: this.vaildData(option.searchEnter, true),

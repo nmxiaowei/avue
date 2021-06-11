@@ -22,6 +22,11 @@
               v-else-if="params.html">
       <span v-html="params.html"></span>
     </template>
+    <template v-for="item in columnSlot"
+              #[item]="scope">
+      <slot v-bind="scope"
+            :name="item"></slot>
+    </template>
   </component>
 </template>
 
@@ -39,6 +44,12 @@ export default {
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    columnSlot: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     props: {
       type: Object
     },

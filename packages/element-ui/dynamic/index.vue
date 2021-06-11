@@ -31,12 +31,12 @@
             <template #_index="{}">
               <span>{{item.$index+1}}</span>
             </template>
-            <template v-for="column in columnSlot"
-                      #[column.prop]="scope">
+            <template v-for="item in columnSlot"
+                      #[item]="scope">
               <slot v-bind="Object.assign(scope,{
                   row:text[index]
                 })"
-                    :name="column.prop"></slot>
+                    :name="item"></slot>
             </template>
           </avue-form>
         </div>
@@ -62,9 +62,9 @@
         <div v-else>{{scope.row.$index+1}}</div>
       </template>
       <template v-for="item in columnSlot"
-                #[getSlotName(item,'F')]="scope">
+                #[getSlotName({prop:item},'F')]="scope">
         <slot v-bind="scope"
-              :name="item.prop"></slot>
+              :name="item"></slot>
       </template>
     </avue-crud>
   </div>

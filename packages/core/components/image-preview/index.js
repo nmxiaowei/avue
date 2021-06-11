@@ -9,7 +9,11 @@ const ImagePreview = function () {
     let id = 'imagePreview_' + seed++;
     let options = {
       datas: datas,
-      index: index
+      index: index,
+      ops: Object.assign({
+        closeOnClickModal: false,
+        modal: true
+      }, ops)
     }
     let userOnClose = options.onClose;
     instance = new MessageConstructor({

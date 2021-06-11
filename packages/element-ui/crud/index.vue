@@ -209,7 +209,6 @@ export default create({
   data () {
     return {
       reload: true,
-      isChild: false,
       config: config,
       list: [],
       tableForm: {},
@@ -267,42 +266,32 @@ export default create({
       }
     },
     formSlot () {
-      return Object.keys(this.$slots).filter(ele => ele.includes('error') || ele.includes('label') || ele.includes('type') || ele.includes('form'))
+      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$slots)
     },
     searchSlot () {
-      return Object.keys(this.$slots).filter(ele => ele.includes('search'))
+      return this.getSlotList(['Search'], this.$slots)
     },
     mainSlot () {
       let result = [];
-      this.columnFormOption.forEach(item => {
+      this.propOption.forEach(item => {
         if (this.$slots[item.prop]) result.push(item.prop)
       })
-      return Object.keys(this.$slots).filter(ele => ele.includes('header') || ele.includes('form')).concat(result)
+      return this.getSlotList(['Header', 'Form'], $slots).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
     },
     propOption () {
       let result = [];
-      const safe = this;
       function findProp (list) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          if (ele.prop || !ele.children) {
-            result.push(ele);
-          }
-          if (ele.children) {
-            safe.isChild = true;
-            findProp(ele.children);
-          }
+          result.push(ele);
+          if (ele.children) findProp(ele.children);
         });
       }
       findProp(this.columnOption);
-      if (this.isChild) {
-        result = calcCascader(result);
-      } else {
-        result = calcCascader(this.columnOption);
-      }
+      result = calcCascader(result);
       return result;
     },
     isTree () {
@@ -316,40 +305,6 @@ export default create({
     },
     isCard () {
       return this.option.card ? 'always' : 'never'
-    },
-    isGroup () {
-      return !this.validatenull(this.tableOption.group);
-    },
-    groupOption () {
-      return this.parentOption.group;
-    },
-    dynamicOption () {
-      let list = [];
-      this.propOption.forEach(ele => {
-        if (ele.type === 'dynamic') {
-          list = list.concat(ele.children.column.map(item => {
-            return Object.assign(item, {
-              dynamic: true
-            })
-          }));
-        }
-      })
-      return list;
-    },
-    columnFormOption () {
-      let list = [];
-      this.propOption.forEach(column => {
-        list.push(column);
-      });
-      if (this.isGroup) {
-        this.groupOption.forEach(ele => {
-          if (!ele.column) return;
-          ele.column.forEach(column => {
-            list.push(column);
-          });
-        });
-      }
-      return list.concat(this.dynamicOption);
     },
     expandLevel () {
       return this.parentOption.expandLevel || 0;
@@ -565,7 +520,6 @@ export default create({
       let column = this.propOption;
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
-      this.refreshTable()
       this.propOption.forEach((ele, index) => {
         this.objectOption[ele.prop].order = index;
       })

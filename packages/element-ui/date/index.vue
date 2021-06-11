@@ -39,7 +39,10 @@ export default create({
     };
   },
   props: {
-    editable: Boolean,
+    editable: {
+      type: Boolean,
+      default: true
+    },
     unlinkPanels: {
       type: Boolean,
       default: false

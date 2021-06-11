@@ -6,7 +6,7 @@
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
+             :custom-class="crud.tableOption.dialogCustomClass"
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
@@ -19,7 +19,8 @@
              v-model="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
-             :before-close="hide">
+             :before-close="hide"
+             @opened="handleOpened">
     <template #title>
       <div :class="b('dialog__header')">
         <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -81,15 +82,6 @@ export default create({
       type: Object,
       default: () => {
         return {};
-      }
-    }
-  },
-  watch: {
-    boxVisible (val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.initFun()
-        })
       }
     }
   },
@@ -179,6 +171,9 @@ export default create({
     }
   },
   methods: {
+    handleOpened () {
+      this.$nextTick(() => this.initFun())
+    },
     getSlotName (item) {
       return item.replace('form', '')
     },

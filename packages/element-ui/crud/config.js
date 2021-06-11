@@ -76,7 +76,6 @@ export default {
   dialogWidth: '60%',
   dialogDrag: false,
   formFullscreen: false,
-  customClass: '',
   pageBackground: true,
   simplePage: false,
   page: true,

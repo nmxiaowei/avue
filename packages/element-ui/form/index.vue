@@ -36,6 +36,7 @@
                   <template #label>
                     <span>
                       <slot :name="getSlotName(tabs,'H')"
+                            :column="tabs"
                             v-if="getSlotName(tabs,'H',$slots)"></slot>
                       <template v-else>
                         <i :class="tabs.icon">&nbsp;</i>
@@ -48,6 +49,7 @@
             </el-tabs>
           </template>
           <template #header
+                    :column="item"
                     v-if="getSlotName(item,'H',$slots)">
             <slot :name="getSlotName(item,'H')"></slot>
           </template>
@@ -128,11 +130,17 @@
                                :size="parentOption.size"
                                v-model="form[column.prop]"
                                @enter="submit"
+                               :column-slot="columnSlot"
                                @change="propChange(item.column,column)">
                       <template #="scope"
                                 v-if="getSlotName(column,'T',$slots)">
                         <slot :name="getSlotName(column,'T')"
                               v-bind="scope"></slot>
+                      </template>
+                      <template v-for="item in columnSlot"
+                                #[item]="scope">
+                        <slot v-bind="scope"
+                              :name="item"></slot>
                       </template>
                     </form-temp>
                   </component>
@@ -229,6 +237,9 @@ export default create({
     }
   },
   computed: {
+    columnSlot () {
+      return Object.keys(this.$slots).filter(item => !this.propOption.map(ele => ele.prop).includes(item))
+    },
     labelSuffix () {
       return this.parentOption.labelSuffix || ':'
     },
@@ -370,9 +381,6 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
-    getChildrenColumn (column) {
-      return ((column.children || {}).column || []).filter(ele => this.$slots[ele.prop])
-    },
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
