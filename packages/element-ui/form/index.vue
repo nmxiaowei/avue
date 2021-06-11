@@ -359,6 +359,10 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    reset: {
+      type: Boolean,
+      default: true
+    },
     isCrud: {
       type: Boolean,
       default: false
