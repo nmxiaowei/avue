@@ -17,15 +17,16 @@ export default {
     prop: 'sortable'
   }, {
     label: '顺序',
-    prop: 'order'
+    prop: 'order',
+    hide: true
   }, {
     label: '宽度',
     prop: 'width',
-    width: 'auto'
+    hide: true
   }],
   clientHeight: document.documentElement.clientHeight,
   // 尺寸
-  menuWidth: 240,
+  menuWidth: 220,
   menuFixed: 'right',
   menuXsWidth: 100,
   menuAlign: 'center',

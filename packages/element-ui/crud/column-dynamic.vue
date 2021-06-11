@@ -1,12 +1,20 @@
 
 <template>
-  <el-table-column :label="columnOption.label"
+  <el-table-column :prop="columnOption.prop"
+                   :label="columnOption.label"
+                   filter-placement="bottom-end"
+                   v-if="getColumnProp(columnOption,'hide')"
+                   :filters="getColumnProp(columnOption,'filters')"
+                   :filter-method="getColumnProp(columnOption,'filterMethod')?handleFiltersMethod:undefined"
+                   :filter-multiple="vaildData(columnOption.filterMultiple,true)"
+                   :show-overflow-tooltip="columnOption.overHidden"
                    :min-width="columnOption.minWidth"
-                   :width="columnOption.width"
+                   :sortable="getColumnProp(columnOption,'sortable')"
                    :render-header="columnOption.renderHeader"
                    :align="columnOption.align || crud.tableOption.align"
                    :header-align="columnOption.headerAlign || crud.tableOption.headerAlign"
-                   :prop="columnOption.prop">
+                   :width="getColumnProp(columnOption,'width')"
+                   :fixed="getColumnProp(columnOption,'fixed')">
     <template v-for="column in columnOption.children">
       <column-dynamic v-if="column.children && column.children.length>0"
                       :key="column.label"
