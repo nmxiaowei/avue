@@ -79,10 +79,6 @@ export default create({
     };
   },
   props: {
-    reset: {
-      type: Boolean,
-      default: true
-    },
     value: {
       type: Object,
       default: () => {
