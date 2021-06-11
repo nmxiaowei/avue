@@ -21,19 +21,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" v-model="form" :before-close="beforeClose" :option="option" :data="data">
-      <el-tag #name="{row}">
-        {{row}}
-      </el-tag>
-      <el-tag #nameHeader="{column}">
-        {{column}}
-      </el-tag>
-      <el-tag #nameSearch="{column}">
-        123
-      </el-tag>
-      <el-tag #nameForm="{column}">
-        456
-      </el-tag>
+    {{form}}
+    <avue-crud :data="data" v-model="form" :before-open="beforeOpen" :before-close="beforeClose" :option="option">
     </avue-crud>
   </div>
 </body>
@@ -45,40 +34,50 @@
         data: [{
           name: '张三',
           sex: '男'
-        },
-        {
-          name: '李四',
-          sex: '女'
         }],
         option: {
-          index: true,
-          height: 'auto',
           align: 'center',
           menuAlign: 'center',
-          border: true,
-          column: [{
-            label: '姓名',
-            prop: 'name',
-            search: true,
-            rules: [
-              {
-                required: true,
-                message: '请选择地区',
-                trigger: 'blur'
-              }
-            ]
-          }, {
-            label: '年龄',
-            prop: 'sex',
-            search: true
-          }]
-        }
-      }
+          viewBtn: true,
+          column: [
+            {
+              label: '姓名',
+              prop: 'name'
+            }, {
+              label: '性别',
+              prop: 'sex'
+            }
+          ]
+        },
+      };
     },
     methods: {
       beforeClose(done, type) {
-        done();
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => { });
+
       },
+      beforeOpen(done, type) {
+        this.$alert(`我是${type}`, {
+          confirmButtonText: '确定',
+          callback: action => {
+            if (['view', 'edit'].includes(type)) {
+              // 查看和编辑逻辑
+            } else {
+              //新增逻辑
+              //一定要用setTimeout包裹，由于form组件底层一些机制的设计
+              setTimeout(() => {
+                this.form.name = '初始化赋值'
+              }, 0)
+            }
+            done();
+          }
+        });
+
+      }
     }
   })
   app.use(ElementPlus)
