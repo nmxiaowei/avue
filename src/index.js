@@ -1,4 +1,5 @@
 import components from 'ui/index';
+import { version } from './version'
 import config from 'ui/config';
 import { validatenull } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
@@ -120,7 +121,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = Object.assign({
-  version: '2.8.12',
+  version: '2.8.13',
   locale: locale.locale,
   $Echart,
   install

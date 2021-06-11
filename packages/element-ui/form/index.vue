@@ -639,7 +639,7 @@ export default create({
     resetForm () {
       if (this.reset) {
         this.clearVal();
-        this.clearValidate();
+        this.$nextTick(() => this.clearValidate())
       }
       this.$emit("reset-change");
     },
