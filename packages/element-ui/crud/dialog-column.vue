@@ -4,12 +4,12 @@
              :class="['avue-dialog',b('dialog'),b('column')]"
              :title="t('crud.showTitle')"
              @opened="rowDrop"
-             :size="crud.isMobile?'100%':'50%'"
-             v-model="columnBox">
-    <el-scrollbar style="height:calc(100% - 100px)">
+             :size="crud.isMobile?'100%':'40%'"
+             :visible.sync="columnBox">
+    <div style="height:calc(100% - 5px)">
       <el-table :data="list"
                 ref="table"
-                :key="Math.random()"
+                height="100%"
                 size="small"
                 border>
         <el-table-column align="center"
@@ -23,10 +23,11 @@
                            :key="index"
                            align="center"
                            header-align="center"
-                           :width="item.width|| 50"
-                           v-if="!['order'].includes(item.prop)"
+                           v-if="item.hide!=true"
                            :label="item.label">
-            <template #="{row}">
+            <<<<<<< HEAD
+                    <template
+                    #="{row}">
               <el-slider :min="0"
                          :max="2000"
                          size="small"
@@ -34,12 +35,16 @@
                          v-model="crud.objectOption[row.prop][item.prop]"></el-slider>
               <el-checkbox v-else
                            v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-            </template>
+              =======
+              <template slot-scope="{row}">
+                <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+                >>>>>>> 0a461a6f... fix:crud header column params
+              </template>
           </el-table-column>
         </template>
 
       </el-table>
-    </el-scrollbar>
+    </div>
   </el-drawer>
 </template>
 <script>
