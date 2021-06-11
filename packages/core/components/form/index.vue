@@ -18,15 +18,15 @@
     <span v-if="params.html"
           v-html="params.html"></span>
     <template slot-scope="scope"
-              v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+              v-for="item in getSlotName(column,'T',$scopedSlots)?[column]:[]">
       <slot :name="getSlotName(item,'T')"
             v-bind="scope"></slot>
     </template>
-    <template :slot="item.prop"
-              v-for="item in columnSlot"
-              slot-scope="scope">
+    <template v-for="item in columnSlot"
+              slot-scope="scope"
+              :slot="item">
       <slot v-bind="scope"
-            :name="item.prop"></slot>
+            :name="item"></slot>
     </template>
   </component>
 </template>

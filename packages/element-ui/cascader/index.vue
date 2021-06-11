@@ -44,7 +44,7 @@ export default create({
       default: false
     },
     value: {
-      type: Array,
+      type: [Array, String],
       default: () => []
     },
     changeOnSelect: {

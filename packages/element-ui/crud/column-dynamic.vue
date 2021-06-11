@@ -1,33 +1,29 @@
 
 <template>
-  <el-table-column :label="columnOption.label"
+  <el-table-column :prop="columnOption.prop"
+                   :label="columnOption.label"
+                   filter-placement="bottom-end"
+                   v-if="getColumnProp(columnOption,'hide')"
+                   :filters="getColumnProp(columnOption,'filters')"
+                   :filter-method="getColumnProp(columnOption,'filterMethod')?handleFiltersMethod:undefined"
+                   :filter-multiple="vaildData(columnOption.filterMultiple,true)"
+                   :show-overflow-tooltip="columnOption.overHidden"
                    :min-width="columnOption.minWidth"
-                   :width="columnOption.width"
+                   :sortable="getColumnProp(columnOption,'sortable')"
                    :render-header="columnOption.renderHeader"
                    :align="columnOption.align || crud.tableOption.align"
                    :header-align="columnOption.headerAlign || crud.tableOption.headerAlign"
-                   :prop="columnOption.prop">
+                   :width="getColumnProp(columnOption,'width')"
+                   :fixed="getColumnProp(columnOption,'fixed')">
     <template v-for="column in columnOption.children">
       <column-dynamic v-if="column.children && column.children.length>0"
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.mainSlot"
                   slot-scope="scope"
-                  :slot="item.prop">
+                  :slot="item">
           <slot v-bind="scope"
-                :name="item.prop"></slot>
-        </template>
-        <template v-for="item in crud.headerSlot"
-                  slot-scope="scope"
-                  :slot="crud.getSlotName(item,'H')">
-          <slot v-bind="scope"
-                :name="crud.getSlotName(item,'H')"></slot>
-        </template>
-        <template v-for="item in crud.mainSlot"
-                  slot-scope="scope"
-                  :slot="crud.getSlotName(item,'F')">
-          <slot v-bind="scope"
-                :name="crud.getSlotName(item,'F')"></slot>
+                :name="item"></slot>
         </template>
       </column-dynamic>
       <el-table-column v-else-if="getColumnProp(column,'hide')"
@@ -47,10 +43,10 @@
                        :width="getColumnProp(column,'width')"
                        :fixed="getColumnProp(column,'fixed')">
         <template slot="header"
-                  slot-scope="scope">
+                  slot-scope="{$index}">
           <slot :name="crud.getSlotName(column,'H')"
-                v-if="crud.$scopedSlots[crud.getSlotName(column,'H')]"
-                v-bind="Object.assign(scope,{column})"></slot>
+                v-if="crud.getSlotName(column,'H',crud.$scopedSlots)"
+                v-bind="{column,$index}"></slot>
           <el-popover placement="bottom"
                       v-else
                       :disabled="(crud.objectOption[column.prop] || {}).screen!==true"
@@ -78,7 +74,7 @@
                       '$cell':row.$cellEdit
                     }"
                   :name="crud.getSlotName(column,'F')"
-                  v-if="crud.$scopedSlots[crud.getSlotName(column,'F')]"></slot>
+                  v-if="crud.getSlotName(column,'F',crud.$scopedSlots)"></slot>
             <form-temp v-else
                        :column="column"
                        :size="crud.isMediumSize"

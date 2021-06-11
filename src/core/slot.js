@@ -1,14 +1,6 @@
 export default {
-  data () {
-    return {
-      slotList: {},
-    }
-  },
-  mounted () {
-    setTimeout(() => this.getSlotList())
-  },
   methods: {
-    getSlotName (item = {}, type = 'D') {
+    getSlotName (item = {}, type = 'D', slot) {
       let result = {
         F: 'Form',
         H: 'Header',
@@ -18,12 +10,17 @@ export default {
         T: 'Type',
         D: ''
       }
-      return item.prop + result[type]
+      let name = item.prop + result[type]
+      if (slot) return slot[name]
+      return name
     },
-    getSlotList () {
-      this.slotList = {};
-      Object.keys(this.$scopedSlots).forEach(ele => {
-        this.$set(this.slotList, ele, true);
+    getSlotList (list = [], slot) {
+      return Object.keys(slot).filter(ele => {
+        let result = false;
+        list.forEach(name => {
+          if (ele.includes(name)) result = true;
+        })
+        return result;
       })
     }
   }

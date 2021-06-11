@@ -35,7 +35,8 @@
                            :name="index+''">
                 <span slot="label">
                   <slot :name="getSlotName(tabs,'H')"
-                        v-if="$slots[getSlotName(tabs,'H')]"></slot>
+                        :column="column"
+                        v-if="getSlotName(tabs,'H',$scopedSlots)"></slot>
                   <template v-else>
                     <i :class="tabs.icon">&nbsp;</i>
                     {{tabs.label}}
@@ -45,8 +46,9 @@
             </template>
           </el-tabs>
           <template slot="header"
-                    v-if="$slots[getSlotName(item,'H')]">
-            <slot :name="getSlotName(item,'H')"></slot>
+                    v-if="getSlotName(item,'H',$scopedSlots)">
+            <slot :name="getSlotName(item,'H')"
+                  :column="item"></slot>
           </template>
           <div :class="b('group',{'flex':vaildData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
@@ -67,7 +69,7 @@
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template slot="label"
-                            v-if="$scopedSlots[getSlotName(column,'L')]">
+                            v-if="getSlotName(column,'L',$scopedSlots)">
                     <slot :name="getSlotName(column,'L')"
                           :column="column"
                           :value="form[column.prop]"
@@ -89,8 +91,8 @@
                   </template>
                   <template slot="error"
                             slot-scope="scope"
-                            v-if="$scopedSlots[`${column.prop}Error`]">
-                    <slot :name="column.prop+'Error'"
+                            v-if="getSlotName(column,'E',$scopedSlots)">
+                    <slot :name="getSlotName(column,'E')"
                           v-bind="Object.assign(scope,{
                             column,
                             value:form[column.prop],
@@ -125,19 +127,19 @@
                                :size="parentOption.size"
                                v-model="form[column.prop]"
                                @enter="submit"
-                               :column-slot="getChildrenColumn(column)"
+                               :column-slot="columnSlot"
                                @change="propChange(item.column,column)">
-                      <template :slot="citem.prop"
-                                slot-scope="scope"
-                                v-for="citem in getChildrenColumn(column)">
-                        <slot v-bind="scope"
-                              :name="citem.prop"></slot>
-                      </template>
                       <template :slot="getSlotName(column,'T')"
                                 slot-scope="scope"
-                                v-for="item in $scopedSlots[getSlotName(column,'T')]?[column]:[]">
+                                v-for="item in getSlotName(column,'T',$scopedSlots)?[column]:[]">
                         <slot :name="getSlotName(item,'T')"
                               v-bind="scope"></slot>
+                      </template>
+                      <template v-for="item in columnSlot"
+                                slot-scope="scope"
+                                :slot="item">
+                        <slot v-bind="scope"
+                              :name="item"></slot>
                       </template>
                     </form-temp>
                   </component>
@@ -236,6 +238,9 @@ export default create({
     }
   },
   computed: {
+    columnSlot () {
+      return Object.keys(this.$scopedSlots).filter(item => !this.propOption.map(ele => ele.prop).includes(item))
+    },
     labelSuffix () {
       return this.parentOption.labelSuffix || ':'
     },
@@ -354,6 +359,10 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    reset: {
+      type: Boolean,
+      default: true
+    },
     isCrud: {
       type: Boolean,
       default: false
@@ -377,9 +386,6 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
-    getChildrenColumn (column) {
-      return ((column.children || {}).column || []).filter(ele => this.$scopedSlots[ele.prop])
-    },
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
@@ -631,8 +637,10 @@ export default create({
       });
     },
     resetForm () {
-      this.clearVal();
-      this.clearValidate();
+      if (this.reset) {
+        this.clearVal();
+        this.$nextTick(() => this.clearValidate())
+      }
       this.$emit("reset-change");
     },
     clearVal () {
