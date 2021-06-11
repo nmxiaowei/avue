@@ -21,7 +21,16 @@
   <div id="app">
     <avue-crud :data="data" :option="option" v-model="user">
       <template slot-scope="scope" slot="nameForm">
-        <el-tag>{{scope.row}}暂时没有内容</el-tag>
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template slot-scope="scope" slot="name">
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template slot-scope="scope" slot="nameSearch">
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template slot-scope="scope" slot="nameHeader">
+        <el-tag>{{scope}}</el-tag>
       </template>
       <template slot-scope="{}" slot="nameLabel">
         <span>姓名&nbsp;&nbsp;</span>
@@ -58,9 +67,7 @@
             {
               label: '姓名',
               prop: 'name',
-              formslot: true,
-              labelslot: true,
-              errorslot: true,
+              search: true,
               rules: [{
                 required: true,
                 message: "请输入姓名",
@@ -69,7 +76,8 @@
             },
             {
               label: '性别',
-              prop: 'sex'
+              prop: 'sex',
+              search: true
             }
           ]
         },

@@ -41,32 +41,10 @@
                  @error="handleError"
                  v-bind="$uploadFun({},crud)"
                  :option="formOption">
-        <!-- 循环form表单卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.formSlot"
-                  :slot="item.prop">
-          <slot :name="item.prop"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单错误卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.errorSlot"
-                  :slot="crud.getSlotName(item,'E')">
-          <slot :name="crud.getSlotName(item,'E')"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单组件自定义卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.typeSlot"
-                  :slot="crud.getSlotName(item,'T')">
-          <slot :name="crud.getSlotName(item,'T')"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单标签卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.labelSlot"
-                  :slot="crud.getSlotName(item,'L')">
-          <slot :name="crud.getSlotName(item,'L')"
+                  :slot="getSlotName(item)">
+          <slot :name="item"
                 v-bind="scope"></slot>
         </template>
         <template slot="menuForm"
@@ -195,6 +173,9 @@ export default create({
     }
   },
   methods: {
+    getSlotName (item) {
+      return item.replace('Form', '')
+    },
     handleOpened () {
       this.$nextTick(() => this.initFun())
     },
