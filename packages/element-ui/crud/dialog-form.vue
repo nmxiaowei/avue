@@ -34,6 +34,7 @@
       <avue-form v-model="crud.tableForm"
                  v-if="boxVisible"
                  ref="tableForm"
+                 :reset="false"
                  @change="handleChange"
                  @submit="handleSubmit"
                  @reset-change="hide"
@@ -45,7 +46,9 @@
                   v-for="item in crud.formSlot"
                   :slot="getSlotName(item)">
           <slot :name="item"
-                v-bind="scope"></slot>
+                v-bind="Object.assign(scope,{
+                    type:boxType
+                  }) "></slot>
         </template>
         <template slot="menuForm"
                   slot-scope="scope">
@@ -75,11 +78,14 @@ export default create({
       fullscreen: false,
       size: null,
       boxVisible: false,
-      boxHeight: 0,
-      index: -1
+      boxHeight: 0
     };
   },
   props: {
+    reset: {
+      type: Boolean,
+      default: true
+    },
     value: {
       type: Object,
       default: () => {
@@ -228,11 +234,10 @@ export default create({
     },
     // 更新
     rowUpdate (hide) {
-      const index = this.crud.tableIndex;
       this.crud.$emit(
         "row-update",
         filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
-        this.index,
+        this.crud.tableIndex,
         this.closeDialog,
         hide
       );
@@ -288,14 +293,11 @@ export default create({
       }
     },
     // 显示表单
-    show (type, index = -1) {
-      this.index = index;
+    show (type) {
       this.boxType = type;
       const callback = () => {
-        this.$nextTick(() => {
-          this.fullscreen = this.crud.tableOption.dialogFullscreen
-          this.boxVisible = true;
-        });
+        this.fullscreen = this.crud.tableOption.dialogFullscreen
+        this.boxVisible = true;
       };
       if (typeof this.crud.beforeOpen === "function") {
         this.crud.beforeOpen(callback, this.boxType);

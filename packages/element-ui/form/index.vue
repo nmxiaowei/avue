@@ -633,8 +633,10 @@ export default create({
       });
     },
     resetForm () {
-      this.clearVal();
-      this.clearValidate();
+      if (this.reset) {
+        this.clearVal();
+        this.clearValidate();
+      }
       this.$emit("reset-change");
     },
     clearVal () {

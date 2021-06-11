@@ -747,7 +747,7 @@ export default create({
       this.tableForm = this.rowClone(row);
       this.tableIndex = index;
       this.$emit("input", this.tableForm);
-      this.$refs.dialogForm.show("edit", index);
+      this.$refs.dialogForm.show("edit");
     },
     //复制
     rowCopy (row) {
