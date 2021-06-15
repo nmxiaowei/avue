@@ -60,7 +60,7 @@ export default create({
         },
         yAxis: {
           data: (() => {
-            return optionData.map(ele => {
+            return (Array.isArray(optionData) ? optionData : []).map(ele => {
               return ele.name;
             });
           })(),
@@ -92,7 +92,7 @@ export default create({
             symbolSize: this.option.symbolSize || 30,
             symbolBoundingData: maxData,
             data: (() => {
-              return optionData.map(ele => {
+              return (Array.isArray(optionData) ? optionData : []).map(ele => {
                 return ele.value;
               });
             })()
@@ -122,7 +122,7 @@ export default create({
             symbolSize: 30,
             symbolBoundingData: maxData,
             data: (() => {
-              return optionData.map(ele => {
+              return (Array.isArray(optionData) ? optionData : []).map(ele => {
                 return ele.value;
               });
             })()
