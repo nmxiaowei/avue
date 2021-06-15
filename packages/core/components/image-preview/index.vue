@@ -28,18 +28,17 @@
                    :interval="0"
                    arrow="never"
                    @change="handleChange"
-                   indicator-position="none"
-                   :height="height">
+                   indicator-position="none">
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <img :src="item.url"
-               :style="styleName"
-               ref="item"
-               @mousedown="move"
-               controls="controls"
-               v-bind="getIsVideo(item)"
-               ondragstart="return false"></img>
+          <component :src="item.url"
+                     :style="styleName"
+                     ref="item"
+                     @mousedown="move"
+                     controls="controls"
+                     :is="getIsVideo(item)"
+                     ondragstart="return false"></component>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -61,11 +60,14 @@
   </div>
 </template>
 <script>
+import { setPx } from 'utils/util';
+import { typeList } from 'global/variable'
 import create from "core/create";
 export default create({
   name: "image-preview",
   data () {
     return {
+      ops: {},
       left: 0,
       top: 0,
       scale: 1,
@@ -79,8 +81,8 @@ export default create({
   computed: {
     styleBoxName () {
       return {
-        marginLeft: this.setPx(this.left),
-        marginTop: this.setPx(this.top)
+        marginLeft: setPx(this.left),
+        marginTop: setPx(this.top)
       }
     },
     styleName () {
@@ -102,25 +104,26 @@ export default create({
   },
   methods: {
     handlePrev () {
+      this.stopItem()
       this.$refs.carousel.prev()
       this.index = this.$refs.carousel.activeIndex
-      this.stopItem()
+
     },
     handleNext () {
+      this.stopItem()
       this.$refs.carousel.next()
       this.index = this.$refs.carousel.activeIndex
-      this.stopItem()
+
     },
     stopItem () {
-      this.$refs.item.forEach(ele => {
-        ele.pause && ele.pause()
-      })
+      const ele = this.$refs.item;
+      ele.pause && ele.pause()
     },
     getIsVideo (item) {
-      if (this.$typeList.video.test(item.url) || item.type == 'video') {
-        return { is: 'video' }
+      if (typeList.video.test(item.url) || item.type == 'video') {
+        return 'video'
       }
-      return {}
+      return 'img'
     },
     subScale () {
       if (this.scale != 0.2) {

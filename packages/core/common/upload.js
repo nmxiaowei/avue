@@ -100,7 +100,9 @@ export default function () {
             is: 'video'
           }, this.params)
         }
-        return this.params
+        return Object.assign({
+          is: 'img'
+        }, this.params)
       },
       fileName () {
         return this.propsHttp.fileName || 'file'

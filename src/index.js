@@ -1,5 +1,6 @@
 
 import components from './ui/index';
+import { typeList } from 'global/variable'
 import { version } from './version'
 import { validatenull } from 'utils/validate.js';
 import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
@@ -81,10 +82,7 @@ const install = function (Vue, opts = {}) {
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
   Vue.config.globalProperties.$axios = opts.axios || window.axios;
-  Vue.config.globalProperties.$typeList = {
-    img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
-    video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
-  };
+  Vue.config.globalProperties.$typeList = typeList
   Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];

@@ -26,11 +26,11 @@
         <slot v-if="$slots.default"
               :file="{url:imgUrl}"></slot>
         <template v-else>
-          <img v-if="imgUrl"
-               :src="imgUrl"
-               v-bind="allParams"
-               @mouseover="menu=true"
-               :class="b('avatar')" />
+          <component v-if="imgUrl"
+                     :src="imgUrl"
+                     v-bind="allParams"
+                     @mouseover="menu=true"
+                     :class="b('avatar')"></component>
           <i v-else
              class="el-icon-plus"
              :class="b('icon')"></i>

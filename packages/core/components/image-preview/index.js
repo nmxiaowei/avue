@@ -1,11 +1,13 @@
 import Main from './index.vue';
 import { isVNode } from 'utils/vdom';
+import { createApp } from 'vue';
+import { ElCarousel, ElCarouselItem } from 'element-plus';
 let instance;
 let instances = [];
 let seed = 1;
-const ImagePreview = function () {
+const ImagePreview = (function () {
   let MessageConstructor = Main;
-  const obj = function (datas = [], index = 0) {
+  const obj = function (datas = [], index = 0, ops = {}) {
     let id = 'imagePreview_' + seed++;
     let options = {
       datas: datas,
@@ -16,9 +18,14 @@ const ImagePreview = function () {
       }, ops)
     }
     let userOnClose = options.onClose;
-    instance = new MessageConstructor({
-      data: options
-    });
+    const parent = document.createElement('div')
+    let app = createApp(MessageConstructor)
+    app.component(ElCarousel.name, ElCarousel);
+    app.component(ElCarouselItem.name, ElCarouselItem);
+    instance = app.mount(parent);
+    Object.keys(options).forEach(ele => {
+      instance[ele] = options[ele]
+    })
     options.onClose = function () {
       obj.close(id, userOnClose);
     };
@@ -27,12 +34,11 @@ const ImagePreview = function () {
       instance.$slots.default = [instance.message];
       instance.message = null;
     }
-    instance.vm = instance.$mount();
-    document.body.appendChild(instance.vm.$el);
-    instance.vm.isShow = true;
-    instance.dom = instance.vm.$el;
+    document.body.appendChild(instance.$el);
+    instance.isShow = true;
+    instance.dom = instance.$el;
     instances.push(instance);
-    return instance.vm;
+    return instance;
   }
   obj.close = function (id, userOnClose) {
     for (let i = 0, len = instances.length; i < len; i++) {
@@ -46,6 +52,6 @@ const ImagePreview = function () {
     }
   };
   return obj
-}
+})()
 
 export default ImagePreview;
