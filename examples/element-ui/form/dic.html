@@ -25,7 +25,7 @@
 </body>
 <script>
   let baseUrl = 'https://cli.avuejs.com/api/area'
-  new Vue({
+  let app = Vue.createApp({
     el: '#app',
     data() {
       return {
@@ -120,6 +120,9 @@
       }
     }
   })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
 </script>
 
 </html>

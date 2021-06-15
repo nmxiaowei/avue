@@ -1,7 +1,6 @@
 
 import zh from './lang/zh';
 import en from './lang/en';;
-import deepmerge from 'deepmerge';
 import Format from './format';
 const Vue = window.Vue;
 const format = Format(Vue);
@@ -14,7 +13,7 @@ let i18nHandler = function () {
       merged = true;
       Vue.locale(
         Vue.config.lang,
-        deepmerge(lang, Vue.locale(Vue.config.lang) || {}, { clone: true })
+        Object.assign(lang, Vue.locale(Vue.config.lang) || {}, { clone: true })
       );
     }
     return vuei18n.apply(this, arguments);

@@ -1,7 +1,6 @@
 import Main from './index.vue';
 import { isVNode } from 'utils/vdom';
 import { createApp } from 'vue';
-import { ElCarousel, ElCarouselItem } from 'element-plus';
 let instance;
 let instances = [];
 let seed = 1;

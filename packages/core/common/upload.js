@@ -3,6 +3,7 @@ import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
+import axios from 'axios';
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -232,7 +233,7 @@ export default function () {
               if (this.isAliOss) {
                 return client.put(uploadfile.name, uploadfile);
               } else {
-                if (!window.axios) {
+                if (!axios) {
                   packages.logs('axios');
                   return Promise.reject()
                 }

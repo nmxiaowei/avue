@@ -276,7 +276,7 @@ export default create({
       this.propOption.forEach(item => {
         if (this.$slots[item.prop]) result.push(item.prop)
       })
-      return this.getSlotList(['Header', 'Form'], $slots).concat(result)
+      return this.getSlotList(['Header', 'Form'], this.$slots).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight

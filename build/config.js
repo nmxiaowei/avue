@@ -12,11 +12,8 @@ const banner =
   ' Released under the MIT License.\n';
 const externals = {
   'vue': 'Vue',
-  'mockjs': 'Mock',
-  'file-saver': 'file-saver',
-  'xlsx': 'xlsx',
+  'element-plus': 'ElementPlus',
   'axios': 'axios',
-  'element-ui': 'ELEMENT'
 };
 const resolve = p => {
   const base = p.split('/')[0];

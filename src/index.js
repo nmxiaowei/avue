@@ -12,15 +12,14 @@ import locale from './locale/';
 import $Screenshot from 'plugin/screenshot/';
 import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
-import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
+import axios from 'axios';
 let plugins = {
   $ImagePreview,
   $Export,
   $Print,
   $Clipboard,
   $Log,
-  $NProgress,
   $Screenshot,
   deepClone,
   dataURLtoFile,
@@ -81,7 +80,7 @@ const install = function (Vue, opts = {}) {
   locale.i18n(opts.i18n);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
-  Vue.config.globalProperties.$axios = opts.axios || window.axios;
+  Vue.config.globalProperties.$axios = opts.axios || axios;
   Vue.config.globalProperties.$typeList = typeList
   Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
     safe = safe || this;

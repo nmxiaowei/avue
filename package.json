@@ -58,12 +58,8 @@
     "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
-    "deepmerge": "^3.1.0",
     "element-plus": "^1.0.2-beta.44",
-    "nprogress": "^0.2.0",
-    "vant": "^2.10.9",
-    "vue": "^3.0.11",
-    "vuedraggable": "^2.17.0"
+    "vue": "^3.0.11"
   },
   "files": [
     "lib",
