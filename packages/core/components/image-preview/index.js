@@ -5,11 +5,15 @@ let instances = [];
 let seed = 1;
 const ImagePreview = function (Vue) {
   let MessageConstructor = Vue.extend(Main);
-  const obj = function (datas = [], index = 0) {
+  const obj = function (datas = [], index = 0, ops = {}) {
     let id = 'imagePreview_' + seed++;
     let options = {
       datas: datas,
-      index: index
+      index: index,
+      ops: Object.assign({
+        closeOnClickModal: false,
+        modal: true
+      }, ops)
     }
     let userOnClose = options.onClose;
     instance = new MessageConstructor({

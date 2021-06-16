@@ -7,7 +7,7 @@
              :direction="direction"
              v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="b('dialog',{'fullscreen':fullscreen})"
-             :custom-class="vaildData(crud.tableOption.customClass,config.customClass)"
+             :custom-class="crud.tableOption.dialogCustomClass"
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
@@ -20,7 +20,8 @@
              :visible.sync="boxVisible"
              :size="size?size:width"
              :width="setPx(width)"
-             :before-close="hide">
+             :before-close="hide"
+             @opened="handleOpened">
     <div slot="title"
          :class="b('dialog__header')">
       <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -33,6 +34,7 @@
       <avue-form v-model="crud.tableForm"
                  v-if="boxVisible"
                  ref="tableForm"
+                 :reset="false"
                  @change="handleChange"
                  @submit="handleSubmit"
                  @reset-change="hide"
@@ -40,33 +42,13 @@
                  @error="handleError"
                  v-bind="$uploadFun({},crud)"
                  :option="formOption">
-        <!-- 循环form表单卡槽 -->
         <template slot-scope="scope"
                   v-for="item in crud.formSlot"
-                  :slot="item.prop">
-          <slot :name="item.prop"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单错误卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.errorSlot"
-                  :slot="crud.getSlotName(item,'E')">
-          <slot :name="crud.getSlotName(item,'E')"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单组件自定义卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.typeSlot"
-                  :slot="crud.getSlotName(item,'T')">
-          <slot :name="crud.getSlotName(item,'T')"
-                v-bind="scope"></slot>
-        </template>
-        <!-- 循环form表单标签卡槽 -->
-        <template slot-scope="scope"
-                  v-for="item in crud.labelSlot"
-                  :slot="crud.getSlotName(item,'L')">
-          <slot :name="crud.getSlotName(item,'L')"
-                v-bind="scope"></slot>
+                  :slot="getSlotName(item)">
+          <slot :name="item"
+                v-bind="Object.assign(scope,{
+                    type:boxType
+                  }) "></slot>
         </template>
         <template slot="menuForm"
                   slot-scope="scope">
@@ -96,8 +78,7 @@ export default create({
       fullscreen: false,
       size: null,
       boxVisible: false,
-      boxHeight: 0,
-      index: -1
+      boxHeight: 0
     };
   },
   props: {
@@ -105,15 +86,6 @@ export default create({
       type: Object,
       default: () => {
         return {};
-      }
-    }
-  },
-  watch: {
-    boxVisible (val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.initFun()
-        })
       }
     }
   },
@@ -203,6 +175,12 @@ export default create({
     }
   },
   methods: {
+    getSlotName (item) {
+      return item.replace('Form', '')
+    },
+    handleOpened () {
+      this.$nextTick(() => this.initFun())
+    },
     handleChange () {
       this.crud.$emit('input', this.crud.tableForm)
       this.crud.$emit('change', this.crud.tableForm)
@@ -252,11 +230,10 @@ export default create({
     },
     // 更新
     rowUpdate (hide) {
-      const index = this.crud.tableIndex;
       this.crud.$emit(
         "row-update",
         filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
-        this.index,
+        this.crud.tableIndex,
         this.closeDialog,
         hide
       );
@@ -312,14 +289,11 @@ export default create({
       }
     },
     // 显示表单
-    show (type, index = -1) {
-      this.index = index;
+    show (type) {
       this.boxType = type;
       const callback = () => {
-        this.$nextTick(() => {
-          this.fullscreen = this.crud.tableOption.dialogFullscreen
-          this.boxVisible = true;
-        });
+        this.fullscreen = this.crud.tableOption.dialogFullscreen
+        this.boxVisible = true;
       };
       if (typeof this.crud.beforeOpen === "function") {
         this.crud.beforeOpen(callback, this.boxType);

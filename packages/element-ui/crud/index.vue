@@ -18,9 +18,9 @@
       </template>
       <template slot-scope="scope"
                 v-for="item in searchSlot"
-                :slot="item.prop">
+                :slot="item">
         <slot v-bind="scope"
-              :name="getSlotName(item,'S')"></slot>
+              :name="item"></slot>
       </template>
     </header-search>
     <el-card :shadow="isCard">
@@ -127,21 +127,9 @@
             </column-default>
             <template v-for="item in mainSlot"
                       slot-scope="scope"
-                      :slot="item.prop">
+                      :slot="item">
               <slot v-bind="scope"
-                    :name="item.prop"></slot>
-            </template>
-            <template v-for="item in headerSlot"
-                      slot-scope="scope"
-                      :slot="getSlotName(item,'H')">
-              <slot v-bind="scope"
-                    :name="getSlotName(item,'H')"></slot>
-            </template>
-            <template v-for="item in formSlot"
-                      slot-scope="scope"
-                      :slot="getSlotName(item,'F')">
-              <slot v-bind="scope"
-                    :name="getSlotName(item,'F')"></slot>
+                    :name="item"></slot>
             </template>
             <column-menu slot="footer">
               <template slot="menu"
@@ -171,39 +159,12 @@
     <dialog-form ref="dialogForm">
       <template slot-scope="scope"
                 v-for="item in formSlot"
-                :slot="item.prop">
+                :slot="item">
         <slot v-bind="Object.assign(scope,{
               row:item.dynamic?scope.row:tableForm,
               index:item.dynamic?scope.row.$index:tableIndex
               })"
-              :name="getSlotName(item,'F')"></slot>
-      </template>
-      <template slot-scope="scope"
-                v-for="item in labelSlot"
-                :slot="getSlotName(item,'L')">
-        <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
-              })"
-              :name="getSlotName(item,'L')"></slot>
-      </template>
-      <template slot-scope="scope"
-                v-for="item in errorSlot"
-                :slot="getSlotName(item,'E')">
-        <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
-              })"
-              :name="getSlotName(item,'E')"></slot>
-      </template>
-      <template slot-scope="scope"
-                v-for="item in typeSlot"
-                :slot="getSlotName(item,'T')">
-        <slot v-bind="Object.assign(scope,{
-              row:tableForm,
-              index:tableIndex
-              })"
-              :name="getSlotName(item,'T')"></slot>
+              :name="item"></slot>
       </template>
       <template slot-scope="scope"
                 slot="menuForm">
@@ -262,7 +223,6 @@ export default create({
   data () {
     return {
       reload: true,
-      isChild: false,
       config: config,
       list: [],
       tableForm: {},
@@ -320,50 +280,32 @@ export default create({
       }
     },
     formSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Form`])
-    },
-    errorSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Error`])
-    },
-    labelSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Label`])
-    },
-    typeSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Type`])
+      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$scopedSlots)
     },
     searchSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Search`])
-    },
-    headerSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[`${ele.prop}Header`])
+      return this.getSlotList(['Search'], this.$scopedSlots)
     },
     mainSlot () {
-      return this.columnFormOption.filter(ele => this.$scopedSlots[ele.prop])
+      let result = [];
+      this.propOption.forEach(item => {
+        if (this.$scopedSlots[item.prop]) result.push(item.prop)
+      })
+      return this.getSlotList(['Header', 'Form'], this.$scopedSlots).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
     },
     propOption () {
       let result = [];
-      const safe = this;
-      function findProp (list) {
+      function findProp (list = []) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          if (ele.prop || !ele.children) {
-            result.push(ele);
-          }
-          if (ele.children) {
-            safe.isChild = true;
-            findProp(ele.children);
-          }
+          result.push(ele);
+          if (ele.children) findProp(ele.children);
         });
       }
       findProp(this.columnOption);
-      if (this.isChild) {
-        result = calcCascader(result);
-      } else {
-        result = calcCascader(this.columnOption);
-      }
+      result = calcCascader(result);
       return result;
     },
     isTree () {
@@ -377,40 +319,6 @@ export default create({
     },
     isCard () {
       return this.option.card ? 'always' : 'never'
-    },
-    isGroup () {
-      return !this.validatenull(this.tableOption.group);
-    },
-    groupOption () {
-      return this.parentOption.group;
-    },
-    dynamicOption () {
-      let list = [];
-      this.propOption.forEach(ele => {
-        if (ele.type === 'dynamic') {
-          list = list.concat(ele.children.column.map(item => {
-            return Object.assign(item, {
-              dynamic: true
-            })
-          }));
-        }
-      })
-      return list;
-    },
-    columnFormOption () {
-      let list = [];
-      this.propOption.forEach(column => {
-        list.push(column);
-      });
-      if (this.isGroup) {
-        this.groupOption.forEach(ele => {
-          if (!ele.column) return;
-          ele.column.forEach(column => {
-            list.push(column);
-          });
-        });
-      }
-      return list.concat(this.dynamicOption);
     },
     expandLevel () {
       return this.parentOption.expandLevel || 0;
@@ -626,7 +534,6 @@ export default create({
       let column = this.propOption;
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
-      this.refreshTable()
       this.propOption.forEach((ele, index) => {
         this.objectOption[ele.prop].order = index;
       })
@@ -840,7 +747,7 @@ export default create({
       this.tableForm = this.rowClone(row);
       this.tableIndex = index;
       this.$emit("input", this.tableForm);
-      this.$refs.dialogForm.show("edit", index);
+      this.$refs.dialogForm.show("edit");
     },
     //复制
     rowCopy (row) {
