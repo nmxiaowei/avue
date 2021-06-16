@@ -72,7 +72,7 @@
                      :clearable="vaildData(column.clearable,false)"
                      v-bind="$uploadFun(column,crud)"
                      v-model="row[column.prop]"
-                     @change="columnChange(index,row,column)">
+                     @change="columnChange($index,row,column,index)">
           </form-temp>
         </el-form-item>
         <slot :row="row"
@@ -113,6 +113,7 @@
 
 <script>
 
+let count = {}
 import create from "core/create";
 import { detail } from "core/detail";
 import { sendDic } from "core/dic";
@@ -123,9 +124,7 @@ import { arraySort } from 'utils/util'
 export default create({
   name: "crud",
   data () {
-    return {
-      count: {}
-    }
+    return {}
   },
   components: {
     formTemp,
@@ -209,12 +208,15 @@ export default create({
       }
       return result;
     },
-    columnChange (index, row, column) {
-      if (this.validatenull(this.count[column.prop])) this.count[column.prop] = 0
-      this.count[column.prop] = this.count[column.prop] + 1;
+    columnChange ($index, row, column, index) {
+      if (this.validatenull(count[$index])) count[$index] = 0
+      count[$index] = count[$index] + 1;
       if (column.cascader) this.handleChange(index, row)
-      if (this.count[column.prop] % 3 === 0 && typeof column.change === 'function' && column.cell === true) {
-        column.change({ row, column, index: row.$index, value: row[column.prop] })
+      if (count[$index] % this.crud.cellChangeCount === 0) {
+        if (typeof column.change === 'function' && column.cell === true) {
+          column.change({ row, column, index: $index, value: row[column.prop] })
+        }
+        this.crud.$emit('column-change', { row, column, index: $index, value: row[column.prop] })
       }
     },
     handleChange (index, row) {

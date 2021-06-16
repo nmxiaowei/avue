@@ -86,7 +86,7 @@
                        :clearable="vaildData(column.clearable,false)"
                        v-bind="$uploadFun(column,crud)"
                        v-model="row[column.prop]"
-                       @change="columnChange(index,row,column)">
+                       @change="columnChange($index,row,column,index)">
             </form-temp>
           </el-form-item>
           <slot :row="row"
