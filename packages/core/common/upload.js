@@ -228,7 +228,9 @@ export default function () {
             }
             (() => {
               if (this.isAliOss) {
-                return client.put(uploadfile.name, uploadfile);
+                return client.put(uploadfile.name, uploadfile, {
+                  headers: this.headers
+                });
               } else {
                 if (!window.axios) {
                   packages.logs('axios');
