@@ -100,7 +100,7 @@
                 <img v-for="(item,index) in getImgList(row,column)"
                      :src="item"
                      :key="index"
-                     @click="openImg(getImgList(row,column),index)" />
+                     @click.stop="openImg(getImgList(row,column),index)" />
               </div>
             </span>
             <span v-else-if="['url'].includes(column.type)">
