@@ -121,7 +121,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const Avue = Object.assign({
-  version: '2.8.13',
+  version: version,
   locale: locale.locale,
   $Echart,
   install
