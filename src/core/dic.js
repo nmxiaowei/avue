@@ -156,6 +156,13 @@ export const sendDic = (params) => {
   url = url || '';
   let list = [];
   let data = {};
+  list = url.match(/[^\{\}]+(?=\})/g) || [];
+  list.forEach(ele => {
+    let eleKey = `{{${ele}}}`;
+    let eleValue = form[ele];
+    if (ele === key) url = url.replace(eleKey, value);
+    else url = url.replace(eleKey, eleValue);
+  })
   if (method === 'post') {
     list = Object.keys(query);
     list.forEach(ele => {
@@ -167,15 +174,8 @@ export const sendDic = (params) => {
         data[ele] = eleKey;
       }
     });
-  } else {
-    list = url.match(/[^\{\}]+(?=\})/g) || [];
-    list.forEach(ele => {
-      let eleKey = `{{${ele}}}`;
-      let eleValue = form[ele];
-      if (ele === key) url = url.replace(eleKey, value);
-      else url = url.replace(eleKey, eleValue);
-    })
   }
+
   if (props) resKey = (props || {}).res || resKey;
   return new Promise(resolve => {
     const callback = (res) => {
