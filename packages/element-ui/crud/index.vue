@@ -49,6 +49,8 @@
       </el-tag>
       <slot name="header"></slot>
       <el-form :model="cellForm"
+               :show-message="false"
+               @validate="handleValidate"
                ref="cellForm">
         <el-table v-if="reload"
                   :data="cellForm.list"
@@ -211,6 +213,7 @@ export default create({
       reload: true,
       config: config,
       list: [],
+      listError: {},
       tableForm: {},
       tableHeight: undefined,
       tableIndex: -1,
@@ -223,7 +226,8 @@ export default create({
       btnDisabled: false,
       defaultColumn: config.defaultColumn,
       default: {},
-      defaultBind: {}
+      defaultBind: {},
+
     };
   },
   created () {
@@ -407,6 +411,11 @@ export default create({
     }
   },
   methods: {
+    handleValidate (prop, valid, msg) {
+      if (!this.listError[prop]) this.$set(this.listError, prop, { valid: false, msg: '' })
+      this.listError[prop].valid = !valid
+      this.listError[prop].msg = msg
+    },
     getPermission (key, row, index) {
       if (typeof this.permission === "function") {
         return this.permission(key, row, index)
