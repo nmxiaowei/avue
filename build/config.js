@@ -2,6 +2,7 @@ const path = require('path');
 const aliases = require('./alias');
 const webpack = require('webpack');
 const version = process.env.VERSION || require('../package.json').version;
+const prd = process.env.TARGET
 const banner =
   ' Avue.js v' +
   version +
@@ -107,4 +108,7 @@ function genConfig (name) {
   return config;
 }
 
-module.exports = genConfig(process.env.TARGET || 'prod');
+if (prd == 'dev') {
+  console.log('\033[42;30m 提示 \033[40;32m 没有可视化界面，实时打包生成调试包avue.js到lib目录，运行examples目录下例子即可调试\033[0m')
+}
+module.exports = genConfig(prd || 'prod');
