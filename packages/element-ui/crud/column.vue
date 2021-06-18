@@ -51,7 +51,10 @@
                         v-if="row.$cellEdit && column.cell"
                         :label-width="vaildLabel(column,row,'1px')"
                         :rules='column.rules'>
-            <slot v-bind="{
+            <el-tooltip :content="(crud.listError[`list.${$index}.${column.prop}`] || {}).msg"
+                        :disabled="!(crud.listError[`list.${$index}.${column.prop}`] || {}).valid"
+                        placement="top">
+              <slot v-bind="{
                       row:row,
                       dic:crud.DIC[column.prop],
                       size:crud.isMediumSize,
@@ -60,20 +63,21 @@
                       label:handleShowLabel(row,column,crud.DIC[column.prop]),
                       '$cell':row.$cellEdit
                     }"
-                  :name="crud.getSlotName(column,'F')"
-                  v-if="crud.getSlotName(column,'F',crud.$scopedSlots)"></slot>
-            <form-temp v-else
-                       :column="column"
-                       :size="crud.isMediumSize"
-                       :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                       :props="column.props || crud.tableOption.props"
-                       :readonly="column.readonly"
-                       :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
-                       :clearable="vaildData(column.clearable,false)"
-                       v-bind="$uploadFun(column,crud)"
-                       v-model="row[column.prop]"
-                       @change="columnChange(index,row,column)">
-            </form-temp>
+                    :name="crud.getSlotName(column,'F')"
+                    v-if="crud.getSlotName(column,'F',crud.$scopedSlots)"></slot>
+              <form-temp v-else
+                         :column="column"
+                         :size="crud.isMediumSize"
+                         :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
+                         :props="column.props || crud.tableOption.props"
+                         :readonly="column.readonly"
+                         :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
+                         :clearable="vaildData(column.clearable,false)"
+                         v-bind="$uploadFun(column,crud)"
+                         v-model="row[column.prop]"
+                         @change="columnChange($index,row,column,index)">
+              </form-temp>
+            </el-tooltip>
           </el-form-item>
           <slot :row="row"
                 :index="$index"
@@ -88,7 +92,7 @@
                 <img v-for="(item,index) in getImgList(row,column)"
                      :src="item"
                      :key="index"
-                     @click="openImg(getImgList(row,column),index)" />
+                     @click.stop="openImg(getImgList(row,column),index)" />
               </div>
             </span>
             <span v-else-if="['url'].includes(column.type)">
@@ -115,6 +119,7 @@
 
 <script>
 
+let count = {}
 import create from "core/create";
 import { detail } from "core/detail";
 import { sendDic } from "core/dic";
@@ -125,9 +130,7 @@ import { arraySort } from 'utils/util'
 export default create({
   name: "crud",
   data () {
-    return {
-      count: {}
-    }
+    return {}
   },
   components: {
     formTemp,
@@ -211,12 +214,15 @@ export default create({
       }
       return result;
     },
-    columnChange (index, row, column) {
-      if (this.validatenull(this.count[column.prop])) this.count[column.prop] = 0
-      this.count[column.prop] = this.count[column.prop] + 1;
+    columnChange ($index, row, column, index) {
+      if (this.validatenull(count[$index])) count[$index] = 0
+      count[$index] = count[$index] + 1;
       if (column.cascader) this.handleChange(index, row)
-      if (this.count[column.prop] % 3 === 0 && typeof column.change === 'function' && column.cell === true) {
-        column.change({ row, column, index: row.$index, value: row[column.prop] })
+      if (count[$index] % this.crud.cellChangeCount === 0) {
+        if (typeof column.change === 'function' && column.cell === true) {
+          column.change({ row, column, index: $index, value: row[column.prop] })
+        }
+        this.crud.$emit('column-change', { row, column, index: $index, value: row[column.prop] })
       }
     },
     handleChange (index, row) {

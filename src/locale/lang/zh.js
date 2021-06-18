@@ -52,6 +52,7 @@ export default {
     excelBtn: '导 出',
     updateBtn: '修 改',
     cancelBtn: '取 消',
+    searchBtn: '搜 索',
     emptyBtn: '清 空',
     menuBtn: '功 能',
     saveBtn: '保 存',

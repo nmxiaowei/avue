@@ -76,7 +76,7 @@ export default create({
             fontSize: this.option.legendFontSize || 12,
           },
           data: (() => {
-            return optionData.map((ele, index) => {
+            return (Array.isArray(optionData) ? optionData : []).map((ele, index) => {
               return {
                 name: ele.name,
                 textStyle: this.ishasprop(!this.switchTheme, {
@@ -126,11 +126,13 @@ export default create({
               })(),
               itemStyle: this.ishasprop(!this.switchTheme, {
                 color: params => this.getColor(params.dataIndex)
-              }, {                emphasis: {
+              }, {
+                emphasis: {
                   shadowBlur: 10,
                   shadowOffsetX: 0,
                   shadowColor: "rgba(0, 0, 0, 0.5)"
-                }              }),
+                }
+              }),
             }
           ];
           return list;

@@ -52,6 +52,7 @@ export default {
     excelBtn: 'excel',
     updateBtn: 'update',
     cancelBtn: 'cancel',
+    searchBtn: 'search',
     emptyBtn: 'empty',
     menuBtn: 'menu',
     saveBtn: 'save',
