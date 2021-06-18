@@ -110,5 +110,7 @@ function genConfig (name) {
 
 if (prd == 'dev') {
   console.log('\033[42;30m 提示 \033[40;32m 没有可视化界面，实时打包生成调试包avue.js到lib目录，运行examples目录下例子即可调试\033[0m')
+} else if (prd == 'prod') {
+  console.log('\033[42;30m 提示 \033[40;32m 打包生成生产包avue.min.js到lib目录\033[0m')
 }
 module.exports = genConfig(prd || 'prod');
