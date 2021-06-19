@@ -152,7 +152,7 @@ export default create({
   computed: {
     list () {
       let result = [...this.columnOption];
-      result = arraySort(result, 'order', (a, b) => this.crud.objectOption[a.prop]?.order - this.crud.objectOption[b.prop]?.order)
+      result = arraySort(result, 'index', (a, b) => this.crud.objectOption[a.prop]?.index - this.crud.objectOption[b.prop]?.index)
       return result;
     }
   },

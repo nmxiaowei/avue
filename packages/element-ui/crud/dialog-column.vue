@@ -9,6 +9,7 @@
     <div style="height:calc(100% - 5px)">
       <el-table :data="list"
                 ref="table"
+                :key="Math.random()"
                 height="100%"
                 size="small"
                 border>
@@ -52,6 +53,7 @@ import create from "core/create";
 import config from "./config.js";
 import packages from "core/packages";
 import locale from "../../core/common/locale";
+import { arraySort } from 'utils/util'
 export default create({
   name: 'crud',
   mixins: [locale],
@@ -70,7 +72,7 @@ export default create({
           list.push(Object.assign(ele, { prop: o }))
         }
       }
-      list = list.filter(item => !this.validatenull(item.order)).sort((a, b) => (a.order || 0) - (b.order || 0)).concat(list.filter(item => this.validatenull(item.order)))
+      list = arraySort(list, 'index', (a, b) => this.crud.objectOption[a.prop]?.index - this.crud.objectOption[b.prop]?.index)
       return list;
     }
   },
