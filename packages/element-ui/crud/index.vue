@@ -521,7 +521,8 @@ export default create({
       this.propOption.forEach(column => {
         if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
-          if (['hide', 'filters', 'order'].includes(ele.prop)) {
+          if (!this.objectOption[column.prop][ele.prop] && ele.prop == 'index') this.$set(this.objectOption[column.prop], ele.prop, '')
+          if (['hide', 'filters', 'index'].includes(ele.prop)) {
             this.$watch(`objectOption.${column.prop}.${ele.prop}`, () => this.refreshTable())
           }
         })
@@ -548,7 +549,7 @@ export default create({
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
       this.propOption.forEach((ele, index) => {
-        this.objectOption[ele.prop].order = index;
+        this.objectOption[ele.prop].index = index;
       })
     },
     //展开或则关闭

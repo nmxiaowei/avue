@@ -22,8 +22,8 @@
 
 <body>
   <div id="app">
-    {{list}}
-    <avue-crud :data="list" :option="option" @sortable-change="sortableChange">
+    {{defaults}}
+    <avue-crud :defaults.sync="defaults" :data="list" :option="option" @sortable-change="sortableChange">
     </avue-crud>
   </div>
 </body>
@@ -32,6 +32,7 @@
     el: '#app',
     data() {
       return {
+        defaults: {},
         list: [
           {
             id: 1,
