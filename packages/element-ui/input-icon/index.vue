@@ -28,7 +28,7 @@
           <div :class="b('item',{'active':text===item})"
                v-for="(item,index) in list"
                :key="index">
-            <svg v-if="item.value.indexOf('#')===0" :class="b('icon-symbol')" aria-hidden="true">
+            <svg  @click="handleSubmit(item.value)" v-if="item.value.indexOf('#')===0" :class="b('icon-symbol')" aria-hidden="true">
               <use :xlink:href="item.value"></use>
             </svg>
             <i v-if="item.value.indexOf('#')!==0" :class="[b('icon'),item.value]"
