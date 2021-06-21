@@ -11,7 +11,7 @@
               @focus="handleShow">
       <template #append>
         <span @click="handleShow">
-          <svg v-if="text.indexOf('#')===0"
+          <svg v-if="isSvg(text)"
                class="avue-crud__icon--small"
                aria-hidden="true">
             <use :xlink:href="text"></use>
@@ -35,7 +35,7 @@
              v-for="(item,index) in list"
              @click="handleSubmit(item.value)"
              :key="index">
-          <svg v-if="item.value.indexOf('#')===0"
+          <svg v-if="isSvg(item.value)"
                :class="b('icon-symbol')"
                aria-hidden="true">
             <use :xlink:href="item.value"></use>
@@ -43,8 +43,8 @@
           <i v-else
              :class="[b('icon'),item.value]"></i>
           <p>{{item.label || item.value}}</p>
-        </div>
-        </el-scrollbar>
+        </div>　
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -96,6 +96,9 @@ export default create({
     this.tabs = this.iconList[0] || {};
   },
   methods: {
+    isSvg (text = '') {
+      return text.includes('#')
+    },
     handleTabs (tabs) {
       this.tabs = tabs;
     },

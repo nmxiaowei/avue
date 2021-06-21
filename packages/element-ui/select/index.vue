@@ -31,15 +31,17 @@
                    :disabled="citem[disabledKey]"
                    :label="getLabelText(citem)"
                    :value="citem[valueKey]">
-          <slot :label="labelKey"
-                :value="valueKey"
-                :item="citem"
-                v-if="$slots.default">
-          </slot>
-          <template v-else>
-            <span>{{ getLabelText(citem) }}</span>
-            <span v-if="citem.desc"
-                  :class="b('desc')">{{ citem.desc }}</span>
+          <template #>
+            <slot :label="labelKey"
+                  :value="valueKey"
+                  :item="citem"
+                  v-if="$slots.default">
+            </slot>
+            <template v-else>
+              <span>{{ getLabelText(citem) }}</span>
+              <span v-if="citem.desc"
+                    :class="b('desc')">{{ citem.desc }}</span>
+            </template>
           </template>
         </el-option>
       </el-option-group>
@@ -50,15 +52,18 @@
                  :disabled="item[disabledKey]"
                  :label="getLabelText(item) "
                  :value="item[valueKey]">
-        <slot :label="labelKey"
-              :value="valueKey"
-              :item="item"
-              v-if="$slots.default">
-        </slot>
-        <template v-else>
-          <span>{{ getLabelText(item) }}</span>
-          <span v-if="item[descKey]"
-                :class="b('desc')">{{ item[descKey] }}</span>
+
+        <template #>
+          <slot :label="labelKey"
+                :value="valueKey"
+                :item="item"
+                v-if="$slots.default">
+          </slot>
+          <template v-else>
+            <span>{{ getLabelText(item) }}</span>
+            <span v-if="item[descKey]"
+                  :class="b('desc')">{{ item[descKey] }}</span>
+          </template>
         </template>
       </el-option>
     </template>
