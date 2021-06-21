@@ -28,7 +28,10 @@
           <div :class="b('item',{'active':text===item})"
                v-for="(item,index) in list"
                :key="index">
-            <i :class="[b('icon'),item.value]"
+            <svg  @click="handleSubmit(item.value)" v-if="item.value.indexOf('#')===0" :class="b('icon-symbol')" aria-hidden="true">
+              <use :xlink:href="item.value"></use>
+            </svg>
+            <i v-if="item.value.indexOf('#')!==0" :class="[b('icon'),item.value]"
                @click="handleSubmit(item.value)"></i>
             <p>{{item.label || item.value}}</p>
           </div>
@@ -101,5 +104,3 @@ export default create({
   }
 });
 </script>
-
-

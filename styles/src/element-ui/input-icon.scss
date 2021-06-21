@@ -19,4 +19,12 @@
   &__icon{
     font-size: 32px !important;
   }
+  &__icon-symbol{
+    width: 1.6em;
+    height: 1.6em;
+    padding-right: 8px;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
 }
