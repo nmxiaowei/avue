@@ -21,22 +21,24 @@
                append-to-body
                :visible.sync="box"
                :width="dialogWidth">
-      <el-scrollbar style="height:400px;overflow-x:hidden">
-        <avue-tabs :option="option"
-                   @change="handleTabs"></avue-tabs>
-        <div :class="b('list')">
-          <div :class="b('item',{'active':text===item})"
-               v-for="(item,index) in list"
-               :key="index">
-            <svg  @click="handleSubmit(item.value)" v-if="item.value.indexOf('#')===0" :class="b('icon-symbol')" aria-hidden="true">
-              <use :xlink:href="item.value"></use>
-            </svg>
-            <i v-if="item.value.indexOf('#')!==0" :class="[b('icon'),item.value]"
-               @click="handleSubmit(item.value)"></i>
-            <p>{{item.label || item.value}}</p>
-          </div>
+      <avue-tabs :option="option"
+                 @change="handleTabs"></avue-tabs>
+      <div :class="b('list')">
+        <div :class="b('item',{'active':text===item})"
+             v-for="(item,index) in list"
+             :key="index">
+          <svg @click="handleSubmit(item.value)"
+               v-if="item.value.indexOf('#')===0"
+               :class="b('icon-symbol')"
+               aria-hidden="true">
+            <use :xlink:href="item.value"></use>
+          </svg>
+          <i v-else
+             :class="[b('icon'),item.value]"
+             @click="handleSubmit(item.value)"></i>
+          <p>{{item.label || item.value}}</p>
         </div>
-      </el-scrollbar>
+      </div>
     </el-dialog>
   </div>
 </template>
