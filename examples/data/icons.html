@@ -26,8 +26,7 @@
 </body>
 <script>
 
-  new Vue({
-    el: '#app',
+  var app = Vue.created({
     data() {
       return {
         option: {
@@ -94,6 +93,9 @@
 
     }
   })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
 </script>
 
 </html>

@@ -27,8 +27,7 @@
   </div>
 </body>
 <script>
-  new Vue({
-    el: '#app',
+  var app = Vue.createApp({
     data() {
       return {
         obj: {
@@ -81,6 +80,9 @@
       }
     }
   })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
 </script>
 
 </html>

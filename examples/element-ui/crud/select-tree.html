@@ -564,8 +564,7 @@
     label: 'name',
     value: 'id'
   }
-  new Vue({
-    el: '#app',
+  var app = Vue.createApp({
     data() {
       return {
         dic: dic,
@@ -645,6 +644,9 @@
       }
     }
   })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
 </script>
 
 

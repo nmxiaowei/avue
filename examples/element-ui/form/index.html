@@ -22,7 +22,7 @@
   <div id="app">
     {{obj}}
     <avue-form :option="option" v-model="obj" @submit="submit">
-      <template slot-scope="scope" slot="name">
+      <template #name="scope">
         <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
       </template>
       <template #test="scope">

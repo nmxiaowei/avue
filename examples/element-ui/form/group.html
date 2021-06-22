@@ -30,8 +30,7 @@
 </body>
 <script>
   let baseUrl = 'https://cli.avuejs.com/api/area'
-  new Vue({
-    el: '#app',
+  var app = Vue.createApp({
     computed: {
       title() {
         return this.type === 0 ? '编辑' : '保存'
@@ -309,6 +308,9 @@
       }
     }
   })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
 </script>
 
 </html>
