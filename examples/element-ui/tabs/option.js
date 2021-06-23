@@ -30,8 +30,7 @@ var infoOption = {
     }]
   }, {
     label: '自定义测试',
-    prop: 'test',
-    formslot: true
+    prop: 'test'
   }]
 }
 
