@@ -34,17 +34,13 @@ export default create({
       return this.parentOption.card;
     },
     parentOption () {
-      let option = this.deepClone(this.tableOption);
-      return option;
+      return this.tableOption;
     },
     propOption () {
-      let list = [];
-      this.columnOption.forEach(column => list.push(column));
-      return list;
+      return this.columnOption;
     },
     columnOption () {
-      let list = [...this.parentOption.column] || [];
-      return list;
+      return this.parentOption.column;
     }
   },
   data () {
