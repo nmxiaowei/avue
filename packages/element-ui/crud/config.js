@@ -36,7 +36,7 @@ export default {
   cancelBtnIcon: 'el-icon-circle-close',
   viewBtnIcon: 'el-icon-view',
   editBtnIcon: 'el-icon-edit',
-  copyBtnIcon: 'el-icon-document-add',
+  copyBtnIcon: 'el-icon-copy-document',
   addBtnIcon: 'el-icon-plus',
   printBtnIcon: 'el-icon-printer',
   excelBtnIcon: 'el-icon-download',

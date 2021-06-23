@@ -8,7 +8,7 @@
              :multiple-limit="limit"
              :collapse-tags="tags"
              @click="initScroll"
-             :value="labelShow"
+             :model-value="labelShow"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
              @focus="handleFocus"
@@ -61,8 +61,8 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 import { DIC_SHOW_SPLIT } from 'global/variable';
 import { detailDataType } from 'utils/util';
 import { sendDic } from "core/dic";

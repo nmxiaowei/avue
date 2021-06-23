@@ -6,7 +6,7 @@
                    v-if="getColumnProp(columnOption,'hide')"
                    :filters="getColumnProp(columnOption,'filters')"
                    :filter-method="getColumnProp(columnOption,'filterMethod')?handleFiltersMethod:undefined"
-                   :filter-multiple="vaildData(columnOption.filterMultiple,true)"
+                   :filter-multiple="validData(columnOption.filterMultiple,true)"
                    :show-overflow-tooltip="columnOption.overHidden"
                    :min-width="columnOption.minWidth"
                    :sortable="getColumnProp(columnOption,'sortable')"
@@ -32,7 +32,7 @@
                        filter-placement="bottom-end"
                        :filters="getColumnProp(column,'filters')"
                        :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
-                       :filter-multiple="vaildData(column.filterMultiple,true)"
+                       :filter-multiple="validData(column.filterMultiple,true)"
                        :show-overflow-tooltip="column.overHidden"
                        :min-width="column.minWidth"
                        :sortable="getColumnProp(column,'sortable')"
@@ -86,7 +86,7 @@
                          :props="column.props || crud.tableOption.props"
                          :readonly="column.readonly"
                          :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[$index]"
-                         :clearable="vaildData(column.clearable,false)"
+                         :clearable="validData(column.clearable,false)"
                          v-bind="$uploadFun(column,crud)"
                          v-model="row[column.prop]"
                          @change="columnChange($index,row,column,index)">
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import formTemp from '../../core/components/form/index'
+import formTemp from 'common/components/form/index'
 export default {
   name: 'column-dynamic',
   components: {

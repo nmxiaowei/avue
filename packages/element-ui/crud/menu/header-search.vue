@@ -45,17 +45,12 @@
 
 <script>
 import create from "core/create";
-import { vaildData } from "utils/util";
+import locale from "core/locale";
+import { validData } from "utils/util";
 import { validatenull } from "utils/validate";
-import locale from "../../core/common/locale";
 import slot from 'core/slot'
-import {
-  formInitVal,
-  getSearchType,
-  getType,
-  getPlaceholder
-} from "core/dataformat";
-import config from "./config";
+import { formInitVal, getSearchType, getType, getPlaceholder } from "core/dataformat";
+import config from "../config";
 export default create({
   name: "crud__search",
   inject: ["crud"],
@@ -125,7 +120,7 @@ export default create({
       return [...list, ...this.crud.columnOption]
     },
     isSearchIcon () {
-      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
+      return this.validData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
     },
     searchIndex () {
       return this.crud.option.searchIndex || 2
@@ -151,7 +146,7 @@ export default create({
               multiple: ele.searchMultiple,
               order: ele.searchOrder,
               detail: false,
-              dicFlag: ele.cascaderItem ? true : this.vaildData(ele.dicFlag, false),
+              dicFlag: ele.cascaderItem ? true : this.validData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || this.config.searchSpan,
               gutter: ele.searchGutter || option.searchGutter || this.config.searchGutter,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
@@ -192,15 +187,15 @@ export default create({
         result.column = detailColumn(this.deepClone(this.propOption))
         result = Object.assign(result, {
           tabs: false,
-          enter: this.vaildData(option.searchEnter, true),
+          enter: this.validData(option.searchEnter, true),
           printBtn: false,
           mockBtn: false,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
-          submitBtn: this.vaildData(option.searchBtn, this.config.searchSubBtn),
+          submitBtn: this.validData(option.searchBtn, this.config.searchSubBtn),
           submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
           emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
-          emptyBtn: this.vaildData(option.emptyBtn, this.config.emptyBtn),
+          emptyBtn: this.validData(option.emptyBtn, this.config.emptyBtn),
           emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
@@ -250,7 +245,7 @@ export default create({
     dataFormat () {
       this.defaultForm = formInitVal(this.option.column);
       this.searchForm = this.deepClone(this.defaultForm.tableForm);
-      this.searchShow = vaildData(
+      this.searchShow = validData(
         this.crud.tableOption.searchShow,
         this.crud.config.searchShow
       );

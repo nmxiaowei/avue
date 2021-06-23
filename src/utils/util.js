@@ -481,7 +481,7 @@ export const clearVal = (obj, list = []) => {
 /**
  * 验证是否存在true/false
  */
-export const vaildData = (val, dafult) => {
+export const validData = (val, dafult) => {
   if (typeof val === 'boolean') {
     return val;
   }

@@ -3,7 +3,7 @@
     <el-row :span="24"
             :gutter="gutter">
       <el-col :span="span"
-              v-if="vaildData(option.addBtn,true)">
+              v-if="validData(option.addBtn,true)">
         <div :class="b('item',{'add':true})"
              @click="rowAdd()">
           <i class="el-icon-plus"></i>
@@ -65,33 +65,33 @@ export default create({
       }
     }
   },
-  data() {
+  data () {
     return {
       propsDefault: propsDefault
     };
   },
   computed: {
-    imgKey: function() {
+    imgKey: function () {
       return this.option.props.img || this.propsDefault.img;
     },
-    titleKey: function() {
+    titleKey: function () {
       return this.option.props.title || this.propsDefault.title;
     },
-    infoKey: function() {
+    infoKey: function () {
       return this.option.props.info || this.propsDefault.info;
     },
-    span() {
+    span () {
       return this.option.span || 8;
     },
-    gutter() {
+    gutter () {
       return this.option.gutter || 20;
     }
   },
   methods: {
-    rowAdd() {
+    rowAdd () {
       this.$emit("row-add");
     },
-    rowClick(row, index) {
+    rowClick (row, index) {
       this.$emit("row-click", row, index);
     }
   }

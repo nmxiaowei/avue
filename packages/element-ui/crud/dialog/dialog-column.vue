@@ -1,7 +1,7 @@
 <template>
   <el-drawer lock-scroll
              append-to-body
-             :class="['avue-dialog',b('dialog'),b('column')]"
+             :custom-class="['avue-dialog',b('dialog'),b('column')]"
              :title="t('crud.showTitle')"
              @opened="rowDrop"
              :size="crud.isMobile?'100%':'40%'"
@@ -26,21 +26,8 @@
                            header-align="center"
                            v-if="item.hide!=true"
                            :label="item.label">
-            <<<<<<< HEAD
-                    <template
-                    #="{row}">
-              <el-slider :min="0"
-                         :max="2000"
-                         size="small"
-                         v-if="item.prop=='width'"
-                         v-model="crud.objectOption[row.prop][item.prop]"></el-slider>
-              <el-checkbox v-else
-                           v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-              =======
-              <template slot-scope="{row}">
-                <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-                >>>>>>> 0a461a6f... fix:crud header column params
-              </template>
+            <template #="{row}">
+              <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
           </el-table-column>
         </template>
 
@@ -50,10 +37,10 @@
 </template>
 <script>
 import create from "core/create";
-import config from "./config.js";
+import locale from "core/locale";
 import packages from "core/packages";
-import locale from "../../core/common/locale";
 import { arraySort } from 'utils/util'
+import config from "./config.js";
 export default create({
   name: 'crud',
   mixins: [locale],

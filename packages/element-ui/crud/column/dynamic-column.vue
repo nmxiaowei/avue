@@ -28,7 +28,7 @@
                          filter-placement="bottom-end"
                          :filters="handleFilters(column)"
                          :filter-method="column.filter? handleFiltersMethod : undefined"
-                         :filter-multiple="vaildData(column.filterMultiple,true)"
+                         :filter-multiple="validData(column.filterMultiple,true)"
                          :show-overflow-tooltip="column.overHidden"
                          :min-width="column.minWidth"
                          :sortable="column.sortable"
@@ -47,7 +47,7 @@
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[scope.row.$index]"
-                       :clearable="vaildData(column.clearable,false)"
+                       :clearable="validData(column.clearable,false)"
                        v-bind="$uploadFun(column,crud)"
                        v-model="scope.row[column.prop]"
                        @change="columnChange(index,scope.row,column)">
@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import formTemp from '../../core/components/form/index'
-import locale from "../../core/common/locale";
+import locale from "core/locale";
+import formTemp from 'common/components/form/index'
 export default {
   name: "dynamic-column",
   mixins: [locale],

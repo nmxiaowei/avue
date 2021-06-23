@@ -5,7 +5,7 @@
           :xs="24"
           :style="styleName"
           :class="[formSafe.b('menu',[formSafe.menuPosition]),'no-print']"
-          v-if="vaildData(formSafe.parentOption.menuBtn,true)">
+          v-if="validData(formSafe.parentOption.menuBtn,true)">
     <el-form-item label-width="0px">
       <el-button type="primary"
                  @click="formSafe.handleMock"
@@ -24,12 +24,12 @@
                  :size="formSafe.controlSize"
                  :icon="formSafe.parentOption.submitIcon || 'el-icon-check'"
                  :loading="formSafe.allDisabled"
-                 v-if="vaildData(formSafe.parentOption.submitBtn,true)">{{vaildData(formSafe.parentOption.submitText,t("form.submit"))}}</el-button>
+                 v-if="validData(formSafe.parentOption.submitBtn,true)">{{validData(formSafe.parentOption.submitText,t("form.submit"))}}</el-button>
       <el-button :icon="formSafe.parentOption.emptyIcon || 'el-icon-delete'"
                  :size="formSafe.controlSize"
                  :loading="formSafe.allDisabled"
-                 v-if="vaildData(formSafe.parentOption.emptyBtn,true)"
-                 @click="formSafe.resetForm">{{vaildData(formSafe.parentOption.emptyText,t("form.empty"))}}</el-button>
+                 v-if="validData(formSafe.parentOption.emptyBtn,true)"
+                 @click="formSafe.resetForm">{{validData(formSafe.parentOption.emptyText,t("form.empty"))}}</el-button>
       <slot name="menuForm"
             :disabled="formSafe.allDisabled"
             :size="formSafe.controlSize"></slot>
@@ -37,7 +37,7 @@
   </el-col>
 </template>
 <script>
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 export default {
   inject: ["formSafe"],
   mixins: [locale],

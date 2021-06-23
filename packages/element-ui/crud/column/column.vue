@@ -18,7 +18,7 @@
                      filter-placement="bottom-end"
                      :filters="getColumnProp(column,'filters')"
                      :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
-                     :filter-multiple="vaildData(column.filterMultiple,true)"
+                     :filter-multiple="validData(column.filterMultiple,true)"
                      :show-overflow-tooltip="column.overHidden"
                      :min-width="column.minWidth"
                      :sortable="getColumnProp(column,'sortable')"
@@ -72,7 +72,7 @@
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
-                       :clearable="vaildData(column.clearable,false)"
+                       :clearable="validData(column.clearable,false)"
                        v-bind="$uploadFun(column,crud)"
                        v-model="row[column.prop]"
                        @change="columnChange($index,row,column,index)">
@@ -121,9 +121,9 @@ let count = {}
 import create from "core/create";
 import { detail } from "core/detail";
 import { sendDic } from "core/dic";
+import formTemp from 'common/components/form/index'
 import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
 import columnDynamic from "./column-dynamic";
-import formTemp from '../../core/components/form/index'
 import { arraySort } from 'utils/util'
 export default create({
   name: "crud",

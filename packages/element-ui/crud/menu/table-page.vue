@@ -1,13 +1,13 @@
 <template>
   <div :class="b('pagination')"
-       v-if="pageFlag && vaildData(crud.tableOption.page,true)">
+       v-if="pageFlag && validData(crud.tableOption.page,true)">
     <slot name="page"></slot>
     <el-pagination :small="crud.isMobile"
                    :disabled="defaultPage.disabled"
-                   :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
+                   :hide-on-single-page="validData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
                    v-model="defaultPage.currentPage"
-                   :background="vaildData(defaultPage.background,config.pageBackground)"
+                   :background="validData(defaultPage.background,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"
                    @size-change="sizeChange"
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import config from "./config";
+import config from "../config";
 import create from "core/create";
 export default create({
   name: "crud",
