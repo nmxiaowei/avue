@@ -42,7 +42,7 @@
                        :width="getColumnProp(column,'width')"
                        :fixed="getColumnProp(column,'fixed')">
         <template #header="scope">
-          <slot v-bind="{...column,...{$index}}"
+          <slot v-bind="{column,$index}"
                 :name="crud.getSlotName(column,'H')"
                 v-if="crud.getSlotName(column,'H',crud.$slots)"></slot>
           <el-popover placement="bottom"
@@ -100,29 +100,8 @@
                 :label="handleShowLabel(row,column,crud.DIC[column.prop])"
                 :name="column.prop"
                 v-else-if="column.prop,crud.$slots"></slot>
-          <template v-else>
-            <span v-if="['img','upload'].includes(column.type)">
-              <div class="avue-crud__img">
-                <img v-for="(item,index) in getImgList(row,column) "
-                     :src="item"
-                     :key="index"
-                     @click="openImg(getImgList(row,column),index)" />
-              </div>
-            </span>
-            <span v-else-if="['url'].includes(column.type)">
-              <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
-                       type="primary"
-                       :key="index"
-                       :href="item"
-                       :target="column.target || '_blank'">{{item}}</el-link>
-            </span>
-            <span v-else-if="['rate'].includes(column.type)">
-              <avue-rate disabled
-                         v-model="row[column.prop]" />
-            </span>
-            <span v-else
-                  v-html="handleDetail(row,column)"></span>
-          </template>
+          <column-temp v-else
+                       v-bind="{row,column}"></column-temp>
         </template>
       </el-table-column>
     </template>
@@ -131,10 +110,12 @@
 
 <script>
 import formTemp from 'common/components/form/index'
+import columnTemp from './menu'
 export default {
   name: 'column-dynamic',
   components: {
-    formTemp
+    formTemp,
+    columnTemp
   },
   inject: ["dynamic", 'crud'],
   props: {
@@ -147,16 +128,12 @@ export default {
   created () {
     const list = [
       'getColumnProp',
-      "corArray",
-      "openImg",
-      "detailData",
       "vaildLabel",
       "vaildColumn",
       "handleDetail",
       "handleShowLabel",
       "handleChange",
       "columnChange",
-      "getImgList",
       "handleFiltersMethod",
       "handleFilters"
     ];

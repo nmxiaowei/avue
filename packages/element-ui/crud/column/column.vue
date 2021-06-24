@@ -28,7 +28,7 @@
                      :width="getColumnProp(column,'width')"
                      :fixed="getColumnProp(column,'fixed')">
       <template #header="{$index}">
-        <slot v-bind="{...column,...{$index}}"
+        <slot v-bind="{column,$index}"
               :name="crud.getSlotName(column,'H')"
               v-if="crud.getSlotName(column,'H',crud.$slots)"></slot>
         <el-popover placement="bottom"
@@ -54,7 +54,8 @@
           <el-tooltip :content="(crud.listError[`list.${$index}.${column.prop}`] || {}).msg"
                       :disabled="!(crud.listError[`list.${$index}.${column.prop}`] || {}).valid"
                       placement="top">
-            <slot v-bind="{
+            <div>
+              <slot v-bind="{
                       row:row,
                       dic:crud.DIC[column.prop],
                       size:crud.isMediumSize,
@@ -63,20 +64,21 @@
                       label:handleShowLabel(row,column,crud.DIC[column.prop]),
                       '$cell':row.$cellEdit
                     }"
-                  :name="crud.getSlotName(column,'F')"
-                  v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
-            <form-temp v-else
-                       :column="column"
-                       :size="crud.isMediumSize"
-                       :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                       :props="column.props || crud.tableOption.props"
-                       :readonly="column.readonly"
-                       :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
-                       :clearable="validData(column.clearable,false)"
-                       v-bind="$uploadFun(column,crud)"
-                       v-model="row[column.prop]"
-                       @change="columnChange($index,row,column,index)">
-            </form-temp>
+                    :name="crud.getSlotName(column,'F')"
+                    v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
+              <form-temp v-else
+                         :column="column"
+                         :size="crud.isMediumSize"
+                         :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
+                         :props="column.props || crud.tableOption.props"
+                         :readonly="column.readonly"
+                         :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
+                         :clearable="validData(column.clearable,false)"
+                         v-bind="$uploadFun(column,crud)"
+                         v-model="row[column.prop]"
+                         @change="columnChange($index,row,column,index)">
+              </form-temp>
+            </div>
           </el-tooltip>
         </el-form-item>
         <slot :row="row"
@@ -86,29 +88,8 @@
               :label="handleShowLabel(row,column,crud.DIC[column.prop])"
               :name="column.prop"
               v-else-if="crud.$slots[column.prop]"></slot>
-        <template v-else>
-          <span v-if="['img','upload'].includes(column.type)">
-            <div class="avue-crud__img">
-              <img v-for="(item,index) in getImgList(row,column)"
-                   :src="item"
-                   :key="index"
-                   @click="openImg(getImgList(row,column),index)" />
-            </div>
-          </span>
-          <span v-else-if="['url'].includes(column.type)">
-            <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
-                     type="primary"
-                     :key="index"
-                     :href="item"
-                     :target="column.target || '_blank'">{{item}}</el-link>
-          </span>
-          <span v-else-if="['rate'].includes(column.type)">
-            <avue-rate disabled
-                       v-model="row[column.prop]" />
-          </span>
-          <span v-else
-                v-html="handleDetail(row,column)"></span>
-        </template>
+        <column-temp v-else
+                     v-bind="{row,column}"></column-temp>
       </template>
     </el-table-column>
   </template>
@@ -122,15 +103,17 @@ import create from "core/create";
 import { detail } from "core/detail";
 import { sendDic } from "core/dic";
 import formTemp from 'common/components/form/index'
-import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
+import { DIC_PROPS } from 'global/variable'
 import columnDynamic from "./column-dynamic";
 import { arraySort } from 'utils/util'
+import columnTemp from './menu'
 export default create({
   name: "crud",
   data () {
     return {}
   },
   components: {
+    columnTemp,
     formTemp,
     columnDynamic
   },
@@ -171,38 +154,6 @@ export default create({
       if (column.rules && row.$cellEdit) {
         return val
       }
-    },
-    corArray (list, separator = DIC_SPLIT) {
-      if (this.validatenull(list)) {
-        return []
-      } else if (!Array.isArray(list)) {
-        return list.split(separator);
-      }
-      return list
-    },
-    getImgList (row, column) {
-      let url = (column.propsHttp || {}).home || ''
-      let value = (column.props || {}).value || DIC_PROPS.value;
-      if (this.validatenull(row[column.prop])) return []
-      if (column.listType == 'picture-img') return [url + row[column.prop]]
-      let list = this.corArray(this.deepClone(row[column.prop]), column.separator);
-      list.forEach((ele, index) => {
-        if (typeof ele === 'object') {
-          list[index] = url + ele[value];
-        } else {
-          list[index] = url + ele;
-        }
-      })
-      return list;
-    },
-    handleDetail (row, column) {
-      let result = row[column.prop];
-      let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
-      result = detail(row, column, this.crud.tableOption, DIC);
-      if (!this.validatenull(DIC)) {
-        row["$" + column.prop] = result;
-      }
-      return result;
     },
     handleShowLabel (row, column, DIC) {
       let result = "";
@@ -274,12 +225,6 @@ export default create({
         );
       })
 
-    },
-    openImg (list, index) {
-      list = list.map(ele => {
-        return { thumbUrl: ele, url: ele }
-      })
-      this.$ImagePreview(list, index);
     },
     //表格筛选逻辑
     handleFiltersMethod (value, row, column) {
