@@ -39,8 +39,8 @@
                :current-node-key="multiple?'':text"
                @check="checkChange"
                :filter-node-method="filterNode"
-               :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?[]:keysList)"
-               :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
+               :default-expanded-keys="defaultExpandAll?[]:keysList"
+               :default-checked-keys="keysList"
                :default-expand-all="defaultExpandAll"
                @node-click.self="handleNodeClick">
         <template #="{data}">
@@ -132,9 +132,6 @@ export default create({
     },
     iconClass: {
       type: String,
-    },
-    defaultCheckedKeys: {
-      type: Array,
     },
     defaultExpandAll: {
       type: Boolean,
@@ -276,6 +273,8 @@ export default create({
     init () {
       setTimeout(() => {
         this.node = [];
+        this.$refs.tree.setCheckedKeys(this.keysList)
+        if (this.validatenull(this.keysList)) return
         if (this.multiple) {
           let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
           list.forEach(ele => {

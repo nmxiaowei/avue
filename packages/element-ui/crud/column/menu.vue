@@ -24,7 +24,7 @@
 
 <script>
 import { detail } from "core/detail";
-import { DIC_SPLIT } from 'global/variable'
+import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
 export default {
   props: {
     column: Object,

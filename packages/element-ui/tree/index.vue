@@ -250,14 +250,14 @@ export default create({
     filterValue (val) {
       this.$refs.tree.filter(val);
     },
+    modelValue () {
+      this.form = val;
+    },
     form (val) {
       this.$emit('update:modelValue', val);
     }
   },
   methods: {
-    handleModelValue (val) {
-      this.form = val;
-    },
     getPermission (key) {
       if (typeof this.permission === "function") {
         return this.permission(key, this.node)

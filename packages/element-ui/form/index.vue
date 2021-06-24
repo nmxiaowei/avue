@@ -201,7 +201,7 @@ export default create({
       bindList: {},
       form: {},
       formList: [],
-      formCreate: false,
+      formCreated: false,
       formDefault: {},
       formVal: {}
     };
@@ -220,16 +220,17 @@ export default create({
     },
     form: {
       handler (val) {
-        if (this.formCreate) this.setVal();
+        if (this.formCreated) this.setVal()
       },
       deep: true
     },
     modelValue: {
       handler (val) {
-        if (this.formCreate) {
-          this.setForm(val);
+        if (this.formCreated) {
+          this.setForm(Object.assign(this.formDefault, this.formVal, val));
         } else {
-          this.formVal = Object.assign(this.formVal, val || {});
+          this.formCreated = true;
+          this.formVal = val;
         }
       },
       deep: true,
@@ -375,12 +376,7 @@ export default create({
     }
   },
   created () {
-    this.$nextTick(() => {
-      this.dataFormat();
-      this.setVal();
-      this.$nextTick(() => this.clearValidate())
-      this.formCreate = true;
-    })
+    this.dataFormat()
   },
   methods: {
     getComponent,
@@ -441,9 +437,7 @@ export default create({
     },
     //初始化表单
     dataFormat () {
-      this.formDefault = formInitVal(this.propOption);
-      let value = this.deepClone(this.formDefault.tableForm);
-      this.setForm(this.deepClone(Object.assign(value, this.formVal)))
+      this.formDefault = formInitVal(this.propOption).tableForm;
     },
     setVal () {
       this.setControl();

@@ -61,8 +61,7 @@
                       size:crud.isMediumSize,
                       index:$index,
                       disabled:crud.btnDisabledList[$index],
-                      label:handleShowLabel(row,column,crud.DIC[column.prop]),
-                      '$cell':row.$cellEdit
+                      label:handleShowLabel(row,column,crud.DIC[column.prop])
                     }"
                     :name="crud.getSlotName(column,'F')"
                     v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
