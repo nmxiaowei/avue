@@ -67,13 +67,6 @@ export default create({
       default: ""
     }
   },
-  watch: {
-    text () {
-      if (Array.isArray(this.text) && this.validatenull(this.text)) {
-        this.text = this.text.join(',')
-      }
-    }
-  },
   created () { },
   mounted () { },
   computed: {
@@ -81,6 +74,12 @@ export default create({
       return this.type === "timerange";
     }
   },
-  methods: {}
+  methods: {
+    handleTextValue (val) {
+      if (Array.isArray(this.text) && this.validatenull(this.text)) {
+        this.text = this.text.join(',')
+      }
+    }
+  }
 });
 </script>

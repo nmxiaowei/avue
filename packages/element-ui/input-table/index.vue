@@ -64,24 +64,6 @@ export default create({
       default: '80%'
     },
   },
-  watch: {
-    value (val) {
-      if (this.validatenull(val)) {
-        this.active = {}
-        this.object = {}
-      }
-    },
-    text (val) {
-      if (this.created || this.validatenull(val)) return
-      if (typeof this.onLoad == 'function') {
-        this.onLoad({ value: this.text }, data => {
-          this.active = data
-          this.object = data
-          this.created = true;
-        })
-      }
-    }
-  },
   computed: {
     title () {
       return (this.disabled || this.readonly) ? "查看" : '选择'
@@ -104,6 +86,22 @@ export default create({
     }
   },
   methods: {
+    handleModelValue (val) {
+      if (this.validatenull(val)) {
+        this.active = {}
+        this.object = {}
+      }
+    },
+    handleTextValue (val) {
+      if (this.created || this.validatenull(val)) return
+      if (typeof this.onLoad == 'function') {
+        this.onLoad({ value: this.text }, data => {
+          this.active = data
+          this.object = data
+          this.created = true;
+        })
+      }
+    },
     handleClear () {
       this.active = {}
       this.setVal()

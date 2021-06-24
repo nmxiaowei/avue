@@ -22,7 +22,7 @@
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
              :disabled="disabled">
-    <template v-if="group">
+    <template v-if="isGroup">
       <el-option-group v-for="(item,index) in netDic"
                        :key="index"
                        :label="getLabelText(item)">
@@ -82,7 +82,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
-      created: false,
+      create: false,
       netDic: [],
       loading: false,
     };
@@ -128,14 +128,6 @@ export default create({
     }
   },
   watch: {
-    value (val) {
-      if (!this.validatenull(val)) {
-        if (this.remote && !this.created) {
-          this.created = true
-          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
-        }
-      }
-    },
     dic: {
       handler (val) {
         this.netDic = val;
@@ -149,6 +141,14 @@ export default create({
     }
   },
   methods: {
+    handleModelValue (val) {
+      if (!this.validatenull(this.text)) {
+        if (this.remote && !this.created) {
+          this.created = true
+          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+        }
+      }
+    },
     setSort () {
       if (!window.Sortable) {
         packages.logs('Sortable');

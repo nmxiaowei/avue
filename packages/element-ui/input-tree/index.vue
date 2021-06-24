@@ -142,22 +142,6 @@ export default create({
     },
   },
   watch: {
-    text: {
-      handler (value) {
-        this.init();
-        if (this.validatenull(value)) {
-          this.clearHandle();
-        }
-      },
-    },
-    value (val) {
-      if (!this.validatenull(val)) {
-        if (this.lazy && !this.created) {
-          this.created = true
-          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
-        }
-      }
-    },
     dic: {
       handler (val) {
         this.netDic = val;
@@ -224,6 +208,20 @@ export default create({
     }
   },
   methods: {
+    handleTextValue (value) {
+      this.init();
+      if (this.validatenull(value)) {
+        this.clearHandle();
+      }
+    },
+    handleModelValue (val) {
+      if (!this.validatenull(val)) {
+        if (this.lazy && !this.created) {
+          this.created = true
+          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+        }
+      }
+    },
     handleClear () {
       if (this.multiple) {
         this.text = [];

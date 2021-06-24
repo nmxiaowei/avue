@@ -76,21 +76,6 @@ export default create({
     poi (val) {
       this.formattedAddress = val.formattedAddress
     },
-    value (val) {
-      if (this.validatenull(val)) {
-        this.poi = {}
-      }
-    },
-    text (val) {
-      if (!this.validatenull(val)) {
-        this.poi = {
-          longitude: val[0],
-          latitude: val[1],
-          formattedAddress: val[2],
-        }
-        this.address = val[2];
-      }
-    },
     box: {
       handler () {
         if (this.box) {
@@ -119,6 +104,19 @@ export default create({
     }
   },
   methods: {
+    handleTextValue (val) {
+      if (!this.validatenull(val)) {
+        this.poi = {
+          longitude: val[0],
+          latitude: val[1],
+          formattedAddress: val[2],
+        }
+        this.address = val[2];
+      }
+    },
+    handleModelValue (val) {
+      if (this.validatenull(val)) this.poi = {}
+    },
     clear () {
       this.poi = {};
       this.clearMarker();

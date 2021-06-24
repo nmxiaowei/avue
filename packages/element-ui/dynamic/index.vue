@@ -213,11 +213,11 @@ export default create({
     textLen () {
       return this.text.length;
     },
-    text () {
-      this.initData();
-    }
   },
   methods: {
+    handleTextValue (val) {
+      this.initData();
+    },
     handleSelectionChange (val) {
       this.selectionChange && this.selectionChange(val);
     },

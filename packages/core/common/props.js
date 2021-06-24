@@ -112,10 +112,6 @@ export default function () {
         type: Boolean,
         default: false
       },
-      group: {
-        type: Boolean,
-        default: false
-      },
       row: {
         type: Boolean,
         default: false
@@ -139,13 +135,15 @@ export default function () {
     },
     watch: {
       text: {
-        handler (n) {
-          this.handleChange(n)
+        handler (val) {
+          this.handleChange(val)
+          this.handleTextValue && this.handleTextValue(val)
         }
       },
       modelValue: {
-        handler () {
+        handler (val) {
           this.initVal();
+          this.handleModelValue && this.handleModelValue(val)
         }
       }
     },
@@ -157,6 +155,15 @@ export default function () {
       },
       required () {
         return !this.validatenull(this.rules);
+      },
+      isGroup () {
+        let result = false;
+        this.dic.forEach(ele => {
+          if (ele[this.groupsKey]) {
+            result = true;
+          }
+        })
+        return result
       },
       isArray () {
         return this.dataType === 'array';
