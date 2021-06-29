@@ -92,7 +92,7 @@ function createdDic (option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    let result = ele.dicFlag === false || ele.remote === true || ele.lazy === true || flagdic.includes(prop)
+    let result = ele.dicFlag === false || ele.lazy === true || flagdic.includes(prop)
     if (result) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
