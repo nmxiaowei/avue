@@ -39,7 +39,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   if (column.bind) result = getAsVal(row, column.bind);
   // 字典处理
   if (!validatenull(dic)) {
-    result = findByValue(dic, result, column.props, ['cascader', 'tree'].includes(column.type), column);
+    result = findByValue(dic, result, column.props);
   }
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {

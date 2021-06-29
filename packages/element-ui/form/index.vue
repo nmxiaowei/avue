@@ -401,7 +401,12 @@ export default create({
     },
     forEachLabel () {
       this.propOption.forEach(column => {
-        this.handleShowLabel(column, this.DIC[column.prop]);
+        let result;
+        let DIC = this.DIC[column.prop]
+        if (!this.validatenull(DIC)) {
+          result = detail(this.form, column, this.tableOption, DIC);
+          this.$set(this.form, ["$" + column.prop], result);
+        }
       });
     },
     handleGroupClick (activeNames) {
@@ -420,15 +425,6 @@ export default create({
         result = this.parentOption.labelWidth;
       }
       return this.setPx(result, this.labelWidth);
-    },
-    //获取全部字段字典的label
-    handleShowLabel (column, DIC) {
-      let result;
-      if (!this.validatenull(DIC)) {
-        result = detail(this.form, column, this.tableOption, DIC);
-        this.$set(this.form, ["$" + column.prop], result);
-      }
-      return result;
     },
     //对部分表单字段进行校验的方法
     validateField (val) {
