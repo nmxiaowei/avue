@@ -52,8 +52,11 @@ export const initVal = (value, column) => {
     ARRAY_VALUE_LIST.includes(type) && emitPath !== false
   ) {
     if (!Array.isArray(list)) {
-      if (validatenull(list)) list = [];
-      list = (list + '').split(separator) || [];
+      if (validatenull(list)) {
+        list = [];
+      } else {
+        list = (list + '').split(separator) || [];
+      }
     }
     // 数据转化
     list.forEach((ele, index) => {
