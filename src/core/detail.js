@@ -28,10 +28,18 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   // 日期处理
   if (DATE_LIST.includes(type) && column.format && !validatenull(result)) {
     const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
+    let formatValue = dayjs().format('YYYY-MM-DD');
     if (type.indexOf('range') !== -1) {
       let date1 = result[0], date2 = result[1]
+      if (type === 'timerange' && date1.length <= 8 && date2.length < 8) {
+        date1 = `${formatValue} ${date1}`
+        date2 = `${formatValue} ${date2}`
+      }
       result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~')
     } else {
+      if (type === 'time' && result.length <= 8) {
+        result = `${formatValue} ${result}`
+      }
       result = dayjs(result).format(format);
     }
   }
