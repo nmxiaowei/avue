@@ -307,17 +307,17 @@ export default create({
       }
     },
     formSlot () {
-      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$scopedSlots)
+      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$scopedSlots, this.propOption)
     },
     searchSlot () {
-      return this.getSlotList(['Search'], this.$scopedSlots)
+      return this.getSlotList(['Search'], this.$scopedSlots, this.propOption)
     },
     mainSlot () {
       let result = [];
       this.propOption.forEach(item => {
         if (this.$scopedSlots[item.prop]) result.push(item.prop)
       })
-      return this.getSlotList(['Header', 'Form'], this.$scopedSlots).concat(result)
+      return this.getSlotList(['Header', 'Form'], this.$scopedSlots, this.propOption).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
