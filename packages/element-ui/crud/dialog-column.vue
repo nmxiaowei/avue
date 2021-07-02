@@ -19,7 +19,7 @@
                          width="100"
                          header-align="center"
                          prop="label"
-                         label="列名">
+                         :label="t('crud.column.name')">
         </el-table-column>
         <template v-for="(item,index) in crud.defaultColumn">
           <el-table-column :prop="item.prop"

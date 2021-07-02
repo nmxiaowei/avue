@@ -238,7 +238,30 @@ export default create({
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      defaultColumn: config.defaultColumn,
+      defaultColumn: [{
+        label: this.t('crud.column.hide'),
+        prop: 'hide'
+      }, {
+        label: this.t('crud.column.fixed'),
+        prop: 'fixed'
+      }, {
+        label: this.t('crud.column.filters'),
+        prop: 'filters'
+      }, {
+        label: this.t('crud.column.screen'),
+        prop: 'screen'
+      }, {
+        label: this.t('crud.column.sortable'),
+        prop: 'sortable'
+      }, {
+        label: this.t('crud.column.index'),
+        prop: 'index',
+        hide: true
+      }, {
+        label: this.t('column.width'),
+        prop: 'width',
+        hide: true
+      }],
       default: {},
       defaultBind: {},
 
