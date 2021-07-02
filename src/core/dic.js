@@ -165,13 +165,18 @@ export const sendDic = (params) => {
   if (method === 'post') {
     list = Object.keys(query);
     list.forEach(ele => {
-      let eleKey = query[ele] + '';
+      let eleKey = query[ele];
+      if (typeof (eleKey) === 'object') {
+        data[ele] = eleKey;
+        return
+      }
       let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
       if (eleKey.match(/\{{|}}/g)) {
         data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
       } else {
         data[ele] = eleKey;
       }
+
     });
   }
 
