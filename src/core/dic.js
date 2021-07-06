@@ -1,7 +1,7 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
 import { getObjValue, detailDic } from 'utils/util';
-export const loadCascaderDic = (columnOption, list) => {
+export const loadCascaderDic = (columnOption, list = []) => {
   return new Promise((resolve, reject) => {
     let columnList = [];
     let result = [];
@@ -22,14 +22,14 @@ export const loadCascaderDic = (columnOption, list) => {
                 });
               } else {
                 if (column.dicUrl) {
-                  sendDic(Object.assign({
-                    url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
-                  }, {
+                  sendDic({
+                    url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`,
                     props: column.props,
                     method: column.dicMethod,
                     formatter: column.dicFormatter,
-                    query: column.dicQuery
-                  })).then(res => {
+                    query: column.dicQuery,
+                    form: ele
+                  }).then(res => {
                     resolve({
                       prop: column.prop,
                       data: res,
