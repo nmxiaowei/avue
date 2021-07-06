@@ -64,7 +64,7 @@
                       :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
-                              :rules="column.rules"
+                              :rules="isDetail?[]:column.rules"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
