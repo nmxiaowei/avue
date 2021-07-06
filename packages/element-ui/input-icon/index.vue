@@ -11,7 +11,7 @@
               @focus="handleShow">
       <span slot="append"
             @click="handleShow">
-        <svg v-if="text.indexOf('#')===0"
+        <svg v-if="(text || '').indexOf('#')===0"
              class="avue-crud__icon--small"
              aria-hidden="true">
           <use :xlink:href="text"></use>

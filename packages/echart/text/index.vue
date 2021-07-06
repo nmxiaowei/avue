@@ -1,6 +1,5 @@
 <template>
   <div :class="b()"
-       :style="styleSizeName"
        ref="main"
        @click="handleClick">
     <div ref="box"
@@ -8,7 +7,7 @@
       <a ref="text"
          :class="b('text')"
          :href="linkHref"
-         :style="styleName"
+         :style="[styleName,styleSizeName]"
          :target="linkTarget">{{dataChart.value}}</a>
     </div>
 
