@@ -1,4 +1,3 @@
-import Schema from 'async-validator';
 import { deepClone } from './util';
 /**
  * 判断是否为空

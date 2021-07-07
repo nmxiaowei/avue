@@ -1,10 +1,5 @@
 import { validatenull } from './validate';
 import { DIC_PROPS, DIC_SHOW_SPLIT } from 'global/variable';
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-
-export function hasOwn (obj, key) {
-  return hasOwnProperty.call(obj, key);
-};
 export function getFixed (val = 0, len = 2) {
   return Number(val.toFixed(len));
 }

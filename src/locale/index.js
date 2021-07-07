@@ -3,7 +3,7 @@ import zh from './lang/zh';
 import en from './lang/en';;
 import deepmerge from 'deepmerge';
 import Format from './format';
-const Vue = window.Vue;
+import Vue from 'vue';
 const format = Format(Vue);
 let lang = zh;
 let merged = false;

@@ -14,7 +14,6 @@ import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 import $Group from 'packages/core/components/group/';
-import $Echart from 'core/echart/common';
 
 let prototypes = {
   $Export,
@@ -124,7 +123,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 const Avue = Object.assign({
   version: version,
   locale: locale.locale,
-  $Echart,
   install
 }, components);
 

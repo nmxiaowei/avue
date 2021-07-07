@@ -1,12 +1,15 @@
-import { hasOwn } from 'utils/util';
+const hasOwnProperty = Object.prototype.hasOwnProperty;
 
+export function hasOwn (obj, key) {
+  return hasOwnProperty.call(obj, key);
+};
 const RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
 /**
  *  String format template
  *  - Inspired:
  *    https://github.com/Matt-Esch/string-template/index.js
  */
-export default function(Vue) {
+export default function (Vue) {
 
   /**
    * template
@@ -16,7 +19,7 @@ export default function(Vue) {
    * @return {String}
    */
 
-  function template(string = '', ...args) {
+  function template (string = '', ...args) {
     if (args.length === 1 && typeof args[0] === 'object') {
       args = args[0];
     }

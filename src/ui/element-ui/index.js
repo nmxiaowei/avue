@@ -51,8 +51,7 @@ if (!window.Element) {
   packages.logs('element-ui');
 }
 import AvueData from '../data/';
-import AvueEchart from '../echart/';
-export default Object.assign(AvueData, AvueEchart, {
+export default Object.assign(AvueData, {
   Arrays,
   Affix,
   Avatar,
