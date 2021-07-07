@@ -7,13 +7,14 @@ export function getAsVal (obj, bind = '') {
   let result = deepClone(obj);
   if (validatenull(bind)) return result;
   bind.split('.').forEach(ele => {
-    if (!validatenull(result[ele])) {
-      result = result[ele];
-    } else {
-      result = '';
-    }
+    result = !validatenull(result[ele]) ? result[ele] : '';
   });
   return result;
+}
+
+export function setAsVal (obj, bind = '', value = '') {
+  eval('obj.' + bind + '=`' + value + '`');
+  return obj;
 }
 export const loadScript = (type = 'js', url) => {
   let flag = false;
@@ -122,10 +123,6 @@ export function createObj (obj, bind) {
     deep[first] = result;
   }
   obj = extend(true, obj, deep);
-  return obj;
-}
-export function setAsVal (obj, bind = '', value = '') {
-  eval('obj.' + bind + '="' + value + '"');
   return obj;
 }
 export function dataURLtoFile (dataurl, filename) {
