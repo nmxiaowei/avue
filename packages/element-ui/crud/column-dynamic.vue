@@ -28,7 +28,14 @@
       </column-dynamic>
       <column-slot v-else
                    :column="column"
-                   :column-option="columnOption.children"></column-slot>
+                   :column-option="columnOption.children">
+        <template v-for="item in crud.mainSlot"
+                  slot-scope="scope"
+                  :slot="item">
+          <slot v-bind="scope"
+                :name="item"></slot>
+        </template>
+      </column-slot>
     </template>
   </el-table-column>
 </template>

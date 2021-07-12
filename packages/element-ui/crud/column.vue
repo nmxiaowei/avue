@@ -15,7 +15,14 @@
       </column-dynamic>
       <column-slot v-else
                    :column="column"
-                   :column-option="columnOption"></column-slot>
+                   :column-option="columnOption">
+        <template v-for="item in crud.mainSlot"
+                  slot-scope="scope"
+                  :slot="item">
+          <slot v-bind="scope"
+                :name="item"></slot>
+        </template>
+      </column-slot>
     </template>
     <slot name="footer"></slot>
   </div>
