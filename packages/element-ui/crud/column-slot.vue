@@ -1,5 +1,5 @@
 <template>
-  <el-table-column v-else-if="getColumnProp(column,'hide')"
+  <el-table-column v-if="getColumnProp(column,'hide')"
                    :key="column.prop"
                    :prop="column.prop"
                    :label="column.label"
