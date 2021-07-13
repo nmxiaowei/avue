@@ -108,6 +108,7 @@
 </template>
 
 <script>
+let count = {}
 import { detail } from "core/detail";
 import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
 import { sendDic } from "core/dic";

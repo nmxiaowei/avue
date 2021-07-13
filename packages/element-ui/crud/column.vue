@@ -31,7 +31,6 @@
 
 <script>
 
-let count = {}
 import create from "core/create";
 import columnDynamic from "./column-dynamic";
 import columnSlot from './column-slot'

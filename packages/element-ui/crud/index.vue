@@ -162,10 +162,7 @@
       <template slot-scope="scope"
                 v-for="item in formSlot"
                 :slot="item">
-        <slot v-bind="Object.assign(scope,{
-              row:item.dynamic?scope.row:tableForm,
-              index:item.dynamic?scope.row.$index:tableIndex
-              })"
+        <slot v-bind="scope"
               :name="item"></slot>
       </template>
       <template slot-scope="scope"
