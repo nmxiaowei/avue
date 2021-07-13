@@ -53,7 +53,7 @@
                     v-if="getSlotName(item,'H',$slots)">
             <slot :name="getSlotName(item,'H')"></slot>
           </template>
-          <div :class="b('group',{'flex':vaildData(item.flex,true)})"
+          <div :class="b('group',{'flex':validData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
@@ -107,7 +107,7 @@
                   </template>
                   <component :is="validTip(column)?'div':'elTooltip'"
                              :disabled="validTip(column)"
-                             :content="vaildData(column.tip,getPlaceholder(column))"
+                             :content="validData(column.tip,getPlaceholder(column))"
                              :placement="column.tipPlacement">
                     <slot :value="form[column.prop]"
                           :column="column"
@@ -201,7 +201,7 @@ export default create({
       bindList: {},
       form: {},
       formList: [],
-      formCreate: false,
+      formCreated: false,
       formDefault: {},
       formVal: {}
     };
@@ -220,16 +220,17 @@ export default create({
     },
     form: {
       handler (val) {
-        if (this.formCreate) this.setVal();
+        if (this.formCreated) this.setVal()
       },
       deep: true
     },
     modelValue: {
       handler (val) {
-        if (this.formCreate) {
-          this.setForm(val);
+        if (this.formCreated) {
+          this.setForm(Object.assign(this.formDefault, this.formVal, val));
         } else {
-          this.formVal = Object.assign(this.formVal, val || {});
+          this.formCreated = true;
+          this.formVal = val;
         }
       },
       deep: true,
@@ -342,13 +343,13 @@ export default create({
       return this.parentOption.boxType;
     },
     isPrint () {
-      return this.vaildData(this.parentOption.printBtn, false)
+      return this.validData(this.parentOption.printBtn, false)
     },
     tabsActive () {
-      return this.vaildData(this.tableOption.tabsActive + '', '1')
+      return this.validData(this.tableOption.tabsActive + '', '1')
     },
     isMock () {
-      return this.vaildData(this.parentOption.mockBtn, false);
+      return this.validData(this.parentOption.mockBtn, false);
     }
   },
   props: {
@@ -375,12 +376,7 @@ export default create({
     }
   },
   created () {
-    this.$nextTick(() => {
-      this.dataFormat();
-      this.setVal();
-      this.$nextTick(() => this.clearValidate())
-      this.formCreate = true;
-    })
+    this.dataFormat()
   },
   methods: {
     getComponent,
@@ -437,9 +433,7 @@ export default create({
     },
     //初始化表单
     dataFormat () {
-      this.formDefault = formInitVal(this.propOption);
-      let value = this.deepClone(this.formDefault.tableForm);
-      this.setForm(this.deepClone(Object.assign(value, this.formVal)))
+      this.formDefault = formInitVal(this.propOption).tableForm;
     },
     setVal () {
       this.setControl();
@@ -548,11 +542,11 @@ export default create({
     vaildDetail (column) {
       if (this.option.detail) return true;
       if (!this.validatenull(column.detail)) {
-        return this.vaildData(column.detail, false);
+        return this.validData(column.detail, false);
       } else if (this.isAdd) {
-        return this.vaildData(column.addDetail, false);
+        return this.validData(column.addDetail, false);
       } else if (this.isEdit) {
-        return this.vaildData(column.editDetail, false);
+        return this.validData(column.editDetail, false);
       } else if (this.isView) {
         return true;
       } else {
@@ -563,11 +557,11 @@ export default create({
     vaildDisabled (column) {
       if (this.disabled) return true;
       if (!this.validatenull(column.disabled)) {
-        return this.vaildData(column.disabled, false);
+        return this.validData(column.disabled, false);
       } else if (this.isAdd) {
-        return this.vaildData(column.addDisabled, false);
+        return this.validData(column.addDisabled, false);
       } else if (this.isEdit) {
-        return this.vaildData(column.editDisabled, false);
+        return this.validData(column.editDisabled, false);
       } else if (this.isView) {
         return true;
       } else {
@@ -577,13 +571,13 @@ export default create({
     // 验证表单是否显隐
     vaildDisplay (column) {
       if (!this.validatenull(column.display)) {
-        return this.vaildData(column.display, true);
+        return this.validData(column.display, true);
       } else if (this.isAdd) {
-        return this.vaildData(column.addDisplay, true);
+        return this.validData(column.addDisplay, true);
       } else if (this.isEdit) {
-        return this.vaildData(column.editDisplay, true);
+        return this.validData(column.editDisplay, true);
       } else if (this.isView) {
-        return this.vaildData(column.viewDisplay, true);
+        return this.validData(column.viewDisplay, true);
       } else {
         return true;
       }

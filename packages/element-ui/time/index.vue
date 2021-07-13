@@ -22,9 +22,9 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
-import locale from "../../core/common/locale";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
+import locale from "core/locale";
 export default create({
   name: "time",
   mixins: [props(), event(), locale],
@@ -67,13 +67,6 @@ export default create({
       default: ""
     }
   },
-  watch: {
-    text () {
-      if (Array.isArray(this.text) && this.validatenull(this.text)) {
-        this.text = this.text.join(',')
-      }
-    }
-  },
   created () { },
   mounted () { },
   computed: {
@@ -81,6 +74,12 @@ export default create({
       return this.type === "timerange";
     }
   },
-  methods: {}
+  methods: {
+    handleTextValue (val) {
+      if (Array.isArray(this.text) && this.validatenull(this.text)) {
+        this.text = this.text.join(',')
+      }
+    }
+  }
 });
 </script>

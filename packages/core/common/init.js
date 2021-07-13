@@ -55,7 +55,7 @@ export default function () {
     computed: {
       resultOption () {
         return Object.assign(this.deepClone(this.tableOption), {
-          column: this.propOption
+          column: this.propOption || []
         })
       },
       rowKey () {

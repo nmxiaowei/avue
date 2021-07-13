@@ -25,10 +25,10 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 import { GetDateStr } from "utils/date.js";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
-import locale from "../../core/common/locale";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 export default create({
   name: "date",
   mixins: [props(), event(), locale],

@@ -1,6 +1,6 @@
 <template>
   <el-drawer lock-scroll
-             :class="['avue-dialog',b('dialog'),b('filter')]"
+             :custom-class="['avue-dialog',b('dialog'),b('filter')]"
              append-to-body
              :title="t('crud.filterTitle')"
              :size="crud.isMobile?'100%':'60%'"
@@ -66,10 +66,10 @@
 
 <script>
 import { getSearchType, formInitVal } from "core/dataformat";
-import locale from "../../core/common/locale";
 import create from "core/create";
+import locale from "core/locale";
 import { dateList } from "core/dataformat";
-import formTemp from '../../core/components/form/index'
+import formTemp from 'common/components/form/index'
 export default create({
   name: "crud",
   mixins: [locale],

@@ -4,7 +4,7 @@
     <!-- 折叠面板  -->
     <el-table-column type="expand"
                      :width="crud.tableOption.expandWidth || config.expandWidth"
-                     :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
+                     :fixed="validData(crud.tableOption.expandFixed,config.expandFixed)"
                      align="center"
                      v-if="crud.tableOption.expand">
       <template #="{row}">
@@ -16,15 +16,15 @@
 
     <!-- 选择框 -->
     <el-table-column v-if="crud.tableOption.selection"
-                     :fixed="vaildData(crud.tableOption.selectionFixed,config.selectionFixed)"
+                     :fixed="validData(crud.tableOption.selectionFixed,config.selectionFixed)"
                      type="selection"
                      :selectable="crud.tableOption.selectable"
-                     :reserve-selection="vaildData(crud.tableOption.reserveSelection)"
+                     :reserve-selection="validData(crud.tableOption.reserveSelection)"
                      :width="crud.tableOption.selectionWidth || config.selectionWidth"
                      align="center"></el-table-column>
     <!-- 序号 -->
-    <el-table-column v-if="vaildData(crud.tableOption.index)"
-                     :fixed="vaildData(crud.tableOption.indexFixed,config.indexFixed)"
+    <el-table-column v-if="validData(crud.tableOption.index)"
+                     :fixed="validData(crud.tableOption.indexFixed,config.indexFixed)"
                      :label="crud.tableOption.indexLabel || config.indexLabel"
                      type="index"
                      :width="crud.tableOption.indexWidth || config.indexWidth"
@@ -36,10 +36,10 @@
 <script>
 
 import create from "core/create";
-import config from "./config.js";
+import locale from "core/locale";
 import packages from "core/packages";
-import locale from "../../core/common/locale";
-import permission from '../../core/directive/permission';
+import permission from 'common/directive/permission';
+import config from "../config.js";
 export default create({
   name: "crud",
   data () {

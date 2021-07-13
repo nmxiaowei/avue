@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <el-input :size="size"
-              :value="labelShow"
+              :model-value="labelShow"
               :clearable="disabled?false:clearable"
               :placeholder="placeholder"
               ref="main"
@@ -40,8 +40,8 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 export default create({
   name: "input-table",
   mixins: [props(), event()],
@@ -63,24 +63,6 @@ export default create({
       type: String,
       default: '80%'
     },
-  },
-  watch: {
-    value (val) {
-      if (this.validatenull(val)) {
-        this.active = {}
-        this.object = {}
-      }
-    },
-    text (val) {
-      if (this.created || this.validatenull(val)) return
-      if (typeof this.onLoad == 'function') {
-        this.onLoad({ value: this.text }, data => {
-          this.active = data
-          this.object = data
-          this.created = true;
-        })
-      }
-    }
   },
   computed: {
     title () {
@@ -104,6 +86,22 @@ export default create({
     }
   },
   methods: {
+    handleModelValue (val) {
+      if (this.validatenull(val)) {
+        this.active = {}
+        this.object = {}
+      }
+    },
+    handleTextValue (val) {
+      if (this.created || this.validatenull(val)) return
+      if (typeof this.onLoad == 'function') {
+        this.onLoad({ value: this.text }, data => {
+          this.active = data
+          this.object = data
+          this.created = true;
+        })
+      }
+    },
     handleClear () {
       this.active = {}
       this.setVal()

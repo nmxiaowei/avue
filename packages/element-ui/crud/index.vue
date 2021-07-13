@@ -23,7 +23,7 @@
     <el-card :shadow="isCard">
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
-                   v-if="vaildData(tableOption.header,true)">
+                   v-if="validData(tableOption.header,true)">
         <template #menuLeft="scope">
           <slot name="menuLeft"
                 v-bind="scope"></slot>
@@ -34,7 +34,7 @@
         </template>
       </header-menu>
       <el-tag class="avue-crud__tip"
-              v-if="vaildData(tableOption.tip,config.tip) && tableOption.selection">
+              v-if="validData(tableOption.tip,config.tip) && tableOption.selection">
         <span class="avue-crud__tip-name">
           {{t('crud.tipStartTitle')}}
           <span class="avue-crud__tip-count">{{selectLen}}</span>
@@ -44,7 +44,7 @@
                    size="small"
                    @click="selectClear"
                    v-permission="getPermission('selectClearBtn')"
-                   v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
+                   v-if="validData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
         <slot name="tip"></slot>
       </el-tag>
       <slot name="header"></slot>
@@ -55,9 +55,9 @@
         <el-table v-if="reload"
                   :data="cellForm.list"
                   :row-key="handleGetRowKeys"
-                  :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
+                  :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
                   :size="$AVUE.tableSize || controlSize"
-                  :lazy="vaildData(tableOption.lazy,false)"
+                  :lazy="validData(tableOption.lazy,false)"
                   :load="treeLoad"
                   :tree-props="treeProps"
                   :expand-row-keys="tableOption.expandRowKeys"
@@ -171,20 +171,20 @@
 <script>
 import create from "core/create";
 import packages from "core/packages";
-import permission from '../../core/directive/permission';
-import init from "../../core/common/init.js";
-import tablePage from "./table-page";
-import headerSearch from "./header-search";
-import locale from "../../core/common/locale";
-import column from "./column";
-import headerMenu from "./header-menu";
-import dialogColumn from "./dialog-column";
-import dialogFilter from "./dialog-filter";
-import dialogForm from "./dialog-form";
-import columnMenu from './column-menu'
-import columnDefault from './column-default'
+import locale from "core/locale";
+import permission from 'common/directive/permission';
+import init from "common/common/init.js";
+import tablePage from "./menu/table-page";
+import headerSearch from "./menu/header-search";
+import headerMenu from "./menu/header-menu";
+import dialogColumn from "./dialog/dialog-column";
+import dialogFilter from "./dialog/dialog-filter";
+import dialogForm from "./dialog/dialog-form";
+import column from "./column/column";
+import columnMenu from './column/column-menu'
+import columnDefault from './column/column-default'
 import config from "./config.js";
-import treeToArray, { addAttrs } from "./eval";
+import treeToArray, { addAttrs } from "./util/eval";
 import { calcCascader, formInitVal } from "core/dataformat";
 export default create({
   name: "crud",
@@ -328,7 +328,7 @@ export default create({
           flag = true;
         }
       })
-      return this.vaildData(this.tableOption.tree, flag);
+      return this.validData(this.tableOption.tree, flag);
     },
     isCard () {
       return this.option.card ? 'always' : 'never'
@@ -504,7 +504,7 @@ export default create({
         : "display:none;";
     },
     menuIcon (value) {
-      return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
+      return this.validData(this.tableOption[value + 'Text'], this.t("crud." + value))
     },
     //对部分表单字段进行校验的方法
     validateField (val) {

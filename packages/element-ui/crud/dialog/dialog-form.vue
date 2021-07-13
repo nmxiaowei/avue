@@ -1,19 +1,18 @@
 <template>
   <component :is="dialogType"
              lock-scroll
-             :class="['avue-dialog',b('dialog',{'fullscreen':fullscreen})]"
-             :destroy-on-close="crud.tableOption.dialogDestroy"
+             :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
-             v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="crud.tableOption.dialogCustomClass"
+             v-dialogdrag="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
+             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen}),'crud.tableOption.dialogCustomClass']"
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
              :top="setPx(dialogTop)"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
-             :close-on-click-modal="vaildData(crud.tableOption.dialogClickModal,false)"
+             :close-on-click-modal="validData(crud.tableOption.dialogClickModal,false)"
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              v-model="boxVisible"
@@ -30,7 +29,6 @@
         </div>
       </div>
     </template>
-
     <el-scrollbar :style="styleName">
       <avue-form v-model="crud.tableForm"
                  v-if="boxVisible"
@@ -61,8 +59,8 @@
 <script>
 import { filterDefaultParams } from 'utils/util'
 import create from "core/create";
-import locale from "../../core/common/locale";
-import config from "./config";
+import locale from "core/locale";
+import config from "../config";
 export default create({
   name: "crud",
   mixins: [locale],
@@ -105,7 +103,7 @@ export default create({
       return this.crud.tableOption.dialogDirection
     },
     width () {
-      return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
+      return this.validData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
     },
     dialogType () {
       return this.isDrawer ? 'elDrawer' : 'elDialog'
@@ -272,9 +270,7 @@ export default create({
     hide (done) {
       const callback = () => {
         done && done();
-        Object.keys(this.crud.tableForm).forEach(ele => {
-          delete this.crud.tableForm[ele];
-        })
+        Object.keys(this.crud.tableForm).forEach(ele => delete this.crud.tableForm[ele])
         this.crud.tableIndex = -1;
         this.boxVisible = false;
       };

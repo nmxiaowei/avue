@@ -8,7 +8,7 @@
              :multiple-limit="limit"
              :collapse-tags="tags"
              @click="initScroll"
-             :value="labelShow"
+             :model-value="labelShow"
              :clearable="disabled?false:clearable"
              :placeholder="placeholder"
              @focus="handleFocus"
@@ -39,8 +39,8 @@
                :current-node-key="multiple?'':text"
                @check="checkChange"
                :filter-node-method="filterNode"
-               :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:(defaultExpandAll?[]:keysList)"
-               :default-checked-keys="defaultCheckedKeys?defaultCheckedKeys:keysList"
+               :default-expanded-keys="defaultExpandAll?[]:keysList"
+               :default-checked-keys="keysList"
                :default-expand-all="defaultExpandAll"
                @node-click.self="handleNodeClick">
         <template #="{data}">
@@ -61,8 +61,8 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 import { DIC_SHOW_SPLIT } from 'global/variable';
 import { detailDataType } from 'utils/util';
 import { sendDic } from "core/dic";
@@ -133,31 +133,12 @@ export default create({
     iconClass: {
       type: String,
     },
-    defaultCheckedKeys: {
-      type: Array,
-    },
     defaultExpandAll: {
       type: Boolean,
       default: false
     },
   },
   watch: {
-    text: {
-      handler (value) {
-        this.init();
-        if (this.validatenull(value)) {
-          this.clearHandle();
-        }
-      },
-    },
-    value (val) {
-      if (!this.validatenull(val)) {
-        if (this.lazy && !this.created) {
-          this.created = true
-          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
-        }
-      }
-    },
     dic: {
       handler (val) {
         this.netDic = val;
@@ -224,6 +205,20 @@ export default create({
     }
   },
   methods: {
+    handleTextValue (value) {
+      this.init();
+      if (this.validatenull(value)) {
+        this.clearHandle();
+      }
+    },
+    handleModelValue (val) {
+      if (!this.validatenull(val)) {
+        if (this.lazy && !this.created) {
+          this.created = true
+          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+        }
+      }
+    },
     handleClear () {
       if (this.multiple) {
         this.text = [];
@@ -278,6 +273,8 @@ export default create({
     init () {
       setTimeout(() => {
         this.node = [];
+        this.$refs.tree.setCheckedKeys(this.keysList)
+        if (this.validatenull(this.keysList)) return
         if (this.multiple) {
           let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
           list.forEach(ele => {

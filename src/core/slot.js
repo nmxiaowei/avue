@@ -20,7 +20,7 @@ export default {
         let result = false;
         if (!propList.includes(ele)) {
           list.forEach(name => {
-            if (ele.includes(name)) result = true;
+            if (ele.includes(name.toLowerCase())) result = true;
           })
         }
         return result;

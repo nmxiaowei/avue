@@ -6,7 +6,7 @@
                  :icon="config.addBtnIcon"
                  :size="crud.isMediumSize"
                  v-permission="crud.getPermission('addBtn')"
-                 v-if="vaildData(crud.tableOption.addBtn,config.addBtn)">
+                 v-if="validData(crud.tableOption.addBtn,config.addBtn)">
         <template v-if="!crud.isIconMenu">
           {{crud.menuIcon('addBtn')}}
         </template>
@@ -16,7 +16,7 @@
                  :icon="config.addBtnIcon"
                  v-permission="crud.getPermission('addRowBtn')"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.addRowBtn,config.addRowBtn)">
+                 v-if="validData(crud.tableOption.addRowBtn,config.addRowBtn)">
         <template v-if="!crud.isIconMenu">
           {{crud.menuIcon('addBtn')}}
         </template>
@@ -26,7 +26,7 @@
                  :icon="config.printBtnIcon"
                  v-permission="crud.getPermission('printBtn')"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.printBtn,config.printBtn)">
+                 v-if="validData(crud.tableOption.printBtn,config.printBtn)">
         <template v-if="!crud.isIconMenu">
           {{crud.menuIcon('printBtn')}}
         </template>
@@ -36,7 +36,7 @@
                  :icon="config.excelBtnIcon"
                  v-permission="crud.getPermission('excelBtn')"
                  :size="crud.isMediumSize"
-                 v-if="vaildData(crud.tableOption.excelBtn,config.excelBtn)">
+                 v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
         <template v-if="!crud.isIconMenu">
           {{crud.menuIcon('excelBtn')}}
         </template>
@@ -53,42 +53,42 @@
                  format="yyyy-MM-dd HH:mm:ss"
                  :pickerOptions="pickerOptions"
                  style="display:inline-block;margin-right:20px;"
-                 v-if="vaildData(crud.tableOption.dateBtn,config.dateBtn)"
+                 v-if="validData(crud.tableOption.dateBtn,config.dateBtn)"
                  :size="crud.isMediumSize"></avue-date>
       <el-button :icon="config.refreshBtnIcon"
                  circle
                  :size="crud.isMediumSize"
                  @click="crud.refreshChange"
                  v-permission="crud.getPermission('refreshBtn')"
-                 v-if="vaildData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
+                 v-if="validData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
       <el-button :icon="config.columnBtnIcon"
                  circle
                  :size="crud.isMediumSize"
                  @click="crud.$refs.dialogColumn.columnBox=true"
                  v-permission="crud.getPermission('columnBtn')"
-                 v-if="vaildData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
+                 v-if="validData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
       <el-button :icon="config.searchBtnIcon"
                  circle
                  :size="crud.isMediumSize"
                  @click="crud.$refs.headerSearch.handleSearchShow()"
-                 v-if="(crud.$refs.headerSearch || {}).searchFlag&&vaildData(crud.tableOption.searchShowBtn,true)"></el-button>
+                 v-if="(crud.$refs.headerSearch || {}).searchFlag&&validData(crud.tableOption.searchShowBtn,true)"></el-button>
       <el-button :icon="config.filterBtnIcon"
                  circle
                  :size="crud.isMediumSize"
                  @click="crud.$refs.dialogFilter.box=true"
                  v-permission="crud.getPermission('filterBtn')"
-                 v-if="vaildData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
+                 v-if="validData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
     </div>
   </div>
 </template>
 
 <script>
-import locale from "../../core/common/locale";
-import permission from '../../core/directive/permission';
 import create from "core/create";
-import config from "./config";
+import locale from "core/locale";
 import packages from "core/packages";
-import { vaildData, getAsVal } from "utils/util";
+import permission from 'common/directive/permission';
+import { validData, getAsVal } from "utils/util";
+import config from "../config";
 export default create({
   name: "crud",
   mixins: [locale],
@@ -169,7 +169,7 @@ export default create({
 
     },
     initFun () {
-      this.vaildData = vaildData;
+      this.validData = validData;
       this.crud.rowExcel = this.rowExcel;
       this.crud.rowPrint = this.rowPrint;
     },

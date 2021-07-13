@@ -1,15 +1,15 @@
 <template>
   <div :class="b()">
     <div :class="b('filter')"
-         v-if="vaildData(option.filter,true)">
-      <el-input :placeholder="vaildData(option.filterText,'输入关键字进行过滤')"
+         v-if="validData(option.filter,true)">
+      <el-input :placeholder="validData(option.filterText,'输入关键字进行过滤')"
                 :size="size"
                 v-model="filterValue">
         <el-button #append
                    :size="size"
                    @click="parentAdd"
                    icon="el-icon-plus"
-                   v-if="vaildData(option.addBtn,true)&&!$slots.addBtn"></el-button>
+                   v-if="validData(option.addBtn,true)&&!$slots.addBtn"></el-button>
         <slot v-else
               name="addBtn"
               #append></slot>
@@ -56,15 +56,15 @@
          :style="styleName"
          :class="b('menu')">
       <div :class="b('item')"
-           v-if="vaildData(option.addBtn,true)"
+           v-if="validData(option.addBtn,true)"
            v-permission="getPermission('addBtn')"
            @click="rowAdd">新增</div>
       <div :class="b('item')"
-           v-if="vaildData(option.editBtn,true)"
+           v-if="validData(option.editBtn,true)"
            v-permission="getPermission('editBtn')"
            @click="rowEdit">修改</div>
       <div :class="b('item')"
-           v-if="vaildData(option.delBtn,true)"
+           v-if="validData(option.delBtn,true)"
            v-permission="getPermission('delBtn')"
            @click="rowRemove">删除</div>
       <slot name="menu"
@@ -76,7 +76,7 @@
                modal-append-to-body
                append-to-body
                @close="hide"
-               :width="vaildData(option.dialogWidth,'50%')">
+               :width="validData(option.dialogWidth,'50%')">
       <avue-form v-model="form"
                  :option="formOption"
                  ref="form"
@@ -88,7 +88,7 @@
 
 <script>
 import { DIC_PROPS } from 'global/variable';
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 import create from "core/create";
 import permission from '../../core/directive/permission';
 export default create({
@@ -164,7 +164,7 @@ export default create({
       })
     },
     menu () {
-      return this.vaildData(this.option.menu, true)
+      return this.validData(this.option.menu, true)
     },
     title () {
       return this.option.title
@@ -250,7 +250,7 @@ export default create({
     filterValue (val) {
       this.$refs.tree.filter(val);
     },
-    value (val) {
+    modelValue () {
       this.form = val;
     },
     form (val) {

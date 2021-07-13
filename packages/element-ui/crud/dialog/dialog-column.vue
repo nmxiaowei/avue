@@ -1,7 +1,7 @@
 <template>
   <el-drawer lock-scroll
              append-to-body
-             :class="['avue-dialog',b('dialog'),b('column')]"
+             :custom-class="['avue-dialog',b('dialog'),b('column')]"
              :title="t('crud.showTitle')"
              @opened="rowDrop"
              :size="crud.isMobile?'100%':'40%'"
@@ -26,22 +26,20 @@
                            header-align="center"
                            v-if="item.hide!=true"
                            :label="item.label">
-            <template slot-scope="{row}">
+            <template #="{row}">
               <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-            </template>
           </el-table-column>
         </template>
-
       </el-table>
     </div>
   </el-drawer>
 </template>
 <script>
 import create from "core/create";
-import config from "./config.js";
+import locale from "core/locale";
 import packages from "core/packages";
-import locale from "../../core/common/locale";
 import { arraySort } from 'utils/util'
+import config from "./config.js";
 export default create({
   name: 'crud',
   mixins: [locale],

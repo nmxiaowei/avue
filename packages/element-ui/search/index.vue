@@ -9,7 +9,7 @@
       <div :class="b('content')">
         <slot :name="column.prop"
               :dic="DIC[column.prop]"
-              v-if="column.slot"></slot>
+              v-if="$slots[column.prop]"></slot>
         <span v-else
               :class="[b('tags'),{'avue-search__tags--active':getActive(item,column)}]"
               @click="handleClick(column,item)"
@@ -37,7 +37,7 @@ export default create({
       return this.tableOption;
     },
     propOption () {
-      return this.tableOption;
+      return this.columnOption;
     },
     columnOption () {
       return this.parentOption.column;

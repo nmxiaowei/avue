@@ -5,7 +5,7 @@
               :clearable="disabled?false:clearable"
               :disabled="disabled"
               ref="main"
-              v-model="address"
+              :model-value="address"
               @focus="handleShow"
               @click.="handleClick"
               :placeholder="placeholder">
@@ -51,8 +51,8 @@
 <script>
 import packages from "core/packages";
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 export default create({
   name: "input-map",
   mixins: [props(), event()],
@@ -75,21 +75,6 @@ export default create({
   watch: {
     poi (val) {
       this.formattedAddress = val.formattedAddress
-    },
-    value (val) {
-      if (this.validatenull(val)) {
-        this.poi = {}
-      }
-    },
-    text (val) {
-      if (!this.validatenull(val)) {
-        this.poi = {
-          longitude: val[0],
-          latitude: val[1],
-          formattedAddress: val[2],
-        }
-        this.address = val[2];
-      }
     },
     box: {
       handler () {
@@ -119,6 +104,19 @@ export default create({
     }
   },
   methods: {
+    handleTextValue (val) {
+      if (!this.validatenull(val)) {
+        this.poi = {
+          longitude: val[0],
+          latitude: val[1],
+          formattedAddress: val[2],
+        }
+        this.address = val[2];
+      }
+    },
+    handleModelValue (val) {
+      if (this.validatenull(val)) this.poi = {}
+    },
     clear () {
       this.poi = {};
       this.clearMarker();

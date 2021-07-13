@@ -9,5 +9,6 @@ module.exports = {
   plugin: resolve('src/plugin'),
   utils: resolve('src/utils'),
   mixins: resolve('packages/mixins'),
-  packages: resolve('packages')
+  common: resolve('packages/core'),
+  packages: resolve('packages'),
 };

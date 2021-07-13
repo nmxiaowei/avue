@@ -24,8 +24,8 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 export default create({
   name: "input-color",
   mixins: [props(), event()],

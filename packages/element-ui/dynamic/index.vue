@@ -73,8 +73,8 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
 export default create({
   name: "dynamic",
   mixins: [props(), event()],
@@ -99,7 +99,7 @@ export default create({
   },
   computed: {
     showIndex () {
-      return this.vaildData(this.children.index, true)
+      return this.validData(this.children.index, true)
     },
     showType () {
       return this.children.type || 'crud'
@@ -197,7 +197,7 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: this.vaildData(ele.cell, true)
+            cell: this.validData(ele.cell, true)
           }))
         })
         return {
@@ -213,11 +213,11 @@ export default create({
     textLen () {
       return this.text.length;
     },
-    text () {
-      this.initData();
-    }
   },
   methods: {
+    handleTextValue (val) {
+      this.initData();
+    },
     handleSelectionChange (val) {
       this.selectionChange && this.selectionChange(val);
     },

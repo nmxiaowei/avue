@@ -2,8 +2,8 @@
   <!-- 操作栏 -->
   <el-table-column :class="b('btn')"
                    prop="menu"
-                   :fixed="vaildData(crud.tableOption.menuFixed,config.menuFixed)"
-                   v-if="vaildData(crud.tableOption.menu,config.menu)&&crud.getPermission('menu')"
+                   :fixed="validData(crud.tableOption.menuFixed,config.menuFixed)"
+                   v-if="validData(crud.tableOption.menu,config.menu)&&crud.getPermission('menu')"
                    :label="crud.tableOption.menuTitle || t('crud.menu')"
                    :align="crud.tableOption.menuAlign || config.menuAlign"
                    :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
@@ -19,19 +19,19 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :icon="config.viewBtnIcon"
-                              v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)"
+                              v-if="validData(crud.tableOption.viewBtn,config.viewBtn)"
                               v-permission="crud.getPermission('viewBtn',row,$index)"
                               @click="crud.rowView(row,$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
             <el-dropdown-item :icon="config.editBtnIcon"
-                              v-if="vaildData(crud.tableOption.editBtn,config.editBtn)"
+                              v-if="validData(crud.tableOption.editBtn,config.editBtn)"
                               v-permission="crud.getPermission('editBtn',row,$index)"
                               @click="crud.rowEdit(row,$index)">{{t('crud.editBtn')}}</el-dropdown-item>
             <el-dropdown-item :icon="config.copyBtnIcon"
-                              v-if="vaildData(crud.tableOption.copyBtn,config.copyBtn)"
+                              v-if="validData(crud.tableOption.copyBtn,config.copyBtn)"
                               v-permission="crud.getPermission('copyBtn',row,$index)"
                               @click="crud.rowCopy(row)">{{t('crud.copyBtn')}}</el-dropdown-item>
             <el-dropdown-item :icon="config.delBtnIcon"
-                              v-if="vaildData(crud.tableOption.delBtn,config.delBtn)"
+                              v-if="validData(crud.tableOption.delBtn,config.delBtn)"
                               v-permission="crud.getPermission('delBtn',row,$index)"
                               @click="crud.rowDel(row,$index)">{{t('crud.delBtn')}}</el-dropdown-item>
             <slot name="menuBtn"
@@ -45,13 +45,13 @@
 
       </el-dropdown>
       <template v-else-if="['button','text','icon'].includes(menuType)">
-        <template v-if="vaildData(crud.tableOption.cellBtn,config.cellBtn)">
+        <template v-if="validData(crud.tableOption.cellBtn,config.cellBtn)">
           <el-button :type="menuText('primary')"
                      :icon="config.editBtnIcon"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCell(row,$index)"
-                     v-if="vaildData(crud.tableOption.editBtn,config.editBtn)&&!row.$cellEdit"
+                     v-if="validData(crud.tableOption.editBtn,config.editBtn)&&!row.$cellEdit"
                      v-permission="crud.getPermission('editBtn',row,$index)">
             <template v-if="!isIconMenu">
               {{crud.menuIcon('editBtn')}}
@@ -62,7 +62,7 @@
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCell(row,$index)"
-                     v-else-if="vaildData(crud.tableOption.saveBtn,config.saveBtn)&&row.$cellEdit"
+                     v-else-if="validData(crud.tableOption.saveBtn,config.saveBtn)&&row.$cellEdit"
                      v-permission="crud.getPermission('saveBtn',row,$index)">
             <template v-if="!isIconMenu">
               {{crud.menuIcon('saveBtn')}}
@@ -85,7 +85,7 @@
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowView(row,$index)"
                    v-permission="crud.getPermission('viewBtn',row,$index)"
-                   v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)">
+                   v-if="validData(crud.tableOption.viewBtn,config.viewBtn)">
           <template v-if="!isIconMenu">
             {{crud.menuIcon('viewBtn')}}
           </template>
@@ -96,7 +96,7 @@
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowEdit(row,$index)"
                    v-permission="crud.getPermission('editBtn',row,$index)"
-                   v-if="vaildData(crud.tableOption.editBtn,config.editBtn)&&!crud.tableOption.cellBtn">
+                   v-if="validData(crud.tableOption.editBtn,config.editBtn)&&!crud.tableOption.cellBtn">
           <template v-if="!isIconMenu">
             {{crud.menuIcon('editBtn')}}
           </template>
@@ -107,7 +107,7 @@
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowCopy(row)"
                    v-permission="crud.getPermission('copyBtn',row,$index)"
-                   v-if="vaildData(crud.tableOption.copyBtn,config.copyBtn)">
+                   v-if="validData(crud.tableOption.copyBtn,config.copyBtn)">
           <template v-if="!isIconMenu">
             {{crud.menuIcon('copyBtn')}}
           </template>
@@ -118,7 +118,7 @@
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowDel(row,$index)"
                    v-permission="crud.getPermission('delBtn',row,$index)"
-                   v-if="vaildData(crud.tableOption.delBtn,config.delBtn) && !row.$cellEdit">
+                   v-if="validData(crud.tableOption.delBtn,config.delBtn) && !row.$cellEdit">
           <template v-if="!isIconMenu">
             {{crud.menuIcon('delBtn')}}
           </template>
@@ -137,9 +137,9 @@
 
 <script>
 import create from "core/create";
-import config from "./config.js";
-import locale from "../../core/common/locale";
-import permission from '../../core/directive/permission';
+import locale from "core/locale";
+import permission from 'common/directive/permission';
+import config from "../config.js";
 export default create({
   name: "crud",
   data () {
