@@ -112,7 +112,7 @@
             </div>
           </template>
           <column :columnOption="columnOption">
-            <template #$header>
+            <template #header>
               <column-default ref="columnDefault">
                 <template #expand="{row,index}">
                   <slot :row="row"
@@ -126,7 +126,7 @@
               <slot v-bind="scope"
                     :name="item"></slot>
             </template>
-            <template #$footer>
+            <template #footer>
               <column-menu>
                 <template #menu="scope">
                   <slot name="menu"
@@ -224,7 +224,30 @@ export default create({
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      defaultColumn: config.defaultColumn,
+      defaultColumn: [{
+        label: this.t('crud.column.hide'),
+        prop: 'hide'
+      }, {
+        label: this.t('crud.column.fixed'),
+        prop: 'fixed'
+      }, {
+        label: this.t('crud.column.filters'),
+        prop: 'filters'
+      }, {
+        label: this.t('crud.column.screen'),
+        prop: 'screen'
+      }, {
+        label: this.t('crud.column.sortable'),
+        prop: 'sortable'
+      }, {
+        label: this.t('crud.column.index'),
+        prop: 'index',
+        hide: true
+      }, {
+        label: this.t('column.width'),
+        prop: 'width',
+        hide: true
+      }],
       default: {},
       defaultBind: {},
 
@@ -270,17 +293,17 @@ export default create({
       }
     },
     formSlot () {
-      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$slots)
+      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$slots, this.propOption)
     },
     searchSlot () {
-      return this.getSlotList(['Search'], this.$slots)
+      return this.getSlotList(['Search'], this.$slots, this.propOption)
     },
     mainSlot () {
       let result = [];
       this.propOption.forEach(item => {
         if (this.$slots[item.prop]) result.push(item.prop)
       })
-      return this.getSlotList(['Header', 'Form'], this.$slots).concat(result)
+      return this.getSlotList(['Header', 'Form'], this.$slots, this.propOption).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight

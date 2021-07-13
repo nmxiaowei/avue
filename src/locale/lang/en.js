@@ -34,6 +34,16 @@ export default {
       cancelBtn: 'cancel',
       submitBtn: 'submit'
     },
+    column: {
+      name: 'name',
+      hide: 'hide',
+      fixed: 'fixed',
+      filters: 'filters',
+      screen: 'screen',
+      sortable: 'sortable',
+      index: 'index',
+      width: 'width'
+    },
     tipStartTitle: 'Currently selected',
     tipEndTitle: 'term',
     editTitle: 'edit',

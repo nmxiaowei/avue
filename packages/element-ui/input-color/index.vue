@@ -14,7 +14,7 @@
                          v-model="text"
                          :color-format="colorFormat"
                          :disabled="disabled"
-                         show-alpha
+                         :show-alpha="showAlpha"
                          @change="handleChange"
                          :predefine="predefineColors"></el-color-picker>
       </template>
@@ -31,6 +31,10 @@ export default create({
   mixins: [props(), event()],
   props: {
     colorFormat: String,
+    showAlpha: {
+      type: Boolean,
+      default: true
+    },
     iconList: {
       type: Array,
       default: () => {

@@ -47,12 +47,11 @@ $space-width: 15px;
   &__img{
    display:flex;
    justify-content:center;
-    img{
+    img,video{
       height: 40px;
       margin-left:5px;
       object-fit: contain;
     }
-  }
   &__column{
     .el-checkbox{
       margin-bottom: 10px;

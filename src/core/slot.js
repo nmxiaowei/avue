@@ -14,12 +14,15 @@ export default {
       if (slot) return slot[name]
       return name
     },
-    getSlotList (list = [], slot) {
+    getSlotList (list = [], slot, propList) {
+      propList = propList.map(ele => ele.prop)
       return Object.keys(slot).filter(ele => {
         let result = false;
-        list.forEach(name => {
-          if (ele.includes(name)) result = true;
-        })
+        if (!propList.includes(ele)) {
+          list.forEach(name => {
+            if (ele.includes(name)) result = true;
+          })
+        }
         return result;
       })
     }

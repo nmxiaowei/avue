@@ -3,7 +3,7 @@ import components from './ui/index';
 import { typeList } from 'global/variable'
 import { version } from './version'
 import { validatenull } from 'utils/validate.js';
-import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
+import { randomId, deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
 import $Export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
@@ -32,7 +32,8 @@ let plugins = {
   downFile,
   loadScript,
   watermark,
-  findObject
+  findObject,
+  randomId
 
 };
 const install = function (Vue, opts = {}) {

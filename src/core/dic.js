@@ -93,7 +93,7 @@ function createdDic (option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    let result = ele.dicFlag === false || ele.remote === true || ele.lazy === true || flagdic.includes(prop)
+    let result = ele.dicFlag === false || ele.lazy === true || flagdic.includes(prop)
     if (result) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
@@ -104,7 +104,7 @@ function createdDic (option) {
         props: ele.props,
         dataType: ele.dataType,
         resKey: (ele.props || {}).res,
-        query: ele.dicQuery
+        query: ele.dicQuery || {}
       });
     }
   });
@@ -152,7 +152,7 @@ export const sendDic = (params) => {
     formatter = column.dicFormatter;
     props = column.props;
   }
-  let key = "key"
+  let key = 'key';
   url = url || '';
   let list = [];
   let data = {};
@@ -162,17 +162,22 @@ export const sendDic = (params) => {
     let eleValue = form[ele];
     if (ele === key) url = url.replace(eleKey, value);
     else url = url.replace(eleKey, eleValue);
-  })
+  });
   if (method === 'post') {
     list = Object.keys(query);
     list.forEach(ele => {
-      let eleKey = query[ele] + '';
+      let eleKey = query[ele];
+      if (typeof (eleKey) === 'object') {
+        data[ele] = eleKey;
+        return
+      }
       let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
       if (eleKey.match(/\{{|}}/g)) {
         data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
       } else {
         data[ele] = eleKey;
       }
+
     });
   }
 

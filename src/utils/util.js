@@ -12,13 +12,13 @@ export function getAsVal (obj, bind = '') {
   let result = deepClone(obj);
   if (validatenull(bind)) return result;
   bind.split('.').forEach(ele => {
-    if (!validatenull(result[ele])) {
-      result = result[ele];
-    } else {
-      result = '';
-    }
+    result = !validatenull(result[ele]) ? result[ele] : '';
   });
   return result;
+}
+export function setAsVal (obj, bind = '', value = '') {
+  eval('obj.' + bind + '=`' + value + '`');
+  return obj;
 }
 export const loadScript = (type = 'js', url) => {
   let flag = false;
@@ -127,10 +127,6 @@ export function createObj (obj, bind) {
     deep[first] = result;
   }
   obj = extend(true, obj, deep);
-  return obj;
-}
-export function setAsVal (obj, bind = '', value = '') {
-  eval('obj.' + bind + '="' + value + '"');
   return obj;
 }
 export function dataURLtoFile (dataurl, filename) {
@@ -330,27 +326,21 @@ export const detailDic = (list = [], props = {}, type) => {
  * 根据字典的value显示label
  */
 
-export const findByValue = (dic, value, props, isTree, column) => {
+export const findByValue = (dic, value, props) => {
   // 如果为空直接返回
   if (validatenull(dic)) return value;
   let result = '';
+  let isArray = value instanceof Array
+  let list = isArray ? value : [value]
   props = props || DIC_PROPS;
-  if (value instanceof Array) {
-    result = [];
-    for (let i = 0; i < value.length; i++) {
-      const dicvalue = value[i];
-      if (isTree) {
-        result.push(findLabelNode(dic, dicvalue, props) || dicvalue);
-      } else {
-        result.push(findArrayLabel(dic, dicvalue, props));
-      }
-    }
-    result = result.join(DIC_SHOW_SPLIT).toString();
-
-  } else if (['string', 'number', 'boolean'].includes(typeof value)) {
-    result = findLabelNode(dic, value, props) || value;
+  result = [];
+  for (let i = 0; i < list.length; i++) {
+    result.push(findLabelNode(dic, list[i], props) || list[i]);
   }
-  return result;
+  if (isArray) {
+    return result.join(DIC_SHOW_SPLIT).toString();
+  }
+  return result.join()
 };
 /**
  * 过滤字典翻译字段和空字段
@@ -369,39 +359,36 @@ export const filterDefaultParams = (form, translate = true) => {
  * 处理存在group分组的情况
  */
 export const detailDicGroup = (dic) => {
-  dic = deepClone(dic);
-  let list = [];
-  if ((dic[0] || {}).groups) {
-    dic.forEach(ele => {
-      if (ele.groups) {
-        list = list.concat(ele.groups);
-      }
-    });
-    return list;
-  }
-  return dic;
+  let list = deepClone(dic);
+  let groupsKey = props[DIC_PROPS.groups] || DIC_PROPS.groups
+  dic.forEach(ele => {
+    if (ele[groupsKey]) {
+      list = list.concat(ele[groupsKey]);
+    }
+  });
+  return list;
 };
 /**
  * 根据label去找到节点
  */
 export const findLabelNode = (dic, value, props, obj) => {
   let result;
-  if (!obj) dic = detailDicGroup(dic);
-  let rev = (dic1, value1, props1) => {
-    const labelKey = props1.label || DIC_PROPS.label;
-    const valueKey = props1.value || DIC_PROPS.value;
-    const childrenKey = props1.children || DIC_PROPS.children;
+  if (!obj) dic = detailDicGroup(dic, props);
+  let rev = (dic1) => {
+    const labelKey = props.label || DIC_PROPS.label;
+    const valueKey = props.value || DIC_PROPS.value;
+    const childrenKey = props.children || DIC_PROPS.children;
     for (let i = 0; i < dic1.length; i++) {
       const ele = dic1[i];
       const children = ele[childrenKey] || [];
-      if (ele[valueKey] === value1) {
+      if (ele[valueKey] === value) {
         result = obj ? ele : ele[labelKey];
       } else {
-        rev(children, value1, props1);
+        rev(children);
       }
     }
   };
-  rev(dic, value, props);
+  rev(dic);
   return result;
 };
 /**
@@ -423,24 +410,9 @@ export const getObjValue = (data, params = '', type) => {
   return result;
 };
 /**
- * 根据字典的value查找对应的index
- */
-export const findArrayLabel = (dic, value, props) => {
-  dic = detailDicGroup(dic);
-  const valueKey = props.value || DIC_PROPS.value;
-  const labelKey = props.label || DIC_PROPS.label;
-  for (let i = 0; i < dic.length; i++) {
-    if (dic[i][valueKey] === value) {
-      return dic[i][labelKey];
-    }
-  }
-  return value;
-};
-/**
  * 根据值查找对应的序号
  */
 export const findArray = (dic, value, valueKey, obj) => {
-  if (!obj) dic = detailDicGroup(dic);
   valueKey = valueKey || DIC_PROPS.value;
   for (let i = 0; i < dic.length; i++) {
     if (dic[i][valueKey] === value) {

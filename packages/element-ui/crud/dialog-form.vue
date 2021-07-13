@@ -46,8 +46,7 @@
         <!-- 循环form表单卡槽 -->
         <template v-for="item in crud.formSlot"
                   #[getSlotName(item)]="scope">
-          <slot v-bind="Object.assign(scope,{
-                    type:boxType})"
+          <slot v-bind="scope"
                 :name="item"></slot>
         </template>
         <template #menuForm="scope">

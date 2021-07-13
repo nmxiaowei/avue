@@ -67,7 +67,7 @@
                       :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
-                              :rules="column.rules"
+                              :rules="isDetail?[]:column.rules"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
@@ -400,7 +400,12 @@ export default create({
     },
     forEachLabel () {
       this.propOption.forEach(column => {
-        this.handleShowLabel(column, this.DIC[column.prop]);
+        let result;
+        let DIC = this.DIC[column.prop]
+        if (!this.validatenull(DIC)) {
+          result = detail(this.form, column, this.tableOption, DIC);
+          this.form["$" + column.prop] = result;
+        }
       });
     },
     handleGroupClick (activeNames) {
@@ -419,15 +424,6 @@ export default create({
         result = this.parentOption.labelWidth;
       }
       return this.setPx(result, this.labelWidth);
-    },
-    //获取全部字段字典的label
-    handleShowLabel (column, DIC) {
-      let result;
-      if (!this.validatenull(DIC)) {
-        result = detail(this.form, column, this.tableOption, DIC);
-        this.form["$" + column.prop] = result;
-      }
-      return result;
     },
     //对部分表单字段进行校验的方法
     validateField (val) {
@@ -455,6 +451,9 @@ export default create({
         let control = ele.control(this.form[ele.prop], this.form);
         Object.keys(control).forEach(item => {
           this.objectOption[item] = Object.assign(this.objectOption[item], control[item])
+          if (control[item].dicData) {
+            this.DIC[item] = control[item].dicData
+          }
         })
       })
     },

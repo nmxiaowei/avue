@@ -17,7 +17,7 @@
                          width="100"
                          header-align="center"
                          prop="label"
-                         label="列名">
+                         :label="t('crud.column.name')">
         </el-table-column>
         <template v-for="(item,index) in crud.defaultColumn">
           <el-table-column :prop="item.prop"
@@ -26,21 +26,9 @@
                            header-align="center"
                            v-if="item.hide!=true"
                            :label="item.label">
-            <<<<<<< HEAD
-                    <template
-                    #="{row}">
-              <el-slider :min="0"
-                         :max="2000"
-                         size="small"
-                         v-if="item.prop=='width'"
-                         v-model="crud.objectOption[row.prop][item.prop]"></el-slider>
-              <el-checkbox v-else
-                           v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-              =======
-              <template slot-scope="{row}">
-                <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-                >>>>>>> 0a461a6f... fix:crud header column params
-              </template>
+            <template slot-scope="{row}">
+              <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+            </template>
           </el-table-column>
         </template>
 

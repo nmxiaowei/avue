@@ -34,6 +34,16 @@ export default {
       cancelBtn: '取 消',
       submitBtn: '确 定'
     },
+    column: {
+      name: 'name',
+      hide: 'hide',
+      fixed: 'fixed',
+      filters: 'filters',
+      screen: 'screen',
+      sortable: 'sortable',
+      index: 'index',
+      width: 'width'
+    },
     tipStartTitle: '当前表格已选择',
     tipEndTitle: '项',
     editTitle: '编 辑',

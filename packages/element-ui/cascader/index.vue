@@ -48,10 +48,6 @@ export default create({
       type: [Array, String],
       default: () => []
     },
-    changeOnSelect: {
-      type: Boolean,
-      default: false
-    },
     expandTrigger: {
       type: String,
       default: "hover"
