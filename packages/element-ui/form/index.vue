@@ -174,8 +174,8 @@
 <script>
 import { detail } from "core/detail";
 import create from "core/create";
-import init from "../../core/common/init";
-import formTemp from '../../core/components/form/index'
+import init from "common/common/init";
+import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
@@ -203,7 +203,6 @@ export default create({
       formList: [],
       formCreated: false,
       formDefault: {},
-      formVal: {}
     };
   },
   provide () {
@@ -220,21 +219,17 @@ export default create({
     },
     form: {
       handler (val) {
-        if (this.formCreated) this.setVal()
+        if (this.formCreated) {
+          this.setVal()
+        }
       },
       deep: true
     },
     modelValue: {
       handler (val) {
-        if (this.formCreated) {
-          this.setForm(Object.assign(this.formDefault, this.formVal, val));
-        } else {
-          this.formCreated = true;
-          this.formVal = val;
-        }
+        this.setForm(val);
       },
-      deep: true,
-      immediate: true
+      deep: true
     }
   },
   computed: {
@@ -376,7 +371,9 @@ export default create({
     }
   },
   created () {
-    this.dataFormat()
+    this.formDefault = formInitVal(this.propOption).tableForm;
+    this.form = Object.assign(this.formDefault, this.modelValue)
+    this.formCreated = true;
   },
   methods: {
     getComponent,
@@ -430,10 +427,6 @@ export default create({
     },
     getPropRef (prop) {
       return this.$refs[prop][0];
-    },
-    //初始化表单
-    dataFormat () {
-      this.formDefault = formInitVal(this.propOption).tableForm;
     },
     setVal () {
       this.setControl();

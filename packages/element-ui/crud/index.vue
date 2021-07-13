@@ -470,7 +470,7 @@ export default create({
       this.$nextTick(() => {
         this.reload = true;
         //是否开启表格排序
-        // setTimeout(() => this.$refs.columnDefault.setSort())
+        setTimeout(() => this.$refs.columnDefault.setSort())
         callback && callback()
       })
     },

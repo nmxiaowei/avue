@@ -358,7 +358,7 @@ export const filterDefaultParams = (form, translate = true) => {
 /**
  * 处理存在group分组的情况
  */
-export const detailDicGroup = (dic) => {
+export const detailDicGroup = (dic, props) => {
   let list = deepClone(dic);
   let groupsKey = props[DIC_PROPS.groups] || DIC_PROPS.groups
   dic.forEach(ele => {
