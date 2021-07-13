@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-crud :option="option1" :data="data1" @submit="submit"></avue-crud>
+    <avue-crud ref="crud" :option="option1" :data="data1" @submit="submit"></avue-crud>
   </div>
 </body>
 <script>
@@ -86,7 +86,7 @@
               value: 'code'
             },
             type: 'select',
-            dicUrl: `${baseUrl}/getArea/{{key}}`,
+            dicUrl: `${baseUrl}/getArea/{{key}}?city={{city}}`,
             rules: [
               {
                 required: true,
@@ -117,6 +117,7 @@
             area: '140623'
           }
         ]
+        this.$nextTick(() => this.$refs.crud.dicInit('cascader'))
       }, 0)
     },
     methods: {

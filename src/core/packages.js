@@ -6,12 +6,6 @@ const list = {
     version: '6.1.0',
     github: 'https://github.com/ali-sdk/ali-oss/'
   },
-  'echarts': {
-    url: 'https://cdn.staticfile.org/echarts/4.2.1-rc1/echarts.min.js',
-    title: '图表组件，需要引echart',
-    version: '4.2.1-rc1',
-    github: 'https://github.com/apache/incubator-echarts'
-  },
   'Map': {
     url: 'https://webapi.amap.com/maps?v=1.4.11&key=xxxxx&plugin=AMap.PlaceSearch,https://webapi.amap.com/ui/1.0/main.js?v=1.0.11',
     title: '地图组件，需要引高德SDK',
@@ -38,12 +32,6 @@ const list = {
     url: 'https://avuejs.com/cdn/CryptoJS.js',
     title: '七牛云图片上传，需要引入CryptoJS',
     version: '3.1.2'
-  },
-  'ant-design-vue': {
-    url: '',
-    title: '需要引入ant-design-vue框架包',
-    version: '1.3.14',
-    github: 'https://github.com/vueComponent/ant-design-vue'
   },
   'element-ui': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/index.js',

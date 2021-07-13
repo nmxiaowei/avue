@@ -1,29 +1,5 @@
 // crud配置文件
 export default {
-  defaultColumn: [{
-    label: '隐藏',
-    prop: 'hide'
-  }, {
-    label: '冻结',
-    prop: 'fixed'
-  }, {
-    label: '过滤',
-    prop: 'filters'
-  }, {
-    label: '筛选',
-    prop: 'screen'
-  }, {
-    label: '排序',
-    prop: 'sortable'
-  }, {
-    label: '顺序',
-    prop: 'order',
-    hide: true
-  }, {
-    label: '宽度',
-    prop: 'width',
-    hide: true
-  }],
   clientHeight: document.documentElement.clientHeight,
   // 尺寸
   menuWidth: 220,
@@ -98,4 +74,4 @@ export default {
   dropRowClass: '.el-table__body-wrapper > table > tbody',
   dropColClass: '.el-table__header-wrapper tr',
   ghostClass: 'avue-crud__ghost',
-};
+}

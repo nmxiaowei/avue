@@ -2,7 +2,7 @@ import components from 'ui/index';
 import { version } from './version'
 import config from 'ui/config';
 import { validatenull } from 'utils/validate.js';
-import { deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
+import { randomId, deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
 import $Export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
@@ -14,7 +14,6 @@ import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 import $Group from 'packages/core/components/group/';
-import $Echart from 'core/echart/common';
 
 let prototypes = {
   $Export,
@@ -34,7 +33,8 @@ let prototypes = {
   downFile,
   loadScript,
   watermark,
-  findObject
+  findObject,
+  randomId
 
 };
 const install = function (Vue, opts = {}) {
@@ -123,7 +123,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 const Avue = Object.assign({
   version: version,
   locale: locale.locale,
-  $Echart,
   install
 }, components);
 

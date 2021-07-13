@@ -1,9 +1,16 @@
 .avue-input-icon{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   &__item{
     text-align: center;
-    max-width: 80px;
-    padding: 20px;
+    width: 60px;
+    padding: 10px 20px 0 20px;
     transition: all .2s;
+    p{
+      font-size: 12px;
+      margin-top: 5px;
+    }
     &:hover{
       transform: scale(1.4);
     }
@@ -18,5 +25,12 @@
   }
   &__icon{
     font-size: 32px !important;
+  }
+  &__icon-symbol{
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+    fill: currentColor;
+    overflow: hidden;
   }
 }

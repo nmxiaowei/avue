@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.8.14",
+  "version": "2.8.15",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -13,15 +13,12 @@
     "build": "yarn gen:version && cross-env TARGET=prod UINAME=element-ui gulp build",
     "dev:vant": "yarn gen:version && cross-env TARGET=dev-vant UINAME=vant gulp watch",
     "build:vant": "yarn gen:version && cross-env TARGET=prod-vant UINAME=vant gulp build",
-    "dev:antd": "yarn gen:version && cross-env TARGET=dev-antd UINAME=antd gulp watch",
-    "build:antd": "yarn gen:version && cross-env TARGET=prod-antd UINAME=antd gulp build",
-    "build:all": "npm run build && npm run build:vant && npm run build:antd"
+    "build:all": "npm run build && npm run build:vant"
   },
   "keywords": [
     "vue",
     "element-ui",
     "vant",
-    "ant-design-vue",
     "avue"
   ],
   "repository": {

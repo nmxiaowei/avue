@@ -47,7 +47,7 @@ $space-width: 15px;
   &__img{
    display:flex;
    justify-content:center;
-    img{
+    img,video{
       height: 40px;
       margin-left:5px;
       object-fit: contain;
@@ -184,6 +184,8 @@ $space-width: 15px;
     font-size: 45px;
     &--small{
       font-size: 20px;
+      width: 20px;
+      height: 20px;
     }
   }
   &__ghost{

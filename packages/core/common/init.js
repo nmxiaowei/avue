@@ -29,6 +29,7 @@ export default function () {
         handler (val) {
           this.objectOption = {};
           val.forEach(ele => this.objectOption[ele.prop] = ele);
+          this.columnInit && this.columnInit();
         },
         deep: true,
       },
@@ -79,7 +80,6 @@ export default function () {
       init (type) {
         this.tableOption = this.option;
         this.getIsMobile();
-        this.columnInit && this.columnInit();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },

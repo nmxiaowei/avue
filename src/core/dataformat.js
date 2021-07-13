@@ -44,23 +44,19 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
 /**
  * 初始化数据格式
  */
-export const initVal = (value, column, callback) => {
-  let { type, multiple, dataType, separator = DIC_SPLIT, alone } = column
+export const initVal = (value, column) => {
+  let { type, multiple, dataType, separator = DIC_SPLIT, alone, emitPath } = column
   let list = value;
   if (
     (MULTIPLE_LIST.includes(type) && multiple) ||
-    ARRAY_VALUE_LIST.includes(type)
+    ARRAY_VALUE_LIST.includes(type) && emitPath !== false
   ) {
-
     if (!Array.isArray(list)) {
       if (validatenull(list)) {
         list = [];
       } else {
         list = (list + '').split(separator) || [];
-        callback && callback(true);
       }
-    } else {
-      callback && callback(false);
     }
     // 数据转化
     list.forEach((ele, index) => {
@@ -126,7 +122,7 @@ export const formInitVal = (list = []) => {
   let tableForm = {};
   list.forEach(ele => {
     if (
-      ARRAY_VALUE_LIST.includes(ele.type) ||
+      (ARRAY_VALUE_LIST.includes(ele.type) && ele.emitPath !== false) ||
       (MULTIPLE_LIST.includes(ele.type) && ele.multiple) ||
       ele.range || ele.dataType === 'array'
     ) {

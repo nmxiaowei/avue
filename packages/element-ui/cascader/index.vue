@@ -4,7 +4,6 @@
                :placeholder="placeholder"
                :props="allProps"
                :size="size"
-               :change-on-select="changeOnSelect"
                :clearable="disabled?false:clearable"
                :show-all-levels="showAllLevels"
                :filterable="filterable"
@@ -40,14 +39,6 @@ export default create({
       default: true
     },
     tags: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: [Array, String],
-      default: () => []
-    },
-    changeOnSelect: {
       type: Boolean,
       default: false
     },

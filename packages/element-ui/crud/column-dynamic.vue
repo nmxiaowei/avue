@@ -26,136 +26,34 @@
                 :name="item"></slot>
         </template>
       </column-dynamic>
-      <el-table-column v-else-if="getColumnProp(column,'hide')"
-                       :key="column.prop"
-                       :prop="column.prop"
-                       :label="column.label"
-                       filter-placement="bottom-end"
-                       :filters="getColumnProp(column,'filters')"
-                       :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
-                       :filter-multiple="vaildData(column.filterMultiple,true)"
-                       :show-overflow-tooltip="column.overHidden"
-                       :min-width="column.minWidth"
-                       :sortable="getColumnProp(column,'sortable')"
-                       :render-header="column.renderHeader"
-                       :align="column.align || crud.tableOption.align"
-                       :header-align="column.headerAlign || crud.tableOption.headerAlign"
-                       :width="getColumnProp(column,'width')"
-                       :fixed="getColumnProp(column,'fixed')">
-        <template slot="header"
-                  slot-scope="{$index}">
-          <slot :name="crud.getSlotName(column,'H')"
-                v-if="crud.getSlotName(column,'H',crud.$scopedSlots)"
-                v-bind="{column,$index}"></slot>
-          <el-popover placement="bottom"
-                      v-else
-                      :disabled="(crud.objectOption[column.prop] || {}).screen!==true"
-                      trigger="hover">
-            <el-input type="text"
-                      :placeholder="`请输入 ${column.label} 筛选关键字`"
-                      v-model="(crud.objectOption[column.prop] || {}).screenValue"
-                      size="mini"></el-input>
-            <span slot="reference">{{column.label}}</span>
-          </el-popover>
+      <column-slot v-else
+                   :column="column"
+                   :column-option="columnOption.children">
+        <template v-for="item in crud.mainSlot"
+                  slot-scope="scope"
+                  :slot="item">
+          <slot v-bind="scope"
+                :name="item"></slot>
         </template>
-        <template slot-scope="{row,$index}">
-          <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
-                        :label="vaildLabel(column,row,' ')"
-                        v-if="row.$cellEdit && column.cell"
-                        :label-width="vaildLabel(column,row,'1px')"
-                        :rules='column.rules'>
-            <el-tooltip :content="(crud.listError[`list.${$index}.${column.prop}`] || {}).msg"
-                        :disabled="!(crud.listError[`list.${$index}.${column.prop}`] || {}).valid"
-                        placement="top">
-              <slot v-bind="{
-                      row:row,
-                      dic:crud.DIC[column.prop],
-                      size:crud.isMediumSize,
-                      index:$index,
-                      disabled:crud.btnDisabledList[$index],
-                      label:handleShowLabel(row,column,crud.DIC[column.prop]),
-                      '$cell':row.$cellEdit
-                    }"
-                    :name="crud.getSlotName(column,'F')"
-                    v-if="crud.getSlotName(column,'F',crud.$scopedSlots)"></slot>
-              <form-temp v-else
-                         :column="column"
-                         :size="crud.isMediumSize"
-                         :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                         :props="column.props || crud.tableOption.props"
-                         :readonly="column.readonly"
-                         :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
-                         :clearable="vaildData(column.clearable,false)"
-                         v-bind="$uploadFun(column,crud)"
-                         v-model="row[column.prop]"
-                         @change="columnChange($index,row,column,index)">
-              </form-temp>
-            </el-tooltip>
-          </el-form-item>
-          <slot :row="row"
-                :index="$index"
-                :dic="crud.DIC[column.prop]"
-                :size="crud.isMediumSize"
-                :label="handleShowLabel(row,column,crud.DIC[column.prop])"
-                :name="column.prop"
-                v-else-if="crud.$scopedSlots[column.prop]"></slot>
-          <template v-else>
-            <span v-if="['img','upload'].includes(column.type)">
-              <div class="avue-crud__img">
-                <img v-for="(item,index) in getImgList(row,column) "
-                     :src="item"
-                     :key="index"
-                     @click="openImg(getImgList(row,column),index)" />
-              </div>
-            </span>
-            <span v-else-if="['url'].includes(column.type)">
-              <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
-                       type="primary"
-                       :key="index"
-                       :href="item"
-                       :target="column.target || '_blank'">{{item}}</el-link>
-            </span>
-            <span v-else-if="['rate'].includes(column.type)">
-              <avue-rate disabled
-                         v-model="row[column.prop]" />
-            </span>
-            <span v-else
-                  v-html="handleDetail(row,column)"></span>
-          </template>
-        </template>
-      </el-table-column>
+      </column-slot>
     </template>
   </el-table-column>
 </template>
 
 <script>
-import formTemp from '../../core/components/form/index'
+import columnSlot from './column-slot'
 export default {
   name: 'column-dynamic',
   components: {
-    formTemp
+    columnSlot
   },
   inject: ["dynamic", 'crud'],
   props: {
-    t: Function,
-    columnOption: {
-      type: Object,
-      required: true
-    }
+    columnOption: Object
   },
   created () {
     const list = [
       'getColumnProp',
-      "corArray",
-      "openImg",
-      "detailData",
-      "vaildLabel",
-      "vaildColumn",
-      "handleDetail",
-      "handleShowLabel",
-      "handleChange",
-      "columnChange",
-      "getImgList",
       "handleFiltersMethod",
       "handleFilters"
     ];

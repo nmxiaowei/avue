@@ -1,7 +1,7 @@
 import packages from 'core/packages';
 import { validatenull } from 'utils/validate';
 import { getObjValue, detailDic } from 'utils/util';
-export const loadCascaderDic = (columnOption, list) => {
+export const loadCascaderDic = (columnOption, list = []) => {
   return new Promise((resolve, reject) => {
     let columnList = [];
     let result = [];
@@ -22,14 +22,14 @@ export const loadCascaderDic = (columnOption, list) => {
                 });
               } else {
                 if (column.dicUrl) {
-                  sendDic(Object.assign({
-                    url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`
-                  }, {
+                  sendDic({
+                    url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`,
                     props: column.props,
                     method: column.dicMethod,
                     formatter: column.dicFormatter,
-                    query: column.dicQuery
-                  })).then(res => {
+                    query: column.dicQuery,
+                    form: ele
+                  }).then(res => {
                     resolve({
                       prop: column.prop,
                       data: res,
@@ -78,7 +78,7 @@ export const loadLocalDic = (option) => {
   });
   return Object.assign(alldic, locationdic);
 };
-function createdDic (option) {
+function createdDic(option) {
   let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
@@ -92,7 +92,7 @@ function createdDic (option) {
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
-    let result = ele.dicFlag === false || ele.remote === true || ele.lazy === true || flagdic.includes(prop)
+    let result = ele.dicFlag === false || ele.lazy === true || flagdic.includes(prop);
     if (result) return;
     if (dicUrl && !parentProp) {
       ajaxdic.push({
@@ -103,7 +103,7 @@ function createdDic (option) {
         props: ele.props,
         dataType: ele.dataType,
         resKey: (ele.props || {}).res,
-        query: ele.dicQuery
+        query: ele.dicQuery || {}
       });
     }
   });
@@ -114,7 +114,7 @@ function createdDic (option) {
 }
 
 // 循环处理字典
-function handleDic (list) {
+function handleDic(list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -151,7 +151,7 @@ export const sendDic = (params) => {
     formatter = column.dicFormatter;
     props = column.props;
   }
-  let key = "key"
+  let key = 'key';
   url = url || '';
   let list = [];
   let data = {};
@@ -161,17 +161,22 @@ export const sendDic = (params) => {
     let eleValue = form[ele];
     if (ele === key) url = url.replace(eleKey, value);
     else url = url.replace(eleKey, eleValue);
-  })
+  });
   if (method === 'post') {
     list = Object.keys(query);
     list.forEach(ele => {
-      let eleKey = query[ele] + '';
+      let eleKey = query[ele];
+      if (typeof (eleKey) === 'object') {
+        data[ele] = eleKey;
+        return
+      }
       let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
       if (eleKey.match(/\{{|}}/g)) {
         data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
       } else {
         data[ele] = eleKey;
       }
+
     });
   }
 
@@ -191,7 +196,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, data).then(function (res) {
+      window.axios.post(url, data).then(function(res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -199,7 +204,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function (res) {
+      }).then(function(res) {
         callback(res);
       }).catch(() => [
         resolve([])

@@ -162,10 +162,7 @@
       <template slot-scope="scope"
                 v-for="item in formSlot"
                 :slot="item">
-        <slot v-bind="Object.assign(scope,{
-              row:item.dynamic?scope.row:tableForm,
-              index:item.dynamic?scope.row.$index:tableIndex
-              })"
+        <slot v-bind="scope"
               :name="item"></slot>
       </template>
       <template slot-scope="scope"
@@ -238,7 +235,30 @@ export default create({
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      defaultColumn: config.defaultColumn,
+      defaultColumn: [{
+        label: this.t('crud.column.hide'),
+        prop: 'hide'
+      }, {
+        label: this.t('crud.column.fixed'),
+        prop: 'fixed'
+      }, {
+        label: this.t('crud.column.filters'),
+        prop: 'filters'
+      }, {
+        label: this.t('crud.column.screen'),
+        prop: 'screen'
+      }, {
+        label: this.t('crud.column.sortable'),
+        prop: 'sortable'
+      }, {
+        label: this.t('crud.column.index'),
+        prop: 'index',
+        hide: true
+      }, {
+        label: this.t('column.width'),
+        prop: 'width',
+        hide: true
+      }],
       default: {},
       defaultBind: {},
 
@@ -284,17 +304,17 @@ export default create({
       }
     },
     formSlot () {
-      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$scopedSlots)
+      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$scopedSlots, this.propOption)
     },
     searchSlot () {
-      return this.getSlotList(['Search'], this.$scopedSlots)
+      return this.getSlotList(['Search'], this.$scopedSlots, this.propOption)
     },
     mainSlot () {
       let result = [];
       this.propOption.forEach(item => {
         if (this.$scopedSlots[item.prop]) result.push(item.prop)
       })
-      return this.getSlotList(['Header', 'Form'], this.$scopedSlots).concat(result)
+      return this.getSlotList(['Header', 'Form'], this.$scopedSlots, this.propOption).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
@@ -521,7 +541,8 @@ export default create({
       this.propOption.forEach(column => {
         if (this.defaultBind[column.prop] === true) return
         this.defaultColumn.forEach(ele => {
-          if (['hide', 'filters', 'order'].includes(ele.prop)) {
+          if (!this.objectOption[column.prop][ele.prop] && ele.prop == 'index') this.$set(this.objectOption[column.prop], ele.prop, '')
+          if (['hide', 'filters', 'index'].includes(ele.prop)) {
             this.$watch(`objectOption.${column.prop}.${ele.prop}`, () => this.refreshTable())
           }
         })
@@ -548,7 +569,7 @@ export default create({
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
       this.propOption.forEach((ele, index) => {
-        this.objectOption[ele.prop].order = index;
+        this.objectOption[ele.prop].index = index;
       })
     },
     //展开或则关闭

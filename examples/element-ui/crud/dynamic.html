@@ -21,7 +21,7 @@
   <div id="app">
     <avue-crud :option="option" :data="data">
       <div slot-scope="scope" slot="inputForm">
-        <el-tag>{{scope.row.$index}}</el-tag>
+        <el-tag>{{scope.row}}</el-tag>
       </div>
     </avue-crud>
   </div>
@@ -43,7 +43,20 @@
           }, {
             input: 2,
             select: 2,
+            radio: 2,
+          }]
+        }, {
+          input: 2,
+          tree: 2,
+          dic: "120000",
+          dynamic: [{
+            input: 1,
+            select: 1,
             radio: 1,
+          }, {
+            input: 2,
+            select: 2,
+            radio: 2,
           }]
         }],
       }
@@ -100,7 +113,6 @@
               align: 'center',
               headerAlign: 'center',
               column: [{
-                width: 200,
                 label: '输入框',
                 prop: "input",
                 rules: [
@@ -110,17 +122,6 @@
                     trigger: 'blur'
                   }
                 ]
-              }, {
-                width: 200,
-                label: '密码框',
-                prop: "password",
-                type: 'password',
-              }, {
-                width: 200,
-                label: '字典',
-                prop: "select",
-                type: 'select',
-                dicData: this.dicData
               }]
             },
           },

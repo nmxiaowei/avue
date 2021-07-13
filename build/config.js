@@ -1,4 +1,5 @@
 const path = require('path');
+const { copyFolder } = require('./util');
 const aliases = require('./alias');
 const webpack = require('webpack');
 const version = process.env.VERSION || require('../package.json').version;
@@ -15,7 +16,6 @@ const externals = {
   'vue': 'Vue',
   'vant': 'vant',
   'mockjs': 'Mock',
-  'ant-design-vue': 'antd',
   'file-saver': 'file-saver',
   'xlsx': 'xlsx',
   'axios': 'axios',
@@ -58,20 +58,6 @@ const builds = {
     filename: 'avue-mobile.js',
     env: 'development',
     externals: externals
-  },
-  'prod-antd': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-antd.min.js',
-    env: 'production',
-    externals: externals
-  },
-  'dev-antd': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-antd.js',
-    env: 'development',
-    externals: externals
   }
 };
 function genConfig (name) {
@@ -111,6 +97,7 @@ function genConfig (name) {
 if (prd == 'dev') {
   console.log('\033[42;30m 提示 \033[40;32m 没有可视化界面，实时打包生成调试包avue.js到lib目录，运行examples目录下例子即可调试\033[0m')
 } else if (prd == 'prod') {
+  // copyFolder('../src/locale', '../lib/locale')
   console.log('\033[42;30m 提示 \033[40;32m 打包生成生产包avue.min.js到lib目录\033[0m')
 }
 module.exports = genConfig(prd || 'prod');

@@ -25,7 +25,6 @@
 
 <script>
 import create from "core/create";
-import { GetDateStr } from "utils/date.js";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import locale from "../../core/common/locale";

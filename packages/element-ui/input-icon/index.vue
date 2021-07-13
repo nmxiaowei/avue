@@ -11,7 +11,13 @@
               @focus="handleShow">
       <span slot="append"
             @click="handleShow">
-        <i class="avue-crud__icon--small"
+        <svg v-if="(text || '').indexOf('#')===0"
+             class="avue-crud__icon--small"
+             aria-hidden="true">
+          <use :xlink:href="text"></use>
+        </svg>
+        <i v-else
+           class="avue-crud__icon--small"
            :class="text"></i>
       </span>
 
@@ -21,19 +27,23 @@
                append-to-body
                :visible.sync="box"
                :width="dialogWidth">
-      <el-scrollbar style="height:400px;overflow-x:hidden">
-        <avue-tabs :option="option"
-                   @change="handleTabs"></avue-tabs>
-        <div :class="b('list')">
-          <div :class="b('item',{'active':text===item})"
-               v-for="(item,index) in list"
-               :key="index">
-            <i :class="[b('icon'),item.value]"
-               @click="handleSubmit(item.value)"></i>
-            <p>{{item.label || item.value}}</p>
-          </div>
+      <avue-tabs :option="option"
+                 @change="handleTabs"></avue-tabs>
+      <div :class="b('list')">
+        <div :class="b('item',{'active':text===item})"
+             v-for="(item,index) in list"
+             @click="handleSubmit(item.value)"
+             :key="index">
+          <svg v-if="item.value.indexOf('#')===0"
+               :class="b('icon-symbol')"
+               aria-hidden="true">
+            <use :xlink:href="item.value"></use>
+          </svg>
+          <i v-else
+             :class="[b('icon'),item.value]"></i>
+          <p>{{item.label || item.value}}</p>
         </div>
-      </el-scrollbar>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -101,5 +111,3 @@ export default create({
   }
 });
 </script>
-
-
