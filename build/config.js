@@ -13,11 +13,8 @@ const banner =
   ' Smallwei\n' +
   ' Released under the MIT License.\n';
 const externals = {
-  'vue': 'Vue',
+  'vue': 'vue',
   'vant': 'vant',
-  'mockjs': 'Mock',
-  'file-saver': 'file-saver',
-  'xlsx': 'xlsx',
   'axios': 'axios',
   'element-ui': 'ELEMENT'
 };
