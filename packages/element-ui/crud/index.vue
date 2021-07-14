@@ -255,7 +255,7 @@ export default create({
         prop: 'index',
         hide: true
       }, {
-        label: this.t('column.width'),
+        label: this.t('crud.column.width'),
         prop: 'width',
         hide: true
       }],
