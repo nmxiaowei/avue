@@ -13,7 +13,12 @@ const banner =
   ' Smallwei\n' +
   ' Released under the MIT License.\n';
 const externals = {
-  'vue': 'vue',
+  'vue': {
+    root: 'Vue',
+    commonjs2: 'vue',
+    commonjs: 'vue',
+    amd: 'vue'
+  },
   'vant': 'vant',
   'axios': 'axios',
   'element-ui': 'ELEMENT'
