@@ -27,7 +27,8 @@
       <span class="el-dialog__title">{{dialogTitle}}</span>
       <div :class="b('dialog__menu')">
         <i @click="handleFullScreen"
-           class="el-dialog__close el-icon-full-screen"></i>
+           :class="fullscreen?'el-icon-news':'el-icon-full-screen'"
+           class="el-dialog__close"></i>
       </div>
     </div>
     <el-scrollbar :style="styleName">

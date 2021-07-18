@@ -173,6 +173,7 @@
     </dialog-form>
     <!-- 动态列 -->
     <dialog-column ref="dialogColumn"></dialog-column>
+    <dialog-excel ref="dialogExcel"></dialog-excel>
     <!-- 过滤器 -->
     <keep-alive>
       <dialog-filter ref="dialogFilter"></dialog-filter>
@@ -192,6 +193,7 @@ import headerMenu from "./header-menu";
 import dialogColumn from "./dialog-column";
 import dialogFilter from "./dialog-filter";
 import dialogForm from "./dialog-form";
+import dialogExcel from './dialog-excel'
 import columnMenu from './column-menu'
 import columnDefault from './column-default'
 import config from "./config.js";
@@ -217,6 +219,7 @@ export default create({
     headerMenu, //菜单头部
     dialogColumn, //显隐列
     dialogFilter, //过滤器
+    dialogExcel,//导出数据
     dialogForm //分页,
   },
   data () {
