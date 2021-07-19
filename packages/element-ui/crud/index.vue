@@ -335,6 +335,15 @@ export default create({
       result = calcCascader(result);
       return result;
     },
+    isHeader () {
+      let flag = false;
+      this.columnOption.forEach(ele => {
+        if (ele.children) {
+          flag = true;
+        }
+      })
+      return flag;
+    },
     isTree () {
       let flag = false;
       this.data.forEach(ele => {
@@ -342,7 +351,7 @@ export default create({
           flag = true;
         }
       })
-      return this.vaildData(this.tableOption.tree, flag);
+      return flag
     },
     isCard () {
       return this.option.card ? 'always' : 'never'

@@ -33,10 +33,50 @@ export default {
     }
   },
   computed: {
+    columnList () {
+      if (!this.form.params) return []
+      if (this.form.params.includes('headers')) {
+        return this.crud.propOption
+      } else {
+        let result = [];
+        const findProp = (list = []) => {
+          list.forEach((ele, index) => {
+            if (ele.children) findProp(ele.children)
+            else result.push(ele)
+          })
+        }
+        findProp(this.crud.columnOption);
+        return result;
+      }
+    },
+    columns () {
+      let columns = this.deepClone(this.crud.columnOption);
+      if (!this.form.params) return []
+      if (this.form.params.includes('headers')) {
+        const findProp = (list = []) => {
+          list.forEach((ele, index) => {
+            if (ele.children) {
+              findProp(ele.children)
+            } else if (!this.form.prop.includes(ele.prop)) {
+              list.splice(index, 1);
+            }
+          })
+        }
+        findProp(columns);
+        return columns
+      } else {
+        let result = [];
+        const findProp = (list = []) => {
+          list.forEach((ele, index) => {
+            if (ele.children) findProp(ele.children)
+            else result.push(ele)
+          })
+        }
+        findProp(columns);
+        return result
+      }
+    },
     option () {
-      let columnList = this.crud.propOption.filter(ele => {
-        return ele.showColumn !== false && ele.hide !== true
-      })
       return {
         submitBtn: false,
         emptyBtn: false,
@@ -52,7 +92,7 @@ export default {
             type: 'select',
             value: 0,
             dicData: [{
-              label: '当前数据(当前页全部数据)',
+              label: '当前数据(当前页全部的数据)',
               value: 0
             }, {
               label: '选中的数据(当前页选中的数据)',
@@ -63,31 +103,44 @@ export default {
             prop: "prop",
             type: 'checkbox',
             span: 24,
-            value: columnList.map(ele => ele.prop),
             props: {
               value: 'prop'
             },
-            dicData: columnList
+            dicData: this.columnList
           }, {
             label: '参数设置',
             prop: 'params',
             type: 'checkbox',
             span: 24,
-            value: ['headers', 'data'],
+            value: ['header', 'data'].concat((() => {
+              if (this.crud.isHeader) return ['headers']
+              return []
+            })()),
             dicData: [{
               label: '表头',
               disabled: true,
-              value: 'headers'
+              value: 'header'
             }, {
               label: '数据源',
               value: 'data'
             }, {
               label: '合计统计',
               value: 'sum'
-            }]
+            }].concat((() => {
+              if (this.crud.isHeader) return [{
+                label: '复杂表头',
+                value: 'headers'
+              }]
+              return []
+            })())
           }
         ]
       }
+    }
+  },
+  watch: {
+    columnList () {
+      this.form.prop = this.columnList.map(ele => ele.prop)
     }
   },
   methods: {
@@ -95,11 +148,9 @@ export default {
       this.box = true
     },
     handleSubmit () {
-      let columns = [];
-      this.form.prop.forEach(ele => columns.push(this.crud.objectOption[ele]))
       this.$Export.excel({
         title: this.form.name,
-        columns: columns,
+        columns: this.columns,
         data: this.handleSum()
       });
       this.box = false;
