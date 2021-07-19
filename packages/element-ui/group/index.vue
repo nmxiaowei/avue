@@ -31,6 +31,7 @@
 import create from "core/create";
 export default create({
   name: "group",
+  empit: ['change'],
   data () {
     return {
       activeName: '',

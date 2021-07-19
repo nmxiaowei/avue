@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <slot name="header"></slot>
-    <!-- 动态列 -->
-    <template v-for="(column,index) in list">
-      <column-dynamic v-if="column.children && column.children.length>0"
-                      :columnOption="column"
-                      :key="column.label">
-        <template v-for="item in crud.mainSlot"
-                  #[item]="scope">
-          <slot v-bind="scope"
-                :name="item"></slot>
-        </template>
-      </column-dynamic>
-      <column-slot v-else
-                   :column="column"
-                   :column-option="columnOption">
-        <template v-for="item in crud.mainSlot"
-                  #[item]="scope">
-          <slot v-bind="scope"
-                :name="item"></slot>
-        </template>
-      </column-slot>
-    </template>
-    <slot name="footer"></slot>
-  </div>
+  <slot name="header"></slot>
+  <!-- 动态列 -->
+  <template v-for="(column,index) in list">
+    <column-dynamic v-if="column.children && column.children.length>0"
+                    :columnOption="column"
+                    :key="column.label">
+      <template v-for="item in crud.mainSlot"
+                #[item]="scope">
+        <slot v-bind="scope"
+              :name="item"></slot>
+      </template>
+    </column-dynamic>
+    <column-slot v-else
+                 :column="column"
+                 :column-option="columnOption">
+      <template v-for="item in crud.mainSlot"
+                #[item]="scope">
+        <slot v-bind="scope"
+              :name="item"></slot>
+      </template>
+    </column-slot>
+  </template>
+  <slot name="footer"></slot>
 </template>
 
 <script>

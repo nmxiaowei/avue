@@ -3,6 +3,7 @@ import slot from 'core/slot'
 export default function () {
   return {
     mixins: [slot],
+    emits: ['update:modelValue', 'update:defaults', 'change'],
     props: {
       option: {
         type: Object,

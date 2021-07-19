@@ -21,26 +21,6 @@
           {{crud.menuIcon('addBtn')}}
         </template>
       </el-button>
-      <el-button type="primary"
-                 @click="rowPrint"
-                 :icon="config.printBtnIcon"
-                 v-permission="crud.getPermission('printBtn')"
-                 :size="crud.isMediumSize"
-                 v-if="validData(crud.tableOption.printBtn,config.printBtn)">
-        <template v-if="!crud.isIconMenu">
-          {{crud.menuIcon('printBtn')}}
-        </template>
-      </el-button>
-      <el-button type="primary"
-                 @click="rowExcel"
-                 :icon="config.excelBtnIcon"
-                 v-permission="crud.getPermission('excelBtn')"
-                 :size="crud.isMediumSize"
-                 v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
-        <template v-if="!crud.isIconMenu">
-          {{crud.menuIcon('excelBtn')}}
-        </template>
-      </el-button>
       <slot name="menuLeft"
             :size="crud.isMediumSize"></slot>
     </div>
@@ -55,6 +35,20 @@
                  style="display:inline-block;margin-right:20px;"
                  v-if="validData(crud.tableOption.dateBtn,config.dateBtn)"
                  :size="crud.isMediumSize"></avue-date>
+      <el-button :icon="config.excelBtnIcon"
+                 circle
+                 :size="crud.isMediumSize"
+                 @click="rowExcel"
+                 v-permission="crud.getPermission('excelBtn')"
+                 v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
+      </el-button>
+      <el-button :icon="config.printBtnIcon"
+                 circle
+                 :size="crud.isMediumSize"
+                 @click="rowPrint"
+                 v-permission="crud.getPermission('printBtn')"
+                 v-if="validData(crud.tableOption.printBtn,config.printBtn)">
+      </el-button>
       <el-button :icon="config.refreshBtnIcon"
                  circle
                  :size="crud.isMediumSize"
@@ -169,58 +163,12 @@ export default create({
 
     },
     initFun () {
-      this.validData = validData;
       this.crud.rowExcel = this.rowExcel;
       this.crud.rowPrint = this.rowPrint;
     },
     rowExcel () {
-      if (this.validatenull(this.data)) {
-        this.$message.warning("请勾选要导出的数据");
-        return;
-      }
-      this.$Export.excel({
-        title: this.crud.tableOption.title,
-        columns: this.crud.columnOption,
-        data: this.handleSum()
-      });
-      this.crud.setCurrentRow();
+      this.crud.$refs.dialogExcel.handleShow()
     },
-    //计算统计
-    handleSum () {
-      const option = this.crud.tableOption;
-      const columnOption = this.crud.propOption;
-      let count = 0;
-      let sumsList = [...this.crud.sumsList];
-      let data = []
-      this.data.forEach(ele => {
-        let obj = this.deepClone(ele);
-        columnOption.forEach(column => {
-          if (column.bind) {
-            obj[column.prop] = getAsVal(obj, column.bind);
-          }
-          if (!this.validatenull(obj['$' + column.prop])) {
-            obj[column.prop] = obj['$' + column.prop];
-          }
-        })
-        data.push(obj);
-      })
-      if (option.index) count++;
-      if (option.selection) count++;
-      if (option.expand) count++;
-      sumsList.splice(0, count);
-      sumsList.splice(sumsList.length - 1, 1);
-      if (option.showSummary) {
-        let sumsObj = {};
-        sumsList.forEach((ele, index) => {
-          if ((columnOption[index] || {}).prop) {
-            sumsObj[columnOption[index].prop] = ele;
-          }
-        });
-        data.push(sumsObj);
-      }
-      return data;
-    },
-    //打印
     rowPrint () {
       this.$Print(this.crud.$refs.table)
     }

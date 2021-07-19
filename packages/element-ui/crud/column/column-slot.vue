@@ -1,5 +1,5 @@
 <template>
-  <el-table-column v-else-if="getColumnProp(column,'hide')"
+  <el-table-column v-if="getColumnProp(column,'hide')"
                    :key="column.prop"
                    :prop="column.prop"
                    :label="column.label"
@@ -17,7 +17,7 @@
                    :fixed="getColumnProp(column,'fixed')">
     <template #header="{$index}">
       <slot :name="crud.getSlotName(column,'H')"
-            v-if="crud.getSlotName(column,'H',crud.$scopedSlots)"
+            v-if="crud.getSlotName(column,'H',crud.$slots)"
             v-bind="{column,$index}"></slot>
       <el-popover placement="bottom"
                   v-else
@@ -27,10 +27,10 @@
                   :placeholder="`请输入 ${column.label} 筛选关键字`"
                   v-model="(crud.objectOption[column.prop] || {}).screenValue"
                   size="mini"></el-input>
-        <span slot="reference">{{column.label}}</span>
+        <template #reference>{{column.label}}</template>
       </el-popover>
     </template>
-    <template slot-scope="{row,$index}">
+    <template #="{row,$index}">
       <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                     :label="vaildLabel(column,row,' ')"
                     v-if="row.$cellEdit && column.cell"
@@ -49,7 +49,7 @@
                       '$cell':row.$cellEdit
                     }"
                 :name="crud.getSlotName(column,'F')"
-                v-if="crud.getSlotName(column,'F',crud.$scopedSlots)"></slot>
+                v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
           <form-temp v-else
                      :column="column"
                      :size="crud.isMediumSize"
@@ -63,8 +63,7 @@
                      :column-slot="crud.mainSlot"
                      @change="columnChange($index,row,column,index)">
             <template v-for="item in crud.mainSlot"
-                      slot-scope="scope"
-                      :slot="item">
+                      #[item]="scope">
               <slot v-bind="scope"
                     :name="item"></slot>
             </template>
@@ -77,7 +76,7 @@
             :size="crud.isMediumSize"
             :label="handleShowLabel(row,column,crud.DIC[column.prop])"
             :name="column.prop"
-            v-else-if="crud.$scopedSlots[column.prop]"></slot>
+            v-else-if="crud.$slots[column.prop]"></slot>
       <template v-else>
         <span v-if="['img','upload'].includes(column.type)">
           <div class="avue-crud__img">

@@ -10,15 +10,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.0.11/vue.global.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.4/vue.global.js"></script>
   <!-- 导入表格需要的包 -->
 
   <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
   <script src="https://cdn.staticfile.org/xlsx/0.14.1/xlsx.full.min.js"></script>
 
   <link rel="stylesheet"
-    href="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.44/theme-chalk/index.min.css" />
-  <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.44/index.full.min.js"></script>
+    href="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.55/theme-chalk/index.min.css" />
+  <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.55/index.full.min.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/1.0.2-beta.48/umd/locale/zh-cn.min.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -39,6 +39,9 @@
             <el-input placeholder="自定义搜索" size="small" v-model="searchForm.slot" />
           </el-form-item>
         </el-col>
+      </template>
+      <template #nameHeader="scope">
+        <el-tag :size="scope.size">{{ scope.column.label }}</el-tag>
       </template>
       <template #nameForm="scope">
         <el-tag :size="scope.size">{{ scope.label }}</el-tag>

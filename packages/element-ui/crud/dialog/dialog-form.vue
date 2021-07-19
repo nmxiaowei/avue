@@ -64,6 +64,7 @@ import config from "../config";
 export default create({
   name: "crud",
   mixins: [locale],
+  emits: ['update:modelValue', 'change'],
   inject: ["crud"],
   data () {
     return {

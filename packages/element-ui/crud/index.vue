@@ -101,7 +101,6 @@
                   @select="select"
                   @select-all="selectAll"
                   @sort-change="sortChange">
-          <!-- 暂无数据提醒 -->
           <template #empty>
             <div :class="b('empty')">
               <slot name="empty"
@@ -162,9 +161,8 @@
               v-bind="scope"></slot>
       </template>
     </dialog-form>
-    <!-- 动态列 -->
+    <dialog-excel ref="dialogExcel"></dialog-excel>
     <dialog-column ref="dialogColumn"></dialog-column>
-    <!-- 过滤器 -->
     <dialog-filter ref="dialogFilter"></dialog-filter>
   </div>
 </template>
@@ -180,6 +178,7 @@ import headerMenu from "./menu/header-menu";
 import dialogColumn from "./dialog/dialog-column";
 import dialogFilter from "./dialog/dialog-filter";
 import dialogForm from "./dialog/dialog-form";
+import dialogExcel from "./dialog/dialog-excel";
 import column from "./column/column";
 import columnMenu from './column/column-menu'
 import columnDefault from './column/column-default'
@@ -206,7 +205,8 @@ export default create({
     headerMenu, //菜单头部
     dialogColumn, //显隐列
     dialogFilter, //过滤器
-    dialogForm //分页,
+    dialogForm,//分页
+    dialogExcel//导出
   },
   data () {
     return {
@@ -320,6 +320,18 @@ export default create({
       findProp(this.columnOption);
       result = calcCascader(result);
       return result;
+    },
+    isShowSummary () {
+      return this.option.showSummary
+    },
+    isHeader () {
+      let flag = false;
+      this.columnOption.forEach(ele => {
+        if (ele.children) {
+          flag = true;
+        }
+      })
+      return flag;
     },
     isTree () {
       let flag = false;
@@ -470,7 +482,7 @@ export default create({
       this.$nextTick(() => {
         this.reload = true;
         //是否开启表格排序
-        setTimeout(() => this.$refs.columnDefault.setSort())
+        // setTimeout(() => this.$refs.columnDefault.setSort())
         callback && callback()
       })
     },

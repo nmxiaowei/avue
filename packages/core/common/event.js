@@ -7,8 +7,8 @@ export default function () {
   return {
     methods: {
       initVal () {
-        this.stringMode = !Array.isArray(this.value)
-        this.text = initVal(this.value, this.column);
+        this.stringMode = !Array.isArray(this.modelValue)
+        this.text = initVal(this.modelValue, this.column);
       },
       getLabelText (item) {
         if (this.validatenull(item)) return ''

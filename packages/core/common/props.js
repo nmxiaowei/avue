@@ -3,6 +3,7 @@ import slot from 'core/slot'
 export default function () {
   return {
     mixins: [slot],
+    emits: ['update:modelValue', 'click', 'focus', 'blur', 'change'],
     data () {
       return {
         stringMode: false,

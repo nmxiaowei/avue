@@ -185,6 +185,7 @@ import formMenu from './menu'
 export default create({
   name: "form",
   mixins: [init()],
+  emits: ['update:modelValue'],
   components: {
     formTemp,
     formMenu
@@ -219,9 +220,7 @@ export default create({
     },
     form: {
       handler (val) {
-        if (this.formCreated) {
-          this.setVal()
-        }
+        if (this.formCreated) this.setVal()
       },
       deep: true
     },
@@ -372,7 +371,7 @@ export default create({
   },
   created () {
     this.formDefault = formInitVal(this.propOption).tableForm;
-    this.form = Object.assign(this.formDefault, this.modelValue)
+    this.setForm(Object.assign(this.formDefault, this.modelValue));
     this.formCreated = true;
   },
   methods: {

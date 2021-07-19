@@ -36,6 +36,7 @@ import slot from 'core/slot'
 export default {
   name: 'form-temp',
   mixins: [slot],
+  emits: ['update:modelValue', 'change'],
   props: {
     modelValue: {},
     uploadBefore: Function,

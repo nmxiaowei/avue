@@ -19,8 +19,7 @@
                       :key="column.label"
                       :columnOption="column">
         <template v-for="item in crud.mainSlot"
-                  #[item]="scope"
-                  :slot="item">
+                  #[item]="scope">
           <slot v-bind="scope"
                 :name="item"></slot>
         </template>
