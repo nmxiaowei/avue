@@ -102,13 +102,14 @@ export default {
           }, {
             label: '选择字段',
             prop: "prop",
-            type: 'select',
+            type: 'tree',
             multiple: true,
+            checkStrictly: true,
             span: 24,
             props: {
               value: 'prop'
             },
-            dicData: this.columnList
+            dicData: this.crud.columnOption
           }, {
             label: '参数设置',
             prop: 'params',
