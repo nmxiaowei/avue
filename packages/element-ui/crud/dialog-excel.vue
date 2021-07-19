@@ -22,6 +22,7 @@
 <script>
 import locale from "../../core/common/locale";
 export default {
+  name: 'crud',
   mixins: [locale],
   inject: ['crud'],
   data () {
@@ -101,7 +102,8 @@ export default {
           }, {
             label: '选择字段',
             prop: "prop",
-            type: 'checkbox',
+            type: 'select',
+            multiple: true,
             span: 24,
             props: {
               value: 'prop'
@@ -113,8 +115,10 @@ export default {
             type: 'checkbox',
             span: 24,
             value: ['header', 'data'].concat((() => {
-              if (this.crud.isHeader) return ['headers']
-              return []
+              let result = []
+              if (this.crud.isHeader) result.push('headers')
+              if (this.crud.isShowSummary) result.push('sum')
+              return result
             })()),
             dicData: [{
               label: '表头',
@@ -123,15 +127,19 @@ export default {
             }, {
               label: '数据源',
               value: 'data'
-            }, {
-              label: '合计统计',
-              value: 'sum'
             }].concat((() => {
-              if (this.crud.isHeader) return [{
+              let result = []
+              result.push({
                 label: '复杂表头',
-                value: 'headers'
-              }]
-              return []
+                value: 'headers',
+                disabled: !this.crud.isHeader
+              })
+              result.push({
+                label: '合计统计',
+                value: 'sum',
+                disabled: !this.crud.isShowSummary
+              })
+              return result
             })())
           }
         ]
@@ -192,6 +200,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

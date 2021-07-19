@@ -335,6 +335,9 @@ export default create({
       result = calcCascader(result);
       return result;
     },
+    isShowSummary () {
+      return this.option.showSummary
+    },
     isHeader () {
       let flag = false;
       this.columnOption.forEach(ele => {
