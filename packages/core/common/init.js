@@ -50,7 +50,8 @@ export default function () {
         objectOption: {}
       };
     },
-    created () {
+    mounted () {
+      this.getIsMobile();
       this.init();
     },
     computed: {
@@ -80,7 +81,7 @@ export default function () {
     methods: {
       init (type) {
         this.tableOption = this.option;
-        this.getIsMobile();
+
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },

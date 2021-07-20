@@ -54,10 +54,8 @@ export const loadCascaderDic = (columnOption, list) => {
   });
 };
 export const loadDic = (option) => {
-  let ajaxdic = []; // 发送ajax的字典
+  let ajaxdic = createdDic(option);
   return new Promise((resolve, reject) => {
-    const params = createdDic(option);
-    ajaxdic = params.ajaxdic;
     if (!axios && !validatenull(ajaxdic)) {
       packages.logs('axios');
       resolve();
@@ -82,17 +80,12 @@ export const loadLocalDic = (option) => {
 function createdDic (option) {
   let column = option.column || [];
   let ajaxdic = [];
-  let locationdic = {};
   let flagdic = [];
   column.forEach(ele => {
-    let dicData = ele.dicData;
     let dicUrl = ele.dicUrl;
     let prop = ele.prop;
     let parentProp = ele.parentProp;
     flagdic = flagdic.concat(ele.cascaderItem || []);
-    if (Array.isArray(dicData)) {
-      locationdic[prop] = dicData;
-    }
     let result = ele.dicFlag === false || ele.lazy === true || flagdic.includes(prop)
     if (result) return;
     if (dicUrl && !parentProp) {
@@ -108,10 +101,7 @@ function createdDic (option) {
       });
     }
   });
-  return {
-    ajaxdic,
-    locationdic
-  };
+  return ajaxdic
 }
 
 // 循环处理字典

@@ -39,7 +39,8 @@
         <el-tooltip :content="(crud.listError[`list.${$index}.${column.prop}`] || {}).msg"
                     :disabled="!(crud.listError[`list.${$index}.${column.prop}`] || {}).valid"
                     placement="top">
-          <slot v-bind="{
+          <div>
+            <slot v-bind="{
                       row:row,
                       dic:crud.DIC[column.prop],
                       size:crud.isMediumSize,
@@ -48,26 +49,27 @@
                       label:handleShowLabel(row,column,crud.DIC[column.prop]),
                       '$cell':row.$cellEdit
                     }"
-                :name="crud.getSlotName(column,'F')"
-                v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
-          <form-temp v-else
-                     :column="column"
-                     :size="crud.isMediumSize"
-                     :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
-                     :props="column.props || crud.tableOption.props"
-                     :readonly="column.readonly"
-                     :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
-                     :clearable="validData(column.clearable,false)"
-                     v-bind="$uploadFun(column,crud)"
-                     v-model="row[column.prop]"
-                     :column-slot="crud.mainSlot"
-                     @change="columnChange($index,row,column,index)">
-            <template v-for="item in crud.mainSlot"
-                      #[item]="scope">
-              <slot v-bind="scope"
-                    :name="item"></slot>
-            </template>
-          </form-temp>
+                  :name="crud.getSlotName(column,'F')"
+                  v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
+            <form-temp v-else
+                       :column="column"
+                       :size="crud.isMediumSize"
+                       :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
+                       :props="column.props || crud.tableOption.props"
+                       :readonly="column.readonly"
+                       :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
+                       :clearable="validData(column.clearable,false)"
+                       v-bind="$uploadFun(column,crud)"
+                       v-model="row[column.prop]"
+                       :column-slot="crud.mainSlot"
+                       @change="columnChange($index,row,column,index)">
+              <template v-for="item in crud.mainSlot"
+                        #[item]="scope">
+                <slot v-bind="scope"
+                      :name="item"></slot>
+              </template>
+            </form-temp>
+          </div>
         </el-tooltip>
       </el-form-item>
       <slot :row="row"

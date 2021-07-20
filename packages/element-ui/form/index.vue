@@ -109,40 +109,42 @@
                              :disabled="validTip(column)"
                              :content="validData(column.tip,getPlaceholder(column))"
                              :placement="column.tipPlacement">
-                    <slot :value="form[column.prop]"
-                          :column="column"
-                          :label="form['$'+column.prop]"
-                          :size="column.size || controlSize"
-                          :readonly="readonly || column.readonly"
-                          :disabled="getDisabled(column)"
-                          :dic="DIC[column.prop]"
-                          :name="column.prop"
-                          v-if="$slots[column.prop]"></slot>
-                    <form-temp :column="column"
-                               v-else
-                               :ref="column.prop"
-                               :dic="DIC[column.prop]"
-                               :props="parentOption.props"
-                               :propsHttp="parentOption.propsHttp"
-                               v-bind="$uploadFun(column)"
-                               :disabled="getDisabled(column)"
-                               :enter="parentOption.enter"
-                               :size="parentOption.size"
-                               v-model="form[column.prop]"
-                               @enter="submit"
-                               :column-slot="columnSlot"
-                               @change="propChange(item.column,column)">
-                      <template #="scope"
-                                v-if="getSlotName(column,'T',$slots)">
-                        <slot :name="getSlotName(column,'T')"
-                              v-bind="scope"></slot>
-                      </template>
-                      <template v-for="item in columnSlot"
-                                #[item]="scope">
-                        <slot v-bind="scope"
-                              :name="item"></slot>
-                      </template>
-                    </form-temp>
+                    <div>
+                      <slot :value="form[column.prop]"
+                            :column="column"
+                            :label="form['$'+column.prop]"
+                            :size="column.size || controlSize"
+                            :readonly="readonly || column.readonly"
+                            :disabled="getDisabled(column)"
+                            :dic="DIC[column.prop]"
+                            :name="column.prop"
+                            v-if="$slots[column.prop]"></slot>
+                      <form-temp :column="column"
+                                 v-else
+                                 :ref="column.prop"
+                                 :dic="DIC[column.prop]"
+                                 :props="parentOption.props"
+                                 :propsHttp="parentOption.propsHttp"
+                                 v-bind="$uploadFun(column)"
+                                 :disabled="getDisabled(column)"
+                                 :enter="parentOption.enter"
+                                 :size="parentOption.size"
+                                 v-model="form[column.prop]"
+                                 @enter="submit"
+                                 :column-slot="columnSlot"
+                                 @change="propChange(item.column,column)">
+                        <template #="scope"
+                                  v-if="getSlotName(column,'T',$slots)">
+                          <slot :name="getSlotName(column,'T')"
+                                v-bind="scope"></slot>
+                        </template>
+                        <template v-for="item in columnSlot"
+                                  #[item]="scope">
+                          <slot v-bind="scope"
+                                :name="item"></slot>
+                        </template>
+                      </form-temp>
+                    </div>
                   </component>
                 </el-form-item>
               </el-col>
