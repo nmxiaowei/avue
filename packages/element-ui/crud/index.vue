@@ -584,7 +584,7 @@ export default create({
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
       this.propOption.forEach((ele, index) => {
-        this.objectOption[ele.prop].index = index;
+        this.objectOption[ele.prop].index = index + 1;
       })
     },
     //展开或则关闭

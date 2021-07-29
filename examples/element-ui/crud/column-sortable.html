@@ -25,7 +25,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
+    {{defaults}}
+    <avue-crud :defaults.sync="defaults" ref="crud" :option="option" :data="data"></avue-crud>
   </div>
 </body>
 <script>
@@ -33,6 +34,7 @@
     el: '#app',
     data() {
       return {
+        defaults: {},
         data: [{
           text1: '内容1-1',
           text2: '内容1-2'
