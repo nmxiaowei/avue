@@ -19,8 +19,7 @@
       <i class="el-icon-arrow-right"></i>
     </span>
     <div :class="b('box')"
-         ref="box"
-         :style="styleBoxName">
+         ref="box">
       <component :is="carouselName"
                  ref="carousel"
                  :show-indicators="false"
@@ -36,7 +35,7 @@
                    v-for="(item,indexs) in datas"
                    :key="indexs">
           <img :src="item.url"
-               :style="styleName"
+               :style="[styleName,styleBoxName]"
                ref="item"
                @mousedown="move"
                controls="controls"
@@ -122,6 +121,8 @@ export default create({
       this.stopItem()
     },
     stopItem () {
+      this.left = 0;
+      this.top = 0;
       this.$refs.item.forEach(ele => {
         ele.pause && ele.pause()
       })
@@ -148,6 +149,7 @@ export default create({
       //算出鼠标相对元素的位置
       let disX = e.clientX;
       let disY = e.clientY;
+      let scale = 2;
       document.onmousemove = (e) => {       //鼠标按下并移动的事件
         //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
         let left = e.clientX - disX;
@@ -155,8 +157,8 @@ export default create({
         disX = e.clientX;
         disY = e.clientY;
         //移动当前元素
-        this.left = this.left + left
-        this.top = this.top + top
+        this.left = this.left + (left * scale)
+        this.top = this.top + (top * scale)
       };
       document.onmouseup = (e) => {
         document.onmousemove = null;
