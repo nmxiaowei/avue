@@ -13,33 +13,35 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     result = (result + '').split(separator || DIC_SPLIT);
     if (column.dataType === 'number') result = strCorNum(result);
   }
-  if (ARRAY_LIST.includes(type)) {
-    if (Array.isArray(result)) {
-      result = result.join(separator || DIC_SHOW_SPLIT);
-    } else {
-      result = result.split(separator || DIC_SPLIT).join(separator || DIC_SHOW_SPLIT);
-    }
-  } else if (['password'].includes(type)) {
-    result = getPasswordChar(result, '*');
-  } else if (['color'].includes(type)) {
-    result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
-  } else if (['icon'].includes(type)) {
-    result = `<i class="avue-crud__icon ${result}" ></i>`;
-  } else if (DATE_LIST.includes(type) && column.format && !validatenull(result)) {
-    const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
-    let formatValue = dayjs().format('YYYY-MM-DD');
-    if (type.indexOf('range') !== -1) {
-      let date1 = result[0], date2 = result[1]
-      if (type === 'timerange' && date1.length <= 8 && date2.length < 8) {
-        date1 = `${formatValue} ${date1}`
-        date2 = `${formatValue} ${date2}`
+  if (!validatenull(result)) {
+    if (ARRAY_LIST.includes(type)) {
+      if (Array.isArray(result)) {
+        result = result.join(separator || DIC_SHOW_SPLIT);
+      } else {
+        result = result.split(separator || DIC_SPLIT).join(separator || DIC_SHOW_SPLIT);
       }
-      result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~')
-    } else {
-      if (type === 'time' && result.length <= 8) {
-        result = `${formatValue} ${result}`
+    } else if (['password'].includes(type)) {
+      result = getPasswordChar(result, '*');
+    } else if (['color'].includes(type)) {
+      result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
+    } else if (['icon'].includes(type)) {
+      result = `<i class="avue-crud__icon ${result}" ></i>`;
+    } else if (DATE_LIST.includes(type) && column.format) {
+      const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
+      let formatValue = dayjs().format('YYYY-MM-DD');
+      if (type.indexOf('range') !== -1) {
+        let date1 = result[0], date2 = result[1]
+        if (type === 'timerange' && date1.length <= 8 && date2.length < 8) {
+          date1 = `${formatValue} ${date1}`
+          date2 = `${formatValue} ${date2}`
+        }
+        result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~')
+      } else {
+        if (type === 'time' && result.length <= 8) {
+          result = `${formatValue} ${result}`
+        }
+        result = dayjs(result).format(format);
       }
-      result = dayjs(result).format(format);
     }
   }
   // 深结构绑定处理
