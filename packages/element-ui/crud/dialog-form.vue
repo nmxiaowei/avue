@@ -51,6 +51,7 @@
       </template>
     </avue-form>
     <span class="avue-dialog__footer"
+          :class="'avue-dialog__footer--'+dialogMenuPosition"
           v-if="!isView">
       <el-button v-if="vaildData(formOption.submitBtn,true)"
                  @click="submit"
@@ -132,7 +133,6 @@ export default create({
       if (this.isView) {
         option.detail = true;
       } else {
-        option.menuPosition = option.dialogMenuPosition || 'right'
         if (this.isAdd) {
           option.submitBtn = option.saveBtn;
           option.submitText = this.crud.menuIcon('saveBtn');
@@ -165,6 +165,9 @@ export default create({
       if (!this.validatenull(this.boxType)) {
         return this.crud.tableOption[key + 'Title'] || this.t(`crud.${key}Title`);
       }
+    },
+    dialogMenuPosition () {
+      return this.crud.option.dialogMenuPosition || 'right'
     }
   },
   methods: {

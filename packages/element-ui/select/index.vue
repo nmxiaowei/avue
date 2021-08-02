@@ -47,7 +47,8 @@
     </template>
     <template v-else>
       <el-checkbox v-model="checkAll"
-                   v-if="all"
+                   v-if="all&&multiple"
+                   :class="b('check')"
                    @change='selectAll'>全选</el-checkbox>
       <el-option v-for="(item,index) in netDic"
                  :key="index"
@@ -76,6 +77,7 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { sendDic } from "core/dic";
+import { DIC_SPLIT } from 'global/variable';
 export default create({
   name: "select",
   mixins: [props(), event()],
@@ -136,7 +138,7 @@ export default create({
       if (!this.validatenull(val)) {
         if (this.remote && !this.created) {
           this.created = true
-          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+          this.handleRemoteMethod(this.multiple ? this.text.join(DIC_SPLIT) : this.text)
         }
       }
     },
