@@ -1,6 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { getPasswordChar, findByValue, getAsVal, strCorNum } from 'utils/util';
-import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST, MULTIPLE_LIST, ARRAY_VALUE_LIST } from 'global/variable';
+import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST, MULTIPLE_LIST, ARRAY_VALUE_LIST, ARRAY_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
@@ -9,12 +9,11 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   if (validatenull(result)) result = '';
   let selectFlag = MULTIPLE_LIST.includes(column.type) && column.multiple;
   let arrayFlag = ARRAY_VALUE_LIST.includes(column.type)
-  let stringMode = ['string', 'number'].includes(typeof (result))
-  if ((['string', 'number'].includes(column.dataType) || selectFlag || arrayFlag) && stringMode) {
+  if ((['string', 'number'].includes(column.dataType) || selectFlag || arrayFlag) && !Array.isArray(result)) {
     result = (result + '').split(separator || DIC_SPLIT);
     if (column.dataType === 'number') result = strCorNum(result);
   }
-  if (['array'].includes(type)) {
+  if (ARRAY_LIST.includes(type)) {
     if (Array.isArray(result)) {
       result = result.join(separator || DIC_SHOW_SPLIT);
     } else {
