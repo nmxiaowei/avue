@@ -1,14 +1,16 @@
 import { validatenull } from 'utils/validate';
 import { getPasswordChar, findByValue, getAsVal, strCorNum } from 'utils/util';
-import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST } from 'global/variable';
+import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST, MULTIPLE_LIST, ARRAY_VALUE_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
   let type = column.type;
   let separator = column.separator;
   if (validatenull(result)) result = '';
-
-  if (['string', 'number'].includes(column.dataType) && !Array.isArray(result) && !validatenull(result)) {
+  let selectFlag = MULTIPLE_LIST.includes(column.type) && column.multiple;
+  let arrayFlag = ARRAY_VALUE_LIST.includes(column.type)
+  let stringMode = ['string', 'number'].includes(typeof (result))
+  if ((['string', 'number'].includes(column.dataType) || selectFlag || arrayFlag) && stringMode) {
     result = (result + '').split(separator || DIC_SPLIT);
     if (column.dataType === 'number') result = strCorNum(result);
   }
@@ -24,9 +26,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
   } else if (['icon'].includes(type)) {
     result = `<i class="avue-crud__icon ${result}" ></i>`;
-  }
-  // 日期处理
-  if (DATE_LIST.includes(type) && column.format && !validatenull(result)) {
+  } else if (DATE_LIST.includes(type) && column.format && !validatenull(result)) {
     const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
     let formatValue = dayjs().format('YYYY-MM-DD');
     if (type.indexOf('range') !== -1) {

@@ -18,6 +18,7 @@
              @focus="handleFocus"
              @blur="handleBlur"
              @click.native="handleClick"
+             @change="changeSelect"
              :multiple-limit="limit"
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
@@ -45,6 +46,9 @@
       </el-option-group>
     </template>
     <template v-else>
+      <el-checkbox v-model="checkAll"
+                   v-if="all"
+                   @change='selectAll'>全选</el-checkbox>
       <el-option v-for="(item,index) in netDic"
                  :key="index"
                  :disabled="item[disabledKey]"
@@ -77,6 +81,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      checkAll: false,
       created: false,
       netDic: [],
       loading: false,
@@ -118,6 +123,10 @@ export default create({
       default: false
     },
     defaultFirstOption: {
+      type: Boolean,
+      default: false
+    },
+    all: {
       type: Boolean,
       default: false
     }
@@ -172,6 +181,19 @@ export default create({
         this.loading = false;
         this.netDic = res;
       });
+    },
+    selectAll () {
+      this.text = []
+      if (this.checkAll) {
+        this.netDic.map((item) => {
+          this.text.push(item[this.valueKey])
+        })
+      } else {
+        this.text = []
+      }
+    },
+    changeSelect (val) {
+      this.checkAll = val.length === this.netDic.length
     }
   }
 });
