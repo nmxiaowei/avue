@@ -225,6 +225,13 @@ export default create({
       },
       deep: true
     },
+    allDisabled: {
+      handler (val) {
+        this.$emit('update:status', val)
+      },
+      deep: true,
+      immediate: true
+    },
     value: {
       handler (val) {
         if (this.formCreate) {
@@ -362,6 +369,10 @@ export default create({
     reset: {
       type: Boolean,
       default: true
+    },
+    status: {
+      type: Boolean,
+      default: false
     },
     isCrud: {
       type: Boolean,

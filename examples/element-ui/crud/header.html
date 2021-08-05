@@ -39,6 +39,7 @@
           pageSize: 20
         },
         option: {
+          excelBtn: true,
           border: true,
           index: true,
           expandLevel: 3,
@@ -65,8 +66,10 @@
             }]
           }, {
             label: '复杂表头',
+            prop: 'header',
             children: [{
               label: '信息',
+              prop: "info",
               children: [{
                 label: '年龄',
                 prop: 'age'
@@ -75,6 +78,7 @@
                 prop: 'phone',
               }, {
                 label: '单位：天',
+                prop: 'day',
                 children: [
                   {
                     label: 'D1-D3天数', children: [{

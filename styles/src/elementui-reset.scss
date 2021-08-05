@@ -17,8 +17,8 @@
       margin-left: 0;
     }
     .el-button{
-      margin-right: 8px;
-      margin-bottom: 8px;
+      margin-right: 5px;
+      margin-bottom: 0px;
     }
   }
   .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
@@ -107,16 +107,9 @@
   font-size: 16px !important;
 }
 
-.el-transfer{
-  display: flex;
-  justify-content: center
-}
 .el-tree-node.is-current>.el-tree-node__content {
    color: #409eff; 
    background-color: #F5F7FA; 
-}
-.el-transfer-panel__item{
-  width: 100%;
 }
 
 .el-select-dropdown .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {

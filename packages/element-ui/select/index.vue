@@ -18,6 +18,7 @@
              @focus="handleFocus"
              @blur="handleBlur"
              @click.native="handleClick"
+             @change="changeSelect"
              :multiple-limit="limit"
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
@@ -45,6 +46,10 @@
       </el-option-group>
     </template>
     <template v-else>
+      <el-checkbox v-model="checkAll"
+                   v-if="all&&multiple"
+                   :class="b('check')"
+                   @change='selectAll'>全选</el-checkbox>
       <el-option v-for="(item,index) in netDic"
                  :key="index"
                  :disabled="item[disabledKey]"
@@ -72,11 +77,13 @@ import create from "core/create";
 import props from "../../core/common/props.js";
 import event from "../../core/common/event.js";
 import { sendDic } from "core/dic";
+import { DIC_SPLIT } from 'global/variable';
 export default create({
   name: "select",
   mixins: [props(), event()],
   data () {
     return {
+      checkAll: false,
       created: false,
       netDic: [],
       loading: false,
@@ -120,6 +127,10 @@ export default create({
     defaultFirstOption: {
       type: Boolean,
       default: false
+    },
+    all: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -127,7 +138,7 @@ export default create({
       if (!this.validatenull(val)) {
         if (this.remote && !this.created) {
           this.created = true
-          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+          this.handleRemoteMethod(this.multiple ? this.text.join(DIC_SPLIT) : this.text)
         }
       }
     },
@@ -172,6 +183,19 @@ export default create({
         this.loading = false;
         this.netDic = res;
       });
+    },
+    selectAll () {
+      this.text = []
+      if (this.checkAll) {
+        this.netDic.map((item) => {
+          this.text.push(item[this.valueKey])
+        })
+      } else {
+        this.text = []
+      }
+    },
+    changeSelect (val) {
+      this.checkAll = val.length === this.netDic.length
     }
   }
 });

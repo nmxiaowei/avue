@@ -62,10 +62,6 @@ export default function () {
         type: Boolean,
         default: false
       },
-      isImage: {
-        type: Boolean,
-        default: true
-      },
       loadText: {
         type: String,
         default: "文件上传中,请稍等"
@@ -133,7 +129,7 @@ export default function () {
             list.push({
               uid: index + '',
               status: 'done',
-              isImage: this.isImage,
+              isImage: ele.isImage || this.$typeList.img.test(ele[this.valueKey]),
               name: this.isMultiple ? name : ele[this.labelKey],
               url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
             });

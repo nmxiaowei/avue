@@ -2,13 +2,11 @@
   <component :is="dialogType"
              lock-scroll
              :destroy-on-close="crud.tableOption.dialogDestroy"
-             class="avue-dialog"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :class="b('dialog',{'fullscreen':fullscreen})"
+             :class="['avue-dialog',b('dialog'),{'avue-dialog--fullscreen':fullscreen}]"
              :custom-class="crud.tableOption.dialogCustomClass"
-             :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
              :top="setPx(dialogTop)"
@@ -27,38 +25,50 @@
       <span class="el-dialog__title">{{dialogTitle}}</span>
       <div :class="b('dialog__menu')">
         <i @click="handleFullScreen"
-           class="el-dialog__close el-icon-full-screen"></i>
+           :class="fullscreen?'el-icon-news':'el-icon-full-screen'"
+           class="el-dialog__close"></i>
       </div>
     </div>
-    <el-scrollbar :style="styleName">
-      <avue-form v-model="crud.tableForm"
-                 v-if="boxVisible"
-                 ref="tableForm"
-                 :reset="false"
-                 @change="handleChange"
-                 @submit="handleSubmit"
-                 @reset-change="hide"
-                 @tab-click="handleTabClick"
-                 @error="handleError"
-                 v-bind="$uploadFun({},crud)"
-                 :option="formOption">
-        <template slot-scope="scope"
-                  v-for="item in crud.formSlot"
-                  :slot="getSlotName(item)">
-          <slot :name="item"
-                v-bind="Object.assign(scope,{
+    <avue-form v-model="crud.tableForm"
+               v-if="boxVisible"
+               ref="tableForm"
+               :reset="false"
+               :status.sync="disabled"
+               @change="handleChange"
+               @submit="handleSubmit"
+               @reset-change="hide"
+               @tab-click="handleTabClick"
+               @error="handleError"
+               v-bind="$uploadFun({},crud)"
+               :option="formOption">
+      <template slot-scope="scope"
+                v-for="item in crud.formSlot"
+                :slot="getSlotName(item)">
+        <slot :name="item"
+              v-bind="Object.assign(scope,{
                     type:boxType
                   }) "></slot>
-        </template>
-        <template slot="menuForm"
-                  slot-scope="scope">
-          <slot name="menuForm"
-                v-bind="Object.assign(scope,{
-                    type:boxType
-                  }) "></slot>
-        </template>
-      </avue-form>
-    </el-scrollbar>
+      </template>
+    </avue-form>
+    <span class="avue-dialog__footer"
+          :class="'avue-dialog__footer--'+dialogMenuPosition"
+          v-if="!isView">
+      <el-button v-if="vaildData(formOption.submitBtn,true)"
+                 @click="submit"
+                 :disabled="disabled"
+                 :size="crud.controlSize"
+                 :icon="formOption.submitIcon || 'el-icon-check'"
+                 type="primary">{{formOption.submitText}}</el-button>
+      <el-button v-if="vaildData(formOption.emptyBtn,true)"
+                 @click="reset"
+                 :disabled="disabled"
+                 :size="crud.controlSize || 'el-icon-delete'"
+                 :icon="formOption.emptyIcon">{{formOption.emptyText}}</el-button>
+      <slot name="menuForm"
+            :disabled="disabled"
+            :size="crud.controlSize"
+            :type="boxType"></slot>
+    </span>
   </component>
 </template>
 
@@ -73,6 +83,7 @@ export default create({
   inject: ["crud"],
   data () {
     return {
+      disabled: false,
       config: config,
       boxType: "",
       fullscreen: false,
@@ -90,12 +101,6 @@ export default create({
     }
   },
   computed: {
-    styleName () {
-      return {
-        height: this.dialogHeight,
-        overflow: 'hidden'
-      }
-    },
     isView () {
       return this.boxType === 'view'
     },
@@ -115,31 +120,19 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.crud.tableOption.dialogTop || config.dialogTop
+      return this.crud.tableOption.dialogTop
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
-    },
-    dialogHeight () {
-      if (this.isDrawer) {
-        return 'calc(100% - 100px)';
-      }
-      if (this.crud.tableOption.dialogHeight === config.dialogHeight) {
-        return this.setPx(config.clientHeight - 3 * this.dialogTop);
-      }
-      return this.setPx(this.crud.tableOption.dialogHeight);
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
-      option.printBtn = false;
-      option.mockBtn = false;
+      option.menuBtn = false;
       if (this.isView) {
-        option.menuBtn = false;
         option.detail = true;
       } else {
-        option.menuPosition = option.dialogMenuPosition || 'right'
         if (this.isAdd) {
           option.submitBtn = option.saveBtn;
           option.submitText = this.crud.menuIcon('saveBtn');
@@ -172,14 +165,27 @@ export default create({
       if (!this.validatenull(this.boxType)) {
         return this.crud.tableOption[key + 'Title'] || this.t(`crud.${key}Title`);
       }
+    },
+    dialogMenuPosition () {
+      return this.crud.option.dialogMenuPosition || 'right'
     }
   },
   methods: {
+    submit () {
+      this.$refs.tableForm.submit()
+    },
+    reset () {
+      this.$refs.tableForm.resetForm()
+    },
     getSlotName (item) {
       return item.replace('Form', '')
     },
     handleOpened () {
-      this.$nextTick(() => this.initFun())
+      this.$nextTick(() => {
+        ['clearValidate', 'validate', 'resetForm'].forEach(ele => {
+          this.crud[ele] = this.$refs.tableForm[ele]
+        })
+      })
     },
     handleChange () {
       this.crud.$emit('input', this.crud.tableForm)
@@ -195,14 +201,12 @@ export default create({
         } else {
           this.size = ''
         }
-      } else {
-        if (this.fullscreen) {
-          this.fullscreen = false;
-        } else {
-          this.fullscreen = true;
-        }
       }
-
+      if (this.fullscreen) {
+        this.fullscreen = false;
+      } else {
+        this.fullscreen = true;
+      }
     },
     handleError (error) {
       this.crud.$emit('error', error)
@@ -213,11 +217,6 @@ export default create({
       } else if (this.isEdit) {
         this.rowUpdate(hide);
       }
-    },
-    initFun () {
-      ['clearValidate', 'validate', 'resetForm'].forEach(ele => {
-        this.crud[ele] = this.$refs.tableForm[ele]
-      })
     },
     // 保存
     rowSave (hide) {
