@@ -5,7 +5,7 @@
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
              v-dialogdrag="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen}),crud.tableOption.dialogCustomClass]"
+             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass]"
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
