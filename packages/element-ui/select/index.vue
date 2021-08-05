@@ -18,6 +18,7 @@
              @focus="handleFocus"
              @blur="handleBlur"
              @click="handleClick"
+             @change="changeSelect"
              :multiple-limit="limit"
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
@@ -47,6 +48,10 @@
       </el-option-group>
     </template>
     <template v-else>
+      <el-checkbox v-model="checkAll"
+                   class="b('check')"
+                   v-if="all"
+                   @change='selectAll'>全选</el-checkbox>
       <el-option v-for="(item,index) in netDic"
                  :key="index"
                  :disabled="item[disabledKey]"
@@ -77,11 +82,13 @@ import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 import { sendDic } from "core/dic";
+import { DIC_SPLIT } from 'global/variable';
 export default create({
   name: "select",
   mixins: [props(), event()],
   data () {
     return {
+      checkAll: false,
       create: false,
       netDic: [],
       loading: false,
@@ -125,6 +132,10 @@ export default create({
     defaultFirstOption: {
       type: Boolean,
       default: false
+    },
+    all: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -145,7 +156,7 @@ export default create({
       if (!this.validatenull(this.text)) {
         if (this.remote && !this.created) {
           this.created = true
-          this.handleRemoteMethod(this.multiple ? this.text.join(',') : this.text)
+          this.handleRemoteMethod(this.multiple ? this.text.join(DIC_SPLIT) : this.text)
         }
       }
     },
@@ -177,6 +188,19 @@ export default create({
         this.loading = false;
         this.netDic = res;
       });
+    },
+    selectAll () {
+      this.text = []
+      if (this.checkAll) {
+        this.netDic.map((item) => {
+          this.text.push(item[this.valueKey])
+        })
+      } else {
+        this.text = []
+      }
+    },
+    changeSelect (val) {
+      this.checkAll = val.length === this.netDic.length
     }
   }
 });

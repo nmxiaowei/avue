@@ -1,11 +1,10 @@
 <template>
   <div :class="b()">
-    <template v-if="all">
-      <el-checkbox :indeterminate="isIndeterminate"
-                   v-model="checkAll"
-                   @change="handleCheckAll">全选</el-checkbox>
-      <div style="margin: 5px 0;"></div>
-    </template>
+    <el-checkbox v-if="all"
+                 style="margin: 5px 0;"
+                 :indeterminate="isIndeterminate"
+                 v-model="checkAll"
+                 @change="handleCheckAll">全选</el-checkbox>
     <el-checkbox-group v-model="text"
                        @change="handleCheckChange"
                        :disabled="disabled"

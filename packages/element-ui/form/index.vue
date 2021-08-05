@@ -187,7 +187,7 @@ import formMenu from './menu'
 export default create({
   name: "form",
   mixins: [init()],
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:status'],
   components: {
     formTemp,
     formMenu
@@ -231,7 +231,14 @@ export default create({
         this.setForm(val);
       },
       deep: true
-    }
+    },
+    allDisabled: {
+      handler (val) {
+        this.$emit('update:status', val)
+      },
+      deep: true,
+      immediate: true
+    },
   },
   computed: {
     columnSlot () {
@@ -358,6 +365,10 @@ export default create({
     reset: {
       type: Boolean,
       default: true
+    },
+    status: {
+      type: Boolean,
+      default: false
     },
     isCrud: {
       type: Boolean,

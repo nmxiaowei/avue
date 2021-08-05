@@ -30,6 +30,7 @@ import create from "core/create";
 import columnDynamic from "./column-dynamic";
 import columnSlot from './column-slot'
 import { arraySort } from 'utils/util'
+import { DIC_PROPS } from 'global/variable'
 export default create({
   name: "crud",
   data () {
