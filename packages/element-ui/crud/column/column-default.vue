@@ -1,36 +1,34 @@
 <template>
-  <div>
-    <el-table-column width="1px"></el-table-column>
-    <!-- 折叠面板  -->
-    <el-table-column type="expand"
-                     :width="crud.tableOption.expandWidth || config.expandWidth"
-                     :fixed="validData(crud.tableOption.expandFixed,config.expandFixed)"
-                     align="center"
-                     v-if="crud.tableOption.expand">
-      <template #="{row}">
-        <slot :row="row"
-              :index="row.$index"
-              name="expand"></slot>
-      </template>
-    </el-table-column>
+  <el-table-column width="1px"></el-table-column>
+  <!-- 折叠面板  -->
+  <el-table-column type="expand"
+                   :width="crud.tableOption.expandWidth || config.expandWidth"
+                   :fixed="validData(crud.tableOption.expandFixed,config.expandFixed)"
+                   align="center"
+                   v-if="crud.tableOption.expand">
+    <template #="{row}">
+      <slot :row="row"
+            :index="row.$index"
+            name="expand"></slot>
+    </template>
+  </el-table-column>
 
-    <!-- 选择框 -->
-    <el-table-column v-if="crud.tableOption.selection"
-                     :fixed="validData(crud.tableOption.selectionFixed,config.selectionFixed)"
-                     type="selection"
-                     :selectable="crud.tableOption.selectable"
-                     :reserve-selection="validData(crud.tableOption.reserveSelection)"
-                     :width="crud.tableOption.selectionWidth || config.selectionWidth"
-                     align="center"></el-table-column>
-    <!-- 序号 -->
-    <el-table-column v-if="validData(crud.tableOption.index)"
-                     :fixed="validData(crud.tableOption.indexFixed,config.indexFixed)"
-                     :label="crud.tableOption.indexLabel || config.indexLabel"
-                     type="index"
-                     :width="crud.tableOption.indexWidth || config.indexWidth"
-                     :index="indexMethod"
-                     align="center"></el-table-column>
-  </div>
+  <!-- 选择框 -->
+  <el-table-column v-if="crud.tableOption.selection"
+                   :fixed="validData(crud.tableOption.selectionFixed,config.selectionFixed)"
+                   type="selection"
+                   :selectable="crud.tableOption.selectable"
+                   :reserve-selection="validData(crud.tableOption.reserveSelection)"
+                   :width="crud.tableOption.selectionWidth || config.selectionWidth"
+                   align="center"></el-table-column>
+  <!-- 序号 -->
+  <el-table-column v-if="validData(crud.tableOption.index)"
+                   :fixed="validData(crud.tableOption.indexFixed,config.indexFixed)"
+                   :label="crud.tableOption.indexLabel || config.indexLabel"
+                   type="index"
+                   :width="crud.tableOption.indexWidth || config.indexWidth"
+                   :index="indexMethod"
+                   align="center"></el-table-column>
 </template>
 
 <script>

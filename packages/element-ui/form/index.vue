@@ -229,6 +229,7 @@ export default create({
     modelValue: {
       handler (val) {
         this.setForm(val);
+        this.formCreated = true;
       },
       deep: true
     },
@@ -383,9 +384,10 @@ export default create({
     }
   },
   created () {
-    this.formDefault = formInitVal(this.propOption).tableForm;
-    this.setForm(Object.assign(this.formDefault, this.modelValue));
-    this.formCreated = true;
+    this.$nextTick(() => {
+      this.formDefault = formInitVal(this.propOption).tableForm;
+      this.setForm(Object.assign(this.formDefault, this.modelValue));
+    })
   },
   methods: {
     getComponent,
