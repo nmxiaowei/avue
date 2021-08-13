@@ -32,7 +32,7 @@
       @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate" @row-del="rowDel"
       @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange"
       @search-reset="searchReset">
-      <template slot="search">
+      <template slot="search" slot-scope="scope">
         <el-col :md="6" :xs="24">
           <el-form-item label="自定义">
             <el-input placeholder="自定义搜索" size="small" v-model="searchForm.slot" />
@@ -463,16 +463,6 @@
           {
             id: '2',
             name: '1',
-            dic: '110000',
-            switch: 0,
-            sum: 15,
-            avg: 20,
-            count: 1,
-            datetime: '2019-01-01 00:00:00'
-          },
-          {
-            id: '2',
-            name: '0',
             dic: '110000',
             switch: 0,
             sum: 15,
