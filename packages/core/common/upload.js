@@ -71,7 +71,8 @@ export default function () {
       uploadDelete: Function,
       uploadPreview: Function,
       uploadError: Function,
-      uploadExceed: Function
+      uploadExceed: Function,
+      httpRequest: Function
     },
     computed: {
       isMultiple () {
@@ -172,7 +173,11 @@ export default function () {
       handleFileChange (file, fileList) {
         fileList.splice(fileList.length - 1, 1);
       },
-      httpRequest (config) {
+      httpUpload (config) {
+        if (typeof this.httpRequest === "function") {
+          this.httpRequest(config)
+          return
+        }
         this.loading = true;
         let file = config.file;
         const fileSize = file.size / 1024;

@@ -10,7 +10,7 @@
                :multiple="multiple"
                :on-preview="handlePreview"
                :limit="limit"
-               :http-request="httpRequest"
+               :http-request="httpUpload"
                :drag="drag"
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
