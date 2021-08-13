@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { KEY_COMPONENT_NAME, DIC_SPLIT, ARRAY_LIST, DATE_LIST, INPUT_LIST, ARRAY_VALUE_LIST, MULTIPLE_LIST, SELECT_LIST } from 'global/variable';
+import { KEY_COMPONENT_NAME, DIC_SPLIT, ARRAY_LIST, DATE_LIST, INPUT_LIST, ARRAY_VALUE_LIST, MULTIPLE_LIST, SELECT_LIST, RANGE_LIST } from 'global/variable';
 import { detailDataType, findObject, createObj } from 'utils/util';
 import { t } from 'locale';
 /**
@@ -45,11 +45,12 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
  * 初始化数据格式
  */
 export const initVal = (value, column) => {
-  let { type, multiple, dataType, separator = DIC_SPLIT, alone, emitPath } = column
+  let { type, multiple, dataType, separator = DIC_SPLIT, alone, emitPath, range } = column
   let list = value;
   if (
-    (MULTIPLE_LIST.includes(type) && multiple) ||
-    ARRAY_VALUE_LIST.includes(type) && emitPath !== false
+    (MULTIPLE_LIST.includes(type) && multiple == true) ||
+    (ARRAY_VALUE_LIST.includes(type) && emitPath !== false) ||
+    (RANGE_LIST && range == true)
   ) {
     if (!Array.isArray(list)) {
       if (validatenull(list)) {
