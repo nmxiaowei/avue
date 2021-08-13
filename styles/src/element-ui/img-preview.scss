@@ -31,6 +31,15 @@
     transition: all 0.5s;
     cursor: pointer;
   }
+  &__file{
+    text-align: center;
+    a{
+      color:#fff;
+    }
+    i{
+      font-size: 80px;
+    }
+  }
   &__mask{
     position: absolute;
     top:0;
