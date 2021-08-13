@@ -132,6 +132,7 @@ export default {
     getComponent,
     getPlaceholder,
     enterChange () {
+      if (typeof this.column.enter === 'function') this.column.enter(this.text, this.column)
       if (this.enter) this.$emit('enter')
     }
   }
