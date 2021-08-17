@@ -131,22 +131,18 @@ export default create({
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
       option.menuBtn = false;
-      if (this.isView) {
-        option.detail = true;
-      } else {
-        if (this.isAdd) {
-          option.submitBtn = option.saveBtn;
-          option.submitText = this.crud.menuIcon('saveBtn');
-          option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
-        } else if (this.isEdit) {
-          option.submitBtn = option.updateBtn;
-          option.submitText = this.crud.menuIcon('updateBtn');
-          option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
-        }
-        option.emptyBtn = option.cancelBtn;
-        option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
-        option.emptyText = this.crud.menuIcon('cancelBtn')
+      if (this.isAdd) {
+        option.submitBtn = option.saveBtn;
+        option.submitText = this.crud.menuIcon('saveBtn');
+        option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
+      } else if (this.isEdit) {
+        option.submitBtn = option.updateBtn;
+        option.submitText = this.crud.menuIcon('updateBtn');
+        option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
       }
+      option.emptyBtn = option.cancelBtn;
+      option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
+      option.emptyText = this.crud.menuIcon('cancelBtn')
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
         option.dicFlag = false;
@@ -158,7 +154,6 @@ export default create({
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }
-
       return option;
     },
     dialogTitle () {
