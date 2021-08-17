@@ -64,22 +64,6 @@ body {
       }
     }
   }
-  .el-checkbox {
-    display: none;
-    &.is-checked,.is-disabled.is-checked{
-      display: inline-block;
-      color: #606266;
-      .el-checkbox__label{
-        padding-left: 14px;
-        color: #606266;
-        font-weight: normal;
-        font-size: 14px;
-      }
-    }
-    .el-checkbox__inner{
-      display: none;
-    }
-  }
   .el-input__suffix{
     display: none;
   }
