@@ -46,6 +46,7 @@
                 :slot="getSlotName(item)">
         <slot :name="item"
               v-bind="Object.assign(scope,{
+                    row:crud.tableForm,
                     type:boxType
                   }) "></slot>
       </template>
