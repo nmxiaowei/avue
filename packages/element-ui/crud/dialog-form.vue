@@ -9,7 +9,7 @@
              :custom-class="crud.tableOption.dialogCustomClass"
              :modal-append-to-body="false"
              append-to-body
-             :top="setPx(dialogTop)"
+             :style="styleName"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
              :close-on-click-modal="vaildData(crud.tableOption.dialogClickModal,false)"
@@ -30,7 +30,6 @@
       </div>
     </div>
     <avue-form v-model="crud.tableForm"
-               v-if="boxVisible"
                ref="tableForm"
                :reset="false"
                :status.sync="disabled"
@@ -102,6 +101,11 @@ export default create({
     }
   },
   computed: {
+    styleName () {
+      if (!this.isDrawer) {
+        return { top: this.dialogTop }
+      }
+    },
     isView () {
       return this.boxType === 'view'
     },
@@ -121,7 +125,7 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.crud.tableOption.dialogTop
+      return this.setPx(this.crud.tableOption.dialogTop || config.dialogTop)
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
@@ -154,6 +158,7 @@ export default create({
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }
+
       return option;
     },
     dialogTitle () {

@@ -49,6 +49,7 @@ export default {
   searchShow: true,
   tip: true,
   dialogWidth: '60%',
+  dialogTop: '15%',
   dialogDrag: false,
   formFullscreen: false,
   pageBackground: true,

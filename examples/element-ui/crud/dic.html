@@ -38,6 +38,7 @@
           {
             name: '张三',
             sex: '男',
+            radio: 1,
             grade: 1,
             address: '110000',
             cascader: [3, 1],
@@ -58,6 +59,7 @@
           align: 'center',
           menuAlign: 'center',
           excelBtn: true,
+          viewBtn: true,
           column: [
             {
               label: '姓名',
@@ -114,6 +116,24 @@
               label: '多选',
               prop: 'checkbox',
               type: 'checkbox',
+              span: 24,
+              dicData: [{
+                label: '有权限',
+                value: 1
+              }, {
+                label: '无权限',
+                value: 0
+              }, {
+                label: '禁止项',
+                disabled: true,
+                value: -1
+              }]
+            },
+            {
+              width: 120,
+              label: '单选',
+              prop: 'radio',
+              type: 'radio',
               span: 24,
               dicData: [{
                 label: '有权限',

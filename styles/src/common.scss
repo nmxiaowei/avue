@@ -16,13 +16,13 @@ body {
   color:#ccc;
 }
 .avue--detail{
+  .hover-row td{
+    background-color: #fff !important;
+  }
   .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner,.el-range-editor.is-disabled,.el-range-editor.is-disabled input{
     color: #606266;
     background-color: #fff;
     padding-left: 0;
-  }
-  .hover-row td{
-    background-color: #fff !important;
   }
   .el-input-number__decrease,.el-input-number__increase{
     display: none;
@@ -31,9 +31,8 @@ body {
     background-color: transparent;
     border:none;
   }
-  .el-checkbox__input.is-disabled+span.el-checkbox__label,
-  .el-radio__input.is-disabled+span.el-radio__label{
-    color: #606266;
+  .el-input__suffix{
+    display: none;
   }
   .el-input__inner,.el-textarea__inner{
     border: none;
@@ -53,8 +52,23 @@ body {
       color:transparent !important;
     }
   }
-  .el-input__suffix{
-    display: none;
+  .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+    background-color: #409EFF;
+    border-color: #409EFF;
+  }
+  .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after{
+    border-color:#fff;
+  }
+  .el-radio__input.is-disabled.is-checked .el-radio__inner{
+    background-color:#409EFF;
+    border-color: #409EFF;
+  }
+  .el-radio__input.is-disabled.is-checked .el-radio__inner::after{
+    background-color:#fff;
+  }
+  .el-checkbox__input.is-disabled+span.el-checkbox__label,
+  .el-radio__input.is-disabled+span.el-radio__label{
+    color: #606266;
   }
   .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before, .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before{
     display: none;
@@ -120,13 +134,14 @@ body {
 
 .avue-dialog {
   .el-dialog{
+    min-height: 180px;
     display: flex;
     flex-direction: column;
     margin:0 !important;
     position:absolute;
-    top:50%;
+    top:0;
     left:50%;
-    transform:translate(-50%,-50%);
+    transform:translate(-50%,0);
     border-radius: 2px;
     max-height:calc(100% - 100px);
     max-width:calc(100% - 100px);
