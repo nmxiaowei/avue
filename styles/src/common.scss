@@ -142,6 +142,7 @@ body {
 }
 
 .avue-dialog {
+  overflow: visible;
   .el-dialog{
     min-height: 180px;
     display: flex;
@@ -154,6 +155,11 @@ body {
     border-radius: 2px;
     max-height:calc(100% - 100px);
     max-width:calc(100% - 100px);
+  }
+  &--top{
+    .el-dialog{
+      top:15%;
+    }
   }
   .el-dialog__header{
     padding: 16px 24px;
