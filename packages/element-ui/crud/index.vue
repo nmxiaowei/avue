@@ -171,13 +171,9 @@
               v-bind="scope"></slot>
       </template>
     </dialog-form>
-    <!-- 动态列 -->
     <dialog-column ref="dialogColumn"></dialog-column>
     <dialog-excel ref="dialogExcel"></dialog-excel>
-    <!-- 过滤器 -->
-    <keep-alive>
-      <dialog-filter ref="dialogFilter"></dialog-filter>
-    </keep-alive>
+    <dialog-filter ref="dialogFilter"></dialog-filter>
   </div>
 </template>
 <script>

@@ -31,7 +31,7 @@
     </div>
     <avue-form v-model="crud.tableForm"
                ref="tableForm"
-               :reset="false"
+               v-if="boxVisible"
                :status.sync="disabled"
                @change="handleChange"
                @submit="handleSubmit"
@@ -124,7 +124,7 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.setPx(this.crud.tableOption.dialogTop || config.dialogTop)
+      return this.setPx(this.crud.tableOption.dialogTop, config.dialogTop)
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
@@ -275,9 +275,6 @@ export default create({
     hide (done) {
       const callback = () => {
         done && done();
-        Object.keys(this.crud.tableForm).forEach(ele => {
-          this.$delete(this.crud.tableForm, ele);
-        })
         this.crud.tableIndex = -1;
         this.boxVisible = false;
       };

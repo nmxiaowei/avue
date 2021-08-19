@@ -366,10 +366,6 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    reset: {
-      type: Boolean,
-      default: true
-    },
     status: {
       type: Boolean,
       default: false
@@ -554,8 +550,11 @@ export default create({
 
         }
       });
-      this.clearValidate();
-      this.$emit('mock-change', this.form);
+      this.$nextTick(() => {
+        this.clearValidate();
+        this.$emit('mock-change', this.form);
+      })
+
     },
     // 验证表单是否禁止
     vaildDisabled (column) {
@@ -636,16 +635,11 @@ export default create({
       });
     },
     resetForm () {
-      if (this.reset) {
-        this.clearVal();
-        this.$nextTick(() => this.clearValidate())
-      }
-      this.$emit("reset-change");
-    },
-    clearVal () {
       this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
-      this.$emit("input", this.form);
-      this.$emit("change", this.form);
+      this.$nextTick(() => {
+        this.clearValidate()
+        this.$emit("reset-change");
+      })
     },
     resetFields () {
       this.$refs.form.resetFields();
