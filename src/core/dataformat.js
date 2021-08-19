@@ -50,7 +50,7 @@ export const initVal = (value, column) => {
   if (
     (MULTIPLE_LIST.includes(type) && multiple == true) ||
     (ARRAY_VALUE_LIST.includes(type) && emitPath !== false) ||
-    (RANGE_LIST && range == true)
+    (RANGE_LIST.includes(type) && range == true)
   ) {
     if (!Array.isArray(list)) {
       if (validatenull(list)) {
@@ -124,10 +124,11 @@ export const formInitVal = (list = []) => {
   list.forEach(ele => {
     if (
       (ARRAY_VALUE_LIST.includes(ele.type) && ele.emitPath !== false) ||
-      (MULTIPLE_LIST.includes(ele.type) && ele.multiple) ||
-      ele.range || ele.dataType === 'array'
+      (MULTIPLE_LIST.includes(ele.type) && ele.multiple) || ele.dataType === 'array'
     ) {
       tableForm[ele.prop] = [];
+    } else if (RANGE_LIST.includes(ele.type) && ele.range == true) {
+      tableForm[ele.prop] = [0, 0]
     } else if (
       ['rate', 'slider', 'number'].includes(ele.type) ||
       ele.dataType === 'number'

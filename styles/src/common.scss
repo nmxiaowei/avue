@@ -19,6 +19,12 @@ body {
   .hover-row td{
     background-color: #fff !important;
   }
+  .avue-group__header{
+    padding-left: 10px;
+  }
+  .el-collapse-item__header{
+    margin-bottom: 0;
+  }
   .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner,.el-range-editor.is-disabled,.el-range-editor.is-disabled input{
     color: #606266;
     background-color: #fff;
@@ -51,6 +57,9 @@ body {
     &::-ms-input-placeholder {
       color:transparent !important;
     }
+  }
+  .avue-checkbox__all{
+    display: none;
   }
   .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
     background-color: #409EFF;

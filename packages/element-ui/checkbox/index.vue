@@ -1,6 +1,8 @@
 <template>
   <div :class="b()">
     <el-checkbox v-if="all"
+                 :class="b('all')"
+                 :disabled="disabled"
                  :indeterminate="isIndeterminate"
                  v-model="checkAll"
                  @change="handleCheckAll">全选</el-checkbox>
