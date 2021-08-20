@@ -58,10 +58,6 @@ export default function () {
         type: Boolean,
         default: false
       },
-      isVideo: {
-        type: Boolean,
-        default: false
-      },
       loadText: {
         type: String,
         default: "文件上传中,请稍等"
@@ -75,7 +71,8 @@ export default function () {
       uploadDelete: Function,
       uploadPreview: Function,
       uploadError: Function,
-      uploadExceed: Function
+      uploadExceed: Function,
+      httpRequest: Function
     },
     computed: {
       isMultiple () {
@@ -91,7 +88,7 @@ export default function () {
         return this.propsHttp.home || ''
       },
       allParams () {
-        if (this.$typeList.video.test(this.imgUrl) || this.isVideo) {
+        if (this.$typeList.video.test(this.imgUrl)) {
           return Object.assign({
             is: 'video'
           }, this.params)
@@ -176,7 +173,11 @@ export default function () {
       handleFileChange (file, fileList) {
         fileList.splice(fileList.length - 1, 1);
       },
-      httpRequest (config) {
+      httpUpload (config) {
+        if (typeof this.httpRequest === "function") {
+          this.httpRequest(config)
+          return
+        }
         this.loading = true;
         let file = config.file;
         const fileSize = file.size / 1024;
@@ -289,7 +290,7 @@ export default function () {
         const callback = () => {
           let url = file.url
           let list = this.fileList.map(ele => Object.assign(ele, {
-            type: (this.$typeList.video.test(ele.url) || this.isVideo) ? 'video' : ''
+            type: this.$typeList.video.test(ele.url) ? 'video' : ''
           }))
           let index = this.fileList.findIndex(ele => {
             return ele.url === url;

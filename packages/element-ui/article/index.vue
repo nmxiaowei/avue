@@ -40,40 +40,34 @@ export default create({
       default: () => {
         return propsDefault;
       }
-    },
-    option: {
-      type: Object,
-      default: () => {
-        return {};
-      }
     }
   },
   computed: {
-    titleKey() {
+    titleKey () {
       return this.props.title || propsDefault.title;
     },
-    metaKey() {
+    metaKey () {
       return this.props.meta || propsDefault.meta;
     },
-    leadKey() {
+    leadKey () {
       return this.props.lead || propsDefault.lead;
     },
-    bodyKey() {
+    bodyKey () {
       return this.props.body || propsDefault.body;
     },
-    title() {
+    title () {
       return this.data[this.titleKey];
     },
-    meta() {
+    meta () {
       return this.data[this.metaKey];
     },
-    lead() {
+    lead () {
       return this.data[this.leadKey];
     },
-    body() {
+    body () {
       return this.data[this.bodyKey];
     }
   },
-  mounted() {}
+  mounted () { }
 });
 </script>

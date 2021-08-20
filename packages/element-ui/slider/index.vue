@@ -1,6 +1,8 @@
 <template>
   <el-slider v-model="text"
              :disabled="disabled"
+             :vertical="vertical"
+             :height="height"
              :step="step"
              :min="min"
              :max="max"
@@ -9,8 +11,7 @@
              :show-input="showInput"
              :marks="marks"
              :format-tooltip="formatTooltip"
-             @click.native="handleClick"
-             @change="handleChange"></el-slider>
+             @click.native="handleClick"></el-slider>
 </template>
 
 <script>
@@ -21,7 +22,6 @@ export default create({
   name: "slider",
   mixins: [props(), event()],
   props: {
-    value: {},
     step: {
       type: Number
     },
@@ -46,14 +46,12 @@ export default create({
       type: Boolean,
       default: false
     },
-    formatTooltip: Function
-  },
-  data () {
-    return {};
-  },
-  watch: {},
-  created () { },
-  mounted () { },
-  methods: {}
+    vertical: {
+      type: Boolean,
+      default: false
+    },
+    formatTooltip: Function,
+    height: String
+  }
 });
 </script>
