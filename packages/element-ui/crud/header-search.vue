@@ -59,8 +59,7 @@ import slot from 'core/slot'
 import {
   formInitVal,
   getSearchType,
-  getType,
-  getPlaceholder
+  getType
 } from "core/dataformat";
 import config from "./config";
 export default cteate({
@@ -164,7 +163,7 @@ export default cteate({
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
               tip: ele.searchTip,
-              placeholder: getPlaceholder(ele, 'search'),
+              placeholder: ele.searchPlaceholder,
               filterable: ele.searchFilterable,
               tipPlacement: ele.searchTipPlacement,
               filterMethod: ele.searchFilterMethod,
