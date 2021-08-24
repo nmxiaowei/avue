@@ -10,6 +10,7 @@
              :modal-append-to-body="false"
              append-to-body
              :top="setPx(dialogTop)"
+             :style="styleName"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
              :close-on-click-modal="validData(crud.tableOption.dialogClickModal,false)"
@@ -34,7 +35,6 @@
                v-model:status="disabled"
                v-if="boxVisible"
                ref="tableForm"
-               :reset="false"
                @change="handleChange"
                @submit="handleSubmit"
                @reset-change="hide"
@@ -101,6 +101,11 @@ export default create({
     }
   },
   computed: {
+    styleName () {
+      if (!this.isDrawer) {
+        return { top: this.dialogTop }
+      }
+    },
     isView () {
       return this.boxType === 'view'
     },
@@ -120,7 +125,7 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.crud.tableOption.dialogTop
+      return this.setPx(this.crud.tableOption.dialogTop, config.dialogTop)
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
@@ -130,22 +135,18 @@ export default create({
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
       option.menuBtn = false;
-      if (this.isView) {
-        option.detail = true;
-      } else {
-        if (this.isAdd) {
-          option.submitBtn = option.saveBtn;
-          option.submitText = this.crud.menuIcon('saveBtn');
-          option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
-        } else if (this.isEdit) {
-          option.submitBtn = option.updateBtn;
-          option.submitText = this.crud.menuIcon('updateBtn');
-          option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
-        }
-        option.emptyBtn = option.cancelBtn;
-        option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
-        option.emptyText = this.crud.menuIcon('cancelBtn')
+      if (this.isAdd) {
+        option.submitBtn = option.saveBtn;
+        option.submitText = this.crud.menuIcon('saveBtn');
+        option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
+      } else if (this.isEdit) {
+        option.submitBtn = option.updateBtn;
+        option.submitText = this.crud.menuIcon('updateBtn');
+        option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
       }
+      option.emptyBtn = option.cancelBtn;
+      option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
+      option.emptyText = this.crud.menuIcon('cancelBtn')
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
         option.dicFlag = false;
@@ -157,7 +158,6 @@ export default create({
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }
-
       return option;
     },
     dialogTitle () {

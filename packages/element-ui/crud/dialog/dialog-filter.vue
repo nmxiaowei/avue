@@ -68,7 +68,6 @@
 import { getSearchType, formInitVal } from "core/dataformat";
 import create from "core/create";
 import locale from "core/locale";
-import { dateList } from "core/dataformat";
 import formTemp from 'common/components/form/index'
 export default create({
   name: "crud",
@@ -83,7 +82,6 @@ export default create({
       formDefault: {},
       list: [],
       columnList: [],
-      dateList: dateList,
       columnProps: {
         value: "prop"
       }

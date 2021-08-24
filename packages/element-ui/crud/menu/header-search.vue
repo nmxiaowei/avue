@@ -8,6 +8,7 @@
                  @submit="searchChange"
                  @change="handleChange"
                  @reset-change="resetChange"
+                 v-if="searchFlag"
                  v-model="searchForm">
         <template #menuForm="scope">
           <slot name="searchMenu"

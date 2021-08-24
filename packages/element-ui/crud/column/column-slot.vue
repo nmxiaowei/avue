@@ -62,7 +62,7 @@
                        v-bind="$uploadFun(column,crud)"
                        v-model="row[column.prop]"
                        :column-slot="crud.mainSlot"
-                       @change="columnChange($index,row,column,index)">
+                       @change="columnChange($index,row,column)">
               <template v-for="item in crud.mainSlot"
                         #[item]="scope">
                 <slot v-bind="scope"
@@ -154,10 +154,10 @@ export default {
       }
       return result;
     },
-    columnChange ($index, row, column, index) {
+    columnChange ($index, row, column) {
       if (this.validatenull(count[$index])) count[$index] = 0
       count[$index] = count[$index] + 1;
-      if (column.cascader) this.handleChange(index, row)
+      if (column.cascader) this.handleChange(column, row)
       if (count[$index] % this.crud.cellChangeCount === 0) {
         if (typeof column.change === 'function' && column.cell === true) {
           column.change({ row, column, index: $index, value: row[column.prop] })
@@ -165,11 +165,10 @@ export default {
         this.crud.$emit('column-change', { row, column, index: $index, value: row[column.prop] })
       }
     },
-    handleChange (index, row) {
+    handleChange (column, row) {
       this.$nextTick(() => {
         const columnOption = [...this.crud.propOption];
         //本节点;
-        const column = columnOption[index];
         const cascader = column.cascader;
         const str = cascader.join(",");
         const columnNextProp = cascader[0];

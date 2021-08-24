@@ -505,16 +505,6 @@ export default create({
       });
       this.list = treeToArray(this, data);
     },
-    showRow (row) {
-      const index = row.rowIndex;
-      const show = row.row._parent
-        ? row.row._parent._expand && row.row._parent._show
-        : true;
-      row.row._show = show;
-      return show
-        ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
-        : "display:none;";
-    },
     menuIcon (value) {
       return this.validData(this.tableOption[value + 'Text'], this.t("crud." + value))
     },

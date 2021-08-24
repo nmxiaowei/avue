@@ -28,6 +28,7 @@
                            :label="item.label">
             <template #="{row}">
               <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+            </template>
           </el-table-column>
         </template>
       </el-table>
@@ -39,7 +40,7 @@ import create from "core/create";
 import locale from "core/locale";
 import packages from "core/packages";
 import { arraySort } from 'utils/util'
-import config from "./config.js";
+import config from "../config.js";
 export default create({
   name: 'crud',
   mixins: [locale],

@@ -84,7 +84,6 @@
                                   style="margin-bottom:10px"
                                   :rows="3"
                                   show-word-limit
-                                  maxlength="100"
                                   placeholder="请输入快捷回复语"
                                   v-model="keys"
                                   type="textarea"></el-input>

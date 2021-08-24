@@ -31,13 +31,22 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <component :src="item.url"
-                     :style="[styleName,styleBoxName]"
-                     ref="item"
-                     @mousedown="move"
-                     controls="controls"
-                     :is="getIsVideo(item)"
-                     ondragstart="return false"></component>
+          <img v-if="$typeList.img.test(item.url) || $typeList.video.test(item.url)"
+               :src="item.url"
+               :style="[styleName,styleBoxName]"
+               ref="item"
+               @mousedown="move"
+               controls="controls"
+               v-bind="getIsVideo(item)"
+               ondragstart="return false"></img>
+          <div v-else
+               :class="b('file')">
+            <a :href="item.url"
+               target="_blank">
+              <i class="el-icon-document"></i>
+              <p>{{item.name}}</p>
+            </a>
+          </div>
         </el-carousel-item>
       </el-carousel>
     </div>

@@ -64,22 +64,6 @@ body {
       }
     }
   }
-  .el-checkbox {
-    display: none;
-    &.is-checked,.is-disabled.is-checked{
-      display: inline-block;
-      color: #606266;
-      .el-checkbox__label{
-        padding-left: 14px;
-        color: #606266;
-        font-weight: normal;
-        font-size: 14px;
-      }
-    }
-    .el-checkbox__inner{
-      display: none;
-    }
-  }
   .el-input__suffix{
     display: none;
   }
@@ -136,6 +120,18 @@ body {
 }
 
 .avue-dialog {
+  .el-dialog{
+    display: flex;
+    flex-direction: column;
+    margin:0 !important;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    border-radius: 2px;
+    max-height:calc(100% - 100px);
+    max-width:calc(100% - 100px);
+  }
   .el-dialog__header{
     padding: 16px 24px;
     min-height: 20px;
@@ -148,9 +144,18 @@ body {
   }
   .el-dialog__body{
     margin-bottom: 50px;
+  }
+  .el-dialog .el-dialog__body{
     flex:1;
     overflow: hidden;
     overflow-y:auto;
+  }
+  .el-drawer{
+    position:absolute;
+    right: 0;
+    top:0;
+    display: flex;
+    flex-direction: column;
   }
   .el-drawer__header{
     margin: 0;
@@ -183,6 +188,17 @@ body {
       text-align: center;
     }
   }
+  &--fullscreen{
+    .el-dialog{
+      left:0;
+      top:0;
+      transform:translate(0,0);
+      width: 100% !important;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
 }
 
 .avue-queue--block {
@@ -205,24 +221,4 @@ body {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
-
-
-
-@keyframes dialog-fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes dialog-fade-out {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
 }

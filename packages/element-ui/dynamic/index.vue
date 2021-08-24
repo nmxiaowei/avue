@@ -62,11 +62,7 @@
                    circle></el-button>
         <div v-else>{{scope.row.$index+1}}</div>
       </template>
-      <template v-for="item in columnSlot"
-                #[getSlotName({prop:item},'F')]="scope">
-        <slot v-bind="scope"
-              :name="item"></slot>
-      </template>
+
     </avue-crud>
   </div>
 </template>

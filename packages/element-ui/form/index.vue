@@ -1,5 +1,5 @@
 <template>
-  <div :class="[b(),{'avue--view':isView,'avue--detail':isDetail}]"
+  <div :class="[b(),{'avue--detail':isDetail}]"
        :style="{width:setPx(parentOption.formWidth,'100%')}">
     <el-form ref="form"
              :status-icon="parentOption.statusIcon"
@@ -58,16 +58,16 @@
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
                       :key="cindex"
-                      :style="{paddingLeft:setPx((parentOption.gutter || 20)/2),paddingRight:setPx((parentOption.gutter ||20)/2)}"
+                      :style="{paddingLeft:setPx((parentOption.gutter)/2),paddingRight:setPx((parentOption.gutter)/2)}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
                       :sm="column.smSpan || item.smSpan || 12"
                       :xs="column.xsSpan || item.xmSpan ||  24"
                       :offset="column.offset || item.offset ||  0"
-                      :class="[b('row'),{'avue--detail':vaildDetail(column)},column.className]">
+                      :class="[b('row'),column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
-                              :rules="isDetail?[]:column.rules"
+                              :rules="column.rules"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
@@ -252,7 +252,7 @@ export default create({
       return this.columnOption.length != 1
     },
     isDetail () {
-      return this.option.detail
+      return this.option.detail || this.isView
     },
     isAdd () {
       return this.boxType === "add"
@@ -363,10 +363,6 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    reset: {
-      type: Boolean,
-      default: true
-    },
     status: {
       type: Boolean,
       default: false
@@ -393,7 +389,7 @@ export default create({
     getComponent,
     getPlaceholder,
     getDisabled (column) {
-      return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
+      return this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
     getSpan (column) {
       return column.span || this.parentOption.span || this.itemSpanDefault
@@ -543,51 +539,43 @@ export default create({
 
         }
       });
-      this.clearValidate();
-      this.$emit('mock-change', this.form);
-    },
-    vaildDetail (column) {
-      if (this.option.detail) return true;
-      if (!this.validatenull(column.detail)) {
-        return this.validData(column.detail, false);
-      } else if (this.isAdd) {
-        return this.validData(column.addDetail, false);
-      } else if (this.isEdit) {
-        return this.validData(column.editDetail, false);
-      } else if (this.isView) {
-        return true;
-      } else {
-        return false;
-      }
+      this.$nextTick(() => {
+        this.clearValidate();
+        this.$emit('mock-change', this.form);
+      })
     },
     // 验证表单是否禁止
     vaildDisabled (column) {
+      let key;
       if (this.disabled) return true;
       if (!this.validatenull(column.disabled)) {
-        return this.validData(column.disabled, false);
+        key = 'disabled';
       } else if (this.isAdd) {
-        return this.validData(column.addDisabled, false);
+        key = 'addDisabled'
       } else if (this.isEdit) {
-        return this.validData(column.editDisabled, false);
+        key = 'editDisabled'
       } else if (this.isView) {
         return true;
-      } else {
-        return false;
       }
+      if (key) return this.validData(column[key], false)
+      return false;
     },
     // 验证表单是否显隐
     vaildDisplay (column) {
+      let key;
       if (!this.validatenull(column.display)) {
-        return this.validData(column.display, true);
+        key = 'display'
       } else if (this.isAdd) {
-        return this.validData(column.addDisplay, true);
+        key = 'addDisplay'
       } else if (this.isEdit) {
-        return this.validData(column.editDisplay, true);
+        key = 'editDisplay'
       } else if (this.isView) {
-        return this.validData(column.viewDisplay, true);
+        key = 'viewDisplay'
       } else {
         return true;
       }
+      if (key) return this.validData(column[key], true)
+      return true;
     },
     clearValidate (list) {
       this.$refs.form.clearValidate(list);
@@ -636,16 +624,11 @@ export default create({
       });
     },
     resetForm () {
-      if (this.reset) {
-        this.clearVal();
-        this.clearValidate();
-      }
-      this.$emit("reset-change");
-    },
-    clearVal () {
       this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
-      this.$emit('update:modelValue', this.form);
-      this.$emit("change", this.form);
+      this.$nextTick(() => {
+        this.clearValidate()
+        this.$emit("reset-change");
+      })
     },
     resetFields () {
       this.$refs.form.resetFields();

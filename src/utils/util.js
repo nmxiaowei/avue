@@ -440,6 +440,7 @@ export const clearVal = (obj, list = []) => {
   if (!obj) return {};
   Object.keys(obj).forEach(ele => {
     if (list.includes(ele)) return
+    else if (ele.includes('$')) delete obj[ele]
     else if (!validatenull(obj[ele])) {
       let type = getObjType(obj[ele])
       if (type === 'array') obj[ele] = [];

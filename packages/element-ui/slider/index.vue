@@ -1,6 +1,8 @@
 <template>
   <el-slider v-model="text"
              :disabled="disabled"
+             :vertical="vertical"
+             :height="height"
              :step="step"
              :min="min"
              :max="max"
@@ -9,8 +11,7 @@
              :show-input="showInput"
              :marks="marks"
              :format-tooltip="formatTooltip"
-             @click.native="handleClick"
-             @change="handleChange"></el-slider>
+             @click.native="handleClick"></el-slider>
 </template>
 
 <script>
@@ -46,6 +47,12 @@ export default create({
       type: Boolean,
       default: false
     },
+    vertical: {
+      type: Boolean,
+      default: false
+    },
+    formatTooltip: Function,
+    height: String,
     formatTooltip: Function
   },
   data () {

@@ -1,32 +1,31 @@
 <template>
   <div class="data-icons">
     <el-row :span="24">
-      <template v-for="(item,index) in data">
-        <el-col :xs="12"
-                :sm="6"
-                :md="span"
-                :key="index">
-          <div class="item"
-               :class="[{'item--easy':discount}]">
-            <a :href="item.href?item.href:'javascript:void(0);'"
-               @click="item.click?item.click(item):''"
-               :target="item.target">
-              <div class="item-icon"
-                   :style="{color:color}">
-                <i :class="item.icon"></i>
-              </div>
-              <div class="item-info">
-                <span>{{item.title}}</span>
-                <avue-count-up :animation="item.animation || animation"
-                               :decimals="item.decimals || decimals"
-                               :style="{color:color}"
-                               class="count"
-                               :end="item.count"></avue-count-up>
-              </div>
-            </a>
-          </div>
-        </el-col>
-      </template>
+      <el-col v-for="(item,index) in data"
+              :xs="12"
+              :sm="6"
+              :md="span"
+              :key="index">
+        <div class="item"
+             :class="[{'item--easy':discount}]">
+          <a :href="item.href?item.href:'javascript:void(0);'"
+             @click="item.click?item.click(item):''"
+             :target="item.target">
+            <div class="item-icon"
+                 :style="{color:color}">
+              <i :class="item.icon"></i>
+            </div>
+            <div class="item-info">
+              <span>{{item.title}}</span>
+              <avue-count-up :animation="item.animation || animation"
+                             :decimals="item.decimals || decimals"
+                             :style="{color:color}"
+                             class="count"
+                             :end="item.count"></avue-count-up>
+            </div>
+          </a>
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>

@@ -10,7 +10,7 @@
                :multiple="multiple"
                :on-preview="handlePreview"
                :limit="limit"
-               :http-request="httpRequest"
+               :http-request="httpUpload"
                :drag="drag"
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
@@ -59,8 +59,9 @@
         <el-button size="small"
                    type="primary">{{t('upload.upload')}}</el-button>
       </template>
-      <div #tip
-           class="el-upload__tip">{{tip}}</div>
+      <template #tip>
+        <div class="el-upload__tip">{{tip}}</div>
+      </template>
       <template v-if="$slots.default"
                 #file="scope">
         <slot v-bind="scope"></slot>

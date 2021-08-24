@@ -10,9 +10,10 @@
                    @click="parentAdd"
                    icon="el-icon-plus"
                    v-if="validData(option.addBtn,true)&&!$slots.addBtn"></el-button>
-        <slot v-else
-              name="addBtn"
-              #append></slot>
+        <div v-else
+             #append>
+          <slot name="addBtn"></slot>
+        </div>
       </el-input>
     </div>
     <el-scrollbar :class="b('content')">

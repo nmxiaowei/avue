@@ -29,7 +29,7 @@ export default function () {
       },
       handleChange (value) {
         let result = value;
-        let flag = this.isString || this.isNumber || this.stringMode;
+        let flag = this.isString || this.isNumber || this.stringMode || this.listType === "picture-img";
         if (flag && Array.isArray(value)) result = value.join(DIC_SPLIT)
         if (typeof this.change === 'function' && this.column.cell !== true) {
           this.change({ value: result, column: this.column });

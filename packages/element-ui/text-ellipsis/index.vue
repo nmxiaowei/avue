@@ -16,7 +16,7 @@
     <span :class="b('more')"
           ref="more">
       <slot name="more"
-            v-show="oversize"></slot>
+            v-if="oversize"></slot>
     </span>
     <slot name="after"
           :class="b('after')"></slot>
@@ -41,7 +41,7 @@ export default create({
     },
     placement: String
   },
-  data() {
+  data () {
     return {
       keyIndex: 0,
       oversize: false,
@@ -49,21 +49,21 @@ export default create({
     };
   },
   watch: {
-    isLimitHeight() {
+    isLimitHeight () {
       this.init();
     },
-    text() {
+    text () {
       this.init();
     },
-    height() {
+    height () {
       this.init();
     }
   },
-  mounted() {
+  mounted () {
     this.init();
   },
   methods: {
-    init() {
+    init () {
       this.oversize = false;
       this.keyIndex += 1;
       let more = this.$refs.more;
@@ -72,7 +72,7 @@ export default create({
         this.limitShow();
       }
     },
-    limitShow() {
+    limitShow () {
       this.$nextTick(() => {
         let textDom = this.$refs.text;
         let title = this.$el;

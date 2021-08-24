@@ -33,6 +33,16 @@ export default {
     }
   },
   computed: {
+    columnOption () {
+      let column = this.deepClone(this.crud.columnOption)
+      column.forEach(ele => {
+        let children = ele.children
+        if (children && !Array.isArray(children)) {
+          delete ele.children
+        }
+      })
+      return column;
+    },
     columnList () {
       if (!this.form.params) return []
       if (this.form.params.includes('headers')) {
@@ -45,12 +55,12 @@ export default {
             else result.push(ele)
           })
         }
-        findProp(this.crud.columnOption);
+        findProp(this.columnOption);
         return result;
       }
     },
     columns () {
-      let columns = this.deepClone(this.crud.columnOption);
+      let columns = this.deepClone(this.columnOption);
       if (!this.form.params) return []
       if (this.form.params.includes('headers')) {
         const findProp = (list = []) => {
@@ -108,7 +118,7 @@ export default {
             props: {
               value: 'prop'
             },
-            dicData: this.crud.columnOption
+            dicData: this.columnOption
           }, {
             label: '参数设置',
             prop: 'params',
