@@ -101,6 +101,9 @@
     display: none;
   }
 }
+.el-input-number__decrease, .el-input-number__increase{
+  background-color: transparent;
+}
 
 .el-tree-node.is-current>.el-tree-node__content {
    color: #409eff; 
