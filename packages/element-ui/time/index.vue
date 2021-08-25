@@ -11,7 +11,7 @@
                     :end-placeholder="endPlaceholder"
                     :format="format"
                     :readonly="readonly"
-                    :clearable="disabled?false:clearable"
+                    :clearable="clearableVal"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     @change="handleChange"

@@ -9,7 +9,7 @@
              :collapse-tags="tags"
              @click.native="initScroll"
              :value="labelShow"
-             :clearable="disabled?false:clearable"
+             :clearable="clearableVal"
              :placeholder="placeholder"
              @focus="handleFocus"
              @blur="handleBlur"

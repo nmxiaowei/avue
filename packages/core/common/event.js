@@ -8,7 +8,7 @@ export default function () {
   return {
     methods: {
       initVal () {
-        this.stringMode = !Array.isArray(this.value)
+        this.stringMode = typeof (this.value) == 'string'
         this.text = initVal(this.value, this.column);
       },
       getLabelText (item) {

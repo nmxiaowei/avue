@@ -150,6 +150,9 @@ export default function () {
       }
     },
     computed: {
+      clearableVal () {
+        return this.disabled ? false : this.clearable
+      },
       componentName () {
         const type = this.$AVUE.ui.type;
         const result = `${type}-${this.name}${this.button ? '-button' : ''}`

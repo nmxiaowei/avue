@@ -1,7 +1,7 @@
 <template>
   <el-input :class="b()"
             :size="size"
-            :clearable="disabled?false:clearable"
+            :clearable="clearableVal"
             v-model="text"
             @keyup.enter="isSearch?appendClick():''"
             @click.native="handleClick"

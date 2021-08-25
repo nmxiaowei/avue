@@ -4,7 +4,7 @@
               v-model="text"
               :size="size"
               ref="main"
-              :clearable="disabled?false:clearable"
+              :clearable="clearableVal"
               :disabled="disabled"
               @change="handleChange"
               @click.native="handleClick"
