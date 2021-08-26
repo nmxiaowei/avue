@@ -2,7 +2,7 @@
   <div :class="b()">
     <el-input :size="size"
               :value="labelShow"
-              :clearable="disabled?false:clearable"
+              :clearable="clearableVal"
               :placeholder="placeholder"
               ref="main"
               @clear="handleClear"

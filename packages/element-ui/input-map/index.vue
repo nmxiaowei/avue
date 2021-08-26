@@ -2,7 +2,7 @@
   <div :class="b()">
     <el-input :size="size"
               @clear="handleClear"
-              :clearable="disabled?false:clearable"
+              :clearable="clearableVal"
               :disabled="disabled"
               ref="main"
               v-model="address"

@@ -4,7 +4,7 @@
                :placeholder="placeholder"
                :props="allProps"
                :size="size"
-               :clearable="disabled?false:clearable"
+               :clearable="clearableVal"
                :show-all-levels="showAllLevels"
                :filterable="filterable"
                :separator="separator"

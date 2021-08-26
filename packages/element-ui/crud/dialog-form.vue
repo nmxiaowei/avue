@@ -101,7 +101,7 @@ export default create({
   },
   computed: {
     styleName () {
-      if (!this.isDrawer) {
+      if (!this.isDrawer && !this.fullscreen) {
         return { top: this.dialogTop }
       }
     },
@@ -277,6 +277,9 @@ export default create({
         done && done();
         this.crud.tableIndex = -1;
         this.boxVisible = false;
+        Object.keys(this.crud.tableForm).forEach(ele => {
+          this.$delete(this.crud.tableForm, ele);
+        })
       };
       if (typeof this.crud.beforeClose === "function") {
         this.crud.beforeClose(callback, this.boxType);

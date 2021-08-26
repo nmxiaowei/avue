@@ -13,7 +13,7 @@
              :no-data-text="noDataText"
              :remote-method="handleRemoteMethod"
              :collapse-tags="tags"
-             :clearable="disabled?false:clearable"
+             :clearable="clearableVal"
              :placeholder="placeholder"
              @focus="handleFocus"
              @blur="handleBlur"

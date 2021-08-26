@@ -7,7 +7,7 @@
               :readonly="readonly"
               @change="handleChange"
               @click.native="handleClick"
-              :clearable="disabled?false:clearable"
+              :clearable="clearableVal"
               :disabled="disabled">
       <template slot="append">
         <el-color-picker size="mini"

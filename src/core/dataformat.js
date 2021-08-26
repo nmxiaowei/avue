@@ -150,23 +150,15 @@ export const formInitVal = (list = []) => {
   };
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function (column) {
   const placeholder = column.placeholder;
   const label = column.label;
-  if (type === 'search') {
-    const searchPlaceholder = column.searchPlaceholder;
-    if (!validatenull(searchPlaceholder)) {
-      return searchPlaceholder;
-    } else {
-      return label;
-    }
-  } else if (validatenull(placeholder)) {
+  if (validatenull(placeholder)) {
     if (SELECT_LIST.includes(column.type)) {
       return `${t('tip.select')} ${label}`;
     } else {
       return `${t('tip.input')} ${label}`;
     }
   }
-
   return placeholder;
 };
