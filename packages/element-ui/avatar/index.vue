@@ -37,19 +37,19 @@ export default create({
     },
     icon: String
   },
-  data() {
+  data () {
     return {
       scale: 1
     };
   },
 
-  updated() {
+  updated () {
     this.$nextTick(() => {
       this.setScale();
     });
   },
   computed: {
-    sizeChildrenStyle() {
+    sizeChildrenStyle () {
       let childrenStyle = {};
       const childrenNode = this.$refs.avatarChildren;
       const transformString = `scale(${this.scale}) translateX(-50%)`;
@@ -63,31 +63,31 @@ export default create({
       }
       return childrenStyle;
     },
-    sizeCls() {
+    sizeCls () {
       return {
         [`${prefixCls}--${this.shape}`]: this.shape,
         [`${prefixCls}--lg`]: this.size === "large",
         [`${prefixCls}--sm`]: this.size === "small"
       };
     },
-    sizeStyle() {
+    sizeStyle () {
       return typeof this.size === "number"
         ? {
-            width: `${this.size}px`,
-            height: `${this.size}px`,
-            lineHeight: `${this.size}px`,
-            fontSize: this.icon ? `${this.size / 2}px` : "18px"
-          }
+          width: `${this.size}px`,
+          height: `${this.size}px`,
+          lineHeight: `${this.size}px`,
+          fontSize: this.icon ? `${this.size / 2}px` : "18px"
+        }
         : {};
     }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.setScale();
     });
   },
   methods: {
-    setScale() {
+    setScale () {
       const childrenNode = this.$refs.avatarChildren;
       if (childrenNode) {
         const childrenWidth = childrenNode.offsetWidth;
