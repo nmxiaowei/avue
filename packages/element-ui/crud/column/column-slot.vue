@@ -155,14 +155,15 @@ export default {
       return result;
     },
     columnChange ($index, row, column) {
-      if (this.validatenull(count[$index])) count[$index] = 0
-      count[$index] = count[$index] + 1;
+      if (this.validatenull(count[$index])) count[$index] = {}
       if (column.cascader) this.handleChange(column, row)
-      if (count[$index] % this.crud.cellChangeCount === 0) {
+      if (!count[$index][column.prop]) {
         if (typeof column.change === 'function' && column.cell === true) {
           column.change({ row, column, index: $index, value: row[column.prop] })
         }
         this.crud.$emit('column-change', { row, column, index: $index, value: row[column.prop] })
+        count[$index][column.prop] = true
+        this.$nextTick(() => count[$index][column.prop] = false)
       }
     },
     handleChange (column, row) {

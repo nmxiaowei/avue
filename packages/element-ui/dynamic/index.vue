@@ -46,7 +46,6 @@
                ref="main"
                :option="option"
                :disabled="disabled"
-               :cell-change-count="2"
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"

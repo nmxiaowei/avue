@@ -10,7 +10,7 @@
                    :min="minRows"
                    :max="maxRows"
                    :step="step"
-                   :clearable="disabled?false:clearable"
+                   :clearable="clearableVal"
                    :readonly="readonly"
                    :controls-position="controlsPosition"
                    :controls="controls"

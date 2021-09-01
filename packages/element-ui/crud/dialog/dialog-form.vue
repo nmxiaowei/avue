@@ -102,7 +102,7 @@ export default create({
   },
   computed: {
     styleName () {
-      if (!this.isDrawer) {
+      if (!this.isDrawer && !this.fullscreen) {
         return { top: this.dialogTop }
       }
     },

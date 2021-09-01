@@ -12,7 +12,7 @@
                     :start-placeholder="startPlaceholder"
                     :end-placeholder="endPlaceholder"
                     :format="format"
-                    :clearable="disabled?false:clearable"
+                    :clearable="clearableVal"
                     :picker-options="pickerOptions"
                     :value-format="valueFormat"
                     :placeholder="placeholder"

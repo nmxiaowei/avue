@@ -50,7 +50,7 @@ import locale from "core/locale";
 import { validData } from "utils/util";
 import { validatenull } from "utils/validate";
 import slot from 'core/slot'
-import { formInitVal, getSearchType, getType, getPlaceholder } from "core/dataformat";
+import { formInitVal, getSearchType, getType } from "core/dataformat";
 import config from "../config";
 export default create({
   name: "crud__search",
@@ -61,7 +61,6 @@ export default create({
       show: false,
       flag: false,
       reload: false,
-      config: config,
       defaultForm: {
         searchForm: {}
       },
@@ -142,29 +141,22 @@ export default create({
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex
-            ele = Object.assign(ele, {
+            let obj = {}
+            Object.keys(ele).forEach(item => {
+              let key = 'search'
+              if (item.includes(key)) {
+                let result = item.replace(key, '')
+                if (result.length == 0) return
+                result = result.replace(result[0], result[0].toLowerCase())
+                obj[result] = ele[item];
+              }
+            })
+            ele = Object.assign(ele, obj, {
               type: getSearchType(ele),
-              multiple: ele.searchMultiple,
-              order: ele.searchOrder,
               detail: false,
               dicFlag: ele.cascaderItem ? true : this.validData(ele.dicFlag, false),
-              span: ele.searchSpan || option.searchSpan || this.config.searchSpan,
-              gutter: ele.searchGutter || option.searchGutter || this.config.searchGutter,
-              labelWidth: ele.searchLabelWidth || option.searchLabelWidth || this.config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
-              tip: ele.searchTip,
-              placeholder: getPlaceholder(ele, 'search'),
-              filterable: ele.searchFilterable,
-              tipPlacement: ele.searchTipPlacement,
-              filterMethod: ele.searchFilterMethod,
-              checkStrictly: ele.searchCheckStrictly || option.searchCheckStrictly,
-              tags: ele.searchTags,
-              row: ele.searchRow,
-              size: ele.searchSize || option.searchSize || this.crud.controlSize,
-              clearable: ele.searchClearable,
               rules: ele.searchRules,
-              disabled: ele.searchDisabled,
-              readonly: ele.searchReadonly,
               value: ele.searchValue,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
@@ -193,11 +185,11 @@ export default create({
           mockBtn: false,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
-          submitBtn: this.validData(option.searchBtn, this.config.searchSubBtn),
-          submitIcon: option.searchBtnIcon || this.config.searchBtnIcon,
+          submitBtn: this.vaildData(option.searchBtn, config.searchSubBtn),
+          submitIcon: option.searchBtnIcon || config.searchBtnIcon,
           emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
-          emptyBtn: this.validData(option.emptyBtn, this.config.emptyBtn),
-          emptyIcon: option.emptyBtnIcon || this.config.emptyBtnIcon,
+          emptyBtn: this.vaildData(option.emptyBtn, config.emptyBtn),
+          emptyIcon: option.emptyBtnIcon || config.emptyBtnIcon,
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
               return option.searchMenuSpan
@@ -246,10 +238,7 @@ export default create({
     dataFormat () {
       this.defaultForm = formInitVal(this.option.column);
       this.searchForm = this.deepClone(this.defaultForm.tableForm);
-      this.searchShow = validData(
-        this.crud.tableOption.searchShow,
-        this.crud.config.searchShow
-      );
+      this.searchShow = vaildData(this.crud.tableOption.searchShow, config.searchShow);
     }
   }
 });

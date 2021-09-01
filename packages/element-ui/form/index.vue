@@ -525,7 +525,6 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      if (this.$refs.form) this.$refs.form.validateField(column.prop)
       if (column.cascader) this.handleChange(option, column)
     },
     handleMock () {

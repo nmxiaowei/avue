@@ -401,10 +401,6 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    cellChangeCount: {
-      type: Number,
-      default: 3
-    },
     permission: {
       type: [Function, Object],
       default: () => {

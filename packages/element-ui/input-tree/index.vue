@@ -9,7 +9,7 @@
              :collapse-tags="tags"
              @click="initScroll"
              :model-value="labelShow"
-             :clearable="disabled?false:clearable"
+             :clearable="clearableVal"
              :placeholder="placeholder"
              @focus="handleFocus"
              @blur="handleBlur"

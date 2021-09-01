@@ -25,8 +25,7 @@
             :size="crud.isMediumSize"></slot>
     </div>
     <div :class="b('right')">
-      <slot name="menuRight"
-            :size="crud.isMediumSize"></slot>
+
       <avue-date type="datetimerange"
                  @change="dateChange"
                  value-format="yyyy-MM-dd HH:mm:ss"
@@ -35,6 +34,8 @@
                  style="display:inline-block;margin-right:20px;"
                  v-if="validData(crud.tableOption.dateBtn,config.dateBtn)"
                  :size="crud.isMediumSize"></avue-date>
+      <slot name="menuRight"
+            :size="crud.isMediumSize"></slot>
       <el-button :icon="config.excelBtnIcon"
                  circle
                  :size="crud.isMediumSize"
