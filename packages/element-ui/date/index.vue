@@ -1,25 +1,26 @@
 <template>
-  <el-date-picker :class="b()"
-                  :type="type"
-                  v-model="text"
-                  :size="size"
-                  :editable="editable"
-                  :unlink-panels="unlinkPanels"
-                  :readonly="readonly"
-                  :default-value="defaultValue"
-                  :default-time="defaultTime"
-                  :range-separator="rangeSeparator"
-                  :start-placeholder="startPlaceholder"
-                  :end-placeholder="endPlaceholder"
-                  :format="format"
-                  :clearable="clearableVal"
-                  :picker-options="pickerOptions"
-                  :value-format="valueFormat"
-                  :placeholder="placeholder"
-                  @blur="handleBlur"
-                  @focus="handleFocus"
-                  @click.native="handleClick"
-                  :disabled="disabled"></el-date-picker>
+  <div :class="b()">
+    <el-date-picker :type="type"
+                    v-model="text"
+                    :size="size"
+                    :editable="editable"
+                    :unlink-panels="unlinkPanels"
+                    :readonly="readonly"
+                    :default-value="defaultValue"
+                    :default-time="defaultTime"
+                    :range-separator="rangeSeparator"
+                    :start-placeholder="startPlaceholder"
+                    :end-placeholder="endPlaceholder"
+                    :format="format"
+                    :clearable="clearableVal"
+                    :picker-options="pickerOptions"
+                    :value-format="valueFormat"
+                    :placeholder="placeholder"
+                    @blur="handleBlur"
+                    @focus="handleFocus"
+                    @click.native="handleClick"
+                    :disabled="disabled"></el-date-picker>
+  </div>
 </template>
 
 <script>

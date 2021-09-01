@@ -1,12 +1,12 @@
 import _waterMark from './watermark';
-import {dataURLtoFile} from 'utils/util';
+import { dataURLtoFile } from 'utils/util';
 // 标准参数
 var canvas, ctx, configDefault = {
   width: 200,
   height: 200
 };
 let config = {
-  text: 'avue.top', // 文字
+  text: 'avueJS', // 文字
   fontFamily: 'microsoft yahei', // 字体
   color: '#999', // 颜色
   fontSize: 16, // 大小
@@ -27,19 +27,19 @@ let config = {
  * @param {Int} degree    水印文本旋转角度，默认 -20
  * @param return
  **/
-export const watermark = function(opt = {}) {
+export const watermark = function (opt = {}) {
   return new _waterMark(opt);
 };
 
 // 将base64转换为文件
 
-export function detailImg(file, option = {}) {
-  return new Promise(function(resolve, reject) {
+export function detailImg (file, option = {}) {
+  return new Promise(function (resolve, reject) {
     const { text, fontFamily, color, fontSize, opacity, bottom, right, ratio } = option;
     initParams();
     fileToBase64(file, initImg);
     // 参数初始化
-    function initParams() {
+    function initParams () {
       config.text = text || config.text;
       config.fontFamily = fontFamily || config.fontFamily;
       config.color = color || config.color;
@@ -50,10 +50,10 @@ export function detailImg(file, option = {}) {
       config.ratio = ratio || config.ratio;
     }
     // 加载图片
-    function initImg(data) {
+    function initImg (data) {
       var img = new Image();
       img.src = data;
-      img.onload = function() {
+      img.onload = function () {
         var width = img.width;
         var height = img.height;
         cretedCanvas(width, height);
@@ -63,7 +63,7 @@ export function detailImg(file, option = {}) {
       };
     }
     // 创建画板
-    function cretedCanvas(width, height) {
+    function cretedCanvas (width, height) {
       canvas = document.getElementById('canvas');
       if (canvas === null) {
         canvas = document.createElement('canvas');
@@ -77,7 +77,7 @@ export function detailImg(file, option = {}) {
 
     }
     // 添加水印
-    function setText(width, height) {
+    function setText (width, height) {
       var txt = config.text;
       var param = calcParam(txt, width, height);
       ctx.font = param.fontSize + 'px ' + config.fontFamily;
@@ -86,7 +86,7 @@ export function detailImg(file, option = {}) {
       ctx.fillText(txt, param.x, param.y);
     }
     // 计算比例
-    function calcParam(txt, width, height) {
+    function calcParam (txt, width, height) {
       var x, y;
 
       // 字体的比例
@@ -122,10 +122,10 @@ export function detailImg(file, option = {}) {
 
     }
     // file转base64
-    function fileToBase64(file, callback) {
+    function fileToBase64 (file, callback) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         callback(e.target.result);
       };
     }
