@@ -55,7 +55,7 @@
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
                       :key="cindex"
-                      :style="{paddingLeft:setPx((parentOption.gutter)/2),paddingRight:setPx((parentOption.gutter)/2)}"
+                      :style="{paddingLeft:gutter,paddingRight:gutter}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
                       :sm="column.smSpan || item.smSpan || 12"
@@ -268,6 +268,9 @@ export default create({
     },
     isView () {
       return this.boxType === "view"
+    },
+    gutter () {
+      return this.setPx((this.parentOption.gutter || 10) / 2)
     },
     disabled () {
       return this.parentOption.disabled
