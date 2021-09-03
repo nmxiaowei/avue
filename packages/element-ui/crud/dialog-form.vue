@@ -103,6 +103,8 @@ export default create({
     styleName () {
       if (!this.isDrawer && !this.fullscreen) {
         return { top: this.dialogTop }
+      } else {
+        return { top: 0 }
       }
     },
     isView () {
