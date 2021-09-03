@@ -104,6 +104,8 @@ export default create({
     styleName () {
       if (!this.isDrawer && !this.fullscreen) {
         return { top: this.dialogTop }
+      } else {
+        return { top: 0 }
       }
     },
     isView () {
@@ -143,6 +145,8 @@ export default create({
         option.submitBtn = option.updateBtn;
         option.submitText = this.crud.menuIcon('updateBtn');
         option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
+      } else if (this.isView) {
+        option.detail = true;
       }
       option.emptyBtn = option.cancelBtn;
       option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;

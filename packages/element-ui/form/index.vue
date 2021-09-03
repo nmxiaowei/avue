@@ -58,13 +58,13 @@
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
                       :key="cindex"
-                      :style="{paddingLeft:setPx((parentOption.gutter)/2),paddingRight:setPx((parentOption.gutter)/2)}"
+                      :style="{paddingLeft:gutter,paddingRight:gutter}"
                       :span="getSpan(column)"
                       :md="getSpan(column)"
                       :sm="column.smSpan || item.smSpan || 12"
                       :xs="column.xsSpan || item.xmSpan ||  24"
                       :offset="column.offset || item.offset ||  0"
-                      :class="[b('row'),column.className]">
+                      :class="[b('row'),{'avue--detail avue--detail__column':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :rules="column.rules"
@@ -76,7 +76,7 @@
                     <slot :name="getSlotName(column,'L')"
                           :column="column"
                           :value="form[column.prop]"
-                          :readonly="readonly || column.readonly"
+                          :readonly="column.readonly || readonly"
                           :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
@@ -114,7 +114,8 @@
                             :column="column"
                             :label="form['$'+column.prop]"
                             :size="column.size || controlSize"
-                            :readonly="readonly || column.readonly"
+                            :readonly="column.readonly|| readonly"
+                            ,
                             :disabled="getDisabled(column)"
                             :dic="DIC[column.prop]"
                             :name="column.prop"
@@ -126,6 +127,8 @@
                                  :props="parentOption.props"
                                  :propsHttp="parentOption.propsHttp"
                                  v-bind="$uploadFun(column)"
+                                 :readonly="column.readonly || readonly"
+                                 ,
                                  :disabled="getDisabled(column)"
                                  :enter="parentOption.enter"
                                  :size="parentOption.size"
@@ -252,7 +255,7 @@ export default create({
       return this.columnOption.length != 1
     },
     isDetail () {
-      return this.option.detail || this.isView
+      return this.detail == true
     },
     isAdd () {
       return this.boxType === "add"
@@ -265,6 +268,12 @@ export default create({
     },
     isView () {
       return this.boxType === "view"
+    },
+    gutter () {
+      return this.setPx((this.parentOption.gutter || 10) / 2)
+    },
+    detail () {
+      return this.parentOption.detail
     },
     disabled () {
       return this.parentOption.disabled
@@ -389,7 +398,7 @@ export default create({
     getComponent,
     getPlaceholder,
     getDisabled (column) {
-      return this.isDetail || this.vaildDisabled(column) || this.allDisabled
+      return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
     getSpan (column) {
       return column.span || this.parentOption.span || this.itemSpanDefault
@@ -542,6 +551,21 @@ export default create({
         this.clearValidate();
         this.$emit('mock-change', this.form);
       })
+    },
+    vaildDetail (column) {
+      let key;
+      if (this.detail) return false;
+      if (!this.validatenull(column.detail)) {
+        key = 'detail';
+      } else if (this.isAdd) {
+        key = 'addDetail';
+      } else if (this.isEdit) {
+        key = 'editDetail';
+      } else if (this.isView) {
+        return false;
+      }
+      if (key) return this.vaildData(column[key], false)
+      return false;
     },
     // 验证表单是否禁止
     vaildDisabled (column) {

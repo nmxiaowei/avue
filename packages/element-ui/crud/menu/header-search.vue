@@ -158,6 +158,7 @@ export default create({
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
               rules: ele.searchRules,
               value: ele.searchValue,
+              row: ele.searchRow,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
             delete ele.bind
