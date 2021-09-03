@@ -73,7 +73,7 @@
                     <slot :name="getSlotName(column,'L')"
                           :column="column"
                           :value="form[column.prop]"
-                          :readonly="readonly || column.readonly"
+                          :readonly="column.readonly || readonly"
                           :disabled="getDisabled(column)"
                           :size="column.size || controlSize"
                           :dic="DIC[column.prop]"></slot>
@@ -96,7 +96,7 @@
                           v-bind="Object.assign(scope,{
                             column,
                             value:form[column.prop],
-                            readonly:column.readonly || readonly,
+                            readonly:readonly || column.readonly,
                             disabled:getDisabled(column),
                             size:column.size || controlSize,
                             dic:DIC[column.prop]
@@ -123,6 +123,7 @@
                                :propsHttp="parentOption.propsHttp"
                                v-bind="$uploadFun(column)"
                                :disabled="getDisabled(column)"
+                               :readonly="column.readonly || readonly"
                                :enter="parentOption.enter"
                                :size="parentOption.size"
                                v-model="form[column.prop]"
