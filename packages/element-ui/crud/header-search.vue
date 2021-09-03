@@ -172,6 +172,7 @@ export default cteate({
               size: ele.searchSize || option.searchSize,
               value: ele.searchValue,
               rules: ele.searchRules,
+              row: ele.searchRow,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
             delete ele.bind
