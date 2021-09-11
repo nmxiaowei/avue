@@ -50,15 +50,14 @@
       </template>
     </avue-form>
     <span class="avue-dialog__footer"
-          :class="'avue-dialog__footer--'+dialogMenuPosition"
-          v-if="!isView">
-      <el-button v-if="vaildData(formOption.submitBtn,true)"
+          :class="'avue-dialog__footer--'+dialogMenuPosition">
+      <el-button v-if="vaildData(formOption.submitBtn,true) && !isView"
                  @click="submit"
                  :disabled="disabled"
                  :size="crud.controlSize"
                  :icon="formOption.submitIcon || 'el-icon-check'"
                  type="primary">{{formOption.submitText}}</el-button>
-      <el-button v-if="vaildData(formOption.emptyBtn,true)"
+      <el-button v-if="vaildData(formOption.emptyBtn,true) && !isView"
                  @click="reset"
                  :disabled="disabled"
                  :size="crud.controlSize || 'el-icon-delete'"
