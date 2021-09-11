@@ -37,9 +37,10 @@ body {
     background-color: transparent;
     border:none;
   }
-  .el-input__suffix{
+  .el-input__suffix,.el-input__prefix{
     display: none;
   }
+  
   .el-input__inner,.el-textarea__inner{
     border: none;
     &::-webkit-input-placeholder {
