@@ -463,7 +463,7 @@ export default create({
     },
     setControl () {
       this.controlOption.forEach(ele => {
-        let control = ele.control(this.form[ele.prop], this.form);
+        let control = ele.control(this.form[ele.prop], this.form) || {};
         Object.keys(control).forEach(item => {
           this.objectOption[item] = Object.assign(this.objectOption[item], control[item])
           if (control[item].dicData) {
