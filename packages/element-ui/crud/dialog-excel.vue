@@ -79,8 +79,11 @@ export default {
         let result = [];
         const findProp = (list = []) => {
           list.forEach((ele, index) => {
-            if (ele.children) findProp(ele.children)
-            else result.push(ele)
+            if (ele.children) {
+              findProp(ele.children)
+            } else if (this.form.prop.includes(ele.prop)) {
+              result.push(ele)
+            }
           })
         }
         findProp(columns);
