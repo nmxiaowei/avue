@@ -194,6 +194,7 @@ export default cteate({
         }
         result.column = detailColumn(this.deepClone(this.propOption))
         result = Object.assign(result, {
+          rowKey: option.searchRowKey || 'null',
           tabs: false,
           enter: this.vaildData(option.searchEnter, true),
           printBtn: false,
