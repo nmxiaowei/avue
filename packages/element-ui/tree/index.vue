@@ -28,6 +28,7 @@
                :accordion="accordion"
                :node-key="props.value"
                :check-strictly="checkStrictly"
+               :check-on-click-node="checkOnClickNode"
                :filter-node-method="filterNode"
                v-loading="loading"
                :expand-on-click-node="expandOnClickNode"
@@ -101,6 +102,7 @@ export default create({
   props: {
     indent: Number,
     filterNodeMethod: Function,
+    checkOnClickNode: Boolean,
     permission: {
       type: [Function, Object],
       default: () => {
