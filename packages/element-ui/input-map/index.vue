@@ -238,7 +238,7 @@ export default create({
         var source = poiResult.source,
           poi = poiResult.item;
         this.poi = Object.assign(poi, {
-          formattedAddress: poi.name,
+          formattedAddress: poi.pname + poi.cityname + poi.adname + poi.address + poi.name,
           longitude: poi.location.R,
           latitude: poi.location.P || poi.location.Q
         });
