@@ -3,6 +3,10 @@
     <el-card :shadow="crud.isCard"
              :class="b()"
              v-show="searchShow && searchFlag">
+      <slot name="search"
+            :row="searchForm"
+            :search="searchForm"
+            :size="crud.controlSize"></slot>
       <avue-form :option="option"
                  ref="form"
                  @submit="searchChange"
@@ -37,13 +41,6 @@
                   search:searchForm,
                   row:searchForm
                 })"></slot>
-        </template>
-        <template slot="search"
-                  slot-scope="{}">
-          <slot name="search"
-                :row="searchForm"
-                :search="searchForm"
-                :size="crud.controlSize"></slot>
         </template>
       </avue-form>
     </el-card>
@@ -223,7 +220,7 @@ export default cteate({
       return result;
     },
     searchFlag () {
-      return !validatenull(this.searchForm);
+      return !!this.crud.$scopedSlots.search || !validatenull(this.searchForm);
     }
   },
   methods: {

@@ -151,7 +151,6 @@
                    :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
-            <slot name="search"></slot>
             <form-menu v-if="!isMenu">
               <template slot-scope="scope"
                         slot="menuForm">
