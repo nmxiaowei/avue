@@ -100,8 +100,10 @@
           <avue-rate disabled
                      v-model="row[column.prop]" />
         </span>
-        <span v-else
+        <span v-else-if="column.html"
               v-html="handleDetail(row,column)"></span>
+        <span v-else
+              v-text="handleDetail(row,column)"></span>
       </template>
     </template>
   </el-table-column>
