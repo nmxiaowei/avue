@@ -202,10 +202,10 @@ export default cteate({
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.vaildData(option.searchBtn, config.searchSubBtn),
-          submitIcon: option.searchBtnIcon || config.searchBtnIcon,
+          submitIcon: this.crud.getBtnIcon('searchBtn'),
           emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
           emptyBtn: this.vaildData(option.emptyBtn, config.emptyBtn),
-          emptyIcon: option.emptyBtnIcon || config.emptyBtnIcon,
+          emptyIcon: this.crud.getBtnIcon('emptyBtn'),
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
               return option.searchMenuSpan

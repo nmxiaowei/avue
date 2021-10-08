@@ -138,17 +138,17 @@ export default create({
       if (this.isAdd) {
         option.submitBtn = option.saveBtn;
         option.submitText = this.crud.menuIcon('saveBtn');
-        option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
+        option.submitIcon = this.crud.getBtnIcon('saveBtn')
       } else if (this.isEdit) {
         option.submitBtn = option.updateBtn;
         option.submitText = this.crud.menuIcon('updateBtn');
-        option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
+        option.submitIcon = this.crud.getBtnIcon('updateBtn')
       } else if (this.isView) {
         option.detail = true;
       }
       option.emptyBtn = option.cancelBtn;
-      option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
       option.emptyText = this.crud.menuIcon('cancelBtn')
+      option.emptyIcon = this.crud.getBtnIcon('cancelBtn')
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
         option.dicFlag = false;

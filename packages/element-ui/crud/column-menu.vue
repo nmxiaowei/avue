@@ -17,19 +17,19 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :icon="config.viewBtnIcon"
+          <el-dropdown-item :icon="crud.getBtnIcon('viewBtn')"
                             v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)"
                             v-permission="crud.getPermission('viewBtn',row,$index)"
                             @click.native="crud.rowView(row,$index)">{{t('crud.viewBtn')}}</el-dropdown-item>
-          <el-dropdown-item :icon="config.editBtnIcon"
+          <el-dropdown-item :icon="crud.getBtnIcon('editBtn')"
                             v-if="vaildData(crud.tableOption.editBtn,config.editBtn)"
                             v-permission="crud.getPermission('editBtn',row,$index)"
                             @click.native="crud.rowEdit(row,$index)">{{t('crud.editBtn')}}</el-dropdown-item>
-          <el-dropdown-item :icon="config.copyBtnIcon"
+          <el-dropdown-item :icon="crud.getBtnIcon('copyBtn')"
                             v-if="vaildData(crud.tableOption.copyBtn,config.copyBtn)"
                             v-permission="crud.getPermission('copyBtn',row,$index)"
                             @click.native="crud.rowCopy(row)">{{t('crud.copyBtn')}}</el-dropdown-item>
-          <el-dropdown-item :icon="config.delBtnIcon"
+          <el-dropdown-item :icon="crud.getBtnIcon('delBtn')"
                             v-if="vaildData(crud.tableOption.delBtn,config.delBtn)"
                             v-permission="crud.getPermission('delBtn',row,$index)"
                             @click.native="crud.rowDel(row,$index)">{{t('crud.delBtn')}}</el-dropdown-item>
@@ -44,7 +44,7 @@
       <template v-else-if="['button','text','icon'].includes(menuType)">
         <template v-if="vaildData(crud.tableOption.cellBtn,config.cellBtn)">
           <el-button :type="menuText('primary')"
-                     :icon="config.editBtnIcon"
+                     :icon="crud.getBtnIcon('editBtn')"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCell(row,$index)"
@@ -55,7 +55,7 @@
             </template>
           </el-button>
           <el-button :type="menuText('primary')"
-                     :icon="config.saveBtnIcon"
+                     :icon="crud.getBtnIcon('saveBtn')"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCell(row,$index)"
@@ -66,7 +66,7 @@
             </template>
           </el-button>
           <el-button :type="menuText('danger')"
-                     :icon="config.cancelBtnIcon"
+                     :icon="crud.getBtnIcon('cancelBtn')"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCancel(row,$index)"
@@ -77,7 +77,7 @@
           </el-button>
         </template>
         <el-button :type="menuText('success')"
-                   :icon="config.viewBtnIcon"
+                   :icon="crud.getBtnIcon('viewBtn')"
                    :size="crud.isMediumSize"
                    :disabled="btnDisabled"
                    @click.stop="crud.rowView(row,$index)"
@@ -88,7 +88,7 @@
           </template>
         </el-button>
         <el-button :type="menuText('primary')"
-                   :icon="config.editBtnIcon"
+                   :icon="crud.getBtnIcon('editBtn')"
                    :size="crud.isMediumSize"
                    :disabled="btnDisabled"
                    @click.stop="crud.rowEdit(row,$index)"
@@ -99,7 +99,7 @@
           </template>
         </el-button>
         <el-button :type="menuText('primary')"
-                   :icon="config.copyBtnIcon"
+                   :icon="crud.getBtnIcon('copyBtn')"
                    :size="crud.isMediumSize"
                    :disabled="btnDisabled"
                    @click.stop="crud.rowCopy(row)"
@@ -110,7 +110,7 @@
           </template>
         </el-button>
         <el-button :type="menuText('danger')"
-                   :icon="config.delBtnIcon"
+                   :icon="crud.getBtnIcon('delBtn')"
                    :size="crud.isMediumSize"
                    :disabled="btnDisabled"
                    @click.stop="crud.rowDel(row,$index)"
