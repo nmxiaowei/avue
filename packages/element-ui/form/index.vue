@@ -152,7 +152,7 @@
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
             <slot name="search"></slot>
-            <form-menu v-if="!isDetail && !isMenu">
+            <form-menu v-if="!isMenu">
               <template slot-scope="scope"
                         slot="menuForm">
                 <slot name="menuForm"
@@ -161,7 +161,7 @@
             </form-menu>
           </div>
         </avue-group>
-        <form-menu v-if="!isDetail && isMenu">
+        <form-menu v-if="isMenu">
           <template slot-scope="scope"
                     slot="menuForm">
             <slot name="menuForm"
