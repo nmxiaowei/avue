@@ -38,7 +38,7 @@
                @mousedown="move"
                controls="controls"
                v-bind="getIsVideo(item)"
-               ondragstart="return false"></img>
+               ondragstart="return false" />
           <div v-else
                :class="b('file')">
             <a :href="item.url"

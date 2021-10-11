@@ -134,10 +134,8 @@ export default create({
           this.page.total = data.total;
           this.data = data.data
           this.loading = false;
-          this.$nextTick(() => {
-            let active = this.data.find(ele => ele[this.valueKey] == this.object[this.valueKey])
-            if (!this.validatenull(active)) this.$refs.crud.setCurrentRow(active);
-          })
+          let active = this.data.find(ele => ele[this.valueKey] == this.object[this.valueKey])
+          if (!this.validatenull(active)) setTimeout(() => this.$refs.crud.setCurrentRow(active))
         })
       }
     }

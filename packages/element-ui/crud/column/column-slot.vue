@@ -89,19 +89,25 @@
                  @click.stop="openImg(getImgList(row,column),index)" />
           </div>
         </span>
-        <span v-else-if="['url'].includes(column.type)">
-          <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
-                   type="primary"
-                   :key="index"
-                   :href="item"
-                   :target="column.target || '_blank'">{{item}}</el-link>
-        </span>
-        <span v-else-if="['rate'].includes(column.type)">
-          <avue-rate disabled
-                     v-model="row[column.prop]" />
-        </span>
-        <span v-else
+        <el-link v-else-if="'url'===column.type"
+                 v-for="(item,index) in corArray(row[column.prop],column.separator)"
+                 type="primary"
+                 :key="index"
+                 :href="item"
+                 :target="column.target || '_blank'">{{item}}</el-link>
+        <avue-rate disabled
+                   v-else-if="'rate'===column.type"
+                   v-model="row[column.prop]"></avue-rate>
+        <i v-else-if="'color'===column.type"
+           class="avue-crud__color"
+           :style="{backgroundColor:row[column.prop]}"></i>
+        <i v-else-if="'icon'===column.type"
+           class="avue-crud__icon"
+           :class="row[column.prop]"></i>
+        <span v-else-if="column.html"
               v-html="handleDetail(row,column)"></span>
+        <span v-else
+              v-text="handleDetail(row,column)"></span>
       </template>
     </template>
   </el-table-column>

@@ -3,6 +3,10 @@
     <el-card :shadow="crud.isCard"
              :class="b()"
              v-show="searchShow && searchFlag">
+      <slot name="search"
+            :row="searchForm"
+            :search="searchForm"
+            :size="crud.controlSize"></slot>
       <avue-form :option="option"
                  ref="form"
                  @submit="searchChange"
@@ -32,12 +36,6 @@
                   #[getSlotName(item)]="scope">
           <slot v-bind="scope"
                 :name="item"></slot>
-        </template>
-        <template #search="{}">
-          <slot name="search"
-                :row="searchForm"
-                :search="searchForm"
-                :size="crud.controlSize"></slot>
         </template>
       </avue-form>
     </el-card>
@@ -180,17 +178,18 @@ export default create({
         }
         result.column = detailColumn(this.deepClone(this.propOption))
         result = Object.assign(result, {
+          rowKey: option.searchRowKey || 'null',
           tabs: false,
           enter: this.validData(option.searchEnter, true),
           printBtn: false,
           mockBtn: false,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
-          submitBtn: this.vaildData(option.searchBtn, config.searchSubBtn),
-          submitIcon: option.searchBtnIcon || config.searchBtnIcon,
+          submitBtn: this.validData(option.searchBtn, config.searchSubBtn),
+          submitIcon: this.crud.getBtnIcon('searchBtn'),
           emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
-          emptyBtn: this.vaildData(option.emptyBtn, config.emptyBtn),
-          emptyIcon: option.emptyBtnIcon || config.emptyBtnIcon,
+          emptyBtn: this.validData(option.emptyBtn, config.emptyBtn),
+          emptyIcon: this.crud.getBtnIcon('emptyBtn'),
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
               return option.searchMenuSpan
@@ -208,7 +207,7 @@ export default create({
       return result;
     },
     searchFlag () {
-      return !validatenull(this.searchForm);
+      return !!this.crud.$slots.search || !validatenull(this.searchForm);
     }
   },
   methods: {
@@ -239,7 +238,7 @@ export default create({
     dataFormat () {
       this.defaultForm = formInitVal(this.option.column);
       this.searchForm = this.deepClone(this.defaultForm.tableForm);
-      this.searchShow = vaildData(this.crud.tableOption.searchShow, config.searchShow);
+      this.searchShow = validData(this.crud.tableOption.searchShow, config.searchShow);
     }
   }
 });

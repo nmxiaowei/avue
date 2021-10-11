@@ -1,5 +1,3 @@
-'use strict';
-
 export default function treeToArray (safe, data = []) {
   let tmp = []
   data.forEach((item, index) => {

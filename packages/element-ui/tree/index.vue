@@ -5,15 +5,14 @@
       <el-input :placeholder="validData(option.filterText,'输入关键字进行过滤')"
                 :size="size"
                 v-model="filterValue">
-        <el-button #append
-                   :size="size"
-                   @click="parentAdd"
-                   icon="el-icon-plus"
-                   v-if="validData(option.addBtn,true)&&!$slots.addBtn"></el-button>
-        <div v-else
-             #append>
-          <slot name="addBtn"></slot>
-        </div>
+        <template #append>
+          <el-button :size="size"
+                     @click="parentAdd"
+                     icon="el-icon-plus"
+                     v-if="validData(option.addBtn,true)&&!$slots.addBtn"></el-button>
+          <slot name="addBtn"
+                v-else></slot>
+        </template>
       </el-input>
     </div>
     <el-scrollbar :class="b('content')">
@@ -29,6 +28,7 @@
                :accordion="accordion"
                :node-key="props.value"
                :check-strictly="checkStrictly"
+               :check-on-click-node="checkOnClickNode"
                :filter-node-method="filterNode"
                v-loading="loading"
                :expand-on-click-node="expandOnClickNode"
@@ -101,6 +101,7 @@ export default create({
   props: {
     indent: Number,
     filterNodeMethod: Function,
+    checkOnClickNode: Boolean,
     permission: {
       type: [Function, Object],
       default: () => {

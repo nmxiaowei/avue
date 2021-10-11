@@ -156,8 +156,7 @@
                    :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
-            <slot name="search"></slot>
-            <form-menu v-if="!isDetail && !isMenu">
+            <form-menu v-if="!isMenu">
               <template #menuForm="scope">
                 <slot name="menuForm"
                       v-bind="scope"></slot>
@@ -165,7 +164,7 @@
             </form-menu>
           </div>
         </avue-group>
-        <form-menu v-if="!isDetail && isMenu">
+        <form-menu v-if="isMenu">
           <template #menuForm="scope">
             <slot name="menuForm"
                   v-bind="scope"></slot>
@@ -454,7 +453,7 @@ export default create({
     },
     setControl () {
       this.controlOption.forEach(ele => {
-        let control = ele.control(this.form[ele.prop], this.form);
+        let control = ele.control(this.form[ele.prop], this.form) || {};
         Object.keys(control).forEach(item => {
           this.objectOption[item] = Object.assign(this.objectOption[item], control[item])
           if (control[item].dicData) {
@@ -564,7 +563,7 @@ export default create({
       } else if (this.isView) {
         return false;
       }
-      if (key) return this.vaildData(column[key], false)
+      if (key) return this.validData(column[key], false)
       return false;
     },
     // 验证表单是否禁止

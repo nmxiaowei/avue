@@ -20,12 +20,8 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       } else {
         result = result.split(separator || DIC_SPLIT).join(separator || DIC_SHOW_SPLIT);
       }
-    } else if (['password'].includes(type)) {
+    } else if ('password' === type) {
       result = getPasswordChar(result, '*');
-    } else if (['color'].includes(type)) {
-      result = `<i class="avue-crud__color" style="background-color:${result}"></i>`;
-    } else if (['icon'].includes(type)) {
-      result = `<i class="avue-crud__icon ${result}" ></i>`;
     } else if (DATE_LIST.includes(type) && column.format) {
       const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
       let formatValue = dayjs().format('YYYY-MM-DD');

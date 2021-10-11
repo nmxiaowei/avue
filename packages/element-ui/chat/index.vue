@@ -80,22 +80,24 @@
                       <el-popover placement="top"
                                   width="160"
                                   v-model="visible">
-                        <el-input size="mini"
-                                  style="margin-bottom:10px"
-                                  :rows="3"
-                                  show-word-limit
-                                  placeholder="请输入快捷回复语"
-                                  v-model="keys"
-                                  type="textarea"></el-input>
-                        <div style="text-align: right; margin: 0">
-                          <el-button size="mini"
-                                     type="text"
-                                     @click="visible = false">取消</el-button>
-                          <el-button type="primary"
-                                     size="mini"
-                                     @click="addKey">确定</el-button>
+                        <div>
+                          <el-input size="mini"
+                                    style="margin-bottom:10px"
+                                    :rows="3"
+                                    show-word-limit
+                                    placeholder="请输入快捷回复语"
+                                    v-model="keys"
+                                    type="textarea"></el-input>
+                          <div style="text-align: right; margin: 0">
+                            <el-button size="mini"
+                                       type="text"
+                                       @click="visible = false">取消</el-button>
+                            <el-button type="primary"
+                                       size="mini"
+                                       @click="addKey">确定</el-button>
+                          </div>
                         </div>
-                        <template #>
+                        <template #reference>
                           <el-button type="text"
                                      icon="el-icon-plus"></el-button>
                         </template>
