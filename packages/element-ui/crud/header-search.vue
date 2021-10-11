@@ -3,6 +3,10 @@
     <el-card :shadow="crud.isCard"
              :class="b()"
              v-show="searchShow && searchFlag">
+      <slot name="search"
+            :row="searchForm"
+            :search="searchForm"
+            :size="crud.controlSize"></slot>
       <avue-form :option="option"
                  ref="form"
                  @submit="searchChange"
@@ -37,13 +41,6 @@
                   search:searchForm,
                   row:searchForm
                 })"></slot>
-        </template>
-        <template slot="search"
-                  slot-scope="{}">
-          <slot name="search"
-                :row="searchForm"
-                :search="searchForm"
-                :size="crud.controlSize"></slot>
         </template>
       </avue-form>
     </el-card>
@@ -194,6 +191,7 @@ export default cteate({
         }
         result.column = detailColumn(this.deepClone(this.propOption))
         result = Object.assign(result, {
+          rowKey: option.searchRowKey || 'null',
           tabs: false,
           enter: this.vaildData(option.searchEnter, true),
           printBtn: false,
@@ -201,10 +199,10 @@ export default cteate({
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.vaildData(option.searchBtn, config.searchSubBtn),
-          submitIcon: option.searchBtnIcon || config.searchBtnIcon,
+          submitIcon: this.crud.getBtnIcon('searchBtn'),
           emptyText: option.emptyBtnText || this.t('crud.emptyBtn'),
           emptyBtn: this.vaildData(option.emptyBtn, config.emptyBtn),
-          emptyIcon: option.emptyBtnIcon || config.emptyBtnIcon,
+          emptyIcon: this.crud.getBtnIcon('emptyBtn'),
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
               return option.searchMenuSpan
@@ -222,7 +220,7 @@ export default cteate({
       return result;
     },
     searchFlag () {
-      return !validatenull(this.searchForm);
+      return !!this.crud.$scopedSlots.search || !validatenull(this.searchForm);
     }
   },
   methods: {

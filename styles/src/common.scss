@@ -37,9 +37,10 @@ body {
     background-color: transparent;
     border:none;
   }
-  .el-input__suffix{
+  .el-input__suffix,.el-input__prefix{
     display: none;
   }
+  
   .el-input__inner,.el-textarea__inner{
     border: none;
     &::-webkit-input-placeholder {
@@ -91,7 +92,7 @@ body {
     border-bottom:1px solid #ebeef5;
     border-right:1px solid #ebeef5;
   }
-  .el-form-item{
+  .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
     margin:0;
     background: #fafafa;
   }

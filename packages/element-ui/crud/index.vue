@@ -514,6 +514,10 @@ export default create({
     menuIcon (value) {
       return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
     },
+    getBtnIcon (value) {
+      const name = value + 'Icon';
+      return this.tableOption[name] || config[name]
+    },
     //对部分表单字段进行校验的方法
     validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);

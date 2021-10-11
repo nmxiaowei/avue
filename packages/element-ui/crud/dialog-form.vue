@@ -50,15 +50,14 @@
       </template>
     </avue-form>
     <span class="avue-dialog__footer"
-          :class="'avue-dialog__footer--'+dialogMenuPosition"
-          v-if="!isView">
-      <el-button v-if="vaildData(formOption.submitBtn,true)"
+          :class="'avue-dialog__footer--'+dialogMenuPosition">
+      <el-button v-if="vaildData(formOption.submitBtn,true) && !isView"
                  @click="submit"
                  :disabled="disabled"
                  :size="crud.controlSize"
                  :icon="formOption.submitIcon || 'el-icon-check'"
                  type="primary">{{formOption.submitText}}</el-button>
-      <el-button v-if="vaildData(formOption.emptyBtn,true)"
+      <el-button v-if="vaildData(formOption.emptyBtn,true) && !isView"
                  @click="reset"
                  :disabled="disabled"
                  :size="crud.controlSize || 'el-icon-delete'"
@@ -139,17 +138,17 @@ export default create({
       if (this.isAdd) {
         option.submitBtn = option.saveBtn;
         option.submitText = this.crud.menuIcon('saveBtn');
-        option.submitIcon = option.saveBtnIcon || config.saveBtnIcon
+        option.submitIcon = this.crud.getBtnIcon('saveBtn')
       } else if (this.isEdit) {
         option.submitBtn = option.updateBtn;
         option.submitText = this.crud.menuIcon('updateBtn');
-        option.submitIcon = option.updateBtnIcon || config.updateBtnIcon
+        option.submitIcon = this.crud.getBtnIcon('updateBtn')
       } else if (this.isView) {
         option.detail = true;
       }
       option.emptyBtn = option.cancelBtn;
-      option.emptyIcon = option.cancelBtnIcon || config.cancelBtnIcon;
       option.emptyText = this.crud.menuIcon('cancelBtn')
+      option.emptyIcon = this.crud.getBtnIcon('cancelBtn')
       //不分组的表单不加载字典
       if (!this.crud.isGroup) {
         option.dicFlag = false;
