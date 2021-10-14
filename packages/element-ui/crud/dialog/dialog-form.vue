@@ -9,7 +9,7 @@
              :fullscreen="fullscreen"
              :modal-append-to-body="false"
              append-to-body
-             :top="setPx(dialogTop)"
+             :top="0"
              :style="styleName"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"

@@ -128,7 +128,6 @@
                                  :propsHttp="parentOption.propsHttp"
                                  v-bind="$uploadFun(column)"
                                  :readonly="column.readonly || readonly"
-                                 ,
                                  :disabled="getDisabled(column)"
                                  :enter="parentOption.enter"
                                  :size="parentOption.size"
