@@ -48,8 +48,11 @@
                 :label="labelKey"
                 :value="valueKey"
                 :item="data"></slot>
-          <span v-else
-                :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
+          <template v-else>
+            <span :class="{'avue--disabled':data[disabledKey]}">{{data[labelKey]}}</span>
+            <span :class="b('desc')"
+                  v-if="data[descKey]">{{ data[descKey] }}</span>
+          </template>
         </div>
       </el-tree>
     </el-option>
