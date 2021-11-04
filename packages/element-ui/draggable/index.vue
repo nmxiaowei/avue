@@ -219,6 +219,12 @@ export default create({
       if (this.resize && this.children.style) {
         this.children.style.height = this.setPx(val);
       }
+    },
+    baseLeft (n, o) {
+      this.setMove(n - o, 0);
+    },
+    baseTop (n, o) {
+      this.setMove(0, n - o);
     }
   },
   mounted () {
@@ -232,6 +238,13 @@ export default create({
       this.baseLeft = getFixed(this.left);
       this.baseTop = getFixed(this.top);
       this.keyDown = document.onkeydown
+    },
+    setMove (left, top) {
+      this.$emit('move', {
+        index: this.index,
+        left: left,
+        top: top
+      })
     },
     setLeft (left) {
       this.baseLeft = left;
