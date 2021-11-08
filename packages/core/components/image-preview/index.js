@@ -12,6 +12,7 @@ const ImagePreview = function (Vue) {
       index: index,
       ops: Object.assign({
         closeOnClickModal: false,
+        beforeClose: null,
         modal: true
       }, ops)
     }

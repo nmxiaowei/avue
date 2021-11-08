@@ -53,7 +53,10 @@
     methods: {
       openPreview(index = 0) {
         this.$ImagePreview(this.datas, index, {
-          closeOnClickModal: true
+          closeOnClickModal: true,
+          beforeClose: (data, index) => {
+            console.log(data, index);
+          }
         });
       }
     }
