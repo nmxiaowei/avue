@@ -16,7 +16,7 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
-             :size="size?size:width"
+             v-bind="isSize"
              :width="setPx(width)"
              :before-close="hide"
              @opened="handleOpened">
@@ -129,6 +129,10 @@ export default create({
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
+    },
+    isSize(){
+      let drawerSize = this.size ? this.size : this.width;
+      return this.isDrawer ? {'size':drawerSize} : {};
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);

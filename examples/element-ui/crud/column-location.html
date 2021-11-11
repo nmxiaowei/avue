@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.staticfile.org/xlsx/0.14.1/xlsx.full.min.js"></script>
+
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.13.0/theme-chalk/index.css" />
+  <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{defaults}}
+    <avue-crud :defaults.sync="defaults" ref="crud" :option="option" :data="data">
+      <template slot="menuLeft" slot-scope="{size}">
+        <el-button @click="saveOption" type="danger" :size="size">保存配置</el-button>
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  let key = 'avue-column';
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        defaults: {},
+        data: [{
+          text1: '内容1-1',
+          text2: '内容1-2'
+        }, {
+          text1: '内容2-1',
+          text2: '内容2-2'
+        }, {
+          text1: '内容3-1',
+          text2: '内容3-2'
+        }, {
+          text1: '内容4-1',
+          text2: '内容4-2'
+        }, {
+          text1: '内容5-1',
+          text2: '内容5-2'
+        }],
+        option: {
+          addBtn: false,
+          menu: false,
+          border: true,
+          align: 'center',
+          column: [{
+            label: '列内容1',
+            prop: 'text1',
+            hide: false
+          }, {
+            label: '列内容2',
+            prop: 'text2',
+          }]
+        }
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.defaults = JSON.parse(localStorage.getItem(key) || '')
+      })
+    },
+    methods: {
+      saveOption() {
+        localStorage.setItem(key, JSON.stringify(this.defaults))
+        this.$message.success('配置保存成功')
+      }
+    }
+  })
+</script>
+
+</html>

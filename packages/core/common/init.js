@@ -4,6 +4,12 @@ export default function () {
   return {
     mixins: [slot],
     props: {
+      defaults: {
+        type: Object,
+        default () {
+          return {};
+        }
+      },
       option: {
         type: Object,
         required: true,

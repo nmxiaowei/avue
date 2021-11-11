@@ -22,7 +22,7 @@
       </span>
 
     </el-input>
-    <el-dialog class="avue-dialog"
+    <el-dialog class="avue-dialog avue-dialog--none"
                :title="placeholder"
                append-to-body
                :visible.sync="box"

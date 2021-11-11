@@ -11,7 +11,7 @@
               :placeholder="placeholder">
     </el-input>
 
-    <el-dialog class="avue-dialog"
+    <el-dialog class="avue-dialog avue-dialog--none"
                :width="dialogWidth"
                append-to-body
                :title="placeholder"

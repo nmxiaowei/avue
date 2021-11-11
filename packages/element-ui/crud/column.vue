@@ -107,7 +107,7 @@ export default create({
       let result = obj?.[type]
       if (type == 'width' && result == 0) { return undefined }
       if (type == 'filters') return this.handleFilters(column, result)
-      if (type == 'hide') return column.hide !== true
+      if (type == 'hide') return obj?.hide !== true
       else return result;
     },
   }

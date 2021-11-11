@@ -2,4 +2,9 @@
   .el-tag__close{
     display: none !important;
   }
+  &__desc{
+    float: right; 
+    color: #8492a6; 
+    font-size: 13px;
+  }
 }
