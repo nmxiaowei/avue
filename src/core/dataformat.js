@@ -74,9 +74,10 @@ export const initVal = (value, column) => {
  * 搜索框获取动态组件
  */
 export const getSearchType = (column) => {
-  const type = column.searchType || column.type;
+  const type = column.type;
   const range = column.searchRange;
   let result = type;
+  if (column.searchType) return column.searchType;
   if (['radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (DATE_LIST.includes(type)) {
