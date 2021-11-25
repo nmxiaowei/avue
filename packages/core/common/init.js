@@ -5,6 +5,12 @@ export default function () {
     mixins: [slot],
     emits: ['update:modelValue', 'update:defaults', 'change'],
     props: {
+      defaults: {
+        type: Object,
+        default () {
+          return {};
+        }
+      },
       option: {
         type: Object,
         required: true,

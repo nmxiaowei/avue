@@ -13,6 +13,7 @@ const ImagePreview = (function () {
       index: index,
       ops: Object.assign({
         closeOnClickModal: false,
+        beforeClose: null,
         modal: true
       }, ops)
     }

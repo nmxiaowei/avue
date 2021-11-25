@@ -10,7 +10,7 @@
               @click="handleClick"
               :disabled="disabled">
     </el-input>
-    <el-dialog custom-class="avue-dialog"
+    <el-dialog custom-class="avue-dialog avue-dialog--none"
                :width="dialogWidth"
                append-to-body
                :title="placeholder"

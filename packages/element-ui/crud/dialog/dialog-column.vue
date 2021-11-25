@@ -28,8 +28,7 @@
                            v-if="item.hide!=true"
                            :label="item.label">
             <template #="{row}">
-              <el-checkbox :true-label="crud.objectOption[row.prop][item.prop]==='custom'?'custom':true"
-                           v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+              <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
             </template>
           </el-table-column>
         </template>

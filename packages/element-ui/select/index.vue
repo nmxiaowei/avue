@@ -40,8 +40,8 @@
             </slot>
             <template v-else>
               <span>{{ getLabelText(citem) }}</span>
-              <span v-if="citem.desc"
-                    :class="b('desc')">{{ citem.desc }}</span>
+              <span v-if="citem[descKey]"
+                    :class="b('desc')">{{ citem[descKey] }}</span>
             </template>
           </template>
         </el-option>

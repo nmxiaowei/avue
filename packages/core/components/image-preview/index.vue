@@ -171,6 +171,9 @@ export default create({
     },
     close () {
       this.isShow = false
+      if (typeof this.ops.beforeClose == "function") {
+        this.ops.beforeClose(this.datas, this.index);
+      }
       if (typeof this.onClose === "function") {
         this.onClose(this);
       }
