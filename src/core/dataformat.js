@@ -74,7 +74,7 @@ export const initVal = (value, column) => {
  * 搜索框获取动态组件
  */
 export const getSearchType = (column) => {
-  const type = column.type;
+  const type = column.searchType || column.type;
   const range = column.searchRange;
   let result = type;
   if (['radio', 'checkbox', 'switch'].includes(type)) {
