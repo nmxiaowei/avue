@@ -12,6 +12,7 @@
       <template slot="append">
         <el-color-picker size="mini"
                          v-model="text"
+                         :popper-class="popperClass"
                          :color-format="colorFormat"
                          :disabled="disabled"
                          :show-alpha="showAlpha"
