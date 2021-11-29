@@ -23,8 +23,8 @@ export default {
   form: {
     printBtn: 'print',
     mockBtn: 'mock',
-    submit: 'submit',
-    empty: 'empty'
+    submitBtn: 'submit',
+    emptyBtn: 'empty'
   },
   crud: {
     filter: {
