@@ -78,7 +78,7 @@ export const loadLocalDic = (option) => {
   });
   return Object.assign(alldic, locationdic);
 };
-function createdDic(option) {
+function createdDic (option) {
   let column = option.column || [];
   let ajaxdic = [];
   let locationdic = {};
@@ -114,7 +114,7 @@ function createdDic(option) {
 }
 
 // 循环处理字典
-function handleDic(list) {
+function handleDic (list) {
   let networkdic = {};
   let result = [];
   return new Promise(resolve => {
@@ -166,17 +166,14 @@ export const sendDic = (params) => {
     list = Object.keys(query);
     list.forEach(ele => {
       let eleKey = query[ele];
-      if (typeof (eleKey) === 'object') {
+      if (typeof (eleKey) !== 'string') {
         data[ele] = eleKey;
-        return
-      }
-      let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
-      if (eleKey.match(/\{{|}}/g)) {
+      } else if (eleKey.match(/\{{|}}/g)) {
+        let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
         data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
       } else {
         data[ele] = eleKey;
       }
-
     });
   }
 
@@ -196,7 +193,7 @@ export const sendDic = (params) => {
       resolve([]);
     }
     if (method === 'post') {
-      window.axios.post(url, data).then(function(res) {
+      window.axios.post(url, data).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
@@ -204,7 +201,7 @@ export const sendDic = (params) => {
     } else {
       window.axios.get(url, {
         params: query
-      }).then(function(res) {
+      }).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
