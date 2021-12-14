@@ -292,6 +292,7 @@ export default create({
       this.addFlag ? this.save(form, done) : this.update(form, done)
     },
     nodeClick (data, node, nodeComp) {
+      this.client.show = false
       this.$emit("node-click", data, node, nodeComp);
     },
     filterNode (value, data) {
