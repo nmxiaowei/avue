@@ -23,8 +23,8 @@ export default {
   form: {
     printBtn: '打 印',
     mockBtn: '模 拟',
-    submit: '提 交',
-    empty: '清 空'
+    submitBtn: '提 交',
+    emptyBtn: '清 空'
   },
   crud: {
     filter: {

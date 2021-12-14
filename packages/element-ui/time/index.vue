@@ -1,6 +1,7 @@
 <template>
   <div :class="b()">
     <el-time-picker v-model="text"
+                    :popper-class="popperClass"
                     :is-range="isRange"
                     :size="size"
                     :editable="editable"

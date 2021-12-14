@@ -54,6 +54,16 @@
                @sortable-change="handleSortableChange"
                :data="text">
       <template slot-scope="scope"
+                slot="_indexHeader">
+        <el-button v-if="!(addBtn || readonly)"
+                   @click="addRow()"
+                   type="primary"
+                   size="mini"
+                   :disabled="disabled"
+                   icon="el-icon-plus"
+                   circle></el-button>
+      </template>
+      <template slot-scope="scope"
                 slot="_index">
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @click="delRow(scope.row.$index)"
@@ -179,24 +189,7 @@ export default create({
           align: 'center',
           headerAlign: 'center',
           span: 24,
-          width: 50,
-          renderHeader: (h, { column, $index }) => {
-            if (this.addBtn || this.readonly) {
-              return
-            }
-            return h('el-button', {
-              attrs: {
-                size: 'mini',
-                type: 'primary',
-                icon: 'el-icon-plus',
-                disabled: this.disabled,
-                circle: true
-              },
-              on: {
-                click: this.addRow
-              }
-            })
-          },
+          width: 50
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {

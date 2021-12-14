@@ -12,6 +12,7 @@
              :no-match-text="noMatchText"
              :no-data-text="noDataText"
              :remote-method="handleRemoteMethod"
+             :popper-class="popperClass"
              :collapse-tags="tags"
              :clearable="clearableVal"
              :placeholder="placeholder"
