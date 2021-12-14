@@ -77,6 +77,7 @@ export const getSearchType = (column) => {
   const type = column.type;
   const range = column.searchRange;
   let result = type;
+  if (column.searchType) return column.searchType;
   if (['radio', 'checkbox', 'switch'].includes(type)) {
     result = 'select';
   } else if (DATE_LIST.includes(type)) {

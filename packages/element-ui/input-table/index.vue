@@ -135,7 +135,7 @@ export default create({
           this.data = data.data
           this.loading = false;
           let active = this.data.find(ele => ele[this.valueKey] == this.object[this.valueKey])
-          if (!this.validatenull(active)) setTimeout(() => this.$refs.crud.setCurrentRow(active))
+          setTimeout(() => this.$refs.crud.setCurrentRow(active))
         })
       }
     }

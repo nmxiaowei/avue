@@ -280,7 +280,7 @@ export default create({
             this.node.push(ele);
           })
         } else {
-          let node = this.$refs.tree.getNode(this.text || '')
+          let node = this.$refs.tree.getNode(this.vaildData(this.text, ''))
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])

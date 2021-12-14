@@ -2,6 +2,7 @@
   <div :class="b()">
     <el-input :placeholder="placeholder"
               :model-value="text"
+              :popper-class="popperClass"
               :size="size"
               ref="main"
               :clearable="disabled?false:clearable"

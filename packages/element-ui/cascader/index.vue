@@ -9,6 +9,7 @@
                  :clearable="clearableVal"
                  :show-all-levels="showAllLevels"
                  :filterable="filterable"
+                 :popper-class="popperClass"
                  :separator="separator"
                  :disabled="disabled"
                  :collapse-tags="tags"

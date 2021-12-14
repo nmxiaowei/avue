@@ -2,6 +2,7 @@
   <div :class="b()">
     <el-date-picker :type="type"
                     v-model="text"
+                    :popper-class="popperClass"
                     :size="size"
                     :editable="editable"
                     :unlink-panels="unlinkPanels"

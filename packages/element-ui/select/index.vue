@@ -2,6 +2,7 @@
   <el-select ref="main"
              :class="b()"
              v-model="text"
+             :popper-class="popperClass"
              :size="size"
              :loading="loading"
              :loading-text="loadingText"

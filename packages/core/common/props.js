@@ -125,6 +125,9 @@ export default function () {
         type: Boolean,
         default: false
       },
+      popperClass: {
+        type: String,
+      },
       propsHttp: {
         type: Object,
         default: () => DIC_HTTP_PROPS
