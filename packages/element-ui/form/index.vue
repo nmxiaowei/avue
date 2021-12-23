@@ -188,7 +188,7 @@ import formMenu from './menu'
 export default create({
   name: "form",
   mixins: [init()],
-  emits: ['update:modelValue', 'update:status'],
+  emits: ['update:modelValue', 'update:status', 'reset-change', 'mock-change', 'tab-click', 'submit', 'error'],
   components: {
     formTemp,
     formMenu
@@ -448,7 +448,6 @@ export default create({
     setVal () {
       this.setControl();
       this.$emit('update:modelValue', this.form);
-      this.$emit("change", this.form);
     },
     setControl () {
       this.controlOption.forEach(ele => {

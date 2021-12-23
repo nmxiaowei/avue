@@ -10,9 +10,7 @@
       <avue-form :option="option"
                  ref="form"
                  @submit="searchChange"
-                 @change="handleChange"
                  @reset-change="resetChange"
-                 v-if="searchFlag"
                  v-model="searchForm">
         <template #menuForm="scope">
           <slot name="searchMenu"
@@ -75,7 +73,7 @@ export default create({
     }
   },
   watch: {
-    'crud.propOption': {
+    propOption: {
       handler () {
         this.dataFormat();
       },
@@ -84,6 +82,13 @@ export default create({
     search: {
       handler () {
         this.searchForm = Object.assign(this.searchForm, this.search);
+      },
+      immediate: true,
+      deep: true
+    },
+    searchForm: {
+      handler () {
+        this.crud.$emit('update:search', this.searchForm)
       },
       immediate: true,
       deep: true
@@ -106,16 +111,15 @@ export default create({
       return !this.validatenull(this.crud.tableOption.group);
     },
     propOption () {
-      let list = [];
+      let column = this.crud.propOption;
       let groupList = this.crud.tableOption.group;
+      let group = [];
       if (groupList) {
         groupList.forEach(ele => {
-          (ele.column || []).forEach(column => {
-            list.push(column);
-          });
+          ele.column.forEach(column => group.push(column));
         });
       }
-      return [...list, ...this.crud.columnOption]
+      return [...column, ...group]
     },
     isSearchIcon () {
       return this.validData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
@@ -163,11 +167,8 @@ export default create({
               row: ele.searchRow,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
-            delete ele.bind
-            let whiteList = ['disabled', 'readonly']
-            whiteList.forEach(key => {
-              delete ele[key]
-            })
+            let whiteList = ['bind', 'disabled', 'readonly']
+            whiteList.forEach(key => delete ele[key])
             column.push(ele);
             count = count + 1;
           }
@@ -220,9 +221,6 @@ export default create({
     },
     getSlotName (item) {
       return item.replace('search', '')
-    },
-    handleChange () {
-      this.crud.$emit('update:search', this.searchForm)
     },
     // 搜索回调
     searchChange (form, done) {

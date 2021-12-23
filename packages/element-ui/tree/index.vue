@@ -73,7 +73,7 @@
     </div>
     <el-dialog :title="node[labelKey] || title"
                v-model="box"
-               :custom-class="['avue-dialog',b('dialog')]"
+               :custom-class="['avue-dialog',b('dialog')].join(' ')"
                modal-append-to-body
                append-to-body
                @close="hide"

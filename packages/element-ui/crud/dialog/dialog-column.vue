@@ -1,12 +1,10 @@
 <template>
-  <el-drawer lock-scroll
-             append-to-body
-             :custom-class="['avue-dialog',b('dialog'),b('column')]"
+  <el-drawer append-to-body
+             :custom-class="['avue-dialog',b('dialog'),b('column')].join(' ')"
              :title="t('crud.showTitle')"
              @opened="rowDrop"
-             style="top:0"
              :size="crud.isMobile?'100%':'40%'"
-             :visible.sync="columnBox">
+             v-model="columnBox">
     <div style="height:calc(100% - 5px)">
       <el-table :data="list"
                 ref="table"

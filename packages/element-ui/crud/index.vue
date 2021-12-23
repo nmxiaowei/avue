@@ -188,6 +188,7 @@ import { calcCascader, formInitVal } from "core/dataformat";
 export default create({
   name: "crud",
   mixins: [init(), locale,],
+  emits: ['modelValue', 'update:page', 'update:search', 'on-load', 'cell-mouse-enter', 'cell-mouse-leave', 'search-change', 'search-reset'],
   directives: {
     permission
   },

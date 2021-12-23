@@ -1,15 +1,11 @@
 <template>
   <component :is="dialogType"
-             lock-scroll
              :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
-             :wrapperClosable="crud.tableOption.dialogClickModal"
-             :direction="direction"
              v-dialogdrag="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass]"
-             :fullscreen="fullscreen"
-             :modal-append-to-body="false"
-             append-to-body
-             :top="0"
+             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass].join(' ')"
+             :modal-append-to-body="validData(crud.tableOption.dialogModalAppendToBody,true)"
+             :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
+             top="0"
              :style="styleName"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
@@ -17,8 +13,7 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              v-model="boxVisible"
-             v-bind="isSize"
-             :width="setPx(width)"
+             v-bind="params"
              :before-close="hide"
              @opened="handleOpened">
     <template #title>
@@ -92,7 +87,7 @@ export default create({
     };
   },
   props: {
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
         return {};
@@ -116,11 +111,11 @@ export default create({
     isEdit () {
       return this.boxType === 'edit'
     },
-    direction () {
-      return this.crud.tableOption.dialogDirection
-    },
     width () {
-      return this.validData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
+      let dialogWidth = this.crud.tableOption.dialogWidth + ''
+      let defaultWidth = this.crud.isMobile ? '100%' : config.dialogWidth;
+      let result = this.validData(dialogWidth, defaultWidth);
+      return this.setPx(result)
     },
     dialogType () {
       return this.isDrawer ? 'elDrawer' : 'elDialog'
@@ -131,9 +126,15 @@ export default create({
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
     },
-    isSize () {
-      let drawerSize = this.size ? this.size : this.width;
-      return this.isDrawer ? { 'size': drawerSize } : {};
+    params () {
+      return this.isDrawer ? {
+        size: this.size,
+        direction: this.crud.tableOption.dialogDirection
+      } :
+        {
+          width: this.width,
+          fullscreen: this.fullscreen
+        };
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);
