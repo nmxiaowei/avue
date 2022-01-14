@@ -10,15 +10,11 @@
     "gen:version": "node build/version.js",
     "analyz": "NODE_ENV=production npm_config_report=true npm run build",
     "dev": "yarn gen:version && cross-env TARGET=dev UINAME=element-ui gulp watch",
-    "build": "yarn gen:version && cross-env TARGET=prod UINAME=element-ui gulp build",
-    "dev:vant": "yarn gen:version && cross-env TARGET=dev-vant UINAME=vant gulp watch",
-    "build:vant": "yarn gen:version && cross-env TARGET=prod-vant UINAME=vant gulp build",
-    "build:all": "npm run build && npm run build:vant"
+    "build": "yarn gen:version && cross-env TARGET=prod UINAME=element-ui gulp build"
   },
   "keywords": [
     "vue",
     "element-ui",
-    "vant",
     "avue"
   ],
   "repository": {

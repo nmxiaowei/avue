@@ -45,12 +45,6 @@ const list = {
     version: '9.15.6',
     github: 'https://github.com/highlightjs/highlight.js'
   },
-  'vant': {
-    url: 'https://cdn.jsdelivr.net/npm/vant@1.6/lib/vant.min.js',
-    title: '需要引入Vant框架包',
-    version: '1.6',
-    github: 'https://github.com/youzan/vant'
-  },
   'file-saver': {
     url: 'https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js',
     title: '需要引入文件操作包',
