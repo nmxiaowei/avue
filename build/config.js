@@ -19,7 +19,6 @@ const externals = {
     commonjs: 'vue',
     amd: 'vue'
   },
-  'vant': 'vant',
   'axios': 'axios',
   'element-ui': 'ELEMENT'
 };
@@ -44,20 +43,6 @@ const builds = {
     entry: resolve('src/index.js'),
     dest: resolve('lib'),
     filename: 'avue.js',
-    env: 'development',
-    externals: externals
-  },
-  'prod-vant': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-mobile.min.js',
-    env: 'production',
-    externals: externals
-  },
-  'dev-vant': {
-    entry: resolve('src/index.js'),
-    dest: resolve('lib'),
-    filename: 'avue-mobile.js',
     env: 'development',
     externals: externals
   }

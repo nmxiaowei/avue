@@ -2,29 +2,27 @@
   <div :class="[b({'header':!isHeader,'arrow':!arrow})]"
        v-if="display">
     <slot name="tabs"></slot>
-    <component :is="collapseName"
-               :value="text"
-               @change="handleChange"
-               v-model="activeName">
-      <component :is="collapseItemName"
-                 :name="1"
-                 :disabled="!arrow">
-        <div :class="[b('header'),b({'none':$isVan})]"
+    <el-collapse :value="text"
+                 @change="handleChange"
+                 v-model="activeName">
+      <el-collapse-item :name="1"
+                        :disabled="!arrow">
+        <div :class="[b('header')]"
              slot="title"
              v-if="$slots.header&&header">
           <slot name="header"></slot>
         </div>
-        <div :class="[b('header'),b({'none':$isVan})]"
+        <div :class="[b('header')]"
              slot="title"
              v-else-if="(label || icon)&&header">
-          <i :class="[$isVan?'van-icon':'',icon,b('icon')]"
+          <i :class="[icon,b('icon')]"
              v-if="icon"></i>
           <h1 :class="b('title')"
               v-if="label">{{label}}</h1>
         </div>
         <slot></slot>
-      </component>
-    </component>
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
@@ -71,12 +69,6 @@ export default create({
     },
   },
   computed: {
-    collapseName () {
-      return `${this.$AVUE.ui.type}Collapse`
-    },
-    collapseItemName () {
-      return `${this.$AVUE.ui.type}CollapseItem`
-    },
     text () {
       return this.collapse ? 1 : 0
     },

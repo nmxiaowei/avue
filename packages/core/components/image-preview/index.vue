@@ -20,21 +20,20 @@
     </span>
     <div :class="b('box')"
          ref="box">
-      <component :is="carouselName"
-                 ref="carousel"
-                 :show-indicators="false"
-                 :initial-index="index"
-                 :initial-swipe="index"
-                 :interval="0"
-                 arrow="never"
-                 @change="handleChange"
-                 indicator-position="none"
-                 :height="height">
-        <component :is="carouselItemName"
-                   @click.native.self="ops.closeOnClickModal?close():''"
-                   v-for="(item,indexs) in datas"
-                   :key="indexs">
-          <img v-if="$typeList.img.test(item.url) || $typeList.video.test(item.url)"
+      <el-carousel ref="carousel"
+                   :show-indicators="false"
+                   :initial-index="index"
+                   :initial-swipe="index"
+                   :interval="0"
+                   arrow="never"
+                   @change="handleChange"
+                   indicator-position="none"
+                   :height="height">
+        <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
+                          v-for="(item,indexs) in datas"
+                          :key="indexs">
+          <img :id="'avue-image-preview__'+indexs"
+               v-if="$typeList.img.test(item.url) || $typeList.video.test(item.url)"
                :src="item.url"
                :style="[styleName,styleBoxName]"
                ref="item"
@@ -42,7 +41,8 @@
                controls="controls"
                v-bind="getIsVideo(item)"
                ondragstart="return false"></img>
-          <div v-else
+          <div :id="'avue-image-preview__'+indexs"
+               v-else
                :class="b('file')">
             <a :href="item.url"
                target="_blank">
@@ -50,8 +50,8 @@
               <p>{{item.name}}</p>
             </a>
           </div>
-        </component>
-      </component>
+        </el-carousel-item>
+      </el-carousel>
     </div>
     <div class="el-image-viewer__btn el-image-viewer__actions">
       <div class="el-image-viewer__actions__inner">
@@ -59,9 +59,10 @@
            @click="subScale"></i>
         <i class="el-icon-zoom-in"
            @click="addScale"></i>
-        <!-- <i class="el-image-viewer__actions__divider"></i> -->
-        <!-- <i class="el-icon-full-screen"></i> -->
-        <!-- <i class="el-image-viewer__actions__divider"></i> -->
+        <i class="el-image-viewer__actions__divider"></i>
+        <i class="el-icon-printer"
+           @click="handlePrint"></i>
+        <i class="el-image-viewer__actions__divider"></i>
         <i class="el-icon-refresh-left"
            @click="rotate=rotate-90"></i>
         <i class="el-icon-refresh-right"
@@ -87,14 +88,6 @@ export default create({
     };
   },
   computed: {
-    carouselName () {
-      if (this.$isVan) return `${this.$AVUE.ui.type}Swipe`
-      return `${this.$AVUE.ui.type}Carousel`
-    },
-    carouselItemName () {
-      if (this.$isVan) return `${this.$AVUE.ui.type}SwipeItem`
-      return `${this.$AVUE.ui.type}CarouselItem`
-    },
     styleBoxName () {
       return {
         marginLeft: this.setPx(this.left),
@@ -119,6 +112,9 @@ export default create({
     }
   },
   methods: {
+    handlePrint () {
+      this.$Print(`#avue-image-preview__${this.index}`)
+    },
     handlePrev () {
       this.$refs.carousel.prev()
       this.index = this.$refs.carousel.activeIndex
