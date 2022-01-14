@@ -6,14 +6,17 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
   let type = column.type;
   let separator = column.separator;
-  if (validatenull(result)) result = '';
-  let selectFlag = MULTIPLE_LIST.includes(column.type) && column.multiple;
-  let arrayFlag = ARRAY_VALUE_LIST.includes(column.type)
-  if ((['string', 'number'].includes(column.dataType) || selectFlag || arrayFlag) && !Array.isArray(result)) {
-    result = (result + '').split(separator || DIC_SPLIT);
-    if (column.dataType === 'number') result = strCorNum(result);
-  }
-  if (!validatenull(result)) {
+  // 深结构绑定处理
+  if (column.bind) result = getAsVal(row, column.bind);
+  if (validatenull(result)) {
+    result = '';
+  } else {
+    let selectFlag = MULTIPLE_LIST.includes(column.type) && column.multiple;
+    let arrayFlag = ARRAY_VALUE_LIST.includes(column.type)
+    if ((['string', 'number'].includes(column.dataType) || selectFlag || arrayFlag) && !Array.isArray(result)) {
+      result = (result + '').split(separator || DIC_SPLIT);
+      if (column.dataType === 'number') result = strCorNum(result);
+    }
     if (ARRAY_LIST.includes(type)) {
       if (Array.isArray(result)) {
         result = result.join(separator || DIC_SHOW_SPLIT);
@@ -39,11 +42,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
         result = dayjs(result).format(format);
       }
     }
-  }
-  // 深结构绑定处理
-  if (column.bind) result = getAsVal(row, column.bind);
-  // 字典处理
-  if (!validatenull(dic)) {
+    // 字典处理
     result = findByValue(dic, result, column.props);
   }
   // 自定义格式化

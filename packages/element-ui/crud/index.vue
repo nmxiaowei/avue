@@ -250,7 +250,7 @@ export default create({
     })
   },
   computed: {
-    defaultColumn() {
+    defaultColumn () {
       return [{
         label: this.t('crud.column.hide'),
         prop: 'hide'
