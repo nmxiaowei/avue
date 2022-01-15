@@ -1,5 +1,5 @@
 import components from 'ui/index';
-import { version } from './version'
+import { version } from './version';
 import config from 'ui/config';
 import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
@@ -14,6 +14,8 @@ import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 import $Group from 'packages/core/components/group/';
+
+import dialog from 'plugin/dialog';
 
 let prototypes = {
   $Export,
@@ -37,7 +39,8 @@ let prototypes = {
   randomId
 
 };
-const install = function (Vue, opts = {}) {
+const install = function(Vue, opts = {}) {
+  Vue.use(dialog);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
   Object.keys(components).map(ele => {
@@ -62,7 +65,7 @@ const install = function (Vue, opts = {}) {
   if (opts.theme === 'dark') {
     document.documentElement.className = 'avue-theme--dark';
   }
-  Vue.prototype.$uploadFun = function (column = {}, safe) {
+  Vue.prototype.$uploadFun = function(column = {}, safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
     let result = {};
@@ -82,7 +85,7 @@ const install = function (Vue, opts = {}) {
   Vue.prototype.$AVUE = Object.assign(opts, {
     ui: (() => {
       Vue.prototype[config.is] = true;
-      return config
+      return config;
     })(),
     size: opts.size || 'small',
     calcHeight: opts.calcHeight || 0,
@@ -126,4 +129,4 @@ const Avue = Object.assign({
   install
 }, components);
 
-export default Avue
+export default Avue;
