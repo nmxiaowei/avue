@@ -7,7 +7,7 @@
     <span class="el-image-viewer__btn el-image-viewer__close"
           @click="close">
       <el-icon>
-        <circleClose />
+        <close />
       </el-icon>
     </span>
     <span class="el-image-viewer__btn el-image-viewer__prev"
@@ -24,7 +24,7 @@
         <arrowRight />
       </el-icon>
     </span>
-    <!-- <div :class="b('box')"
+    <div :class="b('box')"
          ref="box">
       <el-carousel ref="carousel"
                    :show-indicators="false"
@@ -37,20 +37,22 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <img v-if="isMedia(item)"
-               :src="item.url"
-               :style="[styleName,styleBoxName]"
-               ref="item"
-               @mousedown="move"
-               controls="controls"
-               v-bind="getIsVideo(item)"
-               ondragstart="return false" />
-          <div v-else
+          <component :id="'avue-image-preview__'+indexs"
+                     v-if="isMedia(item)"
+                     :src="item.url"
+                     :style="[styleName,styleBoxName]"
+                     ref="item"
+                     @mousedown="move"
+                     controls="controls"
+                     :is="getIsVideo(item)"
+                     ondragstart="return false" />
+          <div :id="'avue-image-preview__'+indexs"
+               v-else
                :class="b('file')">
             <a :href="item.url"
                target="_blank">
               <el-icon>
-                <el-icon-document />
+                <Document />
               </el-icon>
               <p>{{item.name}}</p>
             </a>
@@ -66,6 +68,11 @@
         <el-icon @click="addScale">
           <zoomIn />
         </el-icon>
+        <i class="el-image-viewer__actions__divider"></i>
+        <el-icon @click="handlePrint">
+          <printer />
+        </el-icon>
+        <i class="el-image-viewer__actions__divider"></i>
         <el-icon @click="rotate=rotate-90">
           <refreshLeft />
         </el-icon>
@@ -73,16 +80,34 @@
           <refreshRight />
         </el-icon>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
 import { setPx } from 'utils/util';
 import { typeList } from 'global/variable'
 import create from "core/create";
+import { defineAsyncComponent } from 'vue'
+import { Document, ArrowRight, ArrowLeft, Close, ZoomOut, ZoomIn, RefreshLeft, RefreshRight, Printer } from '@element-plus/icons'
+import { ElIcon, ElCarousel, ElCarouselItem } from 'element-plus'
 export default create({
   name: "image-preview",
+  components: {
+    ElIcon,
+    ElCarousel,
+    ElCarouselItem,
+    Document,
+    ArrowRight,
+    ArrowLeft,
+    Close,
+    ZoomOut,
+    ZoomIn,
+    RefreshLeft,
+    RefreshRight,
+    Printer
+  },
   props: {
+    id: String,
     datas: Array,
     index: [Number, String],
     ops: Object,
@@ -121,6 +146,9 @@ export default create({
     }
   },
   methods: {
+    handlePrint () {
+      this.$Print(`#avue-image-preview__${this.index}`)
+    },
     handlePrev () {
       this.stopItem()
       this.$refs.carousel.prev()
@@ -136,9 +164,6 @@ export default create({
     stopItem () {
       this.left = 0;
       this.top = 0;
-      this.$refs.item.forEach(ele => {
-        ele.pause && ele.pause()
-      })
     },
     isMedia (item) {
       return typeList.img.test(item.url) || typeList.video.test(item.url)

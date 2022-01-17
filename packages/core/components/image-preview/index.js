@@ -10,6 +10,7 @@ const ImagePreview = (function () {
     let options = {
       datas: datas,
       index: index,
+      id: id,
       ops: Object.assign({
         closeOnClickModal: false,
         beforeClose: null,
