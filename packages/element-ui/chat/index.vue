@@ -51,15 +51,18 @@
         <div class="web__footer"
              :style="widthStyleName">
           <div class="web__tools">
-            <i class="el-icon-picture-outline"
-               v-if="tools.img"
-               @click="handleUpload('img')"></i>
-            <i class="el-icon-video-camera"
-               v-if="tools.video"
-               @click="handleUpload('video')"></i>
-            <i class="el-icon-folder-opened"
-               v-if="tools.file"
-               @click="handleUpload('file')"></i>
+            <el-icon v-if="tools.img"
+                     @click="handleUpload('img')">
+              <el-icon-picture-outline />
+            </el-icon>
+            <el-icon v-if="tools.video"
+                     @click="handleUpload('video')">
+              <el-icon-video-camera />
+            </el-icon>
+            <el-icon v-if="tools.file"
+                     @click="handleUpload('file')">
+              <el-icon-folder-opened />
+            </el-icon>
           </div>
           <div class="web__msg">
             <textarea v-model="msg"

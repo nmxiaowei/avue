@@ -7,16 +7,9 @@
     &:hover{
       transform: scale(1.4);
     }
-    &--active{
-      transform: scale(1.4);
-      color:#409EFF;
-    }
   }
   &__list{
     display: flex;
     flex-wrap: wrap;
-  }
-  &__icon{
-    font-size: 32px !important;
   }
 }

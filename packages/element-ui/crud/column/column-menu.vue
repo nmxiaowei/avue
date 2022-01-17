@@ -14,7 +14,9 @@
         <el-button type="text"
                    :size="crud.isMediumSize">
           {{ crud.tableOption.menuBtnTitle || t('crud.menuBtn')}}
-          <i class="el-icon-arrow-down el-icon--right"></i>
+          <el-icon class='el-icon--right"'>
+            <el-icon-arrow-down />
+          </el-icon>
         </el-button>
         <template #dropdown>
           <el-dropdown-menu>

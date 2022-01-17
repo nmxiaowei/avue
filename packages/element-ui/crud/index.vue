@@ -225,7 +225,23 @@ export default create({
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      defaultColumn: [{
+      default: {},
+      defaultBind: {},
+    };
+  },
+  created () {
+    // 初始化数据
+    this.dataInit();
+  },
+  mounted () {
+    this.refreshTable(() => {
+      //动态计算表格高度
+      this.getTableHeight();
+    })
+  },
+  computed: {
+    defaultColumn () {
+      return [{
         label: this.t('crud.column.hide'),
         prop: 'hide'
       }, {
@@ -248,23 +264,8 @@ export default create({
         label: this.t('column.width'),
         prop: 'width',
         hide: true
-      }],
-      default: {},
-      defaultBind: {},
-
-    };
-  },
-  created () {
-    // 初始化数据
-    this.dataInit();
-  },
-  mounted () {
-    this.refreshTable(() => {
-      //动态计算表格高度
-      this.getTableHeight();
-    })
-  },
-  computed: {
+      }]
+    },
     isSortable () {
       return this.tableOption.sortable;
     },
@@ -311,7 +312,7 @@ export default create({
     },
     propOption () {
       let result = [];
-      function findProp (list) {
+      function findProp (list = []) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
           result.push(ele);

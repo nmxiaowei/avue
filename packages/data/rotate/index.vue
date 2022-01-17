@@ -19,7 +19,11 @@
           </div>
           <a :href="item.href?item.href:'javascript:void(0);'"
              @click="item.click?item.click(item):''">
-            <p class="item-more">更多<i class="el-icon-arrow-right"></i></p>
+            <p class="item-more">更多
+              <el-icon>
+                <el-icon-arrow-right />
+              </el-icon>
+            </p>
           </a>
         </div>
       </el-col>

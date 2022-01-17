@@ -6,7 +6,9 @@
               v-if="validData(option.addBtn,true)">
         <div :class="b('item',{'add':true})"
              @click="rowAdd()">
-          <i class="el-icon-plus"></i>
+          <el-icon>
+            <el-icon-plus />
+          </el-icon>
           <span>添加</span>
         </div>
       </el-col>

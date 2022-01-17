@@ -84,6 +84,12 @@ import create from "core/create";
 export default create({
   name: 'login',
   props: {
+    value: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     codesrc: {
       type: String,
     },
@@ -92,6 +98,21 @@ export default create({
       default: () => {
         return {};
       }
+    }
+  },
+  watch: {
+    value: {
+      handler () {
+        this.form = this.value
+      },
+      deep: true
+    },
+    form: {
+      handler () {
+        this.$emit('input', this.form)
+      },
+      deep: true,
+      immediate: true
     }
   },
   computed: {
@@ -132,7 +153,7 @@ export default create({
   },
   data () {
     return {
-      text: '',
+      text: INIT_TEXT,
       nowtime: '',
       check: {},
       flag: false,
@@ -140,9 +161,6 @@ export default create({
 
       }
     }
-  },
-  created () {
-    this.text = INIT_TEXT;
   },
   methods: {
     onSend () {

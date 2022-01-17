@@ -20,6 +20,7 @@
 
 <script>
 import locale from "core/locale";
+import { getAsVal } from "utils/util";
 export default {
   name: 'crud',
   mixins: [locale],

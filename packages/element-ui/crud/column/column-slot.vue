@@ -116,7 +116,7 @@
 <script>
 let count = {}
 import { detail } from "core/detail";
-import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
+import { DIC_PROPS, DIC_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
 import formTemp from 'common/components/form/index'
 export default {
@@ -144,7 +144,7 @@ export default {
   methods: {
     allParams (item) {
       return {
-        is: this.$typeList.video.test(item) ? 'video' : 'img'
+        is: typeList.video.test(item) ? 'video' : 'img'
       }
     },
     vaildLabel (column, row, val) {

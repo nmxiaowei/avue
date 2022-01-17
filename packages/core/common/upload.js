@@ -3,6 +3,7 @@ import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
+import { typeList } from 'global/variable'
 import axios from 'axios';
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
@@ -90,7 +91,7 @@ export default function () {
         return this.propsHttp.home || ''
       },
       allParams () {
-        if (this.$typeList.video.test(this.imgUrl)) {
+        if (typeList.video.test(this.imgUrl)) {
           return Object.assign({
             is: 'video'
           }, this.params)
@@ -130,7 +131,7 @@ export default function () {
             list.push({
               uid: index + '',
               status: 'done',
-              isImage: ele.isImage || this.$typeList.img.test(ele[this.valueKey]),
+              isImage: ele.isImage || typeList.img.test(ele[this.valueKey]),
               name: this.isMultiple ? name : ele[this.labelKey],
               url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
             });
@@ -294,7 +295,7 @@ export default function () {
         const callback = () => {
           let url = file.url
           let list = this.fileList.map(ele => Object.assign(ele, {
-            type: this.$typeList.video.test(ele.url) ? 'video' : ''
+            type: typeList.video.test(ele.url) ? 'video' : ''
           }))
           let index = this.fileList.findIndex(ele => {
             return ele.url === url;

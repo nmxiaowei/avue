@@ -39,12 +39,6 @@ const list = {
     title: '七牛云图片上传，需要引入CryptoJS',
     version: '3.1.2'
   },
-  'element-ui': {
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.12.0/index.js',
-    title: '需要引入Element-ui框架包',
-    version: '2.11.0',
-    github: 'https://github.com/ElemeFE/element'
-  },
   'hljs': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js',
     title: '需要引入hljs框架包',

@@ -1,6 +1,5 @@
 
 import components from './ui/index';
-import { typeList } from 'global/variable'
 import { version } from './version'
 import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, validData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
@@ -14,6 +13,7 @@ import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 import axios from 'axios';
+import createIcon from './icon';
 let plugins = {
   $ImagePreview,
   $Export,
@@ -38,7 +38,7 @@ let plugins = {
 };
 const install = function (Vue, opts = {}) {
   const defaultOption = {
-    size: opts.size || 'small',
+    size: opts.size,
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
@@ -72,17 +72,16 @@ const install = function (Vue, opts = {}) {
   components.forEach(component => {
     Vue.component(component.name, component);
   });
+  createIcon(Vue);
   Object.keys(plugins).forEach((key) => {
     Vue.config.globalProperties[key] = plugins[key];
   });
-  if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
   Vue.config.globalProperties.$axios = opts.axios || axios;
-  Vue.config.globalProperties.$typeList = typeList
   Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];

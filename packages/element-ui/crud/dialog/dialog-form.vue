@@ -20,9 +20,10 @@
       <div :class="b('dialog__header')">
         <span class="el-dialog__title">{{dialogTitle}}</span>
         <div :class="b('dialog__menu')">
-          <i @click="handleFullScreen"
-             :class="fullscreen?'el-icon-news':'el-icon-full-screen'"
-             class="el-dialog__close"></i>
+          <el-icon class='el-dialog__close'
+                   @click="handleFullScreen">
+            <component :is="fullscreen?'el-icon-news':'el-icon-full-screen'" />
+          </el-icon>
         </div>
       </div>
     </template>

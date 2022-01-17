@@ -89,7 +89,9 @@
                       <template #content>
                         <div v-html="column.labelTip"></div>
                       </template>
-                      <i class="el-icon-info"></i>
+                      <el-icon>
+                        <el-icon-info />
+                      </el-icon>
                     </el-tooltip>
                     <span> {{column.label}}{{labelSuffix}}</span>
                   </template>

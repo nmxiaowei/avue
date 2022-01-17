@@ -1,24 +1,30 @@
 <template>
   <div :class="b()"
-       v-if="isShow">
+       :id="id">
     <div :class="b('mask')"
          v-if="ops.modal"
          @click="close"></div>
     <span class="el-image-viewer__btn el-image-viewer__close"
           @click="close">
-      <i class="el-icon-circle-close"></i>
+      <el-icon>
+        <circleClose />
+      </el-icon>
     </span>
     <span class="el-image-viewer__btn el-image-viewer__prev"
           @click="handlePrev()"
           v-if="isRrrow">
-      <i class="el-icon-arrow-left"></i>
+      <el-icon>
+        <arrowLeft />
+      </el-icon>
     </span>
     <span class="el-image-viewer__btn el-image-viewer__next"
           @click="handleNext()"
           v-if="isRrrow">
-      <i class="el-icon-arrow-right"></i>
+      <el-icon>
+        <arrowRight />
+      </el-icon>
     </span>
-    <div :class="b('box')"
+    <!-- <div :class="b('box')"
          ref="box">
       <el-carousel ref="carousel"
                    :show-indicators="false"
@@ -31,7 +37,7 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <img v-if="$typeList.img.test(item.url) || $typeList.video.test(item.url)"
+          <img v-if="isMedia(item)"
                :src="item.url"
                :style="[styleName,styleBoxName]"
                ref="item"
@@ -43,7 +49,9 @@
                :class="b('file')">
             <a :href="item.url"
                target="_blank">
-              <i class="el-icon-document"></i>
+              <el-icon>
+                <el-icon-document />
+              </el-icon>
               <p>{{item.name}}</p>
             </a>
           </div>
@@ -52,19 +60,20 @@
     </div>
     <div class="el-image-viewer__btn el-image-viewer__actions">
       <div class="el-image-viewer__actions__inner">
-        <i class="el-icon-zoom-out"
-           @click="subScale"></i>
-        <i class="el-icon-zoom-in"
-           @click="addScale"></i>
-        <!-- <i class="el-image-viewer__actions__divider"></i> -->
-        <!-- <i class="el-icon-full-screen"></i> -->
-        <!-- <i class="el-image-viewer__actions__divider"></i> -->
-        <i class="el-icon-refresh-left"
-           @click="rotate=rotate-90"></i>
-        <i class="el-icon-refresh-right"
-           @click="rotate=rotate+90"></i>
+        <el-icon @click="subScale">
+          <zoomOut />
+        </el-icon>
+        <el-icon @click="addScale">
+          <zoomIn />
+        </el-icon>
+        <el-icon @click="rotate=rotate-90">
+          <refreshLeft />
+        </el-icon>
+        <el-icon @click="rotate=rotate+90">
+          <refreshRight />
+        </el-icon>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -73,17 +82,18 @@ import { typeList } from 'global/variable'
 import create from "core/create";
 export default create({
   name: "image-preview",
+  props: {
+    datas: Array,
+    index: [Number, String],
+    ops: Object,
+    onClose: Function
+  },
   data () {
     return {
-      ops: {},
       left: 0,
       top: 0,
       scale: 1,
-      datas: [],
-      rotate: 0,
-      isShow: false,
-      index: 0,
-      onClose: null,
+      rotate: 0
     };
   },
   computed: {
@@ -130,6 +140,9 @@ export default create({
         ele.pause && ele.pause()
       })
     },
+    isMedia (item) {
+      return typeList.img.test(item.url) || typeList.video.test(item.url)
+    },
     getIsVideo (item) {
       if (typeList.video.test(item.url) || item.type == 'video') {
         return 'video'
@@ -170,7 +183,6 @@ export default create({
       };
     },
     close () {
-      this.isShow = false
       if (typeof this.ops.beforeClose == "function") {
         this.ops.beforeClose(this.datas, this.index);
       }

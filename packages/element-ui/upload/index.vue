@@ -20,7 +20,9 @@
                :disabled="disabled"
                :file-list="fileList">
       <template v-if="listType=='picture-card'">
-        <i class="el-icon-plus"></i>
+        <el-icon>
+          <el-icon-plus />
+        </el-icon>
       </template>
       <template v-else-if="listType=='picture-img'">
         <slot v-if="$slots.default"
@@ -31,25 +33,30 @@
                      v-bind="allParams"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
-          <i v-else
-             class="el-icon-plus"
-             :class="b('icon')"></i>
+          <el-icon :class="b('icon')"
+                   v-else>
+            <el-icon-plus />
+          </el-icon>
           <div class="el-upload-list__item-actions"
                :class="b('menu')"
                v-if="menu"
                @mouseover="menu=true"
                @mouseout="menu=false"
                @click.stop="()=>{return false}">
-            <i class="el-icon-zoom-in"
-               @click.stop="handlePreview({url:imgUrl})"></i>
-            <i class="el-icon-delete"
-               v-if="!disabled"
-               @click.stop="handleDelete(imgUrl)"></i>
+            <el-icon @click.stop="handlePreview({url:imgUrl})">
+              <el-icon-zoom-in />
+            </el-icon>
+            <el-icon v-if="!disabled"
+                     @click.stop="handleDelete(imgUrl)">
+              <el-icon-delete />
+            </el-icon>
           </div>
         </template>
       </template>
       <template v-else-if="drag">
-        <i class="el-icon-upload"></i>
+        <el-icon>
+          <el-icon-upload />
+        </el-icon>
         <div class="el-upload__text">
           {{t('upload.tip')}}
           <em>{{t('upload.upload')}}</em>

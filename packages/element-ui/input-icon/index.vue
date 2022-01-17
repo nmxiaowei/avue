@@ -11,18 +11,11 @@
               @click="handleClick"
               @focus="handleShow">
       <template #append>
-        <span @click="handleShow">
-          <svg v-if="isSvg(text)"
-               class="avue-crud__icon--small"
-               aria-hidden="true">
-            <use :xlink:href="text"></use>
-          </svg>
-          <i v-else
-             class="avue-crud__icon--small"
-             :class="text"></i>
-        </span>
+        <el-icon @click="handleShow"
+                 size="20">
+          <component :is="text" />
+        </el-icon>
       </template>
-
     </el-input>
     <el-dialog custom-class="avue-dialog avue-dialog--none"
                :title="placeholder"
@@ -32,17 +25,14 @@
       <avue-tabs :option="option"
                  @change="handleTabs"></avue-tabs>
       <div :class="b('list')">
-        <div :class="b('item',{'active':text===item})"
+        <div :class="b('item')"
              v-for="(item,index) in list"
              @click="handleSubmit(item.value)"
              :key="index">
-          <svg v-if="isSvg(item.value)"
-               :class="b('icon-symbol')"
-               aria-hidden="true">
-            <use :xlink:href="item.value"></use>
-          </svg>
-          <i v-else
-             :class="[b('icon'),item.value]"></i>
+          <el-icon :size="getActive(item,'size')"
+                   :color="getActive(item,'color')">
+            <component :is="item.value" />
+          </el-icon>
           <p>{{item.label || item.value}}</p>
         </div>　
       </div>
@@ -97,8 +87,13 @@ export default create({
     this.tabs = this.iconList[0] || {};
   },
   methods: {
-    isSvg (text = '') {
-      return text.includes('#')
+    getActive (item, type) {
+      let flag = item.value == this.text;
+      if (type == 'size') {
+        return flag ? 32 : 26
+      } else if (type == 'color') {
+        return flag ? '#409EFF' : '#333'
+      }
     },
     handleTabs (tabs) {
       this.tabs = tabs;

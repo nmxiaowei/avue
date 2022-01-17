@@ -110,17 +110,6 @@ export default create({
     isGroup () {
       return !this.validatenull(this.crud.tableOption.group);
     },
-    propOption () {
-      let column = this.crud.propOption;
-      let groupList = this.crud.tableOption.group;
-      let group = [];
-      if (groupList) {
-        groupList.forEach(ele => {
-          ele.column.forEach(column => group.push(column));
-        });
-      }
-      return [...column, ...group]
-    },
     isSearchIcon () {
       return this.validData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
     },
@@ -181,7 +170,7 @@ export default create({
         if (result.group) {
           delete result.group;
         }
-        result.column = detailColumn(this.deepClone(this.propOption))
+        result.column = detailColumn(this.deepClone(this.crud.propOption))
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,

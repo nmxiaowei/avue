@@ -44,9 +44,6 @@ import Login from 'packages/element-ui/login';
 import Arrays from 'packages/element-ui/array';
 import textEllipsis from 'packages/element-ui/text-ellipsis';
 import packages from 'core/packages';
-if (!window.ElementPlus) {
-  packages.logs('element-ui');
-}
 export default [
   Arrays,
   Article,
