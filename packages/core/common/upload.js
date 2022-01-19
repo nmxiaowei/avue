@@ -90,15 +90,11 @@ export default function () {
       homeUrl () {
         return this.propsHttp.home || ''
       },
-      allParams () {
+      getIsVideo () {
         if (typeList.video.test(this.imgUrl)) {
-          return Object.assign({
-            is: 'video'
-          }, this.params)
+          return 'video'
         }
-        return Object.assign({
-          is: 'img'
-        }, this.params)
+        return 'img'
       },
       fileName () {
         return this.propsHttp.fileName || 'file'

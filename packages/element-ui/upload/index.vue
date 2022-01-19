@@ -30,7 +30,7 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     v-bind="allParams"
+                     :is="getIsVideo"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <el-icon :class="b('icon')"

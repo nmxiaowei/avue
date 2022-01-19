@@ -169,10 +169,11 @@ export default create({
       return typeList.img.test(item.url) || typeList.video.test(item.url)
     },
     getIsVideo (item) {
-      if (typeList.video.test(item.url) || item.type == 'video') {
+      if (typeList.video.test(item.url)) {
         return 'video'
+      } else if (typeList.img.test(item.url)) {
+        return 'img'
       }
-      return 'img'
     },
     subScale () {
       if (this.scale != 0.2) {

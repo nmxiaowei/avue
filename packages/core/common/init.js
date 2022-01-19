@@ -87,7 +87,6 @@ export default function () {
     methods: {
       init (type) {
         this.tableOption = this.option;
-
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },

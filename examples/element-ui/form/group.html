@@ -180,7 +180,6 @@
                   },
                   cascaderItem: ['city', 'area'],
                   dicUrl: `${baseUrl}/getProvince`,
-                  dicData: 'province',
                   rules: [
                     {
                       required: true,
@@ -267,6 +266,10 @@
               ]
             }
           ]
+          , footer: [{
+            label: '尾部表单',
+            prop: 'footer'
+          }]
         }
       }
     },

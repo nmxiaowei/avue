@@ -1,14 +1,14 @@
 <template>
   <div :class="[b(),{'avue--detail':isDetail}]"
-       :style="{width:setPx(parentOption.formWidth,'100%')}">
+       :style="{width:setPx(tableOption.formWidth,'100%')}">
     <el-form ref="form"
-             :status-icon="parentOption.statusIcon"
+             :status-icon="tableOption.statusIcon"
              @submit.prevent
              :model="form"
              :label-suffix="labelSuffix"
              :size="$AVUE.formSize || controlSize"
-             :label-position="parentOption.labelPosition"
-             :label-width="setPx(parentOption.labelWidth,labelWidth)">
+             :label-position="tableOption.labelPosition"
+             :label-width="setPx(tableOption.labelWidth,labelWidth)">
       <el-row :span="24"
               :class="{'avue-form__tabs':isTabs}">
         <avue-group v-for="(item,index) in columnOption"
@@ -69,7 +69,7 @@
                               :label="column.label"
                               :rules="column.rules"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
-                              :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
+                              :label-position="column.labelPosition || item.labelPosition || tableOption.labelPosition"
                               :label-width="getLabelWidth(column,item)">
                   <template #label
                             v-if="getSlotName(column,'L',$slots)">
@@ -90,7 +90,8 @@
                         <div v-html="column.labelTip"></div>
                       </template>
                       <el-icon>
-                        <el-icon-info />
+
+                        <el-icon-info-filled />
                       </el-icon>
                     </el-tooltip>
                     <span> {{column.label}}{{labelSuffix}}</span>
@@ -126,13 +127,13 @@
                                  v-else
                                  :ref="column.prop"
                                  :dic="DIC[column.prop]"
-                                 :props="parentOption.props"
-                                 :propsHttp="parentOption.propsHttp"
+                                 :props="tableOption.props"
+                                 :propsHttp="tableOption.propsHttp"
                                  v-bind="$uploadFun(column)"
                                  :readonly="column.readonly || readonly"
                                  :disabled="getDisabled(column)"
-                                 :enter="parentOption.enter"
-                                 :size="parentOption.size"
+                                 :enter="tableOption.enter"
+                                 :size="tableOption.size"
                                  v-model="form[column.prop]"
                                  @enter="submit"
                                  :column-slot="columnSlot"
@@ -157,20 +158,41 @@
                    :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
-            <form-menu v-if="!isMenu">
-              <template #menuForm="scope">
-                <slot name="menuForm"
-                      v-bind="scope"></slot>
-              </template>
-            </form-menu>
           </div>
         </avue-group>
-        <form-menu v-if="isMenu">
-          <template #menuForm="scope">
-            <slot name="menuForm"
-                  v-bind="scope"></slot>
-          </template>
-        </form-menu>
+        <el-col :span="menuSpan"
+                :md="menuSpan"
+                :sm="12"
+                :xs="24"
+                :class="[b('menu',[menuPosition]),'no-print']"
+                v-if="isMenu">
+          <el-button type="primary"
+                     @click="handleMock"
+                     :size="controlSize"
+                     icon="el-icon-edit"
+                     :loading="allDisabled"
+                     v-if="isMock">{{validData(tableOption.mockText,t("form.mockBtn"))}}</el-button>
+          <el-button type="primary"
+                     @click="handlePrint"
+                     :size="controlSize"
+                     icon="el-icon-printer"
+                     :loading="allDisabled"
+                     v-if="isPrint">{{validData(tableOption.printText,t("form.printBtn"))}}</el-button>
+          <el-button type="primary"
+                     @click="submit"
+                     :size="controlSize"
+                     :icon="tableOption.submitIcon || 'el-icon-check'"
+                     :loading="allDisabled"
+                     v-if="validData(tableOption.submitBtn,true)">{{validData(tableOption.submitText,t("form.submitBtn"))}}</el-button>
+          <el-button :icon="tableOption.emptyIcon || 'el-icon-delete'"
+                     :size="controlSize"
+                     :loading="allDisabled"
+                     v-if="validData(tableOption.emptyBtn,true)"
+                     @click="resetForm">{{validData(tableOption.emptyText,t("form.emptyBtn"))}}</el-button>
+          <slot name="menuForm"
+                :disabled="allDisabled"
+                :size="controlSize"></slot>
+        </el-col>
       </el-row>
     </el-form>
   </div>
@@ -180,20 +202,19 @@
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
+import locale from "core/locale";
 import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
 import { filterDefaultParams, clearVal, getAsVal, setAsVal, arraySort } from 'utils/util'
 import mock from "utils/mock";
-import formMenu from './menu'
 export default create({
   name: "form",
-  mixins: [init()],
+  mixins: [init(), locale],
   emits: ['update:modelValue', 'update:status', 'reset-change', 'mock-change', 'tab-click', 'submit', 'error'],
   components: {
     formTemp,
-    formMenu
   },
   data () {
     return {
@@ -207,7 +228,6 @@ export default create({
       bindList: {},
       form: {},
       formList: [],
-      formCreated: false,
       formDefault: {},
     };
   },
@@ -223,18 +243,12 @@ export default create({
       },
       immediate: true
     },
-    form: {
-      handler (val) {
-        if (this.formCreated) this.setVal()
-      },
-      deep: true
-    },
     modelValue: {
       handler (val) {
         this.setForm(val);
-        this.formCreated = true;
       },
-      deep: true
+      deep: true,
+      immediate: true
     },
     allDisabled: {
       handler (val) {
@@ -249,10 +263,10 @@ export default create({
       return Object.keys(this.$slots).filter(item => !this.propOption.map(ele => ele.prop).includes(item))
     },
     labelSuffix () {
-      return this.parentOption.labelSuffix || ':'
+      return this.tableOption.labelSuffix || ':'
     },
     isMenu () {
-      return this.columnOption.length != 1
+      return this.validData(this.tableOption.menuBtn, true)
     },
     isDetail () {
       return this.detail == true
@@ -261,7 +275,7 @@ export default create({
       return this.boxType === "add"
     },
     isTabs () {
-      return this.parentOption.tabs;
+      return this.tableOption.tabs;
     },
     isEdit () {
       return this.boxType === "edit"
@@ -270,19 +284,19 @@ export default create({
       return this.boxType === "view"
     },
     gutter () {
-      return this.setPx((this.parentOption.gutter || 10) / 2)
+      return this.setPx((this.tableOption.gutter || 10) / 2)
     },
     detail () {
-      return this.parentOption.detail
+      return this.tableOption.detail
     },
     disabled () {
-      return this.parentOption.disabled
+      return this.tableOption.disabled
     },
     readonly () {
-      return this.parentOption.readonly
+      return this.tableOption.readonly
     },
     tabsType () {
-      return this.parentOption.tabsType;
+      return this.tableOption.tabsType;
     },
     columnLen () {
       return this.columnOption.length
@@ -310,26 +324,23 @@ export default create({
       });
       return list;
     },
-    parentOption () {
-      let option = this.deepClone(this.tableOption);
-      let group = option.group;
-      if (!group) {
-        option = Object.assign(option, {
-          group: [this.deepClone(option)]
-        });
-      }
-      if (group) {
-        //处理分组以外的部分
+    columnOption () {
+      let column = this.tableOption.column || []
+      let group = this.tableOption.group || [];
+      let footer = this.tableOption.footer || [];
+      if (column.length !== 0) {
         group.unshift({
-          arrow: false,
-          column: option.column
+          header: false,
+          column: column
         })
       }
-      return option;
-    },
-    columnOption () {
-      let list = [...this.parentOption.group] || [];
-      list.forEach((ele, index) => {
+      if (footer.length !== 0) {
+        group.push({
+          header: false,
+          column: footer
+        })
+      }
+      group.forEach((ele, index) => {
         ele.column = ele.column || [];
         // 循环列的全部属性
         ele.column.forEach((column, cindex) => {
@@ -343,26 +354,29 @@ export default create({
         //根据order排序
         ele.column = arraySort(ele.column, 'order', (a, b) => a.order - b.order)
       });
-      return list;
+      return group;
     },
     menuPosition: function () {
-      if (this.parentOption.menuPosition) {
-        return this.parentOption.menuPosition;
+      if (this.tableOption.menuPosition) {
+        return this.tableOption.menuPosition;
       } else {
         return "center";
       }
     },
     boxType: function () {
-      return this.parentOption.boxType;
+      return this.tableOption.boxType;
     },
     isPrint () {
-      return this.validData(this.parentOption.printBtn, false)
+      return this.validData(this.tableOption.printBtn, false)
     },
     tabsActive () {
       return this.validData(this.tableOption.tabsActive + '', '1')
     },
     isMock () {
-      return this.validData(this.parentOption.mockBtn, false);
+      return this.validData(this.tableOption.mockBtn, false);
+    },
+    menuSpan () {
+      return this.tableOption.menuSpan || 24;
     }
   },
   props: {
@@ -388,12 +402,6 @@ export default create({
       }
     }
   },
-  created () {
-    this.$nextTick(() => {
-      this.formDefault = formInitVal(this.propOption).tableForm;
-      this.setForm(Object.assign(this.formDefault, this.modelValue));
-    })
-  },
   methods: {
     getComponent,
     getPlaceholder,
@@ -401,7 +409,7 @@ export default create({
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
     getSpan (column) {
-      return column.span || this.parentOption.span || this.itemSpanDefault
+      return column.span || this.tableOption.span || this.itemSpanDefault
     },
     isGroupShow (item, index) {
       if (this.isTabs) {
@@ -433,7 +441,7 @@ export default create({
       } else if (!this.validatenull(item.labelWidth)) {
         result = item.labelWidth
       } else {
-        result = this.parentOption.labelWidth;
+        result = this.tableOption.labelWidth;
       }
       return this.setPx(result, this.labelWidth);
     },
@@ -450,6 +458,7 @@ export default create({
     setVal () {
       this.setControl();
       this.$emit('update:modelValue', this.form);
+      this.$emit('change', this.form);
     },
     setControl () {
       this.controlOption.forEach(ele => {
@@ -533,7 +542,10 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      if (column.cascader) this.handleChange(option, column)
+      this.setVal()
+      if (column.cascader) {
+        this.handleChange(option, column)
+      }
     },
     handleMock () {
       if (!this.isMock) return
@@ -664,7 +676,7 @@ export default create({
     submit () {
       this.validate((valid, msg) => {
         if (valid) {
-          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          this.$emit("submit", filterDefaultParams(this.form, this.tableOption.translate), this.hide);
         } else {
           this.$emit("error", msg);
         }

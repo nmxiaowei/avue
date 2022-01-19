@@ -49,5 +49,4 @@ export const use = function (l) {
 export const i18n = function (fn) {
   i18nHandler = fn || i18nHandler;
 };
-
 export default { use, t, i18n, locale };
