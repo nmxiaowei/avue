@@ -17,13 +17,12 @@
              :disabled="disabled">
     <div v-if="filter"
          style="padding:0 10px;margin:5px 0 0 0;">
-      <el-input size="mini"
-                :placeholder="filterText"
+      <el-input :placeholder="filterText"
                 v-model="filterValue"></el-input>
     </div>
-    <el-option :value="text">
+    <el-option :value="text"
+               :class="b('item')">
       <el-tree :data="dicList"
-               class="tree-option"
                style="padding:10px 0;"
                :lazy="lazy"
                :load="handleTreeLoad"
@@ -280,7 +279,7 @@ export default create({
             this.node.push(ele);
           })
         } else {
-          let node = this.$refs.tree.getNode(this.vaildData(this.text, ''))
+          let node = this.$refs.tree.getNode(this.valiData(this.text, ''))
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])
