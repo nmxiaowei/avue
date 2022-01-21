@@ -1,4 +1,7 @@
 .avue-date {
+  .el-date-editor.el-input, .el-date-editor.el-input__inner{
+    width: 100%;
+  }
   &__group {
     display: flex;
     align-items: center;

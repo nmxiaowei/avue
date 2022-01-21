@@ -6,7 +6,6 @@
                    :disabled="defaultPage.disabled"
                    :hide-on-single-page="validData(crud.tableOption.simplePage,config.simplePage)"
                    :pager-count="defaultPage.pagerCount"
-                   v-model="defaultPage.currentPage"
                    :background="validData(defaultPage.background,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"
@@ -109,6 +108,7 @@ export default create({
     },
     // 页码回调
     currentChange (val) {
+      this.defaultPage.currentPage = val;
       this.updateValue();
       this.crud.$emit("on-load", this.defaultPage);
       this.crud.$emit("current-change", val);

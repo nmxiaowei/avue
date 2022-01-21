@@ -2,12 +2,12 @@ export default {
   methods: {
     getSlotName (item = {}, type = 'D', slot) {
       let result = {
-        F: 'Form',
-        H: 'Header',
-        E: 'Error',
-        L: 'Label',
-        S: 'Search',
-        T: 'Type',
+        F: '-form',
+        H: '-header',
+        E: '-error',
+        L: '-label',
+        S: '-search',
+        T: '-type',
         D: ''
       }
       let name = (item.prop + result[type]).toLowerCase()

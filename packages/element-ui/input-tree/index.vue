@@ -20,7 +20,7 @@
       <el-input :placeholder="filterText"
                 v-model="filterValue"></el-input>
     </div>
-    <el-option :value="text"
+    <el-option :value="text || ' '"
                :class="b('item')">
       <el-tree :data="dicList"
                style="padding:10px 0;"
@@ -279,7 +279,7 @@ export default create({
             this.node.push(ele);
           })
         } else {
-          let node = this.$refs.tree.getNode(this.valiData(this.text, ''))
+          let node = this.$refs.tree.getNode(this.validData(this.text, ''))
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])

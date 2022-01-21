@@ -11,9 +11,10 @@
           <a :href="item.href?item.href:'javascript:void(0);'"
              @click="item.click?item.click(item):''"
              :target="item.target">
-            <div class="item-icon"
-                 :style="{color:color}">
-              <i :class="item.icon"></i>
+            <div class="item-icon">
+              <el-icon :color="item.color">
+                <component :is="item.icon"></component>
+              </el-icon>
             </div>
             <div class="item-info">
               <span>{{item.title}}</span>

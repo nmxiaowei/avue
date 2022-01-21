@@ -221,8 +221,9 @@ $space-width: 15px;
     &__menu{
       padding-right: 20px;
       i{
+        margin-top: 4px;
         color: #909399;
-        font-size: 15px;
+        font-size: 13px;
         &:hover{
           color:#409EFF;
         }

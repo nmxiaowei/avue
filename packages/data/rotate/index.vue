@@ -14,8 +14,10 @@
                            :animation="item.animation || animation"
                            :end="item.count"></avue-count-up>
             <span class="item-title">{{item.title}}</span>
-            <i class="item-icon"
-               :class="item.icon"></i>
+            <el-icon :color="item.color"
+                     class="item-icon">
+              <component :is="item.icon"></component>
+            </el-icon>
           </div>
           <a :href="item.href?item.href:'javascript:void(0);'"
              @click="item.click?item.click(item):''">

@@ -1,5 +1,4 @@
 <template>
-  <el-table-column width="1px"></el-table-column>
   <!-- 折叠面板  -->
   <el-table-column type="expand"
                    :width="crud.tableOption.expandWidth || config.expandWidth"

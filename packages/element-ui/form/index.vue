@@ -90,7 +90,6 @@
                         <div v-html="column.labelTip"></div>
                       </template>
                       <el-icon>
-
                         <el-icon-info-filled />
                       </el-icon>
                     </el-tooltip>
@@ -129,7 +128,6 @@
                                  :dic="DIC[column.prop]"
                                  :props="tableOption.props"
                                  :propsHttp="tableOption.propsHttp"
-                                 v-bind="$uploadFun(column)"
                                  :readonly="column.readonly || readonly"
                                  :disabled="getDisabled(column)"
                                  :enter="tableOption.enter"
@@ -158,41 +156,20 @@
                    :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
+            <form-menu v-if="!isMenu">
+              <template #menu-form="scope">
+                <slot name="menu-form"
+                      v-bind="scope"></slot>
+              </template>
+            </form-menu>
           </div>
         </avue-group>
-        <el-col :span="menuSpan"
-                :md="menuSpan"
-                :sm="12"
-                :xs="24"
-                :class="[b('menu',[menuPosition]),'no-print']"
-                v-if="isMenu">
-          <el-button type="primary"
-                     @click="handleMock"
-                     :size="controlSize"
-                     icon="el-icon-edit"
-                     :loading="allDisabled"
-                     v-if="isMock">{{validData(tableOption.mockText,t("form.mockBtn"))}}</el-button>
-          <el-button type="primary"
-                     @click="handlePrint"
-                     :size="controlSize"
-                     icon="el-icon-printer"
-                     :loading="allDisabled"
-                     v-if="isPrint">{{validData(tableOption.printText,t("form.printBtn"))}}</el-button>
-          <el-button type="primary"
-                     @click="submit"
-                     :size="controlSize"
-                     :icon="tableOption.submitIcon || 'el-icon-check'"
-                     :loading="allDisabled"
-                     v-if="validData(tableOption.submitBtn,true)">{{validData(tableOption.submitText,t("form.submitBtn"))}}</el-button>
-          <el-button :icon="tableOption.emptyIcon || 'el-icon-delete'"
-                     :size="controlSize"
-                     :loading="allDisabled"
-                     v-if="validData(tableOption.emptyBtn,true)"
-                     @click="resetForm">{{validData(tableOption.emptyText,t("form.emptyBtn"))}}</el-button>
-          <slot name="menuForm"
-                :disabled="allDisabled"
-                :size="controlSize"></slot>
-        </el-col>
+        <form-menu v-if="isMenu">
+          <template #menu-form="scope">
+            <slot name="menu-form"
+                  v-bind="scope"></slot>
+          </template>
+        </form-menu>
       </el-row>
     </el-form>
   </div>
@@ -202,8 +179,8 @@
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
-import locale from "core/locale";
 import formTemp from 'common/components/form/index'
+import formMenu from './menu'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
@@ -211,10 +188,11 @@ import { filterDefaultParams, clearVal, getAsVal, setAsVal, arraySort } from 'ut
 import mock from "utils/mock";
 export default create({
   name: "form",
-  mixins: [init(), locale],
+  mixins: [init()],
   emits: ['update:modelValue', 'update:status', 'reset-change', 'mock-change', 'tab-click', 'submit', 'error'],
   components: {
     formTemp,
+    formMenu
   },
   data () {
     return {
@@ -266,7 +244,7 @@ export default create({
       return this.tableOption.labelSuffix || ':'
     },
     isMenu () {
-      return this.validData(this.tableOption.menuBtn, true)
+      return this.columnOption.length != 1
     },
     isDetail () {
       return this.detail == true

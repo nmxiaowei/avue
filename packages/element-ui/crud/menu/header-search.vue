@@ -12,8 +12,8 @@
                  @submit="searchChange"
                  @reset-change="resetChange"
                  v-model="searchForm">
-        <template #menuForm="scope">
-          <slot name="searchMenu"
+        <template #menu-form="scope">
+          <slot name="search-menu"
                 v-bind="Object.assign(scope,{
                   search:searchForm,
                   row:searchForm
@@ -46,7 +46,7 @@ import locale from "core/locale";
 import { validData } from "utils/util";
 import { validatenull } from "utils/validate";
 import slot from 'core/slot'
-import { formInitVal, getSearchType, getType } from "core/dataformat";
+import { getSearchType, getType } from "core/dataformat";
 import config from "../config";
 export default create({
   name: "crud__search",
@@ -57,9 +57,6 @@ export default create({
       show: false,
       flag: false,
       reload: false,
-      defaultForm: {
-        searchForm: {}
-      },
       searchShow: true,
       searchForm: {}
     };
@@ -75,7 +72,7 @@ export default create({
   watch: {
     propOption: {
       handler () {
-        this.dataFormat();
+        this.searchShow = validData(this.crud.tableOption.searchShow, config.searchShow);
       },
       immediate: true
     },
@@ -201,7 +198,7 @@ export default create({
       return result;
     },
     searchFlag () {
-      return !!this.crud.$slots.search || !validatenull(this.searchForm);
+      return !!this.crud.$slots.search || this.columnLen !== 0
     }
   },
   methods: {
@@ -209,7 +206,7 @@ export default create({
       ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
     },
     getSlotName (item) {
-      return item.replace('search', '')
+      return item.replace('-search', '')
     },
     // 搜索回调
     searchChange (form, done) {
@@ -217,7 +214,7 @@ export default create({
     },
     // 搜索清空
     resetChange () {
-      this.crud.$emit("search-reset", this.defaultForm.tableForm);
+      this.crud.$emit("search-reset", this.searchForm);
     },
     // 搜索清空
     searchReset () {
@@ -225,11 +222,6 @@ export default create({
     },
     handleSearchShow () {
       this.searchShow = !this.searchShow;
-    },
-    dataFormat () {
-      this.defaultForm = formInitVal(this.option.column);
-      this.searchForm = this.deepClone(this.defaultForm.tableForm);
-      this.searchShow = validData(this.crud.tableOption.searchShow, config.searchShow);
     }
   }
 });

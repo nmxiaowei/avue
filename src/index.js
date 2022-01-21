@@ -82,23 +82,6 @@ const install = function (Vue, opts = {}) {
   // 初始化指令
   Vue.directive('dialogdrag', dialogDrag);
   Vue.config.globalProperties.$axios = opts.axios || axios;
-  Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
-    safe = safe || this;
-    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
-    let result = {};
-    if (column.type === 'upload') {
-      list.forEach(ele => {
-        if (!column[ele]) {
-          result[ele] = safe[ele];
-        }
-      });
-    } else {
-      list.forEach(ele => {
-        result[ele] = safe[ele];
-      });
-    }
-    return result;
-  };
 };
 export default {
   version,

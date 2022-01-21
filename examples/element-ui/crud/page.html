@@ -67,26 +67,23 @@
         this.$message.error(val[0].message)
       },
       sizeChange(val) {
-
         this.$message.success('行数' + val)
       },
       currentChange(val) {
-
         this.$message.success('页码' + val)
       },
-      onLoad(page) {
-        this.$message.success('分页信息:' + JSON.stringify(page))
+      onLoad() {
         setTimeout(() => {
           this.page.total = 40
           //模拟分页
-          if (page.currentPage === 1) {
+          if (this.page.currentPage === 1) {
             this.data = [
               {
                 name: '张三',
                 sex: '男'
               }
             ]
-          } else if (page.currentPage == 2) {
+          } else if (this.page.currentPage == 2) {
             this.data = [
               {
                 name: '李四',
@@ -94,7 +91,7 @@
               }
             ]
           }
-        }, 2000)
+        }, 0)
       }
     }
   })

@@ -21,7 +21,7 @@
           {{crud.menuIcon('addBtn')}}
         </template>
       </el-button>
-      <slot name="menuLeft"
+      <slot name="menu-left"
             :size="crud.isMediumSize"></slot>
     </div>
     <div :class="b('right')">
@@ -34,7 +34,7 @@
                  style="display:inline-block;margin-right:20px;"
                  v-if="validData(crud.tableOption.dateBtn,config.dateBtn)"
                  :size="crud.isMediumSize"></avue-date>
-      <slot name="menuRight"
+      <slot name="menu-right"
             :size="crud.isMediumSize"></slot>
       <el-button :icon="crud.getBtnIcon('excelBtn')"
                  circle

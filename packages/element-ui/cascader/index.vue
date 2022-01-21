@@ -1,7 +1,7 @@
 <template>
-  <el-cascader :class="b()"
+  <el-cascader :options="dic"
+               :class="b()"
                @click="handleClick"
-               :options="dic"
                v-model="text"
                :placeholder="placeholder"
                :props="allProps"

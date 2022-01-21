@@ -12,7 +12,9 @@
              :target="item.target">
             <div class="item-icon"
                  :style="{backgroundColor:item.color}">
-              <i :class="item.icon"></i>
+              <el-icon :color="item.color">
+                <component :is="item.icon"></component>
+              </el-icon>
             </div>
             <div class="item-info">
               <avue-count-up :animation="item.animation || animation"

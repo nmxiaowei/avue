@@ -48,7 +48,6 @@
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled || crud.btnDisabledList[scope.row.$index]"
                        :clearable="validData(column.clearable,false)"
-                       v-bind="$uploadFun(column,crud)"
                        v-model="scope.row[column.prop]"
                        @change="columnChange(index,scope.row,column)">
             </form-temp>

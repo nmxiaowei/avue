@@ -10,8 +10,8 @@
         <slot name="search"
               v-bind="scope"></slot>
       </template>
-      <template #searchMenu="scope">
-        <slot name="searchMenu"
+      <template #search-menu="scope">
+        <slot name="search-menu"
               v-bind="scope"></slot>
       </template>
       <template v-for="item in searchSlot"
@@ -24,12 +24,12 @@
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="validData(tableOption.header,true)">
-        <template #menuLeft="scope">
-          <slot name="menuLeft"
+        <template #menu-left="scope">
+          <slot name="menu-left"
                 v-bind="scope"></slot>
         </template>
-        <template #menuRight="scope">
-          <slot name="menuRight"
+        <template #menu-right="scope">
+          <slot name="menu-right"
                 v-bind="scope"></slot>
         </template>
       </header-menu>
@@ -156,8 +156,8 @@
         <slot v-bind="scope"
               :name="item"></slot>
       </template>
-      <template #menuForm>
-        <slot name="menuForm"
+      <template #menu-form>
+        <slot name="menu-form"
               v-bind="scope"></slot>
       </template>
     </dialog-form>
@@ -295,17 +295,17 @@ export default create({
       }
     },
     formSlot () {
-      return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$slots, this.propOption)
+      return this.getSlotList(['-error', '-label', '-type', '-form'], this.$slots, this.propOption)
     },
     searchSlot () {
-      return this.getSlotList(['Search'], this.$slots, this.propOption)
+      return this.getSlotList(['-search'], this.$slots, this.propOption)
     },
     mainSlot () {
       let result = [];
       this.propOption.forEach(item => {
         if (this.$slots[item.prop]) result.push(item.prop)
       })
-      return this.getSlotList(['Header', 'Form'], this.$slots, this.propOption).concat(result)
+      return this.getSlotList(['-header', '-form'], this.$slots, this.propOption).concat(result)
     },
     calcHeight () {
       return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight

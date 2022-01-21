@@ -25,8 +25,8 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :data="data" :option="option">
-      <template #menuLeft>
-        <el-button type="primary" size="small" @click="handleSwitch" icon="el-icon-sort">切 换</el-button>
+      <template #menu-left="{size}">
+        <el-button type="primary" :size="size" @click="handleSwitch" icon="el-icon-sort">切 换</el-button>
       </template>
     </avue-crud>
   </div>

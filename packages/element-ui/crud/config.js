@@ -19,9 +19,9 @@ export default {
   delBtnIcon: 'el-icon-delete',
   searchBtnIcon: 'el-icon-search',
   emptyBtnIcon: 'el-icon-delete',
-  saveBtnIcon: 'el-icon-circle-plus-outline',
+  saveBtnIcon: 'el-icon-circle-plus',
   updateBtnIcon: 'el-icon-circle-check',
-  columnBtnIcon: 'el-icon-s-operation',
+  columnBtnIcon: 'el-icon-operation',
   filterBtnIcon: 'el-icon-tickets',
   refreshBtnIcon: 'el-icon-refresh',
   // 显隐

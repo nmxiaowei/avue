@@ -22,7 +22,7 @@
         <div :class="b('dialog__menu')">
           <el-icon class='el-dialog__close'
                    @click="handleFullScreen">
-            <component :is="fullscreen?'el-icon-news':'el-icon-full-screen'" />
+            <component :is="fullscreen?'el-icon-copy-document':'el-icon-full-screen'" />
           </el-icon>
         </div>
       </div>
@@ -36,7 +36,6 @@
                @reset-change="hide"
                @tab-click="handleTabClick"
                @error="handleError"
-               v-bind="$uploadFun({},crud)"
                :option="formOption">
       <!-- 循环form表单卡槽 -->
       <template v-for="item in crud.formSlot"
@@ -58,7 +57,7 @@
                  :disabled="disabled"
                  :size="crud.controlSize || 'el-icon-delete'"
                  :icon="formOption.emptyIcon">{{formOption.emptyText}}</el-button>
-      <slot name="menuForm"
+      <slot name="menu-form"
             :disabled="disabled"
             :size="crud.controlSize"
             :type="boxType"></slot>
@@ -190,7 +189,7 @@ export default create({
       this.$nextTick(() => this.initFun())
     },
     getSlotName (item) {
-      return item.replace('form', '')
+      return item.replace('-form', '')
     },
     handleChange () {
       this.crud.$emit('update:modelValue', this.crud.tableForm)

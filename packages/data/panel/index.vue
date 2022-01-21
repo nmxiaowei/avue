@@ -10,8 +10,9 @@
            @click="item.click?item.click(item):''">
           <div class="item">
             <div class="item-icon">
-              <i :class="item.icon"
-                 :style="{color:item.color}"></i>
+              <el-icon :color="item.color">
+                <component :is="item.icon"></component>
+              </el-icon>
             </div>
             <div class="item-info">
               <div class="item-title">{{item.title}}</div>

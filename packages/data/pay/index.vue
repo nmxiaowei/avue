@@ -51,9 +51,8 @@
                             placement="top">
                   <template #content>
                     <div v-html="citem.tip"></div>
-                    <span :class="{'list-item--link':citem.href}">{{citem.title}}</span>
                   </template>
-
+                  <span :class="{'list-item--link':citem.href}">{{citem.title}}</span>
                 </el-tooltip>
 
               </a>

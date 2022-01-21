@@ -25,22 +25,22 @@
 <body>
   <div id="app">
     <avue-crud :data="data" :option="option" ref="crud" @row-save="handleSave" @row-update="handleUpdate">
-      <template #menuLeft="scope">
-        <el-button type="danger" icon="el-icon-plus" size="small" plain @click.stop="handleAdd()">新增</el-button>
+      <template #menu-left="{size}">
+        <el-button type="danger" icon="el-icon-plus" :size="size" plain @click.stop="handleAdd()">新增</el-button>
       </template>
-      <template #menuForm="{disabled,type}">
+      <template #menu-form="{disabled,type,size}">
         <div>
-          <el-button type="primary" icon="el-icon-check" :loading="disabled" size="small" plain v-if="type=='add'"
+          <el-button type="primary" icon="el-icon-check" :loading="disabled" :size="size" plain v-if="type=='add'"
             @click="$refs.crud.rowSave()">自定义新增</el-button>
-          <el-button type="primary" icon="el-icon-check" :loading="disabled" size="small" plain v-if="type=='edit'"
+          <el-button type="primary" icon="el-icon-check" :loading="disabled" :size="size" plain v-if="type=='edit'"
             @click="$refs.crud.rowUpdate()">自定义修改</el-button>
-          <el-button icon="el-icon-delete" :loading="disabled" size="small" plain @click="$refs.crud.closeDialog()">取消
+          <el-button icon="el-icon-delete" :loading="disabled" :size="size" plain @click="$refs.crud.closeDialog()">取消
           </el-button>
         </div>
       </template>
       <template #menu="scope">
-        <el-button type="primary" icon="el-icon-check" size="small" plain
-          @click.stop="handleEdit(scope.row,scope.index)">编辑</el-button>
+        <el-button type="primary" icon="el-icon-check" plain @click.stop="handleEdit(scope.row,scope.index)">编辑
+        </el-button>
       </template>
     </avue-crud>
   </div>
