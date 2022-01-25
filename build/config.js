@@ -18,7 +18,7 @@ const externals = {
     commonjs: 'vue',
     amd: 'vue'
   },
-  'element-plus': 'ElementPlus',
+  'element-plus': 'element-plus',
   'axios': 'axios',
 };
 const resolve = p => {
