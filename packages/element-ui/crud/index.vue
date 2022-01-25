@@ -156,7 +156,7 @@
         <slot v-bind="scope"
               :name="item"></slot>
       </template>
-      <template #menu-form>
+      <template #menu-form="scope">
         <slot name="menu-form"
               v-bind="scope"></slot>
       </template>
