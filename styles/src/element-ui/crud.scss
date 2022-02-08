@@ -140,10 +140,9 @@ $space-width: 15px;
   }
   &__pagination {
     position: relative;
-    padding: 25px 0 20px 20px;
-    text-align: right;
+    padding:20px 0;
     .el-pagination {
-      display: inline-block;
+      justify-content: flex-end;
     }
   }
   &__form {
