@@ -1,5 +1,6 @@
 <template>
   <div :class="b()"
+       :element-loading-text="loadText"
        v-loading.lock="loading">
     <el-upload :class="b({'list':listType=='picture-img','upload':disabled})"
                @click.native="handleClick"
