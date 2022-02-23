@@ -162,13 +162,8 @@ export default create({
         return
       }
       const el = this.$refs.main.$el.querySelectorAll('.el-select__tags > span')[0]
-      this.sortable = window.Sortable.create(el, {
-        ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
-        setData: function (dataTransfer) {
-          dataTransfer.setData('Text', '')
-          // to avoid Firefox bug
-          // Detail see : https://github.com/RubaXa/Sortable/issues/1012
-        },
+      window.Sortable.create(el, {
+        animation: 100,
         onEnd: evt => {
           const targetRow = this.value.splice(evt.oldIndex, 1)[0]
           this.value.splice(evt.newIndex, 0, targetRow)

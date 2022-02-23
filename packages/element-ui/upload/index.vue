@@ -2,7 +2,8 @@
   <div :class="b()"
        :element-loading-text="loadText"
        v-loading.lock="loading">
-    <el-upload :class="b({'list':listType=='picture-img','upload':disabled})"
+    <el-upload :key="reload"
+               :class="b({'list':listType=='picture-img','upload':disabled})"
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
@@ -12,7 +13,6 @@
                :on-preview="handlePreview"
                :limit="limit"
                :http-request="httpUpload"
-               :drag="drag"
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
@@ -83,6 +83,7 @@ export default create({
   data () {
     return {
       menu: false,
+      reload: 0
     };
   }
 });

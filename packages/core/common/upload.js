@@ -135,7 +135,28 @@ export default function () {
         return list;
       }
     },
+    mounted () {
+      if (this.drag) {
+        this.setSort()
+      }
+    },
     methods: {
+      setSort () {
+        if (!window.Sortable) {
+          packages.logs('Sortable');
+          return
+        }
+        const el = this.$el.querySelectorAll('.avue-upload > ul')[0]
+        window.Sortable.create(el, {
+          animation: 100,
+          onEnd: evt => {
+            const targetRow = this.text.splice(evt.oldIndex, 1)[0];
+            this.text.splice(evt.newIndex, 0, targetRow)
+            this.reload = this.reload + 1;
+            this.$nextTick(() => this.setSort())
+          }
+        })
+      },
       handleSuccess (file) {
         if (this.isPictureImg) {
           this.text.splice(0, 1, file[this.urlKey])
