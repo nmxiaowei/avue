@@ -306,7 +306,11 @@ export default create({
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
-        option.column.forEach(column => list.push(column));
+        if (option.display !== false) {
+          option.column.forEach(column => {
+            list.push(column)
+          });
+        }
       });
       return list;
     },
