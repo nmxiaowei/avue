@@ -1,50 +1,48 @@
 <template>
-  <el-collapse-transition>
-    <el-card :shadow="crud.isCard"
-             :class="b()"
-             v-show="searchShow && searchFlag">
-      <slot name="search"
-            :row="searchForm"
-            :search="searchForm"
-            :size="crud.controlSize"></slot>
-      <avue-form :option="option"
-                 ref="form"
-                 @submit="searchChange"
-                 @change="handleChange"
-                 @reset-change="resetChange"
-                 v-if="searchFlag"
-                 v-model="searchForm">
-        <template slot="menuForm"
-                  slot-scope="scope">
-          <slot name="searchMenu"
-                v-bind="Object.assign(scope,{
+  <el-card :shadow="crud.isCard"
+           :class="b()"
+           v-show="searchShow && searchFlag">
+    <slot name="search"
+          :row="searchForm"
+          :search="searchForm"
+          :size="crud.controlSize"></slot>
+    <avue-form :option="option"
+               ref="form"
+               @submit="searchChange"
+               @change="handleChange"
+               @reset-change="resetChange"
+               v-if="searchFlag"
+               v-model="searchForm">
+      <template slot="menuForm"
+                slot-scope="scope">
+        <slot name="searchMenu"
+              v-bind="Object.assign(scope,{
                   search:searchForm,
                   row:searchForm
                 })"></slot>
-          <template v-if="isSearchIcon">
-            <el-button type="text"
-                       v-if="show===false"
-                       @click="show=true"
-                       icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
-            <el-button type="text"
-                       v-if="show===true"
-                       @click="show=false"
-                       icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
-          </template>
+        <template v-if="isSearchIcon">
+          <el-button type="text"
+                     v-if="show===false"
+                     @click="show=true"
+                     icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
+          <el-button type="text"
+                     v-if="show===true"
+                     @click="show=false"
+                     icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
+        </template>
 
-        </template>
-        <template slot-scope="scope"
-                  v-for="item in crud.searchSlot"
-                  :slot="getSlotName(item)">
-          <slot :name="item"
-                v-bind="Object.assign(scope,{
+      </template>
+      <template slot-scope="scope"
+                v-for="item in crud.searchSlot"
+                :slot="getSlotName(item)">
+        <slot :name="item"
+              v-bind="Object.assign(scope,{
                   search:searchForm,
                   row:searchForm
                 })"></slot>
-        </template>
-      </avue-form>
-    </el-card>
-  </el-collapse-transition>
+      </template>
+    </avue-form>
+  </el-card>
 </template>
 
 <script>
@@ -97,13 +95,14 @@ export default cteate({
       immediate: true,
       deep: true
     },
+    show: {
+      handler () {
+        this.crud.getTableHeight()
+      }
+    },
     searchShow: {
       handler () {
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.crud.getTableHeight()
-          }, 300)
-        })
+        this.crud.getTableHeight()
       }
     }
   },
@@ -132,7 +131,7 @@ export default cteate({
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;
-        //根据order排序
+        list = list.sort((a, b) => b.searchOrder || 0 - a.searchOrder || 0)
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex
@@ -151,6 +150,7 @@ export default cteate({
               detail: false,
               dicFlag: ele.cascaderItem ? true : this.vaildData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || config.searchSpan,
+              control: ele.searchControl,
               gutter: ele.searchGutter || option.searchGutter || config.searchGutter,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
