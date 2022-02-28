@@ -69,7 +69,6 @@ export default create({
     handleCheckChange (value = []) {
       if (!this.all) return
       let checkedCount = value.length;
-      if (checkedCount === 0) return
       let dicLen = this.dic.length;
       this.checkAll = checkedCount === dicLen;
       this.isIndeterminate = checkedCount > 0 && checkedCount < dicLen

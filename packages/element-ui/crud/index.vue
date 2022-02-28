@@ -52,7 +52,7 @@
                :show-message="false"
                @validate="handleValidate"
                ref="cellForm">
-        <el-table v-if="reload"
+        <el-table :key="reload"
                   :data="cellForm.list"
                   :row-key="handleGetRowKeys"
                   :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
@@ -211,7 +211,7 @@ export default create({
   },
   data () {
     return {
-      reload: true,
+      reload: 0,
       config: config,
       list: [],
       listError: {},
@@ -476,10 +476,8 @@ export default create({
       this.$refs.table.doLayout()
     },
     refreshTable (callback) {
-      this.reload = false;
+      this.reload = this.reload + 1;
       this.$nextTick(() => {
-        this.reload = true;
-        //是否开启表格排序
         // setTimeout(() => this.$refs.columnDefault.setSort())
         callback && callback()
       })

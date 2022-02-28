@@ -248,18 +248,15 @@ export default {
     getImgList (row, column) {
       let url = (column.propsHttp || {}).home || ''
       let value = (column.props || {}).value || DIC_PROPS.value;
-      if (this.validatenull(row[column.prop])) return []
-      if (column.listType == 'picture-img') return [url + row[column.prop]]
-      let list = this.corArray(this.deepClone(row[column.prop]), column.separator);
+      let result = this.handleDetail(row, column);
+      if (this.validatenull(result)) return []
+      if (column.listType == 'picture-img') return [url + result]
+      let list = this.corArray(this.deepClone(result), column.separator);
       list.forEach((ele, index) => {
-        if (typeof ele === 'object') {
-          list[index] = url + ele[value];
-        } else {
-          list[index] = url + ele;
-        }
+        list[index] = url + (typeof ele === 'object' ? ele[value] : ele);
       })
       return list;
-    },
+    }
   }
 }
 </script>

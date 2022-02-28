@@ -184,7 +184,7 @@ import formMenu from './menu'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams, clearVal, getAsVal, setAsVal, arraySort } from 'utils/util'
+import { filterDefaultParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 export default create({
   name: "form",
@@ -298,7 +298,9 @@ export default create({
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
-        option.column.forEach(column => list.push(column));
+        if (option.display !== false) {
+          option.column.forEach(column => list.push(column));
+        }
       });
       return list;
     },
@@ -330,7 +332,7 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = arraySort(ele.column, 'order', (a, b) => a.order - b.order)
+        ele.column = ele.column.sort((a, b) => b.order || 0 - a.order || 0)
       });
       return group;
     },

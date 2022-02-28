@@ -125,7 +125,7 @@ export default create({
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;
-        //根据order排序
+        list = list.sort((a, b) => b.searchOrder || 0 - a.searchOrder || 0)
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex
@@ -144,6 +144,7 @@ export default create({
               detail: false,
               dicFlag: ele.cascaderItem ? true : this.validData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || config.searchSpan,
+              control: ele.searchControl,
               gutter: ele.searchGutter || option.searchGutter || config.searchGutter,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
