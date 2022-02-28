@@ -1,7 +1,7 @@
 <template>
   <div :class="b()"
        v-loading.lock="loading">
-    <el-upload :key="reload "
+    <el-upload :key="reload"
                :class="b({'list':listType=='picture-img','upload':disabled})"
                @click="handleClick"
                :action="action"
@@ -12,7 +12,7 @@
                :on-preview="handlePreview"
                :limit="limit"
                :http-request="httpUpload"
-               :drag="drag"
+               :drag="isDrag"
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
@@ -94,6 +94,7 @@ function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
 export default create({
+  name: 'upload',
   mixins: [props(), event(), locale],
   data () {
     return {
@@ -165,6 +166,12 @@ export default create({
 
   },
   computed: {
+    isDrag () {
+      if (['picture-card', 'picture-img'].includes(this.listType)) {
+        return false
+      }
+      return this.drag
+    },
     isMultiple () {
       return this.isArray || this.isString || this.stringMode
     },
@@ -428,3 +435,4 @@ export default create({
     }
   }
 })
+</script>
