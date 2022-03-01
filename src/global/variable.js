@@ -38,3 +38,8 @@ export const ARRAY_VALUE_LIST = ARRAY_LIST.concat(['upload', 'dynamic', 'map', '
 export const SELECT_LIST = DATE_LIST.concat(['select', 'checkbox', 'radio', 'cascader', 'tree', 'color', 'icon', 'table', 'map']);
 export const DIC_SHOW_SPLIT = ' | ';
 export const DIC_SPLIT = ',';
+export const typeList = {
+  img: /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/,
+  video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
+};
+

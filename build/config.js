@@ -19,8 +19,13 @@ const externals = {
     commonjs: 'vue',
     amd: 'vue'
   },
-  'axios': 'axios',
-  'element-ui': 'ELEMENT'
+  'element-ui': {
+    root: 'ELEMENT',
+    commonjs2: 'element-ui',
+    commonjs: 'element-ui',
+    amd: 'element-ui'
+  },
+  'axios': 'axios'
 };
 const resolve = p => {
   const base = p.split('/')[0];

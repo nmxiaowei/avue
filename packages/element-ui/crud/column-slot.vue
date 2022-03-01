@@ -82,11 +82,11 @@
       <template v-else>
         <span v-if="['img','upload'].includes(column.type)">
           <div class="avue-crud__img">
-            <img v-for="(item,index) in getImgList(row,column)"
-                 :src="item"
-                 v-bind="allParams(item)"
-                 :key="index"
-                 @click.stop="openImg(getImgList(row,column),index)" />
+            <component v-for="(item,index) in getImgList(row,column)"
+                       :src="item"
+                       :is="getIsVideo(item)"
+                       :key="index"
+                       @click.stop="openImg(getImgList(row,column),index)"></component>
           </div>
         </span>
         <span v-else-if="'url' ===column.type">
@@ -118,7 +118,7 @@
 <script>
 let count = {}
 import { detail } from "core/detail";
-import { DIC_PROPS, DIC_SPLIT } from 'global/variable'
+import { DIC_PROPS, DIC_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
 import formTemp from '../../core/components/form/index'
 export default {
@@ -144,10 +144,8 @@ export default {
     });
   },
   methods: {
-    allParams (item) {
-      return {
-        is: this.$typeList.video.test(item) ? 'video' : 'img'
-      }
+    getIsVideo (item) {
+      return typeList.video.test(item) ? 'video' : 'img'
     },
     vaildLabel (column, row, val) {
       if (column.rules && row.$cellEdit) {

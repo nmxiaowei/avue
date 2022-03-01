@@ -11,4 +11,4 @@ import DataRotate from 'packages/data/Rotate';
 import DataPay from 'packages/data/pay';
 import DataPrice from 'packages/data/price';
 import DataPanel from 'packages/data/panel';
-export default { DataTabs, DataCardText, DataBox, DataProgress, DataIcons, DataCard, DataDisplay, DataImgText, DataOperaText, DataRotate, DataPay, DataPrice, DataPanel };
+export default [DataTabs, DataCardText, DataBox, DataProgress, DataIcons, DataCard, DataDisplay, DataImgText, DataOperaText, DataRotate, DataPay, DataPrice, DataPanel];

@@ -151,7 +151,7 @@
                    :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
-            <form-menu v-if="!isMenu">
+            <form-menu v-if="!isDetail&&!isMenu">
               <template slot-scope="scope"
                         slot="menuForm">
                 <slot name="menuForm"
@@ -160,7 +160,7 @@
             </form-menu>
           </div>
         </avue-group>
-        <form-menu v-if="isMenu">
+        <form-menu v-if="!isDetail&&isMenu">
           <template slot-scope="scope"
                     slot="menuForm">
             <slot name="menuForm"

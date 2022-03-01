@@ -9,8 +9,6 @@ module.exports = {
   locale: resolve('src/locale'),
   global: resolve('src/global'),
   plugin: resolve('src/plugin'),
-  components: resolve('packages/' + uiname),
-  ui: resolve('src/ui/' + uiname),
   utils: resolve('src/utils'),
   mixins: resolve('packages/mixins'),
   packages: resolve('packages')
