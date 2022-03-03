@@ -41,7 +41,7 @@ const list = {
     github: 'https://github.com/eligrey/FileSaver.js'
   },
   'xlsx': {
-    url: 'https://avuejs.com/cdn/xlsx.full.min.js',
+    url: 'https://cdn.staticfile.org/xlsx/0.18.2/xlsx.full.min.js',
     title: '需引入excel操作包',
     github: 'https://github.com/protobi/js-xlsx'
   },
