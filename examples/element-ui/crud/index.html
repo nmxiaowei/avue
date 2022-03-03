@@ -159,7 +159,7 @@
                 value: 'code'
               },
               cell: true,
-              cascaderItem: ['city', 'area'],
+              cascader: ['city'],
               dicUrl: `${baseUrl}/getProvince`,
               // dicMethod: 'post',
               // dicQuery: {
@@ -179,6 +179,7 @@
               prop: 'city',
               type: 'select',
               cell: true,
+              cascader: ['area'],
               props: {
                 label: 'name',
                 value: 'code'

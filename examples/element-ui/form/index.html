@@ -173,7 +173,7 @@
               label: 'name',
               value: 'code'
             },
-            cascaderItem: ['city', 'area'],
+            cascader: ['city'],
             dicUrl: `${baseUrl}/getProvince`,
             rules: [
               {
@@ -192,8 +192,7 @@
               value: 'code'
             },
             row: true,
-            defaultIndex: 1,
-            dicFlag: false,
+            cascader: ['area'],
             dicUrl: `${baseUrl}/getCity/{{key}}`,
             rules: [
               {
@@ -211,8 +210,6 @@
               label: 'name',
               value: 'code'
             },
-            defaultIndex: 1,
-            dicFlag: false,
             dicUrl: `${baseUrl}/getArea/{{key}}`,
             rules: [
               {

@@ -148,7 +148,7 @@ export default cteate({
             ele = Object.assign(ele, obj, {
               type: getSearchType(ele),
               detail: false,
-              dicFlag: ele.cascaderItem ? true : this.vaildData(ele.dicFlag, false),
+              dicFlag: ele.cascader ? true : this.vaildData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || config.searchSpan,
               control: ele.searchControl,
               gutter: ele.searchGutter || option.searchGutter || config.searchGutter,

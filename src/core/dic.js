@@ -84,7 +84,7 @@ function createdDic (option) {
     let dicUrl = ele.dicUrl;
     let prop = ele.prop;
     let parentProp = ele.parentProp;
-    flagdic = flagdic.concat(ele.cascaderItem || []);
+    flagdic = flagdic.concat(ele.cascader || []);
     if (Array.isArray(dicData)) {
       locationdic[prop] = dicData;
     }
