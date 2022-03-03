@@ -4,7 +4,7 @@
              :destroy-on-close="crud.tableOption.dialogDestroy"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
-             v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
+             v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="['avue-dialog',b('dialog'),{'avue-dialog--fullscreen':fullscreen}]"
              :custom-class="crud.tableOption.dialogCustomClass"
              :modal-append-to-body="false"
@@ -130,9 +130,9 @@ export default create({
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
     },
-    isSize(){
+    isSize () {
       let drawerSize = this.size ? this.size : this.width;
-      return this.isDrawer ? {'size':drawerSize} : {};
+      return this.isDrawer ? { 'size': drawerSize } : {};
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);

@@ -229,7 +229,7 @@ export default create({
       tableIndex: -1,
       tableSelect: [],
       formIndexList: [],
-      sumsList: [],
+      sumsList: {},
       cascaderDicList: {},
       formCascaderList: {},
       btnDisabledList: {},
@@ -832,19 +832,16 @@ export default create({
     },
     //合集统计逻辑
     tableSummaryMethod (param) {
+      let sumsList = {}
       //如果自己写逻辑则调用summaryMethod方法
       if (typeof this.summaryMethod === "function")
         return this.summaryMethod(param);
       const { columns, data } = param;
-      const sums = [];
+      let sums = [];
       if (columns.length > 0) {
         columns.forEach((column, index) => {
-          let currItem = this.sumColumnList.find(
-            item => item.name === column.property
-          );
-          if (index === 0) {
-            sums[index] = ''
-          } else if (currItem) {
+          let currItem = this.sumColumnList.find(item => item.name === column.property);
+          if (currItem) {
             let decimals = currItem.decimals || 2;
             let label = currItem.label || '';
             switch (currItem.type) {
@@ -877,12 +874,13 @@ export default create({
                 sums[index] = label + sums[index].toFixed(decimals);
                 break;
             }
+            sumsList[column.property] = sums[index]
           } else {
-            sums[index] = "-";
+            sums[index] = "";
           }
         });
       }
-      this.sumsList = sums;
+      this.sumsList = sumsList;
       return sums;
     },
     tableDrop (el, callback) {
