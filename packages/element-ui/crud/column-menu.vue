@@ -2,6 +2,7 @@
   <!-- 操作栏 -->
   <el-table-column :class="b('btn')"
                    prop="menu"
+                   key="menu"
                    :fixed="vaildData(crud.tableOption.menuFixed,config.menuFixed)"
                    v-if="vaildData(crud.tableOption.menu,config.menu)&&crud.getPermission('menu')"
                    :label="crud.tableOption.menuTitle || t('crud.menu')"

@@ -20,11 +20,12 @@
                          width="100"
                          header-align="center"
                          prop="label"
+                         key="label"
                          :label="t('crud.column.name')">
         </el-table-column>
         <template v-for="(item,index) in crud.defaultColumn">
           <el-table-column :prop="item.prop"
-                           :key="index"
+                           :key="item.prop"
                            align="center"
                            header-align="center"
                            v-if="item.hide!=true"

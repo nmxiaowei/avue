@@ -1,6 +1,7 @@
 
 <template>
   <el-table-column :prop="columnOption.prop"
+                   :key="columnOption.prop"
                    :label="columnOption.label"
                    filter-placement="bottom-end"
                    v-if="getColumnProp(columnOption,'hide')"

@@ -3,6 +3,7 @@
     <el-table-column width="1px"></el-table-column>
     <!-- 折叠面板  -->
     <el-table-column type="expand"
+                     key="expand"
                      :width="crud.tableOption.expandWidth || config.expandWidth"
                      :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
                      align="center"
@@ -18,6 +19,7 @@
     <el-table-column v-if="crud.tableOption.selection"
                      :fixed="vaildData(crud.tableOption.selectionFixed,config.selectionFixed)"
                      type="selection"
+                     key="selection"
                      :selectable="crud.tableOption.selectable"
                      :reserve-selection="vaildData(crud.tableOption.reserveSelection)"
                      :width="crud.tableOption.selectionWidth || config.selectionWidth"
@@ -27,6 +29,7 @@
                      :fixed="vaildData(crud.tableOption.indexFixed,config.indexFixed)"
                      :label="crud.tableOption.indexLabel || config.indexLabel"
                      type="index"
+                     key="index"
                      :width="crud.tableOption.indexWidth || config.indexWidth"
                      :index="indexMethod"
                      align="center"></el-table-column>

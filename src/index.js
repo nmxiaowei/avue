@@ -41,6 +41,9 @@ let prototypes = {
   randomId
 
 };
+let directive = {
+  dialogDrag
+}
 const install = function (Vue, opts = {}) {
   if (!Element) {
     packages.logs('element-ui');
@@ -88,9 +91,9 @@ const install = function (Vue, opts = {}) {
   Object.keys(prototypes).forEach((key) => {
     Vue.prototype[key] = prototypes[key];
   });
-  // 初始化指令
-  Vue.directive('dialogdrag', dialogDrag);
-  // 国际化
+  Object.keys(directive).forEach((key) => {
+    Vue.directive(key, directive[key]);
+  });
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
   Vue.prototype.$axios = opts.axios || axios;
