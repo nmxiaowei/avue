@@ -156,18 +156,16 @@ body {
 
 .avue-dialog {
   overflow: visible;
-  top:15%;
   .el-dialog{
     min-height: 180px;
     display: flex;
     flex-direction: column;
-    margin:0 !important;
     position:absolute;
     top:0;
     left:50%;
     transform:translate(-50%,0);
     border-radius: 2px;
-    max-height:calc(100% - 100px);
+    max-height:calc(100% - 200px);
     max-width:calc(100% - 100px);
   }
   .el-dialog__header{

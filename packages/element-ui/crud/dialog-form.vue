@@ -9,7 +9,7 @@
              :custom-class="crud.tableOption.dialogCustomClass"
              :modal-append-to-body="false"
              append-to-body
-             :style="styleName"
+             :top="dialogTop"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
              :close-on-click-modal="vaildData(crud.tableOption.dialogClickModal,false)"
@@ -99,13 +99,6 @@ export default create({
     }
   },
   computed: {
-    styleName () {
-      if (!this.isDrawer && !this.fullscreen) {
-        return { top: this.dialogTop }
-      } else {
-        return { top: 0 }
-      }
-    },
     isView () {
       return this.boxType === 'view'
     },
@@ -125,7 +118,12 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.setPx(this.crud.tableOption.dialogTop, config.dialogTop)
+      if (!this.isDrawer && !this.fullscreen) {
+        return this.crud.tableOption.dialogTop
+      } else {
+        return 0
+      }
+      return
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
