@@ -14,7 +14,7 @@
                :limit="limit"
                :http-request="httpUpload"
                :readonly="readonly"
-               :drag="isDrag"
+               :drag="dragFile"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
                :on-change="handleFileChange"
@@ -50,7 +50,7 @@
           </div>
         </template>
       </template>
-      <template v-else-if="drag">
+      <template v-else-if="dragFile">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
           {{t('upload.tip')}}
@@ -138,6 +138,10 @@ export default create({
     fileSize: {
       type: Number
     },
+    dragFile: {
+      type: Boolean,
+      default: false
+    },
     drag: {
       type: Boolean,
       default: false
@@ -159,12 +163,6 @@ export default create({
     httpRequest: Function
   },
   computed: {
-    isDrag () {
-      if (['picture-card', 'picture-img'].includes(this.listType)) {
-        return false
-      }
-      return this.drag
-    },
     isMultiple () {
       return this.isArray || this.isString || this.stringMode
     },
