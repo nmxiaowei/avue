@@ -63,11 +63,11 @@ export default create({
     },
     setSort () {
       this.rowDrop()
-      // this.columnDrop()
+      this.columnDrop()
     },
     rowDrop () {
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
-      this.crud.tableDrop(el, evt => {
+      this.crud.tableDrop('row', el, evt => {
         const oldIndex = evt.oldIndex;
         const newIndex = evt.newIndex;
         const targetRow = this.crud.list.splice(oldIndex, 1)[0]
@@ -79,7 +79,7 @@ export default create({
       let el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
       let headerLen = el.children.length
       headerLen = headerLen - this.crud.columnOption.length - 2;
-      this.crud.tableDrop(el, evt => {
+      this.crud.tableDrop('column', el, evt => {
         const oldIndex = evt.oldIndex - headerLen;
         const newIndex = evt.newIndex - headerLen;
         this.crud.headerSort(oldIndex, newIndex)

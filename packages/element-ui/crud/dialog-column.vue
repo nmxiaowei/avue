@@ -71,7 +71,7 @@ export default create({
   methods: {
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]
-      this.crud.tableDrop(el, evt => {
+      this.crud.tableDrop('column', el, evt => {
         const oldIndex = evt.oldIndex;
         const newIndex = evt.newIndex;
         this.crud.headerSort(oldIndex, newIndex)

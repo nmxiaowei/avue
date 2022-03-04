@@ -279,6 +279,12 @@ export default create({
     isSortable () {
       return this.tableOption.sortable;
     },
+    isRowSort () {
+      return this.tableOption.rowSort;
+    },
+    isColumnSort () {
+      return this.tableOption.columnSort;
+    },
     treeProps () {
       return this.tableOption.treeProps || {}
     },
@@ -883,20 +889,25 @@ export default create({
       this.sumsList = sumsList;
       return sums;
     },
-    tableDrop (el, callback) {
-      if (this.isSortable) {
-        if (!window.Sortable) {
-          packages.logs("Sortable")
+    tableDrop (type, el, callback) {
+      if (this.isSortable !== true) {
+        if (type == 'row' && !this.isRowSort) {
+          return
+        } else if (type == 'column' && !this.isColumnSort) {
           return
         }
-        window.Sortable.create(el, {
-          ghostClass: config.ghostClass,
-          chosenClass: config.ghostClass,
-          animation: 500,
-          delay: 0,
-          onEnd: evt => callback(evt)
-        })
       }
+      if (!window.Sortable) {
+        packages.logs("Sortable")
+        return
+      }
+      window.Sortable.create(el, {
+        ghostClass: config.ghostClass,
+        chosenClass: config.ghostClass,
+        animation: 500,
+        delay: 0,
+        onEnd: evt => callback(evt)
+      })
     }
   }
 });
