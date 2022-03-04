@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "baseUrl": "./",
+    "paths": {
+      "/*": ["/*"],
+      "src/*": ["src/*"],
+      "core/*": ["src/core/*"],
+      "locale/*": ["src/locale/*"],
+      "global/*": ["src/global/*"],
+      "plugin/*": ["src/plugin/*"],
+      "components/*": ["packages/element-ui/*"],
+      "ui/*": ["src/ui/' + uinam/*"],
+      "utils/*": ["src/utils/*"],
+      "mixins/*": ["packages/mixins/*"],
+      "packages/*": ["packag/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
