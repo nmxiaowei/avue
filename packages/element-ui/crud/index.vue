@@ -221,6 +221,9 @@ export default create({
   data () {
     return {
       reload: 0,
+      cellForm: {
+        list: []
+      },
       config: config,
       list: [],
       listError: {},
@@ -290,25 +293,6 @@ export default create({
     },
     isAutoHeight () {
       return this.tableOption.height === "auto"
-    },
-    cellForm () {
-      let list = this.list
-      list = list.filter(ele => {
-        let result = [];
-        for (var o in this.objectOption) {
-          if (!this.validatenull(this.objectOption[o].screenValue)) {
-            let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
-            result.push(value.indexOf(this.objectOption[o].screenValue) !== -1);
-          }
-        }
-        if (this.validatenull(result)) {
-          return true;
-        }
-        return eval(result.join('&&'));
-      })
-      return {
-        list
-      }
     },
     formSlot () {
       return this.getSlotList(['Error', 'Label', 'Type', 'Form'], this.$scopedSlots, this.propOption)
@@ -391,6 +375,12 @@ export default create({
         this.tableForm = this.value;
       },
       immediate: true,
+      deep: true
+    },
+    list: {
+      handler () {
+        this.setCellForm()
+      },
       deep: true
     },
     data: {
@@ -712,6 +702,23 @@ export default create({
       setTimeout(() => {
         this.formIndexList.push(index);
       }, 1000);
+    },
+    setCellForm () {
+      let list = this.list
+      list = list.filter(ele => {
+        let result = [];
+        for (var o in this.objectOption) {
+          if (!this.validatenull(this.objectOption[o].screenValue)) {
+            let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
+            result.push(value.indexOf(this.objectOption[o].screenValue) !== -1);
+          }
+        }
+        if (this.validatenull(result)) {
+          return true;
+        }
+        return eval(result.join('&&'));
+      })
+      this.cellForm.list = list;
     },
     // 对部分表单字段进行校验
     validateCellForm (cb) {
