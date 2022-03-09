@@ -20,16 +20,7 @@
       <slot :name="crud.getSlotName(column,'H')"
             v-if="crud.getSlotName(column,'H',crud.$scopedSlots)"
             v-bind="{column,$index}"></slot>
-      <el-popover placement="bottom"
-                  v-else
-                  :disabled="(crud.objectOption[column.prop] || {}).screen!==true"
-                  trigger="hover">
-        <el-input type="text"
-                  :placeholder="`请输入 ${column.label} 筛选关键字`"
-                  v-model="(crud.objectOption[column.prop] || {}).screenValue"
-                  size="mini"></el-input>
-        <span slot="reference">{{column.label}}</span>
-      </el-popover>
+      <span v-else>{{column.label}}</span>
     </template>
     <template slot-scope="{row,$index}">
       <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"

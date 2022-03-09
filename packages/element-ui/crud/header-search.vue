@@ -131,7 +131,7 @@ export default cteate({
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;
-        list = list.sort((a, b) => b.searchOrder || 0 - a.searchOrder || 0)
+        list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex

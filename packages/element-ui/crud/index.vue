@@ -237,8 +237,7 @@ export default create({
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      default: {},
-      defaultBind: {},
+      default: {}
 
     };
   },
@@ -247,38 +246,9 @@ export default create({
     this.dataInit();
   },
   mounted () {
-    this.refreshTable(() => {
-      //动态计算表格高度
-      this.getTableHeight();
-    })
+    this.getTableHeight();
   },
   computed: {
-    defaultColumn () {
-      return [{
-        label: this.t('crud.column.hide'),
-        prop: 'hide'
-      }, {
-        label: this.t('crud.column.fixed'),
-        prop: 'fixed'
-      }, {
-        label: this.t('crud.column.filters'),
-        prop: 'filters'
-      }, {
-        label: this.t('crud.column.screen'),
-        prop: 'screen'
-      }, {
-        label: this.t('crud.column.sortable'),
-        prop: 'sortable'
-      }, {
-        label: this.t('crud.column.index'),
-        prop: 'index',
-        hide: true
-      }, {
-        label: this.t('crud.column.width'),
-        prop: 'width',
-        hide: true
-      }]
-    },
     isSortable () {
       return this.tableOption.sortable;
     },
@@ -360,7 +330,8 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      return this.tableOption.column || [];
+      let column = this.tableOption.column || []
+      return column
     },
     sumColumnList () {
       return this.tableOption.sumColumnList || [];
@@ -477,6 +448,7 @@ export default create({
       } else {
         this.tableHeight = this.tableOption.height;
       }
+      this.refreshTable()
     },
     doLayout () {
       this.$refs.table.doLayout()
@@ -534,18 +506,6 @@ export default create({
     setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
     },
-    columnInit () {
-      this.propOption.forEach(column => {
-        if (this.defaultBind[column.prop] === true) return
-        this.defaultColumn.forEach(ele => {
-          if (!this.objectOption[column.prop][ele.prop] && ele.prop == 'index') this.$set(this.objectOption[column.prop], ele.prop, '')
-          if (['hide', 'filters', 'index'].includes(ele.prop)) {
-            this.$watch(`objectOption.${column.prop}.${ele.prop}`, () => this.refreshTable())
-          }
-        })
-        this.defaultBind[column.prop] = true;
-      })
-    },
     dataInit () {
       this.list = this.data;
       //初始化序列的参数
@@ -562,12 +522,10 @@ export default create({
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
-      let column = this.propOption;
+      let column = this.columnOption;
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
-      this.propOption.forEach((ele, index) => {
-        this.objectOption[ele.prop].index = index + 1;
-      })
+      this.refreshTable()
     },
     //展开或则关闭
     expandChange (row, expand) {

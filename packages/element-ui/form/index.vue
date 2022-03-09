@@ -199,9 +199,9 @@ export default create({
       optionBox: false,
       tableOption: {},
       itemSpanDefault: 12,
-      bindList: {},
       form: {},
       formList: [],
+      formBind: {},
       formCreate: false,
       formDefault: {},
       formVal: {}
@@ -345,7 +345,7 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = ele.column.sort((a, b) => b.order || 0 - a.order || 0)
+        ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });
       return list;
     },
@@ -478,13 +478,11 @@ export default create({
     //表单赋值
     setForm (value) {
       Object.keys(value).forEach(ele => {
-        let result = value[ele];
-        let column = this.propOption.find(column => column.prop == ele)
-        this.$set(this.form, ele, result);
-        if (!column) return
+        this.$set(this.form, ele, value[ele]);
+        let column = this.propOption.find(column => column.prop == ele) || {}
         let prop = column.prop
         let bind = column.bind
-        if (bind && !this.bindList[prop]) {
+        if (bind && !this.formBind[prop]) {
           this.$watch('form.' + prop, (n, o) => {
             if (n != o) setAsVal(this.form, bind, n);
           })
@@ -492,7 +490,7 @@ export default create({
             if (n != o) this.$set(this.form, prop, n);
           })
           this.$set(this.form, prop, eval('value.' + bind));
-          this.bindList[prop] = true;
+          this.formBind[prop] = true;
         }
       });
       this.forEachLabel();
