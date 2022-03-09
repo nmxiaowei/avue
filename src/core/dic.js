@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { validatenull } from 'utils/validate';
 import { getObjValue, detailDic } from 'utils/util';
 export const loadCascaderDic = (columnOption, list = []) => {
@@ -185,13 +184,13 @@ export const sendDic = (params) => {
       resolve(list);
     };
     if (method === 'post') {
-      axios.post(url, data).then(function (res) {
+      window.axios.post(url, data).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
       ]);
     } else {
-      axios.get(url, {
+      window.axios.get(url, {
         params: query
       }).then(function (res) {
         callback(res);

@@ -48,9 +48,6 @@ const install = function (Vue, opts = {}) {
   if (!Element) {
     packages.logs('element-ui');
     return
-  } else if (!axios) {
-    packages.logs('axios');
-    return
   }
   if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
   const defaultOption = {
@@ -96,7 +93,8 @@ const install = function (Vue, opts = {}) {
   });
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.prototype.$axios = opts.axios || axios;
+  Vue.prototype.$axios = opts.axios || window.axios || axios;
+  window.axios = Vue.prototype.$axios;
   Vue.prototype.$uploadFun = function (column = {}, safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];

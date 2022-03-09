@@ -83,7 +83,6 @@ import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
 import { typeList } from 'global/variable'
-import axios from 'axios';
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -336,7 +335,7 @@ export default create({
                 headers: this.headers
               });
             } else {
-              return axios.post(url, param, { headers });
+              return this.$axios.post(url, param, { headers });
             }
           })()
             .then(res => {
