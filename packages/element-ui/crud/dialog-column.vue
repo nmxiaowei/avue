@@ -105,7 +105,7 @@ export default create({
         const oldIndex = evt.oldIndex;
         const newIndex = evt.newIndex;
         this.crud.headerSort(oldIndex, newIndex)
-        this.$nextTick(() => this.rowDrop())
+        this.crud.refreshTable(() => this.rowDrop())
       })
     },
   }

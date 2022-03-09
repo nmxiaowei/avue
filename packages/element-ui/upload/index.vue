@@ -97,7 +97,7 @@ export default create({
       text: [],
       file: {},
       menu: false,
-      reload: 0
+      reload: Math.random()
     }
   },
   props: {
@@ -238,7 +238,7 @@ export default create({
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
           this.text.splice(evt.newIndex, 0, targetRow)
-          this.reload = this.reload + 1;
+          this.reload = Math.random();
           this.$nextTick(() => this.setSort())
         }
       })

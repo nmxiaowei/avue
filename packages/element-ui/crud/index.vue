@@ -220,7 +220,7 @@ export default create({
   },
   data () {
     return {
-      reload: 0,
+      reload: Math.random(),
       cellForm: {
         list: []
       },
@@ -241,11 +241,8 @@ export default create({
 
     };
   },
-  created () {
-    // 初始化数据
-    this.dataInit();
-  },
   mounted () {
+    this.dataInit();
     this.getTableHeight();
   },
   computed: {
@@ -350,7 +347,7 @@ export default create({
     },
     list: {
       handler () {
-        this.setCellForm()
+        this.cellForm.list = this.list;
       },
       deep: true
     },
@@ -454,7 +451,7 @@ export default create({
       this.$refs.table.doLayout()
     },
     refreshTable (callback) {
-      this.reload = this.reload + 1;
+      this.reload = Math.random()
       this.$nextTick(() => {
         this.$refs.columnDefault.setSort()
         callback && callback()
@@ -466,18 +463,6 @@ export default create({
         tree.children = data;
         resolve(data);
       })
-    },
-    // 格式化数据源
-    formatData () {
-      const data = this.data;
-      if (data.length === 0) {
-        return [];
-      }
-      addAttrs(this, data, {
-        expand: this.expandAll,
-        expandLevel: this.expandLevel
-      });
-      this.list = treeToArray(this, data);
     },
     menuIcon (value) {
       return this.vaildData(this.tableOption[value + 'Text'], this.t("crud." + value))
@@ -513,7 +498,7 @@ export default create({
         if (ele.$cellEdit && !this.formCascaderList[index]) {
           this.formCascaderList[index] = this.deepClone(ele);
         }
-        ele.$index = index;
+        this.$set(ele, '$index', index);
       });
     },
     //拖动表头事件
@@ -660,23 +645,6 @@ export default create({
       setTimeout(() => {
         this.formIndexList.push(index);
       }, 1000);
-    },
-    setCellForm () {
-      let list = this.list
-      list = list.filter(ele => {
-        let result = [];
-        for (var o in this.objectOption) {
-          if (!this.validatenull(this.objectOption[o].screenValue)) {
-            let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
-            result.push(value.indexOf(this.objectOption[o].screenValue) !== -1);
-          }
-        }
-        if (this.validatenull(result)) {
-          return true;
-        }
-        return eval(result.join('&&'));
-      })
-      this.cellForm.list = list;
     },
     // 对部分表单字段进行校验
     validateCellForm (cb) {

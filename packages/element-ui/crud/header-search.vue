@@ -65,7 +65,6 @@ export default cteate({
     return {
       show: false,
       flag: false,
-      reload: false,
       defaultForm: {
         searchForm: {}
       },
