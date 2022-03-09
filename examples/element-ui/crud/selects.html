@@ -43,11 +43,12 @@
             label: '省份',
             prop: 'province',
             type: 'select',
+            search: true,
             props: {
               label: 'name',
               value: 'code'
             },
-            cascaderItem: ['city', 'area'],
+            cascader: ['city'],
             dicUrl: `${baseUrl}/getProvince`,
             // dicMethod: 'post',
             // dicQuery: {
@@ -65,10 +66,12 @@
             label: '城市',
             prop: 'city',
             type: 'select',
+            search: true,
             props: {
               label: 'name',
               value: 'code'
             },
+            cascader: ['area'],
             dicUrl: `${baseUrl}/getCity/{{key}}`,
             rules: [
               {
@@ -81,6 +84,7 @@
           {
             label: '地区',
             prop: 'area',
+            search: true,
             props: {
               label: 'name',
               value: 'code'

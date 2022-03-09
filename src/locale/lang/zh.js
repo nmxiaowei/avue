@@ -39,7 +39,6 @@ export default {
       hide: '隐藏',
       fixed: '冻结',
       filters: '过滤',
-      screen: '筛选',
       sortable: '排序',
       index: '顺序',
       width: '宽度'

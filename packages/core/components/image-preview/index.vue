@@ -33,13 +33,13 @@
                           v-for="(item,indexs) in datas"
                           :key="indexs">
           <img :id="'avue-image-preview__'+indexs"
-               v-if="$typeList.img.test(item.url) || $typeList.video.test(item.url)"
+               v-if="isMedia(item)"
                :src="item.url"
                :style="[styleName,styleBoxName]"
                ref="item"
                @mousedown="move"
                controls="controls"
-               v-bind="getIsVideo(item)"
+               :is="getIsVideo(item)"
                ondragstart="return false"></img>
           <div :id="'avue-image-preview__'+indexs"
                v-else
@@ -73,6 +73,7 @@
 </template>
 <script>
 import create from "core/create";
+import { typeList } from 'global/variable'
 export default create({
   name: "image-preview",
   data () {
@@ -83,8 +84,7 @@ export default create({
       datas: [],
       rotate: 0,
       isShow: false,
-      index: 0,
-      onClose: null,
+      index: 0
     };
   },
   computed: {
@@ -132,11 +132,15 @@ export default create({
         ele.pause && ele.pause()
       })
     },
+    isMedia (item) {
+      return typeList.img.test(item.url) || typeList.video.test(item.url)
+    },
     getIsVideo (item) {
-      if (this.$typeList.video.test(item.url) || item.type == 'video') {
-        return { is: 'video' }
+      if (typeList.video.test(item.url)) {
+        return 'video'
+      } else if (typeList.img.test(item.url)) {
+        return 'img'
       }
-      return {}
     },
     subScale () {
       if (this.scale != 0.2) {
@@ -175,9 +179,8 @@ export default create({
       if (typeof this.ops.beforeClose == "function") {
         this.ops.beforeClose(this.datas, this.index);
       }
-      if (typeof this.onClose === "function") {
-        this.onClose(this);
-      }
+      this.$destroy();
+      this.$el.remove();
     }
   }
 });

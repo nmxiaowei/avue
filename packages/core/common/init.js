@@ -32,10 +32,9 @@ export default function () {
         deep: true
       },
       propOption: {
-        handler (val) {
+        handler (list) {
           this.objectOption = {};
-          val.forEach(ele => this.objectOption[ele.prop] = ele);
-          this.columnInit && this.columnInit();
+          list.forEach(ele => this.objectOption[ele.prop] = ele);
         },
         deep: true,
       },

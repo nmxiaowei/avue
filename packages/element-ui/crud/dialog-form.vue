@@ -4,12 +4,12 @@
              :destroy-on-close="crud.tableOption.dialogDestroy"
              :wrapperClosable="crud.tableOption.dialogClickModal"
              :direction="direction"
-             v-dialogdrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
+             v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="['avue-dialog',b('dialog'),{'avue-dialog--fullscreen':fullscreen}]"
              :custom-class="crud.tableOption.dialogCustomClass"
              :modal-append-to-body="false"
              append-to-body
-             :style="styleName"
+             :top="dialogTop"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
              :close-on-click-modal="vaildData(crud.tableOption.dialogClickModal,false)"
@@ -99,13 +99,6 @@ export default create({
     }
   },
   computed: {
-    styleName () {
-      if (!this.isDrawer && !this.fullscreen) {
-        return { top: this.dialogTop }
-      } else {
-        return { top: 0 }
-      }
-    },
     isView () {
       return this.boxType === 'view'
     },
@@ -125,14 +118,19 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.setPx(this.crud.tableOption.dialogTop, config.dialogTop)
+      if (!this.isDrawer && !this.fullscreen) {
+        return this.crud.tableOption.dialogTop
+      } else {
+        return 0
+      }
+      return
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
     },
-    isSize(){
+    isSize () {
       let drawerSize = this.size ? this.size : this.width;
-      return this.isDrawer ? {'size':drawerSize} : {};
+      return this.isDrawer ? { 'size': drawerSize } : {};
     },
     formOption () {
       let option = this.deepClone(this.crud.tableOption);

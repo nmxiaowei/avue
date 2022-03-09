@@ -6,17 +6,14 @@ import { t } from 'locale';
  * 计算级联属性
  */
 export const calcCascader = (list = []) => {
-  list.forEach((ele, index) => {
-    if (!validatenull(ele.cascaderItem)) {
-      let cascader = [...ele.cascaderItem];
+  list.forEach(ele => {
+    let cascader = ele.cascader
+    if (!validatenull(cascader)) {
       let parentProp = ele.prop;
-      list[index].cascader = [...cascader];
-      cascader.forEach((citem, cindex) => {
+      cascader.forEach(citem => {
         let column = findObject(list, citem);
         if (column === -1) return;
         column.parentProp = parentProp;
-        column.cascader = [...cascader].splice(cindex + 1);
-        parentProp = column.prop;
       });
     }
   });

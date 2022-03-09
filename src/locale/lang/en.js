@@ -39,7 +39,6 @@ export default {
       hide: 'hide',
       fixed: 'fixed',
       filters: 'filters',
-      screen: 'screen',
       sortable: 'sortable',
       index: 'index',
       width: 'width'

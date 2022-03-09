@@ -42,7 +42,7 @@
                 label: 'name',
                 value: 'code'
               },
-              cascaderItem: ['city', 'area'],
+              cascader: ['city'],
               dicUrl: `${baseUrl}/getProvince`,
               rules: [
                 {
@@ -59,7 +59,7 @@
               label: '城市',
               prop: 'city',
               type: 'select',
-              cascaderIndex: 1,
+              cascader: ['area'],
               props: {
                 label: 'name',
                 value: 'code'
@@ -84,8 +84,7 @@
                 label: 'name',
                 value: 'code'
               },
-              cascaderIndex: 1,
-              dicUrl: `${baseUrl}/getArea/{{key}}`,
+              dicUrl: `${baseUrl}/getCity/{{key}}`,
               rules: [
                 {
                   required: true,
@@ -113,7 +112,7 @@
         checkbox: ['110000'],
         province: '220000',
         city: '220700',
-        area: '220701',
+        area: '220700',
         icon: 'el-icon-error',
       }
     },

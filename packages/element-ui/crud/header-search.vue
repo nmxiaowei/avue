@@ -65,7 +65,6 @@ export default cteate({
     return {
       show: false,
       flag: false,
-      reload: false,
       defaultForm: {
         searchForm: {}
       },
@@ -131,7 +130,7 @@ export default cteate({
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;
-        list = list.sort((a, b) => b.searchOrder || 0 - a.searchOrder || 0)
+        list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex
@@ -148,7 +147,7 @@ export default cteate({
             ele = Object.assign(ele, obj, {
               type: getSearchType(ele),
               detail: false,
-              dicFlag: ele.cascaderItem ? true : this.vaildData(ele.dicFlag, false),
+              dicFlag: ele.cascader ? true : this.vaildData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || config.searchSpan,
               control: ele.searchControl,
               gutter: ele.searchGutter || option.searchGutter || config.searchGutter,
