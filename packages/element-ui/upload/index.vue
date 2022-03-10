@@ -393,7 +393,7 @@ export default create({
       const callback = () => {
         let url = file.url
         let list = this.fileList.map(ele => Object.assign(ele, {
-          type: this.typeList.video.test(ele.url) ? 'video' : ''
+          type: typeList.video.test(ele.url) ? 'video' : ''
         }))
         let index = this.fileList.findIndex(ele => {
           return ele.url === url;
