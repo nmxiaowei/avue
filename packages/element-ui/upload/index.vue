@@ -211,7 +211,7 @@ export default create({
           list.push({
             uid: index + '',
             status: 'done',
-            isImage: ele.isImage || typeList.img.test(ele[this.valueKey]),
+            isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
             url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
           });
@@ -390,14 +390,10 @@ export default create({
     },
     handlePreview (file) {
       const callback = () => {
-        let url = file.url
-        let list = this.fileList.map(ele => Object.assign(ele, {
-          type: typeList.video.test(ele.url) ? 'video' : ''
-        }))
         let index = this.fileList.findIndex(ele => {
-          return ele.url === url;
+          return ele.url === file.url;
         })
-        this.$ImagePreview(list, index);
+        this.$ImagePreview(this.fileList, index);
       }
       if (typeof this.uploadPreview === "function") {
         this.uploadPreview(file, this.column, callback);

@@ -32,17 +32,8 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <img :id="'avue-image-preview__'+indexs"
-               v-if="isMedia(item)"
-               :src="item.url"
-               :style="[styleName,styleBoxName]"
-               ref="item"
-               @mousedown="move"
-               controls="controls"
-               :is="getIsVideo(item)"
-               ondragstart="return false"></img>
-          <div :id="'avue-image-preview__'+indexs"
-               v-else
+          <div v-if="item.isImage==false"
+               :id="'avue-image-preview__'+indexs"
                :class="b('file')">
             <a :href="item.url"
                target="_blank">
@@ -50,6 +41,15 @@
               <p>{{item.name}}</p>
             </a>
           </div>
+          <img v-else
+               :id="'avue-image-preview__'+indexs"
+               :src="item.url"
+               :style="[styleName,styleBoxName]"
+               ref="item"
+               @mousedown="move"
+               controls="controls"
+               :is="getIsVideo(item)"
+               ondragstart="return false"></img>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -84,7 +84,8 @@ export default create({
       datas: [],
       rotate: 0,
       isShow: false,
-      index: 0
+      index: 0,
+      isFile: false
     };
   },
   computed: {
