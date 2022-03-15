@@ -22,7 +22,7 @@
 
 <script>
 import create from "core/create";
-import init from "../../core/common/init.js";
+import init from "common/common/init.js";
 export default create({
   name: "search",
   mixins: [init()],

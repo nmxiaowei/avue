@@ -111,7 +111,7 @@ let count = {}
 import { detail } from "core/detail";
 import { DIC_PROPS, DIC_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
-import formTemp from '../../core/components/form/index'
+import formTemp from 'common/components/form/index'
 export default {
   name: 'column-slot',
   inject: ["dynamic", 'crud'],

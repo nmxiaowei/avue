@@ -23,9 +23,9 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
-import locale from "../../core/common/locale";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
+import locale from "core/locale";
 export default create({
   name: "time",
   mixins: [props(), event(), locale],

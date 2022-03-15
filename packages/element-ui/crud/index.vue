@@ -179,11 +179,11 @@
 <script>
 import create from "core/create";
 import packages from "core/packages";
-import permission from '../../core/directive/permission';
-import init from "../../core/common/init.js";
+import permission from 'common/directive/permission';
+import init from "common/common/init.js";
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 import column from "./column";
 import headerMenu from "./header-menu";
 import dialogColumn from "./dialog-column";

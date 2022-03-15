@@ -37,7 +37,7 @@
   </el-col>
 </template>
 <script>
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 export default {
   inject: ["formSafe"],
   mixins: [locale],

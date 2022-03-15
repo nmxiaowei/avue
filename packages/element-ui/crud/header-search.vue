@@ -47,12 +47,10 @@
 
 <script>
 import create from "core/create";
-import { vaildData } from "utils/util";
-import { validatenull } from "utils/validate";
-import locale from "../../core/common/locale";
 import slot from 'core/slot'
-import { getSearchType } from "core/dataformat";
 import config from "./config";
+import locale from "core/locale";
+import { getSearchType } from "core/dataformat";
 export default create({
   name: "crud__search",
   inject: ["crud"],
@@ -61,6 +59,7 @@ export default create({
     return {
       option: {},
       show: false,
+      searchIndex: 2,
       searchShow: true,
       searchForm: {}
     };
@@ -92,10 +91,7 @@ export default create({
   },
   computed: {
     isSearchIcon () {
-      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.searchLen > this.searchIndex
-    },
-    searchIndex () {
-      return this.crud.option.searchIndex || 2
+      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
     },
     searchLen () {
       let count = 0;
@@ -135,7 +131,8 @@ export default create({
     },
     dataFormat () {
       const option = this.crud.option;
-      this.searchShow = vaildData(option.searchShow, config.searchShow);
+      this.searchShow = this.vaildData(option.searchShow, config.searchShow);
+      this.searchIndex = option.searchIndex || 2
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;

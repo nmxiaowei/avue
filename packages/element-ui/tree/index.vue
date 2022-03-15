@@ -90,9 +90,9 @@
 
 <script>
 import { DIC_PROPS } from 'global/variable';
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 import create from "core/create";
-import permission from '../../core/directive/permission';
+import permission from 'common/directive/permission';
 export default create({
   name: "tree",
   mixins: [locale],

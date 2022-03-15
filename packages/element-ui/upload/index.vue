@@ -74,9 +74,9 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
-import locale from "../../core/common/locale";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
+import locale from "core/locale";
 import { getAsVal } from "utils/util";
 import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";

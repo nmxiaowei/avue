@@ -68,10 +68,10 @@
 
 <script>
 import { getSearchType, formInitVal } from "core/dataformat";
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 import create from "core/create";
 import { dateList } from "core/dataformat";
-import formTemp from '../../core/components/form/index'
+import formTemp from 'common/components/form/index'
 export default create({
   name: "crud",
   mixins: [locale],

@@ -73,7 +73,7 @@
 <script>
 import { filterDefaultParams } from 'utils/util'
 import create from "core/create";
-import locale from "../../core/common/locale";
+import locale from "core/locale";
 import config from "./config";
 export default create({
   name: "crud",
