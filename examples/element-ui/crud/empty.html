@@ -25,10 +25,10 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data">
-      <template #nameHeader="{column}">
+      <template #name-header="{column}">
         <el-tag>{{column.label}}({{column.prop}})</el-tag>
       </template>
-      <template #sexHeader="{column}">
+      <template #sex-header="{column}">
         <el-tag>{{column.label}}({{column.prop}})</el-tag>
       </template>
       <!-- <template #empty>

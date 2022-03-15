@@ -39,10 +39,10 @@
           </el-form-item>
         </el-col>
       </template>
-      <template #nameHeader="scope">
+      <template #name-header="scope">
         <el-tag :size="scope.size">{{ scope.column.label }}</el-tag>
       </template>
-      <template #nameForm="scope">
+      <template #name-form="scope">
         <el-tag :size="scope.size">{{ scope.label }}</el-tag>
       </template>
       <template #name="scope">
@@ -54,7 +54,7 @@
         </el-button>
         <span>自定义内容</span>
       </template>
-      <template #menuLeft="props">
+      <template #menu-left="props">
         <el-button size="small" @click="setCurrent(data[1])">选中第二行</el-button>
         <el-button size="small" @click="setCurrent()">取消选择</el-button>
       </template>
@@ -62,7 +62,7 @@
       <template #expand="props">
         <el-tag>当前行的{{ props }}</el-tag>
       </template>
-      <template #menuForm="scope">
+      <template #menu-form="scope">
         <el-button :size="scope.size">自定义按钮</el-button>
       </template>
       <template #menu="scope">

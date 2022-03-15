@@ -22,7 +22,7 @@
     {{obj}}
     {{search}}
     <avue-crud :option="option" v-model="obj" :data="data" v-model:search="search">
-      <template #namesForm="scope">
+      <template #names-form="scope">
         <div>
           <span>{{obj.names}}</span>
           <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.names"></avue-input>

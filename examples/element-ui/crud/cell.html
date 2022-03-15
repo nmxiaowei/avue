@@ -26,16 +26,16 @@
   <div id="app">
     <avue-crud @row-click="handleRowClick" ref="crud" :option="option" :data="data" :table-loading="loading"
       v-model="obj" @on-load="onLoad" @row-update="rowUpdate" @row-del="rowDel">
-      <template #menuLeft="scope">
+      <template #menu-left="scope">
         <el-button @click="addRow" size="small">添加10条</el-button>
       </template>
       <template #name="{row,size,$cell}">
         <el-tag>{{row.name}}</el-tag>
       </template>
-      <template #nameHeader="{column}">
+      <template #name-header="{column}">
         <el-tag>{{column.label}}</el-tag>
       </template>
-      <template #nameForm="{row,size,$cell}">
+      <template #name-form="{row,size,$cell}">
         <el-input v-model="row.name" :size="size"></el-input>
       </template>
     </avue-crud>
