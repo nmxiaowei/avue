@@ -1,6 +1,7 @@
 
 import components from './ui/index';
 import { version } from './version'
+import axios from 'axios';
 import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, validData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
@@ -12,10 +13,12 @@ import $Screenshot from 'plugin/screenshot/';
 import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $ImagePreview from 'packages/core/components/image-preview/';
-import axios from 'axios';
+import $DialogForm from 'packages/core/components/dialog-form/';
 import createIcon from './icon';
+import ElementPlus from 'element-plus';
 let plugins = {
   $ImagePreview,
+  $DialogForm,
   $Export,
   $Print,
   $Clipboard,
@@ -36,7 +39,14 @@ let plugins = {
   randomId
 
 };
+let directive = {
+  dialogDrag
+}
 const install = function (Vue, opts = {}) {
+  if (!ElementPlus) {
+    packages.logs('element-plus');
+    return
+  }
   const defaultOption = {
     size: opts.size,
     calcHeight: opts.calcHeight || 0,
@@ -76,12 +86,14 @@ const install = function (Vue, opts = {}) {
   Object.keys(plugins).forEach((key) => {
     Vue.config.globalProperties[key] = plugins[key];
   });
+  Object.keys(directive).forEach((key) => {
+    Vue.directive(key, directive[key]);
+  });
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  // 初始化指令
-  Vue.directive('dialogdrag', dialogDrag);
-  Vue.config.globalProperties.$axios = opts.axios || axios;
+  Vue.config.globalProperties.$axios = opts.axios || window.axios || axios;
+  window.axios = Vue.config.globalProperties.$axios;
 };
 export default {
   version,

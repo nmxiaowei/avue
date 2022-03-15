@@ -131,8 +131,8 @@
                   <slot name="menu"
                         v-bind="scope"></slot>
                 </template>
-                <template #menuBtn="scope">
-                  <slot name="menuBtn"
+                <template #menu-btn="scope">
+                  <slot name="menu-btn"
                         v-bind="scope"></slot>
                 </template>
               </column-menu>
@@ -183,7 +183,6 @@ import column from "./column/column";
 import columnMenu from './column/column-menu'
 import columnDefault from './column/column-default'
 import config from "./config.js";
-import treeToArray, { addAttrs } from "./util/eval";
 import { calcCascader, formInitVal } from "core/dataformat";
 export default create({
   name: "crud",
@@ -211,7 +210,10 @@ export default create({
   },
   data () {
     return {
-      reload: 0,
+      reload: Math.random(),
+      cellForm: {
+        list: []
+      },
       config: config,
       list: [],
       listError: {},
@@ -220,79 +222,33 @@ export default create({
       tableIndex: -1,
       tableSelect: [],
       formIndexList: [],
-      sumsList: [],
+      sumsList: {},
       cascaderDicList: {},
       formCascaderList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      default: {},
-      defaultBind: {},
+      default: {}
     };
   },
-  created () {
-    // 初始化数据
-    this.dataInit();
-  },
   mounted () {
-    this.refreshTable(() => {
-      //动态计算表格高度
-      this.getTableHeight();
-    })
+    this.dataInit();
+    this.getTableHeight();
   },
   computed: {
-    defaultColumn () {
-      return [{
-        label: this.t('crud.column.hide'),
-        prop: 'hide'
-      }, {
-        label: this.t('crud.column.fixed'),
-        prop: 'fixed'
-      }, {
-        label: this.t('crud.column.filters'),
-        prop: 'filters'
-      }, {
-        label: this.t('crud.column.screen'),
-        prop: 'screen'
-      }, {
-        label: this.t('crud.column.sortable'),
-        prop: 'sortable'
-      }, {
-        label: this.t('crud.column.index'),
-        prop: 'index',
-        hide: true
-      }, {
-        label: this.t('column.width'),
-        prop: 'width',
-        hide: true
-      }]
-    },
     isSortable () {
       return this.tableOption.sortable;
+    },
+    isRowSort () {
+      return this.tableOption.rowSort;
+    },
+    isColumnSort () {
+      return this.tableOption.columnSort;
     },
     treeProps () {
       return this.tableOption.treeProps || {}
     },
     isAutoHeight () {
       return this.tableOption.height === "auto"
-    },
-    cellForm () {
-      let list = this.list
-      list = list.filter(ele => {
-        let result = [];
-        for (var o in this.objectOption) {
-          if (!this.validatenull(this.objectOption[o].screenValue)) {
-            let value = (ele['$' + o] ? ele['$' + o] : ele[o]) + ''
-            result.push(value.indexOf(this.objectOption[o].screenValue) !== -1);
-          }
-        }
-        if (this.validatenull(result)) {
-          return true;
-        }
-        return eval(result.join('&&'));
-      })
-      return {
-        list
-      }
     },
     formSlot () {
       return this.getSlotList(['-error', '-label', '-type', '-form'], this.$slots, this.propOption)
@@ -360,7 +316,8 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      return this.tableOption.column || [];
+      let column = this.tableOption.column || []
+      return column
     },
     sumColumnList () {
       return this.tableOption.sumColumnList || [];
@@ -375,6 +332,12 @@ export default create({
         this.tableForm = val;
       },
       immediate: true,
+      deep: true
+    },
+    list: {
+      handler () {
+        this.cellForm.list = this.list;
+      },
       deep: true
     },
     data: {
@@ -445,7 +408,8 @@ export default create({
   },
   methods: {
     handleValidate (prop, valid, msg) {
-      if (!this.listError[prop]) this.$set(this.listError, prop, { valid: false, msg: '' })
+      if (!this.listError[prop]) this.listError[prop] = { valid: false, msg: '' }
+
       this.listError[prop].valid = !valid
       this.listError[prop].msg = msg
     },
@@ -471,14 +435,15 @@ export default create({
       } else {
         this.tableHeight = this.tableOption.height;
       }
+      this.refreshTable()
     },
     doLayout () {
       this.$refs.table.doLayout()
     },
     refreshTable (callback) {
-      this.reload = this.reload + 1;
+      this.reload = Math.random()
       this.$nextTick(() => {
-        // setTimeout(() => this.$refs.columnDefault.setSort())
+        this.$refs.columnDefault.setSort()
         callback && callback()
       })
     },
@@ -488,18 +453,6 @@ export default create({
         tree.children = data;
         resolve(data);
       })
-    },
-    // 格式化数据源
-    formatData () {
-      const data = this.data;
-      if (data.length === 0) {
-        return [];
-      }
-      addAttrs(this, data, {
-        expand: this.expandAll,
-        expandLevel: this.expandLevel
-      });
-      this.list = treeToArray(this, data);
     },
     menuIcon (value) {
       return this.validData(this.tableOption[value + 'Text'], this.t("crud." + value))
@@ -528,17 +481,6 @@ export default create({
     setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
     },
-    columnInit () {
-      this.propOption.forEach(column => {
-        if (this.defaultBind[column.prop] === true) return
-        this.defaultColumn.forEach(ele => {
-          if (['hide', 'filters', 'index'].includes(ele.prop)) {
-            this.$watch(`objectOption.${column.prop}.${ele.prop}`, () => this.refreshTable())
-          }
-        })
-        this.defaultBind[column.prop] = true;
-      })
-    },
     dataInit () {
       this.list = this.data;
       //初始化序列的参数
@@ -555,12 +497,10 @@ export default create({
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
-      let column = this.propOption;
+      let column = this.columnOption;
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
-      this.propOption.forEach((ele, index) => {
-        this.objectOption[ele.prop].index = index + 1;
-      })
+      this.refreshTable()
     },
     //展开或则关闭
     expandChange (row, expand) {
@@ -821,19 +761,15 @@ export default create({
     },
     //合集统计逻辑
     tableSummaryMethod (param) {
-      //如果自己写逻辑则调用summaryMethod方法
+      let sumsList = {}
       if (typeof this.summaryMethod === "function")
         return this.summaryMethod(param);
       const { columns, data } = param;
-      const sums = [];
+      let sums = [];
       if (columns.length > 0) {
         columns.forEach((column, index) => {
-          let currItem = this.sumColumnList.find(
-            item => item.name === column.property
-          );
-          if (index === 0) {
-            sums[index] = ''
-          } else if (currItem) {
+          let currItem = this.sumColumnList.find(item => item.name === column.property);
+          if (currItem) {
             let decimals = currItem.decimals || 2;
             let label = currItem.label || '';
             switch (currItem.type) {
@@ -867,27 +803,32 @@ export default create({
                 break;
             }
           } else {
-            sums[index] = "-";
+            sums[index] = "";
           }
         });
       }
-      this.sumsList = sums;
+      this.sumsList = sumsList;
       return sums;
     },
-    tableDrop (el, callback) {
-      if (this.isSortable) {
-        if (!window.Sortable) {
-          packages.logs("Sortable")
+    tableDrop (type, el, callback) {
+      if (this.isSortable !== true) {
+        if (type == 'row' && !this.isRowSort) {
+          return
+        } else if (type == 'column' && !this.isColumnSort) {
           return
         }
-        window.Sortable.create(el, {
-          ghostClass: config.ghostClass,
-          chosenClass: config.ghostClass,
-          animation: 500,
-          delay: 0,
-          onEnd: evt => callback(evt)
-        })
       }
+      if (!window.Sortable) {
+        packages.logs("Sortable")
+        return
+      }
+      window.Sortable.create(el, {
+        ghostClass: config.ghostClass,
+        chosenClass: config.ghostClass,
+        animation: 500,
+        delay: 0,
+        onEnd: evt => callback(evt)
+      })
     }
   }
 });

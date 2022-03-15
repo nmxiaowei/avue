@@ -57,26 +57,25 @@ export default create({
     },
     setSort () {
       this.rowDrop()
-      // this.columnDrop()
+      this.columnDrop()
     },
     rowDrop () {
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
-      this.crud.tableDrop(el, evt => {
+      this.crud.tableDrop('row', el, evt => {
         const oldIndex = evt.oldIndex;
         const newIndex = evt.newIndex;
         const targetRow = this.crud.list.splice(oldIndex, 1)[0]
         this.crud.list.splice(newIndex, 0, targetRow)
-        this.crud.$emit('sortable-change', oldIndex, newIndex, targetRow, this.crud.list)
+        this.crud.$emit('sortable-change', oldIndex, newIndex)
+        this.crud.refreshTable(() => this.rowDrop())
+
       })
     },
     columnDrop () {
       let el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
-      let headerLen = el.children.length
-      headerLen = headerLen - this.crud.columnOption.length - 2;
-      this.crud.tableDrop(el, evt => {
-        const oldIndex = evt.oldIndex - headerLen;
-        const newIndex = evt.newIndex - headerLen;
-        this.crud.headerSort(oldIndex, newIndex)
+      this.crud.tableDrop('column', el, evt => {
+        this.crud.headerSort(evt.oldIndex, evt.newIndex)
+        this.columnDrop()
       })
     },
   }

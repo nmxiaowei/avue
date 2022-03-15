@@ -15,7 +15,7 @@
   <!-- 导入表格需要的包 -->
 
   <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
-  <script src="https://cdn.staticfile.org/xlsx/0.14.1/xlsx.full.min.js"></script>
+  <script src="https://cdn.staticfile.org/xlsx/0.18.2/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
   <script src="../../cdn/element-plus/index.full.min.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
@@ -103,7 +103,7 @@
                 value: 'code'
               },
               cell: true,
-              cascaderItem: ['city', 'area'],
+              cascader: ['city'],
               dicUrl: `${baseUrl}/getProvince`,
               rules: [
                 {
@@ -118,6 +118,7 @@
               label: '城市',
               prop: 'city',
               type: 'select',
+              cascader: ['area'],
               cell: true,
               props: {
                 label: 'name',
@@ -185,7 +186,7 @@
               label: '日期',
               prop: 'datetime',
               type: "datetime",
-              format: "yyyy-MM-dd hh:mm:ss",
+              format: "YYYY-MM-DD hh:mm:ss",
               valueFormat: "timestamp",
               cell: true,
               rules: [

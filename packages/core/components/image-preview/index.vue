@@ -1,6 +1,5 @@
 <template>
-  <div :class="b()"
-       :id="id">
+  <div :class="b()">
     <div :class="b('mask')"
          v-if="ops.modal"
          @click="close"></div>
@@ -37,17 +36,8 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <component :id="'avue-image-preview__'+indexs"
-                     v-if="isMedia(item)"
-                     :src="item.url"
-                     :style="[styleName,styleBoxName]"
-                     ref="item"
-                     @mousedown="move"
-                     controls="controls"
-                     :is="getIsVideo(item)"
-                     ondragstart="return false" />
-          <div :id="'avue-image-preview__'+indexs"
-               v-else
+          <div v-if="item.isImage==false"
+               :id="'avue-image-preview__'+indexs"
                :class="b('file')">
             <a :href="item.url"
                target="_blank">
@@ -57,6 +47,15 @@
               <p>{{item.name}}</p>
             </a>
           </div>
+          <component v-else
+                     :id="'avue-image-preview__'+indexs"
+                     :src="item.url"
+                     :style="[styleName,styleBoxName]"
+                     ref="item"
+                     @mousedown="move"
+                     controls="controls"
+                     :is="getIsVideo(item)"
+                     ondragstart="return false" />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -107,18 +106,18 @@ export default create({
     Printer
   },
   props: {
-    id: String,
     datas: Array,
     index: [Number, String],
     ops: Object,
-    onClose: Function
+    onDestroy: Function
   },
   data () {
     return {
       left: 0,
       top: 0,
       scale: 1,
-      rotate: 0
+      rotate: 0,
+      count: this.index
     };
   },
   computed: {
@@ -147,26 +146,23 @@ export default create({
   },
   methods: {
     handlePrint () {
-      this.$Print(`#avue-image-preview__${this.index}`)
+      this.$Print(`#avue-image-preview__${this.count}`)
     },
     handlePrev () {
       this.stopItem()
       this.$refs.carousel.prev()
-      this.index = this.$refs.carousel.activeIndex
+      this.count = this.$refs.carousel.activeIndex
 
     },
     handleNext () {
       this.stopItem()
       this.$refs.carousel.next()
-      this.index = this.$refs.carousel.activeIndex
+      this.count = this.$refs.carousel.activeIndex
 
     },
     stopItem () {
       this.left = 0;
       this.top = 0;
-    },
-    isMedia (item) {
-      return typeList.img.test(item.url) || typeList.video.test(item.url)
     },
     getIsVideo (item) {
       if (typeList.video.test(item.url)) {
@@ -209,12 +205,11 @@ export default create({
       };
     },
     close () {
+      this.isShow = false
       if (typeof this.ops.beforeClose == "function") {
-        this.ops.beforeClose(this.datas, this.index);
+        this.ops.beforeClose(this.datas, this.count);
       }
-      if (typeof this.onClose === "function") {
-        this.onClose(this);
-      }
+      this.onDestroy()
     }
   }
 });

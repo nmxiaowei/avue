@@ -1,12 +1,10 @@
 <template>
   <component :is="dialogType"
              :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
-             v-dialogdrag="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
+             v-dialogDrag="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass].join(' ')"
-             :modal-append-to-body="validData(crud.tableOption.dialogModalAppendToBody,true)"
              :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
-             top="0"
-             :style="styleName"
+             :top="dialogTop"
              :title="dialogTitle"
              :close-on-press-escape="crud.tableOption.dialogEscape"
              :close-on-click-modal="validData(crud.tableOption.dialogClickModal,false)"
@@ -95,13 +93,6 @@ export default create({
     }
   },
   computed: {
-    styleName () {
-      if (!this.isDrawer && !this.fullscreen) {
-        return { top: this.dialogTop }
-      } else {
-        return { top: 0 }
-      }
-    },
     isView () {
       return this.boxType === 'view'
     },
@@ -121,7 +112,12 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return this.setPx(this.crud.tableOption.dialogTop, config.dialogTop)
+      if (!this.isDrawer && !this.fullscreen) {
+        return this.crud.tableOption.dialogTop
+      } else {
+        return 0
+      }
+      return
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';

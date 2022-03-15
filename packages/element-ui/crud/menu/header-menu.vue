@@ -28,8 +28,8 @@
 
       <avue-date type="datetimerange"
                  @change="dateChange"
-                 value-format="yyyy-MM-dd HH:mm:ss"
-                 format="yyyy-MM-dd HH:mm:ss"
+                 value-format="YYYY-MM-DD HH:mm:ss"
+                 format="YYYY-MM-DD HH:mm:ss"
                  :pickerOptions="pickerOptions"
                  style="display:inline-block;margin-right:20px;"
                  v-if="validData(crud.tableOption.dateBtn,config.dateBtn)"

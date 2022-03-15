@@ -59,7 +59,7 @@
             label: '省份',
             prop: 'province',
             type: 'select',
-            cascaderItem: ['city', 'area'],
+            cascader: ['city'],
             dicUrl: `${baseUrl}/getProvince`,
             rules: [
               {
@@ -73,6 +73,7 @@
             label: '城市',
             prop: 'city',
             type: 'select',
+            cascader: ['area'],
             dicFlag: false,
             hide: true,
             dicUrl: `${baseUrl}/getCity/{{key}}`,

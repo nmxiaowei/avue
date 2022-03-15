@@ -1,5 +1,3 @@
-import packages from 'core/packages';
-import axios from 'axios';
 import { validatenull } from 'utils/validate';
 import { getObjValue, detailDic } from 'utils/util';
 export const loadCascaderDic = (columnOption, list) => {
@@ -56,10 +54,6 @@ export const loadCascaderDic = (columnOption, list) => {
 export const loadDic = (option) => {
   let ajaxdic = createdDic(option);
   return new Promise((resolve, reject) => {
-    if (!axios && !validatenull(ajaxdic)) {
-      packages.logs('axios');
-      resolve();
-    }
     handleDic(ajaxdic)
       .then((res) => {
         resolve(res);
@@ -85,7 +79,7 @@ function createdDic (option) {
     let dicUrl = ele.dicUrl;
     let prop = ele.prop;
     let parentProp = ele.parentProp;
-    flagdic = flagdic.concat(ele.cascaderItem || []);
+    flagdic = flagdic.concat(ele.cascader || []);
     let result = ele.dicFlag === false || ele.lazy === true || flagdic.includes(prop)
     if (result) return;
     if (dicUrl && !parentProp) {
@@ -180,18 +174,14 @@ export const sendDic = (params) => {
       }
       resolve(list);
     };
-    if (!axios) {
-      packages.logs('axios');
-      resolve([]);
-    }
     if (method === 'post') {
-      axios.post(url, data).then(function (res) {
+      window.axios.post(url, data).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
       ]);
     } else {
-      axios.get(url, {
+      window.axios.get(url, {
         params: query
       }).then(function (res) {
         callback(res);

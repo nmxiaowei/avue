@@ -56,7 +56,6 @@ export default create({
     return {
       show: false,
       flag: false,
-      reload: false,
       searchShow: true,
       searchForm: {}
     };
@@ -125,7 +124,7 @@ export default create({
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;
-        list = list.sort((a, b) => b.searchOrder || 0 - a.searchOrder || 0)
+        list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
         list.forEach(ele => {
           if (ele.search) {
             let isCount = count < this.searchIndex
@@ -142,7 +141,7 @@ export default create({
             ele = Object.assign(ele, obj, {
               type: getSearchType(ele),
               detail: false,
-              dicFlag: ele.cascaderItem ? true : this.validData(ele.dicFlag, false),
+              dicFlag: ele.cascader ? true : this.validData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || config.searchSpan,
               control: ele.searchControl,
               gutter: ele.searchGutter || option.searchGutter || config.searchGutter,

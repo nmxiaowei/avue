@@ -181,8 +181,6 @@ export default {
     handleSum () {
       const option = this.crud.tableOption;
       const columnOption = this.crud.propOption;
-      let count = 0;
-      let sumsList = [...this.crud.sumsList];
       let list = this.form.type == 0 ? this.crud.list : this.crud.tableSelect;
       let data = []
       if (this.form.params.includes('data')) {
@@ -195,19 +193,8 @@ export default {
           data.push(obj);
         })
       }
-      if (option.index) count++;
-      if (option.selection) count++;
-      if (option.expand) count++;
-      sumsList.splice(0, count);
-      sumsList.splice(sumsList.length - 1, 1);
       if (this.form.params.includes('sum') && option.showSummary) {
-        let sumsObj = {};
-        sumsList.forEach((ele, index) => {
-          if ((columnOption[index] || {}).prop) {
-            sumsObj[columnOption[index].prop] = ele;
-          }
-        });
-        data.push(sumsObj);
+        data.push(this.crud.sumsList);
       }
       return data;
     },

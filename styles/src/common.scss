@@ -139,18 +139,6 @@ body {
 
 
 .avue-dialog {
-  overflow: visible;
-  top:15%;
-  &--top{
-    .el-dialog{
-      top:15%;
-    }
-  }
-  &--none{
-    .el-dialog__body{
-      margin-bottom:0;
-    }
-  }
   .el-dialog__header{
     padding: 16px 24px;
     min-height: 20px;
@@ -160,14 +148,6 @@ body {
     color: rgba(0,0,0,.85);
     font-weight: 500;
     word-wrap: break-word;
-  }
-  .el-dialog__body{
-    margin-bottom: 50px;
-  }
-  .el-dialog .el-dialog__body{
-    flex:1;
-    overflow: hidden;
-    overflow-y:auto;
   }
   .el-drawer{
     position:absolute;

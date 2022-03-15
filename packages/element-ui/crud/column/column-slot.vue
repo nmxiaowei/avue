@@ -19,16 +19,7 @@
       <slot :name="crud.getSlotName(column,'H')"
             v-if="crud.getSlotName(column,'H',crud.$slots)"
             v-bind="{column,$index}"></slot>
-      <el-popover placement="bottom"
-                  v-else
-                  :disabled="(crud.objectOption[column.prop] || {}).screen!==true"
-                  trigger="hover">
-        <el-input type="text"
-                  :placeholder="`请输入 ${column.label} 筛选关键字`"
-                  v-model="(crud.objectOption[column.prop] || {}).screenValue"
-                  size="mini"></el-input>
-        <template #reference>{{column.label}}</template>
-      </el-popover>
+      <span v-else>{{column.label}}</span>
     </template>
     <template #="{row,$index}">
       <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
@@ -177,50 +168,50 @@ export default {
         //本节点;
         const cascader = column.cascader;
         const str = cascader.join(",");
-        const columnNextProp = cascader[0];
-        const value = row[column.prop];
-        const rowIndex = row.$index;
-        // 下一个节点
-        const columnNext = this.findObject(this.columnOption, columnNextProp)
-        if (this.validatenull(columnNext)) return
-        // 如果本节点没有字典则创建节点数组
-        if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
-          this.$set(this.crud.cascaderDIC, rowIndex, {});
-        }
-        if (this.crud.formIndexList.includes(rowIndex)) {
-          //清空子类字典
-          cascader.forEach(ele => {
-            this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
-            cascader.forEach(ele => (row[ele] = ""));
-          });
-        }
-        //最后一级
-        if (
-          this.validatenull(cascader) ||
-          this.validatenull(value) ||
-          this.validatenull(columnNext)
-        ) {
-          return;
-        }
-        sendDic({
-          column: columnNext,
-          value: value,
-          form: row
-        }).then(
-          res => {
+        cascader.forEach(item => {
+          const columnNextProp = item;
+          const value = row[column.prop];
+          const rowIndex = row.$index;
+          // 下一个节点
+          const columnNext = this.findObject(this.columnOption, columnNextProp)
+          if (this.validatenull(columnNext)) return
+          // 如果本节点没有字典则创建节点数组
+          if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
+            this.crud.cascaderDIC[rowIndex] = {}
+          }
+          if (this.crud.formIndexList.includes(rowIndex)) {
+            //清空子类字典
+            cascader.forEach(ele => {
+              this.crud.cascaderDIC[rowIndex][ele.prop] = []
+              cascader.forEach(ele => (row[ele] = ""));
+            });
+          }
+          //最后一级
+          if (
+            this.validatenull(cascader) ||
+            this.validatenull(value) ||
+            this.validatenull(columnNext)
+          ) {
+            return;
+          }
+          sendDic({
+            column: columnNext,
+            value: value,
+            form: row
+          }).then(res => {
             //首次加载的放入队列记录
             if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
-            const dic = Array.isArray(res) ? res : [];
+            const dic = res || [];
             // 修改字典
-            this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
+            this.crud.cascaderDIC[rowIndex][columnNextProp] = dic
 
             if (!this.validatenull(dic[columnNext.cascaderIndex]) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
               row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
             }
           }
-        );
+          );
+        })
       })
-
     },
     openImg (list, index) {
       list = list.map(ele => {

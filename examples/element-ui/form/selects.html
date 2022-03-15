@@ -41,7 +41,7 @@
                 label: 'name',
                 value: 'code'
               },
-              cascaderItem: ['city', 'area'],
+              cascader: ['city'],
               dicUrl: `${baseUrl}/getProvince`,
               rules: [
                 {
@@ -58,6 +58,7 @@
               label: '城市',
               prop: 'city',
               type: 'select',
+              cascader: ['area'],
               cascaderIndex: 1,
               props: {
                 label: 'name',

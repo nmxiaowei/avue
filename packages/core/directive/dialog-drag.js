@@ -1,6 +1,6 @@
 export default {
   // v-dialog-drag: 弹窗拖拽 
-  bind (el, binding, vnode, oldVnode) {
+  mounted (el, binding) {
     const value = binding.value
     if (value == false) return
     // 获取拖拽内容头部

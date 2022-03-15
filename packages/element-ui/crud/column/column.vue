@@ -4,7 +4,7 @@
   <template v-for="(column,index) in list">
     <column-dynamic v-if="column.children && column.children.length>0"
                     :columnOption="column"
-                    :key="column.label">
+                    :key="column.prop">
       <template v-for="item in crud.mainSlot"
                 #[item]="scope">
         <slot v-bind="scope"
@@ -12,6 +12,7 @@
       </template>
     </column-dynamic>
     <column-slot v-else
+                 :key="column.prop"
                  :column="column"
                  :column-option="columnOption">
       <template v-for="item in crud.mainSlot"

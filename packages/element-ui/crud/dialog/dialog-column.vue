@@ -2,43 +2,43 @@
   <el-drawer append-to-body
              :custom-class="['avue-dialog',b('dialog'),b('column')].join(' ')"
              :title="t('crud.showTitle')"
-             @opened="rowDrop"
+             @opened="init"
              :size="crud.isMobile?'100%':'40%'"
              v-model="columnBox">
-    <div style="height:calc(100% - 5px)">
-      <el-table :data="list"
-                ref="table"
-                :key="Math.random()"
-                height="100%"
-                size="small"
-                border>
-        <el-table-column align="center"
-                         width="100"
+    <el-table :data="list"
+              ref="table"
+              height="100%"
+              :key="Math.random()"
+              size="small"
+              border>
+      <el-table-column align="center"
+                       width="100"
+                       header-align="center"
+                       prop="label"
+                       key="label"
+                       :label="t('crud.column.name')">
+      </el-table-column>
+      <template v-for="(item,index) in defaultColumn">
+        <el-table-column :prop="item.prop"
+                         :key="item.prop"
+                         align="center"
                          header-align="center"
-                         prop="label"
-                         :label="t('crud.column.name')">
+                         v-if="item.hide!=true"
+                         :label="item.label">
+          <template slot-scope="{row}">
+            <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+          </template>
         </el-table-column>
-        <template v-for="(item,index) in crud.defaultColumn">
-          <el-table-column :prop="item.prop"
-                           :key="index"
-                           align="center"
-                           header-align="center"
-                           v-if="item.hide!=true"
-                           :label="item.label">
-            <template #="{row}">
-              <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-            </template>
-          </el-table-column>
-        </template>
-      </el-table>
-    </div>
+      </template>
+
+    </el-table>
+
   </el-drawer>
 </template>
 <script>
 import create from "core/create";
 import locale from "core/locale";
 import packages from "core/packages";
-import { arraySort } from 'utils/util'
 import config from "../config.js";
 export default create({
   name: 'crud',
@@ -47,29 +47,63 @@ export default create({
   data () {
     return {
       columnBox: false,
+      bindList: {}
     };
   },
   computed: {
+    defaultColumn () {
+      return [{
+        label: this.t('crud.column.hide'),
+        prop: 'hide'
+      }, {
+        label: this.t('crud.column.fixed'),
+        prop: 'fixed'
+      }, {
+        label: this.t('crud.column.filters'),
+        prop: 'filters'
+      }, {
+        label: this.t('crud.column.sortable'),
+        prop: 'sortable'
+      }, {
+        label: this.t('crud.column.index'),
+        prop: 'index',
+        hide: true
+      }, {
+        label: this.t('crud.column.width'),
+        prop: 'width',
+        hide: true
+      }]
+    },
     list () {
       let list = [];
-      for (var o in this.crud.objectOption) {
-        const ele = this.crud.objectOption[o]
+      this.crud.propOption.forEach(ele => {
         if (ele.showColumn != false) {
-          list.push(Object.assign(ele, { prop: o }))
+          list.push(ele)
         }
-      }
-      list = arraySort(list, 'index', (a, b) => this.crud.objectOption[a.prop]?.index - this.crud.objectOption[b.prop]?.index)
+      })
       return list;
     }
   },
   methods: {
+    init () {
+      this.crud.propOption.forEach(column => {
+        if (this.bindList[column.prop] === true) return
+        this.defaultColumn.forEach(ele => {
+          if (['hide', 'filters'].includes(ele.prop)) {
+            this.$watch(`crud.objectOption.${column.prop}.${ele.prop}`, () => this.crud.refreshTable())
+          }
+        })
+        this.bindList[column.prop] = true;
+      })
+      this.rowDrop();
+    },
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]
-      this.crud.tableDrop(el, evt => {
+      this.crud.tableDrop('column', el, evt => {
         const oldIndex = evt.oldIndex;
         const newIndex = evt.newIndex;
         this.crud.headerSort(oldIndex, newIndex)
-        this.$nextTick(() => this.rowDrop())
+        this.crud.refreshTable(() => this.rowDrop())
       })
     },
   }

@@ -46,7 +46,7 @@
               label: 'name',
               value: 'code'
             },
-            cascaderItem: ['city', 'area'],
+            cascader: ['city'],
             dicUrl: `${baseUrl}/getProvince`,
             // dicMethod: 'post',
             // dicQuery: {
@@ -68,6 +68,7 @@
               label: 'name',
               value: 'code'
             },
+            cascader: ['area'],
             dicUrl: `${baseUrl}/getCity/{{key}}`,
             rules: [
               {

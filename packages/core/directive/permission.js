@@ -7,7 +7,7 @@ function init (el, binding) {
   }
 }
 export default {
-  bind (el, binding) {
+  mounted (el, binding) {
     init(el, binding)
   },
   update (el, binding) {

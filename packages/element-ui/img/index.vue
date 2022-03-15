@@ -13,7 +13,6 @@
                width="60%"
                :custom-class="{'avue-img--fullscreen':fullscreen}"
                :fullscreen="fullscreen"
-               modal-append-to-body
                append-to-body>
       <avue-carousel :option="option"></avue-carousel>
     </el-dialog>

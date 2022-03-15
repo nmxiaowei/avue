@@ -35,14 +35,13 @@ export default {
       submitBtn: '确 定'
     },
     column: {
-      name: 'name',
-      hide: 'hide',
-      fixed: 'fixed',
-      filters: 'filters',
-      screen: 'screen',
-      sortable: 'sortable',
-      index: 'index',
-      width: 'width'
+      name: '列名',
+      hide: '隐藏',
+      fixed: '冻结',
+      filters: '过滤',
+      sortable: '排序',
+      index: '顺序',
+      width: '宽度'
     },
     tipStartTitle: '当前表格已选择',
     tipEndTitle: '项',

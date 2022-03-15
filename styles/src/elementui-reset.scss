@@ -9,3 +9,10 @@
 .el-dialog.is-fullscreen{
   top:0;
 }
+.el-upload--picture-card,.el-upload--picture-img{
+  .el-upload-dragger{
+    width: inherit;
+    height: inherit;
+    background-color: inherit;
+  }
+}

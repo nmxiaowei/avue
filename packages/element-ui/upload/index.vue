@@ -12,7 +12,7 @@
                :on-preview="handlePreview"
                :limit="limit"
                :http-request="httpUpload"
-               :drag="isDrag"
+               :drag="dragFile"
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
                :list-type="listType"
@@ -54,7 +54,7 @@
           </div>
         </template>
       </template>
-      <template v-else-if="drag">
+      <template v-else-if="dragFile">
         <el-icon>
           <el-icon-upload />
         </el-icon>
@@ -89,7 +89,6 @@ import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
 import { typeList } from 'global/variable'
-import axios from 'axios';
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -99,7 +98,7 @@ export default create({
   data () {
     return {
       menu: false,
-      reload: 0,
+      reload: Math.random(),
       res: '',
       loading: false,
       text: [],
@@ -144,6 +143,10 @@ export default create({
     fileSize: {
       type: Number
     },
+    dragFile: {
+      type: Boolean,
+      default: false
+    },
     drag: {
       type: Boolean,
       default: false
@@ -166,12 +169,6 @@ export default create({
 
   },
   computed: {
-    isDrag () {
-      if (['picture-card', 'picture-img'].includes(this.listType)) {
-        return false
-      }
-      return this.drag
-    },
     isMultiple () {
       return this.isArray || this.isString || this.stringMode
     },
@@ -221,7 +218,7 @@ export default create({
           list.push({
             uid: index + '',
             status: 'done',
-            isImage: ele.isImage || typeList.img.test(ele[this.valueKey]),
+            isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
             url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
           });
@@ -247,7 +244,7 @@ export default create({
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
           this.text.splice(evt.newIndex, 0, targetRow)
-          this.reload = this.reload + 1;
+          this.reload = Math.random();
           this.$nextTick(() => this.setSort())
         }
       })
@@ -345,10 +342,6 @@ export default create({
                 headers: this.headers
               });
             } else {
-              if (!axios) {
-                packages.logs('axios');
-                return Promise.reject()
-              }
               return this.$axios.post(url, param, { headers });
             }
           })()
@@ -404,14 +397,10 @@ export default create({
     },
     handlePreview (file) {
       const callback = () => {
-        let url = file.url
-        let list = this.fileList.map(ele => Object.assign(ele, {
-          type: typeList.video.test(ele.url) ? 'video' : ''
-        }))
         let index = this.fileList.findIndex(ele => {
-          return ele.url === url;
+          return ele.url === file.url;
         })
-        this.$ImagePreview(list, index);
+        this.$ImagePreview(this.fileList, index);
       }
       if (typeof this.uploadPreview === "function") {
         this.uploadPreview(file, this.column, callback);

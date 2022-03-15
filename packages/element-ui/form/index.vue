@@ -203,9 +203,10 @@ export default create({
       optionBox: false,
       tableOption: {},
       itemSpanDefault: 12,
-      bindList: {},
       form: {},
+      formFirst: false,
       formList: [],
+      formBind: {},
       formDefault: {},
     };
   },
@@ -332,7 +333,7 @@ export default create({
         //处理级联属性
         ele.column = calcCascader(ele.column);
         //根据order排序
-        ele.column = ele.column.sort((a, b) => b.order || 0 - a.order || 0)
+        ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });
       return group;
     },
@@ -454,13 +455,11 @@ export default create({
     //表单赋值
     setForm (value) {
       Object.keys(value).forEach(ele => {
-        let result = value[ele];
-        let column = this.propOption.find(column => column.prop == ele)
-        this.form[ele] = result;
-        if (!column) return
+        this.form[ele] = value[ele]
+        let column = this.propOption.find(column => column.prop == ele) || {}
         let prop = column.prop
         let bind = column.bind
-        if (bind && !this.bindList[prop]) {
+        if (bind && !this.formBind[prop]) {
           this.$watch('form.' + prop, (n, o) => {
             if (n != o) setAsVal(this.form, bind, n);
           })
@@ -468,7 +467,7 @@ export default create({
             if (n != o) this.form[prop] = n
           })
           this.form[prop] = eval('value.' + bind)
-          this.bindList[prop] = true;
+          this.formBind[prop] = true;
         }
       });
       this.forEachLabel();
@@ -477,45 +476,47 @@ export default create({
       this.$nextTick(() => {
         const cascader = column.cascader;
         const str = cascader.join(",");
-        const columnNextProp = cascader[0];
-        const value = this.form[column.prop];
-        // 下一个节点
-        const columnNext = this.findObject(list, columnNextProp)
-        if (this.validatenull(columnNext)) return
-        // 如果不是首次加载则清空全部关联节点的属性值和字典值
-        if (this.formList.includes(str)) {
-          //清空子类字典列表和值
-          cascader.forEach(ele => {
-            this.form[ele] = "";
-            this.DIC[ele] = []
-          });
-        }
-        /**
-         * 1.判断当前节点是否有下级节点
-         * 2.判断当前节点是否有值
-         */
-        if (
-          this.validatenull(cascader) ||
-          this.validatenull(value) ||
-          this.validatenull(columnNext)
-        ) {
-          return;
-        }
-        // 根据当前节点值获取下一个节点的字典
-        sendDic({
-          column: columnNext,
-          value: value,
-          form: this.form
-        }).then(res => {
-          //首次加载的放入队列记录
-          if (!this.formList.includes(str)) this.formList.push(str);
-          // 修改字典
-          const dic = Array.isArray(res) ? res : [];
-          this.DIC[columnNextProp] = dic;
-          if (!this.validatenull(dic) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
-            this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
+        cascader.forEach(item => {
+          const columnNextProp = item;
+          const value = this.form[column.prop];
+          // 下一个节点
+          const columnNext = this.findObject(list, columnNextProp)
+          if (this.validatenull(columnNext)) return
+          // 如果不是首次加载则清空全部关联节点的属性值和字典值
+          if (this.formList.includes(str)) {
+            //清空子类字典列表和值
+            cascader.forEach(ele => {
+              this.form[ele] = "";
+              this.DIC[ele] = []
+            });
           }
-        });
+          /**
+           * 1.判断当前节点是否有下级节点
+           * 2.判断当前节点是否有值
+           */
+          if (
+            this.validatenull(cascader) ||
+            this.validatenull(value) ||
+            this.validatenull(columnNext)
+          ) {
+            return;
+          }
+          // 根据当前节点值获取下一个节点的字典
+          sendDic({
+            column: columnNext,
+            value: value,
+            form: this.form
+          }).then(res => {
+            //首次加载的放入队列记录
+            if (!this.formList.includes(str)) this.formList.push(str);
+            // 修改字典
+            const dic = res || [];
+            this.DIC[columnNextProp] = dic
+            if (!this.validatenull(dic) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
+              this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
+            }
+          });
+        })
       })
     },
     handlePrint () {
