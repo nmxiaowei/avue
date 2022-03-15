@@ -1,7 +1,7 @@
 <template>
   <component :is="getComponent(column.type,column.component)"
              v-model="text"
-             v-bind="column"
+             v-bind="getBind(column)"
              v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"
@@ -131,6 +131,10 @@ export default {
   methods: {
     getComponent,
     getPlaceholder,
+    getBind (column) {
+      delete column.value
+      return column
+    },
     enterChange () {
       if (typeof this.column.enter === 'function') this.column.enter(this.text, this.column)
       if (this.enter) this.$emit('enter')

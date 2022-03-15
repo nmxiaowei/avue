@@ -142,7 +142,7 @@ export default create({
   },
   created () {
     this.getSearchType = getSearchType;
-    this.formDefault = formInitVal(this.columnOption).tableForm;
+    this.formDefault = formInitVal(this.columnOption);
   },
   methods: {
     getColumnByIndex (column, index) {

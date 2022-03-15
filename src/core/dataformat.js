@@ -143,9 +143,8 @@ export const formInitVal = (list = []) => {
       tableForm[ele.prop] = ele.value;
     }
   });
-  return {
-    tableForm
-  };
+  return tableForm
+
 };
 
 export const getPlaceholder = function (column, type) {

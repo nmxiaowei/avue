@@ -596,7 +596,7 @@ export default create({
     //单元格新增
     rowCellAdd (row = {}) {
       let len = this.list.length
-      let formDefault = formInitVal(this.propOption).tableForm;
+      let formDefault = formInitVal(this.propOption);
       row = this.deepClone(
         Object.assign(
           {

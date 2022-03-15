@@ -383,6 +383,9 @@ export default create({
       }
     }
   },
+  mounted () {
+    this.dataFormat()
+  },
   methods: {
     getComponent,
     getPlaceholder,
@@ -435,6 +438,9 @@ export default create({
     },
     getPropRef (prop) {
       return this.$refs[prop][0];
+    },
+    dataFormat () {
+      this.setForm(formInitVal(this.propOption))
     },
     setVal () {
       this.setControl();
