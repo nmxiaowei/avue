@@ -262,13 +262,13 @@ export default create({
       return this.columnOption.length != 1
     },
     isDetail () {
-      return this.detail == true
+      return this.detail === true
+    },
+    isTabs () {
+      return this.parentOption.tabs === true;
     },
     isAdd () {
       return this.boxType === "add"
-    },
-    isTabs () {
-      return this.parentOption.tabs;
     },
     isEdit () {
       return this.boxType === "edit"

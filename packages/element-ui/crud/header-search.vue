@@ -11,7 +11,7 @@
                @submit="searchChange"
                @change="handleChange"
                @reset-change="resetChange"
-               v-if="searchFlag"
+               v-if="searchShow"
                v-model="searchForm">
       <template slot="menuForm"
                 slot-scope="scope">
@@ -72,9 +72,6 @@ export default create({
       this.dataFormat()
     },
     show () {
-      this.dataFormat()
-    },
-    searchShow () {
       this.dataFormat()
     },
     search: {
@@ -176,17 +173,14 @@ export default create({
       }
       const dataDetail = (list) => {
         let result = this.deepClone(list);
-        result.translate = false;
-        if (result.group) {
-          delete result.group;
-        }
         result.column = detailColumn(this.deepClone(this.crud.propOption))
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
-          enter: this.vaildData(option.searchEnter, true),
+          group: false,
           printBtn: false,
           mockBtn: false,
+          enter: option.searchEnter,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.vaildData(option.searchBtn, config.searchSubBtn),

@@ -39,7 +39,7 @@
                @tab-click="handleTabClick"
                @error="handleError"
                v-bind="$uploadFun({},crud)"
-               :option="formOption">
+               :option="option">
       <template slot-scope="scope"
                 v-for="item in crud.formSlot"
                 :slot="getSlotName(item)">
@@ -51,17 +51,17 @@
     </avue-form>
     <span class="avue-dialog__footer"
           :class="'avue-dialog__footer--'+dialogMenuPosition">
-      <el-button v-if="vaildData(formOption.submitBtn,true) && !isView"
+      <el-button v-if="vaildData(option.submitBtn,true) && !isView"
                  @click="submit"
                  :disabled="disabled"
                  :size="crud.controlSize"
-                 :icon="formOption.submitIcon || 'el-icon-check'"
-                 type="primary">{{formOption.submitText}}</el-button>
-      <el-button v-if="vaildData(formOption.emptyBtn,true) && !isView"
+                 :icon="option.submitIcon || 'el-icon-check'"
+                 type="primary">{{option.submitText}}</el-button>
+      <el-button v-if="vaildData(option.emptyBtn,true) && !isView"
                  @click="reset"
                  :disabled="disabled"
                  :size="crud.controlSize || 'el-icon-delete'"
-                 :icon="formOption.emptyIcon">{{formOption.emptyText}}</el-button>
+                 :icon="option.emptyIcon">{{option.emptyText}}</el-button>
       <slot name="menuForm"
             :disabled="disabled"
             :size="crud.controlSize"
@@ -86,7 +86,8 @@ export default create({
       fullscreen: false,
       size: null,
       boxVisible: false,
-      boxHeight: 0
+      boxHeight: 0,
+      option: {}
     };
   },
   props: {
@@ -95,6 +96,11 @@ export default create({
       default: () => {
         return {};
       }
+    }
+  },
+  watch: {
+    'crud.propOption' () {
+      this.dataFormat()
     }
   },
   computed: {
@@ -117,12 +123,7 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      if (!this.isDrawer && !this.fullscreen) {
-        return this.crud.tableOption.dialogTop
-      } else {
-        return 0
-      }
-      return
+      return (!this.isDrawer && !this.fullscreen) ? this.crud.tableOption.dialogTop : 0
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
@@ -131,7 +132,21 @@ export default create({
       let drawerSize = this.size ? this.size : this.width;
       return this.isDrawer ? { 'size': drawerSize } : {};
     },
-    formOption () {
+    dialogTitle () {
+      const key = `${this.boxType}`;
+      if (!this.validatenull(this.boxType)) {
+        return this.crud.tableOption[key + 'Title'] || this.t(`crud.${key}Title`);
+      }
+    },
+    dialogMenuPosition () {
+      return this.crud.option.dialogMenuPosition || 'right'
+    }
+  },
+  created () {
+    this.dataFormat()
+  },
+  methods: {
+    dataFormat () {
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
@@ -161,19 +176,8 @@ export default create({
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }
-      return option;
+      this.option = option;
     },
-    dialogTitle () {
-      const key = `${this.boxType}`;
-      if (!this.validatenull(this.boxType)) {
-        return this.crud.tableOption[key + 'Title'] || this.t(`crud.${key}Title`);
-      }
-    },
-    dialogMenuPosition () {
-      return this.crud.option.dialogMenuPosition || 'right'
-    }
-  },
-  methods: {
     submit () {
       this.$refs.tableForm.submit()
     },
@@ -294,6 +298,7 @@ export default create({
     show (type) {
       this.boxType = type;
       const callback = () => {
+        this.dataFormat()
         this.fullscreen = this.crud.tableOption.dialogFullscreen
         this.boxVisible = true;
       };
