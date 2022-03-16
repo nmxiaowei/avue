@@ -180,7 +180,7 @@ import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { filterNullParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -224,6 +224,13 @@ export default create({
         if (this.formCreate) this.setVal();
       },
       deep: true
+    },
+    DIC: {
+      handler () {
+        this.forEachLabel()
+      },
+      deep: true,
+      immediate: true
     },
     allDisabled: {
       handler (val) {
@@ -417,6 +424,7 @@ export default create({
       }
     },
     forEachLabel () {
+      if (this.tableOption.filterDic == true) return
       this.propOption.forEach(column => {
         let result;
         let DIC = this.DIC[column.prop]
@@ -493,7 +501,8 @@ export default create({
           this.formBind[prop] = true;
         }
       });
-      this.forEachLabel();
+      this.forEachLabel()
+      if (this.tableOption.filterNull === true) filterNullParams(this.form)
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -677,7 +686,7 @@ export default create({
     submit () {
       this.validate((valid, msg) => {
         if (valid) {
-          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          this.$emit("submit", this.form, this.hide);
         } else {
           this.$emit("error", msg);
         }

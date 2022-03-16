@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import { filterDefaultParams } from 'utils/util'
 import create from "core/create";
 import locale from "core/locale";
 import config from "./config";
@@ -162,7 +161,6 @@ export default create({
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }
-
       return option;
     },
     dialogTitle () {
@@ -227,7 +225,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
+        this.crud.tableForm,
         this.closeDialog,
         hide
       );
@@ -236,7 +234,7 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
+        this.crud.tableForm,
         this.crud.tableIndex,
         this.closeDialog,
         hide

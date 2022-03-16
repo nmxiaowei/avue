@@ -37,7 +37,7 @@
                       size:crud.isMediumSize,
                       index:$index,
                       disabled:crud.btnDisabledList[$index],
-                      label:handleShowLabel(row,column,crud.DIC[column.prop]),
+                      label:handleDetail(row,column),
                       '$cell':row.$cellEdit
                     }"
                 :name="crud.getSlotName(column,'F')"
@@ -67,7 +67,7 @@
             :index="$index"
             :dic="crud.DIC[column.prop]"
             :size="crud.isMediumSize"
-            :label="handleShowLabel(row,column,crud.DIC[column.prop])"
+            :label="handleDetail(row,column)"
             :name="column.prop"
             v-else-if="crud.$scopedSlots[column.prop]"></slot>
       <template v-else>
@@ -142,14 +142,6 @@ export default {
       if (column.rules && row.$cellEdit) {
         return val
       }
-    },
-    handleShowLabel (row, column, DIC) {
-      let result = "";
-      if (!this.validatenull(DIC)) {
-        result = detail(row, column, this.crud.tableOption, DIC);
-        row["$" + column.prop] = result;
-      }
-      return result;
     },
     columnChange ($index, row, column) {
       if (this.validatenull(count[$index])) count[$index] = {}
@@ -232,7 +224,7 @@ export default {
       let result = row[column.prop];
       let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
       result = detail(row, column, this.crud.tableOption, DIC);
-      if (!this.validatenull(DIC)) {
+      if (!this.validatenull(DIC) && this.crud.tableOption.filterDic !== true) {
         row["$" + column.prop] = result;
       }
       return result;
