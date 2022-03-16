@@ -668,7 +668,7 @@ export default create({
       });
     },
     resetForm () {
-      this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
+      this.form = clearVal(this.form, (this.tableOption.filterParams || []).concat([this.rowKey]))
       this.$nextTick(() => {
         this.clearValidate()
         this.$emit("reset-change");
