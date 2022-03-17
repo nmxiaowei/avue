@@ -19,8 +19,6 @@ Plugin.prototype.initMounted = function () {
 
 Plugin.prototype.show = function (opt) {
   this.initMounted();
-  return new Promise(resolve => {
-    this.$root.show(opt, resolve);
-  });
+  this.$root.show(opt);
 };
 export default new Plugin();
