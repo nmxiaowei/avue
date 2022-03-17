@@ -55,12 +55,12 @@
                  @click="submit"
                  :disabled="disabled"
                  :size="crud.controlSize"
-                 :icon="option.submitIcon || 'el-icon-check'"
+                 :icon="option.submitIcon"
                  type="primary">{{option.submitText}}</el-button>
       <el-button v-if="vaildData(option.emptyBtn,true) && !isView"
                  @click="reset"
                  :disabled="disabled"
-                 :size="crud.controlSize || 'el-icon-delete'"
+                 :size="crud.controlSize"
                  :icon="option.emptyIcon">{{option.emptyText}}</el-button>
       <slot name="menuForm"
             :disabled="disabled"
@@ -86,7 +86,6 @@ export default create({
       fullscreen: false,
       size: null,
       boxVisible: false,
-      boxHeight: 0,
       option: {}
     };
   },

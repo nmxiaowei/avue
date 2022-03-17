@@ -51,7 +51,7 @@ const install = function (Vue, opts = {}) {
   }
   if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
   const defaultOption = {
-    size: opts.size,
+    size: opts.size || 'small',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({
