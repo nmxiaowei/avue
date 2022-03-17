@@ -349,6 +349,16 @@ export const filterNullParams = (form) => {
   }
 };
 /**
+ * 过滤字典翻译字段和空字段
+ */
+export const filterDicParams = (form) => {
+  for (let o in form) {
+    if (o.indexOf('$') !== -1) {
+      delete form[o];
+    }
+  }
+};
+/**
  * 处理存在group分组的情况
  */
 export const detailDicGroup = (dic = [], props = {}) => {

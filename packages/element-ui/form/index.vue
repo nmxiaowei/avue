@@ -180,7 +180,7 @@ import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterNullParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { filterNullParams, filterDicParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -424,7 +424,10 @@ export default create({
       }
     },
     forEachLabel () {
-      if (this.tableOption.filterDic == true) return
+      if (this.tableOption.filterDic == true) {
+        filterDicParams(this.form)
+        return
+      }
       this.propOption.forEach(column => {
         let result;
         let DIC = this.DIC[column.prop]
