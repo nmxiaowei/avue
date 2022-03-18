@@ -41,8 +41,8 @@
 import create from "core/create";
 import config from "./config.js";
 import packages from "core/packages";
-import locale from "../../core/common/locale";
-import permission from '../../core/directive/permission';
+import locale from "core/locale";
+import permission from 'common/directive/permission';
 export default create({
   name: "crud",
   data () {

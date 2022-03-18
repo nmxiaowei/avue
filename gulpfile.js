@@ -6,8 +6,8 @@ const webpack = require("webpack");
 const webpackConf = require("./build/build.js");
 
 // 构建webpack配置
-gulp.task("webpack", async function () {
-  await webpack(webpackConf, function (err, stats) {
+gulp.task("webpack", async function() {
+  await webpack(webpackConf, function(err, stats) {
     if (err) {
       console.log(err);
     }
@@ -15,7 +15,7 @@ gulp.task("webpack", async function () {
 });
 
 // 处理样式的配置
-gulp.task("compile", function () {
+gulp.task("compile", function() {
   return gulp
     .src("./styles/index.scss")
     .pipe(sass.sync())
@@ -33,7 +33,7 @@ gulp.task("compile", function () {
 gulp.task("build", gulp.series(["webpack", "compile"]));
 
 // 监听文件变化
-gulp.task("watch", async function () {
+gulp.task("watch", async function() {
   gulp.watch(["./src/**", "./packages/**"], gulp.series(["webpack"]));
   gulp.watch(["./styles/**"], gulp.series(["compile"]));
 });

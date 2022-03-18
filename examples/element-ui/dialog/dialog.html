@@ -29,89 +29,18 @@
     data() {
       return {
         option: {
-          labelWidth: 150,
-          formHeight: 200,
           submitText: '完成',
           column: [
             {
-              label: "房产证号",
-              prop: "name1",
-              suffixIcon: 'el-icon-tickets',
-              prefixIcon: 'el-icon-tickets',
-              rules: [{
-                required: true,
-                message: "请输入部门名称",
-                trigger: "blur"
-              }],
-            },
-
-            {
-              label: "土地来源",
-              prop: "type",
-              type: "select",
-
-
-            },
-            {
-              label: "是否有配偶",
-              prop: "grade1",
-              type: "checkbox",
-            },
-            {
-              label: "证件类型",
-              prop: "idType",
-              type: "select",
-
-            },
-            {
-              label: "证件号码",
-              prop: "idNumber",
-
-              rules: [{
-                required: true,
-                message: "请输入证件号",
-                trigger: "blur"
-              }],
-            },
-            {
               label: "姓名",
-              prop: "customerName",
-              mock: {
-                type: 'name'
-              },
-            },
-            {
-              label: "出生日期",
-              prop: "dat3e",
-              type: "date",
-              format: 'yyyy-MM-dd',
-              valueFormat: 'yyyy-MM-dd',
-              mock: {
-                type: 'datetime',
-                format: 'yyyy-MM-dd'
-              },
-            },
-            {
-              label: "手机号",
-
-
-              prop: "tel",
-              type: 'input'
-            },
-            {
-              label: "配偶是否共有人",
-              prop: "grad2e1",
-              type: "checkbox",
-
-            },
-            {
-              label: "是否有其他共有人",
-              prop: "gr2ad2e1",
-              type: "checkbox",
-
-            }
-
-          ]
+              prop: "name",
+              span: 24,
+              rules: [{
+                required: true,
+                message: "请输入姓名",
+                trigger: "blur"
+              }]
+            }]
         },
         form: {}
       }
@@ -120,41 +49,45 @@
       showDialog() {
         this.$DialogForm.show({
           title: '弹窗页面',
-          width: '80%',
+          width: '30%',
+          menuPosition: 'right',
           option: this.option,
-          beforeClose: () => {
+          beforeClose: (done) => {
             this.$message.success('关闭前方法')
+            done()
           },
-        }).then(res => {
-          console.log(res.data);
-          this.$message.success('关闭等待框')
-          setTimeout(() => {
-            res.done()
+          callback: (res) => {
+            console.log(res.data);
+            this.$message.success('关闭等待框')
             setTimeout(() => {
-              this.$message.success('关闭弹窗')
-              res.close()
+              res.done()
+              setTimeout(() => {
+                this.$message.success('关闭弹窗')
+                res.close()
+              }, 1000)
             }, 1000)
-          }, 1000)
-        });
+          }
+        })
 
       },
       showDialog1() {
         this.$DialogForm.show({
           title: '弹窗页面（带上数据)',
           width: '50%',
-          data: { name1: '测试数据' },
-          option: this.option
-        }).then(res => {
-          console.log(res.data);
-          this.$message.success('关闭等待框')
-          setTimeout(() => {
-            res.done()
+          data: { name: '测试数据' },
+          option: this.option,
+          callback: (res) => {
+            console.log(res.data);
+            this.$message.success('关闭等待框')
             setTimeout(() => {
-              this.$message.success('关闭弹窗')
-              res.close()
+              res.done()
+              setTimeout(() => {
+                this.$message.success('关闭弹窗')
+                res.close()
+              }, 1000)
             }, 1000)
-          }, 1000)
-        });
+          }
+        })
       }
     }
   })

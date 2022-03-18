@@ -175,12 +175,12 @@
 <script>
 import { detail } from "core/detail";
 import create from "core/create";
-import init from "../../core/common/init";
-import formTemp from '../../core/components/form/index'
+import init from "common/common/init";
+import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterDefaultParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { filterNullParams, filterDicParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 export default create({
@@ -225,6 +225,13 @@ export default create({
       },
       deep: true
     },
+    DIC: {
+      handler () {
+        this.forEachLabel()
+      },
+      deep: true,
+      immediate: true
+    },
     allDisabled: {
       handler (val) {
         this.$emit('update:status', val)
@@ -255,13 +262,13 @@ export default create({
       return this.columnOption.length != 1
     },
     isDetail () {
-      return this.detail == true
+      return this.detail === true
+    },
+    isTabs () {
+      return this.parentOption.tabs === true;
     },
     isAdd () {
       return this.boxType === "add"
-    },
-    isTabs () {
-      return this.parentOption.tabs;
     },
     isEdit () {
       return this.boxType === "edit"
@@ -417,6 +424,10 @@ export default create({
       }
     },
     forEachLabel () {
+      if (this.tableOption.filterDic == true) {
+        filterDicParams(this.form)
+        return
+      }
       this.propOption.forEach(column => {
         let result;
         let DIC = this.DIC[column.prop]
@@ -493,7 +504,8 @@ export default create({
           this.formBind[prop] = true;
         }
       });
-      this.forEachLabel();
+      this.forEachLabel()
+      if (this.tableOption.filterNull === true) filterNullParams(this.form)
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -659,7 +671,7 @@ export default create({
       });
     },
     resetForm () {
-      this.form = clearVal(this.form, (this.tableOption.clearExclude || []).concat([this.rowKey]))
+      this.form = clearVal(this.form, (this.tableOption.filterParams || []).concat([this.rowKey]))
       this.$nextTick(() => {
         this.clearValidate()
         this.$emit("reset-change");
@@ -677,7 +689,7 @@ export default create({
     submit () {
       this.validate((valid, msg) => {
         if (valid) {
-          this.$emit("submit", filterDefaultParams(this.form, this.parentOption.translate), this.hide);
+          this.$emit("submit", this.form, this.hide);
         } else {
           this.$emit("error", msg);
         }

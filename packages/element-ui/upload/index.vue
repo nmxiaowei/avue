@@ -74,16 +74,15 @@
 
 <script>
 import create from "core/create";
-import props from "../../core/common/props.js";
-import event from "../../core/common/event.js";
-import locale from "../../core/common/locale";
+import props from "common/common/props.js";
+import event from "common/common/event.js";
+import locale from "core/locale";
 import { getAsVal } from "utils/util";
 import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
 import { typeList } from 'global/variable'
-import axios from 'axios';
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -212,7 +211,7 @@ export default create({
           list.push({
             uid: index + '',
             status: 'done',
-            isImage: ele.isImage || typeList.img.test(ele[this.valueKey]),
+            isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
             url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
           });
@@ -301,7 +300,6 @@ export default create({
       const done = () => {
         const callback = (newFile) => {
           let url = this.action;
-          //附加属性
           for (let o in this.data) {
             param.append(o, this.data[o]);
           }
@@ -336,7 +334,7 @@ export default create({
                 headers: this.headers
               });
             } else {
-              return axios.post(url, param, { headers });
+              return this.$axios.post(url, param, { headers });
             }
           })()
             .then(res => {
@@ -391,14 +389,10 @@ export default create({
     },
     handlePreview (file) {
       const callback = () => {
-        let url = file.url
-        let list = this.fileList.map(ele => Object.assign(ele, {
-          type: this.typeList.video.test(ele.url) ? 'video' : ''
-        }))
         let index = this.fileList.findIndex(ele => {
-          return ele.url === url;
+          return ele.url === file.url;
         })
-        this.$ImagePreview(list, index);
+        this.$ImagePreview(this.fileList, index);
       }
       if (typeof this.uploadPreview === "function") {
         this.uploadPreview(file, this.column, callback);

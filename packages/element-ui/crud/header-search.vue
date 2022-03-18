@@ -11,7 +11,7 @@
                @submit="searchChange"
                @change="handleChange"
                @reset-change="resetChange"
-               v-if="searchFlag"
+               v-if="searchShow"
                v-model="searchForm">
       <template slot="menuForm"
                 slot-scope="scope">
@@ -46,46 +46,33 @@
 </template>
 
 <script>
-import cteate from "core/create";
-import { vaildData } from "utils/util";
-import { validatenull } from "utils/validate";
-import locale from "../../core/common/locale";
+import create from "core/create";
 import slot from 'core/slot'
-import {
-  formInitVal,
-  getSearchType,
-  getType
-} from "core/dataformat";
 import config from "./config";
-export default cteate({
+import locale from "core/locale";
+import { getSearchType } from "core/dataformat";
+export default create({
   name: "crud__search",
   inject: ["crud"],
   mixins: [locale, slot],
   data () {
     return {
+      option: {},
       show: false,
-      flag: false,
-      defaultForm: {
-        searchForm: {}
-      },
+      searchIndex: 2,
       searchShow: true,
       searchForm: {}
     };
   },
   props: {
-    search: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
+    search: Object
   },
   watch: {
-    'crud.propOption': {
-      handler () {
-        this.dataFormat();
-      },
-      immediate: true
+    'crud.propOption' () {
+      this.dataFormat()
+    },
+    show () {
+      this.dataFormat()
     },
     search: {
       handler () {
@@ -93,40 +80,56 @@ export default cteate({
       },
       immediate: true,
       deep: true
-    },
-    show: {
-      handler () {
-        this.crud.getTableHeight()
-      }
-    },
-    searchShow: {
-      handler () {
-        this.crud.getTableHeight()
-      }
     }
   },
   created () {
     this.initFun();
+    this.dataFormat()
   },
   computed: {
-    isGroup () {
-      return !this.validatenull(this.crud.tableOption.group);
-    },
     isSearchIcon () {
-      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
+      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
     },
-    searchIndex () {
-      return this.crud.option.searchIndex || 2
-    },
-    columnLen () {
+    searchLen () {
       let count = 0;
       this.crud.propOption.forEach(ele => {
         if (ele.search) count++
       })
       return count
     },
-    option () {
+    searchFlag () {
+      return !!this.crud.$scopedSlots.search || this.searchLen !== 0
+    }
+  },
+  methods: {
+    initFun () {
+      ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
+    },
+    getSlotName (item) {
+      return item.replace('Search', '')
+    },
+    handleChange () {
+      this.crud.$emit('update:search', this.searchForm)
+    },
+    // 搜索回调
+    searchChange (form, done) {
+      this.crud.$emit("search-change", form, done);
+    },
+    // 搜索清空
+    resetChange () {
+      this.crud.$emit("search-reset", this.searchForm);
+    },
+    // 搜索清空
+    searchReset () {
+      this.$refs.form.resetForm();
+    },
+    handleSearchShow () {
+      this.searchShow = !this.searchShow;
+    },
+    dataFormat () {
       const option = this.crud.option;
+      this.searchShow = this.vaildData(option.searchShow, config.searchShow);
+      this.searchIndex = option.searchIndex || 2
       const detailColumn = (list = []) => {
         let column = [];
         let count = 0;
@@ -157,12 +160,10 @@ export default cteate({
               value: ele.searchValue || this.searchForm[ele.prop],
               rules: ele.searchRules,
               row: ele.searchRow,
+              bind: ele.searchBin,
+              disabled: ele.searchDisabled,
+              readonly: ele.searchReadonly,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
-            })
-            delete ele.bind
-            let whiteList = ['disabled', 'readonly']
-            whiteList.forEach(key => {
-              delete ele[key]
             })
             column.push(ele);
             count = count + 1;
@@ -172,17 +173,14 @@ export default cteate({
       }
       const dataDetail = (list) => {
         let result = this.deepClone(list);
-        result.translate = false;
-        if (result.group) {
-          delete result.group;
-        }
         result.column = detailColumn(this.deepClone(this.crud.propOption))
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
-          enter: this.vaildData(option.searchEnter, true),
+          group: false,
           printBtn: false,
           mockBtn: false,
+          enter: option.searchEnter,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.vaildData(option.searchBtn, config.searchSubBtn),
@@ -203,42 +201,8 @@ export default cteate({
         })
         return result;
       }
-      let result = dataDetail(option)
-      return result;
-    },
-    searchFlag () {
-      return !!this.crud.$scopedSlots.search || !validatenull(this.searchForm);
-    }
-  },
-  methods: {
-    initFun () {
-      ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
-    },
-    getSlotName (item) {
-      return item.replace('Search', '')
-    },
-    handleChange () {
-      this.crud.$emit('update:search', this.searchForm)
-    },
-    // 搜索回调
-    searchChange (form, done) {
-      this.crud.$emit("search-change", form, done);
-    },
-    // 搜索清空
-    resetChange () {
-      this.crud.$emit("search-reset", this.defaultForm.tableForm);
-    },
-    // 搜索清空
-    searchReset () {
-      this.$refs.form.resetForm();
-    },
-    handleSearchShow () {
-      this.searchShow = !this.searchShow;
-    },
-    dataFormat () {
-      this.defaultForm = formInitVal(this.option.column);
-      this.searchForm = this.deepClone(this.defaultForm.tableForm);
-      this.searchShow = vaildData(this.crud.tableOption.searchShow, config.searchShow);
+      this.option = dataDetail(option)
+      this.crud.getTableHeight()
     }
   }
 });
