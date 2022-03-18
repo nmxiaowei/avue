@@ -441,7 +441,7 @@ export default create({
           if (!tableRef) return
           const tableStyle = tableRef.$el;
           const pageStyle = tablePageRef.$el.offsetHeight || 20;
-          this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
