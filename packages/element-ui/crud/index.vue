@@ -149,14 +149,15 @@
         </el-table>
       </el-form>
       <slot name="footer"></slot>
-      <!-- 分页 -->
-      <table-page ref="tablePage"
-                  :page="page">
-        <template slot="page">
-          <slot name="page"></slot>
-        </template>
-      </table-page>
     </el-card>
+    <!-- 分页 -->
+    <table-page ref="tablePage"
+                :page="page">
+      <template slot="page">
+        <slot name="page"></slot>
+      </template>
+    </table-page>
+
     <!-- 表单 -->
     <dialog-form ref="dialogForm">
       <template slot-scope="scope"
