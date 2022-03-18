@@ -440,7 +440,7 @@ export default create({
       return this.$refs[prop][0];
     },
     dataFormat () {
-      this.setForm(formInitVal(this.propOption))
+      this.setForm(Object.assign(formInitVal(this.propOption), this.form))
     },
     setVal () {
       this.setControl();
