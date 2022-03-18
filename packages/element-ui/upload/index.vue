@@ -300,10 +300,8 @@ export default create({
       const done = () => {
         const callback = (newFile) => {
           let url = this.action;
-          //附加属性 解决附加属性取不到值
-          let tmpData=this.column.data || this.data
-          for (let o in tmpData) {
-            param.append(o, tmpData[o]);
+          for (let o in this.data) {
+            param.append(o, this.data[o]);
           }
           const uploadfile = newFile || file;
           param.append(this.fileName, uploadfile);
