@@ -1,7 +1,5 @@
 // crud配置文件
 export default {
-  clientHeight: document.documentElement.clientHeight,
-  // 尺寸
   menuWidth: 220,
   menuFixed: 'right',
   menuXsWidth: 100,
