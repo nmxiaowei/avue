@@ -1,11 +1,13 @@
 <template>
   <el-dialog v-model="visible"
              destroy-on-close
+             class="avue-dialog"
              :beforeClose="beforeClose"
              v-bind="dialog">
-    <avue-form :option="form.option"
-               v-model="form.data"
-               @submit="submit"
+    <avue-form ref="form"
+               :option="option"
+               v-model="data"
+               @submit="handleSubmit"
                @reset-change="close"></avue-form>
     <span class="avue-dialog__footer"
           :class="'avue-dialog__footer--'+menuPosition">
@@ -20,17 +22,9 @@
   </el-dialog>
 </template>
 <script>
-import { ElDialog } from 'element-plus'
-import AvueForm from 'packages/element-ui/form';
-export default {
+import create from "core/create";
+export default create({
   name: 'dialog-form',
-  components: {
-    ElDialog,
-    AvueForm
-  },
-  props: {
-    onDestroy: Function
-  },
   data () {
     return {
       opt: {},
@@ -56,6 +50,16 @@ export default {
     }
   },
   methods: {
+    show (opt) {
+      this.opt = opt;
+      this.callback = opt.callback;
+      let dialog = this.deepClone(opt);
+      ['callback', 'option', 'data'].forEach(ele => delete dialog[ele])
+      this.dialog = Object.assign(this.dialog, dialog);
+      this.option = Object.assign(this.option, opt.option);
+      this.data = opt.data;
+      this.visible = true;
+    },
     submit () {
       this.$refs.form.submit()
     },
@@ -67,15 +71,18 @@ export default {
       this.close()
     },
     close () {
-      if (typeof this.dialog.beforeClose === 'function') {
-        this.dialog.beforeClose();
+      const callback = () => {
+        this.visible = false;
       }
-      this.visible = false;
-      this.onDestroy();
+      if (typeof this.dialog.beforeClose === 'function') {
+        this.dialog.beforeClose(callback);
+      } else {
+        callback()
+      }
     },
     handleSubmit (data, done) {
       this.callback && this.callback({ data: data, close: this.close, done: done });
     }
   }
-};
+});
 </script>

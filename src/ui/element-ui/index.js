@@ -10,6 +10,7 @@ import Form from 'packages/element-ui/form';
 import Checkbox from 'packages/element-ui/checkbox';
 import Date from 'packages/element-ui/date';
 import Draggable from 'packages/element-ui/draggable';
+import DialogForm from 'packages/element-ui/dialog-form';
 import Flow from 'packages/element-ui/flow';
 import Group from 'packages/element-ui/group';
 import Notice from 'packages/element-ui/notice';
@@ -58,6 +59,7 @@ export default [
   Date,
   CountUp,
   Draggable,
+  DialogForm,
   Flow,
   Group,
   Notice,

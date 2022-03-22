@@ -21,6 +21,7 @@
   <div id="app">
     <el-button plain @click="showDialog"> 弹窗页面</el-button>
     <el-button plain @click="showDialog1"> 弹窗页面（带上数据）</el-button>
+    <avue-dialog-form ref="dialogForm"></avue-dialog-form>
   </div>
 </body>
 
@@ -49,7 +50,7 @@
     },
     methods: {
       showDialog() {
-        this.$DialogForm.show({
+        this.$refs.dialogForm.show({
           title: '弹窗页面',
           width: '30%',
           menuPosition: 'right',
@@ -73,7 +74,7 @@
 
       },
       showDialog1() {
-        this.$DialogForm.show({
+        this.$refs.dialogForm.show({
           title: '弹窗页面（带上数据)',
           width: '50%',
           data: { name: '测试数据' },

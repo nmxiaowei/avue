@@ -13,12 +13,10 @@ import $Screenshot from 'plugin/screenshot/';
 import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $ImagePreview from 'packages/core/components/image-preview/';
-import $DialogForm from 'packages/core/components/dialog-form/';
 import createIcon from './icon';
 import ElementPlus from 'element-plus';
 let plugins = {
   $ImagePreview,
-  $DialogForm,
   $Export,
   $Print,
   $Clipboard,
