@@ -34,7 +34,7 @@
                @reset-change="hide"
                @tab-click="handleTabClick"
                @error="handleError"
-               :option="formOption">
+               :option="option">
       <!-- 循环form表单卡槽 -->
       <template v-for="item in crud.formSlot"
                 #[getSlotName(item)]="scope">
@@ -44,17 +44,17 @@
     </avue-form>
     <span class="avue-dialog__footer"
           :class="'avue-dialog__footer--'+dialogMenuPosition">
-      <el-button v-if="validData(formOption.submitBtn,true) && !isView"
+      <el-button v-if="validData(option.submitBtn,true) && !isView"
                  @click="submit"
                  :disabled="disabled"
                  :size="crud.controlSize"
-                 :icon="formOption.submitIcon || 'el-icon-check'"
-                 type="primary">{{formOption.submitText}}</el-button>
-      <el-button v-if="validData(formOption.emptyBtn,true) && !isView"
+                 :icon="option.submitIcon"
+                 type="primary">{{option.submitText}}</el-button>
+      <el-button v-if="validData(option.emptyBtn,true) && !isView"
                  @click="reset"
                  :disabled="disabled"
-                 :size="crud.controlSize || 'el-icon-delete'"
-                 :icon="formOption.emptyIcon">{{formOption.emptyText}}</el-button>
+                 :size="crud.controlSize"
+                 :icon="option.emptyIcon">{{option.emptyText}}</el-button>
       <slot name="menu-form"
             :disabled="disabled"
             :size="crud.controlSize"
@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import { filterDefaultParams } from 'utils/util'
 import create from "core/create";
 import locale from "core/locale";
 import config from "../config";
@@ -80,8 +79,7 @@ export default create({
       boxType: "",
       fullscreen: false,
       size: null,
-      boxVisible: false,
-      boxHeight: 0
+      boxVisible: false
     };
   },
   props: {
@@ -112,12 +110,7 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      if (!this.isDrawer && !this.fullscreen) {
-        return this.crud.tableOption.dialogTop
-      } else {
-        return 0
-      }
-      return
+      return (!this.isDrawer && !this.fullscreen) ? this.crud.tableOption.dialogTop : 0
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
@@ -132,7 +125,7 @@ export default create({
           fullscreen: this.fullscreen
         };
     },
-    formOption () {
+    option () {
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
@@ -227,7 +220,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
+        this.crud.tableForm,
         this.closeDialog,
         hide
       );
@@ -236,7 +229,7 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        filterDefaultParams(this.crud.tableForm, this.crud.tableOption.translate),
+        this.crud.tableForm,
         this.crud.tableIndex,
         this.closeDialog,
         hide

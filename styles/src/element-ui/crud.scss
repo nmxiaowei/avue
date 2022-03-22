@@ -138,6 +138,9 @@ $space-width: 15px;
     cursor: move;
     opacity: 0.4;
   }
+  .is-always-shadow+&__pagination {
+    padding: 0;
+  }
   &__pagination {
     position: relative;
     padding:20px 0;

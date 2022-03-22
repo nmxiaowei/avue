@@ -27,13 +27,13 @@ Plugin.prototype.initMounted = function (ops) {
 
 Plugin.prototype.show = function (opt) {
   this.initMounted(opt);
-  return new Promise(resolve => {
-    let data = this.$root.data;
-    data.resolve = resolve;
-    data.dialog = Object.assign(data.dialog, opt);
-    data.form.option = Object.assign(data.form.option, opt.option);
-    data.form.data = opt.data;
-    data.visible = true;
-  });
+  let data = this.$root.data;
+  data.opt = opt;
+  data.dialog = Object.assign(data.dialog, opt);
+  ['callback', 'option', 'data'].forEach(ele => delete dialog[ele])
+  data.dialog = Object.assign(data.dialog, dialog);
+  data.option = Object.assign(data.option, opt.option);
+  data.data = opt.data;
+  data.visible = true;
 };
 export default new Plugin();

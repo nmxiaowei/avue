@@ -1,43 +1,41 @@
 <template>
-  <el-collapse-transition>
-    <el-card :shadow="crud.isCard"
-             :class="b()"
-             v-show="searchShow && searchFlag">
-      <slot name="search"
-            :row="searchForm"
-            :search="searchForm"
-            :size="crud.controlSize"></slot>
-      <avue-form :option="option"
-                 ref="form"
-                 @submit="searchChange"
-                 @reset-change="resetChange"
-                 v-model="searchForm">
-        <template #menu-form="scope">
-          <slot name="search-menu"
-                v-bind="Object.assign(scope,{
+  <el-card :shadow="crud.isCard"
+           :class="b()"
+           v-show="searchShow && searchFlag">
+    <slot name="search"
+          :row="searchForm"
+          :search="searchForm"
+          :size="crud.controlSize"></slot>
+    <avue-form :option="option"
+               ref="form"
+               @submit="searchChange"
+               @reset-change="resetChange"
+               v-model="searchForm">
+      <template #menu-form="scope">
+        <slot name="search-menu"
+              v-bind="Object.assign(scope,{
                   search:searchForm,
                   row:searchForm
                 })"></slot>
-          <template v-if="isSearchIcon">
-            <el-button type="text"
-                       v-if="show===false"
-                       @click="show=true"
-                       icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
-            <el-button type="text"
-                       v-if="show===true"
-                       @click="show=false"
-                       icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
-          </template>
+        <template v-if="isSearchIcon">
+          <el-button type="text"
+                     v-if="show===false"
+                     @click="show=true"
+                     icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
+          <el-button type="text"
+                     v-if="show===true"
+                     @click="show=false"
+                     icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
+        </template>
 
-        </template>
-        <template v-for="item in crud.searchSlot"
-                  #[getSlotName(item)]="scope">
-          <slot v-bind="scope"
-                :name="item"></slot>
-        </template>
-      </avue-form>
-    </el-card>
-  </el-collapse-transition>
+      </template>
+      <template v-for="item in crud.searchSlot"
+                #[getSlotName(item)]="scope">
+        <slot v-bind="scope"
+              :name="item"></slot>
+      </template>
+    </avue-form>
+  </el-card>
 </template>
 
 <script>
@@ -55,18 +53,9 @@ export default create({
   data () {
     return {
       show: false,
-      flag: false,
       searchShow: true,
       searchForm: {}
     };
-  },
-  props: {
-    search: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
   },
   watch: {
     propOption: {
@@ -77,7 +66,7 @@ export default create({
     },
     search: {
       handler () {
-        this.searchForm = Object.assign(this.searchForm, this.search);
+        this.searchForm = Object.assign(this.searchForm, this.crud.search);
       },
       immediate: true,
       deep: true
@@ -89,14 +78,8 @@ export default create({
       immediate: true,
       deep: true
     },
-    searchShow: {
-      handler () {
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.crud.getTableHeight()
-          }, 300)
-        })
-      }
+    searchShow () {
+      this.crud.getTableHeight()
     }
   },
   created () {
@@ -163,17 +146,14 @@ export default create({
       }
       const dataDetail = (list) => {
         let result = this.deepClone(list);
-        result.translate = false;
-        if (result.group) {
-          delete result.group;
-        }
         result.column = detailColumn(this.deepClone(this.crud.propOption))
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
-          enter: this.validData(option.searchEnter, true),
+          group: false,
           printBtn: false,
           mockBtn: false,
+          enter: option.searchEnter,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.validData(option.searchBtn, config.searchSubBtn),

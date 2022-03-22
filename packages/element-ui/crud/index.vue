@@ -4,8 +4,7 @@
                :style="tableOption.titleStyle"
                v-if="tableOption.title">{{tableOption.title}}</component>
     <!-- 搜索组件 -->
-    <header-search :search="search"
-                   ref="headerSearch">
+    <header-search ref="headerSearch">
       <template #search="scope">
         <slot name="search"
               v-bind="scope"></slot>
@@ -141,14 +140,14 @@
         </el-table>
       </el-form>
       <slot name="footer"></slot>
-      <!-- 分页 -->
-      <table-page ref="tablePage"
-                  :page="page">
-        <template #page>
-          <slot name="page"></slot>
-        </template>
-      </table-page>
     </el-card>
+    <!-- 分页 -->
+    <table-page ref="tablePage"
+                :page="page">
+      <template #page>
+        <slot name="page"></slot>
+      </template>
+    </table-page>
     <!-- 表单 -->
     <dialog-form ref="dialogForm">
       <template v-for="item in formSlot"
@@ -430,7 +429,7 @@ export default create({
           if (!tableRef) return
           const tableStyle = tableRef.$el;
           const pageStyle = tablePageRef.$el.offsetHeight || 20;
-          this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;

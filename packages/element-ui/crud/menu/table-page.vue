@@ -1,6 +1,7 @@
 <template>
-  <div :class="b('pagination')"
-       v-if="pageFlag && validData(crud.tableOption.page,true)">
+  <el-card :shadow="crud.isCard"
+           :class="b('pagination')"
+           v-if="pageFlag && validData(crud.tableOption.page,true)">
     <slot name="page"></slot>
     <el-pagination :small="crud.isMobile"
                    :disabled="defaultPage.disabled"
@@ -15,7 +16,7 @@
                    @current-change="currentChange"
                    :layout="defaultPage.layout"
                    :total="defaultPage.total"></el-pagination>
-  </div>
+  </el-card>
 </template>
 
 <script>

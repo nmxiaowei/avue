@@ -80,7 +80,7 @@ export default function () {
         return this.controlSize;
       },
       controlSize () {
-        return this.tableOption.size || this.$AVUE.size || 'default';
+        return this.tableOption.size || this.$AVUE.size;
       }
     },
     methods: {
@@ -117,7 +117,6 @@ export default function () {
         Object.keys(res).forEach(ele => {
           list[ele] = res[ele]
         });
-        this.forEachLabel && this.forEachLabel()
       },
       //本地字典
       handleLocalDic () {

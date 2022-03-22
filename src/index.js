@@ -48,7 +48,7 @@ const install = function (Vue, opts = {}) {
     return
   }
   const defaultOption = {
-    size: opts.size,
+    size: opts.size || 'default',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
     canvas: Object.assign({

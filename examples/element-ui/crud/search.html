@@ -20,6 +20,7 @@
 
 <body>
   <div id="app">
+    {{search}}
     <avue-crud ref="crud" v-model:page="page" v-model:search="search" :option="option" :data="data"
       @search-change="searchChange">
       <template #header>

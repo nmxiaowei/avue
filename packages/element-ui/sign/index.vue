@@ -8,6 +8,30 @@
 </template>
 
 <script>
+//绘制五角星  
+/** 
+ * 创建一个五角星形状. 该五角星的中心坐标为(sx,sy),中心到顶点的距离为radius,rotate=0时一个顶点在对称轴上 
+ * rotate:绕对称轴旋转rotate弧度 
+ */
+function create5star (context, sx, sy, radius, color, rotato) {
+  context.save();
+  context.fillStyle = color;
+  context.translate(sx, sy);//移动坐标原点  
+  context.rotate(Math.PI + rotato);//旋转  
+  context.beginPath();//创建路径  
+  var x = Math.sin(0);
+  var y = Math.cos(0);
+  var dig = Math.PI / 5 * 4;
+  for (var i = 0; i < 5; i++) {//画五角星的五条边  
+    var x = Math.sin(i * dig);
+    var y = Math.cos(i * dig);
+    context.lineTo(x * radius, y * radius);
+  }
+  context.closePath();
+  context.stroke();
+  context.fill();
+  context.restore();
+}
 import create from "core/create";
 export default create({
   name: "sign",
@@ -23,6 +47,7 @@ export default create({
   },
   data () {
     return {
+      disabled: false,
       linex: [],
       liney: [],
       linen: [],
@@ -92,31 +117,7 @@ export default create({
         context.restore();
         context.save();//锁画布(为了保存之前的画布状态)  
       }
-
-      //绘制五角星  
-      /** 
-       * 创建一个五角星形状. 该五角星的中心坐标为(sx,sy),中心到顶点的距离为radius,rotate=0时一个顶点在对称轴上 
-       * rotate:绕对称轴旋转rotate弧度 
-       */
-      function create5star (context, sx, sy, radius, color, rotato) {
-        context.save();
-        context.fillStyle = color;
-        context.translate(sx, sy);//移动坐标原点  
-        context.rotate(Math.PI + rotato);//旋转  
-        context.beginPath();//创建路径  
-        var x = Math.sin(0);
-        var y = Math.cos(0);
-        var dig = Math.PI / 5 * 4;
-        for (var i = 0; i < 5; i++) {//画五角星的五条边  
-          var x = Math.sin(i * dig);
-          var y = Math.cos(i * dig);
-          context.lineTo(x * radius, y * radius);
-        }
-        context.closePath();
-        context.stroke();
-        context.fill();
-        context.restore();
-      }
+      this.disabled = true
     },
     submit (width, height) {
       if (!width) width = this.width;
@@ -127,6 +128,7 @@ export default create({
       this.linex = new Array();
       this.liney = new Array();
       this.linen = new Array();
+      this.disabled = false
       this.canvas.width = this.canvas.width
 
     },
@@ -176,6 +178,7 @@ export default create({
 
       //鼠标移动的时候
       function onMouseMove (evt) {
+        if (_safe.disabled) return
         var x = getCanvasPos(canvas, evt).x,
           y = getCanvasPos(canvas, evt).y;
 
@@ -207,6 +210,7 @@ export default create({
 
       //当鼠标按下的时候修改按下标志，并开始记录坐标
       function onMouseDown (evt) {
+        if (_safe.disabled) return
         var x = getCanvasPos(canvas, evt).x,
           y = getCanvasPos(canvas, evt).y;
         flag = 1;
@@ -217,6 +221,7 @@ export default create({
 
       //鼠标松开清除标志
       function onMouseUp () {
+        if (_safe.disabled) return
         flag = 0;
       }
     }
