@@ -32,20 +32,17 @@
                 v-bind="scope"></slot>
         </template>
       </header-menu>
-      <el-tag class="avue-crud__tip"
-              v-if="validData(tableOption.tip,config.tip) && tableOption.selection">
+      <div class="avue-crud__tip"
+           v-if="validData(tableOption.tip,config.tip) && tableOption.selection">
         <span class="avue-crud__tip-name">
           {{t('crud.tipStartTitle')}}
           <span class="avue-crud__tip-count">{{selectLen}}</span>
           {{t('crud.tipEndTitle')}}
         </span>
-        <el-button type="text"
-                   size="small"
-                   @click="selectClear"
-                   v-permission="getPermission('selectClearBtn')"
-                   v-if="validData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
+        <span class="avue-crud__tip-button"
+              @click="$refs.table.clearSelection()">{{t('crud.emptyBtn')}}</span>
         <slot name="tip"></slot>
-      </el-tag>
+      </div>
       <slot name="header"></slot>
       <el-form :model="cellForm"
                :show-message="false"
@@ -467,9 +464,6 @@ export default create({
     handleGetRowKeys (row) {
       const rowKey = row[this.rowKey];
       return rowKey;
-    },
-    selectClear () {
-      this.$refs.table.clearSelection();
     },
     toggleRowSelection (row, selected) {
       this.$refs.table.toggleRowSelection(row, selected);
