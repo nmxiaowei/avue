@@ -439,7 +439,7 @@ export default create({
     refreshTable (callback) {
       this.reload = Math.random()
       this.$nextTick(() => {
-        this.$refs.columnDefault.setSort()
+        // this.$refs.columnDefault.setSort()
         callback && callback()
       })
     },
