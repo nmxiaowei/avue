@@ -116,7 +116,6 @@ export default create({
       return this.crud.tableOption.dialogType === 'drawer';
     },
     params () {
-      console.log(this.size)
       return this.isDrawer ?
         {
           size: this.size,
