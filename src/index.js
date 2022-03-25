@@ -4,7 +4,6 @@ import { version } from './version'
 import axios from 'axios';
 import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, validData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
-import dialogDrag from 'packages/core/directive/dialog-drag';
 import $Export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
 import $Log from 'plugin/logs/';
@@ -37,9 +36,7 @@ let plugins = {
   randomId
 
 };
-let directive = {
-  dialogDrag
-}
+let directive = {}
 const install = function (Vue, opts = {}) {
   if (!ElementPlus) {
     packages.logs('element-plus');

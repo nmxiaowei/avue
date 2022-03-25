@@ -1,7 +1,7 @@
 <template>
   <component :is="dialogType"
              :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
-             v-dialogDrag="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
+             :draggable="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass].join(' ')"
              :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
              :top="dialogTop"
