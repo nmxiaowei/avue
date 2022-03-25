@@ -146,20 +146,17 @@ export default create({
     }
   },
   methods: {
-    $Print,
     handlePrint () {
-      this.$Print(`#avue-image-preview__${this.count}`)
+      $Print(`#avue-image-preview__${this.count}`)
     },
     handlePrev () {
       this.stopItem()
       this.$refs.carousel.prev()
-      this.count = this.$refs.carousel.activeIndex
 
     },
     handleNext () {
       this.stopItem()
       this.$refs.carousel.next()
-      this.count = this.$refs.carousel.activeIndex
 
     },
     stopItem () {
@@ -181,9 +178,11 @@ export default create({
     addScale () {
       this.scale = parseFloat((this.scale + 0.2).toFixed(2))
     },
-    handleChange () {
+    handleChange (n, o) {
       this.scale = 1;
       this.rotate = 0;
+      this.count = n
+
     },
     move (e) {       //获取目标元素s
       //算出鼠标相对元素的位置
