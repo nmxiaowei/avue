@@ -78,7 +78,7 @@ export default create({
       config: config,
       boxType: "",
       fullscreen: false,
-      size: null,
+      size: '50%',
       boxVisible: false
     };
   },
@@ -116,11 +116,12 @@ export default create({
       return this.crud.tableOption.dialogType === 'drawer';
     },
     params () {
-      return this.isDrawer ? {
-        size: this.size,
-        direction: this.crud.tableOption.dialogDirection
-      } :
+      console.log(this.size)
+      return this.isDrawer ?
         {
+          size: this.size,
+          direction: this.crud.tableOption.dialogDirection
+        } : {
           width: this.width,
           fullscreen: this.fullscreen
         };
@@ -189,11 +190,7 @@ export default create({
     },
     handleFullScreen () {
       if (this.isDrawer) {
-        if (this.validatenull(this.size)) {
-          this.size = '100%'
-        } else {
-          this.size = ''
-        }
+        this.size = this.size == '100%' ? '50%' : '100%'
       }
       if (this.fullscreen) {
         this.fullscreen = false;

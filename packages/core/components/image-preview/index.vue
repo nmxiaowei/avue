@@ -89,6 +89,7 @@ import create from "core/create";
 import { defineAsyncComponent } from 'vue'
 import { Document, ArrowRight, ArrowLeft, Close, ZoomOut, ZoomIn, RefreshLeft, RefreshRight, Printer } from '@element-plus/icons'
 import { ElIcon, ElCarousel, ElCarouselItem } from 'element-plus'
+import $Print from 'plugin/print/';
 export default create({
   name: "image-preview",
   components: {
@@ -145,6 +146,7 @@ export default create({
     }
   },
   methods: {
+    $Print,
     handlePrint () {
       this.$Print(`#avue-image-preview__${this.count}`)
     },

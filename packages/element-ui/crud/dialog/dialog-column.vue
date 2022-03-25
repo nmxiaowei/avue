@@ -25,7 +25,7 @@
                          header-align="center"
                          v-if="item.hide!=true"
                          :label="item.label">
-          <template slot-scope="{row}">
+          <template #="{row}">
             <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
           </template>
         </el-table-column>
@@ -64,10 +64,6 @@ export default create({
       }, {
         label: this.t('crud.column.sortable'),
         prop: 'sortable'
-      }, {
-        label: this.t('crud.column.index'),
-        prop: 'index',
-        hide: true
       }, {
         label: this.t('crud.column.width'),
         prop: 'width',

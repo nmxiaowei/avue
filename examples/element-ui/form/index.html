@@ -32,14 +32,14 @@
         <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
       </template>
       <template #treeType="{ item }">
-        <span class="el-tree-node__label">
+        <template #="el-tree-node__label">
           <span>
             <el-icon>
               <el-icon-user-solid />
             </el-icon>
             {{ item.label }}
           </span>
-        </span>
+        </template>
       </template>
     </avue-form>
   </div>

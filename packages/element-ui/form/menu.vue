@@ -29,7 +29,7 @@
                :loading="formSafe.allDisabled"
                v-if="validData(formSafe.tableOption.emptyBtn,true)"
                @click="formSafe.resetForm">{{validData(formSafe.tableOption.emptyText,t("form.emptyBtn"))}}</el-button>
-    <slot name="menuform"
+    <slot name="menu-form"
           :disabled="formSafe.allDisabled"
           :size="formSafe.controlSize"></slot>
   </el-col>

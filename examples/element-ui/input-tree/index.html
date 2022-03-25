@@ -22,14 +22,14 @@
 <body>
   <div id="app">
     <avue-input-tree :dic="list" ref="tree" v-model="data">
-      <span class="el-tree-node__label" slot-scope="{ item }">
+      <template class="el-tree-node__label" #="{ item }">
         <span>
           <el-icon>
             <el-icon-user-solid />
           </el-icon>
           {{ item.label }}
         </span>
-      </span>
+      </template>
     </avue-input-tree>
   </div>
 </body>

@@ -23,14 +23,14 @@
   <div id="app">
     <avue-tree ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission" :option="option"
       :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
-      <span class="el-tree-node__label" slot-scope="{ node, data }">
-        <span>
+      <template #="{ node, data }">
+        <span class="el-tree-node__label">
           <el-icon>
-            <el-icon-user-solid />
+            <user />
           </el-icon>
           {{ node.label }}
         </span>
-      </span>
+      </template>
       <template #menu="scope">
         <div class="avue-tree__item" @click.native="tip(scope.node,scope.data)">自定义按钮</di>
       </template>
