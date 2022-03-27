@@ -85,8 +85,7 @@ export default create({
       boxType: "",
       fullscreen: false,
       size: null,
-      boxVisible: false,
-      option: {}
+      boxVisible: false
     };
   },
   props: {
@@ -97,15 +96,39 @@ export default create({
       }
     }
   },
-  watch: {
-    'crud.propOption': {
-      handler () {
-        this.dataFormat()
-      },
-      deep: true
-    }
-  },
   computed: {
+    option () {
+      let option = this.deepClone(this.crud.tableOption);
+      option.boxType = this.boxType;
+      option.column = this.deepClone(this.crud.propOption);
+      option.menuBtn = false;
+      if (this.isAdd) {
+        option.submitBtn = option.saveBtn;
+        option.submitText = this.crud.menuIcon('saveBtn');
+        option.submitIcon = this.crud.getBtnIcon('saveBtn')
+      } else if (this.isEdit) {
+        option.submitBtn = option.updateBtn;
+        option.submitText = this.crud.menuIcon('updateBtn');
+        option.submitIcon = this.crud.getBtnIcon('updateBtn')
+      } else if (this.isView) {
+        option.detail = true;
+      }
+      option.emptyBtn = option.cancelBtn;
+      option.emptyText = this.crud.menuIcon('cancelBtn')
+      option.emptyIcon = this.crud.getBtnIcon('cancelBtn')
+      //不分组的表单不加载字典
+      if (!this.crud.isGroup) {
+        option.dicFlag = false;
+        option.dicData = this.crud.DIC;
+      }
+      if (!this.validatenull(option.dicFlag)) {
+        option.column.forEach(ele => {
+          ele.boxType = this.boxType;
+          ele.dicFlag = ele.dicFlag || option.dicFlag
+        })
+      }
+      return option;
+    },
     isView () {
       return this.boxType === 'view'
     },
@@ -144,42 +167,7 @@ export default create({
       return this.crud.option.dialogMenuPosition || 'right'
     }
   },
-  created () {
-    this.dataFormat()
-  },
   methods: {
-    dataFormat () {
-      let option = this.deepClone(this.crud.tableOption);
-      option.boxType = this.boxType;
-      option.column = this.deepClone(this.crud.propOption);
-      option.menuBtn = false;
-      if (this.isAdd) {
-        option.submitBtn = option.saveBtn;
-        option.submitText = this.crud.menuIcon('saveBtn');
-        option.submitIcon = this.crud.getBtnIcon('saveBtn')
-      } else if (this.isEdit) {
-        option.submitBtn = option.updateBtn;
-        option.submitText = this.crud.menuIcon('updateBtn');
-        option.submitIcon = this.crud.getBtnIcon('updateBtn')
-      } else if (this.isView) {
-        option.detail = true;
-      }
-      option.emptyBtn = option.cancelBtn;
-      option.emptyText = this.crud.menuIcon('cancelBtn')
-      option.emptyIcon = this.crud.getBtnIcon('cancelBtn')
-      //不分组的表单不加载字典
-      if (!this.crud.isGroup) {
-        option.dicFlag = false;
-        option.dicData = this.crud.DIC;
-      }
-      if (!this.validatenull(option.dicFlag)) {
-        option.column.forEach(ele => {
-          ele.boxType = this.boxType;
-          ele.dicFlag = ele.dicFlag || option.dicFlag
-        })
-      }
-      this.option = option;
-    },
     submit () {
       this.$refs.tableForm.submit()
     },
@@ -300,7 +288,6 @@ export default create({
     show (type) {
       this.boxType = type;
       const callback = () => {
-        this.dataFormat()
         this.fullscreen = this.crud.tableOption.dialogFullscreen
         this.boxVisible = true;
       };
