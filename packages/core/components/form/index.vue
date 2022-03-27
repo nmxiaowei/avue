@@ -133,7 +133,7 @@ export default {
     getPlaceholder,
     enterChange () {
       let enter = this.column.enter;
-      if (enter) {
+      if (!this.validatenull(enter)) {
         if (typeof enter === 'function') this.column.enter(this.text, this.column)
       } else if (this.enter) {
         this.$emit('enter')
