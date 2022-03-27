@@ -219,7 +219,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        this.crud.tableForm,
+        this.deepClone(this.crud.tableForm),
         this.closeDialog,
         hide
       );
@@ -228,40 +228,31 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        this.crud.tableForm,
+        this.deepClone(this.crud.tableForm),
         this.crud.tableIndex,
         this.closeDialog,
         hide
       );
     },
-    closeDialog (row, index) {
+    closeDialog (row) {
+      row = this.deepClone(row);
       const callback = () => {
         if (this.isEdit) {
-          let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
-          obj = Object.assign(obj || {}, row);
-        } else if (this.isAdd) {
-          const callback = (list = [], index) => {
-            this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
+          let { parentList, index } = this.crud.findData(row[this.crud.rowKey])
+          if (parentList) {
+            parentList.splice(index, 1);
+            parentList.splice(index, 0, row);
           }
-          if (this.crud.isTree) {
-            let childrenKey = this.crud.treeProps['children'] || 'children'
-            let hasChildrenKey = this.crud.treeProps['hasChildren'] || 'hasChildren'
-            if (!row[childrenKey]) row[childrenKey] = []
-            if (this.crud.vaildParent(row)) {
-              callback(this.crud.data, index)
-            } else {
-              let parent = this.findObject(this.crud.data, row[this.crud.rowParentKey], this.crud.rowKey);
-              if (parent === undefined) {
-                return callback(this.crud.data, index)
-              }
-              if (!parent[childrenKey]) {
-                parent[hasChildrenKey] = true
-                parent[childrenKey] = []
-              }
-              callback(parent[childrenKey], index)
+        } else if (this.isAdd) {
+          let { item } = this.crud.findData(row[this.crud.rowParentKey])
+          if (item) {
+            if (!item[this.crud.childrenKey]) {
+              item[this.crud.childrenKey] = []
+              item[this.crud.hasChildrenKey] = true
             }
+            item[this.crud.childrenKey].push(row)
           } else {
-            callback(this.crud.data, index)
+            this.crud.list.push(row);
           }
         }
       }
