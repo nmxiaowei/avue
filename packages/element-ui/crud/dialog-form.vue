@@ -98,8 +98,11 @@ export default create({
     }
   },
   watch: {
-    'crud.propOption' () {
-      this.dataFormat()
+    'crud.propOption': {
+      handler () {
+        this.dataFormat()
+      },
+      deep: true
     }
   },
   computed: {

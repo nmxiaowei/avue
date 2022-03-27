@@ -68,8 +68,11 @@ export default create({
     search: Object
   },
   watch: {
-    'crud.propOption' () {
-      this.dataFormat()
+    'crud.propOption': {
+      handler () {
+        this.dataFormat()
+      },
+      deep: true
     },
     show () {
       this.dataFormat()
