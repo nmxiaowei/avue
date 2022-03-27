@@ -125,7 +125,7 @@ export default create({
       return this.isDrawer ? 'elDrawer' : 'elDialog'
     },
     dialogTop () {
-      return (!this.isDrawer && !this.fullscreen) ? this.crud.tableOption.dialogTop : 0
+      return (!this.isDrawer && !this.fullscreen) ? this.crud.tableOption.dialogTop : '0'
     },
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
