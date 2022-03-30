@@ -194,8 +194,8 @@ import dialogExcel from './dialog-excel'
 import columnMenu from './column-menu'
 import columnDefault from './column-default'
 import config from "./config.js";
-import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
+import { DIC_PROPS } from 'global/variable';
 export default create({
   name: "crud",
   mixins: [init(), locale,],
@@ -255,6 +255,15 @@ export default create({
     },
     isColumnSort () {
       return this.tableOption.columnSort;
+    },
+    rowParentKey () {
+      return this.option.rowParentKey || DIC_PROPS.rowParentKey
+    },
+    childrenKey () {
+      return this.treeProps.children || DIC_PROPS.children
+    },
+    hasChildrenKey () {
+      return this.treeProps.hasChildren || DIC_PROPS.hasChildren
     },
     treeProps () {
       return this.tableOption.treeProps || {}
@@ -320,9 +329,6 @@ export default create({
     },
     expandAll () {
       return this.parentOption.expandAll || false;
-    },
-    rowParentKey () {
-      return this.tableOption.rowParentKey || "parentId";
     },
     parentOption () {
       return this.tableOption || {};
@@ -670,6 +676,7 @@ export default create({
       return result
     },
     rowCellUpdate (row, index) {
+      row = this.deepClone(row);
       var result = this.validateCellField(index)
       const done = () => {
         this.btnDisabledList[index] = false;
@@ -739,31 +746,11 @@ export default create({
       this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("view");
     },
-    vaildParent (row) {
-      return this.validatenull(row[this.rowParentKey])
-    },
     // 删除
     rowDel (row, index) {
       this.$emit("row-del", row, index, () => {
-        const callback = (list = []) => {
-          let index = list.findIndex(ele => ele[this.rowKey] === row[this.rowKey])
-          list.splice(index, 1);
-        }
-        if (this.isTree) {
-          if (this.vaildParent(row)) {
-            callback(this.data)
-          } else {
-            let parent = this.findObject(this.data, row[this.rowParentKey], this.rowKey);
-            if (parent === undefined) {
-              callback(this.data)
-            } else {
-              callback(parent.children)
-            }
-          }
-        } else {
-          callback(this.data)
-        }
-
+        let { parentList, index } = this.findData(row[this.rowKey])
+        if (parentList) parentList.splice(index, 1);
       });
     },
     //合并行
@@ -842,7 +829,27 @@ export default create({
         delay: 0,
         onEnd: evt => callback(evt)
       })
-    }
+    },
+    findData (id) {
+      let result = {}
+      const callback = (parentList, parent) => {
+        parentList.forEach((ele, index) => {
+          if (ele[this.rowKey] == id) {
+            result = {
+              item: ele,
+              index: index,
+              parentList: parentList,
+              parent: parent
+            }
+          }
+          if (ele[this.childrenKey]) {
+            callback(ele[this.childrenKey], ele)
+          }
+        })
+      }
+      callback(this.list)
+      return result;
+    },
   }
 });
 </script>

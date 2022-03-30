@@ -1,4 +1,5 @@
 import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
+import { DIC_PROPS } from 'global/variable';
 import slot from 'core/slot'
 export default function () {
   return {
@@ -64,7 +65,7 @@ export default function () {
         })
       },
       rowKey () {
-        return this.tableOption.rowKey || "id";
+        return this.tableOption.rowKey || DIC_PROPS.rowKey;
       },
       formRules () {
         let result = {};
