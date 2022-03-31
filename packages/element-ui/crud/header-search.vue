@@ -57,7 +57,6 @@ export default create({
   mixins: [locale, slot],
   data () {
     return {
-      option: {},
       show: false,
       searchIndex: 2,
       searchShow: true,
@@ -68,11 +67,17 @@ export default create({
     search: Object
   },
   watch: {
-    'crud.propOption' () {
-      this.dataFormat()
+    'crud.propOption': {
+      handler () {
+        this.dataFormat()
+      },
+      deep: true
     },
     show () {
-      this.dataFormat()
+      this.crud.getTableHeight()
+    },
+    searchShow () {
+      this.crud.getTableHeight()
     },
     search: {
       handler () {
@@ -87,48 +92,8 @@ export default create({
     this.dataFormat()
   },
   computed: {
-    isSearchIcon () {
-      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
-    },
-    searchLen () {
-      let count = 0;
-      this.crud.propOption.forEach(ele => {
-        if (ele.search) count++
-      })
-      return count
-    },
-    searchFlag () {
-      return !!this.crud.$scopedSlots.search || this.searchLen !== 0
-    }
-  },
-  methods: {
-    initFun () {
-      ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
-    },
-    getSlotName (item) {
-      return item.replace('Search', '')
-    },
-    handleChange () {
-      this.crud.$emit('update:search', this.searchForm)
-    },
-    // 搜索回调
-    searchChange (form, done) {
-      this.crud.$emit("search-change", form, done);
-    },
-    // 搜索清空
-    resetChange () {
-      this.crud.$emit("search-reset", this.searchForm);
-    },
-    // 搜索清空
-    searchReset () {
-      this.$refs.form.resetForm();
-    },
-    handleSearchShow () {
-      this.searchShow = !this.searchShow;
-    },
-    dataFormat () {
+    option () {
       const option = this.crud.option;
-      this.searchShow = this.vaildData(option.searchShow, config.searchShow);
       this.searchIndex = option.searchIndex || 2
       const detailColumn = (list = []) => {
         let column = [];
@@ -201,8 +166,50 @@ export default create({
         })
         return result;
       }
-      this.option = dataDetail(option)
-      this.crud.getTableHeight()
+      return dataDetail(option)
+    },
+    isSearchIcon () {
+      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
+    },
+    searchLen () {
+      let count = 0;
+      this.crud.propOption.forEach(ele => {
+        if (ele.search) count++
+      })
+      return count
+    },
+    searchFlag () {
+      return !!this.crud.$scopedSlots.search || this.searchLen !== 0
+    }
+  },
+  methods: {
+    initFun () {
+      ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
+    },
+    getSlotName (item) {
+      return item.replace('Search', '')
+    },
+    handleChange () {
+      this.crud.$emit('update:search', this.searchForm)
+    },
+    // 搜索回调
+    searchChange (form, done) {
+      this.crud.$emit("search-change", form, done);
+    },
+    // 搜索清空
+    resetChange () {
+      this.crud.$emit("search-reset", this.searchForm);
+    },
+    // 搜索清空
+    searchReset () {
+      this.$refs.form.resetForm();
+    },
+    handleSearchShow () {
+      this.searchShow = !this.searchShow;
+    },
+    dataFormat () {
+      const option = this.crud.option;
+      this.searchShow = this.vaildData(option.searchShow, config.searchShow);
     }
   }
 });

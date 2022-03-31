@@ -7,7 +7,7 @@
              v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="['avue-dialog',b('dialog'),{'avue-dialog--fullscreen':fullscreen}]"
              :custom-class="crud.tableOption.dialogCustomClass"
-             :modal-append-to-body="false"
+             modal-append-to-body
              append-to-body
              :top="dialogTop"
              :title="dialogTitle"
@@ -85,8 +85,7 @@ export default create({
       boxType: "",
       fullscreen: false,
       size: null,
-      boxVisible: false,
-      option: {}
+      boxVisible: false
     };
   },
   props: {
@@ -97,55 +96,8 @@ export default create({
       }
     }
   },
-  watch: {
-    'crud.propOption' () {
-      this.dataFormat()
-    }
-  },
   computed: {
-    isView () {
-      return this.boxType === 'view'
-    },
-    isAdd () {
-      return this.boxType === 'add'
-    },
-    isEdit () {
-      return this.boxType === 'edit'
-    },
-    direction () {
-      return this.crud.tableOption.dialogDirection
-    },
-    width () {
-      return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
-    },
-    dialogType () {
-      return this.isDrawer ? 'elDrawer' : 'elDialog'
-    },
-    dialogTop () {
-      return (!this.isDrawer && !this.fullscreen) ? this.crud.tableOption.dialogTop : 0
-    },
-    isDrawer () {
-      return this.crud.tableOption.dialogType === 'drawer';
-    },
-    isSize () {
-      let drawerSize = this.size ? this.size : this.width;
-      return this.isDrawer ? { 'size': drawerSize } : {};
-    },
-    dialogTitle () {
-      const key = `${this.boxType}`;
-      if (!this.validatenull(this.boxType)) {
-        return this.crud.tableOption[key + 'Title'] || this.t(`crud.${key}Title`);
-      }
-    },
-    dialogMenuPosition () {
-      return this.crud.option.dialogMenuPosition || 'right'
-    }
-  },
-  created () {
-    this.dataFormat()
-  },
-  methods: {
-    dataFormat () {
+    option () {
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
@@ -175,8 +127,47 @@ export default create({
           ele.dicFlag = ele.dicFlag || option.dicFlag
         })
       }
-      this.option = option;
+      return option;
     },
+    isView () {
+      return this.boxType === 'view'
+    },
+    isAdd () {
+      return this.boxType === 'add'
+    },
+    isEdit () {
+      return this.boxType === 'edit'
+    },
+    direction () {
+      return this.crud.tableOption.dialogDirection
+    },
+    width () {
+      return this.vaildData(this.crud.tableOption.dialogWidth + '', this.crud.isMobile ? '100%' : config.dialogWidth + '')
+    },
+    dialogType () {
+      return this.isDrawer ? 'elDrawer' : 'elDialog'
+    },
+    dialogTop () {
+      return (!this.isDrawer && !this.fullscreen) ? this.crud.tableOption.dialogTop : '0'
+    },
+    isDrawer () {
+      return this.crud.tableOption.dialogType === 'drawer';
+    },
+    isSize () {
+      let drawerSize = this.size ? this.size : this.width;
+      return this.isDrawer ? { 'size': drawerSize } : {};
+    },
+    dialogTitle () {
+      const key = `${this.boxType}`;
+      if (!this.validatenull(this.boxType)) {
+        return this.crud.tableOption[key + 'Title'] || this.t(`crud.${key}Title`);
+      }
+    },
+    dialogMenuPosition () {
+      return this.crud.option.dialogMenuPosition || 'right'
+    }
+  },
+  methods: {
     submit () {
       this.$refs.tableForm.submit()
     },
@@ -228,7 +219,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        this.crud.tableForm,
+        this.deepClone(this.crud.tableForm),
         this.closeDialog,
         hide
       );
@@ -237,40 +228,31 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        this.crud.tableForm,
+        this.deepClone(this.crud.tableForm),
         this.crud.tableIndex,
         this.closeDialog,
         hide
       );
     },
-    closeDialog (row, index) {
+    closeDialog (row) {
+      row = this.deepClone(row);
       const callback = () => {
         if (this.isEdit) {
-          let obj = this.findObject(this.crud.data, row[this.crud.rowKey], this.crud.rowKey);
-          obj = Object.assign(obj || {}, row);
-        } else if (this.isAdd) {
-          const callback = (list = [], index) => {
-            this.validatenull(index) ? list.push(row) : list.splice(index, 0, row);
+          let { parentList, index } = this.crud.findData(row[this.crud.rowKey])
+          if (parentList) {
+            parentList.splice(index, 1);
+            parentList.splice(index, 0, row);
           }
-          if (this.crud.isTree) {
-            let childrenKey = this.crud.treeProps['children'] || 'children'
-            let hasChildrenKey = this.crud.treeProps['hasChildren'] || 'hasChildren'
-            if (!row[childrenKey]) row[childrenKey] = []
-            if (this.crud.vaildParent(row)) {
-              callback(this.crud.data, index)
-            } else {
-              let parent = this.findObject(this.crud.data, row[this.crud.rowParentKey], this.crud.rowKey);
-              if (parent === undefined) {
-                return callback(this.crud.data, index)
-              }
-              if (!parent[childrenKey]) {
-                parent[hasChildrenKey] = true
-                parent[childrenKey] = []
-              }
-              callback(parent[childrenKey], index)
+        } else if (this.isAdd) {
+          let { item } = this.crud.findData(row[this.crud.rowParentKey])
+          if (item) {
+            if (!item[this.crud.childrenKey]) {
+              item[this.crud.childrenKey] = []
+              item[this.crud.hasChildrenKey] = true
             }
+            item[this.crud.childrenKey].push(row)
           } else {
-            callback(this.crud.data, index)
+            this.crud.list.push(row);
           }
         }
       }
@@ -297,7 +279,6 @@ export default create({
     show (type) {
       this.boxType = type;
       const callback = () => {
-        this.dataFormat()
         this.fullscreen = this.crud.tableOption.dialogFullscreen
         this.boxVisible = true;
       };
