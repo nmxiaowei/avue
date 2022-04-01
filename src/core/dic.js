@@ -161,14 +161,17 @@ export const sendDic = (params) => {
     list = Object.keys(query);
     list.forEach(ele => {
       let eleKey = query[ele];
-      if (typeof (eleKey) !== 'string') {
-        data[ele] = eleKey;
-      } else if (eleKey.match(/\{{|}}/g)) {
-        let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
-        data[ele] = eleKey.replace(eleKey, eleKey.indexOf(key) !== -1 ? value : eleValue);
+      if (typeof (eleKey) == 'string') {
+        if (eleKey.match(/\{{|}}/g)) {
+          let eleValue = form[eleKey.replace(/\{{|}}/g, '')];
+          data[ele] = eleValue
+        } else {
+          data[ele] = eleKey;
+        }
       } else {
         data[ele] = eleKey;
       }
+
     });
   }
 
