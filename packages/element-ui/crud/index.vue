@@ -111,7 +111,7 @@
               <slot name="empty"
                     v-if="$slots.empty"></slot>
               <el-empty v-else
-                        image-size="100"
+                        :image-size="100"
                         :description="tableOption.emptyText"></el-empty>
             </div>
           </template>
