@@ -513,6 +513,14 @@ export default create({
       column.splice(newIndex, 0, targetRow)
       this.refreshTable()
     },
+    // 清除过滤器执行函数
+    clearFilter(name) {
+      if (name) {
+        this.$refs.table.clearFilter(name);
+      } else {
+        this.$refs.table.clearFilter();
+      }
+    },
     //展开或则关闭
     expandChange (row, expand) {
       this.$emit("expand-change", row, expand);
