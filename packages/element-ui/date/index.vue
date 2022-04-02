@@ -49,12 +49,10 @@ export default create({
     },
     value: {},
     startPlaceholder: {
-      type: String,
-      default: "开始日期"
+      type: String
     },
     endPlaceholder: {
-      type: String,
-      default: "结束日期"
+      type: String
     },
     rangeSeparator: {
       type: String

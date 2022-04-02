@@ -106,15 +106,13 @@
                   @select="select"
                   @select-all="selectAll"
                   @sort-change="sortChange">
-          <!-- 暂无数据提醒 -->
           <template slot="empty">
             <div :class="b('empty')">
               <slot name="empty"
                     v-if="$slots.empty"></slot>
-              <avue-empty v-else
-                          size="50"
-                          image="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxlbGxpcHNlIGZpbGw9IiNGNUY1RjUiIGN4PSIzMiIgY3k9IjMzIiByeD0iMzIiIHJ5PSI3Ii8+CiAgICA8ZyBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0iI0Q5RDlEOSI+CiAgICAgIDxwYXRoIGQ9Ik01NSAxMi43Nkw0NC44NTQgMS4yNThDNDQuMzY3LjQ3NCA0My42NTYgMCA0Mi45MDcgMEgyMS4wOTNjLS43NDkgMC0xLjQ2LjQ3NC0xLjk0NyAxLjI1N0w5IDEyLjc2MVYyMmg0NnYtOS4yNHoiLz4KICAgICAgPHBhdGggZD0iTTQxLjYxMyAxNS45MzFjMC0xLjYwNS45OTQtMi45MyAyLjIyNy0yLjkzMUg1NXYxOC4xMzdDNTUgMzMuMjYgNTMuNjggMzUgNTIuMDUgMzVoLTQwLjFDMTAuMzIgMzUgOSAzMy4yNTkgOSAzMS4xMzdWMTNoMTEuMTZjMS4yMzMgMCAyLjIyNyAxLjMyMyAyLjIyNyAyLjkyOHYuMDIyYzAgMS42MDUgMS4wMDUgMi45MDEgMi4yMzcgMi45MDFoMTQuNzUyYzEuMjMyIDAgMi4yMzctMS4zMDggMi4yMzctMi45MTN2LS4wMDd6IiBmaWxsPSIjRkFGQUZBIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
-                          :desc="tableOption.emptyText || '暂无数据'"></avue-empty>
+              <el-empty v-else
+                        :image-size="100"
+                        :description="tableOption.emptyText"></el-empty>
             </div>
           </template>
           <column :columnOption="columnOption">
@@ -194,8 +192,8 @@ import dialogExcel from './dialog-excel'
 import columnMenu from './column-menu'
 import columnDefault from './column-default'
 import config from "./config.js";
-import treeToArray, { addAttrs } from "./eval";
 import { calcCascader, formInitVal } from "core/dataformat";
+import { DIC_PROPS } from 'global/variable';
 export default create({
   name: "crud",
   mixins: [init(), locale,],
@@ -255,6 +253,15 @@ export default create({
     },
     isColumnSort () {
       return this.tableOption.columnSort;
+    },
+    rowParentKey () {
+      return this.option.rowParentKey || DIC_PROPS.rowParentKey
+    },
+    childrenKey () {
+      return this.treeProps.children || DIC_PROPS.children
+    },
+    hasChildrenKey () {
+      return this.treeProps.hasChildren || DIC_PROPS.hasChildren
     },
     treeProps () {
       return this.tableOption.treeProps || {}
@@ -320,9 +327,6 @@ export default create({
     },
     expandAll () {
       return this.parentOption.expandAll || false;
-    },
-    rowParentKey () {
-      return this.tableOption.rowParentKey || "parentId";
     },
     parentOption () {
       return this.tableOption || {};
@@ -441,7 +445,7 @@ export default create({
           if (!tableRef) return
           const tableStyle = tableRef.$el;
           const pageStyle = tablePageRef.$el.offsetHeight || 20;
-          this.tableHeight = config.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
         })
       } else {
         this.tableHeight = this.tableOption.height;
@@ -678,6 +682,7 @@ export default create({
       return result
     },
     rowCellUpdate (row, index) {
+      row = this.deepClone(row);
       var result = this.validateCellField(index)
       const done = () => {
         this.btnDisabledList[index] = false;
@@ -747,31 +752,11 @@ export default create({
       this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("view");
     },
-    vaildParent (row) {
-      return this.validatenull(row[this.rowParentKey])
-    },
     // 删除
     rowDel (row, index) {
       this.$emit("row-del", row, index, () => {
-        const callback = (list = []) => {
-          let index = list.findIndex(ele => ele[this.rowKey] === row[this.rowKey])
-          list.splice(index, 1);
-        }
-        if (this.isTree) {
-          if (this.vaildParent(row)) {
-            callback(this.data)
-          } else {
-            let parent = this.findObject(this.data, row[this.rowParentKey], this.rowKey);
-            if (parent === undefined) {
-              callback(this.data)
-            } else {
-              callback(parent.children)
-            }
-          }
-        } else {
-          callback(this.data)
-        }
-
+        let { parentList, index } = this.findData(row[this.rowKey])
+        if (parentList) parentList.splice(index, 1);
       });
     },
     //合并行
@@ -850,7 +835,27 @@ export default create({
         delay: 0,
         onEnd: evt => callback(evt)
       })
-    }
+    },
+    findData (id) {
+      let result = {}
+      const callback = (parentList, parent) => {
+        parentList.forEach((ele, index) => {
+          if (ele[this.rowKey] == id) {
+            result = {
+              item: ele,
+              index: index,
+              parentList: parentList,
+              parent: parent
+            }
+          }
+          if (ele[this.childrenKey]) {
+            callback(ele[this.childrenKey], ele)
+          }
+        })
+      }
+      callback(this.list)
+      return result;
+    },
   }
 });
 </script>

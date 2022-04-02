@@ -13,7 +13,7 @@ export function getAsVal (obj, bind = '') {
 }
 
 export function setAsVal (obj, bind = '', value = '') {
-  eval('obj.' + bind + '=`' + value + '`');
+  eval(`obj.${bind}=${value}`);
   return obj;
 }
 export const loadScript = (type = 'js', url) => {
