@@ -3,6 +3,7 @@
                    :key="column.prop"
                    :prop="column.prop"
                    :label="column.label"
+                   :column-key="column.prop"
                    filter-placement="bottom-end"
                    :filters="getColumnProp(column,'filters')"
                    :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"

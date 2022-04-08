@@ -437,7 +437,7 @@ export default create({
         return true;
       }
     },
-    getTableHeight () {
+    getTableHeight (val) {
       if (this.isAutoHeight) {
         this.$nextTick(() => {
           const tableRef = this.$refs.table
@@ -445,7 +445,11 @@ export default create({
           if (!tableRef) return
           const tableStyle = tableRef.$el;
           const pageStyle = tablePageRef.$el.offsetHeight || 20;
-          this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          if(val){
+            this.tableHeight = document.documentElement.clientHeight - pageStyle - this.calcHeight
+          }else{
+            this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
+          }
         })
       } else {
         this.tableHeight = this.tableOption.height;
@@ -516,6 +520,14 @@ export default create({
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
       this.refreshTable()
+    },
+    // 清除过滤器执行函数
+    clearFilter(name) {
+      if (name) {
+        this.$refs.table.clearFilter(name);
+      } else {
+        this.$refs.table.clearFilter();
+      }
     },
     //展开或则关闭
     expandChange (row, expand) {
