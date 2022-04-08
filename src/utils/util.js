@@ -341,22 +341,17 @@ export const findByValue = (dic, value, props) => {
 /**
  * 过滤字典翻译字段和空字段
  */
-export const filterNullParams = (form) => {
+export const filterParams = (form, list = ['', '$']) => {
   for (let o in form) {
-    if (validatenull(form[o])) {
-      delete form[o];
+    if (list.includes('')) {
+      if (validatenull(form[o])) delete form[o];
     }
-  }
-};
-/**
- * 过滤字典翻译字段和空字段
- */
-export const filterDicParams = (form) => {
-  for (let o in form) {
-    if (o.indexOf('$') !== -1) {
-      delete form[o];
+    if (list.includes('$')) {
+      if (o.indexOf('$') !== -1) delete form[o];
     }
+
   }
+  return deepClone(form)
 };
 /**
  * 处理存在group分组的情况
