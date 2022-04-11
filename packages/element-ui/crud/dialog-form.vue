@@ -74,6 +74,7 @@
 import create from "core/create";
 import locale from "core/locale";
 import config from "./config";
+import { filterParams } from 'utils/util'
 export default create({
   name: "crud",
   mixins: [locale],
@@ -219,7 +220,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        this.deepClone(this.crud.tableForm),
+        filterParams(this.crud.tableForm),
         this.closeDialog,
         hide
       );
@@ -228,7 +229,7 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        this.deepClone(this.crud.tableForm),
+        filterParams(this.crud.tableForm),
         this.crud.tableIndex,
         this.closeDialog,
         hide

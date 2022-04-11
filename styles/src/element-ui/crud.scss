@@ -153,7 +153,10 @@ $space-width: 15px;
     padding: 0 8px;
   }
   &__empty{
-    padding:  60px 0;
+    padding:  20px 0;
+    .el-empty__description{
+      margin-top: 0;
+    }
   }
   &__header {
     margin-bottom: 10px;
