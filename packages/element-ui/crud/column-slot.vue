@@ -162,6 +162,7 @@ export default {
         //本节点;
         const cascader = column.cascader;
         const str = cascader.join(",");
+        const oldRow = JSON.parse(JSON.stringify(row));
         cascader.forEach(item => {
           const columnNextProp = item;
           const value = row[column.prop];
@@ -198,9 +199,12 @@ export default {
             const dic = res || [];
             // 修改字典
             this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
-
-            if (!this.validatenull(dic[columnNext.cascaderIndex]) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
-              row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
+            if (!this.validatenull(dic)) {
+              const columnProp = (columnNext.props || {}).value || DIC_PROPS.value;
+              const obj = dic.find(ele => ele[columnProp] === oldRow[columnNextProp]);
+              if (obj) {
+                row[columnNextProp] = obj[columnProp];
+              }
             }
           }
           );

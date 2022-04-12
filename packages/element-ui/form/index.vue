@@ -510,6 +510,7 @@ export default create({
     handleChange (list, column) {
       this.$nextTick(() => {
         const cascader = column.cascader;
+        const oldForm = JSON.parse(JSON.stringify(this.form));
         const str = cascader.join(",");
         cascader.forEach(item => {
           const columnNextProp = item;
@@ -547,8 +548,13 @@ export default create({
             // 修改字典
             const dic = res || [];
             this.$set(this.DIC, columnNextProp, dic);
-            if (!this.validatenull(dic) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex) && this.validatenull(this.form[columnNextProp])) {
-              this.form[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
+
+            if (!this.validatenull(dic)) {
+              const columnProp = (columnNext.props || {}).value || DIC_PROPS.value;
+              const obj = dic.find(ele => ele[columnProp] === oldForm[columnNextProp]);
+              if (obj) {
+                this.form[columnNextProp] = obj[columnProp];
+              }
             }
           });
         })
