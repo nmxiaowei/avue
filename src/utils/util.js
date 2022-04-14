@@ -12,8 +12,23 @@ export function getAsVal (obj, bind = '') {
   return result;
 }
 
-export function setAsVal (obj, bind = '', value = '') {
-  eval(`obj.${bind}=${value}`);
+export function setAsVal (obj, bind = '', value) {
+  let result;
+  if (validatenull(value)) {
+    let type = getObjType(value)
+    if (type === 'array') {
+      result = `obj.${bind}=[]`
+    } else if (type === 'object') {
+      result = `obj.${bind}={}`
+    } else if (['number', 'boolean'].includes(type)) {
+      result = `obj.${bind}=undefined`
+    } else {
+      result = `obj.${bind}=''`
+    }
+  } else {
+    result = `obj.${bind}=${value}`;
+  }
+  eval(result);
   return obj;
 }
 export const loadScript = (type = 'js', url) => {
