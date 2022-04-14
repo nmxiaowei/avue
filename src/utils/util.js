@@ -14,8 +14,8 @@ export function getAsVal (obj, bind = '') {
 
 export function setAsVal (obj, bind = '', value) {
   let result;
+  let type = getObjType(value)
   if (validatenull(value)) {
-    let type = getObjType(value)
     if (type === 'array') {
       result = `obj.${bind}=[]`
     } else if (type === 'object') {
@@ -26,7 +26,11 @@ export function setAsVal (obj, bind = '', value) {
       result = `obj.${bind}=''`
     }
   } else {
-    result = `obj.${bind}=${value}`;
+    if (type == 'string') {
+      result = `obj.${bind}='${value}'`;
+    } else {
+      result = `obj.${bind}=${value}`;
+    }
   }
   eval(result);
   return obj;
