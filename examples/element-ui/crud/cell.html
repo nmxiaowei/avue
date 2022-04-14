@@ -162,6 +162,9 @@
               width: 120,
               type: 'select',
               cell: true,
+              change: (val) => {
+                console.log(val)
+              },
               props: {
                 label: 'name',
                 value: 'code'
