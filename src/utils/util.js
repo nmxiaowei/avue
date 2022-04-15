@@ -361,16 +361,17 @@ export const findByValue = (dic, value, props) => {
  * 过滤字典翻译字段和空字段
  */
 export const filterParams = (form, list = ['', '$']) => {
-  for (let o in form) {
+  let data = deepClone(form)
+  for (let o in data) {
     if (list.includes('')) {
-      if (validatenull(form[o])) delete form[o];
+      if (validatenull(data[o])) delete data[o];
     }
     if (list.includes('$')) {
-      if (o.indexOf('$') !== -1) delete form[o];
+      if (o.indexOf('$') !== -1) delete data[o];
     }
 
   }
-  return deepClone(form)
+  return data
 };
 /**
  * 处理存在group分组的情况
