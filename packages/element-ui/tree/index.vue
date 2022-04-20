@@ -192,7 +192,7 @@ export default create({
       return ["add", "parentAdd"].includes(this.type);
     },
     size () {
-      return this.option.size || "small";
+      return this.option.size
     },
     props () {
       return this.option.props || {};
@@ -251,7 +251,7 @@ export default create({
     filterValue (val) {
       this.$refs.tree.filter(val);
     },
-    modelValue () {
+    modelValue (val) {
       this.form = val;
     },
     form (val) {
