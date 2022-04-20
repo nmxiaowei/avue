@@ -96,9 +96,8 @@
         <i v-else-if="'color'===column.type"
            class="avue-crud__color"
            :style="{backgroundColor:row[column.prop]}"></i>
-        <i v-else-if="'icon'===column.type"
-           class="avue-crud__icon"
-           :class="row[column.prop]"></i>
+        <icon-temp v-else-if="'icon'===column.type"
+                   :text="row[column.prop]"></icon-temp>
         <span v-else-if="column.html"
               v-html="handleDetail(row,column)"></span>
         <span v-else
@@ -114,11 +113,13 @@ import { detail } from "core/detail";
 import { DIC_PROPS, DIC_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
 import formTemp from 'common/components/form/index'
+import iconTemp from 'common/components/icon/index'
 export default {
   name: 'column-slot',
   inject: ["dynamic", 'crud'],
   components: {
-    formTemp
+    formTemp,
+    iconTemp
   },
   props: {
     column: Object,
