@@ -26,10 +26,6 @@ const list = {
     url: 'https://avuejs.com/cdn/CryptoJS.js',
     title: '七牛云图片上传，需引入CryptoJS'
   },
-  'element-ui': {
-    title: '底层依赖需引入Element-ui框架包',
-    github: 'https://github.com/ElemeFE/element'
-  },
   'hljs': {
     url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js',
     title: '需引入hljs框架包',
@@ -49,11 +45,6 @@ const list = {
     url: 'https://cdn.staticfile.org/Mock.js/1.0.1-beta3/mock-min.js',
     title: '需要引入mock模拟数据包',
     github: 'https://github.com/Colingo/mock'
-  },
-  'axios': {
-    title: '底层依赖需引入axios发送数据',
-    url: 'https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js',
-    github: 'https://github.com/axios/axios'
   }
 };
 

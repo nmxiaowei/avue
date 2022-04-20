@@ -43,7 +43,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       }
     }
     // 字典处理
-    result = findByValue(dic, result, column.props);
+    result = findByValue(dic, result, column.props || option.props);
   }
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {

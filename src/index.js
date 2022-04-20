@@ -14,8 +14,6 @@ import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 import $DialogForm from 'packages/core/components/dialog-form/';
-import packages from 'core/packages';
-import Element from 'element-ui';
 
 let prototypes = {
   $ImagePreview,
@@ -45,10 +43,6 @@ let directive = {
   dialogDrag
 }
 const install = function (Vue, opts = {}) {
-  if (!Element) {
-    packages.logs('element-ui');
-    return
-  }
   if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
   const defaultOption = {
     size: opts.size || 'small',
