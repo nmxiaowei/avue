@@ -59,8 +59,8 @@
     "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
-    "element-plus": "^2.0.3",
-    "vue": "^3.2.31"
+    "element-plus": "^2.1.10",
+    "vue": "^3.2.33"
   },
   "files": [
     "lib",
