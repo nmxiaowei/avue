@@ -663,7 +663,6 @@ export default create({
     },
     rowCellUpdate (row, index) {
       row = this.deepClone(row);
-      var result = this.validateCellField(index)
       const done = () => {
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
@@ -675,15 +674,17 @@ export default create({
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
       }
-      if (result) {
-        this.btnDisabledList[index] = true;
-        this.btnDisabled = true;
-        if (this.validatenull(row[this.rowKey])) {
-          this.$emit("row-save", row, done, loading);
-        } else {
-          this.$emit("row-update", row, index, done, loading);
+      this.$refs.cellForm.validate((valid) => {
+        if (valid) {
+          this.btnDisabledList[index] = true;
+          this.btnDisabled = true;
+          if (this.validatenull(row[this.rowKey])) {
+            this.$emit("row-save", row, done, loading);
+          } else {
+            this.$emit("row-update", row, index, done, loading);
+          }
         }
-      }
+      })
     },
     rowAdd () {
       this.$refs.dialogForm.show("add");
