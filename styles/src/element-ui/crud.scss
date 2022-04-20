@@ -126,14 +126,6 @@ $space-width: 15px;
     border-radius: 5px;
     display: block;
   }
-  &__icon{
-    font-size: 45px;
-    &--small{
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
-  }
   &__ghost{
     cursor: move;
     opacity: 0.4;

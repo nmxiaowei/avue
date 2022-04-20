@@ -138,7 +138,20 @@ body {
   background-image: linear-gradient(rgba(0, 0, 0, .1) 1px, transparent 0), linear-gradient(90deg, rgba(0, 0, 0, .1) 1px, transparent 0);
 }
 
-
+.avue-icon{
+  svg,i{
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+  }
+  &--small{
+    svg,i{
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
 .avue-dialog {
   .el-dialog__headerbtn{
     top:3px;

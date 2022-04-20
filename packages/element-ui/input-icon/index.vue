@@ -11,19 +11,11 @@
               @click="handleClick"
               @focus="handleShow">
       <template #append>
-        <span @click="handleShow">
-          <svg v-if="text&&text.indexOf('#')===0"
-               :class="b('symbol')"
-               aria-hidden="true">
-            <use :xlink:href="text"></use>
-          </svg>
-          <el-icon v-else-if="text&&text.indexOf('el-')===0"
-                   size="32">
-            <component :is="text" />
-          </el-icon>
-          <i v-else
-             :class="[b('symbol'),text]"></i>
-        </span>
+        <icon-temp @click="handleShow"
+                   :text="text"
+                   :size="28"
+                   small></icon-temp>
+
       </template>
     </el-input>
     <el-dialog custom-class="avue-dialog avue-dialog--none"
@@ -38,18 +30,9 @@
              v-for="(item,index) in list"
              @click="handleSubmit(item.value)"
              :key="index">
-          <svg v-if="item.value.indexOf('#')===0"
-               :class="b('icon')"
-               aria-hidden="true">
-            <use :xlink:href="item.value"></use>
-          </svg>
-          <el-icon v-else-if="item.value.indexOf('el-')===0"
-                   :size="item.size || 32"
-                   :color="item.color">
-            <component :is="item.value" />
-          </el-icon>
-          <i v-else
-             :class="[b('icon'),item.value]"></i>
+          <icon-temp :text="item.value"
+                     :size="item.size"
+                     :color="item.color"></icon-temp>
           <p>{{item.label || item.value}}</p>
         </div>　
       </div>
@@ -59,10 +42,14 @@
 
 <script>
 import create from "core/create";
+import iconTemp from 'common/components/icon/index';
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 export default create({
   name: "input-icon",
+  components: {
+    iconTemp
+  },
   mixins: [props(), event()],
   props: {
     dialogWidth: {
