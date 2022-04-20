@@ -13,7 +13,6 @@ import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $ImagePreview from 'packages/core/components/image-preview/';
 import createIcon from './icon';
-import ElementPlus from 'element-plus';
 let plugins = {
   $ImagePreview,
   $Export,
@@ -38,10 +37,6 @@ let plugins = {
 };
 let directive = {}
 const install = function (Vue, opts = {}) {
-  if (!ElementPlus) {
-    packages.logs('element-plus');
-    return
-  }
   const defaultOption = {
     size: opts.size || 'default',
     calcHeight: opts.calcHeight || 0,

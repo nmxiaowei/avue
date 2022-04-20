@@ -17,9 +17,10 @@
                v-model="box">
       <avue-crud :class="b('crud')"
                  ref="crud"
+                 v-if="box"
                  :option="option"
                  :data="data"
-                 v-loading="loading"
+                 :table-loading="loading"
                  @on-load="onList"
                  @search-change="handleSearchChange"
                  @search-reset="handleSearchChange"
@@ -109,6 +110,10 @@ export default create({
     handleShow () {
       this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
+      this.page = {
+        currentPage: 1,
+        total: 0
+      }
       this.box = true;
     },
     setVal () {

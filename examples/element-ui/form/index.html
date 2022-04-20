@@ -27,19 +27,17 @@
       <template #test="scope">
         <el-tag>测试自定义内容</el-tag>
       </template>
-      <template #cascaderType="{node,data}">
+      <template #cascader-type="{node,data}">
         <span>{{ data.label }}</span>
         <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
       </template>
-      <template #treeType="{ item }">
-        <template #="el-tree-node__label">
-          <span>
-            <el-icon>
-              <el-icon-user-solid />
-            </el-icon>
-            {{ item.label }}
-          </span>
-        </template>
+      <template #tree-type="{ item }">
+        <span class="el-tree-node__label">
+          <el-icon>
+            <el-icon-user-solid />
+          </el-icon>
+          {{ item.label }}
+        </span>
       </template>
     </avue-form>
   </div>

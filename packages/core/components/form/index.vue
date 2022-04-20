@@ -12,6 +12,7 @@
              :props="column.props || props"
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
+             :table-data="tableData"
              :type="type || column.type"
              @keyup.enter="enterChange">
     <template #="scope"
@@ -53,6 +54,12 @@ export default {
     },
     props: {
       type: Object
+    },
+    tableData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     clearable: {
       type: Boolean
@@ -136,8 +143,12 @@ export default {
       return column
     },
     enterChange () {
-      if (typeof this.column.enter === 'function') this.column.enter(this.text, this.column)
-      if (this.enter) this.$emit('enter')
+      let enter = this.column.enter;
+      if (!this.validatenull(enter)) {
+        if (typeof enter === 'function') this.column.enter(this.text, this.column)
+      } else if (this.enter) {
+        this.$emit('enter')
+      }
     }
   }
 }

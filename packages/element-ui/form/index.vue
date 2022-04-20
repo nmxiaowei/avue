@@ -184,7 +184,7 @@ import formMenu from './menu'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterNullParams, filterDicParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 export default create({
   name: "form",
@@ -411,7 +411,7 @@ export default create({
     },
     forEachLabel () {
       if (this.tableOption.filterDic == true) {
-        filterDicParams(this.form)
+        this.form = filterParams(this.form, ['$'])
         return
       }
       this.propOption.forEach(column => {
@@ -488,7 +488,9 @@ export default create({
         }
       });
       this.forEachLabel();
-      if (this.tableOption.filterNull === true) filterNullParams(this.form)
+      if (this.tableOption.filterNull === true) {
+        this.form = filterParams(this.form, [''])
+      }
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -675,7 +677,7 @@ export default create({
     submit () {
       this.validate((valid, msg) => {
         if (valid) {
-          this.$emit("submit", this.form, this.hide);
+          this.$emit("submit", filterParams(this.form), this.hide);
         } else {
           this.$emit("error", msg);
         }

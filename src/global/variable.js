@@ -1,6 +1,8 @@
 export const KEY_COMPONENT_NAME = 'avue-';
 export const KEY_ECHART_NAME = 'echart-';
 export const DIC_PROPS = {
+  rowKey: 'id',
+  rowParentKey: "parentId",
   nodeKey: 'id',
   label: 'label',
   value: 'value',
@@ -9,6 +11,7 @@ export const DIC_PROPS = {
   title: 'title',
   leaf: 'leaf',
   children: 'children',
+  hasChildren: 'hasChildren',
   labelText: '名称',
   disabled: 'disabled'
 };

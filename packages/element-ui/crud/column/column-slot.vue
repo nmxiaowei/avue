@@ -3,6 +3,7 @@
                    :key="column.prop"
                    :prop="column.prop"
                    :label="column.label"
+                   :column-key="column.prop"
                    filter-placement="bottom-end"
                    :filters="getColumnProp(column,'filters')"
                    :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
@@ -45,6 +46,7 @@
             <form-temp v-else
                        :column="column"
                        :size="crud.isMediumSize"
+                       :table-data="{index:$index,row:row,label:handleDetail(row,column)}"
                        :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
                        :props="column.props || crud.tableOption.props"
                        :readonly="column.readonly"
@@ -52,7 +54,7 @@
                        :clearable="validData(column.clearable,false)"
                        v-model="row[column.prop]"
                        :column-slot="crud.mainSlot"
-                       @change="columnChange($index,row,column)">
+                       @change="columnChange(row,column,$index)">
               <template v-for="item in crud.mainSlot"
                         #[item]="scope">
                 <slot v-bind="scope"
@@ -150,19 +152,19 @@ export default {
       }
       return result;
     },
-    columnChange ($index, row, column) {
-      if (this.validatenull(count[$index])) count[$index] = {}
-      if (column.cascader) this.handleChange(column, row)
-      if (!count[$index][column.prop]) {
-        if (typeof column.change === 'function' && column.cell === true) {
-          column.change({ row, column, index: $index, value: row[column.prop] })
+    columnChange (row, column, index) {
+      let key = `${index}-${column.prop}`
+      if (!count[key]) {
+        this.handleChange(column, row)
+        if (typeof column.change === 'function' && column.cell == true) {
+          column.change({ row, column, index, value: row[column.prop] })
         }
-        this.crud.$emit('column-change', { row, column, index: $index, value: row[column.prop] })
-        count[$index][column.prop] = true
-        this.$nextTick(() => count[$index][column.prop] = false)
       }
+      count[key] = true
+      this.$nextTick(() => count[key] = false)
     },
     handleChange (column, row) {
+      if (!column.cascader) return
       this.$nextTick(() => {
         const columnOption = [...this.crud.propOption];
         //本节点;

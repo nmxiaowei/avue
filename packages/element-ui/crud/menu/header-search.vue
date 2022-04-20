@@ -45,6 +45,7 @@ import { validData } from "utils/util";
 import { validatenull } from "utils/validate";
 import slot from 'core/slot'
 import { getSearchType, getType } from "core/dataformat";
+import { filterParams } from 'utils/util'
 import config from "../config";
 export default create({
   name: "crud__search",
@@ -153,6 +154,9 @@ export default create({
           group: false,
           printBtn: false,
           mockBtn: false,
+          filterDic: option.searchFilterDic,
+          filterNull: option.searchFilterNull,
+          filterParam: option.searchFilterParam,
           enter: option.searchEnter,
           size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
@@ -190,7 +194,7 @@ export default create({
     },
     // 搜索回调
     searchChange (form, done) {
-      this.crud.$emit("search-change", form, done);
+      this.crud.$emit("search-change", filterParams(form), done);
     },
     // 搜索清空
     resetChange () {
