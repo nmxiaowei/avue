@@ -11,6 +11,8 @@
              :value="labelShow"
              :clearable="clearableVal"
              :placeholder="placeholder"
+             :popper-class="popperClass"
+             :popper-append-to-body="popperAppendToBody"
              @focus="handleFocus"
              @blur="handleBlur"
              @clear="handleClear"
@@ -134,6 +136,10 @@ export default create({
       type: Boolean,
       default: false
     },
+    popperAppendToBody: {
+      type: Boolean,
+      default: true
+    }
   },
   watch: {
     text: {
