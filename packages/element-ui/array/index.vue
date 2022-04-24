@@ -29,7 +29,7 @@
                     :placeholder="placeholder"
                     :disabled="disabled"></el-input>
         </el-tooltip>
-        <template v-if="!(disabled ||readonly)">
+        <template v-if="!(disabled ||readonly || alone)">
           <el-button type="primary"
                      icon="el-icon-plus"
                      circle
@@ -78,6 +78,7 @@ export default create({
     },
   },
   props: {
+    alone: Boolean,
     type: String,
     size: String,
     placeholder: String,
