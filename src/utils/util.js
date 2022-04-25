@@ -360,8 +360,8 @@ export const findByValue = (dic, value, props) => {
 /**
  * 过滤字典翻译字段和空字段
  */
-export const filterParams = (form, list = ['', '$']) => {
-  let data = deepClone(form)
+export const filterParams = (form, list = ['', '$'], deep = true) => {
+  let data = deep ? deepClone(form) : form
   for (let o in data) {
     if (list.includes('')) {
       if (validatenull(data[o])) delete data[o];
