@@ -13,6 +13,7 @@
                     :format="format"
                     :readonly="readonly"
                     :clearable="clearableVal"
+                    :picker-options="pickerOptions"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     @change="handleChange"
@@ -53,6 +54,10 @@ export default create({
     },
     defaultValue: {
       type: [String, Array]
+    },
+    pickerOptions: {
+      type: Object,
+      default: () => { }
     },
     valueFormat: {
       default: ""

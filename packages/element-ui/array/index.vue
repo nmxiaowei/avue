@@ -35,6 +35,7 @@
                      circle
                      :size="size"
                      :disabled="disabled"
+                     v-if="!isLimit"
                      @click="add(index)"></el-button>
           <el-button type="danger"
                      icon="el-icon-minus"
@@ -61,6 +62,14 @@ export default create({
     }
   },
   computed: {
+    isLimit () {
+      if (this.validatenull(this.limit)) return false
+      else if (this.textLen >= this.limit) return true
+      return false
+    },
+    textLen () {
+      return (this.text || []).length
+    },
     isImg () {
       return this.type === 'img'
     },
@@ -76,6 +85,7 @@ export default create({
     readonly: Boolean,
     disabled: Boolean,
     value: [Array, String],
+    limit: Number
   },
   methods: {
     add (index) {

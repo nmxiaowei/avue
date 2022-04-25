@@ -9,17 +9,11 @@
               @change="handleChange"
               @click.native="handleClick"
               @focus="handleShow">
-      <span slot="append"
-            @click="handleShow">
-        <svg v-if="(text || '').indexOf('#')===0"
-             class="avue-crud__icon--small"
-             aria-hidden="true">
-          <use :xlink:href="text"></use>
-        </svg>
-        <i v-else
-           class="avue-crud__icon--small"
-           :class="text"></i>
-      </span>
+      <icon-temp slot="append"
+                 @click="handleShow"
+                 :text="text"
+                 :size="28"
+                 small></icon-temp>
 
     </el-input>
     <el-dialog class="avue-dialog avue-dialog--none"
@@ -34,13 +28,7 @@
              v-for="(item,index) in list"
              @click="handleSubmit(item.value)"
              :key="index">
-          <svg v-if="item.value.indexOf('#')===0"
-               :class="b('icon-symbol')"
-               aria-hidden="true">
-            <use :xlink:href="item.value"></use>
-          </svg>
-          <i v-else
-             :class="[b('icon'),item.value]"></i>
+          <icon-temp :text="item.value"></icon-temp>
           <p>{{item.label || item.value}}</p>
         </div>
       </div>
@@ -50,10 +38,14 @@
 
 <script>
 import create from "core/create";
+import iconTemp from 'common/components/icon/index';
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 export default create({
   name: "input-icon",
+  components: {
+    iconTemp
+  },
   mixins: [props(), event()],
   props: {
     dialogWidth: {

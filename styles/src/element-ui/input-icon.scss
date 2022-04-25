@@ -23,14 +23,4 @@
     display: flex;
     flex-wrap: wrap;
   }
-  &__icon{
-    font-size: 32px !important;
-  }
-  &__icon-symbol{
-    width: 32px;
-    height: 32px;
-    margin: 0 auto;
-    fill: currentColor;
-    overflow: hidden;
-  }
 }

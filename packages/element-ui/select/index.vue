@@ -13,6 +13,7 @@
              :no-data-text="noDataText"
              :remote-method="handleRemoteMethod"
              :popper-class="popperClass"
+             :popper-append-to-body="popperAppendToBody"
              :collapse-tags="tags"
              :clearable="clearableVal"
              :placeholder="placeholder"
@@ -132,6 +133,10 @@ export default create({
     all: {
       type: Boolean,
       default: false
+    },
+    popperAppendToBody: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {

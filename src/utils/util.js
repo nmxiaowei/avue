@@ -12,8 +12,27 @@ export function getAsVal (obj, bind = '') {
   return result;
 }
 
-export function setAsVal (obj, bind = '', value = '') {
-  eval(`obj.${bind}=${value}`);
+export function setAsVal (obj, bind = '', value) {
+  let result;
+  let type = getObjType(value)
+  if (validatenull(value)) {
+    if (type === 'array') {
+      result = `obj.${bind}=[]`
+    } else if (type === 'object') {
+      result = `obj.${bind}={}`
+    } else if (['number', 'boolean'].includes(type)) {
+      result = `obj.${bind}=undefined`
+    } else {
+      result = `obj.${bind}=''`
+    }
+  } else {
+    if (type == 'string') {
+      result = `obj.${bind}='${value}'`;
+    } else {
+      result = `obj.${bind}=${value}`;
+    }
+  }
+  eval(result);
   return obj;
 }
 export const loadScript = (type = 'js', url) => {
@@ -342,16 +361,17 @@ export const findByValue = (dic, value, props) => {
  * 过滤字典翻译字段和空字段
  */
 export const filterParams = (form, list = ['', '$']) => {
-  for (let o in form) {
+  let data = deepClone(form)
+  for (let o in data) {
     if (list.includes('')) {
-      if (validatenull(form[o])) delete form[o];
+      if (validatenull(data[o])) delete data[o];
     }
     if (list.includes('$')) {
-      if (o.indexOf('$') !== -1) delete form[o];
+      if (o.indexOf('$') !== -1) delete data[o];
     }
 
   }
-  return deepClone(form)
+  return data
 };
 /**
  * 处理存在group分组的情况

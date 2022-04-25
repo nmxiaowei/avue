@@ -12,6 +12,7 @@
              :props="column.props || props"
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
+             :table-data="tableData"
              :type="type || column.type"
              :column-slot="columnSlot"
              @keyup.enter.native="enterChange">
@@ -53,6 +54,12 @@ export default {
     },
     props: {
       type: Object
+    },
+    tableData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     clearable: {
       type: Boolean
