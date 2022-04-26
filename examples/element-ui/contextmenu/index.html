@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-ui/theme-chalk/index.css" />
+  <script src="../../cdn/element-ui/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <el-button v-contextmenu="{id:'test',event:handleTest,value:test}">点击我弹出右键</el-button>
+    <ul class="el-dropdown-menu el-popper" id="test">
+      <li class="el-dropdown-menu__item">
+        1243
+      </li>
+      <li class="el-dropdown-menu__item">
+        1243
+      </li>
+      <li class="el-dropdown-menu__item">
+        1243
+      </li>
+      <li class="el-dropdown-menu__item">
+        1243
+      </li>
+    </ul>
+    </ul>
+
+  </div>
+</body>
+
+</html>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        test: {
+          name: 123
+        },
+        list: [],
+        option: {
+          excelBtn: true,
+          column: [{
+            label: 'id',
+            prop: 'id'
+          }, {
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '年龄',
+            prop: 'sex'
+          }]
+        }
+      }
+    },
+    created() {
+      setTimeout(() => {
+        this.test = {
+          name: 456
+        }
+      }, 2000)
+    },
+    methods: {
+      handleTest(val) {
+        console.log(val)
+      },
+      handleGet() {
+        window.open('/cdn/demo.xlsx')
+      },
+      handleChange(file, fileLis) {
+        this.$Export.xlsx(file.raw)
+          .then(data => {
+            this.list = data.results;
+          })
+      }
+    }
+  })
+</script>
