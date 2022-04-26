@@ -112,6 +112,10 @@ export default {
             }, {
               label: '选中的数据(当前页选中的数据)',
               value: 1
+            }, {
+              label: '所有数据(导出所有数据)',
+              value: 2,
+              disabled: typeof this.crud.tableOption.excelFn !== 'function',
             }]
           }, {
             label: '选择字段',
@@ -171,33 +175,45 @@ export default {
       this.box = true
     },
     handleSubmit () {
-      this.$Export.excel({
-        title: this.form.name,
-        columns: this.columns,
-        data: this.handleSum()
-      });
-      this.box = false;
+      this.handleSum()
+        .then(data => {
+          this.$Export.excel({
+            title: this.form.name,
+            columns: this.columns,
+            data: data
+          });
+          this.box = false;
+        })
     },
     //计算统计
     handleSum () {
       const option = this.crud.tableOption;
       const columnOption = this.crud.propOption;
-      let list = this.form.type == 0 ? this.crud.list : this.crud.tableSelect;
-      let data = []
-      if (this.form.params.includes('data')) {
-        list.forEach(ele => {
-          let obj = this.deepClone(ele);
-          columnOption.forEach(column => {
-            if (column.bind) obj[column.prop] = getAsVal(obj, column.bind);
-            if (!this.validatenull(obj['$' + column.prop])) obj[column.prop] = obj['$' + column.prop];
+      return new Promise((resolve) => {
+        if(this.form.type == 0) {
+          resolve(this.crud.list)
+        }else if(this.form.type == 1){
+          resolve(this.crud.tableSelect)
+        }else {
+          this.crud.tableOption.excelFn.call(this, resolve)
+        }
+      }).then(list => {
+        let data = []
+        if (this.form.params.includes('data')) {
+          list.forEach(ele => {
+            let obj = this.deepClone(ele);
+            columnOption.forEach(column => {
+              if (column.bind) obj[column.prop] = getAsVal(obj, column.bind);
+              if (!this.validatenull(obj['$' + column.prop])) obj[column.prop] = obj['$' + column.prop];
+            })
+            data.push(obj);
           })
-          data.push(obj);
-        })
-      }
-      if (this.form.params.includes('sum') && option.showSummary) {
-        data.push(this.crud.sumsList);
-      }
-      return data;
+        }
+        if (this.form.params.includes('sum') && option.showSummary) {
+          data.push(this.crud.sumsList);
+        }
+        return new Promise((resolve) => resolve(data));
+      })
     },
   }
 }
