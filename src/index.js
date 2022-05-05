@@ -4,6 +4,7 @@ import axios from 'axios'
 import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, vaildData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
+import contextmenu from 'packages/core/directive/contextmenu';
 import $Export from 'plugin/export/';
 import { watermark } from 'plugin/canvas/';
 import $Log from 'plugin/logs/';
@@ -40,7 +41,8 @@ let prototypes = {
 
 };
 let directive = {
-  dialogDrag
+  dialogDrag,
+  contextmenu
 }
 const install = function (Vue, opts = {}) {
   if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';

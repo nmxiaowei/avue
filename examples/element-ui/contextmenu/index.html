@@ -18,23 +18,29 @@
 
 <body>
   <div id="app">
-    <el-button v-contextmenu="{id:'test',event:handleTest,value:test}">点击我弹出右键</el-button>
-    <ul class="el-dropdown-menu el-popper" id="test">
-      <li class="el-dropdown-menu__item">
-        1243
-      </li>
-      <li class="el-dropdown-menu__item">
-        1243
-      </li>
-      <li class="el-dropdown-menu__item">
-        1243
-      </li>
-      <li class="el-dropdown-menu__item">
-        1243
+    <ul>
+      <li v-for="(item,index) in list" :key="index" class="el-dropdown-menu__item"
+        v-contextmenu="{id:'dialog',event:handleEvent,value:item}">
+        {{item.name}}
       </li>
     </ul>
+    <ul class="el-dropdown-menu el-popper" id="dialog">
+      <li class="el-dropdown-menu__item" @click="handleClick1">
+        <i class="el-icon-eleme"></i>菜单1
+      </li>
+      <li class="el-dropdown-menu__item" @click="handleClick2">
+        <i class="el-icon-user"></i>菜单2
+      </li>
+      <li class="el-dropdown-menu__item" @click="handleClick3">
+        <i class="el-icon-goods"></i>菜单3
+      </li>
+      <li class="el-dropdown-menu__item el-dropdown-menu__item--divided" @click="handleClick4">
+        <i class="el-icon-circle-check"></i>菜单4
+      </li>
+      <li class="el-dropdown-menu__item" @click="handleClick4">
+        菜单5
+      </li>
     </ul>
-
   </div>
 </body>
 
@@ -45,45 +51,39 @@
     el: '#app',
     data() {
       return {
-        test: {
-          name: 123
-        },
-        list: [],
-        option: {
-          excelBtn: true,
-          column: [{
-            label: 'id',
-            prop: 'id'
-          }, {
-            label: '姓名',
-            prop: 'name'
-          }, {
-            label: '年龄',
-            prop: 'sex'
-          }]
-        }
+        form: {},
+        list: [{
+          name: '张三'
+        }, {
+          name: '李四'
+        }, {
+          name: '王五'
+        }]
       }
     },
     created() {
       setTimeout(() => {
-        this.test = {
-          name: 456
-        }
-      }, 2000)
+        this.list[0].name = 'small'
+      }, 1000)
     },
     methods: {
-      handleTest(val) {
-        console.log(val)
+      handleEvent(row, done) {
+        this.form = row;
+        done();
+        this.$message.success('回调信息' + JSON.stringify(row))
       },
-      handleGet() {
-        window.open('/cdn/demo.xlsx')
+      handleClick1() {
+        this.$message.success('菜单1' + JSON.stringify(this.form))
       },
-      handleChange(file, fileLis) {
-        this.$Export.xlsx(file.raw)
-          .then(data => {
-            this.list = data.results;
-          })
-      }
+      handleClick2() {
+        this.$message.success('菜单2' + JSON.stringify(this.form))
+      },
+      handleClick3() {
+        this.$message.success('菜单3' + JSON.stringify(this.form))
+      },
+      handleClick4() {
+        this.$message.success('菜单4' + JSON.stringify(this.form))
+      },
     }
   })
 </script>
