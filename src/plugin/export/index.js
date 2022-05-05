@@ -233,10 +233,10 @@ export default {
       // 列宽
       ws['!cols'] = [{ wpx: 165 }];
       let workbook = {
-        SheetNames: [_params.title],
+        SheetNames: ['Sheet1'],
         Sheets: {}
       };
-      workbook.Sheets[_params.title] = ws;
+      workbook.Sheets.Sheet1 = ws;
       // excel样式
       let wopts = {
         bookType: 'xlsx',
