@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-ui/theme-chalk/index.css" />
+  <script src="../../cdn/element-ui/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(item,index) in list" :key="index" class="el-dropdown-menu__item"
+        v-contextmenu="{id:'dialog',event:handleEvent,value:item}">
+        {{item.name}}
+      </li>
+    </ul>
+    <ul class="el-dropdown-menu el-popper" id="dialog">
+      <li class="el-dropdown-menu__item" @click="handleClick1">
+        <i class="el-icon-eleme"></i>菜单1
+      </li>
+      <li class="el-dropdown-menu__item" @click="handleClick2">
+        <i class="el-icon-user"></i>菜单2
+      </li>
+      <li class="el-dropdown-menu__item" @click="handleClick3">
+        <i class="el-icon-goods"></i>菜单3
+      </li>
+      <li class="el-dropdown-menu__item el-dropdown-menu__item--divided" @click="handleClick4">
+        <i class="el-icon-circle-check"></i>菜单4
+      </li>
+      <li class="el-dropdown-menu__item" @click="handleClick4">
+        菜单5
+      </li>
+    </ul>
+  </div>
+</body>
+
+</html>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        form: {},
+        list: [{
+          name: '张三'
+        }, {
+          name: '李四'
+        }, {
+          name: '王五'
+        }]
+      }
+    },
+    created() {
+      setTimeout(() => {
+        this.list[0].name = 'small'
+      }, 1000)
+    },
+    methods: {
+      handleEvent(row, done) {
+        this.form = row;
+        done();
+        this.$message.success('回调信息' + JSON.stringify(row))
+      },
+      handleClick1() {
+        this.$message.success('菜单1' + JSON.stringify(this.form))
+      },
+      handleClick2() {
+        this.$message.success('菜单2' + JSON.stringify(this.form))
+      },
+      handleClick3() {
+        this.$message.success('菜单3' + JSON.stringify(this.form))
+      },
+      handleClick4() {
+        this.$message.success('菜单4' + JSON.stringify(this.form))
+      },
+    }
+  })
+</script>

@@ -425,7 +425,7 @@ export default create({
     },
     forEachLabel () {
       if (this.tableOption.filterDic == true) {
-        this.form = filterParams(this.form, ['$'])
+        this.form = filterParams(this.form, ['$'], false)
         return
       }
       this.propOption.forEach(column => {
@@ -506,7 +506,7 @@ export default create({
       });
       this.forEachLabel()
       if (this.tableOption.filterNull === true) {
-        this.form = filterParams(this.form, [''])
+        this.form = filterParams(this.form, [''], false)
       }
     },
     handleChange (list, column) {
