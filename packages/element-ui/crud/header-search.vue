@@ -161,7 +161,7 @@ export default create({
             if (this.show || !this.isSearchIcon) {
               return option.searchMenuSpan
             } else {
-              return 6
+              return option.searchMenuSpan < 6 ? option.searchMenuSpan : 6
             }
           })(),
           menuPosition: option.searchMenuPosition || 'center',
