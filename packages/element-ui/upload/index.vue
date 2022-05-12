@@ -62,7 +62,8 @@
                    type="primary">{{t('upload.upload')}}</el-button>
       </template>
       <div slot="tip"
-           class="el-upload__tip">{{tip}}</div>
+           class="el-upload__tip"
+           v-html="tip"></div>
       <template v-if="$scopedSlots.default"
                 slot="file"
                 slot-scope="scope">
