@@ -30,7 +30,7 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     :is="getIsVideo"
+                     :is="getIsVideo(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <i v-else
@@ -64,11 +64,28 @@
       <div slot="tip"
            class="el-upload__tip"
            v-html="tip"></div>
-      <template v-if="$scopedSlots.default"
-                slot="file"
-                slot-scope="scope">
-        <slot v-bind="scope"></slot>
+      <template slot="file"
+                slot-scope="{file}">
+        <slot :file="file"
+              v-if="$scopedSlots.default">
+        </slot>
+        <span v-else>
+          <component class="el-upload-list__item-thumbnail"
+                     :src="file.url"
+                     :is="file.type"></component>
+          <span class="el-upload-list__item-actions">
+            <span class="el-upload-list__item-preview">
+              <i class="el-icon-zoom-in"
+                 @click.stop="handlePreview(file)"></i>
+            </span>
+            <span class="el-upload-list__item-delete">
+              <i class="el-icon-delete"
+                 @click.stop="handleRemove(file)"></i>
+            </span>
+          </span>
+        </span>
       </template>
+
     </el-upload>
   </div>
 </template>
@@ -175,12 +192,6 @@ export default create({
     homeUrl () {
       return this.propsHttp.home || ''
     },
-    getIsVideo () {
-      if (typeList.video.test(this.imgUrl)) {
-        return 'video'
-      }
-      return 'img'
-    },
     fileName () {
       return this.propsHttp.fileName || 'file'
     },
@@ -209,12 +220,14 @@ export default create({
             let i = ele.lastIndexOf('/');
             name = ele.substring(i + 1);
           }
+          let url = getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey]);
           list.push({
             uid: index + '',
             status: 'done',
+            type: this.getIsVideo(url),
             isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
-            url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
+            url: url
           });
         }
       });
@@ -227,6 +240,12 @@ export default create({
     }
   },
   methods: {
+    getIsVideo (url) {
+      if (typeList.video.test(url)) {
+        return 'video'
+      }
+      return 'img'
+    },
     setSort () {
       if (!window.Sortable) {
         packages.logs('Sortable');
