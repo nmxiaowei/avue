@@ -123,7 +123,7 @@ export default create({
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
               size: ele.searchSize || option.searchSize,
-              value: ele.searchValue || this.searchForm[ele.prop],
+              value: ele.searchValue,
               rules: ele.searchRules,
               row: ele.searchRow,
               bind: ele.searchBin,
