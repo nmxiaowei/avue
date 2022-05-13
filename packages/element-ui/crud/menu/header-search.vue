@@ -132,7 +132,7 @@ export default create({
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
               size: ele.searchSize || option.searchSize,
-              value: ele.searchValue || this.searchForm[ele.prop],
+              value: ele.searchValue,
               rules: ele.searchRules,
               row: ele.searchRow,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
@@ -169,7 +169,7 @@ export default create({
             if (this.show || !this.isSearchIcon) {
               return option.searchMenuSpan
             } else {
-              return 6
+              return option.searchMenuSpan < 6 ? option.searchMenuSpan : 6
             }
           })(),
           menuPosition: option.searchMenuPosition || 'center',

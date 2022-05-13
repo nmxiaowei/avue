@@ -7,8 +7,8 @@
                    :precision="precision"
                    :placeholder="placeholder"
                    :size="size"
-                   :min="minRows"
-                   :max="maxRows"
+                   :min="min"
+                   :max="max"
                    :step="step"
                    :clearable="clearableVal"
                    :readonly="readonly"
@@ -44,11 +44,11 @@ export default create({
     precision: {
       type: Number
     },
-    minRows: {
+    min: {
       type: Number,
       default: -Infinity
     },
-    maxRows: {
+    max: {
       type: Number,
       default: Infinity
     }

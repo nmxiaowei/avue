@@ -1,16 +1,18 @@
-function init (el, binding) {
-  const value = binding.value;
-  if (value === false) {
-    el.style.display = "none"
-  } else {
-    el.style.display = ""
+export default (() => {
+  function init (el, binding) {
+    const value = binding.value;
+    if (value === false) {
+      el.style.display = "none"
+    } else {
+      el.style.display = ""
+    }
   }
-}
-export default {
-  mounted (el, binding) {
-    init(el, binding)
-  },
-  update (el, binding) {
-    init(el, binding)
+  return {
+    bind (el, binding) {
+      init(el, binding)
+    },
+    update (el, binding) {
+      init(el, binding)
+    }
   }
-}
+})()

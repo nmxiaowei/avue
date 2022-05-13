@@ -35,14 +35,16 @@ export default {
   },
   computed: {
     columnOption () {
+      let result = []
       let column = this.deepClone(this.crud.columnOption)
       column.forEach(ele => {
         let children = ele.children
         if (children && !Array.isArray(children)) {
           delete ele.children
         }
+        if (ele.showColumn !== false) result.push(ele)
       })
-      return column;
+      return result;
     },
     columnList () {
       if (!this.form.params) return []
