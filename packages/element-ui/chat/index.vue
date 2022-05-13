@@ -93,7 +93,7 @@
                                     type="textarea"></el-input>
                           <div style="text-align: right; margin: 0">
                             <el-button size="mini"
-                                       type="text"
+                                       text
                                        @click="visible = false">取消</el-button>
                             <el-button type="primary"
                                        size="mini"
@@ -101,7 +101,7 @@
                           </div>
                         </div>
                         <template #reference>
-                          <el-button type="text"
+                          <el-button texts
                                      icon="el-icon-plus"></el-button>
                         </template>
 

@@ -18,11 +18,11 @@
                   row:searchForm
                 })"></slot>
         <template v-if="isSearchIcon">
-          <el-button type="text"
+          <el-button text
                      v-if="show===false"
                      @click="show=true"
                      icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
-          <el-button type="text"
+          <el-button text
                      v-if="show===true"
                      @click="show=false"
                      icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>

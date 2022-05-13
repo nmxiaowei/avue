@@ -89,7 +89,7 @@ body {
   }
   .el-col{
     margin-bottom: 0;
-    padding:0 ;
+    padding:0 !important;
     border-bottom:1px solid #ebeef5;
     border-right:1px solid #ebeef5;
   }
@@ -114,6 +114,9 @@ body {
    padding-left: 20px;
    box-sizing: border-box;
    background-color: #fff;
+  }
+  .el-input.is-disabled .el-input__wrapper{
+    background-color:#fff;
   }
   &__column{
     .el-form-item{

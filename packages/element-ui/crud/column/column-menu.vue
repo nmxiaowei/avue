@@ -11,7 +11,7 @@
     <template #="{row,$index}">
       <el-dropdown v-if="isMenu"
                    :size="crud.isMediumSize">
-        <el-button type="text"
+        <el-button text
                    :size="crud.isMediumSize">
           {{ crud.tableOption.menuBtnTitle || t('crud.menuBtn')}}
           <el-icon class='el-icon--right"'>
@@ -49,6 +49,7 @@
       <template v-else-if="['button','text','icon'].includes(menuType)">
         <template v-if="validData(crud.tableOption.cellBtn,config.cellBtn)">
           <el-button :type="menuText('primary')"
+                     :text="isTextMenu"
                      :icon="crud.getBtnIcon('editBtn')"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
@@ -60,6 +61,7 @@
             </template>
           </el-button>
           <el-button :type="menuText('primary')"
+                     :text="isTextMenu"
                      :icon="crud.getBtnIcon('saveBtn')"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
@@ -71,6 +73,7 @@
             </template>
           </el-button>
           <el-button :type="menuText('danger')"
+                     :text="isTextMenu"
                      :icon="crud.getBtnIcon('cancelBtn')"
                      :size="crud.isMediumSize"
                      :disabled="crud.btnDisabledList[$index]"
@@ -82,6 +85,7 @@
           </el-button>
         </template>
         <el-button :type="menuText('success')"
+                   :text="isTextMenu"
                    :icon="crud.getBtnIcon('viewBtn')"
                    :size="crud.isMediumSize"
                    :disabled="crud.btnDisabled"
@@ -93,6 +97,7 @@
           </template>
         </el-button>
         <el-button :type="menuText('primary')"
+                   :text="isTextMenu"
                    :icon="crud.getBtnIcon('editBtn')"
                    :size="crud.isMediumSize"
                    :disabled="crud.btnDisabled"
@@ -104,6 +109,7 @@
           </template>
         </el-button>
         <el-button :type="menuText('primary')"
+                   :text="isTextMenu"
                    :icon="crud.getBtnIcon('copyBtn')"
                    :size="crud.isMediumSize"
                    :disabled="crud.btnDisabled"
@@ -115,6 +121,7 @@
           </template>
         </el-button>
         <el-button :type="menuText('danger')"
+                   :text="isTextMenu"
                    :icon="crud.getBtnIcon('delBtn')"
                    :size="crud.isMediumSize"
                    :disabled="crud.btnDisabled"
@@ -170,7 +177,7 @@ export default create({
   },
   methods: {
     menuText (value) {
-      return ['text', 'menu'].includes(this.menuType) ? "text" : value;
+      return value;
     },
   }
 })
