@@ -1,6 +1,6 @@
 <template>
   <el-drawer append-to-body
-             :custom-class="['avue-dialog',b('dialog'),b('column')].join(' ')"
+             :custom-class="['avue-dialog',b('dialog'),b('column')]"
              :title="t('crud.showTitle')"
              @opened="init"
              :size="crud.isMobile?'100%':'40%'"

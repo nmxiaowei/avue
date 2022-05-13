@@ -220,7 +220,6 @@ $space-width: 15px;
       justify-content: space-between;
     }
     &__menu{
-      padding-right: 10px;
       i{
         margin-top: 1px;
         color: #909399;
@@ -228,6 +227,7 @@ $space-width: 15px;
         &:hover{
           color:#409EFF;
         }
+        cursor: pointer;
       }
     }
     .el-dialog__body{

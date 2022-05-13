@@ -25,6 +25,9 @@ body {
   .el-collapse-item__header{
     margin-bottom: 0;
   }
+  .el-input.is-disabled .el-input__wrapper{
+    box-shadow: none;
+  }
   .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner,.el-range-editor.is-disabled,.el-range-editor.is-disabled input{
     color: #606266;
     background-color: #fff;
@@ -158,7 +161,8 @@ body {
 }
 .avue-dialog {
   .el-dialog__headerbtn{
-    top:2px;
+    top:3px;
+    width: 40px;
   }
   .el-dialog__header{
     padding: 16px 24px;
@@ -191,7 +195,7 @@ body {
     padding: 30px 10px 60px 30px;
   }
   &__footer{
-    margin-top: 20px;
+    padding-top: 20px;
     display: block;
     padding: 10px 16px;
     box-sizing: border-box;
@@ -199,7 +203,6 @@ body {
     width: 100%;
     position: absolute;
     left: 0;
-    // bottom:0;
     background-color: #fff;
     text-align: right;
     &--left{

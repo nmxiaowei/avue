@@ -2,7 +2,7 @@
   <component :is="dialogType"
              :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
              :draggable="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass].join(' ')"
+             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass]"
              :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
              :top="dialogTop"
              :title="dialogTitle"
