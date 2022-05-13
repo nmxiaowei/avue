@@ -5,6 +5,7 @@ export default (() => {
     let v_params = value, e_params = event
     if (first) {
       el.oncontextmenu = function (e) {
+        e.preventDefault();
         let divLeft = e.clientX, divTop = e.clientY
         let client_width = document.documentElement.clientWidth;
         let client_height = document.documentElement.clientHeight;
@@ -35,13 +36,13 @@ export default (() => {
         } else {
           showDialog()
         }
-        return false;
+
       }
     }
 
   }
   return {
-    inserted (el, binding) {
+    mounted (el, binding) {
       let id = binding.value.id
       let event = binding.value.event
       let value = binding.value.value

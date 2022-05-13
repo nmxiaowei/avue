@@ -4,6 +4,10 @@ $space-width: 15px;
   .el-card+.el-card {
     margin-top: 8px;
   }
+  .el-button.is-text{
+    padding-left: 0;
+    padding-right: 0;
+  }
   &--card{
     .el-card{
       border:none;
