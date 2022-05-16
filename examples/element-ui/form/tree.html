@@ -29,11 +29,7 @@
   var app = Vue.createApp({
     data() {
       return {
-        data: {
-          shenfeng: [8, 9, 10],
-          shenfeng1: 32,
-          id: "110101,110102,120000"
-        },
+        data: {},
         option: {
           column: [{
             label: '文本',
@@ -577,6 +573,7 @@
           }, {
             label: '单选',
             prop: 'shenfeng1',
+            parent: false,
             type: 'tree',
             dicData: [{
               "id": 0,
@@ -1124,20 +1121,19 @@
                   })
                 }));
               }
-              console.log(code);
               if (level == 0) {
                 axios.get(`${baseUrl}/getProvince`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else if (level == 1) {
                 axios.get(`${baseUrl}/getCity/${code}`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else if (level == 2) {
                 axios.get(`${baseUrl}/getArea/${code}`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else {
