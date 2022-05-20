@@ -69,7 +69,7 @@
         <slot :file="file"
               v-if="$scopedSlots.default">
         </slot>
-        <span v-else>
+        <span v-else-if="listType==='picture-card'">
           <component class="el-upload-list__item-thumbnail"
                      :src="file.url"
                      :is="file.type"></component>
@@ -83,6 +83,33 @@
                  @click.stop="handleRemove(file)"></i>
             </span>
           </span>
+        </span>
+        <span v-else-if="listType==='picture'"
+              @click.stop="handlePreview(file)">
+          <component class="el-upload-list__item-thumbnail"
+                     :src="file.url"
+                     :is="file.type"></component>
+          <a class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>
+            {{file.name}}
+          </a>
+          <label class="el-upload-list__item-status-label">
+            <i class="el-icon-upload-success el-icon-check"></i>
+          </label>
+          <i class="el-icon-close"
+             @click.stop="handleRemove(file)"></i>
+        </span>
+        <span v-else
+              @click.stop="handlePreview(file)">
+          <a class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>
+            {{file.name}}
+          </a>
+          <label class="el-upload-list__item-status-label">
+            <i class="el-icon-upload-success el-icon-circle-check"></i>
+          </label>
+          <i class="el-icon-close"
+             @click.stop="handleRemove(file)"></i>
         </span>
       </template>
 
