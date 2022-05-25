@@ -117,7 +117,6 @@
                             :label="form['$'+column.prop]"
                             :size="column.size || controlSize"
                             :readonly="column.readonly|| readonly"
-                            ,
                             :disabled="getDisabled(column)"
                             :dic="DIC[column.prop]"
                             :name="column.prop"
