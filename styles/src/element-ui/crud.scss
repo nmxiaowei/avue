@@ -4,6 +4,10 @@ $space-width: 15px;
   .el-card+.el-card {
     margin-top: 8px;
   }
+  .el-button.is-text{
+    padding-left: 0;
+    padding-right: 0;
+  }
   &--card{
     .el-card{
       border:none;
@@ -220,7 +224,6 @@ $space-width: 15px;
       justify-content: space-between;
     }
     &__menu{
-      padding-right: 10px;
       i{
         margin-top: 1px;
         color: #909399;
@@ -228,6 +231,7 @@ $space-width: 15px;
         &:hover{
           color:#409EFF;
         }
+        cursor: pointer;
       }
     }
     .el-dialog__body{

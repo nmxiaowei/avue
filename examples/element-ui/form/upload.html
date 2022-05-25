@@ -78,14 +78,13 @@
               label: '照片墙',
               prop: 'imgUrl',
               type: 'upload',
-              limit: 1,
               span: 24,
               listType: 'picture-card',
               tip: '只能上传jpg/png文件，且不超过500kb',
               propsHttp: {
-                res: 'data.0'
+                res: 'data'
               },
-              action: 'https://avueupload.91eic.com/upload/list'
+              action: 'https://avuejs.com/imgupload'
             },
             {
               label: '数组图片组',
@@ -117,7 +116,6 @@
               prop: 'imgUrl',
               type: 'upload',
               span: 24,
-              drag: true,
               propsHttp: {
                 res: 'data.0'
               },

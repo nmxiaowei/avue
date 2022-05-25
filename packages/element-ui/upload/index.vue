@@ -68,7 +68,8 @@
                    type="primary">{{t('upload.upload')}}</el-button>
       </template>
       <template #tip>
-        <div class="el-upload__tip">{{tip}}</div>
+        <div class="el-upload__tip"
+             v-html="tip"></div>
       </template>
       <template v-if="$slots.default"
                 #file="scope">

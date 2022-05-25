@@ -1,6 +1,6 @@
 <template>
   <el-drawer lock-scroll
-             :custom-class="['avue-dialog',b('dialog'),b('filter')].join(' ')"
+             :custom-class="['avue-dialog',b('dialog'),b('filter')]"
              append-to-body
              :title="t('crud.filterTitle')"
              :size="crud.isMobile?'100%':'60%'"

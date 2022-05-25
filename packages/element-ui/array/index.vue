@@ -61,6 +61,14 @@ export default create({
     }
   },
   computed: {
+    isLimit () {
+      if (this.validatenull(this.limit)) return false
+      else if (this.textLen >= this.limit) return true
+      return false
+    },
+    textLen () {
+      return (this.text || []).length
+    },
     isImg () {
       return this.type === 'img'
     },
@@ -76,6 +84,7 @@ export default create({
     readonly: Boolean,
     disabled: Boolean,
     modelValue: [Array, String],
+    limit: Number
   },
   methods: {
     add (index) {

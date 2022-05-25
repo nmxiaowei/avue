@@ -445,6 +445,7 @@ export default create({
     },
     refreshTable (callback) {
       this.reload = Math.random()
+      this.tableSelect = []
       this.$nextTick(() => {
         // this.$refs.columnDefault.setSort()
         callback && callback()

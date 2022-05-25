@@ -2,7 +2,6 @@
   <el-select ref="main"
              :class="b()"
              v-model="text"
-             :popper-class="popperClass"
              :size="size"
              :loading="loading"
              :loading-text="loadingText"
@@ -13,6 +12,8 @@
              :no-match-text="noMatchText"
              :no-data-text="noDataText"
              :remote-method="handleRemoteMethod"
+             :popper-class="popperClass"
+             :popper-append-to-body="popperAppendToBody"
              :collapse-tags="tags"
              :clearable="clearableVal"
              :placeholder="placeholder"
@@ -137,6 +138,10 @@ export default create({
     all: {
       type: Boolean,
       default: false
+    },
+    popperAppendToBody: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {

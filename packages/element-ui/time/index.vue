@@ -12,7 +12,8 @@
                     :end-placeholder="endPlaceholder"
                     :format="format"
                     :readonly="readonly"
-                    :clearable="disabled?false:clearable"
+                    :clearable="clearableVal"
+                    :picker-options="pickerOptions"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     @change="handleChange"
@@ -50,6 +51,10 @@ export default create({
     },
     modelValue: {
       required: true
+    },
+    pickerOptions: {
+      type: Object,
+      default: () => { }
     },
     defaultValue: {
       type: [String, Array]
