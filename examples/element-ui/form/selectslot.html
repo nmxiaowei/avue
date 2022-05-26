@@ -21,7 +21,7 @@
   <div id="app">
     {{obj}}
     <avue-form :option="option" v-model="obj">
-      <template #provinceType="{item,value,label}">
+      <template #province-type="{item,value,label}">
         <div>
           <span style="float: left">{{ item[value] }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
@@ -33,7 +33,7 @@
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
         </div>
       </template>
-      <template #codesType="{item,value,label}">
+      <template #codes-type="{item,value,label}">
         <div style="padding-left:5px;">
           <span style="float: left">{{ item[value] }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item[label] }}</span>
