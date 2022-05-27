@@ -815,27 +815,27 @@ export default create({
         delay: 0,
         onEnd: evt => callback(evt)
       })
-    }
-  },
-  findData (id) {
-    let result = {}
-    const callback = (parentList, parent) => {
-      parentList.forEach((ele, index) => {
-        if (ele[this.rowKey] == id) {
-          result = {
-            item: ele,
-            index: index,
-            parentList: parentList,
-            parent: parent
+    },
+    findData (id) {
+      let result = {}
+      const callback = (parentList, parent) => {
+        parentList.forEach((ele, index) => {
+          if (ele[this.rowKey] == id) {
+            result = {
+              item: ele,
+              index: index,
+              parentList: parentList,
+              parent: parent
+            }
           }
-        }
-        if (ele[this.childrenKey]) {
-          callback(ele[this.childrenKey], ele)
-        }
-      })
+          if (ele[this.childrenKey]) {
+            callback(ele[this.childrenKey], ele)
+          }
+        })
+      }
+      callback(this.list)
+      return result;
     }
-    callback(this.list)
-    return result;
-  },
+  }
 });
 </script>
