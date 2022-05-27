@@ -66,7 +66,8 @@
       rowDel(form, index, done) {
         done(form);
         this.$message.success('删除数据' + JSON.stringify(form));
-      }, rowSave(form, done, loading) {
+      },
+      rowSave(form, done, loading) {
         this.$message.success('模拟网络请求')
         setTimeout(() => {
           this.$message.success('关闭按钮等待');
@@ -74,7 +75,8 @@
         }, 1000)
         setTimeout(() => {
           this.$message.success('新增数据' + JSON.stringify(form));
-          done(form, 0);
+          form.id=this.data.length
+          done(form);
         }, 2000)
       },
       rowUpdate(form, index, done, loading) {
