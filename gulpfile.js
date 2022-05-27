@@ -1,5 +1,5 @@
 const gulp = require("gulp");
-var sass = require("gulp-sass");
+var sass = require("gulp-sass")(require("sass"));
 var autoprefixer = require("gulp-autoprefixer");
 var cssmin = require("gulp-cssmin");
 const webpack = require("webpack");
@@ -22,6 +22,7 @@ gulp.task("compile", function () {
     .pipe(
       autoprefixer({
         browsers: ["ie > 9", "last 2 versions"],
+        overrideBrowserslist: [],
         cascade: false
       })
     )

@@ -48,6 +48,7 @@
     "gulp-postcss": "^9.0.1",
     "gulp-sass": "^5.1.0",
     "progress-bar-webpack-plugin": "^1.11.0",
+    "sass": "^1.52.1",
     "vue-loader": "^16.1.2",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.27.0",
