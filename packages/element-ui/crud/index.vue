@@ -505,6 +505,7 @@ export default create({
         if (ele.$cellEdit && !this.formCascaderList[index]) {
           this.formCascaderList[index] = this.deepClone(ele);
         }
+        this.$set(ele, '$cellEdit', ele.$cellEdit || false);
         this.$set(ele, '$index', index);
       });
     },
