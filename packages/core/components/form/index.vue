@@ -136,9 +136,11 @@ export default {
     getComponent,
     getPlaceholder,
     getBind (column) {
-      column=Object.assign({},column)
-      delete column.value
-      return column
+      let params = { ...column };
+      ['value', 'className'].forEach(ele => {
+        delete params[ele]
+      })
+      return params
     },
     enterChange () {
       let enter = this.column.enter;
