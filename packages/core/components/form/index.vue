@@ -136,6 +136,7 @@ export default {
     getComponent,
     getPlaceholder,
     getBind (column) {
+      column=Object.assign({},column)
       delete column.value
       return column
     },

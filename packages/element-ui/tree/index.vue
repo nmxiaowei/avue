@@ -235,7 +235,7 @@ export default create({
         },
         (() => {
           let option = this.option.formOption || {};
-          delete option.column;
+          //delete option.column;
           return option;
         })()
       );
