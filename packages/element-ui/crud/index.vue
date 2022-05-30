@@ -486,6 +486,7 @@ export default create({
       return rowKey;
     },
     selectClear () {
+      this.$emit('selection-clear', this.deepClone(this.tableSelect))
       this.$refs.table.clearSelection();
     },
     toggleRowSelection (row, selected) {
