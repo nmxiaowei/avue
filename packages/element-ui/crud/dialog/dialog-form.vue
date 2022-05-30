@@ -79,7 +79,6 @@ export default create({
       config: config,
       boxType: "",
       fullscreen: false,
-      size: '50%',
       boxVisible: false
     };
   },
@@ -119,7 +118,7 @@ export default create({
     params () {
       return this.isDrawer ?
         {
-          size: this.size,
+          size: this.fullscreen ? '100%' : this.width,
           direction: this.crud.tableOption.dialogDirection
         } : {
           width: this.width,
@@ -189,9 +188,6 @@ export default create({
       this.crud.$emit('tab-click', tab, event)
     },
     handleFullScreen () {
-      if (this.isDrawer) {
-        this.size = this.size == '100%' ? '50%' : '100%'
-      }
       if (this.fullscreen) {
         this.fullscreen = false;
       } else {
