@@ -188,7 +188,7 @@ export default create({
       return this.option.lazy
     },
     addText () {
-      return this.addFlag ? this.t("crud.addBtn") : this.t("crud.editBtn");
+      return this.addFlag ? this.t("crud.addBtn") : this.t("crud.updateBtn");
     },
     addFlag () {
       return ["add", "parentAdd"].includes(this.type);
@@ -220,26 +220,12 @@ export default create({
     defaultExpandedKeys () {
       return this.option.defaultExpandedKeys;
     },
-    formColumnOption () {
-      return (this.option.formOption || {}).column || [];
-    },
     formOption () {
       return Object.assign(
+        this.option.formOption,
         {
           submitText: this.addText,
-          column: [{
-            label: this.valueKey,
-            prop: this.valueKey,
-            display: false
-          },
-          ...this.formColumnOption
-          ]
-        },
-        (() => {
-          let option = this.option.formOption || {};
-          delete option.column;
-          return option;
-        })()
+        }
       );
     }
   },
