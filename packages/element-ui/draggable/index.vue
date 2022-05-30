@@ -100,6 +100,7 @@ export default create({
   },
   data () {
     return {
+      first: true,
       value: '',
       baseWidth: 0,
       baseHeight: 0,
@@ -221,9 +222,11 @@ export default create({
       }
     },
     baseLeft (n, o) {
+      if (this.first) return
       this.setMove(n - o, 0);
     },
     baseTop (n, o) {
+      if (this.first) return
       this.setMove(0, n - o);
     }
   },
@@ -238,6 +241,9 @@ export default create({
       this.baseLeft = getFixed(this.left);
       this.baseTop = getFixed(this.top);
       this.keyDown = document.onkeydown
+      this.$nextTick(() => {
+        this.first = false
+      })
     },
     setMove (left, top) {
       this.$emit('move', {

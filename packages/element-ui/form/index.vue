@@ -295,13 +295,6 @@ export default create({
       })
       return list
     },
-    controlOption () {
-      let list = [];
-      this.propOption.forEach(ele => {
-        if (ele.control) list.push(ele);
-      });
-      return list;
-    },
     propOption () {
       let list = [];
       this.columnOption.forEach(option => {
@@ -391,6 +384,7 @@ export default create({
   },
   mounted () {
     this.dataFormat()
+    this.setControl()
   },
   methods: {
     getComponent,
@@ -453,38 +447,46 @@ export default create({
       this.setForm(Object.assign(formInitVal(this.propOption), this.form))
     },
     setVal () {
-      this.setControl();
       this.$emit('update:modelValue', this.form);
       this.$emit('change', this.form);
     },
     setControl () {
-      this.controlOption.forEach(ele => {
-        let control = ele.control(this.form[ele.prop], this.form) || {};
-        Object.keys(control).forEach(item => {
-          this.objectOption[item] = Object.assign(this.objectOption[item], control[item])
-          if (control[item].dicData) {
-            this.DIC[item] = control[item].dicData
+      this.propOption.forEach(column => {
+        let prop = column.prop
+        let bind = column.bind
+        let control = column.control
+        let value = this.form
+        if (!this.formBind[prop]) {
+          if (bind) {
+            this.$watch('form.' + prop, (n, o) => {
+              if (n != o) setAsVal(this.form, bind, n);
+            })
+            this.$watch('form.' + bind, (n, o) => {
+              if (n != o) this.form[prop] = n
+            })
+            this.form[prop] = eval('value.' + bind)
           }
-        })
+          if (control) {
+            const callback = () => {
+              let controlList = control(this.form[column.prop], this.form) || {};
+              Object.keys(controlList).forEach(item => {
+                this.objectOption[item] = Object.assign(this.objectOption[item], controlList[item])
+                if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
+              })
+            }
+            this.$watch('form.' + prop, (n, o) => {
+              callback()
+            })
+            callback()
+          }
+          this.formBind[prop] = true;
+        }
       })
     },
     //表单赋值
     setForm (value) {
       Object.keys(value).forEach(ele => {
         this.form[ele] = value[ele]
-        let column = this.propOption.find(column => column.prop == ele) || {}
-        let prop = column.prop
-        let bind = column.bind
-        if (bind && !this.formBind[prop]) {
-          this.$watch('form.' + prop, (n, o) => {
-            if (n != o) setAsVal(this.form, bind, n);
-          })
-          this.$watch('form.' + bind, (n, o) => {
-            if (n != o) this.form[prop] = n
-          })
-          this.form[prop] = eval('value.' + bind)
-          this.formBind[prop] = true;
-        }
       });
       this.forEachLabel();
       if (this.tableOption.filterNull === true) {

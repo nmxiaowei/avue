@@ -24,7 +24,7 @@
                  @on-load="onList"
                  @search-change="handleSearchChange"
                  @search-reset="handleSearchChange"
-                 @current-row-change="handleCurrentRowChange"
+                 @current-change="handleCurrentChange"
                  v-model:page="page"></avue-crud>
       <template #footer>
         <span class="dialog-footer">
@@ -122,7 +122,7 @@ export default create({
       this.handleChange(this.text)
       this.box = false
     },
-    handleCurrentRowChange (val) {
+    handleCurrentChange (val) {
       this.active = val;
     },
     handleSearchChange (form, done) {

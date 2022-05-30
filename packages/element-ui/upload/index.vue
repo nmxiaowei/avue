@@ -31,7 +31,7 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     :is="getIsVideo"
+                     :is="getIsVideo(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <el-icon :class="b('icon')"
@@ -71,9 +71,52 @@
         <div class="el-upload__tip"
              v-html="tip"></div>
       </template>
-      <template v-if="$slots.default"
-                #file="scope">
-        <slot v-bind="scope"></slot>
+      <template #file="{file}">
+        <slot :file="file"
+              v-if="$slots.default">
+        </slot>
+        <span v-else-if="listType==='picture-card'">
+          <component class="el-upload-list__item-thumbnail"
+                     :src="file.url"
+                     :is="file.type"></component>
+          <span class="el-upload-list__item-actions">
+            <span class="el-upload-list__item-preview">
+              <i class="el-icon-zoom-in"
+                 @click.stop="handlePreview(file)"></i>
+            </span>
+            <span class="el-upload-list__item-delete">
+              <i class="el-icon-delete"
+                 @click.stop="handleRemove(file)"></i>
+            </span>
+          </span>
+        </span>
+        <span v-else-if="listType==='picture'"
+              @click.stop="handlePreview(file)">
+          <component class="el-upload-list__item-thumbnail"
+                     :src="file.url"
+                     :is="file.type"></component>
+          <a class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>
+            {{file.name}}
+          </a>
+          <label class="el-upload-list__item-status-label">
+            <i class="el-icon-upload-success el-icon-check"></i>
+          </label>
+          <i class="el-icon-close"
+             @click.stop="handleRemove(file)"></i>
+        </span>
+        <span v-else
+              @click.stop="handlePreview(file)">
+          <a class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>
+            {{file.name}}
+          </a>
+          <label class="el-upload-list__item-status-label">
+            <i class="el-icon-upload-success el-icon-circle-check"></i>
+          </label>
+          <i class="el-icon-close"
+             @click.stop="handleRemove(file)"></i>
+        </span>
       </template>
     </el-upload>
   </div>
@@ -182,12 +225,6 @@ export default create({
     homeUrl () {
       return this.propsHttp.home || ''
     },
-    getIsVideo () {
-      if (typeList.video.test(this.imgUrl)) {
-        return 'video'
-      }
-      return 'img'
-    },
     fileName () {
       return this.propsHttp.fileName || 'file'
     },
@@ -216,12 +253,14 @@ export default create({
             let i = ele.lastIndexOf('/');
             name = ele.substring(i + 1);
           }
+          let url = getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey]);
           list.push({
             uid: index + '',
             status: 'done',
+            type: this.getIsVideo(url),
             isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
-            url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
+            url: url
           });
         }
       });
@@ -234,6 +273,12 @@ export default create({
     }
   },
   methods: {
+    getIsVideo (url) {
+      if (typeList.video.test(url)) {
+        return 'video'
+      }
+      return 'img'
+    },
     setSort () {
       if (!window.Sortable) {
         packages.logs('Sortable');

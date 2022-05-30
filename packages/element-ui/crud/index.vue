@@ -59,7 +59,7 @@
                   :expand-row-keys="tableOption.expandRowKeys"
                   :default-expand-all="tableOption.defaultExpandAll"
                   :highlight-current-row="tableOption.highlightCurrentRow"
-                  @current-change="currentRowChange"
+                  @current-change="currentChange"
                   @expand-change="expandChange"
                   @header-dragend="headerDragend"
                   :show-summary="tableOption.showSummary"
@@ -473,6 +473,10 @@ export default create({
       const rowKey = row[this.rowKey];
       return rowKey;
     },
+    selectClear () {
+      this.$emit('selection-clear', this.deepClone(this.tableSelect))
+      this.$refs.table.clearSelection();
+    },
     toggleRowSelection (row, selected) {
       this.$refs.table.toggleRowSelection(row, selected);
     },
@@ -489,6 +493,7 @@ export default create({
         if (ele.$cellEdit && !this.formCascaderList[index]) {
           this.formCascaderList[index] = this.deepClone(ele);
         }
+        ele.$cellEdit = ele.$cellEdit || false;
         ele.$index = index;
       });
     },
@@ -511,8 +516,8 @@ export default create({
       this.$emit("expand-change", row, expand);
     },
     //设置单选
-    currentRowChange (currentRow, oldCurrentRow) {
-      this.$emit("current-row-change", currentRow, oldCurrentRow);
+    currentChange (row) {
+      this.$emit("current-change", row);
     },
     //刷新事件
     refreshChange () {

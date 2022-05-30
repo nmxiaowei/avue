@@ -1,4 +1,4 @@
-export default {
+const en = {
   common: {
     condition: 'condition',
     display: 'display',
@@ -70,5 +70,4 @@ export default {
     copyBtn: 'copy',
     delBtn: 'delete'
   }
-}
-  ;
+};

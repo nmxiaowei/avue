@@ -24,11 +24,11 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" @row-save="rowSave" @row-update="rowUpdate" @row-del="rowDel" :option="option" :data="data"
-      :table-loading="tableLoading" @tree-load="treeLoad" @current-row-change="handleCurrentRowChange"
-      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
+    <avue-crud ref="crud" :option="option" :data="data" :table-loading="tableLoading" @tree-load="treeLoad"
+      @row-del="rowDel" @currentChange="handleCurrentChange" @row-dblclick="handleRowDBLClick"
+      @row-click="handleRowClick">
       <template #menu="scope">
-        <el-button :size="scope.size" :type="scope.type" @click="tip(scope)">自定义</el-button>
+        <el-button text :size="scope.size" :type="scope.type" @click="tip(scope)">自定义</el-button>
       </template>
     </avue-crud>
   </div>
@@ -190,7 +190,7 @@
           ])
         }, 1000)
       },
-      handleCurrentRowChange(val) {
+      handleCurrentChange(val) {
         this.$message.success('查看控制台')
         console.log('单选', val);
       },
