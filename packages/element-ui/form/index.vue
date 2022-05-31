@@ -315,24 +315,24 @@ export default create({
       return list;
     },
     parentOption () {
-      let option = this.deepClone(this.tableOption);
-      let group = option.group;
-      if (!group) {
-        option = Object.assign(option, {
-          group: [this.deepClone(option)]
-        });
-      }
-      if (group) {
-        //处理分组以外的部分
-        group.unshift({
+      let option = { ...this.tableOption };
+      let column = option.column
+      if (option.group) {
+        option.group.unshift({
           arrow: false,
-          column: option.column
+          column: column
         })
+      } else {
+        option.group = [{
+          arrow: false,
+          column: column
+        }]
       }
+      delete option.column
       return option;
     },
     columnOption () {
-      let list = [...this.parentOption.group] || [];
+      let list = this.parentOption.group;
       list.forEach((ele, index) => {
         ele.column = ele.column || [];
         // 循环列的全部属性

@@ -19,7 +19,6 @@
 
 <body>
   <div id="app">
-    {{form}}
     <avue-form :option="option" v-model="form"> </avue-form>
   </div>
 </body>
@@ -42,9 +41,17 @@
             type: 'radio',
             control: (val, form) => {
               if (val === 0) {
-                this.form.text2 = '显示'
+                return {
+                  text2: {
+                    display: true
+                  }
+                }
               } else {
-                this.form.text2 = '隐藏'
+                return {
+                  text2: {
+                    display: false
+                  }
+                }
               }
             },
             dicData: [{
