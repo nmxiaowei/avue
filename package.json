@@ -57,7 +57,8 @@
     "dayjs": "^1.10.4",
     "element-ui": "^2.15.6",
     "nprogress": "^0.2.0",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vue-cropper": "^0.5.8"
   },
   "files": [
     "lib",

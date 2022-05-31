@@ -123,7 +123,7 @@ import props from "common/common/props.js";
 import event from "common/common/event.js";
 import locale from "core/locale";
 import { getAsVal } from "utils/util";
-import { detailImg } from "plugin/canvas/";
+import { detailImg, fileToBase64 } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
@@ -174,6 +174,12 @@ export default create({
       default: ""
     },
     canvasOption: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    cropperOption: {
       type: Object,
       default: () => {
         return {};
@@ -421,9 +427,22 @@ export default create({
           }, this.column);
         else callback();
       };
-      //是否开启水印
-      if (!this.validatenull(this.canvasOption)) {
-        detailImg(file, this.canvasOption).then(res => {
+      if (!this.validatenull(this.cropperOption)) {
+        fileToBase64(this.file, (res) => {
+          let option = Object.assign(this.cropperOption, {
+            img: res,
+            callback: res => {
+              file = res;
+              done();
+            },
+            cancel: () => {
+              this.loading = false
+            }
+          })
+          this.$ImageCropper(option)
+        })
+      } else if (!this.validatenull(this.canvasOption)) {
+        detailImg(file, this.canvasOption, res => {
           file = res;
           done();
         });
