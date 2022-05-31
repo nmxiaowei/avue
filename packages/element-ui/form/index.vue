@@ -316,20 +316,11 @@ export default create({
     },
     parentOption () {
       let option = { ...this.tableOption };
-      let column = option.column
-      if (option.group) {
-        option.group.unshift({
-          arrow: false,
-          column: [...column]
-        })
-      } else {
-        option.group = [{
-          arrow: false,
-          column: column
-        }]
-      }
-      delete option.column
-      console.log(option)
+      option.group = option.group || []
+      option.group.unshift({
+        arrow: false,
+        column: [...option.column || []]
+      })
       return option;
     },
     columnOption () {
