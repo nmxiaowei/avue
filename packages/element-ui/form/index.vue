@@ -320,7 +320,7 @@ export default create({
       if (option.group) {
         option.group.unshift({
           arrow: false,
-          column: column
+          column: [...column]
         })
       } else {
         option.group = [{
@@ -329,6 +329,7 @@ export default create({
         }]
       }
       delete option.column
+      console.log(option)
       return option;
     },
     columnOption () {
