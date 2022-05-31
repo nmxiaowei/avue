@@ -10,7 +10,7 @@
                    :background="validData(defaultPage.background,config.pageBackground)"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"
-                   :current-page="defaultPage.currentPage"
+                   v-model:current-page="defaultPage.currentPage"
                    @size-change="sizeChange"
                    @prev-click="prevClick"
                    @next-click="nextClick"

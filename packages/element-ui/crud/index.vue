@@ -59,7 +59,7 @@
                   :expand-row-keys="tableOption.expandRowKeys"
                   :default-expand-all="tableOption.defaultExpandAll"
                   :highlight-current-row="tableOption.highlightCurrentRow"
-                  @current-change="currentChange"
+                  @current-change="currentRowChange"
                   @expand-change="expandChange"
                   @header-dragend="headerDragend"
                   :show-summary="tableOption.showSummary"
@@ -516,8 +516,8 @@ export default create({
       this.$emit("expand-change", row, expand);
     },
     //设置单选
-    currentChange (row) {
-      this.$emit("current-change", row);
+    currentRowChange (row) {
+      this.$emit("current-row-change", row);
     },
     //刷新事件
     refreshChange () {

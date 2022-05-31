@@ -25,7 +25,7 @@
 <body>
   <div id="app">
     <avue-crud ref="crud" :option="option" :data="data" :table-loading="tableLoading" @tree-load="treeLoad"
-      @row-del="rowDel" @currentChange="handleCurrentChange" @row-dblclick="handleRowDBLClick"
+      @row-del="rowDel" @currentRowChange="handleCurrentChange" @row-dblclick="handleRowDBLClick"
       @row-click="handleRowClick">
       <template #menu="scope">
         <el-button text :size="scope.size" :type="scope.type" @click="tip(scope)">自定义</el-button>
