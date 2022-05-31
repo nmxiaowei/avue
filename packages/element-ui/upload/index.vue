@@ -81,12 +81,14 @@
                      :is="file.type"></component>
           <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview">
-              <i class="el-icon-zoom-in"
-                 @click.stop="handlePreview(file)"></i>
+              <el-icon>
+                <el-icon-zoom-in @click.stop="handlePreview(file)"></el-icon-zoom-in>
+              </el-icon>
             </span>
             <span class="el-upload-list__item-delete">
-              <i class="el-icon-delete"
-                 @click.stop="handleRemove(file)"></i>
+              <el-icon>
+                <el-icon-delete @click.stop="handleRemove(file)"></el-icon-delete>
+              </el-icon>
             </span>
           </span>
         </span>
@@ -96,26 +98,28 @@
                      :src="file.url"
                      :is="file.type"></component>
           <a class="el-upload-list__item-name">
-            <i class="el-icon-document"></i>
-            {{file.name}}
+            <el-icon>
+              <el-icon-document></el-icon-document>
+            </el-icon>
+            <span class="el-upload-list__item-file-name"> {{file.name}}</span>
           </a>
-          <label class="el-upload-list__item-status-label">
-            <i class="el-icon-upload-success el-icon-check"></i>
-          </label>
-          <i class="el-icon-close"
-             @click.stop="handleRemove(file)"></i>
+          <el-icon class="el-icon--close">
+            <el-icon-close @click.stop="handleRemove(file)"></el-icon-close>
+          </el-icon>
         </span>
         <span v-else
               @click.stop="handlePreview(file)">
-          <a class="el-upload-list__item-name">
-            <i class="el-icon-document"></i>
-            {{file.name}}
-          </a>
-          <label class="el-upload-list__item-status-label">
-            <i class="el-icon-upload-success el-icon-circle-check"></i>
-          </label>
-          <i class="el-icon-close"
-             @click.stop="handleRemove(file)"></i>
+          <div class="el-upload-list__item-info">
+            <a class="el-upload-list__item-name">
+              <el-icon>
+                <el-icon-document></el-icon-document>
+              </el-icon>
+              <span class="el-upload-list__item-file-name"> {{file.name}}</span>
+            </a>
+            <el-icon class="el-icon--close">
+              <el-icon-close @click.stop="handleRemove(file)"></el-icon-close>
+            </el-icon>
+          </div>
         </span>
       </template>
     </el-upload>

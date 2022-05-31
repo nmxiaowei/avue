@@ -17,7 +17,7 @@ export default function () {
         this.$emit(name, params)
       },
       initVal () {
-        this.stringMode = typeof (this.value) == 'string'
+        this.stringMode = typeof (this.modelValue) == 'string'
         this.text = initVal(this.modelValue, this.column);
       },
       getLabelText (item) {
@@ -28,13 +28,13 @@ export default function () {
         return item[this.labelKey]
       },
       handleFocus (event) {
-        this.bindEvent('focus', { value: this.value, event })
+        this.bindEvent('focus', { value: this.modelValue, event })
       },
       handleBlur (event) {
-        this.bindEvent('blur', { value: this.value, event })
+        this.bindEvent('blur', { value: this.modelValue, event })
       },
       handleClick (event) {
-        this.bindEvent('click', { value: this.value, event })
+        this.bindEvent('click', { value: this.modelValue, event })
       },
       handleChange (value) {
         let result = value;

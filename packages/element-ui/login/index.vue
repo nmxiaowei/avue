@@ -84,7 +84,7 @@ import create from "core/create";
 export default create({
   name: 'login',
   props: {
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
         return {}
@@ -101,9 +101,9 @@ export default create({
     }
   },
   watch: {
-    value: {
+    modelValue: {
       handler () {
-        this.form = this.value
+        this.form = this.modelValue
       },
       deep: true
     },
