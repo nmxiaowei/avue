@@ -220,7 +220,7 @@ export default create({
     },
     formOption () {
       return Object.assign(
-        this.option.formOption,
+        this.option.formOption || {},
         {
           submitText: this.addText,
         }
