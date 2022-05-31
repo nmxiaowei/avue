@@ -22,6 +22,7 @@ gulp.task("compile", function () {
     .pipe(
       autoprefixer({
         browsers: ["ie > 9", "last 2 versions"],
+        overrideBrowserslist: [],
         cascade: false
       })
     )
