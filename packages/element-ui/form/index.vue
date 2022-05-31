@@ -315,17 +315,25 @@ export default create({
       return list;
     },
     parentOption () {
-      let option = { ...this.tableOption };
-      option.group = option.group || []
-      option.group.unshift({
-        arrow: false,
-        column: [...option.column || []]
-      })
-      return option;
+      return this.tableOption || {};
     },
     columnOption () {
-      let list = this.parentOption.group;
-      list.forEach((ele, index) => {
+      let column = this.tableOption.column || []
+      let group = this.tableOption.group || [];
+      let footer = this.tableOption.footer || [];
+      if (column.length !== 0) {
+        group.unshift({
+          header: false,
+          column: column
+        })
+      }
+      if (footer.length !== 0) {
+        group.push({
+          header: false,
+          column: footer
+        })
+      }
+      group.forEach((ele, index) => {
         ele.column = ele.column || [];
         // 循环列的全部属性
         ele.column.forEach((column, cindex) => {
@@ -339,7 +347,7 @@ export default create({
         //根据order排序
         ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });
-      return list;
+      return group;
     },
     menuPosition: function () {
       if (this.parentOption.menuPosition) {
