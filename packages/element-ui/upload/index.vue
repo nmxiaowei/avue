@@ -93,9 +93,6 @@
             <i class="el-icon-document"></i>
             {{file.name}}
           </a>
-          <label class="el-upload-list__item-status-label">
-            <i class="el-icon-upload-success el-icon-check"></i>
-          </label>
           <i class="el-icon-close"
              @click.stop="handleRemove(file)"></i>
         </span>
@@ -105,9 +102,6 @@
             <i class="el-icon-document"></i>
             {{file.name}}
           </a>
-          <label class="el-upload-list__item-status-label">
-            <i class="el-icon-upload-success el-icon-circle-check"></i>
-          </label>
           <i class="el-icon-close"
              @click.stop="handleRemove(file)"></i>
         </span>
@@ -198,7 +192,7 @@ export default create({
     },
     loadText: {
       type: String,
-      default: "文件上传中,请稍等"
+      default: "Loading..."
     },
     action: {
       type: String,
