@@ -118,6 +118,10 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 const Avue = Object.assign({
   version: version,
+  locale: {
+    en: {},
+    zh: {}
+  },
   install
 }, components);
 
