@@ -425,6 +425,7 @@ export default create({
         fileToBase64(this.file, (res) => {
           let option = Object.assign(this.cropperOption, {
             img: res,
+            type: 'file',
             callback: res => {
               file = res;
               done();

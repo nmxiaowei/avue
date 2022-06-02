@@ -139,7 +139,7 @@ export default create({
     getIsVideo (item) {
       if (typeList.video.test(item.url)) {
         return 'video'
-      } else if (typeList.img.test(item.url)) {
+      } else {
         return 'img'
       }
     },

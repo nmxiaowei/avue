@@ -5,7 +5,7 @@
              :beforeClose="beforeClose"
              v-bind="dialog">
     <avue-form ref="form"
-               :option="{...option,...{menuBtn: false}}"
+               :option="{...deepClone(option),...{menuBtn: false}}"
                v-model="data"
                @submit="handleSubmit"
                @reset-change="close"></avue-form>

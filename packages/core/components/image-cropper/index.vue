@@ -113,7 +113,11 @@ export default {
     submit () {
       this.visible = false
       this.$refs.cropper.getCropData(data => {
-        this.option.callback && this.option.callback(dataURLtoFile(data, `${new Date().getTime()}.${this.option.outputType}`))
+        let result = data
+        if (this.option.type === 'file') {
+          result = dataURLtoFile(data, `${new Date().getTime()}.${this.option.outputType}`)
+        }
+        this.option.callback && this.option.callback(result)
       })
     },
     cancel (done) {
