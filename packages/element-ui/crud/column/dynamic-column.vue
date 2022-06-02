@@ -6,7 +6,7 @@
                    v-if="getColumnProp(columnOption,'hide')"
                    :filters="getColumnProp(columnOption,'filters')"
                    :filter-method="getColumnProp(columnOption,'filterMethod')?handleFiltersMethod:undefined"
-                   :filter-multiple="vaildData(columnOption.filterMultiple,true)"
+                   :filter-multiple="validData(columnOption.filterMultiple,true)"
                    :show-overflow-tooltip="columnOption.overHidden"
                    :min-width="columnOption.minWidth"
                    :sortable="getColumnProp(columnOption,'sortable')"
