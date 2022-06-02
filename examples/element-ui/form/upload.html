@@ -23,9 +23,6 @@
     {{form}}
     <avue-form :option="option" v-model="form" :upload-error="uploadError" :upload-delete="uploadDelete"
       :upload-before="uploadBefore" :upload-exceed="uploadExceed" :upload-after="uploadAfter">
-      <template slot="imgUrlType" slot-scope="{file}">
-        {{file}}
-      </template>
     </avue-form>
   </div>
 </body>
@@ -35,10 +32,10 @@
     data() {
       return {
         form: {
-          imgUrl: [{ "label": "avue@226d5c1a_logo.png", "value": "https://avuejs.com/images/logo-bg.jpg" }],
+          imgUrl: [{ "label": "video", "value": "https://www.w3school.com.cn/i/movie.ogg" }, { "label": "avue@226d5c1a_logo.png", "value": "https://avuejs.com/images/logo-bg.jpg" }],
           imgUrl3: 'https://www.w3school.com.cn/i/movie.ogg',
           string: 'https://avuejs.com/images/logo-bg.jpg,/images/logo-bg.jpg',
-          img: ['https://avuejs.com/images/logo-bg.jpg', 'https://avuejs.com/images/logo-bg.jpg']
+          img: ['https://www.w3school.com.cn/i/movie.ogg', 'https://avuejs.com/images/logo-bg.jpg']
         },
         option: {
           labelWidth: 120,
@@ -68,6 +65,11 @@
               span: 24,
               propsHttp: {
                 res: 'data'
+              },
+              cropperOption: {
+                outputType: 'jpeg',
+                fixed: true,
+                fixedNumber: [346, 148]
               },
               canvasOption: {
                 text: 'avue',

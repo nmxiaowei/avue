@@ -52,9 +52,6 @@ export default {
         return []
       }
     },
-    props: {
-      type: Object
-    },
     tableData: {
       type: Object,
       default: () => {

@@ -5,17 +5,20 @@
              :beforeClose="beforeClose"
              v-bind="dialog">
     <avue-form ref="form"
-               :option="option"
+               :option="{...deepClone(option),...{menuBtn: false}}"
                v-model="data"
                @submit="handleSubmit"
                @reset-change="close"></avue-form>
     <span class="avue-dialog__footer"
+          v-if="this.vaildData(option.menuBtn,true)"
           :class="'avue-dialog__footer--'+menuPosition">
       <el-button @click="submit"
                  :size="$AVUE.size"
                  :icon="option.submitIcon"
+                 v-if="this.vaildData(option.submitBtn,true)"
                  type="primary">{{option.submitText}}</el-button>
       <el-button @click="reset"
+                 v-if="this.vaildData(option.emptyBtn,true)"
                  :size="$AVUE.size"
                  :icon="option.emptyIcon ">{{option.emptyText}}</el-button>
     </span>
@@ -32,7 +35,6 @@ export default {
         closeOnClickModal: false
       },
       option: {
-        menuBtn: false,
         submitText: '提交',
         emptyText: '关闭',
         submitIcon: 'el-icon-check',

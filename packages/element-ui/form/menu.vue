@@ -1,8 +1,6 @@
 <template>
   <el-col :span="menuSpan"
           :md="menuSpan"
-          :sm="12"
-          :xs="24"
           :style="styleName"
           :class="[formSafe.b('menu',[formSafe.menuPosition]),'no-print']"
           v-if="vaildData(formSafe.parentOption.menuBtn,true)">

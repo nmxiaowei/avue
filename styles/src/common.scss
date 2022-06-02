@@ -20,6 +20,7 @@ body {
     background-color: #fff !important;
   }
   .avue-group__header{
+    border-bottom:1px solid #eee;
     padding-left: 10px;
   }
   .el-collapse-item__header{
@@ -88,6 +89,7 @@ body {
     border-left:1px solid #ebeef5;
   }
   .el-col{
+    margin: 0 !important;
     padding:0 !important;
     border-bottom:1px solid #ebeef5;
     border-right:1px solid #ebeef5;
@@ -108,11 +110,19 @@ body {
     margin-left: 0 !important;
     margin-right: 6px !important;
   }
+  .avue-crud{
+    .el-form-item__content{
+      border:none;
+    }
+  }
   .el-form-item__content{
    border-left:1px solid #ebeef5;
    padding-left: 20px;
    box-sizing: border-box;
    background-color: #fff;
+  }
+  .el-button{
+    display: none !important;
   }
   &__column{
     .el-form-item{

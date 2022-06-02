@@ -19,10 +19,6 @@
 
 <body>
   <div id="app">
-    {{form}}
-    <el-button type="primary" size="small" @click="form.deep.deep.deep.test1='1.1'">
-      改变1</el-button>
-    <el-button type="primary" size="small" @click="form.deep.deep.deep.test2='1.2'">改变2</el-button>
     <avue-form :option="option" v-model="form"> </avue-form>
   </div>
 </body>
@@ -32,28 +28,44 @@
     data() {
       return {
         form: {
+          text1: 0,
           deep: {
-            deep: {
-              deep: {
-                test1: 1,
-                test2: 2
-              }
-            }
+            deep: 0
           }
         },
         option: {
-          labelWidth: 120,
-          column: [
-            {
-              label: '我是深结构1',
-              prop: 'test1',
-              bind: 'deep.deep.deep.test1'
+          column: [{
+            label: '内容1',
+            prop: 'text1',
+            bind: 'deep.deep',
+            type: 'radio',
+            control: (val, form) => {
+              if (val === 0) {
+                return {
+                  text2: {
+                    display: true
+                  }
+                }
+              } else {
+                return {
+                  text2: {
+                    display: false
+                  }
+                }
+              }
+            },
+            dicData: [{
+              label: '显示',
+              value: 0
             }, {
-              label: '我是深结构2',
-              prop: 'test2',
-              bind: 'deep.deep.deep.test2'
-            }
-          ]
+              label: '隐藏',
+              value: 1,
+            }]
+          }, {
+            label: '内容2',
+            prop: 'text2',
+            display: true
+          }]
         }
       }
     }

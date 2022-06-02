@@ -457,6 +457,7 @@ export default create({
     },
     refreshTable (callback) {
       this.reload = Math.random()
+      this.tableSelect = []
       this.$nextTick(() => {
         this.$refs.columnDefault.setSort()
         callback && callback()
@@ -485,6 +486,7 @@ export default create({
       return rowKey;
     },
     selectClear () {
+      this.$emit('selection-clear', this.deepClone(this.tableSelect))
       this.$refs.table.clearSelection();
     },
     toggleRowSelection (row, selected) {
@@ -503,6 +505,7 @@ export default create({
         if (ele.$cellEdit && !this.formCascaderList[index]) {
           this.formCascaderList[index] = this.deepClone(ele);
         }
+        this.$set(ele, '$cellEdit', ele.$cellEdit || false);
         this.$set(ele, '$index', index);
       });
     },

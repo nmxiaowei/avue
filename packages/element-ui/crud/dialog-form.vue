@@ -16,8 +16,7 @@
              :modal="crud.tableOption.dialogModal"
              :show-close="crud.tableOption.dialogCloseBtn"
              :visible.sync="boxVisible"
-             v-bind="isSize"
-             :width="setPx(width)"
+             v-bind="params"
              :before-close="hide"
              @opened="handleOpened">
     <div slot="title"
@@ -154,9 +153,15 @@ export default create({
     isDrawer () {
       return this.crud.tableOption.dialogType === 'drawer';
     },
-    isSize () {
-      let drawerSize = this.size ? this.size : this.width;
-      return this.isDrawer ? { 'size': drawerSize } : {};
+    params () {
+      return this.isDrawer ?
+        {
+          size: this.fullscreen ? '100%' : this.width,
+          direction: this.crud.tableOption.dialogDirection
+        } : {
+          width: this.width,
+          fullscreen: this.fullscreen
+        };
     },
     dialogTitle () {
       const key = `${this.boxType}`;

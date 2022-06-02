@@ -30,7 +30,7 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     :is="getIsVideo"
+                     :is="getIsVideo(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <i v-else
@@ -62,12 +62,51 @@
                    type="primary">{{t('upload.upload')}}</el-button>
       </template>
       <div slot="tip"
-           class="el-upload__tip">{{tip}}</div>
-      <template v-if="$scopedSlots.default"
-                slot="file"
-                slot-scope="scope">
-        <slot v-bind="scope"></slot>
+           class="el-upload__tip"
+           v-html="tip"></div>
+      <template slot="file"
+                slot-scope="{file}">
+        <slot :file="file"
+              v-if="$scopedSlots.default">
+        </slot>
+        <span v-else-if="listType==='picture-card'">
+          <component class="el-upload-list__item-thumbnail"
+                     :src="file.url"
+                     :is="file.type"></component>
+          <span class="el-upload-list__item-actions">
+            <span class="el-upload-list__item-preview">
+              <i class="el-icon-zoom-in"
+                 @click.stop="handlePreview(file)"></i>
+            </span>
+            <span class="el-upload-list__item-delete">
+              <i class="el-icon-delete"
+                 @click.stop="handleRemove(file)"></i>
+            </span>
+          </span>
+        </span>
+        <span v-else-if="listType==='picture'"
+              @click.stop="handlePreview(file)">
+          <component class="el-upload-list__item-thumbnail"
+                     :src="file.url"
+                     :is="file.type"></component>
+          <a class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>
+            {{file.name}}
+          </a>
+          <i class="el-icon-close"
+             @click.stop="handleRemove(file)"></i>
+        </span>
+        <span v-else
+              @click.stop="handlePreview(file)">
+          <a class="el-upload-list__item-name">
+            <i class="el-icon-document"></i>
+            {{file.name}}
+          </a>
+          <i class="el-icon-close"
+             @click.stop="handleRemove(file)"></i>
+        </span>
       </template>
+
     </el-upload>
   </div>
 </template>
@@ -78,7 +117,7 @@ import props from "common/common/props.js";
 import event from "common/common/event.js";
 import locale from "core/locale";
 import { getAsVal } from "utils/util";
-import { detailImg } from "plugin/canvas/";
+import { detailImg, fileToBase64 } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
@@ -134,6 +173,12 @@ export default create({
         return {};
       }
     },
+    cropperOption: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
     fileSize: {
       type: Number
     },
@@ -147,7 +192,7 @@ export default create({
     },
     loadText: {
       type: String,
-      default: "文件上传中,请稍等"
+      default: "Loading..."
     },
     action: {
       type: String,
@@ -173,12 +218,6 @@ export default create({
     },
     homeUrl () {
       return this.propsHttp.home || ''
-    },
-    getIsVideo () {
-      if (typeList.video.test(this.imgUrl)) {
-        return 'video'
-      }
-      return 'img'
     },
     fileName () {
       return this.propsHttp.fileName || 'file'
@@ -208,12 +247,14 @@ export default create({
             let i = ele.lastIndexOf('/');
             name = ele.substring(i + 1);
           }
+          let url = getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey]);
           list.push({
             uid: index + '',
             status: 'done',
+            type: this.getIsVideo(url),
             isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
-            url: getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey])
+            url: url
           });
         }
       });
@@ -226,6 +267,12 @@ export default create({
     }
   },
   methods: {
+    getIsVideo (url) {
+      if (typeList.video.test(url)) {
+        return 'video'
+      }
+      return 'img'
+    },
     setSort () {
       if (!window.Sortable) {
         packages.logs('Sortable');
@@ -374,9 +421,23 @@ export default create({
           }, this.column);
         else callback();
       };
-      //是否开启水印
-      if (!this.validatenull(this.canvasOption)) {
-        detailImg(file, this.canvasOption).then(res => {
+      if (!this.validatenull(this.cropperOption)) {
+        fileToBase64(this.file, (res) => {
+          let option = Object.assign(this.cropperOption, {
+            img: res,
+            type: 'file',
+            callback: res => {
+              file = res;
+              done();
+            },
+            cancel: () => {
+              this.loading = false
+            }
+          })
+          this.$ImageCropper(option)
+        })
+      } else if (!this.validatenull(this.canvasOption)) {
+        detailImg(file, this.canvasOption, res => {
           file = res;
           done();
         });

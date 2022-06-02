@@ -14,10 +14,12 @@ import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $NProgress from 'plugin/nprogress/';
 import $ImagePreview from 'packages/core/components/image-preview/';
+import $ImageCropper from 'packages/core/components/image-cropper/';
 import $DialogForm from 'packages/core/components/dialog-form/';
 
 let prototypes = {
   $ImagePreview,
+  $ImageCropper,
   $DialogForm,
   $Export,
   $Print,
@@ -116,7 +118,10 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 const Avue = Object.assign({
   version: version,
-  locale: locale.locale,
+  locale: {
+    en: {},
+    zh: {}
+  },
   install
 }, components);
 
