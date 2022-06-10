@@ -14,7 +14,8 @@
                     :end-placeholder="endPlaceholder"
                     :format="format"
                     :clearable="clearableVal"
-                    :picker-options="pickerOptions"
+                    :shortcuts="shortcuts"
+                    :disabled-date="disabledDate"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     @blur="handleBlur"
@@ -64,10 +65,8 @@ export default create({
     defaultTime: {
       type: [String, Array]
     },
-    pickerOptions: {
-      type: Object,
-      default: () => { }
-    },
+    disabledDate: Function,
+    shortcuts: [Object, Function],
     type: {
       type: String,
       default: "date"

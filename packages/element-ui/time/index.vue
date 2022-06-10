@@ -13,7 +13,8 @@
                     :format="format"
                     :readonly="readonly"
                     :clearable="clearableVal"
-                    :picker-options="pickerOptions"
+                    :shortcuts="shortcuts"
+                    :disabled-date="disabledDate"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     @change="handleChange"
@@ -52,10 +53,8 @@ export default create({
     modelValue: {
       required: true
     },
-    pickerOptions: {
-      type: Object,
-      default: () => { }
-    },
+    disabledDate: Function,
+    shortcuts: [Object, Function],
     defaultValue: {
       type: [String, Array]
     },

@@ -302,6 +302,7 @@ export default create({
     handleSuccess (file) {
       if (this.isPictureImg) {
         this.text.splice(0, 1, file[this.urlKey])
+        this.handleChange(this.text)
       } else if (this.isMultiple) {
         this.text.push(file[this.urlKey]);
       } else {
