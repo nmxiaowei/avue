@@ -33,6 +33,7 @@
                           v-for="(item,indexs) in datas"
                           :key="indexs">
           <div v-if="item.isImage==false"
+               @click="handleClick(item,indexs)"
                :id="'avue-image-preview__'+indexs"
                :class="b('file')">
             <a :href="item.url"
@@ -41,7 +42,8 @@
               <p>{{item.name}}</p>
             </a>
           </div>
-          <img v-else
+          <img @click="handleClick(item,indexs)"
+               v-else
                :id="'avue-image-preview__'+indexs"
                :src="item.url"
                :style="[styleName,styleBoxName]"
@@ -174,6 +176,11 @@ export default create({
         document.onmousemove = null;
         document.onmouseup = null;
       };
+    },
+    handleClick (item, index) {
+      if (typeof this.ops.click == "function") {
+        this.ops.click(item, index);
+      }
     },
     close () {
       this.isShow = false

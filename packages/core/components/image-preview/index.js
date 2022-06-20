@@ -9,6 +9,7 @@ export default function (datas = [], index = 0, ops = {}) {
     ops: Object.assign({
       closeOnClickModal: false,
       beforeClose: null,
+      click: null,
       modal: true
     }, ops)
   }
