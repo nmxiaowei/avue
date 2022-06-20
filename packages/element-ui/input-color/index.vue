@@ -10,7 +10,7 @@
               :clearable="clearableVal"
               :disabled="disabled">
       <template #append>
-        <el-color-picker size="mini"
+        <el-color-picker size="small"
                          v-model="text"
                          :color-format="colorFormat"
                          :disabled="disabled"

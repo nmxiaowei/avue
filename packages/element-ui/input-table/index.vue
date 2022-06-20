@@ -79,7 +79,7 @@ export default create({
       return Object.assign({
         menu: false,
         header: false,
-        size: 'mini',
+        size: 'small',
         headerAlign: 'center',
         align: 'center',
         highlightCurrentRow: true,

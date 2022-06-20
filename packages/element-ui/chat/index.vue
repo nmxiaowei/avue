@@ -73,7 +73,7 @@
               <el-dropdown split-button
                            class="web__msg-submit"
                            type="primary"
-                           size="mini"
+                           size="small"
                            @click="handleSend"
                            trigger="click">
                 发送
@@ -84,7 +84,7 @@
                                   width="160"
                                   v-model="visible">
                         <div>
-                          <el-input size="mini"
+                          <el-input size="small"
                                     style="margin-bottom:10px"
                                     :rows="3"
                                     show-word-limit
@@ -92,11 +92,11 @@
                                     v-model="keys"
                                     type="textarea"></el-input>
                           <div style="text-align: right; margin: 0">
-                            <el-button size="mini"
+                            <el-button size="small"
                                        text
                                        @click="visible = false">取消</el-button>
                             <el-button type="primary"
-                                       size="mini"
+                                       size="small"
                                        @click="addKey">确定</el-button>
                           </div>
                         </div>
@@ -141,7 +141,7 @@
                       :rules="[
       { required: true, message: '地址不能为空'},
     ]">
-          <el-input size="mini"
+          <el-input size="small"
                     style="margin-bottom:10px"
                     :rows="4"
                     show-word-limit

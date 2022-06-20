@@ -2,7 +2,7 @@
   <div :class="b()">
     <template v-if="isForm">
       <div :class="b('header')">
-        <el-button size="mini"
+        <el-button size="small"
                    circle
                    v-if="!readonly && !disabled && !addBtn"
                    :disabled="disabled"
@@ -20,7 +20,7 @@
                      @click="delRow(item.$index)"
                      type="danger"
                      :class="b('menu')"
-                     size="mini"
+                     size="small"
                      :disabled="disabled"
                      icon="el-icon-delete"
                      circle></el-button>
@@ -55,7 +55,7 @@
         <el-button v-if="!(addBtn || readonly)"
                    @click="addRow()"
                    type="primary"
-                   size="mini"
+                   size="small"
                    :disabled="disabled"
                    icon="el-icon-plus"
                    circle></el-button>
@@ -64,7 +64,7 @@
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @click="delRow(scope.row.$index)"
                    type="danger"
-                   size="mini"
+                   size="small"
                    :disabled="disabled"
                    icon="el-icon-delete"
                    circle></el-button>

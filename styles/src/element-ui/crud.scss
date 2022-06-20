@@ -45,9 +45,6 @@ $space-width: 15px;
   .el-checkbox:last-of-type {
     margin-right: 0px;
   }
-  .el-range-editor--mini{
-    height: 28px;
-  }
   &__img{
    display:flex;
    justify-content:center;
@@ -77,18 +74,6 @@ $space-width: 15px;
   &__search{
     .el-form-item--medium.el-form-item{
       margin-bottom: 22px;
-    }
-    .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
-      margin-bottom: 14px;
-    }
-  }
-  .el-table--mini{
-    .avue-crud__color{
-      width: 20px;
-      height: 20px;
-    }
-    .avue-crud__icon{
-      font-size: 20px;
     }
   }
   .el-table--small{

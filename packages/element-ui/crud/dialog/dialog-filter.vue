@@ -46,7 +46,7 @@
         </form-temp>
         <el-button type="danger"
                    :class="b('filter-icon')"
-                   size="mini"
+                   size="small"
                    @click="handleDelete(index)"
                    circle
                    icon="el-icon-minus"></el-button>
