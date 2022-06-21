@@ -80,6 +80,7 @@
             </span>
             <span class="el-upload-list__item-delete">
               <i class="el-icon-delete"
+                 v-if="!disabled"
                  @click.stop="handleRemove(file)"></i>
             </span>
           </span>
@@ -103,6 +104,7 @@
             {{file.name}}
           </a>
           <i class="el-icon-close"
+             v-if="!disabled"
              @click.stop="handleRemove(file)"></i>
         </span>
       </template>
