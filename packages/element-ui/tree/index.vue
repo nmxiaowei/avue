@@ -59,15 +59,15 @@
       <div :class="b('item')"
            v-if="vaildData(option.addBtn,true)"
            v-permission="getPermission('addBtn')"
-           @click="rowAdd">新增</div>
+           @click="rowAdd">{{menuIcon('addBtn')}}</div>
       <div :class="b('item')"
            v-if="vaildData(option.editBtn,true)"
            v-permission="getPermission('editBtn')"
-           @click="rowEdit">修改</div>
+           @click="rowEdit">{{menuIcon('editBtn')}}</div>
       <div :class="b('item')"
            v-if="vaildData(option.delBtn,true)"
            v-permission="getPermission('delBtn')"
-           @click="rowRemove">删除</div>
+           @click="rowRemove">{{menuIcon('delBtn')}}</div>
       <slot name="menu"
             :node="node"></slot>
     </div>
@@ -188,7 +188,7 @@ export default create({
       return this.option.lazy
     },
     addText () {
-      return this.addFlag ? this.t("crud.addBtn") : this.t("crud.updateBtn");
+      return this.addFlag ? this.menuIcon('addBtn') : this.menuIcon('updateBtn');
     },
     addFlag () {
       return ["add", "parentAdd"].includes(this.type);
@@ -247,6 +247,9 @@ export default create({
     }
   },
   methods: {
+    menuIcon (value) {
+      return this.vaildData(this.option[value + 'Text'], this.t("crud." + value))
+    },
     getPermission (key) {
       if (typeof this.permission === "function") {
         return this.permission(key, this.node)
