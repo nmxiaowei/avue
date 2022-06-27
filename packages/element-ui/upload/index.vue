@@ -147,7 +147,6 @@ export default create({
         return {}
       }
     },
-    onRemove: Function,
     showFileList: {
       type: Boolean,
       default: true
@@ -304,8 +303,9 @@ export default create({
       }
     },
     handleRemove (file, fileList) {
-      this.onRemove && this.onRemove(file, fileList);
-      this.delete(file);
+      this.beforeRemove(file).then(() => {
+        this.delete(file);
+      })
     },
     handleError (error) {
       this.uploadError && this.uploadError(error, this.column)
@@ -467,8 +467,7 @@ export default create({
       this.beforeRemove(file).then(() => {
         this.text = [];
         this.menu = false;
-      }).catch(() => {
-      });
+      })
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {
