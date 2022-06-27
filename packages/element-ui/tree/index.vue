@@ -8,8 +8,9 @@
         <el-button slot="append"
                    :size="size"
                    @click="parentAdd"
+                   v-permission="getPermission('addBtn')"
                    icon="el-icon-plus"
-                   v-if="vaildData(option.addBtn,true)&&!$slots.addBtn"></el-button>
+                   v-if="vaildData(option.addBtn,true)"></el-button>
         <slot v-else
               name="addBtn"
               slot="append"></slot>
@@ -26,7 +27,7 @@
                :highlight-current="!multiple"
                :show-checkbox="multiple"
                :accordion="accordion"
-               :node-key="props.value"
+               :node-key="valueKey"
                :check-strictly="checkStrictly"
                :check-on-click-node="checkOnClickNode"
                :filter-node-method="filterNode"
