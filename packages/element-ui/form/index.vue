@@ -319,7 +319,7 @@ export default create({
     },
     columnOption () {
       let column = this.tableOption.column || []
-      let group = this.tableOption.group || [];
+      let group = this.deepClone(this.tableOption.group) || [];
       let footer = this.tableOption.footer || [];
       if (column.length !== 0) {
         group.unshift({
