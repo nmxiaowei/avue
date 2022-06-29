@@ -151,6 +151,9 @@ export default create({
       type: Boolean,
       default: true
     },
+    fileType: {
+      type: String,
+    },
     oss: {
       type: String
     },
@@ -253,7 +256,6 @@ export default create({
             uid: index + '',
             status: 'done',
             type: this.getIsVideo(url),
-            isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
             url: url
           });
@@ -269,10 +271,12 @@ export default create({
   },
   methods: {
     getIsVideo (url) {
-      if (typeList.video.test(url)) {
+      if (typeList.video.test(url) || this.fileType == 'video') {
         return 'video'
+      } else if (typeList.img.test(url) || this.fileType == 'image') {
+        return 'img'
       }
-      return 'img'
+      return
     },
     setSort () {
       if (!window.Sortable) {
