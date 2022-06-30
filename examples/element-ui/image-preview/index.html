@@ -54,6 +54,9 @@
       openPreview(index = 0) {
         this.$ImagePreview(this.datas, index, {
           closeOnClickModal: true,
+          click: (data, index) => {
+            alert(index)
+          },
           beforeClose: (data, index) => {
             console.log(data, index);
           }

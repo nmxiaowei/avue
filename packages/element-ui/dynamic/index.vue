@@ -26,7 +26,7 @@
                      circle></el-button>
           <avue-form :key="index"
                      ref="main"
-                     :option="option"
+                     :option="deepClone(option)"
                      v-model="text[index]">
             <div slot-scope="{}"
                  slot="_index">
@@ -184,7 +184,6 @@ export default create({
           label: this.children.indexLabel || '#',
           prop: '_index',
           display: this.showIndex,
-          detail: true,
           fixed: true,
           align: 'center',
           headerAlign: 'center',

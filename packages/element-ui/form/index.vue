@@ -319,7 +319,7 @@ export default create({
     },
     columnOption () {
       let column = this.tableOption.column || []
-      let group = this.tableOption.group || [];
+      let group = this.deepClone(this.tableOption.group) || [];
       let footer = this.tableOption.footer || [];
       if (column.length !== 0) {
         group.unshift({
@@ -488,7 +488,7 @@ export default create({
             const callback = () => {
               let controlList = control(this.form[column.prop], this.form) || {};
               Object.keys(controlList).forEach(item => {
-                this.objectOption[item] = Object.assign(this.objectOption[item], controlList[item])
+                this.objectOption[item] = Object.assign(this.objectOption[item] || {}, controlList[item])
                 if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
               })
             }

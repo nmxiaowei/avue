@@ -32,24 +32,26 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <div v-if="item.isImage==false"
+          <component @click="handleClick(item,indexs)"
+                     v-else
+                     :id="'avue-image-preview__'+indexs"
+                     :src="item.url"
+                     :style="[styleName,styleBoxName]"
+                     ref="item"
+                     @mousedown="move"
+                     controls="controls"
+                     :is="getIsVideo(item)"
+                     v-if="getIsVideo(item)"
+                     ondragstart="return false"></component>
+          <div v-else
+               @click="handleClick(item,indexs,true)"
                :id="'avue-image-preview__'+indexs"
                :class="b('file')">
-            <a :href="item.url"
-               target="_blank">
+            <span>
               <i class="el-icon-document"></i>
               <p>{{item.name}}</p>
-            </a>
+            </span>
           </div>
-          <img v-else
-               :id="'avue-image-preview__'+indexs"
-               :src="item.url"
-               :style="[styleName,styleBoxName]"
-               ref="item"
-               @mousedown="move"
-               controls="controls"
-               :is="getIsVideo(item)"
-               ondragstart="return false"></img>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -137,11 +139,14 @@ export default create({
       return typeList.img.test(item.url) || typeList.video.test(item.url)
     },
     getIsVideo (item) {
-      if (typeList.video.test(item.url)) {
+      let url = item.url
+      let type = item.type
+      if (typeList.video.test(url) || type == 'video') {
         return 'video'
-      } else {
+      } else if (typeList.img.test(url) || type == 'image') {
         return 'img'
       }
+      return
     },
     subScale () {
       if (this.scale != 0.2) {
@@ -174,6 +179,13 @@ export default create({
         document.onmousemove = null;
         document.onmouseup = null;
       };
+    },
+    handleClick (item, index, df = false) {
+      if (typeof this.ops.click == "function") {
+        this.ops.click(item, index);
+      } else if (df) {
+        window.open(item.url)
+      }
     },
     close () {
       this.isShow = false
