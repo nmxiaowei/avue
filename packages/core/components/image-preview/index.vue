@@ -44,14 +44,13 @@
                      v-if="getIsVideo(item)"
                      ondragstart="return false"></component>
           <div v-else
-               @click="handleClick(item,indexs)"
+               @click="handleClick(item,indexs,true)"
                :id="'avue-image-preview__'+indexs"
                :class="b('file')">
-            <a :href="item.url"
-               target="_blank">
+            <span>
               <i class="el-icon-document"></i>
               <p>{{item.name}}</p>
-            </a>
+            </span>
           </div>
         </el-carousel-item>
       </el-carousel>
@@ -181,9 +180,11 @@ export default create({
         document.onmouseup = null;
       };
     },
-    handleClick (item, index) {
+    handleClick (item, index, df = false) {
       if (typeof this.ops.click == "function") {
         this.ops.click(item, index);
+      } else if (df) {
+        window.open(item.url)
       }
     },
     close () {
