@@ -181,7 +181,7 @@ export default create({
       this.$refs.tableForm.resetForm()
     },
     getSlotName (item) {
-      return item.replace('Form', '')
+      return item.replace(/Form$/, '')
     },
     handleOpened () {
       this.$nextTick(() => {
