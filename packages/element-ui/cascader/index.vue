@@ -60,10 +60,6 @@ export default create({
       type: Boolean,
       default: false
     },
-    expandTrigger: {
-      type: String,
-      default: 'click'
-    },
     separator: {
       type: String
     }
