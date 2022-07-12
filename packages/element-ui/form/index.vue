@@ -488,7 +488,8 @@ export default create({
             const callback = () => {
               let controlList = control(this.form[column.prop], this.form) || {};
               Object.keys(controlList).forEach(item => {
-                this.objectOption[item] = Object.assign(this.objectOption[item] || {}, controlList[item])
+                let ele = Object.assign(this.objectOption[item] || {}, controlList[item])
+                this.$set(this.objectOption, item, ele)
                 if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
               })
             }
