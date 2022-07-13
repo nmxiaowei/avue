@@ -24,7 +24,7 @@
                  @on-load="onList"
                  @search-change="handleSearchChange"
                  @search-reset="handleSearchChange"
-                 @current-change="handleCurrentChange"
+                 @current-row-change="handleCurrentChange"
                  v-model:page="page"></avue-crud>
       <template #footer>
         <span class="dialog-footer">

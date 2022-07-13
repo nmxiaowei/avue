@@ -247,7 +247,7 @@ export default create({
   },
   methods: {
     menuIcon (value) {
-      return this.vaildData(this.option[value + 'Text'], this.t("crud." + value))
+      return this.validData(this.option[value + 'Text'], this.t("crud." + value))
     },
     getPermission (key) {
       if (typeof this.permission === "function") {

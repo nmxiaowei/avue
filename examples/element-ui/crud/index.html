@@ -28,10 +28,9 @@
     <avue-crud ref="crud" :option="option" :data="data" :page="page" :table-loading="loading" v-model="obj"
       :upload-before="uploadBefore" :upload-after="uploadAfter" :before-open="handleBeforeOpen"
       :before-close="handleBeforeClose" @selection-change="selectionChange" @on-load="onLoad"
-      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" @current-row-change="currentRowChange"
-      @date-change="dateChange" @row-save="rowSave" @refresh-change="refresh" @row-update="rowUpdate" @row-del="rowDel"
-      @filter-change="filterChange" @expand-change="expandChange" @search-change="searchChange"
-      @search-reset="searchReset">
+      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" @date-change="dateChange" @row-save="rowSave"
+      @refresh-change="refresh" @row-update="rowUpdate" @row-del="rowDel" @filter-change="filterChange"
+      @expand-change="expandChange" @search-change="searchChange" @search-reset="searchReset">
       <template #name-header="scope">
         <el-tag :size="scope.size">{{ scope.column.label }}</el-tag>
       </template>
@@ -352,9 +351,6 @@
       },
       dateChange(val) {
         this.$message.success('日期回调' + JSON.stringify(val))
-      },
-      currentRowChange(val) {
-        this.$message.success('单选' + JSON.stringify(val))
       },
       handleRowClick(row, event, column) {
         this.$message.success('单机' + JSON.stringify(row))

@@ -517,7 +517,7 @@ export default create({
     },
     //设置单选
     currentRowChange (row) {
-      this.$emit("current-row-change", row);
+      // this.$emit("current-row-change", row);
     },
     //刷新事件
     refreshChange () {
