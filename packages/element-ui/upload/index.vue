@@ -85,7 +85,8 @@
                 <el-icon-zoom-in @click.stop="handlePreview(file)"></el-icon-zoom-in>
               </el-icon>
             </span>
-            <span class="el-upload-list__item-delete">
+            <span class="el-upload-list__item-delete"
+                  v-if="!disabled">
               <el-icon>
                 <el-icon-delete @click.stop="handleRemove(file)"></el-icon-delete>
               </el-icon>
@@ -160,10 +161,12 @@ export default create({
         return {}
       }
     },
-    onRemove: Function,
     showFileList: {
       type: Boolean,
       default: true
+    },
+    fileType: {
+      type: String,
     },
     oss: {
       type: String
@@ -201,7 +204,7 @@ export default create({
     },
     loadText: {
       type: String,
-      default: "文件上传中,请稍等"
+      default: "Loading..."
     },
     action: {
       type: String,
@@ -262,7 +265,6 @@ export default create({
             uid: index + '',
             status: 'done',
             type: this.getIsVideo(url),
-            isImage: ele.isImage,
             name: this.isMultiple ? name : ele[this.labelKey],
             url: url
           });
@@ -278,10 +280,12 @@ export default create({
   },
   methods: {
     getIsVideo (url) {
-      if (typeList.video.test(url)) {
+      if (typeList.video.test(url) || this.fileType == 'video') {
         return 'video'
+      } else if (typeList.img.test(url) || this.fileType == 'image') {
+        return 'img'
       }
-      return 'img'
+      return
     },
     setSort () {
       if (!window.Sortable) {
@@ -313,8 +317,9 @@ export default create({
       }
     },
     handleRemove (file, fileList) {
-      this.onRemove && this.onRemove(file, fileList);
-      this.delete(file);
+      this.beforeRemove(file).then(() => {
+        this.delete(file);
+      })
     },
     handleError (error) {
       this.uploadError && this.uploadError(error, this.column)
@@ -463,8 +468,7 @@ export default create({
       this.beforeRemove(file).then(() => {
         this.text = [];
         this.menu = false;
-      }).catch(() => {
-      });
+      })
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {

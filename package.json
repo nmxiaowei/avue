@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -56,12 +56,12 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^2.0.6",
     "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
-    "element-plus": "^2.2.2",
-    "vue": "^3.2.36"
+    "element-plus": "^2.2.9",
+    "vue": "^3.2.37"
   },
   "files": [
     "lib",

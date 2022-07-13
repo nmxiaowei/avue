@@ -8,6 +8,7 @@ export default (function () {
       ops: Object.assign({
         closeOnClickModal: false,
         beforeClose: null,
+        click: null,
         modal: true
       }, ops),
     }

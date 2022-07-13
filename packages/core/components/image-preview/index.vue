@@ -37,17 +37,18 @@
                           v-for="(item,indexs) in datas"
                           :key="indexs">
           <div v-if="item.isImage==false"
+               @click="handleClick(item,indexs,true)"
                :id="'avue-image-preview__'+indexs"
                :class="b('file')">
-            <a :href="item.url"
-               target="_blank">
+            <span>
               <el-icon>
                 <Document />
               </el-icon>
               <p>{{item.name}}</p>
-            </a>
+            </span>
           </div>
-          <component v-else
+          <component @click="handleClick(item,indexs)"
+                     v-else
                      :id="'avue-image-preview__'+indexs"
                      :src="item.url"
                      :style="[styleName,styleBoxName]"
@@ -55,7 +56,8 @@
                      @mousedown="move"
                      controls="controls"
                      :is="getIsVideo(item)"
-                     ondragstart="return false" />
+                     v-if="getIsVideo(item)"
+                     ondragstart="return false"></component>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -87,7 +89,7 @@ import { setPx } from 'utils/util';
 import { typeList } from 'global/variable'
 import create from "core/create";
 import { defineAsyncComponent } from 'vue'
-import { Document, ArrowRight, ArrowLeft, Close, ZoomOut, ZoomIn, RefreshLeft, RefreshRight, Printer } from '@element-plus/icons'
+import { Document, ArrowRight, ArrowLeft, Close, ZoomOut, ZoomIn, RefreshLeft, RefreshRight, Printer } from '@element-plus/icons-vue'
 import { ElIcon, ElCarousel, ElCarouselItem } from 'element-plus'
 import $Print from 'plugin/print/';
 export default create({
@@ -164,11 +166,14 @@ export default create({
       this.top = 0;
     },
     getIsVideo (item) {
-      if (typeList.video.test(item.url)) {
+      let url = item.url
+      let type = item.type
+      if (typeList.video.test(url) || type == 'video') {
         return 'video'
-      } else if (typeList.img.test(item.url)) {
+      } else if (typeList.img.test(url) || type == 'image') {
         return 'img'
       }
+      return
     },
     subScale () {
       if (this.scale != 0.2) {
@@ -204,6 +209,13 @@ export default create({
         document.onmousemove = null;
         document.onmouseup = null;
       };
+    },
+    handleClick (item, index, df = false) {
+      if (typeof this.ops.click == "function") {
+        this.ops.click(item, index);
+      } else if (df) {
+        window.open(item.url)
+      }
     },
     close () {
       this.isShow = false

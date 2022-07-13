@@ -1,4 +1,4 @@
-import * as Icons from '@element-plus/icons'
+import * as Icons from '@element-plus/icons-vue'
 export default (app) => {
   for (const key in Icons) {
     app.component(transElIconName(key), Icons[key])

@@ -90,5 +90,6 @@ const install = function (Vue, opts = {}) {
 };
 export default {
   version,
+  locale,
   install
 }
