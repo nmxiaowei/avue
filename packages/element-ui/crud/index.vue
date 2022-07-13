@@ -463,7 +463,7 @@ export default create({
     },
     getBtnIcon (value) {
       const name = value + 'Icon';
-      return this.tableOption[name] || config[name]
+      return this.tableOption[name] ? this.tableOption[name].trim() : config[name];
     },
     //对部分表单字段进行校验的方法
     validateField (val) {
