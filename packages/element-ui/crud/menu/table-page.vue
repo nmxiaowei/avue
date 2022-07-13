@@ -38,8 +38,8 @@ export default create({
       defaultPage: {
         total: 0, // 总页数
         pagerCount: 7,//超过多少条隐藏
-        currentPage: 1, // 当前页数
-        pageSize: 10, // 每页显示多少条
+        currentPage: Number(this.page.currentPage || 1), // 当前页数
+        pageSize: Number(this.page.pageSize || 10), // 每页显示多少条
         pageSizes: [10, 20, 30, 40, 50, 100],
         layout: 'total, sizes, prev, pager, next, jumper',
         background: true // 背景颜色
