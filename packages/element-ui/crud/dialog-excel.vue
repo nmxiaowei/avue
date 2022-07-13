@@ -54,7 +54,7 @@ export default {
     handleSum () {
       const option = this.crud.tableOption;
       const columnOption = this.crud.propOption;
-      let list = this.form.type == 0 ? this.crud.list : this.crud.tableSelect;
+      let list = this.form.type ? this.crud.list : this.crud.tableSelect;
       let data = []
       if (this.form.params.includes('data')) {
         list.forEach(ele => {
@@ -85,13 +85,12 @@ export default {
             prop: "type",
             span: 24,
             type: 'select',
-            value: 0,
             dicData: [{
               label: '当前数据(当前页全部的数据)',
-              value: 0
+              value: true
             }, {
               label: '选中的数据(当前页选中的数据)',
-              value: 1
+              value: false
             }]
           }, {
             label: '选择字段',
@@ -139,6 +138,7 @@ export default {
           }
         ]
       }
+      this.form.type = this.crud.selectLen == 0
     },
     getColumnOption () {
       let result = []
