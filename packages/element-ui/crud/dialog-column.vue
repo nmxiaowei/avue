@@ -5,13 +5,11 @@
              append-to-body
              class="avue-dialog"
              :title="t('crud.showTitle')"
-             @opened="init"
              :size="crud.isMobile?'100%':'40%'"
              :visible.sync="columnBox">
-    <el-table :data="list"
+    <el-table :data="data"
               ref="table"
               height="100%"
-              :key="Math.random()"
               size="small"
               border>
       <el-table-column align="center"
@@ -22,14 +20,14 @@
                        :label="t('crud.column.name')">
       </el-table-column>
       <template v-for="(item,index) in defaultColumn">
-        <el-table-column :prop="item.prop"
-                         :key="item.prop"
+        <el-table-column :label="item.label"
+                         :prop="item.prop"
+                         :key="index"
                          align="center"
-                         header-align="center"
-                         v-if="item.hide!=true"
-                         :label="item.label">
+                         header-align="center">
           <template slot-scope="{row}">
-            <el-checkbox v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+            <el-checkbox @change="handleChange(item.prop)"
+                         v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
           </template>
         </el-table-column>
       </template>
@@ -48,8 +46,8 @@ export default create({
   inject: ["crud"],
   data () {
     return {
-      columnBox: false,
-      bindList: {}
+      data: [],
+      columnBox: false
     };
   },
   computed: {
@@ -75,29 +73,21 @@ export default create({
         prop: 'width',
         hide: true
       }]
-    },
-    list () {
-      let list = [];
-      this.crud.propOption.forEach(ele => {
-        if (ele.showColumn != false) {
-          list.push(ele)
-        }
-      })
-      return list;
     }
   },
   methods: {
-    init () {
+    handleShow () {
+      this.data = []
       this.crud.propOption.forEach(column => {
-        if (this.bindList[column.prop] === true) return
-        this.defaultColumn.forEach(ele => {
-          if (['hide', 'filters'].includes(ele.prop)) {
-            this.$watch(`crud.objectOption.${column.prop}.${ele.prop}`, () => this.crud.refreshTable())
-          }
-        })
-        this.bindList[column.prop] = true;
+        if (column.showColumn != false) this.data.push(column)
       })
-      this.rowDrop();
+      this.columnBox = true
+      this.$nextTick(() => this.rowDrop())
+    },
+    handleChange (prop) {
+      if (['hide', 'filters'].includes(prop)) {
+        this.crud.refreshTable()
+      }
     },
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]

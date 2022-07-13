@@ -58,7 +58,7 @@
       <el-button :icon="crud.getBtnIcon('columnBtn')"
                  circle
                  :size="crud.isMediumSize"
-                 @click="crud.$refs.dialogColumn.columnBox=true"
+                 @click="crud.$refs.dialogColumn.handleShow()"
                  v-permission="crud.getPermission('columnBtn')"
                  v-if="vaildData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
       <el-button :icon="crud.getBtnIcon('searchBtn')"
@@ -69,7 +69,7 @@
       <el-button :icon="crud.getBtnIcon('filterBtn')"
                  circle
                  :size="crud.isMediumSize"
-                 @click="crud.$refs.dialogFilter.box=true"
+                 @click="crud.$refs.dialogFilter.handleShow()"
                  v-permission="crud.getPermission('filterBtn')"
                  v-if="vaildData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
 
