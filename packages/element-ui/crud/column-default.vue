@@ -80,9 +80,9 @@ export default create({
     columnDrop () {
       let el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
       let noIndexCount = 0;
-      if (this.crud.tableOption.selection) { noIndexCount += 1 }
-      if (this.crud.tableOption.index) { noIndexCount += 1 }
-      if (this.crud.tableOption.expand) { noIndexCount += 1 }
+      ['selection', 'index', 'expand'].forEach(ele => {
+        if (this.crud.tableOption[ele]) { noIndexCount += 1 }
+      })
       this.crud.tableDrop('column', el, evt => {
         this.crud.headerSort(evt.oldIndex - noIndexCount, evt.newIndex - noIndexCount)
         this.columnDrop()
