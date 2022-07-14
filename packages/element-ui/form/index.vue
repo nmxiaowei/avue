@@ -396,9 +396,13 @@ export default create({
     this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
-      this.$nextTick(() => this.clearValidate())
       this.formCreate = true;
       this.setControl()
+    })
+  },
+  mounted () {
+    setTimeout(() => {
+      this.clearValidate()
     })
   },
   methods: {

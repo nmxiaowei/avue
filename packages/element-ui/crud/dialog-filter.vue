@@ -1,5 +1,6 @@
 <template>
-  <el-drawer :class="[b('dialog'),b('filter')]"
+  <el-drawer v-if="box"
+             :class="[b('dialog'),b('filter')]"
              lock-scroll
              class="avue-dialog"
              :modal-append-to-body="false"

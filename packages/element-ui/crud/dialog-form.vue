@@ -1,5 +1,6 @@
 <template>
-  <component :is="dialogType"
+  <component v-if="boxVisible"
+             :is="dialogType"
              lock-scroll
              :destroy-on-close="crud.tableOption.dialogDestroy"
              :wrapperClosable="crud.tableOption.dialogClickModal"
@@ -30,7 +31,6 @@
     </div>
     <avue-form v-model="crud.tableForm"
                ref="tableForm"
-               v-if="boxVisible"
                :status.sync="disabled"
                @change="handleChange"
                @submit="handleSubmit"

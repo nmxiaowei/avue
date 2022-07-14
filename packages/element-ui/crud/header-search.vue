@@ -1,6 +1,7 @@
 <template>
   <el-card :shadow="crud.isCard"
            :class="b()"
+           v-if="searchFlag"
            v-show="searchShow && searchFlag">
     <slot name="search"
           :row="searchForm"
@@ -11,7 +12,6 @@
                @submit="searchChange"
                @change="handleChange"
                @reset-change="resetChange"
-               v-if="searchShow"
                v-model="searchForm">
       <template slot="menuForm"
                 slot-scope="scope">
