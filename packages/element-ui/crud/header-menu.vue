@@ -1,6 +1,7 @@
 <template>
   <div :class="b('menu')">
-    <div :class="b('left')">
+    <div :class="b('left')"
+         v-if="vaildData(crud.tableOption.menuLeft,true)">
       <el-button type="primary"
                  @click="crud.rowAdd"
                  :icon="crud.getBtnIcon('addBtn')"
@@ -24,7 +25,8 @@
       <slot name="menuLeft"
             :size="crud.isMediumSize"></slot>
     </div>
-    <div :class="b('right')">
+    <div :class="b('right')"
+         v-if="vaildData(crud.tableOption.menuRight,true)">
       <avue-date type="datetimerange"
                  @change="dateChange"
                  value-format="yyyy-MM-dd HH:mm:ss"
