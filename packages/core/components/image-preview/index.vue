@@ -143,7 +143,7 @@ export default create({
       let type = item.type
       if (typeList.video.test(url) || type == 'video') {
         return 'video'
-      } else if (typeList.img.test(url) || type == 'image') {
+      } else if (typeList.img.test(url) || type == 'img') {
         return 'img'
       }
       return
