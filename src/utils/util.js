@@ -39,12 +39,13 @@ export const loadScript = (type = 'js', url) => {
   let flag = false;
   return new Promise((resolve) => {
     const head = document.getElementsByTagName('head')[0];
-    head.children.forEach(ele => {
+    for (let i = 0; i < head.children.length; i++) {
+      let ele = head.children[i]
       if ((ele.src || '').indexOf(url) !== -1) {
         flag = true;
         resolve();
       }
-    });
+    }
     if (flag) return;
     let script;
     if (type === 'js') {
