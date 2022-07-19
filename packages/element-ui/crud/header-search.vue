@@ -191,7 +191,7 @@ export default create({
       ['searchReset', 'searchChange'].forEach(ele => this.crud[ele] = this[ele])
     },
     getSlotName (item) {
-      return item.replace(/Search$/, '')
+      return item.replace(/Search$/, '').replace(/SearchLabel$/, 'Label')
     },
     handleChange () {
       this.crud.$emit('update:search', this.searchForm)
