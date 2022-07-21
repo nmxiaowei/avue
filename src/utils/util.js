@@ -35,10 +35,10 @@ export function setAsVal (obj, bind = '', value) {
   eval(result);
   return obj;
 }
-export const loadScript = (type = 'js', url) => {
+export const loadScript = (type = 'js', url, dom = "body") => {
   let flag = false;
   return new Promise((resolve) => {
-    const head = document.getElementsByTagName('head')[0];
+    const head = dom == 'head' ? document.getElementsByTagName('head')[0] : document.body;
     for (let i = 0; i < head.children.length; i++) {
       let ele = head.children[i]
       if ((ele.src || '').indexOf(url) !== -1) {
