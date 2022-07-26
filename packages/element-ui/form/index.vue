@@ -321,12 +321,10 @@ export default create({
       let column = this.tableOption.column || []
       let group = this.deepClone(this.tableOption.group) || [];
       let footer = this.tableOption.footer || [];
-      if (column.length !== 0) {
-        group.unshift({
-          header: false,
-          column: column
-        })
-      }
+      group.unshift({
+        header: false,
+        column: column
+      })
       if (footer.length !== 0) {
         group.push({
           header: false,
