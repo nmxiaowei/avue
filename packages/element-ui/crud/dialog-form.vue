@@ -253,10 +253,10 @@ export default create({
           let { item } = this.crud.findData(row[this.crud.rowParentKey])
           if (item) {
             if (!item[this.crud.childrenKey]) {
-              item[this.crud.childrenKey] = []
+              this.$set(item, this.crud.childrenKey, [])
             }
             if (this.crud.tableOption.lazy) {
-              item[this.crud.hasChildrenKey] = true
+              this.$set(item, this.crud.hasChildrenKey, true)
             }
             item[this.crud.childrenKey].push(row)
           } else {
