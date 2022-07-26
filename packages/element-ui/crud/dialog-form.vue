@@ -254,8 +254,8 @@ export default create({
           if (item) {
             if (!item[this.crud.childrenKey]) {
               item[this.crud.childrenKey] = []
-              item[this.crud.hasChildrenKey] = true
             }
+            item[this.crud.hasChildrenKey] = true
             item[this.crud.childrenKey].push(row)
           } else {
             this.crud.list.push(row);
