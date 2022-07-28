@@ -46,6 +46,9 @@ export default create({
   },
   mixins: [locale],
   inject: ["crud"],
+  mounted () {
+    this.setSort()
+  },
   methods: {
     indexMethod (index) {
       return (

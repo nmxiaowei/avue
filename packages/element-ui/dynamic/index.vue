@@ -175,6 +175,7 @@ export default create({
           label: this.children.indexLabel || '#',
           prop: '_index',
           display: this.showIndex,
+          hide: !this.showIndex,
           fixed: true,
           align: 'center',
           headerAlign: 'center',

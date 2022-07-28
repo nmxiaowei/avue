@@ -128,11 +128,9 @@ export default {
       "handleFiltersMethod",
       "handleFilters"
     ];
-    Object.keys(this.dynamic).forEach(ele => {
-      if (list.includes(ele)) {
-        this[ele] = this.dynamic[ele];
-      }
-    });
+    list.forEach(ele => {
+      this[ele] = this.dynamic[ele];
+    })
   },
   methods: {
     allParams (item) {

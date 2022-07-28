@@ -1,5 +1,6 @@
 <template>
-  <component :is="dialogType"
+  <component v-if="boxVisible"
+             :is="dialogType"
              :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
              :draggable="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass]"
@@ -242,6 +243,8 @@ export default create({
           if (item) {
             if (!item[this.crud.childrenKey]) {
               item[this.crud.childrenKey] = []
+            }
+            if (this.crud.tableOption.lazy) {
               item[this.crud.hasChildrenKey] = true
             }
             item[this.crud.childrenKey].push(row)

@@ -1,6 +1,7 @@
 <template>
   <el-card :shadow="crud.isCard"
            :class="b()"
+           v-if="searchFlag"
            v-show="searchShow && searchFlag">
     <slot name="search"
           :row="searchForm"
