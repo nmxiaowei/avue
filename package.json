@@ -60,7 +60,7 @@
     "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
-    "element-plus": "2.2.6",
+    "element-plus": "^2.2.11",
     "vue": "^3.2.37"
   },
   "files": [
