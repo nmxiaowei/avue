@@ -447,7 +447,7 @@ export default create({
       this.reload = Math.random()
       this.tableSelect = []
       this.$nextTick(() => {
-        // this.$refs.columnDefault.setSort()
+        this.$refs.columnDefault.setSort()
         callback && callback()
       })
     },
@@ -617,7 +617,7 @@ export default create({
         ))
       this.list.push(row);
       this.formIndexList.push(len);
-      // setTimeout(() => this.$refs.columnDefault.setSort())
+      setTimeout(() => this.$refs.columnDefault.setSort())
     },
     //行取消
     rowCancel (row, index) {
