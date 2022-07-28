@@ -24,11 +24,13 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" @row-save="rowSave" @row-update="rowUpdate" @row-del="rowDel" :option="option" :data="data"
-      :table-loading="tableLoading" @tree-load="treeLoad" @current-row-change="handleCurrentRowChange"
-      @row-dblclick="handleRowDBLClick" @row-click="handleRowClick">
-      <template slot="menu" slot-scope="scope">
-        <el-button :size="scope.size" :type="scope.type" @click="tip(scope)">自定义菜单</el-button>
+    <avue-crud v-model="form" :option="option" :data="data" ref="crud" @row-save="rowSave" @row-update="rowUpdate"
+      @row-del="rowDel">
+      <template slot="icon" slot-scope="scope">
+        <i :class="scope.row.icon" style="font-size:24px"></i>
+      </template>
+      <template slot="menu" slot-scope="{row,size,type}">
+        <el-button :size="size" :type="type" @click="handleAdd(row)">新增子级</el-button>
       </template>
     </avue-crud>
   </div>
@@ -38,15 +40,13 @@
     el: '#app',
     data() {
       return {
-        tableLoading: true,
+        parentId: undefined,
+        form: {},
         option: {
-          lazy: true,
           labelWidth: 100,
           highlightCurrentRow: true,
           headerAlign: 'center',
           align: 'center',
-          expandAll: false,
-          expandLevel: 2,
           border: true,
           index: true,
           column: [{
@@ -54,10 +54,6 @@
             prop: 'event',
             align: 'left',
             width: 200
-          },
-          {
-            label: 'ID',
-            prop: 'id'
           },
           {
             label: '时间线',
@@ -80,12 +76,11 @@
         },
         data: [
           {
-            id: 0,
+            id: 10,
             event: '事件',
             timeLine: 50,
             icon: 'el-icon-time',
-            comment: '无',
-            hasChildren: true
+            comment: '无'
           },
           {
             id: 1,
@@ -167,72 +162,24 @@
         ],
       }
     },
-    created() {
-      setTimeout(() => {
-        this.tableLoading = false;
-      }, 2000);
-    },
     methods: {
-      treeLoad(tree, treeNode, resolve) {
-        console.log('懒加载')
-        setTimeout(() => {
-          resolve([
-            {
-              id: 31,
-              date: '2016-05-01',
-              event: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-              id: 32,
-              date: '2016-05-01',
-              event: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }
-          ])
-        }, 1000)
+      rowDel(row, index, done) {
+        done(row)
       },
-      handleCurrentRowChange(val) {
-        this.$message.success('查看控制台')
-        console.log('单选', val);
+      rowSave(row, done) {
+        row.parentId = this.parentId;
+        row.id = new Date().getTime()
+        row.children = []
+        this.parentId = undefined;
+        done(row)
       },
-      handleRowClick(row, event, column) {
-        this.$message.success('查看控制台')
-        console.log('单机', row);
+      rowUpdate(row, index, done) {
+        done(row)
       },
-      handleRowDBLClick(row, event) {
-        this.$message.success('查看控制台')
-        console.log('双击', row);
-      },
-      tip(scope) {
-        this.$message.success('查看控制台')
-        console.log('行数据', scope);
-      },
-      rowDel(form, index, done) {
-        done(form);
-        this.$message.success('删除数据' + JSON.stringify(form));
-      },
-      rowSave(form, done, loading) {
-        this.$message.success('模拟网络请求')
-        setTimeout(() => {
-          this.$message.success('关闭按钮等待');
-          loading();
-        }, 1000)
-        setTimeout(() => {
-          this.$message.success('新增数据' + JSON.stringify(form));
-          done(form);
-        }, 2000)
-      },
-      rowUpdate(form, index, done, loading) {
-        this.$message.success('模拟网络请求')
-        setTimeout(() => {
-          this.$message.success('关闭按钮等待');
-          loading();
-        }, 1000)
-        setTimeout(() => {
-          this.$message.success('编辑数据' + JSON.stringify(form) + '数据序号' + index);
-          done(form);
-        }, 2000)
-      },
+      handleAdd(row) {
+        this.parentId = row.id
+        this.$refs.crud.rowAdd()
+      }
     }
   })
 </script>

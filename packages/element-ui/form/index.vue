@@ -321,12 +321,10 @@ export default create({
       let column = this.tableOption.column || []
       let group = this.deepClone(this.tableOption.group) || [];
       let footer = this.tableOption.footer || [];
-      if (column.length !== 0) {
-        group.unshift({
-          header: false,
-          column: column
-        })
-      }
+      group.unshift({
+        header: false,
+        column: column
+      })
       if (footer.length !== 0) {
         group.push({
           header: false,
@@ -396,9 +394,13 @@ export default create({
     this.$nextTick(() => {
       this.dataFormat();
       this.setVal();
-      this.$nextTick(() => this.clearValidate())
       this.formCreate = true;
       this.setControl()
+    })
+  },
+  mounted () {
+    setTimeout(() => {
+      this.clearValidate()
     })
   },
   methods: {
@@ -488,7 +490,8 @@ export default create({
             const callback = () => {
               let controlList = control(this.form[column.prop], this.form) || {};
               Object.keys(controlList).forEach(item => {
-                this.objectOption[item] = Object.assign(this.objectOption[item] || {}, controlList[item])
+                let ele = Object.assign(this.objectOption[item] || {}, controlList[item])
+                this.$set(this.objectOption, item, ele)
                 if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
               })
             }

@@ -35,7 +35,9 @@ export default function () {
       propOption: {
         handler (list) {
           this.objectOption = {};
-          list.forEach(ele => this.objectOption[ele.prop] = ele);
+          list.forEach(ele => {
+            this.$set(this.objectOption, ele.prop, ele)
+          });
         },
         deep: true,
       },

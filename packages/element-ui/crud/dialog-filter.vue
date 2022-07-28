@@ -1,5 +1,6 @@
 <template>
-  <el-drawer :class="[b('dialog'),b('filter')]"
+  <el-drawer v-if="box"
+             :class="[b('dialog'),b('filter')]"
              lock-scroll
              class="avue-dialog"
              :modal-append-to-body="false"
@@ -29,9 +30,8 @@
               :class="b('filter-item')">
         <avue-select v-model="column.text"
                      :dic="columnOption"
-                     :props="columnProps"
                      :clearable="false"
-                     @change="handleChange(column.text,index)"
+                     @change="handleChange(index)"
                      :size="crud.isMediumSize"
                      :class="b('filter-label')"></avue-select>
         <avue-select :class="b('filter-symbol')"
@@ -39,13 +39,10 @@
                      :dic="symbolDic"
                      :clearable="false"
                      :size="crud.isMediumSize"></avue-select>
-        <form-temp :column="getColumnByIndex(columnList[index])"
-                   :size="crud.isMediumSize"
-                   :class="b('filter-value')"
-                   :dic="crud.DIC[columnList[index].prop]"
-                   :props="columnList[index].props || crud.tableOption.props"
-                   v-model="column.value">
-        </form-temp>
+        <avue-input :size="crud.isMediumSize"
+                    :class="b('filter-value')"
+                    v-model="column.value">
+        </avue-input>
         <el-button type="danger"
                    :class="b('filter-icon')"
                    size="mini"
@@ -67,33 +64,17 @@
 </template>
 
 <script>
-import { getSearchType, formInitVal } from "core/dataformat";
 import locale from "core/locale";
 import create from "core/create";
-import { dateList } from "core/dataformat";
-import formTemp from 'common/components/form/index'
 export default create({
   name: "crud",
   mixins: [locale],
   inject: ["crud"],
-  components: {
-    formTemp
-  },
   data () {
     return {
       box: false,
-      formDefault: {},
-      list: [],
-      columnList: [],
-      dateList: dateList,
-      columnProps: {
-        value: "prop"
-      }
-    };
-  },
-  computed: {
-    symbolDic () {
-      return [
+      columnObj: {},
+      symbolDic: [
         {
           label: "=",
           value: "="
@@ -126,70 +107,52 @@ export default create({
           label: "∈",
           value: "∈"
         }
-      ];
-    },
-    result () {
-      let result = [];
-      this.list.forEach(ele => {
-        if (!this.validatenull(ele.value)) {
-          result.push([ele.text, ele.symbol, ele.value]);
-        }
-      });
-      return result;
-    },
-    columnObj () {
-      return this.columnOption[0];
-    },
-    columnOption () {
-      return this.crud.propOption.filter(ele => ele.filter !== false && ele.showColumn !== false);
+      ],
+      list: [],
+      columnOption: {}
     }
   },
-  created () {
-    this.getSearchType = getSearchType;
-    this.formDefault = formInitVal(this.columnOption).tableForm;
-  },
   methods: {
-    getColumnByIndex (column, index) {
-      const ele = this.deepClone(column)
-      ele.type = getSearchType(ele);
-      ele.multiple = ["checkbox"].includes(column.type)
-      return ele
+    handleShow () {
+      this.getColumnOption()
+      this.box = true
+    },
+    getColumnOption () {
+      let result = []
+      let column = this.deepClone(this.crud.propOption)
+      column.forEach(ele => {
+        if (ele.showColumn !== false) result.push(Object.assign(ele, {
+          value: ele.prop
+        }))
+      });
+      this.columnOption = result
+      this.columnObj = this.columnOption[0];
     },
     handleDelete (index) {
       this.list.splice(index, 1);
-      this.columnList.splice(index, 1);
     },
     handleClear () {
       this.list = [];
-      this.columnList = [];
     },
     handleValueClear () {
-      this.list.forEach((ele, index) => {
-        this.$set(this.list[index], 'value', this.formDefault[ele.text]);
-      });
-    },
-    handleGetColumn (prop) {
-      return this.columnOption.find(ele => ele.prop === prop)
+      this.list.forEach((ele, index) => ele.value = '');
     },
     handleSubmit () {
-      this.list.push({});
-      this.list.splice(this.list.length - 1, 1);
-      this.crud.$emit("filter", this.result);
+      let result = [];
+      this.list.forEach(ele => {
+        result.push([ele.text, ele.symbol, ele.value]);
+      });
+      this.crud.$emit("filter", result);
       this.box = false;
     },
-    handleChange (prop, index) {
-      const column = this.handleGetColumn(prop);
-      this.columnList[index] = column;
-      this.list[index].value = this.formDefault[prop];
+    handleChange (index) {
+      this.list[index].value = ''
     },
     handleAdd () {
-      const len = this.list.length;
       const prop = this.columnObj.prop;
-      const column = this.handleGetColumn(prop);
-      this.columnList.push(column);
       this.list.push({
         text: prop,
-        value: this.formDefault[prop],
+        value: '',
         symbol: this.symbolDic[0].value
       });
     }

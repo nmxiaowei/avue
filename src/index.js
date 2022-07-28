@@ -116,13 +116,8 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-const Avue = Object.assign({
-  version: version,
-  locale: {
-    en: {},
-    zh: {}
-  },
+export default {
+  version,
+  locale,
   install
-}, components);
-
-export default Avue;
+}

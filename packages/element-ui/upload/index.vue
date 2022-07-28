@@ -273,10 +273,10 @@ export default create({
     getIsVideo (url) {
       if (typeList.video.test(url) || this.fileType == 'video') {
         return 'video'
-      } else if (typeList.img.test(url) || this.fileType == 'image') {
+      } else if (typeList.img.test(url) || this.fileType == 'img') {
         return 'img'
       }
-      return
+      return this.listType ? 'img' : ''
     },
     setSort () {
       if (!window.Sortable) {
