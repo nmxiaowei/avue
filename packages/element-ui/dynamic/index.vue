@@ -1,5 +1,6 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       :key="reload">
     <template v-if="isForm">
       <div :class="b('header')">
         <el-button size="mini"
@@ -93,6 +94,7 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      reload: Math.random(),
       hoverList: []
     }
   },
@@ -256,6 +258,7 @@ export default create({
         let list = this.deepClone(this.text)
         list.splice(index, 1);
         this.text = list;
+        this.reload = Math.random();
       }
       if (typeof this.rowDel === 'function') {
         this.rowDel(this.text[index], callback);
