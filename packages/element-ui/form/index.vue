@@ -382,7 +382,9 @@ export default create({
   },
   mounted () {
     this.dataFormat()
-    this.setControl()
+    this.$nextTick(() => {
+      this.setControl()
+    });
   },
   methods: {
     getComponent,
