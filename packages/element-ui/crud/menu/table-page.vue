@@ -11,8 +11,10 @@
                    v-model:page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"
                    v-model:current-page="defaultPage.currentPage"
+                   @size-change="sizeChange"
                    @prev-click="prevClick"
                    @next-click="nextClick"
+                   @current-change="currentChange"
                    :layout="defaultPage.layout"
                    :total="defaultPage.total"></el-pagination>
   </el-card>
@@ -51,12 +53,6 @@ export default create({
     this.crud.$emit("on-load", this.defaultPage);
   },
   watch: {
-    'defaultPage.pageSize' (val) {
-      this.sizeChange(val)
-    },
-    'defaultPage.currentPage' (val) {
-      this.currentChange(val)
-    },
     page: {
       handler () {
         this.pageInit();
