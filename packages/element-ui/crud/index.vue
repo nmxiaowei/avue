@@ -714,29 +714,19 @@ export default create({
     closeDialog () {
       return this.$refs.dialogForm.closeDialog()
     },
-    //对象克隆
-    rowClone (row) {
-      let rowData = {};
-      Object.keys(row).forEach(ele => {
-        if (!["_parent", "children"].includes(ele)) {
-          rowData[ele] = row[ele];
-        }
-      });
-      return rowData;
-    },
     getPropRef (prop) {
       return this.$refs.dialogForm.$refs.tableForm.getPropRef(prop);
     },
     // 编辑
     rowEdit (row, index) {
-      this.tableForm = this.rowClone(row);
+      this.tableForm = this.deepClone(row);
       this.tableIndex = index;
       this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("edit");
     },
     //复制
     rowCopy (row) {
-      this.tableForm = this.rowClone(row);
+      this.tableForm = this.deepClone(row);
       delete this.tableForm[this.rowKey]
       this.tableIndex = -1;
       this.$emit("input", this.tableForm);
@@ -744,7 +734,7 @@ export default create({
     },
     //查看
     rowView (row, index) {
-      this.tableForm = this.rowClone(row);
+      this.tableForm = this.deepClone(row);
       this.tableIndex = index;
       this.$emit("input", this.tableForm);
       this.$refs.dialogForm.show("view");
