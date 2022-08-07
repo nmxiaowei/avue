@@ -81,9 +81,6 @@
                   :cell-class-name="cellClassName"
                   :row-style="rowStyle"
                   :cell-style="cellStyle"
-                  :sort-method="sortMethod"
-                  :sort-orders="sortOrders"
-                  :sort-by="sortBy"
                   :fit="tableOption.fit"
                   :header-cell-class-name="headerCellClassName"
                   :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
@@ -351,9 +348,6 @@ export default create({
     }
   },
   props: {
-    sortBy: Function,
-    sortOrders: Array,
-    sortMethod: Function,
     spanMethod: Function,
     summaryMethod: Function,
     rowStyle: Function,
