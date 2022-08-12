@@ -14,6 +14,7 @@
              :size="column.size || size"
              :table-data="tableData"
              :type="type || column.type"
+             :column-slot="columnSlot"
              @keyup.enter="enterChange">
     <template #="scope"
               v-if="$slots.default">
