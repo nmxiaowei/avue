@@ -1,5 +1,4 @@
 import DialogComponent from './index.vue';
-import Vue from 'vue';
 
 let Plugin = function () {
   this.$root = {};
@@ -7,7 +6,7 @@ let Plugin = function () {
 
 Plugin.prototype.initMounted = function () {
   this.$root = (() => {
-    let DialogConstructor = Vue.extend(DialogComponent);
+    let DialogConstructor = window.Vue.extend(DialogComponent);
     let instance = new DialogConstructor();
     instance.vm = instance.$mount();
     document.body.appendChild(instance.vm.$el);

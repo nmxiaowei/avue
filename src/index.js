@@ -47,6 +47,7 @@ let directive = {
   contextmenu
 }
 const install = function (Vue, opts = {}) {
+  window.Vue = Vue;
   if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
   const defaultOption = {
     size: opts.size || 'small',
