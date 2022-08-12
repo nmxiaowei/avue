@@ -56,7 +56,7 @@
                :data="text">
       <template slot-scope="scope"
                 slot="_indexHeader">
-        <el-button v-if="!(addBtn || readonly)"
+        <el-button v-if="!(addBtn || readonly) && maxFlag"
                    @click="addRow()"
                    type="primary"
                    size="mini"
@@ -99,6 +99,7 @@ export default create({
     }
   },
   props: {
+    max: Number,
     columnSlot: {
       type: Array,
       default: () => {
@@ -113,6 +114,12 @@ export default create({
     }
   },
   computed: {
+    maxFlag () {
+      if (this.max) {
+        return !(this.text.length == this.max)
+      }
+      return true
+    },
     showIndex () {
       return this.vaildData(this.children.index, true)
     },
