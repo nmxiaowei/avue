@@ -22,7 +22,9 @@
   <div id="app">
     <avue-code :code="code"></avue-code>
     </br> </br>
-    <el-button type="primary" @click="setCode">运行</el-button>
+    <el-button type="primary" @click="setCode">运行代码</el-button>
+    <el-button @click="getCode('1549441329026424834')">表格代码</el-button>
+    <el-button @click="getCode('1549434249263570945')">弹窗代码</el-button>
     </br> </br>
     <el-input v-model="text" type="textarea" rows="30"></el-input>
   </div>
@@ -38,12 +40,15 @@
     },
     created() {
       window.$loadScript = this.loadScript
-      axios.get('https://data.avuejs.com/api/blade-visual/component/detail?id=1549434249263570945').then(res => {
-        this.text = res.data.data.content
-        this.setCode()
-      })
+      this.getCode('1549434249263570945')
     },
     methods: {
+      getCode(id) {
+        axios.get('https://data.avuejs.com/api/blade-visual/component/detail?id=' + id).then(res => {
+          this.text = res.data.data.content
+          this.setCode()
+        })
+      },
       setCode() {
         this.code = this.text;
       }
