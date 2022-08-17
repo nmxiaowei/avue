@@ -53,12 +53,6 @@ export default create({
     showAlpha: {
       type: Boolean,
       default: true
-    },
-    iconList: {
-      type: Array,
-      default: () => {
-        return [];
-      }
     }
   }
 });
