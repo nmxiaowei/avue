@@ -51,7 +51,7 @@
                @selection-change="handleSelectionChange"
                @sortable-change="handleSortableChange"
                :data="text">
-      <template #_indexHeader="scope">
+      <template #_index-header="scope">
         <el-button v-if="!(addBtn || readonly)"
                    @click="addRow()"
                    type="primary"
@@ -264,6 +264,7 @@ export default create({
         } else if (this.isForm) {
           this.text.push(obj)
         }
+        this.text = this.deepClone(this.text);
       }
       if (typeof this.rowAdd === 'function') {
         this.rowAdd(callback);
