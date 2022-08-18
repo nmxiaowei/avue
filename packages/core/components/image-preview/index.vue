@@ -48,7 +48,6 @@
             </span>
           </div>
           <component @click="handleClick(item,indexs)"
-                     v-else
                      :id="'avue-image-preview__'+indexs"
                      :src="item.url"
                      :style="[styleName,styleBoxName]"

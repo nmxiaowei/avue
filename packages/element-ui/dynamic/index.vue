@@ -1,5 +1,6 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       :key="reload">
     <template v-if="isForm">
       <div :class="b('header')">
         <el-button size="small"
@@ -52,7 +53,7 @@
                @sortable-change="handleSortableChange"
                :data="text">
       <template #_index-header="scope">
-        <el-button v-if="!(addBtn || readonly)"
+        <el-button v-if="!(addBtn || readonly) && maxFlag"
                    @click="addRow()"
                    type="primary"
                    size="small"
@@ -84,10 +85,12 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
+      reload: Math.random(),
       hoverList: []
     }
   },
   props: {
+    max: Number,
     columnSlot: {
       type: Array,
       default: () => {
@@ -102,6 +105,12 @@ export default create({
     }
   },
   computed: {
+    maxFlag () {
+      if (this.max) {
+        return !(this.text.length == this.max)
+      }
+      return true
+    },
     showIndex () {
       return this.validData(this.children.index, true)
     },
@@ -247,6 +256,7 @@ export default create({
         let list = this.deepClone(this.text)
         list.splice(index, 1);
         this.text = list;
+        this.reload = Math.random();
       }
       if (typeof this.rowDel === 'function') {
         this.rowDel(this.text[index], callback);
@@ -264,7 +274,6 @@ export default create({
         } else if (this.isForm) {
           this.text.push(obj)
         }
-        this.text = this.deepClone(this.text);
       }
       if (typeof this.rowAdd === 'function') {
         this.rowAdd(callback);
