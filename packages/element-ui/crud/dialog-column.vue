@@ -1,40 +1,42 @@
 <template>
-  <el-drawer v-if="columnBox"
-             :class="[b('dialog'),b('column')]"
-             lock-scroll
-             :modal-append-to-body="false"
-             append-to-body
-             class="avue-dialog"
-             :title="t('crud.showTitle')"
-             :size="crud.isMobile?'100%':'40%'"
-             :visible.sync="columnBox">
-    <el-table :data="data"
-              ref="table"
-              height="100%"
-              size="small"
-              border>
-      <el-table-column align="center"
-                       width="100"
-                       header-align="center"
-                       prop="label"
-                       key="label"
-                       :label="t('crud.column.name')">
-      </el-table-column>
-      <template v-for="(item,index) in defaultColumn">
-        <el-table-column :label="item.label"
-                         :prop="item.prop"
-                         :key="index"
-                         align="center"
-                         header-align="center">
-          <template slot-scope="{row}">
-            <el-checkbox @change="handleChange(item.prop)"
-                         v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
-          </template>
+  <div v-if="columnBox">
+    <el-drawer :class="[b('dialog'),b('column')]"
+               lock-scroll
+               :modal-append-to-body="false"
+               append-to-body
+               class="avue-dialog"
+               :title="t('crud.showTitle')"
+               :size="crud.isMobile?'100%':'40%'"
+               :visible.sync="columnBox">
+      <el-table :data="data"
+                ref="table"
+                height="100%"
+                size="small"
+                border>
+        <el-table-column align="center"
+                         width="100"
+                         header-align="center"
+                         prop="label"
+                         key="label"
+                         :label="t('crud.column.name')">
         </el-table-column>
-      </template>
+        <template v-for="(item,index) in defaultColumn">
+          <el-table-column :label="item.label"
+                           :prop="item.prop"
+                           :key="index"
+                           align="center"
+                           header-align="center">
+            <template slot-scope="{row}">
+              <el-checkbox @change="handleChange(item.prop)"
+                           v-model="crud.objectOption[row.prop][item.prop]"></el-checkbox>
+            </template>
+          </el-table-column>
+        </template>
 
-    </el-table>
-  </el-drawer>
+      </el-table>
+    </el-drawer>
+  </div>
+
 </template>
 <script>
 import create from "core/create";
