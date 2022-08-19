@@ -1,67 +1,45 @@
 <template>
-  <div :class="[b(),className]"
-       :style="styleSizeName"
-       ref="main">
-    <div :id="id">
-      <div></div>
-    </div>
+  <div :class="b()">
+    <el-scrollbar :style="styleName">
+      <pre>
+        <code :class="syntax" ref="container">
+          <slot></slot>
+        </code>
+      </pre>
+    </el-scrollbar>
   </div>
+
 </template>
 
 <script>
-import { uuid } from 'utils/util'
 import create from "core/create";
+import packages from "core/packages";
 export default create({
   name: "code",
   props: {
-    code: String
+    height: {
+      type: Number,
+      default: 200
+    },
+    syntax: {
+      type: String,
+      default: "javascript"
+    }
   },
-  data () {
-    return {
-      id: 'code_' + uuid(),
-
-    };
-  },
-  watch: {
-    code () {
-      this.initVue()
+  computed: {
+    styleName () {
+      return {
+        height: this.setPx(this.height)
+      };
     }
   },
   mounted () {
-    this.initVue()
-  },
-  methods: {
-    initVue () {
-
-      let template = this.getSource("template");
-      if (!template) return
-      let script = this.getSource("script");
-      if (script) {
-        script = script.replace(/export default/, "return");
-      }
-      let styleCss = this.getSource("style");
-      let styleId = 'style-' + this.id;
-      if (document.getElementById(styleId)) {
-        document.getElementById(styleId).remove()
-      }
-      let style = document.createElement("style");
-      style.id = styleId
-      style.innerHTML = styleCss;
-      document.head.appendChild(style);
-      let obj = new Function(script)();
-      obj.template = template;
-      let constructor = window.Vue.extend(obj);
-      new constructor().$mount(document.getElementById(this.id).childNodes[0]);
-    },
-    getSource (type) {
-      const reg = new RegExp(`<${type}[^>]*>`);
-      let content = this.code;
-      let matches = content.match(reg);
-      if (matches) {
-        let start = content.indexOf(matches[0]) + matches[0].length;
-        let end = content.lastIndexOf(`</${type}`);
-        return content.slice(start, end)
-      }
+    if (!window.hljs) {
+      packages.logs("hljs");
+      return;
+    }
+    if (window.hljs && typeof window.hljs.highlightBlock === "function") {
+      window.hljs.highlightBlock(this.$refs["container"]);
     }
   }
 });
