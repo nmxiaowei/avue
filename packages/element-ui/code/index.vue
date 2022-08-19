@@ -2,14 +2,13 @@
   <div :class="[b(),className]"
        :style="styleSizeName"
        ref="main">
-    <component :is="id"
-               v-if="reload">
-    </component>
+    <div :id="id">
+      <div></div>
+    </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
 import { uuid } from 'utils/util'
 import create from "core/create";
 export default create({
@@ -20,7 +19,7 @@ export default create({
   data () {
     return {
       id: 'code_' + uuid(),
-      reload: false
+
     };
   },
   watch: {
@@ -33,7 +32,7 @@ export default create({
   },
   methods: {
     initVue () {
-      this.reload = false
+
       let template = this.getSource("template");
       if (!template) return
       let script = this.getSource("script");
@@ -51,10 +50,8 @@ export default create({
       document.head.appendChild(style);
       let obj = new Function(script)();
       obj.template = template;
-      Vue.component(this.id, obj)
-      this.$nextTick(() => {
-        this.reload = true
-      })
+      let constructor = window.Vue.extend(obj);
+      new constructor().$mount(document.getElementById(this.id).childNodes[0]);
     },
     getSource (type) {
       const reg = new RegExp(`<${type}[^>]*>`);
