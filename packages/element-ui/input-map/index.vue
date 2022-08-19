@@ -77,6 +77,7 @@ export default create({
     value (val) {
       if (this.validatenull(val)) {
         this.poi = {}
+        this.address = ''
       }
     },
     text (val) {
