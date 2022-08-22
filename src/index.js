@@ -93,6 +93,7 @@ const install = function (Vue, opts = {}) {
   locale.i18n(opts.i18n);
   Vue.prototype.$axios = opts.axios || window.axios || axios;
   window.axios = Vue.prototype.$axios;
+  window.Vue = Vue;
   Vue.prototype.$uploadFun = function (column = {}, safe) {
     safe = safe || this;
     let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];

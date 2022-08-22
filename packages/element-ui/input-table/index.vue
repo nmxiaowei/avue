@@ -10,30 +10,33 @@
               @click.native="handleClick"
               :disabled="disabled">
     </el-input>
-    <el-dialog class="avue-dialog avue-dialog--none"
-               :width="dialogWidth"
-               append-to-body
-               :title="placeholder"
-               :visible.sync="box">
-      <avue-crud :class="b('crud')"
-                 ref="crud"
-                 v-if="box"
-                 :option="option"
-                 :data="data"
-                 :table-loading="loading"
-                 @on-load="onList"
-                 @search-change="handleSearchChange"
-                 @search-reset="handleSearchChange"
-                 @current-row-change="handleCurrentRowChange"
-                 :page.sync="page"></avue-crud>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   :size="size"
-                   icon="el-icon-check"
-                   @click="setVal">确 定</el-button>
-      </span>
-    </el-dialog>
+    <div v-if="box">
+      <el-dialog class="avue-dialog avue-dialog--none"
+                 :width="dialogWidth"
+                 append-to-body
+                 :title="placeholder"
+                 :visible.sync="box">
+        <avue-crud :class="b('crud')"
+                   ref="crud"
+                   v-if="box"
+                   :option="option"
+                   :data="data"
+                   :table-loading="loading"
+                   @on-load="onList"
+                   @search-change="handleSearchChange"
+                   @search-reset="handleSearchChange"
+                   @current-row-change="handleCurrentRowChange"
+                   :page.sync="page"></avue-crud>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button type="primary"
+                     :size="size"
+                     icon="el-icon-check"
+                     @click="setVal">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 

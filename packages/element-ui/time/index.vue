@@ -8,8 +8,8 @@
                     :default-value="defaultValue"
                     :range-separator="rangeSeparator"
                     :arrow-control="arrowControl"
-                    :start-placeholder="startPlaceholder"
-                    :end-placeholder="endPlaceholder"
+                    :start-placeholder="startPlaceholder || t('time.start')"
+                    :end-placeholder="endPlaceholder || t('time.end')"
                     :format="format"
                     :readonly="readonly"
                     :clearable="clearableVal"
@@ -39,12 +39,10 @@ export default create({
       default: true
     },
     startPlaceholder: {
-      type: String,
-      default: "开始时间"
+      type: String
     },
     endPlaceholder: {
-      type: String,
-      default: "结束时间"
+      type: String
     },
     rangeSeparator: {
       type: String

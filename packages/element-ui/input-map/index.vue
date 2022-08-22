@@ -10,40 +10,42 @@
               @click.native="handleClick"
               :placeholder="placeholder">
     </el-input>
-
-    <el-dialog class="avue-dialog avue-dialog--none"
-               :width="dialogWidth"
-               append-to-body
-               :title="placeholder"
-               @close="handleClose"
-               :visible.sync="box">
-      <div :class="b('content')"
-           v-if="box">
-        <el-input :class="b('content-input')"
-                  id="map__input"
-                  :size="size"
-                  @clear="clear"
-                  :readonly="disabled"
-                  v-model="formattedAddress"
-                  clearable
-                  placeholder="输入关键字选取地点"></el-input>
-        <div :class="b('content-box')">
-          <div id="map__container"
-               :class="b('content-container')"
-               tabindex="0"></div>
-          <div id="map__result"
-               :class="b('content-result')"></div>
+    <div v-if="box">
+      <el-dialog class="avue-dialog avue-dialog--none"
+                 :width="dialogWidth"
+                 append-to-body
+                 :title="placeholder"
+                 @close="handleClose"
+                 :visible.sync="box">
+        <div :class="b('content')"
+             v-if="box">
+          <el-input :class="b('content-input')"
+                    id="map__input"
+                    :size="size"
+                    @clear="clear"
+                    :readonly="disabled"
+                    v-model="formattedAddress"
+                    clearable
+                    placeholder="输入关键字选取地点"></el-input>
+          <div :class="b('content-box')">
+            <div id="map__container"
+                 :class="b('content-container')"
+                 tabindex="0"></div>
+            <div id="map__result"
+                 :class="b('content-result')"></div>
+          </div>
         </div>
-      </div>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   :size="size"
-                   icon="el-icon-check"
-                   v-if="!(disabled || readonly)"
-                   @click="handleSubmit">确 定</el-button>
-      </span>
-    </el-dialog>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button type="primary"
+                     :size="size"
+                     icon="el-icon-check"
+                     v-if="!(disabled || readonly)"
+                     @click="handleSubmit">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 <script>
@@ -77,6 +79,7 @@ export default create({
     value (val) {
       if (this.validatenull(val)) {
         this.poi = {}
+        this.address = ''
       }
     },
     text (val) {

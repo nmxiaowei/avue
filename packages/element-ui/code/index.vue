@@ -27,13 +27,13 @@ export default create({
     }
   },
   computed: {
-    styleName() {
+    styleName () {
       return {
         height: this.setPx(this.height)
       };
     }
   },
-  mounted() {
+  mounted () {
     if (!window.hljs) {
       packages.logs("hljs");
       return;

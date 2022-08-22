@@ -1,5 +1,5 @@
 const gulp = require("gulp");
-var sass = require("gulp-sass");
+const sass = require('gulp-sass')(require('sass'));
 var autoprefixer = require("gulp-autoprefixer");
 var cssmin = require("gulp-cssmin");
 const webpack = require("webpack");
@@ -18,7 +18,7 @@ gulp.task("webpack", async function () {
 gulp.task("compile", function () {
   return gulp
     .src("./styles/index.scss")
-    .pipe(sass.sync())
+    .pipe(sass())
     .pipe(
       autoprefixer({
         browsers: ["ie > 9", "last 2 versions"],

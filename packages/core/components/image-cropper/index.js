@@ -1,8 +1,7 @@
 import Main from './index.vue';
-import Vue from 'vue'
 
 export default function (ops = {}) {
-  let MessageConstructor = Vue.extend(Main);
+  let MessageConstructor = window.Vue.extend(Main);
   let option = Object.assign({
     outputSize: 1,       //裁剪生成图片的质量(可选0.1 - 1)
     outputType: 'jpeg',  //裁剪生成图片的格式（jpeg || png || webp）

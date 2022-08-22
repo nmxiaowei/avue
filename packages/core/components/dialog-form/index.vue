@@ -10,15 +10,15 @@
                @submit="handleSubmit"
                @reset-change="close"></avue-form>
     <span class="avue-dialog__footer"
-          v-if="this.vaildData(option.menuBtn,true)"
+          v-if="vaildData(option.menuBtn,true)"
           :class="'avue-dialog__footer--'+menuPosition">
       <el-button @click="submit"
                  :size="$AVUE.size"
                  :icon="option.submitIcon"
-                 v-if="this.vaildData(option.submitBtn,true)"
+                 v-if="vaildData(option.submitBtn,true)"
                  type="primary">{{option.submitText}}</el-button>
       <el-button @click="reset"
-                 v-if="this.vaildData(option.emptyBtn,true)"
+                 v-if="vaildData(option.emptyBtn,true)"
                  :size="$AVUE.size"
                  :icon="option.emptyIcon ">{{option.emptyText}}</el-button>
     </span>

@@ -32,20 +32,9 @@ export default create({
   mixins: [props(), event()],
   props: {
     colorFormat: String,
-    showAlpha: {
-      type: Boolean,
-      default: true
-    },
-    iconList: {
+    predefineColors: {
       type: Array,
-      default: () => {
-        return [];
-      }
-    }
-  },
-  data () {
-    return {
-      predefineColors: [
+      default: [
         "#ff4500",
         "#ff8c00",
         "#ffd700",
@@ -58,12 +47,14 @@ export default create({
         "hsv(51, 100, 98)",
         "hsva(120, 40, 94, 0.5)",
         "hsl(181, 100%, 37%)",
-        "hsla(209, 100%, 56%, 0.73)",
-        "#c7158577"
+        "hsla(209, 100%, 56%, 0.73)"
       ]
-    };
-  },
-  methods: {}
+    },
+    showAlpha: {
+      type: Boolean,
+      default: true
+    }
+  }
 });
 </script>
 
