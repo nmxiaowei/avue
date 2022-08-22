@@ -1128,17 +1128,17 @@
               console.log(code);
               if (level == 0) {
                 axios.get(`${baseUrl}/getProvince`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else if (level == 1) {
                 axios.get(`${baseUrl}/getCity/${code}`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else if (level == 2) {
                 axios.get(`${baseUrl}/getArea/${code}`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else {

@@ -50,6 +50,10 @@
             blur: () => {
               this.$message.success('查看控制台')
               console.log('失去焦点')
+            },
+            enter: ({ value, column }) => {
+              this.$message.success('enter事件查看控制台')
+              console.log('回车事件', value, column)
             }
           }]
         }
