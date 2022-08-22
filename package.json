@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.9.13",
+  "version": "2.9.14",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -43,8 +43,9 @@
     "gulp-autoprefixer": "^4.0.0",
     "gulp-cssmin": "^0.1.7",
     "gulp-postcss": "^6.1.1",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.1.0",
     "progress-bar-webpack-plugin": "^1.11.0",
+    "sass": "^1.54.5",
     "vue-loader": "^15.9.6",
     "vue-template-compiler": "^2.6.12",
     "webpack": "^4.27.0",
