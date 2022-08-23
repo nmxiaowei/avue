@@ -16,7 +16,7 @@
                  small></icon-temp>
 
     </el-input>
-    <div v-if="show">
+    <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
                  :title="placeholder"
                  append-to-body
