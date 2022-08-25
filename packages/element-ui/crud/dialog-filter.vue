@@ -3,7 +3,6 @@
     <el-drawer :class="[b('dialog'),b('filter')]"
                lock-scroll
                class="avue-dialog"
-               :modal-append-to-body="false"
                append-to-body
                :title="t('crud.filterTitle')"
                :size="crud.isMobile?'100%':'60%'"

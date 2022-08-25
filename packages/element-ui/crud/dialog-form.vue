@@ -8,7 +8,6 @@
                v-dialogDrag="vaildData(crud.tableOption.dialogDrag,config.dialogDrag)"
                :class="['avue-dialog',b('dialog'),{'avue-dialog--fullscreen':fullscreen}]"
                :custom-class="crud.tableOption.dialogCustomClass"
-               modal-append-to-body
                append-to-body
                :top="dialogTop"
                :title="dialogTitle"
