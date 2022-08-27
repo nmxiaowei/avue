@@ -1,24 +1,26 @@
 <template>
   <div :class="b()">
-    <el-time-picker v-model="text"
-                    :popper-class="popperClass"
-                    :is-range="isRange"
-                    :size="size"
-                    :editable="editable"
-                    :default-value="defaultValue"
-                    :range-separator="rangeSeparator"
-                    :arrow-control="arrowControl"
-                    :start-placeholder="startPlaceholder || t('time.start')"
-                    :end-placeholder="endPlaceholder || t('time.end')"
-                    :format="format"
-                    :readonly="readonly"
-                    :clearable="clearableVal"
-                    :picker-options="pickerOptions"
-                    :value-format="valueFormat"
-                    :placeholder="placeholder"
-                    @change="handleChange"
-                    @click.native="handleClick"
-                    :disabled="disabled"></el-time-picker>
+    <component :is="componentName"
+               v-model="text"
+               :popper-class="popperClass"
+               :is-range="isRange"
+               :size="size"
+               :editable="editable"
+               :default-value="defaultValue"
+               :range-separator="rangeSeparator"
+               :arrow-control="arrowControl"
+               :start-placeholder="startPlaceholder || t('time.start')"
+               :end-placeholder="endPlaceholder || t('time.end')"
+               :format="format"
+               :readonly="readonly"
+               :clearable="clearableVal"
+               :picker-options="pickerOptions"
+               :value-format="valueFormat"
+               :placeholder="placeholder"
+               @change="handleChange"
+               @click.native="handleClick"
+               :disabled="disabled">
+    </component>
   </div>
 </template>
 
@@ -34,42 +36,17 @@ export default create({
     return {};
   },
   props: {
-    editable: {
-      type: Boolean,
-      default: true
-    },
-    startPlaceholder: {
-      type: String
-    },
-    endPlaceholder: {
-      type: String
-    },
-    rangeSeparator: {
-      type: String
-    },
-    value: {
-      required: true
-    },
-    defaultValue: {
-      type: [String, Array]
-    },
-    pickerOptions: {
-      type: Object,
-      default: () => { }
-    },
-    valueFormat: {
-      default: ""
-    },
-    arrowControl: {
-      type: Boolean,
-      default: false
-    },
-    type: {
-      default: ""
-    },
-    format: {
-      default: ""
-    }
+    editable: Boolean,
+    startPlaceholder: String,
+    endPlaceholder: String,
+    rangeSeparator: String,
+    value: {},
+    defaultValue: [String, Array],
+    pickerOptions: Object,
+    valueFormat: String,
+    arrowControl: Boolean,
+    type: String,
+    format: String
   },
   watch: {
     text () {
@@ -81,6 +58,14 @@ export default create({
   created () { },
   mounted () { },
   computed: {
+    componentName () {
+      let pickerOptions = this.pickerOptions || {}
+      if (pickerOptions.start || pickerOptions.end || pickerOptions.step) {
+        return "elTimeSelect"
+      } else {
+        return "elTimePicker"
+      }
+    },
     isRange () {
       return this.type === "timerange";
     }

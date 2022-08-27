@@ -60,7 +60,9 @@
                       :md="getSpan(column)"
                       :sm="column.smSpan || item.smSpan || 12"
                       :xs="column.xsSpan || item.xmSpan ||  24"
-                      :offset="column.offset || item.offset ||  0"
+                      :offset="column.offset || item.offset"
+                      :push="column.push || item.push"
+                      :pull="column.pull || item.pull"
                       :class="[b('row'),{'avue--detail avue--detail__column':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"

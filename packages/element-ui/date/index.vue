@@ -39,40 +39,21 @@ export default create({
     };
   },
   props: {
-    editable: {
-      type: Boolean,
-      default: true
-    },
-    unlinkPanels: {
-      type: Boolean,
-      default: false
-    },
+    editable: Boolean,
+    unlinkPanels: Boolean,
     value: {},
-    startPlaceholder: {
-      type: String
-    },
-    endPlaceholder: {
-      type: String
-    },
-    rangeSeparator: {
-      type: String
-    },
-    defaultValue: {
-      type: [String, Array]
-    },
-    defaultTime: {
-      type: [String, Array]
-    },
-    pickerOptions: {
-      type: Object,
-      default: () => { }
-    },
+    startPlaceholder: String,
+    endPlaceholder: String,
+    rangeSeparator: String,
+    defaultValue: [String, Array],
+    defaultTime: [String, Array],
+    pickerOptions: Object,
     type: {
       type: String,
       default: "date"
     },
-    valueFormat: {},
-    format: {}
+    valueFormat: String,
+    format: String
   }
 });
 </script>

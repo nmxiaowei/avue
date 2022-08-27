@@ -25,6 +25,7 @@ export const loadCascaderDic = (columnOption, list = []) => {
                     url: `${column.dicUrl.replace('{{key}}', ele[column.parentProp])}`,
                     props: column.props,
                     method: column.dicMethod,
+                    headers: column.dicHeaders,
                     formatter: column.dicFormatter,
                     query: column.dicQuery,
                     form: ele
@@ -94,6 +95,7 @@ function createdDic (option) {
         url: dicUrl,
         name: prop,
         method: ele.dicMethod,
+        headers: column.dicHeaders,
         formatter: ele.dicFormatter,
         props: ele.props,
         dataType: ele.dataType,
@@ -138,10 +140,11 @@ function handleDic (list) {
 
 // ajax获取字典
 export const sendDic = (params) => {
-  let { url, query, method, resKey, props, formatter, value = '', column, form = {} } = params;
+  let { url, query, method, resKey, props, formatter, headers = {}, value = '', column, form = {} } = params;
   if (column) {
     url = column.dicUrl;
     method = column.dicMethod;
+    headers = column.headers || {}
     query = column.dicQuery || {};
     formatter = column.dicFormatter;
     props = column.props;
@@ -187,14 +190,17 @@ export const sendDic = (params) => {
       resolve(list);
     };
     if (method === 'post') {
-      window.axios.post(url, data).then(function (res) {
+      window.axios.post(url, data, {
+        headers
+      }).then(function (res) {
         callback(res);
       }).catch(() => [
         resolve([])
       ]);
     } else {
       window.axios.get(url, {
-        params: query
+        params: query,
+        headers
       }).then(function (res) {
         callback(res);
       }).catch(() => [

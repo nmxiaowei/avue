@@ -17,7 +17,7 @@
                          :disabled="disabled"
                          :show-alpha="showAlpha"
                          @change="handleChange"
-                         :predefine="predefineColors"></el-color-picker>
+                         :predefine="predefine"></el-color-picker>
       </template>
     </el-input>
   </div>
@@ -32,7 +32,7 @@ export default create({
   mixins: [props(), event()],
   props: {
     colorFormat: String,
-    predefineColors: {
+    predefine: {
       type: Array,
       default: [
         "#ff4500",
