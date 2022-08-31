@@ -13,7 +13,8 @@
     <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
                  :width="dialogWidth"
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  :title="placeholder"
                  :visible.sync="box">
         <avue-crud :class="b('crud')"

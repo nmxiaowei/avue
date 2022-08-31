@@ -124,7 +124,8 @@
     </div>
     <div v-if="upload.box">
       <el-dialog :title="upload.title"
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  :visible.sync="upload.box"
                  width="30%">
         <el-form ref="form"
@@ -157,7 +158,8 @@
     <div v-if="show">
       <el-dialog :visible.sync="show"
                  width="40%"
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  :before-close="handleClose"
                  class="web__dialog">
         <img :src="imgSrc"

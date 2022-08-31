@@ -77,8 +77,8 @@
                  :visible.sync="box"
                  :class="b('dialog')"
                  class="avue-dialog"
-                 modal-append-to-body
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  @close="hide"
                  :width="vaildData(option.dialogWidth,'50%')">
         <avue-form v-model="form"

@@ -19,7 +19,8 @@
     <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
                  :title="placeholder"
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  :visible.sync="box"
                  :width="dialogWidth">
         <avue-tabs :option="option"
