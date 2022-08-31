@@ -70,7 +70,7 @@ export default create({
   computed: {
     list () {
       let list = (this.tabs.list || []).map(ele => {
-        if (!ele.value) {
+        if (!ele.value && !ele.label) {
           return {
             value: ele
           }
