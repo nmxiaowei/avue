@@ -186,7 +186,7 @@ export default create({
     },
     handleOpened () {
       this.$nextTick(() => {
-        ['clearValidate', 'validate', 'resetForm'].forEach(ele => {
+        ['clearValidate', 'validate', 'resetForm', 'validateField'].forEach(ele => {
           this.crud[ele] = this.$refs.tableForm[ele]
         })
       })
