@@ -5,7 +5,7 @@
                  :disabled="disabled"
                  :indeterminate="isIndeterminate"
                  v-model="checkAll"
-                 @change="handleCheckAll">全选</el-checkbox>
+                 @change="handleCheckAll">{{t('check.checkAll')}}</el-checkbox>
     <el-checkbox-group v-model="text"
                        @change="handleCheckChange"
                        :disabled="disabled"
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import locale from "core/locale";
 import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
@@ -38,7 +39,7 @@ export default create({
       default: false
     }
   },
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   data () {
     return {
       checkAll: false,

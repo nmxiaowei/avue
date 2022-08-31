@@ -8,6 +8,9 @@ export default {
     select: 'Please select',
     input: 'Please input'
   },
+  check: {
+    checkAll: 'checkAll'
+  },
   upload: {
     upload: 'upload',
     tip: 'Drag files here，/'
