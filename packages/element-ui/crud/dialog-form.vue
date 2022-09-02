@@ -18,8 +18,7 @@
                :show-close="crud.tableOption.dialogCloseBtn"
                :visible.sync="boxVisible"
                v-bind="params"
-               :before-close="hide"
-               @opened="handleOpened">
+               :before-close="hide">
       <div slot="title"
            :class="b('dialog__header')">
         <span class="el-dialog__title">{{dialogTitle}}</span>
@@ -185,11 +184,9 @@ export default create({
     getSlotName (item) {
       return item.replace('Form', '')
     },
-    handleOpened () {
-      this.$nextTick(() => {
-        ['clearValidate', 'validate', 'resetForm', 'validateField'].forEach(ele => {
-          this.crud[ele] = this.$refs.tableForm[ele]
-        })
+    initFun () {
+      ['clearValidate', 'validate', 'resetForm', 'validateField'].forEach(ele => {
+        this.crud[ele] = this.$refs.tableForm[ele]
       })
     },
     handleChange () {
@@ -290,6 +287,9 @@ export default create({
       const callback = () => {
         this.fullscreen = this.crud.tableOption.dialogFullscreen
         this.boxVisible = true;
+        this.$nextTick(() => {
+          this.initFun()
+        })
       };
       if (typeof this.crud.beforeOpen === "function") {
         this.crud.beforeOpen(callback, this.boxType);

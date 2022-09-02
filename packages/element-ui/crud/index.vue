@@ -242,6 +242,9 @@ export default create({
     this.getTableHeight();
   },
   computed: {
+    isHeightAuto () {
+      return this.tableOption.height == 'auto'
+    },
     isSortable () {
       return this.tableOption.sortable;
     },
@@ -444,7 +447,7 @@ export default create({
       } else {
         this.tableHeight = this.tableOption.height;
       }
-      this.refreshTable()
+      this.doLayout()
     },
     doLayout () {
       this.$refs.table.doLayout()
