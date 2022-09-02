@@ -454,7 +454,6 @@ export default create({
     },
     refreshTable (callback) {
       this.reload = Math.random()
-      this.tableSelect = []
       this.$nextTick(() => {
         callback && callback()
       })

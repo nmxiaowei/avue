@@ -323,11 +323,13 @@ export default create({
     },
     show (data) {
       this.loading = false;
-      this.handleSuccess(data || this.res);
+      this.res = data || this.res
+      this.handleSuccess(this.res);
     },
     hide (msg) {
       this.loading = false;
-      this.handleError(msg);
+      if (msg) this.handleError(msg);
+
     },
     handleFileChange (file, fileList) {
       fileList.splice(fileList.length - 1, 1);
@@ -338,9 +340,8 @@ export default create({
         return
       }
       this.loading = true;
-      let file = config.file;
-      const fileSize = file.size / 1024;
       this.file = config.file;
+      const fileSize = this.file.size / 1024;
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
@@ -353,11 +354,9 @@ export default create({
       const done = () => {
         const callback = (newFile) => {
           let url = this.action;
-          for (let o in this.data) {
-            param.append(o, this.data[o]);
-          }
-          const uploadfile = newFile || file;
-          param.append(this.fileName, uploadfile);
+          this.file = newFile || this.file
+          for (let o in this.data) param.append(o, this.data[o]);
+          param.append(this.fileName, this.file);
           //七牛云oss存储
           if (this.isQiniuOss) {
             if (!window.CryptoJS) {
@@ -381,6 +380,7 @@ export default create({
             oss_config = this.$AVUE.ali;
             client = getClient(oss_config);
           }
+
           (() => {
             if (this.isAliOss) {
               return client.put(uploadfile.name, uploadfile, {
@@ -389,52 +389,47 @@ export default create({
             } else {
               return this.$axios.post(url, param, { headers });
             }
-          })()
-            .then(res => {
-              this.res = {};
-              if (this.isQiniuOss) {
-                res.data.key = oss_config.url + res.data.key;
-              }
-
-              if (this.isAliOss) {
-                this.res = getAsVal(res, this.resKey);
-              } else {
-                this.res = getAsVal(res.data, this.resKey);
-              }
-
-              if (typeof this.uploadAfter === "function")
-                this.uploadAfter(
-                  this.res,
-                  this.show,
-                  () => {
-                    this.loading = false;
-                  },
-                  this.column
-                );
-              else this.show(this.res);
-            })
-            .catch(error => {
-              if (typeof this.uploadAfter === "function")
-                this.uploadAfter(error, this.hide, () => {
-                  this.loading = false;
-                }, this.column);
-              else this.hide(error);
-            });
+          })().then(res => {
+            this.res = {};
+            if (this.isQiniuOss) {
+              res.data.key = oss_config.url + res.data.key;
+            }
+            this.res = getAsVal(this.isAliOss ? res : res.data, this.resKey);
+            if (typeof this.uploadAfter === "function") {
+              this.uploadAfter(this.res, this.show, this.hide, this.column);
+            } else {
+              this.show();
+            }
+          }).catch(error => {
+            this.hide(error);
+          });
         };
-        if (typeof this.uploadBefore === "function")
-          this.uploadBefore(this.file, callback, () => {
-            this.loading = false;
-          }, this.column);
-        else callback();
+        if (typeof this.uploadBefore === "function") {
+          this.uploadBefore(this.file, callback, this.hide, this.column);
+        } else {
+          callback();
+        }
       };
+      //处理水印图片
+      const canvasDone = () => {
+        if (!this.validatenull(this.canvasOption)) {
+          detailImg(this.file, this.canvasOption, file => {
+            this.file = file;
+            done();
+          });
+        } else {
+          done()
+        }
+      }
+      //处理图片剪裁
       if (!this.validatenull(this.cropperOption)) {
         fileToBase64(this.file, (res) => {
           let option = Object.assign(this.cropperOption, {
             img: res,
             type: 'file',
             callback: res => {
-              file = res;
-              done();
+              this.file = res;
+              canvasDone()
             },
             cancel: () => {
               this.loading = false
@@ -442,13 +437,8 @@ export default create({
           })
           this.$ImageCropper(option)
         })
-      } else if (!this.validatenull(this.canvasOption)) {
-        detailImg(file, this.canvasOption, res => {
-          file = res;
-          done();
-        });
       } else {
-        done();
+        canvasDone()
       }
     },
     handleExceed (files, fileList) {
