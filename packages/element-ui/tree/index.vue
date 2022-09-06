@@ -72,17 +72,19 @@
       <slot name="menu"
             :node="node"></slot>
     </div>
-    <el-dialog :title="node[labelKey] || title"
-               v-model="box"
-               :custom-class="['avue-dialog',b('dialog')]"
-               append-to-body
-               @close="hide"
-               :width="validData(option.dialogWidth,'50%')">
-      <avue-form v-model="form"
-                 :option="formOption"
-                 ref="form"
-                 @submit="handleSubmit"></avue-form>
-    </el-dialog>
+    <div v-if="box">
+      <el-dialog :title="node[labelKey] || title"
+                 v-model="box"
+                 :custom-class="['avue-dialog',b('dialog')]"
+                 :append-to-body="$AVUE.appendToBody"
+                 @close="hide"
+                 :width="validData(option.dialogWidth,'50%')">
+        <avue-form v-model="form"
+                   :option="formOption"
+                   ref="form"
+                   @submit="handleSubmit"></avue-form>
+      </el-dialog>
+    </div>
 
   </div>
 </template>

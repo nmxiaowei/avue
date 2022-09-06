@@ -131,56 +131,61 @@
       </div>
       <slot></slot>
     </div>
-    <el-dialog :title="upload.title"
-               append-to-body
-               v-model="upload.box"
-               width="30%">
-      <el-form ref="form"
-               :model="upload">
-        <el-form-item prop="src"
-                      :rules="[
+    <div v-if="upload.box">
+      <el-dialog :title="upload.title"
+                 :append-to-body="$AVUE.appendToBody"
+                 v-model="upload.box"
+                 width="30%">
+        <el-form ref="form"
+                 :model="upload">
+          <el-form-item prop="src"
+                        :rules="[
       { required: true, message: '地址不能为空'},
     ]">
-          <el-input size="small"
-                    style="margin-bottom:10px"
-                    :rows="4"
-                    show-word-limit
-                    maxlength="100"
-                    placeholder="请输入地址"
-                    v-model="upload.src"
-                    type="textarea"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="upload.box=false"
-                     size="small">取 消</el-button>
-          <el-button type="primary"
-                     @click="uploadSubmit"
-                     size="small">确 定</el-button>
-        </span>
-      </template>
+            <el-input size="small"
+                      style="margin-bottom:10px"
+                      :rows="4"
+                      show-word-limit
+                      maxlength="100"
+                      placeholder="请输入地址"
+                      v-model="upload.src"
+                      type="textarea"></el-input>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="upload.box=false"
+                       size="small">取 消</el-button>
+            <el-button type="primary"
+                       @click="uploadSubmit"
+                       size="small">确 定</el-button>
+          </span>
+        </template>
 
-    </el-dialog>
-    <el-dialog v-model="show"
-               width="40%"
-               append-to-body
-               :before-close="handleClose"
-               custom-class="web__dialog">
-      <img :src="imgSrc"
-           v-if="imgSrc"
-           style="width:100%;object-fit: cover;">
-      <video :src="videoSrc"
-             v-if="videoSrc"
-             style="width:100%;object-fit: cover;"
-             controls="controls">
-      </video>
-      <audio :src="audioSrc"
-             v-if="audioSrc"
-             style="width:100%;object-fit: cover;"
-             controls="controls">
-      </audio>
-    </el-dialog>
+      </el-dialog>
+    </div>
+    <div v-if="show">
+      <el-dialog v-model="show"
+                 width="40%"
+                 :append-to-body="$AVUE.appendToBody"
+                 :before-close="handleClose"
+                 custom-class="web__dialog">
+        <img :src="imgSrc"
+             v-if="imgSrc"
+             style="width:100%;object-fit: cover;">
+        <video :src="videoSrc"
+               v-if="videoSrc"
+               style="width:100%;object-fit: cover;"
+               controls="controls">
+        </video>
+        <audio :src="audioSrc"
+               v-if="audioSrc"
+               style="width:100%;object-fit: cover;"
+               controls="controls">
+        </audio>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 

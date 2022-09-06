@@ -10,32 +10,35 @@
               @click="handleClick"
               :disabled="disabled">
     </el-input>
-    <el-dialog custom-class="avue-dialog avue-dialog--none"
-               :width="dialogWidth"
-               append-to-body
-               :title="placeholder"
-               v-model="box">
-      <avue-crud :class="b('crud')"
-                 ref="crud"
-                 v-if="box"
-                 :option="option"
-                 :data="data"
-                 :table-loading="loading"
-                 @on-load="onList"
-                 @search-change="handleSearchChange"
-                 @search-reset="handleSearchChange"
-                 @current-row-change="handleCurrentChange"
-                 v-model:page="page"></avue-crud>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary"
-                     :size="size"
-                     icon="el-icon-check"
-                     @click="setVal">确 定</el-button>
-        </span>
-      </template>
+    <div v-if="box">
+      <el-dialog custom-class="avue-dialog avue-dialog--none"
+                 :width="dialogWidth"
+                 :append-to-body="$AVUE.appendToBody"
+                 :title="placeholder"
+                 v-model="box">
+        <avue-crud :class="b('crud')"
+                   ref="crud"
+                   v-if="box"
+                   :option="option"
+                   :data="data"
+                   :table-loading="loading"
+                   @on-load="onList"
+                   @search-change="handleSearchChange"
+                   @search-reset="handleSearchChange"
+                   @current-row-change="handleCurrentChange"
+                   v-model:page="page"></avue-crud>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button type="primary"
+                       :size="size"
+                       icon="el-icon-check"
+                       @click="setVal">确 定</el-button>
+          </span>
+        </template>
 
-    </el-dialog>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 

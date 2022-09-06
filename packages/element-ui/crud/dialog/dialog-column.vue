@@ -17,10 +17,10 @@
                        key="label"
                        :label="t('crud.column.name')">
       </el-table-column>
-      <template v-for="(item,index) in defaultColumn">
+      <template v-for="(item,index) in defaultColumn"
+                :key="item.prop">
         <el-table-column :label="item.label"
                          :prop="item.prop"
-                         :key="item.prop"
                          align="center"
                          header-align="center">
           <template #="{row}">

@@ -144,9 +144,8 @@ export default {
       return params
     },
     enterChange () {
-      let enter = this.column.enter;
-      if (!this.validatenull(enter)) {
-        if (typeof enter === 'function') this.column.enter(this.text, this.column)
+      if (typeof this.column.enter === 'function') {
+        this.column.enter({ value: this.text, column: this.column })
       } else if (this.enter) {
         this.$emit('enter')
       }

@@ -18,25 +18,28 @@
 
       </template>
     </el-input>
-    <el-dialog custom-class="avue-dialog avue-dialog--none"
-               :title="placeholder"
-               append-to-body
-               v-model="box"
-               :width="dialogWidth">
-      <avue-tabs :option="option"
-                 @change="handleTabs"></avue-tabs>
-      <div :class="b('list')">
-        <div :class="b('item')"
-             v-for="(item,index) in list"
-             @click="handleSubmit(item.value)"
-             :key="index">
-          <icon-temp :text="item.value"
-                     :size="item.size"
-                     :color="item.color"></icon-temp>
-          <p>{{item.label || item.value}}</p>
-        </div>　
-      </div>
-    </el-dialog>
+    <div v-if="box">
+      <el-dialog custom-class="avue-dialog avue-dialog--none"
+                 :title="placeholder"
+                 :append-to-body="$AVUE.appendToBody"
+                 v-model="box"
+                 :width="dialogWidth">
+        <avue-tabs :option="option"
+                   @change="handleTabs"></avue-tabs>
+        <div :class="b('list')">
+          <div :class="b('item')"
+               v-for="(item,index) in list"
+               @click="handleSubmit(item.value)"
+               :key="index">
+            <icon-temp :text="item.value"
+                       :size="item.size"
+                       :color="item.color"></icon-temp>
+            <p>{{item.label || item.value}}</p>
+          </div>　
+        </div>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 
@@ -72,7 +75,7 @@ export default create({
   computed: {
     list () {
       let list = (this.tabs.list || []).map(ele => {
-        if (!ele.value) {
+        if (!ele.value && !ele.label) {
           return {
             value: ele
           }

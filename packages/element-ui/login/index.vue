@@ -3,6 +3,7 @@
        :style="{width:setPx(width)}">
     <el-form :model="form"
              ref="form"
+             :size="$AVUE.size"
              label-suffix=":"
              :label-width="setPx(labelWidth)">
       <el-form-item :label="username.label || '用户名'"
@@ -14,7 +15,6 @@
                     :disabled="username.tip===undefined"
                     placement="top-start">
           <el-input v-model="form.username"
-                    size="small"
                     :prefix-icon="username.prefixIcon || 'el-icon-user'"
                     :placeholder="username.placeholder || '请输入用户名'"
                     :autocomplete="username.autocomplete"></el-input>
@@ -29,7 +29,6 @@
                     :disabled="password.tip===undefined"
                     placement="top-start">
           <el-input type="password"
-                    size="small"
                     :prefix-icon="password.prefixIcon || 'el-icon-unlock'"
                     :placeholder="password.placeholder || '请输入密码'"
                     show-password
@@ -46,7 +45,6 @@
                     :disabled="code.tip===undefined"
                     placement="top-start">
           <el-input v-model="form.code"
-                    size="small"
                     :prefix-icon="code.prefixIcon || 'el-icon-c-scale-to-original'"
                     :placeholder="code.placeholder || '请输入验证码'"
                     :autocomplete="code.autocomplete">

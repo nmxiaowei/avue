@@ -9,13 +9,15 @@
                :size="size"
                :type="type"
                @click="handleViews">查 看</el-button>
-    <el-dialog v-model="box"
-               width="60%"
-               :custom-class="{'avue-img--fullscreen':fullscreen}"
-               :fullscreen="fullscreen"
-               append-to-body>
-      <avue-carousel :option="option"></avue-carousel>
-    </el-dialog>
+    <div v-if="box">
+      <el-dialog v-model="box"
+                 width="60%"
+                 :custom-class="{'avue-img--fullscreen':fullscreen}"
+                 :fullscreen="fullscreen"
+                 :append-to-body="$AVUE.appendToBody">
+        <avue-carousel :option="option"></avue-carousel>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

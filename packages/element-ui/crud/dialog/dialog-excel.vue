@@ -1,22 +1,23 @@
 <template>
-  <el-dialog v-if="box"
-             :title="t('crud.excelBtn')"
-             lock-scroll
-             append-to-body
-             :custom-class="['avue-dialog']"
-             v-model="box"
-             :width="crud.isMobile?'100%':'30%'">
-    <avue-form v-model="form"
-               :option="option"></avue-form>
-    <template #footer
-              class="dialog-footer">
-      <el-button type="primary"
-                 :size="crud.isMediumSize"
-                 @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
-      <el-button @click="box = false"
-                 :size="crud.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
-    </template>
-  </el-dialog>
+  <div v-if="box">
+    <el-dialog :title="t('crud.excelBtn')"
+               lock-scroll
+               :append-to-body="$AVUE.appendToBody"
+               :custom-class="['avue-dialog']"
+               v-model="box"
+               :width="crud.isMobile?'100%':'30%'">
+      <avue-form v-model="form"
+                 :option="option"></avue-form>
+      <template #footer
+                class="dialog-footer">
+        <el-button type="primary"
+                   :size="crud.isMediumSize"
+                   @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
+        <el-button @click="box = false"
+                   :size="crud.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
