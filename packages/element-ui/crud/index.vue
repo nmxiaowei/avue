@@ -240,6 +240,7 @@ export default create({
   mounted () {
     this.dataInit();
     this.getTableHeight();
+    this.refreshTable()
   },
   computed: {
     isHeightAuto () {
@@ -447,7 +448,6 @@ export default create({
       } else {
         this.tableHeight = this.tableOption.height;
       }
-      this.doLayout()
     },
     doLayout () {
       this.$refs.table.doLayout()
