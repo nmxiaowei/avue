@@ -219,6 +219,11 @@ $space-width: 15px;
     }
   }
   &__dialog {
+    .el-drawer__header{
+      .avue-crud__dialog__menu{
+        padding-right: 0;
+      }
+    }
     &__header{
       display: flex;
       align-items: center;
@@ -234,8 +239,12 @@ $space-width: 15px;
         }
       }
     }
-    .el-dialog__body{
+    .el-dialog__body,.el-drawer__body{
       padding: 20px 20px 5px 10px;
+    }
+    .el-drawer__close-btn{
+      margin-top: 2px;
+      font-size: 18px;
     }
     .el-scrollbar__wrap{
       overflow-x: hidden;
