@@ -1,5 +1,5 @@
 {
-  "name": "@smallwei/avue",
+  "name": "@xiaoyi510/avue",
   "version": "3.1.2",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
@@ -19,14 +19,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://gitee.com/smallweigit/avue.git"
+    "url": "git+https://gitee.com/baozer/avue.git"
   },
-  "author": "smallwei",
+  "author": "baozer  (source:smallwei)",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitee.com/smallweigit/avue/issues"
+    "url": "https://gitee.com/baozer/avue/issues"
   },
-  "homepage": "https://gitee.com/smallweigit/avue/blob/master/README.md",
+  "homepage": "https://gitee.com/baozer/avue/blob/master/README.md",
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.11.4",
