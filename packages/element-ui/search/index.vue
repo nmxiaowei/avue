@@ -9,12 +9,12 @@
       <div :class="b('content')">
         <slot :name="column.prop"
               :dic="DIC[column.prop]"
-              v-if="$slots[column.prop]"></slot>
+              v-if="mainSlot.includes(column.prop)"></slot>
         <span v-else
               :class="[b('tags'),{'avue-search__tags--active':getActive(item,column)}]"
               @click="handleClick(column,item)"
               v-for="item in DIC[column.prop]"
-              :key="getKey(item,column.props,'value')">{{getKey(item,column.props,'label')}}</span>
+              :key="getKey(item,column.props,valueKey)">{{getKey(item,column.props,labelKey)}}</span>
       </div>
     </el-col>
   </el-row>
@@ -22,14 +22,45 @@
 
 <script>
 import create from "core/create";
+import { DIC_PROPS } from 'global/variable'
 import init from "../../core/common/init.js";
 export default create({
   name: "search",
   mixins: [init()],
   props: {
-    modelValue: {}
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   computed: {
+    form: {
+      get () {
+        return this.modelValue
+      },
+      set (val) {
+        this.$emit('update:modelValue', val)
+        this.$emit("change", val);
+      }
+    },
+    props () {
+      return this.parentOption.props || {}
+    },
+    labelKey () {
+      return DIC_PROPS.label
+    },
+    valueKey () {
+      return DIC_PROPS.value
+    },
+    mainSlot () {
+      let result = [];
+      this.propOption.forEach(item => {
+        if (this.$slots[item.prop]) result.push(item.prop)
+      })
+      return result
+    },
     isCard () {
       return this.parentOption.card;
     },
@@ -43,48 +74,23 @@ export default create({
       return this.parentOption.column;
     }
   },
-  data () {
-    return {
-      form: {}
-    };
-  },
-  watch: {
-    modelValue: {
-      handler () {
-        this.setVal();
-      },
-      deep: true
-    }
-  },
-  created () {
-    this.dataformat();
-    this.setVal();
+  mounted () {
+    this.dataFormat();
   },
   methods: {
-    setVal () {
-      Object.keys(this.modelValue).forEach(ele => {
-        this.form[ele] = this.modelValue[ele]
-      });
-    },
     getKey (item = {}, props = {}, key) {
-      return item[
-        props[key] || (this.parentOption.props || {})[key] || key
-      ];
+      return item[props[key] || this.props[key] || key];
     },
-    dataformat () {
+    dataFormat () {
       this.columnOption.forEach(ele => {
         const prop = ele.prop;
         if (this.validatenull(this.form[prop])) {
-          if (ele.multiple === false) {
-            this.form[prop] = ''
-          } else {
-            this.form[prop] = []
-          }
+          this.form[prop] = ele.multiple === false ? '' : []
         }
       });
     },
     getActive (item, column) {
-      const value = this.getKey(item, column.props, "value");
+      const value = this.getKey(item, column.props, this.valueKey);
       if (column.multiple === false) {
         return this.form[column.prop] === value;
       } else {
@@ -92,7 +98,7 @@ export default create({
       }
     },
     handleClick (column, item) {
-      const value = this.getKey(item, column.props, "value");
+      const value = this.getKey(item, column.props, this.valueKey);
       //单选
       if (column.multiple === false) {
         this.form[column.prop] = value;
@@ -105,8 +111,6 @@ export default create({
           this.form[column.prop].splice(index, 1);
         }
       }
-      this.$emit("change", this.form);
-      this.$emit('update:modelValue', this.form);
     }
   }
 });

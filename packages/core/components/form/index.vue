@@ -100,37 +100,21 @@ export default {
       }
     }
   },
-  data () {
-    return {
-      first: false,
-      text: undefined,
-    }
-  },
   computed: {
     params () {
       return this.column.params || {}
     },
     event () {
       return this.column.event || {}
-    }
-  },
-  watch: {
-    text: {
-      handler (val) {
-        if (this.first || !this.validatenull(val)) {
-          this.first = true;
-          this.$emit('update:modelValue', val);
-          this.$emit('change', val)
-        } else {
-          this.first = true;
-        }
-      }
     },
-    modelValue: {
-      handler (val) {
-        this.text = val;
+    text: {
+      get () {
+        return this.modelValue
       },
-      immediate: true
+      set (val) {
+        this.$emit('update:modelValue', val);
+        this.$emit('change', val)
+      }
     }
   },
   methods: {

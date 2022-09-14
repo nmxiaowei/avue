@@ -203,10 +203,9 @@ export default create({
       tableOption: {},
       itemSpanDefault: 12,
       form: {},
-      formFirst: false,
+      formCreate: false,
       formList: [],
       formBind: {},
-      formDefault: {},
     };
   },
   provide () {
@@ -215,22 +214,32 @@ export default create({
     };
   },
   watch: {
+    modelValue: {
+      handler (val) {
+        if (this.formCreate) {
+          this.setForm()
+        }
+      },
+      deep: true
+    },
+    form: {
+      handler (val) {
+        if (this.formCreate) {
+          this.setLabel()
+          this.setVal()
+        }
+      },
+      deep: true
+    },
     tabsActive: {
       handler (val) {
         this.activeName = this.tabsActive
       },
       immediate: true
     },
-    modelValue: {
-      handler (val) {
-        this.setForm(val);
-      },
-      deep: true,
-      immediate: true
-    },
     DIC: {
       handler () {
-        this.forEachLabel()
+        this.setLabel()
       },
       deep: true,
       immediate: true
@@ -381,10 +390,9 @@ export default create({
     }
   },
   mounted () {
-    this.dataFormat()
-    this.$nextTick(() => {
-      this.setControl()
-    });
+    setTimeout(() => {
+      this.dataFormat()
+    })
   },
   methods: {
     getComponent,
@@ -402,7 +410,19 @@ export default create({
         return true;
       }
     },
-    forEachLabel () {
+    setForm () {
+      Object.keys(this.modelValue).forEach(ele => {
+        this.form[ele] = this.modelValue[ele]
+      });
+    },
+    setVal () {
+      this.$emit('update:modelValue', this.form)
+      this.$emit('change', this.form)
+    },
+    setLabel () {
+      if (this.tableOption.filterNull === true) {
+        this.form = filterParams(this.form, [''], false)
+      }
       if (this.tableOption.filterDic == true) {
         this.form = filterParams(this.form, ['$'], false)
         return
@@ -410,10 +430,9 @@ export default create({
       this.propOption.forEach(column => {
         let result;
         let DIC = this.DIC[column.prop]
-        if (!this.validatenull(DIC)) {
-          result = detail(this.form, column, this.tableOption, DIC);
-          this.form["$" + column.prop] = result;
-        }
+        if (this.validatenull(DIC)) return
+        result = detail(this.form, column, this.tableOption, DIC);
+        this.form[`$${column.prop}`] = result;
       });
     },
     handleGroupClick (activeNames) {
@@ -444,11 +463,22 @@ export default create({
       return this.$refs[prop][0];
     },
     dataFormat () {
-      this.setForm(Object.assign(formInitVal(this.propOption), this.form))
-    },
-    setVal () {
-      this.$emit('update:modelValue', this.form);
-      this.$emit('change', this.form);
+      let formDefault = formInitVal(this.propOption);
+      let form = {}
+      Object.entries(Object.assign(formDefault, this.modelValue)).forEach(ele => {
+        let key = ele[0], value = ele[1]
+        if (this.validatenull(this.modelValue[key])) {
+          form[key] = value
+        } else {
+          form[key] = this.modelValue[key]
+        }
+      })
+      this.form = form;
+      this.setControl()
+      this.$emit('update:modelValue', this.form)
+      setTimeout(() => {
+        this.formCreate = true
+      })
     },
     setControl () {
       this.propOption.forEach(column => {
@@ -483,16 +513,6 @@ export default create({
           this.formBind[prop] = true;
         }
       })
-    },
-    //表单赋值
-    setForm (value) {
-      Object.keys(value).forEach(ele => {
-        this.form[ele] = value[ele]
-      });
-      this.forEachLabel();
-      if (this.tableOption.filterNull === true) {
-        this.form = filterParams(this.form, [''], false)
-      }
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -545,10 +565,7 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      this.setVal()
-      if (column.cascader) {
-        this.handleChange(option, column)
-      }
+      if (column.cascader) this.handleChange(option, column)
     },
     handleMock () {
       if (!this.isMock) return

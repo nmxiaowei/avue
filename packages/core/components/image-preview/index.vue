@@ -54,8 +54,8 @@
                      ref="item"
                      @mousedown="move"
                      controls="controls"
-                     :is="getIsVideo(item)"
-                     v-if="getIsVideo(item)"
+                     :is="isMediaType(item)"
+                     v-if="isMediaType(item)"
                      ondragstart="return false"></component>
         </el-carousel-item>
       </el-carousel>
@@ -84,8 +84,7 @@
   </div>
 </template>
 <script>
-import { setPx } from 'utils/util';
-import { typeList } from 'global/variable'
+import { setPx, isMediaType } from 'utils/util';
 import create from "core/create";
 import { defineAsyncComponent } from 'vue'
 import { Document, ArrowRight, ArrowLeft, Close, ZoomOut, ZoomIn, RefreshLeft, RefreshRight, Printer } from '@element-plus/icons-vue'
@@ -164,15 +163,8 @@ export default create({
       this.left = 0;
       this.top = 0;
     },
-    getIsVideo (item) {
-      let url = item.url
-      let type = item.type
-      if (typeList.video.test(url) || type == 'video') {
-        return 'video'
-      } else if (typeList.img.test(url) || type == 'img') {
-        return 'img'
-      }
-      return
+    isMediaType (item) {
+      return isMediaType(item.url, item.type)
     },
     subScale () {
       if (this.scale != 0.2) {

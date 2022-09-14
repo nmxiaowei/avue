@@ -14,11 +14,12 @@
         <el-tooltip placement="bottom"
                     :disabled="(!isImg && !isUrl) || validatenull(item)">
           <template #content>
-            <el-image style="width: 150px"
-                      :src="item"
-                      @click="openImg(index)"
-                      fit="cover"
-                      v-if="isImg"></el-image>
+            <component style="width: 200px"
+                       :src="item"
+                       @click="openImg(index)"
+                       v-if="isImg"
+                       controls="controls"
+                       :is="isMediaType(item)"></component>
             <el-link type="primary"
                      :href="item"
                      v-else-if="isUrl"
@@ -52,6 +53,7 @@
 import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
+import { isMediaType } from "utils/util";
 export default create({
   name: 'array',
   mixins: [props(), event()],
@@ -77,16 +79,15 @@ export default create({
     },
   },
   props: {
+    fileType: String,
     alone: Boolean,
     type: String,
-    size: String,
-    placeholder: String,
-    readonly: Boolean,
-    disabled: Boolean,
-    modelValue: [Array, String],
     limit: Number
   },
   methods: {
+    isMediaType (item) {
+      return isMediaType(item, this.fileType)
+    },
     add (index) {
       this.text.splice(index + 1, 0, '');
     },
@@ -95,7 +96,7 @@ export default create({
     },
     openImg (index) {
       const list = this.text.map(ele => {
-        return { thumbUrl: ele, url: ele }
+        return { thumbUrl: ele, url: ele, type: this.fileType }
       })
       this.$ImagePreview(list, index);
     },

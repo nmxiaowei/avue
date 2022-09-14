@@ -81,6 +81,7 @@ const TIP_TEXT = '{{time}}s后重获取'
 import create from "core/create";
 export default create({
   name: 'login',
+  emits: ['update:modelValue'],
   props: {
     modelValue: {
       type: Object,
@@ -96,21 +97,6 @@ export default create({
       default: () => {
         return {};
       }
-    }
-  },
-  watch: {
-    modelValue: {
-      handler () {
-        this.form = this.modelValue
-      },
-      deep: true
-    },
-    form: {
-      handler () {
-        this.$emit('input', this.form)
-      },
-      deep: true,
-      immediate: true
     }
   },
   computed: {
@@ -149,15 +135,27 @@ export default create({
     }
 
   },
+  watch: {
+    modelValue: {
+      handler () {
+        this.form = this.modelValue
+      },
+      deep: true
+    },
+    form: {
+      handler () {
+        this.$emit('update:modelValue', this.form)
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   data () {
     return {
       text: INIT_TEXT,
       nowtime: '',
       check: {},
-      flag: false,
-      form: {
-
-      }
+      form: {}
     }
   },
   methods: {

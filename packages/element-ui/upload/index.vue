@@ -31,7 +31,8 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     :is="getIsVideo(imgUrl)"
+                     controls="controls"
+                     :is="isMediaType(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <el-icon :class="b('icon')"
@@ -132,12 +133,11 @@ import create from "core/create";
 import locale from "core/locale";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
-import { getAsVal } from "utils/util";
+import { getAsVal, isMediaType } from "utils/util";
 import { detailImg } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
-import { typeList } from 'global/variable'
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -150,7 +150,6 @@ export default create({
       reload: Math.random(),
       res: '',
       loading: false,
-      text: [],
       file: {}
     }
   },
@@ -264,7 +263,7 @@ export default create({
           list.push({
             uid: index + '',
             status: 'done',
-            type: this.getIsVideo(url),
+            type: this.isMediaType(url),
             name: this.isMultiple ? name : ele[this.labelKey],
             url: url
           });
@@ -279,13 +278,8 @@ export default create({
     }
   },
   methods: {
-    getIsVideo (url) {
-      if (typeList.video.test(url) || this.fileType == 'video') {
-        return 'video'
-      } else if (typeList.img.test(url) || this.fileType == 'img') {
-        return 'img'
-      }
-      return this.listType ? 'img' : ''
+    isMediaType (url) {
+      return isMediaType(url, this.fileType)
     },
     setSort () {
       if (!window.Sortable) {

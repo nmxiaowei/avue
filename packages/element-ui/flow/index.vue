@@ -18,8 +18,9 @@
                   :node="node">
             </slot>
           </template>
-          <slot :node="node">
-          </slot>
+          <template #="{node}">
+            <slot :node="node"></slot>
+          </template>
         </flow-node>
       </template>
 
@@ -88,8 +89,11 @@ export default create({
     }
   },
   props: {
-    valumodelValuee: {
+    modelValue: {
       type: String,
+      default: () => {
+        return {}
+      }
     },
     option: {
       type: Object
@@ -103,6 +107,13 @@ export default create({
       default: '100%'
     }
   },
+  created () {
+    this.id = randomId();
+    this.jsplumbSetting.Container = this.id;
+  },
+  mounted () {
+    this.init();
+  },
   watch: {
     modelValue: {
       handler (val) {
@@ -113,13 +124,6 @@ export default create({
     active (val) {
       this.$emit('update:modelValue', val)
     }
-  },
-  created () {
-    this.id = randomId();
-    this.jsplumbSetting.Container = this.id;
-  },
-  mounted () {
-    this.init();
   },
   computed: {
     styleName () {

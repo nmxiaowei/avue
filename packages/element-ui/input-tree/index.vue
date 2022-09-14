@@ -5,6 +5,7 @@
                   :lazy="lazy"
                   :load="handleLoad"
                   @check="checkChange"
+                  :render-after-expand="false"
                   :loading-text="loadingText"
                   :collapse-tags="tags"
                   :clearable="clearableVal"
@@ -21,6 +22,8 @@
                   :icon-class="iconClass"
                   @focus="handleFocus"
                   @blur="handleBlur"
+                  :default-checked-keys="keysList"
+                  :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:keysList"
                   :default-expand-all="defaultExpandAll"
                   @node-click.self="handleNodeClick"
                   :props="treeProps"
@@ -86,7 +89,7 @@ export default create({
     },
     filterable: {
       type: Boolean,
-      default: true
+      default: false
     },
     checkStrictly: {
       type: Boolean,
@@ -103,6 +106,7 @@ export default create({
     iconClass: {
       type: String,
     },
+    defaultExpandedKeys: Array,
     defaultExpandAll: {
       type: Boolean,
       default: false
@@ -127,6 +131,9 @@ export default create({
     },
   },
   computed: {
+    keysList () {
+      return this.multiple ? this.text : [this.text]
+    },
     treeProps () {
       return Object.assign(this.props, {
         isLeaf: this.leafKey

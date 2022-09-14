@@ -19,8 +19,9 @@
 
 <body>
   <div id="app">
+    {{form}}
     <h2>普通用户登录</h2>
-    <avue-login :option="option" @submit="submit">
+    <avue-login :option="option" v-model="form" @submit="submit">
     </avue-login>
     <h2>图片验证码登录</h2>
     <avue-login :option="option1" @refresh="refresh" :codesrc="codesrc" @submit="submit">
@@ -37,6 +38,7 @@
   var app = Vue.createApp({
     data() {
       return {
+        form: {},
         codesrc: '',
         option: {
           width: 400,

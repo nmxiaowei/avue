@@ -1,8 +1,10 @@
 <template>
-  <el-select ref="main"
+  <component :is="componentName"
+             ref="main"
              :class="b()"
              v-model="text"
              :size="size"
+             :options="netDic"
              :loading="loading"
              :loading-text="loadingText"
              :multiple="multiple"
@@ -25,57 +27,59 @@
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
              :disabled="disabled">
-    <template v-if="isGroup">
-      <el-option-group v-for="(item,index) in netDic"
-                       :key="index"
-                       :label="getLabelText(item)">
-        <el-option v-for="(citem,cindex) in item[groupsKey]"
-                   :key="cindex"
-                   :disabled="citem[disabledKey]"
-                   :label="getLabelText(citem)"
-                   :value="citem[valueKey]">
+    <template v-if="!virtualize">
+      <template v-if="isGroup">
+        <el-option-group v-for="(item,index) in netDic"
+                         :key="index"
+                         :label="getLabelText(item)">
+          <el-option v-for="(citem,cindex) in item[groupsKey]"
+                     :key="cindex"
+                     :disabled="citem[disabledKey]"
+                     :label="getLabelText(citem)"
+                     :value="citem[valueKey]">
+            <template #>
+              <slot :label="labelKey"
+                    :value="valueKey"
+                    :item="citem"
+                    v-if="$slots.default">
+              </slot>
+              <template v-else>
+                <span>{{ getLabelText(citem) }}</span>
+                <span v-if="citem[descKey]"
+                      :class="b('desc')">{{ citem[descKey] }}</span>
+              </template>
+            </template>
+          </el-option>
+        </el-option-group>
+      </template>
+      <template v-else>
+        <el-checkbox v-model="checkAll"
+                     class="b('check')"
+                     v-if="all"
+                     @change='selectAll'>全选</el-checkbox>
+        <el-option v-for="(item,index) in netDic"
+                   :key="index"
+                   :disabled="item[disabledKey]"
+                   :label="getLabelText(item) "
+                   :value="item[valueKey]">
+
           <template #>
             <slot :label="labelKey"
                   :value="valueKey"
-                  :item="citem"
+                  :item="item"
                   v-if="$slots.default">
             </slot>
             <template v-else>
-              <span>{{ getLabelText(citem) }}</span>
-              <span v-if="citem[descKey]"
-                    :class="b('desc')">{{ citem[descKey] }}</span>
+              <span>{{ getLabelText(item) }}</span>
+              <span v-if="item[descKey]"
+                    :class="b('desc')">{{ item[descKey] }}</span>
             </template>
           </template>
         </el-option>
-      </el-option-group>
-    </template>
-    <template v-else>
-      <el-checkbox v-model="checkAll"
-                   class="b('check')"
-                   v-if="all"
-                   @change='selectAll'>全选</el-checkbox>
-      <el-option v-for="(item,index) in netDic"
-                 :key="index"
-                 :disabled="item[disabledKey]"
-                 :label="getLabelText(item) "
-                 :value="item[valueKey]">
-
-        <template #>
-          <slot :label="labelKey"
-                :value="valueKey"
-                :item="item"
-                v-if="$slots.default">
-          </slot>
-          <template v-else>
-            <span>{{ getLabelText(item) }}</span>
-            <span v-if="item[descKey]"
-                  :class="b('desc')">{{ item[descKey] }}</span>
-          </template>
-        </template>
-      </el-option>
+      </template>
     </template>
 
-  </el-select>
+  </component>
 </template>
 
 <script>
@@ -97,7 +101,7 @@ export default create({
     };
   },
   props: {
-    modelValue: {},
+    virtualize: Boolean,
     loadingText: {
       type: String,
     },
@@ -150,6 +154,11 @@ export default create({
         this.netDic = val;
       },
       immediate: true
+    }
+  },
+  computed: {
+    componentName () {
+      return 'elSelect' + (this.virtualize ? 'V2' : '')
     }
   },
   mounted () {

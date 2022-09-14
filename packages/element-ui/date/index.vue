@@ -28,7 +28,6 @@
 <script>
 import create from "core/create";
 import locale from "core/locale";
-import { GetDateStr } from "utils/date.js";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 export default create({
@@ -36,7 +35,6 @@ export default create({
   mixins: [props(), event(), locale],
   data () {
     return {
-      text: "",
       menu: [],
     };
   },

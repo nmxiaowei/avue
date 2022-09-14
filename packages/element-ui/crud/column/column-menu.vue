@@ -72,7 +72,7 @@
               {{crud.menuIcon('saveBtn')}}
             </template>
           </el-button>
-          <el-button :type="menuText('danger')"
+          <el-button :type="menuText('primary')"
                      :text="isTextMenu"
                      :icon="crud.getBtnIcon('cancelBtn')"
                      :size="crud.isMediumSize"
@@ -84,7 +84,7 @@
             </template>
           </el-button>
         </template>
-        <el-button :type="menuText('success')"
+        <el-button :type="menuText('primary')"
                    :text="isTextMenu"
                    :icon="crud.getBtnIcon('viewBtn')"
                    :size="crud.isMediumSize"
@@ -120,7 +120,7 @@
             {{crud.menuIcon('copyBtn')}}
           </template>
         </el-button>
-        <el-button :type="menuText('danger')"
+        <el-button :type="menuText('primary')"
                    :text="isTextMenu"
                    :icon="crud.getBtnIcon('delBtn')"
                    :size="crud.isMediumSize"

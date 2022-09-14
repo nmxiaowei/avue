@@ -2,7 +2,6 @@
   <div :class="b()">
     <el-radio-group v-model="text"
                     :size="size"
-                    @change="handleChange"
                     @click.native="handleClick"
                     :disabled="disabled">
       <component :is="componentName"

@@ -21,7 +21,8 @@
 
 <body>
   <div id="app">
-    <avue-search :option="option" v-model="form" @change="handleChange">
+    {{form}}
+    <avue-search :option="option" @change="handleChange">
       <template #zdy="scope">
         <el-tag>自定义</el-tag>
       </template>

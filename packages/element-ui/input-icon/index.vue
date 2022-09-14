@@ -7,7 +7,6 @@
               ref="main"
               :clearable="disabled?false:clearable"
               :disabled="disabled"
-              @change="handleChange"
               @click="handleClick"
               @focus="handleShow">
       <template #append>

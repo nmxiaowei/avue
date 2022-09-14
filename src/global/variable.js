@@ -43,6 +43,7 @@ export const SELECT_LIST = DATE_LIST.concat(['select', 'checkbox', 'radio', 'cas
 export const DIC_SHOW_SPLIT = ' | ';
 export const DIC_SPLIT = ',';
 export const typeList = {
-  img: /\.(gif|jpg|jpeg|png|webp|GIF|JPG|PNG|WEBP)/,
-  video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/
+  img: /\.(gif|jpg|jpeg|png|webp|GIF|JPG|PNG)/,
+  video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/,
+  audio: /\.(mp3|wav|MP3|WAV)/,
 };
