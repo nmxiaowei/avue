@@ -92,7 +92,6 @@ export default create({
     };
   },
   props: {
-    value: {},
     loadingText: {
       type: String,
     },
@@ -140,7 +139,7 @@ export default create({
     }
   },
   watch: {
-    value (val) {
+    text (val) {
       if (!this.validatenull(val)) {
         if (this.remote && !this.created) {
           this.created = true
@@ -191,8 +190,6 @@ export default create({
         this.netDic.map((item) => {
           this.text.push(item[this.valueKey])
         })
-      } else {
-        this.text = []
       }
     },
     changeSelect (val) {

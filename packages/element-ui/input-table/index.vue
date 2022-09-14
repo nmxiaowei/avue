@@ -126,7 +126,6 @@ export default create({
     setVal () {
       this.object = this.active
       this.text = this.active[this.valueKey] || ''
-      this.handleChange(this.text)
       this.box = false
     },
     handleCurrentRowChange (val) {

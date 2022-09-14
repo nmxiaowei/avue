@@ -1,5 +1,4 @@
 import { initVal } from 'core/dataformat';
-import { DIC_SPLIT } from 'global/variable';
 export default function () {
   return {
     methods: {
@@ -40,7 +39,7 @@ export default function () {
         let result = value;
         let flag = this.isString || this.isNumber || this.stringMode || this.listType === "picture-img";
         if (flag && Array.isArray(value)) {
-          result = value.join(this.separator || DIC_SPLIT)
+          result = value.join(this.separator)
         }
         this.bindEvent('change', { value: result })
         this.$emit('input', result);

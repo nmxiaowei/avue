@@ -199,7 +199,6 @@ export default create({
       audioSrc: '',
       keys: "",
       show: false,
-      msg: '',
     }
   },
   props: {
@@ -262,28 +261,16 @@ export default create({
       }
     }
   },
-  watch: {
-    'upload.box' (val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.$refs.form.clearValidate()
-        })
+  computed: {
+    msg: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val);
+        this.$emit('change', val);
       }
     },
-    value: {
-      handler () {
-        this.msg = this.value;
-      },
-      immediate: true
-    },
-    msg: {
-      handler () {
-        this.$emit('input', this.msg);
-      },
-      immediate: true
-    }
-  },
-  computed: {
     heightStyleName () {
       return {
         height: this.setPx(this.height)

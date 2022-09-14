@@ -6,7 +6,6 @@
               ref="main"
               :clearable="clearableVal"
               :disabled="disabled"
-              @change="handleChange"
               @click.native="handleClick"
               @focus="handleShow">
       <icon-temp slot="append"

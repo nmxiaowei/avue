@@ -49,14 +49,12 @@ export default create({
   },
   watch: {
     dic () {
-      this.handleCheckChange(this.text);
+      this.handleCheckChange();
     },
     text: {
       handler (val) {
-        this.handleChange(val)
-        this.handleCheckChange(val);
-      },
-      immediate: true
+        this.handleCheckChange();
+      }
     },
   },
   created () { },
@@ -67,7 +65,8 @@ export default create({
       this.text = val ? this.dic.map(ele => ele[this.valueKey]) : [];
       this.isIndeterminate = false;
     },
-    handleCheckChange (value = []) {
+    handleCheckChange () {
+      let value = this.text;
       if (!this.all) return
       let checkedCount = value.length;
       let dicLen = this.dic.length;

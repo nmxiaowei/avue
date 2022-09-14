@@ -152,11 +152,18 @@ export default create({
       box: false,
       type: "",
       node: {},
-      obj: {},
-      form: {},
     };
   },
   computed: {
+    form: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val);
+        this.$emit('change', val)
+      }
+    },
     styleName () {
       return {
         top: this.setPx(this.client.y - 10),
@@ -240,12 +247,6 @@ export default create({
   watch: {
     filterValue (val) {
       this.$refs.tree.filter(val);
-    },
-    value (val) {
-      this.form = val;
-    },
-    form (val) {
-      this.$emit("input", val);
     }
   },
   methods: {

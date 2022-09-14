@@ -34,7 +34,6 @@ export default create({
   mixins: [props(), event(), locale],
   data () {
     return {
-      text: "",
       menu: [],
     };
   },

@@ -39,13 +39,7 @@ import { validatenull } from "utils/validate";
 export default create({
   name: "input",
   mixins: [props(), event()],
-  data () {
-    return {
-
-    };
-  },
   props: {
-    value: {},
     maxlength: "",
     minlength: "",
     showPassword: {

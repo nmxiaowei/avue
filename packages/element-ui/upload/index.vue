@@ -30,7 +30,8 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     :is="getIsVideo(imgUrl)"
+                     controls="controls"
+                     :is="isMediaType(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <i v-else
@@ -72,6 +73,7 @@
         <span v-else-if="listType==='picture-card'">
           <component class="el-upload-list__item-thumbnail"
                      :src="file.url"
+                     controls="controls"
                      :is="file.type"></component>
           <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview">
@@ -118,12 +120,11 @@ import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 import locale from "core/locale";
-import { getAsVal } from "utils/util";
+import { getAsVal, isMediaType } from "utils/util";
 import { detailImg, fileToBase64 } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
-import { typeList } from 'global/variable'
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -134,7 +135,6 @@ export default create({
     return {
       res: '',
       loading: false,
-      text: [],
       file: {},
       menu: false,
       reload: Math.random()
@@ -255,7 +255,7 @@ export default create({
           list.push({
             uid: index + '',
             status: 'done',
-            type: this.getIsVideo(url),
+            type: this.isMediaType(url),
             name: this.isMultiple ? name : ele[this.labelKey],
             url: url
           });
@@ -270,13 +270,8 @@ export default create({
     }
   },
   methods: {
-    getIsVideo (url) {
-      if (typeList.video.test(url) || this.fileType == 'video') {
-        return 'video'
-      } else if (typeList.img.test(url) || this.fileType == 'img') {
-        return 'img'
-      }
-      return this.listType ? 'img' : ''
+    isMediaType (url) {
+      return isMediaType(url, this.fileType)
     },
     setSort () {
       if (!window.Sortable) {
@@ -289,6 +284,7 @@ export default create({
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
           this.text.splice(evt.newIndex, 0, targetRow)
+
           this.reload = Math.random();
           this.$nextTick(() => this.setSort())
         }

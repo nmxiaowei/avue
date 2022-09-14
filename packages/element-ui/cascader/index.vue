@@ -67,7 +67,6 @@ export default create({
   data () {
     return {};
   },
-  watch: {},
   computed: {
     allProps () {
       return {
