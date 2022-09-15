@@ -2,8 +2,8 @@
   <div v-if="box"> 
     <el-dialog :title="t('crud.excelBtn')"
                lock-scroll
-               :modal-append-to-body="false"
-               append-to-body
+               :modal-append-to-body="$AVUE.modalAppendToBody"
+               :append-to-body="$AVUE.appendToBody"
                class="avue-dialog"
                :visible.sync="box"
                :width="crud.isMobile?'100%':'30%'">

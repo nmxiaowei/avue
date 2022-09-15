@@ -80,13 +80,14 @@
           <div class="avue-crud__img">
             <component v-for="(item,index) in getImgList(row,column)"
                        :src="item"
-                       :is="getIsVideo(item)"
+                       controls="controls"
+                       :is="isMediaType(item,column.fileType)"
                        :key="index"
-                       @click.stop="openImg(getImgList(row,column),index)"></component>
+                       @click.stop="openImg(row,column,index)"></component>
           </div>
         </span>
         <span v-else-if="'url' ===column.type">
-          <el-link v-for="(item,index) in corArray(row[column.prop],column.separator)"
+          <el-link v-for="(item,index) in corArray(row,column)"
                    type="primary"
                    :key="index"
                    :href="item"
@@ -113,8 +114,9 @@
 <script>
 let count = {}
 import { detail } from "core/detail";
-import { DIC_PROPS, DIC_SPLIT, typeList } from 'global/variable'
+import { DIC_PROPS, DIC_SPLIT, DIC_SHOW_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
+import { isMediaType } from "utils/util";
 import formTemp from 'common/components/form/index'
 import iconTemp from 'common/components/icon/index'
 export default {
@@ -141,8 +143,8 @@ export default {
     });
   },
   methods: {
-    getIsVideo (item) {
-      return typeList.video.test(item) ? 'video' : 'img'
+    isMediaType (item, fileType) {
+      return isMediaType(item, fileType)
     },
     vaildLabel (column, row, val) {
       if (column.rules && row.$cellEdit) {
@@ -212,20 +214,6 @@ export default {
         })
       })
     },
-    openImg (list, index) {
-      list = list.map(ele => {
-        return { thumbUrl: ele, url: ele }
-      })
-      this.$ImagePreview(list, index);
-    },
-    corArray (list, separator = DIC_SPLIT) {
-      if (this.validatenull(list)) {
-        return []
-      } else if (!Array.isArray(list)) {
-        return list.split(separator);
-      }
-      return list
-    },
     handleDetail (row, column) {
       let result = row[column.prop];
       let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
@@ -235,15 +223,25 @@ export default {
       }
       return result;
     },
+    corArray (row, column) {
+      const list = this.handleDetail(row, column);
+      if (Array.isArray(list)) return list
+      return list.split(DIC_SHOW_SPLIT)
+    },
+    openImg (row, column, index) {
+      let list = this.getImgList(row, column)
+      list = list.map(ele => {
+        return { thumbUrl: ele, url: ele, type: 'img' }
+      })
+      this.$ImagePreview(list, index);
+    },
     getImgList (row, column) {
-      let url = (column.propsHttp || {}).home || ''
-      let value = (column.props || {}).value || DIC_PROPS.value;
-      let result = this.handleDetail(row, column);
-      if (this.validatenull(result)) return []
-      if (column.listType == 'picture-img') return [url + result]
-      let list = this.corArray(this.deepClone(result), column.separator);
+      let url = column.propsHttp?.home || ''
+      let value = column.props?.value || DIC_PROPS.value;
+      let list = this.corArray(row, column);
+      if (column.listType == 'picture-img') return [url + list]
       list.forEach((ele, index) => {
-        list[index] = url + (typeof ele === 'object' ? ele[value] : ele);
+        ele = url + (ele[value] ? ele[value] : ele);
       })
       return list;
     },

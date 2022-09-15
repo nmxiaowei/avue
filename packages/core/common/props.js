@@ -176,42 +176,42 @@ export default function () {
       isNumber () {
         return this.dataType === 'number';
       },
-      nameKey: function () {
+      nameKey () {
         return this.propsHttp.name || this.propsHttpDefault.name;
       },
-      urlKey: function () {
+      urlKey () {
         return this.propsHttp.url || this.propsHttpDefault.url;
       },
-      resKey: function () {
+      resKey () {
         return this.propsHttp.res || this.propsHttpDefault.res;
       },
-      groupsKey: function () {
+      groupsKey () {
         return this.props.groups || this.propsDefault.groups;
       },
-      valueKey: function () {
+      valueKey () {
         return this.props.value || this.propsDefault.value;
       },
-      descKey: function () {
+      descKey () {
         return this.props.desc || this.propsDefault.desc;
       },
-      leafKey: function () {
+      leafKey () {
         return this.props.leaf || this.propsDefault.leaf;
       },
-      labelKey: function () {
+      labelKey () {
         return this.props.label || this.propsDefault.label;
       },
-      childrenKey: function () {
+      childrenKey () {
         return this.props.children || this.propsDefault.children;
       },
-      disabledKey: function () {
+      disabledKey () {
         return this.props.disabled || this.propsDefault.disabled;
       },
-      idKey: function () {
+      idKey () {
         return this.props.id || this.propsDefault.id;
       }
     },
     created () {
-      this.initVal();
+      this.initVal()
     }
   };
 }

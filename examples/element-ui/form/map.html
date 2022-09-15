@@ -35,15 +35,19 @@
     el: '#app',
     data() {
       return {
-        obj: {
-          map: '113.12209610000252,41.03928506034977, 内蒙古自治区乌兰察布市集宁区前进路街道新体大街航天小区'
-        },
+        obj: {},
         option: {
           column: [
+            {
+              label: '地图1',
+              prop: 'input',
+              value: 1
+            },
             {
               label: '地图',
               prop: 'map',
               type: 'map',
+              value: '113.12209610000252,41.03928506034977, 内蒙古自治区乌兰察布市集宁区前进路街道新体大街航天小区',
               rules: [
                 {
                   required: true,

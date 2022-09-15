@@ -66,7 +66,9 @@ export function detailImg (file, option = {}, callback) {
       cretedCanvas(width, height);
       ctx.drawImage(img, 0, 0, width, height);
       setText(width, height);
-      callback && callback(dataURLtoFile(document.getElementById('canvas').toDataURL(file.type, config.ratio), file.name));
+      const base64 = document.getElementById('canvas').toDataURL(file.type, config.ratio)
+      const result = dataURLtoFile(base64, file.name)
+      callback && callback(result);
     };
   }
   // 创建画板

@@ -2,6 +2,13 @@
   .el-tag__close{
     display: none !important;
   }
+  &__filter{
+    padding:0 10px;
+    margin:5px 0 0 0;
+  }
+  &__select{
+    padding:10px 0;
+  }
   &__desc{
     float: right; 
     color: #8492a6; 

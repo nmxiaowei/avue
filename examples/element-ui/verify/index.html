@@ -21,6 +21,7 @@
   <div id="app">
     {{obj}}
     <avue-verify ref="verify" v-model="obj"></avue-verify>
+    <el-button @click="$refs.verify.randomn()">刷新</el-button>
   </div>
 </body>
 <script>

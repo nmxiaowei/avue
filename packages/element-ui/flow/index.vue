@@ -37,7 +37,6 @@ export default create({
   },
   data () {
     return {
-      active: '',
       jsPlumb: {},
       id: '',
       // 默认设置参数
@@ -102,17 +101,6 @@ export default create({
       default: '100%'
     }
   },
-  watch: {
-    value: {
-      handler () {
-        this.active = this.value;
-      },
-      immediate: true
-    },
-    active (val) {
-      this.$emit('input', val)
-    }
-  },
   created () {
     this.id = randomId();
     this.jsplumbSetting.Container = this.id;
@@ -121,6 +109,15 @@ export default create({
     this.init();
   },
   computed: {
+    active: {
+      get () {
+        return this.value;
+      },
+      set (val) {
+        this.$emit('input', val)
+        this.$emit('change', val)
+      }
+    },
     styleName () {
       return {
         position: 'relative',

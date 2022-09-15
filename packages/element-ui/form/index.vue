@@ -60,7 +60,9 @@
                       :md="getSpan(column)"
                       :sm="column.smSpan || item.smSpan || 12"
                       :xs="column.xsSpan || item.xmSpan ||  24"
-                      :offset="column.offset || item.offset ||  0"
+                      :offset="column.offset || item.offset"
+                      :push="column.push || item.push"
+                      :pull="column.pull || item.pull"
                       :class="[b('row'),{'avue--detail avue--detail__column':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
@@ -190,6 +192,29 @@ export default create({
     formTemp,
     formMenu
   },
+  props: {
+    uploadBefore: Function,
+    uploadAfter: Function,
+    uploadDelete: Function,
+    uploadPreview: Function,
+    uploadError: Function,
+    uploadExceed: Function,
+    status: {
+      type: Boolean,
+      default: false
+    },
+    isCrud: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {};
+      }
+    }
+  },
   data () {
     return {
       activeName: '',
@@ -200,11 +225,9 @@ export default create({
       tableOption: {},
       itemSpanDefault: 12,
       form: {},
+      formCreate: false,
       formList: [],
       formBind: {},
-      formCreate: false,
-      formDefault: {},
-      formVal: {}
     };
   },
   provide () {
@@ -213,21 +236,32 @@ export default create({
     };
   },
   watch: {
+    value: {
+      handler (val) {
+        if (this.formCreate) {
+          this.setForm()
+        }
+      },
+      deep: true
+    },
+    form: {
+      handler (val) {
+        if (this.formCreate) {
+          this.setLabel()
+          this.setVal()
+        }
+      },
+      deep: true
+    },
     tabsActive: {
       handler (val) {
         this.activeName = this.tabsActive
       },
       immediate: true
     },
-    form: {
-      handler (val) {
-        if (this.formCreate) this.setVal();
-      },
-      deep: true
-    },
     DIC: {
       handler () {
-        this.forEachLabel()
+        this.setLabel()
       },
       deep: true,
       immediate: true
@@ -235,17 +269,6 @@ export default create({
     allDisabled: {
       handler (val) {
         this.$emit('update:status', val)
-      },
-      deep: true,
-      immediate: true
-    },
-    value: {
-      handler (val) {
-        if (this.formCreate) {
-          this.setForm(val);
-        } else {
-          this.formVal = Object.assign(this.formVal, val || {});
-        }
       },
       deep: true,
       immediate: true
@@ -367,41 +390,11 @@ export default create({
       return this.vaildData(this.parentOption.mockBtn, false);
     }
   },
-  props: {
-    uploadBefore: Function,
-    uploadAfter: Function,
-    uploadDelete: Function,
-    uploadPreview: Function,
-    uploadError: Function,
-    uploadExceed: Function,
-    status: {
-      type: Boolean,
-      default: false
-    },
-    isCrud: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: Object,
-      required: true,
-      default: () => {
-        return {};
-      }
-    }
-  },
-  created () {
-    this.$nextTick(() => {
-      this.dataFormat();
-      this.setVal();
-      this.formCreate = true;
-      this.setControl()
-    })
-  },
   mounted () {
     setTimeout(() => {
-      this.clearValidate()
+      this.dataFormat()
     })
+
   },
   methods: {
     getComponent,
@@ -419,7 +412,19 @@ export default create({
         return true;
       }
     },
-    forEachLabel () {
+    setForm () {
+      Object.keys(this.value).forEach(ele => {
+        this.$set(this.form, ele, this.value[ele]);
+      });
+    },
+    setVal () {
+      this.$emit('input', this.form)
+      this.$emit('change', this.form)
+    },
+    setLabel () {
+      if (this.tableOption.filterNull === true) {
+        this.form = filterParams(this.form, [''], false)
+      }
       if (this.tableOption.filterDic == true) {
         this.form = filterParams(this.form, ['$'], false)
         return
@@ -427,9 +432,12 @@ export default create({
       this.propOption.forEach(column => {
         let result;
         let DIC = this.DIC[column.prop]
-        if (!this.validatenull(DIC)) {
-          result = detail(this.form, column, this.tableOption, DIC);
-          this.$set(this.form, ["$" + column.prop], result);
+        if (this.validatenull(DIC)) return
+        result = detail(this.form, column, this.tableOption, DIC);
+        if (result) {
+          this.$set(this.form, `$${column.prop}`, result);
+        } else {
+          this.$delete(this.form, `$${column.prop}`)
         }
       });
     },
@@ -462,13 +470,22 @@ export default create({
     },
     //初始化表单
     dataFormat () {
-      this.formDefault = formInitVal(this.propOption);
-      let value = this.deepClone(this.formDefault.tableForm);
-      this.setForm(this.deepClone(Object.assign(value, this.formVal)))
-    },
-    setVal () {
-      this.$emit("input", this.form);
-      this.$emit("change", this.form);
+      let formDefault = formInitVal(this.propOption).tableForm;
+      let form = {}
+      Object.entries(Object.assign(formDefault, this.value)).forEach(ele => {
+        let key = ele[0], value = ele[1]
+        if (this.validatenull(this.value[key])) {
+          form[key] = value
+        } else {
+          form[key] = this.value[key]
+        }
+      })
+      this.$set(this, 'form', form)
+      this.setControl()
+      this.$emit('input', this.form)
+      setTimeout(() => {
+        this.formCreate = true
+      })
     },
     setControl () {
       this.propOption.forEach(column => {
@@ -503,16 +520,6 @@ export default create({
           this.formBind[prop] = true;
         }
       })
-    },
-    //表单赋值
-    setForm (value) {
-      Object.keys(value).forEach(ele => {
-        this.$set(this.form, ele, value[ele]);
-      });
-      this.forEachLabel()
-      if (this.tableOption.filterNull === true) {
-        this.form = filterParams(this.form, [''], false)
-      }
     },
     handleChange (list, column) {
       this.$nextTick(() => {

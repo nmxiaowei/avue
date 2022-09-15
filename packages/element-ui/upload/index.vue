@@ -30,7 +30,8 @@
         <template v-else>
           <component v-if="imgUrl"
                      :src="imgUrl"
-                     :is="getIsVideo(imgUrl)"
+                     controls="controls"
+                     :is="isMediaType(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
           <i v-else
@@ -72,6 +73,7 @@
         <span v-else-if="listType==='picture-card'">
           <component class="el-upload-list__item-thumbnail"
                      :src="file.url"
+                     controls="controls"
                      :is="file.type"></component>
           <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview">
@@ -118,12 +120,11 @@ import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 import locale from "core/locale";
-import { getAsVal } from "utils/util";
+import { getAsVal, isMediaType } from "utils/util";
 import { detailImg, fileToBase64 } from "plugin/canvas/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";
-import { typeList } from 'global/variable'
 function getFileUrl (home, uri = '') {
   return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
 };
@@ -134,7 +135,6 @@ export default create({
     return {
       res: '',
       loading: false,
-      text: [],
       file: {},
       menu: false,
       reload: Math.random()
@@ -255,7 +255,7 @@ export default create({
           list.push({
             uid: index + '',
             status: 'done',
-            type: this.getIsVideo(url),
+            type: this.isMediaType(url),
             name: this.isMultiple ? name : ele[this.labelKey],
             url: url
           });
@@ -270,13 +270,8 @@ export default create({
     }
   },
   methods: {
-    getIsVideo (url) {
-      if (typeList.video.test(url) || this.fileType == 'video') {
-        return 'video'
-      } else if (typeList.img.test(url) || this.fileType == 'img') {
-        return 'img'
-      }
-      return this.listType ? 'img' : ''
+    isMediaType (url) {
+      return isMediaType(url, this.fileType)
     },
     setSort () {
       if (!window.Sortable) {
@@ -289,6 +284,7 @@ export default create({
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
           this.text.splice(evt.newIndex, 0, targetRow)
+
           this.reload = Math.random();
           this.$nextTick(() => this.setSort())
         }
@@ -323,11 +319,13 @@ export default create({
     },
     show (data) {
       this.loading = false;
-      this.handleSuccess(data || this.res);
+      this.res = data || this.res
+      this.handleSuccess(this.res);
     },
     hide (msg) {
       this.loading = false;
-      this.handleError(msg);
+      if (msg) this.handleError(msg);
+
     },
     handleFileChange (file, fileList) {
       fileList.splice(fileList.length - 1, 1);
@@ -338,9 +336,8 @@ export default create({
         return
       }
       this.loading = true;
-      let file = config.file;
-      const fileSize = file.size / 1024;
       this.file = config.file;
+      const fileSize = this.file.size / 1024;
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
@@ -353,11 +350,9 @@ export default create({
       const done = () => {
         const callback = (newFile) => {
           let url = this.action;
-          for (let o in this.data) {
-            param.append(o, this.data[o]);
-          }
-          const uploadfile = newFile || file;
-          param.append(this.fileName, uploadfile);
+          this.file = newFile || this.file
+          for (let o in this.data) param.append(o, this.data[o]);
+          param.append(this.fileName, this.file);
           //七牛云oss存储
           if (this.isQiniuOss) {
             if (!window.CryptoJS) {
@@ -381,6 +376,7 @@ export default create({
             oss_config = this.$AVUE.ali;
             client = getClient(oss_config);
           }
+
           (() => {
             if (this.isAliOss) {
               return client.put(uploadfile.name, uploadfile, {
@@ -389,52 +385,47 @@ export default create({
             } else {
               return this.$axios.post(url, param, { headers });
             }
-          })()
-            .then(res => {
-              this.res = {};
-              if (this.isQiniuOss) {
-                res.data.key = oss_config.url + res.data.key;
-              }
-
-              if (this.isAliOss) {
-                this.res = getAsVal(res, this.resKey);
-              } else {
-                this.res = getAsVal(res.data, this.resKey);
-              }
-
-              if (typeof this.uploadAfter === "function")
-                this.uploadAfter(
-                  this.res,
-                  this.show,
-                  () => {
-                    this.loading = false;
-                  },
-                  this.column
-                );
-              else this.show(this.res);
-            })
-            .catch(error => {
-              if (typeof this.uploadAfter === "function")
-                this.uploadAfter(error, this.hide, () => {
-                  this.loading = false;
-                }, this.column);
-              else this.hide(error);
-            });
+          })().then(res => {
+            this.res = {};
+            if (this.isQiniuOss) {
+              res.data.key = oss_config.url + res.data.key;
+            }
+            this.res = getAsVal(this.isAliOss ? res : res.data, this.resKey);
+            if (typeof this.uploadAfter === "function") {
+              this.uploadAfter(this.res, this.show, this.hide, this.column);
+            } else {
+              this.show();
+            }
+          }).catch(error => {
+            this.hide(error);
+          });
         };
-        if (typeof this.uploadBefore === "function")
-          this.uploadBefore(this.file, callback, () => {
-            this.loading = false;
-          }, this.column);
-        else callback();
+        if (typeof this.uploadBefore === "function") {
+          this.uploadBefore(this.file, callback, this.hide, this.column);
+        } else {
+          callback();
+        }
       };
+      //处理水印图片
+      const canvasDone = () => {
+        if (!this.validatenull(this.canvasOption)) {
+          detailImg(this.file, this.canvasOption, file => {
+            this.file = file;
+            done();
+          });
+        } else {
+          done()
+        }
+      }
+      //处理图片剪裁
       if (!this.validatenull(this.cropperOption)) {
         fileToBase64(this.file, (res) => {
           let option = Object.assign(this.cropperOption, {
             img: res,
             type: 'file',
             callback: res => {
-              file = res;
-              done();
+              this.file = res;
+              canvasDone()
             },
             cancel: () => {
               this.loading = false
@@ -442,13 +433,8 @@ export default create({
           })
           this.$ImageCropper(option)
         })
-      } else if (!this.validatenull(this.canvasOption)) {
-        detailImg(file, this.canvasOption, res => {
-          file = res;
-          done();
-        });
       } else {
-        done();
+        canvasDone()
       }
     },
     handleExceed (files, fileList) {

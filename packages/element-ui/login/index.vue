@@ -100,22 +100,16 @@ export default create({
       }
     }
   },
-  watch: {
-    value: {
-      handler () {
-        this.form = this.value
-      },
-      deep: true
-    },
-    form: {
-      handler () {
-        this.$emit('input', this.form)
-      },
-      deep: true,
-      immediate: true
-    }
-  },
   computed: {
+    form: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+        this.$emit('change', val)
+      }
+    },
     labelWidth () {
       return this.option.labelWidth || 80
     },
@@ -156,12 +150,7 @@ export default create({
       text: INIT_TEXT,
       nowtime: '',
       check: {},
-      flag: false,
-      form: {
-        username: '',
-        password: '',
-        code: ''
-      }
+      flag: false
     }
   },
   methods: {

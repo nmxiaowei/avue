@@ -240,8 +240,12 @@ export default create({
   mounted () {
     this.dataInit();
     this.getTableHeight();
+    this.refreshTable()
   },
   computed: {
+    isHeightAuto () {
+      return this.tableOption.height == 'auto'
+    },
     isSortable () {
       return this.tableOption.sortable;
     },
@@ -444,14 +448,12 @@ export default create({
       } else {
         this.tableHeight = this.tableOption.height;
       }
-      this.refreshTable()
     },
     doLayout () {
       this.$refs.table.doLayout()
     },
     refreshTable (callback) {
       this.reload = Math.random()
-      this.tableSelect = []
       this.$nextTick(() => {
         callback && callback()
       })

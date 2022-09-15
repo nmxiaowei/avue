@@ -6,7 +6,6 @@
               ref="main"
               :clearable="clearableVal"
               :disabled="disabled"
-              @change="handleChange"
               @click.native="handleClick"
               @focus="handleShow">
       <icon-temp slot="append"
@@ -16,10 +15,11 @@
                  small></icon-temp>
 
     </el-input>
-    <div v-if="show">
+    <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
                  :title="placeholder"
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  :visible.sync="box"
                  :width="dialogWidth">
         <avue-tabs :option="option"
@@ -70,7 +70,7 @@ export default create({
   computed: {
     list () {
       let list = (this.tabs.list || []).map(ele => {
-        if (!ele.value) {
+        if (!ele.value && !ele.label) {
           return {
             value: ele
           }

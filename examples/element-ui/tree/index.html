@@ -21,8 +21,9 @@
 
 <body>
   <div id="app">
-    <avue-tree ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission" :option="option"
-      :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
+    {{form}}
+    <avue-tree v-model="form" ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission"
+      :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
       <span class="el-tree-node__label" slot-scope="{ node, data }">
         <span>
           <i class="el-icon-user-solid"></i>

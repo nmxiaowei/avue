@@ -4,8 +4,15 @@
            @change="handleChange"
            @click.native="handleClick"
            :max="max"
+           :low-threshold="lowThreshold"
+           :high-threshold="highThreshold"
+           :disabled-void-color="disabledVoidColor"
+           :disabled-void-icon-class="disabledVoidIconClass"
+           :allow-half="allowHalf"
            :readonly="readonly"
            :texts="texts"
+           :show-score="showScore"
+           :score-template="scoreTemplate"
            :show-text="showText"
            :icon-classes="iconClasses"
            :void-icon-class="voidIconClass"
@@ -21,6 +28,11 @@ export default create({
   name: "rate",
   mixins: [props(), event()],
   props: {
+    allowHalf: Boolean,
+    lowThreshold: Number,
+    highThreshold: Number,
+    disabledVoidColor: String,
+    disabledVoidIconClass: String,
     value: {
       type: Number,
       default: 0
@@ -37,6 +49,11 @@ export default create({
     },
     texts: {
       type: Array
+    },
+    scoreTemplate: String,
+    showScore: {
+      type: Boolean,
+      default: false
     },
     showText: {
       type: Boolean,

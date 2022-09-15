@@ -52,6 +52,8 @@ const install = function (Vue, opts = {}) {
     size: opts.size || 'small',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
+    modalAppendToBody: vaildData(opts.modalAppendToBody, true),
+    appendToBody: vaildData(opts.appendToBody, true),
     canvas: Object.assign({
       text: 'avuejs.com',
       fontFamily: 'microsoft yahei',

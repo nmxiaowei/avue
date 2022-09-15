@@ -4,7 +4,8 @@
              :before-close="cancel"
              :close-on-press-escape="false"
              :close-on-click-modal="false"
-             append-to-body
+             :modal-append-to-body="$AVUE.modalAppendToBody"
+             :append-to-body="$AVUE.appendToBody"
              width="1000px">
     <div class="cropper-content">
       <div class="cropper-box">

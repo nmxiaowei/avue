@@ -13,7 +13,8 @@
     <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
                  :width="dialogWidth"
-                 append-to-body
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
                  :title="placeholder"
                  :visible.sync="box">
         <avue-crud :class="b('crud')"
@@ -26,6 +27,7 @@
                    @search-change="handleSearchChange"
                    @search-reset="handleSearchChange"
                    @current-row-change="handleCurrentRowChange"
+                   :search.sync="search"
                    :page.sync="page"></avue-crud>
         <span slot="footer"
               class="dialog-footer">
@@ -51,6 +53,7 @@ export default create({
     return {
       object: {},
       active: {},
+      search: {},
       page: {},
       loading: false,
       box: false,
@@ -123,23 +126,20 @@ export default create({
     setVal () {
       this.object = this.active
       this.text = this.active[this.valueKey] || ''
-      this.handleChange(this.text)
       this.box = false
     },
     handleCurrentRowChange (val) {
       this.active = val;
     },
     handleSearchChange (form, done) {
-      this.onLoad({ page: this.page, data: form }, data => {
-        this.page.total = data.total;
-        this.data = data.data;
-      })
+      this.page.page = 1;
+      this.onList()
       done && done()
     },
-    onList (callback) {
+    onList () {
       this.loading = true;
       if (typeof this.onLoad == 'function') {
-        this.onLoad({ page: this.page }, data => {
+        this.onLoad({ page: this.page, data: this.search }, data => {
           this.page.total = data.total;
           this.data = data.data
           this.loading = false;
