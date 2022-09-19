@@ -132,7 +132,7 @@ export default create({
   },
   computed: {
     keysList () {
-      return this.multiple ? this.text : [this.text]
+      return this.multiple ? this.text : [this.text || '']
     },
     treeProps () {
       return Object.assign(this.props, {

@@ -478,6 +478,7 @@ export default create({
       this.$emit('update:modelValue', this.form)
       setTimeout(() => {
         this.formCreate = true
+        this.clearValidate()
       })
     },
     setControl () {
