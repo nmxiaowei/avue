@@ -2,6 +2,9 @@
   .el-tag__close{
     display: none !important;
   }
+  &__item{
+    width: 100%;
+  }
   &__filter{
     padding:0 10px;
     margin:5px 0 0 0;
@@ -10,6 +13,7 @@
     padding:10px 0;
   }
   &__desc{
+    margin-right: 12px;
     float: right; 
     color: #8492a6; 
     font-size: 13px;

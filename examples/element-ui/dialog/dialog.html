@@ -49,7 +49,8 @@
       showDialog() {
         this.$DialogForm.show({
           title: '弹窗页面',
-          width: '30%',
+          width: '70%',
+          type: 'drawer',
           menuPosition: 'right',
           option: this.option,
           beforeClose: (done) => {
@@ -74,6 +75,8 @@
         this.$DialogForm.show({
           title: '弹窗页面（带上数据)',
           width: '50%',
+          type: 'drawer',
+          direction: 'top',
           data: { name: '测试数据' },
           option: this.option,
           callback: (res) => {

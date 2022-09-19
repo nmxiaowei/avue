@@ -1,5 +1,6 @@
 <template>
-  <el-dialog :visible.sync="visible"
+  <component :is="dialogType"
+             :visible.sync="visible"
              destroy-on-close
              class="avue-dialog"
              :beforeClose="beforeClose"
@@ -22,7 +23,7 @@
                  :size="$AVUE.size"
                  :icon="option.emptyIcon ">{{option.emptyText}}</el-button>
     </span>
-  </el-dialog>
+  </component>
 </template>
 <script>
 export default {
@@ -34,6 +35,7 @@ export default {
       dialog: {
         closeOnClickModal: false
       },
+      isDrawer: false,
       option: {
         submitText: '提交',
         emptyText: '关闭',
@@ -45,6 +47,9 @@ export default {
     };
   },
   computed: {
+    dialogType () {
+      return this.isDrawer ? 'elDrawer' : 'elDialog'
+    },
     menuPosition () {
       return this.opt.menuPosition || 'center'
     }
@@ -66,6 +71,8 @@ export default {
       let dialog = this.deepClone(opt);
       ['callback', 'option', 'data'].forEach(ele => delete dialog[ele])
       this.dialog = Object.assign(this.dialog, dialog);
+      this.dialog.size = this.dialog.width
+      this.isDrawer = this.dialog.type === 'drawer';
       this.option = Object.assign(this.option, opt.option);
       this.data = opt.data;
       this.visible = true;

@@ -42,7 +42,8 @@
                :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:keysList"
                :default-expand-all="defaultExpandAll"
                @node-click.self="handleNodeClick">
-        <span slot-scope="{ data }">
+        <div slot-scope="{ data }"
+             :class="b('item')">
           <slot v-if="$scopedSlots.default"
                 :label="labelKey"
                 :value="valueKey"
@@ -52,7 +53,7 @@
             <span :class="b('desc')"
                   v-if="data[descKey]">{{ data[descKey] }}</span>
           </template>
-        </span>
+        </div>
       </el-tree>
     </el-option>
   </el-select>
@@ -160,7 +161,7 @@ export default create({
       return this.multiple ? '' : this.text
     },
     keysList () {
-      return this.multiple ? this.text : [this.text]
+      return this.multiple ? this.text : [this.text || '']
     },
     labelShow () {
       let list = [...this.node]
@@ -216,7 +217,7 @@ export default create({
             this.node.push(ele);
           })
         } else {
-          let node = this.$refs.tree.getNode(this.vaildData(this.text, ''))
+          let node = this.$refs.tree.getNode(this.text)
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])
