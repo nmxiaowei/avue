@@ -83,8 +83,14 @@
 .el-pagination__editor.el-input .el-input__inner {
   line-height: 28px;
 }
-.el-drawer__body{
-  height: 100%;
+
+.el-drawer{
+  .el-drawer__body{
+    height: 100%;
+  }
+  .avue-form{
+    padding: 20px;
+  }
 }
 .el-checkbox:last-of-type {
   margin-right: 8px;
