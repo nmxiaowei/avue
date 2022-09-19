@@ -134,7 +134,6 @@ export default create({
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
               size: ele.searchSize || option.searchSize,
               value: ele.searchValue,
-              label: ele.searchLabel || ele.label,
               rules: ele.searchRules,
               row: ele.searchRow,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
