@@ -485,6 +485,7 @@ export default create({
       this.$emit('input', this.form)
       setTimeout(() => {
         this.formCreate = true
+        this.clearValidate()
       })
     },
     setControl () {
