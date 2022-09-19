@@ -42,7 +42,8 @@
                :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:keysList"
                :default-expand-all="defaultExpandAll"
                @node-click.self="handleNodeClick">
-        <span slot-scope="{ data }">
+        <div slot-scope="{ data }"
+             :class="b('item')">
           <slot v-if="$scopedSlots.default"
                 :label="labelKey"
                 :value="valueKey"
@@ -52,7 +53,7 @@
             <span :class="b('desc')"
                   v-if="data[descKey]">{{ data[descKey] }}</span>
           </template>
-        </span>
+        </div>
       </el-tree>
     </el-option>
   </el-select>
