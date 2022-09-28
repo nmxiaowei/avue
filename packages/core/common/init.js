@@ -117,18 +117,18 @@ export default function () {
           this.$set(this.DIC, prop, list);
         }
       },
-      handleSetDic (res = {}) {
+      handleSetDic (list, res = {}) {
         Object.keys(res).forEach(ele => {
-          this.$set(this.DIC, ele, res[ele])
+          this.$set(list, ele, res[ele])
         });
       },
       //本地字典
       handleLocalDic () {
-        this.handleSetDic(loadLocalDic(this.resultOption));
+        this.handleSetDic(this.DIC, loadLocalDic(this.resultOption));
       },
       // 网络字典加载
       handleLoadDic () {
-        loadDic(this.resultOption).then(res => this.handleSetDic(res))
+        loadDic(this.resultOption).then(res => this.handleSetDic(this.DIC, res))
       },
       //级联字典加载
       handleLoadCascaderDic () {
