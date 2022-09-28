@@ -10,7 +10,6 @@
     <avue-form :option="option"
                ref="form"
                @submit="searchChange"
-               @change="handleChange"
                @reset-change="resetChange"
                v-model="searchForm">
       <template slot="menuForm"
@@ -61,7 +60,6 @@ export default create({
       show: false,
       searchIndex: 2,
       searchShow: true,
-      searchForm: {}
     };
   },
   props: {
@@ -93,6 +91,14 @@ export default create({
     this.dataFormat()
   },
   computed: {
+    searchForm: {
+      get () {
+        return this.search
+      },
+      set (val) {
+        this.crud.$emit('update:search', val)
+      }
+    },
     option () {
       const option = this.crud.option;
       this.searchIndex = option.searchIndex || 2
@@ -195,20 +201,16 @@ export default create({
     getSlotName (item) {
       return item.replace('Search', '')
     },
-    getSearchProp () {
-      this.crud.propOption.forEach(ele => {
-        if (ele.searchProp) {
-          this.$set(this.searchForm, ele.searchProp, this.searchForm[ele.prop])
-        }
-      })
-    },
-    handleChange () {
-      this.getSearchProp();
-      this.crud.$emit('update:search', this.searchForm)
-    },
     // 搜索回调
     searchChange (form, done) {
-      this.crud.$emit("search-change", filterParams(form), done);
+      form = filterParams(form);
+      this.crud.propOption.forEach(ele => {
+        if (ele.searchProp) {
+          form[ele.searchProp] = form[ele.prop]
+          delete form[ele.prop]
+        }
+      })
+      this.crud.$emit("search-change", form, done);
     },
     // 搜索清空
     resetChange () {

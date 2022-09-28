@@ -20,6 +20,7 @@
 
 <body>
   <div id="app">
+    {{search}}
     <avue-crud ref="crud" :page.sync="page" :search.sync="search" :option="option" :data="data"
       @search-change="searchChange">
       <el-tag slot="header">头部</el-tag>
@@ -76,6 +77,7 @@
           }, {
             label: '年龄',
             prop: 'sex',
+            searchProp: 'sex_eq',
             search: true,
             searchRules: [
               {
@@ -120,16 +122,8 @@
         }]
       }
     },
-    mounted() {
-      setTimeout(() => {
-        console.log('clear')
-        this.$refs.crud.searchReset()
-      }, 5000)
-
-    },
     methods: {
       searchChange(params, done) {
-        const index = this.$refs.crud.findColumnIndex("dic");
         done()
         console.log(params);
       }

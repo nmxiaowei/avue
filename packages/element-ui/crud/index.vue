@@ -713,11 +713,15 @@ export default create({
     getPropRef (prop) {
       return this.$refs.dialogForm.$refs.tableForm.getPropRef(prop);
     },
+    setVal () {
+      this.$emit("input", this.tableForm);
+      this.$emit("change", this.tableForm);
+    },
     // 编辑
     rowEdit (row, index) {
       this.tableForm = this.deepClone(row);
       this.tableIndex = index;
-      this.$emit("input", this.tableForm);
+      this.setVal()
       this.$refs.dialogForm.show("edit");
     },
     //复制
@@ -725,14 +729,14 @@ export default create({
       this.tableForm = this.deepClone(row);
       delete this.tableForm[this.rowKey]
       this.tableIndex = -1;
-      this.$emit("input", this.tableForm);
+      this.setVal()
       this.$refs.dialogForm.show("add");
     },
     //查看
     rowView (row, index) {
       this.tableForm = this.deepClone(row);
       this.tableIndex = index;
-      this.$emit("input", this.tableForm);
+      this.setVal()
       this.$refs.dialogForm.show("view");
     },
     // 删除
