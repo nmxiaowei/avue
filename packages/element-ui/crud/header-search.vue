@@ -97,6 +97,7 @@ export default create({
       const option = this.crud.option;
       this.searchIndex = option.searchIndex || 2
       const detailColumn = (list = []) => {
+        list = this.deepClone(list);
         let column = [];
         let count = 0;
         list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
@@ -138,9 +139,9 @@ export default create({
         })
         return column;
       }
-      const dataDetail = (list) => {
+      const detailOption = (list) => {
         let result = this.deepClone(list);
-        result.column = detailColumn(this.deepClone(this.crud.propOption))
+        result.column = detailColumn(this.crud.propOption)
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
@@ -171,7 +172,7 @@ export default create({
         })
         return result;
       }
-      return dataDetail(option)
+      return detailOption(option)
     },
     isSearchIcon () {
       return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
