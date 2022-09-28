@@ -378,7 +378,7 @@ export const findByValue = (dic, value, props) => {
     result.push(findLabelNode(dic, list[i], props) || list[i]);
   }
   if (isArray) {
-    return result.join(DIC_SHOW_SPLIT).toString();
+    return result.join(DIC_SHOW_SPLIT)
   }
   return result.join()
 };

@@ -118,8 +118,9 @@ export default function () {
         }
       },
       handleSetDic (res = {}) {
-        let result = Object.assign(this.DIC, res)
-        this.$set(this, 'DIC', result)
+        Object.keys(res).forEach(ele => {
+          this.$set(this.DIC, ele, res[ele])
+        });
       },
       //本地字典
       handleLocalDic () {
