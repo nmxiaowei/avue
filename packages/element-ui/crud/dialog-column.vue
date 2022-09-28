@@ -22,6 +22,7 @@
         </el-table-column>
         <template v-for="(item,index) in defaultColumn">
           <el-table-column :label="item.label"
+                           v-if="item.hide!==true"
                            :prop="item.prop"
                            :key="index"
                            align="center"
