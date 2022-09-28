@@ -41,8 +41,8 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
 /**
  * 初始化数据格式
  */
-export const initVal = (value, column) => {
-  let { type, multiple, dataType, separator = DIC_SPLIT, alone, emitPath, range } = column
+export const initVal = (value, safe) => {
+  let { type, multiple, dataType, separator = DIC_SPLIT, alone, emitPath, range } = safe
   let list = value;
   if (
     (MULTIPLE_LIST.includes(type) && multiple == true) ||

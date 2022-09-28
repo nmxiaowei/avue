@@ -12,7 +12,7 @@
              :target="item.target">
             <div class="item-icon"
                  :style="{backgroundColor:item.color}">
-              <el-icon :color="item.color">
+              <el-icon>
                 <component :is="item.icon"></component>
               </el-icon>
             </div>

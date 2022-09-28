@@ -432,6 +432,10 @@ export default create({
           }, this.column);
         else callback();
       };
+      if (isMediaType(this.file.name) != 'img') {
+        done()
+        return
+      }
       //是否开启水印
       if (!this.validatenull(this.canvasOption)) {
         detailImg(file, this.canvasOption).then(res => {

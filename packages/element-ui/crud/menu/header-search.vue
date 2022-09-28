@@ -55,8 +55,7 @@ export default create({
   data () {
     return {
       show: false,
-      searchShow: true,
-      searchForm: {}
+      searchShow: true
     };
   },
   watch: {
@@ -66,20 +65,6 @@ export default create({
       },
       immediate: true
     },
-    search: {
-      handler () {
-        this.searchForm = Object.assign(this.searchForm, this.crud.search);
-      },
-      immediate: true,
-      deep: true
-    },
-    searchForm: {
-      handler () {
-        this.crud.$emit('update:search', this.searchForm)
-      },
-      immediate: true,
-      deep: true
-    },
     searchShow () {
       this.crud.getTableHeight()
     }
@@ -88,6 +73,14 @@ export default create({
     this.initFun();
   },
   computed: {
+    searchForm: {
+      get () {
+        return this.search
+      },
+      set (val) {
+        this.crud.$emit('update:search', val)
+      }
+    },
     isGroup () {
       return !this.validatenull(this.crud.tableOption.group);
     },
@@ -107,6 +100,7 @@ export default create({
     option () {
       const option = this.crud.option;
       const detailColumn = (list = []) => {
+        list = this.deepClone(list);
         let column = [];
         let count = 0;
         list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
@@ -146,9 +140,9 @@ export default create({
         })
         return column;
       }
-      const dataDetail = (list) => {
+      const detailOption = (list) => {
         let result = this.deepClone(list);
-        result.column = detailColumn(this.deepClone(this.crud.propOption))
+        result.column = detailColumn(this.crud.propOption)
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
@@ -179,7 +173,7 @@ export default create({
         })
         return result;
       }
-      let result = dataDetail(option)
+      let result = detailOption(option)
       return result;
     },
     searchFlag () {
@@ -195,7 +189,14 @@ export default create({
     },
     // 搜索回调
     searchChange (form, done) {
-      this.crud.$emit("search-change", filterParams(form), done);
+      form = filterParams(form);
+      this.crud.propOption.forEach(ele => {
+        if (ele.searchProp) {
+          form[ele.searchProp] = form[ele.prop]
+          delete form[ele.prop]
+        }
+      })
+      this.crud.$emit("search-change", form, done);
     },
     // 搜索清空
     resetChange () {
