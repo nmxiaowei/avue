@@ -78,13 +78,6 @@ export default create({
     searchShow () {
       this.crud.getTableHeight()
     },
-    search: {
-      handler () {
-        this.searchForm = Object.assign(this.searchForm, this.search);
-      },
-      immediate: true,
-      deep: true
-    }
   },
   created () {
     this.initFun();
