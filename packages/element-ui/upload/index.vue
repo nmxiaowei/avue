@@ -406,6 +406,10 @@ export default create({
           callback();
         }
       };
+      if (isMediaType(this.file.name) != 'img') {
+        done()
+        return
+      }
       //处理水印图片
       const canvasDone = () => {
         if (!this.validatenull(this.canvasOption)) {
