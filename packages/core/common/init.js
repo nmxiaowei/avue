@@ -34,10 +34,12 @@ export default function () {
       },
       propOption: {
         handler (list) {
-          this.objectOption = {};
+          let result = {}
           list.forEach(ele => {
-            this.$set(this.objectOption, ele.prop, ele)
+            result[ele.prop] = ele
+
           });
+          this.$set(this, 'objectOption', result)
         },
         deep: true,
       },
@@ -115,18 +117,17 @@ export default function () {
           this.$set(this.DIC, prop, list);
         }
       },
-      handleSetDic (list, res = {}) {
-        Object.keys(res).forEach(ele => {
-          this.$set(list, ele, res[ele])
-        });
+      handleSetDic (res = {}) {
+        let result = Object.assign(this.DIC, res)
+        this.$set(this, 'DIC', result)
       },
       //本地字典
       handleLocalDic () {
-        this.handleSetDic(this.DIC, loadLocalDic(this.resultOption));
+        this.handleSetDic(loadLocalDic(this.resultOption));
       },
       // 网络字典加载
       handleLoadDic () {
-        loadDic(this.resultOption).then(res => this.handleSetDic(this.DIC, res))
+        loadDic(this.resultOption).then(res => this.handleSetDic(res))
       },
       //级联字典加载
       handleLoadCascaderDic () {

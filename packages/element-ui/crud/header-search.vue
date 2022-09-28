@@ -106,6 +106,7 @@ export default create({
             let obj = {}
             Object.keys(ele).forEach(item => {
               let key = 'search'
+              if (item == 'searchProp') return
               if (item.includes(key)) {
                 let result = item.replace(key, '')
                 if (result.length == 0) return
@@ -193,7 +194,15 @@ export default create({
     getSlotName (item) {
       return item.replace('Search', '')
     },
+    getSearchProp () {
+      this.crud.propOption.forEach(ele => {
+        if (ele.searchProp) {
+          this.$set(this.searchForm, ele.searchProp, this.searchForm[ele.prop])
+        }
+      })
+    },
     handleChange () {
+      this.getSearchProp();
       this.crud.$emit('update:search', this.searchForm)
     },
     // 搜索回调
