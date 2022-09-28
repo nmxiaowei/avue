@@ -432,7 +432,12 @@ export default create({
         let DIC = this.DIC[column.prop]
         if (this.validatenull(DIC)) return
         result = detail(this.form, column, this.tableOption, DIC);
-        this.form[`$${column.prop}`] = result;
+        if (result) {
+          this.form[`$${column.prop}`] = result;
+        } else {
+          delete this.form[`$${column.prop}`]
+        }
+
       });
     },
     handleGroupClick (activeNames) {
