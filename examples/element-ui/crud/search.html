@@ -124,16 +124,8 @@
         }]
       }
     },
-    mounted() {
-      setTimeout(() => {
-        console.log('clear')
-        this.$refs.crud.searchReset()
-      }, 5000)
-
-    },
     methods: {
       searchChange(params, done) {
-        const index = this.$refs.crud.findColumnIndex("dic");
         done()
         console.log(params);
       }
