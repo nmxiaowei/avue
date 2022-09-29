@@ -4,8 +4,7 @@
                :style="tableOption.titleStyle"
                v-if="tableOption.title">{{tableOption.title}}</component>
     <!-- 搜索组件 -->
-    <header-search :search="search"
-                   ref="headerSearch">
+    <header-search ref="headerSearch">
       <template slot="search"
                 slot-scope="scope">
         <slot name="search"
@@ -146,8 +145,7 @@
       <slot name="footer"></slot>
     </el-card>
     <!-- 分页 -->
-    <table-page ref="tablePage"
-                :page="page">
+    <table-page ref="tablePage">
       <template slot="page">
         <slot name="page"></slot>
       </template>

@@ -5,10 +5,10 @@
     <slot name="page"></slot>
     <el-pagination :small="crud.isMobile"
                    :disabled="defaultPage.disabled"
-                   :hide-on-single-page="vaildData(crud.tableOption.simplePage,config.simplePage)"
+                   :hide-on-single-page="defaultPage.singlePage"
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
-                   :background="vaildData(defaultPage.background,config.pageBackground)"
+                   :background="defaultPage.background"
                    :page-size="defaultPage.pageSize"
                    :page-sizes="defaultPage.pageSizes"
                    @size-change="sizeChange"
@@ -26,18 +26,11 @@ import create from "core/create";
 export default create({
   name: "crud",
   inject: ["crud"],
-  props: {
-    page: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
   data () {
     return {
       config: config,
       defaultPage: {
+        singlePage: false,
         total: 0, // 总页数
         pagerCount: 7,//超过多少条隐藏
         currentPage: 1, // 当前页数
@@ -66,9 +59,7 @@ export default create({
     'defaultPage.total' (val) {
       if (this.defaultPage.total === (this.defaultPage.currentPage - 1) * this.defaultPage.pageSize && this.defaultPage.total != 0) {
         this.defaultPage.currentPage = this.defaultPage.currentPage - 1;
-        this.crud.$emit("on-load", this.defaultPage);
-        this.crud.$emit("current-change", this.defaultPage.currentPage);
-        this.updateValue();
+        this.currentChange(this.defaultPage.currentPage)
       }
     }
   },
@@ -79,12 +70,7 @@ export default create({
   },
   methods: {
     pageInit () {
-      this.defaultPage = Object.assign(this.defaultPage, this.page, {
-        total: Number(this.page.total || this.defaultPage.total),
-        pagerCount: Number(this.page.pagerCount || this.defaultPage.pagerCount),
-        currentPage: Number(this.page.currentPage || this.defaultPage.currentPage),
-        pageSize: Number(this.page.pageSize || this.defaultPage.pageSize)
-      })
+      this.defaultPage = Object.assign(this.defaultPage, this.crud.page)
       this.updateValue();
     },
     updateValue () {

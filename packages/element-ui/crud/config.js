@@ -50,7 +50,6 @@ export default {
   dialogDrag: false,
   formFullscreen: false,
   pageBackground: true,
-  simplePage: false,
   page: true,
   menu: true,
   indexLabel: '#',

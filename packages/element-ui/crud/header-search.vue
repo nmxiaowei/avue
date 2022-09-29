@@ -86,7 +86,7 @@ export default create({
   computed: {
     searchForm: {
       get () {
-        return this.search
+        return this.crud.search
       },
       set (val) {
         this.crud.$emit('update:search', val)
