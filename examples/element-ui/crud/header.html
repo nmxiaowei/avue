@@ -24,7 +24,7 @@
 
 <body>
   <div id="app">
-    <avue-crud :option="option" :data="data" :page="page" @on-load="onLoad"></avue-crud>
+    <avue-crud :option="option" :data="data" v-model:page="page" @on-load="onLoad"></avue-crud>
   </div>
 </body>
 

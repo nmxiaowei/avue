@@ -188,7 +188,15 @@ import mock from "utils/mock";
 export default create({
   name: "form",
   mixins: [init()],
-  emits: ['update:modelValue', 'update:status', 'reset-change', 'mock-change', 'tab-click', 'submit', 'error'],
+  emits: [
+    'update:modelValue',
+    'update:status',
+    'reset-change',
+    'mock-change',
+    'tab-click',
+    'submit',
+    'error'
+  ],
   components: {
     formTemp,
     formMenu

@@ -20,8 +20,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" :page="page" @on-load="onLoad" @expand-change="expandChange"
-      @sort-change="sortChange">
+    <avue-crud ref="crud" :option="option" :data="data" v-model:page="page" @on-load="onLoad"
+      @expand-change="expandChange" @sort-change="sortChange">
       <template #expand="scope">
         {{scope}}
       </template>

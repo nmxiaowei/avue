@@ -25,7 +25,8 @@
 
 <body>
   <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" :page="page" :table-loading="loading" v-model="obj"
+    {{page}}
+    <avue-crud ref="crud" :option="option" :data="data" v-model:page="page" :table-loading="loading" v-model="obj"
       :upload-before="uploadBefore" :upload-after="uploadAfter" :before-open="handleBeforeOpen"
       :before-close="handleBeforeClose" @selection-change="selectionChange" @on-load="onLoad"
       @row-dblclick="handleRowDBLClick" @row-click="handleRowClick" @date-change="dateChange" @row-save="rowSave"
@@ -66,9 +67,7 @@
     data() {
       return {
         loading: true,
-        page: {
-          total: 2000
-        },
+        page: {},
         searchForm: {},
         obj: {},
         option: {
@@ -395,8 +394,7 @@
           done()
         }, 2000)
       },
-      onLoad(page, params) {
-        this.page = page
+      onLoad(page) {
         const data = [
           {
             id: '0',

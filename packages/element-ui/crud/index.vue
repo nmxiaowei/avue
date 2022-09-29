@@ -136,8 +136,7 @@
       <slot name="footer"></slot>
     </el-card>
     <!-- 分页 -->
-    <table-page ref="tablePage"
-                :page="page">
+    <table-page ref="tablePage">
       <template #page>
         <slot name="page"></slot>
       </template>
@@ -181,7 +180,45 @@ import { DIC_PROPS } from 'global/variable';
 export default create({
   name: "crud",
   mixins: [init(), locale,],
-  emits: ['modelValue', 'update:page', 'update:search', 'on-load', 'cell-mouse-enter', 'cell-mouse-leave', 'search-change', 'search-reset'],
+  emits: [
+    'update:modelValue',
+    'tree-load',
+    'selection-clear',
+    'header-dragend',
+    'expand-change',
+    'current-row-change',
+    'refresh-change',
+    'selection-change',
+    'select',
+    'select-all',
+    'sortable-change',
+    'filter',
+    'filter-change',
+    'sort-change',
+    'row-dblclick',
+    'row-click',
+    'cell-mouse-enter',
+    'cell-mouse-leave',
+    'cell-click',
+    'header-click',
+    'tab-click',
+    'error',
+    'date-change',
+    'update:search',
+    'update:page',
+    'search-change',
+    'search-reset',
+    'on-load',
+    'current-change',
+    'size-change',
+    'row-contextmenu',
+    'header-contextmenu',
+    'cell-dblclick',
+    'row-del',
+    'row-save',
+    'row-update',
+    'change'
+  ],
   directives: {
     permission
   },
@@ -510,7 +547,7 @@ export default create({
     },
     //设置单选
     currentRowChange (row) {
-      // this.$emit("current-row-change", row);
+      this.$emit("current-row-change", row);
     },
     //刷新事件
     refreshChange () {
