@@ -26,11 +26,6 @@ const list = {
     url: 'https://avuejs.com/cdn/CryptoJS.js',
     title: '七牛云图片上传，需引入CryptoJS'
   },
-  'hljs': {
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js',
-    title: '需引入hljs框架包',
-    github: 'https://github.com/highlightjs/highlight.js'
-  },
   'file-saver': {
     url: 'https://cdn.  /FileSaver.js/2014-11-29/FileSaver.min.js',
     title: '需引入文件操作包',

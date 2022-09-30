@@ -1,20 +1,15 @@
 import CountUp from 'packages/element-ui/count-up';
 import Article from 'packages/element-ui/article';
-import Carousel from 'packages/element-ui/carousel';
 import Crud from 'packages/element-ui/crud';
 import Card from 'packages/element-ui/card';
-import Code from 'packages/element-ui/code';
 import Chat from 'packages/element-ui/chat';
 import Comment from 'packages/element-ui/comment';
 import Form from 'packages/element-ui/form';
 import Checkbox from 'packages/element-ui/checkbox';
 import Date from 'packages/element-ui/date';
 import Draggable from 'packages/element-ui/draggable';
-import Flow from 'packages/element-ui/flow';
 import Group from 'packages/element-ui/group';
-import Notice from 'packages/element-ui/notice';
 import License from 'packages/element-ui/license';
-import Progress from 'packages/element-ui/progress';
 import Time from 'packages/element-ui/time';
 import Input from 'packages/element-ui/input';
 import Radio from 'packages/element-ui/radio';
@@ -32,24 +27,19 @@ import Rate from 'packages/element-ui/rate';
 import Upload from 'packages/element-ui/upload';
 import Sign from 'packages/element-ui/sign';
 import Slider from 'packages/element-ui/slider';
-import Keyboard from 'packages/element-ui/keyboard';
 import Tree from 'packages/element-ui/tree';
 import Title from 'packages/element-ui/title';
 import Search from 'packages/element-ui/search';
 import Tabs from 'packages/element-ui/tabs';
 import Dynamic from 'packages/element-ui/dynamic';
-import Queue from 'packages/element-ui/queue';
 import Video from 'packages/element-ui/video';
 import Login from 'packages/element-ui/login';
 import Arrays from 'packages/element-ui/array';
 import textEllipsis from 'packages/element-ui/text-ellipsis';
-import packages from 'core/packages';
 export default [
   Arrays,
   Article,
-  Carousel,
   Crud,
-  Code,
   Card,
   Chat,
   Comment,
@@ -58,11 +48,8 @@ export default [
   Date,
   CountUp,
   Draggable,
-  Flow,
   Group,
-  Notice,
   License,
-  Progress,
   Time,
   Input,
   Radio,
@@ -78,12 +65,10 @@ export default [
   Rate,
   Upload,
   Slider,
-  Keyboard,
   Tree,
   Title,
   Search,
   Tabs,
-  Queue,
   Dynamic,
   Video,
   Verifys,
