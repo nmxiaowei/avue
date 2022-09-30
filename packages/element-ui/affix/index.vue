@@ -25,6 +25,7 @@ export default create({
   },
   data () {
     return {
+      container: null,
       affix: false,
       styles: {},
       slot: false,
@@ -32,28 +33,22 @@ export default create({
     };
   },
   computed: {
-    container () {
-      if (this.target) {
-        return document.querySelector(this.target);
-      }
-      return document
-    },
     offsetType () {
       let type = "top";
       if (this.offsetBottom >= 0) {
         type = "bottom";
       }
-
       return type;
     }
   },
   mounted () {
+    if (this.target) {
+      this.container = document.querySelector(this.target);
+    } else {
+      this.container = document
+    }
     this.container.addEventListener("scroll", this.handleScroll, false);
     this.container.addEventListener("resize", this.handleScroll, false);
-  },
-  beforeDestroy () {
-    this.container.removeEventListener("scroll", this.handleScroll, false);
-    this.container.removeEventListener("resize", this.handleScroll, false);
   },
   methods: {
     getScroll (target, top) {
@@ -61,9 +56,8 @@ export default create({
       const method = top ? "scrollTop" : "scrollLeft";
 
       let ret = target[prop];
-
       if (typeof ret !== "number") {
-        ret = window.document.documentElement[method];
+        ret = document.documentElement[method];
       }
 
       return ret;
@@ -130,6 +124,10 @@ export default create({
         this.$emit('on-change', false);
       }
     }
+  },
+  beforeDestroy () {
+    this.container.removeEventListener("scroll", this.handleScroll, false);
+    this.container.removeEventListener("resize", this.handleScroll, false);
   }
 });
 </script>

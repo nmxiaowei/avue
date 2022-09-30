@@ -7,8 +7,8 @@
               :md="span"
               :key="index">
         <div class="item item--active">
-          <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click(item):''"
+          <a :href="item.href"
+             @click="item.click&&item.click(item)"
              :target="item.target">
             <div class="title">
               {{item.title}}

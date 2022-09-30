@@ -7,13 +7,11 @@
               v-for="(item,index) in data"
               :key="index">
         <div class="item">
-          <a :href="item.href || 'javascript:void(0);'"
-             @click="item.click?item.click(item):''"
+          <a :href="item.href"
+             @click="item.click&&item.click(item)"
              :target="item.target">
             <div class="item-header">
-              <i :class="item.icon || 'el-icon-bell'"
-                 :style="{color:item.color || 'red'}"></i>
-              <a class="">{{item.title}}</a>
+              {{item.title}}
             </div>
             <div class="item-content">{{item.content}}</div>
             <div class="item-footer">
@@ -31,27 +29,27 @@
 import create from "core/create";
 export default create({
   name: "data-cardtext",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    icon() {
+    icon () {
       return this.option.icon;
     },
-    color() {
+    color () {
       return this.option.color || "#333";
     },
-    span() {
+    span () {
       return this.option.span || 8;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   }
 });

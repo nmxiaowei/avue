@@ -19,8 +19,8 @@
               <component :is="item.icon"></component>
             </el-icon>
           </div>
-          <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click(item):''">
+          <a :href="item.href"
+             @click="item.click&&item.click(item)">
             <p class="item-more">更多
               <el-icon>
                 <el-icon-arrow-right />
