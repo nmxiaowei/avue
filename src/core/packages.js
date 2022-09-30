@@ -27,7 +27,7 @@ const list = {
     title: '七牛云图片上传，需引入CryptoJS'
   },
   'file-saver': {
-    url: 'https://cdn.  /FileSaver.js/2014-11-29/FileSaver.min.js',
+    url: 'https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js',
     title: '需引入文件操作包',
     github: 'https://github.com/eligrey/FileSaver.js'
   },
