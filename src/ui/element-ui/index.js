@@ -8,6 +8,7 @@ import Form from 'packages/element-ui/form';
 import Checkbox from 'packages/element-ui/checkbox';
 import Date from 'packages/element-ui/date';
 import Draggable from 'packages/element-ui/draggable';
+import Flow from 'packages/element-ui/flow';
 import Group from 'packages/element-ui/group';
 import License from 'packages/element-ui/license';
 import Time from 'packages/element-ui/time';
@@ -48,6 +49,7 @@ export default [
   Date,
   CountUp,
   Draggable,
+  Flow,
   Group,
   License,
   Time,
