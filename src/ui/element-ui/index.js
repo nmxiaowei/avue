@@ -2,7 +2,6 @@ import Affix from 'packages/element-ui/affix';
 import CountUp from 'packages/element-ui/count-up';
 import Avatar from 'packages/element-ui/avatar';
 import Article from 'packages/element-ui/article';
-import Carousel from 'packages/element-ui/carousel';
 import Crud from 'packages/element-ui/crud';
 import Card from 'packages/element-ui/card';
 import Code from 'packages/element-ui/code';
@@ -41,7 +40,6 @@ import Search from 'packages/element-ui/search';
 import Skeleton from 'packages/element-ui/skeleton';
 import Tabs from 'packages/element-ui/tabs';
 import Dynamic from 'packages/element-ui/dynamic';
-import Queue from 'packages/element-ui/queue';
 import Video from 'packages/element-ui/video';
 import Login from 'packages/element-ui/login';
 import Arrays from 'packages/element-ui/array';
@@ -51,7 +49,6 @@ export default [
   Affix,
   Avatar,
   Article,
-  Carousel,
   Crud,
   Code,
   Card,
@@ -87,7 +84,6 @@ export default [
   Title,
   Search,
   Tabs,
-  Queue,
   Dynamic,
   Video,
   Verifys,

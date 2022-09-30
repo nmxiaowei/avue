@@ -7,8 +7,8 @@
               v-for="(item,index) in data"
               :key="index">
         <div class="item">
-          <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click(item):''"
+          <a :href="item.href"
+             @click="item.click&&item.click(item)"
              :target="item.target">
             <img :src="item.src"
                  class="item-img" />
@@ -28,34 +28,34 @@
 import create from "core/create";
 export default create({
   name: "data-card",
-  data() {
+  data () {
     return {};
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   computed: {
-    span() {
+    span () {
       return this.option.span || 6;
     },
-    data() {
+    data () {
       return this.option.data || [];
     },
-    colorText() {
+    colorText () {
       return this.option.colorText || "#fff";
     },
-    bgText() {
+    bgText () {
       return this.option.bgText || "#2e323f";
     },
-    borderColor() {
+    borderColor () {
       return this.option.borderColor || "#2e323f";
     }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   watch: {},
   methods: {}
 });
