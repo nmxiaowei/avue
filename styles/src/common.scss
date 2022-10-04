@@ -8,13 +8,6 @@ body {
   display: none;
 }
 
-.avue-ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
-}
-.avue--disabled{
-  color:#ccc;
-}
 .avue--detail{
   .hover-row td{
     background-color: #fff !important;
@@ -100,9 +93,6 @@ body {
   .el-form-item{
     margin-bottom: 0;
   }
-  .el-form-item__label,.el-form-item__content{
-    padding: 2px 0;
-  }
   .el-form-item__label{
     padding-right: 20px;
     color: #909399;
@@ -112,11 +102,6 @@ body {
   .el-tag{
     margin-left: 0 !important;
     margin-right: 6px !important;
-  }
-  .avue-crud{
-    .el-form-item__content{
-      border:none;
-    }
   }
   .el-form-item__content{
    border-left:1px solid #ebeef5;
@@ -140,45 +125,47 @@ body {
     }
    }
 }
-
-.avue-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: 20px 20px, 20px 20px;
-  background-image: linear-gradient(rgba(0, 0, 0, .1) 1px, transparent 0), linear-gradient(90deg, rgba(0, 0, 0, .1) 1px, transparent 0);
-}
-
 .avue-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   svg,i{
-    width: 32px;
-    height: 32px;
-    font-size: 32px;
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
   }
   &--small{
     svg,i{
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
+      font-size: 15px;
+      width: 15px;
+      height: 15px;
     }
   }
 }
+
+
 .avue-dialog {
-  .el-dialog__headerbtn{
-    top:3px;
-    width: 40px;
-  }
+  position: absolute;
+  min-height: 180px;
+  left: 50%;
+  transform: translate(-50%);
+  border-radius: 2px;
+  max-height: calc(100% - 200px);
+  max-width: calc(100% - 100px);
+  display: flex;
+  flex-direction: column;
   .el-dialog__header{
-    padding: 16px 24px;
-    min-height: 20px;
     border-bottom: 1px solid #f0f0f0;
   }
   .el-dialog__title,.el-drawer__header{
     color: rgba(0,0,0,.85);
     font-weight: 500;
     word-wrap: break-word;
+  }
+  .el-dialog__body{
+    padding-bottom: 60px;
+    flex:1;
+    overflow: scroll;
   }
   .el-drawer{
     position:absolute;
@@ -189,18 +176,14 @@ body {
   }
   .el-drawer__header{
     margin: 0;
-    min-height: 20px;
     padding: 16px 10px 16px 24px;
     border-bottom: 1px solid #f0f0f0;
   }
-  .el-drawer,.el-drawer__body{
-    flex:1;
-    overflow:auto;
-  }
   .el-drawer__body{
-    padding: 30px 10px 60px 30px;
+    padding-bottom: 60px;
   }
   &__footer{
+    z-index:2;
     padding-top: 20px;
     display: block;
     padding: 10px 16px;
@@ -209,6 +192,7 @@ body {
     width: 100%;
     position: absolute;
     left: 0;
+    bottom:0;
     background-color: #fff;
     text-align: right;
     &--left{
@@ -218,15 +202,21 @@ body {
       text-align: center;
     }
   }
-  &--fullscreen{
-    .el-dialog{
-      left:0;
-      top:0;
-      transform:translate(0,0);
-      width: 100% !important;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
+}
+.el-drawer{
+  left:initial;
+  transform:initial;
+  max-height:initial;
+  max-width: initial;
+  .avue-crud__dialog__menu{
+    margin-top: 5px;
+    i{
+      font-size: 16px;
+      color:#333;
     }
   }
+}
+.el-dialog.is-fullscreen{
+  max-width: initial;
+  max-height: initial;
 }

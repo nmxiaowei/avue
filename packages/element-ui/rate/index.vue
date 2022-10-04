@@ -1,7 +1,5 @@
 <template>
   <el-rate v-model="text"
-           style="margin-top:10px"
-           @change="handleChange"
            @click.native="handleClick"
            :max="max"
            :readonly="readonly"
@@ -21,10 +19,6 @@ export default create({
   name: "rate",
   mixins: [props(), event()],
   props: {
-    modelValue: {
-      type: Number,
-      default: 0
-    },
     colors: {
       type: Array
     },

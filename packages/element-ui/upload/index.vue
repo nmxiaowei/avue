@@ -15,7 +15,7 @@
                :drag="dragFile"
                :readonly="readonly"
                :show-file-list="isPictureImg?false:showFileList"
-               :list-type="listType"
+               :list-type="listTypeText"
                :on-change="handleFileChange"
                :on-exceed="handleExceed"
                :disabled="disabled"
@@ -65,7 +65,7 @@
         </div>
       </template>
       <template v-else>
-        <el-button size="small"
+        <el-button :size="size"
                    type="primary">{{t('upload.upload')}}</el-button>
       </template>
       <template #tip>
@@ -94,21 +94,21 @@
             </span>
           </span>
         </span>
-        <span v-else-if="listType==='picture'"
-              @click.stop="handlePreview(file)">
+        <div v-else-if="listType==='picture'"
+             style="display:flex;"
+             @click.stop="handlePreview(file)">
           <component class="el-upload-list__item-thumbnail"
                      :src="file.url"
                      :is="file.type"></component>
-          <a class="el-upload-list__item-name">
-            <el-icon>
-              <el-icon-document></el-icon-document>
-            </el-icon>
-            <span class="el-upload-list__item-file-name"> {{file.name}}</span>
-          </a>
+          <div class="el-upload-list__item-info">
+            <a class="el-upload-list__item-name">
+              <span class="el-upload-list__item-file-name"> {{file.name}}</span>
+            </a>
+          </div>
           <el-icon class="el-icon--close">
             <el-icon-close @click.stop="handleRemove(file)"></el-icon-close>
           </el-icon>
-        </span>
+        </div>
         <span v-else
               @click.stop="handlePreview(file)">
           <div class="el-upload-list__item-info">
@@ -219,6 +219,12 @@ export default create({
 
   },
   computed: {
+    listTypeText () {
+      if (this.listType == 'picture-img' || this.listType == '') {
+        return 'text'
+      }
+      return this.listType
+    },
     isMultiple () {
       return this.isArray || this.isString || this.stringMode
     },

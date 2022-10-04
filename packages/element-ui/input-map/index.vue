@@ -11,7 +11,7 @@
               :placeholder="placeholder">
     </el-input>
     <div v-if="box">
-      <el-dialog custom-class="avue-dialog avue-dialog--none"
+      <el-dialog custom-class="avue-dialog"
                  :width="dialogWidth"
                  :append-to-body="$AVUE.appendToBody"
                  :title="placeholder"

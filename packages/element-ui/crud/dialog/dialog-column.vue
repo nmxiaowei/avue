@@ -1,14 +1,14 @@
 <template>
   <el-drawer v-if="columnBox"
              append-to-body
-             :custom-class="['avue-dialog',b('dialog'),b('column')]"
+             :custom-class="['avue-dialog',b('column')].join(' ')"
              :title="t('crud.showTitle')"
              :size="crud.isMobile?'100%':'40%'"
              v-model="columnBox">
     <el-table :data="data"
               ref="table"
               height="100%"
-              size="small"
+              :size="crud.size"
               border>
       <el-table-column align="center"
                        width="100"

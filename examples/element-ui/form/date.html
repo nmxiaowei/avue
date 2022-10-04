@@ -20,7 +20,7 @@
 <body>
   <div id="app">
     {{form}}
-    <avue-form v-model="form" :option="option" @submit="submit">
+    <avue-form v-model="form" :option="option">
       <template #daterange-label="{}">
         <span>姓名&nbsp;&nbsp;</span>
         <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
@@ -81,31 +81,29 @@
             prop: "date",
             type: "date",
             span: 6,
-            pickerOptions: {
-              disabledDate(time) {
-                return time.getTime() > Date.now();
-              },
-              shortcuts: [{
-                text: '今天',
-                onClick(picker) {
-                  picker.$emit('pick', new Date());
-                }
-              }, {
-                text: '昨天',
-                onClick(picker) {
-                  const date = new Date();
-                  date.setTime(date.getTime() - 3600 * 1000 * 24);
-                  picker.$emit('pick', date);
-                }
-              }, {
-                text: '一周前',
-                onClick(picker) {
-                  const date = new Date();
-                  date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                  picker.$emit('pick', date);
-                }
-              }]
-            }
+            disabledDate(time) {
+              return time.getTime() > Date.now();
+            },
+            shortcuts: [{
+              text: '今天',
+              onClick(picker) {
+                picker.$emit('pick', new Date());
+              }
+            }, {
+              text: '昨天',
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24);
+                picker.$emit('pick', date);
+              }
+            }, {
+              text: '一周前',
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', date);
+              }
+            }]
           }, {
             label: "时间",
             prop: "time",
@@ -115,7 +113,7 @@
             prop: "datetime",
             type: "datetime",
             format: "YYYY-MM-DD hh:mm:ss",
-            valueFormat: "timestamp",
+            valueFormat: "Timestamp",
           }, {
             label: "周",
             prop: "week",

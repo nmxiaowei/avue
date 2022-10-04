@@ -19,9 +19,9 @@
 
 <body>
   <div id="app">
-    <el-button size="small" @click.native="startRecord">开始</el-button>
-    <el-button size="small" type="danger" @click="stopRecord">停止</el-button>
-    <el-button size="small" type="warning" @click="getRecord">捕捉</el-button>
+    <el-button @click.native="startRecord">开始</el-button>
+    <el-button type="danger" @click="stopRecord">停止</el-button>
+    <el-button type="warning" @click="getRecord">捕捉</el-button>
     <br /> <br />
     <avue-video background="https://avuejs.com/images/face.png" @data-change="dataChange" ref="video"></avue-video>
   </div>

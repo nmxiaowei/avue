@@ -41,7 +41,7 @@
         <small>...</small>
       </template>
       <template #before>
-        <el-tag size="small">new</el-tag>
+        <el-tag>new</el-tag>
       </template>
       <template #after>
         <small>[09/14]</small>
@@ -51,7 +51,7 @@
     <avue-text-ellipsis :text="text" :height="100" :width="200" use-tooltip :is-limit-height="isLimitHeight"
       @show="show" @hide="hide">
       <template #before>
-        <el-tag size="small">new</el-tag>
+        <el-tag>new</el-tag>
       </template>
       <template #more>
         <small><span>...</span><span class="link" @click="isLimitHeight=false">查看更多</span></small>

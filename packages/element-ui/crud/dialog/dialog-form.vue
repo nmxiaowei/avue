@@ -3,7 +3,7 @@
              :is="dialogType"
              :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
              :draggable="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="['avue-dialog',b('dialog',{'fullscreen':fullscreen,'dialog':!isDrawer}),crud.tableOption.dialogCustomClass]"
+             :custom-class="['avue-dialog',b('dialog'),this.crud.tableOption.dialogCustomClass].join(' ')"
              :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
              :top="dialogTop"
              :title="dialogTitle"
@@ -47,17 +47,17 @@
       <el-button v-if="validData(option.submitBtn,true) && !isView"
                  @click="submit"
                  :disabled="disabled"
-                 :size="crud.controlSize"
+                 :size="crud.size"
                  :icon="option.submitIcon"
                  type="primary">{{option.submitText}}</el-button>
       <el-button v-if="validData(option.emptyBtn,true) && !isView"
                  @click="reset"
                  :disabled="disabled"
-                 :size="crud.controlSize"
+                 :size="crud.size"
                  :icon="option.emptyIcon">{{option.emptyText}}</el-button>
       <slot name="menu-form"
             :disabled="disabled"
-            :size="crud.controlSize"
+            :size="crud.size"
             :type="boxType"></slot>
     </span>
   </component>

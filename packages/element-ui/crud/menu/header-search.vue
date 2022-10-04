@@ -6,7 +6,7 @@
     <slot name="search"
           :row="searchForm"
           :search="searchForm"
-          :size="crud.controlSize"></slot>
+          :size="crud.size"></slot>
     <avue-form :option="option"
                ref="form"
                @submit="searchChange"

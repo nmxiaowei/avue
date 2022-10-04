@@ -1,7 +1,7 @@
 <template>
   <el-drawer v-if="box"
              lock-scroll
-             :custom-class="['avue-dialog',b('dialog'),b('filter')]"
+             :custom-class="['avue-dialog',b('filter')].join(' ')"
              append-to-body
              :title="t('crud.filterTitle')"
              :size="crud.isMobile?'100%':'60%'"
@@ -11,13 +11,13 @@
               :class="b('filter-menu')">
         <el-button-group>
           <el-button type="primary"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      @click="handleAdd">{{t('crud.filter.addBtn')}}</el-button>
           <el-button type="primary"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      @click="handleClear">{{t('crud.filter.resetBtn')}}</el-button>
           <el-button type="primary"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      @click="handleValueClear">{{t('crud.filter.clearBtn')}}</el-button>
         </el-button-group>
       </el-col>
@@ -31,20 +31,20 @@
                      :dic="columnOption"
                      :clearable="false"
                      @change="handleChange(index)"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      :class="b('filter-label')"></avue-select>
         <avue-select :class="b('filter-symbol')"
                      v-model="column.symbol"
                      :dic="symbolDic"
                      :clearable="false"
-                     :size="crud.isMediumSize"></avue-select>
-        <avue-input :size="crud.isMediumSize"
+                     :size="crud.size"></avue-select>
+        <avue-input :size="crud.size"
                     :class="b('filter-value')"
                     v-model="column.value">
         </avue-input>
         <el-button type="danger"
                    :class="b('filter-icon')"
-                   size="small"
+                   :size="crud.size"
                    @click="handleDelete(index)"
                    circle
                    icon="el-icon-minus"></el-button>
@@ -52,10 +52,10 @@
       <el-col :span="24"
               class="avue-form__menu avue-form__menu--right">
         <el-button type="primary"
-                   :size="crud.isMediumSize"
+                   :size="crud.size"
                    @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
         <el-button @click="box = false"
-                   :size="crud.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
+                   :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
       </el-col>
     </el-row>
 

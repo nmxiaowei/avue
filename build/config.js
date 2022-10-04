@@ -60,7 +60,6 @@ function genConfig (name) {
     output: {
       filename: opts.filename,
       path: opts.dest,
-      chunkFilename: '[id].js',
       libraryExport: "default",
       libraryTarget: 'umd',
       library: 'AVUE',

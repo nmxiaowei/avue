@@ -10,9 +10,9 @@
                    :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
     <template #="{row,$index}">
       <el-dropdown v-if="isMenu"
-                   :size="crud.isMediumSize">
+                   :size="crud.size">
         <el-button text
-                   :size="crud.isMediumSize">
+                   :size="crud.size">
           {{ crud.tableOption.menuBtnTitle || t('crud.menuBtn')}}
           <el-icon class='el-icon--right"'>
             <el-icon-arrow-down />
@@ -40,7 +40,7 @@
                   :row="row"
                   :type="menuText('primary')"
                   :disabled="crud.btnDisabled"
-                  :size="crud.isMediumSize"
+                  :size="crud.size"
                   :index="$index"></slot>
           </el-dropdown-menu>
         </template>
@@ -51,7 +51,7 @@
           <el-button :type="menuText('primary')"
                      :text="isTextMenu"
                      :icon="crud.getBtnIcon('editBtn')"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCell(row,$index)"
                      v-if="validData(crud.tableOption.editBtn,config.editBtn)&&!row.$cellEdit"
@@ -63,7 +63,7 @@
           <el-button :type="menuText('primary')"
                      :text="isTextMenu"
                      :icon="crud.getBtnIcon('saveBtn')"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCell(row,$index)"
                      v-else-if="validData(crud.tableOption.saveBtn,config.saveBtn)&&row.$cellEdit"
@@ -75,7 +75,7 @@
           <el-button :type="menuText('primary')"
                      :text="isTextMenu"
                      :icon="crud.getBtnIcon('cancelBtn')"
-                     :size="crud.isMediumSize"
+                     :size="crud.size"
                      :disabled="crud.btnDisabledList[$index]"
                      @click.stop="crud.rowCancel(row,$index)"
                      v-if="row.$cellEdit">
@@ -87,7 +87,7 @@
         <el-button :type="menuText('primary')"
                    :text="isTextMenu"
                    :icon="crud.getBtnIcon('viewBtn')"
-                   :size="crud.isMediumSize"
+                   :size="crud.size"
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowView(row,$index)"
                    v-permission="crud.getPermission('viewBtn',row,$index)"
@@ -99,7 +99,7 @@
         <el-button :type="menuText('primary')"
                    :text="isTextMenu"
                    :icon="crud.getBtnIcon('editBtn')"
-                   :size="crud.isMediumSize"
+                   :size="crud.size"
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowEdit(row,$index)"
                    v-permission="crud.getPermission('editBtn',row,$index)"
@@ -111,7 +111,7 @@
         <el-button :type="menuText('primary')"
                    :text="isTextMenu"
                    :icon="crud.getBtnIcon('copyBtn')"
-                   :size="crud.isMediumSize"
+                   :size="crud.size"
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowCopy(row)"
                    v-permission="crud.getPermission('copyBtn',row,$index)"
@@ -123,7 +123,7 @@
         <el-button :type="menuText('primary')"
                    :text="isTextMenu"
                    :icon="crud.getBtnIcon('delBtn')"
-                   :size="crud.isMediumSize"
+                   :size="crud.size"
                    :disabled="crud.btnDisabled"
                    @click.stop="crud.rowDel(row,$index)"
                    v-permission="crud.getPermission('delBtn',row,$index)"
@@ -138,7 +138,7 @@
             :row="row"
             :type="menuText('primary')"
             :disabled="crud.btnDisabled"
-            :size="crud.isMediumSize"
+            :size="crud.size"
             :index="$index"></slot>
     </template>
   </el-table-column>
@@ -163,7 +163,7 @@ export default create({
   },
   computed: {
     menuType () {
-      return this.crud.tableOption.menuType || this.$AVUE.menuType || 'button';
+      return this.crud.tableOption.menuType || this.$AVUE.menuType;
     },
     isIconMenu () {
       return this.menuType === "icon"

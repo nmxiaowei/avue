@@ -2,7 +2,7 @@
   <el-slider v-model="text"
              :disabled="disabled"
              :vertical="vertical"
-             :height="height"
+             :height="setPx(height)"
              :step="step"
              :min="min"
              :max="max"

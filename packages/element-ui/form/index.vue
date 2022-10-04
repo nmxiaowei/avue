@@ -6,7 +6,7 @@
              @submit.prevent
              :model="form"
              :label-suffix="labelSuffix"
-             :size="$AVUE.formSize || controlSize"
+             :size="size"
              :label-position="tableOption.labelPosition"
              :label-width="setPx(tableOption.labelWidth,labelWidth)">
       <el-row :span="24"
@@ -78,7 +78,7 @@
                           :value="form[column.prop]"
                           :readonly="column.readonly || readonly"
                           :disabled="getDisabled(column)"
-                          :size="column.size || controlSize"
+                          :size="column.size || size"
                           :dic="DIC[column.prop]"></slot>
                   </template>
                   <template #label
@@ -103,7 +103,7 @@
                             value:form[column.prop],
                             readonly:column.readonly || readonly,
                             disabled:getDisabled(column),
-                            size:column.size || controlSize,
+                            size:column.size || size,
                             dic:DIC[column.prop]
                           })"></slot>
                   </template>
@@ -115,7 +115,7 @@
                       <slot :value="form[column.prop]"
                             :column="column"
                             :label="form['$'+column.prop]"
-                            :size="column.size || controlSize"
+                            :size="column.size || size"
                             :readonly="column.readonly|| readonly"
                             :disabled="getDisabled(column)"
                             :dic="DIC[column.prop]"
@@ -190,7 +190,6 @@ export default create({
   mixins: [init()],
   emits: [
     'update:modelValue',
-    'update:status',
     'reset-change',
     'mock-change',
     'tab-click',
@@ -251,16 +250,12 @@ export default create({
       },
       deep: true,
       immediate: true
-    },
-    allDisabled: {
-      handler (val) {
-        this.$emit('update:status', val)
-      },
-      deep: true,
-      immediate: true
-    },
+    }
   },
   computed: {
+    size () {
+      return this.tableOption.size || this.$AVUE.formSize || this.$AVUE.size;
+    },
     columnSlot () {
       return Object.keys(this.$slots).filter(item => !this.propOption.map(ele => ele.prop).includes(item))
     },
@@ -381,14 +376,6 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    status: {
-      type: Boolean,
-      default: false
-    },
-    isCrud: {
-      type: Boolean,
-      default: false
-    },
     modelValue: {
       type: Object,
       required: true,
@@ -487,6 +474,7 @@ export default create({
         }
       })
       this.form = form;
+      this.setLabel()
       this.setControl()
       this.$emit('update:modelValue', this.form)
       setTimeout(() => {

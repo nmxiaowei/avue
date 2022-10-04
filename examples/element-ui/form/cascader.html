@@ -49,7 +49,7 @@
     data() {
       return {
         form: {
-          "cascader": [],
+          cascader4: ["110000", "110100", "110101"]
         },
         option: {
           column: [{
@@ -107,18 +107,18 @@
               }
               if (level == 0) {
                 axios.get(`${baseUrl}/getProvince`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               }
               if (level == 1) {
                 axios.get(`${baseUrl}/getCity/${code}`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               } else if (level == 2) {
                 axios.get(`${baseUrl}/getArea/${code}`).then(res => {
-                  list = res.data.data;
+                  list = res.data;
                   callback()
                 })
               }

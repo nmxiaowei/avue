@@ -32,6 +32,7 @@ export default function () {
       },
       listType: {
         type: String,
+        default: ''
       },
       tableData: {
         type: Object

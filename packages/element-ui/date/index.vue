@@ -6,7 +6,6 @@
                     :size="size"
                     :editable="editable"
                     :unlink-panels="unlinkPanels"
-                    :readonly="readonly"
                     :default-value="defaultValue"
                     :default-time="defaultTime"
                     :range-separator="rangeSeparator"
@@ -21,6 +20,7 @@
                     @blur="handleBlur"
                     @focus="handleFocus"
                     @click.native="handleClick"
+                    :readonly="readonly"
                     :disabled="disabled"></el-date-picker>
   </div>
 </template>
@@ -33,44 +33,23 @@ import event from "common/common/event.js";
 export default create({
   name: "date",
   mixins: [props(), event(), locale],
-  data () {
-    return {
-      menu: [],
-    };
-  },
   props: {
-    editable: {
-      type: Boolean,
-      default: true
-    },
-    unlinkPanels: {
-      type: Boolean,
-      default: false
-    },
-    modelValue: {},
-    startPlaceholder: {
-      type: String
-    },
-    endPlaceholder: {
-      type: String
-    },
-    rangeSeparator: {
-      type: String
-    },
-    defaultValue: {
-      type: [String, Array]
-    },
-    defaultTime: {
-      type: [String, Array]
-    },
     disabledDate: Function,
-    shortcuts: [Object, Function],
+    shortcuts: [Array, Function],
+    editable: Boolean,
+    unlinkPanels: Boolean,
+    value: {},
+    startPlaceholder: String,
+    endPlaceholder: String,
+    rangeSeparator: String,
+    defaultValue: [String, Array],
+    defaultTime: [String, Array],
     type: {
       type: String,
       default: "date"
     },
-    valueFormat: {},
-    format: {}
+    valueFormat: String,
+    format: String
   }
 });
 </script>

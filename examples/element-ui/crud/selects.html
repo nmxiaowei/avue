@@ -19,7 +19,7 @@
 
 <body>
   <div id="app">
-    <avue-crud :option="option1" :data="data1" @submit="submit"></avue-crud>
+    <avue-crud ref="crud" :option="option1" :data="data1" @submit="submit"></avue-crud>
   </div>
 </body>
 <script>
@@ -117,6 +117,9 @@
             area: '140623'
           }
         ]
+        this.$nextTick(() => {
+          this.$refs.crud.dicInit('cascader');
+        })
       }, 0)
     },
     methods: {

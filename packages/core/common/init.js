@@ -52,7 +52,6 @@ export default function () {
         DIC: {},
         cascaderDIC: {},
         tableOption: {},
-        isMobile: '',
         objectOption: {}
       };
     },
@@ -60,6 +59,9 @@ export default function () {
       this.init();
     },
     computed: {
+      isMobile () {
+        return window.document.body.clientWidth <= 768;
+      },
       resultOption () {
         return Object.assign(this.deepClone(this.tableOption), {
           column: this.propOption || []
@@ -75,18 +77,11 @@ export default function () {
             result[ele.prop] = ele.rules
         });
         return result;
-      },
-      isMediumSize () {
-        return this.controlSize;
-      },
-      controlSize () {
-        return this.tableOption.size || this.$AVUE.size;
       }
     },
     methods: {
       init (type) {
         this.tableOption = this.option;
-        this.getIsMobile();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },
@@ -96,9 +91,6 @@ export default function () {
         } else {
           this.handleLoadDic();
         }
-      },
-      getIsMobile () {
-        this.isMobile = window.document.body.clientWidth <= 768;
       },
       updateDic (prop, list) {
         let column = this.findObject(this.propOption, prop);

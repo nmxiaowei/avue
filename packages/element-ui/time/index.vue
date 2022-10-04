@@ -1,25 +1,33 @@
 <template>
   <div :class="b()">
-    <el-time-picker v-model="text"
-                    :popper-class="popperClass"
-                    :is-range="isRange"
-                    :size="size"
-                    :editable="editable"
-                    :default-value="defaultValue"
-                    :range-separator="rangeSeparator"
-                    :arrow-control="arrowControl"
-                    :start-placeholder="startPlaceholder || t('time.start')"
-                    :end-placeholder="endPlaceholder || t('time.end')"
-                    :format="format"
-                    :readonly="readonly"
-                    :clearable="clearableVal"
-                    :shortcuts="shortcuts"
-                    :disabled-date="disabledDate"
-                    :value-format="valueFormat"
-                    :placeholder="placeholder"
-                    @change="handleChange"
-                    @click="handleClick"
-                    :disabled="disabled"></el-time-picker>
+    <component :is="componentName"
+               v-model="text"
+               :popper-class="popperClass"
+               :is-range="isRange"
+               :size="size"
+               :editable="editable"
+               :disabled-hours="disabledHours"
+               :disabled-minutes="disabledMinutes"
+               :disabled-seconds="disabledSeconds"
+               :default-value="defaultValue"
+               :range-separator="rangeSeparator"
+               :arrow-control="arrowControl"
+               :start-placeholder="startPlaceholder || t('time.start')"
+               :end-placeholder="endPlaceholder || t('time.end')"
+               :format="format"
+               :readonly="readonly"
+               :clearable="clearableVal"
+               :start="start"
+               :end="end"
+               :step="step"
+               :max-time="maxTime"
+               :min-time="minTime"
+               :value-format="valueFormat"
+               :placeholder="placeholder"
+               @change="handleChange"
+               @click="handleClick"
+               :disabled="disabled">
+    </component>
   </div>
 </template>
 
@@ -35,53 +43,34 @@ export default create({
     return {};
   },
   props: {
-    editable: {
-      type: Boolean,
-      default: true
-    },
-    startPlaceholder: {
-      type: String
-    },
-    endPlaceholder: {
-      type: String
-    },
-    rangeSeparator: {
-      type: String
-    },
-    modelValue: {
-      required: true
-    },
-    disabledDate: Function,
-    shortcuts: [Object, Function],
-    defaultValue: {
-      type: [String, Array]
-    },
-    valueFormat: {
-      default: ""
-    },
-    arrowControl: {
-      type: Boolean,
-      default: false
-    },
-    type: {
-      default: ""
-    },
-    format: {
-      default: ""
-    }
+    editable: Boolean,
+    maxTime: String,
+    minTime: String,
+    start: String,
+    end: String,
+    step: String,
+    startPlaceholder: String,
+    endPlaceholder: String,
+    rangeSeparator: String,
+    defaultValue: [String, Array],
+    valueFormat: String,
+    arrowControl: Boolean,
+    type: String,
+    format: String,
+    disabledHours: Function,
+    disabledMinutes: Function,
+    disabledSeconds: Function
   },
-  created () { },
-  mounted () { },
   computed: {
+    componentName () {
+      if (this.start || this.end || this.step || this.maxTime || this.minTime) {
+        return "elTimeSelect"
+      } else {
+        return "elTimePicker"
+      }
+    },
     isRange () {
       return this.type === "timerange";
-    }
-  },
-  methods: {
-    handleTextValue (val) {
-      if (Array.isArray(this.text) && this.validatenull(this.text)) {
-        this.text = this.text.join(',')
-      }
     }
   }
 });

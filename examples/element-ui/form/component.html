@@ -19,16 +19,14 @@
 
 <body>
   <div id="app">
-    <avue-form v-model="form" :option="option" @submit="submit">
-
-    </avue-form>
+    <avue-form v-model="form" :option="option"></avue-form>
   </div>
 </body>
 <script>
   var app = Vue.createApp({
     data() {
       return {
-        obj: {},
+        form: {},
         option: {
           column: [
             {

@@ -27,7 +27,7 @@
     <avue-crud @row-click="handleRowClick" ref="crud" :option="option" :data="data" :table-loading="loading"
       v-model="obj" @on-load="onLoad" @row-update="rowUpdate" @row-del="rowDel">
       <template #menu-left="scope">
-        <el-button @click="addRow" size="small">添加10条</el-button>
+        <el-button @click="addRow">添加10条</el-button>
       </template>
       <template #name="{row,size,$cell}">
         <el-tag>{{row.name}}</el-tag>

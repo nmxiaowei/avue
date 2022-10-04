@@ -25,15 +25,6 @@
   </div>
 </body>
 <script>
-  Vue.use(AVUE, {
-    ali: {
-      region: 'oss-cn-beijing',
-      endpoint: 'oss-cn-beijing.aliyuncs.com',
-      accessKeyId: 'DVVDfw5e3GK53rxt',
-      accessKeySecret: 'T3xEVl1BPOOmBSEfz8w0Qpp9lqmyHa',
-      bucket: 'avue',
-    }
-  })
 </script>
 <script>
   var app = Vue.createApp({
@@ -86,7 +77,15 @@
     }
   })
   app.use(ElementPlus)
-  app.use(AVUE)
+  app.use(AVUE, {
+    ali: {
+      region: 'oss-cn-beijing',
+      endpoint: 'oss-cn-beijing.aliyuncs.com',
+      accessKeyId: 'DVVDfw5e3GK53rxt',
+      accessKeySecret: 'T3xEVl1BPOOmBSEfz8w0Qpp9lqmyHa',
+      bucket: 'avue',
+    }
+  })
   app.mount('#app')
 </script>
 

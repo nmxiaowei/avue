@@ -204,29 +204,30 @@ $space-width: 15px;
   }
   &__dialog {
     &__header{
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     &__menu{
+      position: absolute;
+      right: 5px;
+      z-index: 1;
       i{
-        margin-top: 1px;
         color: #909399;
-        font-size: 13px;
+        font-size: 14px;
         &:hover{
           color:#409EFF;
         }
         cursor: pointer;
       }
     }
+    &--fullscreen{
+      max-width: inherit;
+      max-height: inherit;
+    }
     .el-dialog__body{
       padding: 20px 20px 5px 10px;
-    }
-    .el-scrollbar__wrap{
-      overflow-x: hidden;
-    }
-    .avue-form__menu{
-      padding-top: 15px;
     }
   }
 }

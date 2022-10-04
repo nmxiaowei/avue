@@ -61,7 +61,6 @@ export default {
   expandFixed: 'left',
   filterMultiple: true,
   calcHeight: 300,
-  title: '表格标题',
   width: '100%',
   searchGutter: 20,
   searchLabelWidth: 80,

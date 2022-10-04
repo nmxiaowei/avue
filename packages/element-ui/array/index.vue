@@ -31,7 +31,8 @@
                     :disabled="disabled"></el-input>
         </el-tooltip>
         <template v-if="!(disabled ||readonly || alone)">
-          <el-button type="primary"
+          <el-button v-if="!isLimit"
+                     type="primary"
                      icon="el-icon-plus"
                      circle
                      :size="size"

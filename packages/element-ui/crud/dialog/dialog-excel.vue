@@ -3,7 +3,7 @@
     <el-dialog :title="t('crud.excelBtn')"
                lock-scroll
                :append-to-body="$AVUE.appendToBody"
-               :custom-class="['avue-dialog']"
+               custom-class="avue-dialog"
                v-model="box"
                :width="crud.isMobile?'100%':'30%'">
       <avue-form v-model="form"
@@ -11,10 +11,10 @@
       <template #footer
                 class="dialog-footer">
         <el-button type="primary"
-                   :size="crud.isMediumSize"
+                   :size="crud.size"
                    @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
         <el-button @click="box = false"
-                   :size="crud.isMediumSize">{{t('crud.filter.cancelBtn')}}</el-button>
+                   :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
       </template>
     </el-dialog>
   </div>

@@ -20,9 +20,9 @@
 <body>
   <div id="app">
     {{form}}
-    <el-button type="primary" size="small" @click="form.deep.deep.deep.test1='1.1'">
+    <el-button type="primary" @click="form.deep.deep.deep.test1='1.1'">
       改变1</el-button>
-    <el-button type="primary" size="small" @click="form.deep.deep.deep.test2='1.2'">改变2</el-button>
+    <el-button type="primary" @click="form.deep.deep.deep.test2='1.2'">改变2</el-button>
     <avue-form :option="option" v-model="form"> </avue-form>
   </div>
 </body>

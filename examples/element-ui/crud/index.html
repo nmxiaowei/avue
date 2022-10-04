@@ -56,7 +56,7 @@
         <el-button :size="scope.size">自定义按钮</el-button>
       </template>
       <template #menu="scope">
-        <el-button :size="scope.size" :disabled="scope.disabled" :type="scope.type" icon="el-icon-plus">自定义</el-button>
+        <el-button :size="scope.size" :disabled="scope.disabled" type="primary" text icon="el-icon-plus">自定义</el-button>
       </template>
     </avue-crud>
   </div>
@@ -67,7 +67,9 @@
     data() {
       return {
         loading: true,
-        page: {},
+        page: {
+          total: 1
+        },
         searchForm: {},
         obj: {},
         option: {
@@ -319,6 +321,9 @@
       }, 1000)
     },
     methods: {
+      currentRowChange(row) {
+        this.$message.success('单选中的数据' + JSON.stringify(row));
+      },
       expandChange(row, expendList) {
         this.$message.success('展开回调')
       },
@@ -453,7 +458,7 @@
             datetime: '2019-01-01 00:00:00'
           },
           {
-            id: '2',
+            id: '3',
             name: '0',
             dic: '110000',
             switch: 0,

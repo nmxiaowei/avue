@@ -73,7 +73,7 @@
               <el-dropdown split-button
                            class="web__msg-submit"
                            type="primary"
-                           size="small"
+                           :size="size"
                            @click="handleSend"
                            trigger="click">
                 发送
@@ -84,7 +84,7 @@
                                   width="160"
                                   v-model="visible">
                         <div>
-                          <el-input size="small"
+                          <el-input :size="size"
                                     style="margin-bottom:10px"
                                     :rows="3"
                                     show-word-limit
@@ -92,11 +92,11 @@
                                     v-model="keys"
                                     type="textarea"></el-input>
                           <div style="text-align: right; margin: 0">
-                            <el-button size="small"
+                            <el-button :size="size"
                                        text
                                        @click="visible = false">取消</el-button>
                             <el-button type="primary"
-                                       size="small"
+                                       :size="size"
                                        @click="addKey">确定</el-button>
                           </div>
                         </div>
@@ -142,7 +142,7 @@
                         :rules="[
       { required: true, message: '地址不能为空'},
     ]">
-            <el-input size="small"
+            <el-input :size="size"
                       style="margin-bottom:10px"
                       :rows="4"
                       show-word-limit
@@ -155,10 +155,10 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="upload.box=false"
-                       size="small">取 消</el-button>
+                       :size="size">取 消</el-button>
             <el-button type="primary"
                        @click="uploadSubmit"
-                       size="small">确 定</el-button>
+                       :size="size">确 定</el-button>
           </span>
         </template>
 
@@ -211,6 +211,7 @@ export default create({
     }
   },
   props: {
+    size: String,
     beforeOpen: Function,
     tools: {
       type: Object,

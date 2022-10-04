@@ -3,7 +3,7 @@
            :class="b('pagination')"
            v-if="pageFlag && validData(crud.tableOption.page,true)">
     <slot name="page"></slot>
-    <el-pagination :small="crud.isMobile"
+    <el-pagination :small="crud.size=='small'"
                    :disabled="defaultPage.disabled"
                    :hide-on-single-page="defaultPage.single"
                    :pager-count="defaultPage.pagerCount"
@@ -50,6 +50,9 @@ export default create({
     };
   },
   created () {
+    if (this.crud.isMobile) {
+      this.defaultPage.layout = 'total, sizes, prev, pager, next'
+    }
     this.pageInit();
     this.crud.$emit("on-load", this.defaultPage);
   },

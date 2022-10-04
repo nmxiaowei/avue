@@ -38,7 +38,7 @@
             <slot v-bind="{
                       row:row,
                       dic:crud.DIC[column.prop],
-                      size:crud.isMediumSize,
+                      size:crud.size,
                       index:$index,
                       disabled:crud.btnDisabledList[$index],
                       label:handleShowLabel(row,column,crud.DIC[column.prop]),
@@ -48,7 +48,7 @@
                   v-if="crud.getSlotName(column,'F',crud.$slots)"></slot>
             <form-temp v-else
                        :column="column"
-                       :size="crud.isMediumSize"
+                       :size="crud.size"
                        :table-data="{index:$index,row:row,label:handleDetail(row,column)}"
                        :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
                        :props="column.props || crud.tableOption.props"
@@ -70,7 +70,7 @@
       <slot :row="row"
             :index="$index"
             :dic="crud.DIC[column.prop]"
-            :size="crud.isMediumSize"
+            :size="crud.size"
             :label="handleShowLabel(row,column,crud.DIC[column.prop])"
             :name="column.prop"
             v-else-if="crud.$slots[column.prop]"></slot>

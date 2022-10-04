@@ -50,9 +50,9 @@
                ref="cellForm">
         <el-table :key="reload"
                   :data="cellForm.list"
-                  :row-key="handleGetRowKeys"
+                  :row-key="rowKey"
                   :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
-                  :size="$AVUE.tableSize || controlSize"
+                  :size="size"
                   :lazy="validData(tableOption.lazy,false)"
                   :load="treeLoad"
                   :tree-props="treeProps"
@@ -266,6 +266,9 @@ export default create({
     this.getTableHeight();
   },
   computed: {
+    size () {
+      return this.tableOption.size || this.$AVUE.tableSize || this.$AVUE.size;
+    },
     isSortable () {
       return this.tableOption.sortable;
     },
@@ -311,8 +314,8 @@ export default create({
       function findProp (list = []) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          result.push(ele);
           if (ele.children) findProp(ele.children);
+          else result.push(ele);
         });
       }
       findProp(this.columnOption);
@@ -498,10 +501,6 @@ export default create({
     //对部分表单字段进行校验的方法
     validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
-    },
-    handleGetRowKeys (row) {
-      const rowKey = row[this.rowKey];
-      return rowKey;
     },
     selectClear () {
       this.$emit('selection-clear', this.deepClone(this.tableSelect))

@@ -11,7 +11,7 @@
               :disabled="disabled">
     </el-input>
     <div v-if="box">
-      <el-dialog custom-class="avue-dialog avue-dialog--none"
+      <el-dialog custom-class="avue-dialog"
                  :width="dialogWidth"
                  :append-to-body="$AVUE.appendToBody"
                  :title="placeholder"
@@ -82,7 +82,7 @@ export default create({
       return Object.assign({
         menu: false,
         header: false,
-        size: 'small',
+        size: this.size,
         headerAlign: 'center',
         align: 'center',
         highlightCurrentRow: true,

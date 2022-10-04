@@ -5,7 +5,7 @@
       <el-button type="primary"
                  @click="crud.rowAdd"
                  :icon="crud.getBtnIcon('addBtn')"
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  v-permission="crud.getPermission('addBtn')"
                  v-if="validData(crud.tableOption.addBtn,config.addBtn)">
         <template v-if="!crud.isIconMenu">
@@ -16,14 +16,14 @@
                  @click="crud.rowCellAdd"
                  :icon="crud.getBtnIcon('addBtn')"
                  v-permission="crud.getPermission('addRowBtn')"
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  v-if="validData(crud.tableOption.addRowBtn,config.addRowBtn)">
         <template v-if="!crud.isIconMenu">
           {{crud.menuIcon('addBtn')}}
         </template>
       </el-button>
       <slot name="menu-left"
-            :size="crud.isMediumSize"></slot>
+            :size="crud.size"></slot>
     </div>
     <div :class="b('right')"
          v-if="validData(crud.tableOption.menuLeft,true)">
@@ -31,46 +31,46 @@
                  @change="dateChange"
                  value-format="YYYY-MM-DD HH:mm:ss"
                  format="YYYY-MM-DD HH:mm:ss"
-                 :pickerOptions="pickerOptions"
+                 :shortcuts="shortcuts"
                  style="display:inline-block;margin-right:20px;"
                  v-if="validData(crud.tableOption.dateBtn,config.dateBtn)"
-                 :size="crud.isMediumSize"></avue-date>
+                 :size="crud.size"></avue-date>
       <slot name="menu-right"
-            :size="crud.isMediumSize"></slot>
+            :size="crud.size"></slot>
       <el-button :icon="crud.getBtnIcon('excelBtn')"
                  circle
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  @click="rowExcel"
                  v-permission="crud.getPermission('excelBtn')"
                  v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
       </el-button>
       <el-button :icon="crud.getBtnIcon('printBtn')"
                  circle
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  @click="rowPrint"
                  v-permission="crud.getPermission('printBtn')"
                  v-if="validData(crud.tableOption.printBtn,config.printBtn)">
       </el-button>
       <el-button :icon="crud.getBtnIcon('refreshBtn')"
                  circle
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  @click="crud.refreshChange"
                  v-permission="crud.getPermission('refreshBtn')"
                  v-if="validData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
       <el-button :icon="crud.getBtnIcon('columnBtn')"
                  circle
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  @click="crud.$refs.dialogColumn.handleShow()"
                  v-permission="crud.getPermission('columnBtn')"
                  v-if="validData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
       <el-button :icon="crud.getBtnIcon('searchBtn')"
                  circle
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  @click="crud.$refs.headerSearch.handleSearchShow()"
                  v-if="(crud.$refs.headerSearch || {}).searchFlag&&validData(crud.tableOption.searchShowBtn,true)"></el-button>
       <el-button :icon="crud.getBtnIcon('filterBtn')"
                  circle
-                 :size="crud.isMediumSize"
+                 :size="crud.size"
                  @click="crud.$refs.dialogFilter.handleShow()"
                  v-permission="crud.getPermission('filterBtn')"
                  v-if="validData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
@@ -95,49 +95,47 @@ export default create({
   data () {
     return {
       dateCreate: false,
-      pickerOptions: {
-        shortcuts: [{
-          text: '今日',
-          onClick (picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime());
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '昨日',
-          onClick (picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一周',
-          onClick (picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一个月',
-          onClick (picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近三个月',
-          onClick (picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
-      },
+      shortcuts: [{
+        text: '今日',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime());
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '昨日',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一周',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一个月',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近三个月',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+          picker.$emit('pick', [start, end]);
+        }
+      }],
       config: config
     };
   },

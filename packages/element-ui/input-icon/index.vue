@@ -13,12 +13,12 @@
         <icon-temp @click="handleShow"
                    :text="text"
                    :size="28"
-                   small></icon-temp>
+                   :small="size==='small'"></icon-temp>
 
       </template>
     </el-input>
     <div v-if="box">
-      <el-dialog custom-class="avue-dialog avue-dialog--none"
+      <el-dialog custom-class="avue-dialog"
                  :title="placeholder"
                  :append-to-body="$AVUE.appendToBody"
                  v-model="box"
@@ -32,6 +32,7 @@
                :key="index">
             <icon-temp :text="item.value"
                        :size="item.size"
+                       :small="size==='small'"
                        :color="item.color"></icon-temp>
             <p>{{item.label || item.value}}</p>
           </div>　
