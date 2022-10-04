@@ -404,9 +404,11 @@ export default create({
             .then(res => {
               this.res = {};
               if (this.isQiniuOss) {
-                res.data.key = oss_config.url + res.data.key;
+                res.data = {
+                  url: oss_config.url + res.data.key,
+                  name: res.data.hash
+                }
               }
-
               if (this.isAliOss) {
                 this.res = getAsVal(res, this.resKey);
               } else {
