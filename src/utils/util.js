@@ -36,7 +36,7 @@ export function getAsVal (obj, bind = '') {
   return result;
 }
 
-export function setAsVal (obj, bind = '', value) {
+export function setAsVal (obj = {}, bind = '', value) {
   let result;
   let type = getObjType(value)
   if (validatenull(value)) {
@@ -56,7 +56,11 @@ export function setAsVal (obj, bind = '', value) {
       result = `obj.${bind}=${value}`;
     }
   }
-  eval(result);
+  try {
+    eval(result);
+  } catch (err) {
+    return obj;
+  }
   return obj;
 }
 export const loadScript = (type = 'js', url, dom = "body") => {

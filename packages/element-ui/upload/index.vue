@@ -134,7 +134,7 @@ import locale from "core/locale";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 import { getAsVal, isMediaType } from "utils/util";
-import { detailImg } from "plugin/canvas/";
+import { detailImg } from "plugin/watermark/";
 import { getToken } from "plugin/qiniu/";
 import { getClient } from "plugin/ali/";
 import packages from "core/packages";

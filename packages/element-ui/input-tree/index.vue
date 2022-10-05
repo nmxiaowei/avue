@@ -1,5 +1,6 @@
 <template>
-  <el-tree-select :class="b()"
+  <el-tree-select ref="tree"
+                  :class="b()"
                   v-model="text"
                   :loading="loading"
                   :lazy="lazy"
@@ -143,6 +144,11 @@ export default create({
   methods: {
     handleTextValue (value) {
       this.init();
+    },
+    getHalfList () {
+      let list = this.$refs.tree.getCheckedNodes(false, true)
+      list = list.map(ele => ele[this.valueKey])
+      return list;
     },
     init () {
       this.disabledParentNode(this.dic, this.parent);

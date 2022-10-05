@@ -17,27 +17,28 @@
       </el-input>
     </div>
     <el-scrollbar :class="b('content')">
-      <el-tree ref="tree"
-               :data="data"
-               :lazy="lazy"
-               :load="treeLoad"
-               :props="treeProps"
-               :icon-class="iconClass"
-               :indent="indent"
-               :highlight-current="!multiple"
-               :show-checkbox="multiple"
-               :accordion="accordion"
-               :node-key="valueKey"
-               :check-strictly="checkStrictly"
-               :check-on-click-node="checkOnClickNode"
-               :filter-node-method="filterNode"
-               v-loading="loading"
-               :expand-on-click-node="expandOnClickNode"
-               @check-change="handleCheckChange"
-               @node-click="nodeClick"
-               @node-contextmenu="nodeContextmenu"
-               :default-expand-all="defaultExpandAll"
-               :default-expanded-keys="defaultExpandedKeys">
+      <component :is="componentName"
+                 ref="tree"
+                 :data="data"
+                 :lazy="lazy"
+                 :load="treeLoad"
+                 :props="treeProps"
+                 :icon-class="iconClass"
+                 :indent="indent"
+                 :highlight-current="!multiple"
+                 :show-checkbox="multiple"
+                 :accordion="accordion"
+                 :node-key="valueKey"
+                 :check-strictly="checkStrictly"
+                 :check-on-click-node="checkOnClickNode"
+                 :filter-node-method="filterNode"
+                 v-loading="loading"
+                 :expand-on-click-node="expandOnClickNode"
+                 @check-change="handleCheckChange"
+                 @node-click="nodeClick"
+                 @node-contextmenu="nodeContextmenu"
+                 :default-expand-all="defaultExpandAll"
+                 :default-expanded-keys="defaultExpandedKeys">
         <template #="{ node, data }"
                   v-if="$slots.default">
           <slot :node="node"
@@ -49,7 +50,7 @@
                 :data="data"></slot>
           <span class="el-tree-node__label">{{node.label}}</span>
         </template>
-      </el-tree>
+      </component>
     </el-scrollbar>
 
     <div class="el-cascader-panel is-bordered"
@@ -156,6 +157,12 @@ export default create({
     };
   },
   computed: {
+    virtualize () {
+      return this.option.virtualize
+    },
+    componentName () {
+      return 'elTree' + (this.virtualize ? 'V2' : '')
+    },
     styleName () {
       return {
         top: this.setPx(this.client.y - 10),

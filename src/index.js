@@ -6,7 +6,7 @@ import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, validData, findArray, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
 import contextmenu from 'packages/core/directive/contextmenu';
 import $Export from 'plugin/export/';
-import { watermark } from 'plugin/canvas/';
+import $Watermark from 'plugin/watermark/';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Screenshot from 'plugin/screenshot/';
@@ -19,6 +19,7 @@ let plugins = {
   $Export,
   $Print,
   $Clipboard,
+  $Watermark,
   $Log,
   $Screenshot,
   deepClone,
@@ -31,7 +32,6 @@ let plugins = {
   validatenull,
   downFile,
   loadScript,
-  watermark,
   findObject,
   randomId
 
@@ -86,7 +86,7 @@ const install = function (Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.config.globalProperties.$axios = opts.axios || window.axios || axios;
+  Vue.config.globalProperties.$axios = opts.axios || axios || window.axios;
   window.axios = Vue.config.globalProperties.$axios;
 };
 export default {

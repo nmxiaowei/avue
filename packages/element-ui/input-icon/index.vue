@@ -23,6 +23,11 @@
                  :append-to-body="$AVUE.appendToBody"
                  v-model="box"
                  :width="dialogWidth">
+        <div :class="b('filter')">
+          <el-input :placeholder="t('tip.input')"
+                    :size="size"
+                    v-model="filterText"></el-input>
+        </div>
         <avue-tabs :option="option"
                    @change="handleTabs"></avue-tabs>
         <div :class="b('list')">
@@ -45,6 +50,7 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 import iconTemp from 'common/components/icon/index';
 import props from "common/common/props.js";
 import event from "common/common/event.js";
@@ -53,7 +59,7 @@ export default create({
   components: {
     iconTemp
   },
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   props: {
     dialogWidth: {
       type: String,
@@ -68,6 +74,7 @@ export default create({
   },
   data () {
     return {
+      filterText: '',
       box: false,
       tabs: {}
     };
@@ -77,11 +84,15 @@ export default create({
       let list = (this.tabs.list || []).map(ele => {
         if (!ele.value && !ele.label) {
           return {
+            label: ele,
             value: ele
           }
         }
         return ele
       });
+      if (this.filterText) {
+        list = list.filter(ele => ele.label.indexOf(this.filterText) !== -1)
+      }
       return list
     },
     option () {

@@ -26,7 +26,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     } else if ('password' === type) {
       result = getPasswordChar(result, '*');
     } else if (DATE_LIST.includes(type) && column.format) {
-      const format = column.format.replace('dd', 'DD').replace('yyyy', 'YYYY');
+      const format = column.format
       let formatValue = dayjs().format('YYYY-MM-DD');
       if (type.indexOf('range') !== -1) {
         let date1 = result[0] || '', date2 = result[1] || ''

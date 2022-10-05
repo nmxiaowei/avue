@@ -27,7 +27,7 @@ let config = {
  * @param {Int} degree    水印文本旋转角度，默认 -20
  * @param return
  **/
-export const watermark = function (opt = {}) {
+export default function (opt = {}) {
   return new _waterMark(opt);
 };
 
