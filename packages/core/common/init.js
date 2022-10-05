@@ -60,7 +60,7 @@ export default function () {
     },
     computed: {
       isMobile () {
-        return window.document.body.clientWidth <= 768;
+        return document.body.clientWidth <= 768;
       },
       resultOption () {
         return Object.assign(this.deepClone(this.tableOption), {

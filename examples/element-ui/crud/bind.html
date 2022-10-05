@@ -19,6 +19,7 @@
 
 <body>
   <div id="app">
+    {{form}}
     <avue-crud :option="option" :data="data" v-model="form"></avue-crud>
   </div>
 </body>
@@ -37,6 +38,8 @@
           }
         }],
         option: {
+          filterBtn: true,
+          excelBtn: true,
           labelWidth: 120,
           column: [
             {

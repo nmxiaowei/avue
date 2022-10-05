@@ -3,7 +3,7 @@
     <el-dialog :title="t('crud.excelBtn')"
                lock-scroll
                :append-to-body="$AVUE.appendToBody"
-               custom-class="avue-dialog"
+               class="avue-dialog"
                v-model="box"
                :width="crud.isMobile?'100%':'30%'">
       <avue-form v-model="form"

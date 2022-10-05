@@ -11,9 +11,10 @@
               :placeholder="placeholder">
     </el-input>
     <div v-if="box">
-      <el-dialog custom-class="avue-dialog"
+      <el-dialog class="avue-dialog"
                  :width="dialogWidth"
                  :append-to-body="$AVUE.appendToBody"
+                 lock-scroll
                  :title="placeholder"
                  @close="handleClose"
                  v-model="box">

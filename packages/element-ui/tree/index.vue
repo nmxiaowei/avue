@@ -16,7 +16,7 @@
         </template>
       </el-input>
     </div>
-    <el-scrollbar :class="b('content')">
+    <div :class="b('content')">
       <component :is="componentName"
                  ref="tree"
                  :data="data"
@@ -51,7 +51,7 @@
           <span class="el-tree-node__label">{{node.label}}</span>
         </template>
       </component>
-    </el-scrollbar>
+    </div>
 
     <div class="el-cascader-panel is-bordered"
          v-if="client.show&&menu"
@@ -76,8 +76,9 @@
     <div v-if="box">
       <el-dialog :title="node[labelKey] || title"
                  v-model="box"
-                 :custom-class="['avue-dialog',b('dialog')].join(' ')"
+                 :class="['avue-dialog',b('dialog')]"
                  :append-to-body="$AVUE.appendToBody"
+                 lock-scroll
                  @close="hide"
                  :width="validData(option.dialogWidth,'50%')">
         <avue-form v-model="form"

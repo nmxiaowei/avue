@@ -2,7 +2,7 @@
   <el-drawer v-if="box"
              lock-scroll
              :custom-class="['avue-dialog',b('filter')].join(' ')"
-             append-to-body
+             :append-to-body="$AVUE.appendToBody"
              :title="t('crud.filterTitle')"
              :size="crud.isMobile?'100%':'60%'"
              v-model="box">
@@ -49,16 +49,14 @@
                    circle
                    icon="el-icon-minus"></el-button>
       </el-col>
-      <el-col :span="24"
-              class="avue-form__menu avue-form__menu--right">
-        <el-button type="primary"
-                   :size="crud.size"
-                   @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
-        <el-button @click="box = false"
-                   :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
-      </el-col>
     </el-row>
-
+    <span class="avue-dialog__footer">
+      <el-button type="primary"
+                 :size="crud.size"
+                 @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
+      <el-button @click="box = false"
+                 :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
+    </span>
   </el-drawer>
 </template>
 

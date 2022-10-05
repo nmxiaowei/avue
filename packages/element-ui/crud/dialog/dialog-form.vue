@@ -1,9 +1,9 @@
 <template>
   <component v-if="boxVisible"
              :is="dialogType"
-             :destroy-on-close="validData(crud.tableOption.dialogDestroy,true)"
+             :destroy-on-close="validData(crud.tableOption.dialogDestroy,false)"
              :draggable="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
-             :custom-class="['avue-dialog',b('dialog'),this.crud.tableOption.dialogCustomClass].join(' ')"
+             :class="['avue-dialog',b('dialog'),this.crud.tableOption.dialogCustomClass]"
              :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
              :top="dialogTop"
              :title="dialogTitle"
@@ -258,6 +258,7 @@ export default create({
         Object.keys(this.crud.tableForm).forEach(ele => delete this.crud.tableForm[ele])
         this.crud.tableIndex = -1;
         this.boxVisible = false;
+        this.crud.tableForm = {}
       };
       if (typeof this.crud.beforeClose === "function") {
         this.crud.beforeClose(callback, this.boxType);

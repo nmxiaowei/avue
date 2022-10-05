@@ -18,9 +18,10 @@
       </template>
     </el-input>
     <div v-if="box">
-      <el-dialog custom-class="avue-dialog"
+      <el-dialog class="avue-dialog"
                  :title="placeholder"
                  :append-to-body="$AVUE.appendToBody"
+                 lock-scroll
                  v-model="box"
                  :width="dialogWidth">
         <div :class="b('filter')">
