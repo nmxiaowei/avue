@@ -1,7 +1,6 @@
 <template>
   <component v-if="boxVisible"
              :is="dialogType"
-             :destroy-on-close="validData(crud.tableOption.dialogDestroy,false)"
              :draggable="validData(crud.tableOption.dialogDrag,config.dialogDrag)"
              :class="['avue-dialog',b('dialog'),this.crud.tableOption.dialogCustomClass]"
              :append-to-body="validData(crud.tableOption.dialogAppendToBody,true)"
