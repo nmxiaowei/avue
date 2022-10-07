@@ -101,7 +101,7 @@ export default function () {
         }
       },
       getIsMobile () {
-        this.isMobile = window.document.body.clientWidth <= 768;
+        this.isMobile = document.body.clientWidth <= 768;
       },
       updateDic (prop, list) {
         let column = this.findObject(this.propOption, prop);

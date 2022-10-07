@@ -32,15 +32,9 @@ import locale from "core/locale";
 export default create({
   name: "date",
   mixins: [props(), event(), locale],
-  data () {
-    return {
-      menu: [],
-    };
-  },
   props: {
     editable: Boolean,
     unlinkPanels: Boolean,
-    value: {},
     startPlaceholder: String,
     endPlaceholder: String,
     rangeSeparator: String,

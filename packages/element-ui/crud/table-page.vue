@@ -3,9 +3,9 @@
            v-if="pageFlag && vaildData(crud.tableOption.page,true)"
            :class="b('pagination')">
     <slot name="page"></slot>
-    <el-pagination :small="crud.isMobile"
+    <el-pagination :small="crud.size=='mini'"
                    :disabled="defaultPage.disabled"
-                   :hide-on-single-page="defaultPage.singlePage"
+                   :hide-on-single-page="defaultPage.single"
                    :pager-count="defaultPage.pagerCount"
                    :current-page.sync="defaultPage.currentPage"
                    :background="defaultPage.background"
@@ -30,7 +30,7 @@ export default create({
     return {
       config: config,
       defaultPage: {
-        singlePage: false,
+        single: false,
         total: 0, // 总页数
         pagerCount: 7,//超过多少条隐藏
         currentPage: 1, // 当前页数
@@ -42,6 +42,9 @@ export default create({
     };
   },
   created () {
+    if (this.crud.isMobile) {
+      this.defaultPage.layout = 'total, sizes, prev, pager, next'
+    }
     this.pageInit();
     this.crud.$emit("on-load", this.defaultPage);
   },

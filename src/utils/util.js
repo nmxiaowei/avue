@@ -480,9 +480,9 @@ export const getPasswordChar = (result = '', char) => {
 export const arraySort = (list = [], prop, callback) => {
   return list.filter(ele => !validatenull(ele[prop])).sort((a, b) => callback(a, b)).concat(list.filter(ele => validatenull(ele[prop])));
 }
-export const clearVal = (obj, list = []) => {
+export const clearVal = (obj, propList, list = []) => {
   if (!obj) return {};
-  Object.keys(obj).forEach(ele => {
+  propList.forEach(ele => {
     if (list.includes(ele)) return
     else if (ele.includes('$')) delete obj[ele]
     else if (!validatenull(obj[ele])) {

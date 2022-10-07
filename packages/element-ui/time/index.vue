@@ -32,15 +32,11 @@ import locale from "core/locale";
 export default create({
   name: "time",
   mixins: [props(), event(), locale],
-  data () {
-    return {};
-  },
   props: {
     editable: Boolean,
     startPlaceholder: String,
     endPlaceholder: String,
     rangeSeparator: String,
-    value: {},
     defaultValue: [String, Array],
     pickerOptions: Object,
     valueFormat: String,
@@ -55,8 +51,6 @@ export default create({
       }
     }
   },
-  created () { },
-  mounted () { },
   computed: {
     componentName () {
       let pickerOptions = this.pickerOptions || {}

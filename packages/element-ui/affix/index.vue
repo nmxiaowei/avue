@@ -69,7 +69,7 @@ export default create({
       const scrollTop = this.getScroll(this.container, true);
       const scrollLeft = this.getScroll(this.container);
 
-      const docEl = window.document.body;
+      const docEl = document.body;
       const clientTop = docEl.clientTop || 0;
       const clientLeft = docEl.clientLeft || 0;
 

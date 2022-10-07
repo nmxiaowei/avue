@@ -411,7 +411,7 @@ export default create({
     handleDetail (html = '') {
       let result = html;
       setTimeout(() => {
-        const list = this.$refs.content;
+        const list = this.$refs.content || [];
         list.forEach(ele => {
           for (let i = 0; i < ele.children.length; i++) {
             const child = ele.children[i];

@@ -481,6 +481,7 @@ export default create({
         }
       })
       this.$set(this, 'form', form)
+      this.setLabel()
       this.setControl()
       this.$emit('input', this.form)
       setTimeout(() => {
@@ -495,13 +496,16 @@ export default create({
         let control = column.control
         let value = this.form
         if (!this.formBind[prop]) {
+          let bindList = [];
           if (bind) {
-            this.$watch('form.' + prop, (n, o) => {
+            let formProp = this.$watch('form.' + prop, (n, o) => {
               if (n != o) setAsVal(this.form, bind, n);
             })
-            this.$watch('form.' + bind, (n, o) => {
+            let formDeep = this.$watch('form.' + bind, (n, o) => {
               if (n != o) this.$set(this.form, prop, n);
             })
+            bindList.push(formProp)
+            bindList.push(formDeep)
             this.$set(this.form, prop, eval('value.' + bind));
           }
           if (control) {
@@ -513,12 +517,13 @@ export default create({
                 if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
               })
             }
-            this.$watch('form.' + prop, (n, o) => {
+            let formControl = this.$watch('form.' + prop, (n, o) => {
               callback()
             })
+            bindList.push(formControl)
             callback()
           }
-          this.formBind[prop] = true;
+          this.formBind[prop] = bindList;
         }
       })
     },
@@ -686,7 +691,8 @@ export default create({
       });
     },
     resetForm () {
-      this.form = clearVal(this.form, (this.tableOption.filterParams || []).concat([this.rowKey]))
+      let propList = this.propOption.map(ele => ele.prop)
+      this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
       this.$nextTick(() => {
         this.clearValidate()
         this.$emit("reset-change");
@@ -710,6 +716,13 @@ export default create({
         }
       });
     }
+  },
+  beforeDestroy () {
+    Object.keys(this.formBind).forEach(ele => {
+      this.formBind[ele].forEach(unWatch => {
+        unWatch()
+      })
+    })
   }
 });
 </script>
