@@ -30,7 +30,6 @@
       </div>
       <avue-form v-model="crud.tableForm"
                  ref="tableForm"
-                 :reset="false"
                  :status.sync="disabled"
                  @change="handleChange"
                  @submit="handleSubmit"
@@ -180,7 +179,7 @@ export default create({
       this.$refs.tableForm.submit()
     },
     reset () {
-      this.$refs.tableForm.resetForm()
+      this.$refs.tableForm.resetForm(false)
     },
     getSlotName (item) {
       return item.replace('Form', '')

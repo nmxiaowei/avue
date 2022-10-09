@@ -199,10 +199,6 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
-    reset: {
-      type: Boolean,
-      default: false
-    },
     status: {
       type: Boolean,
       default: false
@@ -415,7 +411,6 @@ export default create({
         return true;
       }
     },
-
     //初始化表单
     dataFormat () {
       let formDefault = formInitVal(this.propOption).tableForm;
@@ -695,8 +690,8 @@ export default create({
         })
       });
     },
-    resetForm () {
-      if (this.reset) {
+    resetForm (reset = true) {
+      if (reset) {
         let propList = this.propOption.map(ele => ele.prop)
         this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
       }
