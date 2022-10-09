@@ -199,6 +199,10 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    reset: {
+      type: Boolean,
+      default: false
+    },
     status: {
       type: Boolean,
       default: false
@@ -394,7 +398,6 @@ export default create({
     setTimeout(() => {
       this.dataFormat()
     })
-
   },
   methods: {
     getComponent,
@@ -412,78 +415,24 @@ export default create({
         return true;
       }
     },
-    setForm () {
-      Object.keys(this.value).forEach(ele => {
-        this.$set(this.form, ele, this.value[ele]);
-      });
-    },
-    setVal () {
-      this.$emit('input', this.form)
-      this.$emit('change', this.form)
-    },
-    setLabel () {
-      if (this.tableOption.filterNull === true) {
-        this.form = filterParams(this.form, [''], false)
-      }
-      if (this.tableOption.filterDic == true) {
-        this.form = filterParams(this.form, ['$'], false)
-        return
-      }
-      this.propOption.forEach(column => {
-        let result;
-        let DIC = this.DIC[column.prop]
-        if (this.validatenull(DIC)) return
-        result = detail(this.form, column, this.tableOption, DIC);
-        if (result) {
-          this.$set(this.form, `$${column.prop}`, result);
-        } else {
-          this.$delete(this.form, `$${column.prop}`)
-        }
-      });
-    },
-    handleGroupClick (activeNames) {
-      this.$emit('tab-click', activeNames)
-    },
-    handleTabClick (tab, event) {
-      this.$emit('tab-click', tab, event)
-    },
-    getLabelWidth (column, item) {
-      let result;
-      if (!this.validatenull(column.labelWidth)) {
-        result = column.labelWidth
-      } else if (!this.validatenull(item.labelWidth)) {
-        result = item.labelWidth
-      } else {
-        result = this.parentOption.labelWidth;
-      }
-      return this.setPx(result, this.labelWidth);
-    },
-    //对部分表单字段进行校验的方法
-    validateField (val) {
-      return this.$refs.form.validateField(val);
-    },
-    validTip (column) {
-      return !column.tip || column.type === 'upload'
-    },
-    getPropRef (prop) {
-      return this.$refs[prop][0];
-    },
+
     //初始化表单
     dataFormat () {
       let formDefault = formInitVal(this.propOption).tableForm;
+      let formValue = this.value
       let form = {}
-      Object.entries(Object.assign(formDefault, this.value)).forEach(ele => {
+      Object.entries(Object.assign(formDefault, formValue)).forEach(ele => {
         let key = ele[0], value = ele[1]
-        if (this.validatenull(this.value[key])) {
+        if (this.validatenull(formValue[key])) {
           form[key] = value
         } else {
-          form[key] = this.value[key]
+          form[key] = formValue[key]
         }
       })
       this.$set(this, 'form', form)
       this.setLabel()
       this.setControl()
-      this.$emit('input', this.form)
+      this.setVal()
       setTimeout(() => {
         this.formCreate = true
         this.clearValidate()
@@ -526,6 +475,62 @@ export default create({
           this.formBind[prop] = bindList;
         }
       })
+    },
+    setForm () {
+      Object.keys(this.value).forEach(ele => {
+        this.$set(this.form, ele, this.value[ele]);
+      });
+    },
+    setVal () {
+      this.$emit('input', this.form)
+      this.$emit('change', this.form)
+    },
+    setLabel () {
+      if (this.tableOption.filterNull === true) {
+        this.form = filterParams(this.form, [''], false)
+      }
+      if (this.tableOption.filterDic == true) {
+        this.form = filterParams(this.form, ['$'], false)
+      } else {
+        this.propOption.forEach(column => {
+          let result;
+          let DIC = this.DIC[column.prop]
+          if (this.validatenull(DIC)) return
+          result = detail(this.form, column, this.tableOption, DIC);
+          if (result) {
+            this.$set(this.form, `$${column.prop}`, result);
+          } else {
+            this.$delete(this.form, `$${column.prop}`)
+          }
+        });
+      }
+    },
+    handleGroupClick (activeNames) {
+      this.$emit('tab-click', activeNames)
+    },
+    handleTabClick (tab, event) {
+      this.$emit('tab-click', tab, event)
+    },
+    getLabelWidth (column, item) {
+      let result;
+      if (!this.validatenull(column.labelWidth)) {
+        result = column.labelWidth
+      } else if (!this.validatenull(item.labelWidth)) {
+        result = item.labelWidth
+      } else {
+        result = this.parentOption.labelWidth;
+      }
+      return this.setPx(result, this.labelWidth);
+    },
+    //对部分表单字段进行校验的方法
+    validateField (val) {
+      return this.$refs.form.validateField(val);
+    },
+    validTip (column) {
+      return !column.tip || column.type === 'upload'
+    },
+    getPropRef (prop) {
+      return this.$refs[prop][0];
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -691,8 +696,10 @@ export default create({
       });
     },
     resetForm () {
-      let propList = this.propOption.map(ele => ele.prop)
-      this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
+      if (this.reset) {
+        let propList = this.propOption.map(ele => ele.prop)
+        this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
+      }
       this.$nextTick(() => {
         this.clearValidate()
         this.$emit("reset-change");
