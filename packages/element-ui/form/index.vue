@@ -250,6 +250,13 @@ export default create({
       },
       deep: true,
       immediate: true
+    },
+    allDisabled: {
+      handler (val) {
+        this.$emit('update:status', val)
+      },
+      deep: true,
+      immediate: true
     }
   },
   computed: {
@@ -376,6 +383,10 @@ export default create({
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    status: {
+      type: Boolean,
+      default: false
+    },
     modelValue: {
       type: Object,
       required: true,
@@ -405,78 +416,23 @@ export default create({
         return true;
       }
     },
-    setForm () {
-      Object.keys(this.modelValue).forEach(ele => {
-        this.form[ele] = this.modelValue[ele]
-      });
-    },
-    setVal () {
-      this.$emit('update:modelValue', this.form)
-      this.$emit('change', this.form)
-    },
-    setLabel () {
-      if (this.tableOption.filterNull === true) {
-        this.form = filterParams(this.form, [''], false)
-      }
-      if (this.tableOption.filterDic == true) {
-        this.form = filterParams(this.form, ['$'], false)
-        return
-      }
-      this.propOption.forEach(column => {
-        let result;
-        let DIC = this.DIC[column.prop]
-        if (this.validatenull(DIC)) return
-        result = detail(this.form, column, this.tableOption, DIC);
-        if (result) {
-          this.form[`$${column.prop}`] = result;
-        } else {
-          delete this.form[`$${column.prop}`]
-        }
 
-      });
-    },
-    handleGroupClick (activeNames) {
-      this.$emit('tab-click', activeNames)
-    },
-    handleTabClick (tab, event) {
-      this.$emit('tab-click', tab, event)
-    },
-    getLabelWidth (column, item) {
-      let result;
-      if (!this.validatenull(column.labelWidth)) {
-        result = column.labelWidth
-      } else if (!this.validatenull(item.labelWidth)) {
-        result = item.labelWidth
-      } else {
-        result = this.tableOption.labelWidth;
-      }
-      return this.setPx(result, this.labelWidth);
-    },
-    //对部分表单字段进行校验的方法
-    validateField (val) {
-      return this.$refs.form.validateField(val);
-    },
-    validTip (column) {
-      return !column.tip || column.type === 'upload'
-    },
-    getPropRef (prop) {
-      return this.$refs[prop][0];
-    },
     dataFormat () {
       let formDefault = formInitVal(this.propOption);
+      let formValue = this.modelValue
       let form = {}
-      Object.entries(Object.assign(formDefault, this.modelValue)).forEach(ele => {
+      Object.entries(Object.assign(formDefault, formValue)).forEach(ele => {
         let key = ele[0], value = ele[1]
-        if (this.validatenull(this.modelValue[key])) {
+        if (this.validatenull(formValue[key])) {
           form[key] = value
         } else {
-          form[key] = this.modelValue[key]
+          form[key] = formValue[key]
         }
       })
       this.form = form;
       this.setLabel()
       this.setControl()
-      this.$emit('update:modelValue', this.form)
+      this.setVal()
       setTimeout(() => {
         this.formCreate = true
         this.clearValidate()
@@ -519,6 +475,62 @@ export default create({
           this.formBind[prop] = bindList;
         }
       })
+    },
+    setForm () {
+      Object.keys(this.modelValue).forEach(ele => {
+        this.form[ele] = this.modelValue[ele]
+      });
+    },
+    setVal () {
+      this.$emit('update:modelValue', this.form)
+      this.$emit('change', this.form)
+    },
+    setLabel () {
+      if (this.tableOption.filterNull === true) {
+        this.form = filterParams(this.form, [''], false)
+      }
+      if (this.tableOption.filterDic == true) {
+        this.form = filterParams(this.form, ['$'], false)
+      } else {
+        this.propOption.forEach(column => {
+          let result;
+          let DIC = this.DIC[column.prop]
+          if (this.validatenull(DIC)) return
+          result = detail(this.form, column, this.tableOption, DIC);
+          if (result) {
+            this.form[`$${column.prop}`] = result;
+          } else {
+            delete this.form[`$${column.prop}`]
+          }
+        });
+      }
+    },
+    handleGroupClick (activeNames) {
+      this.$emit('tab-click', activeNames)
+    },
+    handleTabClick (tab, event) {
+      this.$emit('tab-click', tab, event)
+    },
+    getLabelWidth (column, item) {
+      let result;
+      if (!this.validatenull(column.labelWidth)) {
+        result = column.labelWidth
+      } else if (!this.validatenull(item.labelWidth)) {
+        result = item.labelWidth
+      } else {
+        result = this.tableOption.labelWidth;
+      }
+      return this.setPx(result, this.labelWidth);
+    },
+    //对部分表单字段进行校验的方法
+    validateField (val) {
+      return this.$refs.form.validateField(val);
+    },
+    validTip (column) {
+      return !column.tip || column.type === 'upload'
+    },
+    getPropRef (prop) {
+      return this.$refs[prop][0];
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -683,9 +695,11 @@ export default create({
         })
       });
     },
-    resetForm () {
-      let propList = this.propOption.map(ele => ele.prop)
-      this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
+    resetForm (reset = true) {
+      if (reset) {
+        let propList = this.propOption.map(ele => ele.prop)
+        this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
+      }
       this.$nextTick(() => {
         this.clearValidate()
         this.$emit("reset-change");

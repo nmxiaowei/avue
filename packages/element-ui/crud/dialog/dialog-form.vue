@@ -26,7 +26,6 @@
     </template>
     <avue-form v-model="crud.tableForm"
                v-model:status="disabled"
-               v-if="boxVisible"
                ref="tableForm"
                @change="handleChange"
                @submit="handleSubmit"
@@ -171,14 +170,13 @@ export default create({
       this.$refs.tableForm.submit()
     },
     reset () {
-      this.$refs.tableForm.resetForm()
+      this.$refs.tableForm.resetForm(false)
     },
     getSlotName (item) {
       return item.replace('-form', '')
     },
     handleChange () {
-      this.crud.$emit('update:modelValue', this.crud.tableForm)
-      this.crud.$emit('change', this.crud.tableForm)
+      this.crud.setVal()
     },
     handleTabClick (tab, event) {
       this.crud.$emit('tab-click', tab, event)
@@ -256,8 +254,9 @@ export default create({
         done && done();
         Object.keys(this.crud.tableForm).forEach(ele => delete this.crud.tableForm[ele])
         this.crud.tableIndex = -1;
-        this.boxVisible = false;
         this.crud.tableForm = {}
+        this.crud.setVal()
+        this.boxVisible = false;
       };
       if (typeof this.crud.beforeClose === "function") {
         this.crud.beforeClose(callback, this.boxType);
