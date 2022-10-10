@@ -23,7 +23,9 @@
     {{form}}
     <avue-form :option="option" v-model="form" :upload-error="uploadError" :upload-delete="uploadDelete"
       :upload-before="uploadBefore" :upload-exceed="uploadExceed" :upload-after="uploadAfter">
-
+      <template #imgUrl-type="{file}">
+        <span>自定义模板{{file}}</span>
+      </template>
     </avue-form>
   </div>
 </body>
