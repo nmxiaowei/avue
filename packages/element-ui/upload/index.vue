@@ -154,6 +154,8 @@ export default create({
     }
   },
   props: {
+    ali: Object,
+    qiniu: Object,
     data: {
       type: Object,
       default: () => {
@@ -376,7 +378,7 @@ export default create({
               this.hide();
               return;
             }
-            oss_config = this.$AVUE.qiniu;
+            oss_config = this.qiniu || this.$AVUE.qiniu;
             const token = getToken(oss_config.AK, oss_config.SK, {
               scope: oss_config.scope,
               deadline: new Date().getTime() + oss_config.deadline * 3600
@@ -389,7 +391,7 @@ export default create({
               this.hide();
               return;
             }
-            oss_config = this.$AVUE.ali;
+            oss_config = this.ali || this.$AVUE.ali;
             client = getClient(oss_config);
           }
           (() => {

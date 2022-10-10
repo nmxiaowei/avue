@@ -190,6 +190,7 @@ export default create({
   mixins: [init()],
   emits: [
     'update:modelValue',
+    'update:status',
     'reset-change',
     'mock-change',
     'tab-click',

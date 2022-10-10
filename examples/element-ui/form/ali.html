@@ -12,7 +12,7 @@
   <script src="../../cdn/vue/vue.global.min.js"></script>
   <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
   <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="https://avuejs.com/cdn/aliyun-oss-sdk.min.js"></script>
+  <script src="https://cdn.staticfile.org/ali-oss/6.17.1/aliyun-oss-sdk.min.js"></script>
 
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -54,6 +54,19 @@
         }
       }
     },
+    created() {
+      axios.get('https://api.avuejs.com/sts').then(token => {
+        token = token.data;
+        this.option.column[0].ali = {
+          region: 'oss-cn-beijing',
+          endpoint: 'oss-cn-beijing.aliyuncs.com',
+          accessKeyId: token.AccessKeyId,
+          accessKeySecret: token.AccessKeySecret,
+          stsToken: token.SecurityToken,
+          bucket: 'avue',
+        }
+      })
+    },
     methods: {
       uploadPreview(file, column) {
         console.log(file, column)
@@ -77,15 +90,7 @@
     }
   })
   app.use(ElementPlus)
-  app.use(AVUE, {
-    ali: {
-      region: 'oss-cn-beijing',
-      endpoint: 'oss-cn-beijing.aliyuncs.com',
-      accessKeyId: 'DVVDfw5e3GK53rxt',
-      accessKeySecret: 'T3xEVl1BPOOmBSEfz8w0Qpp9lqmyHa',
-      bucket: 'avue',
-    }
-  })
+  app.use(AVUE);
   app.mount('#app')
 </script>
 
