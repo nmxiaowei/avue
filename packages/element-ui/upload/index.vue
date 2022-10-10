@@ -135,12 +135,13 @@ export default create({
     return {
       res: '',
       loading: false,
-      file: {},
       menu: false,
       reload: Math.random()
     }
   },
   props: {
+    qiniu: Object,
+    ali: Object,
     data: {
       type: Object,
       default: () => {
@@ -336,8 +337,8 @@ export default create({
         return
       }
       this.loading = true;
-      this.file = config.file;
-      const fileSize = this.file.size / 1024;
+      let file = config.file;
+      const fileSize = file.size / 1024;
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
         this.hide("文件太大不符合");
         return;
@@ -350,9 +351,12 @@ export default create({
       const done = () => {
         const callback = (newFile) => {
           let url = this.action;
-          this.file = newFile || this.file
-          for (let o in this.data) param.append(o, this.data[o]);
-          param.append(this.fileName, this.file);
+          //附加属性
+          for (let o in this.data) {
+            param.append(o, this.data[o]);
+          }
+          const uploadFile = newFile || file;
+          param.append(this.fileName, uploadFile);
           //七牛云oss存储
           if (this.isQiniuOss) {
             if (!window.CryptoJS) {
@@ -360,7 +364,7 @@ export default create({
               this.hide();
               return;
             }
-            oss_config = this.$AVUE.qiniu;
+            oss_config = this.qiniu || this.$AVUE.qiniu;
             const token = getToken(oss_config.AK, oss_config.SK, {
               scope: oss_config.scope,
               deadline: new Date().getTime() + oss_config.deadline * 3600
@@ -373,13 +377,13 @@ export default create({
               this.hide();
               return;
             }
-            oss_config = this.$AVUE.ali;
+            oss_config = this.ali || this.$AVUE.ali;
             client = getClient(oss_config);
           }
 
           (() => {
             if (this.isAliOss) {
-              return client.put(uploadfile.name, uploadfile, {
+              return client.put(uploadFile.name, uploadFile, {
                 headers: this.headers
               });
             } else {
@@ -401,20 +405,20 @@ export default create({
           });
         };
         if (typeof this.uploadBefore === "function") {
-          this.uploadBefore(this.file, callback, this.hide, this.column);
+          this.uploadBefore(file, callback, this.hide, this.column);
         } else {
           callback();
         }
       };
-      if (isMediaType(this.file.name) != 'img') {
+      if (isMediaType(file.name) != 'img') {
         done()
         return
       }
       //处理水印图片
       const canvasDone = () => {
         if (!this.validatenull(this.canvasOption)) {
-          detailImg(this.file, this.canvasOption, file => {
-            this.file = file;
+          detailImg(file, this.canvasOption, res => {
+            file = res;
             done();
           });
         } else {
@@ -423,12 +427,12 @@ export default create({
       }
       //处理图片剪裁
       if (!this.validatenull(this.cropperOption)) {
-        fileToBase64(this.file, (res) => {
+        fileToBase64(file, (res) => {
           let option = Object.assign(this.cropperOption, {
             img: res,
             type: 'file',
             callback: res => {
-              this.file = res;
+              file = res;
               canvasDone()
             },
             cancel: () => {
