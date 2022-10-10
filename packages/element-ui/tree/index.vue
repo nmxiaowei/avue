@@ -73,20 +73,18 @@
       <slot name="menu"
             :node="node"></slot>
     </div>
-    <div v-if="box">
-      <el-dialog :title="node[labelKey] || title"
-                 v-model="box"
-                 :class="['avue-dialog',b('dialog')]"
-                 :append-to-body="$AVUE.appendToBody"
-                 lock-scroll
-                 @close="hide"
-                 :width="validData(option.dialogWidth,'50%')">
-        <avue-form v-model="form"
-                   :option="formOption"
-                   ref="form"
-                   @submit="handleSubmit"></avue-form>
-      </el-dialog>
-    </div>
+    <el-dialog :title="node[labelKey] || title"
+               v-model="box"
+               class="avue-dialog avue-dialog--none"
+               :append-to-body="$AVUE.appendToBody"
+               lock-scroll
+               @close="hide"
+               :width="validData(option.dialogWidth,'50%')">
+      <avue-form v-model="form"
+                 :option="formOption"
+                 ref="form"
+                 @submit="handleSubmit"></avue-form>
+    </el-dialog>
 
   </div>
 </template>
@@ -179,7 +177,7 @@ export default create({
       return this.validData(this.option.menu, true)
     },
     title () {
-      return this.option.title
+      return this.option.title || this.t('crud.addTitle')
     },
     treeLoad () {
       return this.option.treeLoad
@@ -303,8 +301,6 @@ export default create({
     hide () {
       this.box = false;
       this.node = {};
-      this.$refs.form.resetForm();
-      this.$refs.form.clearValidate();
     },
     save (data, done) {
       const callback = () => {

@@ -1,6 +1,7 @@
 import $Log from 'plugin/logs/';
 const list = {
   'AliOSS': {
+    url: 'https://cdn.staticfile.org/ali-oss/6.17.1/aliyun-oss-sdk.min.js',
     title: '阿里云云图片上传，需引入OSS的sdk',
     github: 'https://github.com/ali-sdk/ali-oss/'
   },

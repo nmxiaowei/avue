@@ -203,6 +203,12 @@ body {
       text-align: center;
     }
   }
+  &--none{
+    .el-dialog__body{
+      padding-bottom: 20px;
+    }
+    
+  }
 }
 .el-drawer{
   left:initial;
