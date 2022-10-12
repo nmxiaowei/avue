@@ -9,6 +9,7 @@
             :maxlength="maxlength"
             :minlength="minlength"
             :show-password="typeParam=='password'?showPassword:false"
+            :rows="rows"
             :autosize="{ minRows: minRows, maxRows: maxRows}"
             :prefix-icon="prefixIcon"
             :suffix-icon="suffixIcon"
@@ -80,6 +81,7 @@ export default create({
     maxlength: {
       type: Number
     },
+    rows: Number,
     minRows: {
       type: Number,
       default: 5
