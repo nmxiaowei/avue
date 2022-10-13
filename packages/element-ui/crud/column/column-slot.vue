@@ -75,15 +75,20 @@
             :name="column.prop"
             v-else-if="crud.$slots[column.prop]"></slot>
       <template v-else>
-        <span v-if="['img','upload'].includes(column.type)">
-          <div class="avue-crud__img">
-            <component v-for="(item,index) in getImgList(row,column)"
-                       :src="item"
-                       controls="controls"
+        <span v-if="['img','upload'].includes(column.type)"
+              class="avue-crud__img ">
+          <template v-for="(item,index) in getImgList(row,column)">
+            <component :src="item"
+                       v-if="isMediaType(item,column.fileType)"
                        :is="isMediaType(item,column.fileType)"
                        :key="index"
                        @click.stop="openImg(row,column,index)"></component>
-          </div>
+            <el-icon v-else
+                     :key="index"
+                     @click.stop="openImg(row,column,index)">
+              <el-icon-document></el-icon-document>
+            </el-icon>
+          </template>
         </span>
         <el-link v-else-if="'url'===column.type"
                  v-for="(item,index) in corArray(row,column)"
@@ -218,7 +223,7 @@ export default {
       })
     },
     handleDetail (row, column) {
-      let result = row[column.prop];
+      let result;
       let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
       result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC)) {
@@ -228,13 +233,15 @@ export default {
     },
     corArray (row, column) {
       const list = this.handleDetail(row, column);
-      if (Array.isArray(list)) return list
-      return list.split(DIC_SHOW_SPLIT)
+      if (!Array.isArray(list)) {
+        list = list.split(DIC_SHOW_SPLIT);
+      }
+      return this.deepClone(list)
     },
     openImg (row, column, index) {
       let list = this.getImgList(row, column)
       list = list.map(ele => {
-        return { thumbUrl: ele, url: ele, type: 'img' }
+        return { thumbUrl: ele, url: ele }
       })
       this.$ImagePreview(list, index);
     },
@@ -244,7 +251,7 @@ export default {
       let list = this.corArray(row, column);
       if (column.listType == 'picture-img') return [url + list]
       list.forEach((ele, index) => {
-        ele = url + (ele[value] ? ele[value] : ele);
+        list[index] = url + (ele[value] ? ele[value] : ele);
       })
       return list;
     },

@@ -12,7 +12,8 @@
   }
   &--list {
     .el-upload {
-      border: 1px dashed #d9d9d9;
+      background-color: #fbfdff;
+      border: 1px dashed #c0ccda;
       border-radius: 6px;
       cursor: pointer;
       position: relative;
@@ -49,17 +50,13 @@
       font-size: 20px;
     }
   }
-  &__icon {
+  &__avatar {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width: 148px;
+    height: 148px;
+    line-height: 148px;
     text-align: center;
-  }
-  &__avatar {
-    width: 178px;
-    height: 178px;
     display: block;
   }
 }

@@ -36,17 +36,6 @@
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
-          <div v-if="item.isImage==false"
-               @click="handleClick(item,indexs,true)"
-               :id="'avue-image-preview__'+indexs"
-               :class="b('file')">
-            <span>
-              <el-icon>
-                <Document />
-              </el-icon>
-              <p>{{item.name}}</p>
-            </span>
-          </div>
           <component @click="handleClick(item,indexs)"
                      :id="'avue-image-preview__'+indexs"
                      :src="item.url"
@@ -57,6 +46,17 @@
                      :is="isMediaType(item)"
                      v-if="isMediaType(item)"
                      ondragstart="return false"></component>
+          <div v-else
+               @click="handleClick(item,indexs,true)"
+               :id="'avue-image-preview__'+indexs"
+               :class="b('file')">
+            <span>
+              <el-icon>
+                <Document />
+              </el-icon>
+              <p>{{item.name || getName(item.url)}}</p>
+            </span>
+          </div>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -136,16 +136,13 @@ export default create({
       }
     },
     isRrrow () {
-      return this.imgLen != 1
-    },
-    imgLen () {
-      return this.imgList.length
-    },
-    imgList () {
-      return this.datas.map(ele => ele.url)
+      return this.datas.length > 1
     }
   },
   methods: {
+    getName (url) {
+      return url.substring(url.lastIndexOf('/') + 1)
+    },
     handlePrint () {
       $Print(`#avue-image-preview__${this.count}`)
     },

@@ -29,12 +29,16 @@
         <slot v-if="$slots.default"
               :file="{url:imgUrl}"></slot>
         <template v-else>
-          <component v-if="imgUrl"
+          <component v-if="isMediaType(imgUrl)"
                      :src="imgUrl"
-                     controls="controls"
                      :is="isMediaType(imgUrl)"
                      @mouseover="menu=true"
                      :class="b('avatar')"></component>
+          <el-icon v-else-if="imgUrl"
+                   @mouseover="menu=true"
+                   :class="b('avatar')">
+            <el-icon-document />
+          </el-icon>
           <el-icon :class="b('icon')"
                    v-else>
             <el-icon-plus />
@@ -78,8 +82,13 @@
         </slot>
         <span v-else-if="listType==='picture-card'">
           <component class="el-upload-list__item-thumbnail"
+                     v-if="isMediaType(file.url)"
                      :src="file.url"
                      :is="file.type"></component>
+          <el-icon v-else
+                   :class="b('avatar')">
+            <el-icon-document />
+          </el-icon>
           <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview">
               <el-icon>
@@ -167,8 +176,7 @@ export default create({
       default: true
     },
     fileType: {
-      type: String,
-      type: 'img'
+      type: String
     },
     oss: {
       type: String
@@ -262,18 +270,14 @@ export default create({
       let list = [];
       (this.text || []).forEach((ele, index) => {
         if (ele) {
-          let name;
-          //处理单个url链接取最后为label
-          if (this.isMultiple) {
-            let i = ele.lastIndexOf('/');
-            name = ele.substring(i + 1);
-          }
-          let url = getFileUrl(this.homeUrl, this.isMultiple ? ele : ele[this.valueKey]);
+          let name = this.isMultiple ? ele.substring(ele.lastIndexOf('/') + 1) : ele[this.labelKey]
+          let url = this.isMultiple ? ele : ele[this.valueKey];
+          url = getFileUrl(this.homeUrl, url);
           list.push({
             uid: index + '',
             status: 'done',
             type: this.isMediaType(url),
-            name: this.isMultiple ? name : ele[this.labelKey],
+            name: name,
             url: url
           });
         }
@@ -329,7 +333,8 @@ export default create({
     },
     delete (file) {
       (this.text || []).forEach((ele, index) => {
-        if ((this.isMultiple ? ele : ele[this.valueKey]) === file.url.replace(this.homeUrl, '')) {
+        let url = this.isMultiple ? ele : ele[this.valueKey]
+        if (getFileUrl(this.homeUrl, url) === file.url) {
           this.text.splice(index, 1);
         }
       });
