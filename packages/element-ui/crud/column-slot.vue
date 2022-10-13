@@ -220,7 +220,7 @@ export default {
       })
     },
     handleDetail (row, column) {
-      let result = row[column.prop];
+      let result;
       let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
       result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC) && this.crud.tableOption.filterDic !== true) {
@@ -230,8 +230,10 @@ export default {
     },
     corArray (row, column) {
       const list = this.handleDetail(row, column);
-      if (Array.isArray(list)) return list
-      return list.split(DIC_SHOW_SPLIT)
+      if (!Array.isArray(list)) {
+        list = list.split(DIC_SHOW_SPLIT);
+      }
+      return this.deepClone(list)
     },
     openImg (row, column, index) {
       let list = this.getImgList(row, column)
