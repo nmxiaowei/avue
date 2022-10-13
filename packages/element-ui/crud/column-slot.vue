@@ -76,17 +76,22 @@
             :name="column.prop"
             v-else-if="crud.$scopedSlots[column.prop]"></slot>
       <template v-else>
-        <span v-if="['img','upload'].includes(column.type)">
-          <div class="avue-crud__img">
-            <component v-for="(item,index) in getImgList(row,column)"
-                       :src="item"
-                       controls="controls"
+        <span v-if="['img','upload'].includes(column.type)"
+              class="avue-crud__img ">
+          <template v-for="(item,index) in getImgList(row,column)">
+            <component :src="item"
+                       v-if="isMediaType(item,column.fileType)"
                        :is="isMediaType(item,column.fileType)"
                        :key="index"
                        @click.stop="openImg(row,column,index)"></component>
-          </div>
+            <i v-else
+               :key="index"
+               :src="item"
+               @click.stop="openImg(row,column,index)"
+               class="el-icon-document"></i>
+          </template>
         </span>
-        <span v-else-if="'url' ===column.type">
+        <span v-else-if="'url'===column.type">
           <el-link v-for="(item,index) in corArray(row,column)"
                    type="primary"
                    :key="index"
@@ -143,7 +148,7 @@ export default {
     });
   },
   methods: {
-    isMediaType (item, fileType = 'img') {
+    isMediaType (item, fileType) {
       return isMediaType(item, fileType)
     },
     vaildLabel (column, row, val) {
@@ -231,7 +236,7 @@ export default {
     openImg (row, column, index) {
       let list = this.getImgList(row, column)
       list = list.map(ele => {
-        return { thumbUrl: ele, url: ele, type: 'img' }
+        return { thumbUrl: ele, url: ele, type: column.fileType }
       })
       this.$ImagePreview(list, index);
     },

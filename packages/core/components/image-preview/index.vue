@@ -48,7 +48,7 @@
                :class="b('file')">
             <span>
               <i class="el-icon-document"></i>
-              <p>{{item.name}}</p>
+              <p>{{item.name || getName(item.url)}}</p>
             </span>
           </div>
         </el-carousel-item>
@@ -104,16 +104,13 @@ export default create({
       }
     },
     isRrrow () {
-      return this.imgLen != 1
-    },
-    imgLen () {
-      return this.imgList.length
-    },
-    imgList () {
-      return this.datas.map(ele => ele.url)
+      return this.datas.length > 1
     }
   },
   methods: {
+    getName (url) {
+      return url.substring(url.lastIndexOf('/') + 1)
+    },
     handlePrint () {
       this.$Print(`#avue-image-preview__${this.index}`)
     },
