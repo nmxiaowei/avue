@@ -27,8 +27,7 @@
                    :interval="0"
                    arrow="never"
                    @change="handleChange"
-                   indicator-position="none"
-                   :height="height">
+                   indicator-position="none">
         <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
