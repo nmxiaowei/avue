@@ -168,6 +168,7 @@ export default create({
     },
     fileType: {
       type: String,
+      type: 'img'
     },
     oss: {
       type: String
