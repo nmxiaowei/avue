@@ -154,6 +154,7 @@ export default create({
     },
     fileType: {
       type: String,
+      default: 'img'
     },
     oss: {
       type: String
