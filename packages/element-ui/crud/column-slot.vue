@@ -143,7 +143,7 @@ export default {
     });
   },
   methods: {
-    isMediaType (item, fileType) {
+    isMediaType (item, fileType = 'img') {
       return isMediaType(item, fileType)
     },
     vaildLabel (column, row, val) {
@@ -241,7 +241,7 @@ export default {
       let list = this.corArray(row, column);
       if (column.listType == 'picture-img') return [url + list]
       list.forEach((ele, index) => {
-        ele = url + (ele[value] ? ele[value] : ele);
+        list[index] = url + (ele[value] ? ele[value] : ele);
       })
       return list;
     },
