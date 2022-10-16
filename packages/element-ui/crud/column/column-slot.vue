@@ -81,10 +81,8 @@
             <component :src="item"
                        v-if="isMediaType(item,column.fileType)"
                        :is="isMediaType(item,column.fileType)"
-                       :key="index"
                        @click.stop="openImg(row,column,index)"></component>
             <el-icon v-else
-                     :key="index"
                      @click.stop="openImg(row,column,index)">
               <el-icon-document></el-icon-document>
             </el-icon>
