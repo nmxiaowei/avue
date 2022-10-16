@@ -10,7 +10,6 @@
     <avue-form :option="option"
                ref="form"
                @submit="searchChange"
-               @change="handleChange"
                @reset-change="resetChange"
                v-model="searchForm">
       <template slot="menuForm"
@@ -61,7 +60,6 @@ export default create({
       show: false,
       searchIndex: 2,
       searchShow: true,
-      searchForm: {}
     };
   },
   props: {
@@ -80,23 +78,25 @@ export default create({
     searchShow () {
       this.crud.getTableHeight()
     },
-    search: {
-      handler () {
-        this.searchForm = Object.assign(this.searchForm, this.search);
-      },
-      immediate: true,
-      deep: true
-    }
   },
   created () {
     this.initFun();
     this.dataFormat()
   },
   computed: {
+    searchForm: {
+      get () {
+        return this.crud.search
+      },
+      set (val) {
+        this.crud.$emit('update:search', val)
+      }
+    },
     option () {
       const option = this.crud.option;
       this.searchIndex = option.searchIndex || 2
       const detailColumn = (list = []) => {
+        list = this.deepClone(list);
         let column = [];
         let count = 0;
         list = list.sort((a, b) => (b.searchOrder || 0) - (a.searchOrder || 0))
@@ -106,6 +106,7 @@ export default create({
             let obj = {}
             Object.keys(ele).forEach(item => {
               let key = 'search'
+              if (item == 'searchProp') return
               if (item.includes(key)) {
                 let result = item.replace(key, '')
                 if (result.length == 0) return
@@ -137,9 +138,9 @@ export default create({
         })
         return column;
       }
-      const dataDetail = (list) => {
+      const detailOption = (list) => {
         let result = this.deepClone(list);
-        result.column = detailColumn(this.deepClone(this.crud.propOption))
+        result.column = detailColumn(this.crud.propOption)
         result = Object.assign(result, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
@@ -170,7 +171,7 @@ export default create({
         })
         return result;
       }
-      return dataDetail(option)
+      return detailOption(option)
     },
     isSearchIcon () {
       return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
@@ -193,12 +194,16 @@ export default create({
     getSlotName (item) {
       return item.replace('Search', '')
     },
-    handleChange () {
-      this.crud.$emit('update:search', this.searchForm)
-    },
     // 搜索回调
     searchChange (form, done) {
-      this.crud.$emit("search-change", filterParams(form), done);
+      form = filterParams(form);
+      this.crud.propOption.forEach(ele => {
+        if (ele.searchProp) {
+          form[ele.searchProp] = form[ele.prop]
+          delete form[ele.prop]
+        }
+      })
+      this.crud.$emit("search-change", form, done);
     },
     // 搜索清空
     resetChange () {

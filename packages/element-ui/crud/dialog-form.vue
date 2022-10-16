@@ -179,7 +179,7 @@ export default create({
       this.$refs.tableForm.submit()
     },
     reset () {
-      this.$refs.tableForm.resetForm()
+      this.$refs.tableForm.resetForm(false)
     },
     getSlotName (item) {
       return item.replace('Form', '')
@@ -190,8 +190,7 @@ export default create({
       })
     },
     handleChange () {
-      this.crud.$emit('input', this.crud.tableForm)
-      this.crud.$emit('change', this.crud.tableForm)
+      this.crud.setVal()
     },
     handleTabClick (tab, event) {
       this.crud.$emit('tab-click', tab, event)
@@ -270,10 +269,9 @@ export default create({
       const callback = () => {
         done && done();
         this.crud.tableIndex = -1;
+        this.crud.tableForm = {}
+        this.crud.setVal()
         this.boxVisible = false;
-        Object.keys(this.crud.tableForm).forEach(ele => {
-          this.$delete(this.crud.tableForm, ele);
-        })
       };
       if (typeof this.crud.beforeClose === "function") {
         this.crud.beforeClose(callback, this.boxType);

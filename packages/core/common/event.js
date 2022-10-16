@@ -17,7 +17,7 @@ export default function () {
       },
       initVal () {
         this.stringMode = typeof (this.value) == 'string'
-        this.text = initVal(this.value, this.column);
+        this.text = initVal(this.value, this);
       },
       getLabelText (item) {
         if (this.validatenull(item)) return ''

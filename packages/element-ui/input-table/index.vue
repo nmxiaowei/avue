@@ -101,7 +101,7 @@ export default create({
       return Object.assign({
         menu: false,
         header: false,
-        size: 'mini',
+        size: this.size,
         headerAlign: 'center',
         align: 'center',
         highlightCurrentRow: true,

@@ -4,8 +4,7 @@
                :style="tableOption.titleStyle"
                v-if="tableOption.title">{{tableOption.title}}</component>
     <!-- 搜索组件 -->
-    <header-search :search="search"
-                   ref="headerSearch">
+    <header-search ref="headerSearch">
       <template slot="search"
                 slot-scope="scope">
         <slot name="search"
@@ -59,7 +58,7 @@
                ref="cellForm">
         <el-table :key="reload"
                   :data="cellForm.list"
-                  :row-key="handleGetRowKeys"
+                  :row-key="rowKey"
                   :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
                   :size="$AVUE.tableSize || controlSize"
                   :lazy="vaildData(tableOption.lazy,false)"
@@ -146,8 +145,7 @@
       <slot name="footer"></slot>
     </el-card>
     <!-- 分页 -->
-    <table-page ref="tablePage"
-                :page="page">
+    <table-page ref="tablePage">
       <template slot="page">
         <slot name="page"></slot>
       </template>
@@ -291,8 +289,8 @@ export default create({
       function findProp (list = []) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          result.push(ele);
           if (ele.children) findProp(ele.children);
+          else result.push(ele);
         });
       }
       findProp(this.columnOption);
@@ -475,10 +473,6 @@ export default create({
     //对部分表单字段进行校验的方法
     validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
-    },
-    handleGetRowKeys (row) {
-      const rowKey = row[this.rowKey];
-      return rowKey;
     },
     selectClear () {
       this.$emit('selection-clear', this.deepClone(this.tableSelect))
@@ -713,11 +707,15 @@ export default create({
     getPropRef (prop) {
       return this.$refs.dialogForm.$refs.tableForm.getPropRef(prop);
     },
+    setVal () {
+      this.$emit("input", this.tableForm);
+      this.$emit("change", this.tableForm);
+    },
     // 编辑
     rowEdit (row, index) {
       this.tableForm = this.deepClone(row);
       this.tableIndex = index;
-      this.$emit("input", this.tableForm);
+      this.setVal()
       this.$refs.dialogForm.show("edit");
     },
     //复制
@@ -725,14 +723,14 @@ export default create({
       this.tableForm = this.deepClone(row);
       delete this.tableForm[this.rowKey]
       this.tableIndex = -1;
-      this.$emit("input", this.tableForm);
+      this.setVal()
       this.$refs.dialogForm.show("add");
     },
     //查看
     rowView (row, index) {
       this.tableForm = this.deepClone(row);
       this.tableIndex = index;
-      this.$emit("input", this.tableForm);
+      this.setVal()
       this.$refs.dialogForm.show("view");
     },
     // 删除

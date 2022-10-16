@@ -11,7 +11,7 @@
              :readonly="readonly"
              :no-match-text="noMatchText"
              :no-data-text="noDataText"
-             :remote-method="handleRemoteMethod"
+             :remote-method="remote?handleRemoteMethod:undefined"
              :popper-class="popperClass"
              :popper-append-to-body="popperAppendToBody"
              :collapse-tags="tags"

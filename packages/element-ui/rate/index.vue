@@ -1,7 +1,5 @@
 <template>
   <el-rate v-model="text"
-           style="margin-top:10px"
-           @change="handleChange"
            @click.native="handleClick"
            :max="max"
            :low-threshold="lowThreshold"

@@ -6,8 +6,8 @@
               :md="span"
               :xs="24"
               :sm="12">
-        <a :href="item.href?item.href:'javascript:void(0);'"
-           @click="item.click?item.click(item):''">
+        <a :href="item.href"
+           @click="item.click&&item.click(item)">
           <div class="item">
             <div class="item-icon">
               <i :class="item.icon"

@@ -7,8 +7,8 @@
               :xs="24"
               :sm="12">
         <div class="item">
-          <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click(item):''">
+          <a :href="item.href"
+             @click="item.click&&item.click(item)">
             <div class="item-header"
                  :style="{backgroundColor:item.color,backgroundImage:`url(${item.colorImg})`}">
               <span class="item-title">{{item.title}}</span>
@@ -39,24 +39,24 @@
 import create from "core/create";
 export default create({
   name: "data-operatext",
-  data() {
+  data () {
     return {};
   },
   computed: {
-    span() {
+    span () {
       return this.option.span || 6;
     },
-    data() {
+    data () {
       return this.option.data || [];
     }
   },
   props: {
     option: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
-  created() {},
+  created () { },
   methods: {}
 });
 </script>

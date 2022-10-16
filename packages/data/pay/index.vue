@@ -32,8 +32,8 @@
             </template>
             <div class="line"></div>
             <a class="btn"
-               :href="item.href?item.href:'javascript:void(0);'"
-               @click="item.click?item.click(item):''"
+               :href="item.href"
+               @click="item.click&&item.click(item)"
                :style="{backgroundColor:item.color}">{{item.subtext}}</a>
           </div>
           <div class="list">

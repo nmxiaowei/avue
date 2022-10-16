@@ -12,7 +12,7 @@
   <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
   <link rel="stylesheet" href="../../cdn/element-ui/theme-chalk/index.css" />
   <script src="../../cdn/element-ui/index.js"></script>
-  <script src="https://avuex.avue.top/cdn/aliyun-oss-sdk.min.js"></script>
+  <script src="https://cdn.staticfile.org/ali-oss/6.10.0/aliyun-oss-sdk.min.js"></script>
 
   <link rel="stylesheet" href="../../../lib/index.css" />
   <script src="../../../lib/avue.js"></script>
@@ -25,24 +25,28 @@
   </div>
 </body>
 <script>
-  Vue.use(AVUE, {
-    ali: {
-      region: 'oss-cn-beijing',
-      endpoint: 'oss-cn-beijing.aliyuncs.com',
-      accessKeyId: 'DVVDfw5e3GK53rxt',
-      accessKeySecret: 'T3xEVl1BPOOmBSEfz8w0Qpp9lqmyHa',
-      bucket: 'avue',
-    }
+  //https://help.aliyun.com/document_detail/32077.html
+  axios.get('https://api.avuejs.com/sts').then(token => {
+    token = token.data;
+    Vue.use(AVUE, {
+      ali: {
+        region: 'oss-cn-beijing',
+        endpoint: 'oss-cn-beijing.aliyuncs.com',
+        accessKeyId: token.AccessKeyId,
+        accessKeySecret: token.AccessKeySecret,
+        stsToken: token.SecurityToken,
+        bucket: 'avue',
+      }
+    })
   })
+
 </script>
 <script>
   new Vue({
     el: '#app',
     data() {
       return {
-        form: {
-          imgUrl: 'https://avuejs.com/images/logo-bg.jpg',
-        },
+        form: {},
         option: {
           labelWidth: 120,
           column: [
@@ -54,6 +58,12 @@
               canvasOption: {
                 text: 'avue',
                 ratio: 0.1
+              },
+              cropperOption: {
+                autoCropWidth: 100,
+                autoCropHeight: 100,
+                fixed: true,
+                fixedNumber: [100, 100],
               },
               oss: 'ali',
               loadText: '附件上传中，请稍等',
@@ -74,13 +84,13 @@
         return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
       },
       uploadBefore(file, done, loading, column) {
-        // console.log(file, column)
-        var newFile = new File([file], '1234', { type: file.type });
+        console.log(file, column)
+        var newFile = new File([file], '1234.jpg', { type: file.type });
         done(newFile)
         this.$message.success('上传前的方法')
       },
       uploadAfter(res, done, loading, column) {
-        // console.log(res, column)
+        console.log(res, column)
         done()
         this.$message.success('上传后的方法')
       },

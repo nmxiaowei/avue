@@ -16,7 +16,7 @@
               slot="append"></slot>
       </el-input>
     </div>
-    <el-scrollbar :class="b('content')">
+    <div :class="b('content')">
       <el-tree ref="tree"
                :data="data"
                :lazy="lazy"
@@ -50,8 +50,7 @@
           <span>{{node.label}}</span>
         </span>
       </el-tree>
-    </el-scrollbar>
-
+    </div>
     <div class="el-cascader-panel is-bordered"
          v-if="client.show&&menu"
          @click="client.show=false"
@@ -72,21 +71,20 @@
       <slot name="menu"
             :node="node"></slot>
     </div>
-    <div v-if="box">
-      <el-dialog :title="node[labelKey] || title"
-                 :visible.sync="box"
-                 :class="b('dialog')"
-                 class="avue-dialog"
-                 :modal-append-to-body="$AVUE.modalAppendToBody"
-                 :append-to-body="$AVUE.appendToBody"
-                 @close="hide"
-                 :width="vaildData(option.dialogWidth,'50%')">
-        <avue-form v-model="form"
-                   :option="formOption"
-                   ref="form"
-                   @submit="handleSubmit"></avue-form>
-      </el-dialog>
-    </div>
+    <el-dialog v-if="box"
+               :title="node[labelKey] || title"
+               :visible.sync="box"
+               :class="b('dialog')"
+               class="avue-dialog avue-dialog--none"
+               :modal-append-to-body="$AVUE.modalAppendToBody"
+               :append-to-body="$AVUE.appendToBody"
+               @close="hide"
+               :width="vaildData(option.dialogWidth,'50%')">
+      <avue-form v-model="form"
+                 :option="formOption"
+                 ref="form"
+                 @submit="handleSubmit"></avue-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -179,7 +177,7 @@ export default create({
       return this.vaildData(this.option.menu, true)
     },
     title () {
-      return this.option.title
+      return this.option.title || this.t(`crud.addTitle`)
     },
     treeLoad () {
       return this.option.treeLoad
@@ -297,8 +295,6 @@ export default create({
     hide () {
       this.box = false;
       this.node = {};
-      this.$refs.form.resetForm();
-      this.$refs.form.clearValidate();
     },
     save (data, done) {
       const callback = () => {

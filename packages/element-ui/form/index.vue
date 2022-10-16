@@ -394,7 +394,6 @@ export default create({
     setTimeout(() => {
       this.dataFormat()
     })
-
   },
   methods: {
     getComponent,
@@ -412,6 +411,66 @@ export default create({
         return true;
       }
     },
+    //初始化表单
+    dataFormat () {
+      let formDefault = formInitVal(this.propOption).tableForm;
+      let formValue = this.value
+      let form = {}
+      Object.entries(Object.assign(formDefault, formValue)).forEach(ele => {
+        let key = ele[0], value = ele[1]
+        if (this.validatenull(formValue[key])) {
+          form[key] = value
+        } else {
+          form[key] = formValue[key]
+        }
+      })
+      this.$set(this, 'form', form)
+      this.setLabel()
+      this.setControl()
+      this.setVal()
+      setTimeout(() => {
+        this.formCreate = true
+        this.clearValidate()
+      })
+    },
+    setControl () {
+      this.propOption.forEach(column => {
+        let prop = column.prop
+        let bind = column.bind
+        let control = column.control
+        let value = this.form
+        if (!this.formBind[prop]) {
+          let bindList = [];
+          if (bind) {
+            let formProp = this.$watch('form.' + prop, (n, o) => {
+              if (n != o) setAsVal(this.form, bind, n);
+            })
+            let formDeep = this.$watch('form.' + bind, (n, o) => {
+              if (n != o) this.$set(this.form, prop, n);
+            })
+            bindList.push(formProp)
+            bindList.push(formDeep)
+            this.$set(this.form, prop, eval('value.' + bind));
+          }
+          if (control) {
+            const callback = () => {
+              let controlList = control(this.form[column.prop], this.form) || {};
+              Object.keys(controlList).forEach(item => {
+                let ele = Object.assign(this.objectOption[item] || {}, controlList[item])
+                this.$set(this.objectOption, item, ele)
+                if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
+              })
+            }
+            let formControl = this.$watch('form.' + prop, (n, o) => {
+              callback()
+            })
+            bindList.push(formControl)
+            callback()
+          }
+          this.formBind[prop] = bindList;
+        }
+      })
+    },
     setForm () {
       Object.keys(this.value).forEach(ele => {
         this.$set(this.form, ele, this.value[ele]);
@@ -427,19 +486,19 @@ export default create({
       }
       if (this.tableOption.filterDic == true) {
         this.form = filterParams(this.form, ['$'], false)
-        return
+      } else {
+        this.propOption.forEach(column => {
+          let result;
+          let DIC = this.DIC[column.prop]
+          if (this.validatenull(DIC)) return
+          result = detail(this.form, column, this.tableOption, DIC);
+          if (result) {
+            this.$set(this.form, `$${column.prop}`, result);
+          } else {
+            this.$delete(this.form, `$${column.prop}`)
+          }
+        });
       }
-      this.propOption.forEach(column => {
-        let result;
-        let DIC = this.DIC[column.prop]
-        if (this.validatenull(DIC)) return
-        result = detail(this.form, column, this.tableOption, DIC);
-        if (result) {
-          this.$set(this.form, `$${column.prop}`, result);
-        } else {
-          this.$delete(this.form, `$${column.prop}`)
-        }
-      });
     },
     handleGroupClick (activeNames) {
       this.$emit('tab-click', activeNames)
@@ -467,60 +526,6 @@ export default create({
     },
     getPropRef (prop) {
       return this.$refs[prop][0];
-    },
-    //初始化表单
-    dataFormat () {
-      let formDefault = formInitVal(this.propOption).tableForm;
-      let form = {}
-      Object.entries(Object.assign(formDefault, this.value)).forEach(ele => {
-        let key = ele[0], value = ele[1]
-        if (this.validatenull(this.value[key])) {
-          form[key] = value
-        } else {
-          form[key] = this.value[key]
-        }
-      })
-      this.$set(this, 'form', form)
-      this.setControl()
-      this.$emit('input', this.form)
-      setTimeout(() => {
-        this.formCreate = true
-        this.clearValidate()
-      })
-    },
-    setControl () {
-      this.propOption.forEach(column => {
-        let prop = column.prop
-        let bind = column.bind
-        let control = column.control
-        let value = this.form
-        if (!this.formBind[prop]) {
-          if (bind) {
-            this.$watch('form.' + prop, (n, o) => {
-              if (n != o) setAsVal(this.form, bind, n);
-            })
-            this.$watch('form.' + bind, (n, o) => {
-              if (n != o) this.$set(this.form, prop, n);
-            })
-            this.$set(this.form, prop, eval('value.' + bind));
-          }
-          if (control) {
-            const callback = () => {
-              let controlList = control(this.form[column.prop], this.form) || {};
-              Object.keys(controlList).forEach(item => {
-                let ele = Object.assign(this.objectOption[item] || {}, controlList[item])
-                this.$set(this.objectOption, item, ele)
-                if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
-              })
-            }
-            this.$watch('form.' + prop, (n, o) => {
-              callback()
-            })
-            callback()
-          }
-          this.formBind[prop] = true;
-        }
-      })
     },
     handleChange (list, column) {
       this.$nextTick(() => {
@@ -685,8 +690,11 @@ export default create({
         })
       });
     },
-    resetForm () {
-      this.form = clearVal(this.form, (this.tableOption.filterParams || []).concat([this.rowKey]))
+    resetForm (reset = true) {
+      if (reset) {
+        let propList = this.propOption.map(ele => ele.prop)
+        this.form = clearVal(this.form, propList, (this.tableOption.filterParams || []).concat([this.rowKey]))
+      }
       this.$nextTick(() => {
         this.clearValidate()
         this.$emit("reset-change");
@@ -710,6 +718,13 @@ export default create({
         }
       });
     }
+  },
+  beforeDestroy () {
+    Object.keys(this.formBind).forEach(ele => {
+      this.formBind[ele].forEach(unWatch => {
+        unWatch()
+      })
+    })
   }
 });
 </script>

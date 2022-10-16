@@ -34,10 +34,12 @@ export default function () {
       },
       propOption: {
         handler (list) {
-          this.objectOption = {};
+          let result = {}
           list.forEach(ele => {
-            this.$set(this.objectOption, ele.prop, ele)
+            result[ele.prop] = ele
+
           });
+          this.$set(this, 'objectOption', result)
         },
         deep: true,
       },
@@ -99,7 +101,7 @@ export default function () {
         }
       },
       getIsMobile () {
-        this.isMobile = window.document.body.clientWidth <= 768;
+        this.isMobile = document.body.clientWidth <= 768;
       },
       updateDic (prop, list) {
         let column = this.findObject(this.propOption, prop);

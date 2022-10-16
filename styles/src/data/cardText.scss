@@ -6,17 +6,8 @@
         border-radius:6px;
         box-shadow: 2px 2px 20px #ccc;
         &-header{
-            position: relative;
-            i {
-                font-size: 26px;
-                color: #009688;
-            }
-            a {
-                font-size: 16px;
-                margin-left: 6px;
-                position: absolute;
-                bottom: 4px;
-            }
+          color: #000;
+          font-weight: bold;
         }
         &-content{
             margin-top: 8PX;
@@ -25,20 +16,11 @@
             color:#333;
         }
         &-footer{
-            position: relative;
-            span:nth-child(1) {
-                color: #777;
-                font-size: 12px;
-                text-overflow: ellipsis;
-                word-break: break-all;
-            }
-            span:nth-child(2) {
-                color: #CCC;
-                font-size: 12px;
-                line-height: 24px;
-                position: absolute;
-                right: 0
-            }
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
         }
     }
 }

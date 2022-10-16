@@ -17,8 +17,8 @@
             <i class="item-icon"
                :class="item.icon"></i>
           </div>
-          <a :href="item.href?item.href:'javascript:void(0);'"
-             @click="item.click?item.click(item):''">
+          <a :href="item.href"
+             @click="item.click&&item.click(item)">
             <p class="item-more">更多<i class="el-icon-arrow-right"></i></p>
           </a>
         </div>

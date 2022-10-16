@@ -11,7 +11,7 @@
 
   <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
 
-  <script src="https://cdn.staticfile.org/vue/2.5.17/vue.js"></script>
+  <script src="../../cdn/vue/vue.js"></script>
   <link rel="stylesheet" href="../../cdn/element-ui/theme-chalk/index.css" />
   <script src="../../cdn/element-ui/index.js"></script>
   <link rel="stylesheet" href="../../../lib/index.css" />
@@ -20,6 +20,7 @@
 
 <body>
   <div id="app">
+    {{search}}
     <avue-crud ref="crud" :page.sync="page" :search.sync="search" :option="option" :data="data"
       @search-change="searchChange">
       <el-tag slot="header">头部</el-tag>
@@ -76,6 +77,7 @@
           }, {
             label: '年龄',
             prop: 'sex',
+            searchProp: 'sex_eq',
             search: true,
             searchRules: [
               {
@@ -120,16 +122,8 @@
         }]
       }
     },
-    mounted() {
-      setTimeout(() => {
-        console.log('clear')
-        this.$refs.crud.searchReset()
-      }, 5000)
-
-    },
     methods: {
       searchChange(params, done) {
-        const index = this.$refs.crud.findColumnIndex("dic");
         done()
         console.log(params);
       }

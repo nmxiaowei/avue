@@ -19,8 +19,8 @@
 
 <body>
   <div id="app">
-    <el-button type="primary" size="small" @click="updateDic">点我更新字典</el-button><br /><br />
-    <avue-form ref="form" :option="option" v-model="form"></avue-form>
+    {{form}}
+    <avue-crud :option="option" :data="data" v-model="form"></avue-crud>
   </div>
 </body>
 <script>
@@ -29,24 +29,25 @@
     data() {
       return {
         form: {},
-        option: {
-          column: [{
-            label: '字典',
-            span: 24,
-            type: 'radio',
-            prop: 'radio',
-            dicUrl: 'https://cli.avuejs.com/api/area/getProvince',
-            props: {
-              label: 'name',
-              value: 'code'
+        data: [{
+          deep: {
+            deep: {
+              deep: {
+                value: '我是深结构'
+              }
             }
-          }]
+          }
+        }],
+        option: {
+          labelWidth: 120,
+          column: [
+            {
+              label: '深结构',
+              prop: 'test',
+              bind: 'deep.deep.deep.value'
+            }
+          ]
         }
-      }
-    },
-    methods: {
-      updateDic() {
-        this.$refs.form.updateDic('radio');
       }
     }
   })

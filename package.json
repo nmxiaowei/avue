@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.10.1",
+  "version": "2.10.2",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -47,7 +47,6 @@
     "progress-bar-webpack-plugin": "^1.11.0",
     "sass": "^1.54.5",
     "vue-loader": "^15.9.6",
-    "vue-template-compiler": "^2.6.12",
     "webpack": "^4.27.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-merge": "^4.1.4"
@@ -56,9 +55,9 @@
     "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
-    "element-ui": "^2.15.6",
+    "element-ui": "^2.15.10",
     "nprogress": "^0.2.0",
-    "vue": "^2.5.17",
+    "vue": "2.7.10",
     "vue-cropper": "^0.5.8"
   },
   "files": [
