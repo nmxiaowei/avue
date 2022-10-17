@@ -229,7 +229,7 @@ export default {
       return result;
     },
     corArray (row, column) {
-      const list = this.handleDetail(row, column);
+      let list = this.handleDetail(row, column);
       if (!Array.isArray(list)) {
         list = list.split(DIC_SHOW_SPLIT);
       }
