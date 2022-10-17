@@ -86,7 +86,7 @@ const install = function (Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.config.globalProperties.$axios = opts.axios || axios || window.axios
+  Vue.config.globalProperties.$axios = opts.axios || window.axios || axios
   window.axios = Vue.config.globalProperties.$axios
 
 };
