@@ -57,6 +57,7 @@
                @validate="handleValidate"
                ref="cellForm">
         <el-table :key="reload"
+                  :resizable="tableOption.resizable"
                   :data="cellForm.list"
                   :row-key="rowKey"
                   :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
