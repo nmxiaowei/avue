@@ -30,15 +30,21 @@ export default create({
   props: {
     value: {}
   },
+  watch: {
+    value: {
+      handler (val) {
+        this.setVal(val)
+      },
+      deep: true
+    }
+  },
   computed: {
     form: {
       get () {
         return this.value
       },
       set (val) {
-        this.$emit('input', val)
-        this.$emit("change", val);
-
+        this.setVal(val)
       }
     },
     props () {
@@ -74,6 +80,10 @@ export default create({
     this.dataFormat();
   },
   methods: {
+    setVal (val) {
+      this.$emit('input', val)
+      this.$emit("change", val);
+    },
     getKey (item = {}, props = {}, key) {
       return item[props[key] || this.props[key] || key];
     },
