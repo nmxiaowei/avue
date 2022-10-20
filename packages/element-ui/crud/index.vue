@@ -290,7 +290,7 @@ export default create({
       function findProp (list = []) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          if (ele.children) findProp(ele.children);
+          if (ele.children && ele.type !== 'dynamic') findProp(ele.children);
           else result.push(ele);
         });
       }
