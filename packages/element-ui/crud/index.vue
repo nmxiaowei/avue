@@ -501,7 +501,8 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
-      this.objectOption[column.property].width = newWidth
+      let obj = this.objectOption[column.property];
+      if (obj) this.$set(this.objectOption[column.property], 'width', newWidth)
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
