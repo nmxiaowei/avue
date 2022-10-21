@@ -21,6 +21,9 @@
   <div id="app">
     {{form}}
     <avue-form v-model="form" :option="option">
+      <template #daterange-type="{item}">
+        <span class="el-date-table-cell__text">{{item.text}}</span>
+      </template>
       <template #daterange-label="{}">
         <span>姓名&nbsp;&nbsp;</span>
         <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
@@ -52,7 +55,6 @@
                 trigger: 'blur'
               }
             ],
-            detail: true,
             label: "日期范围",
             prop: "daterange",
             type: "daterange",

@@ -21,7 +21,17 @@
                     @focus="handleFocus"
                     @click.native="handleClick"
                     :readonly="readonly"
-                    :disabled="disabled"></el-date-picker>
+                    :disabled="disabled">
+      <template #="cell">
+        <div class="el-date-table-cell">
+          <slot :item="cell"
+                v-if="$slots.default">
+          </slot>
+          <span class="el-date-table-cell__text"
+                v-else>{{ cell.text }}</span>
+        </div>
+      </template>
+    </el-date-picker>
   </div>
 </template>
 

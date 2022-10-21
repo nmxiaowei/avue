@@ -1,4 +1,3 @@
-import Affix from 'packages/element-ui/affix';
 import CountUp from 'packages/element-ui/count-up';
 import Article from 'packages/element-ui/article';
 import Crud from 'packages/element-ui/crud';
@@ -39,7 +38,6 @@ import Login from 'packages/element-ui/login';
 import Arrays from 'packages/element-ui/array';
 import textEllipsis from 'packages/element-ui/text-ellipsis';
 export default [
-  Affix,
   Arrays,
   Article,
   Crud,
