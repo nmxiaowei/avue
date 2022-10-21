@@ -49,6 +49,7 @@
                @validate="handleValidate"
                ref="cellForm">
         <el-table :key="reload"
+                  :resizable="tableOption.resizable"
                   :data="cellForm.list"
                   :row-key="rowKey"
                   :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
@@ -314,7 +315,7 @@ export default create({
       function findProp (list = []) {
         if (!Array.isArray(list)) return
         list.forEach(ele => {
-          if (ele.children) findProp(ele.children);
+          if (Array.isArray(ele.children)) findProp(ele.children);
           else result.push(ele);
         });
       }
@@ -528,7 +529,8 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
-      this.objectOption[column.property].width = newWidth
+      let obj = this.objectOption[column.property];
+      if (obj) this.objectOption[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {

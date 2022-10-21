@@ -35,14 +35,21 @@ export default create({
       }
     }
   },
+  watch: {
+    modelValue: {
+      handler (val) {
+        this.setVal(val)
+      },
+      deep: true
+    }
+  },
   computed: {
     form: {
       get () {
         return this.modelValue
       },
       set (val) {
-        this.$emit('update:modelValue', val)
-        this.$emit("change", val);
+        this.setVal(val)
       }
     },
     props () {
@@ -78,6 +85,10 @@ export default create({
     this.dataFormat();
   },
   methods: {
+    setVal (val) {
+      this.$emit('update:modelValue', val)
+      this.$emit("change", val);
+    },
     getKey (item = {}, props = {}, key) {
       return item[props[key] || this.props[key] || key];
     },
