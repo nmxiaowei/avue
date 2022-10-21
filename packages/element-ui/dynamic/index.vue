@@ -193,7 +193,7 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: this.validData(ele.cell, true)
+            cell: this.vaildData(ele.cell, this.isCrud)
           }))
         })
         return {
