@@ -13,7 +13,7 @@
              v-model="boxVisible"
              v-bind="params"
              :before-close="hide">
-    <template #title>
+    <template #header>
       <div :class="b('dialog__header')">
         <span class="el-dialog__title">{{dialogTitle}}</span>
         <div :class="b('dialog__menu')">

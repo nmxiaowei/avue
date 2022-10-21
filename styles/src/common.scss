@@ -155,7 +155,7 @@ body {
   max-width: calc(100% - 100px);
   display: flex;
   flex-direction: column;
-  .el-dialog__header{
+  .el-dialog__header,.el-drawer__header{
     border-bottom: 1px solid #f0f0f0;
   }
   .el-dialog__title,.el-drawer__header{
@@ -178,7 +178,6 @@ body {
   .el-drawer__header{
     margin: 0;
     padding: 16px 10px 16px 24px;
-    border-bottom: 1px solid #f0f0f0;
   }
   .el-drawer__body{
     padding-bottom: 60px;
@@ -219,7 +218,6 @@ body {
     margin-top: 5px;
     i{
       font-size: 16px;
-      color:#333;
     }
   }
 }
