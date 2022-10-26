@@ -128,6 +128,7 @@
                                  :props="tableOption.props"
                                  :propsHttp="tableOption.propsHttp"
                                  :readonly="column.readonly || readonly"
+                                 v-bind="$uploadFun(column)"
                                  :disabled="getDisabled(column)"
                                  :enter="tableOption.enter"
                                  :size="tableOption.size"

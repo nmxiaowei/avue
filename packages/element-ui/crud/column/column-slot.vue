@@ -55,6 +55,7 @@
                        :readonly="column.readonly"
                        :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
                        :clearable="validData(column.clearable,false)"
+                       v-bind="$uploadFun(column,crud)"
                        v-model="row[column.prop]"
                        :column-slot="crud.mainSlot"
                        @change="columnChange(row,column,$index)">

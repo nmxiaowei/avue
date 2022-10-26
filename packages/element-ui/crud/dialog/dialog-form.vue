@@ -114,7 +114,7 @@ export default create({
       return this.crud.tableOption.dialogType === 'drawer';
     },
     params () {
-      return this.isDrawer ?
+      let result = this.isDrawer ?
         {
           size: this.fullscreen ? '100%' : this.width,
           direction: this.crud.tableOption.dialogDirection
@@ -122,6 +122,7 @@ export default create({
           width: this.width,
           fullscreen: this.fullscreen
         };
+      return Object.assign(result, this.$uploadFun({}, this.crud))
     },
     option () {
       let option = this.deepClone(this.crud.tableOption);
