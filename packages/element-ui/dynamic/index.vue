@@ -114,6 +114,9 @@ export default create({
     }
   },
   computed: {
+    textLen () {
+      return this.text.length;
+    },
     maxFlag () {
       if (this.max) {
         return !(this.text.length == this.max)
@@ -202,7 +205,7 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: this.vaildData(ele.cell, true)
+            cell: this.vaildData(ele.cell, this.isCrud)
           }))
         })
         return {
@@ -215,9 +218,6 @@ export default create({
     this.initData();
   },
   watch: {
-    textLen () {
-      return this.text.length;
-    },
     text () {
       this.initData();
     }

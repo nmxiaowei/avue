@@ -49,7 +49,7 @@ export default create({
     this.crud.$emit("on-load", this.defaultPage);
   },
   watch: {
-    page: {
+    'crud.page': {
       handler () {
         this.pageInit();
       },
