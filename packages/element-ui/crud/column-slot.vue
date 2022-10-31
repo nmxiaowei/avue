@@ -14,6 +14,7 @@
                    :sort-method="column.sortMethod"
                    :sort-orders="column.sortOrders"
                    :sort-by="column.sortBy"
+                   :resizable="column.resizable"
                    :render-header="column.renderHeader"
                    :align="column.align || crud.tableOption.align"
                    :header-align="column.headerAlign || crud.tableOption.headerAlign"
