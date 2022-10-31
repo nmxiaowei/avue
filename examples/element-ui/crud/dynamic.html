@@ -20,9 +20,7 @@
 <body>
   <div id="app">
     <avue-crud :option="option" :data="data">
-      <template #input-form="scope">
-        <el-tag>{{scope.row.$index}}</el-tag>
-      </template>
+
     </avue-crud>
   </div>
 </body>
@@ -98,6 +96,7 @@
               height: 300,
               align: 'center',
               headerAlign: 'center',
+              type: 'form',
               column: [{
                 width: 200,
                 label: '输入框',

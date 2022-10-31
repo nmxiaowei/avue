@@ -86,8 +86,25 @@ const install = function (Vue, opts = {}) {
   // 国际化
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
-  Vue.config.globalProperties.$axios = opts.axios || window.axios || axios
-  window.axios = Vue.config.globalProperties.$axios
+  Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
+    safe = safe || this;
+    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
+    let result = {};
+    if (column.type === 'upload') {
+      list.forEach(ele => {
+        if (!column[ele]) {
+          result[ele] = safe[ele];
+        }
+      });
+    } else {
+      list.forEach(ele => {
+        result[ele] = safe[ele];
+      });
+    }
+    return result;
+  };
+  Vue.config.globalProperties.$axios = opts.axios || axios
+  // window.axios = Vue.config.globalProperties.$axios
 
 };
 export default {

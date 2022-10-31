@@ -105,6 +105,9 @@ export default create({
     }
   },
   computed: {
+    textLen () {
+      return this.text.length;
+    },
     maxFlag () {
       if (this.max) {
         return !(this.text.length == this.max)
@@ -189,11 +192,11 @@ export default create({
           align: 'center',
           headerAlign: 'center',
           span: 24,
-          width: 50
+          width: 60
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            cell: this.vaildData(ele.cell, this.isCrud)
+            cell: this.validData(ele.cell, this.isCrud)
           }))
         })
         return {
@@ -204,11 +207,6 @@ export default create({
   },
   mounted () {
     this.initData();
-  },
-  watch: {
-    textLen () {
-      return this.text.length;
-    },
   },
   methods: {
     handleTextValue (val) {
