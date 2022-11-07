@@ -6,7 +6,7 @@
                    filter-placement="bottom-end"
                    v-if="getColumnProp(columnOption,'hide')"
                    :filters="getColumnProp(columnOption,'filters')"
-                   :filter-method="getColumnProp(columnOption,'filterMethod')?handleFiltersMethod:undefined"
+                   :filter-method="getColumnProp(columnOption,'filterMethod')?handleFilterMethod:undefined"
                    :filter-multiple="vaildData(columnOption.filterMultiple,true)"
                    :show-overflow-tooltip="columnOption.overHidden"
                    :min-width="columnOption.minWidth"
@@ -55,7 +55,7 @@ export default {
   created () {
     const list = [
       'getColumnProp',
-      "handleFiltersMethod",
+      "handleFilterMethod",
       "handleFilters"
     ];
     Object.keys(this.dynamic).forEach(ele => {
