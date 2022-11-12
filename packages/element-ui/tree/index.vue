@@ -5,16 +5,16 @@
       <el-input :placeholder="vaildData(option.filterText,'输入关键字进行过滤')"
                 :size="size"
                 v-model="filterValue">
-        <el-button slot="append"
-                   :size="size"
-                   @click="parentAdd"
-                   v-permission="getPermission('addBtn')"
-                   icon="el-icon-plus"
-                   v-if="vaildData(option.addBtn,true)"></el-button>
-        <slot v-else
-              name="addBtn"
-              slot="append"></slot>
+
       </el-input>
+      <el-button v-permission="getPermission('addBtn')"
+                 :size="size"
+                 @click="parentAdd"
+                 icon="el-icon-plus"
+                 v-if="vaildData(option.addBtn,true)"></el-button>
+      <slot v-else
+            v-permission="getPermission('addBtn')"
+            name="addBtn"></slot>
     </div>
     <div :class="b('content')">
       <el-tree ref="tree"
@@ -71,20 +71,21 @@
       <slot name="menu"
             :node="node"></slot>
     </div>
-    <el-dialog v-if="box"
-               :title="node[labelKey] || title"
-               :visible.sync="box"
-               :class="b('dialog')"
-               class="avue-dialog avue-dialog--none"
-               :modal-append-to-body="$AVUE.modalAppendToBody"
-               :append-to-body="$AVUE.appendToBody"
-               @close="hide"
-               :width="vaildData(option.dialogWidth,'50%')">
-      <avue-form v-model="form"
-                 :option="formOption"
-                 ref="form"
-                 @submit="handleSubmit"></avue-form>
-    </el-dialog>
+    <div v-if="box">
+      <el-dialog :title="node[labelKey] || title"
+                 :visible.sync="box"
+                 :class="b('dialog')"
+                 class="avue-dialog avue-dialog--none"
+                 :modal-append-to-body="$AVUE.modalAppendToBody"
+                 :append-to-body="$AVUE.appendToBody"
+                 :before-close="hide"
+                 :width="vaildData(option.dialogWidth,'50%')">
+        <avue-form v-model="form"
+                   :option="formOption"
+                   ref="form"
+                   @submit="handleSubmit"></avue-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -103,6 +104,8 @@ export default create({
     indent: Number,
     filterNodeMethod: Function,
     checkOnClickNode: Boolean,
+    beforeClose: Function,
+    beforeOpen: Function,
     permission: {
       type: [Function, Object],
       default: () => {
@@ -150,18 +153,10 @@ export default create({
       box: false,
       type: "",
       node: {},
+      form: {}
     };
   },
   computed: {
-    form: {
-      get () {
-        return this.value
-      },
-      set (val) {
-        this.$emit('input', val);
-        this.$emit('change', val)
-      }
-    },
     styleName () {
       return {
         top: this.setPx(this.client.y - 10),
@@ -245,6 +240,13 @@ export default create({
   watch: {
     filterValue (val) {
       this.$refs.tree.filter(val);
+    },
+    value (val) {
+      this.form = val;
+    },
+    form (val) {
+      this.$emit("input", val);
+      this.$emit("change", val);
     }
   },
   methods: {
@@ -292,9 +294,18 @@ export default create({
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
-    hide () {
-      this.box = false;
-      this.node = {};
+    hide (done) {
+      const callback = () => {
+        done && done()
+        this.node = {};
+        this.form = {}
+        this.box = false;
+      }
+      if (typeof this.beforeClose === "function") {
+        this.beforeClose(callback, this.type);
+      } else {
+        callback();
+      }
     },
     save (data, done) {
       const callback = () => {
@@ -332,8 +343,15 @@ export default create({
       this.show();
     },
     show () {
-      this.client.show = false;
-      this.box = true;
+      const callback = () => {
+        this.client.show = false;
+        this.box = true;
+      }
+      if (typeof this.beforeOpen === "function") {
+        this.beforeOpen(callback, this.type);
+      } else {
+        callback();
+      }
     },
     rowRemove () {
       this.client.show = false;
