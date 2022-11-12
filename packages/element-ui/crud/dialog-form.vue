@@ -244,7 +244,9 @@ export default create({
         if (this.isEdit) {
           let { parentList, index } = this.crud.findData(row[this.crud.rowKey])
           if (parentList) {
-            parentList.splice(index, 1, row);
+            const oldRow = parentList.splice(index, 1)[0];
+            row[this.crud.childrenKey] = oldRow[this.crud.childrenKey]
+            parentList.splice(index, 0, row)
           }
         } else if (this.isAdd) {
           let { item } = this.crud.findData(row[this.crud.rowParentKey])
