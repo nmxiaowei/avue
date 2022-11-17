@@ -3,8 +3,11 @@
     <el-input :size="size"
               @clear="handleClear"
               :clearable="clearableVal"
+              :rows="rows"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
               :disabled="disabled"
               ref="main"
+              type="textarea"
               v-model="address"
               @focus="handleShow"
               @click.native="handleClick"
@@ -61,6 +64,14 @@ export default create({
     dialogWidth: {
       type: String,
       default: '80%'
+    },
+    rows: Number,
+    minRows: {
+      type: Number,
+      default: 1
+    },
+    maxRows: {
+      type: Number
     },
   },
   data () {
