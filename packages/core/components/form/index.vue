@@ -122,7 +122,7 @@ export default {
     enterChange () {
       if (typeof this.column.enter === 'function') {
         this.column.enter({ value: this.text, column: this.column })
-      } else if (this.enter) {
+      } else if (this.column.enter) {
         this.$emit('enter')
       }
     }
