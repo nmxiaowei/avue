@@ -5,18 +5,16 @@
       <el-input :placeholder="validData(option.filterText,'输入关键字进行过滤')"
                 :size="size"
                 v-model="filterValue">
-        <template #append>
+        <template #append
+                  v-if="validData(option.addBtn,true)">
           <el-button :size="size"
                      @click="parentAdd"
                      v-permission="getPermission('addBtn')"
-                     icon="el-icon-plus"
-                     v-if="validData(option.addBtn,true)"></el-button>
-          <slot name="addBtn"
-                v-else></slot>
+                     icon="el-icon-plus"></el-button>
         </template>
       </el-input>
     </div>
-    <div :class="b('content')">
+    <el-scrollbar :class="b('content')">
       <component :is="componentName"
                  ref="tree"
                  :data="data"
@@ -51,7 +49,7 @@
           <span class="el-tree-node__label">{{node.label}}</span>
         </template>
       </component>
-    </div>
+    </el-scrollbar>
 
     <div class="el-cascader-panel is-bordered"
          v-if="client.show&&menu"
@@ -78,7 +76,7 @@
                class="avue-dialog avue-dialog--none"
                :append-to-body="$AVUE.appendToBody"
                lock-scroll
-               @close="hide"
+               :before-close="hide"
                :width="validData(option.dialogWidth,'50%')">
       <avue-form v-model="form"
                  :option="formOption"
@@ -104,6 +102,8 @@ export default create({
     indent: Number,
     filterNodeMethod: Function,
     checkOnClickNode: Boolean,
+    beforeClose: Function,
+    beforeOpen: Function,
     permission: {
       type: [Function, Object],
       default: () => {
@@ -251,6 +251,7 @@ export default create({
     },
     form (val) {
       this.$emit('update:modelValue', val);
+      this.$emit("change", val);
     }
   },
   methods: {
@@ -298,9 +299,18 @@ export default create({
       if (!value) return true;
       return data[this.labelKey].indexOf(value) !== -1;
     },
-    hide () {
-      this.box = false;
-      this.node = {};
+    hide (done) {
+      const callback = () => {
+        done && done()
+        this.node = {};
+        this.form = {}
+        this.box = false;
+      }
+      if (typeof this.beforeClose === "function") {
+        this.beforeClose(callback, this.type);
+      } else {
+        callback();
+      }
     },
     save (data, done) {
       const callback = () => {
@@ -338,8 +348,15 @@ export default create({
       this.show();
     },
     show () {
-      this.client.show = false;
-      this.box = true;
+      const callback = () => {
+        this.client.show = false;
+        this.box = true;
+      }
+      if (typeof this.beforeOpen === "function") {
+        this.beforeOpen(callback, this.type);
+      } else {
+        callback();
+      }
     },
     rowRemove () {
       this.client.show = false;

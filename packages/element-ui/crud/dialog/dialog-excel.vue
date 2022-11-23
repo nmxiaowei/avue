@@ -90,6 +90,7 @@ export default {
               value: true
             }, {
               label: '选中的数据(当前页选中的数据)',
+              disabled: this.crud.tableOption.selection != true,
               value: true
             }]
           }, {

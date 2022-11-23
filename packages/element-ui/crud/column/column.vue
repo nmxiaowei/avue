@@ -60,12 +60,12 @@ export default create({
   },
   methods: {
     //表格筛选逻辑
-    handleFiltersMethod (value, row, column) {
+    handleFilterMethod (value, row, column) {
       const columnNew = this.columnOption.filter(
         ele => ele.prop === column.property
       )[0];
-      if (typeof columnNew.filtersMethod === "function") {
-        return columnNew.filtersMethod(value, row, columnNew);
+      if (typeof columnNew.filterMethod === "function") {
+        return columnNew.filterMethod(value, row, columnNew);
       } else {
         return row[columnNew.prop] === value;
       }

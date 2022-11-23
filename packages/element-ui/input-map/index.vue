@@ -3,6 +3,8 @@
     <el-input :size="size"
               @clear="handleClear"
               :clearable="clearableVal"
+              :rows="rows"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
               :disabled="disabled"
               ref="main"
               :model-value="address"
@@ -64,6 +66,14 @@ export default create({
       type: String,
       default: '80%'
     },
+    rows: Number,
+    minRows: {
+      type: Number,
+      default: 1
+    },
+    maxRows: {
+      type: Number
+    }
   },
   data () {
     return {

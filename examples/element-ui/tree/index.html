@@ -21,8 +21,9 @@
 
 <body>
   <div id="app">
-    <avue-tree ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission" :option="option"
-      :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
+    <avue-tree :before-open="beforeOpen" :before-close="beforeClose" ref="tree" :filter-node-method="filterNodeMethod"
+      :permission="getPermission" :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save"
+      @del="del" v-model="form">
       <template #="{ node, data }">
         <span class="el-tree-node__label">
           <el-icon>
@@ -92,6 +93,14 @@
       }
     },
     methods: {
+      beforeOpen(done, type) {
+        alert(type);
+        done()
+      },
+      beforeClose(done, type) {
+        alert(type);
+        done()
+      },
       getPermission(key, data) {
         // if (key == "addBtn") { return false; }
         return true;

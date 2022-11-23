@@ -6,7 +6,7 @@
                    :column-key="column.prop"
                    filter-placement="bottom-end"
                    :filters="getColumnProp(column,'filters')"
-                   :filter-method="getColumnProp(column,'filterMethod')?handleFiltersMethod:undefined"
+                   :filter-method="getColumnProp(column,'filterMethod')?handleFilterMethod:undefined"
                    :filter-multiple="validData(column.filterMultiple,true)"
                    :show-overflow-tooltip="column.overHidden"
                    :min-width="column.minWidth"
@@ -135,7 +135,7 @@ export default {
   created () {
     const list = [
       'getColumnProp',
-      "handleFiltersMethod",
+      "handleFilterMethod",
       "handleFilters"
     ];
     list.forEach(ele => {

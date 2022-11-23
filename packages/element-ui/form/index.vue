@@ -719,7 +719,7 @@ export default create({
     submit () {
       this.validate((valid, msg) => {
         if (valid) {
-          this.$emit("submit", filterParams(this.form), this.hide);
+          this.$emit("submit", filterParams(this.form, ['$']), this.hide);
         } else {
           this.$emit("error", msg);
         }
