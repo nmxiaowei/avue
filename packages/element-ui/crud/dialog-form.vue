@@ -223,7 +223,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        filterParams(this.crud.tableForm),
+        filterParams(this.crud.tableForm, ['$']),
         this.closeDialog,
         hide
       );
@@ -232,7 +232,7 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        filterParams(this.crud.tableForm),
+        filterParams(this.crud.tableForm, ['$']),
         this.crud.tableIndex,
         this.closeDialog,
         hide
