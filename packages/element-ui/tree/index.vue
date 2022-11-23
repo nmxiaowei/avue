@@ -16,7 +16,7 @@
             v-permission="getPermission('addBtn')"
             name="addBtn"></slot>
     </div>
-    <div :class="b('content')">
+    <el-scrollbar :class="b('content')">
       <el-tree ref="tree"
                :data="data"
                :lazy="lazy"
@@ -50,7 +50,7 @@
           <span>{{node.label}}</span>
         </span>
       </el-tree>
-    </div>
+    </el-scrollbar>
     <div class="el-cascader-panel is-bordered"
          v-if="client.show&&menu"
          @click="client.show=false"
