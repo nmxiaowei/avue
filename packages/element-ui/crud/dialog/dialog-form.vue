@@ -44,7 +44,7 @@
           :class="'avue-dialog__footer--'+dialogMenuPosition">
       <el-button v-if="validData(option.submitBtn,true) && !isView"
                  @click="submit"
-                 :disabled="disabled"
+                 :loading="disabled"
                  :size="crud.size"
                  :icon="option.submitIcon"
                  type="primary">{{option.submitText}}</el-button>
