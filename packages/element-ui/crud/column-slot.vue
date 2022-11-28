@@ -186,7 +186,7 @@ export default {
           if (this.validatenull(this.crud.cascaderDIC[rowIndex])) {
             this.$set(this.crud.cascaderDIC, rowIndex, {});
           }
-          if (this.crud.formIndexList.includes(rowIndex)) {
+          if (this.crud.cascaderIndexList.includes(rowIndex)) {
             //清空子类字典
             cascader.forEach(ele => {
               this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
@@ -206,17 +206,23 @@ export default {
             value: value,
             form: row
           }).then(res => {
-            //首次加载的放入队列记录
-            if (!this.crud.formIndexList.includes(rowIndex)) this.crud.formIndexList.push(rowIndex);
             const dic = res || [];
+            //首次加载的放入队列记录
+            if (!this.crud.cascaderIndexList.includes(rowIndex)) {
+              this.crud.cascaderIndexList.push(rowIndex);
+            }
+            if (!this.crud.cascaderDicList[rowIndex]) {
+              this.$set(this.crud.cascaderDicList, rowIndex, {})
+            }
+            if (!this.crud.cascaderDicList[rowIndex][columnNextProp]) {
+              this.$set(this.crud.cascaderDicList[rowIndex], columnNextProp, dic)
+            }
             // 修改字典
             this.$set(this.crud.cascaderDIC[rowIndex], columnNextProp, dic);
-
             if (!this.validatenull(dic[columnNext.cascaderIndex]) && !this.validatenull(dic) && !this.validatenull(columnNext.cascaderIndex)) {
               row[columnNextProp] = dic[columnNext.cascaderIndex][(columnNext.props || {}).value || DIC_PROPS.value]
             }
-          }
-          );
+          });
         })
       })
     },

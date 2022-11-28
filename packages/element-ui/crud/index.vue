@@ -225,10 +225,10 @@ export default create({
       tableHeight: undefined,
       tableIndex: -1,
       tableSelect: [],
-      formIndexList: [],
       sumsList: {},
+      cascaderIndexList: [],
       cascaderDicList: {},
-      formCascaderList: {},
+      cascaderFormList: {},
       btnDisabledList: {},
       btnDisabled: false,
       default: {}
@@ -489,10 +489,9 @@ export default create({
     },
     dataInit () {
       this.list = this.data;
-      //初始化序列的参数
       this.list.forEach((ele, index) => {
-        if (ele.$cellEdit && !this.formCascaderList[index]) {
-          this.formCascaderList[index] = this.deepClone(ele);
+        if (ele.$cellEdit && !this.cascaderFormList[index]) {
+          this.cascaderFormList[index] = this.deepClone(ele);
         }
         this.$set(ele, '$cellEdit', ele.$cellEdit || false);
         this.$set(ele, '$index', index);
@@ -597,14 +596,6 @@ export default create({
     cellDblclick (row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
     },
-    //行编辑点击
-    rowCell (row, index) {
-      if (row.$cellEdit) {
-        this.rowCellUpdate(row, index);
-      } else {
-        this.rowCellEdit(row, index);
-      }
-    },
     //单元格新增
     rowCellAdd (row = {}) {
       let len = this.list.length
@@ -619,33 +610,61 @@ export default create({
           row
         ))
       this.list.push(row);
-      this.formIndexList.push(len);
     },
     //行取消
     rowCancel (row, index) {
       if (this.validatenull(row[this.rowKey])) {
         this.list.splice(index, 1);
-        return;
+        delete this.cascaderDIC[index]
+      } else {
+        this.cascaderFormList[index].$cellEdit = false;
+        this.$set(this.cascaderDIC, index, this.cascaderDicList[index]);
+        this.$set(this.list, index, this.cascaderFormList[index]);
       }
-      this.formCascaderList[index].$cellEdit = false;
-      //设置行数据
-      this.$set(this.list, index, this.formCascaderList[index]);
-      delete this.formCascaderList[index]
-      //设置级联字典
-      this.$set(this.cascaderDIC, index, this.cascaderDicList[index]);
-      this.formIndexList.splice(this.formIndexList.indexOf(index), 1);
+      delete this.cascaderDicList[index]
+      delete this.cascaderFormList[index]
+      this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
+    },
+    //行编辑点击
+    rowCell (row, index) {
+      if (row.$cellEdit) {
+        this.rowCellUpdate(row, index);
+      } else {
+        this.rowCellEdit(row, index);
+      }
+    },
+    rowCellUpdate (row, index) {
+      row = this.deepClone(row);
+      var result = this.validateCellField(index)
+      const done = () => {
+        this.btnDisabledList[index] = false;
+        this.btnDisabled = false;
+        this.list[index].$cellEdit = false
+        this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
+        delete this.cascaderFormList[index]
+      }
+      const loading = () => {
+        this.btnDisabledList[index] = false;
+        this.btnDisabled = false;
+      }
+      if (result) {
+        this.btnDisabledList[index] = true;
+        this.btnDisabled = true;
+        if (this.validatenull(row[this.rowKey])) {
+          this.$emit("row-save", row, done, loading);
+        } else {
+          this.$emit("row-update", row, index, done, loading);
+        }
+      }
     },
     // 单元格编辑
     rowCellEdit (row, index) {
       row.$cellEdit = true;
       this.$set(this.list, index, row);
       //缓冲行数据
-      this.formCascaderList[index] = this.deepClone(row);
+      this.cascaderFormList[index] = this.deepClone(row);
       //缓冲级联字典
       this.cascaderDicList[index] = this.deepClone(this.cascaderDIC[index]);
-      setTimeout(() => {
-        this.formIndexList.push(index);
-      }, 1000);
     },
     // 对部分表单字段进行校验
     validateCellForm (cb) {
@@ -668,30 +687,6 @@ export default create({
         if (!result) break
       }
       return result
-    },
-    rowCellUpdate (row, index) {
-      row = this.deepClone(row);
-      var result = this.validateCellField(index)
-      const done = () => {
-        this.btnDisabledList[index] = false;
-        this.btnDisabled = false;
-        row.$cellEdit = false;
-        this.$set(this.list, index, row);
-        delete this.formCascaderList[index]
-      }
-      const loading = () => {
-        this.btnDisabledList[index] = false;
-        this.btnDisabled = false;
-      }
-      if (result) {
-        this.btnDisabledList[index] = true;
-        this.btnDisabled = true;
-        if (this.validatenull(row[this.rowKey])) {
-          this.$emit("row-save", row, done, loading);
-        } else {
-          this.$emit("row-update", row, index, done, loading);
-        }
-      }
     },
     rowAdd () {
       this.$refs.dialogForm.show("add");
