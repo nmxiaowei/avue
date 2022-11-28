@@ -660,7 +660,6 @@ export default create({
     // 单元格编辑
     rowCellEdit (row, index) {
       row.$cellEdit = true;
-      this.$set(this.list, index, row);
       //缓冲行数据
       this.cascaderFormList[index] = this.deepClone(row);
       //缓冲级联字典
