@@ -51,7 +51,7 @@
             :class="'avue-dialog__footer--'+dialogMenuPosition">
         <el-button v-if="vaildData(option.submitBtn,true) && !isView"
                    @click="submit"
-                   :disabled="disabled"
+                   :loading="disabled"
                    :size="crud.controlSize"
                    :icon="option.submitIcon"
                    type="primary">{{option.submitText}}</el-button>
@@ -223,7 +223,7 @@ export default create({
     rowSave (hide) {
       this.crud.$emit(
         "row-save",
-        filterParams(this.crud.tableForm),
+        filterParams(this.crud.tableForm, ['$']),
         this.closeDialog,
         hide
       );
@@ -232,7 +232,7 @@ export default create({
     rowUpdate (hide) {
       this.crud.$emit(
         "row-update",
-        filterParams(this.crud.tableForm),
+        filterParams(this.crud.tableForm, ['$']),
         this.crud.tableIndex,
         this.closeDialog,
         hide
@@ -244,7 +244,9 @@ export default create({
         if (this.isEdit) {
           let { parentList, index } = this.crud.findData(row[this.crud.rowKey])
           if (parentList) {
-            parentList.splice(index, 1, row);
+            const oldRow = parentList.splice(index, 1)[0];
+            row[this.crud.childrenKey] = oldRow[this.crud.childrenKey]
+            parentList.splice(index, 0, row)
           }
         } else if (this.isAdd) {
           let { item } = this.crud.findData(row[this.crud.rowParentKey])

@@ -9,13 +9,13 @@
                  @click="formSafe.handleMock"
                  :size="formSafe.controlSize"
                  icon="el-icon-edit-outline"
-                 :loading="formSafe.allDisabled"
+                 :disabled="formSafe.allDisabled"
                  v-if="formSafe.isMock">{{vaildData(formSafe.parentOption.mockText,t("form.mockBtn"))}}</el-button>
       <el-button type="primary"
                  @click="formSafe.handlePrint"
                  :size="formSafe.controlSize"
                  icon="el-icon-printer"
-                 :loading="formSafe.allDisabled"
+                 :disabled="formSafe.allDisabled"
                  v-if="formSafe.isPrint">{{vaildData(formSafe.parentOption.printText,t("form.printBtn"))}}</el-button>
       <el-button type="primary"
                  @click="formSafe.submit"
@@ -25,7 +25,7 @@
                  v-if="vaildData(formSafe.parentOption.submitBtn,true)">{{vaildData(formSafe.parentOption.submitText,t("form.submitBtn"))}}</el-button>
       <el-button :icon="formSafe.parentOption.emptyIcon || 'el-icon-delete'"
                  :size="formSafe.controlSize"
-                 :loading="formSafe.allDisabled"
+                 :disabled="formSafe.allDisabled"
                  v-if="vaildData(formSafe.parentOption.emptyBtn,true)"
                  @click="formSafe.resetForm">{{vaildData(formSafe.parentOption.emptyText,t("form.emptyBtn"))}}</el-button>
       <slot name="menuForm"

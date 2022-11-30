@@ -8,6 +8,7 @@
     <avue-form ref="form"
                :option="{...deepClone(option),...{menuBtn: false}}"
                v-model="data"
+               :status.sync="disabled"
                @submit="handleSubmit"
                @reset-change="close"></avue-form>
     <span class="avue-dialog__footer"
@@ -16,10 +17,12 @@
       <el-button @click="submit"
                  :size="$AVUE.size"
                  :icon="option.submitIcon"
+                 :loading="disabled"
                  v-if="vaildData(option.submitBtn,true)"
                  type="primary">{{option.submitText}}</el-button>
       <el-button @click="reset"
                  v-if="vaildData(option.emptyBtn,true)"
+                 :disabled="disabled"
                  :size="$AVUE.size"
                  :icon="option.emptyIcon ">{{option.emptyText}}</el-button>
     </span>
@@ -30,6 +33,7 @@ export default {
   data () {
     return {
       opt: {},
+      disabled: false,
       callback: null,
       visible: false,
       dialog: {

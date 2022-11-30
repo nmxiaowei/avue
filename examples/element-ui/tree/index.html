@@ -22,8 +22,9 @@
 <body>
   <div id="app">
     {{form}}
-    <avue-tree v-model="form" ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission"
-      :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
+    <avue-tree :before-open="beforeOpen" :before-close="beforeClose" v-model="form" ref="tree"
+      :filter-node-method="filterNodeMethod" :permission="getPermission" :option="option" :data="data"
+      @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
       <span class="el-tree-node__label" slot-scope="{ node, data }">
         <span>
           <i class="el-icon-user-solid"></i>
@@ -31,7 +32,7 @@
         </span>
       </span>
       <template slot-scope="scope" slot="menu">
-        <div class="avue-tree__item" @click.native="tip(scope.node,scope.data)">自定义按钮</di>
+        <div class="avue-tree__item" @click="tip(scope.node,scope.data)">自定义按钮</di>
       </template>
     </avue-tree>
 
@@ -79,7 +80,23 @@
             column: [{
               label: '自定义项',
               prop: 'label'
-            }],
+            }, {
+              label: '适用工厂',
+              prop: 'im_FactoryIds',
+              span: 24,
+              type: 'tree',
+              props: {
+                label: 'label',
+                value: 'value'
+              },
+              rules: [{
+                required: true,
+                message: "不能为空",
+                trigger: "change"
+              }],
+              dicUrl: 'https://api.avuejs.com/area/getProvince',
+              multiple: true,
+            },],
           },
           props: {
             labelText: '标题',
@@ -91,6 +108,14 @@
       }
     },
     methods: {
+      beforeOpen(done, type) {
+        alert(type);
+        done()
+      },
+      beforeClose(done, type) {
+        alert(type);
+        done()
+      },
       getPermission(key, data) {
         if (key == "addBtn") { return false; }
         return true;

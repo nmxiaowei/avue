@@ -1,5 +1,6 @@
 .avue-tree {
   position: relative;
+  height: 100%;
   &__menu {
       width:200px;
       position: fixed;
@@ -36,5 +37,6 @@
   }
   &__content{
       padding: 5px 0;
+      height: calc(100% - 32px);
   }
 }
