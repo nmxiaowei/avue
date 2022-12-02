@@ -64,7 +64,6 @@
           <el-icon-upload />
         </el-icon>
         <div class="el-upload__text">
-          <span v-html="tip"></span>
           <em>{{fileText || t('upload.upload')}}</em>
         </div>
       </template>
