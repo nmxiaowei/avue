@@ -4,7 +4,7 @@
              :class="b()"
              v-model="text"
              :size="size"
-             :options="netDic"
+             :options="options"
              :loading="loading"
              :loading-text="loadingText"
              :multiple="multiple"
@@ -157,6 +157,15 @@ export default create({
     }
   },
   computed: {
+    options () {
+      return this.netDic.map(ele => {
+        return Object.assign(ele, {
+          label: ele[this.labelKey],
+          value: ele[this.valueKey],
+          disabled: ele[this.disabledKey]
+        })
+      })
+    },
     componentName () {
       return 'elSelect' + (this.virtualize ? 'V2' : '')
     }
