@@ -21,12 +21,14 @@ body {
   }
   .el-input.is-disabled .el-input__wrapper{
     box-shadow: none;
+
   }
   .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner,.el-range-editor.is-disabled,.el-range-editor.is-disabled input{
     color: #606266;
     background-color: #fff;
     padding-left: 0;
     box-shadow:none;
+    -webkit-text-fill-color:inherit;
   }
   .el-input-number__decrease,.el-input-number__increase{
     display: none;
