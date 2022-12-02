@@ -58,7 +58,6 @@
       <template v-else-if="dragFile">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
-          <span v-html="tip"></span>
           <em>{{fileText || t('upload.upload')}}</em>
         </div>
       </template>
