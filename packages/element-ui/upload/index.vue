@@ -58,13 +58,14 @@
       <template v-else-if="dragFile">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
-          {{t('upload.tip')}}
-          <em>{{t('upload.upload')}}</em>
+          <span v-html="tip"></span>
+          <em>{{fileText || t('upload.upload')}}</em>
         </div>
       </template>
       <template v-else>
-        <el-button size="small"
-                   type="primary">{{t('upload.upload')}}</el-button>
+        <el-button icon="el-icon-upload"
+                   size="small"
+                   type="primary">{{fileText || t('upload.upload')}}</el-button>
       </template>
       <div slot="tip"
            class="el-upload__tip"
@@ -160,6 +161,7 @@ export default create({
       type: Boolean,
       default: true
     },
+    fileText: String,
     fileType: {
       type: String
     },
