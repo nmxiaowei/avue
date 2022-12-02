@@ -131,7 +131,7 @@
                                  v-bind="$uploadFun(column)"
                                  :disabled="getDisabled(column)"
                                  :enter="tableOption.enter"
-                                 :size="tableOption.size"
+                                 :size="size"
                                  v-model="form[column.prop]"
                                  @enter="submit"
                                  :column-slot="columnSlot"
