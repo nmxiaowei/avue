@@ -1,6 +1,6 @@
 import DataTabs from 'packages/data/tabs';
 import DataCardText from 'packages/data/cardText';
-import DataBox from 'packages/data/Box';
+import DataBox from 'packages/data/box';
 import DataProgress from 'packages/data/progress';
 import DataIcons from 'packages/data/icons';
 import DataCard from 'packages/data/card';
