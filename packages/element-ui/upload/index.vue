@@ -28,7 +28,7 @@
         <slot v-if="$scopedSlots.default"
               :file="{url:imgUrl}"></slot>
         <template v-else>
-          <component v-if="isMediaType(imgUrl)"
+          <component v-if="isMediaType(imgUrl)&&imgUrl"
                      :src="imgUrl"
                      :is="isMediaType(imgUrl)"
                      @mouseover="menu=true"
