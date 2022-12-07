@@ -241,7 +241,7 @@ export default {
     corArray (row, column) {
       let list = this.handleDetail(row, column);
       if (!Array.isArray(list)) {
-        list = list.split(DIC_SHOW_SPLIT);
+        list = this.validatenull(list) ? [] : list.split(DIC_SHOW_SPLIT);
       }
       return this.deepClone(list)
     },
@@ -256,7 +256,6 @@ export default {
       let url = column.propsHttp?.home || ''
       let value = column.props?.value || DIC_PROPS.value;
       let list = this.corArray(row, column);
-      if (column.listType == 'picture-img') return [url + list]
       list.forEach((ele, index) => {
         list[index] = url + (ele[value] ? ele[value] : ele);
       })
