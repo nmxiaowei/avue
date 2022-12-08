@@ -23,7 +23,7 @@
 
 <script>
 import locale from "core/locale";
-import { getAsVal } from "utils/util";
+import { detail } from "core/detail";
 export default {
   name: 'crud',
   mixins: [locale],
@@ -62,8 +62,8 @@ export default {
         list.forEach(ele => {
           let obj = this.deepClone(ele);
           columnOption.forEach(column => {
-            if (column.bind) obj[column.prop] = getAsVal(obj, column.bind);
-            if (!this.validatenull(obj['$' + column.prop])) obj[column.prop] = obj['$' + column.prop];
+            let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
+            obj[column.prop] = detail(obj, column, option, DIC);
           })
           data.push(obj);
         })
