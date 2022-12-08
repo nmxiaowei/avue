@@ -183,8 +183,7 @@ export default create({
       type: String
     },
     limit: {
-      type: Number,
-      default: 10
+      type: Number
     },
     headers: {
       type: Object,
