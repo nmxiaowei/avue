@@ -1,28 +1,32 @@
 <template>
-  <div v-if="box">
+  <div v-if="box"> 
     <el-dialog :title="t('crud.excelBtn')"
                lock-scroll
                :append-to-body="$AVUE.appendToBody"
                class="avue-dialog"
                v-model="box"
                :width="crud.isMobile?'100%':'30%'">
-      <avue-form v-model="form"
-                 :option="option"></avue-form>
-      <template #footer
-                class="dialog-footer">
-        <el-button type="primary"
-                   :size="crud.size"
-                   @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
-        <el-button @click="box = false"
-                   :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
+      <avue-form ref="form"
+                 v-model="form"
+                 :option="option">
+      </avue-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary"
+                     :size="crud.size"
+                     @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
+          <el-button @click="box = false"
+                     :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
+        </span>
       </template>
+
     </el-dialog>
   </div>
 </template>
 
 <script>
 import locale from "core/locale";
-import { getAsVal } from "utils/util";
+import { detail } from "core/detail";
 export default {
   name: 'crud',
   mixins: [locale],
@@ -51,6 +55,7 @@ export default {
       });
       this.box = false;
     },
+    //计算统计
     handleSum () {
       const option = this.crud.tableOption;
       const columnOption = this.crud.propOption;
@@ -60,8 +65,8 @@ export default {
         list.forEach(ele => {
           let obj = this.deepClone(ele);
           columnOption.forEach(column => {
-            if (column.bind) obj[column.prop] = getAsVal(obj, column.bind);
-            if (!this.validatenull(obj['$' + column.prop])) obj[column.prop] = obj['$' + column.prop];
+            let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
+            obj[column.prop] = detail(obj, column, option, DIC);
           })
           data.push(obj);
         })
@@ -91,7 +96,7 @@ export default {
             }, {
               label: '选中的数据(当前页选中的数据)',
               disabled: this.crud.tableOption.selection != true,
-              value: true
+              value: false
             }]
           }, {
             label: '选择字段',
@@ -142,28 +147,34 @@ export default {
       this.form.type = this.crud.selectLen == 0
     },
     getColumnOption () {
-      let result = []
       let column = this.deepClone(this.crud.columnOption)
-      column.forEach(ele => {
-        let children = ele.children
-        if (children && !Array.isArray(children)) {
-          delete ele.children
-        }
-        if (ele.showColumn !== false) result.push(ele)
-      })
-      this.columnOption = result;
-      this.form.prop = this.columnOption.map(ele => ele.prop)
+      let prop = []
+      const findProp = (list = []) => {
+        list.forEach((ele, index) => {
+          let children = ele.children
+          if (children && !Array.isArray(children)) delete ele.children
+          else if (ele.showColumn === false) list.splice(index, 1)
+          else {
+            prop.push(ele.prop)
+            if (ele.children) findProp(children)
+          }
+        })
+      }
+      findProp(column)
+      this.columnOption = column;
+      this.form.prop = prop
     },
     getColumn () {
       let columns = this.deepClone(this.columnOption);
+      let props = this.$refs.form.getPropRef('prop').$refs.temp.getHalfList()
       if (!this.form.params) return []
       if (this.form.params.includes('headers')) {
         const findProp = (list = []) => {
           list.forEach((ele, index) => {
-            if (ele.children) {
-              findProp(ele.children)
-            } else if (!this.form.prop.includes(ele.prop)) {
+            if (!props.includes(ele.prop)) {
               list.splice(index, 1);
+            } else if (ele.children) {
+              findProp(ele.children)
             }
           })
         }
@@ -175,7 +186,7 @@ export default {
           list.forEach((ele, index) => {
             if (ele.children) {
               findProp(ele.children)
-            } else if (this.form.prop.includes(ele.prop)) {
+            } else if (props.includes(ele.prop)) {
               result.push(ele)
             }
           })

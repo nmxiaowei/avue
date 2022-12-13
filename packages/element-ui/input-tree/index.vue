@@ -50,6 +50,7 @@ import props from "common/common/props.js";
 import event from "common/common/event.js";
 import { DIC_SHOW_SPLIT } from 'global/variable';
 import { detailDataType } from 'utils/util';
+import { DIC_PROPS } from 'global/variable';
 export default create({
   name: "input-tree",
   mixins: [props(), event()],
@@ -135,7 +136,7 @@ export default create({
       return this.multiple ? this.text : [this.text || '']
     },
     treeProps () {
-      return Object.assign(this.props, {
+      return Object.assign(DIC_PROPS, this.props, {
         isLeaf: this.leafKey
       })
     }

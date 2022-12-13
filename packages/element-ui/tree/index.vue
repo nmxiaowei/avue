@@ -169,7 +169,7 @@ export default create({
       }
     },
     treeProps () {
-      return Object.assign(this.props, {
+      return Object.assign(DIC_PROPS, this.props, {
         isLeaf: this.leafKey
       })
     },
