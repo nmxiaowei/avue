@@ -260,7 +260,7 @@ export default create({
     },
     getPermission (key) {
       if (typeof this.permission === "function") {
-        return this.permission(key, this.node)
+        return this.permission(key, this.node.data || {})
       } else if (!this.validatenull(this.permission[key])) {
         return this.permission[key]
       } else {
@@ -276,8 +276,8 @@ export default create({
         this[ele] = this.$refs.tree[ele];
       })
     },
-    nodeContextmenu (e, data) {
-      this.node = this.deepClone(data);
+    nodeContextmenu (e, data, node) {
+      this.node = node;
       this.client.x = e.clientX;
       this.client.y = e.clientY;
       this.client.show = true;
@@ -313,10 +313,10 @@ export default create({
       }
     },
     save (data, done) {
-      const callback = () => {
-        let form = this.deepClone(this.form);
+      const callback = (form) => {
+        form = form || this.form;
         if (this.type === "add") {
-          this.$refs.tree.append(form, this.node[this.valueKey])
+          this.$refs.tree.append(form, this.node.data[this.valueKey])
         } else if (this.type === "parentAdd") {
           this.$refs.tree.append(form)
         }
@@ -326,9 +326,16 @@ export default create({
       this.$emit("save", this.node, data, callback, done);
     },
     update (data, done) {
-      const callback = () => {
-        let node = this.$refs.tree.getNode(this.node[this.valueKey]) || {};
-        node.data = this.deepClone(this.form)
+      const callback = (form) => {
+        form = form || this.form;
+        const rowKey = form[this.valueKey]
+        this.node.data = this.deepClone(form)
+        let { parentList, index } = this.findData(rowKey)
+        if (parentList) {
+          const oldRow = parentList.splice(index, 1)[0];
+          form[this.childrenKey] = oldRow[this.childrenKey]
+          parentList.splice(index, 0, this.deepClone(form))
+        }
         this.hide();
         done()
       };
@@ -336,7 +343,7 @@ export default create({
     },
     rowEdit (a) {
       this.type = "edit";
-      this.form = this.node;
+      this.form = this.deepClone(this.node.data);
       this.show();
     },
     parentAdd () {
@@ -361,9 +368,29 @@ export default create({
     rowRemove () {
       this.client.show = false;
       const callback = () => {
-        this.$refs.tree.remove(this.node[this.valueKey])
+        this.$refs.tree.remove(this.node)
       }
       this.$emit("del", this.node, callback);
+    },
+    findData (id) {
+      let result = {}
+      const callback = (parentList, parent) => {
+        parentList.forEach((ele, index) => {
+          if (ele[this.valueKey] == id) {
+            result = {
+              item: ele,
+              index: index,
+              parentList: parentList,
+              parent: parent
+            }
+          }
+          if (ele[this.childrenKey]) {
+            callback(ele[this.childrenKey], ele)
+          }
+        })
+      }
+      callback(this.data)
+      return result;
     }
   }
 });

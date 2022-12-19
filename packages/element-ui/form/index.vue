@@ -445,7 +445,6 @@ export default create({
         let prop = column.prop
         let bind = column.bind
         let control = column.control
-        let value = this.form
         if (!this.formBind[prop]) {
           let bindList = [];
           if (bind) {
@@ -457,7 +456,7 @@ export default create({
             })
             bindList.push(formProp)
             bindList.push(formDeep)
-            this.form[prop] = eval('value.' + bind)
+            this.form[prop] =getAsVal(this.form,bind)
           }
           if (control) {
             const callback = () => {
