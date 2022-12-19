@@ -2,6 +2,7 @@ import { validatenull } from './validate';
 import { DIC_PROPS, DIC_SHOW_SPLIT } from 'global/variable';
 import { typeList } from 'global/variable'
 export const isMediaType = (url, type) => {
+  if (validatenull(url)) return
   if (typeList.audio.test(url) || type == 'audio') {
     return 'audio'
   } else if (typeList.video.test(url) || type == 'video') {
@@ -9,7 +10,7 @@ export const isMediaType = (url, type) => {
   } else if (typeList.img.test(url) || type == 'img') {
     return 'img'
   }
-
+  return
 }
 export const uuid = () => {
   var s = [];

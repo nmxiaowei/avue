@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "2.10.5",
+  "version": "2.10.6",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -55,9 +55,8 @@
     "webpack-merge": "^4.1.4"
   },
   "peerDependencies": {
-    "axios": "^0.21.1",
-    "element-ui": "^2.15.10",
-    "vue": "2.7.10"
+    "element-ui": ">=2.15.3",
+    "vue": ">=2.5.17"
   },
   "dependencies": {
     "countup.js": "^1.9.3",

@@ -58,13 +58,13 @@
       <template v-else-if="dragFile">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
-          {{t('upload.tip')}}
-          <em>{{t('upload.upload')}}</em>
+          <em>{{fileText || t('upload.upload')}}</em>
         </div>
       </template>
       <template v-else>
-        <el-button size="small"
-                   type="primary">{{t('upload.upload')}}</el-button>
+        <el-button icon="el-icon-upload"
+                   :size="size"
+                   type="primary">{{fileText || t('upload.upload')}}</el-button>
       </template>
       <div slot="tip"
            class="el-upload__tip"
@@ -160,6 +160,7 @@ export default create({
       type: Boolean,
       default: true
     },
+    fileText: String,
     fileType: {
       type: String
     },
@@ -167,8 +168,7 @@ export default create({
       type: String
     },
     limit: {
-      type: Number,
-      default: 10
+      type: Number
     },
     headers: {
       type: Object,
@@ -220,8 +220,9 @@ export default create({
     httpRequest: Function
   },
   computed: {
-    isMultiple () {
-      return this.isArray || this.isString || this.stringMode
+    isObject () {
+      let obj = this.text[0]
+      return typeof (obj) === 'object'
     },
     acceptList () {
       if (Array.isArray(this.accept)) {
@@ -254,8 +255,8 @@ export default create({
       let list = [];
       (this.text || []).forEach((ele, index) => {
         if (ele) {
-          let name = this.isMultiple ? ele.substring(ele.lastIndexOf('/') + 1) : ele[this.labelKey]
-          let url = this.isMultiple ? ele : ele[this.valueKey];
+          let name = this.isObject ? ele[this.labelKey] : ele.substring(ele.lastIndexOf('/') + 1)
+          let url = this.isObject ? ele[this.valueKey] : ele;
           url = getFileUrl(this.homeUrl, url);
           list.push({
             uid: index + '',
@@ -298,13 +299,13 @@ export default create({
     handleSuccess (file) {
       if (this.isPictureImg) {
         this.text.splice(0, 1, file[this.urlKey])
-      } else if (this.isMultiple) {
-        this.text.push(file[this.urlKey]);
-      } else {
+      } else if (this.isObject) {
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
         obj[this.valueKey] = file[this.urlKey];
         this.text.push(obj);
+      } else {
+        this.text.push(file[this.urlKey]);
       }
     },
     handleRemove (file, fileList) {
@@ -317,7 +318,7 @@ export default create({
     },
     delete (file) {
       (this.text || []).forEach((ele, index) => {
-        let url = this.isMultiple ? ele : ele[this.valueKey]
+        let url = this.isObject ? ele[this.valueKey] : ele
         if (getFileUrl(this.homeUrl, url) === file.url) {
           this.text.splice(index, 1);
         }

@@ -127,7 +127,7 @@
                                :disabled="getDisabled(column)"
                                :readonly="column.readonly || readonly"
                                :enter="parentOption.enter"
-                               :size="parentOption.size"
+                               :size="size"
                                v-model="form[column.prop]"
                                @enter="submit"
                                :column-slot="columnSlot"
@@ -450,7 +450,7 @@ export default create({
             })
             bindList.push(formProp)
             bindList.push(formDeep)
-            this.$set(this.form, prop, eval('value.' + bind));
+            this.$set(this.form, prop, getAsVal(this.form, bind));
           }
           if (control) {
             const callback = () => {
