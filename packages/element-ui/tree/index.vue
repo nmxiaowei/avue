@@ -255,7 +255,7 @@ export default create({
     },
     getPermission (key) {
       if (typeof this.permission === "function") {
-        return this.permission(key, this.node.data)
+        return this.permission(key, this.node.data || {})
       } else if (!this.validatenull(this.permission[key])) {
         return this.permission[key]
       } else {
