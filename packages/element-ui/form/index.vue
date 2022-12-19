@@ -450,7 +450,7 @@ export default create({
             })
             bindList.push(formProp)
             bindList.push(formDeep)
-            this.$set(this.form, prop, eval('value.' + bind));
+            this.$set(this.form, prop, getAsVal(this.form, bind));
           }
           if (control) {
             const callback = () => {
