@@ -81,6 +81,7 @@
       <avue-form v-model="form"
                  :option="formOption"
                  ref="form"
+                 v-if="box"
                  @submit="handleSubmit"></avue-form>
     </el-dialog>
 
@@ -314,22 +315,22 @@ export default create({
     },
     save (data, done) {
       const callback = (form) => {
-        form = form || this.form;
+        form = this.deepClone(form || this.form);
         if (this.type === "add") {
           this.$refs.tree.append(form, this.node.data[this.valueKey])
         } else if (this.type === "parentAdd") {
           this.$refs.tree.append(form)
         }
-        this.hide();
         done()
+        this.$nextTick(() => this.hide())
       };
       this.$emit("save", this.node, data, callback, done);
     },
     update (data, done) {
       const callback = (form) => {
-        form = form || this.form;
+        form = this.deepClone(form || this.form);
         const rowKey = form[this.valueKey]
-        this.node.data = this.deepClone(form)
+        this.node.data = form
         let { parentList, index } = this.findData(rowKey)
         if (parentList) {
           const oldRow = parentList.splice(index, 1)[0];
