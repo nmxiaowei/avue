@@ -81,7 +81,7 @@ const TIP_TEXT = '{{time}}s后重获取'
 import create from "core/create";
 export default create({
   name: 'login',
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue','send','refresh','submit'],
   props: {
     modelValue: {
       type: Object,
