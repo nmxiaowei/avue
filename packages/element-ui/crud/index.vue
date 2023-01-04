@@ -128,6 +128,11 @@
                     :name="item"></slot>
             </template>
             <column-menu slot="footer">
+              <template slot="menuHeader"
+                        slot-scope="scope">
+                <slot name="menuHeader"
+                      v-bind="scope"></slot>
+              </template>
               <template slot="menu"
                         slot-scope="scope">
                 <slot name="menu"
