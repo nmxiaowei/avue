@@ -183,7 +183,7 @@ export const sendDic = (params) => {
     const callback = (res) => {
       let list = [];
       if (typeof formatter === 'function') {
-        list = formatter(res.data);
+        list = formatter(res.data, form);
       } else {
         list = getObjValue(res.data, resKey);
       }
