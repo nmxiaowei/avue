@@ -222,7 +222,7 @@ export default create({
   computed: {
     isObject () {
       let obj = this.text[0]
-      return typeof (obj) === 'object'
+      return typeof (obj) === 'object' || this.dataType == 'object'
     },
     acceptList () {
       if (Array.isArray(this.accept)) {
