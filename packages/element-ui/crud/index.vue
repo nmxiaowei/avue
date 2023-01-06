@@ -120,6 +120,10 @@
             </template>
             <template #footer>
               <column-menu>
+                <template #menu-header="scope">
+                  <slot name="menu-header"
+                        v-bind="scope"></slot>
+                </template>
                 <template #menu="scope">
                   <slot name="menu"
                         v-bind="scope"></slot>

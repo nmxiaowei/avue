@@ -39,7 +39,7 @@
                    :class="b('avatar')">
             <el-icon-document />
           </el-icon>
-          <el-icon :class="b('icon')"
+          <el-icon :class="b('avatar')"
                    v-else>
             <el-icon-plus />
           </el-icon>
@@ -238,7 +238,7 @@ export default create({
     },
     isObject () {
       let obj = this.text[0]
-      return typeof (obj) === 'object'
+      return typeof (obj) === 'object' || this.dataType == 'object'
     },
     acceptList () {
       if (Array.isArray(this.accept)) {

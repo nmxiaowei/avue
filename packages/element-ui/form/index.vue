@@ -456,7 +456,7 @@ export default create({
             })
             bindList.push(formProp)
             bindList.push(formDeep)
-            this.form[prop] =getAsVal(this.form,bind)
+            this.form[prop] = getAsVal(this.form, bind)
           }
           if (control) {
             const callback = () => {

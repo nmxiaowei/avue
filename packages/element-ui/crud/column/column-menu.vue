@@ -8,6 +8,13 @@
                    :align="crud.tableOption.menuAlign || config.menuAlign"
                    :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
                    :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
+    <template #header="scope">
+      <slot name="menu-header"
+            v-bind="scope"
+            :size="crud.size"
+            v-if="crud.getSlotName({prop:'menu'},'H',crud.$slots)"></slot>
+      <span v-else>{{crud.tableOption.menuTitle || t('crud.menu')}}</span>
+    </template>
     <template #="{row,$index}">
       <el-dropdown v-if="isMenu"
                    :size="crud.size">
