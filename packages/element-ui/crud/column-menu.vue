@@ -10,9 +10,10 @@
                    :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
                    :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
     <template slot="header"
-              slot-scope="{$index}">
+              slot-scope="scope">
       <slot name="menuHeader"
             :size="crud.isMediumSize"
+            v-bind="scope"
             v-if="crud.getSlotName({prop:'menu'},'H',crud.$scopedSlots)"></slot>
       <span v-else>{{crud.tableOption.menuTitle || t('crud.menu')}}</span>
     </template>
