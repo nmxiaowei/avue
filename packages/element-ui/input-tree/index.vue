@@ -212,10 +212,14 @@ export default create({
       this.$nextTick(() => {
         this.node = [];
         if (this.multiple) {
-          let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
-          list.forEach(ele => {
-            this.node.push(ele);
-          })
+          if (this.validatenull(this.text)) {
+            this.$refs.tree.setCheckedKeys([]);
+          } else {
+            let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
+            list.forEach(ele => {
+              this.node.push(ele);
+            })
+          }
         } else {
           let node = this.$refs.tree.getNode(this.text)
           if (node) {
