@@ -119,8 +119,8 @@
                             :readonly="column.readonly|| readonly"
                             :disabled="getDisabled(column)"
                             :dic="DIC[column.prop]"
-                            :name="column.prop"
-                            v-if="$slots[column.prop]"></slot>
+                            :name="column.prop.toLowerCase()"
+                            v-if="$slots[column.prop.toLowerCase()]"></slot>
                       <form-temp :column="column"
                                  v-else
                                  :ref="column.prop"

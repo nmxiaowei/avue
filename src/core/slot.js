@@ -15,7 +15,7 @@ export default {
       return name
     },
     getSlotList (list = [], slot, propList) {
-      propList = propList.map(ele => ele.prop)
+      propList = propList.map(ele => ele.prop.toLowerCase())
       return Object.keys(slot).filter(ele => {
         let result = false;
         if (!propList.includes(ele)) {

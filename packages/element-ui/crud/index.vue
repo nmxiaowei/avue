@@ -181,6 +181,7 @@ import columnDefault from './column/column-default'
 import config from "./config.js";
 import { calcCascader, formInitVal } from "core/dataformat";
 import { DIC_PROPS } from 'global/variable';
+import { CommonProps } from "element-plus";
 export default create({
   name: "crud",
   mixins: [init(), locale,],
@@ -306,7 +307,8 @@ export default create({
     mainSlot () {
       let result = [];
       this.propOption.forEach(item => {
-        if (this.$slots[item.prop]) result.push(item.prop)
+        let prop = item.prop.toLowerCase()
+        if (this.$slots[prop]) result.push(prop)
       })
       return this.getSlotList(['-header', '-form'], this.$slots, this.propOption).concat(result)
     },
