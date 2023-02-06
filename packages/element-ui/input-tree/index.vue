@@ -64,7 +64,6 @@ import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
 import { DIC_SHOW_SPLIT } from 'global/variable';
-import { detailDataType } from 'utils/util';
 export default create({
   name: "input-tree",
   mixins: [props(), event()],

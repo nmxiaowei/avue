@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { getObjValue, detailDic } from 'utils/util';
+import { getDataDic, detailDic } from 'utils/util';
 export const loadCascaderDic = (columnOption, list = []) => {
   return new Promise((resolve, reject) => {
     let columnList = [];
@@ -185,7 +185,7 @@ export const sendDic = (params) => {
       if (typeof formatter === 'function') {
         list = formatter(res.data, form);
       } else {
-        list = getObjValue(res.data, resKey);
+        list = getDataDic(res.data, resKey);
       }
       resolve(list);
     };

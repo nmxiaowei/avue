@@ -27,42 +27,30 @@
     el: '#app',
     data() {
       return {
-        obj: {
-          name: '11'
-        },
+        obj: {},
         data: [],
         option: {
           column: [{
-            label: '姓名',
-            prop: 'name',
-            change: () => {
-              this.$message.success('查看控制台')
-              console.log('值改变')
+            label: '省份',
+            prop: 'province',
+            change: (scope) => {
+              console.log('值改变', scope)
             },
-            click: () => {
-              this.$message.success('查看控制台')
-              console.log('点击事件')
+            click: (scope) => {
+              console.log('点击事件', scope)
             },
-            focus: () => {
-              this.$message.success('查看控制台')
-              console.log('获取焦点')
+            focus: (scope) => {
+              console.log('获取焦点', scope)
             },
-            blur: () => {
-              this.$message.success('查看控制台')
-              console.log('失去焦点')
+            blur: (scope) => {
+              console.log('失去焦点', scope)
             },
-            enter: ({ value, column }) => {
-              this.$message.success('enter事件查看控制台')
-              console.log('回车事件', value, column)
+            enter: (scope) => {
+              console.log('回车事件', scope)
             }
           }]
         }
       }
-    },
-    mounted() {
-
-    },
-    methods: {
     }
   })
 </script>
