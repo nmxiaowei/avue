@@ -680,13 +680,15 @@ export default create({
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
       }
-      this.btnDisabledList[index] = true;
-      this.btnDisabled = true;
-      if (this.validatenull(row[this.rowKey])) {
-        this.$emit("row-save", row, done, loading);
-      } else {
-        this.$emit("row-update", row, index, done, loading);
-      }
+      this.validateCellField(index).then(() => {
+        this.btnDisabledList[index] = true;
+        this.btnDisabled = true;
+        if (this.validatenull(row[this.rowKey])) {
+          this.$emit("row-save", row, done, loading);
+        } else {
+          this.$emit("row-update", row, index, done, loading);
+        }
+      })
     },
     // 单元格编辑
     rowCellEdit (row, index) {
@@ -705,24 +707,21 @@ export default create({
       })
     },
     validateCellField (index) {
-      this.$refs.cellForm.validateField(item.prop, (error) => {
-        if (error) {
-          console.log(error)
-        }
-        return
-      })
-      let result = true
-      for (const item of this.$refs.cellForm.fields) {
-        if (item.prop.split('.')[1] == index) {
-          this.$refs.cellForm.validateField(item.prop, (error) => {
-            if (error) {
-              result = false
+      return new Promise((resolve, reject) => {
+        this.$refs.cellForm.validate((valid, msg) => {
+          let result = true
+          let list = []
+          Object.keys(msg).forEach(ele => {
+            if (ele.indexOf(`list.${index}`) !== -1) {
+              result = false;
+            } else {
+              list.push(ele)
             }
           })
-        }
-        if (!result) break
-      }
-      return result
+          this.$refs.cellForm.clearValidate(list)
+          if (result) resolve()
+        });
+      })
     },
     rowAdd () {
       this.$refs.dialogForm.show("add");
