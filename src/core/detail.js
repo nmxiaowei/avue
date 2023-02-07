@@ -1,5 +1,5 @@
 import { validatenull } from 'utils/validate';
-import { getPasswordChar, findByValue, getAsVal, strCorNum } from 'utils/util';
+import { getPasswordChar, getDicValue, getAsVal, strCorNum } from 'utils/util';
 import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST, MULTIPLE_LIST, ARRAY_VALUE_LIST, ARRAY_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
@@ -43,7 +43,9 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       }
     }
     // 字典处理
-    result = findByValue(dic, result, column.props || option.props);
+    if (!validatenull(dic)) {
+      result = getDicValue(dic, result, column.props || option.props);
+    }
   }
   // 自定义格式化
   if (column.formatter && typeof column.formatter === 'function') {

@@ -22,7 +22,6 @@
              @focus="handleFocus"
              @blur="handleBlur"
              @click="handleClick"
-             @change="changeSelect"
              :multiple-limit="limit"
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
@@ -53,10 +52,15 @@
         </el-option-group>
       </template>
       <template v-else>
-        <el-checkbox v-model="checkAll"
-                     class="b('check')"
-                     v-if="all"
-                     @change='selectAll'>全选</el-checkbox>
+        <div :class="b('check')">
+          <el-checkbox v-if="all&&multiple"
+                       :value="checked"
+                       :checked="checked"
+                       :disabled="disabled"
+                       :indeterminate="indeterminate"
+                       @change='checkChange'>全选</el-checkbox>
+        </div>
+
         <el-option v-for="(item,index) in netDic"
                    :key="index"
                    :disabled="item[disabledKey]"
@@ -94,7 +98,8 @@ export default create({
   mixins: [props(), event()],
   data () {
     return {
-      checkAll: false,
+      checked: false,
+      indeterminate: false,
       create: false,
       netDic: [],
       loading: false,
@@ -183,6 +188,18 @@ export default create({
           this.handleRemoteMethod(this.multiple ? this.text.join(DIC_SPLIT) : this.text)
         }
       }
+      if (this.multiple) {
+        if (this.text.length == 0) {
+          this.checked = false
+          this.indeterminate = false
+        } else if (this.text.length == this.netDic.length) {
+          this.checked = true
+          this.indeterminate = false
+        } else {
+          this.checked = false
+          this.indeterminate = true
+        }
+      }
     },
     setSort () {
       if (!window.Sortable) {
@@ -208,18 +225,13 @@ export default create({
         this.netDic = res;
       });
     },
-    selectAll () {
+    checkChange (val) {
       this.text = []
-      if (this.checkAll) {
-        this.netDic.map((item) => {
-          this.text.push(item[this.valueKey])
-        })
-      } else {
-        this.text = []
+      this.checked = val
+      this.indeterminate = false
+      if (val) {
+        this.text = this.netDic.map(ele => ele[this.valueKey])
       }
-    },
-    changeSelect (val) {
-      this.checkAll = val.length === this.netDic.length
     }
   }
 });
