@@ -40,7 +40,7 @@
           {{t('crud.tipEndTitle')}}
         </span>
         <span class="avue-crud__tip-button"
-              @click="$refs.table.clearSelection()">{{t('crud.emptyBtn')}}</span>
+              @click="clearSelection">{{t('crud.emptyBtn')}}</span>
         <slot name="tip"></slot>
       </div>
       <slot name="header"></slot>
@@ -508,9 +508,12 @@ export default create({
     validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
-    selectClear () {
-      this.$emit('selection-clear', this.deepClone(this.tableSelect))
+    clearSelection () {
       this.$refs.table.clearSelection();
+      this.$emit('selection-clear', this.deepClone(this.tableSelect))
+    },
+    toggleAllSelection () {
+      this.$refs.table.toggleAllSelection();
     },
     toggleRowSelection (row, selected) {
       this.$refs.table.toggleRowSelection(row, selected);

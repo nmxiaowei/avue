@@ -12,8 +12,7 @@ export const calcCascader = (list = []) => {
       let parentProp = ele.prop;
       cascader.forEach(citem => {
         let column = findObject(list, citem);
-        if (column === -1) return;
-        column.parentProp = parentProp;
+        if (column) column.parentProp = parentProp;
       });
     }
   });

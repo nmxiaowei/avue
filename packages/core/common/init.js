@@ -113,15 +113,15 @@ export default function () {
       },
       //本地字典
       handleLocalDic () {
-        this.handleSetDic(this.DIC, loadLocalDic(this.resultOption));
+        loadLocalDic(this.resultOption, this)
       },
       // 网络字典加载
       handleLoadDic () {
-        loadDic(this.resultOption).then(res => this.handleSetDic(this.DIC, res))
+        loadDic(this.resultOption, this)
       },
       //级联字典加载
       handleLoadCascaderDic () {
-        loadCascaderDic(this.propOption, this.data).then(res => this.handleSetDic(this.cascaderDIC, res));
+        loadCascaderDic(this.propOption, this)
       }
     }
   };
