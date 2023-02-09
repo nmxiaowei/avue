@@ -46,7 +46,7 @@
         </span>
         <el-button type="text"
                    size="small"
-                   @click="selectClear"
+                   @click="clearSelection"
                    v-permission="getPermission('selectClearBtn')"
                    v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
         <slot name="tip"></slot>
@@ -479,9 +479,12 @@ export default create({
     validateField (val) {
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
-    selectClear () {
-      this.$emit('selection-clear', this.deepClone(this.tableSelect))
+    clearSelection () {
       this.$refs.table.clearSelection();
+      this.$emit('selection-clear', this.deepClone(this.tableSelect))
+    },
+    toggleAllSelection () {
+      this.$refs.table.toggleAllSelection();
     },
     toggleRowSelection (row, selected) {
       this.$refs.table.toggleRowSelection(row, selected);
