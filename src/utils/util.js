@@ -1,5 +1,5 @@
 import { validatenull } from './validate';
-import { DIC_PROPS, DIC_SHOW_SPLIT, CHILDREN_LIST } from 'global/variable';
+import { DIC_PROPS, CHILDREN_LIST } from 'global/variable';
 import { typeList } from 'global/variable'
 export const isMediaType = (url, type) => {
   if (validatenull(url)) return
@@ -105,12 +105,6 @@ export function downFile (url, saveName) {
       false, false, false, 0, null);
   }
   aLink.dispatchEvent(event);
-}
-export function strCorNum (list) {
-  list.forEach((ele, index) => {
-    list[index] = Number(ele);
-  });
-  return list;
 }
 export function extend () {
   var target = arguments[0] || {};
@@ -307,18 +301,6 @@ export const detailDataType = (value, type) => {
 };
 
 /**
- * 数组的数据类型转化
- */
-export const detailDic = (list = [], props = {}, type) => {
-  let valueKey = props.value || DIC_PROPS.value;
-  let childrenKey = props.children || DIC_PROPS.children;
-  list.forEach(ele => {
-    ele[valueKey] = detailDataType(ele[valueKey], type);
-    if (ele[childrenKey]) detailDic(ele[childrenKey], props, type);
-  });
-  return list;
-};
-/**
  * 根据字典的value显示label
  */
 
@@ -339,8 +321,11 @@ export const getDicValue = (list, value, props = {}) => {
     let obj = findNode(dic, props, ele) || {}
     result.push(obj[labelKey] || ele);
   })
-
-  return result.join(isArray ? DIC_SHOW_SPLIT : '')
+  if (isArray) {
+    return result
+  } else {
+    return result.join('')
+  }
 };
 /**
  * 过滤字典翻译字段和空字段
@@ -359,19 +344,6 @@ export const filterParams = (form, list = ['', '$'], deep = true) => {
   return data
 };
 
-
-export const getDataDic = (data, bind = '') => {
-  const list = bind.split('.');
-  if (list[0] === '') {
-    let result = data.data
-    if (result) {
-      return Array.isArray(result) ? result : [result]
-    } else {
-      return data
-    }
-  }
-  return getAsVal(data, bind)
-};
 
 /**
  * 根据值查找对应的序号
