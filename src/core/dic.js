@@ -95,7 +95,7 @@ export const loadDic = (option, safe) => {
             url: url,
             name: prop,
             method: ele.dicMethod,
-            headers: column.dicHeaders,
+            headers: ele.dicHeaders,
             formatter: ele.dicFormatter,
             props: ele.props,
             dataType: ele.dataType,
