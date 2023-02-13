@@ -1,6 +1,6 @@
 import { validatenull } from 'utils/validate';
 import { getPasswordChar, getDicValue, getAsVal, detailDataType } from 'utils/util';
-import { DIC_SPLIT, DATE_LIST, MULTIPLE_LIST, ARRAY_VALUE_LIST } from 'global/variable';
+import { DIC_SPLIT, DIC_SHOW_SPLIT, DATE_LIST, MULTIPLE_LIST, ARRAY_VALUE_LIST } from 'global/variable';
 import dayjs from 'dayjs';
 export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   let result = row[column.prop];
