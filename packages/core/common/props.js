@@ -146,13 +146,15 @@ export default function () {
         handler (val) {
           this.handleChange(val)
           this.handleTextValue && this.handleTextValue(val)
-        }
+        },
+        deep: true
       },
       modelValue: {
         handler (val) {
           this.initVal();
           this.handleModelValue && this.handleModelValue(val)
-        }
+        },
+        deep: true
       }
     },
     computed: {
