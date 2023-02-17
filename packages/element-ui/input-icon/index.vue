@@ -23,7 +23,7 @@
                  :visible.sync="box"
                  :width="dialogWidth">
         <div :class="b('filter')">
-          <el-input :placeholder="t('tip.input')"
+          <el-input :placeholder="vaildData(option.filterText,t('tip.input'))"
                     :size="size"
                     v-model="filterText"></el-input>
         </div>
@@ -77,9 +77,10 @@ export default create({
   },
   computed: {
     list () {
-      let list = (this.tabs.list || []).map(ele => {
+      let list = this.tabs.list.map(ele => {
         if (!ele.value && !ele.label) {
           return {
+            label: ele,
             value: ele
           }
         }
@@ -97,7 +98,7 @@ export default create({
     }
   },
   created () {
-    this.tabs = this.iconList[0] || {};
+    this.tabs = this.iconList[0]
   },
   methods: {
     handleTabs (tabs) {
@@ -111,6 +112,7 @@ export default create({
     handleShow () {
       this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
+      this.tabs = this.iconList[0]
       this.box = true;
     }
   }

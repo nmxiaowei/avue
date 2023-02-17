@@ -2,7 +2,7 @@
   <div :class="b()">
     <div :class="b('filter')"
          v-if="vaildData(option.filter,true)">
-      <el-input :placeholder="vaildData(option.filterText,'输入关键字进行过滤')"
+      <el-input :placeholder="vaildData(option.filterText,t('tip.input'))"
                 :size="size"
                 v-model="filterValue">
 
