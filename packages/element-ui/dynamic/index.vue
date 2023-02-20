@@ -28,6 +28,7 @@
           <avue-form :key="index"
                      ref="main"
                      :option="deepClone(option)"
+                     v-bind="$uploadFun({},this)"
                      v-model="text[index]">
             <div slot-scope="{}"
                  slot="_index">
@@ -49,6 +50,7 @@
                ref="main"
                :option="option"
                :disabled="disabled"
+               v-bind="$uploadFun({},this)"
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"
@@ -99,6 +101,12 @@ export default create({
     }
   },
   props: {
+    uploadBefore: Function,
+    uploadAfter: Function,
+    uploadDelete: Function,
+    uploadPreview: Function,
+    uploadError: Function,
+    uploadExceed: Function,
     max: Number,
     columnSlot: {
       type: Array,

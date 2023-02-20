@@ -186,7 +186,7 @@ export function findObject (list = [], value, prop = 'prop') {
       if (ele.column) {
         if (!result) result = findNode(ele.column, { value: prop }, value);
       } else if (ele.children && CHILDREN_LIST.includes(ele.type)) {
-        if (!result) result = findNode(ele.column.children, { value: prop }, value);
+        if (!result) result = findNode(ele.children.column, { value: prop }, value);
       }
     })
   }
@@ -363,7 +363,7 @@ export const findNode = (list = [], props = {}, value) => {
   let node;
   list.forEach(ele => {
     if (ele[valueKey] == value) node = ele
-    else if (ele[childrenKey]) node = findNode(ele[childrenKey], props, value)
+    else if (ele[childrenKey] && Array.isArray(ele[childrenKey])) node = findNode(ele[childrenKey], props, value)
   })
   return node
 }
