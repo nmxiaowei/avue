@@ -360,12 +360,14 @@ export const findArray = (list = [], value, valueKey = DIC_PROPS.value, index = 
 export const findNode = (list = [], props = {}, value) => {
   let valueKey = props.value || DIC_PROPS.value;
   let childrenKey = props.children || DIC_PROPS.children;
-  let node;
-  list.forEach(ele => {
-    if (ele[valueKey] == value) node = ele
-    else if (ele[childrenKey] && Array.isArray(ele[childrenKey])) node = findNode(ele[childrenKey], props, value)
-  })
-  return node
+  for (let i = 0; i < list.length; i++) {
+    const ele = list[i]
+    if (ele[valueKey] == value) {
+      return ele
+    } else if (ele[childrenKey] && Array.isArray(ele[childrenKey])) {
+      return findNode(ele[childrenKey], props, value)
+    }
+  }
 }
 /**
  * 根据位数获取*密码程度
