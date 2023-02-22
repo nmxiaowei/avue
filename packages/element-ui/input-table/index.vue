@@ -33,7 +33,7 @@
             <el-button type="primary"
                        :size="size"
                        icon="el-icon-check"
-                       @click="setVal">确 定</el-button>
+                       @click="setVal">{{t("common.submitBtn")}}</el-button>
           </span>
         </template>
 
@@ -47,9 +47,10 @@
 import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
+import locale from "core/locale";
 export default create({
   name: "input-table",
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   data () {
     return {
       object: {},
