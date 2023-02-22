@@ -45,7 +45,7 @@
                      :size="size"
                      icon="el-icon-check"
                      v-if="!(disabled || readonly)"
-                     @click="handleSubmit">确 定</el-button>
+                     @click="handleSubmit">{{t("common.submitBtn")}}</el-button>
         </span>
       </el-dialog>
     </div>
@@ -57,9 +57,10 @@ import packages from "core/packages";
 import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
+import locale from "core/locale";
 export default create({
   name: "input-map",
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   props: {
     dialogWidth: {
       type: String,
