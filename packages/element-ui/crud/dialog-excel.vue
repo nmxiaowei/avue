@@ -154,6 +154,7 @@ export default {
           if (children && !Array.isArray(children)) delete ele.children
           else if (ele.showColumn === false) list.splice(index, 1)
           else {
+            ele.prop = ele.prop || new Date().getTime()
             prop.push(ele.prop)
             if (ele.children) findProp(children)
           }
