@@ -74,8 +74,8 @@
             :dic="crud.DIC[column.prop]"
             :size="crud.size"
             :label="handleShowLabel(row,column,crud.DIC[column.prop])"
-            :name="column.prop.toLowerCase()"
-            v-else-if="crud.$slots[column.prop.toLowerCase()]"></slot>
+            :name="column.prop"
+            v-else-if="crud.$slots[column.prop]"></slot>
       <template v-else>
         <span v-if="['img','upload'].includes(column.type)"
               class="avue-crud__img ">

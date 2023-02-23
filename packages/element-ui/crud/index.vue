@@ -307,7 +307,7 @@ export default create({
     mainSlot () {
       let result = [];
       this.propOption.forEach(item => {
-        let prop = item.prop.toLowerCase()
+        let prop = item.prop
         if (this.$slots[prop]) result.push(prop)
       })
       return this.getSlotList(['-header', '-form'], this.$slots, this.propOption).concat(result)

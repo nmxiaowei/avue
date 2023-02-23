@@ -10,17 +10,17 @@ export default {
         T: '-type',
         D: ''
       }
-      let name = (item.prop + result[type]).toLowerCase()
+      let name = (item.prop + result[type])
       if (slot) return slot[name]
       return name
     },
     getSlotList (list = [], slot, propList) {
-      propList = propList.map(ele => ele.prop.toLowerCase())
+      propList = propList.map(ele => ele.prop)
       return Object.keys(slot).filter(ele => {
         let result = false;
         if (!propList.includes(ele)) {
           list.forEach(name => {
-            if (ele.includes(name.toLowerCase())) result = true;
+            if (ele.includes(name)) result = true;
           })
         }
         return result;

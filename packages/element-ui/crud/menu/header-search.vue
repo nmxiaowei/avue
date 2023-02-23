@@ -113,7 +113,6 @@ export default create({
               if (item.includes(key)) {
                 let result = item.replace(key, '')
                 if (result.length == 0) return
-                result = result.replace(result[0], result[0].toLowerCase())
                 obj[result] = ele[item];
               }
             })
