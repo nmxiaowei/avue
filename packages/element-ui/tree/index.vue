@@ -170,7 +170,7 @@ export default create({
       }
     },
     treeProps () {
-      return Object.assign(DIC_PROPS, this.props, {
+      return Object.assign(this.deepClone(DIC_PROPS), this.props, {
         isLeaf: this.leafKey
       })
     },
