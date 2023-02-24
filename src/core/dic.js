@@ -1,4 +1,5 @@
 import { detailDataType, getAsVal } from 'utils/util';
+import { validatenull } from 'utils/validate';
 import { DIC_PROPS } from 'global/variable'
 const key = 'key';
 function getDataType (list = [], props = {}, type) {
@@ -139,7 +140,9 @@ export const sendDic = (params) => {
   props = column.props || props || {};
   let list = url.match(/[^\{\}]+(?=\})/g) || []
   list.forEach(ele => {
-    url = url.replace(`{{${ele}}}`, ele === key ? value : form[ele]);
+    let result = ele === key ? value : form[ele]
+    if (validatenull(result)) result = ''
+    url = url.replace(`{{${ele}}}`, result);
   });
 
   const getKey = (data) => {
@@ -152,6 +155,7 @@ export const sendDic = (params) => {
       } else {
         result[ele] = eleKey;
       }
+      if (validatenull(result[ele])) result[ele] = ''
     });
     return result;
   }

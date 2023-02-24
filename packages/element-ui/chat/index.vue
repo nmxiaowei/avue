@@ -90,10 +90,10 @@
                       <div style="text-align: right; margin: 0">
                         <el-button size="mini"
                                    type="text"
-                                   @click="visible = false">取消</el-button>
+                                   @click="visible = false">{{t("common.cancelBtn")}}</el-button>
                         <el-button type="primary"
                                    size="mini"
-                                   @click="addKey">确定</el-button>
+                                   @click="addKey">{{t("common.submitBtn")}}</el-button>
                       </div>
                       <el-button slot="reference"
                                  type="text"
@@ -147,10 +147,10 @@
         <span slot="footer"
               class="dialog-footer">
           <el-button @click="upload.box=false"
-                     size="small">取 消</el-button>
+                     size="small">{{t("common.cancelBtn")}}</el-button>
           <el-button type="primary"
                      @click="uploadSubmit"
-                     size="small">确 定</el-button>
+                     size="small">{{t("common.submitBtn")}}</el-button>
         </span>
       </el-dialog>
     </div>
@@ -182,9 +182,11 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 import dayjs from 'dayjs'
 export default create({
   name: "chat",
+  mixins: [locale],
   data () {
     return {
       upload: {

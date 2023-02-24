@@ -67,19 +67,20 @@
     <span class="avue-dialog__footer">
       <el-button size="small"
                  type="primary"
-                 @click="submit">确 定</el-button>
+                 @click="submit">{{t("common.submitBtn")}}</el-button>
       <el-button size="small"
-                 @click="cancel()">取 消</el-button>
+                 @click="cancel()">{{t("common.cancelBtn")}}</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-
+import locale from "core/locale";
 import { dataURLtoFile } from 'utils/util';
 import { VueCropper } from 'vue-cropper'
 export default {
   name: "CropperImage",
+  mixins: [locale],
   components: {
     VueCropper
   },
