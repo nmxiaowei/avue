@@ -256,7 +256,6 @@ export default create({
     hide (done) {
       const callback = () => {
         done && done();
-        Object.keys(this.crud.tableForm).forEach(ele => delete this.crud.tableForm[ele])
         this.crud.tableIndex = -1;
         this.crud.tableForm = {}
         this.crud.setVal()

@@ -1,0 +1,17 @@
+@media screen and (max-width: 992px) {
+  .avue-crud {
+    .avue-crud__menu{
+      display: block;
+    }
+    .avue-crud__left,.avue-crud__right{
+      margin: 5px 0;
+      width: 100%;
+    }
+    .avue-crud__right{
+      text-align: right;
+    }
+    .el-button+.el-button {
+      margin-left: 0;
+    }
+  }
+}

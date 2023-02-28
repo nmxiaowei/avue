@@ -19,13 +19,15 @@
 
 <body>
   <div id="app">
-    <avue-crud :option="option" :data="data"></avue-crud>
+    {{form}}
+    <avue-crud :option="option" :data="data" v-model="form"></avue-crud>
   </div>
 </body>
 <script>
   var app = Vue.createApp({
     data() {
       return {
+        form: {},
         data: [{
           deep: {
             deep: {
