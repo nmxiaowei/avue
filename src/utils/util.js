@@ -365,7 +365,8 @@ export const findNode = (list = [], props = {}, value) => {
     if (ele[valueKey] == value) {
       return ele
     } else if (ele[childrenKey] && Array.isArray(ele[childrenKey])) {
-      return findNode(ele[childrenKey], props, value)
+      let node = findNode(ele[childrenKey], props, value)
+      if (node) return node
     }
   }
 }
