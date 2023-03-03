@@ -1,6 +1,8 @@
 <template>
   <div :class="b()">
-    <el-input :placeholder="placeholder"
+    <el-input :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :placeholder="placeholder"
               v-model="text"
               :size="size"
               ref="main"
@@ -29,6 +31,12 @@ export default create({
   name: "input-color",
   mixins: [props(), event()],
   props: {
+    prefixIcon: {
+      type: String
+    },
+    suffixIcon: {
+      type: String
+    },
     colorFormat: String,
     predefine: {
       type: Array,
