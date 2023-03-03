@@ -1,6 +1,8 @@
 <template>
   <div :class="b()">
-    <el-input :size="size"
+    <el-input :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :size="size"
               @clear="handleClear"
               :clearable="clearableVal"
               :rows="rows"
@@ -63,6 +65,12 @@ export default create({
   name: "input-map",
   mixins: [props(), event(), locale],
   props: {
+    prefixIcon: {
+      type: String
+    },
+    suffixIcon: {
+      type: String
+    },
     dialogWidth: {
       type: String,
       default: '80%'

@@ -1,6 +1,8 @@
 <template>
   <div :class="b()">
-    <el-input :size="size"
+    <el-input :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :size="size"
               :model-value="labelShow"
               :clearable="disabled?false:clearable"
               :placeholder="placeholder"
@@ -63,6 +65,12 @@ export default create({
     };
   },
   props: {
+    prefixIcon: {
+      type: String
+    },
+    suffixIcon: {
+      type: String
+    },
     formatter: Function,
     onLoad: Function,
     dialogWidth: {

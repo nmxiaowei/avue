@@ -1,6 +1,8 @@
 <template>
   <div :class="b()">
-    <el-input :placeholder="placeholder"
+    <el-input :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :placeholder="placeholder"
               :model-value="text"
               :popper-class="popperClass"
               :size="size"
@@ -62,6 +64,12 @@ export default create({
   },
   mixins: [props(), event(), locale],
   props: {
+    prefixIcon: {
+      type: String
+    },
+    suffixIcon: {
+      type: String
+    },
     dialogWidth: {
       type: String,
       default: '80%'
