@@ -327,7 +327,7 @@ export default create({
     },
     columnOption () {
       let column = this.tableOption.column || []
-      let group = this.tableOption.group || [];
+      let group = this.deepClone(this.tableOption.group) || [];
       let footer = this.tableOption.footer || [];
       group.unshift({
         header: false,
