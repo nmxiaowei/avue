@@ -114,7 +114,8 @@
               <span class="el-upload-list__item-file-name"> {{file.name}}</span>
             </a>
           </div>
-          <el-icon class="el-icon--close">
+          <el-icon class="el-icon--close"
+                   v-if="!disabled">
             <el-icon-close @click.stop="handleRemove(file)"></el-icon-close>
           </el-icon>
         </div>
@@ -127,7 +128,8 @@
               </el-icon>
               <span class="el-upload-list__item-file-name"> {{file.name}}</span>
             </a>
-            <el-icon class="el-icon--close">
+            <el-icon class="el-icon--close"
+                     v-if="!disabled">
               <el-icon-close @click.stop="handleRemove(file)"></el-icon-close>
             </el-icon>
           </div>
