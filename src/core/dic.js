@@ -155,7 +155,6 @@ export const sendDic = (params) => {
       } else {
         result[ele] = eleKey;
       }
-      if (validatenull(result[ele])) result[ele] = ''
     });
     return result;
   }
