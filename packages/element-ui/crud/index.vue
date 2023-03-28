@@ -19,7 +19,8 @@
               :name="item"></slot>
       </template>
     </header-search>
-    <el-card :shadow="isCard">
+    <el-card :shadow="isCard"
+             :class="b('body')">
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="validData(tableOption.header,true)">
@@ -362,7 +363,7 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.tableOption.column || []
+      let column = this.deepClone(this.tableOption.column) || []
       return column
     },
     sumColumnList () {

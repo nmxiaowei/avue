@@ -3,6 +3,8 @@
                    :key="column.prop"
                    :prop="column.prop"
                    :label="column.label"
+                   :class-name="column.className"
+                   :label-class-name="column.labelClassName"
                    :column-key="column.prop"
                    filter-placement="bottom-end"
                    :filters="getColumnProp(column,'filters')"

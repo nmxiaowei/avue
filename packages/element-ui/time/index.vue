@@ -24,7 +24,6 @@
                :min-time="minTime"
                :value-format="valueFormat"
                :placeholder="placeholder"
-               @change="handleChange"
                @click="handleClick"
                :disabled="disabled">
     </component>

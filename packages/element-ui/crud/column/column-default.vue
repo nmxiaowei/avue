@@ -1,10 +1,12 @@
 <template>
   <!-- 折叠面板  -->
-  <el-table-column type="expand"
+  <el-table-column v-if="crud.tableOption.expand"
+                   type="expand"
+                   :class-name="crud.tableOption.expandClassName"
+                   :label-class-name="crud.tableOption.expandLabelClassName"
                    :width="crud.tableOption.expandWidth || config.expandWidth"
                    :fixed="validData(crud.tableOption.expandFixed,config.expandFixed)"
-                   align="center"
-                   v-if="crud.tableOption.expand">
+                   align="center">
     <template #="{row}">
       <slot :row="row"
             :index="row.$index"
@@ -16,6 +18,8 @@
   <el-table-column v-if="crud.tableOption.selection"
                    :fixed="validData(crud.tableOption.selectionFixed,config.selectionFixed)"
                    type="selection"
+                   :class-name="crud.tableOption.selectionClassName"
+                   :label-class-name="crud.tableOption.selectionLabelClassName"
                    :selectable="crud.tableOption.selectable"
                    :reserve-selection="validData(crud.tableOption.reserveSelection)"
                    :width="crud.tableOption.selectionWidth || config.selectionWidth"
@@ -25,6 +29,8 @@
                    :fixed="validData(crud.tableOption.indexFixed,config.indexFixed)"
                    :label="crud.tableOption.indexLabel || config.indexLabel"
                    type="index"
+                   :class-name="crud.tableOption.indexClassName"
+                   :label-class-name="crud.tableOption.indexLabelClassName"
                    :width="crud.tableOption.indexWidth || config.indexWidth"
                    :index="indexMethod"
                    align="center"></el-table-column>

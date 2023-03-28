@@ -1,8 +1,10 @@
 <template>
-  <el-table-column :prop="columnOption.prop"
+  <el-table-column v-if="getColumnProp(columnOption,'hide')"
+                   :prop="columnOption.prop"
                    :label="columnOption.label"
+                   :class-name="column.className"
+                   :label-class-name="column.labelClassName"
                    filter-placement="bottom-end"
-                   v-if="getColumnProp(columnOption,'hide')"
                    :filters="getColumnProp(columnOption,'filters')"
                    :filter-method="getColumnProp(columnOption,'filterMethod')?handleFilterMethod:undefined"
                    :filter-multiple="validData(columnOption.filterMultiple,true)"

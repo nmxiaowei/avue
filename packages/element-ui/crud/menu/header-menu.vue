@@ -1,8 +1,9 @@
 <template>
-  <div :class="b('menu')">
+  <div :class="b('header')">
     <div :class="b('left')"
          v-if="validData(crud.tableOption.menuLeft,true)">
       <el-button type="primary"
+                 :class="b('addBtn')"
                  @click="crud.rowAdd"
                  :icon="crud.getBtnIcon('addBtn')"
                  :size="crud.size"
@@ -13,6 +14,7 @@
         </template>
       </el-button>
       <el-button type="primary"
+                 :class="b('addBtn')"
                  @click="crud.rowCellAdd"
                  :icon="crud.getBtnIcon('addBtn')"
                  v-permission="crud.getPermission('addRowBtn')"
@@ -38,6 +40,7 @@
       <slot name="menu-right"
             :size="crud.size"></slot>
       <el-button :icon="crud.getBtnIcon('excelBtn')"
+                 :class="b('excelBtn')"
                  circle
                  :size="crud.size"
                  @click="rowExcel"
@@ -45,6 +48,7 @@
                  v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
       </el-button>
       <el-button :icon="crud.getBtnIcon('printBtn')"
+                 :class="b('printBtn')"
                  circle
                  :size="crud.size"
                  @click="rowPrint"
@@ -52,23 +56,27 @@
                  v-if="validData(crud.tableOption.printBtn,config.printBtn)">
       </el-button>
       <el-button :icon="crud.getBtnIcon('refreshBtn')"
+                 :class="b('refreshBtn')"
                  circle
                  :size="crud.size"
                  @click="crud.refreshChange"
                  v-permission="crud.getPermission('refreshBtn')"
                  v-if="validData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
       <el-button :icon="crud.getBtnIcon('columnBtn')"
+                 :class="b('columnBtn')"
                  circle
                  :size="crud.size"
                  @click="crud.$refs.dialogColumn.handleShow()"
                  v-permission="crud.getPermission('columnBtn')"
                  v-if="validData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
       <el-button :icon="crud.getBtnIcon('searchBtn')"
+                 :class="b('searchBtn')"
                  circle
                  :size="crud.size"
                  @click="crud.$refs.headerSearch.handleSearchShow()"
                  v-if="(crud.$refs.headerSearch || {}).searchFlag&&validData(crud.tableOption.searchShowBtn,true)"></el-button>
       <el-button :icon="crud.getBtnIcon('filterBtn')"
+                 :class="b('filterBtn')"
                  circle
                  :size="crud.size"
                  @click="crud.$refs.dialogFilter.handleShow()"
