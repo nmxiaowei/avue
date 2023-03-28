@@ -2,12 +2,14 @@
   <div>
     <el-table-column width="1px"></el-table-column>
     <!-- 折叠面板  -->
-    <el-table-column type="expand"
+    <el-table-column v-if="crud.tableOption.expand"
+                     type="expand"
                      key="expand"
+                     :class-name="crud.tableOption.expandClassName"
+                     :label-class-name="crud.tableOption.expandLabelClassName"
                      :width="crud.tableOption.expandWidth || config.expandWidth"
                      :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
-                     align="center"
-                     v-if="crud.tableOption.expand">
+                     align="center">
       <template slot-scope="{row}">
         <slot :row="row"
               :index="row.$index"
@@ -20,6 +22,8 @@
                      :fixed="vaildData(crud.tableOption.selectionFixed,config.selectionFixed)"
                      type="selection"
                      key="selection"
+                     :class-name="crud.tableOption.selectionClassName"
+                     :label-class-name="crud.tableOption.selectionLabelClassName"
                      :selectable="crud.tableOption.selectable"
                      :reserve-selection="vaildData(crud.tableOption.reserveSelection)"
                      :width="crud.tableOption.selectionWidth || config.selectionWidth"
@@ -30,6 +34,8 @@
                      :label="crud.tableOption.indexLabel || config.indexLabel"
                      type="index"
                      key="index"
+                     :class-name="crud.tableOption.indexClassName"
+                     :label-class-name="crud.tableOption.indexLabelClassName"
                      :width="crud.tableOption.indexWidth || config.indexWidth"
                      :index="indexMethod"
                      align="center"></el-table-column>

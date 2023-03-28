@@ -22,7 +22,8 @@
               :name="item"></slot>
       </template>
     </header-search>
-    <el-card :shadow="isCard">
+    <el-card :shadow="isCard"
+             :class="b('body')">
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="vaildData(tableOption.header,true)">
