@@ -17,7 +17,6 @@
                :picker-options="pickerOptions"
                :value-format="valueFormat"
                :placeholder="placeholder"
-               @change="handleChange"
                @click.native="handleClick"
                :disabled="disabled">
     </component>
@@ -46,8 +45,8 @@ export default create({
   },
   watch: {
     text () {
-      if (Array.isArray(this.text) && this.validatenull(this.text)) {
-        this.text = this.text.join(',')
+      if (this.validatenull(this.text)) {
+        this.text = null
       }
     }
   },
