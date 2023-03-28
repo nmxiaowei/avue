@@ -27,7 +27,7 @@
                      circle></el-button>
           <avue-form :key="index"
                      ref="main"
-                     :option="deepClone(option)"
+                     :option="option"
                      v-bind="$uploadFun({},this)"
                      v-model="text[index]">
             <div slot-scope="{}"
@@ -183,7 +183,7 @@ export default create({
       return rules;
     },
     columnOption () {
-      return this.children.column || []
+      return this.deepClone(this.children.column) || []
     },
     option () {
       return Object.assign({

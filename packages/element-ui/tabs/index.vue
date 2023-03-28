@@ -45,7 +45,7 @@ export default create({
       return this.columnOption[this.active];
     },
     parentOption () {
-      return this.option;;
+      return this.option;
     },
     columnOption () {
       return this.parentOption.column || [];

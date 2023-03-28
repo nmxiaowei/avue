@@ -337,7 +337,7 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.tableOption.column || []
+      let column = this.deepClone(this.tableOption.column) || []
       return column
     },
     sumColumnList () {

@@ -341,9 +341,10 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.tableOption.column || []
-      let group = this.deepClone(this.tableOption.group) || [];
-      let footer = this.tableOption.footer || [];
+      let tableOption = this.deepClone(this.tableOption)
+      let column = tableOption.column || []
+      let group = tableOption.group || [];
+      let footer = tableOption.footer || [];
       group.unshift({
         header: false,
         column: column
