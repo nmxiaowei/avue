@@ -317,13 +317,17 @@ export default create({
     },
     addRow () {
       const callback = (obj = {}) => {
-        obj = Object.assign(this.valueOption, obj, {
-          $index: this.textLen
-        });
+        let row = this.deepClone({
+          ...this.valueOption,
+          ...obj,
+          ...{
+            $index: this.textLen
+          }
+        })
         if (this.isCrud) {
-          this.$refs.main.rowCellAdd(obj);
+          this.$refs.main.rowCellAdd(row);
         } else if (this.isForm) {
-          this.text.push(obj)
+          this.text.push(row)
         }
       }
       if (typeof this.rowAdd === 'function') {
