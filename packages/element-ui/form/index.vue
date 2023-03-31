@@ -123,6 +123,7 @@
                             v-if="$slots[column.prop]"></slot>
                       <form-temp :column="column"
                                  v-else
+                                 :box-type="boxType"
                                  :ref="column.prop"
                                  :dic="DIC[column.prop]"
                                  :props="tableOption.props"
@@ -615,8 +616,8 @@ export default create({
       } else if (this.isView) {
         return false;
       }
-      if (key) return this.validData(column[key], false)
-      return false;
+      return this.validData(column[key], false)
+
     },
     // 验证表单是否禁止
     vaildDisabled (column) {
@@ -631,8 +632,7 @@ export default create({
       } else if (this.isView) {
         return true;
       }
-      if (key) return this.validData(column[key], false)
-      return false;
+      return this.validData(column[key], false)
     },
     // 验证表单是否显隐
     vaildDisplay (column) {
@@ -648,8 +648,7 @@ export default create({
       } else {
         return true;
       }
-      if (key) return this.validData(column[key], true)
-      return true;
+      return this.validData(column[key], true)
     },
     clearValidate (list) {
       this.$refs.form.clearValidate(list);

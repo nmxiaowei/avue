@@ -6,6 +6,7 @@
                   :lazy="lazy"
                   :load="handleLoad"
                   @check="checkChange"
+                  :filter-node-method="filterNodeMethod"
                   :render-after-expand="false"
                   :loading-text="loadingText"
                   :collapse-tags="tags"
@@ -21,6 +22,7 @@
                   :disabled="disabled"
                   :accordion="accordion"
                   :icon-class="iconClass"
+                  :indent="indent"
                   @focus="handleFocus"
                   @blur="handleBlur"
                   :default-checked-keys="keysList"
@@ -60,6 +62,8 @@ export default create({
     };
   },
   props: {
+    indent: Number,
+    filterNodeMethod: Function,
     nodeClick: Function,
     treeLoad: Function,
     checked: Function,
