@@ -17,7 +17,7 @@
     </el-input>
     <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
-                 :width="dialogWidth"
+                 :width="setPx(dialogWidth)"
                  :modal-append-to-body="$AVUE.modalAppendToBody"
                  :append-to-body="$AVUE.appendToBody"
                  :title="placeholder"

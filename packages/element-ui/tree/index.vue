@@ -79,7 +79,7 @@
                  :modal-append-to-body="$AVUE.modalAppendToBody"
                  :append-to-body="$AVUE.appendToBody"
                  :before-close="hide"
-                 :width="vaildData(option.dialogWidth,'50%')">
+                 :width="setPx(vaildData(option.dialogWidth,'50%'))">
         <avue-form v-model="form"
                    :option="formOption"
                    ref="form"
