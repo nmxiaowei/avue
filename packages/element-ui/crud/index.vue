@@ -712,7 +712,7 @@ export default create({
     },
     validateCellField (index) {
       return new Promise((resolve, reject) => {
-        this.$refs.cellForm.validate((valid, msg) => {
+        this.$refs.cellForm.validate((valid, msg = {}) => {
           let result = true
           let list = []
           Object.keys(msg).forEach(ele => {
