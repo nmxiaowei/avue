@@ -722,7 +722,7 @@ export default create({
               list.push(ele)
             }
           })
-          this.$refs.cellForm.clearValidate(list)
+          if (!this.validatenull(list)) this.$refs.cellForm.clearValidate(list)
           if (result) resolve()
         });
       })
