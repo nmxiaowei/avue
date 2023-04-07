@@ -215,7 +215,7 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            hide: this.validData(ele.hide, !this.vaildParams(ele, 'display', true)),
+            hide: this.validData(ele.hide, !this.validParams(ele, 'display', true)),
             disabled: this.validParams(ele, 'disabled', false),
             detail: this.validParams(ele, 'detail', false),
             cell: this.validData(ele.cell, this.isCrud)
@@ -249,7 +249,7 @@ export default create({
       } else if (this.isView) {
         key = 'view' + caseKey
       }
-      return this.vaildData(column[key], value)
+      return this.validData(column[key], value)
     },
     handleTextValue (val) {
       this.initData();
