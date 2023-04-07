@@ -215,9 +215,9 @@ export default create({
         }];
         this.columnOption.forEach(ele => {
           list.push(Object.assign(ele, {
-            hide: this.vaildData(ele.hide, !this.vaildParams(ele, 'display', true)),
-            disabled: this.vaildParams(ele, 'disabled', false),
-            detail: this.vaildParams(ele, 'detail', false),
+            hide: this.validData(ele.hide, !this.vaildParams(ele, 'display', true)),
+            disabled: this.validParams(ele, 'disabled', false),
+            detail: this.validParams(ele, 'detail', false),
             cell: this.validData(ele.cell, this.isCrud)
           }))
         })
@@ -231,7 +231,7 @@ export default create({
     this.initData();
   },
   methods: {
-    vaildParams (column, type, value) {
+    validParams (column, type, value) {
       function replaceStr (str) { // 正则法
         str = str.toLowerCase();
         var reg = /\b(\w)|\s(\w)/g; //  \b判断边界\s判断空格
