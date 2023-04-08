@@ -29,6 +29,7 @@
                :node-key="valueKey"
                :accordion="accordion"
                :icon-class="iconClass"
+               :indent="indent"
                :show-checkbox="multiple"
                :expand-on-click-node="expandOnClickNode"
                :props="treeProps"
@@ -76,6 +77,8 @@ export default create({
     };
   },
   props: {
+    indent: Number,
+    filterNodeMethod: Function,
     nodeClick: Function,
     treeLoad: Function,
     checked: Function,
@@ -193,6 +196,9 @@ export default create({
       this.treeLoad && this.treeLoad(node, callback)
     },
     filterNode (value, data) {
+      if (typeof this.filterNodeMethod === 'function') {
+        return this.filterNodeMethod(value, data);
+      }
       if (!value) return true;
       return data[this.labelKey].toLowerCase().indexOf(value.toLowerCase()) !== -1;
     },

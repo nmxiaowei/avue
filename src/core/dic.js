@@ -155,12 +155,11 @@ export const sendDic = (params) => {
       } else {
         result[ele] = eleKey;
       }
-      if (validatenull(result[ele])) result[ele] = ''
     });
     return result;
   }
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     if (!url) resolve([])
     const callback = (res) => {
       let list = [];
@@ -183,8 +182,8 @@ export const sendDic = (params) => {
       headers: getKey(headers),
     }, getData())).then(function (res) {
       callback(res);
-    }).catch(() => [
-      resolve([])
+    }).catch(err => [
+      reject(err)
     ]);
   });
 };

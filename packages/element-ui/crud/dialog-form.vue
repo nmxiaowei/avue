@@ -157,10 +157,10 @@ export default create({
     params () {
       return this.isDrawer ?
         {
-          size: this.fullscreen ? '100%' : this.width,
+          size: this.fullscreen ? '100%' : this.setPx(this.width),
           direction: this.crud.tableOption.dialogDirection
         } : {
-          width: this.width,
+          width: this.setPx(this.width),
           fullscreen: this.fullscreen
         };
     },

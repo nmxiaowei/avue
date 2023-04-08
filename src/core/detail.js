@@ -45,11 +45,13 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     // 字典处理
     result = getDicValue(dic, result, column.props || option.props);
   }
+
   // 自定义格式化
   if (typeof column.formatter === 'function') {
     result = column.formatter(row, row[column.prop], result, column);
   } else if (Array.isArray(result)) {
-    result = result.join(separator || DIC_SHOW_SPLIT);
+    if (typeof (result[0]) !== 'object') result = result.join(separator || DIC_SHOW_SPLIT);
   }
+
   return result;
 };

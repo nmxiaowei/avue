@@ -23,7 +23,7 @@
                  :modal-append-to-body="$AVUE.modalAppendToBody"
                  :append-to-body="$AVUE.appendToBody"
                  :visible.sync="box"
-                 :width="dialogWidth">
+                 :width="setPx(dialogWidth)">
         <div :class="b('filter')">
           <el-input :placeholder="vaildData(option.filterText,t('tip.input'))"
                     :size="size"

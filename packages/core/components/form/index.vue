@@ -5,6 +5,7 @@
              v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"
+             :box-type="boxType"
              ref="temp"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
@@ -46,6 +47,7 @@ export default {
     uploadPreview: Function,
     uploadError: Function,
     uploadExceed: Function,
+    boxType: String,
     columnSlot: {
       type: Array,
       default: () => {

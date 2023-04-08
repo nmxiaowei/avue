@@ -22,7 +22,8 @@
               :name="item"></slot>
       </template>
     </header-search>
-    <el-card :shadow="isCard">
+    <el-card :shadow="isCard"
+             :class="b('body')">
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="vaildData(tableOption.header,true)">
@@ -336,7 +337,7 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.tableOption.column || []
+      let column = this.deepClone(this.tableOption.column) || []
       return column
     },
     sumColumnList () {
@@ -750,12 +751,16 @@ export default create({
     //合集统计逻辑
     tableSummaryMethod (param) {
       let sumsList = {}
-      //如果自己写逻辑则调用summaryMethod方法
-      if (typeof this.summaryMethod === "function")
-        return this.summaryMethod(param);
-      const { columns, data } = param;
       let sums = [];
-      if (columns.length > 0) {
+      const { columns, data } = param;
+      //如果自己写逻辑则调用summaryMethod方法
+      if (typeof this.summaryMethod === "function") {
+        sums = this.summaryMethod(param)
+        columns.forEach((column, index) => {
+          sumsList[column.property] = sums[index]
+        })
+        this.sumsList = sumsList;
+      } else {
         columns.forEach((column, index) => {
           let currItem = this.sumColumnList.find(item => item.name === column.property);
           if (currItem) {
