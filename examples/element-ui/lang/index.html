@@ -15,7 +15,6 @@
   <!-- 导入表格需要的包 -->
 
   <script src="./en.js"></script>
-  <script src="./zh.js"></script>
   <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
   <script src="https://cdn.staticfile.org/xlsx/0.18.2/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="../../cdn/element-ui/theme-chalk/index.css" />
@@ -41,6 +40,7 @@
     data() {
       return {
         option: {
+          excelBtn: true,
           dateBtn: true,
           selection: true,
           filterBtn: true,
