@@ -150,16 +150,18 @@ export default {
       let column = this.deepClone(this.crud.columnOption)
       let prop = []
       const findProp = (list = []) => {
+        let count = [];
         list.forEach((ele, index) => {
           let children = ele.children
           if (children && !Array.isArray(children)) delete ele.children
-          else if (ele.showColumn === false) list.splice(index, 1)
+          else if (ele.showColumn === false) count.push(index)
           else {
             ele.prop = ele.prop || uuid()
             prop.push(ele.prop)
             if (ele.children) findProp(children)
           }
         })
+        count.forEach(ele => list.splice(ele, 1))
       }
       findProp(column)
       this.columnOption = column;
