@@ -337,7 +337,7 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.deepClone(this.tableOption.column) || []
+      let column = this.tableOption.column || []
       return column
     },
     sumColumnList () {
@@ -481,8 +481,9 @@ export default create({
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
     clearSelection () {
-      this.$refs.table.clearSelection();
       this.$emit('selection-clear', this.deepClone(this.tableSelect))
+      this.$refs.table.clearSelection();
+
     },
     toggleAllSelection () {
       this.$refs.table.toggleAllSelection();

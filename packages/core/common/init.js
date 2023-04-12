@@ -64,9 +64,12 @@ export default function () {
     },
     computed: {
       resultOption () {
-        return Object.assign(this.deepClone(this.tableOption), {
-          column: this.propOption
-        })
+        return {
+          ...this.tableOption,
+          ...{
+            column: this.propOption
+          }
+        }
       },
       rowKey () {
         return this.tableOption.rowKey || DIC_PROPS.rowKey;
@@ -88,7 +91,7 @@ export default function () {
     },
     methods: {
       init (type) {
-        this.tableOption = this.option;
+        this.tableOption = this.deepClone(this.option);
         this.getIsMobile();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
