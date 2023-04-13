@@ -120,8 +120,11 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-export default Object.assign({
-  version,
-  locale,
-  install
-}, components)
+export default {
+  ...{
+    version,
+    locale,
+    install
+  },
+  ...components
+}
