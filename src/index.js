@@ -82,7 +82,8 @@ const install = function (Vue, opts = {}) {
     }, (opts.ali || {}))
   }
   Vue.prototype.$AVUE = Object.assign(opts, defaultOption);
-  components.forEach(component => {
+  Object.keys(components).forEach(ele => {
+    const component = components[ele];
     Vue.component(component.name, component);
   });
   Object.keys(prototypes).forEach((key) => {
@@ -119,8 +120,8 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-export default {
+export default Object.assign({
   version,
   locale,
   install
-}
+}, components)
