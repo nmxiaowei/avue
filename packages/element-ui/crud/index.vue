@@ -247,9 +247,6 @@ export default create({
     this.refreshTable()
   },
   computed: {
-    isHeightAuto () {
-      return this.tableOption.height == 'auto'
-    },
     isSortable () {
       return this.tableOption.sortable;
     },
