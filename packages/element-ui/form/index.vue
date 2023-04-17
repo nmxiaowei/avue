@@ -183,7 +183,7 @@ import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { getColumn, filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 import config from "./config.js";
@@ -337,8 +337,8 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let tableOption = this.tableOption
-      let column = tableOption.column || []
+      let tableOption = this.deepClone(this.tableOption)
+      let column = getColumn(tableOption.column)
       let group = tableOption.group || [];
       let footer = tableOption.footer || [];
       group.unshift({
@@ -352,7 +352,7 @@ export default create({
         })
       }
       group.forEach((ele, index) => {
-        ele.column = ele.column || [];
+        ele.column = getColumn(ele.column)
         // 循环列的全部属性
         ele.column.forEach((column, cindex) => {
           //动态计算列的位置，如果为隐藏状态则或则手机状态不计算

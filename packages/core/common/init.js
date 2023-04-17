@@ -91,7 +91,7 @@ export default function () {
     },
     methods: {
       init (type) {
-        this.tableOption = this.deepClone(this.option);
+        this.tableOption = this.option;
         this.getIsMobile();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()

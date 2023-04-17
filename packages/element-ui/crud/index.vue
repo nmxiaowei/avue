@@ -195,6 +195,7 @@ import columnDefault from './column-default'
 import config from "./config.js";
 import { calcCascader, formInitVal } from "core/dataformat";
 import { DIC_PROPS } from 'global/variable';
+import { getColumn } from 'utils/util'
 export default create({
   name: "crud",
   mixins: [init(), locale,],
@@ -334,8 +335,8 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.tableOption.column || []
-      return column
+      let tableOption = this.deepClone(this.tableOption)
+      return getColumn(tableOption.column)
     },
     sumColumnList () {
       return this.tableOption.sumColumnList || [];
