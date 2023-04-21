@@ -37,8 +37,8 @@
       <!-- 循环form表单卡槽 -->
       <template v-for="item in crud.formSlot"
                 #[getSlotName(item)]="scope">
-        <slot v-bind="scope"
-              :name="item"></slot>
+        <slot :name="item"
+              v-bind="Object.assign(scope,{type:boxType})"></slot>
       </template>
     </avue-form>
     <span class="avue-dialog__footer"

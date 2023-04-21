@@ -73,7 +73,8 @@ const install = function (Vue, opts = {}) {
     }, (opts.ali || {}))
   }
   Vue.config.globalProperties.$AVUE = Object.assign(opts, defaultOption);
-  components.forEach(component => {
+  Object.keys(components).forEach(ele => {
+    const component = components[ele];
     Vue.component(component.name, component);
   });
   createIcon(Vue);
@@ -108,7 +109,10 @@ const install = function (Vue, opts = {}) {
 
 };
 export default {
-  version,
-  locale,
-  install
-}
+  ...{
+    version,
+    locale,
+    install
+  },
+  ...components
+} 

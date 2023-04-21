@@ -122,7 +122,6 @@ export default create({
               dicFlag: ele.cascader ? true : this.validData(ele.dicFlag, false),
               span: ele.searchSpan || option.searchSpan || config.searchSpan,
               control: ele.searchControl,
-              gutter: ele.searchGutter || option.searchGutter || config.searchGutter,
               labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config.searchLabelWidth,
               labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
               size: ele.searchSize || option.searchSize,
@@ -141,18 +140,23 @@ export default create({
       }
       const detailOption = (list) => {
         let result = this.deepClone(list);
+        let obj = {}
+        Object.keys(result).forEach(item => {
+          let key = 'search'
+          if (item.includes(key)) {
+            let str = item.replace(key, '')
+            if (str.length == 0) return
+            str = str.replace(str[0], str[0].toLowerCase())
+            obj[str] = result[item];
+          }
+        })
         result.column = detailColumn(this.crud.propOption)
-        result = Object.assign(result, {
+        result = Object.assign(result, obj, {
           rowKey: option.searchRowKey || 'null',
           tabs: false,
           group: false,
           printBtn: false,
           mockBtn: false,
-          filterDic: option.searchFilterDic,
-          filterNull: option.searchFilterNull,
-          filterParam: option.searchFilterParam,
-          enter: option.searchEnter,
-          size: option.searchSize,
           submitText: option.searchBtnText || this.t('crud.searchBtn'),
           submitBtn: this.validData(option.searchBtn, config.searchSubBtn),
           submitIcon: this.crud.getBtnIcon('searchBtn'),

@@ -82,6 +82,7 @@
 import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
+import { getColumn } from 'utils/util'
 export default create({
   name: "dynamic",
   mixins: [props(), event()],
@@ -184,7 +185,7 @@ export default create({
       return rules;
     },
     columnOption () {
-      return this.deepClone(this.children.column) || []
+      return getColumn(this.children.column)
     },
     option () {
       return Object.assign({

@@ -183,6 +183,7 @@ import config from "./config.js";
 import { calcCascader, formInitVal } from "core/dataformat";
 import { DIC_PROPS } from 'global/variable';
 import { CommonProps } from "element-plus";
+import { getColumn } from 'utils/util'
 export default create({
   name: "crud",
   mixins: [init(), locale,],
@@ -363,8 +364,7 @@ export default create({
       return this.tableOption || {};
     },
     columnOption () {
-      let column = this.deepClone(this.tableOption.column) || []
-      return column
+      return getColumn(this.tableOption.column)
     },
     sumColumnList () {
       return this.tableOption.sumColumnList || [];
@@ -510,8 +510,8 @@ export default create({
       return this.$refs.dialogForm.$refs.tableForm.validateField(val);
     },
     clearSelection () {
-      this.$refs.table.clearSelection();
       this.$emit('selection-clear', this.deepClone(this.tableSelect))
+      this.$refs.table.clearSelection();
     },
     toggleAllSelection () {
       this.$refs.table.toggleAllSelection();

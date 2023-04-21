@@ -62,7 +62,6 @@ export default {
   filterMultiple: true,
   calcHeight: 300,
   width: '100%',
-  searchGutter: 20,
   searchLabelWidth: 80,
   searchSpan: 6,
   dropRowClass: '.el-table__body-wrapper table tbody',

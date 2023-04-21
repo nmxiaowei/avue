@@ -272,6 +272,21 @@ export const deepClone = data => {
   return obj;
 };
 
+export const getColumn = (column) => {
+  let columnList = []
+  if (Array.isArray(column)) {
+    columnList = column
+  } else {
+    for (let o in column) {
+      let columnMerge = {
+        ...column[o],
+        ...{ prop: o }
+      }
+      columnList.push(columnMerge)
+    }
+  }
+  return columnList;
+};
 
 /**
  * 设置px像素
