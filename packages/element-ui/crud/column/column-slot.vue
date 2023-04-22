@@ -32,9 +32,9 @@
     </template>
     <template #="{row,$index}">
       <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
-                    :label="vaildLabel(column,row,' ')"
+                    :label="validLabel(column,row,' ')"
                     v-if="row.$cellEdit && column.cell"
-                    :label-width="vaildLabel(column,row,'-1px')"
+                    :label-width="validLabel(column,row,'-1px')"
                     :rules='column.rules'>
         <el-tooltip :content="(crud.listError[`list.${$index}.${column.prop}`] || {}).msg"
                     :disabled="!(crud.listError[`list.${$index}.${column.prop}`] || {}).valid"
@@ -150,7 +150,7 @@ export default {
     isMediaType (item, fileType) {
       return isMediaType(item, fileType)
     },
-    vaildLabel (column, row, val) {
+    validLabel (column, row, val) {
       if (column.rules && row.$cellEdit) {
         return val
       }
