@@ -252,7 +252,7 @@ export default {
     openImg (row, column, index) {
       let list = this.getImgList(row, column)
       list = list.map(ele => {
-        return { thumbUrl: ele, url: ele }
+        return { thumbUrl: ele, url: ele, type: column.fileType }
       })
       this.$ImagePreview(list, index);
     },
