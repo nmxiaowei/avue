@@ -41,12 +41,13 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
         result = dayjs(result).format(format);
       }
     }
-    result = getDicValue(dic, result, column.props || option.props);
   }
+  // 字典处理
+  result = getDicValue(dic, result, column.props || option.props);
   // 自定义格式化
   if (typeof column.formatter === 'function') {
     result = column.formatter(row, row[column.prop], result, column);
-  } else if (Array.isArray(result)) {
+  } else if (Array.isArray(result) && !validatenull(dic)) {
     result = result.join(separator || DIC_SHOW_SPLIT);
   }
   return result;
