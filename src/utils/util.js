@@ -332,9 +332,18 @@ export const getDicValue = (list, value, props = {}) => {
       delete ele[groupsKey];
     }
   });
-  value.forEach(ele => {
-    let obj = findNode(dic, props, ele) || {}
-    result.push(obj[labelKey] || ele);
+  value.forEach(val => {
+    if (Array.isArray(val)) {
+      let array_result = []
+      val.forEach(array_val => {
+        let obj = findNode(dic, props, array_val) || {}
+        array_result.push(obj[labelKey] || array_val);
+      })
+      result.push(array_result);
+    } else {
+      let obj = findNode(dic, props, val) || {}
+      result.push(obj[labelKey] || val);
+    }
   })
   if (isArray) {
     return result
