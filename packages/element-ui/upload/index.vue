@@ -63,6 +63,7 @@
       </template>
       <template v-else>
         <el-button icon="el-icon-upload"
+                   :disabled="disabled"
                    :size="size"
                    type="primary">{{fileText || t('upload.upload')}}</el-button>
       </template>

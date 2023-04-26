@@ -82,24 +82,24 @@ export default {
         emptyBtn: false,
         column: [
           {
-            label: '文件名',
+            label: this.t('crud.excel.name'),
             prop: 'name',
             span: 24,
           }, {
-            label: '选择数据',
+            label: this.t('crud.excel.type'),
             prop: "type",
             span: 24,
             type: 'select',
             dicData: [{
-              label: '当前数据(当前页全部的数据)',
+              label: this.t('crud.excel.typeDic.true'),
               value: true
             }, {
-              label: '选中的数据(当前页选中的数据)',
+              label: this.t('crud.excel.typeDic.false'),
               disabled: this.crud.tableOption.selection != true,
               value: false
             }]
           }, {
-            label: '选择字段',
+            label: this.t('crud.excel.prop'),
             prop: "prop",
             type: 'tree',
             multiple: true,
@@ -110,7 +110,7 @@ export default {
             },
             dicData: this.columnOption
           }, {
-            label: '参数设置',
+            label: this.t('crud.excel.params'),
             prop: 'params',
             type: 'checkbox',
             span: 24,
@@ -121,21 +121,21 @@ export default {
               return result
             })()),
             dicData: [{
-              label: '表头',
+              label: this.t('crud.excel.paramsDic.header'),
               disabled: true,
               value: 'header'
             }, {
-              label: '数据源',
+              label: this.t('crud.excel.paramsDic.data'),
               value: 'data'
             }].concat((() => {
               let result = []
               result.push({
-                label: '复杂表头',
+                label: this.t('crud.excel.paramsDic.headers'),
                 value: 'headers',
                 disabled: !this.crud.isHeader
               })
               result.push({
-                label: '合计统计',
+                label: this.t('crud.excel.paramsDic.sum'),
                 value: 'sum',
                 disabled: !this.crud.isShowSummary
               })
@@ -150,16 +150,18 @@ export default {
       let column = this.deepClone(this.crud.columnOption)
       let prop = []
       const findProp = (list = []) => {
+        let count = [];
         list.forEach((ele, index) => {
           let children = ele.children
           if (children && !Array.isArray(children)) delete ele.children
-          else if (ele.showColumn === false) list.splice(index, 1)
+          else if (ele.showColumn === false) count.push(index)
           else {
             ele.prop = ele.prop || uuid()
             prop.push(ele.prop)
             if (ele.children) findProp(children)
           }
         })
+        count.forEach(ele => list.splice(ele, 1))
       }
       findProp(column)
       this.columnOption = column;

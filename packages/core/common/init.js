@@ -64,9 +64,12 @@ export default function () {
     },
     computed: {
       resultOption () {
-        return Object.assign(this.deepClone(this.tableOption), {
-          column: this.propOption
-        })
+        return {
+          ...this.tableOption,
+          ...{
+            column: this.propOption
+          }
+        }
       },
       rowKey () {
         return this.tableOption.rowKey || DIC_PROPS.rowKey;

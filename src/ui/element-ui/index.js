@@ -44,7 +44,7 @@ import Video from 'packages/element-ui/video';
 import Login from 'packages/element-ui/login';
 import Arrays from 'packages/element-ui/array';
 import textEllipsis from 'packages/element-ui/text-ellipsis';
-export default [
+export default {
   Arrays,
   Affix,
   Avatar,
@@ -91,4 +91,4 @@ export default [
   Skeleton,
   Sign,
   Login
-];
+};

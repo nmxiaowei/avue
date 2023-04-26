@@ -8,8 +8,9 @@
              :label-suffix="labelSuffix"
              :size="$AVUE.formSize || controlSize"
              :label-position="parentOption.labelPosition"
-             :label-width="setPx(parentOption.labelWidth,labelWidth)">
+             :label-width="setPx(parentOption.labelWidth,config.labelWidth)">
       <el-row :span="24"
+              :gutter="parentOption.gutter"
               :class="{'avue-form__tabs':isTabs}">
         <avue-group v-for="(item,index) in columnOption"
                     @change="handleGroupClick"
@@ -55,21 +56,20 @@
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
                       :key="cindex"
-                      :style="{paddingLeft:gutter,paddingRight:gutter}"
-                      :span="getSpan(column)"
-                      :md="getSpan(column)"
-                      :sm="column.smSpan || item.smSpan || 12"
-                      :xs="column.xsSpan || item.xmSpan ||  24"
-                      :offset="column.offset || item.offset"
-                      :push="column.push || item.push"
-                      :pull="column.pull || item.pull"
+                      :span="getItemParams(column,item,'span')"
+                      :md="getItemParams(column,item,'span')"
+                      :sm="getItemParams(column,item,'span')"
+                      :xs="getItemParams(column,item,'xsSpan')"
+                      :offset="getItemParams(column,item,'offset')"
+                      :push="getItemParams(column,item,'push')"
+                      :pull="getItemParams(column,item,'pull')"
                       :class="[b('row'),{'avue--detail avue--detail__column':vaildDetail(column)},column.className]">
                 <el-form-item :prop="column.prop"
                               :label="column.label"
                               :rules="column.rules"
                               :class="b('item--'+(column.labelPosition || item.labelPosition || ''))"
                               :label-position="column.labelPosition || item.labelPosition || parentOption.labelPosition"
-                              :label-width="getLabelWidth(column,item)">
+                              :label-width="getItemParams(column,item,'labelWidth',true)">
                   <template slot="label"
                             v-if="getSlotName(column,'L',$scopedSlots)">
                     <slot :name="getSlotName(column,'L')"
@@ -183,9 +183,10 @@ import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { getColumn, filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
+import config from "./config.js";
 export default create({
   name: "form",
   mixins: [init()],
@@ -218,13 +219,10 @@ export default create({
   },
   data () {
     return {
+      config: config,
       activeName: '',
-      labelWidth: 90,
       allDisabled: false,
-      optionIndex: [],
-      optionBox: false,
       tableOption: {},
-      itemSpanDefault: 12,
       form: {},
       formCreate: false,
       formList: [],
@@ -300,9 +298,6 @@ export default create({
     isView () {
       return this.boxType === "view"
     },
-    gutter () {
-      return this.setPx((this.parentOption.gutter || 10) / 2)
-    },
     detail () {
       return this.parentOption.detail
     },
@@ -343,7 +338,7 @@ export default create({
     },
     columnOption () {
       let tableOption = this.deepClone(this.tableOption)
-      let column = tableOption.column || []
+      let column = getColumn(tableOption.column)
       let group = tableOption.group || [];
       let footer = tableOption.footer || [];
       group.unshift({
@@ -357,12 +352,12 @@ export default create({
         })
       }
       group.forEach((ele, index) => {
-        ele.column = ele.column || [];
+        ele.column = getColumn(ele.column)
         // 循环列的全部属性
         ele.column.forEach((column, cindex) => {
           //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
           if (column.display !== false && !this.isMobile) {
-            column = calcCount(column, this.itemSpanDefault, cindex === 0);
+            column = calcCount(column, this.config.span, cindex === 0);
           }
         });
         //处理级联属性
@@ -402,9 +397,6 @@ export default create({
     getPlaceholder,
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
-    },
-    getSpan (column) {
-      return column.span || this.parentOption.span || this.itemSpanDefault
     },
     isGroupShow (item, index) {
       if (this.isTabs) {
@@ -508,16 +500,17 @@ export default create({
     handleTabClick (tab, event) {
       this.$emit('tab-click', tab, event)
     },
-    getLabelWidth (column, item) {
+    getItemParams (column, item, type, isPx) {
       let result;
-      if (!this.validatenull(column.labelWidth)) {
-        result = column.labelWidth
-      } else if (!this.validatenull(item.labelWidth)) {
-        result = item.labelWidth
+      if (!this.validatenull(column[type])) {
+        result = column[type]
+      } else if (!this.validatenull(item[type])) {
+        result = item[type]
       } else {
-        result = this.parentOption.labelWidth;
+        result = this.parentOption[type];
       }
-      return this.setPx(result, this.labelWidth);
+      result = this.vaildData(result, this.config[type])
+      return isPx ? this.setPx(result) : result
     },
     //对部分表单字段进行校验的方法
     validateField (val) {

@@ -13,18 +13,14 @@ function getDataType (list = [], props = {}, type) {
 };
 
 function getResData (data, props, dataType) {
-  const bind = props.bind || ''
-  const list = bind.split('.');
-  let res;
-  if (list[0] === '') {
-    let result = data.data
-    if (result) {
-      res = Array.isArray(result) ? result : [result]
-    } else {
-      res = data
-    }
+  const bind = props.res
+  let res = data;
+  let deep = data.data;
+  if (bind) {
+    res = getAsVal(res, bind)
+  } else if (deep) {
+    res = Array.isArray(deep) ? deep : [deep]
   }
-  res = getAsVal(res, bind)
   if (dataType) res = getDataType(res, props, dataType)
   return res;
 };
