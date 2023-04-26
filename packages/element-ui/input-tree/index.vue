@@ -97,7 +97,7 @@ export default create({
     },
     checkStrictly: {
       type: Boolean,
-      default: false
+      default: (props) => props.multiple ? false : true
     },
     accordion: {
       type: Boolean,
