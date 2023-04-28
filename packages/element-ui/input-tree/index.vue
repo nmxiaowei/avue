@@ -31,14 +31,15 @@
                   @node-click.self="handleNodeClick"
                   :props="treeProps"
                   :data="netDic">
-    <template #="{data}">
+    <template #="{data,node}">
       <slot v-if="$slots.default"
             :label="labelKey"
             :value="valueKey"
+            :node="node"
             :item="data"></slot>
       <span v-else
             style="margin-left:8px;">
-        <span>{{data[labelKey]}}</span>
+        <span>{{getLabelText(data)}}</span>
         <span :class="b('desc')"
               v-if="data[descKey]">{{ data[descKey] }}</span>
       </span>
