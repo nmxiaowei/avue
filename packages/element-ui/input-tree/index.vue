@@ -90,10 +90,6 @@ export default create({
       type: Number,
       default: 0
     },
-    expandOnClickNode: {
-      type: Boolean,
-      default: true
-    },
     filterable: {
       type: Boolean,
       default: false
