@@ -31,7 +31,6 @@
                :icon-class="iconClass"
                :indent="indent"
                :show-checkbox="multiple"
-               :expand-on-click-node="expandOnClickNode"
                :props="treeProps"
                :check-strictly="checkStrictly"
                ref="tree"
@@ -99,10 +98,6 @@ export default create({
     limit: {
       type: Number,
       default: 0
-    },
-    expandOnClickNode: {
-      type: Boolean,
-      default: true
     },
     filter: {
       type: Boolean,
