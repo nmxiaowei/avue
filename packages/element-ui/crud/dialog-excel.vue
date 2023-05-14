@@ -63,12 +63,12 @@ export default {
       let data = []
       if (this.form.params.includes('data')) {
         list.forEach(ele => {
-          let obj = this.deepClone(ele);
+          let row = this.deepClone(ele);
           columnOption.forEach(column => {
             let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
-            obj[column.prop] = detail(obj, column, option, DIC);
+            row[column.prop] = detail(row, column, option, DIC);
           })
-          data.push(obj);
+          data.push(row);
         })
       }
       if (this.form.params.includes('sum') && option.showSummary) {
