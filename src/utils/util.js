@@ -320,6 +320,7 @@ export const detailDataType = (value, type) => {
  */
 
 export const getDicValue = (list, value, props = {}) => {
+  if (validatenull(list)) return value
   let isArray = Array.isArray(value)
   value = isArray ? value : [value]
   let result = [];
