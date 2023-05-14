@@ -28,6 +28,8 @@
                   :default-checked-keys="keysList"
                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:keysList"
                   :default-expand-all="defaultExpandAll"
+                  :check-on-click-node="checkOnClickNode"
+                  :expand-on-click-node="expandOnClickNode"
                   @node-click.self="handleNodeClick"
                   :props="treeProps"
                   :data="netDic">
@@ -112,14 +114,10 @@ export default create({
       type: String,
     },
     defaultExpandedKeys: Array,
-    defaultExpandAll: {
-      type: Boolean,
-      default: false
-    },
-    popperAppendToBody: {
-      type: Boolean,
-      default: true
-    }
+    checkOnClickNode: Boolean,
+    expandOnClickNode: Boolean,
+    defaultExpandAll: Boolean,
+    popperAppendToBody: Boolean,
   },
   watch: {
     dic: {
