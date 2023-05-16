@@ -110,6 +110,7 @@ export default create({
             let obj = {}
             Object.keys(ele).forEach(item => {
               let key = 'search'
+              if (item == 'searchProp') return
               if (item.includes(key)) {
                 let result = item.replace(key, '')
                 if (result.length == 0) return
