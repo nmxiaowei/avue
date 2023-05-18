@@ -15,8 +15,7 @@
     </el-tooltip>
     <span :class="b('more')"
           ref="more">
-      <slot name="more"
-            v-if="oversize"></slot>
+      <slot name="more"></slot>
     </span>
     <slot name="after"
           :class="b('after')"></slot>
@@ -44,7 +43,6 @@ export default create({
   data () {
     return {
       keyIndex: 0,
-      oversize: false,
       isHide: false
     };
   },
@@ -64,7 +62,6 @@ export default create({
   },
   methods: {
     init () {
-      this.oversize = false;
       this.keyIndex += 1;
       let more = this.$refs.more;
       more.style.display = "none";
