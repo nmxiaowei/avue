@@ -43,7 +43,9 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     }
   }
   // 字典处理
-  result = getDicValue(dic, result, column.props || option.props);
+  if (!validatenull(dic)) {
+    result = getDicValue(dic, result, column.props || option.props);
+  }
   // 自定义格式化
   if (typeof column.formatter === 'function') {
     result = column.formatter(row, row[column.prop], result, column);
