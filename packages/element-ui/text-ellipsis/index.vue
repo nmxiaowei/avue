@@ -15,8 +15,7 @@
     </el-tooltip>
     <span :class="b('more')"
           ref="more">
-      <slot name="more"
-            v-show="oversize"></slot>
+      <slot name="more"></slot>
     </span>
     <slot name="after"
           :class="b('after')"></slot>
@@ -41,30 +40,28 @@ export default create({
     },
     placement: String
   },
-  data() {
+  data () {
     return {
       keyIndex: 0,
-      oversize: false,
       isHide: false
     };
   },
   watch: {
-    isLimitHeight() {
+    isLimitHeight () {
       this.init();
     },
-    text() {
+    text () {
       this.init();
     },
-    height() {
+    height () {
       this.init();
     }
   },
-  mounted() {
+  mounted () {
     this.init();
   },
   methods: {
-    init() {
-      this.oversize = false;
+    init () {
       this.keyIndex += 1;
       let more = this.$refs.more;
       more.style.display = "none";
@@ -72,7 +69,7 @@ export default create({
         this.limitShow();
       }
     },
-    limitShow() {
+    limitShow () {
       this.$nextTick(() => {
         let textDom = this.$refs.text;
         let title = this.$el;
