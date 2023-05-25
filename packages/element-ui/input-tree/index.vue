@@ -124,7 +124,10 @@ export default create({
     checkOnClickNode: Boolean,
     expandOnClickNode: Boolean,
     defaultExpandAll: Boolean,
-    popperAppendToBody: Boolean,
+    popperAppendToBody: {
+      type: Boolean,
+      default: true
+    }
   },
   watch: {
     text (val) {
