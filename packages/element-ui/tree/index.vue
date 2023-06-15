@@ -21,6 +21,7 @@
                :data="data"
                :lazy="lazy"
                :load="treeLoad"
+               :draggable="draggable"
                :props="treeProps"
                :icon-class="iconClass"
                :indent="indent"
@@ -36,6 +37,14 @@
                @check-change="handleCheckChange"
                @node-click="nodeClick"
                @node-contextmenu="nodeContextmenu"
+               @node-drag-start="handleDragStart"
+               @node-drag-enter="handleDragEnter"
+               @node-drag-leave="handleDragLeave"
+               @node-drag-over="handleDragOver"
+               @node-drag-end="handleDragEnd"
+               @node-drop="handleDrop"
+               :allow-drop="option.allowDrop"
+               :allow-drag="option.allowDrag"
                :default-expand-all="defaultExpandAll"
                :default-expanded-keys="defaultExpandedKeys">
 
@@ -157,6 +166,9 @@ export default create({
     };
   },
   computed: {
+    draggable () {
+      return this.option.draggable
+    },
     styleName () {
       return {
         top: this.setPx(this.client.y - 10),
@@ -250,6 +262,24 @@ export default create({
     }
   },
   methods: {
+    handleDragStart (node, ev) {
+      this.$emit('node-drag-start', node, ev)
+    },
+    handleDragEnter (draggingNode, dropNode, ev) {
+      this.$emit('node-drag-enter', draggingNode, dropNode, ev)
+    },
+    handleDragLeave (draggingNode, dropNode, ev) {
+      this.$emit('node-drag-leave', draggingNode, dropNode, ev)
+    },
+    handleDragOver (draggingNode, dropNode, ev) {
+      this.$emit('node-drag-over', draggingNode, dropNode, ev)
+    },
+    handleDragEnd (draggingNode, dropNode, dropType, ev) {
+      this.$emit('node-drag-end', draggingNode, dropNode, dropType, ev)
+    },
+    handleDrop (draggingNode, dropNode, dropType, ev) {
+      this.$emit('node-drop', draggingNode, dropNode, dropType, ev)
+    },
     menuIcon (value) {
       return this.vaildData(this.option[value + 'Text'], this.t("crud." + value))
     },
