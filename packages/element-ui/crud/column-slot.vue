@@ -192,7 +192,7 @@ export default {
           if (this.crud.cascaderIndexList.includes(rowIndex)) {
             //清空子类字典
             cascader.forEach(ele => {
-              this.$set(this.crud.cascaderDIC[rowIndex], ele.prop, []);
+              this.$set(this.crud.cascaderDIC[rowIndex], ele, []);
               cascader.forEach(ele => (row[ele] = ""));
             });
           }
