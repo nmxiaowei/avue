@@ -21,9 +21,10 @@
 
 <body>
   <div id="app">
-    <avue-tree :before-open="beforeOpen" :before-close="beforeClose" ref="tree" :filter-node-method="filterNodeMethod"
-      :permission="getPermission" :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save"
-      @del="del" v-model="form">
+    <avue-tree @node-drag-start="handleDragStart" @node-drag-enter="handleDragEnter" @node-drag-leave="handleDragLeave"
+      @node-drag-over="handleDragOver" @node-drag-end="handleDragEnd" @node-drop="handleDrop" :before-open="beforeOpen"
+      :before-close="beforeClose" ref="tree" :filter-node-method="filterNodeMethod" :permission="getPermission"
+      :option="option" :data="data" @node-click="nodeClick" @update="update" @save="save" @del="del" v-model="form">
       <template #="{ node, data }">
         <span class="el-tree-node__label">
           <el-icon>
@@ -76,6 +77,7 @@
           defaultExpandAll: true,
           dialogWidth: '50%',
           title: "新增部门",
+          draggable: true,
           formOption: {
             labelWidth: 100,
             column: [{
@@ -93,6 +95,24 @@
       }
     },
     methods: {
+      handleDragStart(node, ev) {
+        console.log('drag start', node);
+      },
+      handleDragEnter(draggingNode, dropNode, ev) {
+        console.log('tree drag enter: ', dropNode.label);
+      },
+      handleDragLeave(draggingNode, dropNode, ev) {
+        console.log('tree drag leave: ', dropNode.label);
+      },
+      handleDragOver(draggingNode, dropNode, ev) {
+        console.log('tree drag over: ', dropNode.label);
+      },
+      handleDragEnd(draggingNode, dropNode, dropType, ev) {
+        console.log('tree drag end: ', dropNode && dropNode.label, dropType);
+      },
+      handleDrop(draggingNode, dropNode, dropType, ev) {
+        console.log('tree drop: ', dropNode.label, dropType);
+      },
       beforeOpen(done, type) {
         alert(type);
         done()

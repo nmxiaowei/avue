@@ -35,6 +35,15 @@
                  @check-change="handleCheckChange"
                  @node-click="nodeClick"
                  @node-contextmenu="nodeContextmenu"
+                 @node-drag-start="handleDragStart"
+                 @node-drag-enter="handleDragEnter"
+                 @node-drag-leave="handleDragLeave"
+                 @node-drag-over="handleDragOver"
+                 @node-drag-end="handleDragEnd"
+                 @node-drop="handleDrop"
+                 :allow-drop="option.allowDrop"
+                 :allow-drag="option.allowDrag"
+                 @node-contextmenu="nodeContextmenu"
                  :default-expand-all="defaultExpandAll"
                  :default-expanded-keys="defaultExpandedKeys">
         <template #="{ node, data }"
@@ -256,6 +265,24 @@ export default create({
     }
   },
   methods: {
+    handleDragStart (node, ev) {
+      this.$emit('node-drag-start', node, ev)
+    },
+    handleDragEnter (draggingNode, dropNode, ev) {
+      this.$emit('node-drag-enter', draggingNode, dropNode, ev)
+    },
+    handleDragLeave (draggingNode, dropNode, ev) {
+      this.$emit('node-drag-leave', draggingNode, dropNode, ev)
+    },
+    handleDragOver (draggingNode, dropNode, ev) {
+      this.$emit('node-drag-over', draggingNode, dropNode, ev)
+    },
+    handleDragEnd (draggingNode, dropNode, dropType, ev) {
+      this.$emit('node-drag-end', draggingNode, dropNode, dropType, ev)
+    },
+    handleDrop (draggingNode, dropNode, dropType, ev) {
+      this.$emit('node-drop', draggingNode, dropNode, dropType, ev)
+    },
     menuIcon (value) {
       return this.validData(this.option[value + 'Text'], this.t("crud." + value))
     },
