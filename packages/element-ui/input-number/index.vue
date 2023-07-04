@@ -1,11 +1,12 @@
 <template>
   <el-input-number v-model.number="text"
                    :class="b()"
-                   @click.native="handleClick"
+                   @click="handleClick"
                    @focus="handleFocus"
                    @blur="handleBlur"
                    :precision="precision"
                    :placeholder="placeholder"
+                   :step-strictly="stepStrictly"
                    :size="size"
                    :min="min"
                    :max="max"
@@ -29,6 +30,10 @@ export default create({
     return {};
   },
   props: {
+    stepStrictly: {
+      type: Boolean,
+      default: false
+    },
     controls: {
       type: Boolean,
       default: true
