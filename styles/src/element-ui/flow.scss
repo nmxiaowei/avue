@@ -18,9 +18,17 @@
       border-width: 2px;
       border-color:#f56c6c;
     }
-    &-drag{
-      margin: 0 5px;
+    .el-icon{
+      margin: 0 2px;
       display: inline-block;
+    }
+    &-drag{
+      position: absolute;
+      left:0;
+      top:0;
+      width:15px;
+      height:15px;
+      z-index: 1024;
     }
     &-header{
       flex:1;

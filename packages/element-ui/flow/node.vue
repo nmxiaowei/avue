@@ -10,7 +10,9 @@
        :mask="false">
     <div :class="b('node',{'active':active===node.id})">
       <div :class="b('node-header')">
-        <el-icon :class="b('node-drag')">
+        <span :class="b('node-drag')">
+        </span>
+        <el-icon>
           <el-icon-rank />
         </el-icon>
         <slot name="header"
