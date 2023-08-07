@@ -23,6 +23,9 @@
     <avue-chat :keylist="keylist" @keysend="handleSubmit" @keyadd="handleAdd" :config="config" width="500" height="720"
       ref="chat" @submit="handleSubmit" v-model="msg" :list="list">
       <div>这里是内容</div>
+      <template #menu>
+        <span>自定义</span>
+      </template>
     </avue-chat>
   </div>
 </body>
