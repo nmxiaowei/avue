@@ -60,6 +60,7 @@
             <i class="el-icon-folder-opened"
                v-if="tools.file"
                @click="handleUpload('file')"></i>
+            <slot name="menu"></slot>
           </div>
           <div class="web__msg">
             <textarea v-model="msg"
