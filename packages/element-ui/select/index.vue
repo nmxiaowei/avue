@@ -163,7 +163,8 @@ export default create({
   },
   computed: {
     options () {
-      return this.netDic.map(ele => {
+      let dicData = this.deepClone(this.netDic)
+      return dicData.map(ele => {
         return Object.assign(ele, {
           label: ele[this.labelKey],
           value: ele[this.valueKey],
