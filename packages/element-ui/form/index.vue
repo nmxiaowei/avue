@@ -638,7 +638,7 @@ export default create({
 
     },
     clearValidate (list) {
-      this.$refs.form.clearValidate(list);
+      if (this.$refs.form) this.$refs.form.clearValidate(list);
     },
     validateCellForm () {
       return new Promise(resolve => {

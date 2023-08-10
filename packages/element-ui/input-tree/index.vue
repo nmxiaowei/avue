@@ -11,6 +11,7 @@
              :placeholder="placeholder"
              :popper-class="popperClass"
              :popper-append-to-body="popperAppendToBody"
+             @remove-tag="removeTag"
              @focus="handleFocus"
              @blur="handleBlur"
              @clear="handleClear"
@@ -89,7 +90,7 @@ export default create({
     },
     leafOnly: {
       type: Boolean,
-      default: false
+      default: true
     },
     tags: {
       type: Boolean,
@@ -162,12 +163,27 @@ export default create({
       return this.multiple ? this.text : [this.text || '']
     },
     labelShow () {
-      let list = [...this.node]
-      let result = list.map(ele => this.getLabelText(ele))
+      let result=[]
+      this.keysList.forEach(ele=>{
+        let node=this.node.find(node=>node[this.valueKey]==ele)
+        if(!node){
+          node ={}
+          node[this.labelKey]=ele;
+          node[this.valueKey]=ele;
+        }
+         result.push(this.getLabelText(node))
+      })
       return result
     }
   },
   methods: {
+    removeTag (val) {
+      let index = this.node.findIndex(ele => ele[this.labelKey] == val)
+      if (index != -1) {
+        this.$refs.tree.setChecked(this.node[index][this.valueKey])
+        this.text.splice(index, 1)
+      }
+    },
     handleClear () {
       this.text = this.multiple ? [] : '';
       this.node = [];
