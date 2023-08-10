@@ -53,7 +53,7 @@
           <div class="web__tools">
             <el-icon v-if="tools.img"
                      @click="handleUpload('img')">
-              <el-icon-picture-outline />
+              <el-icon-picture />
             </el-icon>
             <el-icon v-if="tools.video"
                      @click="handleUpload('video')">
@@ -63,6 +63,7 @@
                      @click="handleUpload('file')">
               <el-icon-folder-opened />
             </el-icon>
+            <slot name="menu"></slot>
           </div>
           <div class="web__msg">
             <textarea v-model="msg"
