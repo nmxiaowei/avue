@@ -83,7 +83,8 @@
       <template v-else>
         <span v-if="['img','upload'].includes(column.type)"
               class="avue-crud__img ">
-          <template v-for="(item,index) in getImgList(row,column)">
+          <template v-for="(item,index) in getImgList(row,column)"
+                    :key="index">
             <component :src="item"
                        v-if="isMediaType(item,column.fileType)"
                        :is="isMediaType(item,column.fileType)"

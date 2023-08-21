@@ -179,6 +179,7 @@
 </template>
 
 <script>
+let count = {}
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
@@ -581,7 +582,12 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      if (column.cascader) this.handleChange(option, column)
+      let key = column.prop
+      if (!count[key]) {
+        if (column.cascader) this.handleChange(option, column)
+      }
+      count[key] = true
+      this.$nextTick(() => count[key] = false)
     },
     handleMock () {
       if (!this.isMock) return
