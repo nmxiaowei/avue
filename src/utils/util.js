@@ -415,17 +415,24 @@ export const getPasswordChar = (result = '', char) => {
 export const arraySort = (list = [], prop, callback) => {
   return list.filter(ele => !validatenull(ele[prop])).sort((a, b) => callback(a, b)).concat(list.filter(ele => validatenull(ele[prop])));
 }
+
+export const blankVal = (value) => {
+  if (validatenull(value)) return value;
+  let type = getObjType(value)
+  if (type === 'array') value = [];
+  else if (type === 'object') value = {};
+  else if (['number', 'boolean'].includes(type)) value = undefined;
+  else value = '';
+  return value;
+};
+
 export const clearVal = (obj, propList, list = []) => {
   if (!obj) return {};
   propList.forEach(ele => {
     if (list.includes(ele)) return
     else if (ele.includes('$')) delete obj[ele]
     else if (!validatenull(obj[ele])) {
-      let type = getObjType(obj[ele])
-      if (type === 'array') obj[ele] = [];
-      else if (type === 'object') obj[ele] = {};
-      else if (['number', 'boolean'].includes(type)) obj[ele] = undefined;
-      else obj[ele] = '';
+      obj[ele] = blankVal(obj[ele])
     }
   });
   return obj;
