@@ -105,7 +105,7 @@
                     v-if="$slots.empty"></slot>
               <el-empty :image-size="100"
                         v-else
-                        :description="tableOption.emptyText || '暂无数据'"></el-empty>
+                        :description="tableOption.emptyText || t('crud.emptyText')"></el-empty>
             </div>
           </template>
           <column :columnOption="columnOption">
@@ -190,7 +190,7 @@ import { CommonProps } from "element-plus";
 import { getColumn } from 'utils/util'
 export default create({
   name: "crud",
-  mixins: [init(), locale,],
+  mixins: [init(), locale],
   emits: [
     'update:modelValue',
     'tree-load',
