@@ -278,11 +278,8 @@ export const getColumn = (column) => {
     columnList = column
   } else {
     for (let o in column) {
-      let columnMerge = {
-        ...column[o],
-        ...{ prop: o }
-      }
-      columnList.push(columnMerge)
+      column[o].prop = o;
+      columnList.push(column[o])
     }
   }
   return columnList;
