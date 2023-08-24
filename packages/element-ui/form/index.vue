@@ -187,6 +187,7 @@ import { getColumn, filterParams, clearVal, getAsVal, blankVal, setAsVal } from 
 import mock from "utils/mock";
 import formMenu from './menu'
 import config from "./config.js";
+let count = {}
 export default create({
   name: "form",
   mixins: [init()],
@@ -573,7 +574,12 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      if (column.cascader) this.handleChange(option, column)
+      let key = column.prop
+      if (!count[key]) {
+        if (column.cascader) this.handleChange(option, column)
+      }
+      count[key] = true
+      this.$nextTick(() => count[key] = false)
     },
     handleMock () {
       if (!this.isMock) return
