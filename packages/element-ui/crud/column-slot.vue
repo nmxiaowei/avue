@@ -125,7 +125,7 @@ let count = {}
 import { detail } from "core/detail";
 import { DIC_PROPS, DIC_SPLIT, DIC_SHOW_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
-import { isMediaType } from "utils/util";
+import { isMediaType, blankVal } from "utils/util";
 import formTemp from 'common/components/form/index'
 import iconTemp from 'common/components/icon/index'
 export default {
@@ -193,7 +193,9 @@ export default {
             //清空子类字典
             cascader.forEach(ele => {
               this.$set(this.crud.cascaderDIC[rowIndex], ele, []);
-              cascader.forEach(ele => (row[ele] = ""));
+              cascader.forEach(ele => {
+                row[ele] = blankVal(row[ele])
+              });
             });
           }
           //最后一级

@@ -183,7 +183,7 @@ import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { getColumn, filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { getColumn, filterParams, clearVal, getAsVal, blankVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 import config from "./config.js";
@@ -536,7 +536,7 @@ export default create({
           if (this.formList.includes(str)) {
             //清空子类字典列表和值
             cascader.forEach(ele => {
-              this.form[ele] = "";
+              this.form[ele] = blankVal(this.form[ele])
               this.$set(this.DIC, ele, []);
             });
           }
