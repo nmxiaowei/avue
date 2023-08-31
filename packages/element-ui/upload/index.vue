@@ -3,7 +3,7 @@
        :element-loading-text="loadText"
        v-loading.lock="loading">
     <el-upload :key="reload"
-               :class="b({'list':listType=='picture-img','upload':disabled})"
+               :class="[b({'list':listType=='picture-img','upload':disabled}),'avue-upload--'+listType]"
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
