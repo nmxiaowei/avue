@@ -12,7 +12,9 @@
                :popper-class="popperClass"
                :separator="separator"
                :disabled="disabled"
-               :collapse-tags="tags"
+               :collapse-tags="tags || collapseTags"
+               :collapse-tags-tooltip="collapseTagsTooltip"
+               :max-collapse-tags="maxCollapseTags"
                @focus="handleFocus"
                @blur="handleBlur">
     <template #="{data,node}">
@@ -44,6 +46,9 @@ export default create({
       type: Boolean,
       default: false
     },
+    collapseTags: Boolean,
+    collapseTagsTooltip: Boolean,
+    maxCollapseTags: Number,
     modelValue: {
       type: [Array, String],
       default: () => []
