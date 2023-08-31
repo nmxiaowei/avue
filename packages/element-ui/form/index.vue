@@ -5,6 +5,10 @@
              :status-icon="tableOption.statusIcon"
              @submit.prevent
              :model="form"
+             :scroll-to-error="tableOption.scrollToError"
+             :hide-required-asterisk="tableOption.hideRequiredAsterisk"
+             :require-asterisk-position="tableOption.requireAsteriskPosition"
+             :scroll-into-view-options="tableOption.scrollIntoViewOptions"
              :label-suffix="labelSuffix"
              :size="size"
              :label-position="tableOption.labelPosition"
@@ -524,6 +528,9 @@ export default create({
     //对部分表单字段进行校验的方法
     validateField (val) {
       return this.$refs.form.validateField(val);
+    },
+    scrollToField (val) {
+      return this.$refs.form.scrollToField(val);
     },
     validTip (column) {
       return !column.tip || column.type === 'upload'
