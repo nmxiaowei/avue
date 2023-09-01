@@ -3,16 +3,15 @@
     <el-switch v-model="text"
                @click="handleClick"
                :inline-prompt="inlinePrompt"
-               :inactive-action-icon="activeIcon"
+               :active-icon="activeIcon"
+               :before-change="beforeChange"
+               :active-action-icon="activeActionIcon"
                :active-text="active[labelKey]"
                :active-value="active[valueKey]"
                :inactive-icon="inactiveIcon"
+               :inactive-action-icon="inactiveActionIcon"
                :inactive-value="inactive[valueKey]"
                :inactive-text="inactive[labelKey]"
-               :active-icon-class="activeIconClass"
-               :inactive-icon-class="inactiveIconClass"
-               :active-color="activeColor"
-               :inactive-color="inactiveColor"
                :width="len"
                :disabled="disabled"></el-switch>
   </div>
@@ -26,15 +25,13 @@ export default create({
   name: "switch",
   mixins: [props(), event()],
   props: {
-    modelValue: {},
     inlinePrompt: Boolean,
-    activeIconClass: String,
-    inactiveIconClass: String,
+    inactiveActionIcon: String,
+    activeActionIcon: String,
     inactiveIcon: String,
     activeIcon: String,
-    activeColor: String,
-    inactiveColor: String,
-    len: Number
+    len: Number,
+    beforeChange: [Boolean, Function]
   },
   data () {
     return {};
