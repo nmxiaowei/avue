@@ -68,6 +68,7 @@ export default {
       index: '顺序',
       width: '宽度'
     },
+    emptyText: '暂无数据',
     tipStartTitle: '当前表格已选择',
     tipEndTitle: '项',
     editTitle: '编 辑',

@@ -73,6 +73,12 @@ export default create({
     },
     formatter: Function,
     onLoad: Function,
+    children: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     dialogWidth: {
       type: String,
       default: '80%'
@@ -96,7 +102,7 @@ export default create({
         headerAlign: 'center',
         align: 'center',
         highlightCurrentRow: true,
-      }, this.column.children)
+      }, this.children)
     }
   },
   methods: {

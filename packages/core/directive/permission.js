@@ -11,7 +11,7 @@ export default (() => {
     mounted (el, binding) {
       init(el, binding)
     },
-    update (el, binding) {
+    updated (el, binding) {
       init(el, binding)
     }
   }

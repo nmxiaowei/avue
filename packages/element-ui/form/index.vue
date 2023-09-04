@@ -5,6 +5,10 @@
              :status-icon="tableOption.statusIcon"
              @submit.prevent
              :model="form"
+             :scroll-to-error="tableOption.scrollToError"
+             :hide-required-asterisk="tableOption.hideRequiredAsterisk"
+             :require-asterisk-position="tableOption.requireAsteriskPosition"
+             :scroll-into-view-options="tableOption.scrollIntoViewOptions"
              :label-suffix="labelSuffix"
              :size="size"
              :label-position="tableOption.labelPosition"
@@ -179,6 +183,7 @@
 </template>
 
 <script>
+let count = {}
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
@@ -187,7 +192,7 @@ import formMenu from './menu'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { getColumn, filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { getColumn, filterParams, clearVal, getAsVal, blankVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import config from "./config.js";
 export default create({
@@ -524,6 +529,9 @@ export default create({
     validateField (val) {
       return this.$refs.form.validateField(val);
     },
+    scrollToField (val) {
+      return this.$refs.form.scrollToField(val);
+    },
     validTip (column) {
       return !column.tip || column.type === 'upload'
     },
@@ -544,7 +552,7 @@ export default create({
           if (this.formList.includes(str)) {
             //清空子类字典列表和值
             cascader.forEach(ele => {
-              this.form[ele] = "";
+              this.form[ele] = blankVal(this.form[ele])
               this.DIC[ele] = []
             });
           }
@@ -581,7 +589,12 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      if (column.cascader) this.handleChange(option, column)
+      let key = column.prop
+      if (!count[key]) {
+        if (column.cascader) this.handleChange(option, column)
+      }
+      count[key] = true
+      this.$nextTick(() => count[key] = false)
     },
     handleMock () {
       if (!this.isMock) return
@@ -683,9 +696,9 @@ export default create({
           let result = Object.assign(dynamicError, msg);
           if (this.validatenull(result)) {
             this.show();
-            callback(true, this.hide)
+            callback && callback(true, this.hide)
           } else {
-            callback(false, this.hide, result)
+            callback && callback(false, this.hide, result)
           }
 
         })

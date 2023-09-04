@@ -16,7 +16,9 @@
              :remote-method="remote?handleRemoteMethod:undefined"
              :popper-class="popperClass"
              :popper-append-to-body="popperAppendToBody"
-             :collapse-tags="tags"
+             :collapse-tags="tags || collapseTags"
+             :collapse-tags-tooltip="collapseTagsTooltip"
+             :max-collapse-tags="maxCollapseTags"
              :clearable="clearableVal"
              :placeholder="placeholder"
              @focus="handleFocus"
@@ -128,6 +130,9 @@ export default create({
       type: Boolean,
       default: false
     },
+    collapseTags: Boolean,
+    collapseTagsTooltip: Boolean,
+    maxCollapseTags: Number,
     limit: {
       type: Number,
       default: 0

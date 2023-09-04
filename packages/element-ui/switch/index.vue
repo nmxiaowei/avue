@@ -2,14 +2,17 @@
   <div>
     <el-switch v-model="text"
                @click="handleClick"
+               :loading="loading"
+               :inline-prompt="inlinePrompt"
+               :active-icon="activeIcon"
+               :before-change="handleBeforeChange"
+               :active-action-icon="activeActionIcon"
                :active-text="active[labelKey]"
                :active-value="active[valueKey]"
+               :inactive-icon="inactiveIcon"
+               :inactive-action-icon="inactiveActionIcon"
                :inactive-value="inactive[valueKey]"
                :inactive-text="inactive[labelKey]"
-               :active-icon-class="activeIconClass"
-               :inactive-icon-class="inactiveIconClass"
-               :active-color="activeColor"
-               :inactive-color="inactiveColor"
                :width="len"
                :disabled="disabled"></el-switch>
   </div>
@@ -23,15 +26,18 @@ export default create({
   name: "switch",
   mixins: [props(), event()],
   props: {
-    modelValue: {},
-    activeIconClass: String,
-    inactiveIconClass: String,
-    activeColor: String,
-    inactiveColor: String,
-    len: Number
+    inlinePrompt: Boolean,
+    inactiveActionIcon: String,
+    activeActionIcon: String,
+    inactiveIcon: String,
+    activeIcon: String,
+    len: Number,
+    beforeChange: Function
   },
   data () {
-    return {};
+    return {
+      loading: false,
+    };
   },
   watch: {},
   created () { },
@@ -44,7 +50,23 @@ export default create({
       return this.dic[0] || {};
     }
   },
-  methods: {}
+  methods: {
+    handleBeforeChange () {
+      return new Promise((resolve) => {
+        this.loading = true
+        const callback = (result) => {
+          this.loading = false
+          return resolve(result)
+        }
+        if (typeof this.beforeChange == 'function') {
+          return this.beforeChange(callback)
+        } else {
+          return callback(true)
+        }
+      })
+
+    }
+  }
 });
 </script>
 

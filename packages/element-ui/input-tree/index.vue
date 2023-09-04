@@ -1,6 +1,7 @@
 <template>
   <el-tree-select ref="tree"
                   :class="b()"
+                  :cache-data="cacheData"
                   v-model="text"
                   :loading="loading"
                   :lazy="lazy"
@@ -65,6 +66,7 @@ export default create({
     };
   },
   props: {
+    cacheData: [Object, Array],
     indent: Number,
     filterNodeMethod: Function,
     nodeClick: Function,
