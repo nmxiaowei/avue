@@ -2,9 +2,10 @@
   <div>
     <el-switch v-model="text"
                @click="handleClick"
+               :loading="loading"
                :inline-prompt="inlinePrompt"
                :active-icon="activeIcon"
-               :before-change="beforeChange"
+               :before-change="handleBeforeChange"
                :active-action-icon="activeActionIcon"
                :active-text="active[labelKey]"
                :active-value="active[valueKey]"
@@ -31,10 +32,12 @@ export default create({
     inactiveIcon: String,
     activeIcon: String,
     len: Number,
-    beforeChange: [Boolean, Function]
+    beforeChange: Function
   },
   data () {
-    return {};
+    return {
+      loading: false,
+    };
   },
   watch: {},
   created () { },
@@ -47,7 +50,23 @@ export default create({
       return this.dic[0] || {};
     }
   },
-  methods: {}
+  methods: {
+    handleBeforeChange () {
+      return new Promise((resolve) => {
+        this.loading = true
+        const callback = (result) => {
+          this.loading = false
+          return resolve(result)
+        }
+        if (typeof this.beforeChange == 'function') {
+          return this.beforeChange(callback)
+        } else {
+          return callback(true)
+        }
+      })
+
+    }
+  }
 });
 </script>
 
