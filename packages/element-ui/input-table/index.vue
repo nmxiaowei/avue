@@ -131,6 +131,7 @@ export default create({
     handleShow () {
       this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
+      this.search = {}
       this.page = {
         currentPage: 1,
         total: 0
