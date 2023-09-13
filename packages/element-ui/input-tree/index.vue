@@ -163,15 +163,15 @@ export default create({
       return this.multiple ? this.text : [this.text || '']
     },
     labelShow () {
-      let result=[]
-      this.keysList.forEach(ele=>{
-        let node=this.node.find(node=>node[this.valueKey]==ele)
-        if(!node){
-          node ={}
-          node[this.labelKey]=ele;
-          node[this.valueKey]=ele;
+      let result = []
+      this.keysList.forEach(ele => {
+        let node = this.node.find(node => node[this.valueKey] == ele)
+        if (!node) {
+          node = {}
+          node[this.labelKey] = ele;
+          node[this.valueKey] = ele;
         }
-         result.push(this.getLabelText(node))
+        result.push(this.getLabelText(node))
       })
       return result
     }
@@ -216,7 +216,8 @@ export default create({
     },
     checkChange (checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys) {
       this.text.splice(0, this.text.length)
-      const list = this.$refs.tree.getCheckedNodes(this.leafOnly, false);
+      const leafOnly = this.checkStrictly ? false : this.leafOnly
+      const list = this.$refs.tree.getCheckedNodes(leafOnly, false);
       list.forEach(node => this.text.push(node[this.valueKey]));
       if (typeof this.checked === "function") this.checked(checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys);
     },
@@ -232,7 +233,8 @@ export default create({
           if (this.validatenull(this.text)) {
             this.$refs.tree.setCheckedKeys([]);
           } else {
-            let list = this.$refs.tree.getCheckedNodes(this.leafOnly, false)
+            const leafOnly = this.checkStrictly ? false : this.leafOnly
+            let list = this.$refs.tree.getCheckedNodes(leafOnly, false)
             list.forEach(ele => {
               this.node.push(ele);
             })
