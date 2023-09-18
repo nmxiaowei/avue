@@ -273,11 +273,10 @@ export default create({
         this.clearMarker();
         var source = poiResult.source,
           poi = poiResult.item;
-        console.log(poi)
         this.poi = Object.assign(poi, {
           formattedAddress: poi.name,
-          longitude: poi.longitude,
-          latitude: poi.latitude
+          longitude: poi.location.lng,
+          latitude: poi.location.lat
         });
         if (source !== "search") {
           poiPicker.searchByKeyword(poi.name);
