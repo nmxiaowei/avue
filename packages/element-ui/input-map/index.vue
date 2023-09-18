@@ -215,8 +215,8 @@ export default create({
       this.map.on("click", e => {
         if (this.disabled || this.readonly) return
         const lnglat = e.lnglat;
-        const P = lnglat.P || lnglat.Q;
-        const R = lnglat.R;
+        const P = lnglat.lat;
+        const R = lnglat.lng;
         this.addMarker(R, P);
         this.getAddress(R, P);
       });
@@ -261,10 +261,11 @@ export default create({
         this.clearMarker();
         var source = poiResult.source,
           poi = poiResult.item;
+        console.log(poi)
         this.poi = Object.assign(poi, {
           formattedAddress: poi.name,
-          longitude: poi.location.R,
-          latitude: poi.location.P || poi.location.Q
+          longitude: poi.location.lng,
+          latitude: poi.location.lat
         });
         if (source !== "search") {
           poiPicker.searchByKeyword(poi.name);
