@@ -10,6 +10,21 @@
       margin-top: -6px;
     }
   }
+  &--picture-img{
+    .el-upload.is-drag{
+      width: 148px; 
+    }
+    .el-upload-dragger{
+      padding: 0;
+    } 
+  }
+  &--picture-card{
+    .el-upload-dragger{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   &--list {
     .el-upload {
       background-color: #fbfdff;

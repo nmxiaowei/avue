@@ -73,6 +73,12 @@ export default create({
     },
     formatter: Function,
     onLoad: Function,
+    children: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     dialogWidth: {
       type: String,
       default: '80%'
@@ -114,7 +120,7 @@ export default create({
         headerAlign: 'center',
         align: 'center',
         highlightCurrentRow: true,
-      }, this.column.children)
+      }, this.children)
     }
   },
   methods: {
@@ -125,6 +131,7 @@ export default create({
     handleShow () {
       this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
+      this.search = {}
       this.page = {
         currentPage: 1,
         total: 0

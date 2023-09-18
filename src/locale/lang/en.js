@@ -68,6 +68,7 @@ export default {
       index: 'Index',
       width: 'Width'
     },
+    emptyText: 'No Data',
     tipStartTitle: 'Selected',
     tipEndTitle: 'Items　',
     editTitle: 'Edit',

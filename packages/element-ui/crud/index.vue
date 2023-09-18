@@ -109,7 +109,7 @@
                     v-if="$slots.empty"></slot>
               <el-empty v-else
                         :image-size="100"
-                        :description="tableOption.emptyText"></el-empty>
+                        :description="tableOption.emptyText || t('crud.emptyText')"></el-empty>
             </div>
           </template>
           <column :columnOption="columnOption">

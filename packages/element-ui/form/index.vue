@@ -6,6 +6,7 @@
              @submit.native.prevent
              :model="form"
              :label-suffix="labelSuffix"
+             :hide-required-asterisk="parentOption.hideRequiredAsterisk"
              :size="$AVUE.formSize || controlSize"
              :label-position="parentOption.labelPosition"
              :label-width="setPx(parentOption.labelWidth,config.labelWidth)">
@@ -183,10 +184,11 @@ import formTemp from 'common/components/form/index'
 import { DIC_PROPS } from 'global/variable';
 import { getComponent, getPlaceholder, formInitVal, calcCount, calcCascader } from "core/dataformat";
 import { sendDic } from "core/dic";
-import { getColumn, filterParams, clearVal, getAsVal, setAsVal } from 'utils/util'
+import { getColumn, filterParams, clearVal, getAsVal, blankVal, setAsVal } from 'utils/util'
 import mock from "utils/mock";
 import formMenu from './menu'
 import config from "./config.js";
+let count = {}
 export default create({
   name: "form",
   mixins: [init()],
@@ -536,7 +538,7 @@ export default create({
           if (this.formList.includes(str)) {
             //清空子类字典列表和值
             cascader.forEach(ele => {
-              this.form[ele] = "";
+              this.form[ele] = blankVal(this.form[ele])
               this.$set(this.DIC, ele, []);
             });
           }
@@ -573,7 +575,12 @@ export default create({
       this.$Print(this.$el);
     },
     propChange (option, column) {
-      if (column.cascader) this.handleChange(option, column)
+      let key = column.prop
+      if (!count[key]) {
+        if (column.cascader) this.handleChange(option, column)
+      }
+      count[key] = true
+      this.$nextTick(() => count[key] = false)
     },
     handleMock () {
       if (!this.isMock) return
@@ -675,9 +682,9 @@ export default create({
           let result = Object.assign(dynamicError, msg);
           if (this.validatenull(result)) {
             this.show();
-            callback(true, this.hide)
+            callback && callback(true, this.hide, result)
           } else {
-            callback(false, this.hide, result)
+            callback && callback(false, this.hide, result)
           }
 
         })
@@ -703,7 +710,7 @@ export default create({
       this.allDisabled = false;
     },
     submit () {
-      this.validate((valid, msg) => {
+      this.validate((valid, hide, msg) => {
         if (valid) {
           this.$emit("submit", filterParams(this.form, ['$']), this.hide);
         } else {
