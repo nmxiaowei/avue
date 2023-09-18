@@ -93,8 +93,9 @@
                        :icon="crud.getBtnIcon('cancelBtn')"
                        :size="crud.size"
                        :disabled="crud.btnDisabledList[$index]"
+                       v-permission="crud.getPermission('cancelBtn',row,$index)"
                        @click.stop="crud.rowCancel(row,$index)"
-                       v-if="row.$cellEdit">
+                       v-if="row.$cellEdit&&validData(crud.tableOption.cancelBtn,config.cancelBtn)">
               <template v-if="!isIconMenu">
                 {{crud.menuIcon('cancelBtn')}}
               </template>
