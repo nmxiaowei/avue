@@ -696,7 +696,7 @@ export default create({
           let result = Object.assign(dynamicError, msg);
           if (this.validatenull(result)) {
             this.show();
-            callback && callback(true, this.hide)
+            callback && callback(true, this.hide, result)
           } else {
             callback && callback(false, this.hide, result)
           }
@@ -724,7 +724,7 @@ export default create({
       this.allDisabled = false;
     },
     submit () {
-      this.validate((valid, msg) => {
+      this.validate((valid, hide, msg) => {
         if (valid) {
           this.$emit("submit", filterParams(this.form, ['$']), this.hide);
         } else {
