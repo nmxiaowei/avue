@@ -24,7 +24,7 @@
                    :show-indicators="false"
                    :initial-index="index"
                    :initial-swipe="index"
-                   :interval="0"
+                   :interval="ops.interval || 0"
                    arrow="never"
                    @change="handleChange"
                    indicator-position="none">
