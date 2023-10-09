@@ -304,11 +304,12 @@ export default create({
         this[ele] = this.$refs.tree[ele];
       })
     },
-    nodeContextmenu (e, data, node) {
+    nodeContextmenu (e, data, node, obj) {
       this.node = node;
       this.client.x = e.clientX;
       this.client.y = e.clientY;
       this.client.show = true;
+      this.$emit('node-contextmenu', e, data, node, obj)
     },
     handleCheckChange (data, checked, indeterminate) {
       this.$emit('check-change', data, checked, indeterminate)
