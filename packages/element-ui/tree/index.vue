@@ -306,7 +306,7 @@ export default create({
       this.client.x = e.clientX;
       this.client.y = e.clientY;
       this.client.show = true;
-      this.$emit('node-contextmenu', e, data, node, obj)
+      this.$emit('node-contextmenu', data, node, obj)
     },
     handleCheckChange (data, checked, indeterminate) {
       this.$emit('check-change', data, checked, indeterminate)
