@@ -333,15 +333,16 @@ export default create({
       let column = getColumn(tableOption.column)
       let group = tableOption.group || [];
       let footer = tableOption.footer || [];
-      group.unshift({
+      let firstGroup = [], footerGroup = []
+      firstGroup = [{
         header: false,
         column: column
-      })
+      }]
       if (footer.length !== 0) {
-        group.push({
+        footerGroup = [{
           header: false,
           column: footer
-        })
+        }]
       }
       group.forEach((ele, index) => {
         ele.column = getColumn(ele.column) || []
@@ -357,7 +358,7 @@ export default create({
         //根据order排序
         ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });
-      return group;
+      return firstGroup.concat(group).concat(footerGroup)
     },
     menuPosition: function () {
       if (this.tableOption.menuPosition) {
