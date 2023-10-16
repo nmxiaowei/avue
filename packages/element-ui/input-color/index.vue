@@ -14,6 +14,8 @@
         <el-color-picker size="small"
                          v-model="text"
                          :color-format="colorFormat"
+                         @focus="handleFocus"
+                         @blur="handleBlur"
                          :disabled="disabled"
                          :show-alpha="showAlpha"
                          :predefine="predefineColors"></el-color-picker>
