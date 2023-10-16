@@ -19,7 +19,7 @@
                     :placeholder="placeholder"
                     @blur="handleBlur"
                     @focus="handleFocus"
-                    @click.native="handleClick"
+                    @click="handleClick"
                     :readonly="readonly"
                     :disabled="disabled">
       <template #="cell">
