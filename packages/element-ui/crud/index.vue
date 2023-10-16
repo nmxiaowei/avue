@@ -57,6 +57,8 @@
                   :lazy="validData(tableOption.lazy,false)"
                   :load="treeLoad"
                   :tree-props="treeProps"
+                  :flexible="tableOption.flexible"
+                  :table-layout="tableOption.tableLayout"
                   :expand-row-keys="tableOption.expandRowKeys"
                   :default-expand-all="tableOption.defaultExpandAll"
                   :highlight-current-row="tableOption.highlightCurrentRow"
