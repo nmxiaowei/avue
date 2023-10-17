@@ -29,11 +29,11 @@
                    :show-indicators="false"
                    :initial-index="index"
                    :initial-swipe="index"
-                   :interval="0"
+                   :interval="ops.interval || 0"
                    arrow="never"
                    @change="handleChange"
                    indicator-position="none">
-        <el-carousel-item @click.native.self="ops.closeOnClickModal?close():''"
+        <el-carousel-item @click.self="ops.closeOnClickModal?close():''"
                           v-for="(item,indexs) in datas"
                           :key="indexs">
           <component @click="handleClick(item,indexs)"

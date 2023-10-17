@@ -18,8 +18,13 @@
     border-radius: 3px;
   }
   &__content {
+    position: relative;
+    padding-top: 40px;
     &-input {
-      margin-bottom: 10px;
+      left:0;
+      top:0;
+      position: absolute;
+      z-index:1;
     }
     &-box {
       position: relative;

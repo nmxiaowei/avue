@@ -54,7 +54,7 @@
                @selection-change="handleSelectionChange"
                @sortable-change="handleSortableChange"
                :data="text">
-      <template #_index-header="scope">
+      <template #_index-header="{}">
         <el-button v-if="!(addBtn || readonly) && maxFlag"
                    @click="addRow()"
                    type="primary"
@@ -72,6 +72,11 @@
                    icon="el-icon-delete"
                    circle></el-button>
         <div v-else>{{scope.row.$index+1}}</div>
+      </template>
+      <template v-for="item in columnSlot"
+                #[getSlotName({prop:item},`F`)]="scope">
+        <slot v-bind="scope"
+              :name="item"></slot>
       </template>
 
     </avue-crud>

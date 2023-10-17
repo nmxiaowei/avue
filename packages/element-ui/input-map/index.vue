@@ -193,33 +193,31 @@ export default create({
     },
     //获取坐标
     getAddress (R, P) {
-      new window.AMap.service("AMap.Geocoder", () => {
-        //回调函数
-        let geocoder = new window.AMap.Geocoder({});
-        geocoder.getAddress([R, P], (status, result) => {
-          if (status === "complete" && result.info === "OK") {
-            const regeocode = result.regeocode;
-            this.poi = Object.assign(regeocode, {
-              longitude: R,
-              latitude: P
-            });
-            // 自定义点标记内容
-            var markerContent = document.createElement("div");
+      //回调函数
+      let geocoder = new window.AMap.Geocoder({});
+      geocoder.getAddress([R, P], (status, result) => {
+        if (status === "complete" && result.info === "OK") {
+          const regeocode = result.regeocode;
+          this.poi = Object.assign(regeocode, {
+            longitude: R,
+            latitude: P
+          });
+          // 自定义点标记内容
+          var markerContent = document.createElement("div");
+          // 点标记中的图标
+          var markerImg = document.createElement("img");
+          markerImg.style.width = "25px"
+          markerImg.src =
+            "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png";
+          markerContent.appendChild(markerImg);
 
-            // 点标记中的图标
-            var markerImg = document.createElement("img");
-            markerImg.src =
-              "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png";
-            markerContent.appendChild(markerImg);
-
-            // 点标记中的文本
-            var markerSpan = document.createElement("span");
-            markerSpan.className = "avue-input-map__marker";
-            markerSpan.innerHTML = this.poi.formattedAddress;
-            markerContent.appendChild(markerSpan);
-            this.marker.setContent(markerContent); //更新点标记内容
-          }
-        });
+          // 点标记中的文本
+          var markerSpan = document.createElement("span");
+          markerSpan.className = "avue-input-map__marker";
+          markerSpan.innerHTML = this.poi.formattedAddress;
+          markerContent.appendChild(markerSpan);
+          this.marker.setContent(markerContent); //更新点标记内容
+        }
       });
     },
     handleClose () {
@@ -229,8 +227,8 @@ export default create({
       this.map.on("click", e => {
         if (this.disabled || this.readonly) return
         const lnglat = e.lnglat;
-        const P = lnglat.P || lnglat.Q;
-        const R = lnglat.R;
+        const P = lnglat.lat;
+        const R = lnglat.lng;
         this.addMarker(R, P);
         this.getAddress(R, P);
       });
@@ -277,8 +275,8 @@ export default create({
           poi = poiResult.item;
         this.poi = Object.assign(poi, {
           formattedAddress: poi.name,
-          longitude: poi.location.R,
-          latitude: poi.location.P || poi.location.Q
+          longitude: poi.location.lng,
+          latitude: poi.location.lat
         });
         if (source !== "search") {
           poiPicker.searchByKeyword(poi.name);

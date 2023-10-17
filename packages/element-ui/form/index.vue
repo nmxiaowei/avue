@@ -333,15 +333,16 @@ export default create({
       let column = getColumn(tableOption.column)
       let group = tableOption.group || [];
       let footer = tableOption.footer || [];
-      group.unshift({
+      let firstGroup = [], footerGroup = []
+      firstGroup = [{
         header: false,
         column: column
-      })
+      }]
       if (footer.length !== 0) {
-        group.push({
+        footerGroup = [{
           header: false,
           column: footer
-        })
+        }]
       }
       group.forEach((ele, index) => {
         ele.column = getColumn(ele.column) || []
@@ -357,7 +358,7 @@ export default create({
         //根据order排序
         ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
       });
-      return group;
+      return firstGroup.concat(group).concat(footerGroup)
     },
     menuPosition: function () {
       if (this.tableOption.menuPosition) {
@@ -696,7 +697,7 @@ export default create({
           let result = Object.assign(dynamicError, msg);
           if (this.validatenull(result)) {
             this.show();
-            callback && callback(true, this.hide)
+            callback && callback(true, this.hide, result)
           } else {
             callback && callback(false, this.hide, result)
           }
@@ -724,7 +725,7 @@ export default create({
       this.allDisabled = false;
     },
     submit () {
-      this.validate((valid, msg) => {
+      this.validate((valid, hide, msg) => {
         if (valid) {
           this.$emit("submit", filterParams(this.form, ['$']), this.hide);
         } else {
