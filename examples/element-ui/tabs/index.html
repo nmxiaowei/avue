@@ -33,6 +33,10 @@
       return {
         type: {},
         option: {
+          stretch: true,
+          beforeLeave: (active) => {
+            console.log(active)
+          },
           // position: 'left',//left|right|top|bottom
           column: [{
             label: '选项卡1',
