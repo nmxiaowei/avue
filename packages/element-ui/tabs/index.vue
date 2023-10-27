@@ -1,6 +1,8 @@
 <template>
   <div :class="b()">
     <el-tabs v-model="active"
+             :before-leave="parentOption.beforeLeave"
+             :stretch="parentOption.stretch"
              :tab-position="parentOption.position"
              :type="parentOption.type">
       <el-tab-pane :name="index+''"
