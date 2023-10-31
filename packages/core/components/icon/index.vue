@@ -5,7 +5,7 @@
          aria-hidden="true">
       <use :xlink:href="text"></use>
     </svg>
-    <el-icon v-else-if="text.includes('el-')"
+    <el-icon v-else-if="text.indexOf('el-') == 0"
              :size="size"
              :color="color">
       <component :is="text" />
