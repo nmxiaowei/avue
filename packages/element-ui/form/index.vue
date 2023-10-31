@@ -329,6 +329,22 @@ export default create({
       return list;
     },
     columnOption () {
+      const detail = (list) => {
+        list.forEach((ele, index) => {
+          ele.column = getColumn(ele.column) || []
+          // 循环列的全部属性
+          ele.column.forEach((column, cindex) => {
+            //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
+            if (column.display !== false && !this.isMobile) {
+              column = calcCount(column, this.config.span, cindex === 0);
+            }
+          });
+          //处理级联属性
+          ele.column = calcCascader(ele.column);
+          //根据order排序
+          ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
+        });
+      }
       let tableOption = this.tableOption
       let column = getColumn(tableOption.column)
       let group = tableOption.group || [];
@@ -338,26 +354,15 @@ export default create({
         header: false,
         column: column
       }]
+      detail(firstGroup)
+      detail(group)
       if (footer.length !== 0) {
         footerGroup = [{
           header: false,
           column: footer
         }]
+        detail(footerGroup)
       }
-      group.forEach((ele, index) => {
-        ele.column = getColumn(ele.column) || []
-        // 循环列的全部属性
-        ele.column.forEach((column, cindex) => {
-          //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
-          if (column.display !== false && !this.isMobile) {
-            column = calcCount(column, this.config.span, cindex === 0);
-          }
-        });
-        //处理级联属性
-        ele.column = calcCascader(ele.column);
-        //根据order排序
-        ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
-      });
       return firstGroup.concat(group).concat(footerGroup)
     },
     menuPosition: function () {
