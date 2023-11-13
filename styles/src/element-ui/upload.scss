@@ -1,6 +1,6 @@
 .avue-upload {
   &--upload{
-    .el-upload,.el-upload__tip{
+    .el-upload>.el-button,.el-upload__tip{
       display: none;
     }
     .el-upload--picture-img{
