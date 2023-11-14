@@ -857,8 +857,8 @@ export default create({
       window.Sortable.create(el, {
         ghostClass: config.ghostClass,
         chosenClass: config.ghostClass,
-        animation: 500,
-        delay: 0,
+        animation: 100,
+        delay: 200,
         onEnd: evt => callback(evt)
       })
     },
