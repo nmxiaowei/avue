@@ -144,16 +144,17 @@ export default create({
       this.active = val;
     },
     handleSearchChange (form, done) {
-      this.onLoad({ page: this.page, data: form }, data => {
-        this.page.total = data.total;
-        this.data = data.data;
+      this.loading = true;
+      this.page.currentPage = 1;
+      this.onList({ data: form }, () => {
+        done && done()
       })
-      done && done()
     },
-    onList (callback) {
+    onList (params = {}, callback) {
       this.loading = true;
       if (typeof this.onLoad == 'function') {
-        this.onLoad({ page: this.page }, data => {
+        this.onLoad(Object.assign({ page: this.page }, params), data => {
+          callback && callback()
           this.page.total = data.total;
           this.data = data.data
           this.loading = false;
