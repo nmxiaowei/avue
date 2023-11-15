@@ -120,17 +120,18 @@ export const formInitVal = (list = []) => {
   let tableForm = {};
   list.forEach(ele => {
     if (
+      ['rate', 'slider', 'number'].includes(ele.type) ||
+      ele.dataType === 'number' ||
+      (ele.type == 'select' && ele.virtualize == true)
+    ) {
+      tableForm[ele.prop] = undefined;
+    } else if (
       ARRAY_VALUE_LIST.includes(ele.type) ||
       (MULTIPLE_LIST.includes(ele.type) && ele.multiple) || ele.dataType === 'array'
     ) {
       tableForm[ele.prop] = [];
     } else if (RANGE_LIST.includes(ele.type) && ele.range == true) {
       tableForm[ele.prop] = [0, 0]
-    } else if (
-      ['rate', 'slider', 'number'].includes(ele.type) ||
-      ele.dataType === 'number'
-    ) {
-      tableForm[ele.prop] = undefined;
     } else {
       tableForm[ele.prop] = '';
     }
