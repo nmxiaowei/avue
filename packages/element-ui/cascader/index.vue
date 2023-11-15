@@ -1,5 +1,6 @@
 <template>
-  <el-cascader :options="dic"
+  <el-cascader ref="cascader" 
+               :options="dic"
                :class="b()"
                @click="handleClick"
                v-model="text"
@@ -107,6 +108,9 @@ export default create({
   created () { },
   mounted () { },
   methods: {
+    getCheckedNodes (leafOnly = false) {
+      return this.$refs.cascader.getCheckedNodes(leafOnly)
+    }
   }
 });
 </script>
