@@ -124,6 +124,18 @@ body {
   // .el-button{
   //   display: none !important;
   // }
+  .el-upload.el-upload--picture-card,
+  .el-upload.el-upload--text,
+  .el-icon.avue-upload__avatar,
+  .el-icon-plus.avue-upload__avatar,
+  .el-upload__tip{
+    display: none;
+  }
+  .avue-upload--picture-img{
+    .el-upload.el-upload--text{
+      display: inline-block;
+    }
+  }
   &__column{
     .el-form-item{
       background-color: #fff;
@@ -136,12 +148,6 @@ body {
       border-left: none;
     }
    }
-   
-   .el-upload,
-   .el-upload__tip,
-   .el-upload--text{
-    display: none;
-  }
 }
 
 .avue-grid {
