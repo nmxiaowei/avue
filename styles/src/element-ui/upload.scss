@@ -1,8 +1,5 @@
 .avue-upload {
-  &--upload{
-    .el-upload,.el-upload__tip{
-      display: none;
-    }
+  &--disabled{
     .el-upload--picture-img{
       display: inline-block;
     }

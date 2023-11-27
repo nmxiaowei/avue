@@ -136,6 +136,12 @@ body {
       border-left: none;
     }
    }
+   
+   .el-upload,
+   .el-upload__tip,
+   .el-upload--text{
+    display: none;
+  }
 }
 
 .avue-grid {
