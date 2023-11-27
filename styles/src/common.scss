@@ -115,6 +115,18 @@ body {
   .el-input.is-disabled .el-input__wrapper{
     background-color:#fff;
   }
+  .el-upload.el-upload--picture-card,
+  .el-upload.el-upload--picture,
+  .el-upload.el-upload--text,
+  .el-icon.avue-upload__avatar,
+  .el-upload__tip{
+    display: none;
+  }
+  .avue-upload--picture-img{
+    .el-upload.el-upload--text{
+      display: inline-block;
+    }
+  }
   &__column{
     .el-form-item{
       background-color: #fff;
