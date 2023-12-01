@@ -2,7 +2,7 @@
   <div :class="b()"
        v-loading.lock="loading">
     <el-upload :key="reload"
-               :class="[b({'list':listType=='picture-img','upload':disabled}),'avue-upload--'+listType]"
+               :class="[b({'list':listType=='picture-img','disabled':disabled}),'avue-upload--'+listType]"
                @click="handleClick"
                :action="action"
                :on-remove="handleRemove"
@@ -306,6 +306,7 @@ export default create({
       const el = this.$el.querySelectorAll('.avue-upload > ul')[0]
       window.Sortable.create(el, {
         animation: 100,
+        delay: 200,
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
           this.text.splice(evt.newIndex, 0, targetRow)

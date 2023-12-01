@@ -68,6 +68,18 @@
             }]
           },
           {
+            label: '下拉框',
+            prop: 'select3',
+            type: 'select',
+            virtualize: true,
+            dicData: new Array(100).fill({}).map((ele, index) => {
+              return {
+                label: '选项' + (index + 1),
+                value: index + 1
+              }
+            })
+          },
+          {
             label: '动态',
             prop: 'text',
             rules: [
@@ -82,7 +94,6 @@
             label: '省份',
             prop: 'province',
             type: 'select',
-            virtualize: true,
             props: {
               label: 'name',
               value: 'code'

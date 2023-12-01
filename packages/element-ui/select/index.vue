@@ -28,60 +28,74 @@
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
              :disabled="disabled">
-    <template v-if="!virtualize">
-      <template v-if="isGroup">
-        <el-option-group v-for="(item,index) in netDic"
-                         :key="index"
-                         :label="getLabelText(item)">
-          <el-option v-for="(citem,cindex) in item[groupsKey]"
-                     :key="cindex"
-                     :disabled="citem[disabledKey]"
-                     :label="getLabelText(citem)"
-                     :value="citem[valueKey]">
+    <template #="{item}">
+      <template v-if="virtualize">
+        <slot :label="labelKey"
+              :value="valueKey"
+              :item="item"
+              v-if="$slots.default">
+        </slot>
+        <template v-else>
+          <span>{{ getLabelText(item) }}</span>
+          <span v-if="item[descKey]"
+                :class="b('desc')">{{ item[descKey] }}</span>
+        </template>
+      </template>
+      <template v-else>
+        <template v-if="isGroup">
+          <el-option-group v-for="(item,index) in netDic"
+                           :key="index"
+                           :label="getLabelText(item)">
+            <el-option v-for="(citem,cindex) in item[groupsKey]"
+                       :key="cindex"
+                       :disabled="citem[disabledKey]"
+                       :label="getLabelText(citem)"
+                       :value="citem[valueKey]">
+              <template #>
+                <slot :label="labelKey"
+                      :value="valueKey"
+                      :item="citem"
+                      v-if="$slots.default">
+                </slot>
+                <template v-else>
+                  <span>{{ getLabelText(citem) }}</span>
+                  <span v-if="citem[descKey]"
+                        :class="b('desc')">{{ citem[descKey] }}</span>
+                </template>
+              </template>
+            </el-option>
+          </el-option-group>
+        </template>
+        <template v-else>
+          <div :class="b('check')">
+            <el-checkbox v-if="all&&multiple"
+                         :value="checked"
+                         :checked="checked"
+                         :disabled="disabled"
+                         :indeterminate="indeterminate"
+                         @change='checkChange'>全选</el-checkbox>
+          </div>
+
+          <el-option v-for="(item,index) in netDic"
+                     :key="index"
+                     :disabled="item[disabledKey]"
+                     :label="getLabelText(item) "
+                     :value="item[valueKey]">
+
             <template #>
               <slot :label="labelKey"
                     :value="valueKey"
-                    :item="citem"
+                    :item="item"
                     v-if="$slots.default">
               </slot>
               <template v-else>
-                <span>{{ getLabelText(citem) }}</span>
-                <span v-if="citem[descKey]"
-                      :class="b('desc')">{{ citem[descKey] }}</span>
+                <span>{{ getLabelText(item) }}</span>
+                <span v-if="item[descKey]"
+                      :class="b('desc')">{{ item[descKey] }}</span>
               </template>
             </template>
           </el-option>
-        </el-option-group>
-      </template>
-      <template v-else>
-        <div :class="b('check')">
-          <el-checkbox v-if="all&&multiple"
-                       :value="checked"
-                       :checked="checked"
-                       :disabled="disabled"
-                       :indeterminate="indeterminate"
-                       @change='checkChange'>全选</el-checkbox>
-        </div>
-
-        <el-option v-for="(item,index) in netDic"
-                   :key="index"
-                   :disabled="item[disabledKey]"
-                   :label="getLabelText(item) "
-                   :value="item[valueKey]">
-
-          <template #>
-            <slot :label="labelKey"
-                  :value="valueKey"
-                  :item="item"
-                  v-if="$slots.default">
-            </slot>
-            <template v-else>
-              <span>{{ getLabelText(item) }}</span>
-              <span v-if="item[descKey]"
-                    :class="b('desc')">{{ item[descKey] }}</span>
-            </template>
-          </template>
-        </el-option>
+        </template>
       </template>
     </template>
 
@@ -215,6 +229,7 @@ export default create({
       const el = this.$refs.main.$el.querySelectorAll('.el-select__tags > span')[0]
       this.sortable = window.Sortable.create(el, {
         animation: 100,
+        delay: 200,
         onEnd: evt => {
           const targetRow = this.modelValue.splice(evt.oldIndex, 1)[0]
           this.modelValue.splice(evt.newIndex, 0, targetRow)
