@@ -23,6 +23,10 @@ const list = {
     title: '需引入html2canvas依赖包',
     github: 'https://github.com/niklasvh/html2canvas/'
   },
+  'COS': {
+    url: 'https://avuejs.com/cdn/cos-js-sdk-v5.min.js',
+    title: '腾讯云云图片上传，需引入COS'
+  },
   'CryptoJS': {
     url: 'https://avuejs.com/cdn/CryptoJS.js',
     title: '七牛云图片上传，需引入CryptoJS'

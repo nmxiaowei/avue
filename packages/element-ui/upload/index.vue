@@ -4,7 +4,7 @@
        v-loading.lock="loading">
     <el-upload :key="reload"
                ref="main"
-               :class="[b({'list':listType=='picture-img','upload':disabled}),'avue-upload--'+listType]"
+               :class="[b({'list':listType=='picture-img','disabled':disabled}),'avue-upload--'+listType]"
                @click.native="handleClick"
                :action="action"
                :on-remove="handleRemove"
@@ -238,6 +238,9 @@ export default create({
     fileName () {
       return this.propsHttp.fileName || 'file'
     },
+    isCosOss () {
+      return this.oss === "cos";
+    },
     isAliOss () {
       return this.oss === "ali";
     },
@@ -353,7 +356,7 @@ export default create({
       }
       const headers = Object.assign(this.headers, { "Content-Type": "multipart/form-data" });
       //oss配置属性
-      let oss_config = {};
+      let oss, oss_config = {};
       let client = {};
       let param = new FormData();
       const done = () => {
@@ -365,8 +368,20 @@ export default create({
           }
           const uploadFile = newFile || file;
           param.append(this.fileName, uploadFile);
-          //七牛云oss存储
-          if (this.isQiniuOss) {
+          //腾讯云oss存储
+          if (this.isCosOss) {
+            if (!window.COS) {
+              packages.logs("COS");
+              this.hide();
+              return;
+            }
+            oss_config = this.cos || this.$AVUE.cos;
+            oss = new COS({
+              SecretId: oss_config.SecretId,
+              SecretKey: oss_config.SecretKey
+            });
+          }//七牛云oss存储
+          else if (this.isQiniuOss) {
             if (!window.CryptoJS) {
               packages.logs("CryptoJS");
               this.hide();
@@ -388,9 +403,24 @@ export default create({
             oss_config = this.ali || this.$AVUE.ali;
             client = getClient(oss_config);
           }
-
           (() => {
-            if (this.isAliOss) {
+            if (this.isCosOss) {
+              return new Promise((resolve, reject) => {
+                oss.uploadFile({
+                  Bucket: 'avue-1253807724',
+                  Region: 'ap-beijing',
+                  Key: uploadFile.name,
+                  Body: uploadFile,
+                }, function (err, data) {
+                  resolve({
+                    data: {
+                      name: data.ETag,
+                      url: location.protocol + '//' + data.Location
+                    }
+                  })
+                });
+              })
+            } else if (this.isAliOss) {
               return client.put(uploadFile.name, uploadFile, {
                 headers: this.headers
               });
@@ -400,7 +430,9 @@ export default create({
           })().then(res => {
             this.res = {};
             if (this.isQiniuOss) {
-              res.data.key = oss_config.url + res.data.key;
+              let key = res.data.key;
+              res.data.url = oss_config.url + key
+              res.data.name = key
             }
             this.res = getAsVal(this.isAliOss ? res : res.data, this.resKey);
             if (typeof this.uploadAfter === "function") {

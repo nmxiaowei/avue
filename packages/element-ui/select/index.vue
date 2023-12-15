@@ -30,6 +30,7 @@
                        :label="getLabelText(item)">
         <el-option v-for="(citem,cindex) in item[groupsKey]"
                    :key="cindex"
+                   :class="citem[classNameKey]"
                    :disabled="citem[disabledKey]"
                    :label="getLabelText(citem)"
                    :value="citem[valueKey]">
@@ -57,6 +58,7 @@
       <el-option v-for="(item,index) in netDic"
                  :key="index"
                  :disabled="item[disabledKey]"
+                 :class="item[classNameKey]"
                  :label="getLabelText(item) "
                  :value="item[valueKey]">
         <slot :label="labelKey"
@@ -139,6 +141,11 @@ export default create({
     popperAppendToBody: {
       type: Boolean,
       default: true
+    }
+  },
+  computed: {
+    classNameKey () {
+      return this.props.className || 'className'
     }
   },
   watch: {
