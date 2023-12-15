@@ -14,6 +14,7 @@
     </el-input>
     <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
+                 :class="b()"
                  :width="setPx(dialogWidth)"
                  :modal-append-to-body="$AVUE.modalAppendToBody"
                  :append-to-body="$AVUE.appendToBody"
@@ -28,6 +29,7 @@
                    @on-load="onList"
                    @search-change="handleSearchChange"
                    @search-reset="handleSearchChange"
+                   :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentRowChange"
                    :search.sync="search"
                    :page.sync="page"></avue-crud>
@@ -144,8 +146,15 @@ export default create({
       this.text = this.active[this.valueKey] || ''
       this.box = false
     },
+    handleRowClassName ({ row, rowIndex }) {
+      if (row[this.disabledKey]) return 'disabled'
+    },
     handleCurrentRowChange (val) {
-      this.active = val;
+      if (val[this.disabledKey]) {
+        this.$refs.crud.setCurrentRow(this.active)
+      } else {
+        this.active = val;
+      }
     },
     handleSearchChange (form, done) {
       this.page.page = 1;
