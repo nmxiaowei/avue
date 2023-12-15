@@ -28,6 +28,7 @@
                    :table-loading="loading"
                    @on-load="onList"
                    @search-change="handleSearchChange"
+                   @selection-change="handleSelectionChange"
                    @search-reset="handleSearchChange"
                    :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentRowChange"
@@ -56,8 +57,8 @@ export default create({
   mixins: [props(), event(), locale],
   data () {
     return {
-      object: {},
-      active: {},
+      object: [],
+      active: [],
       search: {},
       page: {},
       loading: false,
@@ -89,30 +90,34 @@ export default create({
   watch: {
     value (val) {
       if (this.validatenull(val)) {
-        this.active = {}
-        this.object = {}
+        this.active = []
+        this.object = []
       }
     },
     text (val) {
       if (this.created || this.validatenull(val)) return
       if (typeof this.onLoad == 'function') {
         this.onLoad({ value: this.text }, data => {
-          this.active = data
-          this.object = data
+          let result = Array.isArray(data) ? data : [data]
+          this.active = result
+          this.object = result
           this.created = true;
         })
       }
     }
   },
   computed: {
+    isMultiple () {
+      return this.multiple
+    },
     title () {
       return (this.disabled || this.readonly) ? "查看" : '选择'
     },
     labelShow () {
       if (typeof this.formatter == 'function') {
-        return this.formatter(this.object)
+        return this.formatter(this.isMultiple ? this.object : (this.object[0] || {}))
       }
-      return this.object[this.labelKey] || ''
+      return this.object.map(ele => ele[this.labelKey]).join(',')
     },
     option () {
       return Object.assign({
@@ -121,13 +126,21 @@ export default create({
         size: this.size,
         headerAlign: 'center',
         align: 'center',
-        highlightCurrentRow: true,
+        highlightCurrentRow: !this.isMultiple,
+        reserveSelection: this.isMultiple,
+        selection: this.isMultiple,
+        selectable: (row, index) => {
+          return !row.disabled
+        },
       }, this.children)
     }
   },
   methods: {
+    handleSelectionChange (val) {
+      this.active = val
+    },
     handleClear () {
-      this.active = {}
+      this.active = []
       this.setVal()
     },
     handleShow () {
@@ -143,17 +156,21 @@ export default create({
     },
     setVal () {
       this.object = this.active
-      this.text = this.active[this.valueKey] || ''
+      this.text = this.active.map(ele => ele[this.valueKey])
       this.box = false
     },
     handleRowClassName ({ row, rowIndex }) {
       if (row[this.disabledKey]) return 'disabled'
     },
     handleCurrentRowChange (val) {
-      if (val[this.disabledKey]) {
-        this.$refs.crud.setCurrentRow(this.active)
+      if (this.isMultiple) {
+        this.$refs.crud.setCurrentRow(null)
       } else {
-        this.active = val;
+        if (val[this.disabledKey]) {
+          this.$refs.crud.setCurrentRow(this.active[0])
+        } else {
+          this.active = [val];
+        }
       }
     },
     handleSearchChange (form, done) {
@@ -168,8 +185,17 @@ export default create({
           this.page.total = data.total;
           this.data = data.data
           this.loading = false;
-          let active = this.data.find(ele => ele[this.valueKey] == this.object[this.valueKey])
-          setTimeout(() => this.$refs.crud.setCurrentRow(active))
+          if (this.isMultiple) {
+            let ids = this.object.map(ele => ele[this.valueKey])
+            let data = this.data.filter(ele => ids.includes(ele[this.valueKey]))
+            console.log(data)
+            this.$nextTick(() => {
+              this.$refs.crud.toggleSelection(data);
+            })
+          } else {
+            let active = this.data.find(ele => ele[this.valueKey] == this.text)
+            setTimeout(() => this.$refs.crud.setCurrentRow(active))
+          }
         })
       }
     }
