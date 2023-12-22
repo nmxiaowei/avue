@@ -383,8 +383,9 @@ export default create({
           for (let o in this.data) {
             param.append(o, this.data[o]);
           }
-          const uploadfile = newFile || file;
-          param.append(this.fileName, uploadfile);
+          const uploadFile = newFile || file;
+
+          param.append(this.fileName, uploadFile);
           //腾讯云oss存储
           if (this.isCosOss) {
             if (!window.COS) {
@@ -397,7 +398,8 @@ export default create({
               SecretId: oss_config.SecretId,
               SecretKey: oss_config.SecretKey
             });
-          }//七牛云oss存储
+          }
+          //七牛云oss存储
           else if (this.isQiniuOss) {
             if (!window.CryptoJS) {
               packages.logs("CryptoJS");
@@ -438,7 +440,7 @@ export default create({
                 });
               })
             } else if (this.isAliOss) {
-              return client.put(uploadfile.name, uploadfile, {
+              return client.put(uploadFile.name, uploadFile, {
                 headers: this.headers
               });
             } else {

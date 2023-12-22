@@ -23,23 +23,12 @@
       :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
   </div>
 </body>
-<script>
-  Vue.use(AVUE, {
-    cos: {
-      SecretId: 'AKIDBWuODM6o1YP8duwjHeostpiaQCwcHsU4',
-      SecretKey: 'jTG71yusmcVRNH7pSdr6Mk5Pi2Nk7XuH',
-      Bucket: 'avue-1253807724',
-      Region: 'ap-beijing'
-    }
-  })
-</script>
+<script></script>
 <script>
   var app = Vue.createApp({
     data() {
       return {
-        form: {
-          imgUrl: 'https://avuejs.com/images/logo-bg.jpg',
-        },
+        form: {},
         option: {
           labelWidth: 120,
           column: [
@@ -52,7 +41,7 @@
                 text: 'avue',
                 ratio: 0.1
               },
-              oss: 'ali',
+              oss: 'cos',
               loadText: '附件上传中，请稍等',
               span: 24,
               tip: '只能上传jpg/png文件，且不超过500kb',
@@ -60,19 +49,6 @@
           ]
         }
       }
-    },
-    created() {
-      axios.get('https://api.avuejs.com/sts').then(token => {
-        token = token.data;
-        this.option.column[0].ali = {
-          region: 'oss-cn-beijing',
-          endpoint: 'oss-cn-beijing.aliyuncs.com',
-          accessKeyId: token.AccessKeyId,
-          accessKeySecret: token.AccessKeySecret,
-          stsToken: token.SecurityToken,
-          bucket: 'avue',
-        }
-      })
     },
     methods: {
       uploadPreview(file, column) {
@@ -90,14 +66,21 @@
         this.$message.success('上传前的方法')
       },
       uploadAfter(res, done, loading, column) {
-        // console.log(res, column)
+        console.log(res, column)
         done()
         this.$message.success('上传后的方法')
       },
     }
   })
   app.use(ElementPlus)
-  app.use(AVUE);
+  app.use(AVUE, {
+    cos: {
+      SecretId: 'AKIDBWuODM6o1YP8duwjHeostpiaQCwcHsU4',
+      SecretKey: 'jTG71yusmcVRNH7pSdr6Mk5Pi2Nk7XuH',
+      Bucket: 'avue-1253807724',
+      Region: 'ap-beijing'
+    }
+  });
   app.mount('#app')
 </script>
 
