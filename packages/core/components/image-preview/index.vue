@@ -174,6 +174,20 @@ export default create({
         window.open(item.url)
       }
     },
+    open () {
+      this.isShow = true;
+      this.$nextTick(() => {
+        this.$refs.item.forEach((ele, index) => {
+          this.$refs.item[index].onwheel = (e) => {
+            if (e.wheelDelta > 0) {
+              this.addScale()
+            } else {
+              this.subScale()
+            }
+          }
+        })
+      })
+    },
     close () {
       this.isShow = false
       if (typeof this.ops.beforeClose == "function") {

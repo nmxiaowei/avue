@@ -17,7 +17,7 @@ export default function (datas = [], index = 0, ops = {}) {
   });
   instance.vm = instance.$mount();
   document.body.appendChild(instance.vm.$el);
-  instance.vm.isShow = true;
+  instance.vm.open()
   instance.dom = instance.vm.$el;
   return instance.vm;
 }
