@@ -28,7 +28,7 @@
     data() {
       return {
         obj: {
-          table: '0',
+          table: [0, 2]
         },
         option: {
           column: [
@@ -36,6 +36,7 @@
               label: '表格',
               prop: 'table',
               type: 'table',
+              multiple: true,
               children: {
                 border: true,
                 column: [{
@@ -49,20 +50,25 @@
                 }],
               },
               formatter: (row) => {
-                if (!row.name) {
-                  return ''
+                if (Array.isArray(row)) {
+                  return row.map(ele => ele.name + '格式化').join(',')
+                } else {
+                  return row.name + '格式化'
                 }
-                return row.name + '-' + row.sex
               },
               onLoad: ({ page, value, data }, callback) => {
                 console.log(data);
                 setTimeout(() => {
                   if (value) {
-                    callback({
+                    callback([{
                       id: '0',
                       name: '张三',
                       sex: '男'
-                    })
+                    }, {
+                      id: '2',
+                      name: '王五',
+                      sex: '女'
+                    }])
                     return
                   }
                   callback({
