@@ -255,6 +255,9 @@ export default create({
     fileName () {
       return this.propsHttp.fileName || 'file'
     },
+    isCosOss () {
+      return this.oss === "cos";
+    },
     isAliOss () {
       return this.oss === "ali";
     },
@@ -370,7 +373,7 @@ export default create({
       }
       const headers = Object.assign(this.headers, { "Content-Type": "multipart/form-data" });
       //oss配置属性
-      let oss_config = {};
+      let oss, oss_config = {};
       let client = {};
       let param = new FormData();
       const done = () => {
@@ -382,8 +385,20 @@ export default create({
           }
           const uploadfile = newFile || file;
           param.append(this.fileName, uploadfile);
-          //七牛云oss存储
-          if (this.isQiniuOss) {
+          //腾讯云oss存储
+          if (this.isCosOss) {
+            if (!window.COS) {
+              packages.logs("COS");
+              this.hide();
+              return;
+            }
+            oss_config = this.cos || this.$AVUE.cos;
+            oss = new COS({
+              SecretId: oss_config.SecretId,
+              SecretKey: oss_config.SecretKey
+            });
+          }//七牛云oss存储
+          else if (this.isQiniuOss) {
             if (!window.CryptoJS) {
               packages.logs("CryptoJS");
               this.hide();
@@ -406,7 +421,23 @@ export default create({
             client = getClient(oss_config);
           }
           (() => {
-            if (this.isAliOss) {
+            if (this.isCosOss) {
+              return new Promise((resolve, reject) => {
+                oss.uploadFile({
+                  Bucket: oss_config.Bucket,
+                  Region: oss_config.Region,
+                  Key: uploadFile.name,
+                  Body: uploadFile,
+                }, function (err, data) {
+                  resolve({
+                    data: {
+                      name: data.ETag,
+                      url: location.protocol + '//' + data.Location
+                    }
+                  })
+                });
+              })
+            } else if (this.isAliOss) {
               return client.put(uploadfile.name, uploadfile, {
                 headers: this.headers
               });
@@ -417,10 +448,9 @@ export default create({
             .then(res => {
               this.res = {};
               if (this.isQiniuOss) {
-                res.data = {
-                  url: oss_config.url + res.data.key,
-                  name: res.data.hash
-                }
+                let key = res.data.key;
+                res.data.url = oss_config.url + key
+                res.data.name = key
               }
               if (this.isAliOss) {
                 this.res = getAsVal(res, this.resKey);
