@@ -139,6 +139,17 @@ export default create({
       return this.datas.length > 1
     }
   },
+  mounted () {
+    this.$refs.item.forEach((ele, index) => {
+      this.$refs.item[index].onwheel = (e) => {
+        if (e.wheelDelta > 0) {
+          this.addScale()
+        } else {
+          this.subScale()
+        }
+      }
+    })
+  },
   methods: {
     getName (url) {
       return url.substring(url.lastIndexOf('/') + 1)
