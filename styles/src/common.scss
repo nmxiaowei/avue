@@ -122,6 +122,9 @@ body {
   .el-upload__tip{
     display: none;
   }
+  .el-upload-list--picture-card,.avue-upload--picture-img{
+    padding-top:10px;
+  }
   .avue-upload--picture-img{
     .el-upload.el-upload--text{
       display: inline-block;

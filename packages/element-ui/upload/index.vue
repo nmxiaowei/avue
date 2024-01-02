@@ -1,6 +1,5 @@
 <template>
-  <div :class="b()"
-       v-loading.lock="loading">
+  <div v-loading.lock="loading">
     <el-upload :key="reload"
                :class="[b({'list':listType=='picture-img','disabled':disabled}),'avue-upload--'+listType]"
                @click="handleClick"
