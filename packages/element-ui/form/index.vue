@@ -467,7 +467,8 @@ export default create({
           }
           if (control) {
             const callback = () => {
-              let controlList = control(this.form[column.prop], this.form) || {};
+              let result = this.form['$' + column.prop] || this.form[column.prop]
+              let controlList = control(this.form[column.prop], this.form, result, column) || {};
               Object.keys(controlList).forEach(item => {
                 let ele = Object.assign(this.objectOption[item] || {}, controlList[item])
                 this.objectOption[item] = ele;

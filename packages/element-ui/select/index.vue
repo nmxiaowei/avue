@@ -48,6 +48,7 @@
                            :label="getLabelText(item)">
             <el-option v-for="(citem,cindex) in item[groupsKey]"
                        :key="cindex"
+                       :class="citem[classNameKey]"
                        :disabled="citem[disabledKey]"
                        :label="getLabelText(citem)"
                        :value="citem[valueKey]">
@@ -78,6 +79,7 @@
 
           <el-option v-for="(item,index) in netDic"
                      :key="index"
+                     :class="item[classNameKey]"
                      :disabled="item[disabledKey]"
                      :label="getLabelText(item) "
                      :value="item[valueKey]">
@@ -181,6 +183,11 @@ export default create({
     }
   },
   computed: {
+    computed: {
+      classNameKey () {
+        return this.props.className || 'className'
+      }
+    },
     options () {
       let dicData = this.deepClone(this.netDic)
       return dicData.map(ele => {
