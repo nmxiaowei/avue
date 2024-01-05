@@ -183,10 +183,8 @@ export default create({
     }
   },
   computed: {
-    computed: {
-      classNameKey () {
-        return this.props.className || 'className'
-      }
+    classNameKey () {
+      return this.props.className || 'className'
     },
     options () {
       let dicData = this.deepClone(this.netDic)
