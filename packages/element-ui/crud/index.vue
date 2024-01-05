@@ -858,7 +858,7 @@ export default create({
         ghostClass: config.ghostClass,
         chosenClass: config.ghostClass,
         animation: 100,
-        delay: 200,
+        delay: 0,
         onEnd: evt => callback(evt)
       })
     },
