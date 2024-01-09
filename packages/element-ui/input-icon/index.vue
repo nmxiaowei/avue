@@ -3,10 +3,11 @@
     <el-input :prefix-icon="prefixIcon"
               :suffix-icon="suffixIcon"
               :placeholder="placeholder"
-              :model-value="text"
+              v-model="text"
               :popper-class="popperClass"
               :size="size"
               ref="main"
+              @clear="handleClear"
               :clearable="disabled?false:clearable"
               :disabled="disabled"
               @click="handleClick"
@@ -114,6 +115,11 @@ export default create({
     this.tabs = this.iconList[0]
   },
   methods: {
+    handleClear () {
+      setTimeout(() => {
+        this.box = false;
+      }, 0)
+    },
     handleTabs (tabs) {
       this.tabs = tabs;
     },
