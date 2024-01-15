@@ -3,6 +3,7 @@
                :options="dic"
                :class="b()"
                @click="handleClick"
+               @change="handleValueChange"
                v-model="text"
                :placeholder="placeholder"
                :props="allProps"
@@ -104,6 +105,13 @@ export default create({
   created () { },
   mounted () { },
   methods: {
+    handleValueChange (val) {
+      setTimeout(() => {
+        if (!this.validatenull(val) && this.$parent) {
+          this.$parent.$parent.clearValidate()
+        }
+      })
+    },
     getCheckedNodes (leafOnly = false) {
       return this.$refs.cascader.getCheckedNodes(leafOnly)
     }
