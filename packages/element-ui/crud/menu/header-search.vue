@@ -21,11 +21,11 @@
         <template v-if="isSearchIcon">
           <el-button text
                      v-if="show===false"
-                     @click="show=true"
+                     @click="handleSearchIconShow"
                      icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
           <el-button text
                      v-if="show===true"
-                     @click="show=false"
+                     @click="handleSearchIconShow"
                      icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
         </template>
 
@@ -64,6 +64,9 @@ export default create({
         this.searchShow = validData(this.crud.tableOption.searchShow, config.searchShow);
       },
       immediate: true
+    },
+    show () {
+      this.crud.getTableHeight()
     },
     searchShow () {
       this.crud.getTableHeight()
@@ -210,6 +213,10 @@ export default create({
     // 搜索清空
     searchReset () {
       this.$refs.form.resetForm();
+    },
+    handleSearchIconShow () {
+      this.show = !this.show;
+      this.crud.$emit('search-icon-change', this.show)
     },
     handleSearchShow () {
       this.searchShow = !this.searchShow;
