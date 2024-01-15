@@ -1,5 +1,5 @@
 <template>
-  <el-cascader ref="cascader" 
+  <el-cascader ref="cascader"
                :options="dic"
                :class="b()"
                @click="handleClick"
@@ -50,10 +50,6 @@ export default create({
     collapseTags: Boolean,
     collapseTagsTooltip: Boolean,
     maxCollapseTags: Number,
-    modelValue: {
-      type: [Array, String],
-      default: () => []
-    },
     expandTrigger: {
       type: String,
       default: "hover"
