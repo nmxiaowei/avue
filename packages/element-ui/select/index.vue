@@ -234,7 +234,6 @@ export default create({
       const el = this.$refs.main.$el.querySelectorAll('.el-select__tags > span')[0]
       this.sortable = window.Sortable.create(el, {
         animation: 100,
-        delay: 200,
         onEnd: evt => {
           const targetRow = this.modelValue.splice(evt.oldIndex, 1)[0]
           this.modelValue.splice(evt.newIndex, 0, targetRow)
