@@ -104,8 +104,9 @@ export default create({
   methods: {
     handleValueChange (val) {
       setTimeout(() => {
-        if (!this.validatenull(val) && this.$parent) {
-          this.$parent.$parent.clearValidate()
+        let $parent = this.$parent.$parent
+        if (!this.validatenull(val) && $parent && this.rules) {
+          $parent.clearValidate && $parent.clearValidate()
         }
       })
     },
