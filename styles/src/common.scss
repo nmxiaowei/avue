@@ -163,12 +163,8 @@ body {
 
 
 .avue-dialog {
-  position: absolute;
   min-height: 180px;
-  left: 50%;
-  transform: translate(-50%);
   border-radius: 2px;
-  margin-left: 0 !important;
   max-height: calc(100% - 200px);
   max-width: calc(100% - 100px);
   display: flex;
