@@ -308,7 +308,6 @@ export default create({
       const el = this.$el.querySelectorAll('.avue-upload > ul')[0]
       window.Sortable.create(el, {
         animation: 100,
-        delay: 200,
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
           this.text.splice(evt.newIndex, 0, targetRow)

@@ -1,8 +1,9 @@
 <template>
-  <el-cascader ref="cascader" 
+  <el-cascader ref="cascader"
                :options="dic"
                :class="b()"
                @click="handleClick"
+               @change="handleValueChange"
                v-model="text"
                :placeholder="placeholder"
                :props="allProps"
@@ -50,10 +51,6 @@ export default create({
     collapseTags: Boolean,
     collapseTagsTooltip: Boolean,
     maxCollapseTags: Number,
-    modelValue: {
-      type: [Array, String],
-      default: () => []
-    },
     expandTrigger: {
       type: String,
       default: "hover"
@@ -108,6 +105,14 @@ export default create({
   created () { },
   mounted () { },
   methods: {
+    handleValueChange (val) {
+      setTimeout(() => {
+        let $parent = this.$parent.$parent
+        if (!this.validatenull(val) && $parent && this.rules) {
+          $parent.clearValidate && $parent.clearValidate()
+        }
+      })
+    },
     getCheckedNodes (leafOnly = false) {
       return this.$refs.cascader.getCheckedNodes(leafOnly)
     }

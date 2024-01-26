@@ -21,8 +21,8 @@
 <body>
   <div id="app">
     {{search}}
-    <avue-crud ref="crud" v-model:page="page" v-model:search="search" :option="option" :data="data"
-      @search-change="searchChange">
+    <avue-crud ref="crud" @search-icon-click="searchIconClick" v-model:page="page" v-model:search="search"
+      :option="option" :data="data" @search-change="searchChange">
       <template #header>
         <el-tag>头部</el-tag>
       </template>
@@ -60,6 +60,8 @@
           // searchShow: false,
           searchIcon: true,
           searchMenuSpan: 6,
+          height: 'auto',
+          calcHeight: 20,
           emptyText: '自定义暂无数据提示语',
           column: [{
             label: '姓名',
@@ -125,6 +127,9 @@
       }
     },
     methods: {
+      searchIconClick(flag) {
+        console.log(flag)
+      },
       searchChange(params, done) {
         done()
         console.log(params);

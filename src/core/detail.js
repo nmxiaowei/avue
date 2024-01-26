@@ -10,7 +10,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   if (column.bind) result = getAsVal(row, column.bind);
   if (!validatenull(result)) {
     let selectFlag = MULTIPLE_LIST.includes(column.type) && column.multiple;
-    let arrayFlag = ARRAY_VALUE_LIST.includes(column.type)
+    let arrayFlag = ARRAY_VALUE_LIST.includes(column.type) && column.emitPath !== false
     if ((selectFlag || arrayFlag) && !Array.isArray(result) && !column.dataType) column.dataType = 'string'
     if (column.dataType) {
       if (selectFlag || arrayFlag) {

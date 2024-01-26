@@ -23,7 +23,7 @@
 <body>
   <div id="app">
     {{defaults}}
-    <avue-crud :defaults.sync="defaults" :data="list" :option="option" @sortable-change="sortableChange">
+    <avue-crud v-model:defaults="defaults" :data="list" :option="option" @sortable-change="sortableChange">
     </avue-crud>
   </div>
 </body>
@@ -94,9 +94,7 @@
        * @param {Array} list      排序后的整个对象
        * @param return
        **/
-      sortableChange(oldindex, newindex, row, list) {
-        this.list = list
-        console.log(oldindex, newindex, row, list)
+      sortableChange(oldindex, newindex) {
       }
     }
   })
