@@ -1,5 +1,6 @@
 <template>
-  <el-cascader :options="dic"
+  <el-cascader ref="cascader"
+               :options="dic"
                v-model="text"
                :placeholder="placeholder"
                :props="allProps"
@@ -13,6 +14,7 @@
                :collapse-tags="tags"
                @focus="handleFocus"
                @blur="handleBlur"
+               @change="handleValueChange"
                @click.native="handleClick">
     <template slot-scope="{data,node}">
       <slot v-if="$scopedSlots.default"
@@ -100,6 +102,17 @@ export default create({
   created () { },
   mounted () { },
   methods: {
+    handleValueChange (val) {
+      setTimeout(() => {
+        let $parent = this.$parent.$parent
+        if (!this.validatenull(val) && $parent && this.rules) {
+          $parent.clearValidate && $parent.clearValidate()
+        }
+      })
+    },
+    getCheckedNodes (leafOnly = false) {
+      return this.$refs.cascader.getCheckedNodes(leafOnly)
+    }
   }
 });
 </script>

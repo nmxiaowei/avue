@@ -22,11 +22,11 @@
         <template v-if="isSearchIcon">
           <el-button type="text"
                      v-if="show===false"
-                     @click="show=true"
+                     @click="handleSearchIconShow"
                      icon="el-icon-arrow-down">{{t('crud.open')}}</el-button>
           <el-button type="text"
                      v-if="show===true"
-                     @click="show=false"
+                     @click="handleSearchIconShow"
                      icon="el-icon-arrow-up">{{t('crud.shrink')}}</el-button>
         </template>
 
@@ -68,7 +68,7 @@ export default create({
   watch: {
     'crud.propOption': {
       handler () {
-        this.dataFormat()
+        this.searchShow = validData(this.crud.tableOption.searchShow, config.searchShow);
       },
       deep: true
     },
@@ -217,12 +217,12 @@ export default create({
     searchReset () {
       this.$refs.form.resetForm();
     },
+    handleSearchIconShow () {
+      this.show = !this.show;
+      this.crud.$emit('search-icon-change', this.show)
+    },
     handleSearchShow () {
       this.searchShow = !this.searchShow;
-    },
-    dataFormat () {
-      const option = this.crud.option;
-      this.searchShow = this.vaildData(option.searchShow, config.searchShow);
     }
   }
 });

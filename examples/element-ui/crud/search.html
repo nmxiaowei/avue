@@ -21,8 +21,8 @@
 <body>
   <div id="app">
     {{search}}
-    <avue-crud ref="crud" :page.sync="page" :search.sync="search" :option="option" :data="data"
-      @search-change="searchChange">
+    <avue-crud ref="crud" @search-icon-click="searchIconClick" :page.sync="page" :search.sync="search" :option="option"
+      :data="data" @search-change="searchChange">
       <el-tag slot="header">头部</el-tag>
       <template slot="searchMenu" slot-scope="{size,row}">
         <el-button :size="size">测试</el-button>
@@ -123,6 +123,9 @@
       }
     },
     methods: {
+      searchIconClick(flag) {
+        console.log(flag)
+      },
       searchChange(params, done) {
         done()
         console.log(params);

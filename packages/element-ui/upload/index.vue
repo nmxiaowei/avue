@@ -407,8 +407,8 @@ export default create({
             if (this.isCosOss) {
               return new Promise((resolve, reject) => {
                 oss.uploadFile({
-                  Bucket: 'avue-1253807724',
-                  Region: 'ap-beijing',
+                  Bucket: oss_config.Bucket,
+                  Region: oss_config.Region,
                   Key: uploadFile.name,
                   Body: uploadFile,
                 }, function (err, data) {
