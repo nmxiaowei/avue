@@ -255,7 +255,7 @@ export default create({
       this.checked = val
       this.indeterminate = false
       if (val) {
-        this.text = this.netDic.map(ele => ele[this.valueKey])
+        this.text = this.netDic.filter(ele => !ele[this.disabledKey]).map(ele => ele[this.valueKey])
       }
     }
   }
