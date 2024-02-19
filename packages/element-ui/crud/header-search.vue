@@ -81,7 +81,6 @@ export default create({
   },
   created () {
     this.initFun();
-    this.dataFormat()
   },
   computed: {
     searchForm: {
