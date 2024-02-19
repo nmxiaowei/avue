@@ -1,6 +1,7 @@
 <template>
   <el-col :span="menuSpan"
           :md="menuSpan"
+          :xs="menuXsSpan"
           :style="styleName"
           :class="[formSafe.b('menu',[formSafe.menuPosition]),'no-print']"
           v-if="vaildData(formSafe.parentOption.menuBtn,true)">
@@ -40,8 +41,11 @@ export default {
   inject: ["formSafe"],
   mixins: [locale],
   computed: {
+    menuXsSpan () {
+      return this.formSafe.parentOption.menuXsSpan || this.formSafe.config.xsSpan;
+    },
     menuSpan () {
-      return this.formSafe.parentOption.menuSpan || 24;
+      return this.formSafe.parentOption.menuSpan || this.formSafe.config.xsSpan;
     },
     styleName () {
       if (this.menuSpan !== 24) {
