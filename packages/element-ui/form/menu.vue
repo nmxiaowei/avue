@@ -42,10 +42,10 @@ export default create({
   mixins: [locale],
   computed: {
     menuXsSpan () {
-      return this.formSafe.parentOption.menuXsSpan || this.formSafe.config.xsSpan;
+      return this.formSafe.tableOption.menuXsSpan || this.formSafe.config.xsSpan;
     },
     menuSpan () {
-      return this.formSafe.parentOption.menuSpan || this.formSafe.config.xsSpan;
+      return this.formSafe.tableOption.menuSpan || this.formSafe.config.xsSpan;
     },
     styleName () {
       if (this.menuSpan !== 24) {
