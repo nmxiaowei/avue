@@ -68,7 +68,7 @@ export default create({
   watch: {
     'crud.propOption': {
       handler () {
-        this.searchShow = validData(this.crud.tableOption.searchShow, config.searchShow);
+        this.searchShow = vaildData(this.crud.tableOption.searchShow, config.searchShow);
       },
       deep: true
     },
