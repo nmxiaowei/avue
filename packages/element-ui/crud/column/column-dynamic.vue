@@ -27,6 +27,7 @@
         </template>
       </column-dynamic>
       <column-slot v-else
+                   :key="column.prop"
                    :column="column"
                    :column-option="columnOption.children">
         <template v-for="item in crud.mainSlot"
