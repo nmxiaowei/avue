@@ -16,6 +16,13 @@ body {
     border-bottom:1px solid #eee;
     padding-left: 10px;
   }
+  .el-select__wrapper.is-disabled{
+    background-color: transparent;
+    box-shadow: none !important;
+  }
+  .el-select__suffix{
+    display: none;
+  }
   .el-collapse-item__header{
     margin-bottom: 0;
   }

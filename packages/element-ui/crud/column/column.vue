@@ -1,10 +1,10 @@
 <template>
   <slot name="header"></slot>
   <!-- 动态列 -->
-  <template v-for="(column,index) in list">
+  <template v-for="column in list"
+            :key="column.prop">
     <column-dynamic v-if="column.children && column.children.length>0"
-                    :columnOption="column"
-                    :key="column.prop">
+                    :columnOption="column">
       <template v-for="item in crud.mainSlot"
                 #[item]="scope">
         <slot v-bind="scope"
@@ -96,7 +96,7 @@ export default create({
       return list;
     },
     getColumnProp (column, type) {
-      let obj = this.crud.objectOption[column.prop] || {}
+      let obj = column || {}
       if (type === 'filterMethod') return obj?.filters
       if (this.crud.isMobile && ['fixed'].includes(type)) return false;
       let result = obj?.[type]
