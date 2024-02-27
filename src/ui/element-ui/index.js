@@ -37,6 +37,8 @@ import Video from 'packages/element-ui/video';
 import Login from 'packages/element-ui/login';
 import Arrays from 'packages/element-ui/array';
 import textEllipsis from 'packages/element-ui/text-ellipsis';
+import timeSlect from 'packages/element-ui/time-select';
+
 export default {
   Arrays,
   Article,
@@ -75,6 +77,7 @@ export default {
   Video,
   Verifys,
   textEllipsis,
+  timeSlect,
   Sign,
   Login
 }
