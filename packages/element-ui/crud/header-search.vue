@@ -66,12 +66,6 @@ export default create({
     search: Object
   },
   watch: {
-    'crud.propOption': {
-      handler () {
-        this.searchShow = vaildData(this.crud.tableOption.searchShow, config.searchShow);
-      },
-      deep: true
-    },
     show () {
       this.crud.getTableHeight()
     },
@@ -80,6 +74,7 @@ export default create({
     },
   },
   created () {
+    this.searchShow = this.vaildData(this.crud.tableOption.searchShow, config.searchShow);
     this.initFun();
   },
   computed: {
