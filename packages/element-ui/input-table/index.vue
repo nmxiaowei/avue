@@ -141,6 +141,9 @@ export default create({
     handleClear () {
       this.active = []
       this.setVal()
+      setTimeout(() => {
+        this.box = false;
+      }, 0)
     },
     handleShow () {
       this.$refs.main.blur();

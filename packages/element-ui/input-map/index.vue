@@ -167,6 +167,9 @@ export default create({
       this.text = [];
       this.poi = {};
       this.handleChange(this.text)
+      setTimeout(() => {
+        this.box = false;
+      }, 0)
     },
     setVal () {
       this.text = [this.poi.longitude, this.poi.latitude, this.poi.formattedAddress]
