@@ -173,6 +173,12 @@ export default create({
         return {}
       }
     },
+    paramsList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     showFileList: {
       type: Boolean,
       default: true
@@ -266,6 +272,9 @@ export default create({
     isPictureImg () {
       return this.listType === "picture-img";
     },
+    typeKey () {
+      return this.props.type || 'type'
+    },
     //单个头像图片
     imgUrl () {
       if (!this.validatenull(this.text)) {
@@ -278,11 +287,12 @@ export default create({
         if (ele) {
           let name = this.isObject ? ele[this.labelKey] : ele.substring(ele.lastIndexOf('/') + 1);
           let url = this.isObject ? ele[this.valueKey] : ele;
+          let type = this.isObject ? ele[this.typeKey] : this.isMediaType(url);
           url = getFileUrl(this.homeUrl, url);
           list.push({
             uid: index + '',
             status: 'done',
-            type: this.isMediaType(url),
+            type: type || this.isMediaType(url),
             name: name,
             url: url
           });
@@ -324,6 +334,8 @@ export default create({
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
         obj[this.valueKey] = file[this.urlKey];
+        obj[this.typeKey] = file[this.typeKey];
+        this.paramsList.forEach(ele => obj[ele] = file[ele])
         this.text.push(obj);
       } else {
         this.text.push(file[this.urlKey]);
