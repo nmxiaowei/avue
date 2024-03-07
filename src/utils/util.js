@@ -3,11 +3,11 @@ import { DIC_PROPS, CHILDREN_LIST } from 'global/variable';
 import { typeList } from 'global/variable'
 export const isMediaType = (url, type) => {
   if (validatenull(url)) return
-  if (typeList.audio.test(url) || type == 'audio') {
+  if (typeList.audio.test(url) || typeList.audio.test(type) || type == 'audio') {
     return 'audio'
-  } else if (typeList.video.test(url) || type == 'video') {
+  } else if (typeList.video.test(url) || typeList.video.test(type) || type == 'video') {
     return 'video'
-  } else if (typeList.img.test(url) || type == 'img') {
+  } else if (typeList.img.test(url) || typeList.img.test(type) || type == 'img') {
     return 'img'
   }
   return
