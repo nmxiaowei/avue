@@ -67,7 +67,11 @@
         </div>
       </template>
       <template v-else>
-        <el-button icon="el-icon-upload"
+        <slot name="button"
+              :disabled="disabled"
+              v-if="$slots.button"></slot>
+        <el-button v-else
+                   icon="el-icon-upload"
                    :size="size"
                    :disabled="disabled"
                    type="primary">{{fileText || t('upload.upload')}}</el-button>
@@ -272,9 +276,6 @@ export default create({
     isPictureImg () {
       return this.listType === "picture-img";
     },
-    typeKey () {
-      return this.props.type || 'type'
-    },
     //单个头像图片
     imgUrl () {
       if (!this.validatenull(this.text)) {
@@ -334,8 +335,8 @@ export default create({
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
         obj[this.valueKey] = file[this.urlKey];
-        obj[this.typeKey] = file[this.typeKey];
-        this.paramsList.forEach(ele => obj[ele] = file[ele])
+        obj[this.typeKey] = file[this.fileTypeKey];
+        this.paramsList.forEach(ele => obj[ele.label] = file[ele.value])
         this.text.push(obj);
       } else {
         this.text.push(file[this.urlKey]);
