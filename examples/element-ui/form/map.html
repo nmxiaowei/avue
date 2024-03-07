@@ -42,6 +42,9 @@
               label: '地图',
               prop: 'map',
               type: 'map',
+              mapChange(val) {
+                console.log(val)
+              },
               rules: [
                 {
                   required: true,

@@ -65,6 +65,7 @@ export default create({
   name: "input-map",
   mixins: [props(), event(), locale],
   props: {
+    mapChange: Function,
     prefixIcon: {
       type: String
     },
@@ -200,6 +201,7 @@ export default create({
       let geocoder = new window.AMap.Geocoder({});
       geocoder.getAddress([R, P], (status, result) => {
         if (status === "complete" && result.info === "OK") {
+          this.mapChange && this.mapChange(result)
           const regeocode = result.regeocode;
           this.poi = Object.assign(regeocode, {
             longitude: R,
