@@ -371,7 +371,7 @@ export default create({
     },
     httpUpload (config) {
       if (typeof this.httpRequest === "function") {
-        this.httpRequest(config)
+        this.httpRequest(config,this.column);
         return
       }
       this.loading = true;
