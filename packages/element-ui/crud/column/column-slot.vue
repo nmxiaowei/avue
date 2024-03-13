@@ -156,7 +156,7 @@ export default {
     },
     handleShowLabel (row, column, DIC) {
       let result = "";
-      if (!this.validatenull(DIC)) {
+      if (!this.validatenull(DIC) && this.crud.tableOption.filterDic != true) {
         result = detail(row, column, this.crud.tableOption, DIC);
         row["$" + column.prop] = result;
       }
@@ -238,7 +238,7 @@ export default {
       let result;
       let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
       result = detail(row, column, this.crud.tableOption, DIC);
-      if (!this.validatenull(DIC)) {
+      if (!this.validatenull(DIC) && this.crud.tableOption.filterDic != true) {
         row["$" + column.prop] = result;
       }
       return result;
