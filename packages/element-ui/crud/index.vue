@@ -62,6 +62,8 @@
                   :expand-row-keys="tableOption.expandRowKeys"
                   :default-expand-all="tableOption.defaultExpandAll"
                   :highlight-current-row="tableOption.highlightCurrentRow"
+                  :tooltip-effect="tableOption.tooltipEffect"
+                  :tooltip-options="tableOption.tooltipOptions"
                   @current-change="currentRowChange"
                   @expand-change="expandChange"
                   @header-dragend="headerDragend"

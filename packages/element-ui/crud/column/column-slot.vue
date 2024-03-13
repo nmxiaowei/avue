@@ -11,8 +11,6 @@
                    :filter-method="getColumnProp(column,'filterMethod')?handleFilterMethod:undefined"
                    :filter-multiple="validData(column.filterMultiple,true)"
                    :show-overflow-tooltip="column.showOverflowTooltip || column.overHidden"
-                   :tooltip-effect="column.tooltipEffect"
-                   :tooltip-options="column.tooltipOptions"
                    :min-width="column.minWidth"
                    :sortable="getColumnProp(column,'sortable')"
                    :sort-method="column.sortMethod"
