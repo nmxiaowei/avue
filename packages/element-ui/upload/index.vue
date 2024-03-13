@@ -234,7 +234,7 @@ export default create({
   computed: {
     isObject () {
       let obj = this.text[0]
-      return typeof (obj) === 'object' || this.dataType == 'object'
+      return typeof (obj) === 'object' || this.dataType == 'object' || this.isJson
     },
     acceptList () {
       if (Array.isArray(this.accept)) {

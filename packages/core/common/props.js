@@ -176,6 +176,9 @@ export default function () {
       isNumber () {
         return this.dataType === 'number';
       },
+      isJson () {
+        return this.dataType === 'json'
+      },
       nameKey () {
         return this.propsHttp.name || this.propsHttpDefault.name;
       },
