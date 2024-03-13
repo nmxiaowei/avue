@@ -47,11 +47,9 @@ $space-width: 15px;
     margin-right: 0px;
   }
   &__img{
-   display:flex;
-   justify-content:center;
     & > *{
       height: 50px;
-      margin-right:5px;
+      margin-right:8px;
       object-fit: contain;
       font-size: 50px;
     }
