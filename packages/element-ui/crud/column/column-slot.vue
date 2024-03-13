@@ -44,7 +44,7 @@
                       size:crud.size,
                       index:$index,
                       disabled:crud.btnDisabledList[$index],
-                      label:handleShowLabel(row,column,crud.DIC[column.prop]),
+                      label:handleDetail(row,column),
                       '$cell':row.$cellEdit
                     }"
                   :name="crud.getSlotName(column,'F')"
@@ -75,7 +75,7 @@
             :index="$index"
             :dic="crud.DIC[column.prop]"
             :size="crud.size"
-            :label="handleShowLabel(row,column,crud.DIC[column.prop])"
+            :label="handleDetail(row,column)"
             :name="column.prop"
             v-else-if="crud.$slots[column.prop]"></slot>
       <template v-else>
@@ -153,14 +153,6 @@ export default {
       if (column.rules && row.$cellEdit) {
         return val
       }
-    },
-    handleShowLabel (row, column, DIC) {
-      let result = "";
-      if (!this.validatenull(DIC) && this.crud.tableOption.filterDic != true) {
-        result = detail(row, column, this.crud.tableOption, DIC);
-        row["$" + column.prop] = result;
-      }
-      return result;
     },
     columnChange (row, column, index) {
       let key = `${index}-${column.prop}`
