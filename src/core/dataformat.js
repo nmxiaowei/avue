@@ -52,7 +52,11 @@ export const initVal = (value, safe) => {
       if (validatenull(list)) {
         list = [];
       } else {
-        list = (list + '').split(separator) || [];
+        if (dataType == 'json') {
+          list = JSON.parse(list)
+        } else {
+          list = (list + '').split(separator) || [];
+        }
       }
     }
     // 数据转化
@@ -126,7 +130,7 @@ export const formInitVal = (list = []) => {
     ) {
       tableForm[ele.prop] = undefined;
     } else if (
-      ARRAY_VALUE_LIST.includes(ele.type) ||
+      (ARRAY_VALUE_LIST.includes(ele.type) && ele.emitPath !== false && ele.dataType != 'json') ||
       (MULTIPLE_LIST.includes(ele.type) && ele.multiple) || ele.dataType === 'array'
     ) {
       tableForm[ele.prop] = [];

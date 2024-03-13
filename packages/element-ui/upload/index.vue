@@ -250,7 +250,7 @@ export default create({
     },
     isObject () {
       let obj = this.text[0]
-      return typeof (obj) === 'object' || this.dataType == 'object'
+      return typeof (obj) === 'object' || this.dataType == 'object' || this.isJson
     },
     acceptList () {
       if (Array.isArray(this.accept)) {
@@ -371,7 +371,7 @@ export default create({
     },
     httpUpload (config) {
       if (typeof this.httpRequest === "function") {
-        this.httpRequest(config,this.column);
+        this.httpRequest(config, this.column);
         return
       }
       this.loading = true;
