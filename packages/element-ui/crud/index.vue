@@ -64,6 +64,7 @@
                   :highlight-current-row="tableOption.highlightCurrentRow"
                   :tooltip-effect="tableOption.tooltipEffect"
                   :tooltip-options="tableOption.tooltipOptions"
+                  :show-overflow-tooltip="tableOption.showOverflowTooltip || tableOption.overHidden"
                   @current-change="currentRowChange"
                   @expand-change="expandChange"
                   @header-dragend="headerDragend"
