@@ -54,9 +54,9 @@
             </el-tabs>
           </template>
           <template #header
-                    :column="item"
                     v-if="getSlotName(item,'H',$slots)">
-            <slot :name="getSlotName(item,'H')"></slot>
+            <slot :name="getSlotName(item,'H')"
+                  :column="item"></slot>
           </template>
           <div :class="b('group',{'flex':validData(item.flex,true)})"
                v-show="isGroupShow(item,index)">
