@@ -240,7 +240,7 @@ export default create({
             })
           }
         } else {
-          let node = this.$refs.tree.getNode(this.text)
+          let node = this.$refs.tree.getNode(this.text || '')
           if (node) {
             let data = node.data
             this.$refs.tree.setCurrentKey(data[this.valueKey])
