@@ -24,6 +24,9 @@
       <template #name="{row,disabled}">
         <avue-input v-model="obj.names" :disabled="disabled"></avue-input>
       </template>
+      <template #jbxx-header="{column}">
+        <span>{{column.label}}</span>
+      </template>
     </avue-form>
   </div>
 </body>

@@ -104,8 +104,7 @@ const install = function (Vue, opts = {}) {
     }
     return result;
   };
-  Vue.config.globalProperties.$axios = opts.axios || window.axios || axios
-  window.axios = Vue.config.globalProperties.$axios
+  Vue.config.globalProperties.$axios = opts.axios || axios
 
 };
 export default {
