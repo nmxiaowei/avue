@@ -9,6 +9,9 @@ body {
 }
 
 .avue--detail{
+  .el-col {
+    margin-bottom: 0;
+  }
   .hover-row td{
     background-color: #fff !important;
   }
@@ -28,7 +31,11 @@ body {
   }
   .el-input.is-disabled .el-input__wrapper{
     box-shadow: none;
-
+    padding: 0;
+    background-color: #fff;
+    &:hover {
+      box-shadow: none;
+    }
   }
   .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner,.el-range-editor.is-disabled,.el-range-editor.is-disabled input{
     color: #606266;
@@ -108,6 +115,7 @@ body {
     color: #909399;
     box-sizing: border-box;
     background: #fafafa;
+    height: inherit;
   }
   .el-tag{
     margin-left: 0 !important;
