@@ -245,7 +245,7 @@ export default create({
       sendDic({
         column: this.column,
         value: query,
-      }).then(res => {
+      }, this).then(res => {
         this.loading = false;
         this.netDic = res;
       });

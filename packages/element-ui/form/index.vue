@@ -579,7 +579,7 @@ export default create({
             column: columnNext,
             value: value,
             form: this.form
-          }).then(res => {
+          }, this).then(res => {
             //首次加载的放入队列记录
             if (!this.formList.includes(str)) this.formList.push(str);
             // 修改字典

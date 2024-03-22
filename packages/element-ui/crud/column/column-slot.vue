@@ -204,7 +204,7 @@ export default {
             column: columnNext,
             value: value,
             form: row
-          }).then(res => {
+          }, this).then(res => {
             const dic = res || [];
             //首次加载的放入队列记录
             if (!this.crud.cascaderIndexList.includes(rowIndex)) {

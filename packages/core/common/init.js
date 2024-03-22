@@ -102,7 +102,7 @@ export default function () {
         } else if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
           sendDic({
             column: column
-          }).then(list => {
+          }, this).then(list => {
             this.DIC[prop] = list;
           });
         } else {
