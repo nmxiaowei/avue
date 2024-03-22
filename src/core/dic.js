@@ -1,6 +1,6 @@
 import { detailDataType, getAsVal } from 'utils/util';
 import { validatenull } from 'utils/validate';
-import { DIC_PROPS } from 'global/variable'
+import { DIC_PROPS } from 'global/variable';
 const key = 'key';
 function getDataType (list = [], props = {}, type) {
   let valueKey = props.value || DIC_PROPS.value;
@@ -13,24 +13,24 @@ function getDataType (list = [], props = {}, type) {
 };
 
 function getResData (data, props, dataType) {
-  const bind = props.res
+  const bind = props.res;
   let res = data;
   let deep = data.data;
   if (bind) {
-    res = getAsVal(res, bind)
+    res = getAsVal(res, bind);
   } else if (deep) {
-    res = Array.isArray(deep) ? deep : [deep]
+    res = Array.isArray(deep) ? deep : [deep];
   }
-  if (dataType) res = getDataType(res, props, dataType)
+  if (dataType) res = getDataType(res, props, dataType);
   return res;
 };
 export const loadCascaderDic = (columnOption, safe) => {
   return new Promise(resolve => {
     let list = [];
     let result = {};
-    let columnList = columnOption.filter(ele => ele.parentProp)
+    let columnList = columnOption.filter(ele => ele.parentProp);
     safe.data.forEach((ele, index) => {
-      if (!safe.cascaderDIC[index]) safe.cascaderDIC[index] = {}
+      if (!safe.cascaderDIC[index]) safe.cascaderDIC[index] = {};
       columnList.forEach(column => {
         if (column.hide !== true && column.dicFlag !== false) {
           list.push(new Promise(resolve => {
@@ -45,13 +45,13 @@ export const loadCascaderDic = (columnOption, safe) => {
                 dataType: column.dataType,
                 form: ele,
                 value: ele[column.parentProp]
-              }).then(res => {
+              }, safe).then(res => {
                 let obj = {
                   prop: column.prop,
                   data: res,
                   index: index
-                }
-                safe.cascaderDIC[index][obj.prop] = obj.data
+                };
+                safe.cascaderDIC[index][obj.prop] = obj.data;
                 resolve(obj);
               });
             } else {
@@ -59,8 +59,8 @@ export const loadCascaderDic = (columnOption, safe) => {
                 prop: column.prop,
                 data: [],
                 index: index
-              }
-              safe.cascaderDIC[index][obj.prop] = obj.data
+              };
+              safe.cascaderDIC[index][obj.prop] = obj.data;
               resolve(obj);
             }
           }));
@@ -97,11 +97,11 @@ export const loadDic = (option, safe) => {
             props: ele.props,
             dataType: ele.dataType,
             query: ele.dicQuery
-          }).then(res => {
+          }, safe).then(res => {
             safe.DIC[prop] = res;
-            resolve(res)
+            resolve(res);
           });
-        }))
+        }));
       }
     });
     Promise.all(list).then(res => {
@@ -119,25 +119,25 @@ export const loadLocalDic = (option, safe) => {
   option.column.forEach(ele => {
     if (ele.dicData) columnData[ele.prop] = getDataType(ele.dicData, ele.props, ele.dataType);
   });
-  let result = { ...optionData, ...columnData }
+  let result = { ...optionData, ...columnData };
   Object.keys(result).forEach(ele => {
-    safe.DIC[ele] = result[ele]
-  })
-  return result
+    safe.DIC[ele] = result[ele];
+  });
+  return result;
 };
 
-export const sendDic = (params) => {
+export const sendDic = (params, safe) => {
   let { url, query, method, props, formatter, headers, value, column = {}, form = {}, dataType } = params;
   url = column.dicUrl || url;
   method = (column.dicMethod || method || 'get').toLowerCase();
-  headers = column.dicHeaders || headers || {}
+  headers = column.dicHeaders || headers || {};
   query = column.dicQuery || query || {};
   formatter = column.dicFormatter || formatter;
   props = column.props || props || {};
-  let list = url.match(/[^\{\}]+(?=\})/g) || []
+  let list = url.match(/[^\{\}]+(?=\})/g) || [];
   list.forEach(ele => {
-    let result = ele === key ? value : form[ele]
-    if (validatenull(result)) result = ''
+    let result = ele === key ? value : form[ele];
+    if (validatenull(result)) result = '';
     url = url.replace(`{{${ele}}}`, result);
   });
 
@@ -145,18 +145,18 @@ export const sendDic = (params) => {
     let result = {};
     Object.keys(data).forEach(ele => {
       let eleKey = data[ele];
-      if (typeof (eleKey) == 'string' && eleKey.match(/\{{|}}/g)) {
+      if (typeof (eleKey) === 'string' && eleKey.match(/\{{|}}/g)) {
         let prop = eleKey.replace(/\{{|}}/g, '');
-        result[ele] = prop == key ? value : form[prop]
+        result[ele] = prop == key ? value : form[prop];
       } else {
         result[ele] = eleKey;
       }
     });
     return result;
-  }
+  };
 
   return new Promise((resolve, reject) => {
-    if (!url) resolve([])
+    if (!url) resolve([]);
     const callback = (res) => {
       let list = [];
       res = res.data || {};
@@ -169,13 +169,13 @@ export const sendDic = (params) => {
     };
     const getData = () => {
       let data = getKey(query);
-      if (method == 'get') return { params: data }
-      return { data }
-    }
-    window.axios(Object.assign({
+      if (method == 'get') return { params: data };
+      return { data };
+    };
+    safe.$axios(Object.assign({
       url,
       method,
-      headers: getKey(headers),
+      headers: getKey(headers)
     }, getData())).then(function (res) {
       callback(res);
     }).catch(err => [

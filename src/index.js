@@ -1,6 +1,6 @@
 
 import components from './ui/index';
-import { version } from './version'
+import { version } from './version';
 import axios from 'axios';
 import { validatenull } from 'utils/validate.js';
 import { randomId, deepClone, dataURLtoFile, findObject, validData, findArray, findNode, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
@@ -38,7 +38,7 @@ let plugins = {
 };
 let directive = {
   contextmenu
-}
+};
 const install = function (Vue, opts = {}) {
   const defaultOption = {
     size: opts.size || 'default',
@@ -71,7 +71,7 @@ const install = function (Vue, opts = {}) {
       accessKeySecret: '',
       bucket: ''
     }, (opts.ali || {}))
-  }
+  };
   Vue.config.globalProperties.$AVUE = Object.assign(opts, defaultOption);
   Object.keys(components).forEach(ele => {
     const component = components[ele];
@@ -104,7 +104,7 @@ const install = function (Vue, opts = {}) {
     }
     return result;
   };
-  Vue.config.globalProperties.$axios = opts.axios || axios
+  Vue.config.globalProperties.$axios = opts.axios || axios;
 
 };
 export default {
@@ -114,4 +114,4 @@ export default {
     install
   },
   ...components
-} 
+};

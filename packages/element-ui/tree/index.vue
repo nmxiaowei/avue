@@ -7,7 +7,10 @@
                 v-model="filterValue">
         <template #append
                   v-if="validData(option.addBtn,true)">
-          <el-button :size="size"
+          <slot v-if="$slots['add-btn']"
+                name="add-btn"></slot>
+          <el-button v-else
+                     :size="size"
                      @click="parentAdd"
                      v-permission="getPermission('addBtn')"
                      icon="el-icon-plus"></el-button>
