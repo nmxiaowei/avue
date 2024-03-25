@@ -1,15 +1,16 @@
 <template>
   <!-- 操作栏 -->
-  <el-table-column prop="menu"
-                   key="menu"
-                   :class-name="crud.tableOption.menuClassName"
-                   :label-class-name="crud.tableOption.menuLabelClassName"
-                   :fixed="vaildData(crud.tableOption.menuFixed,config.menuFixed)"
-                   v-if="vaildData(crud.tableOption.menu,config.menu)&&crud.getPermission('menu')"
-                   :label="crud.tableOption.menuTitle || t('crud.menu')"
-                   :align="crud.tableOption.menuAlign || config.menuAlign"
-                   :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
-                   :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
+  <component :is="crud.tableColumnName"
+             prop="menu"
+             key="menu"
+             :class-name="crud.tableOption.menuClassName"
+             :label-class-name="crud.tableOption.menuLabelClassName"
+             :fixed="vaildData(crud.tableOption.menuFixed,config.menuFixed)"
+             v-if="vaildData(crud.tableOption.menu,config.menu)&&crud.getPermission('menu')"
+             :label="crud.tableOption.menuTitle || t('crud.menu')"
+             :align="crud.tableOption.menuAlign || config.menuAlign"
+             :header-align="crud.tableOption.menuHeaderAlign || config.menuHeaderAlign"
+             :width="crud.isMobile?(crud.tableOption.menuXsWidth || config.menuXsWidth):( crud.tableOption.menuWidth || config.menuWidth)">
     <template slot="header"
               slot-scope="scope">
       <slot name="menuHeader"
@@ -153,16 +154,20 @@
               :index="$index"></slot>
       </div>
     </template>
-  </el-table-column>
+  </component>
 </template>
 
 <script>
 import create from "core/create";
 import config from "./config.js";
 import locale from "core/locale";
+import tableGridColumn from './grid/column'
 import permission from 'common/directive/permission';
 export default create({
   name: "crud",
+  components: {
+    tableGridColumn
+  },
   data () {
     return {
       config: config,

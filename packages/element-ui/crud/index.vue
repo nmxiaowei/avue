@@ -57,52 +57,53 @@
                :show-message="false"
                @validate="handleValidate"
                ref="cellForm">
-        <el-table :key="reload"
-                  :data="cellForm.list"
-                  :row-key="rowKey"
-                  :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
-                  :size="$AVUE.tableSize || controlSize"
-                  :lazy="vaildData(tableOption.lazy,false)"
-                  :load="treeLoad"
-                  :tree-props="treeProps"
-                  :expand-row-keys="tableOption.expandRowKeys"
-                  :default-expand-all="tableOption.defaultExpandAll"
-                  :highlight-current-row="tableOption.highlightCurrentRow"
-                  @current-change="currentRowChange"
-                  @expand-change="expandChange"
-                  @header-dragend="headerDragend"
-                  :show-summary="tableOption.showSummary"
-                  :summary-method="tableSummaryMethod"
-                  :span-method="tableSpanMethod"
-                  :stripe="tableOption.stripe"
-                  :show-header="tableOption.showHeader"
-                  :default-sort="tableOption.defaultSort"
-                  @row-click="rowClick"
-                  @row-dblclick="rowDblclick"
-                  @cell-mouse-enter="cellMouseEnter"
-                  @cell-mouse-leave="cellMouseLeave"
-                  @cell-click="cellClick"
-                  @header-click="headerClick"
-                  @row-contextmenu="rowContextmenu"
-                  @header-contextmenu="headerContextmenu"
-                  @cell-dblclick="cellDblclick"
-                  :row-class-name="rowClassName"
-                  :cell-class-name="cellClassName"
-                  :row-style="rowStyle"
-                  :cell-style="cellStyle"
-                  :fit="tableOption.fit"
-                  :header-cell-class-name="headerCellClassName"
-                  :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
-                  :height="tableHeight"
-                  ref="table"
-                  :width="setPx(tableOption.width,config.width)"
-                  :border="tableOption.border"
-                  v-loading="tableLoading"
-                  @filter-change="filterChange"
-                  @selection-change="selectionChange"
-                  @select="select"
-                  @select-all="selectAll"
-                  @sort-change="sortChange">
+        <component :is="tableName"
+                   :key="reload"
+                   :data="cellForm.list"
+                   :row-key="rowKey"
+                   :class="{'avue-crud--indeterminate':vaildData(tableOption.indeterminate,false)}"
+                   :size="$AVUE.tableSize || controlSize"
+                   :lazy="vaildData(tableOption.lazy,false)"
+                   :load="treeLoad"
+                   :tree-props="treeProps"
+                   :expand-row-keys="tableOption.expandRowKeys"
+                   :default-expand-all="tableOption.defaultExpandAll"
+                   :highlight-current-row="tableOption.highlightCurrentRow"
+                   @current-change="currentRowChange"
+                   @expand-change="expandChange"
+                   @header-dragend="headerDragend"
+                   :show-summary="tableOption.showSummary"
+                   :summary-method="tableSummaryMethod"
+                   :span-method="tableSpanMethod"
+                   :stripe="tableOption.stripe"
+                   :show-header="tableOption.showHeader"
+                   :default-sort="tableOption.defaultSort"
+                   @row-click="rowClick"
+                   @row-dblclick="rowDblclick"
+                   @cell-mouse-enter="cellMouseEnter"
+                   @cell-mouse-leave="cellMouseLeave"
+                   @cell-click="cellClick"
+                   @header-click="headerClick"
+                   @row-contextmenu="rowContextmenu"
+                   @header-contextmenu="headerContextmenu"
+                   @cell-dblclick="cellDblclick"
+                   :row-class-name="rowClassName"
+                   :cell-class-name="cellClassName"
+                   :row-style="rowStyle"
+                   :cell-style="cellStyle"
+                   :fit="tableOption.fit"
+                   :header-cell-class-name="headerCellClassName"
+                   :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
+                   :height="tableHeight"
+                   ref="table"
+                   :width="setPx(tableOption.width,config.width)"
+                   :border="tableOption.border"
+                   v-loading="tableLoading"
+                   @filter-change="filterChange"
+                   @selection-change="selectionChange"
+                   @select="select"
+                   @select-all="selectAll"
+                   @sort-change="sortChange">
           <template slot="empty">
             <div :class="b('empty')">
               <slot name="empty"
@@ -146,7 +147,7 @@
               </template>
             </column-menu>
           </column>
-        </el-table>
+        </component>
       </el-form>
       <slot name="footer"></slot>
     </el-card>
@@ -181,6 +182,7 @@ import create from "core/create";
 import packages from "core/packages";
 import permission from 'common/directive/permission';
 import init from "common/common/init.js";
+import tableGrid from './grid/index'
 import tablePage from "./table-page";
 import headerSearch from "./header-search";
 import locale from "core/locale";
@@ -211,6 +213,7 @@ export default create({
     column,
     columnDefault,//其它列,
     columnMenu,//操作栏，
+    tableGrid,
     tablePage, //分页
     headerSearch, //搜索
     headerMenu, //菜单头部
@@ -238,9 +241,16 @@ export default create({
       cascaderFormList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      default: {}
+      default: {},
+      gridOption: {
+        span: 6,
+        show: false,
+      }
 
     };
+  },
+  created () {
+    this.gridOption = Object.assign(this.gridOption, this.option.grid || {})
   },
   mounted () {
     this.dataInit();
@@ -248,6 +258,12 @@ export default create({
     this.refreshTable()
   },
   computed: {
+    tableName () {
+      return this.gridOption.show ? 'tableGrid' : 'elTable'
+    },
+    tableColumnName () {
+      return this.gridOption.show ? 'tableGridColumn' : 'elTableColumn'
+    },
     isSortable () {
       return this.tableOption.sortable;
     },
@@ -423,6 +439,9 @@ export default create({
     }
   },
   methods: {
+    handleGridShow () {
+      this.gridOption.show = !this.gridOption.show
+    },
     handleValidate (prop, valid, msg) {
       if (!this.listError[prop]) this.$set(this.listError, prop, { valid: false, msg: '' })
       this.listError[prop].valid = !valid

@@ -1,44 +1,52 @@
 <template>
   <div>
-    <el-table-column width="1px"></el-table-column>
+    <component :is="crud.tableColumnName"
+               width="1px"></component>
     <!-- 折叠面板  -->
-    <el-table-column v-if="crud.tableOption.expand"
-                     type="expand"
-                     key="expand"
-                     :class-name="crud.tableOption.expandClassName"
-                     :label-class-name="crud.tableOption.expandLabelClassName"
-                     :width="crud.tableOption.expandWidth || config.expandWidth"
-                     :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
-                     align="center">
+    <component :is="crud.tableColumnName"
+               v-if="crud.tableOption.expand"
+               type="expand"
+               key="expand"
+               :class-name="crud.tableOption.expandClassName"
+               :label-class-name="crud.tableOption.expandLabelClassName"
+               :width="crud.tableOption.expandWidth || config.expandWidth"
+               :fixed="vaildData(crud.tableOption.expandFixed,config.expandFixed)"
+               align="center">
       <template slot-scope="{row}">
         <slot :row="row"
               :index="row.$index"
               name="expand"></slot>
       </template>
-    </el-table-column>
+    </component>
 
     <!-- 选择框 -->
-    <el-table-column v-if="crud.tableOption.selection"
-                     :fixed="vaildData(crud.tableOption.selectionFixed,config.selectionFixed)"
-                     type="selection"
-                     key="selection"
-                     :class-name="crud.tableOption.selectionClassName"
-                     :label-class-name="crud.tableOption.selectionLabelClassName"
-                     :selectable="crud.tableOption.selectable"
-                     :reserve-selection="vaildData(crud.tableOption.reserveSelection)"
-                     :width="crud.tableOption.selectionWidth || config.selectionWidth"
-                     align="center"></el-table-column>
+    <component :is="crud.tableColumnName"
+               v-if="crud.tableOption.selection"
+               :fixed="vaildData(crud.tableOption.selectionFixed,config.selectionFixed)"
+               type="selection"
+               key="selection"
+               :class-name="crud.tableOption.selectionClassName"
+               :label-class-name="crud.tableOption.selectionLabelClassName"
+               :selectable="crud.tableOption.selectable"
+               :reserve-selection="vaildData(crud.tableOption.reserveSelection)"
+               :width="crud.tableOption.selectionWidth || config.selectionWidth"
+               align="center"></component>
     <!-- 序号 -->
-    <el-table-column v-if="vaildData(crud.tableOption.index)"
-                     :fixed="vaildData(crud.tableOption.indexFixed,config.indexFixed)"
-                     :label="crud.tableOption.indexLabel || config.indexLabel"
-                     type="index"
-                     key="index"
-                     :class-name="crud.tableOption.indexClassName"
-                     :label-class-name="crud.tableOption.indexLabelClassName"
-                     :width="crud.tableOption.indexWidth || config.indexWidth"
-                     :index="indexMethod"
-                     align="center"></el-table-column>
+    <component :is="crud.tableColumnName"
+               v-if="vaildData(crud.tableOption.index)"
+               :fixed="vaildData(crud.tableOption.indexFixed,config.indexFixed)"
+               :label="crud.tableOption.indexLabel || config.indexLabel"
+               type="index"
+               key="index"
+               :class-name="crud.tableOption.indexClassName"
+               :label-class-name="crud.tableOption.indexLabelClassName"
+               :width="crud.tableOption.indexWidth || config.indexWidth"
+               :index="indexMethod"
+               align="center">
+      <template slot-scope="{$index}">
+        {{ $index+1 }}
+      </template>
+    </component>
   </div>
 </template>
 
@@ -46,11 +54,13 @@
 
 import create from "core/create";
 import config from "./config.js";
-import packages from "core/packages";
 import locale from "core/locale";
-import permission from 'common/directive/permission';
+import tableGridColumn from './grid/column'
 export default create({
   name: "crud",
+  components: {
+    tableGridColumn
+  },
   data () {
     return {
       config: config,
@@ -75,6 +85,7 @@ export default create({
       this.columnDrop()
     },
     rowDrop () {
+      if (!this.crud.$refs.table) return
       const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
       this.crud.tableDrop('row', el, evt => {
         const oldIndex = evt.oldIndex;
@@ -87,7 +98,8 @@ export default create({
       })
     },
     columnDrop () {
-      let el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
+      if (!this.crud.$refs.table) return
+      const el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
       let noIndexCount = 0;
       ['selection', 'index', 'expand'].forEach(ele => {
         if (this.crud.tableOption[ele]) { noIndexCount += 1 }
