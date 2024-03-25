@@ -3,6 +3,7 @@
              v-if="getColumnProp(column,'hide')"
              :key="column.prop"
              :prop="column.prop"
+             :grid-row="column.gridRow"
              :label="column.label"
              :class-name="column.className"
              :label-class-name="column.labelClassName"

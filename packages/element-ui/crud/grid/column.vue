@@ -7,7 +7,7 @@ export default {
   props: {
     className: String,
     labeClassName: String,
-    row: Boolean,
+    gridRow: Boolean,
     prop: String,
     type: String,
     label: String
@@ -25,7 +25,7 @@ export default {
     this.parent.column.push({
       className: this.className,
       labeClassName: this.labeClassName,
-      row: this.row,
+      row: this.gridRow,
       label: this.label,
       prop: this.prop,
       type: this.type,
