@@ -14,7 +14,13 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
     if ((selectFlag || arrayFlag) && !Array.isArray(result) && !column.dataType) column.dataType = 'string'
     if (column.dataType) {
       if (selectFlag || arrayFlag) {
-        if (!Array.isArray(result)) result = result.split(separator || DIC_SPLIT)
+        if (!Array.isArray(result)) {
+          if (column.dataType == 'json') {
+            result = JSON.parse(result)
+          } else {
+            result = result.split(separator || DIC_SPLIT)
+          }
+        }
         result.forEach(ele => {
           ele = detailDataType(ele, column.dataType)
         })

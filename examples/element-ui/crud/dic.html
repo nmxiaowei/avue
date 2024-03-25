@@ -31,7 +31,7 @@
 <script>
   new Vue({
     el: '#app',
-    data() {
+    data () {
       return {
         form: {},
         data: [
@@ -67,7 +67,8 @@
               value: 1
             }, {
               label: '性别',
-              prop: 'sex'
+              prop: 'sex',
+              gridRow: true
             }, {
               label: '权限',
               prop: 'grade',
@@ -170,7 +171,7 @@
         }
       }
     },
-    mounted() {
+    mounted () {
       setTimeout(() => {
         this.$refs.crud.updateDic('checkbox', [{
           label: '有权限1',

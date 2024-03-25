@@ -176,6 +176,9 @@ export default function () {
       isNumber () {
         return this.dataType === 'number';
       },
+      isJson () {
+        return this.dataType === 'json'
+      },
       nameKey () {
         return this.propsHttp.name || this.propsHttpDefault.name;
       },
@@ -185,11 +188,17 @@ export default function () {
       resKey () {
         return this.propsHttp.res || this.propsHttpDefault.res;
       },
+      fileTypeKey () {
+        return this.propsHttp.fileType || this.propsHttpDefault.fileType;
+      },
       groupsKey () {
         return this.props.groups || this.propsDefault.groups;
       },
       valueKey () {
         return this.props.value || this.propsDefault.value;
+      },
+      typeKey () {
+        return this.props.type || this.propsDefault.type;
       },
       descKey () {
         return this.props.desc || this.propsDefault.desc;

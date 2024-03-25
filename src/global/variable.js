@@ -5,6 +5,7 @@ export const DIC_PROPS = {
   nodeKey: 'id',
   label: 'label',
   value: 'value',
+  type: 'type',
   desc: 'desc',
   groups: 'groups',
   title: 'title',
@@ -17,6 +18,7 @@ export const DIC_PROPS = {
 export const DIC_HTTP_PROPS = {
   name: 'name',
   url: 'url',
+  fileType: 'type',
   fileName: 'file',
   res: ''
 };
@@ -43,8 +45,8 @@ export const SELECT_LIST = DATE_LIST.concat(['select', 'checkbox', 'radio', 'cas
 export const DIC_SHOW_SPLIT = ' | ';
 export const DIC_SPLIT = ',';
 export const typeList = {
-  img: /\.(gif|jpg|jpeg|png|webp|svg|GIF|JPG|JPEG|PNG|WEBP|SVG)/,
-  video: /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/,
-  audio: /\.(mp3|wav|MP3|WAV)/,
+  img: /(\.|^)(gif|jpg|jpeg|png|webp|svg|GIF|JPG|JPEG|PNG|WEBP|SVG)/,
+  video: /(\.|^)(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/,
+  audio: /(\.|^)(mp3|wav|MP3|WAV)/,
 };
 

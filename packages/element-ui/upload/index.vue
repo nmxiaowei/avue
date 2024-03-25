@@ -63,7 +63,11 @@
         </div>
       </template>
       <template v-else>
-        <el-button icon="el-icon-upload"
+        <slot name="button"
+              :disabled="disabled"
+              v-if="$scopedSlots.button"></slot>
+        <el-button v-else
+                   icon="el-icon-upload"
                    :disabled="disabled"
                    :size="size"
                    type="primary">{{fileText || t('upload.upload')}}</el-button>
@@ -158,6 +162,12 @@ export default create({
         return {}
       }
     },
+    paramsList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     showFileList: {
       type: Boolean,
       default: true
@@ -224,7 +234,7 @@ export default create({
   computed: {
     isObject () {
       let obj = this.text[0]
-      return typeof (obj) === 'object' || this.dataType == 'object'
+      return typeof (obj) === 'object' || this.dataType == 'object' || this.isJson
     },
     acceptList () {
       if (Array.isArray(this.accept)) {
@@ -262,11 +272,12 @@ export default create({
         if (ele) {
           let name = this.isObject ? ele[this.labelKey] : ele.substring(ele.lastIndexOf('/') + 1)
           let url = this.isObject ? ele[this.valueKey] : ele;
+          let type = this.isObject ? ele[this.typeKey] : this.isMediaType(url);
           url = getFileUrl(this.homeUrl, url);
           list.push({
             uid: index + '',
             status: 'done',
-            type: this.isMediaType(url),
+            type: type || this.isMediaType(url),
             name: name,
             url: url
           });
@@ -308,6 +319,8 @@ export default create({
         let obj = {};
         obj[this.labelKey] = file[this.nameKey];
         obj[this.valueKey] = file[this.urlKey];
+        obj[this.typeKey] = file[this.fileTypeKey];
+        this.paramsList.forEach(ele => obj[ele.label] = file[ele.value])
         this.text.push(obj);
       } else {
         this.text.push(file[this.urlKey]);
