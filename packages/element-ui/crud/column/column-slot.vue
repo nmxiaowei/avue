@@ -1,27 +1,29 @@
 <template>
-  <el-table-column v-if="getColumnProp(column,'hide')"
-                   :key="column.prop"
-                   :prop="column.prop"
-                   :label="column.label"
-                   :class-name="column.className"
-                   :label-class-name="column.labelClassName"
-                   :column-key="column.prop"
-                   filter-placement="bottom-end"
-                   :filters="getColumnProp(column,'filters')"
-                   :filter-method="getColumnProp(column,'filterMethod')?handleFilterMethod:undefined"
-                   :filter-multiple="validData(column.filterMultiple,true)"
-                   :show-overflow-tooltip="column.showOverflowTooltip || column.overHidden"
-                   :min-width="column.minWidth"
-                   :sortable="getColumnProp(column,'sortable')"
-                   :sort-method="column.sortMethod"
-                   :sort-orders="column.sortOrders"
-                   :sort-by="column.sortBy"
-                   :resizable="column.resizable"
-                   :render-header="column.renderHeader"
-                   :align="column.align || crud.tableOption.align"
-                   :header-align="column.headerAlign || crud.tableOption.headerAlign"
-                   :width="getColumnProp(column,'width')"
-                   :fixed="getColumnProp(column,'fixed')">
+  <component :is="crud.tableColumnName"
+             v-if="getColumnProp(column,'hide')"
+             :key="column.prop"
+             :prop="column.prop"
+             :grid-row="column.gridRow"
+             :label="column.label"
+             :class-name="column.className"
+             :label-class-name="column.labelClassName"
+             :column-key="column.prop"
+             filter-placement="bottom-end"
+             :filters="getColumnProp(column,'filters')"
+             :filter-method="getColumnProp(column,'filterMethod')?handleFilterMethod:undefined"
+             :filter-multiple="validData(column.filterMultiple,true)"
+             :show-overflow-tooltip="column.showOverflowTooltip || column.overHidden"
+             :min-width="column.minWidth"
+             :sortable="getColumnProp(column,'sortable')"
+             :sort-method="column.sortMethod"
+             :sort-orders="column.sortOrders"
+             :sort-by="column.sortBy"
+             :resizable="column.resizable"
+             :render-header="column.renderHeader"
+             :align="column.align || crud.tableOption.align"
+             :header-align="column.headerAlign || crud.tableOption.headerAlign"
+             :width="getColumnProp(column,'width')"
+             :fixed="getColumnProp(column,'fixed')">
     <template #header="{$index}">
       <slot :name="crud.getSlotName(column,'H')"
             v-if="crud.getSlotName(column,'H',crud.$slots)"
@@ -113,7 +115,7 @@
               v-text="handleDetail(row,column)"></span>
       </template>
     </template>
-  </el-table-column>
+  </component>
 </template>
 
 <script>
@@ -124,10 +126,12 @@ import { sendDic } from "core/dic";
 import { isMediaType, blankVal } from "utils/util";
 import formTemp from 'common/components/form/index'
 import iconTemp from 'common/components/icon/index'
+import tableItemCard from '../card/item'
 export default {
   name: 'column-slot',
   inject: ["dynamic", 'crud'],
   components: {
+    tableItemCard,
     formTemp,
     iconTemp
   },

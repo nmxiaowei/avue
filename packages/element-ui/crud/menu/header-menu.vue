@@ -82,6 +82,15 @@
                  @click="crud.$refs.dialogFilter.handleShow()"
                  v-permission="crud.getPermission('filterBtn')"
                  v-if="validData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
+
+      <el-button :icon="crud.getBtnIcon('gridBtn')"
+                 :class="b('gridBtn')"
+                 circle
+                 :size="crud.size"
+                 @click="crud.handleGridShow()"
+                 v-permission="crud.getPermission('gridBtn')"
+                 v-if="validData(crud.tableOption.gridBtn,config.gridBtn)"></el-button>
+
     </div>
   </div>
 </template>

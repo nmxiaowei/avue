@@ -66,13 +66,6 @@ export default create({
     pageFlag () {
       this.crud.getTableHeight();
     },
-    //如果当前页面删除没数据了调用前一页
-    // 'defaultPage.total' (val) {
-    //   if (this.defaultPage.total === (this.defaultPage.currentPage - 1) * this.defaultPage.pageSize && this.defaultPage.total != 0) {
-    //     const currentPage =  this.defaultPage.currentPage - 1
-    //     this.currentChange(currentPage)
-    //   }
-    // }
   },
   computed: {
     pageFlag () {

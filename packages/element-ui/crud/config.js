@@ -21,6 +21,7 @@ export default {
   updateBtnIcon: 'el-icon-circle-check',
   columnBtnIcon: 'el-icon-operation',
   filterBtnIcon: 'el-icon-tickets',
+  gridBtnIcon: 'el-icon-grid',
   refreshBtnIcon: 'el-icon-refresh',
   // 显隐
   viewBtn: false,
@@ -39,6 +40,7 @@ export default {
   refreshBtn: true,
   columnBtn: true,
   filterBtn: false,
+  gridBtn: true,
   queryBtn: true,
   menuBtn: false,
   searchBtn: true,
