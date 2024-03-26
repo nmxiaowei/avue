@@ -99,7 +99,6 @@ import locale from "core/locale";
 import permission from 'common/directive/permission';
 import create from "core/create";
 import config from "./config";
-import packages from "core/packages";
 import { vaildData, getAsVal } from "utils/util";
 export default create({
   name: "crud",

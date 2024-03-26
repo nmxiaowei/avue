@@ -200,7 +200,7 @@ import { DIC_PROPS } from 'global/variable';
 import { getColumn } from 'utils/util'
 export default create({
   name: "crud",
-  mixins: [init(), locale,],
+  mixins: [init(), locale],
   directives: {
     permission
   },
@@ -242,15 +242,11 @@ export default create({
       btnDisabledList: {},
       btnDisabled: false,
       default: {},
-      gridOption: {
-        span: 6,
-        show: false,
-      }
-
+      gridShow: false
     };
   },
   created () {
-    this.gridOption = Object.assign(this.gridOption, this.option.grid || {})
+    this.gridShow = this.tableOption.grid
   },
   mounted () {
     this.dataInit();
@@ -259,10 +255,10 @@ export default create({
   },
   computed: {
     tableName () {
-      return this.gridOption.show ? 'tableGrid' : 'elTable'
+      return this.gridShow ? 'tableGrid' : 'elTable'
     },
     tableColumnName () {
-      return this.gridOption.show ? 'tableGridColumn' : 'elTableColumn'
+      return this.gridShow ? 'tableGridColumn' : 'elTableColumn'
     },
     isSortable () {
       return this.tableOption.sortable;
@@ -440,7 +436,7 @@ export default create({
   },
   methods: {
     handleGridShow () {
-      this.gridOption.show = !this.gridOption.show
+      this.gridShow = !this.gridShow
     },
     handleValidate (prop, valid, msg) {
       if (!this.listError[prop]) this.$set(this.listError, prop, { valid: false, msg: '' })
