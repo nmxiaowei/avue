@@ -7,6 +7,7 @@
       <component :is="componentName"
                  v-for="(item,index) in dic"
                  :label="item[valueKey]"
+                 :value="item[valueKey]"
                  :border="border"
                  :readonly="readonly"
                  :disabled="item[disabledKey]"

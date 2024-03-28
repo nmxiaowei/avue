@@ -20,6 +20,7 @@
                  :label="item[valueKey]"
                  :border="border"
                  :size="size"
+                 :value="item[valueKey]"
                  :readonly="readonly"
                  :disabled="item[disabledKey]"
                  :key="index">{{item[labelKey]}}
