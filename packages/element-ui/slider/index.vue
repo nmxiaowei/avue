@@ -11,7 +11,7 @@
              :show-input="showInput"
              :marks="marks"
              :format-tooltip="formatTooltip"
-             @click.native="handleClick"></el-slider>
+             @click="handleClick"></el-slider>
 </template>
 
 <script>

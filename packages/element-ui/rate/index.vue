@@ -1,6 +1,6 @@
 <template>
   <el-rate v-model="text"
-           @click.native="handleClick"
+           @click="handleClick"
            :max="max"
            :readonly="readonly"
            :texts="texts"

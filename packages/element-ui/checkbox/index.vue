@@ -10,9 +10,11 @@
                        @change="handleCheckChange"
                        :disabled="disabled"
                        :size="size"
+                       :fill="fill"
+                       :text-color="textColor"
                        :min="min"
                        :max="max"
-                       @click.native="handleClick">
+                       @click="handleClick">
       <component :is="componentName"
                  v-for="(item,index) in dic"
                  :label="item[valueKey]"
@@ -34,6 +36,8 @@ import event from "../../core/common/event.js";
 export default create({
   name: "checkbox",
   props: {
+    fill: String,
+    textColor: String,
     all: {
       type: Boolean,
       default: false

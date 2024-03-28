@@ -2,7 +2,7 @@
   <div :class="b()">
     <el-radio-group v-model="text"
                     :size="size"
-                    @click.native="handleClick"
+                    @click="handleClick"
                     :disabled="disabled">
       <component :is="componentName"
                  v-for="(item,index) in dic"
