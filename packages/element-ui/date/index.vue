@@ -19,7 +19,6 @@
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     :prefix-icon="prefixIcon"
-                    prefixIcon
                     @blur="handleBlur"
                     @focus="handleFocus"
                     @click="handleClick"
