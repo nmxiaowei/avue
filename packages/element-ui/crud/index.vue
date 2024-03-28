@@ -283,9 +283,6 @@ export default create({
       gridShow: false
     };
   },
-  created () {
-    this.gridShow = this.tableOption.grid
-  },
   mounted () {
     this.dataInit();
     this.getTableHeight();
@@ -416,6 +413,12 @@ export default create({
         this.dataInit();
       },
       deep: true
+    },
+    tableOption: {
+      handler () {
+        this.gridShow = this.tableOption.grid
+      },
+      immediate: true
     }
   },
   props: {
