@@ -178,8 +178,8 @@ export const sendDic = (params, safe) => {
       headers: getKey(headers)
     }, getData())).then(function (res) {
       callback(res);
-    }).catch(err => [
-      reject(err)
-    ]);
+    }).catch(err => {
+      reject(err);
+    });
   });
 };

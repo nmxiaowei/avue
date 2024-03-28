@@ -4,6 +4,7 @@
                     v-model="text"
                     :popper-class="popperClass"
                     :size="size"
+                    :cell-class-name="cellClassName"
                     :editable="editable"
                     :unlink-panels="unlinkPanels"
                     :default-value="defaultValue"
@@ -17,6 +18,7 @@
                     :disabled-date="disabledDate"
                     :value-format="valueFormat"
                     :placeholder="placeholder"
+                    :prefix-icon="prefixIcon"
                     @blur="handleBlur"
                     @focus="handleFocus"
                     @click="handleClick"
@@ -44,6 +46,8 @@ export default create({
   name: "date",
   mixins: [props(), event(), locale],
   props: {
+    cellClassName: String,
+    prefixIcon: String,
     disabledDate: Function,
     shortcuts: [Array, Function],
     editable: Boolean,

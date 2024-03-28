@@ -2,11 +2,12 @@
   <div :class="b()">
     <el-radio-group v-model="text"
                     :size="size"
-                    @click.native="handleClick"
+                    @click="handleClick"
                     :disabled="disabled">
       <component :is="componentName"
                  v-for="(item,index) in dic"
                  :label="item[valueKey]"
+                 :value="item[valueKey]"
                  :border="border"
                  :readonly="readonly"
                  :disabled="item[disabledKey]"

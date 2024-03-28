@@ -49,61 +49,62 @@
                :show-message="false"
                @validate="handleValidate"
                ref="cellForm">
-        <el-table :key="reload"
-                  :data="cellForm.list"
-                  :row-key="rowKey"
-                  :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
-                  :size="size"
-                  :lazy="validData(tableOption.lazy,false)"
-                  :load="treeLoad"
-                  :tree-props="treeProps"
-                  :flexible="tableOption.flexible"
-                  :table-layout="tableOption.tableLayout"
-                  :expand-row-keys="tableOption.expandRowKeys"
-                  :default-expand-all="tableOption.defaultExpandAll"
-                  :highlight-current-row="tableOption.highlightCurrentRow"
-                  :tooltip-effect="tableOption.tooltipEffect"
-                  :tooltip-options="tableOption.tooltipOptions"
-                  :show-overflow-tooltip="tableOption.showOverflowTooltip || tableOption.overHidden"
-                  @current-change="currentRowChange"
-                  @expand-change="expandChange"
-                  @header-dragend="headerDragend"
-                  :show-summary="tableOption.showSummary"
-                  :summary-method="tableSummaryMethod"
-                  :span-method="tableSpanMethod"
-                  :stripe="tableOption.stripe"
-                  :show-header="tableOption.showHeader"
-                  :default-sort="tableOption.defaultSort"
-                  @row-click="rowClick"
-                  @row-dblclick="rowDblclick"
-                  @cell-mouse-enter="cellMouseEnter"
-                  @cell-mouse-leave="cellMouseLeave"
-                  @cell-click="cellClick"
-                  @header-click="headerClick"
-                  @row-contextmenu="rowContextmenu"
-                  @header-contextmenu="headerContextmenu"
-                  @cell-dblclick="cellDblclick"
-                  :row-class-name="rowClassName"
-                  :cell-class-name="cellClassName"
-                  :row-style="rowStyle"
-                  :cell-style="cellStyle"
-                  :fit="tableOption.fit"
-                  :header-cell-class-name="headerCellClassName"
-                  :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
-                  :height="tableHeight"
-                  ref="table"
-                  :width="setPx(tableOption.width,config.width)"
-                  :border="tableOption.border"
-                  v-loading="tableLoading"
-                  :element-loading-text="tableOption.loadingText"
-                  :element-loading-spinner="tableOption.loadingSpinner"
-                  :element-loading-svg="tableOption.loadingSvg"
-                  :element-loading-background="tableOption.loadingBackground"
-                  @filter-change="filterChange"
-                  @selection-change="selectionChange"
-                  @select="select"
-                  @select-all="selectAll"
-                  @sort-change="sortChange">
+        <component :is="tableName"
+                   :key="reload"
+                   :data="cellForm.list"
+                   :row-key="rowKey"
+                   :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
+                   :size="size"
+                   :lazy="validData(tableOption.lazy,false)"
+                   :load="treeLoad"
+                   :tree-props="treeProps"
+                   :flexible="tableOption.flexible"
+                   :table-layout="tableOption.tableLayout"
+                   :expand-row-keys="tableOption.expandRowKeys"
+                   :default-expand-all="tableOption.defaultExpandAll"
+                   :highlight-current-row="tableOption.highlightCurrentRow"
+                   :tooltip-effect="tableOption.tooltipEffect"
+                   :tooltip-options="tableOption.tooltipOptions"
+                   :show-overflow-tooltip="tableOption.showOverflowTooltip || tableOption.overHidden"
+                   @current-change="currentRowChange"
+                   @expand-change="expandChange"
+                   @header-dragend="headerDragend"
+                   :show-summary="tableOption.showSummary"
+                   :summary-method="tableSummaryMethod"
+                   :span-method="tableSpanMethod"
+                   :stripe="tableOption.stripe"
+                   :show-header="tableOption.showHeader"
+                   :default-sort="tableOption.defaultSort"
+                   @row-click="rowClick"
+                   @row-dblclick="rowDblclick"
+                   @cell-mouse-enter="cellMouseEnter"
+                   @cell-mouse-leave="cellMouseLeave"
+                   @cell-click="cellClick"
+                   @header-click="headerClick"
+                   @row-contextmenu="rowContextmenu"
+                   @header-contextmenu="headerContextmenu"
+                   @cell-dblclick="cellDblclick"
+                   :row-class-name="rowClassName"
+                   :cell-class-name="cellClassName"
+                   :row-style="rowStyle"
+                   :cell-style="cellStyle"
+                   :fit="tableOption.fit"
+                   :header-cell-class-name="headerCellClassName"
+                   :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
+                   :height="tableHeight"
+                   ref="table"
+                   :width="setPx(tableOption.width,config.width)"
+                   :border="tableOption.border"
+                   v-loading="tableLoading"
+                   :element-loading-text="tableOption.loadingText"
+                   :element-loading-spinner="tableOption.loadingSpinner"
+                   :element-loading-svg="tableOption.loadingSvg"
+                   :element-loading-background="tableOption.loadingBackground"
+                   @filter-change="filterChange"
+                   @selection-change="selectionChange"
+                   @select="select"
+                   @select-all="selectAll"
+                   @sort-change="sortChange">
           <template #empty>
             <div :class="b('empty')">
               <slot name="empty"
@@ -145,7 +146,7 @@
               </column-menu>
             </template>
           </column>
-        </el-table>
+        </component>
       </el-form>
       <slot name="footer"></slot>
     </el-card>
@@ -178,6 +179,8 @@ import packages from "core/packages";
 import locale from "core/locale";
 import permission from 'common/directive/permission';
 import init from "common/common/init.js";
+import tableCard from './card/index'
+import tableItemCard from './card/item'
 import tablePage from "./menu/table-page";
 import headerSearch from "./menu/header-search";
 import headerMenu from "./menu/header-menu";
@@ -244,6 +247,8 @@ export default create({
     };
   },
   components: {
+    tableCard,
+    tableItemCard,
     column,
     columnDefault,//其它列,
     columnMenu,//操作栏，
@@ -274,7 +279,8 @@ export default create({
       cascaderFormList: {},
       btnDisabledList: {},
       btnDisabled: false,
-      default: {}
+      default: {},
+      gridShow: false
     };
   },
   mounted () {
@@ -282,6 +288,12 @@ export default create({
     this.getTableHeight();
   },
   computed: {
+    tableName () {
+      return this.gridShow ? 'tableCard' : 'elTable'
+    },
+    tableColumnName () {
+      return this.gridShow ? 'tableItemCard' : 'elTableColumn'
+    },
     size () {
       return this.tableOption.size || this.$AVUE.tableSize || this.$AVUE.size;
     },
@@ -401,6 +413,12 @@ export default create({
         this.dataInit();
       },
       deep: true
+    },
+    tableOption: {
+      handler () {
+        this.gridShow = this.tableOption.grid
+      },
+      immediate: true
     }
   },
   props: {
@@ -460,6 +478,9 @@ export default create({
     }
   },
   methods: {
+    handleGridShow () {
+      this.gridShow = !this.gridShow
+    },
     handleValidate (prop, valid, msg) {
       if (!this.listError[prop]) this.listError[prop] = { valid: false, msg: '' }
 
