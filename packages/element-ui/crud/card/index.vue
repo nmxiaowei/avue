@@ -5,15 +5,20 @@
     </div>
     <el-row v-if="data.length!==0">
       <el-col v-for="(c,p) in data"
+              @click.stop="handleRowClick(c,column)"
+              @dblclick.stop="handleRowDblClick(c,column)"
               :span="crud.tableOption.gridSpan || span"
               :md="crud.tableOption.gridSpan|| span"
               :sm="crud.tableOption.gridSpan|| span"
               :xs="crud.tableOption.gridXsSpan|| xsSpan"
+              :class="getRowClass(c,column)"
               :key="p">
         <div :class="b('content')"
              :style="getGradientColor()">
           <div v-for="(item,index) in column"
-               :class="[b('item'),(item.type || item.prop),getClass(item)]"
+               :class="[b('item'),(item.type || item.prop),getClass(c,item)]"
+               @click="handleCellClick(c,item)"
+               @dblclick="handleCellDblClick(c,item)"
                :key="index">
             <template v-for="(comp,cindex) in item.header && item.header({row:c,$index:p})"
                       :key="cindex">
@@ -44,6 +49,8 @@ export default create({
   inject: ["crud"],
   mixins: [locale],
   props: {
+    cellClassName: Function,
+    rowClassName: Function,
     data: Array
   },
   data () {
@@ -55,6 +62,18 @@ export default create({
     }
   },
   methods: {
+    handleRowDblClick (row, index, event) {
+      this.$emit('row-dblclick', row, index, event)
+    },
+    handleRowClick (row, index, event) {
+      this.$emit('row-click', row, index, event)
+    },
+    handleCellDblClick (row, column, event) {
+      this.$emit('cell-dblclick', row, column, event)
+    },
+    handleCellClick (row, column, event) {
+      this.$emit('cell-click', row, column, event)
+    },
     getGradientColor () {
       let styles = {}
       if (this.crud.tableOption.gridBackgroundImage) {
@@ -64,8 +83,14 @@ export default create({
       }
       return styles
     },
-    getClass (item) {
+    getRowClass (row, column) {
       let list = []
+      if (this.rowClassName) list.push(this.rowClassName(row, column))
+      return list;
+    },
+    getClass (item, column) {
+      let list = []
+      if (this.cellClassName) list.push(this.cellClassName(item, column))
       const columnOption = this.crud.columnOption || []
       if (item.prop == (columnOption[0] || {}).prop) list.push('title')
       if (item.row) list.push('row')
@@ -75,6 +100,3 @@ export default create({
   }
 })
 </script>
-
-<style>
-</style>
