@@ -1,5 +1,6 @@
 <template>
-  <div :class="b()">
+  <div :class="b()"
+       :style="styleName">
     <div :class="b('hide')">
       <slot></slot>
     </div>
@@ -59,6 +60,13 @@ export default create({
       xsSpan: 12,
       id: 'crud-grid',
       column: []
+    }
+  },
+  computed: {
+    styleName () {
+      return {
+        height: this.crud.tableHeight + 'px'
+      }
     }
   },
   methods: {
