@@ -41,7 +41,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
         }
         result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~');
       } else {
-        if (type === 'time' && result.length <= 8) {
+        if (type === 'time') {
           result = `${formatValue} ${result}`;
         }
         result = dayjs(result).format(format);
