@@ -35,7 +35,7 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
       let formatValue = dayjs().format('YYYY-MM-DD');
       if (type.indexOf('range') !== -1) {
         let date1 = result[0] || '', date2 = result[1] || ''
-        if (type === 'timerange' && date1.length <= 8 && date2.length < 8) {
+        if (type === 'timerange' && date1.length <= 8 && date2.length <= 8) {
           date1 = `${formatValue} ${date1}`
           date2 = `${formatValue} ${date2}`
         }
