@@ -201,8 +201,7 @@ export default create({
         size: this.size,
         disabled: this.disabled,
         readonly: this.readonly,
-        emptyBtn: false,
-        submitBtn: false,
+        menuBtn: false,
       }, (() => {
         let option = this.deepClone(this.children)
         delete option.column;
