@@ -52,6 +52,7 @@ export default create({
   props: {
     cellClassName: Function,
     rowClassName: Function,
+    height: [String, Number],
     data: Array
   },
   data () {
@@ -70,17 +71,17 @@ export default create({
     }
   },
   methods: {
-    handleRowDblClick (row, index, event) {
-      this.$emit('row-dblclick', row, index, event)
+    handleRowDblClick (row, index) {
+      this.$emit('row-dblclick', row, index)
     },
-    handleRowClick (row, index, event) {
-      this.$emit('row-click', row, index, event)
+    handleRowClick (row, index) {
+      this.$emit('row-click', row, index)
     },
-    handleCellDblClick (row, column, event) {
-      this.$emit('cell-dblclick', row, column, event)
+    handleCellDblClick (row, column) {
+      this.$emit('cell-dblclick', row, column)
     },
-    handleCellClick (row, column, event) {
-      this.$emit('cell-click', row, column, event)
+    handleCellClick (row, column) {
+      this.$emit('cell-click', row, column)
     },
     getGradientColor () {
       let styles = {}
