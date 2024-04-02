@@ -4,9 +4,10 @@
     <div :class="b('hide')">
       <slot></slot>
     </div>
-    <el-row v-if="data.length!==0">
-      <el-checkbox-group v-model="checkList"
-                         @change="checkListChange">
+    <el-checkbox-group v-if="data.length!==0"
+                       v-model="checkList"
+                       @change="checkListChange">
+      <el-row>
         <el-col v-for="(c,p) in data"
                 @click.stop="handleRowClick(c,column)"
                 @dblclick.stop="handleRowDblClick(c,column)"
@@ -39,8 +40,9 @@
             </div>
           </div>
         </el-col>
-      </el-checkbox-group>
-    </el-row>
+
+      </el-row>
+    </el-checkbox-group>
     <el-empty v-else
               :image-size="100"
               :description="crud.tableOption.emptyText || t('crud.emptyText')"></el-empty>
