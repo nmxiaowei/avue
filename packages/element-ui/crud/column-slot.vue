@@ -32,7 +32,7 @@
             v-bind="{column,$index}"></slot>
       <span v-else>{{column.label}}</span>
     </template>
-    <template slot-scope="{row,$index}">
+    <template slot-scope="{row,column:tableColumn,$index}">
       <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                     :label="vaildLabel(column,row,' ')"
                     v-if="row.$cellEdit && column.cell"
@@ -43,6 +43,7 @@
                     placement="top">
           <slot v-bind="{
                       row:row,
+                      column:Object.assign(tableColumn,column),
                       dic:crud.DIC[column.prop],
                       size:crud.isMediumSize,
                       index:$index,
@@ -75,6 +76,7 @@
         </el-tooltip>
       </el-form-item>
       <slot :row="row"
+            :column="Object.assign(tableColumn,column)"
             :index="$index"
             :dic="crud.DIC[column.prop]"
             :size="crud.isMediumSize"

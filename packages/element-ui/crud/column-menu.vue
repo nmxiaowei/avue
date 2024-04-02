@@ -19,7 +19,7 @@
             v-if="crud.getSlotName({prop:'menu'},'H',crud.$scopedSlots)"></slot>
       <span v-else>{{crud.tableOption.menuTitle || t('crud.menu')}}</span>
     </template>
-    <template slot-scope="{row,$index}">
+    <template slot-scope="{row,column:tableColumn,$index}">
       <div :class="b('menu')">
         <el-dropdown v-if="isMenu"
                      :size="crud.isMediumSize">
@@ -51,6 +51,7 @@
                               @click.native="crud.rowDel(row,$index)">{{crud.menuIcon('delBtn')}}</el-dropdown-item>
             <slot name="menuBtn"
                   :row="row"
+                  :column="tableColumn"
                   :type="menuText('primary')"
                   :disabled="crud.btnDisabled"
                   :size="crud.isMediumSize"
@@ -148,6 +149,7 @@
         </template>
         <slot name="menu"
               :row="row"
+              :column="tableColumn"
               :type="menuText('primary')"
               :disabled="crud.btnDisabled"
               :size="crud.isMediumSize"
