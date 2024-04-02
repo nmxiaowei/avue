@@ -383,6 +383,13 @@ $space-width: 15px;
       width: 100%;
     }
 
+    .selection {
+      width: inherit;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
     .index {
       width: inherit;
       position: absolute;

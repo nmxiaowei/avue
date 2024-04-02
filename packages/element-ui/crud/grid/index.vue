@@ -5,33 +5,41 @@
       <slot></slot>
     </div>
     <el-row v-if="data.length!==0">
-      <el-col v-for="(c,p) in data"
-              @click.stop="handleRowClick(c,column)"
-              @dblclick.stop="handleRowDblClick(c,column)"
-              :span="crud.tableOption.gridSpan || span"
-              :md="crud.tableOption.gridSpan|| span"
-              :sm="crud.tableOption.gridSpan|| span"
-              :xs="crud.tableOption.gridXsSpan|| xsSpan"
-              :class="getRowClass(c,column)"
-              :key="p">
-        <div :class="b('content')"
-             :style="getGradientColor()">
-          <div v-for="(item,index) in column"
-               :class="[b('item'),(item.type || item.prop),getClass(item)]"
-               @click="handleCellClick(c,item)"
-               @dblclick="handleCellDblClick(c,item)"
-               :key="index">
-            <row-item :content="item.header"
-                      :row="c"
-                      :index="p"
-                      :class="[b('label'),item.labelClassName]"></row-item>
-            <row-item :content="item.default"
-                      :row="c"
-                      :index="p"
-                      :class="[b('value'),item.className]"></row-item>
+      <el-checkbox-group v-model="checkList"
+                         @change="checkListChange">
+        <el-col v-for="(c,p) in data"
+                @click.stop="handleRowClick(c,column)"
+                @dblclick.stop="handleRowDblClick(c,column)"
+                :span="crud.tableOption.gridSpan || span"
+                :md="crud.tableOption.gridSpan|| span"
+                :sm="crud.tableOption.gridSpan|| span"
+                :xs="crud.tableOption.gridXsSpan|| xsSpan"
+                :class="getRowClass(c,column)"
+                :key="p">
+          <div :class="b('content')"
+               :style="getGradientColor()">
+            <div v-for="(item,index) in column"
+                 :class="[b('item'),(item.type || item.prop),getClass(item)]"
+                 @click="handleCellClick(c,item)"
+                 @dblclick="handleCellDblClick(c,item)"
+                 :key="index">
+              <span v-if="item.type=='selection'">
+                <el-checkbox :label="p">&nbsp;</el-checkbox>
+              </span>
+              <template v-else>
+                <row-item :content="item.header"
+                          :row="c"
+                          :index="p"
+                          :class="[b('label'),item.labelClassName]"></row-item>
+                <row-item :content="item.default"
+                          :row="c"
+                          :index="p"
+                          :class="[b('value'),item.className]"></row-item>
+              </template>
+            </div>
           </div>
-        </div>
-      </el-col>
+        </el-col>
+      </el-checkbox-group>
     </el-row>
     <el-empty v-else
               :image-size="100"
@@ -58,6 +66,7 @@ export default create({
   },
   data () {
     return {
+      checkList: [],
       span: 8,
       xsSpan: 12,
       id: 'crud-grid',
@@ -72,6 +81,36 @@ export default create({
     }
   },
   methods: {
+    clearSelection () {
+      this.checkList = []
+      this.checkListChange(this.checkList)
+    },
+    toggleAllSelection () {
+      if (this.checkList.length === this.crud.data.length) {
+        this.checkList = []
+      } else {
+        this.checkList = this.crud.data.map((ele, index) => index)
+      }
+      this.checkListChange(this.checkList)
+    },
+    toggleRowSelection (data, selected) {
+      let index = this.crud.data.findIndex(ele => JSON.stringify(ele) == JSON.stringify(data))
+      if (selected && index != -1) {
+        this.checkList.push(index)
+      } else {
+        let checkIndex = this.checkList.findIndex(ele => ele == index);
+        this.checkList.splice(checkIndex, 1)
+      }
+      this.checkListChange(this.checkList)
+    },
+    checkListChange (val) {
+      let result = [];
+      const data = this.crud.data
+      val.forEach(ele => {
+        result.push(data[ele])
+      });
+      this.$emit('selection-change', result)
+    },
     handleRowDblClick (row, index) {
       this.$emit('row-dblclick', row, index)
     },
