@@ -6,15 +6,20 @@
     </div>
     <el-row v-if="data.length!==0">
       <el-col v-for="(c,p) in data"
+              @click.stop="handleRowClick(c,column)"
+              @dblclick.stop="handleRowDblClick(c,column)"
               :span="crud.tableOption.gridSpan || span"
               :md="crud.tableOption.gridSpan|| span"
               :sm="crud.tableOption.gridSpan|| span"
               :xs="crud.tableOption.gridXsSpan|| xsSpan"
+              :class="getRowClass(c,column)"
               :key="p">
         <div :class="b('content')"
              :style="getGradientColor()">
           <div v-for="(item,index) in column"
                :class="[b('item'),(item.type || item.prop),getClass(item)]"
+               @click="handleCellClick(c,item)"
+               @dblclick="handleCellDblClick(c,item)"
                :key="index">
             <row-item :content="item.header"
                       :row="c"
@@ -46,6 +51,8 @@ export default create({
     rowItem
   },
   props: {
+    cellClassName: Function,
+    rowClassName: Function,
     height: [String, Number],
     data: Array
   },
@@ -65,6 +72,18 @@ export default create({
     }
   },
   methods: {
+    handleRowDblClick (row, index) {
+      this.$emit('row-dblclick', row, index)
+    },
+    handleRowClick (row, index) {
+      this.$emit('row-click', row, index)
+    },
+    handleCellDblClick (row, column) {
+      this.$emit('cell-dblclick', row, column)
+    },
+    handleCellClick (row, column) {
+      this.$emit('cell-click', row, column)
+    },
     getGradientColor () {
       let styles = {}
       if (this.crud.tableOption.gridBackgroundImage) {
@@ -74,9 +93,15 @@ export default create({
       }
       return styles
     },
+    getRowClass (row, column) {
+      let list = []
+      if (this.rowClassName) list.push(this.rowClassName(row, column))
+      return list;
+    },
     getClass (item) {
       let list = []
       const columnOption = this.crud.columnOption || []
+      if (this.cellClassName) list.push(this.cellClassName(item, column))
       if (item.prop == (columnOption[0] || {}).prop) list.push('title')
       if (item.row) list.push('row')
       if (item.showOverflowTooltip) list.push('overHidden')
