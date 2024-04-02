@@ -17,7 +17,7 @@
             v-if="crud.getSlotName({prop:'menu'},'H',crud.$slots)"></slot>
       <span v-else>{{crud.tableOption.menuTitle || t('crud.menu')}}</span>
     </template>
-    <template #="{row,$index}">
+    <template #="{row,column,$index}">
       <div :class="b('menu')">
         <el-dropdown v-if="isMenu"
                      :size="crud.size">
@@ -52,6 +52,7 @@
                                 @click="crud.rowDel(row,$index)">{{crud.menuIcon('delBtn')}}</el-dropdown-item>
               <slot name="menuBtn"
                     :row="row"
+                    :column="column"
                     :type="menuText('primary')"
                     :disabled="crud.btnDisabled"
                     :size="crud.size"
@@ -158,6 +159,7 @@
         </template>
         <slot name="menu"
               :row="row"
+              :column="column"
               :type="menuText('primary')"
               :disabled="crud.btnDisabled"
               :size="crud.size"
@@ -172,7 +174,7 @@ import create from "core/create";
 import locale from "core/locale";
 import permission from 'common/directive/permission';
 import config from "../config.js";
-import tableItemCard from '../card/item'
+import tableItemCard from '../grid/item'
 export default create({
   name: "crud",
   data () {

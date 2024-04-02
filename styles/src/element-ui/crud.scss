@@ -283,6 +283,8 @@ $space-width: 15px;
   }
 
   &__grid {
+    overflow-y: auto;
+
     .el-col {
       padding: 10px;
       box-sizing: border-box;
