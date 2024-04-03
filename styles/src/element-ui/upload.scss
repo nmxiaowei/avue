@@ -35,6 +35,9 @@
       border-color: #409eff;
     }
   }
+  &__progress{
+    margin-top: 10px;
+  }
   &__dialog{
     .el-dialog__header{
       display: none;
