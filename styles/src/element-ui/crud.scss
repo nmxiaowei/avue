@@ -41,6 +41,9 @@ $space-width: 15px;
     .el-form-item__content {
       line-height: inherit;
       font-size: inherit;
+      .el-tooltip__trigger{
+        width: 100%;
+      }
     }
 
     .el-form-item__error {
