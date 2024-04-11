@@ -1,6 +1,10 @@
 import Main from './index.vue';
-import { createVNode, render } from 'vue';
-export default (function () {
+import {
+  createVNode,
+  render
+} from 'vue';
+export default function (app) {
+  let defaultContext = app._context
   return (datas = [], index = 0, ops = {}) => {
     let options = {
       datas: datas,
@@ -20,6 +24,7 @@ export default (function () {
     }
     const parent = document.createElement('div')
     let instance = createVNode(Main, options)
+    instance.appContext = defaultContext;
     instance.props.onDestroy = () => {
       render(null, parent)
     }
@@ -27,4 +32,4 @@ export default (function () {
     appendTo.appendChild(parent.firstElementChild);
     return instance;
   }
-})()
+}

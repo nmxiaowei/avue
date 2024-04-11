@@ -19,8 +19,11 @@
   height: 100%;
   transition: all 0.5s;
   z-index:9998;
+  svg{
+    width: 22px;
+  }
   .el-image-viewer__close{
-    i{
+    svg{
       color:#fff;
     }
   }

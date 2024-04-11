@@ -5,23 +5,17 @@
          @click="close"></div>
     <span class="el-image-viewer__btn el-image-viewer__close"
           @click="close">
-      <el-icon>
-        <close />
-      </el-icon>
+      <el-icon-close />
     </span>
     <span class="el-image-viewer__btn el-image-viewer__prev"
           @click="handlePrev()"
           v-if="isRrrow">
-      <el-icon>
-        <arrowLeft />
-      </el-icon>
+      <el-icon-arrow-left />
     </span>
     <span class="el-image-viewer__btn el-image-viewer__next"
           @click="handleNext()"
           v-if="isRrrow">
-      <el-icon>
-        <arrowRight />
-      </el-icon>
+      <el-icon-arrow-right />
     </span>
     <div :class="b('box')"
          ref="box">
@@ -51,9 +45,7 @@
                :id="'avue-image-preview__'+indexs"
                :class="b('file')">
             <span>
-              <el-icon>
-                <Document />
-              </el-icon>
+              <el-icon-document />
               <p>{{item.name || getName(item.url)}}</p>
             </span>
           </div>
@@ -62,23 +54,13 @@
     </div>
     <div class="el-image-viewer__btn el-image-viewer__actions">
       <div class="el-image-viewer__actions__inner">
-        <el-icon @click="subScale">
-          <zoomOut />
-        </el-icon>
-        <el-icon @click="addScale">
-          <zoomIn />
-        </el-icon>
+        <el-icon-zoom-out @click="subScale" />
+        <el-icon-zoom-in @click="addScale" />
         <i class="el-image-viewer__actions__divider"></i>
-        <el-icon @click="handlePrint">
-          <printer />
-        </el-icon>
+        <el-icon-printer @click="handlePrint" />
         <i class="el-image-viewer__actions__divider"></i>
-        <el-icon @click="rotate=rotate-90">
-          <refreshLeft />
-        </el-icon>
-        <el-icon @click="rotate=rotate+90">
-          <refreshRight />
-        </el-icon>
+        <el-icon-refresh-left @click="rotate=rotate-90" />
+        <el-icon-refresh-right @click="rotate=rotate+90" />
       </div>
     </div>
   </div>
@@ -86,26 +68,9 @@
 <script>
 import { setPx, isMediaType } from 'utils/util';
 import create from "core/create";
-import { defineAsyncComponent } from 'vue'
-import { Document, ArrowRight, ArrowLeft, Close, ZoomOut, ZoomIn, RefreshLeft, RefreshRight, Printer } from '@element-plus/icons-vue'
-import { ElIcon, ElCarousel, ElCarouselItem } from 'element-plus'
 import $Print from 'plugin/print/';
 export default create({
   name: "image-preview",
-  components: {
-    ElIcon,
-    ElCarousel,
-    ElCarouselItem,
-    Document,
-    ArrowRight,
-    ArrowLeft,
-    Close,
-    ZoomOut,
-    ZoomIn,
-    RefreshLeft,
-    RefreshRight,
-    Printer
-  },
   props: {
     datas: Array,
     index: [Number, String],
