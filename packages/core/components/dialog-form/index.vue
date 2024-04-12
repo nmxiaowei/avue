@@ -5,8 +5,7 @@
              class="avue-dialog"
              :beforeClose="beforeClose"
              v-bind="dialog">
-    <avue-form style="padding-top:20px"
-               ref="form"
+    <avue-form ref="form"
                :option="{...deepClone(option),...{menuBtn: false}}"
                v-model="data"
                v-model:status="disabled"
