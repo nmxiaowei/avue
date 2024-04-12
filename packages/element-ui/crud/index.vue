@@ -200,7 +200,7 @@ import { DIC_PROPS } from 'global/variable';
 import { getColumn } from 'utils/util'
 export default create({
   name: "crud",
-  mixins: [init(), locale],
+  mixins: [init('crud'), locale],
   directives: {
     permission
   },

@@ -386,15 +386,15 @@ $space-width: 15px;
     .selection {
       width: inherit;
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: -2px;
+      right: -8px;
     }
 
     .index {
       width: inherit;
       position: absolute;
       right: 20px;
-      top: 25px;
+      top: 18px;
 
       &:before {
         content: 'No';

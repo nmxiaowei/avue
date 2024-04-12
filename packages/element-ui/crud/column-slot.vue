@@ -54,7 +54,7 @@
                 :name="crud.getSlotName(column,'F')"
                 v-if="crud.getSlotName(column,'F',crud.$scopedSlots)"></slot>
           <form-temp v-else
-                     :column="column"
+                     :column="Object.assign(tableColumn,column)"
                      :size="crud.isMediumSize"
                      :table-data="{index:$index,row:row,label:handleDetail(row,column)}"
                      :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"

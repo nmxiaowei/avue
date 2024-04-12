@@ -1,12 +1,30 @@
-import components from './ui/index'
-import { version } from './version';
-import axios from 'axios'
-import { validatenull } from 'utils/validate.js';
-import { randomId, deepClone, dataURLtoFile, findObject, vaildData, findArray, findNode, setPx, isJson, downFile, loadScript } from 'utils/util';
+import components from './ui/index';
+import {
+  version
+} from './version';
+import axios from 'axios';
+import {
+  validatenull
+} from 'utils/validate.js';
+import {
+  randomId,
+  deepClone,
+  dataURLtoFile,
+  findObject,
+  vaildData,
+  findArray,
+  findNode,
+  setPx,
+  isJson,
+  downFile,
+  loadScript
+} from 'utils/util';
 import dialogDrag from 'packages/core/directive/dialog-drag';
 import contextmenu from 'packages/core/directive/contextmenu';
 import $Export from 'plugin/export/';
-import { watermark } from 'plugin/canvas/';
+import {
+  watermark
+} from 'plugin/canvas/';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Screenshot from 'plugin/screenshot/';
@@ -45,13 +63,15 @@ let prototypes = {
 let directive = {
   dialogDrag,
   contextmenu
-}
+};
 const install = function (Vue, opts = {}) {
   if (opts.theme === 'dark') document.documentElement.className = 'avue-theme--dark';
   const defaultOption = {
     size: opts.size || 'small',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
+    formOption: opts.formOption || {},
+    crudOption: opts.crudOption || {},
     modalAppendToBody: vaildData(opts.modalAppendToBody, true),
     appendToBody: vaildData(opts.appendToBody, true),
     canvas: Object.assign({
@@ -80,7 +100,7 @@ const install = function (Vue, opts = {}) {
       accessKeySecret: '',
       bucket: ''
     }, (opts.ali || {}))
-  }
+  };
   Vue.prototype.$AVUE = Object.assign(opts, defaultOption);
   Object.keys(components).forEach(ele => {
     const component = components[ele];
@@ -127,4 +147,4 @@ export default {
     install
   },
   ...components
-}
+};

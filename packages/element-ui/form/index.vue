@@ -191,7 +191,7 @@ import config from "./config.js";
 let count = {}
 export default create({
   name: "form",
-  mixins: [init()],
+  mixins: [init('form')],
   components: {
     formTemp,
     formMenu

@@ -30,10 +30,12 @@
               <template v-else>
                 <row-item :content="item.header"
                           :row="c"
+                          :column="item"
                           :index="p"
                           :class="[b('label'),item.labelClassName]"></row-item>
                 <row-item :content="item.default"
                           :row="c"
+                          :column="item"
                           :index="p"
                           :class="[b('value'),item.className]"></row-item>
               </template>

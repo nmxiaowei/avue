@@ -1,7 +1,14 @@
-import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
-import { DIC_PROPS } from 'global/variable';
+import {
+  sendDic,
+  loadDic,
+  loadCascaderDic,
+  loadLocalDic
+} from 'core/dic';
+import {
+  DIC_PROPS
+} from 'global/variable';
 import slot from 'core/slot'
-export default function () {
+export default function (name) {
   return {
     mixins: [slot],
     props: {
@@ -21,19 +28,19 @@ export default function () {
     },
     watch: {
       defaults: {
-        handler (val) {
+        handler(val) {
           this.objectOption = val;
         },
         deep: true
       },
       objectOption: {
-        handler (val) {
+        handler(val) {
           this.$emit('update:defaults', val)
         },
         deep: true
       },
       propOption: {
-        handler (list) {
+        handler(list) {
           let result = {}
           list.forEach(ele => {
             result[ele.prop] = ele
@@ -44,13 +51,13 @@ export default function () {
         deep: true,
       },
       option: {
-        handler () {
+        handler() {
           this.init(false);
         },
         deep: true,
       },
     },
-    data () {
+    data() {
       return {
         DIC: {},
         cascaderDIC: {},
@@ -59,11 +66,11 @@ export default function () {
         objectOption: {}
       };
     },
-    created () {
+    created() {
       this.init();
     },
     computed: {
-      resultOption () {
+      resultOption() {
         return {
           ...this.tableOption,
           ...{
@@ -71,10 +78,10 @@ export default function () {
           }
         }
       },
-      rowKey () {
+      rowKey() {
         return this.tableOption.rowKey || DIC_PROPS.rowKey;
       },
-      formRules () {
+      formRules() {
         let result = {};
         this.propOption.forEach(ele => {
           if (ele.rules && ele.display !== false)
@@ -82,31 +89,32 @@ export default function () {
         });
         return result;
       },
-      isMediumSize () {
+      isMediumSize() {
         return this.controlSize;
       },
-      controlSize () {
+      controlSize() {
         return this.tableOption.size || this.$AVUE.size;
       }
     },
     methods: {
-      init (type) {
-        this.tableOption = this.option;
+      init(type) {
+        let option = Object.assign(this.$AVUE[`${name}Option`], this.option)
+        this.tableOption = option;
         this.getIsMobile();
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },
-      dicInit (type) {
+      dicInit(type) {
         if (type === 'cascader') {
           this.handleLoadCascaderDic()
         } else {
           this.handleLoadDic();
         }
       },
-      getIsMobile () {
+      getIsMobile() {
         this.isMobile = document.body.clientWidth <= 768;
       },
-      updateDic (prop, list) {
+      updateDic(prop, list) {
         let column = this.findObject(this.propOption, prop);
         if (this.validatenull(list) && this.validatenull(prop)) {
           this.handleLoadDic();
@@ -121,15 +129,15 @@ export default function () {
         }
       },
       //本地字典
-      handleLocalDic () {
+      handleLocalDic() {
         loadLocalDic(this.resultOption, this)
       },
       // 网络字典加载
-      handleLoadDic () {
+      handleLoadDic() {
         loadDic(this.resultOption, this)
       },
       //级联字典加载
-      handleLoadCascaderDic () {
+      handleLoadCascaderDic() {
         loadCascaderDic(this.propOption, this)
       }
     }
