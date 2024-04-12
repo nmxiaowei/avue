@@ -1,9 +1,24 @@
-
 import components from './ui/index';
-import { version } from './version';
+import {
+  version
+} from './version';
 import axios from 'axios';
-import { validatenull } from 'utils/validate.js';
-import { randomId, deepClone, dataURLtoFile, findObject, validData, findArray, findNode, setPx, sortArrys, isJson, downFile, loadScript } from 'utils/util';
+import {
+  validatenull
+} from 'utils/validate.js';
+import {
+  randomId,
+  deepClone,
+  dataURLtoFile,
+  findObject,
+  validData,
+  findArray,
+  findNode,
+  setPx,
+  isJson,
+  downFile,
+  loadScript
+} from 'utils/util';
 import contextmenu from 'packages/core/directive/contextmenu';
 import $Export from 'plugin/export/';
 import $Watermark from 'plugin/watermark/';
@@ -13,8 +28,10 @@ import $Screenshot from 'plugin/screenshot/';
 import $Clipboard from 'plugin/clipboard/';
 import $Print from 'plugin/print/';
 import $ImagePreview from 'packages/core/components/image-preview/';
+import $DialogForm from 'packages/core/components/dialog-form/';
 import createIcon from './icon';
 let plugins = {
+  $DialogForm,
   $ImagePreview,
   $Export,
   $Print,
@@ -44,6 +61,8 @@ const install = function (Vue, opts = {}) {
     size: opts.size || 'default',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
+    formOption: opts.formOption || {},
+    crudOption: opts.crudOption || {},
     appendToBody: validData(opts.appendToBody, true),
     canvas: Object.assign({
       text: 'avuejs.com',
@@ -79,7 +98,12 @@ const install = function (Vue, opts = {}) {
   });
   createIcon(Vue);
   Object.keys(plugins).forEach((key) => {
-    Vue.config.globalProperties[key] = plugins[key];
+    if (['$DialogForm', '$ImagePreview'].includes(key)) {
+      Vue.config.globalProperties[key] = plugins[key](Vue);
+    } else {
+      Vue.config.globalProperties[key] = plugins[key];
+    }
+
   });
   Object.keys(directive).forEach((key) => {
     Vue.directive(key, directive[key]);
