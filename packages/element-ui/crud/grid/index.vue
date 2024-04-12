@@ -28,12 +28,12 @@
                 <el-checkbox :label="p">&nbsp;</el-checkbox>
               </span>
               <template v-else>
-                <template v-for="(comp,cindex) in item.header && item.header({row:c,$index:p})"
+                <template v-for="(comp,cindex) in item.header && item.header({row:c,$index:p,column:item})"
                           :key="cindex">
                   <component :class="[b('label'),item.labelClassName]"
                              :is="comp"></component>
                 </template>
-                <template v-for="(comp,cindex) in item.default &&item.default({row:c,$index:p})"
+                <template v-for="(comp,cindex) in item.default &&item.default({row:c,$index:p,column:item})"
                           :key="cindex">
                   <div :class="[b('value'),item.className]">
                     <component :is="comp"></component>
@@ -141,9 +141,9 @@ export default create({
       let list = []
       if (this.cellClassName) list.push(this.cellClassName(item, column))
       const columnOption = this.crud.columnOption || []
-      if (item.prop == (columnOption[0] || {}).prop) list.push('title')
-      if (item.row) list.push('row')
-      if (item.showOverflowTooltip) list.push('overHidden')
+      if (column.prop == (columnOption[0] || {}).prop) list.push('title')
+      if (column.row) list.push('row')
+      if (column.showOverflowTooltip) list.push('overHidden')
       return list;
     }
   }

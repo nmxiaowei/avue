@@ -256,7 +256,7 @@ $space-width: 15px;
 
     &__menu {
       position: absolute;
-      right: -5px;
+      right: 25px;
       z-index: 1;
 
       i {
@@ -362,14 +362,14 @@ $space-width: 15px;
     .selection {
       width: inherit;
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: -2px;
+      right: -8px;
     }
     .index {
       width: inherit;
       position: absolute;
       right: 20px;
-      top: 25px;
+      top: 18px;
 
       &:before {
         content: 'No';
@@ -395,7 +395,7 @@ $space-width: 15px;
     }
 
     .menu {
-      margin-top: 5px;
+      margin-top: 8px;
       width: 100%;
       justify-content: flex-end;
       text-align: right;

@@ -231,8 +231,11 @@ body {
   max-height: calc(100% - 200px);
   max-width: calc(100% - 100px);
   display: flex;
+  padding:0;
   flex-direction: column;
-
+  .el-dialog__header{
+    padding: 16px;
+  }
   .el-dialog__header,
   .el-drawer__header {
     border-bottom: 1px solid #f0f0f0;
