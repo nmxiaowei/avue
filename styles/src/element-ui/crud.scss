@@ -287,9 +287,18 @@ $space-width: 15px;
 
   &__grid {
     overflow-y: auto;
-
+    .el-switch{
+      height: 22px;
+    }
+    .el-switch__core{
+      height: 16px;
+    }
+   .el-switch__action{
+      height: 14px;
+    }
     .el-col {
       padding: 10px;
+      padding-left:0;
       box-sizing: border-box;
     }
 

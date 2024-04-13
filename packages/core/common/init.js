@@ -91,7 +91,11 @@ export default function (name) {
     },
     methods: {
       init(type) {
-        let option = Object.assign(this.$AVUE[`${name}Option`], this.option)
+        let globOption = this.deepClone(this.$AVUE[`${name}Option`])
+        let option = {
+          ...globOption,
+          ...this.option
+        }
         this.tableOption = this.deepClone(option);
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
