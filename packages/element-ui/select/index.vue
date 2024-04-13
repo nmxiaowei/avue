@@ -231,7 +231,7 @@ export default create({
         packages.logs('Sortable');
         return
       }
-      const el = this.$refs.main.$el.querySelectorAll('.el-select__tags > span')[0]
+      const el = this.$refs.main.$el.querySelectorAll('.el-select__selection')[0]
       this.sortable = window.Sortable.create(el, {
         animation: 100,
         onEnd: evt => {

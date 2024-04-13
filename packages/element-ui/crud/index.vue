@@ -179,8 +179,8 @@ import packages from "core/packages";
 import locale from "core/locale";
 import permission from 'common/directive/permission';
 import init from "common/common/init.js";
-import tableCard from './card/index'
-import tableItemCard from './card/item'
+import tableCard from './grid/index'
+import tableItemCard from './grid/item'
 import tablePage from "./menu/table-page";
 import headerSearch from "./menu/header-search";
 import headerMenu from "./menu/header-menu";
@@ -198,7 +198,7 @@ import { CommonProps } from "element-plus";
 import { getColumn } from 'utils/util'
 export default create({
   name: "crud",
-  mixins: [init(), locale],
+  mixins: [init('crud'), locale],
   emits: [
     'update:modelValue',
     'tree-load',
@@ -594,10 +594,10 @@ export default create({
       this.$emit("refresh-change");
     },
     // 选中实例
-    toggleSelection (rows) {
+    toggleSelection (rows, checked) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.table.toggleRowSelection(row);
+          this.$refs.table.toggleRowSelection(row, checked);
         });
       } else {
         this.$refs.table.clearSelection();

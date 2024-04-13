@@ -197,7 +197,7 @@ import mock from "utils/mock";
 import config from "./config.js";
 export default create({
   name: "form",
-  mixins: [init()],
+  mixins: [init('form')],
   emits: [
     'update:modelValue',
     'update:status',

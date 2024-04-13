@@ -10,39 +10,39 @@ export const detail = (row = {}, column = {}, option = {}, dic = []) => {
   if (column.bind) result = getAsVal(row, column.bind);
   if (!validatenull(result)) {
     let selectFlag = MULTIPLE_LIST.includes(column.type) && column.multiple;
-    let arrayFlag = ARRAY_VALUE_LIST.includes(column.type) && column.emitPath !== false
-    if ((selectFlag || arrayFlag) && !Array.isArray(result) && !column.dataType) column.dataType = 'string'
+    let arrayFlag = ARRAY_VALUE_LIST.includes(column.type) && column.emitPath !== false;
+    if ((selectFlag || arrayFlag) && !Array.isArray(result) && !column.dataType) column.dataType = 'string';
     if (column.dataType) {
       if (selectFlag || arrayFlag) {
         if (!Array.isArray(result)) {
           if (column.dataType == 'json') {
-            result = JSON.parse(result)
+            result = JSON.parse(result);
           } else {
-            result = result.split(separator || DIC_SPLIT)
+            result = result.split(separator || DIC_SPLIT);
           }
         }
         result.forEach(ele => {
-          ele = detailDataType(ele, column.dataType)
-        })
+          ele = detailDataType(ele, column.dataType);
+        });
       } else {
-        result = detailDataType(result, column.dataType)
+        result = detailDataType(result, column.dataType);
       }
     }
-    if ('password' === type) {
+    if (type === 'password') {
       result = getPasswordChar(result, '*');
     } else if (DATE_LIST.includes(type) && column.format) {
-      const format = column.format
+      const format = column.format;
       let formatValue = dayjs().format('YYYY-MM-DD');
       if (type.indexOf('range') !== -1) {
-        let date1 = result[0] || '', date2 = result[1] || ''
-        if (type === 'timerange' && date1.length <= 8 && date2.length < 8) {
-          date1 = `${formatValue} ${date1}`
-          date2 = `${formatValue} ${date2}`
+        let [date1 = '', date2 = ''] = result;
+        if (type === 'timerange') {
+          date1 = `${formatValue} ${date1}`;
+          date2 = `${formatValue} ${date2}`;
         }
-        result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~')
+        result = [dayjs(date1).format(format), dayjs(date2).format(format)].join(column.separator || '~');
       } else {
-        if (type === 'time' && result.length <= 8) {
-          result = `${formatValue} ${result}`
+        if (type === 'time') {
+          result = `${formatValue} ${result}`;
         }
         result = dayjs(result).format(format);
       }

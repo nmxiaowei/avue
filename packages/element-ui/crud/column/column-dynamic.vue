@@ -43,7 +43,7 @@
 
 <script>
 import columnSlot from './column-slot'
-import tableItemCard from '../card/item'
+import tableItemCard from '../grid/item'
 export default {
   name: 'column-dynamic',
   components: {

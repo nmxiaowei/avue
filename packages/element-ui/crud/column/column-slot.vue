@@ -30,7 +30,7 @@
             v-bind="{column,$index}"></slot>
       <span v-else>{{column.label}}</span>
     </template>
-    <template #="{row,$index}">
+    <template #="{row,column:tableColumn,$index}">
       <el-form-item :prop="crud.isTree?'':`list.${$index}.${column.prop}`"
                     :label="validLabel(column,row,' ')"
                     v-if="row.$cellEdit && column.cell"
@@ -42,6 +42,7 @@
           <div>
             <slot v-bind="{
                       row:row,
+                      column:Object.assign(tableColumn,column),
                       dic:crud.DIC[column.prop],
                       size:crud.size,
                       index:$index,
@@ -74,6 +75,7 @@
         </el-tooltip>
       </el-form-item>
       <slot :row="row"
+            :column="Object.assign(tableColumn,column)"
             :index="$index"
             :dic="crud.DIC[column.prop]"
             :size="crud.size"
@@ -126,7 +128,7 @@ import { sendDic } from "core/dic";
 import { isMediaType, blankVal } from "utils/util";
 import formTemp from 'common/components/form/index'
 import iconTemp from 'common/components/icon/index'
-import tableItemCard from '../card/item'
+import tableItemCard from '../grid/item'
 export default {
   name: 'column-slot',
   inject: ["dynamic", 'crud'],
