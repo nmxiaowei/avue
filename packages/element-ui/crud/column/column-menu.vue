@@ -50,7 +50,7 @@
                                 v-if="validData(crud.tableOption.delBtn,config.delBtn)"
                                 v-permission="crud.getPermission('delBtn',row,$index)"
                                 @click="crud.rowDel(row,$index)">{{crud.menuIcon('delBtn')}}</el-dropdown-item>
-              <slot name="menuBtn"
+              <slot name="menu-btn"
                     :row="row"
                     :column="column"
                     :type="menuText('primary')"
