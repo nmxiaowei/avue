@@ -20,7 +20,7 @@
   <div id="app">
     <ul>
       <li v-for="(item,index) in list" :key="index" class="el-dropdown-menu__item"
-        v-contextmenu="{id:'dialog',event:handleEvent,value:item}">
+        v-contextmenu="{id:'dialog',event:handleEvent,value:item,hide:handleHide}">
         {{item.name}}
       </li>
     </ul>
@@ -49,7 +49,7 @@
 <script>
   new Vue({
     el: '#app',
-    data() {
+    data () {
       return {
         form: {},
         list: [{
@@ -61,27 +61,30 @@
         }]
       }
     },
-    created() {
+    created () {
       setTimeout(() => {
         this.list[0].name = 'small'
       }, 1000)
     },
     methods: {
-      handleEvent(row, done) {
+      handleHide (row, e) {
+        this.$message.success('回调信息' + JSON.stringify(row))
+      },
+      handleEvent (row, done) {
         this.form = row;
         done();
         this.$message.success('回调信息' + JSON.stringify(row))
       },
-      handleClick1() {
+      handleClick1 () {
         this.$message.success('菜单1' + JSON.stringify(this.form))
       },
-      handleClick2() {
+      handleClick2 () {
         this.$message.success('菜单2' + JSON.stringify(this.form))
       },
-      handleClick3() {
+      handleClick3 () {
         this.$message.success('菜单3' + JSON.stringify(this.form))
       },
-      handleClick4() {
+      handleClick4 () {
         this.$message.success('菜单4' + JSON.stringify(this.form))
       },
     }
