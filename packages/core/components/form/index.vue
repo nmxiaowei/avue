@@ -125,11 +125,7 @@ export default {
   },
   methods: {
     getComponent (column) {
-      if (column.render) {
-        return 'custom'
-      } else {
-        return getComponent(column.type, column.component)
-      }
+      return column.render ? 'custom' : getComponent(column.type, column.component)
     },
     getPlaceholder,
     enterChange () {
