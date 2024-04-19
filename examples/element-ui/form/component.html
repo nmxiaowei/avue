@@ -19,22 +19,29 @@
 
 <body>
   <div id="app">
-    <avue-form v-model="form" :option="option" @submit="submit">
-
-    </avue-form>
+    {{form}}
+    <avue-form v-model="form" :option="option"></avue-form>
   </div>
 </body>
 <script>
   new Vue({
     el: '#app',
-    data() {
+    data () {
       return {
-        obj: {},
+        form: {},
         option: {
           column: [
             {
               label: '文本1',
-              prop: 'text1'
+              prop: 'text1',
+              render: (h, params) => {
+                return h('div',
+                  {
+                    attrs: { id: 'box' },
+                    class: { 'demo': true },
+                    style: { color: 'pink' }
+                  }, 'Hello World')
+              }
             },
             {
               label: '',
