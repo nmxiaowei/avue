@@ -188,9 +188,8 @@ export default create({
           if (this.isMultiple) {
             let ids = this.object.map(ele => ele[this.valueKey])
             let data = this.data.filter(ele => ids.includes(ele[this.valueKey]))
-            console.log(data)
             this.$nextTick(() => {
-              this.$refs.crud.toggleSelection(data);
+              this.$refs.crud.toggleSelection(data, true);
             })
           } else {
             let active = this.data.find(ele => ele[this.valueKey] == this.text)

@@ -7,6 +7,7 @@ export default {
   props: {
     className: String,
     labeClassName: String,
+    showOverflowTooltip: Boolean,
     gridRow: Boolean,
     prop: String,
     type: String,
@@ -25,6 +26,7 @@ export default {
     this.parent.column.push({
       className: this.className,
       labeClassName: this.labeClassName,
+      showOverflowTooltip: this.showOverflowTooltip,
       row: this.gridRow,
       label: this.label,
       prop: this.prop,

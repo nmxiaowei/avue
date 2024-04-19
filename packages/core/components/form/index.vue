@@ -1,12 +1,13 @@
 <template>
-  <component :is="getComponent(column.type,column.component)"
+  <component :is="getComponent(column)"
              v-model="text"
-             v-bind="Object.assign(column,$uploadFun(column))"
+             v-bind="Object.assign(column,params,$uploadFun(column))"
              v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"
              :box-type="boxType"
              ref="temp"
+             :render="column.render"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
              :placeholder="getPlaceholder(column)"
@@ -35,10 +36,14 @@
 
 <script>
 import { getComponent, getPlaceholder } from "core/dataformat";
+import custom from "./custom";
 import slot from 'core/slot'
 export default {
   name: 'form-temp',
   mixins: [slot],
+  components: {
+    custom
+  },
   props: {
     value: {},
     uploadBefore: Function,
@@ -119,7 +124,9 @@ export default {
     }
   },
   methods: {
-    getComponent,
+    getComponent (column) {
+      return column.render ? 'custom' : getComponent(column.type, column.component)
+    },
     getPlaceholder,
     enterChange () {
       if (typeof this.column.enter === 'function') {

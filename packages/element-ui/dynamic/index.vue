@@ -197,7 +197,8 @@ export default create({
       return getColumn(this.children.column)
     },
     option () {
-      return Object.assign({
+      // 默认选项
+      let options = {
         boxType: this.boxType,
         border: true,
         header: false,
@@ -205,36 +206,50 @@ export default create({
         size: this.size,
         disabled: this.disabled,
         readonly: this.readonly,
-        emptyBtn: false,
-        submitBtn: false,
-      }, (() => {
-        let option = this.deepClone(this.children)
-        delete option.column;
-        return option;
-      })(), (() => {
-        let list = [{
-          label: this.children.indexLabel || '#',
-          prop: '_index',
-          display: this.showIndex,
-          hide: !this.showIndex,
-          fixed: true,
-          align: 'center',
-          headerAlign: 'center',
-          span: 24,
-          width: 50
-        }];
-        this.columnOption.forEach(ele => {
-          list.push(Object.assign(ele, {
-            hide: this.vaildData(ele.hide, !this.vaildParams(ele, 'display', true)),
-            disabled: this.vaildParams(ele, 'disabled', false),
-            detail: this.vaildParams(ele, 'detail', false),
-            cell: this.vaildData(ele.cell, this.isCrud)
-          }))
+        menuBtn: false,
+      };
+
+      // 处理子选项
+      let childOptions = this.deepClone(this.children);
+      delete childOptions.column;
+
+      let columnOption = this.deepClone(this.columnOption);
+      const callback = (list) => {
+        list.forEach((ele, index) => {
+          if (ele.children) callback(ele.children)
+          else {
+            list[index] = {
+              ...ele,
+              ...{
+                hide: this.vaildData(ele.hide, !this.vaildParams(ele, 'display', true)),
+                disabled: this.vaildParams(ele, 'disabled', false),
+                detail: this.vaildParams(ele, 'detail', false),
+                cell: this.vaildData(ele.cell, this.isCrud)
+              }
+            }
+          }
         })
-        return {
-          column: list
-        }
-      })())
+      }
+      callback(columnOption)
+      // 处理列选项
+      columnOption.unshift({
+        label: this.children.indexLabel || '#',
+        prop: '_index',
+        display: this.showIndex,
+        hide: !this.showIndex,
+        fixed: true,
+        align: 'center',
+        headerAlign: 'center',
+        span: 24,
+        width: 60
+      })
+
+      // 返回合并后的选项对象
+      return {
+        ...options,
+        ...{ column: columnOption },
+        ...childOptions
+      };
     }
   },
   mounted () {

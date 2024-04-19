@@ -313,6 +313,8 @@ $space-width: 15px;
   }
 
   &__grid {
+    overflow-y: auto;
+
     .el-col {
       padding: 10px;
       box-sizing: border-box;
@@ -325,31 +327,48 @@ $space-width: 15px;
       display: flex;
       flex-wrap: wrap;
       padding: 20px 20px 10px 20px;
-      background: linear-gradient(to bottom, rgba(88, 159, 248, 0.1), white);
-      border: 1px solid #fdfdfd;
+      background-size: cover;
+      border: 1px solid #fafafa;
     }
 
     &__item {
       box-sizing: border-box;
       padding-right: 5px;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
       width: 50%;
       line-height: 20px;
       font-size: 12px;
       color: #666;
+      display: flex;
+      align-items: flex-start
     }
 
     &__label {
       position: relative;
       margin-right: 10px;
+      font-weight: 450;
+      color: #333;
+      flex: 0 0 auto;
+      white-space: nowrap;
 
       &::after {
-        content: ' :'
+        position: absolute;
+        right: -3px;
+        content: ':'
       }
     }
 
     &__value {
       display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .overHidden {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .title,
@@ -364,11 +383,18 @@ $space-width: 15px;
       width: 100%;
     }
 
+    .selection {
+      width: inherit;
+      position: absolute;
+      top: 1px;
+      right: -8px;
+    }
+
     .index {
       width: inherit;
       position: absolute;
       right: 20px;
-      top: 20px;
+      top: 18px;
 
       &:before {
         content: 'No';
@@ -378,12 +404,13 @@ $space-width: 15px;
     }
 
     .title {
-      width: 100%;
-      margin-bottom: 10px;
+      width: 80%;
+      margin-bottom: 12px;
 
       .avue-crud__grid__value {
         font-size: 16px;
         font-weight: bold;
+        line-height: 22px;
         color: #333;
       }
     }
@@ -393,9 +420,10 @@ $space-width: 15px;
     }
 
     .menu {
+      margin-top: 8px;
       width: 100%;
+      justify-content: flex-end;
       text-align: right;
-
     }
 
 
