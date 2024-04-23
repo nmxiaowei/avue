@@ -172,7 +172,7 @@
                  destroy-on-close
                  :append-to-body="$AVUE.appendToBody"
                  :before-close="handleClose"
-                 custom-class="web__dialog">
+                 class="web__dialog">
         <img :src="imgSrc"
              v-if="imgSrc"
              style="width:100%;object-fit: cover;">
