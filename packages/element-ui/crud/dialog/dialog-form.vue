@@ -129,6 +129,7 @@ export default create({
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
+      option.column.forEach(ele => { if (ele.renderForm) ele.render = ele.renderForm })
       option.menuBtn = false;
       if (this.isAdd) {
         option.submitBtn = option.saveBtn;

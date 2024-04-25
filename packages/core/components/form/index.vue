@@ -9,7 +9,7 @@
              ref="temp"
              :row="row"
              :index="index"
-             :render="column.renderForm"
+             :render="render"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
              :placeholder="getPlaceholder(column)"
@@ -57,6 +57,7 @@ export default {
     uploadExceed: Function,
     boxType: String,
     row: Object,
+    render: Function,
     index: [String, Number],
     columnSlot: {
       type: Array,
@@ -130,7 +131,7 @@ export default {
   },
   methods: {
     getComponent (column) {
-      return column.renderForm ? 'custom' : getComponent(column.type, column.component)
+      return this.render ? 'custom' : getComponent(column.type, column.component)
     },
     getPlaceholder,
     getBind (column) {

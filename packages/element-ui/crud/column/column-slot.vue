@@ -57,6 +57,7 @@
                        :size="crud.size"
                        :index="$index"
                        :row="row"
+                       :render="column.renderForm"
                        :table-data="{index:$index,row:row,label:handleDetail(row,column)}"
                        :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
                        :props="column.props || crud.tableOption.props"

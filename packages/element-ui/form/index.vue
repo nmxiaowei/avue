@@ -134,6 +134,7 @@
                                  :dic="DIC[column.prop]"
                                  :props="tableOption.props"
                                  :propsHttp="tableOption.propsHttp"
+                                 :render="column.render"
                                  :readonly="column.readonly || readonly"
                                  v-bind="$uploadFun(column)"
                                  :disabled="getDisabled(column)"
