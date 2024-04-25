@@ -1,5 +1,5 @@
 <template>
-  <component :is="getComponent(column.type,column.component)"
+  <component :is="getComponent(column)"
              v-model="text"
              v-bind="getBind(column)"
              v-on="event"
@@ -7,6 +7,9 @@
              :dic="dic"
              :box-type="boxType"
              ref="temp"
+             :row="row"
+             :index="index"
+             :render="column.renderForm"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
              :placeholder="getPlaceholder(column)"
@@ -34,12 +37,16 @@
 </template>
 
 <script>
+import custom from "./custom";
 import { getComponent, getPlaceholder } from "core/dataformat";
 import slot from 'core/slot'
 export default {
   name: 'form-temp',
   mixins: [slot],
   emits: ['update:modelValue', 'change'],
+  components: {
+    custom
+  },
   props: {
     modelValue: {},
     uploadBefore: Function,
@@ -49,6 +56,8 @@ export default {
     uploadError: Function,
     uploadExceed: Function,
     boxType: String,
+    row: Object,
+    index: [String, Number],
     columnSlot: {
       type: Array,
       default: () => {
@@ -120,10 +129,12 @@ export default {
     }
   },
   methods: {
-    getComponent,
+    getComponent (column) {
+      return column.renderForm ? 'custom' : getComponent(column.type, column.component)
+    },
     getPlaceholder,
     getBind (column) {
-      let params = { ...column, ...this.$uploadFun(column) };
+      let params = { ...column, ...params, ...this.$uploadFun(column) };
       ['value', 'className'].forEach(ele => {
         delete params[ele]
       })
