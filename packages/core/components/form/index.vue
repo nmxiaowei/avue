@@ -7,7 +7,9 @@
              :dic="dic"
              :box-type="boxType"
              ref="temp"
-             :render="column.render"
+             :render="render"
+             :row="row"
+             :index="index"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
              :placeholder="getPlaceholder(column)"
@@ -53,6 +55,9 @@ export default {
     uploadError: Function,
     uploadExceed: Function,
     boxType: String,
+    row: Object,
+    render: Function,
+    index: [String, Number],
     columnSlot: {
       type: Array,
       default: () => {
@@ -125,7 +130,7 @@ export default {
   },
   methods: {
     getComponent (column) {
-      return column.render ? 'custom' : getComponent(column.type, column.component)
+      return this.render ? 'custom' : getComponent(column.type, column.component)
     },
     getPlaceholder,
     enterChange () {

@@ -60,6 +60,9 @@
                      :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"
                      :props="column.props || crud.tableOption.props"
                      :readonly="column.readonly"
+                     :row="row"
+                     :index="$index"
+                     :render="column.renderForm"
                      :disabled="crud.disabled || crud.tableOption.disabled || column.disabled  || crud.btnDisabledList[$index]"
                      :clearable="vaildData(column.clearable,false)"
                      v-bind="$uploadFun(column,crud)"
@@ -75,6 +78,13 @@
           </form-temp>
         </el-tooltip>
       </el-form-item>
+      <custom v-else-if="column.render"
+              :column="column"
+              :row="row"
+              :index="$index"
+              :render="column.render"
+              :event="column.event"
+              :params="column.params"></custom>
       <slot :row="row"
             :column="Object.assign(tableColumn,column)"
             :index="$index"
@@ -130,6 +140,7 @@ import { detail } from "core/detail";
 import { DIC_PROPS, DIC_SPLIT, DIC_SHOW_SPLIT, typeList } from 'global/variable'
 import { sendDic } from "core/dic";
 import { isMediaType, blankVal } from "utils/util";
+import custom from 'common/components/form/custom'
 import formTemp from 'common/components/form/index'
 import iconTemp from 'common/components/icon/index'
 import tableGridColumn from './grid/column'
@@ -137,6 +148,7 @@ export default {
   name: 'column-slot',
   inject: ["dynamic", 'crud'],
   components: {
+    custom,
     tableGridColumn,
     formTemp,
     iconTemp
