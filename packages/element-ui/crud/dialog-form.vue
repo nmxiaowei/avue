@@ -49,6 +49,14 @@
       </avue-form>
       <span class="avue-dialog__footer"
             :class="'avue-dialog__footer--'+dialogMenuPosition">
+        <el-button v-if="validData(option.mockBtn,false) && !isView"
+                   type="primary"
+                   @click="($refs.tableForm || {}).handleMock"
+                   :loading="disabled"
+                   :size="crud.size"
+                   :icon="option.mockIcon">
+          {{option.mockText}}
+        </el-button>
         <el-button v-if="vaildData(option.submitBtn,true) && !isView"
                    @click="submit"
                    :loading="disabled"
@@ -115,6 +123,9 @@ export default create({
       } else if (this.isView) {
         option.detail = true;
       }
+      option.mockIcon = this.crud.getBtnIcon('mockBtn')
+      option.mockText = this.crud.menuIcon('mockBtn')
+
       option.emptyBtn = option.cancelBtn;
       option.emptyText = this.crud.menuIcon('cancelBtn')
       option.emptyIcon = this.crud.getBtnIcon('cancelBtn')
