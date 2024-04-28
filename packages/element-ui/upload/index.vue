@@ -209,6 +209,7 @@ export default create({
   mixins: [props(), event(), locale],
   data () {
     return {
+      uploadCacheList: [],
       uploadList: [],
       res: '',
       menu: false,
@@ -440,14 +441,14 @@ export default create({
     },
     handleFileChange (file, fileList) {
       fileList.pop();
-      this.uploadList.push(file)
+      this.uploadCacheList.push(file)
     },
     httpUpload (config) {
       let { file } = config;
-      const fileIndex = this.uploadList.findIndex(ele => ele.raw === file);
-      const fileState = fileIndex !== -1 ? this.uploadList[fileIndex] : null;
+      const fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
+      const fileState = fileIndex !== -1 ? this.uploadCacheList[fileIndex] : null;
       if (typeof this.httpRequest === "function") {
-        if (fileState) this.uploadList.splice(fileIndex, 1)
+        if (fileState) this.uploadCacheList.splice(fileIndex, 1)
         this.httpRequest(config)
         return
       }
@@ -563,6 +564,8 @@ export default create({
           }).then(handleUploadResult).catch(handleUploadError);
         };
         const callback = (newFile) => {
+          let list = this.uploadCacheList.splice(0, this.uploadCacheList.length)
+          this.uploadList = this.uploadList.concat(list)
           uploadFile = newFile || file;
           param.append(this.fileName, uploadFile);
           if (this.isCosOss) {
