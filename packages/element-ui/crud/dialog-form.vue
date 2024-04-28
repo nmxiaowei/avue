@@ -49,7 +49,7 @@
       </avue-form>
       <span class="avue-dialog__footer"
             :class="'avue-dialog__footer--'+dialogMenuPosition">
-        <el-button v-if="validData(option.mockBtn,false) && !isView"
+        <el-button v-if="vaildData(option.mockBtn,false) && !isView"
                    type="primary"
                    @click="($refs.tableForm || {}).handleMock"
                    :loading="disabled"
