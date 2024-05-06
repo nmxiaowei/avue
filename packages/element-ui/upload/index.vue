@@ -26,7 +26,7 @@
       <div :class="b('avatar')"
            v-else-if="listType=='picture-img'">
         <el-progress type="circle"
-                     @mouseover="handleMouseover"
+                     @mouseover.native="handleMouseover"
                      :percentage="firstFile.percentage"
                      v-if="showProgress(firstFile)"></el-progress>
         <div v-else
