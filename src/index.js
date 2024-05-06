@@ -137,5 +137,6 @@ export default {
     locale,
     install
   },
-  ...components
+  ...components,
+  ...plugins
 };
