@@ -23,13 +23,14 @@
         <el-icon-plus />
       </el-icon>
     </template>
-    <template v-else-if="listType=='picture-img'">
+    <div :class="b('avatar')"
+         v-else-if="listType=='picture-img'">
       <el-progress type="circle"
                    @mouseover="handleMouseover"
-                   @mouseout="handleMouseout"
-                   :percentage="firstFile.percentage"
-                   v-if="showProgress(firstFile)"></el-progress>
-      <div :element-loading-text="loadText"
+                   v-if="showProgress(firstFile)"
+                   :percentage="firstFile.percentage"></el-progress>
+      <div v-else
+           :element-loading-text="loadText"
            v-loading.lock="firstFile.loading">
         <template v-if="firstFile.url">
           <slot v-if="$slots.default"
@@ -60,15 +61,15 @@
            @mouseover="handleMouseover"
            @mouseout="handleMouseout"
            @click.stop="()=>{return false}">
-        <el-icon @click.stop="handlePreview({url:imgUrl})">
+        <el-icon @click.stop="handlePreview(firstFile)">
           <el-icon-zoom-in />
         </el-icon>
         <el-icon v-if="!disabled"
-                 @click.stop="handleDelete(imgUrl)">
+                 @click.stop="handleRemove(firstFile)">
           <el-icon-delete />
         </el-icon>
       </div>
-    </template>
+    </div>
     <template v-else-if="dragFile">
       <el-icon>
         <el-icon-upload />
@@ -431,6 +432,7 @@ export default create({
           this.text.splice(index, 1);
         }
       });
+      this.menu = false;
     },
     show (data) {
       this.res = data || this.res
@@ -590,7 +592,7 @@ export default create({
         //处理水印图片
         const canvasDone = () => {
           if (!this.validatenull(this.canvasOption)) {
-            detailImg(file, this.canvasOption, res => {
+            detailImg(file, this.canvasOption).then(res => {
               file = res;
               done();
             });
@@ -638,12 +640,6 @@ export default create({
       } else {
         callback();
       }
-    },
-    handleDelete (file) {
-      this.beforeRemove(file).then(() => {
-        this.text = [];
-        this.menu = false;
-      })
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {
