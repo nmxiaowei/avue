@@ -23,10 +23,10 @@
       <template v-if="listType=='picture-card'">
         <i class="el-icon-plus"></i>
       </template>
-      <template v-else-if="listType=='picture-img'">
+      <div :class="b('avatar')"
+           v-else-if="listType=='picture-img'">
         <el-progress type="circle"
                      @mouseover="handleMouseover"
-                     @mouseout="handleMouseout"
                      :percentage="firstFile.percentage"
                      v-if="showProgress(firstFile)"></el-progress>
         <div v-else
@@ -63,9 +63,9 @@
              @click.stop="handlePreview(firstFile)"></i>
           <i class="el-icon-delete"
              v-if="!disabled"
-             @click.stop="handleDelete(firstFile)"></i>
+             @click.stop="handleRemove(firstFile)"></i>
         </div>
-      </template>
+      </div>
       <template v-else-if="dragFile">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
@@ -566,7 +566,7 @@ export default create({
         //处理水印图片
         const canvasDone = () => {
           if (!this.validatenull(this.canvasOption)) {
-            detailImg(file, this.canvasOption, res => {
+            detailImg(file, this.canvasOption).then(res => {
               file = res;
               done();
             });
@@ -614,12 +614,6 @@ export default create({
       } else {
         callback();
       }
-    },
-    handleDelete (file) {
-      this.beforeRemove(file).then(() => {
-        this.text = [];
-        this.menu = false;
-      })
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {
