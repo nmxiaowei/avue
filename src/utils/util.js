@@ -1,34 +1,41 @@
-import { validatenull } from './validate';
-import { DIC_PROPS, CHILDREN_LIST } from 'global/variable';
-import { typeList } from 'global/variable'
+import {
+  validatenull
+} from './validate';
+import {
+  DIC_PROPS,
+  CHILDREN_LIST
+} from 'global/variable';
+import {
+  typeList
+} from 'global/variable';
 export const isMediaType = (url, type) => {
-  if (validatenull(url)) return
+  if (validatenull(url)) return;
   if (typeList.audio.test(url) || typeList.audio.test(type) || type == 'audio') {
-    return 'audio'
+    return 'audio';
   } else if (typeList.video.test(url) || typeList.video.test(type) || type == 'video') {
-    return 'video'
+    return 'video';
   } else if (typeList.img.test(url) || typeList.img.test(type) || type == 'img') {
-    return 'img'
+    return 'img';
   }
-  return
-}
+  return;
+};
 export const uuid = () => {
   var s = [];
-  var hexDigits = "0123456789abcdef";
+  var hexDigits = '0123456789abcdef';
   for (var i = 0; i < 36; i++) {
     s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
   }
-  s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+  s[14] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
   s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-  s[8] = s[13] = s[18] = s[23] = "-";
+  s[8] = s[13] = s[18] = s[23] = '-';
 
-  var uuid = s.join("");
+  var uuid = s.join('');
   return uuid;
-}
-export function getFixed (val = 0, len = 2) {
+};
+export function getFixed(val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
-export function getAsVal (obj, bind = '') {
+export function getAsVal(obj, bind = '') {
   let result = deepClone(obj);
   if (validatenull(bind)) return result;
   bind.split('.').forEach(ele => {
@@ -37,22 +44,28 @@ export function getAsVal (obj, bind = '') {
   return result;
 }
 
-export function setAsVal (obj, bind = '', value) {
+export function setAsVal(obj, bind = '', value) {
   let result;
-  let type = getObjType(value)
+  let type = getObjType(value);
   if (validatenull(value)) {
     if (type === 'array') {
-      result = `obj.${bind}=[]`
+      result = `obj.${bind}=[]`;
     } else if (type === 'object') {
-      result = `obj.${bind}={}`
+      result = `obj.${bind}={}`;
     } else if (['number', 'boolean'].includes(type)) {
-      result = `obj.${bind}=undefined`
+      result = `obj.${bind}=undefined`;
     } else {
-      result = `obj.${bind}=''`
+      result = `obj.${bind}=''`;
     }
   } else {
-    if (type == 'string') {
-      result = `obj.${bind}='${value}'`;
+    if (['array', 'object'].includes(type)) {
+      let array = obj;
+      let props = bind.split('.');
+      let len = props.length;
+      for (var i = 0; i < len - 1; i++) {
+        array = array[props[i]];
+      }
+      array[props[len - 1]] = value;
     } else {
       result = `obj.${bind}=${value}`;
     }
@@ -60,12 +73,12 @@ export function setAsVal (obj, bind = '', value) {
   eval(result);
   return obj;
 }
-export const loadScript = (type = 'js', url, dom = "body") => {
+export const loadScript = (type = 'js', url, dom = 'body') => {
   let flag = false;
   return new Promise((resolve) => {
     const head = dom == 'head' ? document.getElementsByTagName('head')[0] : document.body;
     for (let i = 0; i < head.children.length; i++) {
-      let ele = head.children[i]
+      let ele = head.children[i];
       if ((ele.src || '').indexOf(url) !== -1) {
         flag = true;
         resolve();
@@ -89,8 +102,8 @@ export const loadScript = (type = 'js', url, dom = "body") => {
     };
   });
 };
-export function downFile (url, saveName) {
-  if (typeof url == 'object' && url instanceof Blob) {
+export function downFile(url, saveName) {
+  if (typeof url === 'object' && url instanceof Blob) {
     url = URL.createObjectURL(url); // 创建blob地址
   }
   var aLink = document.createElement('a');
@@ -106,7 +119,7 @@ export function downFile (url, saveName) {
   }
   aLink.dispatchEvent(event);
 }
-export function extend () {
+export function extend() {
   var target = arguments[0] || {};
   var deep = false;
   var arr = Array.prototype.slice.call(arguments);
@@ -142,7 +155,7 @@ export function extend () {
   }
   return target;
 }
-export function createObj (obj, bind) {
+export function createObj(obj, bind) {
   let list = bind.split('.');
   let first = list.splice(0, 1)[0];
   let deep = {};
@@ -164,7 +177,7 @@ export function createObj (obj, bind) {
   obj = extend(true, obj, deep);
   return obj;
 }
-export function dataURLtoFile (dataurl, filename) {
+export function dataURLtoFile(dataurl, filename) {
   let arr = dataurl.split(',');
   let mime = arr[0].match(/:(.*?);/)[1];
   let bstr = atob(arr[1]);
@@ -178,24 +191,34 @@ export function dataURLtoFile (dataurl, filename) {
   });
 }
 
-export function findObject (list = [], value, prop = 'prop') {
-  let result
-  result = findNode(list, { value: prop }, value);
+export function findObject(list = [], value, prop = 'prop') {
+  let result;
+  result = findNode(list, {
+    value: prop
+  }, value);
   if (!result) {
     list.forEach(ele => {
       if (ele.column) {
-        if (!result) result = findNode(ele.column, { value: prop }, value);
+        if (!result) {
+          result = findNode(ele.column, {
+            value: prop
+          }, value);
+        }
       } else if (ele.children && CHILDREN_LIST.includes(ele.type)) {
-        if (!result) result = findNode(ele.children.column, { value: prop }, value);
+        if (!result) {
+          result = findNode(ele.children.column, {
+            value: prop
+          }, value);
+        }
       }
-    })
+    });
   }
   return result;
 }
 /**
  * 生成随机数
  */
-export function randomId () {
+export function randomId() {
   let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let maxPos = $chars.length;
   let id = '';
@@ -273,13 +296,13 @@ export const deepClone = data => {
 };
 
 export const getColumn = (column) => {
-  let columnList = []
+  let columnList = [];
   if (Array.isArray(column)) {
-    columnList = column
+    columnList = column;
   } else {
     for (let o in column) {
       column[o].prop = o;
-      columnList.push(column[o])
+      columnList.push(column[o]);
     }
   }
   return columnList;
@@ -302,7 +325,7 @@ export const setPx = (val, defval = '') => {
  * 字符串数据类型转化
  */
 export const detailDataType = (value, type) => {
-  if (validatenull(value)) return value
+  if (validatenull(value)) return value;
   if (type === 'number') {
     return Number(value);
   } else if (type === 'string') {
@@ -317,12 +340,12 @@ export const detailDataType = (value, type) => {
  */
 
 export const getDicValue = (list, value, props = {}) => {
-  if (validatenull(list)) return value
-  let isArray = Array.isArray(value)
-  value = isArray ? value : [value]
+  if (validatenull(list)) return value;
+  let isArray = Array.isArray(value);
+  value = isArray ? value : [value];
   let result = [];
-  let labelKey = props[DIC_PROPS.label] || DIC_PROPS.label
-  let groupsKey = props[DIC_PROPS.groups] || DIC_PROPS.groups
+  let labelKey = props[DIC_PROPS.label] || DIC_PROPS.label;
+  let groupsKey = props[DIC_PROPS.groups] || DIC_PROPS.groups;
   let dic = deepClone(list);
   dic.forEach(ele => {
     if (ele[groupsKey]) {
@@ -332,28 +355,28 @@ export const getDicValue = (list, value, props = {}) => {
   });
   value.forEach(val => {
     if (Array.isArray(val)) {
-      let array_result = []
+      let array_result = [];
       val.forEach(array_val => {
-        let obj = findNode(dic, props, array_val) || {}
+        let obj = findNode(dic, props, array_val) || {};
         array_result.push(obj[labelKey] || array_val);
-      })
+      });
       result.push(array_result);
     } else {
-      let obj = findNode(dic, props, val) || {}
+      let obj = findNode(dic, props, val) || {};
       result.push(obj[labelKey] || val);
     }
-  })
+  });
   if (isArray) {
-    return result
+    return result;
   } else {
-    return result.join('')
+    return result.join('');
   }
 };
 /**
  * 过滤字典翻译字段和空字段
  */
 export const filterParams = (form, list = ['', '$'], deep = true) => {
-  let data = deep ? deepClone(form) : form
+  let data = deep ? deepClone(form) : form;
   for (let o in data) {
     if (list.includes('')) {
       if (validatenull(data[o])) delete data[o];
@@ -363,9 +386,8 @@ export const filterParams = (form, list = ['', '$'], deep = true) => {
     }
 
   }
-  return data
+  return data;
 };
-
 
 /**
  * 根据值查找对应的序号
@@ -373,33 +395,33 @@ export const filterParams = (form, list = ['', '$'], deep = true) => {
 export const findArray = (list = [], value, valueKey = DIC_PROPS.value, index = false) => {
   let node;
   if (index) {
-    node = list.findIndex(ele => ele[valueKey] == value)
+    node = list.findIndex(ele => ele[valueKey] == value);
   } else {
-    node = list.find(ele => ele[valueKey] == value)
+    node = list.find(ele => ele[valueKey] == value);
   }
-  return node
+  return node;
 };
 export const findNode = (list = [], props = {}, value) => {
   let valueKey = props.value || DIC_PROPS.value;
   let childrenKey = props.children || DIC_PROPS.children;
   let node;
   for (let i = 0; i < list.length; i++) {
-    const ele = list[i]
+    const ele = list[i];
     if (ele[valueKey] == value) {
       if (value === 0 || ele[valueKey] === 0) {
         if (ele[valueKey] === value) {
-          return ele
+          return ele;
         }
       } else {
-        return ele
+        return ele;
       }
     } else if (ele[childrenKey] && Array.isArray(ele[childrenKey])) {
-      let node = findNode(ele[childrenKey], props, value)
-      if (node) return node
+      let node = findNode(ele[childrenKey], props, value);
+      if (node) return node;
     }
   }
-  return node
-}
+  return node;
+};
 /**
  * 根据位数获取*密码程度
  */
@@ -414,11 +436,11 @@ export const getPasswordChar = (result = '', char) => {
 
 export const arraySort = (list = [], prop, callback) => {
   return list.filter(ele => !validatenull(ele[prop])).sort((a, b) => callback(a, b)).concat(list.filter(ele => validatenull(ele[prop])));
-}
+};
 
 export const blankVal = (value) => {
   if (validatenull(value)) return value;
-  let type = getObjType(value)
+  let type = getObjType(value);
   if (type === 'array') value = [];
   else if (type === 'object') value = {};
   else if (['number', 'boolean'].includes(type)) value = undefined;
@@ -429,10 +451,10 @@ export const blankVal = (value) => {
 export const clearVal = (obj, propList, list = []) => {
   if (!obj) return {};
   propList.forEach(ele => {
-    if (list.includes(ele)) return
-    else if (ele.includes('$')) delete obj[ele]
+    if (list.includes(ele)) return;
+    else if (ele.includes('$')) delete obj[ele];
     else if (!validatenull(obj[ele])) {
-      obj[ele] = blankVal(obj[ele])
+      obj[ele] = blankVal(obj[ele]);
     }
   });
   return obj;

@@ -1,25 +1,60 @@
-
 import packages from 'core/packages';
 
-
-
-export default (column, dic, defaultForm, run) => {
-  if (!run) return
+export default (column, dicData, defaultForm, run) => {
+  if (!run) return;
   if (!window.Mock) {
-    packages.logs("mock");
-    return
+    packages.logs('mock');
+    return;
   }
   let mockjs = window.Mock;
   let Random = (mockjs || {}).Random;
   let form = {};
-  function createName({ en }) {
+
+  function createName({
+    en
+  }) {
     if (en) {
       return Random.name(true);
     }
     return Random.cname();
   }
 
-  function createNumber({ max, min, precision }) {
+  function createImage({
+    size,
+    text,
+    base64
+  }) {
+    // 确定图片生成参数
+    let imageSize = size || Random.natural(200, 400); // 默认图片大小为随机数
+    let textColor = text ? '#000000' : Random.color(); // 文本颜色，默认黑色或随机颜色
+    let bgColor = text ? '#ffffff' : Random.color(); // 背景颜色，默认白色或随机颜色
+
+    // 判断是否有数据源，选择生成图片
+    if (base64) {
+      return Random.dataImage(imageSize, text);
+    } else {
+      return Random.image(imageSize, bgColor, textColor, 'png', text || Random.name());
+    }
+  }
+
+  function createId({
+    uuid
+  }) {
+    if (uuid) {
+      return mockjs.mock('@guid');
+    }
+    return mockjs.mock('@id');
+  }
+
+  function createTel() {
+    return mockjs.mock(/^1[3-9]\d{9}$/);
+  }
+
+  function createNumber({
+    max,
+    min,
+    precision
+  }) {
     if (precision) {
       const number = Random.float(min, max, precision) + '';
       const index = number.indexOf('.') + 1;
@@ -29,7 +64,10 @@ export default (column, dic, defaultForm, run) => {
     }
   }
 
-  function createUrl({ header, footer }) {
+  function createUrl({
+    header,
+    footer
+  }) {
     let url = Random.url();
     const index = url.indexOf('://');
     if (header === false) {
@@ -40,14 +78,20 @@ export default (column, dic, defaultForm, run) => {
     return url;
   }
 
-  function createDatetime({ format, now }) {
+  function createDatetime({
+    format,
+    now
+  }) {
     if (now) {
       return Random.now(format);
     }
     return Random.datetime(format);
   }
 
-  function createText({ min, max }) {
+  function createText({
+    min,
+    max
+  }) {
     return Random.csentence(min, max);
   }
 
@@ -55,9 +99,15 @@ export default (column, dic, defaultForm, run) => {
     return Random.county(true);
   }
 
-  function createDic({ dic, props, columnType, multiple }) {
+  function createDic({
+    dic,
+    props,
+    columnType,
+    multiple
+  }) {
     const value = props.value || 'value';
     const len = dic.length;
+    if (len === 0) return;
     if (['checkbox'].includes(columnType) || multiple) {
       const number = createNumber({
         min: 1,
@@ -91,40 +141,37 @@ export default (column, dic, defaultForm, run) => {
   function create() {
     Object.keys(column).forEach(index => {
       const ele = column[index];
-      if (ele.mock && typeof ele.mock === 'object') {
-        let params = ele.mock;
-        params.dic =
-          typeof ele.dicData === 'string'
-            ? dic[ele.dicData]
-            : ele.dicData || [];
-        params.props = ele.props || {};
-        params.columnType = ele.type;
-        params.multiple = ele.multiple;
-        switch (params.type) {
-          case 'name':
-            form[ele.prop] = createName(params);
-            break;
-          case 'number':
-            form[ele.prop] = createNumber(params);
-            break;
-          case 'datetime':
-            form[ele.prop] = createDatetime(params);
-            break;
-          case 'word':
-            form[ele.prop] = createText(params);
-            break;
-          case 'url':
-            form[ele.prop] = createUrl(params);
-            break;
-          case 'county':
-            form[ele.prop] = createCounty(params);
-            break;
-          case 'dic':
-            form[ele.prop] = createDic(params);
-            break;
+      const isObject = typeof ele.mock === 'object';
+      const params = isObject ? ele.mock || {} : {};
+      params.dic = dicData[ele.prop] || [];
+      params.props = ele.props || {};
+      params.columnType = ele.type;
+      params.multiple = ele.multiple;
+
+      // 根据类型生成相应的数据
+      const dataGenerator = {
+        'name': createName,
+        'number': createNumber,
+        'datetime': createDatetime,
+        'word': createText,
+        'tel': createTel,
+        'id': createId,
+        'image': createImage,
+        'url': createUrl,
+        'county': createCounty,
+        'dic': createDic
+      };
+      if (isObject && dataGenerator[params.type]) {
+        if (params.array) {
+          form[ele.prop] = Array.from({
+            length: params.array
+          }, () => dataGenerator[params.type](params));
+        } else {
+          form[ele.prop] = dataGenerator[params.type](params);
         }
+
       } else if (ele.mock instanceof Function) {
-        form[ele.prop] = ele.mock(defaultForm)
+        form[ele.prop] = ele.mock(defaultForm, mockjs);
       }
     });
   }

@@ -23,13 +23,14 @@
         <el-icon-plus />
       </el-icon>
     </template>
-    <template v-else-if="listType=='picture-img'">
+    <div :class="b('avatar')"
+         v-else-if="listType=='picture-img'">
       <el-progress type="circle"
                    @mouseover="handleMouseover"
-                   @mouseout="handleMouseout"
-                   :percentage="firstFile.percentage"
-                   v-if="showProgress(firstFile)"></el-progress>
-      <div :element-loading-text="loadText"
+                   v-if="showProgress(firstFile)"
+                   :percentage="firstFile.percentage"></el-progress>
+      <div v-else
+           :element-loading-text="loadText"
            v-loading.lock="firstFile.loading">
         <template v-if="firstFile.url">
           <slot v-if="$slots.default"
@@ -60,15 +61,15 @@
            @mouseover="handleMouseover"
            @mouseout="handleMouseout"
            @click.stop="()=>{return false}">
-        <el-icon @click.stop="handlePreview({url:imgUrl})">
+        <el-icon @click.stop="handlePreview(firstFile)">
           <el-icon-zoom-in />
         </el-icon>
         <el-icon v-if="!disabled"
-                 @click.stop="handleDelete(imgUrl)">
+                 @click.stop="handleRemove(firstFile)">
           <el-icon-delete />
         </el-icon>
       </div>
-    </template>
+    </div>
     <template v-else-if="dragFile">
       <el-icon>
         <el-icon-upload />
@@ -209,6 +210,7 @@ export default create({
   mixins: [props(), event(), locale],
   data () {
     return {
+      uploadCacheList: [],
       uploadList: [],
       res: '',
       menu: false,
@@ -430,6 +432,7 @@ export default create({
           this.text.splice(index, 1);
         }
       });
+      this.menu = false;
     },
     show (data) {
       this.res = data || this.res
@@ -440,14 +443,14 @@ export default create({
     },
     handleFileChange (file, fileList) {
       fileList.pop();
-      this.uploadList.push(file)
+      this.uploadCacheList.push(file)
     },
     httpUpload (config) {
       let { file } = config;
-      const fileIndex = this.uploadList.findIndex(ele => ele.raw === file);
-      const fileState = fileIndex !== -1 ? this.uploadList[fileIndex] : null;
+      const fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
+      const fileState = fileIndex !== -1 ? this.uploadCacheList[fileIndex] : null;
       if (typeof this.httpRequest === "function") {
-        if (fileState) this.uploadList.splice(fileIndex, 1)
+        if (fileState) this.uploadCacheList.splice(fileIndex, 1)
         this.httpRequest(config)
         return
       }
@@ -563,6 +566,8 @@ export default create({
           }).then(handleUploadResult).catch(handleUploadError);
         };
         const callback = (newFile) => {
+          let list = this.uploadCacheList.splice(0, this.uploadCacheList.length)
+          this.uploadList = this.uploadList.concat(list)
           uploadFile = newFile || file;
           param.append(this.fileName, uploadFile);
           if (this.isCosOss) {
@@ -587,7 +592,7 @@ export default create({
         //处理水印图片
         const canvasDone = () => {
           if (!this.validatenull(this.canvasOption)) {
-            detailImg(file, this.canvasOption, res => {
+            detailImg(file, this.canvasOption).then(res => {
               file = res;
               done();
             });
@@ -635,12 +640,6 @@ export default create({
       } else {
         callback();
       }
-    },
-    handleDelete (file) {
-      this.beforeRemove(file).then(() => {
-        this.text = [];
-        this.menu = false;
-      })
     },
     beforeRemove (file) {
       if (typeof this.uploadDelete === "function") {

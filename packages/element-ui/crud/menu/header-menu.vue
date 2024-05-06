@@ -28,7 +28,7 @@
             :size="crud.size"></slot>
     </div>
     <div :class="b('right')"
-         v-if="validData(crud.tableOption.menuLeft,true)">
+         v-if="validData(crud.tableOption.menuRight,true)">
       <avue-date type="datetimerange"
                  @change="dateChange"
                  value-format="YYYY-MM-DD HH:mm:ss"

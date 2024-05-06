@@ -1,7 +1,7 @@
 <template>
   <el-drawer v-if="box"
              lock-scroll
-             :custom-class="['avue-dialog',b('filter')].join(' ')"
+             :class="['avue-dialog',b('filter')].join(' ')"
              :append-to-body="$AVUE.appendToBody"
              :title="t('crud.filterTitle')"
              :size="crud.isMobile?'100%':'60%'"

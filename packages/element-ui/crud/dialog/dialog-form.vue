@@ -43,6 +43,14 @@
     </avue-form>
     <span class="avue-dialog__footer"
           :class="'avue-dialog__footer--'+dialogMenuPosition">
+      <el-button type="primary"
+                 @click="($refs.tableForm || {}).handleMock"
+                 :loading="disabled"
+                 :size="crud.size"
+                 :icon="option.mockIcon"
+                 v-if="validData(option.mockBtn,false) && !isView">
+        {{option.mockText}}
+      </el-button>
       <el-button v-if="validData(option.submitBtn,true) && !isView"
                  @click="submit"
                  :loading="disabled"
@@ -129,6 +137,7 @@ export default create({
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
+      option.column.forEach(ele => { if (ele.renderForm) ele.render = ele.renderForm })
       option.menuBtn = false;
       if (this.isAdd) {
         option.submitBtn = option.saveBtn;
@@ -141,6 +150,9 @@ export default create({
       } else if (this.isView) {
         option.detail = true;
       }
+      option.mockIcon = this.crud.getBtnIcon('mockBtn')
+      option.mockText = this.crud.menuIcon('mockBtn')
+
       option.emptyBtn = option.cancelBtn;
       option.emptyIcon = this.crud.getBtnIcon('cancelBtn')
       option.emptyText = this.crud.menuIcon('cancelBtn')

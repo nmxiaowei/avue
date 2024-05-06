@@ -1,5 +1,7 @@
 import _waterMark from './watermark';
-import { dataURLtoFile } from 'utils/util';
+import {
+  dataURLtoFile
+} from 'utils/util';
 // 标准参数
 var canvas, ctx, configDefault = {
   width: 200,
@@ -13,7 +15,7 @@ let config = {
   opacity: 100, // 透明度
   bottom: 10, // 下边位置
   right: 10, // 右边位置
-  ratio: 1// 压缩比
+  ratio: 1 // 压缩比
 };
 
 /**
@@ -33,13 +35,22 @@ export default function (opt = {}) {
 
 // 将base64转换为文件
 
-export function detailImg (file, option = {}) {
+export function detailImg(file, option = {}) {
   return new Promise(function (resolve, reject) {
-    const { text, fontFamily, color, fontSize, opacity, bottom, right, ratio } = option;
+    const {
+      text,
+      fontFamily,
+      color,
+      fontSize,
+      opacity,
+      bottom,
+      right,
+      ratio
+    } = option;
     initParams();
     fileToBase64(file, initImg);
     // 参数初始化
-    function initParams () {
+    function initParams() {
       config.text = text || config.text;
       config.fontFamily = fontFamily || config.fontFamily;
       config.color = color || config.color;
@@ -50,7 +61,7 @@ export function detailImg (file, option = {}) {
       config.ratio = ratio || config.ratio;
     }
     // 加载图片
-    function initImg (data) {
+    function initImg(data) {
       var img = new Image();
       img.src = data;
       img.onload = function () {
@@ -63,7 +74,7 @@ export function detailImg (file, option = {}) {
       };
     }
     // 创建画板
-    function cretedCanvas (width, height) {
+    function cretedCanvas(width, height) {
       canvas = document.getElementById('canvas');
       if (canvas === null) {
         canvas = document.createElement('canvas');
@@ -77,7 +88,7 @@ export function detailImg (file, option = {}) {
 
     }
     // 添加水印
-    function setText (width, height) {
+    function setText(width, height) {
       var txt = config.text;
       var param = calcParam(txt, width, height);
       ctx.font = param.fontSize + 'px ' + config.fontFamily;
@@ -86,7 +97,7 @@ export function detailImg (file, option = {}) {
       ctx.fillText(txt, param.x, param.y);
     }
     // 计算比例
-    function calcParam (txt, width, height) {
+    function calcParam(txt, width, height) {
       var x, y;
 
       // 字体的比例
@@ -122,7 +133,7 @@ export function detailImg (file, option = {}) {
 
     }
     // file转base64
-    function fileToBase64 (file, callback) {
+    function fileToBase64(file, callback) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function (e) {

@@ -70,9 +70,11 @@
     color: #8c939d;
     width: 148px;
     height: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     line-height: 148px;
     text-align: center;
-    display: block;
   }
 }
 
