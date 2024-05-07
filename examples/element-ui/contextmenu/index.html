@@ -62,13 +62,10 @@
       }
     },
     created () {
-      setTimeout(() => {
-        this.list[0].name = 'small'
-      }, 1000)
     },
     methods: {
       handleHide (row, e) {
-        this.$message.success('回调信息' + JSON.stringify(row))
+        this.$message.success('隐藏回调' + JSON.stringify(row))
       },
       handleEvent (row, done, e) {
         this.form = row;
@@ -77,6 +74,7 @@
       },
       handleClick1 () {
         this.$message.success('菜单1' + JSON.stringify(this.form))
+        this.list.splice(1, 1)
       },
       handleClick2 () {
         this.$message.success('菜单2' + JSON.stringify(this.form))
