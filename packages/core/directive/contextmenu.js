@@ -22,12 +22,14 @@ export default (() => {
         if (calcWidth < 0) {
           divLeft = divLeft - dialogDom_width
         }
-        const closeDialog = function () {
+
+        function closeDialog() {
           dialogDom.style.display = 'none'
           h_params & h_params(v_params, e)
           document.removeEventListener('click', closeDialog)
         }
-        const showDialog = function () {
+
+        function showDialog() {
           dialogDom.style.display = 'block'
           dialogDom.style.position = 'fixed'
           dialogDom.style.zIndex = 1024
