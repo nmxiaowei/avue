@@ -135,6 +135,7 @@
                                  :props="tableOption.props"
                                  :propsHttp="tableOption.propsHttp"
                                  :render="column.render"
+                                 :row="form"
                                  :readonly="column.readonly || readonly"
                                  v-bind="$uploadFun(column)"
                                  :disabled="getDisabled(column)"

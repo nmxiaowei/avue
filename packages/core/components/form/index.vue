@@ -3,6 +3,7 @@
           :render="render"
           :index="index"
           :row="row"
+          :column="column"
           :params="params"
           :event="event"></custom>
   <component v-else
