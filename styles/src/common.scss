@@ -249,9 +249,13 @@ body {
   }
 
   .el-dialog__body {
-    padding-bottom: 60px;
+    padding:20px 20px 60px 20px;
     flex: 1;
     overflow: scroll;
+  }
+  .el-dialog__footer{
+    padding:20px;
+    padding-top: 10px;
   }
 
   .el-drawer {

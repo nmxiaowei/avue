@@ -40,15 +40,13 @@
                  :class="b('content-result')"></div>
           </div>
         </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button type="primary"
-                       :size="size"
-                       icon="el-icon-check"
-                       v-if="!(disabled || readonly)"
-                       @click="handleSubmit">{{t("common.submitBtn")}}</el-button>
-          </span>
-        </template>
+        <span class="avue-dialog__footer">
+          <el-button type="primary"
+                     :size="size"
+                     icon="el-icon-check"
+                     v-if="!(disabled || readonly)"
+                     @click="handleSubmit">{{t("common.submitBtn")}}</el-button>
+        </span>
 
       </el-dialog>
     </div>
