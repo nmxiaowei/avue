@@ -2,7 +2,7 @@ export const KEY_COMPONENT_NAME = 'avue-';
 export const KEY_ECHART_NAME = 'echart-';
 export const DIC_PROPS = {
   rowKey: 'id',
-  rowParentKey: "parentId",
+  rowParentKey: 'parentId',
   nodeKey: 'id',
   label: 'label',
   value: 'value',
@@ -36,11 +36,11 @@ export const DATE_LIST = [
   'monthrange',
   'year'
 ];
-export const CHILDREN_LIST = ['table', 'dynamic']
+export const CHILDREN_LIST = ['table', 'dynamic'];
 export const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map'];
 export const ARRAY_LIST = ['img', 'array', 'url'];
-export const MULTIPLE_LIST = ['cascader', 'tree', 'select'];
-export const RANGE_LIST = ['slider']
+export const MULTIPLE_LIST = ['cascader', 'tree', 'select', 'table'];
+export const RANGE_LIST = ['slider'];
 export const ARRAY_VALUE_LIST = ARRAY_LIST.concat(['upload', 'dynamic', 'map', 'checkbox', 'cascader', 'timerange', 'monthrange', 'daterange', 'datetimerange', 'dates']);
 export const SELECT_LIST = DATE_LIST.concat(['select', 'checkbox', 'radio', 'cascader', 'tree', 'color', 'icon', 'table', 'map']);
 export const DIC_SHOW_SPLIT = ' | ';
@@ -48,5 +48,5 @@ export const DIC_SPLIT = ',';
 export const typeList = {
   img: /(\.|^)(gif|jpg|jpeg|png|webp|svg|GIF|JPG|JPEG|PNG|WEBP|SVG)/,
   video: /(\.|^)(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|ogg|mp4)/,
-  audio: /(\.|^)(mp3|wav|MP3|WAV)/,
+  audio: /(\.|^)(mp3|wav|MP3|WAV)/
 };
