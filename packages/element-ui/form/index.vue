@@ -125,6 +125,8 @@
                                :dic="DIC[column.prop]"
                                :props="parentOption.props"
                                :propsHttp="parentOption.propsHttp"
+                               :render="column.render"
+                               :row="form"
                                v-bind="$uploadFun(column)"
                                :disabled="getDisabled(column)"
                                :readonly="column.readonly || readonly"

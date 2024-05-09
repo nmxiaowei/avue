@@ -88,6 +88,8 @@
     height: 148px;
     line-height: 148px;
     text-align: center;
-    display: block;
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 }

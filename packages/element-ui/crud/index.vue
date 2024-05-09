@@ -455,13 +455,21 @@ export default create({
     getTableHeight () {
       if (this.isAutoHeight) {
         this.$nextTick(() => {
-          const tableRef = this.$refs.table
-          const tablePageRef = this.$refs.tablePage
-          if (!tableRef) return
-          const tableStyle = tableRef.$el;
-          const pageStyle = tablePageRef.$el.offsetHeight || 20;
-          this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
-        })
+          const clientHeight = document.documentElement.clientHeight;
+          const calcHeight = this.calcHeight;
+          const tableRef = this.$refs.table;
+          const tablePageRef = this.$refs.tablePage;
+          let tableHeight = clientHeight - calcHeight;
+          if (tableRef) {
+            const tableBoundingClientRect = tableRef.$el.getBoundingClientRect();
+            tableHeight -= tableBoundingClientRect.top;
+          }
+          if (tablePageRef) {
+            const tablePageBoundingClientRect = tablePageRef.$el.getBoundingClientRect();
+            tableHeight -= tablePageBoundingClientRect.height;
+          }
+          this.tableHeight = tableHeight;
+        });
       } else {
         this.tableHeight = this.tableOption.height;
       }

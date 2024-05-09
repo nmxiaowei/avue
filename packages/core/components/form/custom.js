@@ -1,6 +1,8 @@
 export default {
   props: {
     render: Function,
+    row: Object,
+    index: [String, Number],
     column: {
       type: Object,
       default: () => {
@@ -24,7 +26,9 @@ export default {
     return this.render.call(this._renderProxy, h, {
       column: this.column,
       params: this.params,
-      event: this.event
+      event: this.event,
+      row: this.row,
+      index: this.index
     })
   }
 }

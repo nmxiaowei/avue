@@ -1,5 +1,12 @@
 <template>
-  <component :is="getComponent(column)"
+  <custom v-if="render"
+          :render="render"
+          :index="index"
+          :row="row"
+          :params="params"
+          :event="event"></custom>
+  <component v-else
+             :is="getComponent(column)"
              v-model="text"
              v-bind="Object.assign(column,params,$uploadFun(column))"
              v-on="event"
@@ -7,7 +14,6 @@
              :dic="dic"
              :box-type="boxType"
              ref="temp"
-             :render="column.render"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
              :placeholder="getPlaceholder(column)"
@@ -53,6 +59,9 @@ export default {
     uploadError: Function,
     uploadExceed: Function,
     boxType: String,
+    row: Object,
+    render: Function,
+    index: [String, Number],
     columnSlot: {
       type: Array,
       default: () => {
@@ -125,7 +134,7 @@ export default {
   },
   methods: {
     getComponent (column) {
-      return column.render ? 'custom' : getComponent(column.type, column.component)
+      return getComponent(column.type, column.component)
     },
     getPlaceholder,
     enterChange () {

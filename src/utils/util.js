@@ -1,6 +1,13 @@
-import { validatenull } from './validate';
-import { DIC_PROPS, CHILDREN_LIST } from 'global/variable';
-import { typeList } from 'global/variable';
+import {
+  validatenull
+} from './validate';
+import {
+  DIC_PROPS,
+  CHILDREN_LIST
+} from 'global/variable';
+import {
+  typeList
+} from 'global/variable';
 export const isMediaType = (url, type) => {
   if (validatenull(url)) return null;
   if (typeList.audio.test(url) || typeList.audio.test(type) || type == 'audio') {
@@ -51,8 +58,14 @@ export function setAsVal(obj, bind = '', value) {
       result = `obj.${bind}=''`;
     }
   } else {
-    if (type == 'string') {
-      result = `obj.${bind}='${value}'`;
+    if (['array', 'object'].includes(type)) {
+      let array = obj;
+      let props = bind.split('.');
+      let len = props.length;
+      for (var i = 0; i < len - 1; i++) {
+        array = array[props[i]];
+      }
+      array[props[len - 1]] = value;
     } else {
       result = `obj.${bind}=${value}`;
     }
@@ -84,7 +97,7 @@ export const loadScript = (type = 'js', url, dom = 'body') => {
       script.href = url;
     }
     head.appendChild(script);
-    script.onload = function() {
+    script.onload = function () {
       resolve();
     };
   });
@@ -180,13 +193,23 @@ export function dataURLtoFile(dataurl, filename) {
 
 export function findObject(list = [], value, prop = 'prop') {
   let result;
-  result = findNode(list, { value: prop }, value);
+  result = findNode(list, {
+    value: prop
+  }, value);
   if (!result) {
     list.forEach(ele => {
       if (ele.column) {
-        if (!result) result = findNode(ele.column, { value: prop }, value);
+        if (!result) {
+          result = findNode(ele.column, {
+            value: prop
+          }, value);
+        }
       } else if (ele.children && CHILDREN_LIST.includes(ele.type)) {
-        if (!result) result = findNode(ele.children.column, { value: prop }, value);
+        if (!result) {
+          result = findNode(ele.children.column, {
+            value: prop
+          }, value);
+        }
       }
     });
   }
@@ -280,7 +303,9 @@ export const getColumn = (column) => {
     for (let o in column) {
       let columnMerge = {
         ...column[o],
-        ...{ prop: o }
+        ...{
+          prop: o
+        }
       };
       columnList.push(columnMerge);
     }
