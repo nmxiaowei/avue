@@ -15,12 +15,12 @@
                 :md="crud.tableOption.gridSpan|| span"
                 :sm="crud.tableOption.gridSpan|| span"
                 :xs="crud.tableOption.gridXsSpan|| xsSpan"
-                :class="getRowClass(c,column)"
+                :class="getRowClass(c,p,column)"
                 :key="p">
           <div :class="b('content')"
-               :style="getGradientColor()">
+               :style="getGradientColor(c,p)">
             <div v-for="(item,index) in column"
-                 :class="[b('item'),(item.type || item.prop),getClass(c,item)]"
+                 :class="[b('item'),(item.type || item.prop),getClass(c,p,item)]"
                  @click="handleCellClick(c,item)"
                  @dblclick="handleCellDblClick(c,item)"
                  :key="index">
@@ -123,23 +123,27 @@ export default create({
     handleCellClick (row, column) {
       this.$emit('cell-click', row, column)
     },
-    getGradientColor () {
+    getGradientColor (row, index) {
       let styles = {}
-      if (this.crud.tableOption.gridBackgroundImage) {
+      if (this.crud.tableOption.gridBackground) {
+        if (typeof this.crud.tableOption.gridBackground == 'function') {
+          styles.background = this.crud.tableOption.gridBackground(row, index)
+        } else {
+          styles.background = this.crud.tableOption.gridBackground || 'linear-gradient(to bottom, rgba(88, 159, 248, 0.1), white)'
+        }
+      } else if (this.crud.tableOption.gridBackgroundImage) {
         styles.backgroundImage = `url(${this.crud.tableOption.gridBackgroundImage})`
-      } else {
-        styles.background = this.crud.tableOption.gridBackground || 'linear-gradient(to bottom, rgba(88, 159, 248, 0.1), white)'
       }
       return styles
     },
-    getRowClass (row, column) {
+    getRowClass (row, index, column) {
       let list = []
-      if (this.rowClassName) list.push(this.rowClassName(row, column))
+      if (this.rowClassName) list.push(this.rowClassName({ row, rowIndex: index, column }))
       return list;
     },
-    getClass (item, column) {
+    getClass (item, index, column) {
       let list = []
-      if (this.cellClassName) list.push(this.cellClassName(item, column))
+      if (this.cellClassName) list.push(this.cellClassName({ row, rowIndex: index, column }))
       const columnOption = this.crud.columnOption || []
       if (column.prop == (columnOption[0] || {}).prop) list.push('title')
       if (column.row) list.push('row')
