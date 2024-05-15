@@ -148,8 +148,8 @@ export default create({
     },
     getClass (row, index, column) {
       let list = []
-      if (this.cellClassName) list.push(this.cellClassName({ row, rowIndex: index, column }))
       const columnOption = this.crud.columnOption || []
+      if (this.cellClassName) list.push(this.cellClassName({ row, rowIndex: index, column }))
       if (column.prop == (columnOption[0] || {}).prop) list.push('title')
       if (column.row) list.push('row')
       if (column.showOverflowTooltip) list.push('overHidden')
