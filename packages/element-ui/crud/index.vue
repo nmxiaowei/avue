@@ -22,6 +22,7 @@
               :name="item"></slot>
       </template>
     </header-search>
+    <slot name="header"></slot>
     <el-card :shadow="isCard"
              :class="b('body')">
       <!-- 表格功能列 -->
@@ -52,7 +53,7 @@
                    v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
         <slot name="tip"></slot>
       </el-tag>
-      <slot name="header"></slot>
+      <slot name="body"></slot>
       <el-form :model="cellForm"
                :show-message="false"
                @validate="handleValidate"
@@ -93,12 +94,19 @@
                    :cell-style="cellStyle"
                    :fit="tableOption.fit"
                    :header-cell-class-name="headerCellClassName"
+                   :header-row-class-name="headerRowClassName"
+                   :header-row-style="headerRowStyle"
+                   :header-cell-style="headerCellStyle"
                    :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
                    :height="tableHeight"
                    ref="table"
                    :width="setPx(tableOption.width,config.width)"
                    :border="tableOption.border"
                    v-loading="tableLoading"
+                   :element-loading-text="tableOption.loadingText"
+                   :element-loading-spinner="tableOption.loadingSpinner"
+                   :element-loading-svg="tableOption.loadingSvg"
+                   :element-loading-background="tableOption.loadingBackground"
                    @filter-change="filterChange"
                    @selection-change="selectionChange"
                    @select="select"
@@ -381,13 +389,16 @@ export default create({
   props: {
     spanMethod: Function,
     summaryMethod: Function,
-    rowStyle: Function,
-    cellStyle: Function,
     beforeClose: Function,
     beforeOpen: Function,
-    rowClassName: Function,
-    cellClassName: Function,
-    headerCellClassName: Function,
+    rowStyle: [Function, Object],
+    cellStyle: [Function, Object],
+    rowClassName: [Function, String],
+    cellClassName: [Function, String],
+    headerCellClassName: [Function, String],
+    headerRowClassName: [Function, String],
+    headerRowStyle: [Function, Object],
+    headerCellStyle: [Function, Object],
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
@@ -460,11 +471,11 @@ export default create({
           const tableRef = this.$refs.table;
           const tablePageRef = this.$refs.tablePage;
           let tableHeight = clientHeight - calcHeight;
-          if (tableRef) {
+          if (tableRef && tableRef.$el.getBoundingClientRect) {
             const tableBoundingClientRect = tableRef.$el.getBoundingClientRect();
             tableHeight -= tableBoundingClientRect.top;
           }
-          if (tablePageRef) {
+          if (tablePageRef && tablePageRef.$el.getBoundingClientRect) {
             const tablePageBoundingClientRect = tablePageRef.$el.getBoundingClientRect();
             tableHeight -= tablePageBoundingClientRect.height;
           }
