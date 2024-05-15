@@ -90,6 +90,9 @@
                    :cell-style="cellStyle"
                    :fit="tableOption.fit"
                    :header-cell-class-name="headerCellClassName"
+                   :header-row-class-name="headerRowClassName"
+                   :header-row-style="headerRowStyle"
+                   :header-cell-style="headerCellStyle"
                    :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
                    :height="tableHeight"
                    ref="table"
@@ -424,13 +427,16 @@ export default create({
   props: {
     spanMethod: Function,
     summaryMethod: Function,
-    rowStyle: Function,
-    cellStyle: Function,
     beforeClose: Function,
     beforeOpen: Function,
-    rowClassName: Function,
-    cellClassName: Function,
-    headerCellClassName: Function,
+    rowStyle: [Function, Object],
+    cellStyle: [Function, Object],
+    rowClassName: [Function, String],
+    cellClassName: [Function, String],
+    headerCellClassName: [Function, String],
+    headerRowClassName: [Function, String],
+    headerRowStyle: [Function, Object],
+    headerCellStyle: [Function, Object],
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
@@ -505,12 +511,12 @@ export default create({
           const tablePageRef = this.$refs.tablePage;
           let tableHeight = clientHeight - calcHeight;
           if (tableRef) {
-            const tableBoundingClientRect = tableRef.$el.getBoundingClientRect();
-            tableHeight -= tableBoundingClientRect.top;
+            const height = tableRef.$el.offsetTop || 0;
+            tableHeight -= height;
           }
           if (tablePageRef) {
-            const tablePageBoundingClientRect = tablePageRef.$el.getBoundingClientRect();
-            tableHeight -= tablePageBoundingClientRect.height;
+            const height = tablePageRef.$el.offsetHeight || 0;
+            tableHeight -= height;
           }
           this.tableHeight = tableHeight;
         });
