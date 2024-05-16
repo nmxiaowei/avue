@@ -87,7 +87,7 @@ export default create({
       }
     },
     option () {
-      const option = this.crud.option;
+      const option = this.crud.tableOption;
       this.searchIndex = option.searchIndex || 2
       const detailColumn = (list = []) => {
         list = this.deepClone(list);
@@ -172,7 +172,7 @@ export default create({
       return detailOption(option)
     },
     isSearchIcon () {
-      return this.vaildData(this.crud.option.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
+      return this.vaildData(this.crud.tableOption.searchIcon, this.$AVUE.searchIcon) && this.searchLen > this.searchIndex
     },
     searchLen () {
       let count = 0;
