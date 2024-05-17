@@ -38,7 +38,7 @@
           <template v-else>
             <component v-if="firstFile.type"
                        :src="firstFile.url"
-                       :controls="controls"
+                       controls="controls"
                        :is="firstFile.type"
                        @mouseover="handleMouseover"
                        :class="b('avatar')"></component>
