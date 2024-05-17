@@ -179,7 +179,7 @@ export default create({
       }
     },
     dialogMenuPosition () {
-      return this.crud.option.dialogMenuPosition || 'right'
+      return this.crud.tableOption.dialogMenuPosition || 'right'
     }
   },
   methods: {

@@ -88,10 +88,10 @@ export default create({
       return !this.validatenull(this.crud.tableOption.group);
     },
     isSearchIcon () {
-      return this.validData(this.crud.option.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
+      return this.validData(this.crud.tableOption.searchIcon, this.$AVUE.searchIcon) === true && this.columnLen > this.searchIndex
     },
     searchIndex () {
-      return this.crud.option.searchIndex || 2
+      return this.crud.tableOption.searchIndex || 2
     },
     columnLen () {
       let count = 0;
@@ -101,7 +101,7 @@ export default create({
       return count
     },
     option () {
-      const option = this.crud.option;
+      const option = this.crud.tableOption;
       const detailColumn = (list = []) => {
         list = this.deepClone(list);
         let column = [];
