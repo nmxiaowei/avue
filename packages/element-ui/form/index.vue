@@ -441,10 +441,10 @@ export default create({
           let bindList = [];
           if (bind) {
             let formProp = this.$watch('form.' + prop, (n, o) => {
-              if (n != o) setAsVal(this.form, bind, n);
+              setAsVal(this.form, bind, n);
             })
             let formDeep = this.$watch('form.' + bind, (n, o) => {
-              if (n != o) this.$set(this.form, prop, n);
+              this.$set(this.form, prop, n);
             })
             bindList.push(formProp)
             bindList.push(formDeep)
