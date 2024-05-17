@@ -99,7 +99,7 @@ const install = function (Vue, opts = {}) {
   createIcon(Vue);
   Object.keys(plugins).forEach((key) => {
     if (['$DialogForm', '$ImagePreview'].includes(key)) {
-      Vue.config.globalProperties[key] = plugins[key](Vue);
+      Vue.config.globalProperties[key] = plugins[key](Vue._context);
     } else {
       Vue.config.globalProperties[key] = plugins[key];
     }
