@@ -21,6 +21,7 @@
     </header-search>
     <el-card :shadow="isCard"
              :class="b('body')">
+      <slot name="header"></slot>
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="validData(tableOption.header,true)">
@@ -44,7 +45,7 @@
               @click="clearSelection">{{t('crud.emptyBtn')}}</span>
         <slot name="tip"></slot>
       </div>
-      <slot name="header"></slot>
+      <slot name="body"></slot>
       <el-form :model="cellForm"
                :show-message="false"
                @validate="handleValidate"
@@ -717,9 +718,10 @@ export default create({
     },
     rowCellUpdate (row, index) {
       row = this.deepClone(row);
-      const done = () => {
+      const done = (row) => {
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
+        if (row) this.list[index] = row;
         this.list[index].$cellEdit = false
         this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
         delete this.cascaderFormList[index]
