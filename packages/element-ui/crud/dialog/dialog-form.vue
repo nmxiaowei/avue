@@ -43,6 +43,8 @@
     </avue-form>
     <span class="avue-dialog__footer"
           :class="'avue-dialog__footer--'+dialogMenuPosition">
+      <slot name="menu-form-before"
+            v-bind="menuParams()"></slot>
       <el-button type="primary"
                  @click="($refs.tableForm || {}).handleMock"
                  :loading="disabled"
@@ -63,9 +65,7 @@
                  :size="crud.size"
                  :icon="option.emptyIcon">{{option.emptyText}}</el-button>
       <slot name="menu-form"
-            :disabled="disabled"
-            :size="crud.size"
-            :type="boxType"></slot>
+            v-bind="menuParams()"></slot>
     </span>
   </component>
 </template>
@@ -183,6 +183,13 @@ export default create({
     }
   },
   methods: {
+    menuParams () {
+      return {
+        disabled: this.disabled,
+        size: this.crud.size,
+        type: this.boxType
+      }
+    },
     submit () {
       this.$refs.tableForm.submit()
     },

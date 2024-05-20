@@ -166,6 +166,10 @@
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
             <form-menu v-if="!isMenu">
+              <template #menu-form-before="scope">
+                <slot name="menu-form-before"
+                      v-bind="scope"></slot>
+              </template>
               <template #menu-form="scope">
                 <slot name="menu-form"
                       v-bind="scope"></slot>
