@@ -19,8 +19,10 @@
             v-if="crud.getSlotName({prop:'menu'},'H',crud.$scopedSlots)"></slot>
       <span v-else>{{crud.tableOption.menuTitle || t('crud.menu')}}</span>
     </template>
-    <template slot-scope="{row,column:tableColumn,$index}">
+    <template slot-scope="{row,column,$index}">
       <div :class="b('menu')">
+        <slot name="menuBefore"
+              v-bind="menuParams({row,column,$index})"></slot>
         <el-dropdown v-if="isMenu"
                      :size="crud.isMediumSize">
           <el-button type="text"
@@ -29,6 +31,8 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
+            <slot name="menuBtnBefore"
+                  v-bind="menuParams({row,column,$index})"></slot>
             <el-dropdown-item :icon="crud.getBtnIcon('viewBtn')"
                               :class="b('viewBtn')"
                               v-if="vaildData(crud.tableOption.viewBtn,config.viewBtn)"
@@ -50,12 +54,7 @@
                               v-permission="crud.getPermission('delBtn',row,$index)"
                               @click.native="crud.rowDel(row,$index)">{{crud.menuIcon('delBtn')}}</el-dropdown-item>
             <slot name="menuBtn"
-                  :row="row"
-                  :column="tableColumn"
-                  :type="menuText('primary')"
-                  :disabled="crud.btnDisabled"
-                  :size="crud.isMediumSize"
-                  :index="$index"></slot>
+                  v-bind="menuParams({row,column,$index})"></slot>
           </el-dropdown-menu>
         </el-dropdown>
         <template v-else-if="['button','text','icon'].includes(menuType)">
@@ -148,12 +147,7 @@
 
         </template>
         <slot name="menu"
-              :row="row"
-              :column="tableColumn"
-              :type="menuText('primary')"
-              :disabled="crud.btnDisabled"
-              :size="crud.isMediumSize"
-              :index="$index"></slot>
+              v-bind="menuParams({row,column,$index})"></slot>
       </div>
     </template>
   </component>
@@ -198,6 +192,17 @@ export default create({
     menuText (value) {
       return ['text', 'menu'].includes(this.menuType) ? "text" : value;
     },
+    menuParams ({ row, column, $index }) {
+      let parent = this.crud
+      return {
+        row,
+        column,
+        type: this.menuText('primary'),
+        disabled: parent.btnDisabled,
+        size: parent.isMediumSize,
+        index: $index
+      }
+    }
   }
 })
 </script>
