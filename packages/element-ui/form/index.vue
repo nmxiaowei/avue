@@ -168,6 +168,11 @@
         </avue-group>
         <form-menu v-if="!isDetail&&isMenu">
           <template slot-scope="scope"
+                    slot="menuFormBefore">
+            <slot name="menuFormBefore"
+                  v-bind="scope"></slot>
+          </template>
+          <template slot-scope="scope"
                     slot="menuForm">
             <slot name="menuForm"
                   v-bind="scope"></slot>
