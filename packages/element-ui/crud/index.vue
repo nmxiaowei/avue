@@ -22,9 +22,9 @@
               :name="item"></slot>
       </template>
     </header-search>
-    <slot name="header"></slot>
     <el-card :shadow="isCard"
              :class="b('body')">
+      <slot name="header"></slot>
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="vaildData(tableOption.header,true)">
@@ -681,6 +681,7 @@ export default create({
       const done = () => {
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
+        this.list[index] = row;
         this.list[index].$cellEdit = false
         this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
         delete this.cascaderFormList[index]
