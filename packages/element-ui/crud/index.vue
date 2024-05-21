@@ -340,7 +340,7 @@ export default create({
       return this.getSlotList(['-header', '-form'], this.$slots, this.propOption).concat(result)
     },
     calcHeight () {
-      return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
+      return this.tableOption.calcHeight || this.$AVUE.calcHeight
     },
     propOption () {
       let result = [];
@@ -507,7 +507,7 @@ export default create({
       if (this.isAutoHeight) {
         this.$nextTick(() => {
           const clientHeight = document.documentElement.clientHeight;
-          const calcHeight = this.calcHeight;
+          const calcHeight = this.calcHeight || 0;
           const tableRef = this.$refs.table;
           const tablePageRef = this.$refs.tablePage;
           let tableHeight = clientHeight - calcHeight;
