@@ -21,6 +21,7 @@
     </header-search>
     <el-card :shadow="isCard"
              :class="b('body')">
+      <slot name="header"></slot>
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="validData(tableOption.header,true)">
@@ -44,7 +45,7 @@
               @click="clearSelection">{{t('crud.emptyBtn')}}</span>
         <slot name="tip"></slot>
       </div>
-      <slot name="header"></slot>
+      <slot name="body"></slot>
       <el-form :model="cellForm"
                :show-message="false"
                @validate="handleValidate"
@@ -90,6 +91,9 @@
                    :cell-style="cellStyle"
                    :fit="tableOption.fit"
                    :header-cell-class-name="headerCellClassName"
+                   :header-row-class-name="headerRowClassName"
+                   :header-row-style="headerRowStyle"
+                   :header-cell-style="headerCellStyle"
                    :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
                    :height="tableHeight"
                    ref="table"
@@ -143,6 +147,14 @@
                   <slot name="menu-btn"
                         v-bind="scope"></slot>
                 </template>
+                <template #menu-before="scope">
+                  <slot name="menu-before"
+                        v-bind="scope"></slot>
+                </template>
+                <template #menu-btn-before="scope">
+                  <slot name="menu-btn-before"
+                        v-bind="scope"></slot>
+                </template>
               </column-menu>
             </template>
           </column>
@@ -165,6 +177,10 @@
       </template>
       <template #menu-form="scope">
         <slot name="menu-form"
+              v-bind="scope"></slot>
+      </template>
+      <template #menu-form-before="scope">
+        <slot name="menu-form-before"
               v-bind="scope"></slot>
       </template>
     </dialog-form>
@@ -336,7 +352,7 @@ export default create({
       return this.getSlotList(['-header', '-form'], this.$slots, this.propOption).concat(result)
     },
     calcHeight () {
-      return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
+      return this.tableOption.calcHeight || this.$AVUE.calcHeight
     },
     propOption () {
       let result = [];
@@ -424,13 +440,16 @@ export default create({
   props: {
     spanMethod: Function,
     summaryMethod: Function,
-    rowStyle: Function,
-    cellStyle: Function,
     beforeClose: Function,
     beforeOpen: Function,
-    rowClassName: Function,
-    cellClassName: Function,
-    headerCellClassName: Function,
+    rowStyle: [Function, Object],
+    cellStyle: [Function, Object],
+    rowClassName: [Function, String],
+    cellClassName: [Function, String],
+    headerCellClassName: [Function, String],
+    headerRowClassName: [Function, String],
+    headerRowStyle: [Function, Object],
+    headerCellStyle: [Function, Object],
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
@@ -499,13 +518,21 @@ export default create({
     getTableHeight () {
       if (this.isAutoHeight) {
         this.$nextTick(() => {
-          const tableRef = this.$refs.table
-          const tablePageRef = this.$refs.tablePage
-          if (!tableRef) return
-          const tableStyle = tableRef.$el;
-          const pageStyle = tablePageRef.$el.offsetHeight || 20;
-          this.tableHeight = document.documentElement.clientHeight - tableStyle.offsetTop - pageStyle - this.calcHeight
-        })
+          const clientHeight = document.documentElement.clientHeight;
+          const calcHeight = this.calcHeight || 0;
+          const tableRef = this.$refs.table;
+          const tablePageRef = this.$refs.tablePage;
+          let tableHeight = clientHeight - calcHeight;
+          if (tableRef) {
+            const height = tableRef.$el.offsetTop || 0;
+            tableHeight -= height;
+          }
+          if (tablePageRef) {
+            const height = tablePageRef.$el.offsetHeight || 0;
+            tableHeight -= height;
+          }
+          this.tableHeight = tableHeight;
+        });
       } else {
         this.tableHeight = this.tableOption.height;
       }
@@ -703,9 +730,10 @@ export default create({
     },
     rowCellUpdate (row, index) {
       row = this.deepClone(row);
-      const done = () => {
+      const done = (row) => {
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
+        if (row) this.list[index] = row;
         this.list[index].$cellEdit = false
         this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
         delete this.cascaderFormList[index]

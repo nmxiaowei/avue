@@ -10,15 +10,13 @@
                  v-model="form"
                  :option="option">
       </avue-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary"
-                     :size="crud.size"
-                     @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
-          <el-button @click="box = false"
-                     :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
-        </span>
-      </template>
+      <span class="avue-dialog__footer">
+        <el-button type="primary"
+                   :size="crud.size"
+                   @click="handleSubmit">{{t('crud.filter.submitBtn')}}</el-button>
+        <el-button @click="box = false"
+                   :size="crud.size">{{t('crud.filter.cancelBtn')}}</el-button>
+      </span>
 
     </el-dialog>
   </div>

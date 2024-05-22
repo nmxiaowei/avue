@@ -3,8 +3,8 @@ import {
   render
 } from 'vue';
 import Main from './index.vue';
-export default function (app) {
-  let defaultContext = app._context
+export default function (_context) {
+  let defaultContext = _context
   return (opt) => {
     let options = {
       opt

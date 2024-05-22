@@ -33,15 +33,12 @@
                    :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentChange"
                    v-model:page="page"></avue-crud>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button type="primary"
-                       :size="size"
-                       icon="el-icon-check"
-                       @click="setVal">{{t("common.submitBtn")}}</el-button>
-          </span>
-        </template>
-
+        <span class="avue-dialog__footer">
+          <el-button type="primary"
+                     :size="size"
+                     icon="el-icon-check"
+                     @click="setVal">{{t("common.submitBtn")}}</el-button>
+        </span>
       </el-dialog>
     </div>
 

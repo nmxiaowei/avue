@@ -8,33 +8,34 @@
                        v-model="checkList"
                        @change="checkListChange">
       <el-row>
-        <el-col v-for="(c,p) in data"
-                @click.stop="handleRowClick(c,column)"
-                @dblclick.stop="handleRowDblClick(c,column)"
+        <el-col v-for="(row,index) in data"
+                @click.stop="handleRowClick(row,index)"
+                @dblclick.stop="handleRowDblClick(row,index)"
                 :span="crud.tableOption.gridSpan || span"
                 :md="crud.tableOption.gridSpan|| span"
                 :sm="crud.tableOption.gridSpan|| span"
                 :xs="crud.tableOption.gridXsSpan|| xsSpan"
-                :class="getRowClass(c,column)"
-                :key="p">
+                :class="getRowClass(row,index)"
+                :key="index">
           <div :class="b('content')"
-               :style="getGradientColor()">
-            <div v-for="(item,index) in column"
-                 :class="[b('item'),(item.type || item.prop),getClass(c,item)]"
-                 @click="handleCellClick(c,item)"
-                 @dblclick="handleCellDblClick(c,item)"
-                 :key="index">
+               :style="[getGradientColor(row,index),getRowStyle(row,index)]">
+            <div v-for="(item,columnIndex) in column"
+                 :class="[b('item'),(item.type || item.prop),getClass(row,index,item)]"
+                 :style="getCellStyle(row,index,item,columnIndex)"
+                 @click="handleCellClick(row,item)"
+                 @dblclick="handleCellDblClick(row,item)"
+                 :key="columnIndex">
               <span v-if="item.type=='selection'">
-                <el-checkbox :label="p">&nbsp;</el-checkbox>
+                <el-checkbox :label="index">&nbsp;</el-checkbox>
               </span>
               <template v-else>
-                <template v-for="(comp,cindex) in item.header && item.header({row:c,$index:p,column:item})"
-                          :key="cindex">
+                <template v-for="(comp,compIndex) in item.header && item.header({row:row,$index:index,column:item})"
+                          :key="compIndex">
                   <component :class="[b('label'),item.labelClassName]"
                              :is="comp"></component>
                 </template>
-                <template v-for="(comp,cindex) in item.default &&item.default({row:c,$index:p,column:item})"
-                          :key="cindex">
+                <template v-for="(comp,compIndex) in item.default &&item.default({row:row,$index:index,column:item})"
+                          :key="compIndex">
                   <div :class="[b('value'),item.className]">
                     <component :is="comp"></component>
                   </div>
@@ -59,6 +60,8 @@ export default create({
   inject: ["crud"],
   mixins: [locale],
   props: {
+    rowStyle: Function,
+    cellStyle: Function,
     cellClassName: Function,
     rowClassName: Function,
     height: [String, Number],
@@ -123,24 +126,30 @@ export default create({
     handleCellClick (row, column) {
       this.$emit('cell-click', row, column)
     },
-    getGradientColor () {
+    getGradientColor (row, index) {
       let styles = {}
-      if (this.crud.tableOption.gridBackgroundImage) {
+      if (typeof this.crud.tableOption.gridBackground == 'function') {
+        styles.background = this.crud.tableOption.gridBackground(row, index)
+      } else if (this.crud.tableOption.gridBackgroundImage) {
         styles.backgroundImage = `url(${this.crud.tableOption.gridBackgroundImage})`
       } else {
         styles.background = this.crud.tableOption.gridBackground || 'linear-gradient(to bottom, rgba(88, 159, 248, 0.1), white)'
       }
       return styles
     },
-    getRowClass (row, column) {
-      let list = []
-      if (this.rowClassName) list.push(this.rowClassName(row, column))
-      return list;
+    getCellStyle (row, index, column, columnIndex) {
+      if (this.cellStyle) return this.cellStyle({ row, rowIndex: index, column, columnIndex })
     },
-    getClass (item, column) {
+    getRowStyle (row, index) {
+      if (this.rowStyle) return this.rowStyle({ row, rowIndex: index })
+    },
+    getRowClass (row, index) {
+      if (this.rowClassName) return this.rowClassName({ row, rowIndex: index });
+    },
+    getClass (row, index, column) {
       let list = []
-      if (this.cellClassName) list.push(this.cellClassName(item, column))
       const columnOption = this.crud.columnOption || []
+      if (this.cellClassName) list.push(this.cellClassName({ row, rowIndex: index, column }))
       if (column.prop == (columnOption[0] || {}).prop) list.push('title')
       if (column.row) list.push('row')
       if (column.showOverflowTooltip) list.push('overHidden')

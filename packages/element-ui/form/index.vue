@@ -135,6 +135,7 @@
                                  :props="tableOption.props"
                                  :propsHttp="tableOption.propsHttp"
                                  :render="column.render"
+                                 :row="form"
                                  :readonly="column.readonly || readonly"
                                  v-bind="$uploadFun(column)"
                                  :disabled="getDisabled(column)"
@@ -165,6 +166,10 @@
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
             <form-menu v-if="!isMenu">
+              <template #menu-form-before="scope">
+                <slot name="menu-form-before"
+                      v-bind="scope"></slot>
+              </template>
               <template #menu-form="scope">
                 <slot name="menu-form"
                       v-bind="scope"></slot>
@@ -457,10 +462,10 @@ export default create({
           let bindList = [];
           if (bind) {
             let formProp = this.$watch('form.' + prop, (n, o) => {
-              if (n != o) setAsVal(this.form, bind, n);
+              setAsVal(this.form, bind, n);
             })
             let formDeep = this.$watch('form.' + bind, (n, o) => {
-              if (n != o) this.form[prop] = n
+              this.form[prop] = n
             })
             bindList.push(formProp)
             bindList.push(formDeep)

@@ -5,6 +5,9 @@
           :style="styleName"
           :class="[b('menu',[formSafe.menuPosition]),'no-print']"
           v-if="validData(formSafe.tableOption.menuBtn, true)">
+    <slot name="menu-form-before"
+          :disabled="formSafe.allDisabled"
+          :size="formSafe.size"></slot>
     <el-button type="primary"
                @click="formSafe.handleMock"
                :size="formSafe.size"

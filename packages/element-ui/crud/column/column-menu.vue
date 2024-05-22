@@ -19,6 +19,8 @@
     </template>
     <template #="{row,column,$index}">
       <div :class="b('menu')">
+        <slot name="menu-before"
+              v-bind="menuParams({row,column,$index})"></slot>
         <el-dropdown v-if="isMenu"
                      :size="crud.size">
           <el-button text
@@ -30,6 +32,8 @@
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
+              <slot name="menu-btn-before"
+                    v-bind="menuParams({row,column,$index})"></slot>
               <el-dropdown-item :icon="crud.getBtnIcon('viewBtn')"
                                 :class="b('viewBtn')"
                                 v-if="validData(crud.tableOption.viewBtn,config.viewBtn)"
@@ -51,12 +55,7 @@
                                 v-permission="crud.getPermission('delBtn',row,$index)"
                                 @click="crud.rowDel(row,$index)">{{crud.menuIcon('delBtn')}}</el-dropdown-item>
               <slot name="menu-btn"
-                    :row="row"
-                    :column="column"
-                    :type="menuText('primary')"
-                    :disabled="crud.btnDisabled"
-                    :size="crud.size"
-                    :index="$index"></slot>
+                    v-bind="menuParams({row,column,$index})"></slot>
             </el-dropdown-menu>
           </template>
 
@@ -158,12 +157,7 @@
 
         </template>
         <slot name="menu"
-              :row="row"
-              :column="column"
-              :type="menuText('primary')"
-              :disabled="crud.btnDisabled"
-              :size="crud.size"
-              :index="$index"></slot>
+              v-bind="menuParams({row,column,$index})"></slot>
       </div>
     </template>
   </component>
@@ -208,6 +202,17 @@ export default create({
     menuText (value) {
       return value;
     },
+    menuParams ({ row, column, $index }) {
+      let parent = this.crud
+      return {
+        row,
+        column,
+        type: this.menuText('primary'),
+        disabled: parent.btnDisabled,
+        size: parent.size,
+        index: $index
+      }
+    }
   }
 })
 </script>

@@ -43,6 +43,8 @@
     </avue-form>
     <span class="avue-dialog__footer"
           :class="'avue-dialog__footer--'+dialogMenuPosition">
+      <slot name="menu-form-before"
+            v-bind="menuParams()"></slot>
       <el-button type="primary"
                  @click="($refs.tableForm || {}).handleMock"
                  :loading="disabled"
@@ -63,9 +65,7 @@
                  :size="crud.size"
                  :icon="option.emptyIcon">{{option.emptyText}}</el-button>
       <slot name="menu-form"
-            :disabled="disabled"
-            :size="crud.size"
-            :type="boxType"></slot>
+            v-bind="menuParams()"></slot>
     </span>
   </component>
 </template>
@@ -137,7 +137,10 @@ export default create({
       let option = this.deepClone(this.crud.tableOption);
       option.boxType = this.boxType;
       option.column = this.deepClone(this.crud.propOption);
-      option.column.forEach(ele => { if (ele.renderForm) ele.render = ele.renderForm })
+      option.column.forEach(ele => {
+        delete ele.render
+        if (ele.renderForm) ele.render = ele.renderForm
+      })
       option.menuBtn = false;
       if (this.isAdd) {
         option.submitBtn = option.saveBtn;
@@ -176,10 +179,17 @@ export default create({
       }
     },
     dialogMenuPosition () {
-      return this.crud.option.dialogMenuPosition || 'right'
+      return this.crud.tableOption.dialogMenuPosition || 'right'
     }
   },
   methods: {
+    menuParams () {
+      return {
+        disabled: this.disabled,
+        size: this.crud.size,
+        type: this.boxType
+      }
+    },
     submit () {
       this.$refs.tableForm.submit()
     },

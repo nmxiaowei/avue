@@ -3,8 +3,8 @@ import {
   createVNode,
   render
 } from 'vue';
-export default function (app) {
-  let defaultContext = app._context
+export default function (_context) {
+  let defaultContext = _context
   return (datas = [], index = 0, ops = {}) => {
     let options = {
       datas: datas,

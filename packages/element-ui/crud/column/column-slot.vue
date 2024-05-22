@@ -42,7 +42,8 @@
           <div>
             <slot v-bind="{
                       row:row,
-                      column:Object.assign(tableColumn,column),
+                      tableColumn:tableColumn,
+                      column:column,
                       dic:crud.DIC[column.prop],
                       size:crud.size,
                       index:$index,
@@ -85,7 +86,8 @@
               :event="column.event"
               :params="column.params"></custom>
       <slot :row="row"
-            :column="Object.assign(tableColumn,column)"
+            :tableColumn="tableColumn"
+            :column="column"
             :index="$index"
             :dic="crud.DIC[column.prop]"
             :size="crud.size"
