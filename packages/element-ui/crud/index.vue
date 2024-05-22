@@ -147,6 +147,14 @@
                   <slot name="menu-btn"
                         v-bind="scope"></slot>
                 </template>
+                <template #menu-before="scope">
+                  <slot name="menu-before"
+                        v-bind="scope"></slot>
+                </template>
+                <template #menu-btn-before="scope">
+                  <slot name="menu-btn-before"
+                        v-bind="scope"></slot>
+                </template>
               </column-menu>
             </template>
           </column>
@@ -169,6 +177,10 @@
       </template>
       <template #menu-form="scope">
         <slot name="menu-form"
+              v-bind="scope"></slot>
+      </template>
+      <template #menu-form-before="scope">
+        <slot name="menu-form-before"
               v-bind="scope"></slot>
       </template>
     </dialog-form>
