@@ -456,6 +456,7 @@ export default create({
       }
       const fileSize = file.size / 1024;
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
+        if (fileState) this.uploadList.splice(fileIndex, 1);
         this.hide("文件太大不符合");
         return;
       }
