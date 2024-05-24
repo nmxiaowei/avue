@@ -32,7 +32,7 @@
                @reset-change="hide"
                @tab-click="handleTabClick"
                @error="handleError"
-               v-bind="$uploadFun({},crud)"
+               v-bind="$uploadFun(null,crud)"
                :option="option">
       <!-- 循环form表单卡槽 -->
       <template v-for="item in crud.formSlot"

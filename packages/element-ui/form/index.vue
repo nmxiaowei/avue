@@ -395,6 +395,7 @@ export default create({
     }
   },
   props: {
+    uploadSized: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,

@@ -287,6 +287,7 @@ export default create({
       type: String,
       default: ""
     },
+    uploadSized: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
@@ -349,7 +350,7 @@ export default create({
         url = getFileUrl(this.homeUrl, url);
         return { name, url, type };
       }
-      (this.text || []).forEach((ele, index) => {
+      this.text.forEach((ele, index) => {
         if (ele) {
           const { name, url, type } = parseFile(ele);
           list.push({
@@ -399,6 +400,9 @@ export default create({
         }
       })
     },
+    handleError (msg) {
+      if (msg) this.uploadError && this.uploadError(error, this.column)
+    },
     handleSuccess (file) {
       if (this.isObject) {
         const obj = {
@@ -418,28 +422,15 @@ export default create({
         this.uploadList.splice(index, 1)
       } else {
         this.beforeRemove(file).then(() => {
-          this.delete(file);
+          this.text.forEach((ele, index) => {
+            let url = this.isObject ? ele[this.valueKey] : ele
+            if (getFileUrl(this.homeUrl, url) === file.url) {
+              this.text.splice(index, 1);
+            }
+          });
+          this.menu = false;
         })
       }
-    },
-    handleError (error) {
-      this.uploadError && this.uploadError(error, this.column)
-    },
-    delete (file) {
-      (this.text || []).forEach((ele, index) => {
-        let url = this.isObject ? ele[this.valueKey] : ele
-        if (getFileUrl(this.homeUrl, url) === file.url) {
-          this.text.splice(index, 1);
-        }
-      });
-      this.menu = false;
-    },
-    show (data) {
-      this.res = data || this.res
-      this.handleSuccess(this.res);
-    },
-    hide (msg) {
-      if (msg) this.handleError(msg);
     },
     handleFileChange (file, fileList) {
       fileList.pop();
@@ -447,17 +438,33 @@ export default create({
     },
     httpUpload (config) {
       let { file } = config;
-      const fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
-      const fileState = fileIndex !== -1 ? this.uploadCacheList[fileIndex] : null;
+      let fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
+      let fileState = this.uploadCacheList[fileIndex] || {}
+      const deleteUploadCacheFile = () => {
+        const cacheIndex = this.uploadCacheList.findIndex(ele => ele.raw === file)
+        const index = this.uploadList.findIndex(ele => ele.raw === file)
+        if (cacheIndex !== -1) this.uploadCacheList.splice(cacheIndex, 1);
+        if (index !== -1) this.uploadList.splice(index, 1);
+      }
+
+      const show = (data) => {
+        deleteUploadCacheFile()
+        this.res = data || this.res
+        this.handleSuccess(this.res);
+      }
+      const hide = (msg) => {
+        deleteUploadCacheFile();
+        this.handleError(msg);
+      }
       if (typeof this.httpRequest === "function") {
-        if (fileState) this.uploadCacheList.splice(fileIndex, 1)
+        deleteUploadCacheFile()
         this.httpRequest(config)
         return
       }
       const fileSize = file.size / 1024;
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
-        if (fileState) this.uploadList.splice(fileIndex, 1);
-        this.hide("文件太大不符合");
+        deleteUploadCacheFile()
+        this.handleSized(file, this.text)
         return;
       }
       const headers = { ...this.headers, "Content-Type": "multipart/form-data" };
@@ -474,7 +481,6 @@ export default create({
         }
         let uploadFile;
         const handleUploadResult = (res) => {
-          if (fileState) this.uploadList.splice(fileIndex, 1);
           this.res = {};
           if (this.isQiniuOss) {
             let key = res.data.key;
@@ -483,15 +489,14 @@ export default create({
           }
           this.res = getAsVal(this.isAliOss ? res : res.data, this.resKey);
           if (typeof this.uploadAfter === "function") {
-            this.uploadAfter(this.res, this.show, this.hide, this.column);
+            this.uploadAfter(this.res, show, hide, this.column);
           } else {
-            this.show();
+            show();
           }
         };
 
         const handleUploadError = (error) => {
-          if (fileState) this.uploadList.splice(fileIndex, 1);
-          this.hide(error);
+          hide(error);
         };
 
         const uploadToDefault = () => {
@@ -510,7 +515,7 @@ export default create({
         const uploadToCos = () => {
           if (!window.COS) {
             packages.logs("COS");
-            this.hide();
+            hide();
             return;
           }
           oss_config = this.cos || this.$AVUE.cos;
@@ -541,7 +546,7 @@ export default create({
         const uploadToQiniu = () => {
           if (!window.CryptoJS) {
             packages.logs("CryptoJS");
-            this.hide();
+            hide();
             return;
           }
           oss_config = this.qiniu || this.$AVUE.qiniu;
@@ -556,7 +561,7 @@ export default create({
         const uploadToAliOss = () => {
           if (!window.OSS) {
             packages.logs("AliOSS");
-            this.hide();
+            hide();
             return;
           }
           oss_config = this.ali || this.$AVUE.ali;
@@ -567,8 +572,11 @@ export default create({
           }).then(handleUploadResult).catch(handleUploadError);
         };
         const callback = (newFile) => {
-          let list = this.uploadCacheList.splice(0, this.uploadCacheList.length)
-          this.uploadList = this.uploadList.concat(list)
+          fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === fileState);
+          if (fileIndex !== -1) {
+            let list = this.uploadCacheList.splice(fileIndex, 1)
+            this.uploadList = this.uploadList.concat(list)
+          }
           uploadFile = newFile || file;
           param.append(this.fileName, uploadFile);
           if (this.isCosOss) {
@@ -582,7 +590,7 @@ export default create({
           }
         };
         if (typeof this.uploadBefore === "function") {
-          this.uploadBefore(file, callback, this.hide, this.column);
+          this.uploadBefore(file, callback, hide, this.column);
         } else {
           callback();
         }
@@ -627,8 +635,13 @@ export default create({
       }
 
     },
+    handleSized (files, fileList) {
+      this.uploadSized && this.uploadSized(this.fileSize, files, fileList, this.column);
+      this.handleError('size')
+    },
     handleExceed (files, fileList) {
       this.uploadExceed && this.uploadExceed(this.limit, files, fileList, this.column);
+      this.handleError('exceed')
     },
     handlePreview (file) {
       if (isFileReady(file)) return
