@@ -28,7 +28,7 @@
           <avue-form :key="index"
                      ref="main"
                      :option="option"
-                     v-bind="$uploadFun({},this)"
+                     v-bind="$uploadFun(null,this)"
                      v-model="text[index]">
             <div slot-scope="{}"
                  slot="_index">
@@ -50,7 +50,7 @@
                ref="main"
                :option="option"
                :disabled="disabled"
-               v-bind="$uploadFun({},this)"
+               v-bind="$uploadFun(null,this)"
                @cell-mouse-enter="cellMouseenter"
                @cell-mouse-leave="cellMouseLeave"
                @selection-change="handleSelectionChange"
@@ -102,6 +102,7 @@ export default create({
     }
   },
   props: {
+    uploadSized: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,

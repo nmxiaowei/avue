@@ -36,7 +36,7 @@
                  @reset-change="hide"
                  @tab-click="handleTabClick"
                  @error="handleError"
-                 v-bind="$uploadFun({},crud)"
+                 v-bind="$uploadFun(null,crud)"
                  :option="option">
         <template slot-scope="scope"
                   v-for="item in crud.formSlot"
