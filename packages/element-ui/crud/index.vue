@@ -143,9 +143,19 @@
                 <slot name="menuHeader"
                       v-bind="scope"></slot>
               </template>
-              <template slot="menu"
+              <template slot="menuBefore"
                         slot-scope="scope">
-                <slot name="menu"
+                <slot name="menuBefore"
+                      v-bind="scope"></slot>
+              </template>
+              <template slot="menuBefore"
+                        slot-scope="scope">
+                <slot name="menuBefore"
+                      v-bind="scope"></slot>
+              </template>
+              <template slot="menuBtn"
+                        slot-scope="scope">
+                <slot name="menuBtn"
                       v-bind="scope"></slot>
               </template>
               <template slot="menuBtn"
@@ -173,6 +183,11 @@
                 :slot="item">
         <slot v-bind="scope"
               :name="item"></slot>
+      </template>
+      <template slot-scope="scope"
+                slot="menuFormBefore">
+        <slot name="menuFormBefore"
+              v-bind="scope"></slot>
       </template>
       <template slot-scope="scope"
                 slot="menuForm">
