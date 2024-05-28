@@ -24,6 +24,7 @@
     </header-search>
     <el-card :shadow="isCard"
              :class="b('body')">
+      <slot name="header"></slot>
       <!-- 表格功能列 -->
       <header-menu ref="headerMenu"
                    v-if="vaildData(tableOption.header,true)">
@@ -52,7 +53,7 @@
                    v-if="vaildData(tableOption.selectClearBtn,config.selectClearBtn) && tableOption.selection">{{t('crud.emptyBtn')}}</el-button>
         <slot name="tip"></slot>
       </el-tag>
-      <slot name="header"></slot>
+      <slot name="body"></slot>
       <el-form :model="cellForm"
                :show-message="false"
                @validate="handleValidate"
@@ -93,12 +94,19 @@
                    :cell-style="cellStyle"
                    :fit="tableOption.fit"
                    :header-cell-class-name="headerCellClassName"
+                   :header-row-class-name="headerRowClassName"
+                   :header-row-style="headerRowStyle"
+                   :header-cell-style="headerCellStyle"
                    :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
                    :height="tableHeight"
                    ref="table"
                    :width="setPx(tableOption.width,config.width)"
                    :border="tableOption.border"
                    v-loading="tableLoading"
+                   :element-loading-text="tableOption.loadingText"
+                   :element-loading-spinner="tableOption.loadingSpinner"
+                   :element-loading-svg="tableOption.loadingSvg"
+                   :element-loading-background="tableOption.loadingBackground"
                    @filter-change="filterChange"
                    @selection-change="selectionChange"
                    @select="select"
@@ -135,9 +143,19 @@
                 <slot name="menuHeader"
                       v-bind="scope"></slot>
               </template>
+              <template slot="menuBefore"
+                        slot-scope="scope">
+                <slot name="menuBefore"
+                      v-bind="scope"></slot>
+              </template>
               <template slot="menu"
                         slot-scope="scope">
                 <slot name="menu"
+                      v-bind="scope"></slot>
+              </template>
+              <template slot="menuBtnBefore"
+                        slot-scope="scope">
+                <slot name="menuBtnBefore"
                       v-bind="scope"></slot>
               </template>
               <template slot="menuBtn"
@@ -165,6 +183,11 @@
                 :slot="item">
         <slot v-bind="scope"
               :name="item"></slot>
+      </template>
+      <template slot-scope="scope"
+                slot="menuFormBefore">
+        <slot name="menuFormBefore"
+              v-bind="scope"></slot>
       </template>
       <template slot-scope="scope"
                 slot="menuForm">
@@ -381,13 +404,17 @@ export default create({
   props: {
     spanMethod: Function,
     summaryMethod: Function,
-    rowStyle: Function,
-    cellStyle: Function,
     beforeClose: Function,
     beforeOpen: Function,
-    rowClassName: Function,
-    cellClassName: Function,
-    headerCellClassName: Function,
+    rowStyle: [Function, Object],
+    cellStyle: [Function, Object],
+    rowClassName: [Function, String],
+    cellClassName: [Function, String],
+    headerCellClassName: [Function, String],
+    headerRowClassName: [Function, String],
+    headerRowStyle: [Function, Object],
+    headerCellStyle: [Function, Object],
+    uploadSized: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,
@@ -456,15 +483,15 @@ export default create({
       if (this.isAutoHeight) {
         this.$nextTick(() => {
           const clientHeight = document.documentElement.clientHeight;
-          const calcHeight = this.calcHeight;
+          const calcHeight = this.calcHeight || 0;
           const tableRef = this.$refs.table;
           const tablePageRef = this.$refs.tablePage;
           let tableHeight = clientHeight - calcHeight;
-          if (tableRef) {
+          if (tableRef && tableRef.$el.getBoundingClientRect) {
             const tableBoundingClientRect = tableRef.$el.getBoundingClientRect();
             tableHeight -= tableBoundingClientRect.top;
           }
-          if (tablePageRef) {
+          if (tablePageRef && tablePageRef.$el.getBoundingClientRect) {
             const tablePageBoundingClientRect = tablePageRef.$el.getBoundingClientRect();
             tableHeight -= tablePageBoundingClientRect.height;
           }
@@ -670,6 +697,7 @@ export default create({
       const done = () => {
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
+        this.list[index] = row;
         this.list[index].$cellEdit = false
         this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
         delete this.cascaderFormList[index]

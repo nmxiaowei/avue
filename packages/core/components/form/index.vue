@@ -52,6 +52,7 @@ export default {
   },
   props: {
     value: {},
+    uploadSized: Function,
     uploadBefore: Function,
     uploadDelete: Function,
     uploadAfter: Function,

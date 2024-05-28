@@ -36,7 +36,7 @@
                  @reset-change="hide"
                  @tab-click="handleTabClick"
                  @error="handleError"
-                 v-bind="$uploadFun({},crud)"
+                 v-bind="$uploadFun(null,crud)"
                  :option="option">
         <template slot-scope="scope"
                   v-for="item in crud.formSlot"
@@ -57,6 +57,8 @@
                    :icon="option.mockIcon">
           {{option.mockText}}
         </el-button>
+        <slot name="menuFormBefore"
+              v-bind="menuParams()"></slot>
         <el-button v-if="vaildData(option.submitBtn,true) && !isView"
                    @click="submit"
                    :loading="disabled"
@@ -69,9 +71,7 @@
                    :size="crud.controlSize"
                    :icon="option.emptyIcon">{{option.emptyText}}</el-button>
         <slot name="menuForm"
-              :disabled="disabled"
-              :size="crud.controlSize"
-              :type="boxType"></slot>
+              v-bind="menuParams()"></slot>
       </span>
     </component>
   </div>
@@ -186,10 +186,17 @@ export default create({
       }
     },
     dialogMenuPosition () {
-      return this.crud.option.dialogMenuPosition || 'right'
+      return this.crud.tableOption.dialogMenuPosition || 'right'
     }
   },
   methods: {
+    menuParams () {
+      return {
+        disabled: this.disabled,
+        size: this.crud.controlSize,
+        type: this.boxType
+      }
+    },
     submit () {
       this.$refs.tableForm.submit()
     },
