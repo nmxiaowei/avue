@@ -148,14 +148,14 @@
                 <slot name="menuBefore"
                       v-bind="scope"></slot>
               </template>
-              <template slot="menuBefore"
+              <template slot="menu"
                         slot-scope="scope">
-                <slot name="menuBefore"
+                <slot name="menu"
                       v-bind="scope"></slot>
               </template>
-              <template slot="menuBtn"
+              <template slot="menuBtnBefore"
                         slot-scope="scope">
-                <slot name="menuBtn"
+                <slot name="menuBtnBefore"
                       v-bind="scope"></slot>
               </template>
               <template slot="menuBtn"
