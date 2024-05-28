@@ -67,7 +67,7 @@ export function setAsVal(obj, bind = '', value) {
       }
       array[props[len - 1]] = value;
     } else {
-      result = `obj.${bind}=${value}`;
+      result = `obj.${bind}='${value}'`;
     }
   }
   eval(result);
