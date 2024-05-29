@@ -169,17 +169,17 @@
 </template>
 
 <script>
-import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
-import locale from "core/locale";
-import { getAsVal, isMediaType } from "utils/util";
-import { detailImg, fileToBase64 } from "plugin/canvas/";
-import { getToken } from "plugin/qiniu/";
-import { getClient } from "plugin/ali/";
-import packages from "core/packages";
+import create from 'core/create';
+import props from 'common/common/props.js';
+import event from 'common/common/event.js';
+import locale from 'core/locale';
+import { getAsVal, isMediaType } from 'utils/util';
+import { detailImg, fileToBase64 } from 'plugin/canvas/';
+import { getToken } from 'plugin/qiniu/';
+import { getClient } from 'plugin/ali/';
+import packages from 'core/packages';
 function getFileUrl (home, uri = '') {
-  return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri
+  return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri;
 };
 const FILE_STATUS_READY = 'ready';
 const FILE_STATUS_DONE = 'done';
@@ -187,7 +187,7 @@ function isFileReady (file) {
   return file.status === FILE_STATUS_READY;
 }
 export default create({
-  name: "upload",
+  name: 'upload',
   mixins: [props(), event(), locale],
   data () {
     return {
@@ -196,7 +196,7 @@ export default create({
       res: '',
       menu: false,
       reload: Math.random()
-    }
+    };
   },
   props: {
     qiniu: Object,
@@ -204,13 +204,13 @@ export default create({
     data: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       }
     },
     paramsList: {
       type: Array,
       default: () => {
-        return []
+        return [];
       }
     },
     showFileList: {
@@ -230,12 +230,12 @@ export default create({
     headers: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       }
     },
     accept: {
       type: [String, Array],
-      default: ""
+      default: ''
     },
     canvasOption: {
       type: Object,
@@ -262,11 +262,11 @@ export default create({
     },
     loadText: {
       type: String,
-      default: "Loading..."
+      default: 'Loading...'
     },
     action: {
       type: String,
-      default: ""
+      default: ''
     },
     uploadSized: Function,
     uploadBefore: Function,
@@ -279,35 +279,35 @@ export default create({
   },
   computed: {
     isObject () {
-      let obj = this.text[0]
-      return typeof (obj) === 'object' || this.dataType == 'object' || this.isJson
+      let obj = this.text[0];
+      return typeof (obj) === 'object' || this.dataType == 'object' || this.isJson;
     },
     acceptList () {
       if (Array.isArray(this.accept)) {
-        return this.accept.join(',')
+        return this.accept.join(',');
       }
-      return this.accept
+      return this.accept;
     },
     homeUrl () {
-      return this.propsHttp.home || ''
+      return this.propsHttp.home || '';
     },
     fileName () {
-      return this.propsHttp.fileName || 'file'
+      return this.propsHttp.fileName || 'file';
     },
     isCosOss () {
-      return this.oss === "cos";
+      return this.oss === 'cos';
     },
     isAliOss () {
-      return this.oss === "ali";
+      return this.oss === 'ali';
     },
     isQiniuOss () {
-      return this.oss === "qiniu";
+      return this.oss === 'qiniu';
     },
     isPictureImg () {
-      return this.listType === "picture-img";
+      return this.listType === 'picture-img';
     },
     firstFile () {
-      return this.fileList[0] || {}
+      return this.fileList[0] || {};
     },
     fileList () {
       let list = [];
@@ -324,7 +324,7 @@ export default create({
         }
         url = getFileUrl(this.homeUrl, url);
         return { name, url, type };
-      }
+      };
       this.text.forEach((ele, index) => {
         if (ele) {
           const { name, url, type } = parseFile(ele);
@@ -342,7 +342,7 @@ export default create({
   },
   mounted () {
     if (this.drag) {
-      this.setSort()
+      this.setSort();
     }
   },
   methods: {
@@ -356,27 +356,27 @@ export default create({
       return isFileReady(file) && !this.oss;
     },
     isMediaType (url) {
-      return isMediaType(url, this.fileType)
+      return isMediaType(url, this.fileType);
     },
     setSort () {
       if (!window.Sortable) {
         packages.logs('Sortable');
-        return
+        return;
       }
-      const el = this.$el.querySelectorAll('.avue-upload > ul')[0]
+      const el = this.$el.querySelectorAll('.avue-upload > ul')[0];
       window.Sortable.create(el, {
         animation: 100,
         onEnd: evt => {
           const targetRow = this.text.splice(evt.oldIndex, 1)[0];
-          this.text.splice(evt.newIndex, 0, targetRow)
+          this.text.splice(evt.newIndex, 0, targetRow);
 
           this.reload = Math.random();
-          this.$nextTick(() => this.setSort())
+          this.$nextTick(() => this.setSort());
         }
-      })
+      });
     },
-    handleError (msg) {
-      if (msg) this.uploadError && this.uploadError(error, this.column)
+    handleError (error) {
+      if (error) this.uploadError && this.uploadError(error, this.column);
     },
     handleSuccess (file) {
       if (this.isObject) {
@@ -385,7 +385,7 @@ export default create({
           [this.valueKey]: file[this.urlKey],
           [this.typeKey]: file[this.fileTypeKey]
         };
-        this.paramsList.forEach(ele => obj[ele.label] = file[ele.value])
+        this.paramsList.forEach(ele => obj[ele.label] = file[ele.value]);
         this.text.push(obj);
       } else {
         this.text.push(file[this.urlKey]);
@@ -393,63 +393,63 @@ export default create({
     },
     handleRemove (file) {
       if (isFileReady(file)) {
-        let index = this.uploadList.findIndex(ele => ele.raw == file)
-        this.uploadList.splice(index, 1)
+        let index = this.uploadList.findIndex(ele => ele.raw == file);
+        this.uploadList.splice(index, 1);
       } else {
         this.beforeRemove(file).then(() => {
           this.text.forEach((ele, index) => {
-            let url = this.isObject ? ele[this.valueKey] : ele
+            let url = this.isObject ? ele[this.valueKey] : ele;
             if (getFileUrl(this.homeUrl, url) === file.url) {
               this.text.splice(index, 1);
             }
           });
-        })
+        });
       }
     },
     handleFileChange (file, fileList) {
       fileList.pop();
-      this.uploadCacheList.push(file)
+      this.uploadCacheList.push(file);
     },
     httpUpload (config) {
       let { file } = config;
       let fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
-      let fileState = this.uploadCacheList[fileIndex] || {}
+      let fileState = this.uploadCacheList[fileIndex] || {};
       const deleteUploadCacheFile = () => {
-        const cacheIndex = this.uploadCacheList.findIndex(ele => ele.raw === file)
-        const index = this.uploadList.findIndex(ele => ele.raw === file)
+        const cacheIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
+        const index = this.uploadList.findIndex(ele => ele.raw === file);
         if (cacheIndex !== -1) this.uploadCacheList.splice(cacheIndex, 1);
         if (index !== -1) this.uploadList.splice(index, 1);
-      }
+      };
 
       const show = (data) => {
-        deleteUploadCacheFile()
-        this.res = data || this.res
+        deleteUploadCacheFile();
+        this.res = data || this.res;
         this.handleSuccess(this.res);
-      }
+      };
       const hide = (msg) => {
         deleteUploadCacheFile();
-        this.handleError(msg)
-      }
-      if (typeof this.httpRequest === "function") {
-        deleteUploadCacheFile()
-        this.httpRequest(config)
-        return
+        this.handleError(msg);
+      };
+      if (typeof this.httpRequest === 'function') {
+        deleteUploadCacheFile();
+        this.httpRequest(config);
+        return;
       }
       const fileSize = file.size / 1024;
       if (!this.validatenull(fileSize) && fileSize > this.fileSize) {
-        deleteUploadCacheFile()
-        this.handleSized(file, this.text)
+        deleteUploadCacheFile();
+        this.handleSized(file, this.text);
         return;
       }
-      const headers = { ...this.headers, "Content-Type": "multipart/form-data" };
-      //oss配置属性
+      const headers = { ...this.headers, 'Content-Type': 'multipart/form-data' };
+      // oss配置属性
       let oss, oss_config = {};
       let client = {};
       let param = new FormData();
       const done = () => {
-        this.oss ? fileState.loading = true : fileState.percentage = 0
+        this.oss ? fileState.loading = true : fileState.percentage = 0;
         let url = this.action;
-        //附加属性
+        // 附加属性
         for (let o in this.data) {
           param.append(o, this.data[o]);
         }
@@ -462,7 +462,7 @@ export default create({
             res.data.name = key;
           }
           this.res = getAsVal(this.isAliOss ? res : res.data, this.resKey);
-          if (typeof this.uploadAfter === "function") {
+          if (typeof this.uploadAfter === 'function') {
             this.uploadAfter(this.res, show, hide, this.column);
           } else {
             show();
@@ -476,7 +476,7 @@ export default create({
         const uploadToDefault = () => {
           this.$axios({
             url,
-            method: "post",
+            method: 'post',
             data: param,
             headers,
             onUploadProgress: (progressEvent) => {
@@ -488,7 +488,7 @@ export default create({
 
         const uploadToCos = () => {
           if (!window.COS) {
-            packages.logs("COS");
+            packages.logs('COS');
             hide();
             return;
           }
@@ -502,7 +502,7 @@ export default create({
             Bucket: oss_config.Bucket,
             Region: oss_config.Region,
             Key: uploadFile.name,
-            Body: uploadFile,
+            Body: uploadFile
           }, function (err, data) {
             if (err) {
               handleUploadError(err);
@@ -519,7 +519,7 @@ export default create({
 
         const uploadToQiniu = () => {
           if (!window.CryptoJS) {
-            packages.logs("CryptoJS");
+            packages.logs('CryptoJS');
             hide();
             return;
           }
@@ -528,13 +528,13 @@ export default create({
             scope: oss_config.scope,
             deadline: new Date().getTime() + oss_config.deadline * 3600
           });
-          param.append("token", token);
+          param.append('token', token);
           url = oss_config.bucket;
-          uploadToDefault()
+          uploadToDefault();
         };
         const uploadToAliOss = () => {
           if (!window.OSS) {
-            packages.logs("AliOSS");
+            packages.logs('AliOSS');
             hide();
             return;
           }
@@ -546,10 +546,10 @@ export default create({
           }).then(handleUploadResult).catch(handleUploadError);
         };
         const callback = (newFile) => {
-          fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === fileState);
+          fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
           if (fileIndex !== -1) {
-            let list = this.uploadCacheList.splice(fileIndex, 1)
-            this.uploadList = this.uploadList.concat(list)
+            let list = this.uploadCacheList.splice(fileIndex, 1);
+            this.uploadList = this.uploadList.concat(list);
           }
           uploadFile = newFile || file;
           param.append(this.fileName, uploadFile);
@@ -563,16 +563,16 @@ export default create({
             uploadToDefault();
           }
         };
-        if (typeof this.uploadBefore === "function") {
+        if (typeof this.uploadBefore === 'function') {
           this.uploadBefore(file, callback, hide, this.column);
         } else {
           callback();
         }
       };
       if (isMediaType(file.name) != 'img') {
-        done()
+        done();
       } else {
-        //处理水印图片
+        // 处理水印图片
         const canvasDone = () => {
           if (!this.validatenull(this.canvasOption)) {
             detailImg(file, this.canvasOption).then(res => {
@@ -580,10 +580,10 @@ export default create({
               done();
             });
           } else {
-            done()
+            done();
           }
-        }
-        //处理图片剪裁
+        };
+        // 处理图片剪裁
         const canvasCrop = () => {
           fileToBase64(file, (res) => {
             let option = Object.assign(this.cropperOption, {
@@ -591,51 +591,51 @@ export default create({
               type: 'file',
               callback: res => {
                 file = res;
-                canvasDone()
+                canvasDone();
               },
               cancel: () => {
-                if (fileState) this.uploadList.splice(fileIndex, 1)
+                deleteUploadCacheFile()
               }
-            })
-            this.$ImageCropper(option)
-          })
+            });
+            this.$ImageCropper(option);
+          });
 
-        }
+        };
         if (!this.validatenull(this.cropperOption)) {
-          canvasCrop()
+          canvasCrop();
         } else {
-          canvasDone()
+          canvasDone();
         }
       }
 
     },
     handleSized (files, fileList) {
       this.uploadSized && this.uploadSized(this.fileSize, files, fileList, this.column);
-      this.handleError('size')
+      this.handleError('size');
     },
     handleExceed (files, fileList) {
       this.uploadExceed && this.uploadExceed(this.limit, files, fileList, this.column);
-      this.handleError('exceed')
+      this.handleError('exceed');
     },
     handlePreview (file) {
-      if (isFileReady(file)) return
+      if (isFileReady(file)) return;
       const callback = () => {
         const index = this.fileList.findIndex(ele => ele.url === file.url);
         this.$ImagePreview(this.fileList, index);
-      }
-      if (typeof this.uploadPreview === "function") {
+      };
+      if (typeof this.uploadPreview === 'function') {
         this.uploadPreview(file, this.column, callback);
       } else {
         callback();
       }
     },
     beforeRemove (file) {
-      if (typeof this.uploadDelete === "function") {
+      if (typeof this.uploadDelete === 'function') {
         return this.uploadDelete(file, this.column);
       } else {
-        return Promise.resolve()
+        return Promise.resolve();
       }
     }
   }
-})
+});
 </script>
