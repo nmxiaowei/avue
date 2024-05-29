@@ -400,8 +400,8 @@ export default create({
         }
       })
     },
-    handleError (msg) {
-      if (msg) this.uploadError && this.uploadError(error, this.column)
+    handleError (error) {
+      if (error) this.uploadError && this.uploadError(error, this.column)
     },
     handleSuccess (file) {
       if (this.isObject) {
@@ -572,7 +572,7 @@ export default create({
           }).then(handleUploadResult).catch(handleUploadError);
         };
         const callback = (newFile) => {
-          fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === fileState);
+          fileIndex = this.uploadCacheList.findIndex(ele => ele.raw === file);
           if (fileIndex !== -1) {
             let list = this.uploadCacheList.splice(fileIndex, 1)
             this.uploadList = this.uploadList.concat(list)
