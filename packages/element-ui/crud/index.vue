@@ -352,7 +352,7 @@ export default create({
       return this.getSlotList(['-header', '-form'], this.$slots, this.propOption).concat(result)
     },
     calcHeight () {
-      return this.tableOption.calcHeight || this.$AVUE.calcHeight
+      return (this.tableOption.calcHeight || 0) + this.$AVUE.calcHeight
     },
     propOption () {
       let result = [];
@@ -450,6 +450,7 @@ export default create({
     headerRowClassName: [Function, String],
     headerRowStyle: [Function, Object],
     headerCellStyle: [Function, Object],
+    uploadSized: Function,
     uploadBefore: Function,
     uploadAfter: Function,
     uploadDelete: Function,

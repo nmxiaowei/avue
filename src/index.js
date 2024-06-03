@@ -113,19 +113,13 @@ const install = function (Vue, opts = {}) {
   locale.i18n(opts.i18n);
   Vue.config.globalProperties.$uploadFun = function (column = {}, safe) {
     safe = safe || this;
-    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed'];
+    let list = ['uploadPreview', 'uploadBefore', 'uploadAfter', 'uploadDelete', 'uploadError', 'uploadExceed', 'uploadSized'];
     let result = {};
-    if (column.type === 'upload') {
-      list.forEach(ele => {
-        if (!column[ele]) {
-          result[ele] = safe[ele];
-        }
-      });
-    } else {
-      list.forEach(ele => {
+    list.forEach(ele => {
+      if (!column || (column.type === 'upload' && !column[ele])) {
         result[ele] = safe[ele];
-      });
-    }
+      }
+    });
     return result;
   };
   Vue.config.globalProperties.$axios = opts.axios || axios;
