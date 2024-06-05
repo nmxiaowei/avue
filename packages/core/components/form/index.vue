@@ -141,7 +141,7 @@ export default {
     },
     getPlaceholder,
     getBind (column) {
-      let params = { ...column, ...params, ...this.$uploadFun(column) };
+      let params = { ...column, ...this.params, ...this.$uploadFun(column) };
       ['value', 'className'].forEach(ele => {
         delete params[ele]
       })
