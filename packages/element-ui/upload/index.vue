@@ -500,14 +500,26 @@ export default create({
         };
 
         const uploadToDefault = () => {
+          let timer = null;
           this.$axios({
             url,
             method: "post",
             data: param,
             headers,
             onUploadProgress: (progressEvent) => {
-              let complete = progressEvent.loaded / progressEvent.total * 100 | 0;
-              if (fileState) fileState.percentage = complete;
+              let complete = (progressEvent.loaded / progressEvent.total * 100) || 0;
+              if (complete >= 80) {
+                if (timer) return
+                timer = setInterval(() => {
+                  complete += (100 - complete) * 0.2
+                  if (fileState) fileState.percentage = parseFloat(complete.toFixed(2))
+                  if (complete > 99) {
+                    timer && clearInterval(timer)
+                  }
+                }, 1000)
+              } else {
+                if (fileState) fileState.percentage = parseFloat(complete.toFixed(2))
+              }
             }
           }).then(handleUploadResult).catch(handleUploadError);
         };
