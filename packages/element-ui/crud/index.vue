@@ -73,6 +73,7 @@
                    @current-change="currentRowChange"
                    @expand-change="expandChange"
                    @header-dragend="headerDragend"
+                   :tooltip-effect="tableOption.tooltipEffect"
                    :show-summary="tableOption.showSummary"
                    :summary-method="tableSummaryMethod"
                    :span-method="tableSpanMethod"
