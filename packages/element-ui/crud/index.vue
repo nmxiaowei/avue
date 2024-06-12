@@ -302,6 +302,7 @@ export default create({
   mounted () {
     this.dataInit();
     this.getTableHeight();
+    this.refreshTable();
   },
   computed: {
     tableName () {
@@ -537,7 +538,6 @@ export default create({
         } else {
           this.tableHeight = this.tableOption.height;
         }
-        this.refreshTable()
       });
     },
     doLayout () {
