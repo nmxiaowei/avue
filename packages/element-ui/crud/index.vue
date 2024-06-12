@@ -537,7 +537,7 @@ export default create({
         } else {
           this.tableHeight = this.tableOption.height;
         }
-        this.refreshTable()
+        this.doLayout();
       });
     },
     doLayout () {
@@ -605,7 +605,7 @@ export default create({
       let column = this.columnOption;
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
-      this.refreshTable()
+      this.doLayout()
     },
     clearFilter (name) {
       this.$refs.table.clearFilter(name);
@@ -908,7 +908,7 @@ export default create({
         packages.logs("Sortable")
         return
       }
-      window.Sortable.create(el, {
+      return window.Sortable.create(el, {
         ghostClass: config.ghostClass,
         chosenClass: config.ghostClass,
         animation: 100,
