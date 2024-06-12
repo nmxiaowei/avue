@@ -128,7 +128,10 @@ export default create({
   props: {
     virtualize: Boolean,
     emptyValues: Array,
-    valueOnClear: [String, Number, Boolean, Function],
+    valueOnClear: {
+      type: [String, Number, Boolean, Function],
+      default: undefined,
+    },
     loadingText: {
       type: String,
     },
