@@ -517,8 +517,8 @@ export default create({
       }
     },
     getTableHeight () {
-      if (this.isAutoHeight) {
-        this.$nextTick(() => {
+      this.$nextTick(() => {
+        if (this.isAutoHeight) {
           const clientHeight = document.documentElement.clientHeight;
           const calcHeight = this.calcHeight || 0;
           const tableRef = this.$refs.table;
@@ -533,11 +533,12 @@ export default create({
             tableHeight -= height;
           }
           this.tableHeight = tableHeight;
-        });
-      } else {
-        this.tableHeight = this.tableOption.height;
-      }
-      this.refreshTable()
+
+        } else {
+          this.tableHeight = this.tableOption.height;
+        }
+        this.refreshTable()
+      });
     },
     doLayout () {
       this.$refs.table.doLayout()
