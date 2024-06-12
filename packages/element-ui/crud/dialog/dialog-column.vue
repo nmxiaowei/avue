@@ -83,7 +83,7 @@ export default create({
     },
     handleChange (prop) {
       if (['hide', 'filters'].includes(prop)) {
-        this.crud.refreshTable()
+        this.crud.doLayout()
       }
     },
     rowDrop () {
@@ -92,7 +92,6 @@ export default create({
         const oldIndex = evt.oldIndex;
         const newIndex = evt.newIndex;
         this.crud.headerSort(oldIndex, newIndex)
-        this.crud.refreshTable(() => this.rowDrop())
       })
     },
   }
