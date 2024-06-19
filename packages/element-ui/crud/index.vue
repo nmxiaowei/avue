@@ -903,7 +903,7 @@ export default create({
         } else if (type == 'column' && !this.isColumnSort) {
           return
         }
-      }
+      } else if (!el) return
       if (!window.Sortable) {
         packages.logs("Sortable")
         return
