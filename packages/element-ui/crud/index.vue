@@ -73,6 +73,7 @@
                    @current-change="currentRowChange"
                    @expand-change="expandChange"
                    @header-dragend="headerDragend"
+                   :tooltip-effect="tableOption.tooltipEffect"
                    :show-summary="tableOption.showSummary"
                    :summary-method="tableSummaryMethod"
                    :span-method="tableSpanMethod"
@@ -464,6 +465,7 @@ export default create({
   methods: {
     handleGridShow () {
       this.gridShow = !this.gridShow
+      this.$emit('grid-status-change', this.gridShow)
     },
     handleValidate (prop, valid, msg) {
       if (!this.listError[prop]) this.$set(this.listError, prop, { valid: false, msg: '' })
@@ -862,7 +864,7 @@ export default create({
         } else if (type == 'column' && !this.isColumnSort) {
           return
         }
-      }
+      } else if (!el) return
       if (!window.Sortable) {
         packages.logs("Sortable")
         return
