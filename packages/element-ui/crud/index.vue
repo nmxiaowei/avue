@@ -465,6 +465,7 @@ export default create({
   methods: {
     handleGridShow () {
       this.gridShow = !this.gridShow
+      this.$emit('grid-status-change', this.gridShow)
     },
     handleValidate (prop, valid, msg) {
       if (!this.listError[prop]) this.$set(this.listError, prop, { valid: false, msg: '' })
