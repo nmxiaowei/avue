@@ -2,6 +2,14 @@ import _waterMark from './watermark';
 import {
   dataURLtoFile
 } from 'utils/util';
+// file转base64
+export function fileToBase64(file, callback) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function (e) {
+    callback(e.target.result);
+  };
+}
 // 标准参数
 var canvas, ctx, configDefault = {
   width: 200,
@@ -131,14 +139,6 @@ export function detailImg(file, option = {}) {
         fontSize: fontSize
       };
 
-    }
-    // file转base64
-    function fileToBase64(file, callback) {
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function (e) {
-        callback(e.target.result);
-      };
     }
   });
 }
