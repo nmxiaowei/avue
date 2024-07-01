@@ -44,7 +44,7 @@
                :index="indexMethod"
                align="center">
       <template slot-scope="{$index}">
-        {{ $index+1 }}
+        {{ indexMethod($index) }}
       </template>
     </component>
   </div>
