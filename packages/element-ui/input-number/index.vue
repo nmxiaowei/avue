@@ -15,7 +15,6 @@
                    :readonly="readonly"
                    :controls-position="controlsPosition"
                    :controls="controls"
-                   :label="placeholder"
                    :disabled="disabled"></el-input-number>
 </template>
 
