@@ -62,6 +62,7 @@ export default create({
       loading: false,
       box: false,
       created: false,
+      search: {},
       data: []
     };
   },
@@ -175,14 +176,15 @@ export default create({
     handleSearchChange (form, done) {
       this.loading = true;
       this.page.currentPage = 1;
-      this.onList({ data: form }, () => {
+      this.search = form;
+      this.onList({}, () => {
         done && done()
       })
     },
     onList (params = {}, callback) {
       this.loading = true;
       if (typeof this.onLoad == 'function') {
-        this.onLoad(Object.assign({ page: this.page }, params), data => {
+        this.onLoad(Object.assign({ page: this.page }, params, { data: this.search }), data => {
           callback && callback()
           this.page.total = data.total;
           this.data = data.data
