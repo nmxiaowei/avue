@@ -174,14 +174,17 @@ export default create({
       }
     },
     handleSearchChange (form, done) {
-      this.page.page = 1;
-      this.onList()
-      done && done()
+      this.loading = true;
+      this.page.currentPage = 1;
+      this.onList({}, () => {
+        done && done()
+      })
     },
-    onList () {
+    onList (params, callback) {
       this.loading = true;
       if (typeof this.onLoad == 'function') {
         this.onLoad({ page: this.page, data: this.search }, data => {
+          callback && callback()
           this.page.total = data.total;
           this.data = data.data
           this.loading = false;
