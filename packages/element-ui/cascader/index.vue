@@ -77,10 +77,14 @@ export default create({
       return {
         label: this.labelKey,
         value: this.valueKey,
+        disabled: this.disabledKey,
         children: this.childrenKey,
         checkStrictly: this.checkStrictly,
         multiple: this.multiple,
         emitPath: this.emitPath,
+        expandTrigger: this.props.expandTrigger,
+        hoverThreshold: this.props.hoverThreshold,
+        leaf: this.leafKey,
         lazy: this.lazy,
         lazyLoad: (node, resolve) => {
           let callback = (list) => {

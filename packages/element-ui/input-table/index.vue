@@ -16,6 +16,7 @@
       <el-dialog class="avue-dialog"
                  :class="b()"
                  :width="dialogWidth"
+                 :before-close="beforeClose"
                  :append-to-body="$AVUE.appendToBody"
                  lock-scroll
                  :title="placeholder"
@@ -32,6 +33,7 @@
                    @selection-change="handleSelectionChange"
                    :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentChange"
+                   v-model:search="search"
                    v-model:page="page"></avue-crud>
         <span class="avue-dialog__footer">
           <el-button type="primary"
@@ -57,6 +59,7 @@ export default create({
     return {
       object: [],
       active: [],
+      search: {},
       page: {},
       loading: false,
       box: false,
@@ -65,6 +68,7 @@ export default create({
     };
   },
   props: {
+    beforeClose: Function,
     prefixIcon: {
       type: String
     },
@@ -145,10 +149,12 @@ export default create({
     handleShow () {
       this.$refs.main.blur();
       if (this.disabled || this.readonly) return;
+      this.search = {}
       this.page = {
         currentPage: 1,
         total: 0
       }
+      this.data = []
       this.box = true;
     },
     setVal () {
@@ -173,14 +179,14 @@ export default create({
     handleSearchChange (form, done) {
       this.loading = true;
       this.page.currentPage = 1;
-      this.onList({ data: form }, () => {
+      this.onList({}, () => {
         done && done()
       })
     },
-    onList (params = {}, callback) {
+    onList (params, callback) {
       this.loading = true;
       if (typeof this.onLoad == 'function') {
-        this.onLoad(Object.assign({ page: this.page }, params), data => {
+        this.onLoad({ page: this.page, data: this.search }, data => {
           callback && callback()
           this.page.total = data.total;
           this.data = data.data

@@ -84,6 +84,9 @@ export default create({
     }
   },
   methods: {
+    doLayout () {
+
+    },
     clearSelection () {
       this.checkList = []
       this.checkListChange(this.checkList)

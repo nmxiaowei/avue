@@ -38,7 +38,7 @@
              :index="indexMethod"
              align="center">
     <template #="{$index}">
-      {{ $index+1 }}
+      {{ indexMethod($index)}}
     </template>
   </component>
 </template>

@@ -17,6 +17,7 @@
     <div v-if="box">
       <el-dialog class="avue-dialog"
                  :width="dialogWidth"
+                 :before-close="beforeClose"
                  :append-to-body="$AVUE.appendToBody"
                  lock-scroll
                  :title="placeholder"
@@ -63,6 +64,7 @@ export default create({
   name: "input-map",
   mixins: [props(), event(), locale],
   props: {
+    beforeClose: Function,
     mapChange: Function,
     prefixIcon: {
       type: String

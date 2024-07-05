@@ -23,6 +23,7 @@
     <div v-if="box">
       <el-dialog class="avue-dialog"
                  :title="placeholder"
+                 :before-close="beforeClose"
                  :append-to-body="$AVUE.appendToBody"
                  lock-scroll
                  v-model="box"
@@ -65,6 +66,7 @@ export default create({
   },
   mixins: [props(), event(), locale],
   props: {
+    beforeClose: Function,
     prefixIcon: {
       type: String
     },
