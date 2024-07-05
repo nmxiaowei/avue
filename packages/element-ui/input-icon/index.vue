@@ -20,6 +20,7 @@
     <div v-if="box">
       <el-dialog class="avue-dialog avue-dialog--none"
                  :title="placeholder"
+                 :before-close="beforeClose"
                  :modal-append-to-body="$AVUE.modalAppendToBody"
                  :append-to-body="$AVUE.appendToBody"
                  :visible.sync="box"
@@ -59,6 +60,7 @@ export default create({
   },
   mixins: [props(), event(), locale],
   props: {
+    beforeClose: Function,
     prefixIcon: {
       type: String
     },

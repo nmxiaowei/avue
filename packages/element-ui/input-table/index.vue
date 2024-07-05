@@ -16,6 +16,7 @@
       <el-dialog class="avue-dialog avue-dialog--none"
                  :class="b()"
                  :width="setPx(dialogWidth)"
+                 :before-close="beforeClose"
                  :modal-append-to-body="$AVUE.modalAppendToBody"
                  :append-to-body="$AVUE.appendToBody"
                  :title="placeholder"
@@ -68,6 +69,7 @@ export default create({
     };
   },
   props: {
+    beforeClose: Function,
     prefixIcon: {
       type: String
     },
