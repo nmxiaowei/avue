@@ -82,8 +82,10 @@ export default create({
       this.$nextTick(() => this.rowDrop())
     },
     handleChange (prop) {
-      if (['hide', 'filters'].includes(prop)) {
+      if (prop === 'hide') {
         this.crud.doLayout()
+      } else if (prop === 'filters') {
+        this.crud.refreshTable()
       }
     },
     rowDrop () {
