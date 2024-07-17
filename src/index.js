@@ -22,9 +22,7 @@ import {
 import dialogDrag from 'packages/core/directive/dialog-drag';
 import contextmenu from 'packages/core/directive/contextmenu';
 import $Export from 'plugin/export/';
-import {
-  watermark
-} from 'plugin/canvas/';
+import watermark from 'plugin/canvas/';
 import $Log from 'plugin/logs/';
 import locale from './locale/';
 import $Screenshot from 'plugin/screenshot/';
