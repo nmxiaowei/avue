@@ -9,6 +9,7 @@ export default (() => {
       e.preventDefault();
       let divLeft = e.clientX,
         divTop = e.clientY
+      dialogDom.style.display = 'block'
       let client_width = document.documentElement.clientWidth;
       let client_height = document.documentElement.clientHeight;
       let dialogDom_width = dialogDom.offsetWidth;
@@ -29,7 +30,6 @@ export default (() => {
       }
 
       function showDialog() {
-        dialogDom.style.display = 'block'
         dialogDom.style.position = 'fixed'
         dialogDom.style.zIndex = 1024
         dialogDom.style.top = divTop + 'px'
