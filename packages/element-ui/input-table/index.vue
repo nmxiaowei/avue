@@ -30,7 +30,7 @@
                    @on-load="onList"
                    @search-change="handleSearchChange"
                    @search-reset="handleSearchChange"
-                   @selection-change="handleSelectionChange"
+                   @select="handleSelectionChange"
                    :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentChange"
                    v-model:search="search"
@@ -107,6 +107,7 @@ export default create({
         menu: false,
         header: false,
         size: this.size,
+        tip: false,
         headerAlign: 'center',
         align: 'center',
         highlightCurrentRow: !this.isMultiple,
@@ -119,8 +120,14 @@ export default create({
     }
   },
   methods: {
-    handleSelectionChange (val) {
-      this.active = val
+    handleSelectionChange (val, row) {
+      let checkbox = val.find(ele => ele[this.valueKey] == row[this.valueKey])
+      if (checkbox) {
+        this.active.push(row);
+      } else {
+        let index = this.active.findIndex(ele => ele[this.valueKey] == row[this.valueKey]);
+        if (index != -1) this.active.splice(index, 1)
+      }
     },
     handleModelValue (val) {
       if (this.validatenull(val)) {
@@ -133,8 +140,8 @@ export default create({
       if (typeof this.onLoad == 'function') {
         this.onLoad({ value: this.text }, data => {
           let result = Array.isArray(data) ? data : [data]
-          this.active = result
-          this.object = result
+          this.active = this.deepClone(result)
+          this.object = this.deepClone(result)
           this.created = true;
         })
       }
@@ -158,7 +165,7 @@ export default create({
       this.box = true;
     },
     setVal () {
-      this.object = this.active
+      this.object = this.deepClone(this.active)
       this.text = this.active.map(ele => ele[this.valueKey])
       this.box = false
     },
