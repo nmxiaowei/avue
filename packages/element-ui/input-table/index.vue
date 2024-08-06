@@ -30,6 +30,7 @@
                    @on-load="onList"
                    @search-change="handleSearchChange"
                    @search-reset="handleSearchChange"
+                   @select-all="handleSelectionAllChange"
                    @select="handleSelectionChange"
                    :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentChange"
@@ -120,6 +121,18 @@ export default create({
     }
   },
   methods: {
+    handleSelectionAllChange (val) {
+      let ids = this.data.map(ele => ele[this.valueKey])
+      let list = val.filter(ele => ids.includes(ele[this.valueKey]))
+      this.data.forEach(row => {
+        let index = this.active.findIndex(ele => ele[this.valueKey] == row[this.valueKey]);
+        if (list.length == 0) {
+          if (index != -1) this.active.splice(index, 1)
+        } else {
+          if (index == -1) this.active.push(row)
+        }
+      })
+    },
     handleSelectionChange (val, row) {
       let checkbox = val.find(ele => ele[this.valueKey] == row[this.valueKey])
       if (checkbox) {
