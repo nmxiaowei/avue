@@ -217,7 +217,7 @@ export default create({
       let columnOption = this.deepClone(this.columnOption);
       const callback = (list) => {
         list.forEach((ele, index) => {
-          if (ele.children) callback(ele.children)
+          if (ele.children && Array.isArray(ele.children)) callback(ele.children)
           else {
             list[index] = {
               ...ele,
