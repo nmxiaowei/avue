@@ -1,7 +1,7 @@
 export default (() => {
   let dialogDom;
 
-  function setEvent(el, value, event, hide) {
+  function setEvent (el, value, event, hide) {
     let v_params = value,
       e_params = event,
       h_params = hide
@@ -22,13 +22,13 @@ export default (() => {
         divLeft = divLeft - dialogDom_width
       }
 
-      function closeDialog() {
+      function closeDialog () {
         dialogDom.style.display = 'none'
-        h_params & h_params(v_params, e)
+        h_params && h_params(v_params, e)
         document.removeEventListener('click', closeDialog)
       }
 
-      function showDialog() {
+      function showDialog () {
         dialogDom.style.position = 'fixed'
         dialogDom.style.zIndex = 1024
         dialogDom.style.top = divTop + 'px'
@@ -45,7 +45,7 @@ export default (() => {
 
   }
   return {
-    inserted(el, binding) {
+    inserted (el, binding) {
       let id = binding.value.id
       let event = binding.value.event
       let value = binding.value.value
@@ -55,13 +55,13 @@ export default (() => {
       dialogDom.style.display = 'none'
       setEvent(el, value, event, hide);
     },
-    update(el, binding) {
+    update (el, binding) {
       let event = binding.value.event
       let value = binding.value.value
       let hide = binding.value.hide
       setEvent(el, value, event, hide);
     },
-    unbind(el) {
+    unbind (el) {
       el.oncontextmenu = null;
     }
   }
