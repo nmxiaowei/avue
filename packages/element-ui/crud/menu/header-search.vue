@@ -133,10 +133,11 @@ export default create({
               value: ele.searchValue,
               rules: ele.searchRules,
               row: ele.searchRow,
+              bind: ele.searchBin,
+              disabled: ele.searchDisabled,
+              readonly: ele.searchReadonly,
               display: this.isSearchIcon ? (this.show ? true : isCount) : true,
             })
-            let whiteList = ['bind', 'disabled', 'readonly']
-            whiteList.forEach(key => delete ele[key])
             column.push(ele);
             count = count + 1;
           }
