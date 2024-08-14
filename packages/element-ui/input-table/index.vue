@@ -29,7 +29,8 @@
                    :table-loading="loading"
                    @on-load="onList"
                    @search-change="handleSearchChange"
-                   @selection-change="handleSelectionChange"
+                   @select-all="handleSelectionAllChange"
+                   @select="handleSelectionChange"
                    @search-reset="handleSearchChange"
                    :rowClassName="handleRowClassName"
                    @current-row-change="handleCurrentRowChange"
@@ -138,8 +139,26 @@ export default create({
     }
   },
   methods: {
-    handleSelectionChange (val) {
-      this.active = val
+    handleSelectionAllChange (val) {
+      let ids = this.data.map(ele => ele[this.valueKey])
+      let list = val.filter(ele => ids.includes(ele[this.valueKey]))
+      this.data.forEach(row => {
+        let index = this.active.findIndex(ele => ele[this.valueKey] == row[this.valueKey]);
+        if (list.length == 0) {
+          if (index != -1) this.active.splice(index, 1)
+        } else {
+          if (index == -1) this.active.push(row)
+        }
+      })
+    },
+    handleSelectionChange (val, row) {
+      let checkbox = val.find(ele => ele[this.valueKey] == row[this.valueKey])
+      if (checkbox) {
+        this.active.push(row);
+      } else {
+        let index = this.active.findIndex(ele => ele[this.valueKey] == row[this.valueKey]);
+        if (index != -1) this.active.splice(index, 1)
+      }
     },
     handleClear () {
       this.active = []

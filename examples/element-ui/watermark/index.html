@@ -37,22 +37,22 @@
 <script>
   new Vue({
     el: '#app',
-    data() {
+    data () {
       return {
         obj: '',
         obj1: ''
       }
     },
     methods: {
-      submit() {
+      submit () {
         this.$message.success('添加水印成功')
         this.obj = this.watermark({ text: 'avue全局水印演示' })
       },
-      submit1() {
+      submit1 () {
         this.$message.success('添加水印成功')
         this.obj1 = this.watermark({ id: 'test', fontSize: '14px', width: 120, height: 80, text: 'avue局部水印演示' })
       },
-      del() {
+      del () {
         this.obj.remove();
         this.obj1.remove();
       },

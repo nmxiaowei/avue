@@ -1,5 +1,6 @@
 <template>
-  <span class="avue-icon"
+  <span v-if="text"
+        class="avue-icon"
         :class="{'avue-icon--small':small}">
     <svg v-if="text.includes('#')"
          aria-hidden="true">
