@@ -46,8 +46,6 @@ export default create({
   name: "input",
   mixins: [props(), event()],
   props: {
-    maxlength: "",
-    minlength: "",
     showPassword: {
       type: Boolean,
       default: true
@@ -80,12 +78,8 @@ export default create({
     append: {
       type: String
     },
-    minlength: {
-      type: Number
-    },
-    maxlength: {
-      type: Number
-    },
+    minlength: [String, Number],
+    maxlength: [String, Number],
     rows: Number,
     minRows: {
       type: Number,

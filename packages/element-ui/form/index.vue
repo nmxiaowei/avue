@@ -59,6 +59,7 @@
                   :column="item"></slot>
           </template>
           <div :class="b('group',{'flex':validData(item.flex,true)})"
+               v-if="isGroupShow(item,index,isVerifyAll)"
                v-show="isGroupShow(item,index)">
             <template v-for="(column,cindex) in item.column">
               <el-col v-if="vaildDisplay(column)"
@@ -390,6 +391,9 @@ export default create({
     isMock () {
       return this.validData(this.tableOption.mockBtn, false);
     },
+    isVerifyAll () {
+      return this.validData(this.tableOption.tabsVerifyAll, true);
+    },
     menuSpan () {
       return this.tableOption.menuSpan || 24;
     }
@@ -425,8 +429,9 @@ export default create({
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
-    isGroupShow (item, index) {
-      if (this.isTabs) {
+    isGroupShow (item, index, verifyAll) {
+      if (verifyAll) return true
+      else if (this.isTabs) {
         return index == this.activeName || index == 0
       } else {
         return true;

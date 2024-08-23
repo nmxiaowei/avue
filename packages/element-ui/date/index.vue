@@ -50,7 +50,10 @@ export default create({
     prefixIcon: String,
     disabledDate: Function,
     shortcuts: [Array, Function],
-    editable: Boolean,
+    editable: {
+      type: Boolean,
+      default: true
+    },
     unlinkPanels: Boolean,
     value: {},
     startPlaceholder: String,

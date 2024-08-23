@@ -36,9 +36,12 @@
                 </template>
                 <template v-for="(comp,compIndex) in item.default &&item.default({row:row,$index:index,column:item})"
                           :key="compIndex">
-                  <div :class="[b('value'),item.className]">
+                  <component placement="top"
+                             :is="(item.overHidden||item.showOverflowTooltip)?'elTooltip':'div'"
+                             :class="[b('value'),item.className]"
+                             :content="row[item.prop]">
                     <component :is="comp"></component>
-                  </div>
+                  </component>
                 </template>
               </template>
             </div>
