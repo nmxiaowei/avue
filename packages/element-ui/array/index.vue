@@ -27,6 +27,9 @@
           </template>
           <el-input v-model="text[index]"
                     :size="size"
+                    :maxlength="maxlength"
+                    :minlength="minlength"
+                    :show-word-limit="showWordLimit"
                     :placeholder="placeholder"
                     :disabled="disabled"></el-input>
         </el-tooltip>
@@ -83,7 +86,13 @@ export default create({
     fileType: String,
     alone: Boolean,
     type: String,
-    limit: Number
+    limit: Number,
+    maxlength: [String, Number],
+    minlength: [String, Number],
+    showWordLimit: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     isMediaType (item) {
