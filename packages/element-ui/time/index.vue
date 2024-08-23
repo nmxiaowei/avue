@@ -42,7 +42,10 @@ export default create({
     return {};
   },
   props: {
-    editable: Boolean,
+    editable: {
+      type: Boolean,
+      default: true
+    },
     maxTime: String,
     minTime: String,
     start: String,
