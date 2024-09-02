@@ -120,7 +120,7 @@ export const loadLocalDic = (option, safe) => {
     const dic = ele.dicData;
     const prop = ele.prop;
     if (dic instanceof Function) {
-      if (dic() instanceof Promise) {
+      if (dic(ele) instanceof Promise) {
         dic(ele).then(res => {
           safe.DIC[prop] = getDataType(res, ele.props, ele.dataType);
         });
