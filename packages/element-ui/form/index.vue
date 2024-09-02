@@ -457,12 +457,21 @@ export default create({
           }
           if (control) {
             const callback = () => {
+              const controlResolve = (list) => {
+                Object.keys(list).forEach(item => {
+                  let ele = Object.assign(this.objectOption[item] || {}, list[item])
+                  this.objectOption[item] = ele;
+                  if (list[item].dicData) this.DIC[item] = list[item].dicData
+                })
+              }
               let controlList = control(this.form[column.prop], this.form) || {};
-              Object.keys(controlList).forEach(item => {
-                let ele = Object.assign(this.objectOption[item] || {}, controlList[item])
-                this.$set(this.objectOption, item, ele)
-                if (controlList[item].dicData) this.DIC[item] = controlList[item].dicData
-              })
+              if (controlList instanceof Promise) {
+                controlList.then(res => {
+                  controlResolve(res)
+                })
+              } else {
+                controlResolve(controlList)
+              }
             }
             let formControl = this.$watch('form.' + prop, (n, o) => {
               callback()
