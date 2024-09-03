@@ -14,9 +14,11 @@
             <avue-count-up :animation="item.animation || animation"
                            :decimals="item.decimals || decimals"
                            class="count"
+                           :style="{color:item.color}"
                            :end="item.count"></avue-count-up>
             <span class="splitLine" />
-            <div class="title">{{item.title}}</div>
+            <div class="title"
+                 :style="{color:item.fontColor}">{{item.title}}</div>
           </a>
         </div>
       </el-col>
