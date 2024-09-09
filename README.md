@@ -13,6 +13,19 @@
 | avue.min.js | 生产环境|
 | avue.js     | 开发环境|
 
+## 开发
+
+``` sh
+# 安装依赖
+yarn
+
+# 打开调试页面
+yarn dev:view
+
+# 发布
+yarn build
+```
+
 ## 文档
 
 要查看[Live Examples](https://avuejs.com/doc/installation)和文档，请访问[https://avuejs.com](https://avuejs.com).
