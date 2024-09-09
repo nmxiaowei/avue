@@ -468,3 +468,6 @@ export const validData = (val, dafult) => {
   }
   return !validatenull(val) ? val : dafult;
 };
+
+const hasOwnProperty$1 = Object.prototype.hasOwnProperty;
+export const hasOwn = (val, key) => hasOwnProperty$1.call(val, key);
