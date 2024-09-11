@@ -38,6 +38,7 @@
                  :expand-on-click-node="expandOnClickNode"
                  @check-change="handleCheckChange"
                  @node-click="nodeClick"
+                 @node-expand="nodeExpand"
                  @node-drag-start="handleDragStart"
                  @node-drag-enter="handleDragEnter"
                  @node-drag-leave="handleDragLeave"
@@ -323,6 +324,9 @@ export default create({
     nodeClick (data, node, nodeComp) {
       this.client.show = false
       this.$emit("node-click", data, node, nodeComp);
+    },
+    nodeExpand (data, node, nodeComp) {
+      this.$emit("node-expand", data, node, nodeComp);
     },
     filterNode (value, data) {
       if (typeof this.filterNodeMethod === 'function') {
