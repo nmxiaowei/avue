@@ -160,7 +160,9 @@ export default {
             if (ele.children) findProp(children)
           }
         })
-        count.forEach(ele => list.splice(ele, 1))
+        for (let i = count.length - 1; i >= 0; i--) {
+          list.splice(count[i], 1)
+        }
       }
       findProp(column)
       this.columnOption = column;
