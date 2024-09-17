@@ -117,7 +117,19 @@ export const loadLocalDic = (option, safe) => {
   let columnData = {};
   let optionData = option.dicData || {};
   option.column.forEach(ele => {
-    if (ele.dicData) columnData[ele.prop] = getDataType(ele.dicData, ele.props, ele.dataType);
+    const dic = ele.dicData;
+    const prop = ele.prop;
+    if (dic instanceof Function) {
+      if (dic(ele) instanceof Promise) {
+        dic(ele).then(res => {
+          safe.DIC[prop] = getDataType(res, ele.props, ele.dataType);
+        });
+      } else {
+        columnData[prop] = getDataType(dic(ele), ele.props, ele.dataType);
+      }
+    } else if (dic instanceof Array) {
+      columnData[prop] = getDataType(dic, ele.props, ele.dataType);
+    }
   });
   let result = { ...optionData, ...columnData };
   Object.keys(result).forEach(ele => {

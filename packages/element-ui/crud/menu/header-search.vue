@@ -132,6 +132,7 @@ export default create({
               size: ele.searchSize || option.searchSize,
               value: ele.searchValue,
               rules: ele.searchRules,
+              render: ele.renderSearch,
               row: ele.searchRow,
               bind: ele.searchBin,
               disabled: ele.searchDisabled,
