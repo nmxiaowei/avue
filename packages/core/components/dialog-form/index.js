@@ -18,6 +18,9 @@ export default function (_context) {
     const parent = document.createElement('div')
     let instance = createVNode(Main, options)
     instance.appContext = defaultContext;
+    instance.props.onDestroy = () => {
+
+    }
     render(instance, parent)
     appendTo.appendChild(parent.firstElementChild);
     return instance;
