@@ -91,7 +91,7 @@ export default function () {
         }
       },
       dic: {
-        type: Array,
+        type: [Array, Function],
         default: () => {
           return [];
         }
