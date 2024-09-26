@@ -27,6 +27,7 @@ export default function (_context) {
     instance.appContext = defaultContext;
     instance.props.onDestroy = () => {
       render(null, parent)
+      parent.remove();
     }
     render(instance, parent)
     appendTo.appendChild(parent.firstElementChild);

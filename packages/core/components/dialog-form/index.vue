@@ -1,6 +1,7 @@
 <template>
   <component :is="dialogType"
              v-model="visible"
+             v-if="visible"
              destroy-on-close
              class="avue-dialog"
              :beforeClose="beforeClose"
