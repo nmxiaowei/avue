@@ -605,7 +605,7 @@ export default create({
     },
     headerSort (oldIndex, newIndex) {
       let column = this.columnOption;
-      const notHideColumn = column.filter(ele => ele.hide != true || ele.fixed);
+      const notHideColumn = column.filter(ele => ele.hide != true);
       const newColumn = notHideColumn[newIndex]
       const oldColumn = notHideColumn[oldIndex];
       newIndex = column.findIndex(ele => ele.prop == newColumn.prop)
