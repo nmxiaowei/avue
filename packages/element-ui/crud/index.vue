@@ -227,6 +227,7 @@ export default create({
     'select',
     'select-all',
     'sortable-change',
+    "column-sortable-change",
     'filter',
     'filter-change',
     'sort-change',
@@ -604,6 +605,11 @@ export default create({
     },
     headerSort (oldIndex, newIndex) {
       let column = this.columnOption;
+      const notHideColumn = column.filter(ele => ele.hide != true || ele.fixed);
+      const newColumn = notHideColumn[newIndex]
+      const oldColumn = notHideColumn[oldIndex];
+      newIndex = column.findIndex(ele => ele.prop == newColumn.prop)
+      oldIndex = column.findIndex(ele => ele.prop == oldColumn.prop)
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
       this.doLayout()
