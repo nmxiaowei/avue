@@ -49,7 +49,7 @@
                            :key="index"
                            :label="getLabelText(item)">
             <el-option v-for="(citem,cindex) in item[groupsKey]"
-                       :key="cindex"
+                       :key="citem[valueKey]"
                        :class="citem[classNameKey]"
                        :disabled="citem[disabledKey]"
                        :label="getLabelText(citem)"
@@ -80,7 +80,7 @@
           </div>
 
           <el-option v-for="(item,index) in netDic"
-                     :key="index"
+                     :key="item[valueKey]"
                      :class="item[classNameKey]"
                      :disabled="item[disabledKey]"
                      :label="getLabelText(item) "

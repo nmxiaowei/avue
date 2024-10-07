@@ -6,6 +6,7 @@
                   :loading="loading"
                   :lazy="lazy"
                   :load="handleLoad"
+                  :size="size"
                   @check="checkChange"
                   :filter-node-method="filterNodeMethod"
                   :render-after-expand="false"
