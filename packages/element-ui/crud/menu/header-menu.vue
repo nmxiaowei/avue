@@ -133,7 +133,7 @@ export default create({
             return date;
           },
         },
-      ],,
+      ],
       config: config
     };
   },
