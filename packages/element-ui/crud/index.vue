@@ -565,6 +565,11 @@ export default create({
     },
     headerSort (oldIndex, newIndex) {
       let column = this.columnOption;
+      const notHideColumn = column.filter(ele => ele.hide != true);
+      const newColumn = notHideColumn[newIndex]
+      const oldColumn = notHideColumn[oldIndex];
+      newIndex = column.findIndex(ele => ele.prop == newColumn.prop)
+      oldIndex = column.findIndex(ele => ele.prop == oldColumn.prop)
       let targetRow = column.splice(oldIndex, 1)[0]
       column.splice(newIndex, 0, targetRow)
       this.refreshTable()
@@ -869,10 +874,10 @@ export default create({
         packages.logs("Sortable")
         return
       }
-      window.Sortable.create(el, {
+      return window.Sortable.create(el, {
         ghostClass: config.ghostClass,
         chosenClass: config.ghostClass,
-        animation: 500,
+        animation: 100,
         delay: 0,
         onEnd: evt => callback(evt)
       })

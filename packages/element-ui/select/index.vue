@@ -29,7 +29,7 @@
                        :key="index"
                        :label="getLabelText(item)">
         <el-option v-for="(citem,cindex) in item[groupsKey]"
-                   :key="cindex"
+                   :key="citem[valueKey]"
                    :class="citem[classNameKey]"
                    :disabled="citem[disabledKey]"
                    :label="getLabelText(citem)"
@@ -56,7 +56,7 @@
                    :indeterminate="indeterminate"
                    @change='checkChange'>全选</el-checkbox>
       <el-option v-for="(item,index) in netDic"
-                 :key="index"
+                 :key="item[valueKey]"
                  :disabled="item[disabledKey]"
                  :class="item[classNameKey]"
                  :label="getLabelText(item) "
