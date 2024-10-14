@@ -37,6 +37,11 @@
                  @tab-click="handleTabClick"
                  @error="handleError"
                  v-bind="$uploadFun(null,crud)"
+                 v-loading="loading"
+                 :element-loading-text="crud.tableOption.loadingText"
+                 :element-loading-spinner="crud.tableOption.loadingSpinner"
+                 :element-loading-svg="crud.tableOption.loadingSvg"
+                 :element-loading-background="crud.tableOption.loadingBackground"
                  :option="option">
         <template slot-scope="scope"
                   v-for="item in crud.formSlot"
@@ -52,7 +57,7 @@
         <el-button v-if="vaildData(option.mockBtn,false) && !isView"
                    type="primary"
                    @click="($refs.tableForm || {}).handleMock"
-                   :loading="disabled"
+                   :loading="disabled||loading"
                    :size="crud.size"
                    :icon="option.mockIcon">
           {{option.mockText}}
@@ -61,13 +66,13 @@
               v-bind="menuParams()"></slot>
         <el-button v-if="vaildData(option.submitBtn,true) && !isView"
                    @click="submit"
-                   :loading="disabled"
+                   :loading="disabled||loading"
                    :size="crud.controlSize"
                    :icon="option.submitIcon"
                    type="primary">{{option.submitText}}</el-button>
         <el-button v-if="vaildData(option.emptyBtn,true) && !isView"
                    @click="reset"
-                   :disabled="disabled"
+                   :loading="disabled||loading"
                    :size="crud.controlSize"
                    :icon="option.emptyIcon">{{option.emptyText}}</el-button>
         <slot name="menuForm"
@@ -89,6 +94,7 @@ export default create({
   inject: ["crud"],
   data () {
     return {
+      loading: false,
       disabled: false,
       config: config,
       boxType: "",
@@ -306,15 +312,23 @@ export default create({
     // 显示表单
     show (type) {
       this.boxType = type;
-      const callback = () => {
+      const callback = (fn) => {
         this.fullscreen = this.crud.tableOption.dialogFullscreen
         this.boxVisible = true;
+        this.loading = false
         this.$nextTick(() => {
           this.initFun()
+          fn && fn()
         })
       };
+      const loading = () => {
+        callback(() => {
+          this.loading = true
+        });
+
+      }
       if (typeof this.crud.beforeOpen === "function") {
-        this.crud.beforeOpen(callback, this.boxType);
+        this.crud.beforeOpen(callback, this.boxType, loading);
       } else {
         callback();
       }

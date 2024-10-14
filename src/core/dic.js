@@ -120,12 +120,13 @@ export const loadLocalDic = (option, safe) => {
     const dic = ele.dicData;
     const prop = ele.prop;
     if (dic instanceof Function) {
-      if (dic(ele) instanceof Promise) {
-        dic(ele).then(res => {
+      let dicResult = dic(ele);
+      if (dicResult instanceof Promise) {
+        dicResult.then(res => {
           safe.DIC[prop] = getDataType(res, ele.props, ele.dataType);
         });
       } else {
-        columnData[prop] = getDataType(dic(ele), ele.props, ele.dataType);
+        columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
       }
     } else if (dic instanceof Array) {
       columnData[prop] = getDataType(dic, ele.props, ele.dataType);

@@ -64,12 +64,27 @@ export default create({
   data () {
     return {
       config: config,
+      rowSortable: null,
+      columnSortable: null,
     }
   },
   mixins: [locale],
   inject: ["crud"],
+  watch: {
+    'crud.isSortable' (val) {
+      this.rowDrop(val)
+      this.columnDrop(val)
+    },
+    'crud.isRowSort' (val) {
+      this.rowDrop(val)
+    },
+    'crud.isColumnSort' (val) {
+      this.columnDrop(val)
+    }
+  },
   mounted () {
-    this.setSort()
+    this.rowDrop()
+    this.columnDrop()
   },
   methods: {
     indexMethod (index) {
@@ -80,33 +95,39 @@ export default create({
         (this.crud.page.pageSize || 10)
       );
     },
-    setSort () {
-      this.rowDrop()
-      this.columnDrop()
-    },
-    rowDrop () {
-      if (!this.crud.$refs.table) return
-      const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
-      this.crud.tableDrop('row', el, evt => {
-        const oldIndex = evt.oldIndex;
-        const newIndex = evt.newIndex;
-        const targetRow = this.crud.list.splice(oldIndex, 1)[0]
-        this.crud.list.splice(newIndex, 0, targetRow)
-        this.crud.$emit('sortable-change', oldIndex, newIndex)
-        this.crud.refreshTable(() => this.rowDrop())
-
+    rowDrop (flag) {
+      this.$nextTick(() => {
+        if (flag == false) {
+          this.rowSortable && this.rowSortable.destroy();
+          return
+        }
+        if (!this.crud.$refs.table.$el) return
+        const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
+        this.rowSortable = this.crud.tableDrop('row', el, evt => {
+          const oldIndex = evt.oldIndex;
+          const newIndex = evt.newIndex;
+          const targetRow = this.crud.list.splice(oldIndex, 1)[0]
+          this.crud.list.splice(newIndex, 0, targetRow)
+          this.crud.$emit('sortable-change', oldIndex, newIndex)
+        })
       })
     },
-    columnDrop () {
-      if (!this.crud.$refs.table) return
-      const el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
-      let noIndexCount = 0;
-      ['selection', 'index', 'expand'].forEach(ele => {
-        if (this.crud.tableOption[ele]) { noIndexCount += 1 }
-      })
-      this.crud.tableDrop('column', el, evt => {
-        this.crud.headerSort(evt.oldIndex - noIndexCount, evt.newIndex - noIndexCount)
-        this.columnDrop()
+    columnDrop (flag) {
+      this.$nextTick(() => {
+        if (flag == false) {
+          this.columnSortable && this.columnSortable.destroy();
+          return
+        }
+        if (!this.crud.$refs.table.$el) return
+        const el = this.crud.$refs.table.$el.querySelector(this.config.dropColClass);
+        let noIndexCount = 0;
+        ['selection', 'index', 'expand'].forEach(ele => {
+          if (this.crud.tableOption[ele]) { noIndexCount += 1 }
+        })
+        this.columnSortable = this.crud.tableDrop('column', el, evt => {
+          this.crud.headerSort(evt.oldIndex - noIndexCount, evt.newIndex - noIndexCount)
+          this.crud.$emit('column-sortable-change', evt.oldIndex - noIndexCount, evt.newIndex - noIndexCount)
+        })
       })
     },
   }

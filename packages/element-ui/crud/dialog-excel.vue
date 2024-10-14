@@ -151,18 +151,18 @@ export default {
       let prop = []
       const findProp = (list = []) => {
         let count = [];
-        for (let i = 0; i < list.length; i++) {
-          const ele = list[i], index = i, children = ele.children
+        list.forEach((ele, index) => {
+          let children = ele.children
           if (children && !Array.isArray(children)) delete ele.children
-          else if (ele.showColumn === false) {
-            list.splice(i, 1)
-            i--;
-          }
+          else if (ele.showColumn === false) count.push(index)
           else {
             ele.prop = ele.prop || uuid()
             prop.push(ele.prop)
             if (ele.children) findProp(children)
           }
+        })
+        for (let i = count.length - 1; i >= 0; i--) {
+          list.splice(count[i], 1)
         }
       }
       findProp(column)
