@@ -567,8 +567,8 @@ export default create({
       return this.tableOption[name] ? this.tableOption[name].trim() : config[name];
     },
     //对部分表单字段进行校验的方法
-    validateField (val) {
-      return this.$refs.dialogForm.$refs.tableForm.validateField(val);
+    validateField (val, fn) {
+      return this.$refs.dialogForm.$refs.tableForm.validateField(val, fn);
     },
     clearSelection () {
       this.$emit('selection-clear', this.deepClone(this.tableSelect))
