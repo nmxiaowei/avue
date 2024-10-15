@@ -64,7 +64,8 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.6",
     "countup.js": "^1.9.3",
-    "dayjs": "^1.10.4"
+    "dayjs": "^1.10.4",
+    "loadsh": "^0.0.4"
   },
   "files": [
     "lib",

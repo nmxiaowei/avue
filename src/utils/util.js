@@ -8,7 +8,9 @@ import {
 import {
   typeList
 } from 'global/variable';
-import _ from 'loadsh/object';
+import _get from 'loadsh/get';
+import _set from 'loadsh/set';
+import _cloneDeep from 'lodash/cloneDeep';
 export const isMediaType = (url, type) => {
   if (validatenull(url)) return;
   if (typeList.audio.test(url) || typeList.audio.test(type) || type == 'audio') {
@@ -37,11 +39,11 @@ export function getFixed (val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
 export function getAsVal (obj, bind = '') {
-  return _.get(obj, bind);
+  return _get(obj, bind);
 }
 
 export function setAsVal (obj, bind = '', value) {
-  _.set(obj, bind, value);
+  _set(obj, bind, value);
   return obj;
 }
 export const loadScript = (type = 'js', url, dom = 'body') => {
@@ -237,33 +239,7 @@ export const isJson = str => {
  * 对象深拷贝
  */
 export const deepClone = data => {
-  var type = getObjType(data);
-  var obj;
-  if (type === 'array') obj = [];
-  else if (type === 'object') obj = {};
-  else return data;
-  if (type === 'array') {
-    for (var i = 0, len = data.length; i < len; i++) {
-      data[i] = (() => {
-        if (data[i] === 0) {
-          return data[i];
-        }
-        return data[i];
-      })();
-      if (data[i]) {
-        delete data[i].$parent;
-      }
-      obj.push(deepClone(data[i]));
-    }
-  } else if (type === 'object') {
-    for (var key in data) {
-      if (data) {
-        delete data.$parent;
-      }
-      obj[key] = deepClone(data[key]);
-    }
-  }
-  return obj;
+  return _cloneDeep(data);
 };
 
 export const getColumn = (column) => {
