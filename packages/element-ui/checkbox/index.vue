@@ -17,7 +17,6 @@
                        @click="handleClick">
       <component :is="componentName"
                  v-for="(item,index) in dic"
-                 :label="item[valueKey]"
                  :border="border"
                  :size="size"
                  :value="item[valueKey]"
