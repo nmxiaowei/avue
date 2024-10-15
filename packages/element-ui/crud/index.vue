@@ -240,6 +240,7 @@ export default create({
     'tab-click',
     'error',
     'date-change',
+    'grid-status-change',
     'update:search',
     'update:page',
     'search-change',
