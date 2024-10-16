@@ -30,7 +30,7 @@
                 v-if="$slots.default">
           </slot>
           <span class="el-date-table-cell__text"
-                v-else>{{ cell.text }}</span>
+                v-else>{{  cell.renderText || cell.text }}</span>
         </div>
       </template>
     </el-date-picker>
