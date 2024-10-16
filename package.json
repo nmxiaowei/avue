@@ -1,16 +1,15 @@
 {
   "name": "@smallwei/avue",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
   "jsdelivr": "lib/avue.min.js",
   "scripts": {
-    "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org && yarn gen:version",
-    "dev": "yarn gen:version && cross-env TARGET=dev gulp watch",
+    "dev": "pnpm gen:version && cross-env TARGET=dev gulp watch",
     "gen:version": "node build/version.js",
-    "build": "yarn gen:version && cross-env TARGET=prod UINAME=element-ui gulp build",
-    "all": "yarn build && yarn dev"
+    "build": "pnpm gen:version && cross-env TARGET=prod UINAME=element-ui gulp build",
+    "all": "pnpm build && pnpm dev"
   },
   "keywords": [
     "vue",

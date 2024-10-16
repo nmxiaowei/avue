@@ -33,15 +33,18 @@ export const DATE_LIST = [
   'timerange',
   'week',
   'month',
+  'months',
   'monthrange',
-  'year'
+  'year',
+  'years',
+  'yearrange'
 ];
 export const CHILDREN_LIST = ['table', 'dynamic'];
 export const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map'];
 export const ARRAY_LIST = ['img', 'array', 'url'];
 export const MULTIPLE_LIST = ['cascader', 'tree', 'select', 'table'];
 export const RANGE_LIST = ['slider'];
-export const ARRAY_VALUE_LIST = ARRAY_LIST.concat(['upload', 'dynamic', 'map', 'checkbox', 'cascader', 'timerange', 'monthrange', 'daterange', 'datetimerange', 'dates', 'months', 'years']);
+export const ARRAY_VALUE_LIST = ARRAY_LIST.concat(['upload', 'dynamic', 'map', 'checkbox', 'cascader', 'timerange', 'monthrange', 'daterange', 'yearrange', 'datetimerange', 'dates', 'months', 'years']);
 export const SELECT_LIST = DATE_LIST.concat(['select', 'checkbox', 'radio', 'cascader', 'tree', 'color', 'icon', 'table', 'map']);
 export const DIC_SHOW_SPLIT = ' | ';
 export const DIC_SPLIT = ',';
