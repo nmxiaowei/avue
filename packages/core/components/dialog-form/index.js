@@ -25,7 +25,7 @@ export default function (_context) {
     instance.props.onDestroy = onDestroy;
     instance.close = onDestroy;
     render(instance, parent)
-    appendTo.appendChild(parent.firstElementChild);
+    appendTo.appendChild(parent);
     return instance;
   }
 }
