@@ -8,8 +8,8 @@ import {
 import {
   typeList
 } from 'global/variable';
-import _get from 'loadsh/get';
-import _set from 'loadsh/set';
+import _get from 'lodash/get';
+import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 export const isMediaType = (url, type) => {
   if (validatenull(url)) return;
