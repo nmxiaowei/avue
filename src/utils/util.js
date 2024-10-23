@@ -39,6 +39,8 @@ export function getFixed (val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
 export function getAsVal (obj, bind = '') {
+  let result = deepClone(obj);
+  if (validatenull(bind)) return result;
   return _get(obj, bind);
 }
 
