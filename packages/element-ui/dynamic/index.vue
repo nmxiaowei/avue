@@ -27,6 +27,7 @@
                      circle></el-button>
           <avue-form :key="index"
                      ref="main"
+                     :table-data="{row:text[index],index}"
                      :option="option"
                      v-bind="$uploadFun(null,this)"
                      v-model="text[index]">
