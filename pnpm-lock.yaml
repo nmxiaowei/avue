@@ -14,6 +14,9 @@ importers:
       dayjs:
         specifier: ^1.10.4
         version: 1.11.10
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -83,7 +86,7 @@ importers:
         version: 2.7.10
       vue-loader:
         specifier: ^15.9.6
-        version: 15.11.1(css-loader@5.2.7)(webpack@4.47.0)
+        version: 15.11.1(css-loader@5.2.7(webpack@4.47.0))(lodash@4.17.21)(webpack@4.47.0)
       webpack:
         specifier: ^4.27.0
         version: 4.47.0
@@ -2043,7 +2046,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
+    deprecated: Upgrade to fsevents v2 to mitigate potential security issues
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -4858,9 +4861,9 @@ snapshots:
       postcss: 8.4.35
       source-map: 0.6.1
 
-  '@vue/component-compiler-utils@3.3.0':
+  '@vue/component-compiler-utils@3.3.0(lodash@4.17.21)':
     dependencies:
-      consolidate: 0.15.1
+      consolidate: 0.15.1(lodash@4.17.21)
       hash-sum: 1.0.2
       lru-cache: 4.1.5
       merge-source-map: 1.1.0
@@ -5645,9 +5648,11 @@ snapshots:
 
   console-browserify@1.2.0: {}
 
-  consolidate@0.15.1:
+  consolidate@0.15.1(lodash@4.17.21):
     dependencies:
       bluebird: 3.7.2
+    optionalDependencies:
+      lodash: 4.17.21
 
   constants-browserify@1.0.0: {}
 
@@ -7652,7 +7657,7 @@ snapshots:
   progress@2.0.3: {}
 
   promise-inflight@1.0.1(bluebird@3.7.2):
-    dependencies:
+    optionalDependencies:
       bluebird: 3.7.2
 
   proxy-addr@2.0.7:
@@ -8511,9 +8516,9 @@ snapshots:
 
   vue-hot-reload-api@2.3.4: {}
 
-  vue-loader@15.11.1(css-loader@5.2.7)(webpack@4.47.0):
+  vue-loader@15.11.1(css-loader@5.2.7(webpack@4.47.0))(lodash@4.17.21)(webpack@4.47.0):
     dependencies:
-      '@vue/component-compiler-utils': 3.3.0
+      '@vue/component-compiler-utils': 3.3.0(lodash@4.17.21)
       css-loader: 5.2.7(webpack@4.47.0)
       hash-sum: 1.0.2
       loader-utils: 1.4.2

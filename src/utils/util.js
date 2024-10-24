@@ -8,6 +8,9 @@ import {
 import {
   typeList
 } from 'global/variable';
+import _get from 'lodash/get';
+import _set from 'lodash/set';
+import _cloneDeep from 'lodash/cloneDeep';
 export const isMediaType = (url, type) => {
   if (validatenull(url)) return null;
   if (typeList.audio.test(url) || typeList.audio.test(type) || type == 'audio') {
@@ -32,45 +35,17 @@ export const uuid = () => {
   var uuid = s.join('');
   return uuid;
 };
-export function getFixed(val = 0, len = 2) {
+export function getFixed (val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
-export function getAsVal(obj, bind = '') {
+export function getAsVal (obj, bind = '') {
   let result = deepClone(obj);
   if (validatenull(bind)) return result;
-  bind.split('.').forEach(ele => {
-    result = !validatenull(result[ele]) ? result[ele] : '';
-  });
-  return result;
+  return _get(obj, bind);
 }
 
-export function setAsVal(obj, bind = '', value) {
-  let result;
-  let type = getObjType(value);
-  if (validatenull(value)) {
-    if (type === 'array') {
-      result = `obj.${bind}=[]`;
-    } else if (type === 'object') {
-      result = `obj.${bind}={}`;
-    } else if (['number', 'boolean'].includes(type)) {
-      result = `obj.${bind}=undefined`;
-    } else {
-      result = `obj.${bind}=''`;
-    }
-  } else {
-    if (['array', 'object'].includes(type)) {
-      let array = obj;
-      let props = bind.split('.');
-      let len = props.length;
-      for (var i = 0; i < len - 1; i++) {
-        array = array[props[i]];
-      }
-      array[props[len - 1]] = value;
-    } else {
-      result = `obj.${bind}='${value}'`;
-    }
-  }
-  eval(result);
+export function setAsVal (obj, bind = '', value) {
+  _set(obj, bind, value);
   return obj;
 }
 export const loadScript = (type = 'js', url, dom = 'body') => {
@@ -102,7 +77,7 @@ export const loadScript = (type = 'js', url, dom = 'body') => {
     };
   });
 };
-export function downFile(url, saveName) {
+export function downFile (url, saveName) {
   if (typeof url === 'object' && url instanceof Blob) {
     url = URL.createObjectURL(url); // 创建blob地址
   }
@@ -119,7 +94,7 @@ export function downFile(url, saveName) {
   }
   aLink.dispatchEvent(event);
 }
-export function extend() {
+export function extend () {
   var target = arguments[0] || {};
   var deep = false;
   var arr = Array.prototype.slice.call(arguments);
@@ -155,7 +130,7 @@ export function extend() {
   }
   return target;
 }
-export function createObj(obj, bind) {
+export function createObj (obj, bind) {
   let list = bind.split('.');
   let first = list.splice(0, 1)[0];
   let deep = {};
@@ -177,7 +152,7 @@ export function createObj(obj, bind) {
   obj = extend(true, obj, deep);
   return obj;
 }
-export function dataURLtoFile(dataurl, filename) {
+export function dataURLtoFile (dataurl, filename) {
   let arr = dataurl.split(',');
   let mime = arr[0].match(/:(.*?);/)[1];
   let bstr = atob(arr[1]);
@@ -191,7 +166,7 @@ export function dataURLtoFile(dataurl, filename) {
   });
 }
 
-export function findObject(list = [], value, prop = 'prop') {
+export function findObject (list = [], value, prop = 'prop') {
   let result;
   result = findNode(list, {
     value: prop
@@ -218,7 +193,7 @@ export function findObject(list = [], value, prop = 'prop') {
 /**
  * 生成随机数
  */
-export function randomId() {
+export function randomId () {
   let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let maxPos = $chars.length;
   let id = '';
@@ -266,33 +241,7 @@ export const isJson = str => {
  * 对象深拷贝
  */
 export const deepClone = data => {
-  var type = getObjType(data);
-  var obj;
-  if (type === 'array') obj = [];
-  else if (type === 'object') obj = {};
-  else return data;
-  if (type === 'array') {
-    for (var i = 0, len = data.length; i < len; i++) {
-      data[i] = (() => {
-        if (data[i] === 0) {
-          return data[i];
-        }
-        return data[i];
-      })();
-      if (data[i]) {
-        delete data[i].$parent;
-      }
-      obj.push(deepClone(data[i]));
-    }
-  } else if (type === 'object') {
-    for (var key in data) {
-      if (data) {
-        delete data.$parent;
-      }
-      obj[key] = deepClone(data[key]);
-    }
-  }
-  return obj;
+  return _cloneDeep(data);
 };
 
 export const getColumn = (column) => {
