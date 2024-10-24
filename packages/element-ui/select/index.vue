@@ -127,7 +127,12 @@ export default create({
   },
   props: {
     virtualize: Boolean,
-    emptyValues: Array,
+    emptyValues: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     valueOnClear: {
       type: [String, Number, Boolean, Function],
       default: undefined,

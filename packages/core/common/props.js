@@ -35,7 +35,10 @@ export default function () {
         default: ''
       },
       tableData: {
-        type: Object
+        type: Object,
+        default: () => {
+          return {}
+        }
       },
       modelValue: {},
       column: {

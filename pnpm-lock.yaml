@@ -17,9 +17,9 @@ importers:
       dayjs:
         specifier: ^1.10.4
         version: 1.11.13
-      loadsh:
-        specifier: ^0.0.4
-        version: 0.0.4
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
     devDependencies:
       '@babel/cli':
         specifier: ^7.12.1
@@ -2646,10 +2646,6 @@ packages:
   loader-utils@2.0.4:
     resolution: {integrity: sha512-xXqpXoINfFhgua9xiqD8fPFHgkoq1mmmpE92WlDbm9rNRd/EbRb+Gqf908T2DMfuHjjJlksiK2RbHVOdD/MqSw==}
     engines: {node: '>=8.9.0'}
-
-  loadsh@0.0.4:
-    resolution: {integrity: sha512-U+wLL8InpfRalWrr+0SuhWgGt10M4OyAk6G8xCYo2rwpiHtxZkWiFpjei0vO463ghW8LPCdhqQxXlMy2qicAEw==}
-    deprecated: This is a typosquat on the popular Lodash package. This is not maintained nor is the original Lodash package.
 
   locate-path@3.0.0:
     resolution: {integrity: sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==}
@@ -7064,8 +7060,6 @@ snapshots:
       big.js: 5.2.2
       emojis-list: 3.0.0
       json5: 2.2.3
-
-  loadsh@0.0.4: {}
 
   locate-path@3.0.0:
     dependencies:
