@@ -531,8 +531,8 @@ export default create({
       return isPx ? this.setPx(result) : result
     },
     //对部分表单字段进行校验的方法
-    validateField (val) {
-      return this.$refs.form.validateField(val);
+    validateField (val, fn) {
+      return this.$refs.form.validateField(val, fn);
     },
     validTip (column) {
       return !column.tip || column.type === 'upload'
