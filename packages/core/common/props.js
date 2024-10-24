@@ -33,7 +33,10 @@ export default function () {
         type: String,
       },
       tableData: {
-        type: Object
+        type: Object,
+        default: () => {
+          return {}
+        }
       },
       value: {},
       column: {
