@@ -7,7 +7,6 @@
              :options="options"
              :loading="loading"
              :loading-text="loadingText"
-             :empty-values="emptyValues"
              :value-on-clear="valueOnClear"
              :multiple="multiple"
              :filterable="remote?true:filterable"
@@ -127,12 +126,6 @@ export default create({
   },
   props: {
     virtualize: Boolean,
-    emptyValues: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
     valueOnClear: {
       type: [String, Number, Boolean, Function],
       default: undefined,
