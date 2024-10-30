@@ -700,7 +700,8 @@ export default create({
     },
     rowCellUpdate (row, index) {
       var result = this.validateCellField(index)
-      const done = () => {
+      const done = (newRow) => {
+        row = newRow || row
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
         row.$cellEdit = false
