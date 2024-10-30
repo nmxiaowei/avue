@@ -292,7 +292,7 @@ export default create({
       return this.detail === true
     },
     isAdd () {
-      return this.boxType === "add"
+      return ['parentAdd', 'add'].includes(this.boxType)
     },
     isTabs () {
       return this.tableOption.tabs === true;
