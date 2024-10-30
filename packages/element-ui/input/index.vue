@@ -4,7 +4,7 @@
               :size="size"
               :clearable="clearableVal"
               v-model="text"
-              @keyup.enter="isSearch?appendClick():''"
+              @keyup.enter="isSearch?appendClick(text):''"
               @click.="handleClick"
               :type="typeParam"
               :maxlength="maxlength"
@@ -22,16 +22,16 @@
               :disabled="disabled"
               :autocomplete="autocomplete">
       <template #prepend
-                v-if="prepend"><span @click="prependClick()">{{prepend}}</span>
+                v-if="prepend"><span @click="prependClick(text)">{{prepend}}</span>
       </template>
       <template #append
                 v-if="append">
-        <span @click="appendClick()">{{append}}</span>
+        <span @click="appendClick(text)">{{append}}</span>
       </template>
       <template #append
                 v-else-if="isSearch">
         <el-button icon="el-icon-search"
-                   @click="appendClick()"></el-button>
+                   @click="appendClick(text)"></el-button>
       </template>
     </el-input>
   </div>
