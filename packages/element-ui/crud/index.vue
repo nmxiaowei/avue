@@ -699,13 +699,12 @@ export default create({
       }
     },
     rowCellUpdate (row, index) {
-      row = this.deepClone(row);
       var result = this.validateCellField(index)
       const done = () => {
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
+        row.$cellEdit = false
         this.list[index] = row;
-        this.list[index].$cellEdit = false
         this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
         delete this.cascaderFormList[index]
       }
