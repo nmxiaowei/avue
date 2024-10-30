@@ -116,8 +116,10 @@ export default create({
           if (this.crud.tableOption[ele]) { noIndexCount += 1 }
         })
         this.columnSortable = this.crud.tableDrop('column', el, evt => {
-          this.crud.headerSort(evt.oldIndex - noIndexCount, evt.newIndex - noIndexCount)
-          this.crud.$emit('column-sortable-change', evt.oldIndex - noIndexCount, evt.newIndex - noIndexCount)
+          const newIndex = evt.newIndex - noIndexCount
+          const oldIndex = evt.oldIndex - noIndexCount
+          this.crud.headerSort(oldIndex, newIndex)
+          this.crud.$emit('column-sortable-change', oldIndex, newIndex)
         })
       })
     },
