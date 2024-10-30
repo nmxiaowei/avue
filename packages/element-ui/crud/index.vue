@@ -739,7 +739,8 @@ export default create({
       }
     },
     rowCellUpdate (row, index) {
-      const done = (row) => {
+      const done = (newRow) => {
+        row = newRow || row
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
         row.$cellEdit = false
