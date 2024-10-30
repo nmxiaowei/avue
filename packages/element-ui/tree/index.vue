@@ -238,6 +238,7 @@ export default create({
       return Object.assign(
         this.option.formOption || {},
         {
+          boxType: this.type,
           submitText: this.addText,
         }
       );

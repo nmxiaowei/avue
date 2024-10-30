@@ -300,7 +300,7 @@ export default create({
       return this.parentOption.tabs === true;
     },
     isAdd () {
-      return this.boxType === "add"
+      return ['parentAdd', 'add'].includes(this.boxType)
     },
     isEdit () {
       return this.boxType === "edit"
