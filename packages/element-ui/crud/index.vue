@@ -243,6 +243,7 @@ export default create({
     'grid-status-change',
     'update:search',
     'update:page',
+    'search-icon-change',
     'search-change',
     'search-reset',
     'on-load',
