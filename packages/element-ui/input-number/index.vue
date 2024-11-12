@@ -1,5 +1,5 @@
 <template>
-  <el-input-number v-model.number="text"
+  <el-input-number v-model="text"
                    :class="b()"
                    @click="handleClick"
                    @focus="handleFocus"
@@ -16,15 +16,15 @@
                    :controls-position="controlsPosition"
                    :controls="controls"
                    :disabled="disabled">
-      <template #prefix
-                v-if="prefix">
-        <span>{{prefix}}</span>
-      </template>
-      <template #suffix
-                v-if="suffix">
-        <span>{{suffix}}</span>
-      </template>               
-    </el-input-number>
+    <template #prefix
+              v-if="prefix">
+      <span @click="prefixClick(text)">{{prefix}}</span>
+    </template>
+    <template #suffix
+              v-if="suffix">
+      <span @click="suffixClick(text)">{{suffix}}</span>
+    </template>
+  </el-input-number>
 </template>
 
 <script>
@@ -68,8 +68,16 @@ export default create({
     prefix: {
       type: String,
     },
+    prefixClick: {
+      type: Function,
+      default: () => { }
+    },
     suffix: {
       type: String,
+    },
+    suffixClick: {
+      type: Function,
+      default: () => { }
     },
   },
   created () { },
