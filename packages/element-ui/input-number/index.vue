@@ -15,7 +15,16 @@
                    :readonly="readonly"
                    :controls-position="controlsPosition"
                    :controls="controls"
-                   :disabled="disabled"></el-input-number>
+                   :disabled="disabled">
+      <template #prefix
+                v-if="prefix">
+        <span>{{prefix}}</span>
+      </template>
+      <template #suffix
+                v-if="suffix">
+        <span>{{suffix}}</span>
+      </template>               
+    </el-input-number>
 </template>
 
 <script>
@@ -55,7 +64,13 @@ export default create({
     max: {
       type: Number,
       default: Infinity
-    }
+    },
+    prefix: {
+      type: String,
+    },
+    suffix: {
+      type: String,
+    },
   },
   created () { },
   mounted () { },
