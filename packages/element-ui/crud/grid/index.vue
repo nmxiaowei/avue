@@ -26,7 +26,7 @@
                  @dblclick="handleCellDblClick(row,item)"
                  :key="columnIndex">
               <span v-if="item.type=='selection'">
-                <el-checkbox :label="index">&nbsp;</el-checkbox>
+                <el-checkbox :value="index">&nbsp;</el-checkbox>
               </span>
               <template v-else>
                 <template v-for="(comp,compIndex) in item.header && item.header({row:row,$index:index,column:item})"
