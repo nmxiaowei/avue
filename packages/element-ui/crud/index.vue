@@ -103,7 +103,7 @@
                    ref="table"
                    :width="setPx(tableOption.width,config.width)"
                    :border="tableOption.border"
-                   v-loading="tableLoading"
+                   v-loading.lock="tableLoading"
                    :element-loading-text="tableOption.loadingText"
                    :element-loading-spinner="tableOption.loadingSpinner"
                    :element-loading-svg="tableOption.loadingSvg"
