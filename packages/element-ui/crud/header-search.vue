@@ -158,9 +158,9 @@ export default create({
           emptyIcon: this.crud.getBtnIcon('emptyBtn'),
           menuSpan: (() => {
             if (this.show || !this.isSearchIcon) {
-              return option.searchMenuSpan
+              return option.searchMenuSpan || option.searchSpan
             } else {
-              return option.searchMenuSpan < 6 ? option.searchMenuSpan : 6
+              return option.searchMenuSpan || 6
             }
           })(),
           menuPosition: option.searchMenuPosition || 'center',
