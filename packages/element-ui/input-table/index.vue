@@ -186,6 +186,7 @@ export default create({
       if (row[this.disabledKey]) return 'disabled'
     },
     handleCurrentChange (val) {
+      if (!val) return
       if (this.isMultiple) {
         this.$refs.crud.setCurrentRow(null)
       } else {

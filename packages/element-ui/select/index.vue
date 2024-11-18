@@ -4,10 +4,10 @@
              :class="b()"
              v-model="text"
              :size="size"
-             :options="options"
+             :options="netDic"
+             :props="props"
              :loading="loading"
              :loading-text="loadingText"
-             :empty-values="emptyValues"
              :value-on-clear="valueOnClear"
              :multiple="multiple"
              :filterable="remote?true:filterable"
@@ -127,12 +127,6 @@ export default create({
   },
   props: {
     virtualize: Boolean,
-    emptyValues: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
     valueOnClear: {
       type: [String, Number, Boolean, Function],
       default: undefined,
@@ -197,16 +191,6 @@ export default create({
   computed: {
     classNameKey () {
       return this.props.className || 'className'
-    },
-    options () {
-      let dicData = this.deepClone(this.netDic)
-      return dicData.map(ele => {
-        return Object.assign(ele, {
-          label: ele[this.labelKey],
-          value: ele[this.valueKey],
-          disabled: ele[this.disabledKey]
-        })
-      })
     },
     componentName () {
       return 'elSelect' + (this.virtualize ? 'V2' : '')

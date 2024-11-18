@@ -99,7 +99,7 @@
                    ref="table"
                    :width="setPx(tableOption.width,config.width)"
                    :border="tableOption.border"
-                   v-loading="tableLoading"
+                   v-loading.lock="tableLoading"
                    :element-loading-text="tableOption.loadingText"
                    :element-loading-spinner="tableOption.loadingSpinner"
                    :element-loading-svg="tableOption.loadingSvg"
@@ -243,6 +243,7 @@ export default create({
     'grid-status-change',
     'update:search',
     'update:page',
+    'search-icon-change',
     'search-change',
     'search-reset',
     'on-load',
@@ -739,12 +740,12 @@ export default create({
       }
     },
     rowCellUpdate (row, index) {
-      row = this.deepClone(row);
-      const done = (row) => {
+      const done = (newRow) => {
+        row = newRow || row
         this.btnDisabledList[index] = false;
         this.btnDisabled = false;
-        if (row) this.list[index] = row;
-        this.list[index].$cellEdit = false
+        row.$cellEdit = false
+        this.list[index] = row;
         this.cascaderIndexList.splice(this.cascaderIndexList.indexOf(index), 1);
         delete this.cascaderFormList[index]
       }
