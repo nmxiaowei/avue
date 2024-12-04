@@ -7,8 +7,9 @@
               :placeholder="placeholder"
               :size="size"
               :prefix="prefix"
-              :options="netDic"
+              :options="options"
               :loading="loading"
+              :split="split"
               :whole="whole"
               :check-is-whole="checkIsWhole"
               @search="remote?handleRemoteMethod:undefined"
@@ -24,6 +25,8 @@
     </template>
     <template #label="{ item }">
       <slot :item="item"
+            :label="labelKey"
+            :value="valueKey"
             v-if="$slots.default">
       </slot>
       <span v-else>{{ item.value }}</span>
@@ -46,6 +49,10 @@ export default create({
     };
   },
   props: {
+    split: {
+      type: String,
+      default: ','
+    },
     remote: Boolean,
     prependClick: {
       type: Function,
@@ -67,6 +74,16 @@ export default create({
   },
   created () { },
   mounted () { },
+  computed: {
+    options () {
+      return this.netDic.map(ele => {
+        return {
+          label: ele[this.labelKey],
+          value: ele[this.valueKey],
+        }
+      })
+    }
+  },
   watch: {
     dic: {
       handler (val) {
