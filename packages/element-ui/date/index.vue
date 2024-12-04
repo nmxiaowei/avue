@@ -19,6 +19,7 @@
                     :value-format="valueFormat"
                     :placeholder="placeholder"
                     :prefix-icon="prefixIcon"
+                    :show-now="showNow"
                     @blur="handleBlur"
                     @focus="handleFocus"
                     @click="handleClick"
@@ -49,6 +50,7 @@ export default create({
     cellClassName: String,
     prefixIcon: String,
     disabledDate: Function,
+    showNow: Boolean,
     shortcuts: [Array, Function],
     editable: {
       type: Boolean,
