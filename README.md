@@ -1,17 +1,19 @@
 <p align="center"><a href="https://avuejs.com" target="_blank" rel="noopener noreferrer"><img width="100" src="https://avuejs.com/images/logo-bg.jpg" alt="Avue logo"></a></p>
 
 ## 介绍
-  Avue.js是基于现有的element-ui库进行的二次封装，从而简化一些繁琐的操作，核心理念为数据驱动视图,主要的组件库针对table表格和form表单场景，同时衍生出更多企业常用的组件，达到高复用，容易维护和扩展的框架，同时内置了丰富了数据展示组件，让开发变得更加容易.
+
+Avue.js 是基于现有的 element-plus 库进行的二次封装，从而简化一些繁琐的操作，核心理念为数据驱动视图,主要的组件库针对 table 表格和 form 表单场景，同时衍生出更多企业常用的组件，达到高复用，容易维护和扩展的框架，同时内置了丰富了数据展示组件，让开发变得更加容易.
 
 ### 浏览器兼容性
-  支持所有符合ES5标准的浏览器(不支持IE8及以下版本）.
-  
+
+支持所有符合 ES5 标准的浏览器(不支持 IE8 及以下版本）.
+
 ## 文件
 
-| 文件名 | 用途 |
-|-------------|----------|
-| avue.min.js | 生产环境|
-| avue.js     | 开发环境|
+| 文件名      | 用途     |
+| ----------- | -------- |
+| avue.min.js | 生产环境 |
+| avue.js     | 开发环境 |
 
 ## 文档
 
@@ -19,7 +21,7 @@
 
 ## 问答
 
-有关问题和支持，请使用[issues](https://gitee.com/smallweigit/avue/issues)或加入QQ群606410437.
+有关问题和支持，请使用[issues](https://gitee.com/smallweigit/avue/issues)或加入 QQ 群 606410437.
 
 ## issues
 

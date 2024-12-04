@@ -1,3 +1,3 @@
-import Element from './element-ui/';
+import Element from './element-plus/';
 import Data from './data/';
-export default { ...Element, ...Data }
+export default { ...Element, ...Data };

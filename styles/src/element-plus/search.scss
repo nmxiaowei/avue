@@ -17,6 +17,7 @@
     color: rgba(0,0,0,.65);
     cursor: pointer;
     white-space: nowrap;
+    display: inline-block;
     &:hover{
       color:#1890ff;
     }
@@ -29,7 +30,6 @@
         color:#fff;
       }
     }
-    display: inline-block;
   }
   &__title{
     margin: 0;

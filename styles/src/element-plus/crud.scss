@@ -2,6 +2,8 @@ $color-blue: #2196f3;
 $space-width: 15px;
 
 .avue-crud {
+  margin: 0 auto;
+  width: 100%;
   .el-card+.el-card {
     margin-top: 8px;
   }
@@ -110,8 +112,6 @@ $space-width: 15px;
     }
   }
 
-  margin: 0 auto;
-  width: 100%;
 
   th {
     word-break: break-word;
