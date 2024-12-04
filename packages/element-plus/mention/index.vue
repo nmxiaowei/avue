@@ -29,7 +29,7 @@
             :value="valueKey"
             v-if="$slots.default">
       </slot>
-      <span v-else>{{ item.value }}</span>
+      <span v-else>{{ item.label }}</span>
     </template>
   </el-mention>
 </template>
@@ -38,6 +38,7 @@
 import create from "core/create";
 import props from "common/common/props.js";
 import event from "common/common/event.js";
+import { sendDic } from "core/dic";
 export default create({
   name: "mention",
   mixins: [props(), event()],
