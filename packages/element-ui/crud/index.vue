@@ -59,6 +59,7 @@
                    :lazy="validData(tableOption.lazy,false)"
                    :load="treeLoad"
                    :tree-props="treeProps"
+                   :scrollbar-always-on="tabeleOption.scrollbarAlwaysOn"
                    :flexible="tableOption.flexible"
                    :table-layout="tableOption.tableLayout"
                    :expand-row-keys="tableOption.expandRowKeys"
@@ -76,6 +77,7 @@
                    :stripe="tableOption.stripe"
                    :show-header="tableOption.showHeader"
                    :default-sort="tableOption.defaultSort"
+                   @scroll="scroll"
                    @row-click="rowClick"
                    @row-dblclick="rowDblclick"
                    @cell-mouse-enter="cellMouseEnter"
@@ -618,6 +620,9 @@ export default create({
     },
     clearFilter (name) {
       this.$refs.table.clearFilter(name);
+    },
+    scroll (params) {
+      this.$emit("scroll", params);
     },
     //展开或则关闭
     expandChange (row, expand) {
