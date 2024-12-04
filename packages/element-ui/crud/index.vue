@@ -549,6 +549,9 @@ export default create({
     doLayout () {
       this.$refs.table.doLayout()
     },
+    updateKeyChildren (key, data) {
+      this.$refs.table.updateKeyChildren(key, data)
+    },
     refreshTable (callback) {
       this.reload = Math.random()
       this.tableSelect = []
