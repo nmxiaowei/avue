@@ -1,6 +1,6 @@
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const { VueLoaderPlugin } = require('vue-loader')
+const { VueLoaderPlugin } = require('vue-loader');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const alias = require('./alias');
 let config = require('./config');

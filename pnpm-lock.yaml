@@ -85,8 +85,8 @@ importers:
         specifier: ^9.0.1
         version: 9.1.0(postcss@8.4.47)
       gulp-sass:
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^6.0.0
+        version: 6.0.0
       progress-bar-webpack-plugin:
         specifier: ^1.11.0
         version: 1.12.1(webpack@4.47.0)
@@ -2236,8 +2236,8 @@ packages:
     resolution: {integrity: sha512-juUttYYC7PuQjWmRVvgLFBtxvprujQnJR1HD4hGiLi4a3EqQTtd7QWnb/SfW1kbb9OjH7wcWZm+yD6W6r9fiEg==}
     engines: {node: '>=0.8.0', npm: '>=1.2.10'}
 
-  gulp-sass@5.1.0:
-    resolution: {integrity: sha512-7VT0uaF+VZCmkNBglfe1b34bxn/AfcssquLKVDYnCDJ3xNBaW7cUuI3p3BQmoKcoKFrs9jdzUxyb+u+NGfL4OQ==}
+  gulp-sass@6.0.0:
+    resolution: {integrity: sha512-FGb4Uab4jnH2GnSfBGd6uW3+imvNodAGfsjGcUhEtpNYPVx+TK2tp5uh7MO0sSR7aIf1Sm544werc+zV7ejHHw==}
     engines: {node: '>=12'}
 
   gulp-util@2.2.20:
@@ -6657,7 +6657,7 @@ snapshots:
     dependencies:
       map-stream: 0.0.4
 
-  gulp-sass@5.1.0:
+  gulp-sass@6.0.0:
     dependencies:
       lodash.clonedeep: 4.5.0
       picocolors: 1.1.0

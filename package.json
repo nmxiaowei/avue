@@ -48,7 +48,7 @@
     "gulp-autoprefixer": "^8.0.0",
     "gulp-cssmin": "^0.2.0",
     "gulp-postcss": "^9.0.1",
-    "gulp-sass": "^5.1.0",
+    "gulp-sass": "^6.0.0",
     "progress-bar-webpack-plugin": "^1.11.0",
     "sass": "^1.52.1",
     "vue": "^3.3.4",
