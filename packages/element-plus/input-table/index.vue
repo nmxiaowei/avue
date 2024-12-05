@@ -16,7 +16,7 @@
       <el-dialog class="avue-dialog"
                  :class="b()"
                  :width="dialogWidth"
-                 :before-close="beforeClose"
+                 :before-close="handelBeforeClose"
                  :append-to-body="$AVUE.appendToBody"
                  lock-scroll
                  :title="placeholder"
@@ -40,7 +40,7 @@
           <el-button type="primary"
                      :size="size"
                      icon="el-icon-check"
-                     @click="setVal">{{t("common.submitBtn")}}</el-button>
+                     @click="setVal()">{{t("common.submitBtn")}}</el-button>
         </span>
       </el-dialog>
     </div>
@@ -101,7 +101,6 @@ export default create({
         return this.formatter(this.isMultiple ? this.object : (this.object[0] || {}))
       }
       return this.object.map(ele => ele[this.labelKey]).join(',')
-
     },
     option () {
       return Object.assign({
@@ -121,6 +120,17 @@ export default create({
     }
   },
   methods: {
+    handelBeforeClose (done) {
+      const callback = () => {
+        this.active = []
+        done()
+      }
+      if (typeof this.beforeClose === "function") {
+        this.beforeClose(callback);
+      } else {
+        callback();
+      }
+    },
     handleSelectionAllChange (val) {
       let ids = this.data.map(ele => ele[this.valueKey])
       let list = val.filter(ele => ids.includes(ele[this.valueKey]))
@@ -153,18 +163,14 @@ export default create({
       if (typeof this.onLoad == 'function') {
         this.onLoad({ value: this.text }, data => {
           let result = Array.isArray(data) ? data : [data]
-          this.active = this.deepClone(result)
           this.object = this.deepClone(result)
           this.created = true;
         })
       }
     },
     handleClear () {
-      this.active = []
-      this.setVal()
-      setTimeout(() => {
-        this.box = false;
-      }, 0)
+      this.setVal([])
+      this.box = false;
     },
     handleShow () {
       this.$refs.main.blur();
@@ -177,9 +183,9 @@ export default create({
       this.data = []
       this.box = true;
     },
-    setVal () {
-      this.object = this.deepClone(this.active)
-      this.text = this.active.map(ele => ele[this.valueKey])
+    setVal (value) {
+      this.object = this.deepClone(value || this.active)
+      this.text = this.object.map(ele => ele[this.valueKey])
       this.box = false
     },
     handleRowClassName ({ row, rowIndex }) {

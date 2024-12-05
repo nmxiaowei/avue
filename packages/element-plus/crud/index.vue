@@ -59,7 +59,7 @@
                    :lazy="validData(tableOption.lazy,false)"
                    :load="treeLoad"
                    :tree-props="treeProps"
-                   :scrollbar-always-on="tabeleOption.scrollbarAlwaysOn"
+                   :scrollbar-always-on="tableOption.scrollbarAlwaysOn"
                    :flexible="tableOption.flexible"
                    :table-layout="tableOption.tableLayout"
                    :expand-row-keys="tableOption.expandRowKeys"
