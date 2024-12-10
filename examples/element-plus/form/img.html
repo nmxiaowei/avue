@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="form" :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli.avuejs.com/api/area'
+  var app = Vue.createApp({
+    data() {
+      return {
+        form: {
+
+        },
+        option: {
+          labelWidth: 120,
+          column: [
+            {
+              label: '附件上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              loadText: '附件上传中，请稍等',
+              span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
+              props: {
+                label: 'label',
+                value: 'value'
+              },
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'http://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '用户头像',
+              prop: 'imgUrl3',
+              type: 'upload',
+              listType: 'picture-img',
+              span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
+              canvasOption: {
+                text: 'avue',
+                ratio: 0.1
+              },
+              tip: '只能上传jpg/png用户头像，且不超过500kb',
+              action: 'http://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '照片墙',
+              prop: 'imgUrl',
+              type: 'upload',
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              propsHttp: {
+                res: 'data.0'
+              },
+              action: 'http://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '数组图片组',
+              prop: 'img',
+              dataType: 'array',
+              type: 'upload',
+              propsHttp: {
+                res: 'data.0'
+              },
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'http://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '字符串图片组',
+              prop: 'string',
+              dataType: 'string',
+              type: 'upload',
+              propsHttp: {
+                res: 'data.0'
+              },
+              span: 24,
+              listType: 'picture-card',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'http://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '拖拽上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              span: 24,
+              drag: true,
+              propsHttp: {
+                res: 'data.0'
+              },
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'http://avueupload.91eic.com/upload/list'
+            },
+            {
+              label: '缩略图上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              limit: 3,
+              span: 24,
+              propsHttp: {
+                res: 'data.0'
+              },
+              listType: 'picture',
+              tip: '只能上传jpg/png文件，且不超过500kb',
+              action: 'http://avueupload.91eic.com/upload/list'
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      uploadBefore(file, done, loading) {
+        console.log(file)
+        done()
+        this.$message.success('上传前的方法')
+      },
+      uploadAfter(res, done, loading) {
+        console.log(res)
+        done()
+        this.$message.success('上传后的方法')
+      },
+      submit() {
+        this.$message.success('当前数据' + JSON.stringify(this.form))
+      }
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

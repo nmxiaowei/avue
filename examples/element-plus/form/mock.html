@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <script src="https://cdn.staticfile.org/Mock.js/1.0.1-beta3/mock-min.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form v-model="form" ref="form" :option="option"></avue-form>
+  </div>
+</body>
+<script>
+  var DIC = {
+    VAILD: [{
+      label: '真',
+      value: 'true'
+    }, {
+      label: '假',
+      value: 'false'
+    }],
+    SEX: [{
+      label: '男',
+      value: 0
+    }, {
+      label: '女',
+      value: 1
+    }]
+  }
+  let baseUrl = 'https://cli.avuejs.com/api/area'
+  let app = Vue.createApp({
+    el: '#app',
+    data () {
+      return {
+        form: {},
+        option: {
+          mockBtn: true,
+          column: [{
+            label: "id",
+            prop: "id",
+            mock: {
+              type: 'id',
+              uuid: true
+            },
+            span: 8
+          }, {
+            label: "用户名",
+            prop: "username",
+            mock: {
+              type: 'name',
+              en: true,
+            }
+          },
+          {
+            label: "自定义",
+            prop: "text2",
+            mock: (form, mock) => {
+              return '自定义逻辑' + form.name
+            },
+            span: 8
+          },
+          {
+            label: "姓名",
+            prop: "name",
+            mock: {
+              type: 'name'
+            },
+            span: 8
+          },
+          {
+            label: "图片",
+            prop: "upload",
+            type: 'upload',
+            span: 24,
+            listType: 'picture-card',
+            mock: {
+              type: 'image',
+              array: 5
+            }
+          },
+          {
+            label: "类型",
+            prop: "type",
+            type: "select",
+            props: {
+              label: 'name',
+              value: 'code'
+            },
+            dicUrl: 'https://cli.avuejs.com/api/area/getProvince',
+            span: 6,
+            mock: {
+              type: 'dic',
+            },
+          },
+          {
+            label: "权限",
+            prop: "grade",
+            span: 6,
+            type: "checkbox",
+            dicData: DIC.VAILD,
+            mock: {
+              type: 'dic',
+            },
+          },
+          {
+            label: "开关",
+            prop: "switch",
+            span: 6,
+            type: "switch",
+            dicData: DIC.SEX,
+            mock: {
+              type: 'dic'
+            },
+            hide: true,
+            row: true,
+          },
+          {
+            label: "性别",
+            prop: "sex",
+            dicData: DIC.SEX,
+            span: 6,
+            type: "radio",
+            mock: {
+              type: 'dic'
+            }
+          },
+          {
+            label: "手机号",
+            prop: "tel",
+            mock: {
+              type: 'tel'
+            }
+          },
+          {
+            label: "数字",
+            prop: "number",
+            type: 'number',
+            span: 6,
+            precision: 2,
+            mock: {
+              type: 'number',
+              max: 1,
+              min: 2,
+              precision: 2
+            },
+            min: 0,
+            max: 3,
+            row: true,
+          },
+          {
+            label: "网站",
+            span: 12,
+            prop: "url",
+            prepend: 'http://',
+            mock: {
+              type: 'url',
+              header: false,
+            },
+            append: 'com',
+            row: true,
+          },
+          {
+            label: "日期",
+            prop: "date",
+            type: "date",
+            span: 8,
+            format: 'YYYY-MM-DD',
+            valueFormat: 'YYYY-MM-DD',
+            mock: {
+              type: 'datetime',
+              format: 'yyyy-MM-dd'
+            },
+          },
+          {
+            label: "日期时间",
+            prop: "datetime",
+            type: "datetime",
+            span: 8,
+            format: 'YYYY-MM-DD HH:mm:ss',
+            valueFormat: 'YYYY-MM-DD HH:mm:ss',
+            mock: {
+              type: 'datetime',
+              format: 'yyyy-MM-dd HH:mm:ss',
+              now: true,
+            },
+          },
+          {
+            label: "时间",
+            prop: "time",
+            type: "time",
+            span: 8,
+            format: 'HH:mm:ss',
+            valueFormat: 'HH:mm:ss',
+            mock: {
+              type: 'datetime',
+              format: 'HH:mm:ss'
+            },
+          },
+          {
+            label: "地址",
+            span: 24,
+            prop: "address",
+            mock: {
+              type: 'county'
+            },
+          }, {
+            label: "建议",
+            span: 24,
+            prop: "adit",
+            mock: {
+              type: 'word',
+              min: 10,
+              max: 30
+            },
+          }]
+        }
+      }
+    },
+    mounted () {
+
+    },
+    methods: {
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

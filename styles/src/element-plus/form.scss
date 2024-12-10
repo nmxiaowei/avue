@@ -1,0 +1,85 @@
+.avue-form {
+  position: relative;
+  margin: 0 auto;
+  box-sizing: border-box;
+  &__item{
+    &--top{
+      display: flex;
+      flex-direction: column;
+      .el-form-item__label{
+        width:100% !important;
+        text-align: left !important;
+      }
+      .el-form-item__content{
+        margin-left: 0 !important;
+      }
+    }
+    &--left{
+     .el-form-item__label{
+      text-align: left !important;
+     }
+    }
+  }
+  
+  &__menu {
+    padding: 5px 10px 0 10px;
+    box-sizing: border-box;
+    &--center {
+      text-align: center;
+      .el-button{
+        margin: 0 5px;
+      }
+    }
+    &--left {
+      text-align: left;
+    }
+    &--right {
+      text-align: right;
+    }
+  }
+  &__tabs{
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  &__group {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    height: auto;
+    &--flex{
+      display: flex;
+    }
+    .el-col {
+      position: relative;
+    }
+  }
+  &__line {
+    display: inline-block;
+    height: 100%;
+  }
+  &__row {
+    &--block {
+      width: 100%;
+      display: block;
+    }
+    &--cursor {
+      cursor: pointer;
+    }
+  }
+  &__option {
+    position: absolute;
+    right: 0;
+    top: -10px;
+    z-index: 999;
+    i {
+      color: #666;
+    }
+    i + i {
+      margin-left: 10px;
+    }
+  }
+}
+.el-drawer{
+  .avue-form{
+    padding: 0 20px;
+  }
+}

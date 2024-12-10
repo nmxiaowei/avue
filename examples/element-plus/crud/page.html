@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{page}}
+    <avue-crud ref="crud" :option="option" @size-change="sizeChange" @current-change="currentChange" :data="data"
+      v-model:page="page" @on-load="onLoad" @error="error"></avue-crud>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        page: {
+          pageSize: 20,
+          pageSizes: [20, 100, 150, 200],
+          total: 0
+        },
+        data: [],
+        option: {
+          index: true,
+          height: 'auto',
+          align: 'center',
+          menuAlign: 'center',
+          border: true,
+          column: [{
+            label: '姓名',
+            prop: 'name',
+            search: true,
+            searchSpan: 24,
+            rules: [
+              {
+                required: true,
+                message: '请选择地区',
+                trigger: 'blur'
+              }
+            ]
+          }, {
+            label: '年龄',
+            prop: 'sex',
+            search: true,
+            searchSpan: 24,
+          }]
+        }
+      }
+    },
+    methods: {
+      error(val) {
+        this.$message.error(val[0].message)
+      },
+      sizeChange(val) {
+        this.$message.success('行数' + val)
+      },
+      currentChange(val) {
+        this.$message.success('页码' + val)
+      },
+      onLoad() {
+        setTimeout(() => {
+          this.page.total = 40
+          //模拟分页
+          if (this.page.currentPage === 1) {
+            this.data = [
+              {
+                name: '张三',
+                sex: '男'
+              }
+            ]
+          } else if (this.page.currentPage == 2) {
+            this.data = [
+              {
+                name: '李四',
+                sex: '女'
+              }
+            ]
+          }
+        }, 0)
+      }
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

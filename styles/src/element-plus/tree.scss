@@ -1,0 +1,37 @@
+.avue-tree {
+  position: relative;
+  height: 100%;
+  &__menu {
+      width:200px;
+      position: fixed;
+      z-index: 1024;
+      flex-wrap: wrap;
+      background-color: #fff;
+  }
+  &__item{
+    position: relative;
+    padding: 0 30px 0 20px;
+    height: 34px;
+    line-height: 34px;
+    outline: none;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:100%;
+    color:#666;
+    &:hover{
+      cursor: pointer;
+      color:#409eff
+    }
+  }
+  &__filter {
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+  }
+  &__content{
+      padding: 5px 0;
+      height: calc(100% - 32px);
+  }
+}

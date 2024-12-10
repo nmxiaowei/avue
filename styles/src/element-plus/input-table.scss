@@ -1,0 +1,11 @@
+.avue-input-table{
+  &__crud{
+    .avue-crud__pagination{
+      padding: 10px 0 2px 10px;
+      margin: 0;
+    }
+  }
+  .el-table__row.disabled{
+    color:#ccc;
+  }
+}

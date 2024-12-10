@@ -1,0 +1,12 @@
+.avue-input-tree{
+  &__desc{
+    float: right; 
+    color: #8492a6; 
+    font-size: 13px;
+  }
+  &__item{
+    padding: 0;
+    height: auto;
+    line-height: normal;
+  }
+}

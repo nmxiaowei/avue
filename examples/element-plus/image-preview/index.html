@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+  <style>
+    .imagepreview-1-vue img {
+      width: 60px;
+      cursor: pointer;
+      margin-right: 10px;
+      border-radius: 4px;
+    }
+
+    .imagepreview-1-vue img:hover {
+      box-shadow: 0 0 6px rgb(63, 63, 63);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="imagepreview-1-vue">
+      <el-button @click="openPreview(0)">打开图片预览</el-button>
+      <p>
+        <img v-for="(d, index) of datas" :src="d.thumbUrl" @click="openPreview(index)">
+      </p>
+    </div>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        datas: [
+          { thumbUrl: `https://img.alicdn.com/tfs/TB1uevcCrj1gK0jSZFuXXcrHpXa-1880-640.jpg`, url: `https://img.alicdn.com/tfs/TB1uevcCrj1gK0jSZFuXXcrHpXa-1880-640.jpg` },
+          { thumbUrl: `https://img.alicdn.com/tfs/TB1v28TC8v0gK0jSZKbXXbK2FXa-1880-640.jpg`, url: `https://www.w3school.com.cn/i/movie.ogg` },
+        ]
+      }
+    },
+    methods: {
+      openPreview(index = 0) {
+        this.$ImagePreview(this.datas, index, {
+          closeOnClickModal: true,
+          beforeClose: (data, index) => {
+            console.log(data, index);
+          }
+        });
+      }
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

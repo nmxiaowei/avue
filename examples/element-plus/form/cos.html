@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <script src="http://avuejs.com/cdn/cos-js-sdk-v5.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="form" :upload-preview="uploadPreview" :upload-delete="uploadDelete"
+      :upload-before="uploadBefore" :upload-after="uploadAfter"> </avue-form>
+  </div>
+</body>
+<script></script>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        form: {},
+        option: {
+          labelWidth: 120,
+          column: [
+            {
+              label: '附件上传',
+              prop: 'imgUrl',
+              type: 'upload',
+              listType: 'picture-img',
+              canvasOption: {
+                text: 'avue',
+                ratio: 0.1
+              },
+              oss: 'cos',
+              loadText: '附件上传中，请稍等',
+              span: 24,
+              tip: '只能上传jpg/png文件，且不超过500kb',
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      uploadPreview(file, column) {
+        console.log(file, column)
+        this.$message.success('自定义查看方法')
+      },
+      uploadDelete(column) {
+        console.log(column)
+        return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
+      },
+      uploadBefore(file, done, loading, column) {
+        // console.log(file, column)
+        var newFile = new File([file], '1234', { type: file.type });
+        done(newFile)
+        this.$message.success('上传前的方法')
+      },
+      uploadAfter(res, done, loading, column) {
+        console.log(res, column)
+        done()
+        this.$message.success('上传后的方法')
+      },
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE, {
+    cos: {
+      SecretId: 'AKIDBWuODM6o1YP8duwjHeostpiaQCwcHsU4',
+      SecretKey: 'jTG71yusmcVRNH7pSdr6Mk5Pi2Nk7XuH',
+      Bucket: 'avue-1253807724',
+      Region: 'ap-beijing'
+    }
+  });
+  app.mount('#app')
+</script>
+
+</html>

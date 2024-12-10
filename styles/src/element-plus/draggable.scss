@@ -1,0 +1,138 @@
+.avue-draggable{
+  $active__color:rgba(115, 170, 229,.5);
+  padding: 10px;
+  position: absolute;
+  cursor: move;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  &__focus{
+    opacity: 0;
+    position: absolute !important;
+    top:0;
+    left:0;
+    z-index: -1024;
+  }
+  &__mask{
+    width:100%;
+    height: 100%;
+    border: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+  }
+  &--active{
+    cursor: move;
+    border:1px dashed #09f;
+    background-color: $active__color;
+  }
+  &--move{
+    opacity: .6;
+    background-color:$active__color;
+  }
+  &--click{
+    cursor: pointer;
+  }
+  &__line{
+    &--left {
+      position: absolute;
+      border-top: 1px dashed #09f;
+      width: 10000px;
+      height: 0;
+      top: 0;
+      transform: translateX(-100%);
+    }
+    &--top {
+      position: absolute;
+      border-left: 1px dashed #09f;
+      width: 0;
+      height: 10000px;
+      left: 0;
+      transform: translateY(-100%);
+    }
+    &--label{
+      top:-5px;
+      left: -8px;
+      position: absolute;
+      padding: 5px;
+      transform: translate(-100%,-100%);
+      color: #09f;
+      font-size: 18px;
+      white-space: nowrap;
+      cursor: move;
+    }
+  }
+  &__menu{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    background-color: #409EFF;
+    font-size: 25px;
+    color:#fff;
+    z-index:9999;
+    cursor: pointer;
+  }
+  &__range{
+    $calcheight:-6px;
+    position: absolute;
+    width:10px;
+    height: 10px;
+    border-radius: 100%;
+    z-index:9999;
+    background-color: #09f;
+    &--left,&--right{
+      &:hover{
+        cursor:ew-resize 
+      }
+      top:50%;
+      transform: translateY(-50%);
+    }
+    &--left{
+      left: $calcheight;
+    }
+    &--right{
+      right: $calcheight;
+    }
+    &--top,&--bottom{
+      &:hover{
+        cursor: ns-resize
+      }
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &--top{
+      top: $calcheight;
+    }
+    &--bottom{
+      bottom: $calcheight;
+    }
+    &--bottom-right,&--top-left{
+      &:hover{
+        cursor: nwse-resize
+      }
+    }
+    &--bottom-left,&--top-right{
+      &:hover{
+        cursor: nesw-resize
+      }
+    }
+    &--top-right{
+      top: $calcheight;
+      right:$calcheight;
+    }
+    &--top-left{
+      top: $calcheight;
+      left:$calcheight;
+    }
+    &--bottom-right{
+      bottom: $calcheight;
+      right:$calcheight;
+    }
+    &--bottom-left{
+      bottom: $calcheight;
+      left:$calcheight;
+    }
+  }
+}

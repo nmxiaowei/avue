@@ -1,0 +1,415 @@
+$color-blue: #2196f3;
+$space-width: 15px;
+
+.avue-crud {
+  margin: 0 auto;
+  width: 100%;
+  .el-card+.el-card {
+    margin-top: 8px;
+  }
+
+  .el-button.is-text {
+    margin-left: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  &--card {
+    .el-card {
+      border: none;
+    }
+
+    .el-card__body {
+      padding: 0;
+    }
+
+    .el-card+.el-card {
+      margin-top: 0;
+    }
+  }
+
+  .el-table {
+    .el-form-item {
+      margin-bottom: 0;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .el-form-item__label {
+      position: absolute;
+      left: 2px;
+    }
+
+    .el-form-item__content {
+      line-height: inherit;
+      font-size: inherit;
+      .el-tooltip__trigger{
+        width: 100%;
+      }
+    }
+
+    .el-form-item__error {
+      width: 100%;
+      text-align: left;
+      position: relative;
+    }
+  }
+
+  .el-dropdown+.el-button {
+    margin-left: 10px;
+  }
+
+  .el-checkbox:last-of-type {
+    margin-right: 0px;
+  }
+
+  &__img {
+    &>* {
+      height: 50px;
+      margin-right: 8px;
+      object-fit: contain;
+      font-size: 50px;
+    }
+  }
+
+  &__column {
+    .el-checkbox {
+      margin-bottom: 10px;
+      cursor: move;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    min-height: 40px;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 5px;
+    background-color: #fff;
+  }
+
+  &__search {
+    .el-card__body {
+      padding-bottom: 5px;
+    }
+
+    .el-form-item--medium.el-form-item {
+      margin-bottom: 22px;
+    }
+  }
+
+  .el-table--small {
+    .avue-crud__color {
+      width: 30px;
+      height: 30px;
+    }
+
+    .avue-crud__icon {
+      font-size: 30px;
+    }
+  }
+
+
+  th {
+    word-break: break-word;
+    color: rgba(0, 0, 0, 0.85);
+    background-color: #fafafa;
+  }
+
+  table td {
+    line-height: 26px;
+  }
+
+  &--indeterminate {
+    .is-indeterminate {
+      .el-checkbox__inner {
+        background-color: #fff;
+        border-color: #dcdfe6;
+      }
+    }
+  }
+
+  .el-table th.el-table__cell {
+    word-break: break-word;
+    color: rgba(0, 0, 0, 0.85);
+    background-color: #fafafa;
+  }
+
+  &__color {
+    margin: 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: block;
+  }
+
+  &__ghost {
+    cursor: move;
+    opacity: 0.4;
+  }
+
+  .is-always-shadow+&__pagination {
+    padding: 0;
+  }
+
+  &__pagination {
+    position: relative;
+    padding: 20px 0;
+
+    .el-pagination {
+      justify-content: flex-end;
+    }
+  }
+
+  &__form {
+    padding: 0 8px;
+  }
+
+  &__empty {
+    padding: 60px 0;
+  }
+
+  &__title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 22px;
+  }
+
+  &__tip {
+    padding: 4px 10px 6px 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #d9ecff;
+    background-color: #ecf5ff;
+    color: #409eff;
+    font-size: 12px;
+    border-radius: 3px;
+
+    &-name {
+      margin-right: 10px;
+    }
+
+    &-count {
+      padding: 0 1px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    &-button {
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  &__filter {
+    &-item {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-menu {
+      padding: 0 5px;
+      margin-bottom: 20px;
+    }
+
+    &-label {
+      margin: 0 5px;
+      width: 120px !important;
+    }
+
+    &-symbol {
+      margin: 0 5px;
+      width: 80px !important;
+    }
+
+    &-value {
+      margin: 0 5px;
+      width: 150px !important;
+
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
+        width: 100%;
+      }
+    }
+
+    &-icon {
+      margin-left: 10px;
+    }
+  }
+
+  &__dialog {
+    &__header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__menu {
+      position: absolute;
+      right: 25px;
+      z-index: 1;
+
+      i {
+        color: #909399;
+        font-size: 14px;
+
+        &:hover {
+          color: #409EFF;
+        }
+
+        cursor: pointer;
+      }
+    }
+
+    &--fullscreen {
+      max-width: inherit;
+      max-height: inherit;
+    }
+
+    .el-dialog__headerbtn {
+      top: 5px;
+    }
+
+    .el-dialog__body {
+      padding: 20px 20px 5px 10px;
+    }
+  }
+
+  &__grid {
+    overflow-y: auto;
+    .el-switch{
+      height: 22px;
+    }
+    .el-switch__core{
+      height: 16px;
+    }
+   .el-switch__action{
+      height: 14px;
+    }
+    .el-col {
+      padding: 10px;
+      padding-left:0;
+      box-sizing: border-box;
+    }
+
+    &__content {
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px 20px 10px 20px;
+      background-size: cover;
+      border: 1px solid #fafafa;
+    }
+
+    &__item {
+      box-sizing: border-box;
+      padding-right: 5px;
+      margin-bottom: 3px;
+      width: 50%;
+      line-height: 20px;
+      font-size: 12px;
+      color: #666;
+      display: flex;
+      align-items: flex-start
+    }
+
+    &__label {
+      position: relative;
+      margin-right: 10px;
+      font-weight: 450;
+      color: #333;
+      flex: 0 0 auto;
+      white-space: nowrap;
+
+      &::after {
+        position: absolute;
+        right: -3px;
+        content: ':'
+      }
+    }
+
+    &__value {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .overHidden {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .title,
+    .menu {
+      .avue-crud__grid__label {
+        display: none;
+      }
+
+      .el-button {
+        font-size: 12px;
+      }
+
+    }
+
+    .row {
+      width: 100%;
+    }
+    .selection {
+      width: inherit;
+      position: absolute;
+      top: -2px;
+      right: -8px;
+    }
+    .index {
+      width: inherit;
+      position: absolute;
+      right: 20px;
+      top: 18px;
+
+      &:before {
+        content: 'No';
+        margin-right: 2px;
+        font-weight: bold;
+      }
+    }
+
+    .title {
+      width: 80%;
+      margin-bottom: 12px;
+
+      .avue-crud__grid__value {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 22px;
+        color: #333;
+      }
+    }
+
+    &__hide {
+      display: none;
+    }
+
+    .menu {
+      margin-top: 8px;
+      width: 100%;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+
+  }
+}

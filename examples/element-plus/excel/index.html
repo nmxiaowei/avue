@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://avuejs.com/cdn/xlsx.full.min.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div style="display:flex;">
+      <el-button type="primary" @click="handleGet">下载模版</el-button>
+      <div style="width:20px;"></div>
+      <el-upload :show-file-list="false" action="action" :on-change="handleChange">
+        <el-button type="primary">导入 excel</el-button>
+      </el-upload>
+    </div>
+    <br>
+    <avue-crud :option="option" :data="list"></avue-crud>
+
+  </div>
+</body>
+
+</html>
+
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        list: [],
+        option: {
+          excelBtn: true,
+          column: [{
+            label: 'id',
+            prop: 'id'
+          }, {
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '年龄',
+            prop: 'sex'
+          }]
+        }
+      }
+    },
+    methods: {
+      handleGet() {
+        window.open('/cdn/demo.xlsx')
+      },
+      handleChange(file, fileLis) {
+        this.$Export.xlsx(file.raw)
+          .then(data => {
+            this.list = data.results;
+          })
+      }
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>

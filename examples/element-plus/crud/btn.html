@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.staticfile.org/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.staticfile.org/xlsx/0.18.2/xlsx.full.min.js"></script>
+
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :data="data" :option="option" ref="crud" @row-save="handleSave" @row-update="handleUpdate">
+      <template #menu-left="{size}">
+        <el-button type="danger" icon="el-icon-plus" :size="size" plain @click.stop="handleAdd()">新增</el-button>
+      </template>
+      <template #menu-form="{disabled,type,size}">
+        <div>
+          <el-button type="primary" icon="el-icon-check" :loading="disabled" :size="size" plain v-if="type=='add'"
+            @click="$refs.crud.rowSave()">自定义新增</el-button>
+          <el-button type="primary" icon="el-icon-check" :loading="disabled" :size="size" plain v-if="type=='edit'"
+            @click="$refs.crud.rowUpdate()">自定义修改</el-button>
+          <el-button icon="el-icon-delete" :loading="disabled" :size="size" plain @click="$refs.crud.closeDialog()">取消
+          </el-button>
+        </div>
+      </template>
+      <template #menu="scope">
+        <el-button type="primary" icon="el-icon-check" plain @click.stop="handleEdit(scope.row,scope.index)">编辑
+        </el-button>
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        data: [
+          {
+            name: '张三',
+            sex: '男'
+          }, {
+            name: '李四',
+            sex: '女'
+          }
+        ],
+        option: {
+          index: true,
+          selection: true,
+          refreshBtn: false,
+          saveBtn: false,
+          updateBtn: false,
+          cancelBtn: false,
+          addBtn: false,
+          delBtn: false,
+          editBtn: false,
+          page: false,
+          viewBtn: true,
+          align: 'center',
+          menuAlign: 'center',
+          column: [
+            {
+              label: '姓名',
+              prop: 'name'
+            }, {
+              label: '性别',
+              prop: 'sex'
+            }
+          ]
+        },
+      };
+    },
+    methods: {
+      handleAdd() {
+        this.$refs.crud.rowAdd();
+      },
+      handleSave(form, done, loading) {
+        this.$message.success('新增数据' + JSON.stringify(form));
+        setTimeout(() => {
+          done();
+        }, 1000)
+      },
+      handleUpdate(form, index, done, loading) {
+        this.$message.success('编辑数据' + JSON.stringify(form) + '数据序号' + index);
+        setTimeout(() => {
+          done();
+        }, 1000)
+      },
+      handleEdit(row, index) {
+        this.$refs.crud.rowEdit(row, index);
+      },
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

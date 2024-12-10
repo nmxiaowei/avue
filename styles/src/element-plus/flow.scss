@@ -1,0 +1,46 @@
+.avue-flow{
+  position: relative;
+  .avue-draggable {
+    padding: 0;
+  }
+  &__node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 80px;
+    border-radius: 5px;
+    box-shadow: '#66a6e0 0px 0px 12px 0px';
+    border:1px solid #eee;
+    box-sizing: border-box;
+    overflow: hidden;
+    &--active{
+      border-width: 2px;
+      border-color:#f56c6c;
+    }
+    .el-icon{
+      margin: 0 2px;
+      display: inline-block;
+    }
+    &-drag{
+      position: absolute;
+      left:0;
+      top:0;
+      width:15px;
+      height:15px;
+      z-index: 1024;
+    }
+    &-header{
+      flex:1;
+      background-color: #66a6e0;
+    }
+    &-body{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex:1.5;
+      text-align: center;
+      background: #fff;
+    }
+  }
+}

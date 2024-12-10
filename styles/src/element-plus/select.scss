@@ -1,0 +1,23 @@
+.avue-select {
+  .sortable-ghost {
+    opacity: .8;
+    color: #fff!important;
+    background: #409EFF!important;
+  }
+  .el-tag {
+    cursor: pointer;
+  }
+  &__desc{
+    float: right; 
+    color: #8492a6; 
+    font-size: 13px;
+  }
+}
+.el-select-dropdown{
+  .avue-select__check{
+    box-sizing: border-box;
+    text-align: right;
+    width: 100%;
+    padding-right: 20px;
+  }
+}

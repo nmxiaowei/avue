@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{form}}
+    <avue-crud :data="data" v-model="form" :before-open="beforeOpen" :before-close="beforeClose" :option="option">
+    </avue-crud>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        form: {},
+        data: [{
+          name: '张三',
+          sex: '男'
+        }],
+        option: {
+          align: 'center',
+          menuAlign: 'center',
+          viewBtn: true,
+          column: [
+            {
+              label: '姓名',
+              prop: 'name'
+            }, {
+              label: '性别',
+              prop: 'sex'
+            }
+          ]
+        },
+      };
+    },
+    methods: {
+      beforeClose(done, type) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => { });
+
+      },
+      beforeOpen(done, type) {
+        this.$alert(`我是${type}`, {
+          confirmButtonText: '确定',
+          callback: action => {
+            if (['view', 'edit'].includes(type)) {
+              // 查看和编辑逻辑
+            } else {
+              //新增逻辑
+              //一定要用setTimeout包裹，由于form组件底层一些机制的设计
+              setTimeout(() => {
+                this.form.name = '初始化赋值'
+              }, 0)
+            }
+            done();
+          }
+        });
+
+      }
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

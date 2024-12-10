@@ -1,0 +1,81 @@
+.avue-upload {
+  &--upload{
+    .el-upload--picture-img{
+      display: inline-block;
+    }
+    .el-upload-list{
+      margin-top: -6px;
+    }
+  }
+  &--picture-img{
+    .el-upload.is-drag{
+      width: 148px; 
+    }
+    .el-upload-dragger{
+      padding: 0;
+    } 
+  }
+  &--picture-card{
+    .el-upload-dragger{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  &--list {
+    .el-upload {
+      background-color: #fbfdff;
+      border: 1px dashed #c0ccda;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .el-upload:hover {
+      border-color: #409eff;
+    }
+  }
+  &__progress{
+    margin-top: 10px;
+  }
+  &__dialog{
+    .el-dialog__header{
+      display: none;
+    }
+    .el-dialog__body{
+      padding:10px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  &__menu{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index:1024;
+    i{
+      color:#fff;
+      margin: 0 8px;
+      font-size: 20px;
+    }
+  }
+  &__avatar {
+    font-size: 28px;
+    color: #8c939d;
+    width: 148px;
+    height: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 148px;
+    text-align: center;
+  }
+}
+
+

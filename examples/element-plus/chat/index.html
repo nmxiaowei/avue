@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-chat :keylist="keylist" @keysend="handleSubmit" @keyadd="handleAdd" :config="config" width="500" height="720"
+      ref="chat" @submit="handleSubmit" v-model="msg" :list="list">
+      <div>这里是内容</div>
+      <template #menu>
+        <span>自定义</span>
+      </template>
+    </avue-chat>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        config: {
+          img: 'https://gitee.com/uploads/61/632261_smallweigit.jpg',
+          name: 'avue自助机器人',
+          dept: '这是一个神奇的前端框架'
+        },
+        keylist: [
+          '您好，欢迎光临***品牌旗舰店，很高兴为您服务！/:^_^',
+          '您好，/:^_^不好意思让您久等了，您看中这款是吗（截图发给客户看），要什么颜色的呢？',
+          '亲，这款是打特价的价格呢，已经是最低价了哦，现在全场三件（根据具体情况而定）包邮哦，您挑多一件了',
+          '您好，欢迎光临***品牌旗舰店，很高兴为您服务！/:^_^',
+          '您好，/:^_^不好意思让您久等了，您看中这款是吗（截图发给客户看），要什么颜色的呢？',
+          '亲，这款是打特价的价格呢，已经是最低价了哦，现在全场三件（根据具体情况而定）包邮哦，您挑多一件了'
+        ],
+        msg: '这是你想说的话～。～',
+        list: [{
+          "date": "2019-07-17 23:25:15",
+          "text": {
+            "text": '1111'
+          },
+          "mine": true,
+          "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542562834&di=4d469265c6847a8f29393fe1038c64c8&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FhFB4FUPIIlJSIN5vlQwX2OGlW03Oic9SdtXoOAgMmNBYxfpibmxyG6C0rf7Yml1YKQKrLbet5C4ebpmzGOJZ8icEQ%2F640%3Fwx_fmt%3Djpeg\t",
+          "name": "我"
+        }, {
+          "date": "2019-07-17 23:25:15",
+          "text": {
+            "text": "你说啥我听不懂啊"
+          },
+          "mine": false,
+          "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547542538742&di=33c9b3d1ad6bdfe87eb19e44c8d0da04&imgtype=0&src=http%3A%2F%2Fcyjmw.shengyilu.com%2Fskin%2Findex%2Fimages_four%2Fpic_fi_32.png\t",
+          "name": "云集汇通自助客服"
+        }]
+      }
+    },
+    mounted() {
+      this.handleSubmit('如何贷款')
+    },
+    methods: {
+      handleAdd(msg) {
+        this.keylist.push(msg);
+        this.$message.success('快捷回复语添加成功')
+      },
+      handleSubmit(msg) {
+        this.msg = msg || this.msg
+        this.$refs.chat.pushMsg({
+          mine: true,
+          text: this.msg
+        });
+        this.$refs.chat.rootSendMsg(this.getMsg(this.msg));
+        this.msg = '';
+      },
+      //智能题库
+      getMsg(msg) {
+        if (msg === 'wel') {
+          return {
+            text: '您好，我是银行小客服，有什么可以帮助你的?',
+            list: [{
+              text: "如何申请贷款？",
+              ask: '如何贷款'
+            }]
+          };
+        } else if (msg === '如何贷款') {
+          return {
+            text: `我行提供了如下贷款方式
+            <img data-type="IMG" data-src="https://avuejs.com/images/logo-bg.jpg" />
+            <video data-type="VIDEO" data-src="https://www.w3school.com.cn/i/movie.ogg"></video>
+            <audio data-type="AUDIO" data-src="https://www.w3school.com.cn/i/house.ogg"></audio>
+            <file data-type="FILE" data-name="小程序申诉文件.doc" data-src="https://www.w3school.com.cn/i/movie.ogg"></file>
+            <map data-type="MAP" data-longitude="116.307852" data-latitude="40.057031" data-address="这是一个很长很长这是一个很长很长的地址"></map>`,
+            list: [{
+              text: "1.微信线上申请",
+              ask: '微信线上申请'
+            }, {
+              text: "2.电话申请",
+              ask: '电话申请'
+            }, {
+              text: "3.到网点申请",
+              ask: '到网点申请'
+            }]
+          }
+        } else if (msg === '微信线上申请') {
+          return '可关注***银行微信公众号，点击我要贷款，身份认证，发起申请。'
+        } else if (msg === '电话申请') {
+          return '可拨打24小时热线96668或********'
+        } else if (msg === '到网点申请') {
+          return '可就近选择网点，附网点列表及联系人'
+        }
+        return {
+          text: '你说啥我听不懂啊'
+        }
+      },
+    }
+  })
+
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

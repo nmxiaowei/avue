@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{form}}
+    <avue-form v-model="form" :option="option">
+      <template #daterange-type="{item}">
+        <span class="el-date-table-cell__text">{{item.text}}</span>
+      </template>
+      <template #daterange-label="{}">
+        <span>姓名&nbsp;&nbsp;</span>
+        <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
+          <el-icon>
+            <el-icon-warning />
+          </el-icon>
+        </el-tooltip>
+      </template>
+      <template #daterange-error="{error}">
+        <p style="color:green">自定义提示</p>
+      </template>
+    </avue-form>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        form: {
+          datetime: '1398250549123'//时间戳例子
+        },
+        option: {
+          labelWidth: 110,
+          column: [{
+            rules: [
+              {
+                required: true,
+                message: '请输入数字',
+                trigger: 'blur'
+              }
+            ],
+            label: "日期范围",
+            prop: "daterange",
+            type: "daterange",
+            startPlaceholder: '日期开始范围自定义',
+            endPlaceholder: '日期结束范围自定义',
+          }, {
+            label: "时间范围",
+            prop: 'timerange',
+            type: 'timerange',
+            startPlaceholder: '时间开始范围自定义',
+            endPlaceholder: '时间结束范围自定义',
+          }, {
+            label: '多行文本',
+            prop: 'textarea',
+            type: 'textarea',
+            minRows: 6,
+          }, {
+            label: "时间日期范围",
+            span: 6,
+            prop: 'datetimerange',
+            type: 'datetimerange',
+            startPlaceholder: '时间日期开始范围自定义',
+            endPlaceholder: '时间日期结束范围自定义',
+          }, {
+            label: "日期",
+            prop: "date",
+            type: "date",
+            span: 6,
+            disabledDate(time) {
+              return time.getTime() > Date.now();
+            },
+            shortcuts: [{
+              text: '今天',
+              onClick(picker) {
+                picker.$emit('pick', new Date());
+              }
+            }, {
+              text: '昨天',
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24);
+                picker.$emit('pick', date);
+              }
+            }, {
+              text: '一周前',
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', date);
+              }
+            }]
+          }, {
+            label: "时间",
+            prop: "time",
+            type: "time",
+          }, {
+            label: "日期时间",
+            prop: "datetime",
+            type: "datetime",
+            format: "YYYY-MM-DD hh:mm:ss",
+            valueFormat: "Timestamp",
+          }, {
+            label: "周",
+            prop: "week",
+            type: "week",
+            format: "yyyy 第 WW 周"
+          }, {
+            label: "月",
+            prop: "month",
+            type: "month",
+          }, {
+            label: "月范围",
+            prop: "monthrange",
+            type: "monthrange",
+          }, {
+            label: "年",
+            prop: "year",
+            type: "year",
+          }, {
+            label: "多个日期",
+            prop: "dates",
+            type: "dates",
+            format: "YYYY-MM-DD hh:mm:ss",
+            valueFormat: "YYYY-MM-DD hh:mm:ss",
+          }]
+        },
+      };
+    },
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

@@ -1,0 +1,21 @@
+.avue-login{
+  .el-form-item{
+    margin-bottom:18px;
+  }
+  .el-input-group__append{
+    padding: 0;
+    overflow: hidden;
+  }
+  &__send{
+    min-width: 150px;
+    box-sizing: border-box;
+    &:hover{
+      color: #C0C4CC !important;
+      border-color: #EBEEF5 !important;
+      background-color: #F5F7FA !important;
+    }
+  }
+  &__submit{
+    width: 100%;
+  }
+}

@@ -75,7 +75,7 @@ function genConfig (name) {
     config.plugins.push(
       new webpack.DefinePlugin({
         __ENV__: JSON.stringify(opts.env || 'production'),
-        __UINAME__: JSON.stringify(process.env.UINAME || 'element-ui')
+        __UINAME__: JSON.stringify(process.env.UINAME || 'element-plus')
       })
     );
   }

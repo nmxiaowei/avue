@@ -1,0 +1,24 @@
+.avue-form{
+  .el-form-item__content>div{
+    width: 100%;
+  }
+  .avue-input-number,.avue-select,.avue-cascader,.avue-input-tree{
+    width: 100%;
+  }
+  .avue-time,.avue-date{
+    .el-input{
+      width: 100%;
+    }
+    .el-date-editor {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+.el-upload--picture-card,.el-upload--picture-img{
+  .el-upload-dragger{
+    width: inherit;
+    height: inherit;
+    background-color: inherit;
+  }
+}

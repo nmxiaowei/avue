@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+  <style>
+    .link {
+      color: #409EFF;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .demo-line {
+      height: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <avue-text-ellipsis :text="text" :height="50" :width="200">
+      <template #more>
+        <small>...</small>
+      </template>
+    </avue-text-ellipsis>
+    <div class="demo-line"></div>
+    <avue-text-ellipsis :text="text" :height="100" :width="200">
+      <template #more>
+        <small>...</small>
+      </template>
+      <template #before>
+        <el-tag>new</el-tag>
+      </template>
+      <template #after>
+        <small>[09/14]</small>
+      </template>
+    </avue-text-ellipsis>
+    <div class="demo-line"></div>
+    <avue-text-ellipsis :text="text" :height="100" :width="200" use-tooltip :is-limit-height="isLimitHeight"
+      @show="show" @hide="hide">
+      <template #before>
+        <el-tag>new</el-tag>
+      </template>
+      <template #more>
+        <small><span>...</span><span class="link" @click="isLimitHeight=false">查看更多</span></small>
+      </template>
+      <template #after>
+        <small class="link" v-if="!isLimitHeight" @click="isLimitHeight=true">收起</small>
+      </template>
+    </avue-text-ellipsis>
+    <div class="demo-line"></div>
+    <avue-text-ellipsis :key="text" :text="text" :height="40" :width="200" use-tooltip placement="top">
+      <template #more>
+        <small>...</small>
+      </template>
+    </avue-text-ellipsis>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        text: "《华盛顿自由灯塔报》几天前报道称，美国国防部官员透露中国近日进行第十次东风-41洲际导弹的试射活动，这次试射中东风-41导弹投射了多个弹头并成功命中中国西部靶场目标。",
+        isLimitHeight: true
+      }
+    },
+    methods: {
+      show() {
+        this.$message.success('show');
+      },
+      hide() {
+        this.$message.success('hide')
+      }
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    权限开关<el-switch :active-value="false" :inactive-value="true" v-model="text" active-color="#13ce66"
+      inactive-color="#ff4949">
+    </el-switch>
+    <avue-crud ref="crud" :permission="permission" :option="option" :data="data" @expand-change="expandChange">
+      <template #expand="scope">
+        {{scope}}
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        text: true,
+        permission: {
+          delBtn: false,
+          addBtn: false,
+          menu: false
+        },
+        option: {
+          expand: true,
+          column: [{
+            label: '姓名',
+            prop: 'name'
+          }, {
+            label: '年龄',
+            prop: 'sex'
+          }]
+        },
+        data: [{
+          id: 1,
+          name: '张三',
+          sex: 12,
+        }, {
+          id: 2,
+          name: '李四',
+          sex: 20,
+        }]
+      }
+    },
+    watch: {
+      text() {
+        if (this.text === true) {
+          this.permission = {
+            delBtn: false,
+            addBtn: false,
+            menu: false
+          }
+        } else {
+          this.permission = {
+            delBtn: true,
+            addBtn: true,
+            menu: true
+          }
+        }
+      }
+    },
+    methods: {
+      expandChange(row, expendList) {
+        this.$message.success('展开回调')
+      },
+    }
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>

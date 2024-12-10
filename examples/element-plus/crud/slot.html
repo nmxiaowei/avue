@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="../../cdn/vue/vue.global.min.js"></script>
+  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+  <script src="../../cdn/element-plus/index.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css" />
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :data="data" :option="option" v-model="user">
+      <template #name="scope">
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template #name-search="scope">
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template #name-header="scope">
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template #name-form="scope">
+        <el-tag>{{scope}}</el-tag>
+      </template>
+      <template #name-label="scope">
+        <span>姓名&nbsp;&nbsp;</span>
+        <el-tooltip class="item" effect="dark" content="文字提示" placement="top-start">
+          <el-icon>
+            <el-icon-warning />
+          </el-icon>
+        </el-tooltip>
+      </template>
+      <template #name-error="{error}">
+        <p style="color:green">自定义提示</p>
+      </template>
+    </avue-crud>
+  </div>
+</body>
+<script>
+  var app = Vue.createApp({
+    data() {
+      return {
+        user: {},
+        data: [
+          {
+            name: '张三',
+            sex: '男'
+          }, {
+            name: '李四',
+            sex: '女'
+          }
+        ],
+        option: {
+          page: false,
+          align: 'center',
+          menuAlign: 'center',
+          column: [
+            {
+              label: '姓名',
+              prop: 'name',
+              search: true,
+              rules: [{
+                required: true,
+                message: "请输入姓名",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: '性别',
+              prop: 'sex'
+            }
+          ]
+        },
+      };
+    },
+  })
+  app.use(ElementPlus)
+  app.use(AVUE)
+  app.mount('#app')
+</script>
+
+</html>
