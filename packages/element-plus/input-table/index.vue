@@ -164,6 +164,7 @@ export default create({
         this.onLoad({ value: this.text }, data => {
           let result = Array.isArray(data) ? data : [data]
           this.object = this.deepClone(result)
+          this.active= this.deepClone(result)
           this.created = true;
         })
       }
@@ -222,13 +223,11 @@ export default create({
             let ids = this.object.map(ele => ele[this.valueKey])
             let data = this.data.filter(ele => ids.includes(ele[this.valueKey]))
             this.$nextTick(() => {
-              this.active=data;
               this.$refs.crud.toggleSelection(data, true);
             })
           } else {
             let active = this.data.find(ele => ele[this.valueKey] == this.text)
             setTimeout(() => {
-              this.active=[active]
               this.$refs.crud.setCurrentRow(active)
             })
           }
