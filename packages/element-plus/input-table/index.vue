@@ -222,11 +222,15 @@ export default create({
             let ids = this.object.map(ele => ele[this.valueKey])
             let data = this.data.filter(ele => ids.includes(ele[this.valueKey]))
             this.$nextTick(() => {
+              this.active=data;
               this.$refs.crud.toggleSelection(data, true);
             })
           } else {
             let active = this.data.find(ele => ele[this.valueKey] == this.text)
-            setTimeout(() => this.$refs.crud.setCurrentRow(active))
+            setTimeout(() => {
+              this.active=[active]
+              this.$refs.crud.setCurrentRow(active)
+            })
           }
         })
       }
