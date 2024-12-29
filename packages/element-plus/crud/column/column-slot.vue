@@ -58,6 +58,8 @@
                        :size="crud.size"
                        :index="$index"
                        :row="row"
+                       :prop="`list.${$index}.${column.prop}`"
+                       :clearValidate="crud.clearValidate"
                        :render="column.renderForm"
                        :table-data="{index:$index,row:row,label:handleDetail(row,column)}"
                        :dic="(crud.cascaderDIC[$index] || {})[column.prop] || crud.DIC[column.prop]"

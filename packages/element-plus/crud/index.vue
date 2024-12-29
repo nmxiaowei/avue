@@ -47,7 +47,6 @@
       </div>
       <slot name="body"></slot>
       <el-form :model="cellForm"
-               :show-message="false"
                @validate="handleValidate"
                ref="cellForm">
         <component :is="tableName"
@@ -803,6 +802,9 @@ export default create({
           if (result) resolve()
         });
       })
+    },
+    clearValidate(list){
+      this.$refs.cellForm.clearValidate(list)
     },
     rowAdd () {
       this.$refs.dialogForm.show("add");

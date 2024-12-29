@@ -1,38 +1,40 @@
 <template>
-  <el-input :class="b()"
-            :size="size"
-            :clearable="clearableVal"
-            v-model="text"
-            @keyup.enter="isSearch?appendClick(text):''"
-            @click.="handleClick"
-            :type="typeParam"
-            :maxlength="maxlength"
-            :minlength="minlength"
-            :show-password="typeParam=='password'?showPassword:false"
-            :rows="rows"
-            :autosize="{ minRows: minRows, maxRows: maxRows}"
-            :prefix-icon="prefixIcon"
-            :suffix-icon="suffixIcon"
-            :readonly="readonly"
-            :placeholder="placeholder"
-            :show-word-limit="showWordLimit"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            :disabled="disabled"
-            :autocomplete="autocomplete">
-    <template #prepend
-              v-if="prepend"><span @click="prependClick(text)">{{prepend}}</span>
-    </template>
-    <template #append
-              v-if="append">
-      <span @click="appendClick(text)">{{append}}</span>
-    </template>
-    <template #append
-              v-else-if="isSearch">
-      <el-button icon="el-icon-search"
-                 @click="appendClick(text)"></el-button>
-    </template>
-  </el-input>
+  <div>
+    <el-input :class="b()"
+              :size="size"
+              :clearable="clearableVal"
+              v-model="text"
+              @keyup.enter="isSearch?appendClick(text):''"
+              @click.="handleClick"
+              :type="typeParam"
+              :maxlength="maxlength"
+              :minlength="minlength"
+              :show-password="typeParam=='password'?showPassword:false"
+              :rows="rows"
+              :autosize="{ minRows: minRows, maxRows: maxRows}"
+              :prefix-icon="prefixIcon"
+              :suffix-icon="suffixIcon"
+              :readonly="readonly"
+              :placeholder="placeholder"
+              :show-word-limit="showWordLimit"
+              @focus="handleFocus"
+              @blur="handleBlur"
+              :disabled="disabled"
+              :autocomplete="autocomplete">
+      <template #prepend
+                v-if="prepend"><span @click="prependClick(text)">{{prepend}}</span>
+      </template>
+      <template #append
+                v-if="append">
+        <span @click="appendClick(text)">{{append}}</span>
+      </template>
+      <template #append
+                v-else-if="isSearch">
+        <el-button icon="el-icon-search"
+                   @click="appendClick(text)"></el-button>
+      </template>
+    </el-input>
+  </div>
 </template>
 
 <script>

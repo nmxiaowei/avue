@@ -36,6 +36,7 @@ export default create({
   name: "cascader",
   mixins: [props(), event()],
   props: {
+    clearValidate: Function,
     checkStrictly: {
       type: Boolean,
       default: false
@@ -111,9 +112,8 @@ export default create({
   methods: {
     handleValueChange (val) {
       setTimeout(() => {
-        let $parent = this.$parent.$parent
-        if (!this.validatenull(val) && $parent && this.rules) {
-          $parent.clearValidate && $parent.clearValidate()
+        if (!this.validatenull(val) && this.rules && this.clearValidate) {
+          this.clearValidate(this.prop)
         }
       })
     },

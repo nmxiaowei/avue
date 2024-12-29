@@ -13,6 +13,7 @@
              v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"
+             :clearValidate="clearValidate"
              :box-type="boxType"
              ref="temp"
              :disabled="column.disabled || disabled"
@@ -54,6 +55,7 @@ export default {
   },
   props: {
     modelValue: {},
+    clearValidate:Function,
     uploadSized: Function,
     uploadBefore: Function,
     uploadDelete: Function,

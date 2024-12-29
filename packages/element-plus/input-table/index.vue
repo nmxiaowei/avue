@@ -164,6 +164,7 @@ export default create({
         this.onLoad({ value: this.text }, data => {
           let result = Array.isArray(data) ? data : [data]
           this.object = this.deepClone(result)
+          this.active= this.deepClone(result)
           this.created = true;
         })
       }
@@ -226,7 +227,9 @@ export default create({
             })
           } else {
             let active = this.data.find(ele => ele[this.valueKey] == this.text)
-            setTimeout(() => this.$refs.crud.setCurrentRow(active))
+            setTimeout(() => {
+              this.$refs.crud.setCurrentRow(active)
+            })
           }
         })
       }
