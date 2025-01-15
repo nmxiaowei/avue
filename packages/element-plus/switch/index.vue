@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <el-switch v-model="text"
-               @click="handleClick"
-               :loading="loading"
-               :inline-prompt="inlinePrompt"
-               :active-icon="activeIcon"
-               :before-change="handleBeforeChange"
-               :active-action-icon="activeActionIcon"
-               :active-text="active[labelKey]"
-               :active-value="active[valueKey]"
-               :inactive-icon="inactiveIcon"
-               :inactive-action-icon="inactiveActionIcon"
-               :inactive-value="inactive[valueKey]"
-               :inactive-text="inactive[labelKey]"
-               :width="len"
-               :disabled="disabled"></el-switch>
-  </div>
+  <el-switch v-model="text"
+             @click="handleClick"
+             :loading="loading"
+             :inline-prompt="inlinePrompt"
+             :active-icon="activeIcon"
+             :before-change="handleBeforeChange"
+             :active-action-icon="activeActionIcon"
+             :active-text="active[labelKey]"
+             :active-value="active[valueKey]"
+             :inactive-icon="inactiveIcon"
+             :inactive-action-icon="inactiveActionIcon"
+             :inactive-value="inactive[valueKey]"
+             :inactive-text="inactive[labelKey]"
+             :width="len"
+             :disabled="disabled"></el-switch>
 </template>
 
 <script>
