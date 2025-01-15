@@ -10,6 +10,7 @@
              :is="getComponent(column)"
              v-model="text"
              v-bind="getBind(column)"
+             align="left"
              v-on="event"
              :column="Object.assign(column,params)"
              :dic="dic"

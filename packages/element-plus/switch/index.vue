@@ -1,5 +1,6 @@
 <template>
-  <el-switch v-model="text"
+  <div>
+    <el-switch v-model="text"
              @click="handleClick"
              :loading="loading"
              :inline-prompt="inlinePrompt"
@@ -14,6 +15,7 @@
              :inactive-text="inactive[labelKey]"
              :width="len"
              :disabled="disabled"></el-switch>
+  </div>
 </template>
 
 <script>
