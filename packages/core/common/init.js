@@ -11,18 +11,12 @@ import slot from 'core/slot'
 export default function (name) {
   return {
     mixins: [slot],
-    emits: ['update:modelValue', 'update:defaults', 'change'],
+    emits: ['update:modelValue','change'],
     props: {
       tableData: {
         type: Object,
         default: () => {
           return {}
-        }
-      },
-      defaults: {
-        type: Object,
-        default () {
-          return {};
         }
       },
       option: {
@@ -34,21 +28,8 @@ export default function (name) {
       }
     },
     watch: {
-      defaults: {
-        handler (val) {
-          this.objectOption = val;
-        },
-        deep: true
-      },
-      objectOption: {
-        handler (val) {
-          this.$emit('update:defaults', val)
-        },
-        deep: true
-      },
       propOption: {
         handler (list) {
-          this.objectOption = {};
           list.forEach(ele => this.objectOption[ele.prop] = ele);
         },
         deep: true,
@@ -102,7 +83,7 @@ export default function (name) {
           ...globOption,
           ...this.option
         }
-        this.tableOption = this.deepClone(option);
+        this.tableOption = option;
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic()
       },

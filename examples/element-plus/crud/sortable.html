@@ -22,8 +22,7 @@
 
 <body>
   <div id="app">
-    {{defaults}}
-    <avue-crud v-model:defaults="defaults" :data="list" :option="option" @sortable-change="sortableChange">
+    <avue-crud  :data="list" :option="option" @sortable-change="sortableChange">
     </avue-crud>
   </div>
 </body>
@@ -31,7 +30,6 @@
   var app = Vue.createApp({
     data() {
       return {
-        defaults: {},
         list: [
           {
             id: 1,

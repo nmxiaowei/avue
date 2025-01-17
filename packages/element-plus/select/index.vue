@@ -72,8 +72,7 @@
         <template v-else>
           <div :class="b('check')">
             <el-checkbox v-if="all&&multiple"
-                         :value="checked"
-                         :checked="checked"
+                         v-model="checked"
                          :disabled="disabled"
                          :indeterminate="indeterminate"
                          @change='checkChange'>全选</el-checkbox>
@@ -217,7 +216,6 @@ export default create({
           this.checked = true
           this.indeterminate = false
         } else {
-          this.checked = false
           this.indeterminate = true
         }
       }
