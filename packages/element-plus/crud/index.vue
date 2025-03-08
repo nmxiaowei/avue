@@ -67,6 +67,7 @@
                    :tooltip-effect="tableOption.tooltipEffect"
                    :tooltip-options="tableOption.tooltipOptions"
                    :show-overflow-tooltip="tableOption.showOverflowTooltip || tableOption.overHidden"
+                   :tooltip-formatter="tableOption.tooltipFormatter"
                    @current-change="currentRowChange"
                    @expand-change="expandChange"
                    @header-dragend="headerDragend"
