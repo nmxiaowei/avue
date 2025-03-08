@@ -66,16 +66,17 @@ export default create({
   methods: {
     handleCheckAll (val) {
       if (!this.all) return
-      this.text = val ? this.dic.map(ele => ele[this.valueKey]) : [];
+      const availableOptions = this.dic.filter(item => !item[this.disabledKey]);
+      this.text = val ? availableOptions.map(ele => ele[this.valueKey]) : [];
       this.isIndeterminate = false;
     },
     handleCheckChange () {
       let value = this.text;
       if (!this.all) return
+      const availableCount = this.dic.filter(item => !item[this.disabledKey]).length;
       let checkedCount = value.length;
-      let dicLen = this.dic.length;
-      this.checkAll = checkedCount === dicLen;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < dicLen
+      this.checkAll = checkedCount === availableCount;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < availableCount;
     }
   }
 });

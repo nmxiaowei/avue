@@ -458,7 +458,7 @@ export default create({
       }
       if (typeof this.httpRequest === "function") {
         deleteUploadCacheFile()
-        this.httpRequest(config)
+        this.httpRequest(config,this.column)
         return
       }
       const fileSize = file.size / 1024;

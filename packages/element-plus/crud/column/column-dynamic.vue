@@ -10,6 +10,7 @@
              :filter-method="getColumnProp(columnOption,'filterMethod')?handleFilterMethod:undefined"
              :filter-multiple="validData(columnOption.filterMultiple,true)"
              :show-overflow-tooltip="columnOption.showOverflowTooltip || columnOption.overHidden"
+             :tooltip-formatter="columnOption.tooltipFormatter"
              :min-width="columnOption.minWidth"
              :sortable="getColumnProp(columnOption,'sortable')"
              :render-header="columnOption.renderHeader"

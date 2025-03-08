@@ -34,6 +34,7 @@
                  :check-strictly="checkStrictly"
                  :check-on-click-node="checkOnClickNode"
                  :filter-node-method="filterNode"
+                 :check-on-click-leaf="checkOnClickLeaf"
                  v-loading="loading"
                  :expand-on-click-node="expandOnClickNode"
                  @check-change="handleCheckChange"
@@ -127,6 +128,7 @@ export default create({
     iconClass: {
       type: String,
     },
+    checkOnClickLeaf: Boolean,
     loading: {
       type: Boolean,
       default: false

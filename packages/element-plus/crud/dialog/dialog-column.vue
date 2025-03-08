@@ -83,7 +83,7 @@ export default create({
     },
     handleChange (prop) {
       if (prop === 'hide') {
-        this.crud.doLayout()
+        this.crud.gridShow ? this.crud.refreshTable() : this.crud.doLayout()
       } else if (prop === 'filters') {
         this.crud.refreshTable()
       }
