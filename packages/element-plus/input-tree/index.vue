@@ -27,6 +27,7 @@
                   :indent="indent"
                   @focus="handleFocus"
                   @blur="handleBlur"
+                  :check-on-click-leaf="checkOnClickLeaf"
                   :default-checked-keys="keysList"
                   :default-expanded-keys="defaultExpandedKeys?defaultExpandedKeys:keysList"
                   :default-expand-all="defaultExpandAll"
@@ -93,6 +94,7 @@ export default create({
       type: Number,
       default: 0
     },
+    checkOnClickLeaf: Boolean,
     filterable: {
       type: Boolean,
       default: false
