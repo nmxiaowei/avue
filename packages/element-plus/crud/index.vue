@@ -55,6 +55,8 @@
                    :row-key="rowKey"
                    :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
                    :size="size"
+                   :append-filter-panel-to="tableOption.appendFilterPanelTo"
+                   :allow-drag-last-column="tableOption.allowDragLastColumn"
                    :lazy="validData(tableOption.lazy,false)"
                    :load="treeLoad"
                    :tree-props="treeProps"
