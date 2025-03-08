@@ -54,13 +54,20 @@
     </div>
     <div class="el-image-viewer__btn el-image-viewer__actions">
       <div class="el-image-viewer__actions__inner">
-        <el-icon-zoom-out @click="subScale" />
-        <el-icon-zoom-in @click="addScale" />
+        <el-icon-zoom-out @click="subScale" class="viewer-icon" />
+        <el-icon-zoom-in @click="addScale" class="viewer-icon" />
         <i class="el-image-viewer__actions__divider"></i>
-        <el-icon-printer @click="handlePrint" />
+        <el-icon-refresh-left @click="rotate=rotate-90" class="viewer-icon" />
+        <el-icon-refresh-right @click="rotate=rotate+90" class="viewer-icon" />
         <i class="el-image-viewer__actions__divider"></i>
-        <el-icon-refresh-left @click="rotate=rotate-90" />
-        <el-icon-refresh-right @click="rotate=rotate+90" />
+        <el-icon-printer @click="handlePrint" class="viewer-icon" />
+        <i class="el-image-viewer__actions__divider"></i>
+        <el-icon-d-arrow-left @click="handlePrev" class="viewer-icon" />
+        <el-icon-d-arrow-right @click="handleNext" class="viewer-icon" />
+        <i class="el-image-viewer__actions__divider"></i>
+        <el-icon-refresh @click="handleReset" class="viewer-icon" />
+        <i class="el-image-viewer__actions__divider"></i>
+        <el-icon-download @click="handleDownload" class="viewer-icon" />
       </div>
     </div>
   </div>
@@ -125,12 +132,27 @@ export default create({
     handlePrev () {
       this.stopItem()
       this.$refs.carousel.prev()
-
     },
     handleNext () {
       this.stopItem()
       this.$refs.carousel.next()
-
+    },
+    handleReset() {
+      this.scale = 1;
+      this.rotate = 0;
+      this.left = 0;
+      this.top = 0;
+    },
+    handleDownload() {
+      const currentItem = this.datas[this.count];
+      if (!currentItem || !currentItem.url) return;
+      
+      const link = document.createElement('a');
+      link.href = currentItem.url;
+      link.download = currentItem.name || this.getName(currentItem.url);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
     stopItem () {
       this.left = 0;
