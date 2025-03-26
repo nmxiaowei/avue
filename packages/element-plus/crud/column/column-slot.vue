@@ -129,6 +129,8 @@
         <span v-else-if="column.html"
               v-html="handleDetail(row,column)"></span>
         <span v-else
+              :class="{'avue-crud__ellipsis': column.ellipsis}"
+              :title="column.ellipsis ? handleDetail(row,column) : ''"
               v-text="handleDetail(row,column)"></span>
       </template>
     </template>
