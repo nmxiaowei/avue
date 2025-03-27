@@ -345,7 +345,7 @@ export default create({
       return this.tableOption.height === "auto"
     },
     formSlot () {
-      return this.getSlotList(['-error', '-label', '-type', '-form', '-header'], this.$slots, this.propOption)
+      return this.getSlotList(['-error', '-label', '-type', '-form', '-header', '-desc'], this.$slots, this.propOption)
     },
     searchSlot () {
       return this.getSlotList(['-search'], this.$slots, this.propOption)

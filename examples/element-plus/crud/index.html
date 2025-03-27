@@ -58,6 +58,9 @@
       <template #menu="scope">
         <el-button :size="scope.size" :disabled="scope.disabled" type="primary" text icon="el-icon-plus">自定义</el-button>
       </template>
+      <template #city-desc="{descClass, description}">
+        <span :class="descClass">{{ description }}</span>
+      </template>
     </avue-crud>
   </div>
 </body>
@@ -98,7 +101,7 @@
           ],
           dateBtn: true,
           align: 'center',
-          viewBtn: false,
+          viewBtn: true,
           editBtn: true,
           addRowBtn: true,
           printBtn: true,
@@ -173,6 +176,8 @@
                 label: 'name',
                 value: 'code'
               },
+              description: '这是字段的描述',
+              descClass: 'field-desc2',
               dicUrl: `${baseUrl}/getCity/{{key}}`,
               rules: [
                 {
@@ -186,6 +191,7 @@
               width: 120,
               label: '地区',
               prop: 'area',
+              description: '这是字段的描述',
               cell: true,
               props: {
                 label: 'name',
@@ -499,4 +505,11 @@
   app.mount('#app')
 </script>
 
+<style lang="css">
+  .field-desc2 {
+    font-size: 12px;
+    color: rgb(12, 180, 79); 
+    font-style: italic;
+  }
+</style>
 </html>
