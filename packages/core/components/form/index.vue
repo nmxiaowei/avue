@@ -37,10 +37,21 @@
     </template>
     <template v-for="item in columnSlot"
               #[item]="scope">
-      <slot v-bind="scope"
+      <slot v-bind="scope" v-if="!item.endsWith('-desc')"
             :name="item"></slot>
     </template>
   </component>
+  <template v-if="!render && boxType !== 'view'">
+      <slot v-if="columnSlot.includes(column.prop + '-desc')" :name="column.prop + '-desc'"
+        :column="column"
+        :description="column.description"
+        :descClass="column.descClass"
+        :size="column.size || size"
+        ></slot>
+      <span v-else :class="column.descClass ? column.descClass : 'field-desc'">
+        {{column.description}}
+      </span>
+  </template>
 </template>
 
 <script>

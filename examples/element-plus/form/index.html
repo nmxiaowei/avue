@@ -39,6 +39,9 @@
           {{ item.label }}
         </span>
       </template>
+      <template #cascader-desc="{descClass, description}">
+        <span :class="descClass">{{ description }}</span>
+      </template>
     </avue-form>
   </div>
 </body>
@@ -63,7 +66,7 @@
             label: '姓名',
             prop: 'name',
             formslot: true,
-            order: 3
+            order: 3,
           },
           {
             label: '级别',
@@ -73,6 +76,8 @@
             // filterable: true,
             // checkStrictly: true,
             order: 4,
+            description: '这是字段的描述。',
+            descClass: 'field-desc2',
             dicData: [{
               label: '一级',
               value: 3,
@@ -116,6 +121,7 @@
             label: '开关',
             prop: 'switch',
             type: 'switch',
+            description: '这是字段的描述。',
             dicData: [
               {
                 label: '关闭',
@@ -287,4 +293,11 @@
   app.mount('#app')
 </script>
 
+<style lang="css">
+  .field-desc2 {
+    font-size: 12px;
+    color: rgb(12, 180, 79); 
+    font-style: italic;
+  }
+</style>
 </html>
