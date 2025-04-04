@@ -614,9 +614,8 @@ export default create({
     },
     headerSort (oldIndex, newIndex) {
       let column = this.columnOption;
-      const notHideColumn = column.filter(ele => ele.hide != true);
-      const newColumn = notHideColumn[newIndex]
-      const oldColumn = notHideColumn[oldIndex];
+      const newColumn = column[newIndex]
+      const oldColumn = column[oldIndex];
       newIndex = column.findIndex(ele => ele.prop == newColumn.prop)
       oldIndex = column.findIndex(ele => ele.prop == oldColumn.prop)
       let targetRow = column.splice(oldIndex, 1)[0]
@@ -935,7 +934,8 @@ export default create({
         chosenClass: config.ghostClass,
         animation: 100,
         delay: 0,
-        onEnd: evt => callback(evt)
+        onEnd: evt => callback(evt),
+        filter: '.el-table-fixed-column--right'
       })
     },
     findData (id) {
