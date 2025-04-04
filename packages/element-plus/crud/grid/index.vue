@@ -49,10 +49,14 @@
         </el-col>
       </el-row>
     </el-checkbox-group>
-    <el-empty v-else
-              :image-size="100"
-              :description="crud.tableOption.emptyText || t('crud.emptyText')"></el-empty>
-  </div>
+    <template v-else>
+      <slot name="empty"
+            v-if="$slots.empty"></slot>
+      <el-empty v-else
+                :image-size="100"
+                :description="crud.tableOption.emptyText || t('crud.emptyText')"></el-empty>
+    </template>
+</div>
 </template>
 
 <script>
@@ -154,10 +158,10 @@ export default create({
     },
     getClass (row, index, column) {
       let list = []
-      let firstIndex=this.crud.columnOption.findIndex(item => item.hide !== true)
+      let firstIndex = this.crud.columnOption.findIndex(item => item.hide !== true)
       const columnOption = this.crud.columnOption || []
       if (this.cellClassName) list.push(this.cellClassName({ row, rowIndex: index, column }))
-      if (column.prop == (columnOption[firstIndex || 0] || {}).prop)list.push('title')
+      if (column.prop == (columnOption[firstIndex || 0] || {}).prop) list.push('title')
       if (column.row) list.push('row')
       if (column.showOverflowTooltip) list.push('overHidden')
       return list;
