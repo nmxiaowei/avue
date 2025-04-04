@@ -9,6 +9,12 @@ export default {
         return {}
       }
     },
+    dic: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     params: {
       type: Object,
       default: () => {
@@ -25,6 +31,7 @@ export default {
   render() {
     return this.render.call(this, {
       column: this.column,
+      dic:this.dic,
       params: this.params,
       event: this.event,
       row: this.row,

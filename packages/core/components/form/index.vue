@@ -3,6 +3,7 @@
           :render="render"
           :index="index"
           :row="row"
+          :dic="dic"
           :column="column"
           :params="params"
           :event="event"></custom>
