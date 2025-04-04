@@ -164,7 +164,7 @@
                 </el-form-item>
               </el-col>
               <div :class="b('line')"
-                   v-if="vaildDisplay(column)&&column.row && column.span!==24 && column.count"
+                   v-if="shouldShowDivider(column)"
                    :key="`line${cindex}`"
                    :style="{width:(column.count/24*100)+'%'}"></div>
             </template>
@@ -761,6 +761,19 @@ export default create({
           this.$emit("error", msg);
         }
       });
+    },
+    /**
+     * 判断是否需要显示分割线
+     * @param {Object} column - 列配置对象
+     * @returns {Boolean} - 是否显示分割线
+     */
+    shouldShowDivider (column) {
+      return (
+        this.vaildDisplay(column) && // 列是否显示
+        column.row && // 是否需要换行
+        column.span !== 24 && // 不是全宽
+        column.count // 有剩余空间需要填充
+      );
     }
   },
   unmounted () {
