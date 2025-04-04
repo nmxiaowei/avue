@@ -608,8 +608,6 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
-      let obj = this.objectOption[column.property];
-      if (obj) this.objectOption[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
@@ -805,7 +803,7 @@ export default create({
         });
       })
     },
-    clearValidate(list){
+    clearValidate (list) {
       this.$refs.cellForm.clearValidate(list)
     },
     rowAdd () {
