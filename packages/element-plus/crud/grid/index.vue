@@ -22,11 +22,11 @@
             <div v-for="(item,columnIndex) in column"
                  :class="[b('item'),(item.type || item.prop),getClass(row,index,item)]"
                  :style="getCellStyle(row,index,item,columnIndex)"
-                 @click="handleCellClick(row,item)"
-                 @dblclick="handleCellDblClick(row,item)"
+                 @click.stop="handleCellClick(row,item)"
+                 @dblclick.stop="handleCellDblClick(row,item)"
                  :key="columnIndex">
               <span v-if="item.type=='selection'">
-                <el-checkbox :value="index">&nbsp;</el-checkbox>
+                <el-checkbox :value="index" @click.stop>&nbsp;</el-checkbox>
               </span>
               <template v-else>
                 <template v-for="(comp,compIndex) in item.header && item.header({row:row,$index:index,column:item})"
