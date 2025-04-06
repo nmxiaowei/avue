@@ -345,7 +345,7 @@ export default create({
       return this.tableOption.height === "auto"
     },
     formSlot () {
-      return this.getSlotList(['-error', '-label', '-type', '-form', '-header'], this.$slots, this.propOption)
+      return this.getSlotList(['-error', '-label', '-type', '-form', '-header', '-desc'], this.$slots, this.propOption)
     },
     searchSlot () {
       return this.getSlotList(['-search'], this.$slots, this.propOption)
@@ -608,15 +608,12 @@ export default create({
     },
     //拖动表头事件
     headerDragend (newWidth, oldWidth, column, event) {
-      let obj = this.objectOption[column.property];
-      if (obj) this.objectOption[column.property].width = newWidth
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
       let column = this.columnOption;
-      const notHideColumn = column.filter(ele => ele.hide != true);
-      const newColumn = notHideColumn[newIndex]
-      const oldColumn = notHideColumn[oldIndex];
+      const newColumn = column[newIndex]
+      const oldColumn = column[oldIndex];
       newIndex = column.findIndex(ele => ele.prop == newColumn.prop)
       oldIndex = column.findIndex(ele => ele.prop == oldColumn.prop)
       let targetRow = column.splice(oldIndex, 1)[0]
@@ -806,7 +803,7 @@ export default create({
         });
       })
     },
-    clearValidate(list){
+    clearValidate (list) {
       this.$refs.cellForm.clearValidate(list)
     },
     rowAdd () {
@@ -935,7 +932,8 @@ export default create({
         chosenClass: config.ghostClass,
         animation: 100,
         delay: 0,
-        onEnd: evt => callback(evt)
+        onEnd: evt => callback(evt),
+        filter: '.el-table-fixed-column--right'
       })
     },
     findData (id) {

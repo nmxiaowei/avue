@@ -23,17 +23,32 @@ export const calcCascader = (list = []) => {
  */
 let count = 0;
 export const calcCount = (ele, spanDefault = 12, init = false) => {
-  if (init) count = 0;
   const spanAll = 24;
-  count = count + (ele.span || spanDefault) + (ele.offset || 0);
-  if (count === spanAll) {
-    count = 0;
-  } else if (count > spanAll) {
-    count = 0 + (ele.span || spanDefault) + (ele.offset || 0);
-  } else if (ele.row && count !== spanAll) {
-    ele.count = spanAll - count;
-    count = 0;
+
+  const currentSpan = (ele.span || spanDefault) + (ele.offset || 0);
+
+  if (init || ele.row) {
+    count = currentSpan;
+    // 如果需要填充空白,计算剩余空间
+    if (ele.row && count < spanAll) {
+      ele.count = spanAll - count;
+    }
+  } else {
+    // 累加当前span
+    count += currentSpan;
+
+    // 如果超出总列数,需要换行
+    if (count >= spanAll) {
+      // 如果刚好等于总列数,直接重置
+      if (count === spanAll) {
+        count = 0;
+      } else {
+        // 超出总列数,当前元素放到下一行
+        count = currentSpan;
+      }
+    }
   }
+
   return ele;
 };
 
@@ -151,7 +166,7 @@ export const formInitVal = (list = []) => {
 
 };
 
-export const getPlaceholder = function (column, type) {
+export const getPlaceholder = function(column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
   if (type === 'search') {
