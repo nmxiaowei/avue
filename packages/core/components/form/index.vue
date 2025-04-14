@@ -62,7 +62,7 @@ import slot from 'core/slot'
 export default {
   name: 'form-temp',
   mixins: [slot],
-  emits: ['update:modelValue', 'change'],
+  emits: ['update:modelValue', 'change', 'enter'],
   components: {
     custom
   },
