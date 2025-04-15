@@ -20,7 +20,7 @@
              ref="temp"
              :disabled="column.disabled || disabled"
              :readonly="column.readonly || readonly"
-             :placeholder="getPlaceholder(column)"
+             :placeholder="column.disabled || disabled || column.readonly || readonly ? '' : getPlaceholder(column)"
              :props="column.props || props"
              :propsHttp="column.propsHttp || propsHttp"
              :size="column.size || size"
