@@ -345,7 +345,7 @@ export default create({
           ele.column.forEach((column, cindex) => {
             //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
             if (column.display !== false && !this.isMobile) {
-              column = calcCount(column, this.config.span, cindex === 0);
+              column = calcCount(column,this.tableOption.span || this.config.span, cindex === 0);
             }
           });
           //处理级联属性
