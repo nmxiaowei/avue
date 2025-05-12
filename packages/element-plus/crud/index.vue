@@ -611,14 +611,16 @@ export default create({
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort (oldIndex, newIndex) {
-      let column = this.columnOption;
-      const newColumn = column[newIndex]
-      const oldColumn = column[oldIndex];
-      newIndex = column.findIndex(ele => ele.prop == newColumn.prop)
-      oldIndex = column.findIndex(ele => ele.prop == oldColumn.prop)
-      let targetRow = column.splice(oldIndex, 1)[0]
-      column.splice(newIndex, 0, targetRow)
-      this.doLayout()
+      const visibleColumns = this.columnOption.filter(col => col.hide !== true);
+      const oldProp = visibleColumns[oldIndex].prop;
+      const newProp = visibleColumns[newIndex].prop;
+      const allColumns = this.columnOption;
+      const realOldIndex = allColumns.findIndex(col => col.prop === oldProp);
+      const realNewIndex = allColumns.findIndex(col => col.prop === newProp);
+      const targetRow = allColumns.splice(realOldIndex, 1)[0];
+      allColumns.splice(realNewIndex, 0, targetRow);
+
+      this.doLayout();
     },
     clearFilter (name) {
       this.$refs.table.clearFilter(name);
