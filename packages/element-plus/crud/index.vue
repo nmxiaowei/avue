@@ -242,6 +242,7 @@ export default create({
     'cell-click',
     'header-click',
     'tab-click',
+    'enter',
     'error',
     'date-change',
     'grid-status-change',
