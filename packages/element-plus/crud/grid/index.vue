@@ -26,7 +26,9 @@
                  @dblclick.stop="handleCellDblClick(row,item)"
                  :key="columnIndex">
               <span v-if="item.type=='selection'">
-                <el-checkbox :value="index" @click.stop>&nbsp;</el-checkbox>
+                <el-checkbox :value="index" 
+                            :disabled="isDisabled(row, index)"
+                            @click.stop>&nbsp;</el-checkbox>
               </span>
               <template v-else>
                 <template v-for="(comp,compIndex) in item.header && item.header({row:row,$index:index,column:item})"
@@ -93,6 +95,11 @@ export default create({
   methods: {
     doLayout () {
 
+    },
+    isDisabled(row, index) {
+      return typeof this.crud.tableOption.selectable === 'function' 
+        ? !this.crud.tableOption.selectable(row, index) 
+        : false
     },
     clearSelection () {
       this.checkList = []

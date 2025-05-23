@@ -31,7 +31,7 @@
                      :option="option"
                      v-bind="$uploadFun(null,this)"
                      v-model="text[index]">
-            <template #_index="{}">
+            <template #index="{}">
               <span>{{item.$index+1}}</span>
             </template>
             <template v-for="item in columnSlot"
@@ -55,7 +55,7 @@
                @selection-change="handleSelectionChange"
                @sortable-change="handleSortableChange"
                :data="text">
-      <template #_index-header="{}">
+      <template #index-header="{}">
         <el-button v-if="!(addBtn || readonly) && maxFlag"
                    @click="addRow()"
                    type="primary"
@@ -64,7 +64,7 @@
                    icon="el-icon-plus"
                    circle></el-button>
       </template>
-      <template #_index="scope">
+      <template #index="scope">
         <el-button v-if="!readonly && !disabled  && !delBtn && hoverList[scope.row.$index]"
                    @click="delRow(scope.row.$index)"
                    type="danger"
@@ -232,7 +232,7 @@ export default create({
       // 处理列选项
       columnOption.unshift({
         label: this.children.indexLabel || '#',
-        prop: '_index',
+        prop: 'index',
         display: this.showIndex,
         hide: !this.showIndex,
         fixed: true,

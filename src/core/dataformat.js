@@ -24,29 +24,13 @@ export const calcCascader = (list = []) => {
 let count = 0;
 export const calcCount = (ele, spanDefault = 12, init = false) => {
   const spanAll = 24;
-
+  if (init) count = 0;
   const currentSpan = (ele.span || spanDefault) + (ele.offset || 0);
-
-  if (init || ele.row) {
-    count = currentSpan;
-    // 如果需要填充空白,计算剩余空间
-    if (ele.row && count < spanAll) {
-      ele.count = spanAll - count;
-    }
-  } else {
-    // 累加当前span
-    count += currentSpan;
-
-    // 如果超出总列数,需要换行
-    if (count >= spanAll) {
-      // 如果刚好等于总列数,直接重置
-      if (count === spanAll) {
-        count = 0;
-      } else {
-        // 超出总列数,当前元素放到下一行
-        count = currentSpan;
-      }
-    }
+  count += currentSpan;
+  if (ele.row && count < spanAll) {
+    ele.count = spanAll - count;
+  } else if (count >= spanAll) {
+    count = 0;
   }
 
   return ele;
