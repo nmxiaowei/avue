@@ -260,7 +260,8 @@ export default create({
     'row-del',
     'row-save',
     'row-update',
-    'change'
+    'change',
+    'scroll'
   ],
   directives: {
     permission
