@@ -796,7 +796,7 @@ export default create({
           let result = true
           let list = []
           Object.keys(msg).forEach(ele => {
-            if (ele.indexOf(`list.${index}`) !== -1) {
+            if (ele.indexOf(`list.${index}.`) !== -1) {
               result = false;
             } else {
               list.push(ele)
