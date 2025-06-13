@@ -30,17 +30,17 @@
              :allow-create="allowCreate"
              :default-first-option="defaultFirstOption"
              :disabled="disabled">
-    <template #="{item}">
+    <template #="scope">
       <template v-if="virtualize">
         <slot :label="labelKey"
               :value="valueKey"
-              :item="item"
+              :item="scope.item"
               v-if="$slots.default">
         </slot>
         <template v-else>
-          <span>{{ getLabelText(item) }}</span>
-          <span v-if="item[descKey]"
-                :class="b('desc')">{{ item[descKey] }}</span>
+          <span>{{ getLabelText(scope.item) }}</span>
+          <span v-if="scope.item[descKey]"
+                :class="b('desc')">{{ scope.item[descKey] }}</span>
         </template>
       </template>
       <template v-else>
@@ -101,7 +101,6 @@
         </template>
       </template>
     </template>
-
   </component>
 </template>
 
