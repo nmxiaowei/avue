@@ -29,10 +29,10 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
   count += currentSpan;
   if (ele.row && count < spanAll) {
     ele.count = spanAll - count;
+    count = 0;
   } else if (count >= spanAll) {
     count = 0;
   }
-
   return ele;
 };
 
