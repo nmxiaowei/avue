@@ -52,6 +52,8 @@
         <component :is="tableName"
                    :key="reload"
                    :data="cellForm.list"
+                   :fixed="tableOption.fixed"
+                   :columns="columnVirtualizeOption"
                    :row-key="rowKey"
                    :class="{'avue-crud--indeterminate':validData(tableOption.indeterminate,false)}"
                    :size="size"
@@ -99,9 +101,9 @@
                    :header-row-style="headerRowStyle"
                    :header-cell-style="headerCellStyle"
                    :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
-                   :height="tableHeight"
+                   :height="virtualize?tableOption.height:tableHeight"
                    ref="table"
-                   :width="setPx(tableOption.width,config.width)"
+                   :width="virtualize?tableOption.width:setPx(tableOption.width,config.width)"
                    :border="tableOption.border"
                    v-loading.lock="tableLoading"
                    :element-loading-text="tableOption.loadingText"
@@ -122,7 +124,7 @@
                         :description="tableOption.emptyText || t('crud.emptyText')"></el-empty>
             </div>
           </template>
-          <column :columnOption="columnOption">
+          <column v-if="!virtualize" :columnOption="columnOption">
             <template #header>
               <column-default ref="columnDefault">
                 <template #expand="{row,index}">
@@ -311,13 +313,33 @@ export default create({
   mounted () {
     this.dataInit();
     this.getTableHeight();
+    this.initFun();
+    this.initVirtualizeFun();
   },
   computed: {
+    columnVirtualizeOption () {
+      return this.columnOption.map(ele => {
+        return {
+          ...ele,
+          ...{
+            key: ele.prop,
+            title: ele.label,
+            dataKey: ele.prop
+          }
+        }
+      })
+    },
     tableName () {
+      if (this.virtualize) {
+        return 'elTableV2'
+      }
       return this.gridShow ? 'tableCard' : 'elTable'
     },
     tableColumnName () {
       return this.gridShow ? 'tableItemCard' : 'elTableColumn'
+    },
+    virtualize () {
+      return this.tableOption.virtualize
     },
     size () {
       return this.tableOption.size || this.$AVUE.tableSize || this.$AVUE.size;
@@ -507,6 +529,41 @@ export default create({
     }
   },
   methods: {
+    initVirtualizeFun () {
+      if (!this.virtualize) return
+      this.initTableMethods([
+        'scrollTo',
+        'scrollToTop',
+        'scrollToLeft',
+        'scrollRow'
+      ]);
+    },
+    initFun () {
+      this.initTableMethods([
+        'scrollTo',
+        'setScrollTop',
+        'setScrollLeft',
+        'columns',
+        'doLayout',
+        'updateKeyChildren',
+        'toggleAllSelection',
+        'toggleRowSelection',
+        'toggleRowExpansion',
+        'setCurrentRow',
+        'clearFilter',
+        'clearSort'
+      ]);
+    },
+    initTableMethods (methods) {
+      methods.forEach(ele => {
+        this[ele] = (...args) => {
+          const tableRef = this.$refs.table;
+          if (tableRef && typeof tableRef[ele] === 'function') {
+            return tableRef[ele](...args);
+          }
+        };
+      });
+    },
     handleGridShow () {
       this.gridShow = !this.gridShow
       this.$emit('grid-status-change', this.gridShow)
@@ -550,12 +607,6 @@ export default create({
         this.doLayout();
       });
     },
-    doLayout () {
-      this.$refs.table.doLayout()
-    },
-    updateKeyChildren (key, data) {
-      this.$refs.table.updateKeyChildren(key, data)
-    },
     refreshTable (callback) {
       this.reload = Math.random()
       this.tableSelect = []
@@ -585,18 +636,6 @@ export default create({
       this.$emit('selection-clear', this.deepClone(this.tableSelect))
       this.$refs.table.clearSelection();
     },
-    toggleAllSelection () {
-      this.$refs.table.toggleAllSelection();
-    },
-    toggleRowSelection (row, selected) {
-      this.$refs.table.toggleRowSelection(row, selected);
-    },
-    toggleRowExpansion (row, expanded) {
-      this.$refs.table.toggleRowExpansion(row, expanded);
-    },
-    setCurrentRow (row) {
-      this.$refs.table.setCurrentRow(row);
-    },
     dataInit () {
       this.list = this.data;
       //初始化序列的参数
@@ -621,11 +660,7 @@ export default create({
       const realNewIndex = allColumns.findIndex(col => col.prop === newProp);
       const targetRow = allColumns.splice(realOldIndex, 1)[0];
       allColumns.splice(realNewIndex, 0, targetRow);
-
       this.doLayout();
-    },
-    clearFilter (name) {
-      this.$refs.table.clearFilter(name);
     },
     scroll (params) {
       this.$emit("scroll", params);
@@ -680,10 +715,6 @@ export default create({
     // 行单机
     rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
-    },
-    //清空排序
-    clearSort () {
-      this.$refs.table.clearSort();
     },
     //当单元格 hover 进入时会触发该事件
     cellMouseEnter (row, column, cell, event) {
