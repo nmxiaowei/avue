@@ -421,6 +421,7 @@ export default create({
     }
   },
   mounted () {
+    this.initFun();
     setTimeout(() => {
       this.dataFormat()
     })
@@ -428,6 +429,26 @@ export default create({
   methods: {
     getComponent,
     getPlaceholder,
+    initFun () {
+      this.initFormMethods([
+        'validateField',
+        'scrollToField',
+        'clearValidate',
+        'resetFields',
+        'getField',
+        'fields'
+      ]);
+    },
+    initFormMethods (methods) {
+      methods.forEach(ele => {
+        this[ele] = (...args) => {
+          const formRef = this.$refs.form;
+          if (formRef && typeof formRef[ele] === 'function') {
+            return formRef[ele](...args);
+          }
+        };
+      });
+    },
     getDisabled (column) {
       return this.vaildDetail(column) || this.isDetail || this.vaildDisabled(column) || this.allDisabled
     },
@@ -555,13 +576,6 @@ export default create({
       result = this.validData(result, this.config[type])
       return isPx ? this.setPx(result) : result
     },
-    //对部分表单字段进行校验的方法
-    validateField (val, fn) {
-      return this.$refs.form.validateField(val, fn);
-    },
-    scrollToField (val) {
-      return this.$refs.form.scrollToField(val);
-    },
     validTip (column) {
       return !column.tip || column.type === 'upload'
     },
@@ -688,9 +702,6 @@ export default create({
       }
       return this.validData(column[key], true)
     },
-    clearValidate (list) {
-      if (this.$refs.form) this.$refs.form.clearValidate(list);
-    },
     validateCellForm () {
       return new Promise(resolve => {
         this.$refs.form.validate((valid, msg) => {
@@ -744,9 +755,6 @@ export default create({
         this.$emit("reset-change");
       })
     },
-    resetFields () {
-      this.$refs.form.resetFields();
-    },
     show () {
       this.allDisabled = true;
     },
@@ -762,11 +770,6 @@ export default create({
         }
       });
     },
-    /**
-     * 判断是否需要显示分割线
-     * @param {Object} column - 列配置对象
-     * @returns {Boolean} - 是否显示分割线
-     */
     shouldShowDivider (column) {
       return (
         this.vaildDisplay(column) && // 列是否显示

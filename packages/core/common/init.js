@@ -11,7 +11,7 @@ import slot from 'core/slot'
 export default function (name) {
   return {
     mixins: [slot],
-    emits: ['update:modelValue','change'],
+    emits: ['update:modelValue', 'change'],
     props: {
       tableData: {
         type: Object,
@@ -96,17 +96,28 @@ export default function (name) {
       },
       updateDic (prop, list) {
         let column = this.findObject(this.propOption, prop);
+        let formatter = column.dicFormatter
+        const callback = (list) => {
+          if (typeof formatter === 'function') {
+            this.DIC[prop] = formatter(list, this.tableForm || this.form);
+          } else {
+            this.DIC[prop] = list;
+          }
+        }
+        let dic = [];
         if (this.validatenull(list) && this.validatenull(prop)) {
           this.handleLoadDic();
+          reutrn
         } else if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
           sendDic({
             column: column
           }, this).then(list => {
-            this.DIC[prop] = list;
+            dic = callback(list)
           });
         } else {
-          this.DIC[prop] = list;
+          dic = callback(list)
         }
+
       },
       handleSetDic (list, res = {}) {
         Object.keys(res).forEach(ele => {
