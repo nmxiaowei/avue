@@ -101,9 +101,9 @@
                    :header-row-style="headerRowStyle"
                    :header-cell-style="headerCellStyle"
                    :max-height="isAutoHeight?tableHeight:tableOption.maxHeight"
-                   :height="virtualize?tableOption.height:tableHeight"
+                   :height="height?height:tableHeight"
                    ref="table"
-                   :width="virtualize?tableOption.width:setPx(tableOption.width,config.width)"
+                   :width="width?width:setPx(tableOption.width,config.width)"
                    :border="tableOption.border"
                    v-loading.lock="tableLoading"
                    :element-loading-text="tableOption.loadingText"
@@ -124,7 +124,8 @@
                         :description="tableOption.emptyText || t('crud.emptyText')"></el-empty>
             </div>
           </template>
-          <column v-if="!virtualize" :columnOption="columnOption">
+          <column v-if="!virtualize"
+                  :columnOption="columnOption">
             <template #header>
               <column-default ref="columnDefault">
                 <template #expand="{row,index}">
@@ -526,6 +527,14 @@ export default create({
       default: () => {
         return [];
       }
+    },
+    width: {
+      type: [Number, String],
+      default: null
+    },
+    height: {
+      type: [Number, String],
+      default: null
     }
   },
   methods: {

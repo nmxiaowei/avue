@@ -443,8 +443,8 @@ export default create({
       methods.forEach(ele => {
         this[ele] = (...args) => {
           const formRef = this.$refs.form;
-          if (formRef && typeof tableRef[ele] === 'function') {
-            return tableRef[ele](...args);
+          if (formRef && typeof formRef[ele] === 'function') {
+            return formRef[ele](...args);
           }
         };
       });
