@@ -20,7 +20,10 @@
               @focus="handleFocus"
               @blur="handleBlur"
               :disabled="disabled"
-              :autocomplete="autocomplete">
+              :autocomplete="autocomplete"
+              :formatter="formatter"
+              :parser="parser"
+>
       <template #prepend
                 v-if="prepend"><span @click="prependClick(text)">{{prepend}}</span>
       </template>
@@ -71,6 +74,14 @@ export default create({
       type: String
     },
     appendClick: {
+      type: Function,
+      default: () => { }
+    },
+    formatter: {
+      type: Function,
+      default: () => { }
+    },
+    parser: {
       type: Function,
       default: () => { }
     },
