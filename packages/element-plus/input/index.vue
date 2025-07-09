@@ -21,7 +21,7 @@
               @blur="handleBlur"
               :disabled="disabled"
               :autocomplete="autocomplete"
-              :formatter="formatter"
+              :formatter="formatters"
               :parser="parser"
 >
       <template #prepend
@@ -67,23 +67,19 @@ export default create({
       type: String
     },
     prependClick: {
-      type: Function,
-      default: () => { }
+      type: Function
     },
     prepend: {
       type: String
     },
     appendClick: {
-      type: Function,
-      default: () => { }
+      type: Function
     },
-    formatter: {
-      type: Function,
-      default: () => { }
+    formatters: {
+      type: Function
     },
     parser: {
-      type: Function,
-      default: () => { }
+      type: Function
     },
     append: {
       type: String
