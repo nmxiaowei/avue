@@ -391,7 +391,6 @@ export default create({
       if (footerColumns.length > 0) {
         processColumnDetails(footerGroup)
       }
-      console.log('===', [...mainGroup, ...processedGroups, ...footerGroup])
       return [...mainGroup, ...processedGroups, ...footerGroup]
     },
     menuPosition: function () {
@@ -669,6 +668,13 @@ export default create({
     propChange (option, column) {
       let key = column.prop
       // 使用组件实例的count而不是全局变量
+      // 当字段类型为 cascader 或 upload 时，值发生变化需要进行字段验证
+      if (column.type === 'cascader' || column.type === 'upload') {
+        this.$nextTick(() => {
+          // 调用validateField方法验证当前字段
+          this.validateField(key).catch(error => { })
+        })
+      }
       if (!this.count[key]) {
         if (column.cascader) this.handleChange(option, column)
       }
@@ -764,7 +770,6 @@ export default create({
           }
         })
         Promise.all(dynamicList).then(res => {
-          let count = 0;
           res.forEach((error, index) => {
             if (!this.validatenull(error)) {
               dynamicError[dynamicName[index]] = error;
