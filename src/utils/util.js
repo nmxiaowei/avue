@@ -35,16 +35,16 @@ export const uuid = () => {
   var uuid = s.join('');
   return uuid;
 };
-export function getFixed (val = 0, len = 2) {
+export function getFixed(val = 0, len = 2) {
   return Number(val.toFixed(len));
 }
-export function getAsVal (obj, bind = '') {
+export function getAsVal(obj, bind = '') {
   let result = deepClone(obj);
   if (validatenull(bind)) return result;
   return _get(obj, bind);
 }
 
-export function setAsVal (obj, bind = '', value) {
+export function setAsVal(obj, bind = '', value) {
   _set(obj, bind, value);
   return obj;
 }
@@ -72,12 +72,12 @@ export const loadScript = (type = 'js', url, dom = 'body') => {
       script.href = url;
     }
     head.appendChild(script);
-    script.onload = function () {
+    script.onload = function() {
       resolve();
     };
   });
 };
-export function downFile (url, saveName) {
+export function downFile(url, saveName) {
   if (typeof url === 'object' && url instanceof Blob) {
     url = URL.createObjectURL(url); // 创建blob地址
   }
@@ -94,7 +94,7 @@ export function downFile (url, saveName) {
   }
   aLink.dispatchEvent(event);
 }
-export function extend () {
+export function extend() {
   var target = arguments[0] || {};
   var deep = false;
   var arr = Array.prototype.slice.call(arguments);
@@ -130,7 +130,7 @@ export function extend () {
   }
   return target;
 }
-export function createObj (obj, bind) {
+export function createObj(obj, bind) {
   let list = bind.split('.');
   let first = list.splice(0, 1)[0];
   let deep = {};
@@ -152,7 +152,7 @@ export function createObj (obj, bind) {
   obj = extend(true, obj, deep);
   return obj;
 }
-export function dataURLtoFile (dataurl, filename) {
+export function dataURLtoFile(dataurl, filename) {
   let arr = dataurl.split(',');
   let mime = arr[0].match(/:(.*?);/)[1];
   let bstr = atob(arr[1]);
@@ -166,7 +166,7 @@ export function dataURLtoFile (dataurl, filename) {
   });
 }
 
-export function findObject (list = [], value, prop = 'prop') {
+export function findObject(list = [], value, prop = 'prop') {
   let result;
   result = findNode(list, {
     value: prop
@@ -193,7 +193,7 @@ export function findObject (list = [], value, prop = 'prop') {
 /**
  * 生成随机数
  */
-export function randomId () {
+export function randomId() {
   let $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let maxPos = $chars.length;
   let id = '';

@@ -342,41 +342,55 @@ export default create({
       return list;
     },
     columnOption () {
-      const detail = (list) => {
-        list.forEach((ele, index) => {
-          ele.column = getColumn(ele.column) || []
-          // 循环列的全部属性
-          ele.column.forEach((column, cindex) => {
-            //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
+      const processColumnDetails = (list) => {
+        list.forEach((groupItem, groupIndex) => {
+          groupItem.column = getColumn(groupItem.column) || []
+          
+          groupItem.column.forEach((column, columnIndex) => {
             if (column.display !== false && !this.isMobile) {
-              column = calcCount(column,this.tableOption.span || this.config.span, cindex === 0);
+              column = calcCount(
+                column, 
+                this.tableOption.span || this.config.span, 
+                columnIndex === 0
+              );
             }
           });
-          //处理级联属性
-          ele.column = calcCascader(ele.column);
-          //根据order排序
-          ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
+          
+          groupItem.column = calcCascader(groupItem.column);
+          
+          groupItem.column = groupItem.column.sort((a, b) => (b.order || 0) - (a.order || 0))
         });
       }
-      let tableOption = this.tableOption
-      let column = getColumn(tableOption.column)
-      let group = tableOption.group || [];
-      let footer = tableOption.footer || [];
-      let firstGroup = [], footerGroup = []
-      firstGroup = [{
+
+      const { tableOption } = this
+      
+      const mainColumn = getColumn(tableOption.column)
+      
+      // 处理分组配置
+      const processedGroups = (tableOption.group || []).map(groupItem => ({
+        ...groupItem,
+        column: getColumn(groupItem.column)
+      }))
+      
+      const footerColumns = tableOption.footer || []
+      
+      // 添加主列组
+      const mainGroup = [{
         header: false,
-        column: column
+        column: mainColumn
       }]
-      detail(firstGroup)
-      detail(group)
-      if (footer.length !== 0) {
-        footerGroup = [{
-          header: false,
-          column: footer
-        }]
-        detail(footerGroup)
-      }
-      return firstGroup.concat(group).concat(footerGroup)
+      
+      const footerGroup = footerColumns.length > 0 ? [{
+        header: false,
+        column: footerColumns
+      }] : []
+      
+      // 处理所有组的详细信息
+      processColumnDetails(mainGroup)
+      processColumnDetails(processedGroups)
+      processColumnDetails(footerGroup)
+      console.log('===', [...mainGroup, ...processedGroups, ...footerGroup])
+      return [...mainGroup, ...processedGroups, ...footerGroup]
     },
     menuPosition: function () {
       if (this.tableOption.menuPosition) {
@@ -504,7 +518,7 @@ export default create({
           })
           delete this.formBind[prop]
         }
-        
+
         let bindList = [];
         if (bind) {
           let formProp = this.$watch('form.' + prop, (n, o) => {
@@ -669,13 +683,13 @@ export default create({
           });
 
         }
-              });
-        // 保存定时器ID，用于清理
-        this.$nextTick(() => {
-          this.clearValidate();
-          this.$emit('mock-change', this.form);
-        })
-      },
+      });
+      // 保存定时器ID，用于清理
+      this.$nextTick(() => {
+        this.clearValidate();
+        this.$emit('mock-change', this.form);
+      })
+    },
     vaildDetail (column) {
       let key;
       if (this.detail) return false;
@@ -807,7 +821,7 @@ export default create({
       }
     })
     this.timers = []
-    
+
     // 清理所有watcher
     Object.keys(this.formBind).forEach(ele => {
       this.formBind[ele].forEach(unWatch => {
@@ -816,20 +830,20 @@ export default create({
         }
       })
     })
-    
+
     // 清理formBind对象
     this.formBind = {}
-    
+
     // 清理formList数组
     this.formList = []
-    
+
     // 清理count对象
     this.count = {}
-    
+
     // 清理form对象的引用
     this.form = {}
   },
-  
+
   unmounted () {
     // 保留原有的unmounted钩子以确保兼容性
   }
