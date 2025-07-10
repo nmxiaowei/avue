@@ -345,50 +345,52 @@ export default create({
       const processColumnDetails = (list) => {
         list.forEach((groupItem, groupIndex) => {
           groupItem.column = getColumn(groupItem.column) || []
-          
+
           groupItem.column.forEach((column, columnIndex) => {
             if (column.display !== false && !this.isMobile) {
               column = calcCount(
-                column, 
-                this.tableOption.span || this.config.span, 
+                column,
+                this.tableOption.span || this.config.span,
                 columnIndex === 0
               );
             }
           });
-          
+
           groupItem.column = calcCascader(groupItem.column);
-          
+
           groupItem.column = groupItem.column.sort((a, b) => (b.order || 0) - (a.order || 0))
         });
       }
 
       const { tableOption } = this
-      
+
       const mainColumn = getColumn(tableOption.column)
-      
+
       // 处理分组配置
       const processedGroups = (tableOption.group || []).map(groupItem => ({
         ...groupItem,
         column: getColumn(groupItem.column)
       }))
-      
+
       const footerColumns = tableOption.footer || []
-      
+
       // 添加主列组
-      const mainGroup = [{
+      const mainGroup = mainColumn.length > 0 ? [{
         header: false,
         column: mainColumn
-      }]
-      
+      }] : []
+
       const footerGroup = footerColumns.length > 0 ? [{
         header: false,
         column: footerColumns
       }] : []
-      
+
       // 处理所有组的详细信息
       processColumnDetails(mainGroup)
       processColumnDetails(processedGroups)
-      processColumnDetails(footerGroup)
+      if (footerColumns.length > 0) {
+        processColumnDetails(footerGroup)
+      }
       console.log('===', [...mainGroup, ...processedGroups, ...footerGroup])
       return [...mainGroup, ...processedGroups, ...footerGroup]
     },
