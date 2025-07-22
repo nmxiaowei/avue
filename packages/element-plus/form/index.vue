@@ -192,7 +192,7 @@
 </template>
 
 <script>
-let count = {}
+// 移除全局变量，避免内存泄露
 import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
@@ -230,6 +230,10 @@ export default create({
       formCreate: false,
       formList: [],
       formBind: {},
+      // 防止内存泄露的计数器，移到组件实例中
+      count: {},
+      // 保存定时器ID，用于清理
+      timers: []
     };
   },
   provide () {
@@ -338,41 +342,56 @@ export default create({
       return list;
     },
     columnOption () {
-      const detail = (list) => {
-        list.forEach((ele, index) => {
-          ele.column = getColumn(ele.column) || []
-          // 循环列的全部属性
-          ele.column.forEach((column, cindex) => {
-            //动态计算列的位置，如果为隐藏状态则或则手机状态不计算
+      const processColumnDetails = (list) => {
+        list.forEach((groupItem, groupIndex) => {
+          groupItem.column = getColumn(groupItem.column) || []
+
+          groupItem.column.forEach((column, columnIndex) => {
             if (column.display !== false && !this.isMobile) {
-              column = calcCount(column,this.tableOption.span || this.config.span, cindex === 0);
+              column = calcCount(
+                column,
+                this.tableOption.span || this.config.span,
+                columnIndex === 0
+              );
             }
           });
-          //处理级联属性
-          ele.column = calcCascader(ele.column);
-          //根据order排序
-          ele.column = ele.column.sort((a, b) => (b.order || 0) - (a.order || 0))
+
+          groupItem.column = calcCascader(groupItem.column);
+
+          groupItem.column = groupItem.column.sort((a, b) => (b.order || 0) - (a.order || 0))
         });
       }
-      let tableOption = this.tableOption
-      let column = getColumn(tableOption.column)
-      let group = tableOption.group || [];
-      let footer = tableOption.footer || [];
-      let firstGroup = [], footerGroup = []
-      firstGroup = [{
+
+      const { tableOption } = this
+
+      const mainColumn = getColumn(tableOption.column)
+
+      // 处理分组配置
+      const processedGroups = (tableOption.group || []).map(groupItem => ({
+        ...groupItem,
+        column: getColumn(groupItem.column)
+      }))
+
+      const footerColumns = tableOption.footer || []
+
+      // 添加主列组
+      const mainGroup = mainColumn.length > 0 ? [{
         header: false,
-        column: column
-      }]
-      detail(firstGroup)
-      detail(group)
-      if (footer.length !== 0) {
-        footerGroup = [{
-          header: false,
-          column: footer
-        }]
-        detail(footerGroup)
+        column: mainColumn
+      }] : []
+
+      const footerGroup = footerColumns.length > 0 ? [{
+        header: false,
+        column: footerColumns
+      }] : []
+
+      // 处理所有组的详细信息
+      processColumnDetails(mainGroup)
+      processColumnDetails(processedGroups)
+      if (footerColumns.length > 0) {
+        processColumnDetails(footerGroup)
       }
-      return firstGroup.concat(group).concat(footerGroup)
+      return [...mainGroup, ...processedGroups, ...footerGroup]
     },
     menuPosition: function () {
       if (this.tableOption.menuPosition) {
@@ -422,9 +441,11 @@ export default create({
   },
   mounted () {
     this.initFun();
-    setTimeout(() => {
+    // 保存定时器ID，用于清理
+    const timerId = setTimeout(() => {
       this.dataFormat()
     })
+    this.timers.push(timerId)
   },
   methods: {
     getComponent,
@@ -477,54 +498,66 @@ export default create({
       this.setLabel()
       this.setControl()
       this.setVal()
-      setTimeout(() => {
+      // 保存定时器ID，用于清理
+      const timerId = setTimeout(() => {
         this.formCreate = true
         this.clearValidate()
       })
+      this.timers.push(timerId)
     },
     setControl () {
       this.propOption.forEach(column => {
         let prop = column.prop
         let bind = column.bind
         let control = column.control
-        if (!this.formBind[prop]) {
-          let bindList = [];
-          if (bind) {
-            let formProp = this.$watch('form.' + prop, (n, o) => {
-              setAsVal(this.form, bind, n);
-            })
-            let formDeep = this.$watch('form.' + bind, (n, o) => {
-              this.form[prop] = n
-            })
-            bindList.push(formProp)
-            bindList.push(formDeep)
-            this.form[prop] = getAsVal(this.form, bind)
-          }
-          if (control) {
-            const callback = () => {
-              const controlResolve = (list) => {
-                Object.keys(list).forEach(item => {
-                  let ele = Object.assign(this.objectOption[item] || {}, list[item])
-                  this.objectOption[item] = ele;
-                  if (list[item].dicData) this.DIC[item] = list[item].dicData
-                })
-              }
-              let result = this.form['$' + column.prop] || this.form[column.prop]
-              let controlList = control(this.form[column.prop], this.form, result, column) || {};
-              if (controlList instanceof Promise) {
-                controlList.then(res => {
-                  controlResolve(res)
-                })
-              } else {
-                controlResolve(controlList)
-              }
+        // 防止重复创建watcher，如果已存在则先清理
+        if (this.formBind[prop]) {
+          this.formBind[prop].forEach(unWatch => {
+            if (typeof unWatch === 'function') {
+              unWatch()
             }
-            let formControl = this.$watch('form.' + prop, (n, o) => {
-              callback()
-            })
-            bindList.push(formControl)
-            callback()
+          })
+          delete this.formBind[prop]
+        }
+
+        let bindList = [];
+        if (bind) {
+          let formProp = this.$watch('form.' + prop, (n, o) => {
+            setAsVal(this.form, bind, n);
+          })
+          let formDeep = this.$watch('form.' + bind, (n, o) => {
+            this.form[prop] = n
+          })
+          bindList.push(formProp)
+          bindList.push(formDeep)
+          this.form[prop] = getAsVal(this.form, bind)
+        }
+        if (control) {
+          const callback = () => {
+            const controlResolve = (list) => {
+              Object.keys(list).forEach(item => {
+                let ele = Object.assign(this.objectOption[item] || {}, list[item])
+                this.objectOption[item] = ele;
+                if (list[item].dicData) this.DIC[item] = list[item].dicData
+              })
+            }
+            let result = this.form['$' + column.prop] || this.form[column.prop]
+            let controlList = control(this.form[column.prop], this.form, result, column) || {};
+            if (controlList instanceof Promise) {
+              controlList.then(res => {
+                controlResolve(res)
+              })
+            } else {
+              controlResolve(controlList)
+            }
           }
+          let formControl = this.$watch('form.' + prop, (n, o) => {
+            callback()
+          })
+          bindList.push(formControl)
+          callback()
+        }
+        if (bindList.length > 0) {
           this.formBind[prop] = bindList;
         }
       })
@@ -634,11 +667,19 @@ export default create({
     },
     propChange (option, column) {
       let key = column.prop
-      if (!count[key]) {
+      // 使用组件实例的count而不是全局变量
+      // 当字段类型为 cascader 或 upload 时，值发生变化需要进行字段验证
+      if (column.type === 'cascader' || column.type === 'upload') {
+        this.$nextTick(() => {
+          // 调用validateField方法验证当前字段
+          this.validateField(key).catch(error => { })
+        })
+      }
+      if (!this.count[key]) {
         if (column.cascader) this.handleChange(option, column)
       }
-      count[key] = true
-      this.$nextTick(() => count[key] = false)
+      this.count[key] = true
+      this.$nextTick(() => this.count[key] = false)
     },
     handleMock () {
       if (!this.isMock) return
@@ -651,6 +692,7 @@ export default create({
 
         }
       });
+      // 保存定时器ID，用于清理
       this.$nextTick(() => {
         this.clearValidate();
         this.$emit('mock-change', this.form);
@@ -728,7 +770,6 @@ export default create({
           }
         })
         Promise.all(dynamicList).then(res => {
-          let count = 0;
           res.forEach((error, index) => {
             if (!this.validatenull(error)) {
               dynamicError[dynamicName[index]] = error;
@@ -779,12 +820,39 @@ export default create({
       );
     }
   },
-  unmounted () {
+  beforeUnmount () {
+    // 清理所有定时器，防止内存泄露
+    this.timers.forEach(timerId => {
+      if (timerId) {
+        clearTimeout(timerId)
+      }
+    })
+    this.timers = []
+
+    // 清理所有watcher
     Object.keys(this.formBind).forEach(ele => {
       this.formBind[ele].forEach(unWatch => {
-        unWatch()
+        if (typeof unWatch === 'function') {
+          unWatch()
+        }
       })
     })
+
+    // 清理formBind对象
+    this.formBind = {}
+
+    // 清理formList数组
+    this.formList = []
+
+    // 清理count对象
+    this.count = {}
+
+    // 清理form对象的引用
+    this.form = {}
+  },
+
+  unmounted () {
+    // 保留原有的unmounted钩子以确保兼容性
   }
 });
 </script>

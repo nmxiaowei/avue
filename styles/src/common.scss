@@ -117,6 +117,9 @@ body {
   .el-radio__input.is-disabled+span.el-radio__label {
     color: #606266;
   }
+  .el-select__wrapper.is-disabled .el-select__selected-item{
+    color:transparent;
+  }
 
   .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before,
   .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {

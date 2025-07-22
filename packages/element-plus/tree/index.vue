@@ -169,6 +169,8 @@ export default create({
       node: {},
       obj: {},
       form: {},
+      // 存储事件监听器引用，用于销毁时清理
+      clickListener: null,
     };
   },
   computed: {
@@ -254,10 +256,26 @@ export default create({
     }
   },
   mounted () {
-    document.addEventListener('click', (e) => {
-      if (!this.$el.contains(e.target)) this.client.show = false
-    })
-    this.initFun()
+    // 创建事件监听器函数并存储引用，用于后续清理
+    this.clickListener = (e) => {
+      // 检查点击事件是否发生在组件外部，如果是则隐藏右键菜单
+      if (!this.$el.contains(e.target)) {
+        this.client.show = false;
+      }
+    };
+    
+    // 注册全局点击事件监听器
+    document.addEventListener('click', this.clickListener);
+    
+    // 初始化树组件的方法
+    this.initFun();
+  },
+  beforeUnmount () {
+    // 组件销毁前清理全局事件监听器，防止内存泄漏
+    if (this.clickListener) {
+      document.removeEventListener('click', this.clickListener);
+      this.clickListener = null;
+    }
   },
   watch: {
     filterValue (val) {
@@ -302,6 +320,11 @@ export default create({
         return true;
       }
     },
+    /**
+     * 初始化树组件的方法代理
+     * 将element-plus tree组件的方法代理到当前组件实例上，
+     * 使父组件可以直接调用这些方法
+     */
     initFun () {
       [
         'filter', 'updateKeyChildren', 'getCheckedNodes', 'setCheckedNodes', 'getCheckedKeys',

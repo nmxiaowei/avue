@@ -918,7 +918,7 @@ export default create({
         columns.forEach((column, index) => {
           let currItem = this.sumColumnList.find(item => item.name === column.property);
           if (currItem) {
-            let decimals = currItem.decimals || 2;
+            let decimals = currItem.decimals !== void 0 ? currItem.decimals : 2;
             let label = currItem.label || '';
             switch (currItem.type) {
               case "count":

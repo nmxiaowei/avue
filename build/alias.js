@@ -10,5 +10,5 @@ module.exports = {
   utils: resolve('src/utils'),
   mixins: resolve('packages/mixins'),
   common: resolve('packages/core'),
-  packages: resolve('packages'),
+  packages: resolve('packages')
 };
