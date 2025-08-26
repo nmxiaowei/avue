@@ -1,28 +1,30 @@
 <template>
-  <el-input-number v-model="text"
-                   :class="b()"
-                   @click="handleClick"
-                   @focus="handleFocus"
-                   @blur="handleBlur"
-                   :precision="precision"
-                   :placeholder="placeholder"
-                   :step-strictly="stepStrictly"
-                   :size="size"
-                   :min="min"
-                   :max="max"
-                   :step="step"
-                   :clearable="clearableVal"
-                   :readonly="readonly"
-                   :controls-position="controlsPosition"
-                   :controls="controls"
-                   :disabled="disabled">
-    <template #prefix
-              v-if="prefix">
-      <span @click="prefixClick(text)">{{prefix}}</span>
+  <el-input-number
+    v-model="text"
+    :class="b()"
+    @click="handleClick"
+    @focus="handleFocus"
+    @blur="handleBlur"
+    :precision="precision"
+    :placeholder="placeholder"
+    :step-strictly="stepStrictly"
+    :size="size"
+    :min="min"
+    :align="align"
+    :max="max"
+    :step="step"
+    :clearable="clearableVal"
+    :readonly="readonly"
+    :controls-position="controlsPosition"
+    :controls="controls"
+    :disabled-scientific="disabledScientific"
+    :disabled="disabled"
+  >
+    <template #prefix v-if="prefix">
+      <span @click="prefixClick(text)">{{ prefix }}</span>
     </template>
-    <template #suffix
-              v-if="suffix">
-      <span @click="suffixClick(text)">{{suffix}}</span>
+    <template #suffix v-if="suffix">
+      <span @click="suffixClick(text)">{{ suffix }}</span>
     </template>
   </el-input-number>
 </template>
@@ -34,54 +36,56 @@ import event from "common/common/event.js";
 export default create({
   name: "input-number",
   mixins: [props(), event()],
-  data () {
+  data() {
     return {};
   },
   props: {
+    align: String,
+    disabledScientific: Boolean,
     stepStrictly: {
       type: Boolean,
-      default: false
+      default: false,
     },
     controls: {
       type: Boolean,
-      default: true
+      default: true,
     },
     step: {
       type: Number,
-      default: 1
+      default: 1,
     },
     controlsPosition: {
       type: String,
-      default: "right"
+      default: "right",
     },
     precision: {
-      type: Number
+      type: Number,
     },
     min: {
       type: Number,
-      default: -Infinity
+      default: -Infinity,
     },
     max: {
       type: Number,
-      default: Infinity
+      default: Infinity,
     },
     prefix: {
       type: String,
     },
     prefixClick: {
       type: Function,
-      default: () => { }
+      default: () => {},
     },
     suffix: {
       type: String,
     },
     suffixClick: {
       type: Function,
-      default: () => { }
+      default: () => {},
     },
   },
-  created () { },
-  mounted () { },
-  methods: {}
+  created() {},
+  mounted() {},
+  methods: {},
 });
 </script>

@@ -1,29 +1,31 @@
 <template>
-  <el-cascader ref="cascader"
-               :options="dic"
-               :class="b()"
-               @click="handleClick"
-               @change="handleValueChange"
-               v-model="text"
-               :placeholder="placeholder"
-               :props="allProps"
-               :size="size"
-               :clearable="clearableVal"
-               :show-all-levels="showAllLevels"
-               :filterable="filterable"
-               :popper-class="popperClass"
-               :separator="separator"
-               :disabled="disabled"
-               :collapse-tags="tags || collapseTags"
-               :collapse-tags-tooltip="collapseTagsTooltip"
-               :max-collapse-tags="maxCollapseTags"
-               @focus="handleFocus"
-               @blur="handleBlur">
-    <template #="{data,node}">
-      <slot v-if="$slots.default"
-            :data="data"
-            :node="node"></slot>
-      <span v-else>{{data[labelKey]}}</span>
+  <el-cascader
+    ref="cascader"
+    :options="dic"
+    :class="b()"
+    @click="handleClick"
+    @change="handleValueChange"
+    v-model="text"
+    :placeholder="placeholder"
+    :props="allProps"
+    :size="size"
+    :effect="effect"
+    :clearable="clearableVal"
+    :show-all-levels="showAllLevels"
+    :filterable="filterable"
+    :popper-class="popperClass"
+    :separator="separator"
+    :disabled="disabled"
+    :show-checked-strategy="showCheckedStrategy"
+    :collapse-tags="tags || collapseTags"
+    :collapse-tags-tooltip="collapseTagsTooltip"
+    :max-collapse-tags="maxCollapseTags"
+    @focus="handleFocus"
+    @blur="handleBlur"
+  >
+    <template #="{ data, node }">
+      <slot v-if="$slots.default" :data="data" :node="node"></slot>
+      <span v-else>{{ data[labelKey] }}</span>
     </template>
   </el-cascader>
 </template>
@@ -37,44 +39,46 @@ export default create({
   mixins: [props(), event()],
   props: {
     clearValidate: Function,
+    effect: String,
+    showCheckedStrategy: String,
     checkStrictly: {
       type: Boolean,
-      default: false
+      default: false,
     },
     emitPath: {
       type: Boolean,
-      default: true
+      default: true,
     },
     tags: {
       type: Boolean,
-      default: false
+      default: false,
     },
     collapseTags: Boolean,
     collapseTagsTooltip: Boolean,
     maxCollapseTags: Number,
     expandTrigger: {
       type: String,
-      default: "hover"
+      default: "hover",
     },
     showAllLevels: {
       type: Boolean,
-      default: true
+      default: true,
     },
     lazy: {
       type: Boolean,
-      default: false
+      default: false,
     },
     lazyLoad: Function,
     filterable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     separator: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
-    allProps () {
+    allProps() {
       return {
         label: this.labelKey,
         value: this.valueKey,
@@ -90,36 +94,36 @@ export default create({
         lazyLoad: (node, resolve) => {
           let callback = (list) => {
             let findDic = (list, value, children) => {
-              list.forEach(ele => {
+              list.forEach((ele) => {
                 if (ele[this.valueKey] == value) {
-                  ele[this.childrenKey] = children
+                  ele[this.childrenKey] = children;
                 } else if (ele[this.childrenKey]) {
-                  findDic(ele[this.childrenKey])
+                  findDic(ele[this.childrenKey]);
                 }
-              })
-            }
-            findDic(this.dic, node[this.valueKey], list)
+              });
+            };
+            findDic(this.dic, node[this.valueKey], list);
             resolve(list);
-          }
-          this.lazyLoad && this.lazyLoad(node, callback)
+          };
+          this.lazyLoad && this.lazyLoad(node, callback);
         },
-        expandTrigger: this.expandTrigger
-      }
-    }
+        expandTrigger: this.expandTrigger,
+      };
+    },
   },
-  created () { },
-  mounted () { },
+  created() {},
+  mounted() {},
   methods: {
-    handleValueChange (val) {
+    handleValueChange(val) {
       setTimeout(() => {
         if (!this.validatenull(val) && this.rules && this.clearValidate) {
-          this.clearValidate(this.prop)
+          this.clearValidate(this.prop);
         }
-      })
+      });
     },
-    getCheckedNodes (leafOnly = false) {
-      return this.$refs.cascader.getCheckedNodes(leafOnly)
-    }
-  }
+    getCheckedNodes(leafOnly = false) {
+      return this.$refs.cascader.getCheckedNodes(leafOnly);
+    },
+  },
 });
 </script>
