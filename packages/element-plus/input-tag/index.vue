@@ -1,29 +1,28 @@
 <template>
-  <el-input-tag v-model="text"
-                :class="b()"
-                @click="handleClick"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                :placeholder="placeholder"
-                :size="size"
-                :min="min"
-                :max="max"
-                :draggable="drag"
-                :clearable="clearableVal"
-                :readonly="readonly"
-                :disabled="disabled">
-    <template #prefix
-              v-if="prefix">
-      <span @click="prefixClick(text)">{{prefix}}</span>
+  <el-input-tag
+    v-model="text"
+    :class="b()"
+    @click="handleClick"
+    @focus="handleFocus"
+    @blur="handleBlur"
+    @change="handleValueChange"
+    :placeholder="placeholder"
+    :size="size"
+    :min="min"
+    :max="max"
+    :draggable="drag"
+    :clearable="clearableVal"
+    :readonly="readonly"
+    :disabled="disabled"
+  >
+    <template #prefix v-if="prefix">
+      <span @click="prefixClick(text)">{{ prefix }}</span>
     </template>
-    <template #suffix
-              v-if="suffix">
-      <span @click="suffixClick(text)">{{suffix}}</span>
+    <template #suffix v-if="suffix">
+      <span @click="suffixClick(text)">{{ suffix }}</span>
     </template>
     <template #tag="{ value }">
-      <slot :value="value"
-            v-if="$slots.default">
-      </slot>
+      <slot :value="value" v-if="$slots.default"> </slot>
       <span v-else>{{ value }}</span>
     </template>
   </el-input-tag>
@@ -36,36 +35,45 @@ import event from "common/common/event.js";
 export default create({
   name: "input-tag",
   mixins: [props(), event()],
-  data () {
+  data() {
     return {};
   },
   props: {
+    clearValidate: Function,
     drag: Boolean,
     min: {
       type: Number,
-      default: -Infinity
+      default: -Infinity,
     },
     max: {
       type: Number,
-      default: Infinity
+      default: Infinity,
     },
     prefix: {
       type: String,
     },
     prefixClick: {
       type: Function,
-      default: () => { }
+      default: () => {},
     },
     suffix: {
       type: String,
     },
     suffixClick: {
       type: Function,
-      default: () => { }
+      default: () => {},
     },
   },
-  created () { },
-  mounted () { },
-  methods: {}
+  created() {},
+  mounted() {},
+  methods: {
+    handleValueChange(val) {
+      setTimeout(() => {
+        if (!this.validatenull(val) && this.rules && this.clearValidate) {
+          this.clearValidate(this.prop);
+        }
+      });
+    },
+  },
 });
 </script>

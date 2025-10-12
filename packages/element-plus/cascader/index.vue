@@ -39,7 +39,10 @@ export default create({
   mixins: [props(), event()],
   props: {
     clearValidate: Function,
-    effect: String,
+    effect: {
+      type: String,
+      default: "light",
+    },
     showCheckedStrategy: String,
     checkStrictly: {
       type: Boolean,
