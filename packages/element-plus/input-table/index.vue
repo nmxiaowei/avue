@@ -185,8 +185,8 @@ export default create({
             value.some((val) => val == item[this.valueKey])
           );
 
-          this.object = this.deepClone(result);
-          this.active = this.deepClone(result);
+          this.object = this.deepClone(valueArray);
+          this.active = this.deepClone(valueArray);
 
           this.created = true;
         });
