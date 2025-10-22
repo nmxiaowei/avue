@@ -180,8 +180,17 @@ export default create({
       if (typeof this.onLoad == "function") {
         this.onLoad({ value: this.text }, (data) => {
           let result = Array.isArray(data) ? data : [data];
-          this.object = this.deepClone(result);
-          this.active = this.deepClone(result);
+          const nV = this.modelValue;
+          const activeObjArray =
+            nV && nV.length
+              ? result.filter((item) =>
+                  nV.some((val) => val === item[this.valueKey])
+                )
+              : [];
+
+          this.object = this.deepClone(activeObjArray)
+          this.active = this.deepClone(activeObjArray)
+
           this.created = true;
         });
       }
