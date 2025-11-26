@@ -988,7 +988,7 @@ export default create({
         ghostClass: config.ghostClass,
         chosenClass: config.ghostClass,
         animation: 100,
-        delay: 0,
+        delay: 800,
         onEnd: (evt) => callback(evt),
         filter: ".el-table-fixed-column--right",
       });
