@@ -1,57 +1,64 @@
 <template>
   <div :class="b()">
-    <el-input :prefix-icon="prefixIcon"
-              :suffix-icon="suffixIcon"
-              :size="size"
-              @clear="handleClear"
-              :clearable="clearableVal"
-              :rows="rows"
-              :autosize="{ minRows: minRows, maxRows: maxRows}"
-              :disabled="disabled"
-              ref="main"
-              :model-value="address"
-              @focus="handleShow"
-              @click.="handleClick"
-              :placeholder="placeholder">
+    <el-input
+      :prefix-icon="prefixIcon"
+      :suffix-icon="suffixIcon"
+      :size="size"
+      @clear="handleClear"
+      :clearable="clearableVal"
+      :rows="rows"
+      :autosize="{ minRows: minRows, maxRows: maxRows }"
+      :disabled="disabled"
+      ref="main"
+      :model-value="address"
+      @focus="handleShow"
+      @click.="handleClick"
+      :placeholder="placeholder"
+    >
     </el-input>
     <div v-if="box">
-      <el-dialog class="avue-dialog"
-                 :width="dialogWidth"
-                 :before-close="beforeClose"
-                 :append-to-body="$AVUE.appendToBody"
-                 lock-scroll
-                 :title="placeholder"
-                 @close="handleClose"
-                 v-model="box">
-        <div :class="b('content')"
-             v-if="box">
-          <el-input :class="b('content-input')"
-                    id="map__input"
-                    :size="size"
-                    @clear="clear"
-                    :readonly="disabled"
-                    v-model="formattedAddress"
-                    clearable
-                    placeholder="输入关键字选取地点"></el-input>
+      <el-dialog
+        class="avue-dialog"
+        :width="dialogWidth"
+        :before-close="beforeClose"
+        :append-to-body="$AVUE.appendToBody"
+        lock-scroll
+        :title="placeholder"
+        @close="handleClose"
+        v-model="box"
+      >
+        <div :class="b('content')" v-if="box">
+          <el-input
+            :class="b('content-input')"
+            id="map__input"
+            :size="size"
+            @clear="clear"
+            :readonly="disabled"
+            v-model="formattedAddress"
+            clearable
+            placeholder="输入关键字选取地点"
+          ></el-input>
           <div :class="b('content-box')">
-            <div id="map__container"
-                 :class="b('content-container')"
-                 tabindex="0"></div>
-            <div id="map__result"
-                 :class="b('content-result')"></div>
+            <div
+              id="map__container"
+              :class="b('content-container')"
+              tabindex="0"
+            ></div>
+            <div id="map__result" :class="b('content-result')"></div>
           </div>
         </div>
         <span class="avue-dialog__footer">
-          <el-button type="primary"
-                     :size="size"
-                     icon="el-icon-check"
-                     v-if="!(disabled || readonly)"
-                     @click="handleSubmit">{{t("common.submitBtn")}}</el-button>
+          <el-button
+            type="primary"
+            :size="size"
+            icon="el-icon-check"
+            v-if="!(disabled || readonly)"
+            @click="handleSubmit"
+            >{{ t("common.submitBtn") }}</el-button
+          >
         </span>
-
       </el-dialog>
     </div>
-
   </div>
 </template>
 <script>
@@ -67,56 +74,56 @@ export default create({
     beforeClose: Function,
     mapChange: Function,
     prefixIcon: {
-      type: String
+      type: String,
     },
     suffixIcon: {
-      type: String
+      type: String,
     },
     dialogWidth: {
       type: String,
-      default: '80%'
+      default: "80%",
     },
     rows: Number,
     minRows: {
       type: Number,
-      default: 1
+      default: 1,
     },
     maxRows: {
-      type: Number
-    }
+      type: Number,
+    },
   },
-  data () {
+  data() {
     return {
-      formattedAddress: '',
-      address: '',
-      poi: {},
+      formattedAddress: "",
+      address: "",
+      poi: {},  
       marker: null,
       map: null,
-      box: false
+      box: false,
     };
   },
   watch: {
-    poi (val) {
-      this.formattedAddress = val.formattedAddress
+    poi(val) {
+      this.formattedAddress = val.formattedAddress;
     },
-    value (val) {
+    modelValue(val) {
       if (this.validatenull(val)) {
-        this.poi = {}
-        this.address = ''
+        this.poi = {};
+        this.address = "";
       }
     },
-    text (val) {
+    text(val) {
       if (!this.validatenull(val)) {
         this.poi = {
           longitude: val[0],
           latitude: val[1],
           formattedAddress: val[2],
-        }
+        };
         this.address = val[2];
       }
     },
     box: {
-      handler () {
+      handler() {
         if (this.box) {
           this.$nextTick(() =>
             this.init(() => {
@@ -128,90 +135,94 @@ export default create({
           );
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   computed: {
-    longitude () {
-      return this.text[0]
+    longitude() {
+      return this.text[0];
     },
-    latitude () {
-      return this.text[1]
+    latitude() {
+      return this.text[1];
     },
-    title () {
-      return (this.disabled || this.readonly) ? "查看" : '选择'
-    }
+    title() {
+      return this.disabled || this.readonly ? "查看" : "选择";
+    },
   },
   methods: {
-    handleTextValue (val) {
+    handleTextValue(val) {
       if (!this.validatenull(val)) {
         this.poi = {
           longitude: val[0],
           latitude: val[1],
           formattedAddress: val[2],
-        }
+        };
         this.address = val[2];
       }
     },
-    handleModelValue (val) {
-      if (this.validatenull(val)) this.poi = {}
+    handleModelValue(val) {
+      if (this.validatenull(val)) this.poi = {};
     },
-    clear () {
+    clear() {
       this.poi = {};
       this.clearMarker();
     },
-    handleSubmit () {
-      this.setVal()
+    handleSubmit() {
+      this.setVal();
       this.box = false;
     },
-    handleClear () {
+    handleClear() {
       this.text = [];
       this.poi = {};
-      this.handleChange(this.text)
+      this.handleChange(this.text);
       setTimeout(() => {
         this.box = false;
-      }, 0)
+      }, 0);
     },
-    setVal () {
-      this.text = [this.poi.longitude, this.poi.latitude, this.poi.formattedAddress]
-      this.handleChange(this.text)
+    setVal() {
+      this.text = [
+        this.poi.longitude,
+        this.poi.latitude,
+        this.poi.formattedAddress,
+      ];
+      this.handleChange(this.text);
     },
-    handleShow () {
+    handleShow() {
       this.$refs.main.blur();
       this.box = true;
     },
     //新增坐标
-    addMarker (R, P) {
+    addMarker(R, P) {
       this.clearMarker();
       this.marker = new window.AMap.Marker({
-        position: [R, P]
+        position: [R, P],
       });
       this.marker.setMap(this.map);
     },
     //清空坐标
-    clearMarker () {
+    clearMarker() {
       if (this.marker) {
         this.marker.setMap(null);
         this.marker = null;
       }
     },
     //获取坐标
-    getAddress (R, P) {
+    getAddress(R, P) {
       //回调函数
       let geocoder = new window.AMap.Geocoder({});
       geocoder.getAddress([R, P], (status, result) => {
         if (status === "complete" && result.info === "OK") {
-          this.mapChange && this.mapChange(result)
+          this.mapChange && this.mapChange(result);
           const regeocode = result.regeocode;
           this.poi = Object.assign(regeocode, {
             longitude: R,
-            latitude: P
+            latitude: P,
           });
           // 自定义点标记内容
           var markerContent = document.createElement("div");
           // 点标记中的图标
           var markerImg = document.createElement("img");
-          markerImg.style.width = "25px"
+          markerImg.style.width = "25px";
           markerImg.src =
             "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png";
           markerContent.appendChild(markerImg);
@@ -225,12 +236,12 @@ export default create({
         }
       });
     },
-    handleClose () {
+    handleClose() {
       window.poiPicker.clearSearchResults();
     },
-    addClick () {
-      this.map.on("click", e => {
-        if (this.disabled || this.readonly) return
+    addClick() {
+      this.map.on("click", (e) => {
+        if (this.disabled || this.readonly) return;
         const lnglat = e.lnglat;
         const P = lnglat.lat;
         const R = lnglat.lng;
@@ -238,56 +249,63 @@ export default create({
         this.getAddress(R, P);
       });
     },
-    init (callback) {
+    init(callback) {
       if (!window.AMap) {
-        packages.logs('Map')
-        return
+        packages.logs("Map");
+        return;
       }
-      this.map = new window.AMap.Map("map__container", Object.assign({
-        zoom: 13,
-        center: (() => {
-          if (this.longitude && this.latitude) return [this.longitude, this.latitude];
-        })()
-      }, this.params));
+      this.map = new window.AMap.Map(
+        "map__container",
+        Object.assign(
+          {
+            zoom: 13,
+            center: (() => {
+              if (this.longitude && this.latitude)
+                return [this.longitude, this.latitude];
+            })(),
+          },
+          this.params
+        )
+      );
       this.initPoip();
       this.addClick();
       callback();
     },
-    initPoip () {
+    initPoip() {
       if (!window.AMapUI) {
-        packages.logs('MapUi')
-        return
+        packages.logs("MapUi");
+        return;
       }
-      window.AMapUI.loadUI(["misc/PoiPicker"], PoiPicker => {
+      window.AMapUI.loadUI(["misc/PoiPicker"], (PoiPicker) => {
         var poiPicker = new PoiPicker({
           input: "map__input",
           placeSearchOptions: {
             map: this.map,
-            pageSize: 10
+            pageSize: 10,
           },
-          searchResultsContainer: "map__result"
+          searchResultsContainer: "map__result",
         });
         //初始化poiPicker
         this.poiPickerReady(poiPicker);
       });
     },
-    poiPickerReady (poiPicker) {
+    poiPickerReady(poiPicker) {
       window.poiPicker = poiPicker;
       //选取了某个POI
-      poiPicker.on("poiPicked", poiResult => {
+      poiPicker.on("poiPicked", (poiResult) => {
         this.clearMarker();
         var source = poiResult.source,
           poi = poiResult.item;
         this.poi = Object.assign(poi, {
           formattedAddress: poi.name,
           longitude: poi.location.lng,
-          latitude: poi.location.lat
+          latitude: poi.location.lat,
         });
         if (source !== "search") {
           poiPicker.searchByKeyword(poi.name);
         }
       });
-    }
-  }
+    },
+  },
 });
 </script>

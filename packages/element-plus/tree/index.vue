@@ -24,6 +24,7 @@
                  :lazy="lazy"
                  :load="treeLoad"
                  :draggable="option.draggable"
+                 :height="option.height"
                  :props="treeProps"
                  :icon-class="iconClass"
                  :indent="indent"

@@ -26,7 +26,7 @@
                  @dblclick.stop="handleCellDblClick(row,item)"
                  :key="columnIndex">
               <span v-if="item.type=='selection'">
-                <el-checkbox :value="index" 
+                <el-checkbox :value="index" :label="index"
                             :disabled="isDisabled(row, index)"
                             @click.stop>&nbsp;</el-checkbox>
               </span>

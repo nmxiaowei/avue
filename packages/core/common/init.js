@@ -97,8 +97,8 @@ export default function (name) {
       updateDic (prop, list) {
         let column = this.findObject(this.propOption, prop);
         let formatter = column.dicFormatter
-        const callback = (list) => {
-          if (typeof formatter === 'function') {
+        const callback = (list,useFormatter = true) => {
+          if (useFormatter && typeof formatter === 'function') {
             this.DIC[prop] = formatter(list, this.tableForm || this.form);
           } else {
             this.DIC[prop] = list;
@@ -112,7 +112,7 @@ export default function (name) {
           sendDic({
             column: column
           }, this).then(list => {
-            dic = callback(list)
+            dic = callback(list,false)
           });
         } else {
           dic = callback(list)
