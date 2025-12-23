@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "3.7.4",
+  "version": "3.7.5",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
   "unpkg": "lib/avue.min.js",
@@ -51,6 +51,7 @@
     "gulp-sass": "^6.0.0",
     "progress-bar-webpack-plugin": "^1.11.0",
     "sass": "^1.52.1",
+    "terser-webpack-plugin": "4",
     "vue": "^3.3.4",
     "vue-loader": "^16.1.2",
     "webpack": "^4.27.0",
