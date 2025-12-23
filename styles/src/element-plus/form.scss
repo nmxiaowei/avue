@@ -2,31 +2,33 @@
   position: relative;
   margin: 0 auto;
   box-sizing: border-box;
-  &__item{
-    &--top{
+  &__item {
+    &--top {
       display: flex;
       flex-direction: column;
-      .el-form-item__label{
-        width:100% !important;
+      margin-right: 20px;
+      box-sizing: border-box;
+      .el-form-item__label {
+        width: 100% !important;
         text-align: left !important;
       }
-      .el-form-item__content{
+      .el-form-item__content {
         margin-left: 0 !important;
       }
     }
-    &--left{
-     .el-form-item__label{
-      text-align: left !important;
-     }
+    &--left {
+      .el-form-item__label {
+        text-align: left !important;
+      }
     }
   }
-  
+
   &__menu {
     padding: 5px 10px 0 10px;
     box-sizing: border-box;
     &--center {
       text-align: center;
-      .el-button{
+      .el-button {
         margin: 0 5px;
       }
     }
@@ -37,7 +39,7 @@
       text-align: right;
     }
   }
-  &__tabs{
+  &__tabs {
     padding: 0 10px;
     box-sizing: border-box;
   }
@@ -45,7 +47,7 @@
     align-items: flex-start;
     flex-wrap: wrap;
     height: auto;
-    &--flex{
+    &--flex {
       display: flex;
     }
     .el-col {
@@ -78,12 +80,12 @@
     }
   }
 }
-.el-drawer{
-  .avue-form{
+.el-drawer {
+  .avue-form {
     padding: 0 20px;
   }
 }
 .field-desc {
   font-size: 12px;
-  color: dimgrey; 
+  color: dimgrey;
 }

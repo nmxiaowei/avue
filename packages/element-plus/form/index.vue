@@ -99,7 +99,10 @@
                   :class="
                     b(
                       'item--' +
-                        (column.labelPosition || item.labelPosition || '')
+                        (column.labelPosition ||
+                          item.labelPosition ||
+                          tableOption.labelPosition ||
+                          '')
                     )
                   "
                   :label-position="
