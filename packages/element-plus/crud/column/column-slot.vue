@@ -14,7 +14,10 @@
     :filtered-multiple="column.filterMultiple"
     :filters="getColumnProp(column, 'filters')"
     :filter-method="
-      getColumnProp(column, 'filterMethod') ? handleFilterMethod : undefined
+      column.filters
+        ? (value, row) =>
+            getColumnProp(columnOption, 'filterMethod', { value, row, column })
+        : undefined
     "
     :filter-multiple="validData(column.filterMultiple, true)"
     :show-overflow-tooltip="column.showOverflowTooltip || column.overHidden"
@@ -208,7 +211,7 @@ export default {
     columnOption: Array,
   },
   created() {
-    const list = ["getColumnProp", "handleFilterMethod", "handleFilters"];
+    const list = ["getColumnProp"];
     list.forEach((ele) => {
       this[ele] = this.dynamic[ele];
     });
