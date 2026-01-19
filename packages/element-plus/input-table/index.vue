@@ -180,7 +180,7 @@ export default create({
       if (typeof this.onLoad == "function") {
         this.onLoad({ value: this.text }, (data) => {
           let result = Array.isArray(data) ? data : [data];
-          const value = this.modelValue;
+          const value = this.text;
           const valueArray = result.filter((item) =>
             value.some((val) => val == item[this.valueKey])
           );

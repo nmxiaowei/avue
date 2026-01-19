@@ -1,16 +1,26 @@
-import { validatenull } from 'utils/validate';
-import { KEY_COMPONENT_NAME, DIC_SPLIT, ARRAY_LIST, DATE_LIST, INPUT_LIST, ARRAY_VALUE_LIST, MULTIPLE_LIST, SELECT_LIST, RANGE_LIST } from 'global/variable';
-import { detailDataType, findObject, createObj } from 'utils/util';
-import { t } from 'locale';
+import { validatenull } from "utils/validate";
+import {
+  KEY_COMPONENT_NAME,
+  DIC_SPLIT,
+  ARRAY_LIST,
+  DATE_LIST,
+  INPUT_LIST,
+  ARRAY_VALUE_LIST,
+  MULTIPLE_LIST,
+  SELECT_LIST,
+  RANGE_LIST,
+} from "global/variable";
+import { detailDataType, findObject, createObj } from "utils/util";
+import { t } from "locale";
 /**
  * 计算级联属性
  */
 export const calcCascader = (list = []) => {
-  list.forEach(ele => {
+  list.forEach((ele) => {
     let cascader = ele.cascader;
     if (!validatenull(cascader)) {
       let parentProp = ele.prop;
-      cascader.forEach(citem => {
+      cascader.forEach((citem) => {
         let column = findObject(list, citem);
         if (column) column.parentProp = parentProp;
       });
@@ -40,7 +50,15 @@ export const calcCount = (ele, spanDefault = 12, init = false) => {
  * 初始化数据格式
  */
 export const initVal = (value, safe) => {
-  let { type, multiple, dataType, separator = DIC_SPLIT, alone, emitPath, range } = safe;
+  let {
+    type,
+    multiple,
+    dataType,
+    separator = DIC_SPLIT,
+    alone,
+    emitPath,
+    range,
+  } = safe;
   let list = value;
   if (
     (MULTIPLE_LIST.includes(type) && multiple == true) ||
@@ -51,10 +69,10 @@ export const initVal = (value, safe) => {
       if (validatenull(list)) {
         list = [];
       } else {
-        if (dataType == 'json') {
+        if (dataType == "json") {
           list = JSON.parse(list);
         } else {
-          list = (list + '').split(separator) || [];
+          list = (list + "").split(separator) || [];
         }
       }
     }
@@ -62,7 +80,7 @@ export const initVal = (value, safe) => {
     list.forEach((ele, index) => {
       list[index] = detailDataType(ele, dataType);
     });
-    if (ARRAY_LIST.includes(type) && validatenull(list) && alone) list = [''];
+    if (ARRAY_LIST.includes(type) && validatenull(list) && alone) list = [""];
   } else {
     list = detailDataType(list, dataType);
   }
@@ -77,19 +95,19 @@ export const getSearchType = (column) => {
   const range = column.searchRange;
   let result = type;
   if (column.searchType) return column.searchType;
-  if (['radio', 'checkbox', 'switch'].includes(type)) {
-    result = 'select';
+  if (["radio", "checkbox", "switch"].includes(type)) {
+    result = "select";
   } else if (DATE_LIST.includes(type)) {
-    let rangeKey = 'range';
+    let rangeKey = "range";
     if (range) {
       if (!type.includes(rangeKey)) {
         result = type + rangeKey;
       } else {
         result = type;
       }
-    } else result = type.replace(rangeKey, '');
-  } else if (['textarea'].includes(type)) {
-    result = 'input';
+    } else result = type.replace(rangeKey, "");
+  } else if (["textarea"].includes(type)) {
+    result = "input";
   }
   return result;
 };
@@ -98,19 +116,19 @@ export const getSearchType = (column) => {
  * 动态获取组件
  */
 export const getComponent = (type, component) => {
-  let result = type || 'input';
+  let result = type || "input";
   if (!validatenull(component)) {
     return component;
   } else if (ARRAY_LIST.includes(type)) {
-    result = 'array';
-  } else if (['time', 'timerange'].includes(type)) {
-    result = 'time';
+    result = "array";
+  } else if (["time", "timerange"].includes(type)) {
+    result = "time";
   } else if (DATE_LIST.includes(type)) {
-    result = 'date';
-  } else if (['password', 'textarea', 'search'].includes(type)) {
-    result = 'input';
+    result = "date";
+  } else if (["password", "textarea", "search"].includes(type)) {
+    result = "input";
   } else if (INPUT_LIST.includes(type)) {
-    result = 'input-' + type;
+    result = "input-" + type;
   }
   return KEY_COMPONENT_NAME + result;
 };
@@ -121,22 +139,25 @@ export const getComponent = (type, component) => {
 
 export const formInitVal = (list = []) => {
   let tableForm = {};
-  list.forEach(ele => {
+  list.forEach((ele) => {
     if (
-      ['rate', 'slider', 'number'].includes(ele.type) ||
-      ele.dataType === 'number' ||
-      (ele.type == 'select' && ele.virtualize == true)
+      ["rate", "slider", "number"].includes(ele.type) ||
+      ele.dataType === "number" ||
+      (ele.type == "select" && ele.virtualize == true)
     ) {
       tableForm[ele.prop] = undefined;
     } else if (
-      (ARRAY_VALUE_LIST.includes(ele.type) && ele.emitPath !== false && ele.dataType != 'json') ||
-      (MULTIPLE_LIST.includes(ele.type) && ele.multiple) || ele.dataType === 'array'
+      (ARRAY_VALUE_LIST.includes(ele.type) &&
+        ele.emitPath !== false &&
+        ele.dataType != "json") ||
+      (MULTIPLE_LIST.includes(ele.type) && ele.multiple) ||
+      ele.dataType === "array"
     ) {
       tableForm[ele.prop] = [];
     } else if (RANGE_LIST.includes(ele.type) && ele.range == true) {
       tableForm[ele.prop] = [0, 0];
     } else {
-      tableForm[ele.prop] = '';
+      tableForm[ele.prop] = "";
     }
     if (ele.bind) {
       tableForm = createObj(tableForm, ele.bind);
@@ -147,13 +168,12 @@ export const formInitVal = (list = []) => {
     }
   });
   return tableForm;
-
 };
 
-export const getPlaceholder = function(column, type) {
+export const getPlaceholder = function (column, type) {
   const placeholder = column.placeholder;
   const label = column.label;
-  if (type === 'search') {
+  if (type === "search") {
     const searchPlaceholder = column.searchPlaceholder;
     if (!validatenull(searchPlaceholder)) {
       return searchPlaceholder;
@@ -162,9 +182,9 @@ export const getPlaceholder = function(column, type) {
     }
   } else if (validatenull(placeholder)) {
     if (SELECT_LIST.includes(column.type)) {
-      return `${t('tip.select')} ${label}`;
+      return `${t("tip.select")} ${label}`;
     } else {
-      return `${t('tip.input')} ${label}`;
+      return `${t("tip.input")} ${label}`;
     }
   }
 

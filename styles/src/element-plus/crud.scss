@@ -4,7 +4,7 @@ $space-width: 15px;
 .avue-crud {
   margin: 0 auto;
   width: 100%;
-  .el-card+.el-card {
+  .el-card + .el-card {
     margin-top: 8px;
   }
 
@@ -23,7 +23,7 @@ $space-width: 15px;
       padding: 0;
     }
 
-    .el-card+.el-card {
+    .el-card + .el-card {
       margin-top: 0;
     }
   }
@@ -43,7 +43,7 @@ $space-width: 15px;
     .el-form-item__content {
       line-height: inherit;
       font-size: inherit;
-      .el-tooltip__trigger{
+      .el-tooltip__trigger {
         width: 100%;
       }
     }
@@ -55,7 +55,7 @@ $space-width: 15px;
     }
   }
 
-  .el-dropdown+.el-button {
+  .el-dropdown + .el-button {
     margin-left: 10px;
   }
 
@@ -64,7 +64,7 @@ $space-width: 15px;
   }
 
   &__img {
-    &>* {
+    & > * {
       height: 50px;
       margin-right: 8px;
       object-fit: contain;
@@ -112,7 +112,6 @@ $space-width: 15px;
     }
   }
 
-
   th {
     word-break: break-word;
     color: rgba(0, 0, 0, 0.85);
@@ -151,7 +150,7 @@ $space-width: 15px;
     opacity: 0.4;
   }
 
-  .is-always-shadow+&__pagination {
+  .is-always-shadow + &__pagination {
     padding: 0;
   }
 
@@ -264,7 +263,7 @@ $space-width: 15px;
         font-size: 14px;
 
         &:hover {
-          color: #409EFF;
+          color: #409eff;
         }
 
         cursor: pointer;
@@ -287,18 +286,18 @@ $space-width: 15px;
 
   &__grid {
     overflow-y: auto;
-    .el-switch{
+    .el-switch {
       height: 22px;
     }
-    .el-switch__core{
+    .el-switch__core {
       height: 16px;
     }
-   .el-switch__action{
+    .el-switch__action {
       height: 14px;
     }
     .el-col {
       padding: 10px;
-      padding-left:0;
+      padding-left: 0;
       box-sizing: border-box;
     }
 
@@ -322,7 +321,7 @@ $space-width: 15px;
       font-size: 12px;
       color: #666;
       display: flex;
-      align-items: flex-start
+      align-items: flex-start;
     }
 
     &__label {
@@ -336,7 +335,7 @@ $space-width: 15px;
       &::after {
         position: absolute;
         right: -3px;
-        content: ':'
+        content: ":";
       }
     }
 
@@ -362,7 +361,6 @@ $space-width: 15px;
       .el-button {
         font-size: 12px;
       }
-
     }
 
     .row {
@@ -381,7 +379,7 @@ $space-width: 15px;
       top: 18px;
 
       &:before {
-        content: 'No';
+        content: "No";
         margin-right: 2px;
         font-weight: bold;
       }
@@ -409,8 +407,6 @@ $space-width: 15px;
       justify-content: flex-end;
       text-align: right;
     }
-
-
   }
 
   &__ellipsis {
@@ -419,5 +415,19 @@ $space-width: 15px;
     text-overflow: ellipsis;
     max-width: 100%;
     display: inline-block;
+  }
+  .el-table__body-wrapper tr td.el-table-fixed-column--left,
+  .el-table__body-wrapper tr td.el-table-fixed-column--right,
+  .el-table__body-wrapper tr th.el-table-fixed-column--left,
+  .el-table__body-wrapper tr th.el-table-fixed-column--right,
+  .el-table__footer-wrapper tr td.el-table-fixed-column--left,
+  .el-table__footer-wrapper tr td.el-table-fixed-column--right,
+  .el-table__footer-wrapper tr th.el-table-fixed-column--left,
+  .el-table__footer-wrapper tr th.el-table-fixed-column--right,
+  .el-table__header-wrapper tr td.el-table-fixed-column--left,
+  .el-table__header-wrapper tr td.el-table-fixed-column--right,
+  .el-table__header-wrapper tr th.el-table-fixed-column--left,
+  .el-table__header-wrapper tr th.el-table-fixed-column--right {
+    background-color: #fff;
   }
 }

@@ -62,7 +62,7 @@ app.mount('#app')
 除了核心框架外，我们还提供以下解决方案：
 
 -  **[数据大屏](https://data.avuejs.com)** - 专业的可视化数据大屏解决方案
--  **[数据组态](http://iot.huiteng.club)** - 工业物联网数据组态平台
+-  **[数据组态](http://iot.avuejs.com)** - 工业物联网数据组态平台
 -  **[AI大模型](http://ai.avuejs.com)** - 智能AI应用解决方案
 
 ## 🤝 参与贡献
