@@ -9,9 +9,13 @@
     filter-placement="bottom-end"
     :filters="getColumnProp(columnOption, 'filters')"
     :filter-method="
-      column.filters
+      columnOption.filters
         ? (value, row) =>
-            getColumnProp(columnOption, 'filterMethod', { value, row, column })
+            getColumnProp(columnOption, 'filterMethod', {
+              value,
+              row,
+              column: columnOption,
+            })
         : undefined
     "
     :filter-multiple="validData(columnOption.filterMultiple, true)"
