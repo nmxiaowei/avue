@@ -3,7 +3,7 @@
            :class="b('pagination')"
            v-if="pageFlag && validData(crud.tableOption.page,true)">
     <slot name="page"></slot>
-    <el-pagination :small="crud.size=='small'"
+    <el-pagination :size="crud.size"
                    :disabled="defaultPage.disabled"
                    :hide-on-single-page="defaultPage.single"
                    :pager-count="defaultPage.pagerCount"
