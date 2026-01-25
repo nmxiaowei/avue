@@ -90,6 +90,15 @@ export default create({
             value: ele[props.value || DIC_PROPS.value],
           });
         });
+      } else {
+        this.crud.cellForm.list.forEach((ele) => {
+          if (!list.map((item) => item.text).includes(ele[column.prop])) {
+            list.push({
+              text: ele[column.prop],
+              value: ele[column.prop],
+            });
+          }
+        });
       }
       return list;
     },
