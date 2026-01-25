@@ -380,7 +380,6 @@ export const findArray = (
   return node;
 };
 export const findNode = (list = [], props = {}, value) => {
-  list = _cloneDeep(list);
   const valueKey = props.value || DIC_PROPS.value;
   const childrenKey = props.children || DIC_PROPS.children;
   for (const ele of list) {
