@@ -74,8 +74,12 @@ export default create({
     },
     //表格筛选字典
     handleFilters(column) {
+      if (Array.isArray(column.filters))
+        return column.filters.map((ele) => ({
+          text: ele.label,
+          value: ele.value,
+        }));
       if (column.filters !== true) return undefined;
-      if (Array.isArray(column.filters)) return column.filters;
       let DIC = this.crud.DIC[column.prop] || [];
       let list = [];
       if (!this.validatenull(DIC)) {
@@ -85,6 +89,15 @@ export default create({
             text: ele[props.label || DIC_PROPS.label],
             value: ele[props.value || DIC_PROPS.value],
           });
+        });
+      } else {
+        this.crud.cellForm.list.forEach((ele) => {
+          if (!list.map((item) => item.text).includes(ele[column.prop])) {
+            list.push({
+              text: ele[column.prop],
+              value: ele[column.prop],
+            });
+          }
         });
       }
       return list;

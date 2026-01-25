@@ -62,13 +62,13 @@ function logDivider(title = "") {
 // ============================================================
 
 const banner =
-  " Avue.js v" +
+  "Avue.js v" +
   version +
   "\n" +
-  " (c) 2017-" +
+  "(c) 2017-" +
   new Date().getFullYear() +
   " Smallwei\n" +
-  " Released under the MIT License.\n";
+  "Released under the MIT License.";
 
 // 外部依赖配置 - 这些依赖不会打包进最终文件，减小体积
 const externals = {
@@ -208,8 +208,8 @@ function genConfig(name) {
                 },
                 // 输出选项
                 output: {
-                  // 移除注释
-                  comments: false,
+                  // 保留 banner 注释
+                  comments: /^!/,
                   // 保持 ASCII 输出
                   ascii_only: true,
                 },
