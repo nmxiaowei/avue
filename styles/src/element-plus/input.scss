@@ -1,0 +1,208 @@
+// 输入框样式
+.avue-input {
+
+    // 手机号输入框样式
+    &__phone {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+
+        .el-select {
+            flex-shrink: 0;
+            width: 120px !important;
+        }
+
+        .el-input {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+
+    &__phone-code {
+        .el-input__inner {
+            text-align: center;
+        }
+    }
+
+    // 货币输入框样式
+    &__currency {
+        .el-input__inner {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .el-input-group__prepend,
+        .el-input-group__append {
+            padding: 0 12px;
+            font-weight: 500;
+        }
+    }
+
+    // 银行卡输入框样式
+    &__bank-card {
+        .el-input__inner {
+            letter-spacing: 2px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    }
+
+    &__bank-card-type {
+        font-size: 12px;
+        color: #909399;
+        padding-right: 8px;
+    }
+
+    // 身份证输入框样式
+    &__id-card {
+        .el-input__inner {
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        &--invalid {
+            .el-input__wrapper {
+                box-shadow: 0 0 0 1px #f56c6c inset;
+            }
+        }
+    }
+
+    &__id-card-info {
+        cursor: pointer;
+        padding-right: 8px;
+        font-weight: bold;
+    }
+
+    // 邮箱验证图标
+    &__email-valid {
+        padding-right: 8px;
+        font-weight: bold;
+    }
+
+    // 验证码输入框样式
+    &__code {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-start;
+    }
+
+    &__code-item {
+        width: 42px;
+        height: 42px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        border: 1px solid #dcdfe6;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+            border-color: #409eff;
+        }
+
+        &.is-disabled {
+            background-color: #f5f7fa;
+            color: #c0c4cc;
+            cursor: not-allowed;
+        }
+    }
+
+    // 车牌号输入框样式
+    &__plate {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__plate-province {
+        flex-shrink: 0;
+    }
+
+    &__plate-number {
+        flex: 1;
+
+        .el-input__inner {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    }
+
+    // IP地址输入框样式
+    &__ip {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    &__ip-segment {
+        width: 50px;
+        height: 32px;
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace;
+        border: 1px solid #dcdfe6;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+            border-color: #409eff;
+        }
+
+        &.is-disabled {
+            background-color: #f5f7fa;
+            color: #c0c4cc;
+            cursor: not-allowed;
+        }
+    }
+
+    &__ip-dot {
+        font-size: 20px;
+        font-weight: bold;
+        color: #606266;
+        padding: 0 2px;
+    }
+
+    // MAC地址输入框样式
+    &__mac {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    &__mac-segment {
+        width: 36px;
+        height: 32px;
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace;
+        text-transform: uppercase;
+        border: 1px solid #dcdfe6;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+            border-color: #409eff;
+        }
+
+        &.is-disabled {
+            background-color: #f5f7fa;
+            color: #c0c4cc;
+            cursor: not-allowed;
+        }
+    }
+
+    &__mac-sep {
+        font-size: 14px;
+        color: #606266;
+        padding: 0 1px;
+    }
+
+    // 社会信用代码验证图标
+    &__uscc-valid {
+        padding-right: 8px;
+        font-weight: bold;
+    }
+}

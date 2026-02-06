@@ -125,7 +125,7 @@ export const getComponent = (type, component) => {
     result = "time";
   } else if (DATE_LIST.includes(type)) {
     result = "date";
-  } else if (["password", "textarea", "search"].includes(type)) {
+  } else if (["password", "textarea", "search", "phone", "currency", "bankCard", "bank-card", "idCard", "id-card", "email", "code", "plate", "ip", "mac", "uscc"].includes(type)) {
     result = "input";
   } else if (INPUT_LIST.includes(type)) {
     result = "input-" + type;
