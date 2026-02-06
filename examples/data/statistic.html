@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data-statistic 统计数值卡片</title>
+    <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .demo-section h3 {
+            color: #409eff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-statistic 统计数值卡片</h1>
+
+        <div class="demo-section">
+            <h3>基础用法</h3>
+            <avue-data-statistic :option="option1"></avue-data-statistic>
+        </div>
+
+        <div class="demo-section">
+            <h3>带趋势指标</h3>
+            <avue-data-statistic :option="option2"></avue-data-statistic>
+        </div>
+
+        <div class="demo-section">
+            <h3>自定义样式</h3>
+            <avue-data-statistic :option="option3"></avue-data-statistic>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const option1 = ref({
+                    span: 6,
+                    data: [
+                        { title: '总用户', value: 8846 },
+                        { title: '今日订单', value: 156 },
+                        { title: '本月收入', value: 98500, prefix: '¥' },
+                        { title: '在线人数', value: 234 }
+                    ]
+                });
+
+                const option2 = ref({
+                    span: 6,
+                    data: [
+                        { title: '销售额', value: 128000, prefix: '¥', trend: 12.5, trendText: 'vs 昨日' },
+                        { title: '订单数', value: 1256, trend: -5.2, trendText: 'vs 昨日' },
+                        { title: '用户数', value: 8846, trend: 8.1, trendText: 'vs 昨日' },
+                        { title: '访问量', value: 128560, trend: 15.3, trendText: 'vs 昨日' }
+                    ]
+                });
+
+                const option3 = ref({
+                    span: 6,
+                    data: [
+                        { title: '总收入', value: 256800, prefix: '¥', suffix: '元', valueColor: '#67c23a' },
+                        { title: '完成率', value: 98.5, suffix: '%', decimals: 1, valueColor: '#409eff' },
+                        { title: '待处理', value: 23, valueColor: '#e6a23c' },
+                        { title: '异常数', value: 5, valueColor: '#f56c6c' }
+                    ]
+                });
+
+                return { option1, option2, option3 };
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

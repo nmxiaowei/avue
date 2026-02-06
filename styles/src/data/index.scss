@@ -11,13 +11,17 @@
 @import './pay.scss';
 @import './price.scss';
 @import './panel.scss';
-[class^="avue-data-"]{
-  a{
+@import './data-cards.scss';
+@import './data-cards2.scss';
+
+[class^="avue-data-"] {
+  a {
     text-decoration: none;
   }
 }
-[class^="data-"]{
-  a{
+
+[class^="data-"] {
+  a {
     text-decoration: none;
   }
 }

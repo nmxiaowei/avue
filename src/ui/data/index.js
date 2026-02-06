@@ -11,4 +11,16 @@ import DataRotate from 'packages/data/rotate';
 import DataPay from 'packages/data/pay';
 import DataPrice from 'packages/data/price';
 import DataPanel from 'packages/data/panel';
-export default { DataTabs, DataCardText, DataBox, DataProgress, DataIcons, DataCard, DataDisplay, DataImgText, DataOperaText, DataRotate, DataPay, DataPrice, DataPanel };
+import DataStatistic from 'packages/data/statistic';
+import DataWeather from 'packages/data/weather';
+import DataRank from 'packages/data/rank';
+import DataProfile from 'packages/data/profile';
+import DataProduct from 'packages/data/product';
+import DataCountdown from 'packages/data/countdown';
+import DataNotice from 'packages/data/notice';
+import DataTask from 'packages/data/task';
+import DataList from 'packages/data/list';
+import DataDashboard from 'packages/data/dashboard';
+export default { DataTabs, DataCardText, DataBox, DataProgress, DataIcons, DataCard, DataDisplay, DataImgText, DataOperaText, DataRotate, DataPay, DataPrice, DataPanel, DataStatistic, DataWeather, DataRank, DataProfile, DataProduct, DataCountdown, DataNotice, DataTask, DataList, DataDashboard };
+
+

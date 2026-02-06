@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>data-dashboard 仪表盘</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-dashboard 仪表盘</h1>
+        <avue-data-dashboard :option="option"></avue-data-dashboard>
+    </div>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    option: {
+                        span: 6,
+                        data: [
+                            {
+                                title: '本周销售额',
+                                value: 128560,
+                                unit: '元',
+                                status: '正常',
+                                statusType: 'success',
+                                chartData: [30, 45, 60, 40, 70, 85, 90],
+                                chartColor: '#67c23a',
+                                footerText: '周同比',
+                                footerValue: '+12.5%',
+                                footerColor: '#67c23a'
+                            },
+                            {
+                                title: '今日访问量',
+                                value: 8846,
+                                status: '上升',
+                                statusType: 'warning',
+                                chartData: [20, 35, 50, 45, 60, 55, 70],
+                                chartColor: '#409eff',
+                                footerText: '日同比',
+                                footerValue: '+8.2%',
+                                footerColor: '#409eff'
+                            },
+                            {
+                                title: '新增用户',
+                                value: 256,
+                                chartData: [40, 30, 50, 60, 45, 70, 65],
+                                chartColor: '#e6a23c',
+                                footerText: '转化率',
+                                footerValue: '23.5%'
+                            },
+                            {
+                                title: '待处理订单',
+                                value: 23,
+                                status: '注意',
+                                statusType: 'danger',
+                                chartData: [60, 50, 40, 55, 35, 45, 30],
+                                chartColor: '#f56c6c',
+                                footerText: '超时订单',
+                                footerValue: '3',
+                                footerColor: '#f56c6c'
+                            }
+                        ]
+                    }
+                }
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

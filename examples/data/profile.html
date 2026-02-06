@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data-profile 人员信息卡片</title>
+    <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .demo-section h3 {
+            color: #409eff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-profile 人员信息卡片</h1>
+
+        <div class="demo-section">
+            <h3>团队成员</h3>
+            <avue-data-profile :option="option1"></avue-data-profile>
+        </div>
+
+        <div class="demo-section">
+            <h3>带统计数据</h3>
+            <avue-data-profile :option="option2"></avue-data-profile>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const option1 = ref({
+                    span: 6,
+                    data: [
+                        { name: '张三', title: '前端工程师', avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', tags: ['Vue', 'React'] },
+                        { name: '李四', title: '后端工程师', avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', tags: ['Java', 'Go'] },
+                        { name: '王五', title: '产品经理', avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', tags: ['需求分析'] },
+                        { name: '赵六', title: 'UI设计师', avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', tags: ['Figma', 'Sketch'] }
+                    ]
+                });
+
+                const option2 = ref({
+                    span: 8,
+                    data: [
+                        {
+                            name: '张三',
+                            title: '高级前端工程师',
+                            desc: '5年开发经验，专注于Vue生态',
+                            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+                            phone: '138****1234',
+                            email: 'zhang@example.com',
+                            tags: ['Vue', 'TypeScript', 'Node.js'],
+                            stats: [
+                                { label: '项目', value: 28 },
+                                { label: '任务', value: 156 },
+                                { label: '评分', value: 4.9 }
+                            ],
+                            actions: [
+                                { text: '发消息', type: 'primary' },
+                                { text: '关注', type: '' }
+                            ]
+                        },
+                        {
+                            name: '李四',
+                            title: '技术总监',
+                            desc: '10年架构经验',
+                            phone: '139****5678',
+                            email: 'li@example.com',
+                            stats: [
+                                { label: '团队', value: 5 },
+                                { label: '项目', value: 42 },
+                                { label: '评分', value: 5.0 }
+                            ]
+                        }
+                    ]
+                });
+
+                return { option1, option2 };
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

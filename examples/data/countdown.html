@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>data-countdown 倒计时</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-countdown 倒计时</h1>
+        <avue-data-countdown :option="option"></avue-data-countdown>
+    </div>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    option: {
+                        span: 8,
+                        data: [
+                            { title: '距离活动开始', days: 2, hours: 13, minutes: 45, seconds: 30, desc: '夏季大促' },
+                            { title: '秒杀倒计时', hours: 0, minutes: 30, seconds: 0, background: 'linear-gradient(135deg, #f56c6c 0%, #e6a23c 100%)' },
+                            { title: '限时特惠', days: 0, hours: 5, minutes: 20, seconds: 15, background: 'linear-gradient(135deg, #67c23a 0%, #409eff 100%)' }
+                        ]
+                    }
+                }
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
