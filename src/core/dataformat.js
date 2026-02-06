@@ -127,6 +127,8 @@ export const getComponent = (type, component) => {
     result = "date";
   } else if (["password", "textarea", "search", "phone", "currency", "bankCard", "bank-card", "idCard", "id-card", "email", "code", "plate", "ip", "mac", "uscc"].includes(type)) {
     result = "input";
+  } else if (type === "cron") {
+    result = "input-cron";
   } else if (INPUT_LIST.includes(type)) {
     result = "input-" + type;
   }

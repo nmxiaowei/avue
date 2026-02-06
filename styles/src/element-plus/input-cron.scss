@@ -1,0 +1,88 @@
+// Cron 表达式编辑器样式
+.avue-input-cron {
+
+    &__container {
+        padding: 10px 0;
+    }
+
+    &__tab {
+        padding: 15px;
+    }
+
+    &__option {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .el-radio {
+            margin-right: 10px;
+        }
+    }
+
+    &__inline {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 10px;
+        color: #606266;
+    }
+
+    &__specify {
+        margin-top: 10px;
+        padding: 15px;
+        background: #f5f7fa;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+
+        .el-checkbox {
+            margin-right: 15px;
+            margin-bottom: 8px;
+            width: 60px;
+        }
+    }
+
+    &__result {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f5f7fa;
+        border-radius: 4px;
+    }
+
+    &__expression {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    &__label {
+        font-weight: 500;
+        color: #303133;
+        margin-right: 10px;
+        white-space: nowrap;
+    }
+
+    &__preview {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    &__times {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            padding: 4px 0;
+            color: #606266;
+            font-family: 'Courier New', Courier, monospace;
+
+            &::before {
+                content: '→';
+                margin-right: 8px;
+                color: #409eff;
+            }
+        }
+    }
+}
