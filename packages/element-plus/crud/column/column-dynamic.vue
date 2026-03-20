@@ -79,7 +79,7 @@ export default {
   created() {
     const list = ["getColumnProp"];
     list.forEach((ele) => {
-      this[ele] = this.dynamic[ele];
+      if (this.dynamic) this[ele] = this.dynamic[ele];
     });
   },
 };
