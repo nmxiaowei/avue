@@ -3,6 +3,7 @@ import {
   version
 } from './version';
 import axios from 'axios';
+import { identity } from 'utils/identity';
 import {
   validatenull
 } from 'utils/validate.js';
@@ -57,7 +58,7 @@ let directive = {
   contextmenu
 };
 const install = function (Vue, opts = {}) {
-  const defaultOption = {
+  const defaultOption = identity({
     size: opts.size || 'default',
     calcHeight: opts.calcHeight || 0,
     menuType: opts.menuType || 'text',
@@ -90,7 +91,7 @@ const install = function (Vue, opts = {}) {
       accessKeySecret: '',
       bucket: ''
     }, (opts.ali || {}))
-  };
+  });
   Vue.config.globalProperties.$AVUE = Object.assign(opts, defaultOption);
   Object.keys(components).forEach(ele => {
     const component = components[ele];

@@ -3,11 +3,13 @@
   "version": "3.8.2",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/avue.min.js",
+  "types": "types/index.d.ts",
   "unpkg": "lib/avue.min.js",
   "jsdelivr": "lib/avue.min.js",
   "scripts": {
     "dev": "pnpm gen:version && cross-env TARGET=dev gulp watch",
     "gen:version": "node build/version.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "pnpm gen:version && cross-env TARGET=prod UINAME=element-plus gulp build",
     "all": "pnpm build && pnpm dev"
   },
@@ -50,7 +52,9 @@
     "gulp-sass": "^6.0.0",
     "progress-bar-webpack-plugin": "^1.11.0",
     "sass": "^1.52.1",
+    "ts-loader": "^8.4.0",
     "terser-webpack-plugin": "4",
+    "typescript": "^5.4.5",
     "vue-loader": "^16.1.2",
     "webpack": "^4.27.0",
     "webpack-bundle-analyzer": "^3.0.3",
@@ -68,6 +72,7 @@
   },
   "files": [
     "lib",
+    "types",
     "README.md",
     "LICENSE"
   ]
