@@ -1,0 +1,517 @@
+// 统计数值卡片样式
+.data-statistic {
+  &__item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ebeef5;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__title {
+    font-size: 14px;
+    color: #909399;
+    margin-bottom: 8px;
+  }
+
+  &__value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #303133;
+    line-height: 1.2;
+  }
+
+  &__prefix,
+  &__suffix {
+    font-size: 16px;
+    font-weight: normal;
+    color: #606266;
+  }
+
+  &__trend {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #909399;
+
+    &-icon {
+      &.is-up {
+        color: #67c23a;
+      }
+      &.is-down {
+        color: #f56c6c;
+      }
+    }
+
+    &-value {
+      margin-left: 4px;
+      font-weight: 500;
+    }
+
+    &-text {
+      margin-left: 8px;
+    }
+  }
+}
+
+// 天气卡片样式
+.data-weather {
+  &__item {
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  &__city {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__date {
+    font-size: 13px;
+    opacity: 0.8;
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  &__temp {
+    &-value {
+      font-size: 48px;
+      font-weight: 300;
+    }
+    &-unit {
+      font-size: 24px;
+      vertical-align: top;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.9;
+  }
+
+  &__range {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+}
+
+// 排行榜样式
+.data-rank {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #ebeef5;
+
+  &__header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ebeef5;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f7fa;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f5f7fa;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__index {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #909399;
+    margin-right: 12px;
+
+    &.is-first,
+    &.is-second,
+    &.is-third {
+      font-size: 20px;
+    }
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #303133;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 4px;
+  }
+
+  &__value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #409eff;
+    margin-right: 12px;
+  }
+
+  &__unit {
+    font-size: 12px;
+    font-weight: normal;
+    color: #909399;
+  }
+
+  &__bar {
+    width: 100px;
+  }
+}
+
+// 人员信息卡片样式
+.data-profile {
+  &__item {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid #ebeef5;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  &__cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      font-size: 32px;
+      font-weight: 600;
+    }
+  }
+
+  &__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #303133;
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    font-size: 14px;
+    color: #409eff;
+    margin-bottom: 8px;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: #909399;
+    margin-bottom: 12px;
+  }
+
+  &__tags {
+    margin-bottom: 16px;
+
+    .el-tag {
+      margin: 0 4px 4px 0;
+    }
+  }
+
+  &__contact {
+    text-align: left;
+    padding: 12px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    margin-bottom: 16px;
+
+    &-item {
+      font-size: 13px;
+      color: #606266;
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &-icon {
+      margin-right: 8px;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+    border-top: 1px solid #ebeef5;
+    margin-top: 16px;
+  }
+
+  &__stat {
+    flex: 1;
+    text-align: center;
+
+    &-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    &-label {
+      font-size: 12px;
+      color: #909399;
+      margin-top: 4px;
+    }
+  }
+
+  &__actions {
+    margin-top: 16px;
+  }
+}
+
+// 商品卡片样式
+.data-product {
+  &__item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #ebeef5;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+    }
+  }
+
+  &__img {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  &__tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  &__content {
+    padding: 16px;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #303133;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: #909399;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    &-value {
+      font-size: 14px;
+      color: #f7ba2a;
+      margin-left: 8px;
+    }
+
+    &-count {
+      font-size: 12px;
+      color: #909399;
+      margin-left: 4px;
+    }
+  }
+
+  &__price {
+    margin-bottom: 8px;
+
+    &-current {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f56c6c;
+    }
+
+    &-symbol {
+      font-size: 14px;
+    }
+
+    &-original {
+      font-size: 14px;
+      color: #c0c4cc;
+      text-decoration: line-through;
+      margin-left: 8px;
+    }
+  }
+
+  &__discount {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 12px;
+    color: #f56c6c;
+    background: #fef0f0;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+
+  &__info {
+    font-size: 12px;
+    color: #909399;
+    margin-bottom: 12px;
+
+    span {
+      margin-right: 12px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+}

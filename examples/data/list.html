@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>data-list 数据列表</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo {
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-list 数据列表</h1>
+        <div class="demo">
+            <h3>基础列表</h3>
+            <avue-data-list :option="option1"></avue-data-list>
+        </div>
+        <div class="demo">
+            <h3>带操作按钮</h3>
+            <avue-data-list :option="option2"></avue-data-list>
+        </div>
+    </div>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    option1: {
+                        title: '最近访问',
+                        data: [
+                            { title: '项目管理系统', desc: '上次访问：10分钟前', avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', extra: '1.2k', label: '访问量' },
+                            { title: '数据分析平台', desc: '上次访问：1小时前', icon: 'el-icon-data-analysis', iconColor: '#409eff', extra: '856', label: '访问量' },
+                            { title: '用户中心', desc: '上次访问：昨天', icon: 'el-icon-user', iconColor: '#67c23a', extra: '2.3k', label: '访问量' }
+                        ]
+                    },
+                    option2: {
+                        title: '待办事项',
+                        data: [
+                            { title: '审批报销单', desc: '张三提交的差旅报销', tag: '待审批', tagType: 'warning', actions: [{ text: '通过', type: 'primary' }, { text: '拒绝', type: 'danger' }] },
+                            { title: '项目验收', desc: 'XX系统二期', tag: '进行中', tagType: 'success', actions: [{ text: '查看详情' }] },
+                            { title: '合同签署', desc: '需要您的电子签名', tag: '紧急', tagType: 'danger', actions: [{ text: '去签署', type: 'primary' }] }
+                        ]
+                    }
+                }
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

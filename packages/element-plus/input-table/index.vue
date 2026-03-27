@@ -176,19 +176,22 @@ export default create({
       }
     },
     handleTextValue(val) {
-      if (this.created || this.validatenull(val)) return;
       if (typeof this.onLoad == "function") {
         this.onLoad({ value: this.text }, (data) => {
           let result = Array.isArray(data) ? data : [data];
-          const value = this.text;
-          const valueArray = result.filter((item) =>
-            value.some((val) => val == item[this.valueKey])
-          );
+          const valArray = Array.isArray(val) ? val : [val];
+          const activeObjArray = valArray && valArray.length
+              ? result.filter((item) =>valArray.some((val) => val === item[this.valueKey]))
+              : [];
+          this.active = this.deepClone(activeObjArray)
 
-          this.object = this.deepClone(valueArray);
-          this.active = this.deepClone(valueArray);
-
-          this.created = true;
+          const activeObjArray2 = valArray && valArray.length
+              ? valArray.map((item) =>{
+                const resultIndex = result.findIndex((val) => item === val[this.valueKey])
+                return resultIndex < 0 ? {[this.labelKey]: item, [this.valueKey]: item} : result[resultIndex]
+              })
+              : [];
+          this.object = this.deepClone(activeObjArray2)
         });
       }
     },

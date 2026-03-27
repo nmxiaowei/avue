@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>data-task 任务清单</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo {
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-task 任务清单</h1>
+        <div class="demo">
+            <avue-data-task :option="option" @change="handleChange"></avue-data-task>
+        </div>
+    </div>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    option: {
+                        title: '今日任务',
+                        data: [
+                            { title: '完成项目需求文档', deadline: '今天 18:00', priority: '高', completed: false },
+                            { title: '代码评审', deadline: '今天 15:00', priority: '中', completed: true },
+                            { title: '修复登录页面Bug', priority: '高', completed: false },
+                            { title: '整理会议纪要', deadline: '明天', priority: '低', completed: false },
+                            { title: '更新用户手册', completed: true }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                handleChange(data) {
+                    console.log('任务状态变化:', data);
+                }
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

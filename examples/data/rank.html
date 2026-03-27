@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data-rank 排行榜</title>
+    <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .demo-section h3 {
+            color: #409eff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-rank 排行榜</h1>
+
+        <div class="demo-section">
+            <h3>销售排行榜</h3>
+            <avue-data-rank :option="option1"></avue-data-rank>
+        </div>
+
+        <div class="demo-section">
+            <h3>积分排行榜</h3>
+            <avue-data-rank :option="option2"></avue-data-rank>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const option1 = ref({
+                    title: '本月销售TOP5',
+                    unit: '万元',
+                    data: [
+                        { name: '张三', value: 980, avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', desc: '销售一部' },
+                        { name: '李四', value: 870, avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', desc: '销售二部' },
+                        { name: '王五', value: 760, avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', desc: '销售一部' },
+                        { name: '赵六', value: 650, avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', desc: '销售三部' },
+                        { name: '孙七', value: 540, avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', desc: '销售二部' }
+                    ]
+                });
+
+                const option2 = ref({
+                    title: '用户积分榜',
+                    unit: '分',
+                    barColor: '#67c23a',
+                    data: [
+                        { name: '用户A', value: 15800 },
+                        { name: '用户B', value: 12300 },
+                        { name: '用户C', value: 9800 },
+                        { name: '用户D', value: 7600 },
+                        { name: '用户E', value: 5400 }
+                    ]
+                });
+
+                return { option1, option2 };
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

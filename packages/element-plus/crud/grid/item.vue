@@ -1,6 +1,4 @@
-<template>
-
-</template>
+<template></template>
 
 <script>
 export default {
@@ -11,18 +9,18 @@ export default {
     gridRow: Boolean,
     prop: String,
     type: String,
-    label: String
+    label: String,
   },
   computed: {
-    parent () {
-      let parent = this.$parent
+    parent() {
+      let parent = this.$parent;
       while (parent.$parent && !parent.id) {
-        parent = parent.$parent
+        parent = parent.$parent;
       }
-      return parent
-    }
+      return parent;
+    },
   },
-  mounted () {
+  mounted() {
     this.parent.column.push({
       className: this.className,
       labeClassName: this.labeClassName,
@@ -32,11 +30,10 @@ export default {
       prop: this.prop,
       type: this.type,
       header: this.$slots.header,
-      default: this.$slots.default
-    })
-  }
-}
+      default: this.$slots.default,
+    });
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>

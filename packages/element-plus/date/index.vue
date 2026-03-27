@@ -1,37 +1,41 @@
 <template>
   <div :class="b()">
-    <el-date-picker :type="type"
-                    v-model="text"
-                    :popper-class="popperClass"
-                    :size="size"
-                    :cell-class-name="cellClassName"
-                    :editable="editable"
-                    :unlink-panels="unlinkPanels"
-                    :default-value="defaultValue"
-                    :default-time="defaultTime"
-                    :range-separator="rangeSeparator"
-                    :start-placeholder="startPlaceholder || t('date.start')"
-                    :end-placeholder="endPlaceholder || t('date.end')"
-                    :format="format"
-                    :clearable="clearableVal"
-                    :shortcuts="shortcuts"
-                    :disabled-date="disabledDate"
-                    :value-format="valueFormat"
-                    :placeholder="placeholder"
-                    :prefix-icon="prefixIcon"
-                    :show-now="showNow"
-                    @blur="handleBlur"
-                    @focus="handleFocus"
-                    @click="handleClick"
-                    :readonly="readonly"
-                    :disabled="disabled">
+    <el-date-picker
+      :type="type"
+      v-model="text"
+      :popper-class="popperClass"
+      :size="size"
+      :cell-class-name="cellClassName"
+      :editable="editable"
+      :unlink-panels="unlinkPanels"
+      :default-value="defaultValue"
+      :default-time="defaultTime"
+      :range-separator="rangeSeparator"
+      :start-placeholder="startPlaceholder || t('date.start')"
+      :end-placeholder="endPlaceholder || t('date.end')"
+      :format="format"
+      :clearable="clearableVal"
+      :shortcuts="shortcuts"
+      :disabled-date="disabledDate"
+      :disabled-hours="disabledHours"
+      :disabled-minutes="disabledMinutes"
+      :disabled-seconds="disabledSeconds"
+      :value-format="valueFormat"
+      :placeholder="placeholder"
+      :prefix-icon="prefixIcon"
+      :show-now="showNow"
+      @blur="handleBlur"
+      @focus="handleFocus"
+      @click="handleClick"
+      :readonly="readonly"
+      :disabled="disabled"
+    >
       <template #="cell">
         <div class="el-date-table-cell">
-          <slot :item="cell"
-                v-if="$slots.default">
-          </slot>
-          <span class="el-date-table-cell__text"
-                v-else>{{  cell.renderText || cell.text }}</span>
+          <slot :item="cell" v-if="$slots.default"> </slot>
+          <span class="el-date-table-cell__text" v-else>{{
+            cell.renderText || cell.text
+          }}</span>
         </div>
       </template>
     </el-date-picker>
@@ -50,11 +54,14 @@ export default create({
     cellClassName: String,
     prefixIcon: String,
     disabledDate: Function,
+    disabledHours: Function,
+    disabledMinutes: Function,
+    disabledSeconds: Function,
     showNow: Boolean,
     shortcuts: [Array, Function],
     editable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     unlinkPanels: Boolean,
     value: {},
@@ -65,11 +72,10 @@ export default create({
     defaultTime: [String, Array],
     type: {
       type: String,
-      default: "date"
+      default: "date",
     },
     valueFormat: String,
-    format: String
-  }
+    format: String,
+  },
 });
 </script>
-

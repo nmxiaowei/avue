@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>data-notice 公告通知</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo {
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-notice 公告通知</h1>
+        <div class="demo">
+            <avue-data-notice :option="option" @more="handleMore"></avue-data-notice>
+        </div>
+    </div>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    option: {
+                        title: '系统公告',
+                        data: [
+                            { title: '关于2024年春节放假的通知', date: '2024-02-01', tag: '重要', tagColor: '#f56c6c' },
+                            { title: '系统将于本周六进行升级维护', date: '2024-01-28', tag: '通知', tagColor: '#409eff' },
+                            { title: '新功能上线：数据导出功能', date: '2024-01-25', tag: '更新', tagColor: '#67c23a' },
+                            { title: '安全提醒：请定期修改密码', date: '2024-01-20', tag: '安全', tagColor: '#e6a23c' }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                handleMore() {
+                    alert('查看更多');
+                }
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

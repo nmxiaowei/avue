@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data-product 商品卡片</title>
+    <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .demo-section h3 {
+            color: #409eff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-product 商品卡片</h1>
+
+        <div class="demo-section">
+            <h3>商品列表</h3>
+            <avue-data-product :option="option1" @buy="handleBuy" @cart="handleCart"></avue-data-product>
+        </div>
+
+        <div class="demo-section">
+            <h3>促销商品</h3>
+            <avue-data-product :option="option2"></avue-data-product>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const option1 = ref({
+                    span: 6,
+                    data: [
+                        {
+                            name: 'iPhone 15 Pro',
+                            img: 'https://via.placeholder.com/300x300/409eff/fff?text=iPhone',
+                            price: 7999,
+                            originalPrice: 8999,
+                            rating: 4.9,
+                            ratingCount: 1256,
+                            sales: 5000,
+                            tag: '新品',
+                            tagColor: '#409eff'
+                        },
+                        {
+                            name: 'MacBook Pro 14',
+                            img: 'https://via.placeholder.com/300x300/67c23a/fff?text=MacBook',
+                            price: 14999,
+                            originalPrice: 16999,
+                            discount: '立减2000',
+                            rating: 4.8,
+                            ratingCount: 856,
+                            sales: 2000
+                        },
+                        {
+                            name: 'AirPods Pro',
+                            img: 'https://via.placeholder.com/300x300/e6a23c/fff?text=AirPods',
+                            price: 1899,
+                            rating: 4.7,
+                            ratingCount: 3256,
+                            sales: 15000
+                        },
+                        {
+                            name: 'Apple Watch',
+                            img: 'https://via.placeholder.com/300x300/f56c6c/fff?text=Watch',
+                            price: 2999,
+                            originalPrice: 3499,
+                            rating: 4.6,
+                            ratingCount: 2156,
+                            tag: '热销',
+                            tagColor: '#f56c6c'
+                        }
+                    ]
+                });
+
+                const option2 = ref({
+                    span: 8,
+                    showCart: false,
+                    buyText: '立即抢购',
+                    data: [
+                        {
+                            name: '限时秒杀 - 无线耳机',
+                            img: 'https://via.placeholder.com/300x300/909399/fff?text=Sale',
+                            price: 99,
+                            originalPrice: 299,
+                            discount: '3.3折',
+                            stock: 50,
+                            tag: '秒杀',
+                            tagColor: '#f56c6c'
+                        },
+                        {
+                            name: '会员专享 - 蓝牙音箱',
+                            img: 'https://via.placeholder.com/300x300/409eff/fff?text=VIP',
+                            price: 199,
+                            originalPrice: 399,
+                            discount: '5折',
+                            stock: 100,
+                            tag: '会员价'
+                        }
+                    ]
+                });
+
+                const handleBuy = (item) => {
+                    alert('购买: ' + item.name);
+                };
+
+                const handleCart = (item) => {
+                    alert('加入购物车: ' + item.name);
+                };
+
+                return { option1, option2, handleBuy, handleCart };
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

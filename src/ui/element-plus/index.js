@@ -23,6 +23,7 @@ import InputMap from 'packages/element-plus/input-map';
 import InputIcon from 'packages/element-plus/input-icon';
 import InputTag from 'packages/element-plus/input-tag';
 import InputTable from 'packages/element-plus/input-table';
+import InputCron from 'packages/element-plus/input-cron';
 import Mention from 'packages/element-plus/mention';
 import Verifys from 'packages/element-plus/verify';
 import Switchs from 'packages/element-plus/switch';
@@ -66,6 +67,7 @@ export default {
   InputMap,
   InputTag,
   InputTable,
+  InputCron,
   Mention,
   Switchs,
   Rate,
@@ -82,3 +84,4 @@ export default {
   Sign,
   Login
 };
+

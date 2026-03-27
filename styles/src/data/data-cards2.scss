@@ -1,0 +1,379 @@
+// 倒计时样式
+.data-countdown {
+    &__item {
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+        color: #fff;
+        text-align: center;
+    }
+
+    &__title {
+        font-size: 16px;
+        margin-bottom: 16px;
+        opacity: 0.9;
+    }
+
+    &__timer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    &__block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__number {
+        font-size: 36px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        border-radius: 8px;
+        min-width: 60px;
+    }
+
+    &__label {
+        font-size: 12px;
+        margin-top: 8px;
+        opacity: 0.8;
+    }
+
+    &__separator {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    &__desc {
+        margin-top: 16px;
+        font-size: 14px;
+        opacity: 0.8;
+    }
+}
+
+// 公告通知样式
+.data-notice {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #ebeef5;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #ebeef5;
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+    }
+
+    &__more {
+        font-size: 14px;
+        color: #409eff;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid #f5f7fa;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+            background: #f5f7fa;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &__tag {
+        padding: 2px 8px;
+        font-size: 12px;
+        color: #fff;
+        border-radius: 4px;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    &__content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__text {
+        font-size: 14px;
+        color: #303133;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__date {
+        font-size: 12px;
+        color: #909399;
+        margin-top: 4px;
+    }
+}
+
+// 任务清单样式
+.data-task {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #ebeef5;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+    }
+
+    &__count {
+        font-size: 14px;
+        color: #909399;
+    }
+
+    &__progress {
+        margin-bottom: 16px;
+    }
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid #f5f7fa;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &.is-completed {
+            .data-task__text {
+                text-decoration: line-through;
+                color: #c0c4cc;
+            }
+        }
+    }
+
+    &__content {
+        flex: 1;
+        margin-left: 12px;
+    }
+
+    &__text {
+        font-size: 14px;
+        color: #303133;
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 4px;
+    }
+
+    &__deadline {
+        font-size: 12px;
+        color: #909399;
+    }
+}
+
+// 数据列表样式
+.data-list {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #ebeef5;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #ebeef5;
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #f5f7fa;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+            background: #f5f7fa;
+            margin: 0 -20px;
+            padding: 16px 20px;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &__avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f5f7fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        i {
+            font-size: 24px;
+            color: #909399;
+        }
+    }
+
+    &__body {
+        flex: 1;
+        margin-left: 16px;
+        min-width: 0;
+    }
+
+    &__title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__name {
+        font-size: 14px;
+        font-weight: 500;
+        color: #303133;
+    }
+
+    &__desc {
+        font-size: 13px;
+        color: #909399;
+        margin-top: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__extra {
+        text-align: right;
+        margin-left: 16px;
+    }
+
+    &__value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+    }
+
+    &__label {
+        display: block;
+        font-size: 12px;
+        color: #909399;
+        margin-top: 4px;
+    }
+
+    &__action {
+        margin-left: 16px;
+    }
+}
+
+// 仪表盘样式
+.data-dashboard {
+    &__item {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ebeef5;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    &__title {
+        font-size: 14px;
+        color: #909399;
+    }
+
+    &__value {
+        font-size: 28px;
+        font-weight: 600;
+        color: #303133;
+        margin-bottom: 16px;
+    }
+
+    &__unit {
+        font-size: 14px;
+        font-weight: normal;
+        color: #909399;
+        margin-left: 4px;
+    }
+
+    &__chart {
+        display: flex;
+        align-items: flex-end;
+        height: 40px;
+        gap: 4px;
+        margin-bottom: 12px;
+    }
+
+    &__bar {
+        flex: 1;
+        border-radius: 2px;
+        min-height: 4px;
+        transition: height 0.3s;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #909399;
+        padding-top: 12px;
+        border-top: 1px solid #f5f7fa;
+    }
+}

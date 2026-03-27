@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data-weather 天气卡片</title>
+    <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../lib/index.css" />
+    <script src="../../lib/avue.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .demo-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .demo-section h3 {
+            color: #409eff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>data-weather 天气卡片</h1>
+
+        <div class="demo-section">
+            <h3>多城市天气</h3>
+            <avue-data-weather :option="option1"></avue-data-weather>
+        </div>
+
+        <div class="demo-section">
+            <h3>详细天气信息</h3>
+            <avue-data-weather :option="option2"></avue-data-weather>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const option1 = ref({
+                    span: 6,
+                    data: [
+                        { city: '北京', temp: 28, weather: '晴', wind: '东南风3级', date: '周一' },
+                        { city: '上海', temp: 25, weather: '多云', wind: '东风2级', date: '周一' },
+                        { city: '广州', temp: 32, weather: '晴', wind: '南风2级', date: '周一' },
+                        { city: '深圳', temp: 30, weather: '雨', wind: '西南风3级', date: '周一' }
+                    ]
+                });
+
+                const option2 = ref({
+                    span: 8,
+                    data: [
+                        { city: '北京', temp: 28, weather: '晴', wind: '东南风3级', date: '2024-02-06', tempLow: 18, tempHigh: 30 },
+                        { city: '成都', temp: 15, weather: '阴', wind: '微风', date: '2024-02-06', tempLow: 10, tempHigh: 18 },
+                        { city: '哈尔滨', temp: -5, weather: '雪', wind: '北风4级', date: '2024-02-06', tempLow: -15, tempHigh: -2 }
+                    ]
+                });
+
+                return { option1, option2 };
+            }
+        });
+        app.use(ElementPlus);
+        app.use(AVUE);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
