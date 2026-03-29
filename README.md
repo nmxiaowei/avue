@@ -38,7 +38,7 @@ yarn add @smallwei/avue
 // 完整引入
 import { createApp } from 'vue'
 import Avue from '@smallwei/avue'
-import '@smallwei/avue/dist/avue.css'
+import '@smallwei/avue/lib/index.css'
 import App from './App.vue'
 
 const app = createApp(App)

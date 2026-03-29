@@ -11,6 +11,9 @@ importers:
       '@element-plus/icons-vue':
         specifier: ^2.0.6
         version: 2.3.1(vue@3.5.27(typescript@5.9.3))
+      axios:
+        specifier: ^0.21.1
+        version: 0.21.4
       countup.js:
         specifier: ^1.9.3
         version: 1.9.3
@@ -48,9 +51,6 @@ importers:
       '@vue/component-compiler-utils':
         specifier: ^3.2.0
         version: 3.3.0(lodash@4.17.21)
-      axios:
-        specifier: ^0.21.1
-        version: 0.21.4
       babel-loader:
         specifier: ^8.2.2
         version: 8.4.1(@babel/core@7.25.8)(webpack@4.47.0)
@@ -2006,6 +2006,7 @@ packages:
   eslint@4.14.0:
     resolution: {integrity: sha512-Ul6CSGRjKscEyg0X/EeNs7o2XdnbTEOD1OM8cTjmx85RPcBJQrEhZLevhuJZNAE/vS2iVl5Uhgiqf3h5uLMCJQ==}
     engines: {node: '>=4'}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -2854,6 +2855,7 @@ packages:
 
   lodash.template@2.4.1:
     resolution: {integrity: sha512-5yLOQwlS69xbaez3g9dA1i0GMAj8pLDHp8lhA4V7M1vRam1lqD76f0jg5EV+65frbqrXo1WH9ZfKalfYBzJ5yQ==}
+    deprecated: This package is deprecated. Use https://socket.dev/npm/package/eta instead.
 
   lodash.templatesettings@2.4.1:
     resolution: {integrity: sha512-vY3QQ7GxbeLe8XfTvoYDbaMHO5iyTDJS1KIZrxp00PRMmyBKr8yEcObHSl2ppYTwd8MgqPXAarTvLA14hx8ffw==}

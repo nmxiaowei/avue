@@ -2,7 +2,7 @@
   "name": "@smallwei/avue",
   "version": "3.8.2",
   "description": "A Magic Configurable Web Framework",
-  "main": "lib/avue.min.js",
+  "main": "lib/avue.js",
   "types": "types/index.d.ts",
   "unpkg": "lib/avue.min.js",
   "jsdelivr": "lib/avue.min.js",
@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://gitee.com/smallweigit/avue/issues"
   },
-  "homepage": "https://gitee.com/smallweigit/avue/blob/master/README.md",
+  "homepage": "https://gitee.com/smallweigit/avue",
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.11.4",
@@ -37,7 +37,6 @@
     "@babel/runtime": "^7.26.0",
     "@vue/compiler-sfc": "^3.0.9",
     "@vue/component-compiler-utils": "^3.2.0",
-    "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "cross-env": "^3.1.3",
     "css-loader": "^5.2.0",
@@ -63,11 +62,12 @@
     "webpack-merge": "^4.1.4"
   },
   "peerDependencies": {
+    "@element-plus/icons-vue": ">=2.0.0",
     "element-plus": ">=2.2.0",
     "vue": ">=3.2.0"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.0.6",
+    "axios": "^0.21.1",
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
     "lodash": "^4.17.21"
