@@ -47,7 +47,7 @@
 
 import create from "core/create";
 import locale from "core/locale";
-import config from "../config.js";
+import config from "../config";
 import tableItemCard from '../grid/item'
 export default create({
   name: "crud",

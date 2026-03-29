@@ -29,7 +29,9 @@
   </component>
 </template>
 <script>
+import locale from "core/locale";
 export default {
+  mixins: [locale],
   props: {
     opt: Object,
     onDestroy: Function
@@ -44,8 +46,8 @@ export default {
       },
       isDrawer: false,
       option: {
-        submitText: '提交',
-        emptyText: '关闭',
+        submitText: this.t('form.submitBtn'),
+        emptyText: this.t('common.closeBtn'),
         submitIcon: 'el-icon-check',
         emptyIcon: 'el-icon-close',
         column: []

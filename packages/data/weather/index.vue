@@ -37,8 +37,27 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
+
+const WEATHER_GRADIENTS = {
+  sunny: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  cloudy: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
+  overcast: 'linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%)',
+  rain: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  snow: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)'
+};
+
+const WEATHER_ICONS = {
+  sunny: 'el-icon-sunny',
+  cloudy: 'el-icon-partly-cloudy',
+  overcast: 'el-icon-cloudy',
+  rain: 'el-icon-heavy-rain',
+  snow: 'el-icon-ice-cream'
+};
+
 export default create({
   name: "data-weather",
+  mixins: [locale],
   data() {
     return {};
   },
@@ -60,27 +79,24 @@ export default create({
     }
   },
   methods: {
+    normalizeWeatherKey(weather) {
+      const normalized = String(weather || '').trim().toLowerCase();
+      const aliases = this.t('weather.aliases') || {};
+      const matchedKey = Object.keys(WEATHER_GRADIENTS).find((key) => {
+        const values = Array.isArray(aliases[key]) ? aliases[key] : [];
+        return values.some((value) => String(value).trim().toLowerCase() === normalized);
+      });
+      return matchedKey || normalized;
+    },
     getItemStyle(item) {
-      const gradients = {
-        '晴': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        '多云': 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
-        '阴': 'linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%)',
-        '雨': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        '雪': 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)'
-      };
+      const weatherKey = this.normalizeWeatherKey(item.weather);
       return {
-        background: item.background || gradients[item.weather] || gradients['晴']
+        background: item.background || WEATHER_GRADIENTS[weatherKey] || WEATHER_GRADIENTS.sunny
       };
     },
     getWeatherIcon(weather) {
-      const icons = {
-        '晴': 'el-icon-sunny',
-        '多云': 'el-icon-partly-cloudy',
-        '阴': 'el-icon-cloudy',
-        '雨': 'el-icon-heavy-rain',
-        '雪': 'el-icon-ice-cream'
-      };
-      return icons[weather] || 'el-icon-sunny';
+      const weatherKey = this.normalizeWeatherKey(weather);
+      return WEATHER_ICONS[weatherKey] || WEATHER_ICONS.sunny;
     }
   }
 });

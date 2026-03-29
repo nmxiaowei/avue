@@ -23,7 +23,7 @@
 <script>
 import create from "core/create";
 import { DIC_PROPS } from 'global/variable'
-import init from "../../core/common/init.js";
+import init from "../../core/common/init";
 export default create({
   name: "search",
   mixins: [init()],

@@ -114,14 +114,14 @@ const resolve = (p) => {
 // 构建配置
 const builds = {
   prod: {
-    entry: resolve("src/index.js"),
+    entry: resolve("src/index.ts"),
     dest: resolve("lib"),
     filename: "avue.min.js",
     env: "production",
     externals: externals,
   },
   dev: {
-    entry: resolve("src/index.js"),
+    entry: resolve("src/index.ts"),
     dest: resolve("lib"),
     filename: "avue.js",
     env: "development",

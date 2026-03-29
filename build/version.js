@@ -73,7 +73,7 @@ if (tagVer) {
   log('info', `使用 package.json 中的版本号: ${version}`)
 }
 
-const outputPath = path.resolve(__dirname, '../src/version.js')
+const outputPath = path.resolve(__dirname, '../src/version.ts')
 const outputContent = `export const version = '${version}'\n`
 
 log('info', `输出路径: ${outputPath}`)

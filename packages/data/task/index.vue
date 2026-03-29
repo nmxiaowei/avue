@@ -29,8 +29,17 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
+
+const PRIORITY_TYPES = {
+  high: 'danger',
+  medium: 'warning',
+  low: 'info'
+};
+
 export default create({
   name: "data-task",
+  mixins: [locale],
   data() {
     return {};
   },
@@ -60,8 +69,13 @@ export default create({
       this.$emit('change', { item, index, completed: item.completed });
     },
     getPriorityType(priority) {
-      const types = { '高': 'danger', '中': 'warning', '低': 'info' };
-      return types[priority] || '';
+      const normalized = String(priority || '').trim().toLowerCase();
+      const aliases = this.t('task.priorityAliases') || {};
+      const matchedKey = Object.keys(PRIORITY_TYPES).find((key) => {
+        const values = Array.isArray(aliases[key]) ? aliases[key] : [];
+        return values.some((value) => String(value).trim().toLowerCase() === normalized);
+      });
+      return PRIORITY_TYPES[matchedKey || normalized] || '';
     }
   }
 });

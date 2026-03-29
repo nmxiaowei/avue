@@ -214,8 +214,8 @@
 <script>
 import create from "core/create";
 import locale from "core/locale";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 import { getAsVal, isMediaType } from "utils/util";
 import { detailImg } from "plugin/watermark/";
 import { getToken } from "plugin/qiniu/";

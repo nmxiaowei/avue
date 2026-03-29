@@ -27,10 +27,14 @@
     }
   },
   "include": [
+    "src/**/*.js",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.vue",
+    "packages/**/*.js",
     "packages/**/*.ts",
     "packages/**/*.tsx",
+    "packages/**/*.vue",
     "types/**/*.d.ts"
   ],
   "exclude": ["node_modules", "lib", "examples"]

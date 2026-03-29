@@ -36,7 +36,7 @@
             :readonly="disabled"
             v-model="formattedAddress"
             clearable
-            placeholder="输入关键字选取地点"
+            :placeholder="t('map.searchPlaceholder')"
           ></el-input>
           <div :class="b('content-box')">
             <div
@@ -64,8 +64,8 @@
 <script>
 import packages from "core/packages";
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 import locale from "core/locale";
 export default create({
   name: "input-map",
@@ -146,7 +146,7 @@ export default create({
       return this.text[1];
     },
     title() {
-      return this.disabled || this.readonly ? "查看" : "选择";
+      return this.disabled || this.readonly ? this.t('common.view') : this.t('common.select');
     },
   },
   methods: {

@@ -7,10 +7,11 @@
   "unpkg": "lib/avue.min.js",
   "jsdelivr": "lib/avue.min.js",
   "scripts": {
-    "dev": "pnpm gen:version && cross-env TARGET=dev gulp watch",
+    "dev": "pnpm gen:version && pnpm gen:locale && cross-env TARGET=dev gulp watch",
+    "gen:locale": "node build/locale.js",
     "gen:version": "node build/version.js",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
-    "build": "pnpm gen:version && cross-env TARGET=prod UINAME=element-plus gulp build",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "build": "pnpm gen:version && pnpm gen:locale && cross-env TARGET=prod UINAME=element-plus gulp compile && cross-env TARGET=prod UINAME=element-plus gulp webpack",
     "all": "pnpm build && pnpm dev"
   },
   "keywords": [
@@ -55,6 +56,7 @@
     "ts-loader": "^8.4.0",
     "terser-webpack-plugin": "4",
     "typescript": "^5.4.5",
+    "vue-tsc": "^2.2.10",
     "vue-loader": "^16.1.2",
     "webpack": "^4.27.0",
     "webpack-bundle-analyzer": "^3.0.3",

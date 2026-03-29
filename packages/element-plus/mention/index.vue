@@ -36,8 +36,8 @@
 
 <script>
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 import { sendDic } from "core/dic";
 export default create({
   name: "mention",

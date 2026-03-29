@@ -54,8 +54,8 @@
 
 <script>
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 import { DIC_SHOW_SPLIT } from 'global/variable';
 import { DIC_PROPS } from 'global/variable';
 export default create({

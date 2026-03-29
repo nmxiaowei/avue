@@ -6,7 +6,7 @@
              :size="$AVUE.size"
              label-suffix=":"
              :label-width="setPx(labelWidth)">
-      <el-form-item :label="username.label || '用户名'"
+      <el-form-item :label="username.label || t('login.usernameLabel')"
                     :rules="username.rules"
                     :label-width="setPx(username.labelWidth)"
                     v-if="!username.hide"
@@ -16,11 +16,11 @@
                     placement="top-start">
           <el-input v-model="form.username"
                     :prefix-icon="username.prefixIcon || 'el-icon-user'"
-                    :placeholder="username.placeholder || '请输入用户名'"
+                    :placeholder="username.placeholder || t('login.usernamePlaceholder')"
                     :autocomplete="username.autocomplete"></el-input>
         </el-tooltip>
       </el-form-item>
-      <el-form-item :label="password.label || '密码'"
+      <el-form-item :label="password.label || t('login.passwordLabel')"
                     :rules="password.rules"
                     :label-width="setPx(password.labelWidth)"
                     v-if="!password.hide"
@@ -30,13 +30,13 @@
                     placement="top-start">
           <el-input type="password"
                     :prefix-icon="password.prefixIcon || 'el-icon-unlock'"
-                    :placeholder="password.placeholder || '请输入密码'"
+                    :placeholder="password.placeholder || t('login.passwordPlaceholder')"
                     show-password
                     v-model="form.password"
                     :autocomplete="password.autocomplete"></el-input>
         </el-tooltip>
       </el-form-item>
-      <el-form-item :label="code.label || '验证码'"
+      <el-form-item :label="code.label || t('login.codeLabel')"
                     :rules="code.rules"
                     v-if="!code.hide"
                     :label-width="setPx(code.labelWidth)"
@@ -46,7 +46,7 @@
                     placement="top-start">
           <el-input v-model="form.code"
                     :prefix-icon="code.prefixIcon || 'el-icon-c-scale-to-original'"
-                    :placeholder="code.placeholder || '请输入验证码'"
+                    :placeholder="code.placeholder || t('login.codePlaceholder')"
                     :autocomplete="code.autocomplete">
 
             <template #append>
@@ -54,7 +54,7 @@
                          :class="b('send')"
                          v-if="isPhone"
                          :disabled="sendDisabled"
-                         @click="onSend">{{text}}</el-button>
+                         @click="onSend">{{sendText}}</el-button>
               <span v-if="isImg">
                 <img :src="codesrc"
                      alt=""
@@ -69,18 +69,18 @@
       <el-form-item>
         <el-button type="primary"
                    @click="onSubmit"
-                   :class="b('submit')">登录</el-button>
+                   :class="b('submit')">{{t('login.submitBtn')}}</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-const INIT_TEXT = '发送验证码'
-const TIP_TEXT = '{{time}}s后重获取'
 import create from "core/create";
+import locale from "core/locale";
 export default create({
   name: 'login',
+  mixins: [locale],
   emits: ['update:modelValue','send','refresh','submit'],
   props: {
     modelValue: {
@@ -132,6 +132,11 @@ export default create({
     },
     sendDisabled () {
       return !this.validatenull(this.check)
+    },
+    sendText () {
+      return this.nowtime > 0
+        ? this.t('login.resendCode', { time: this.nowtime })
+        : this.t('login.sendCode');
     }
 
   },
@@ -152,9 +157,8 @@ export default create({
   },
   data () {
     return {
-      text: INIT_TEXT,
-      nowtime: '',
-      check: {},
+      nowtime: 0,
+      check: null,
       form: {}
     }
   },
@@ -162,15 +166,11 @@ export default create({
     onSend () {
       const callback = () => {
         this.nowtime = this.time;
-        this.text = TIP_TEXT.replace('{{time}}', this.nowtime);
         this.check = setInterval(() => {
           this.nowtime--
           if (this.nowtime === 0) {
-            this.text = INIT_TEXT;
             clearInterval(this.check);
             this.check = null;
-          } else {
-            this.text = TIP_TEXT.replace('{{time}}', this.nowtime);
           }
         }, 1000)
       }

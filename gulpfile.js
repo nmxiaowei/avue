@@ -4,8 +4,10 @@ const autoprefixer = require("gulp-autoprefixer");
 const cssmin = require("gulp-cssmin");
 const webpack = require("webpack");
 const webpackConf = require("./build/build.js");
+const buildLocale = require("./build/locale.js");
 const path = require("path");
 const fs = require("fs");
+const ts = require("typescript");
 const { Transform } = require("stream");
 
 // ============================================================
@@ -270,6 +272,24 @@ gulp.task("compile", function () {
     });
 });
 
+gulp.task("locale:generated", function (done) {
+  logDivider("Locale Build");
+  log("task", "Building locale outputs...");
+  log("info", "source: ./src/locale/lang/**", "output: ./lib/locale");
+
+  const timer = createTimer();
+  const { totalFiles, totalSize, removedFiles } = buildLocale();
+
+  log("success", "Locale outputs ready", `elapsed: ${timer()}`);
+  log("info", `generated: ${totalFiles} files`, `size: ${formatBytes(totalSize)}`);
+
+  if (removedFiles > 0) {
+    log("info", `removed stale files: ${removedFiles}`, "format.js / index.js");
+  }
+
+  done();
+});
+
 /**
  * 国际化文件复制任务
  * 将 locale 目录下的文件复制到 lib/locale
@@ -280,15 +300,39 @@ gulp.task("locale", function () {
   log('info', '源目录: ./src/locale/**', '输出: ./lib/locale');
 
   const timer = createTimer();
+  const localeOutputPath = path.resolve('./lib/locale');
   let fileCount = 0;
   let totalSize = 0;
 
+  if (!fs.existsSync(localeOutputPath)) {
+    fs.mkdirSync(localeOutputPath, { recursive: true });
+  }
+
+  ['format.js', 'index.js'].forEach((file) => {
+    const staleFile = path.join(localeOutputPath, file);
+    if (fs.existsSync(staleFile)) {
+      fs.unlinkSync(staleFile);
+    }
+  });
+
   return gulp
-    .src("./src/locale/**")
+    .src("./src/locale/lang/**/*.ts", { base: "./src/locale" })
     .pipe(new Transform({
       objectMode: true,
       transform(file, enc, cb) {
         if (!file.isDirectory() && file.contents) {
+          const source = file.contents.toString(enc || 'utf8');
+          const output = ts.transpileModule(source, {
+            compilerOptions: {
+              target: ts.ScriptTarget.ES2018,
+              module: ts.ModuleKind.ESNext,
+              moduleResolution: ts.ModuleResolutionKind.NodeJs,
+              esModuleInterop: true
+            },
+            fileName: file.path
+          });
+          file.contents = Buffer.from(output.outputText);
+          file.path = file.path.replace(/\.ts$/, '.js');
           fileCount++;
           totalSize += file.contents.length;
           log('info', `复制文件: ${path.basename(file.path)}`, formatBytes(file.contents.length));
@@ -296,7 +340,7 @@ gulp.task("locale", function () {
         cb(null, file);
       }
     }))
-    .pipe(gulp.dest("./lib/locale"))
+    .pipe(gulp.dest(localeOutputPath))
     .on('end', () => {
       log('success', '国际化文件复制完成', `耗时: ${timer()}`);
       log('info', `共复制 ${fileCount} 个文件`, `总大小: ${formatBytes(totalSize)}`);
@@ -412,6 +456,24 @@ gulp.task("watch", gulp.series(
   gulp.parallel("compile", "webpack"),
   "listen"
 ));
+
+gulp.task("locale", function (done) {
+  logDivider("Locale Build");
+  log("task", "Building locale outputs...");
+  log("info", "source: ./src/locale/lang/**", "output: ./lib/locale");
+
+  const timer = createTimer();
+  const { totalFiles, totalSize, removedFiles } = buildLocale();
+
+  log("success", "Locale outputs ready", `elapsed: ${timer()}`);
+  log("info", `generated: ${totalFiles} files`, `size: ${formatBytes(totalSize)}`);
+
+  if (removedFiles > 0) {
+    log("info", `removed stale files: ${removedFiles}`, "format.js / index.js");
+  }
+
+  done();
+});
 
 
 

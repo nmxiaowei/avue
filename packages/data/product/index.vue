@@ -33,15 +33,15 @@
               <span class="data-product__discount" v-if="item.discount">{{ item.discount }}</span>
             </div>
             <div class="data-product__info" v-if="item.sales || item.stock">
-              <span v-if="item.sales">已售 {{ item.sales }}</span>
-              <span v-if="item.stock">库存 {{ item.stock }}</span>
+              <span v-if="item.sales">{{ t('product.sold', { value: item.sales }) }}</span>
+              <span v-if="item.stock">{{ t('product.stock', { value: item.stock }) }}</span>
             </div>
             <div class="data-product__actions" v-if="showActions">
               <el-button type="primary" size="small" @click.stop="handleBuy(item)">
                 {{ buyText }}
               </el-button>
               <el-button size="small" @click.stop="handleCart(item)" v-if="showCart">
-                加入购物车
+                {{ t('product.addToCart') }}
               </el-button>
             </div>
           </div>
@@ -53,8 +53,10 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 export default create({
   name: "data-product",
+  mixins: [locale],
   data() {
     return {};
   },
@@ -84,7 +86,7 @@ export default create({
       return this.option.showCart !== false;
     },
     buyText() {
-      return this.option.buyText || '立即购买';
+      return this.option.buyText || this.t('product.buyNow');
     },
     ratingColors() {
       return this.option.ratingColors || ['#F7BA2A', '#F7BA2A', '#F7BA2A'];

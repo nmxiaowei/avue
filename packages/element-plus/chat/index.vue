@@ -68,7 +68,7 @@
           <div class="web__msg">
             <textarea v-model="msg"
                       rows="2"
-                      :placeholder="placeholder"
+                      :placeholder="messagePlaceholder"
                       class="web__msg-input"></textarea>
             <div class="web__msg-menu">
               <el-dropdown split-button
@@ -77,7 +77,7 @@
                            :size="size"
                            @click="handleSend"
                            trigger="click">
-                发送
+                {{ t("chat.sendBtn") }}
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>
@@ -89,7 +89,7 @@
                                     style="margin-bottom:10px"
                                     :rows="3"
                                     show-word-limit
-                                    placeholder="请输入快捷回复语"
+                                    :placeholder="t('chat.quickReplyPlaceholder')"
                                     v-model="keys"
                                     type="textarea"></el-input>
                           <div style="text-align: right; margin: 0">
@@ -142,14 +142,14 @@
                  :model="upload">
           <el-form-item prop="src"
                         :rules="[
-      { required: true, message: '地址不能为空'},
+      { required: true, message: t('chat.addressRequired')},
     ]">
             <el-input :size="size"
                       style="margin-bottom:10px"
                       :rows="4"
                       show-word-limit
                       maxlength="100"
-                      placeholder="请输入地址"
+                      :placeholder="t('chat.addressPlaceholder')"
                       v-model="upload.src"
                       type="textarea"></el-input>
           </el-form-item>
@@ -230,7 +230,7 @@ export default create({
     },
     placeholder: {
       type: String,
-      default: '请输入...'
+      default: ''
     },
     width: {
       type: [String, Number],
@@ -298,6 +298,9 @@ export default create({
     },
     msgActive () {
       return !this.validatenull(this.msg.replace(/[\r\n]/g, ""))
+    },
+    messagePlaceholder () {
+      return this.placeholder || this.t('chat.inputPlaceholder');
     }
   },
   methods: {
@@ -313,11 +316,11 @@ export default create({
       this.upload.type = type;
       this.upload.src = '';
       if (type === 'img') {
-        this.upload.title = "图片上传"
+        this.upload.title = this.t('chat.uploadImageTitle')
       } else if (type === 'video') {
-        this.upload.title = "视频上传"
+        this.upload.title = this.t('chat.uploadVideoTitle')
       } else if (type === 'file') {
-        this.upload.title = "文件上传"
+        this.upload.title = this.t('chat.uploadFileTitle')
       }
       this.upload.box = true;
     },
@@ -349,7 +352,7 @@ export default create({
         if (permissionNow === 'granted') {//允许通知
           CreatNotification();
         } else if (permissionNow === 'denied') {
-          console.log('用户拒绝了你!!!');
+          console.log(this.t('chat.notificationDenied'));
         } else {
           setPermission();
         }
@@ -359,7 +362,7 @@ export default create({
             if (PERMISSION === 'granted') {
               CreatNotification();
             } else {
-              console.log('用户无情残忍的拒绝了你!!!');
+              console.log(safe.t('chat.notificationRejected'));
             }
           });
         }
@@ -447,10 +450,10 @@ export default create({
                 child.src = child.getAttribute('data-src')
               } else if (child.tagName === 'FILE') {
                 child.className = 'web__msg--file'
-                child.innerHTML = `<h2>File</h2><span>${child.getAttribute('data-name')}</span>`
+                child.innerHTML = `<h2>${this.t('chat.fileLabel')}</h2><span>${child.getAttribute('data-name')}</span>`
               } else if (child.tagName === 'MAP') {
                 child.className = 'web__msg--file web__msg--map'
-                child.innerHTML = `<h2>Map</h2><span>${child.getAttribute('data-longitude')} , ${child.getAttribute('data-latitude')}<br />${child.getAttribute('data-address')}</span>`
+                child.innerHTML = `<h2>${this.t('chat.mapLabel')}</h2><span>${child.getAttribute('data-longitude')} , ${child.getAttribute('data-latitude')}<br />${child.getAttribute('data-address')}</span>`
               }
               this.setScroll();
             }
