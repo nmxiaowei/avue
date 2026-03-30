@@ -28,12 +28,18 @@ import $Print from "plugin/print/";
 import $ImagePreview from "packages/core/components/image-preview/";
 import $DialogForm from "packages/core/components/dialog-form/";
 import createIcon from "./icon";
-function identity<T>(value: T): T {
-  return value;
-}
 
 type AnyRecord = Record<string, any>;
 type AppWithContext = App & { _context: any };
+const UPLOAD_HOOK_KEYS = [
+  "uploadPreview",
+  "uploadBefore",
+  "uploadAfter",
+  "uploadDelete",
+  "uploadError",
+  "uploadExceed",
+  "uploadSized",
+] as const;
 
 export interface AvueInstallOptions extends AnyRecord {
   size?: string;
@@ -78,51 +84,45 @@ const directive: AnyRecord = {
 };
 
 export const install = function (app: App, opts: AvueInstallOptions = {}) {
-  const defaultOption = identity({
-    size: opts.size || "default",
-    calcHeight: opts.calcHeight || 0,
-    menuType: opts.menuType || "text",
-    formOption: opts.formOption || {},
-    crudOption: opts.crudOption || {},
+  const defaultOption = {
+    size: opts.size ?? "default",
+    calcHeight: opts.calcHeight ?? 0,
+    menuType: opts.menuType ?? "text",
+    formOption: opts.formOption ?? {},
+    crudOption: opts.crudOption ?? {},
     appendToBody: validData(opts.appendToBody, true),
-    canvas: Object.assign(
-      {
-        text: "avuejs.com",
-        fontFamily: "microsoft yahei",
-        color: "#999",
-        fontSize: 16,
-        opacity: 100,
-        bottom: 10,
-        right: 10,
-        ratio: 1,
-      },
-      opts.canvas
-    ),
-    qiniu: Object.assign(
-      {
-        AK: "",
-        SK: "",
-        scope: "",
-        url: "",
-        bucket: "https://upload.qiniup.com",
-        deadline: 1,
-      },
-      opts.qiniu || {}
-    ),
-    ali: Object.assign(
-      {
-        region: "",
-        endpoint: "",
-        stsToken: "",
-        accessKeyId: "",
-        accessKeySecret: "",
-        bucket: "",
-      },
-      opts.ali || {}
-    ),
-  });
+    canvas: {
+      text: "avuejs.com",
+      fontFamily: "microsoft yahei",
+      color: "#999",
+      fontSize: 16,
+      opacity: 100,
+      bottom: 10,
+      right: 10,
+      ratio: 1,
+      ...(opts.canvas ?? {}),
+    },
+    qiniu: {
+      AK: "",
+      SK: "",
+      scope: "",
+      url: "",
+      bucket: "https://upload.qiniup.com",
+      deadline: 1,
+      ...(opts.qiniu ?? {}),
+    },
+    ali: {
+      region: "",
+      endpoint: "",
+      stsToken: "",
+      accessKeyId: "",
+      accessKeySecret: "",
+      bucket: "",
+      ...(opts.ali ?? {}),
+    },
+  };
 
-  app.config.globalProperties.$AVUE = Object.assign(opts, defaultOption);
+  app.config.globalProperties.$AVUE = Object.assign({}, opts, defaultOption);
 
   Object.keys(components).forEach((key) => {
     const component = components[key];
@@ -152,21 +152,12 @@ export const install = function (app: App, opts: AvueInstallOptions = {}) {
     column: AnyRecord = {},
     safe: any
   ) {
-    safe = safe || this;
-    const list = [
-      "uploadPreview",
-      "uploadBefore",
-      "uploadAfter",
-      "uploadDelete",
-      "uploadError",
-      "uploadExceed",
-      "uploadSized",
-    ];
+    const ctx = safe ?? this;
     const result: AnyRecord = {};
 
-    list.forEach((key) => {
-      if (!column || (column.type === "upload" && !column[key])) {
-        result[key] = safe[key];
+    UPLOAD_HOOK_KEYS.forEach((key) => {
+      if (column.type === "upload" && !column[key]) {
+        result[key] = ctx[key];
       }
     });
 

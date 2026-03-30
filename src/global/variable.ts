@@ -1,4 +1,4 @@
-export const KEY_COMPONENT_NAME = 'avue-';
+﻿export const KEY_COMPONENT_NAME = 'avue-';
 export const KEY_ECHART_NAME = 'echart-';
 
 export const DIC_PROPS = {
@@ -14,7 +14,7 @@ export const DIC_PROPS = {
   leaf: 'leaf',
   children: 'children',
   hasChildren: 'hasChildren',
-  labelText: '鍚嶇О',
+  labelText: '名称',
   disabled: 'disabled',
 } as const;
 
@@ -26,7 +26,7 @@ export const DIC_HTTP_PROPS = {
   res: '',
 } as const;
 
-export const DATE_LIST: string[] = [
+export const DATE_LIST = [
   'dates',
   'date',
   'datetime',
@@ -41,14 +41,14 @@ export const DATE_LIST: string[] = [
   'year',
   'years',
   'yearrange',
-] ;
+];
 
-export const CHILDREN_LIST: string[] = ['table', 'dynamic'];
-export const INPUT_LIST: string[] = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag'];
-export const ARRAY_LIST: string[] = ['img', 'array', 'url'];
-export const MULTIPLE_LIST: string[] = ['cascader', 'tree', 'select', 'table'];
-export const RANGE_LIST: string[] = ['slider'];
-export const ARRAY_VALUE_LIST: string[] = ARRAY_LIST.concat([
+export const CHILDREN_LIST = ['table', 'dynamic'];
+export const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag'];
+export const ARRAY_LIST = ['img', 'array', 'url'];
+export const MULTIPLE_LIST = ['cascader', 'tree', 'select', 'table'];
+export const RANGE_LIST = ['slider'];
+export const ARRAY_VALUE_LIST = ARRAY_LIST.concat([
   'tag',
   'upload',
   'dynamic',
@@ -64,7 +64,7 @@ export const ARRAY_VALUE_LIST: string[] = ARRAY_LIST.concat([
   'months',
   'years',
 ]);
-export const SELECT_LIST: string[] = DATE_LIST.concat([
+export const SELECT_LIST = DATE_LIST.concat([
   'select',
   'checkbox',
   'radio',
