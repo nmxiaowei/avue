@@ -1,0 +1,705 @@
+/*! Avue.js v3.8.6 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { detail } from '../../../src/core/detail.mjs';
+import create from '../../../src/core/create.mjs';
+import init from '../../core/common/init.mjs';
+import '../../core/components/form/index.mjs';
+import './menu.mjs';
+import { DIC_PROPS } from '../../../src/global/variable.mjs';
+import { getPlaceholder, getComponent, formInitVal, calcCount, calcCascader } from '../../../src/core/dataformat.mjs';
+import { sendDic } from '../../../src/core/dic.mjs';
+import { filterParams, clearVal, blankVal, setAsVal, getAsVal, getColumn } from '../../../src/utils/util.mjs';
+import mock from '../../../src/utils/mock.mjs';
+import config from './config.mjs';
+import script$1 from './menu2.mjs';
+import script$2 from '../../core/components/form/index2.mjs';
+
+var script = create({
+  name: "form",
+  mixins: [init("form")],
+  emits: [
+    "update:modelValue",
+    "update:status",
+    "reset-change",
+    "mock-change",
+    "tab-click",
+    "submit",
+    "error",
+  ],
+  components: {
+    formTemp: script$2,
+    formMenu: script$1,
+  },
+  data() {
+    return {
+      config,
+      activeName: "",
+      allDisabled: false,
+      tableOption: {},
+      form: {},
+      formCreate: false,
+      formList: [],
+      formBind: {},
+      // 防止内存泄露的计数器，移到组件实例中
+      count: {},
+      // 保存定时器ID，用于清理
+      timers: [],
+    };
+  },
+  provide() {
+    return {
+      formSafe: this,
+    };
+  },
+  watch: {
+    modelValue: {
+      handler(val) {
+        if (this.formCreate) {
+          this.setForm();
+        }
+      },
+      deep: true,
+    },
+    form: {
+      handler(val) {
+        if (this.formCreate) {
+          this.setLabel();
+          this.setVal();
+        }
+      },
+      deep: true,
+    },
+    tabsActive: {
+      handler(val) {
+        this.activeName = this.tabsActive;
+      },
+      immediate: true,
+    },
+    DIC: {
+      handler() {
+        this.setLabel();
+      },
+      deep: true,
+      immediate: true,
+    },
+    allDisabled: {
+      handler(val) {
+        this.$emit("update:status", val);
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+  computed: {
+    size() {
+      return this.tableOption.size || this.$AVUE.formSize || this.$AVUE.size;
+    },
+    columnSlot() {
+      return Object.keys(this.$slots).filter(
+        (item) => !this.propOption.map((ele) => ele.prop).includes(item)
+      );
+    },
+    labelSuffix() {
+      return this.tableOption.labelSuffix || ":";
+    },
+    isMenu() {
+      return this.columnOption.length != 1;
+    },
+    isDetail() {
+      return this.detail === true;
+    },
+    isAdd() {
+      return ["parentAdd", "add"].includes(this.boxType);
+    },
+    isTabs() {
+      return this.tableOption.tabs === true;
+    },
+    isEdit() {
+      return this.boxType === "edit";
+    },
+    isView() {
+      return this.boxType === "view";
+    },
+    detail() {
+      return this.tableOption.detail;
+    },
+    disabled() {
+      return this.tableOption.disabled;
+    },
+    readonly() {
+      return this.tableOption.readonly;
+    },
+    tabsType() {
+      return this.tableOption.tabsType;
+    },
+    columnLen() {
+      return this.columnOption.length;
+    },
+    dynamicOption() {
+      let list = [];
+      this.propOption.forEach((ele) => {
+        if (ele.type == "dynamic" && this.vaildDisplay(ele)) {
+          list.push(ele);
+        }
+      });
+      return list;
+    },
+    propOption() {
+      let list = [];
+      this.columnOption.forEach((option) => {
+        if (option.display !== false) {
+          option.column.forEach((column) => list.push(column));
+        }
+      });
+      return list;
+    },
+    columnOption() {
+      const processColumnDetails = (list) => {
+        list.forEach((groupItem, groupIndex) => {
+          groupItem.column = getColumn(groupItem.column) || [];
+
+          groupItem.column.forEach((column, columnIndex) => {
+            if (column.display !== false && !this.isMobile) {
+              column = calcCount(
+                column,
+                this.tableOption.span || this.config.span,
+                columnIndex === 0
+              );
+            }
+          });
+
+          groupItem.column = calcCascader(groupItem.column);
+
+          groupItem.column = groupItem.column.sort(
+            (a, b) => (b.order || 0) - (a.order || 0)
+          );
+        });
+      };
+
+      const { tableOption } = this;
+
+      const mainColumn = getColumn(tableOption.column);
+
+      // 处理分组配置
+      const processedGroups = (tableOption.group || []).map((groupItem) => ({
+        ...groupItem,
+        column: getColumn(groupItem.column),
+      }));
+
+      const footerColumns = tableOption.footer || [];
+
+      // 添加主列组
+      const mainGroup = [
+        {
+          header: false,
+          column: mainColumn,
+        },
+      ];
+
+      const footerGroup =
+        footerColumns.length > 0
+          ? [
+              {
+                header: false,
+                column: footerColumns,
+              },
+            ]
+          : [];
+
+      // 处理所有组的详细信息
+      processColumnDetails(mainGroup);
+      processColumnDetails(processedGroups);
+      if (footerColumns.length > 0) {
+        processColumnDetails(footerGroup);
+      }
+      return [...mainGroup, ...processedGroups, ...footerGroup];
+    },
+    menuPosition: function () {
+      if (this.tableOption.menuPosition) {
+        return this.tableOption.menuPosition;
+      } else {
+        return "center";
+      }
+    },
+    boxType: function () {
+      return this.tableOption.boxType;
+    },
+    isPrint() {
+      return this.validData(this.tableOption.printBtn, false);
+    },
+    tabsActive() {
+      return this.validData(this.tableOption.tabsActive + "", "1");
+    },
+    isMock() {
+      return this.validData(this.tableOption.mockBtn, false);
+    },
+    isVerifyAll() {
+      return this.validData(this.tableOption.tabsVerifyAll, true);
+    },
+    menuSpan() {
+      return this.tableOption.menuSpan || 24;
+    },
+  },
+  props: {
+    uploadSized: Function,
+    uploadBefore: Function,
+    uploadAfter: Function,
+    uploadDelete: Function,
+    uploadPreview: Function,
+    uploadError: Function,
+    uploadExceed: Function,
+    status: {
+      type: Boolean,
+      default: false,
+    },
+    modelValue: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {};
+      },
+    },
+  },
+  mounted() {
+    this.initFun();
+    // 保存定时器ID，用于清理
+    const timerId = setTimeout(() => {
+      this.dataFormat();
+    });
+    this.timers.push(timerId);
+  },
+  methods: {
+    getComponent,
+    getPlaceholder,
+    initFun() {
+      this.initFormMethods([
+        "validateField",
+        "scrollToField",
+        "clearValidate",
+        "resetFields",
+        "getField",
+        "fields",
+      ]);
+    },
+    initFormMethods(methods) {
+      methods.forEach((ele) => {
+        this[ele] = (...args) => {
+          const formRef = this.$refs.form;
+          if (formRef && typeof formRef[ele] === "function") {
+            return formRef[ele](...args);
+          }
+        };
+      });
+    },
+    getDisabled(column) {
+      return (
+        this.vaildDetail(column) ||
+        this.isDetail ||
+        this.vaildDisabled(column) ||
+        this.allDisabled
+      );
+    },
+    isGroupShow(item, index, verifyAll) {
+      if (verifyAll) return true;
+      else if (this.isTabs) {
+        return index == this.activeName || index == 0;
+      } else {
+        return true;
+      }
+    },
+
+    dataFormat() {
+      let formDefault = formInitVal(this.propOption);
+      let formValue = this.modelValue;
+      let form = {};
+      Object.entries(Object.assign(formDefault, formValue)).forEach((ele) => {
+        let key = ele[0],
+          value = ele[1];
+        if (this.validatenull(formValue[key])) {
+          form[key] = value;
+        } else {
+          form[key] = formValue[key];
+        }
+      });
+      this.form = form;
+      this.setLabel();
+      this.setControl();
+      this.setVal();
+      // 保存定时器ID，用于清理
+      const timerId = setTimeout(() => {
+        this.formCreate = true;
+        this.clearValidate();
+      });
+      this.timers.push(timerId);
+    },
+    setControl() {
+      this.propOption.forEach((column) => {
+        let prop = column.prop;
+        let bind = column.bind;
+        let control = column.control;
+        // 防止重复创建watcher，如果已存在则先清理
+        if (this.formBind[prop]) {
+          this.formBind[prop].forEach((unWatch) => {
+            if (typeof unWatch === "function") {
+              unWatch();
+            }
+          });
+          delete this.formBind[prop];
+        }
+
+        let bindList = [];
+        if (bind) {
+          let formProp = this.$watch("form." + prop, (n, o) => {
+            setAsVal(this.form, bind, n);
+          });
+          let formDeep = this.$watch("form." + bind, (n, o) => {
+            this.form[prop] = n;
+          });
+          bindList.push(formProp);
+          bindList.push(formDeep);
+          this.form[prop] = getAsVal(this.form, bind);
+        }
+        if (control) {
+          const callback = () => {
+            const controlResolve = (list) => {
+              Object.keys(list).forEach((item) => {
+                let ele = Object.assign(
+                  this.objectOption[item] || {},
+                  list[item]
+                );
+                this.objectOption[item] = ele;
+                if (list[item].dicData) this.DIC[item] = list[item].dicData;
+              });
+            };
+            let result = this.form["$" + column.prop] || this.form[column.prop];
+            let controlList =
+              control(this.form[column.prop], this.form, result, column) || {};
+            if (controlList instanceof Promise) {
+              controlList.then((res) => {
+                controlResolve(res);
+              });
+            } else {
+              controlResolve(controlList);
+            }
+          };
+          let formControl = this.$watch("form." + prop, (n, o) => {
+            callback();
+          });
+          bindList.push(formControl);
+          callback();
+        }
+        if (bindList.length > 0) {
+          this.formBind[prop] = bindList;
+        }
+      });
+    },
+    setForm() {
+      Object.keys(this.modelValue).forEach((ele) => {
+        this.form[ele] = this.modelValue[ele];
+      });
+    },
+    setVal() {
+      this.$emit("update:modelValue", this.form);
+      this.$emit("change", this.form);
+    },
+    setLabel() {
+      if (this.tableOption.filterNull === true) {
+        this.form = filterParams(this.form, [""], false);
+      }
+      if (this.tableOption.filterDic == true) {
+        this.form = filterParams(this.form, ["$"], false);
+      } else {
+        this.propOption.forEach((column) => {
+          let result;
+          let DIC = this.DIC[column.prop];
+          if (this.validatenull(DIC)) return;
+          result = detail(this.form, column, this.tableOption, DIC);
+          if (result) {
+            this.form[`$${column.prop}`] = result;
+          } else {
+            delete this.form[`$${column.prop}`];
+          }
+        });
+      }
+    },
+    handleGroupClick(activeNames) {
+      this.$emit("tab-click", activeNames);
+    },
+    handleTabClick(tab, event) {
+      this.$emit("tab-click", tab, event);
+    },
+    getItemParams(column, item, type, isPx) {
+      let result;
+      if (!this.validatenull(column[type])) {
+        result = column[type];
+      } else if (!this.validatenull(item[type])) {
+        result = item[type];
+      } else {
+        result = this.tableOption[type];
+      }
+      result = this.validData(result, this.config[type]);
+      return isPx ? this.setPx(result) : result;
+    },
+    validTip(column) {
+      return !column.tip || column.type === "upload";
+    },
+    getPropRef(prop) {
+      return this.$refs[prop][0];
+    },
+    handleChange(list, column) {
+      this.$nextTick(() => {
+        const cascader = column.cascader;
+        const str = cascader.join(",");
+        cascader.forEach((item) => {
+          const columnNextProp = item;
+          const value = this.form[column.prop];
+          // 下一个节点
+          const columnNext = this.findObject(list, columnNextProp);
+          if (this.validatenull(columnNext)) return;
+          // 如果不是首次加载则清空全部关联节点的属性值和字典值
+          if (this.formList.includes(str)) {
+            //清空子类字典列表和值
+            cascader.forEach((ele) => {
+              this.form[ele] = blankVal(this.form[ele]);
+              this.DIC[ele] = [];
+            });
+          }
+          /**
+           * 1.判断当前节点是否有下级节点
+           * 2.判断当前节点是否有值
+           */
+          if (
+            this.validatenull(cascader) ||
+            this.validatenull(value) ||
+            this.validatenull(columnNext)
+          ) {
+            return;
+          }
+          // 根据当前节点值获取下一个节点的字典
+          sendDic(
+            {
+              column: columnNext,
+              value: value,
+              form: this.form,
+            },
+            this
+          ).then((res) => {
+            //首次加载的放入队列记录
+            if (!this.formList.includes(str)) this.formList.push(str);
+            // 修改字典
+            const dic = res || [];
+            this.DIC[columnNextProp] = dic;
+            if (
+              !this.validatenull(dic) &&
+              !this.validatenull(dic) &&
+              !this.validatenull(columnNext.cascaderIndex) &&
+              this.validatenull(this.form[columnNextProp])
+            ) {
+              this.form[columnNextProp] =
+                dic[columnNext.cascaderIndex][
+                  (columnNext.props || {}).value || DIC_PROPS.value
+                ];
+            }
+          });
+        });
+      });
+    },
+    handlePrint() {
+      this.$Print(this.$el);
+    },
+    propChange(option, column) {
+      let key = column.prop;
+      // 使用组件实例的count而不是全局变量
+      // 当字段类型为 cascader 或 upload 时，值发生变化需要进行字段验证
+      if (column.type === "cascader" || column.type === "upload") {
+        this.$nextTick(() => {
+          // 调用validateField方法验证当前字段
+          this.validateField(key).catch((error) => {});
+        });
+      }
+      if (!this.count[key]) {
+        if (column.cascader) this.handleChange(option, column);
+      }
+      this.count[key] = true;
+      this.$nextTick(() => (this.count[key] = false));
+    },
+    handleMock() {
+      if (!this.isMock) return;
+      this.columnOption.forEach((column) => {
+        const form = mock(column.column, this.DIC, this.form, this.isMock);
+        if (!this.validatenull(form)) {
+          Object.keys(form).forEach((ele) => {
+            this.form[ele] = form[ele];
+          });
+        }
+      });
+      // 保存定时器ID，用于清理
+      this.$nextTick(() => {
+        this.clearValidate();
+        this.$emit("mock-change", this.form);
+      });
+    },
+    vaildDetail(column) {
+      let key;
+      if (this.detail) return false;
+      if (!this.validatenull(column.detail)) {
+        key = "detail";
+      } else if (this.isAdd) {
+        key = "addDetail";
+      } else if (this.isEdit) {
+        key = "editDetail";
+      } else if (this.isView) {
+        return false;
+      }
+      return this.validData(column[key], false);
+    },
+    // 验证表单是否禁止
+    vaildDisabled(column) {
+      let key;
+      if (this.disabled) return true;
+      if (!this.validatenull(column.disabled)) {
+        key = "disabled";
+      } else if (this.isAdd) {
+        key = "addDisabled";
+      } else if (this.isEdit) {
+        key = "editDisabled";
+      } else if (this.isView) {
+        return true;
+      }
+      return this.validData(column[key], false);
+    },
+    // 验证表单是否显隐
+    vaildDisplay(column) {
+      let key;
+      if (!this.validatenull(column.display)) {
+        key = "display";
+      } else if (this.isAdd) {
+        key = "addDisplay";
+      } else if (this.isEdit) {
+        key = "editDisplay";
+      } else if (this.isView) {
+        key = "viewDisplay";
+      } else {
+        return true;
+      }
+      return this.validData(column[key], true);
+    },
+    validateCellForm() {
+      return new Promise((resolve) => {
+        this.$refs.form.validate((valid, msg) => {
+          resolve(msg);
+        });
+      });
+    },
+    validate(callback) {
+      this.$refs.form.validate((valid, msg) => {
+        let dynamicList = [];
+        let dynamicName = [];
+        let dynamicError = {};
+        this.dynamicOption.forEach((ele) => {
+          let isForm = ele.children.type === "form";
+          dynamicName.push(ele.prop);
+          if (isForm) {
+            if (
+              !this.validatenull(this.$refs[ele.prop][0].$refs.temp.$refs.main)
+            ) {
+              this.$refs[ele.prop][0].$refs.temp.$refs.main.forEach((ele) => {
+                dynamicList.push(ele.validateCellForm());
+              });
+            }
+          } else {
+            dynamicList.push(
+              this.$refs[ele.prop][0].$refs.temp.$refs.main.validateCellForm()
+            );
+          }
+        });
+        Promise.all(dynamicList).then((res) => {
+          res.forEach((error, index) => {
+            if (!this.validatenull(error)) {
+              dynamicError[dynamicName[index]] = error;
+            }
+          });
+          let result = Object.assign(dynamicError, msg);
+          if (this.validatenull(result)) {
+            this.show();
+            callback && callback(true, this.hide, result);
+          } else {
+            callback && callback(false, this.hide, result);
+          }
+        });
+      });
+    },
+    resetForm(reset = true) {
+      if (reset) {
+        let propList = this.propOption.map((ele) => ele.prop);
+        this.form = clearVal(
+          this.form,
+          propList,
+          (this.tableOption.filterParams || []).concat([this.rowKey])
+        );
+      }
+      this.$nextTick(() => {
+        this.clearValidate();
+        this.$emit("reset-change");
+      });
+    },
+    show() {
+      this.allDisabled = true;
+    },
+    hide() {
+      this.allDisabled = false;
+    },
+    submit() {
+      this.validate((valid, hide, msg) => {
+        if (valid) {
+          this.$emit("submit", filterParams(this.form, ["$"]), this.hide);
+        } else {
+          this.$emit("error", msg);
+        }
+      });
+    },
+    shouldShowDivider(column) {
+      return (
+        this.vaildDisplay(column) && // 列是否显示
+        column.row && // 是否需要换行
+        column.span !== 24 && // 不是全宽
+        column.count // 有剩余空间需要填充
+      );
+    },
+  },
+  beforeUnmount() {
+    // 清理所有定时器，防止内存泄露
+    this.timers.forEach((timerId) => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+    });
+    this.timers = [];
+
+    // 清理所有watcher
+    Object.keys(this.formBind).forEach((ele) => {
+      this.formBind[ele].forEach((unWatch) => {
+        if (typeof unWatch === "function") {
+          unWatch();
+        }
+      });
+    });
+
+    // 清理formBind对象
+    this.formBind = {};
+
+    // 清理formList数组
+    this.formList = [];
+
+    // 清理count对象
+    this.count = {};
+
+    // 清理form对象的引用
+    this.form = {};
+  },
+
+  unmounted() {
+    // 保留原有的unmounted钩子以确保兼容性
+  },
+});
+
+export { script as default };

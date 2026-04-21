@@ -2,10 +2,11 @@
 *.sh
 node_modules
 lib
+es
+dist
 coverage
 *.md
 *.scss
 *.woff
 *.ttf
 examples
-packages

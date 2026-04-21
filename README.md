@@ -167,8 +167,10 @@ pnpm dev
 ```bash
 pnpm dev
 pnpm build
+pnpm build:esm
+pnpm build:cjs
+pnpm build:browser
 pnpm typecheck
-pnpm gen:locale
 pnpm gen:version
 ```
 
