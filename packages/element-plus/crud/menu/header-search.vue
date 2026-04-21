@@ -45,7 +45,7 @@ import locale from "core/locale";
 import { validData } from "utils/util";
 import { validatenull } from "utils/validate";
 import slot from 'core/slot'
-import { getSearchType, getType } from "core/dataformat";
+import { getSearchType } from "core/dataformat";
 import { filterParams } from 'utils/util'
 import config from "../config";
 export default create({

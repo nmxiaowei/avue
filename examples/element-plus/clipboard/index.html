@@ -1,71 +1,78 @@
 <!DOCTYPE html>
 
 <html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title></title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="../../cdn/axios/axios.js"></script>
-  <script src="../../cdn/vue/vue.global.min.js"></script>
-  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
-  <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-  <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-</head>
-
-<body>
-  <div id="app">
-    <p>
-      <el-button @click="copy">直接复制</el-button>
-      <el-button @click="textarea=''">清 空</el-button>
-    </p>
-    <el-input placeholder="内容" v-model="text">
-      <template #append>
-        <el-button @click="copyText" color="primary">复制</el-button>
-      </template>
-    </el-input>
-    <div style="margin-top:10px">
-      <el-input type="textarea" v-model="textarea" cols="40" rows="3"></el-input>
+  <body>
+    <div id="app">
+      <p>
+        <el-button @click="copy">直接复制</el-button>
+        <el-button @click="textarea=''">清 空</el-button>
+      </p>
+      <el-input placeholder="内容" v-model="text">
+        <template #append>
+          <el-button @click="copyText" color="primary">复制</el-button>
+        </template>
+      </el-input>
+      <div style="margin-top: 10px">
+        <el-input
+          type="textarea"
+          v-model="textarea"
+          cols="40"
+          rows="3"
+        ></el-input>
+      </div>
     </div>
-  </div>
-</body>
-<script>
-  var app = Vue.createApp({
-    data() {
-      return {
-        text: '',
-        textarea: ''
-      }
-    },
-    methods: {
-      copyText() {
-        this.$Clipboard({
-          text: this.text
-        }).then(() => {
-          this.$message.success('复制成功')
-        }).catch(() => {
-          this.$message.error('复制失败')
-        });
+  </body>
+  <script>
+    var app = Vue.createApp({
+      data() {
+        return {
+          text: "",
+          textarea: "",
+        };
       },
-      copy() {
-        this.$Clipboard({
-          text: '测试==复制至剪切板的文本==测试'
-        }).then(() => {
-          this.$message.success('复制成功')
-        }).catch(() => {
-          this.$message.error('复制失败')
-        });
-      }
-    }
-  })
-  app.use(ElementPlus)
-  app.use(AVUE)
-  app.mount('#app')
-</script>
-
+      methods: {
+        copyText() {
+          this.$Clipboard({
+            text: this.text,
+          })
+            .then(() => {
+              this.$message.success("复制成功");
+            })
+            .catch(() => {
+              this.$message.error("复制失败");
+            });
+        },
+        copy() {
+          this.$Clipboard({
+            text: "测试==复制至剪切板的文本==测试",
+          })
+            .then(() => {
+              this.$message.success("复制成功");
+            })
+            .catch(() => {
+              this.$message.error("复制失败");
+            });
+        },
+      },
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
 </html>

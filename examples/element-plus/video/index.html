@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 
 <html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title></title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="../../cdn/axios/axios.js"></script>
-  <script src="../../cdn/vue/vue.global.min.js"></script>
-  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
-  <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-  <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-</head>
-
-<body>
-  <div id="app">
-    <el-button @click.native="startRecord">开始</el-button>
-    <el-button type="danger" @click="stopRecord">停止</el-button>
-    <el-button type="warning" @click="getRecord">捕捉</el-button>
-    <br /> <br />
-    <avue-video background="https://avuejs.com/images/face.png" @data-change="dataChange" ref="video"></avue-video>
-  </div>
-</body>
-<script>
-  var app = Vue.createApp({
-    methods: {
-      startRecord() {
-        this.$refs.video.startRecord();
+  <body>
+    <div id="app">
+      <el-button @click.native="startRecord">开始</el-button>
+      <el-button type="danger" @click="stopRecord">停止</el-button>
+      <el-button type="warning" @click="getRecord">捕捉</el-button>
+      <br />
+      <br />
+      <avue-video
+        background="https://avuejs.com/images/face.png"
+        @data-change="dataChange"
+        ref="video"
+      ></avue-video>
+    </div>
+  </body>
+  <script>
+    var app = Vue.createApp({
+      methods: {
+        startRecord() {
+          this.$refs.video.startRecord();
+        },
+        stopRecord() {
+          this.$refs.video.stopRecord();
+        },
+        getRecord() {
+          this.$refs.video.getRecord();
+        },
+        dataChange(data) {
+          console.log(data);
+        },
       },
-      stopRecord() {
-        this.$refs.video.stopRecord();
-      },
-      getRecord() {
-        this.$refs.video.getRecord();
-      },
-      dataChange(data) {
-        console.log(data);
-      }
-    }
-  })
-  app.use(ElementPlus)
-  app.use(AVUE)
-  app.mount('#app')
-</script>
-
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
 </html>

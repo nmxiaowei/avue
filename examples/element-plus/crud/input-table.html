@@ -1,137 +1,146 @@
 <!DOCTYPE html>
 
 <html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <script src="../../cdn/cryptojs/CryptoJS.js"></script>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title></title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="../../cdn/axios/axios.js"></script>
-  <script src="../../cdn/vue/vue.global.min.js"></script>
-  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
-  <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-  <script src="../../cdn/cryptojs/CryptoJS.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-</head>
+  <body>
+    <div id="app">
+      {{form}}
+      <avue-crud
+        :option="option"
+        :data="data"
+        :upload-error="uploadError"
+        :upload-delete="uploadDelete"
+        :upload-before="uploadBefore"
+        :upload-exceed="uploadExceed"
+        :upload-after="uploadAfter"
+      >
+      </avue-crud>
+    </div>
+  </body>
+  <script>
+    const getPageDataFun = () => [
+      {
+        id: "0",
+        name: "牛肉",
+        info: "好吃",
+      },
+      {
+        id: "1",
+        name: "生菜",
+        info: "草有什么好吃的",
+      },
+    ];
+    const getItemsInfo = (id, data) => {
+      const i = data.findIndex((i) => i.id == id);
+      return i < 0 ? "" : data[i];
+    };
+    var app = Vue.createApp({
+      data() {
+        return {
+          data: [],
+          option: {
+            labelWidth: 120,
+            viewBtn: true,
+            column: [
+              {
+                label: "菜单",
+                prop: "foodmenu",
+                type: "input-table",
+                props: {
+                  label: "name",
+                  value: "id",
+                },
+                children: {
+                  border: true,
+                  column: [
+                    {
+                      label: "姓名",
+                      width: 120,
+                      search: true,
+                      prop: "name",
+                    },
+                    {
+                      label: "性别",
+                      search: true,
+                      prop: "sex",
+                    },
+                  ],
+                },
+                onLoad: ({ page, value, data }, callback) => {
+                  if (value) {
+                    // 打开dialog的时候，处理table的当前选中值
+                    ElementPlus.ElMessage.success("首次查询" + value);
+                    return callback(getItemsInfo(value, getPageDataFun()));
+                  }
 
-<body>
-  <div id="app">
-    {{form}}
-    <avue-crud :option="option" :data="data" :upload-error="uploadError" :upload-delete="uploadDelete"
-      :upload-before="uploadBefore" :upload-exceed="uploadExceed" :upload-after="uploadAfter">
-    </avue-crud>
-  </div>
-</body>
-<script>
-  const getPageDataFun = ()=>[
-    {
-      id: "0",
-      name: "牛肉",
-      info: "好吃",
-    },
-    {
-      id: "1",
-      name: "生菜",
-      info: "草有什么好吃的",
-    }
-  ]
-  const getItemsInfo = (id, data)=>{
-    const i = data.findIndex((i)=>i.id == id);
-    return i < 0 ? '' : data[i]
-  }
-  var app = Vue.createApp({
-    data() {
-      return {
-        data: [],
-        option: {
-          labelWidth: 120,
-          viewBtn: true,
-          column: [
-            {
-              label: '菜单',
-              prop: 'foodmenu',
-              type: 'input-table',
-              props:{
-                label: "name",
-                value: "id",
+                  // 加载 table 的可选数据
+                  if (data) {
+                    ElementPlus.ElMessage.success(
+                      "搜索查询参数" + JSON.stringify(data)
+                    );
+                  }
+                  if (page) {
+                    ElementPlus.ElMessage.success(
+                      "分页参数" + JSON.stringify(page)
+                    );
+                  }
+                  //分页查询信息
+                  callback({
+                    total: 2,
+                    data: getPageDataFun(),
+                  });
+                },
               },
-              children:{
-                border: true,
-                column: [
-                  {
-                    label: "姓名",
-                    width: 120,
-                    search: true,
-                    prop: "name",
-                  },
-                  {
-                    label: "性别",
-                    search: true,
-                    prop: "sex",
-                  },
-                ],
-              },
-              onLoad:({ page, value, data }, callback) =>{
-                if (value) {
-                  // 打开dialog的时候，处理table的当前选中值
-                  ElementPlus.ElMessage.success("首次查询" + value);
-                  return callback(getItemsInfo(value, getPageDataFun()));
-                }
-                
-                // 加载 table 的可选数据
-                if(data){
-                  ElementPlus.ElMessage.success("搜索查询参数" + JSON.stringify(data));
-                }
-                if(page){
-                  ElementPlus.ElMessage.success("分页参数" + JSON.stringify(page));
-                }
-                //分页查询信息
-                callback({
-                  total: 2,
-                  data: getPageDataFun(),
-                });
-              },
-            },
-          ]
-        }
-      }
-    },
-    methods: {
-      uploadDelete(file, column) {
-        console.log(file, column)
-        return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
+            ],
+          },
+        };
       },
-      uploadExceed(limit, files, fileList, column) {
-        console.log(limit, files, fileList, column)
-        this.$message.success('达到文件限制了' + limit)
+      methods: {
+        uploadDelete(file, column) {
+          console.log(file, column);
+          return this.$confirm(`这里是自定义的，是否确定移除该选项？`);
+        },
+        uploadExceed(limit, files, fileList, column) {
+          console.log(limit, files, fileList, column);
+          this.$message.success("达到文件限制了" + limit);
+        },
+        uploadBefore(file, done, loading, column) {
+          console.log(file, column);
+          done();
+          this.$message.success("上传前的方法");
+        },
+        uploadError(error, column) {
+          this.$message.success("上传失败");
+          console.log(error, column);
+        },
+        uploadAfter(res, done, loading, column) {
+          console.log(res, column);
+          done();
+          this.$message.success("上传后的方法");
+        },
+        submit() {
+          this.$message.success("当前数据" + JSON.stringify(this.form));
+        },
       },
-      uploadBefore(file, done, loading, column) {
-        console.log(file, column)
-        done()
-        this.$message.success('上传前的方法')
-      },
-      uploadError(error, column) {
-        this.$message.success('上传失败')
-        console.log(error, column)
-      },
-      uploadAfter(res, done, loading, column) {
-        console.log(res, column)
-        done()
-        this.$message.success('上传后的方法')
-      },
-      submit() {
-        this.$message.success('当前数据' + JSON.stringify(this.form))
-      }
-    }
-  })
-  app.use(ElementPlus)
-  app.use(AVUE)
-  app.mount('#app')
-</script>
-
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
 </html>

@@ -156,7 +156,7 @@ export const install = function (app: App, opts: AvueInstallOptions = {}) {
     const result: AnyRecord = {};
 
     UPLOAD_HOOK_KEYS.forEach((key) => {
-      if (column.type === "upload" && !column[key]) {
+      if (column && column.type === "upload" && !column[key]) {
         result[key] = ctx[key];
       }
     });

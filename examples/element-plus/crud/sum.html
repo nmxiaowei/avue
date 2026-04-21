@@ -1,80 +1,81 @@
 <!DOCTYPE html>
 
 <html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title></title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
 
-  <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
 
-  <script src="../../cdn/vue/vue.global.min.js"></script>
-  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
-  <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-</head>
-
-<body>
-  <div id="app">
-    <avue-crud :data="data" :option="option"></avue-crud>
-  </div>
-</body>
-<script>
-  var app = Vue.createApp({
-    data() {
-      return {
-        data: [
-          {
-            sum: 5,
-            avg: 10,
-            count: 2,
-          }, {
-            sum: 15,
-            avg: 20,
-            count: 1,
-          }
-        ],
-        option: {
-          index: true,
-          showSummary: true,
-          sumColumnList: [
+  <body>
+    <div id="app">
+      <avue-crud :data="data" :option="option"></avue-crud>
+    </div>
+  </body>
+  <script>
+    var app = Vue.createApp({
+      data() {
+        return {
+          data: [
             {
-              name: 'sum',
-              type: 'sum'
+              sum: 5,
+              avg: 10,
+              count: 2,
             },
             {
-              name: 'avg',
-              type: 'avg'
+              sum: 15,
+              avg: 20,
+              count: 1,
             },
-            {
-              name: 'count',
-              type: 'count'
-            }
           ],
-          column: [{
-            label: '相加',
-            prop: 'sum'
+          option: {
+            index: true,
+            showSummary: true,
+            sumColumnList: [
+              {
+                name: "sum",
+                type: "sum",
+              },
+              {
+                name: "avg",
+                type: "avg",
+              },
+              {
+                name: "count",
+                type: "count",
+              },
+            ],
+            column: [
+              {
+                label: "相加",
+                prop: "sum",
+              },
+              {
+                label: "平均值",
+                prop: "avg",
+              },
+              {
+                label: "统计",
+                prop: "count",
+              },
+            ],
           },
-          {
-            label: '平均值',
-            prop: 'avg'
-          },
-          {
-            label: '统计',
-            prop: 'count'
-          }]
-        }
-      }
-    }
-  })
-  app.use(ElementPlus)
-  app.use(AVUE)
-  app.mount('#app')
-</script>
-
+        };
+      },
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
 </html>

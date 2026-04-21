@@ -1,64 +1,72 @@
 <!DOCTYPE html>
 
 <html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title></title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
+    <!-- 导入表格需要的包 -->
 
-  <script src="../../cdn/axios/axios.js"></script>
-  <!-- 导入表格需要的包 -->
+    <script src="../../cdn/filesaver/FileSaver.min.js"></script>
+    <script src="../../cdn/xlsx/xlsx.full.min.js"></script>
 
-  <script src="../../cdn/filesaver/FileSaver.min.js"></script>
-  <script src="../../cdn/xlsx/xlsx.full.min.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
 
-  <script src="../../cdn/vue/vue.global.min.js"></script>
-  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
-  <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-</head>
-
-<body>
-  <div id="app">
-    <avue-crud ref="crud" :option="option" :data="data" @date-change="dateChange"></avue-crud>
-  </div>
-</body>
-<script>
-  var app = Vue.createApp({
-    data() {
-      return {
-        data: [{
-          name: 'smallwei'
-        }],
-        option: {
-          dateBtn: true,
-          border: true,
-          column: [{
-            search: true,
-            label: '姓名',
-            prop: 'name'
-          }, {
-            search: true,
-            label: '年龄',
-            prop: 'sex'
-          }]
-        }
-      }
-    },
-    methods: {
-      dateChange(val) {
-        console.log(val)
-      }
-    }
-  })
-  app.use(ElementPlus)
-  app.use(AVUE)
-  app.mount('#app')
-</script>
-
+  <body>
+    <div id="app">
+      <avue-crud
+        ref="crud"
+        :option="option"
+        :data="data"
+        @date-change="dateChange"
+      ></avue-crud>
+    </div>
+  </body>
+  <script>
+    var app = Vue.createApp({
+      data() {
+        return {
+          data: [
+            {
+              name: "smallwei",
+            },
+          ],
+          option: {
+            dateBtn: true,
+            border: true,
+            column: [
+              {
+                search: true,
+                label: "姓名",
+                prop: "name",
+              },
+              {
+                search: true,
+                label: "年龄",
+                prop: "sex",
+              },
+            ],
+          },
+        };
+      },
+      methods: {
+        dateChange(val) {
+          console.log(val);
+        },
+      },
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
 </html>

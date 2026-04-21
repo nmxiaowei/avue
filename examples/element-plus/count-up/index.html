@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 
 <html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title></title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="../../cdn/axios/axios.js"></script>
-  <script src="../../cdn/vue/vue.global.min.js"></script>
-  <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
-  <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-  <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
-  <link rel="stylesheet" href="../../../lib/index.css" />
-  <script src="../../../lib/avue.js"></script>
-</head>
-
-<body>
-  <div id="app">
-    {{test}}
-    <input type="text" v-model='test[0].c'>
-    <div style="font-size:43px;font-weight:500;color:red;">
-      <p>
-        <avue-count-up :end="15033.2"></avue-count-up>
-      </p>
-      <p>
-        <avue-count-up :end="1233.2" :start="1000"></avue-count-up>
-      </p>
+  <body>
+    <div id="app">
+      {{test}}
+      <input type="text" v-model="test[0].c" />
+      <div style="font-size: 43px; font-weight: 500; color: red">
+        <p>
+          <avue-count-up :end="15033.2"></avue-count-up>
+        </p>
+        <p>
+          <avue-count-up :end="1233.2" :start="1000"></avue-count-up>
+        </p>
+      </div>
     </div>
-  </div>
-</body>
-<script>
-  let app = Vue.createApp({
-    setup() {
-      const test = Vue.reactive([{ a: 1 }])
-      test[0].b = 2;
-      test[0].c = 3
-      return {
-        test
-      }
-    }
-  })
-  app.use(AVUE)
-  app.mount('#app')
-</script>
-
+  </body>
+  <script>
+    let app = Vue.createApp({
+      setup() {
+        const test = Vue.reactive([{ a: 1 }]);
+        test[0].b = 2;
+        test[0].c = 3;
+        return {
+          test,
+        };
+      },
+    });
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
 </html>

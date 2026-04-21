@@ -1,137 +1,140 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Avue Cron 表达式编辑器示例</title>
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-  <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <link rel="stylesheet" href="../../../lib/index.css" />
-    <script src="../../../lib/avue.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
     <style>
-        body {
-            padding: 20px;
-            background: #f5f7fa;
-        }
+      body {
+        padding: 20px;
+        background: #f5f7fa;
+      }
 
-        .demo-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+      .demo-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
 
-        .demo-title {
-            text-align: center;
-            color: #303133;
-            margin-bottom: 30px;
-        }
+      .demo-title {
+        text-align: center;
+        color: #303133;
+        margin-bottom: 30px;
+      }
 
-        .demo-section {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-        }
+      .demo-section {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      }
 
-        .demo-section h3 {
-            margin-bottom: 20px;
-            color: #409eff;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
+      .demo-section h3 {
+        margin-bottom: 20px;
+        color: #409eff;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="app">
-        <div class="demo-container">
-            <h1 class="demo-title">Cron 表达式可视化编辑器</h1>
+      <div class="demo-container">
+        <h1 class="demo-title">Cron 表达式可视化编辑器</h1>
 
-            <div class="demo-section">
-                <h3>独立组件使用</h3>
-                <avue-input-cron v-model="cron1" placeholder="点击配置Cron表达式"></avue-input-cron>
-                <p style="margin-top: 10px; color: #909399;">当前值：{{ cron1 || '未配置' }}</p>
-            </div>
-
-            <div class="demo-section">
-                <h3>表单中使用</h3>
-                <avue-form v-model="form" :option="option"></avue-form>
-            </div>
-
-            <div class="demo-section">
-                <h3>表单数据</h3>
-                <pre>{{ JSON.stringify(form, null, 2) }}</pre>
-            </div>
-
-            <div class="demo-section">
-                <h3>常用 Cron 表达式示例</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                        <code>0 0 * * * ?</code> - 每小时整点执行
-                    </li>
-                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                        <code>0 0/30 * * * ?</code> - 每30分钟执行一次
-                    </li>
-                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                        <code>0 0 9 * * ?</code> - 每天9点执行
-                    </li>
-                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                        <code>0 0 9 * * 1-5</code> - 每周一到周五9点执行
-                    </li>
-                    <li style="padding: 8px 0;">
-                        <code>0 0 0 1 * ?</code> - 每月1号0点执行
-                    </li>
-                </ul>
-            </div>
+        <div class="demo-section">
+          <h3>独立组件使用</h3>
+          <avue-input-cron
+            v-model="cron1"
+            placeholder="点击配置Cron表达式"
+          ></avue-input-cron>
+          <p style="margin-top: 10px; color: #909399">
+            当前值：{{ cron1 || '未配置' }}
+          </p>
         </div>
+
+        <div class="demo-section">
+          <h3>表单中使用</h3>
+          <avue-form v-model="form" :option="option"></avue-form>
+        </div>
+
+        <div class="demo-section">
+          <h3>表单数据</h3>
+          <pre>{{ JSON.stringify(form, null, 2) }}</pre>
+        </div>
+
+        <div class="demo-section">
+          <h3>常用 Cron 表达式示例</h3>
+          <ul style="list-style: none; padding: 0">
+            <li style="padding: 8px 0; border-bottom: 1px solid #eee">
+              <code>0 0 * * * ?</code> - 每小时整点执行
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #eee">
+              <code>0 0/30 * * * ?</code> - 每30分钟执行一次
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #eee">
+              <code>0 0 9 * * ?</code> - 每天9点执行
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #eee">
+              <code>0 0 9 * * 1-5</code> - 每周一到周五9点执行
+            </li>
+            <li style="padding: 8px 0">
+              <code>0 0 0 1 * ?</code> - 每月1号0点执行
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <script>
-        const { createApp, ref } = Vue;
+      const { createApp, ref } = Vue;
 
-        const app = createApp({
-            setup() {
-                const cron1 = ref('0 0/5 * * * ?');
+      const app = createApp({
+        setup() {
+          const cron1 = ref("0 0/5 * * * ?");
 
-                const form = ref({
-                    taskName: '',
-                    cron: '0 0 9 * * ?'
-                });
+          const form = ref({
+            taskName: "",
+            cron: "0 0 9 * * ?",
+          });
 
-                const option = ref({
-                    labelWidth: 120,
-                    column: [
-                        {
-                            label: '任务名称',
-                            prop: 'taskName',
-                            type: 'input',
-                            placeholder: '请输入任务名称'
-                        },
-                        {
-                            label: '执行周期',
-                            prop: 'cron',
-                            type: 'cron',
-                            placeholder: '点击配置执行周期'
-                        }
-                    ]
-                });
+          const option = ref({
+            labelWidth: 120,
+            column: [
+              {
+                label: "任务名称",
+                prop: "taskName",
+                type: "input",
+                placeholder: "请输入任务名称",
+              },
+              {
+                label: "执行周期",
+                prop: "cron",
+                type: "cron",
+                placeholder: "点击配置执行周期",
+              },
+            ],
+          });
 
-                return {
-                    cron1,
-                    form,
-                    option
-                };
-            }
-        });
+          return {
+            cron1,
+            form,
+            option,
+          };
+        },
+      });
 
-        app.use(ElementPlus);
-        app.use(AVUE);
-        app.mount('#app');
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
     </script>
-</body>
-
+  </body>
 </html>
