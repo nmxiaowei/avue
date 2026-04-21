@@ -23,7 +23,12 @@
       "utils/*": ["src/utils/*"],
       "mixins/*": ["packages/mixins/*"],
       "common/*": ["packages/core/*"],
-      "packages/*": ["packages/*"]
+      "packages/*": [
+        "packages/*",
+        "packages/*/index",
+        "packages/*/index.ts",
+        "packages/*/index.vue"
+      ]
     }
   },
   "include": [
