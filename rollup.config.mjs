@@ -397,22 +397,6 @@ function writeRootBridges(outputDir, format) {
         "",
       ].join("\n")
     );
-    writeFile(
-      path.resolve(root, outputDir, "avue.mjs"),
-      [
-        "export * from './index.mjs';",
-        "export { default } from './index.mjs';",
-        "",
-      ].join("\n")
-    );
-    writeFile(
-      path.resolve(root, outputDir, "avue.min.mjs"),
-      [
-        "export * from './index.mjs';",
-        "export { default } from './index.mjs';",
-        "",
-      ].join("\n")
-    );
     return;
   }
 
