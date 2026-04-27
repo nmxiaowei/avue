@@ -1,4 +1,4 @@
-/*! Avue.js v3.8.6 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import { getFixed } from '../../../src/utils/util.mjs';
 

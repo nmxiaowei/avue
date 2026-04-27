@@ -1,4 +1,4 @@
-/*! Avue.js v3.8.6 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 function validatenull(val) {
     if (val instanceof Date || typeof val === 'boolean' || typeof val === 'number') {
         return false;

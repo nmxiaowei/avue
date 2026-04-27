@@ -1,4 +1,4 @@
-/*! Avue.js v3.8.6 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { validatenull } from './validate.mjs';
 import { typeList, DIC_PROPS, CHILDREN_LIST } from '../global/variable.mjs';
 import _get from 'lodash-es/get.js';

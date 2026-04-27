@@ -1,4 +1,4 @@
-/*! Avue.js v3.8.6 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, createTextVNode, createVNode, withCtx, createElementVNode, toDisplayString, createCommentVNode } from 'vue';
 
 const _hoisted_1 = { key: 0 };

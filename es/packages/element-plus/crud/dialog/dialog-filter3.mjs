@@ -1,4 +1,4 @@
-/*! Avue.js v3.8.6 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createBlock, normalizeClass, withCtx, createVNode, createTextVNode, toDisplayString, createElementBlock, Fragment, renderList, createElementVNode, createCommentVNode } from 'vue';
 
 const _hoisted_1 = { class: "avue-dialog__footer" };
