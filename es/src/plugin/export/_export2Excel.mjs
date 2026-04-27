@@ -1,10 +1,16 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import './_blob.mjs';
 
 // @ts-nocheck
 /* eslint-disable */
-const saveAs = window.saveAs;
-const XLSX = window.XLSX;
+const getExportDeps = () => {
+    if (typeof window === 'undefined')
+        return {};
+    return {
+        saveAs: window.saveAs,
+        XLSX: window.XLSX
+    };
+};
 function generateArray(table) {
     const out = [];
     const rows = table.querySelectorAll('tr');
@@ -51,6 +57,7 @@ function datenum(v, date1904) {
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
 }
 function sheet_from_array_of_arrays(data) {
+    const { XLSX } = getExportDeps();
     const ws = {};
     const range = { s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } };
     for (let R = 0; R != data.length; ++R) {
@@ -99,6 +106,9 @@ function s2ab(s) {
     return buf;
 }
 function export_table_to_excel(id) {
+    const { saveAs, XLSX } = getExportDeps();
+    if (!saveAs || !XLSX || typeof document === 'undefined')
+        return;
     const theTable = document.getElementById(id);
     const oo = generateArray(theTable);
     const ranges = oo[1];
@@ -117,6 +127,9 @@ function export_table_to_excel(id) {
     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'test.xlsx');
 }
 function export_json_to_excel(th, jsonData, defaultTitle, options = { merges: [], header: null }) {
+    const { saveAs, XLSX } = getExportDeps();
+    if (!saveAs || !XLSX)
+        return;
     const data = jsonData;
     data.unshift(th);
     if (options.header)

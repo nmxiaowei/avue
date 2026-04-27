@@ -1,10 +1,10 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { isJson, downFile, validData } from '../../utils/util.mjs';
 import packages from '../../core/packages.mjs';
 import dayjs from '../../../_virtual/dayjs.min.mjs';
 
 /* eslint-disable */
-const XLSX = window.XLSX;
+const getXLSX = () => (typeof window === 'undefined' ? undefined : window.XLSX);
 var $Export = {
     buildHeader(revealList) {
         const excelHeader = [];
@@ -91,7 +91,7 @@ var $Export = {
         }
         return merges;
     },
-    aoa_to_sheet(data, headerRows) {
+    aoa_to_sheet(data, headerRows, xlsx) {
         const ws = {};
         const range = { s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } };
         for (let R = 0; R !== data.length; ++R) {
@@ -133,7 +133,7 @@ var $Export = {
                         bgColor: { theme: 7, tint: 0.3999755851924192, rgb: 'F5F7FA' }
                     };
                 }
-                const cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
+                const cell_ref = xlsx.utils.encode_cell({ c: C, r: R });
                 if (typeof cell.v === 'number') {
                     cell.t = 'n';
                 }
@@ -147,7 +147,7 @@ var $Export = {
             }
         }
         if (range.s.c < 10000000) {
-            ws['!ref'] = XLSX.utils.encode_range(range);
+            ws['!ref'] = xlsx.utils.encode_range(range);
         }
         return ws;
     },
@@ -160,7 +160,8 @@ var $Export = {
         return buf;
     },
     excel(params) {
-        if (!window.XLSX) {
+        const xlsx = getXLSX();
+        if (!xlsx) {
             packages.logs('xlsx');
             return;
         }
@@ -190,7 +191,7 @@ var $Export = {
             const headerRows = _params.header.length;
             _params.header.push(..._params.data, []);
             const merges = this.doMerges(_params.header);
-            const ws = this.aoa_to_sheet(_params.header, headerRows);
+            const ws = this.aoa_to_sheet(_params.header, headerRows, xlsx);
             ws['!merges'] = merges;
             ws['!freeze'] = {
                 xSplit: '1',
@@ -211,14 +212,14 @@ var $Export = {
                 type: 'binary',
                 cellStyles: true
             };
-            const wbout = XLSX.write(workbook, wopts);
+            const wbout = xlsx.write(workbook, wopts);
             const blob = new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' });
             downFile(blob, _params.title + '.xlsx');
             resolve();
         });
     },
     xlsx(file) {
-        if (!window.saveAs || !window.XLSX) {
+        if (typeof window === 'undefined' || !window.saveAs || !window.XLSX) {
             packages.logs('file-saver');
             packages.logs('xlsx');
             return;

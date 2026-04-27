@@ -10,8 +10,13 @@ declare global {
   }
 }
 
-const saveAs = window.saveAs;
-const XLSX = window.XLSX;
+const getExportDeps = () => {
+  if (typeof window === 'undefined') return {};
+  return {
+    saveAs: window.saveAs,
+    XLSX: window.XLSX
+  };
+};
 
 function generateArray(table: HTMLElement) {
   const out: any[] = [];
@@ -64,6 +69,7 @@ function datenum(v: any, date1904: any) {
 }
 
 function sheet_from_array_of_arrays(data: any[][]) {
+  const { XLSX } = getExportDeps();
   const ws: Record<string, any> = {};
   const range = { s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } };
   for (let R = 0; R != data.length; ++R) {
@@ -105,6 +111,8 @@ function s2ab(s: string) {
 }
 
 export function export_table_to_excel(id: string) {
+  const { saveAs, XLSX } = getExportDeps();
+  if (!saveAs || !XLSX || typeof document === 'undefined') return;
   const theTable = document.getElementById(id)!;
   const oo = generateArray(theTable);
   const ranges = oo[1];
@@ -137,6 +145,8 @@ export function export_json_to_excel(
   defaultTitle?: string,
   options: { merges?: any[]; header?: string | null } = { merges: [], header: null }
 ) {
+  const { saveAs, XLSX } = getExportDeps();
+  if (!saveAs || !XLSX) return;
   const data = jsonData;
   data.unshift(th);
   if (options.header) data.unshift([options.header]);

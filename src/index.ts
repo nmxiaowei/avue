@@ -174,4 +174,30 @@ const Avue = {
   ...plugins,
 };
 
+export { version, locale };
+export {
+  $DialogForm,
+  $ImagePreview,
+  $Export,
+  $Print,
+  $Clipboard,
+  $Watermark,
+  $Log,
+  $Screenshot,
+  deepClone,
+  dataURLtoFile,
+  isJson,
+  setPx,
+  validData,
+  findArray,
+  findNode,
+  validatenull,
+  downFile,
+  loadScript,
+  findObject,
+  randomId,
+};
+export * from "./ui/element-plus/";
+export * from "./ui/data/";
+
 export default Avue;

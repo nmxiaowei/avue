@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { loadCascaderDic, loadDic, loadLocalDic, sendDic } from '../../../src/core/dic.mjs';
 import { DIC_PROPS } from '../../../src/global/variable.mjs';
 import slot from '../../../src/core/slot.mjs';

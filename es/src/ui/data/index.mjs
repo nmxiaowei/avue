@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import '../../../packages/data/tabs/index.mjs';
 import '../../../packages/data/cardText/index.mjs';
 import '../../../packages/data/box/index.mjs';
@@ -72,4 +72,4 @@ const dataComponents = {
     DataDashboard: script,
 };
 
-export { dataComponents as default };
+export { script$k as DataBox, script$h as DataCard, script$l as DataCardText, script$4 as DataCountdown, script as DataDashboard, script$g as DataDisplay, script$i as DataIcons, script$f as DataImgText, script$1 as DataList, script$3 as DataNotice, script$e as DataOperaText, script$a as DataPanel, script$c as DataPay, script$b as DataPrice, script$5 as DataProduct, script$6 as DataProfile, script$j as DataProgress, script$7 as DataRank, script$d as DataRotate, script$9 as DataStatistic, script$m as DataTabs, script$2 as DataTask, script$8 as DataWeather, dataComponents as default };

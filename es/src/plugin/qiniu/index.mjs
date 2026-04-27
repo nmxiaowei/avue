@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 const getToken = (accessKey, secretKey, putPolicy) => {
     const putPolicyString = JSON.stringify(putPolicy);
     const encoded = base64encode(utf16to8(putPolicyString));

@@ -22,6 +22,32 @@ import DataTask from 'packages/data/task';
 import DataList from 'packages/data/list';
 import DataDashboard from 'packages/data/dashboard';
 
+export {
+  DataTabs,
+  DataCardText,
+  DataBox,
+  DataProgress,
+  DataIcons,
+  DataCard,
+  DataDisplay,
+  DataImgText,
+  DataOperaText,
+  DataRotate,
+  DataPay,
+  DataPrice,
+  DataPanel,
+  DataStatistic,
+  DataWeather,
+  DataRank,
+  DataProfile,
+  DataProduct,
+  DataCountdown,
+  DataNotice,
+  DataTask,
+  DataList,
+  DataDashboard,
+};
+
 const dataComponents = {
   DataTabs,
   DataCardText,
