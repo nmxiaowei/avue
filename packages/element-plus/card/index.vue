@@ -9,7 +9,7 @@
           <el-icon>
             <el-icon-plus />
           </el-icon>
-          <span>添加</span>
+          <span>{{ t('crud.addBtn') }}</span>
         </div>
       </el-col>
       <el-col :span="span"
@@ -45,8 +45,10 @@ const propsDefault = {
   info: "info"
 };
 import create from "core/create";
+import locale from "core/locale";
 export default create({
   name: "card",
+  mixins: [locale],
   props: {
     props: {
       type: Object,

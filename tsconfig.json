@@ -23,14 +23,23 @@
       "utils/*": ["src/utils/*"],
       "mixins/*": ["packages/mixins/*"],
       "common/*": ["packages/core/*"],
-      "packages/*": ["packages/*"]
+      "packages/*": [
+        "packages/*",
+        "packages/*/index",
+        "packages/*/index.ts",
+        "packages/*/index.vue"
+      ]
     }
   },
   "include": [
+    "src/**/*.js",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.vue",
+    "packages/**/*.js",
     "packages/**/*.ts",
     "packages/**/*.tsx",
+    "packages/**/*.vue",
     "types/**/*.d.ts"
   ],
   "exclude": ["node_modules", "lib", "examples"]

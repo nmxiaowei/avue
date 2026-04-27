@@ -56,8 +56,8 @@
 
 <script>
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 import locale from "core/locale";
 export default create({
   name: "input-table",
@@ -100,7 +100,7 @@ export default create({
       return this.multiple;
     },
     title() {
-      return this.disabled || this.readonly ? "查看" : "选择";
+      return this.disabled || this.readonly ? this.t('common.view') : this.t('common.select');
     },
     labelShow() {
       if (typeof this.formatter == "function") {

@@ -11,22 +11,22 @@
           <div class="data-countdown__timer">
             <div class="data-countdown__block" v-if="showDays">
               <span class="data-countdown__number">{{ formatNumber(item.days || 0) }}</span>
-              <span class="data-countdown__label">天</span>
+              <span class="data-countdown__label">{{ t('countdown.day') }}</span>
             </div>
             <span class="data-countdown__separator" v-if="showDays">:</span>
             <div class="data-countdown__block">
               <span class="data-countdown__number">{{ formatNumber(item.hours || 0) }}</span>
-              <span class="data-countdown__label">时</span>
+              <span class="data-countdown__label">{{ t('countdown.hour') }}</span>
             </div>
             <span class="data-countdown__separator">:</span>
             <div class="data-countdown__block">
               <span class="data-countdown__number">{{ formatNumber(item.minutes || 0) }}</span>
-              <span class="data-countdown__label">分</span>
+              <span class="data-countdown__label">{{ t('countdown.minute') }}</span>
             </div>
             <span class="data-countdown__separator">:</span>
             <div class="data-countdown__block">
               <span class="data-countdown__number">{{ formatNumber(item.seconds || 0) }}</span>
-              <span class="data-countdown__label">秒</span>
+              <span class="data-countdown__label">{{ t('countdown.second') }}</span>
             </div>
           </div>
           <div class="data-countdown__desc" v-if="item.desc">{{ item.desc }}</div>
@@ -38,8 +38,10 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 export default create({
   name: "data-countdown",
+  mixins: [locale],
   data() {
     return {
       timers: []

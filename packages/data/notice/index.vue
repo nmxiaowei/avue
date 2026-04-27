@@ -23,8 +23,10 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 export default create({
   name: "data-notice",
+  mixins: [locale],
   data() {
     return {};
   },
@@ -42,7 +44,7 @@ export default create({
       return this.option.showMore !== false;
     },
     moreText() {
-      return this.option.moreText || '更多';
+      return this.option.moreText || this.t('common.more');
     },
     data() {
       return this.option.data || [];

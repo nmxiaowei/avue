@@ -114,11 +114,11 @@ export default create({
       dateCreate: false,
       shortcuts: [
         {
-          text: '今天',
+          text: this.t('date.t'),
           value: new Date(),
         },
         {
-          text: '昨天',
+          text: this.t('date.y'),
           value: () => {
             const date = new Date();
             date.setTime(date.getTime() - 3600 * 1000 * 24);
@@ -126,7 +126,7 @@ export default create({
           },
         },
         {
-          text: '一周前',
+          text: this.t('date.n'),
           value: () => {
             const date = new Date();
             date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);

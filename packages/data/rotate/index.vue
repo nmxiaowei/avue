@@ -21,7 +21,7 @@
           </div>
           <a :href="item.href"
              @click="item.click&&item.click(item)">
-            <p class="item-more">更多
+            <p class="item-more">{{ t('common.more') }}
               <el-icon>
                 <el-icon-arrow-right />
               </el-icon>
@@ -34,8 +34,10 @@
 </template>
 <script>
 import create from "core/create";
+import locale from "core/locale";
 export default create({
   name: "data-rotate",
+  mixins: [locale],
   data () {
     return {};
   },

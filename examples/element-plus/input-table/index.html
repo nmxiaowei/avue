@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html class="no-js">
   <head>
@@ -7,16 +7,14 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.staticfile.org/axios/0.19.0-beta.1/axios.js"></script>
+    <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.staticfile.org/animate.css/3.7.0/animate.min.css"
-    />
-    <link rel="stylesheet" href="../../../lib/index.css" />
-    <script src="../../../lib/avue.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
     <style>
       .imagepreview-1-vue img {
         width: 60px;
@@ -42,7 +40,7 @@
         placeholder="请选择数据"
       >
       </avue-input-table>
-      
+
       <br />
       <div>格式化值:{{form0}}</div>
       <avue-input-table
@@ -51,9 +49,10 @@
         :formatter="formatter"
         :on-load="onLoad"
         v-model="form0"
-        placeholder="请选择数据">
+        placeholder="请选择数据"
+      >
       </avue-input-table>
-      
+
       <br />
       <div>值:{{form1}}</div>
       <avue-input-table
@@ -63,39 +62,46 @@
         :formatter="formatter1"
         :on-load="onLoad1"
         v-model="form1"
-        placeholder="请选择数据">
+        placeholder="请选择数据"
+      >
       </avue-input-table>
     </div>
   </body>
   <script>
-    
-    const pageFirst = [{
-        id: '0',
-        name: '张三',
-        sex: '男',
-        age: 18
-      }, {
-        id: '1',
-        name: '李四',
-        sex: '女',
+    const pageFirst = [
+      {
+        id: "0",
+        name: "张三",
+        sex: "男",
+        age: 18,
+      },
+      {
+        id: "1",
+        name: "李四",
+        sex: "女",
         disabled: true,
-        age: 18
-      }, {
-        id: '2',
-        name: '王五',
-        sex: '女'
-      }]
-    const pageSecond = [{
-        id: '21',
-        name: '小虎',
-        sex: '男',
-        age: 18
-      }, {
-        id: '22',
-        name: '熊二',
-        sex: '女'
-    }]
-    const getPageDataFun = ()=>[
+        age: 18,
+      },
+      {
+        id: "2",
+        name: "王五",
+        sex: "女",
+      },
+    ];
+    const pageSecond = [
+      {
+        id: "21",
+        name: "小虎",
+        sex: "男",
+        age: 18,
+      },
+      {
+        id: "22",
+        name: "熊二",
+        sex: "女",
+      },
+    ];
+    const getPageDataFun = () => [
       {
         id: "0",
         name: "张三",
@@ -106,11 +112,11 @@
         name: "李四",
         sex: "女",
       },
-    ]
-    const getItemsInfo = (id, data)=>{
-      const i = data.findIndex((i)=>i.id == id);
-      return i < 0 ? '' : data[i]
-    }
+    ];
+    const getItemsInfo = (id, data) => {
+      const i = data.findIndex((i) => i.id == id);
+      return i < 0 ? "" : data[i];
+    };
     var app = Vue.createApp({
       data() {
         return {
@@ -136,8 +142,8 @@
           },
 
           form: "1",
-          form0: '',
-          form1: [0, '1', 4],
+          form0: "",
+          form1: [0, "1", 4],
           // form1: []
         };
       },
@@ -149,12 +155,14 @@
             ElementPlus.ElMessage.success("首次查询" + value);
             return callback(getItemsInfo(value, getPageDataFun()));
           }
-          
+
           // 加载 table 的可选数据
-          if(data){
-            ElementPlus.ElMessage.success("搜索查询参数" + JSON.stringify(data));
+          if (data) {
+            ElementPlus.ElMessage.success(
+              "搜索查询参数" + JSON.stringify(data)
+            );
           }
-          if(page){
+          if (page) {
             ElementPlus.ElMessage.success("分页参数" + JSON.stringify(page));
           }
           //分页查询信息
@@ -163,46 +171,50 @@
             data: getPageDataFun(),
           });
         },
-        onLoad1 ({ page, value, data }, callback) {
+        onLoad1({ page, value, data }, callback) {
           if (value) {
             // 打开dialog的时候，处理table的当前选中值
-            ElementPlus.ElMessage.success('首次查询' + value)
-            
-            return callback( value.map(id=>getItemsInfo(id, pageFirst.concat(pageSecond))))
+            ElementPlus.ElMessage.success("首次查询" + value);
+
+            return callback(
+              value.map((id) => getItemsInfo(id, pageFirst.concat(pageSecond)))
+            );
           }
-          
-          
+
           // 加载 table 的可选数据
-          if(data){
-            ElementPlus.ElMessage.success("搜索查询参数" + JSON.stringify(data));
+          if (data) {
+            ElementPlus.ElMessage.success(
+              "搜索查询参数" + JSON.stringify(data)
+            );
           }
-          if(page){
+          if (page) {
             ElementPlus.ElMessage.success("分页参数" + JSON.stringify(page));
           }
           //分页查询信息
-          callback(page.currentPage == 1 
-            ? {
-              total: 20,
-              data: pageFirst
-            }
-            : {
-              total: 20,
-              data: pageSecond
-            }
-          )
+          callback(
+            page.currentPage == 1
+              ? {
+                  total: 20,
+                  data: pageFirst,
+                }
+              : {
+                  total: 20,
+                  data: pageSecond,
+                }
+          );
         },
-        formatter (row) {
-          if (!row.name) return ''
-          return row.name + '-' + row.sex
+        formatter(row) {
+          if (!row.name) return "";
+          return row.name + "-" + row.sex;
         },
         formatter1(row) {
-          console.log('formatter1 => row', row)
+          console.log("formatter1 => row", row);
           if (Array.isArray(row)) {
-            return row.map(ele => ele.name + '格式化').join(',')
+            return row.map((ele) => ele.name + "格式化").join(",");
           } else {
-            return row.name + '格式化'
+            return row.name + "格式化";
           }
-        }
+        },
       },
     });
     app.use(ElementPlus);

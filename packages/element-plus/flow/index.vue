@@ -30,10 +30,12 @@
 
 <script>
 import create from "core/create";
+import locale from "core/locale";
 import flowNode from './node'
 import { randomId } from 'utils/util';
 export default create({
   name: "flow",
+  mixins: [locale],
   components: {
     flowNode
   },
@@ -180,9 +182,9 @@ export default create({
     },
     //删除节点
     deleteNode (nodeId) {
-      this.$confirm('确定要删除节点' + nodeId + '?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.t('flow.deleteNodeConfirm', { nodeId }), this.t('common.tip'), {
+        confirmButtonText: this.t('common.submitBtn'),
+        cancelButtonText: this.t('common.cancelBtn'),
         type: 'warning',
         closeOnClickModal: false
       }).then(() => {
@@ -257,9 +259,9 @@ export default create({
         _this.jsPlumb.bind('click', function (conn, originalEvent) {
           console.log('click', conn)
 
-          _this.$confirm('确定删除所点击的线吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+          _this.$confirm(_this.t('flow.deleteLineConfirm'), _this.t('common.tip'), {
+            confirmButtonText: _this.t('common.submitBtn'),
+            cancelButtonText: _this.t('common.cancelBtn'),
             type: 'warning'
           }).then(() => {
             _this.jsPlumb.deleteConnection(conn)
@@ -312,15 +314,15 @@ export default create({
           let from = evt.sourceId
           let to = evt.targetId
           if (from === to) {
-            _this.$message.error('不能连接自己')
+            _this.$message.error(_this.t('flow.noSelfConnect'))
             return false
           }
           if (_this.hasLine(from, to)) {
-            _this.$message.error('不能重复连线')
+            _this.$message.error(_this.t('flow.noDuplicateConnect'))
             return false
           }
           if (_this.hashOppositeLine(from, to)) {
-            _this.$message.error('不能回环哦')
+            _this.$message.error(_this.t('flow.noLoopConnect'))
             return false
           }
           return true

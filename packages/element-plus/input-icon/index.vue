@@ -57,8 +57,8 @@
 import create from "core/create";
 import locale from "core/locale";
 import iconTemp from 'common/components/icon/index';
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 export default create({
   name: "input-icon",
   components: {

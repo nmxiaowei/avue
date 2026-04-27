@@ -40,7 +40,7 @@
 import create from "core/create";
 import locale from "core/locale";
 import packages from "core/packages";
-import config from "../config.js";
+import config from "../config";
 export default create({
   name: 'crud',
   mixins: [locale],

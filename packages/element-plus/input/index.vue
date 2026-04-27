@@ -7,7 +7,7 @@
                    class="avue-input__phone-code"
                    :size="size"
                    :disabled="disabled"
-                   :placeholder="phoneCodePlaceholder"
+                   :placeholder="phoneCodePlaceholderText"
                    filterable
                    style="width: 120px;">
           <el-option v-for="item in phoneCodeList"
@@ -28,7 +28,7 @@
                   :prefix-icon="prefixIcon"
                   :suffix-icon="suffixIcon"
                   :readonly="readonly"
-                  :placeholder="phonePlaceholder"
+                  :placeholder="phonePlaceholderText"
                   @focus="handleFocus"
                   @blur="handlePhoneBlur"
                   :disabled="disabled"
@@ -66,7 +66,7 @@
                    :size="size"
                    :disabled="disabled"
                    style="width: 70px;">
-          <el-option v-for="item in plateProvinceList"
+          <el-option v-for="item in resolvedPlateProvinceList"
                      :key="item"
                      :label="item"
                      :value="item" />
@@ -78,7 +78,7 @@
                   @click="handleClick"
                   :maxlength="7"
                   :readonly="readonly"
-                  :placeholder="platePlaceholder"
+                  :placeholder="platePlaceholderText"
                   @focus="handleFocus"
                   @blur="handlePlateBlur"
                   @input="handlePlateInput"
@@ -194,36 +194,36 @@
 
 <script>
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
+import locale from "core/locale";
 
-// 国际电话区号列表
-const defaultPhoneCodeList = [
-  { code: '+86', name: '中国', label: '🇨🇳 +86' },
-  { code: '+852', name: '香港', label: '🇭🇰 +852' },
-  { code: '+853', name: '澳门', label: '🇲🇴 +853' },
-  { code: '+886', name: '台湾', label: '🇹🇼 +886' },
-  { code: '+1', name: '美国/加拿大', label: '🇺🇸 +1' },
-  { code: '+44', name: '英国', label: '🇬🇧 +44' },
-  { code: '+81', name: '日本', label: '🇯🇵 +81' },
-  { code: '+82', name: '韩国', label: '🇰🇷 +82' },
-  { code: '+65', name: '新加坡', label: '🇸🇬 +65' },
-  { code: '+61', name: '澳大利亚', label: '🇦🇺 +61' },
-  { code: '+49', name: '德国', label: '🇩🇪 +49' },
-  { code: '+33', name: '法国', label: '🇫🇷 +33' },
-  { code: '+39', name: '意大利', label: '🇮🇹 +39' },
-  { code: '+7', name: '俄罗斯', label: '🇷🇺 +7' },
-  { code: '+91', name: '印度', label: '🇮🇳 +91' },
-  { code: '+55', name: '巴西', label: '🇧🇷 +55' },
-  { code: '+34', name: '西班牙', label: '🇪🇸 +34' },
-  { code: '+31', name: '荷兰', label: '🇳🇱 +31' },
-  { code: '+41', name: '瑞士', label: '🇨🇭 +41' },
-  { code: '+46', name: '瑞典', label: '🇸🇪 +46' },
-  { code: '+60', name: '马来西亚', label: '🇲🇾 +60' },
-  { code: '+66', name: '泰国', label: '🇹🇭 +66' },
-  { code: '+84', name: '越南', label: '🇻🇳 +84' },
-  { code: '+62', name: '印尼', label: '🇮🇩 +62' },
-  { code: '+63', name: '菲律宾', label: '🇵🇭 +63' }
+const defaultPhoneCodeOptions = [
+  { code: '+86', flag: '🇨🇳', nameKey: 'input.countries.cn' },
+  { code: '+852', flag: '🇭🇰', nameKey: 'input.countries.hk' },
+  { code: '+853', flag: '🇲🇴', nameKey: 'input.countries.mo' },
+  { code: '+886', flag: '🇹🇼', nameKey: 'input.countries.tw' },
+  { code: '+1', flag: '🇺🇸', nameKey: 'input.countries.usca' },
+  { code: '+44', flag: '🇬🇧', nameKey: 'input.countries.uk' },
+  { code: '+81', flag: '🇯🇵', nameKey: 'input.countries.jp' },
+  { code: '+82', flag: '🇰🇷', nameKey: 'input.countries.kr' },
+  { code: '+65', flag: '🇸🇬', nameKey: 'input.countries.sg' },
+  { code: '+61', flag: '🇦🇺', nameKey: 'input.countries.au' },
+  { code: '+49', flag: '🇩🇪', nameKey: 'input.countries.de' },
+  { code: '+33', flag: '🇫🇷', nameKey: 'input.countries.fr' },
+  { code: '+39', flag: '🇮🇹', nameKey: 'input.countries.it' },
+  { code: '+7', flag: '🇷🇺', nameKey: 'input.countries.ru' },
+  { code: '+91', flag: '🇮🇳', nameKey: 'input.countries.in' },
+  { code: '+55', flag: '🇧🇷', nameKey: 'input.countries.br' },
+  { code: '+34', flag: '🇪🇸', nameKey: 'input.countries.es' },
+  { code: '+31', flag: '🇳🇱', nameKey: 'input.countries.nl' },
+  { code: '+41', flag: '🇨🇭', nameKey: 'input.countries.ch' },
+  { code: '+46', flag: '🇸🇪', nameKey: 'input.countries.se' },
+  { code: '+60', flag: '🇲🇾', nameKey: 'input.countries.my' },
+  { code: '+66', flag: '🇹🇭', nameKey: 'input.countries.th' },
+  { code: '+84', flag: '🇻🇳', nameKey: 'input.countries.vn' },
+  { code: '+62', flag: '🇮🇩', nameKey: 'input.countries.id' },
+  { code: '+63', flag: '🇵🇭', nameKey: 'input.countries.ph' }
 ];
 
 // 货币符号映射
@@ -242,7 +242,7 @@ const currencySymbols = {
 
 export default create({
   name: "input",
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   emits: ['update:modelValue', 'click', 'focus', 'blur', 'change', 'id-card-valid', 'code-complete', 'uscc-valid'],
   data() {
     return {
@@ -267,7 +267,7 @@ export default create({
       codeValues: [],
       codeRefs: [],
       // 车牌号相关
-      plateProvince: '京',
+      plateProvince: '',
       plateNumber: '',
       // IP地址相关
       ipSegments: ['', '', '', ''],
@@ -350,12 +350,12 @@ export default create({
     // 区号选择器占位符
     phoneCodePlaceholder: {
       type: String,
-      default: '区号'
+      default: ''
     },
     // 手机号输入框占位符
     phonePlaceholder: {
       type: String,
-      default: '请输入手机号'
+      default: ''
     },
     
     // ========== 货币相关配置 ==========
@@ -382,7 +382,7 @@ export default create({
     // 货币占位符
     currencyPlaceholder: {
       type: String,
-      default: '请输入金额'
+      default: ''
     },
     // 最小值
     currencyMin: {
@@ -414,7 +414,7 @@ export default create({
     // 银行卡占位符
     bankCardPlaceholder: {
       type: String,
-      default: '请输入银行卡号'
+      default: ''
     },
     // 是否显示银行卡类型
     showBankCardType: {
@@ -426,7 +426,7 @@ export default create({
     // 身份证占位符
     idCardPlaceholder: {
       type: String,
-      default: '请输入身份证号'
+      default: ''
     },
     // 是否显示身份证信息
     showIdCardInfo: {
@@ -442,7 +442,7 @@ export default create({
     // ========== 邮箱相关配置 ==========
     emailPlaceholder: {
       type: String,
-      default: '请输入邮箱'
+      default: ''
     },
     // 邮箱后缀建议列表
     emailSuffixes: {
@@ -474,23 +474,23 @@ export default create({
     // ========== 车牌号相关配置 ==========
     platePlaceholder: {
       type: String,
-      default: '请输入车牌号'
+      default: ''
     },
     // 默认省份
     defaultPlateProvince: {
       type: String,
-      default: '京'
+      default: ''
     },
     // 省份列表
     plateProvinceList: {
       type: Array,
-      default: () => ['京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '川', '青', '藏', '琼', '宁', '港', '澳', '台']
+      default: () => []
     },
     
     // ========== IP地址相关配置 ==========
     ipPlaceholder: {
       type: String,
-      default: '请输入IP地址'
+      default: ''
     },
     // IP版本 (4 或 6)
     ipVersion: {
@@ -501,7 +501,7 @@ export default create({
     // ========== MAC地址相关配置 ==========
     macPlaceholder: {
       type: String,
-      default: '请输入MAC地址'
+      default: ''
     },
     // MAC分隔符
     macSeparator: {
@@ -512,7 +512,7 @@ export default create({
     // ========== 社会信用代码相关配置 ==========
     usccPlaceholder: {
       type: String,
-      default: '请输入统一社会信用代码'
+      default: ''
     },
     // 是否实时校验
     usccRealtimeValidate: {
@@ -610,12 +610,21 @@ export default create({
       return this.suffixIcon;
     },
     inputPlaceholder() {
-      if (this.isCurrency) return this.currencyPlaceholder;
-      if (this.isBankCard) return this.bankCardPlaceholder;
-      if (this.isIdCard) return this.idCardPlaceholder;
-      if (this.isEmail) return this.emailPlaceholder;
-      if (this.isUscc) return this.usccPlaceholder;
+      if (this.isCurrency) return this.currencyPlaceholder || this.t('input.currencyPlaceholder');
+      if (this.isBankCard) return this.bankCardPlaceholder || this.t('input.bankCardPlaceholder');
+      if (this.isIdCard) return this.idCardPlaceholder || this.t('input.idCardPlaceholder');
+      if (this.isEmail) return this.emailPlaceholder || this.t('input.emailPlaceholder');
+      if (this.isUscc) return this.usccPlaceholder || this.t('input.usccPlaceholder');
       return this.placeholder;
+    },
+    phoneCodePlaceholderText() {
+      return this.phoneCodePlaceholder || this.t('input.phoneCodePlaceholder');
+    },
+    phonePlaceholderText() {
+      return this.phonePlaceholder || this.t('input.phonePlaceholder');
+    },
+    platePlaceholderText() {
+      return this.platePlaceholder || this.t('input.platePlaceholder');
     },
     showPrepend() {
       if (this.isCurrency) return !!this.currencySymbol;
@@ -642,7 +651,26 @@ export default create({
     // ========== 原有计算属性 ==========
     // 手机区号列表
     phoneCodeList() {
-      return this.phoneCodeOptions.length > 0 ? this.phoneCodeOptions : defaultPhoneCodeList;
+      const list = this.phoneCodeOptions.length > 0 ? this.phoneCodeOptions : defaultPhoneCodeOptions;
+      return list.map((item) => {
+        const flag = item.flag || '';
+        const name = item.name || (item.nameKey ? this.t(item.nameKey) : item.code);
+        return {
+          ...item,
+          name,
+          label: item.label || [flag, item.code].filter(Boolean).join(' ')
+        };
+      });
+    },
+    localizedPlateProvinces() {
+      const provinces = this.t('input.plateProvinces');
+      return Array.isArray(provinces) ? provinces : [];
+    },
+    resolvedPlateProvinceList() {
+      return this.plateProvinceList.length > 0 ? this.plateProvinceList : this.localizedPlateProvinces;
+    },
+    resolvedDefaultPlateProvince() {
+      return this.defaultPlateProvince || this.resolvedPlateProvinceList[0] || '';
     },
     // 货币符号
     currencySymbol() {
@@ -881,7 +909,7 @@ export default create({
       
       // 常见银行卡 BIN 码判断
       if (/^62/.test(bin)) {
-        this.bankCardType = '银联卡';
+        this.bankCardType = this.t('input.bankCardTypes.unionpay');
       } else if (/^4/.test(bin)) {
         this.bankCardType = 'VISA';
       } else if (/^5[1-5]/.test(bin) || /^2[2-7]/.test(bin)) {
@@ -976,7 +1004,7 @@ export default create({
         this.idCardInfo = {
           region: this.getRegionName(regionCode),
           birthday: `${birthYear}-${birthMonth}-${birthDay}`,
-          gender: genderCode % 2 === 0 ? '女' : '男',
+          gender: genderCode % 2 === 0 ? this.t('input.genders.female') : this.t('input.genders.male'),
           age: this.calculateAge(birthYear, birthMonth, birthDay)
         };
       } else {
@@ -986,18 +1014,9 @@ export default create({
       return valid;
     },
     getRegionName(code) {
-      // 简化版地区码映射（实际应用中可扩展完整映射）
-      const regions = {
-        '11': '北京', '12': '天津', '13': '河北', '14': '山西', '15': '内蒙古',
-        '21': '辽宁', '22': '吉林', '23': '黑龙江',
-        '31': '上海', '32': '江苏', '33': '浙江', '34': '安徽', '35': '福建', '36': '江西', '37': '山东',
-        '41': '河南', '42': '湖北', '43': '湖南', '44': '广东', '45': '广西', '46': '海南',
-        '50': '重庆', '51': '四川', '52': '贵州', '53': '云南', '54': '西藏',
-        '61': '陕西', '62': '甘肃', '63': '青海', '64': '宁夏', '65': '新疆',
-        '71': '台湾', '81': '香港', '82': '澳门'
-      };
+      const regions = this.t('input.regions');
       const provinceCode = code.slice(0, 2);
-      return regions[provinceCode] || '未知地区';
+      return (regions && regions[provinceCode]) || this.t('input.unknownRegion');
     },
     calculateAge(year, month, day) {
       const birthDate = new Date(year, month - 1, day);
@@ -1088,7 +1107,7 @@ export default create({
     // ========== 车牌号相关方法 ==========
     initPlateValue(val) {
       if (!val) {
-        this.plateProvince = this.defaultPlateProvince;
+        this.plateProvince = this.resolvedDefaultPlateProvince;
         this.plateNumber = '';
         return;
       }

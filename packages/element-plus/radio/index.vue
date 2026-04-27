@@ -17,8 +17,8 @@
 
 <script>
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
 export default create({
   name: "radio",
   mixins: [props(), event()],

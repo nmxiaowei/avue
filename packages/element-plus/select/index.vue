@@ -90,7 +90,7 @@
               :disabled="disabled"
               :indeterminate="indeterminate"
               @change="checkChange"
-              >全选</el-checkbox
+              >{{ t('check.checkAll') }}</el-checkbox
             >
           </div>
 
@@ -127,13 +127,14 @@
 <script>
 import packages from "core/packages";
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
+import locale from "core/locale";
 import { sendDic } from "core/dic";
 import { DIC_SPLIT } from "global/variable";
 export default create({
   name: "select",
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   data() {
     return {
       checked: false,

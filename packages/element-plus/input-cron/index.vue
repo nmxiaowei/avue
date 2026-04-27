@@ -2,7 +2,7 @@
   <div :class="b()">
     <el-input :prefix-icon="prefixIcon"
               :suffix-icon="suffixIcon"
-              :placeholder="placeholder || '点击配置Cron表达式'"
+              :placeholder="placeholder || t('cron.placeholder')"
               v-model="text"
               :size="size"
               ref="main"
@@ -19,7 +19,7 @@
     </el-input>
     
     <el-dialog class="avue-dialog"
-               title="Cron表达式配置"
+               :title="t('cron.title')"
                :append-to-body="$AVUE.appendToBody"
                lock-scroll
                v-model="box"
@@ -27,22 +27,22 @@
       <div :class="b('container')">
         <!-- Tabs 切换不同时间单位 -->
         <el-tabs v-model="activeTab" type="border-card">
-          <el-tab-pane label="秒" name="second">
+          <el-tab-pane :label="t('cron.units.second')" name="second">
             <cron-tab v-model="cronData.second" :type="'second'" :max="59" />
           </el-tab-pane>
-          <el-tab-pane label="分" name="minute">
+          <el-tab-pane :label="t('cron.units.minute')" name="minute">
             <cron-tab v-model="cronData.minute" :type="'minute'" :max="59" />
           </el-tab-pane>
-          <el-tab-pane label="时" name="hour">
+          <el-tab-pane :label="t('cron.units.hour')" name="hour">
             <cron-tab v-model="cronData.hour" :type="'hour'" :max="23" />
           </el-tab-pane>
-          <el-tab-pane label="日" name="day">
+          <el-tab-pane :label="t('cron.units.day')" name="day">
             <cron-tab v-model="cronData.day" :type="'day'" :max="31" :min="1" :show-not-specify="true" />
           </el-tab-pane>
-          <el-tab-pane label="月" name="month">
+          <el-tab-pane :label="t('cron.units.month')" name="month">
             <cron-tab v-model="cronData.month" :type="'month'" :max="12" :min="1" />
           </el-tab-pane>
-          <el-tab-pane label="周" name="week">
+          <el-tab-pane :label="t('cron.units.week')" name="week">
             <cron-tab v-model="cronData.week" :type="'week'" :max="7" :min="1" :show-not-specify="true" :is-week="true" />
           </el-tab-pane>
         </el-tabs>
@@ -50,11 +50,11 @@
         <!-- Cron 表达式预览 -->
         <div :class="b('result')">
           <div :class="b('expression')">
-            <span :class="b('label')">Cron表达式：</span>
+            <span :class="b('label')">{{ t('cron.expression') }}</span>
             <el-input v-model="cronExpression" size="small" style="width: 300px" @input="parseCronExpression" />
           </div>
           <div :class="b('preview')">
-            <span :class="b('label')">最近执行时间：</span>
+            <span :class="b('label')">{{ t('cron.nextTimes') }}</span>
             <ul :class="b('times')">
               <li v-for="(time, index) in nextTimes" :key="index">{{ time }}</li>
             </ul>
@@ -63,8 +63,8 @@
       </div>
       
       <template #footer>
-        <el-button @click="box = false">取消</el-button>
-        <el-button type="primary" @click="handleConfirm">确定</el-button>
+        <el-button @click="box = false">{{ t('common.cancelBtn') }}</el-button>
+        <el-button type="primary" @click="handleConfirm">{{ t('common.submitBtn') }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -72,12 +72,14 @@
 
 <script>
 import create from "core/create";
-import props from "common/common/props.js";
-import event from "common/common/event.js";
+import props from "common/common/props";
+import event from "common/common/event";
+import locale from "core/locale";
 
 // Cron Tab 子组件
 const CronTab = {
   name: 'CronTab',
+  mixins: [locale],
   props: {
     modelValue: Object,
     type: String,
@@ -87,19 +89,17 @@ const CronTab = {
     isWeek: Boolean
   },
   emits: ['update:modelValue'],
-  data() {
-    return {
-      weekLabels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    };
-  },
   computed: {
     data: {
       get() { return this.modelValue; },
       set(val) { this.$emit('update:modelValue', val); }
     },
+    weekLabels() {
+      const labels = this.t('cron.weekLabels');
+      return Array.isArray(labels) ? labels : [];
+    },
     typeLabel() {
-      const labels = { second: '秒', minute: '分', hour: '时', day: '日', month: '月', week: '周' };
-      return labels[this.type] || '';
+      return this.t(`cron.units.${this.type}`);
     },
     options() {
       const list = [];
@@ -121,32 +121,34 @@ const CronTab = {
     <div class="avue-input-cron__tab">
       <el-radio-group :model-value="data.type" @update:model-value="val => updateData('type', val)">
         <div class="avue-input-cron__option">
-          <el-radio label="every">每{{ typeLabel }}执行</el-radio>
+          <el-radio label="every">{{ t('cron.every', { label: typeLabel }) }}</el-radio>
         </div>
         <div class="avue-input-cron__option" v-if="showNotSpecify">
-          <el-radio label="notSpecify">不指定</el-radio>
+          <el-radio label="notSpecify">{{ t('cron.notSpecify') }}</el-radio>
         </div>
         <div class="avue-input-cron__option">
-          <el-radio label="range">周期</el-radio>
+          <el-radio label="range">{{ t('cron.range') }}</el-radio>
           <span v-if="data.type === 'range'" class="avue-input-cron__inline">
-            从
+            {{ t('cron.from') }}
             <el-input-number v-model="data.rangeStart" :min="min" :max="max" size="small" style="width:80px" @change="val => updateData('rangeStart', val)" />
-            到
+            {{ t('cron.to') }}
             <el-input-number v-model="data.rangeEnd" :min="min" :max="max" size="small" style="width:80px" @change="val => updateData('rangeEnd', val)" />
             {{ typeLabel }}
           </span>
         </div>
         <div class="avue-input-cron__option">
-          <el-radio label="step">从</el-radio>
+          <el-radio label="step">{{ t('cron.step') }}</el-radio>
           <span v-if="data.type === 'step'" class="avue-input-cron__inline">
+            {{ t('cron.startingFrom') }}
             <el-input-number v-model="data.stepStart" :min="min" :max="max" size="small" style="width:80px" @change="val => updateData('stepStart', val)" />
-            {{ typeLabel }}开始，每
+            {{ typeLabel }}
+            {{ t('cron.everyInterval') }}
             <el-input-number v-model="data.stepValue" :min="1" :max="max" size="small" style="width:80px" @change="val => updateData('stepValue', val)" />
-            {{ typeLabel }}执行一次
+            {{ typeLabel }}
           </span>
         </div>
         <div class="avue-input-cron__option">
-          <el-radio label="specify">指定</el-radio>
+          <el-radio label="specify">{{ t('cron.specify') }}</el-radio>
         </div>
       </el-radio-group>
       <div v-if="data.type === 'specify'" class="avue-input-cron__specify">
@@ -161,7 +163,7 @@ const CronTab = {
 export default create({
   name: "input-cron",
   components: { CronTab },
-  mixins: [props(), event()],
+  mixins: [props(), event(), locale],
   props: {
     prefixIcon: String,
     suffixIcon: String,
@@ -292,7 +294,7 @@ export default create({
       try {
         const times = [];
         const parts = cron.split(/\s+/);
-        if (parts.length < 6) return ['表达式格式错误'];
+        if (parts.length < 6) return [this.t('cron.invalidFormat')];
         
         let current = new Date();
         for (let i = 0; i < count && times.length < count; i++) {
@@ -304,9 +306,9 @@ export default create({
             break;
           }
         }
-        return times.length > 0 ? times : ['无法计算执行时间'];
+        return times.length > 0 ? times : [this.t('cron.noNextTimes')];
       } catch (e) {
-        return ['表达式解析错误'];
+        return [this.t('cron.parseError')];
       }
     },
     getNextTime(date, parts) {

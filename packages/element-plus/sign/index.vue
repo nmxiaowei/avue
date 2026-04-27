@@ -83,7 +83,7 @@ export default create({
       create5star(context, width, height, 20, "#f00", 0);
 
       // 绘制印章名称   
-      context.font = '18px 黑体';
+      context.font = '18px SimHei';
       context.textBaseline = 'middle';//设置文本的垂直对齐方式
       context.textAlign = 'center'; //设置文本的水平对对齐方式
       context.lineWidth = 1;
@@ -91,7 +91,7 @@ export default create({
       context.strokeText(text, width, height + 50);
 
       // 绘制印章副属性名称   
-      context.font = '14px 黑体';
+      context.font = '14px SimHei';
       context.textBaseline = 'middle';//设置文本的垂直对齐方式
       context.textAlign = 'center'; //设置文本的水平对对齐方式
       context.lineWidth = 1;
@@ -100,7 +100,7 @@ export default create({
 
       // 绘制印章单位   
       context.translate(width, height);// 平移到此位置,
-      context.font = '22px 黑体'
+      context.font = '22px SimHei'
       var count = text1.length;// 字数   
       var angle = 4 * Math.PI / (3 * (count - 1));// 字间角度   
       var chars = text1.split("");
