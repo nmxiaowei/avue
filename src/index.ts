@@ -134,7 +134,7 @@ export const install = function (app: App, opts: AvueInstallOptions = {}) {
   Object.keys(plugins).forEach((key) => {
     if (["$DialogForm", "$ImagePreview"].includes(key)) {
       app.config.globalProperties[key] = plugins[key](
-        (app as AppWithContext)._context
+        (app as AppWithContext)._context,
       );
       return;
     }
@@ -150,13 +150,13 @@ export const install = function (app: App, opts: AvueInstallOptions = {}) {
   locale.i18n(opts.i18n);
   app.config.globalProperties.$uploadFun = function (
     column: AnyRecord = {},
-    safe: any
+    safe: any,
   ) {
     const ctx = safe ?? this;
     const result: AnyRecord = {};
 
     UPLOAD_HOOK_KEYS.forEach((key) => {
-      if (column && column.type === "upload" && !column[key]) {
+      if (!column || (column.type === "upload" && !column[key])) {
         result[key] = ctx[key];
       }
     });
