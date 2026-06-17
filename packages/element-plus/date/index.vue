@@ -8,6 +8,7 @@
       :cell-class-name="cellClassName"
       :editable="editable"
       :unlink-panels="unlinkPanels"
+      :single-panel="singlePanel"
       :default-value="defaultValue"
       :default-time="defaultTime"
       :range-separator="rangeSeparator"
@@ -64,6 +65,10 @@ export default create({
       default: true,
     },
     unlinkPanels: Boolean,
+    singlePanel: {
+      type: Boolean,
+      default: undefined,
+    },
     value: {},
     startPlaceholder: String,
     endPlaceholder: String,

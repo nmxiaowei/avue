@@ -10,6 +10,10 @@
     :props="allProps"
     :size="size"
     :effect="effect"
+    :virtual-scroll="virtualScroll"
+    :fit-input-width="fitInputWidth"
+    :height="height"
+    :item-size="itemSize"
     :clearable="clearableVal"
     :show-all-levels="showAllLevels"
     :filterable="filterable"
@@ -43,6 +47,16 @@ export default create({
       type: String,
       default: "light",
     },
+    virtualScroll: {
+      type: Boolean,
+      default: undefined,
+    },
+    fitInputWidth: {
+      type: Boolean,
+      default: undefined,
+    },
+    height: Number,
+    itemSize: Number,
     showCheckedStrategy: String,
     checkStrictly: {
       type: Boolean,

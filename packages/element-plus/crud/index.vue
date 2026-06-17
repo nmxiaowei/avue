@@ -55,7 +55,7 @@
           :class="{
             'avue-crud--indeterminate': validData(
               tableOption.indeterminate,
-              false
+              false,
             ),
           }"
           :size="size"
@@ -366,7 +366,7 @@ export default create({
       return this.getSlotList(
         ["-error", "-label", "-type", "-form", "-header", "-desc"],
         this.$slots,
-        this.propOption
+        this.propOption,
       );
     },
     searchSlot() {
@@ -381,7 +381,7 @@ export default create({
       return this.getSlotList(
         ["-header", "-form"],
         this.$slots,
-        this.propOption
+        this.propOption,
       ).concat(result);
     },
     calcHeight() {
@@ -635,7 +635,7 @@ export default create({
     menuIcon(value) {
       return this.validData(
         this.tableOption[value + "Text"],
-        this.t("crud." + value)
+        this.t("crud." + value),
       );
     },
     getBtnIcon(value) {
@@ -669,7 +669,7 @@ export default create({
     },
     headerSort(oldIndex, newIndex) {
       const visibleColumns = this.columnOption.filter(
-        (col) => col.hide !== true
+        (col) => col.hide !== true,
       );
       const oldProp = visibleColumns[oldIndex].prop;
       const newProp = visibleColumns[newIndex].prop;
@@ -773,8 +773,8 @@ export default create({
             $index: len,
           },
           formDefault,
-          row
-        )
+          row,
+        ),
       );
       this.list.push(row);
     },
@@ -927,7 +927,7 @@ export default create({
       } else {
         columns.forEach((column, index) => {
           let currItem = this.sumColumnList.find(
-            (item) => item.name === column.property
+            (item) => item.name === column.property,
           );
           if (currItem) {
             let decimals = currItem.decimals !== void 0 ? currItem.decimals : 2;
@@ -938,7 +938,7 @@ export default create({
                 break;
               case "avg":
                 let avgValues = data.map((item) =>
-                  Number(item[column.property])
+                  Number(item[column.property]),
                 );
                 let nowindex = 1;
                 sums[index] = avgValues.reduce((perv, curr) => {
