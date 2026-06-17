@@ -556,6 +556,7 @@ export default create({
         "columns",
         "doLayout",
         "updateKeyChildren",
+        "getHalfSelectionRows",
         "toggleAllSelection",
         "toggleRowSelection",
         "toggleRowExpansion",
