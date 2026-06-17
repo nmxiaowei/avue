@@ -308,7 +308,6 @@ export default create({
     this.dataInit();
     this.getTableHeight();
     this.initFun();
-    this.initVirtualizeFun();
   },
   computed: {
     columnVirtualizeOption() {
@@ -539,15 +538,6 @@ export default create({
     },
   },
   methods: {
-    initVirtualizeFun() {
-      if (!this.virtualize) return;
-      this.initTableMethods([
-        "scrollTo",
-        "scrollToTop",
-        "scrollToLeft",
-        "scrollRow",
-      ]);
-    },
     initFun() {
       this.initTableMethods([
         "scrollTo",
