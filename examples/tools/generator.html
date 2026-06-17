@@ -1,0 +1,660 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Code Generator</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <script src="../cdn/element-plus/icons-vue.js"></script>
+    <script src="../cdn/element-plus/locale/zh-cn.min.js"></script>
+    <link rel="stylesheet" href="../../dist/index.css" />
+    <script src="../../dist/avue.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #1f2937;
+        background: #f5f7fb;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+      #app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .tool-header {
+        min-height: 56px;
+        padding: 10px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .tool-title {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .workspace {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(480px, 46%) minmax(0, 1fr);
+      }
+      .config-panel,
+      .code-panel {
+        min-width: 0;
+        min-height: 0;
+      }
+      .config-panel {
+        padding: 14px;
+        overflow: auto;
+        border-right: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .code-panel {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .setting-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .field-toolbar {
+        margin: 12px 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .code-toolbar {
+        height: 50px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .code-output {
+        flex: 1;
+        min-height: 0;
+        margin: 0;
+        padding: 16px;
+        overflow: auto;
+        color: #e5e7eb;
+        background: #111827;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .preview-wrap {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding: 14px;
+        background: #f5f7fb;
+      }
+      .preview-toolbar {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .preview-surface {
+        min-width: 760px;
+        padding: 14px;
+        border: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .compact-input {
+        width: 100%;
+      }
+      @media (max-width: 980px) {
+        .tool-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+        .config-panel {
+          border-right: 0;
+          border-bottom: 1px solid #dfe5ef;
+        }
+        .setting-row {
+          grid-template-columns: 1fr;
+        }
+        .preview-surface {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="tool-header">
+        <div class="tool-title">Avue 页面代码生成器</div>
+        <div>
+          <el-button size="small" @click="loadSample">示例字段</el-button>
+          <el-button size="small" type="primary" @click="copyCode"
+            >复制当前代码</el-button
+          >
+        </div>
+      </div>
+      <div class="workspace">
+        <section class="config-panel">
+          <div class="setting-row">
+            <el-input
+              v-model="entityName"
+              label="实体名"
+              placeholder="实体名，如 User"
+            ></el-input>
+            <el-input
+              v-model="moduleName"
+              placeholder="模块名，如 user"
+            ></el-input>
+          </div>
+          <div class="setting-row">
+            <el-input
+              v-model="apiPath"
+              placeholder="接口路径，如 @/api/system/user"
+            ></el-input>
+            <el-select v-model="rowKey" placeholder="主键字段">
+              <el-option
+                v-for="field in fields"
+                :key="field.prop"
+                :label="field.prop"
+                :value="field.prop"
+              ></el-option>
+            </el-select>
+          </div>
+          <div class="field-toolbar">
+            <strong>字段配置</strong>
+            <el-button size="small" @click="addField">新增字段</el-button>
+          </div>
+          <el-table :data="fields" border size="small">
+            <el-table-column label="标签" min-width="120">
+              <template #default="{ row }">
+                <el-input class="compact-input" v-model="row.label"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="字段" min-width="120">
+              <template #default="{ row }">
+                <el-input class="compact-input" v-model="row.prop"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="类型" width="135">
+              <template #default="{ row }">
+                <el-select class="compact-input" v-model="row.type">
+                  <el-option
+                    v-for="type in fieldTypes"
+                    :key="type"
+                    :label="type || 'input'"
+                    :value="type"
+                  ></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="栅格" width="82">
+              <template #default="{ row }">
+                <el-input-number
+                  v-model="row.span"
+                  :min="1"
+                  :max="24"
+                  controls-position="right"
+                  size="small"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="搜索" width="70" align="center">
+              <template #default="{ row }">
+                <el-checkbox v-model="row.search"></el-checkbox>
+              </template>
+            </el-table-column>
+            <el-table-column label="必填" width="70" align="center">
+              <template #default="{ row }">
+                <el-checkbox v-model="row.required"></el-checkbox>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="86" align="center">
+              <template #default="{ $index }">
+                <el-button link type="danger" @click="removeField($index)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </section>
+        <section class="code-panel">
+          <div class="code-toolbar">
+            <el-tabs v-model="activeTab" @tab-change="noop">
+              <el-tab-pane label="CRUD 页面" name="crud"></el-tab-pane>
+              <el-tab-pane label="Form 页面" name="form"></el-tab-pane>
+              <el-tab-pane label="TS 类型" name="types"></el-tab-pane>
+              <el-tab-pane label="实时预览" name="preview"></el-tab-pane>
+            </el-tabs>
+          </div>
+          <div v-if="activeTab === 'preview'" class="preview-wrap">
+            <div class="preview-toolbar">
+              <el-radio-group v-model="previewType" size="small">
+                <el-radio-button label="crud">CRUD</el-radio-button>
+                <el-radio-button label="form">Form</el-radio-button>
+              </el-radio-group>
+              <el-button size="small" @click="resetPreview">刷新预览数据</el-button>
+            </div>
+            <div class="preview-surface">
+              <avue-crud
+                v-if="previewType === 'crud'"
+                :key="'crud' + previewKey"
+                v-model="previewForm"
+                :option="optionObject"
+                :data="previewRows"
+              ></avue-crud>
+              <avue-form
+                v-else
+                :key="'form' + previewKey"
+                v-model="previewForm"
+                :option="formOptionObject"
+              ></avue-form>
+            </div>
+          </div>
+          <pre v-else class="code-output"><code>{{ activeCode }}</code></pre>
+        </section>
+      </div>
+    </div>
+    <script>
+      const fieldSample = [
+        {
+          label: "姓名",
+          prop: "name",
+          type: "",
+          span: 12,
+          search: true,
+          required: true,
+        },
+        {
+          label: "手机号",
+          prop: "phone",
+          type: "phone",
+          span: 12,
+          search: true,
+          required: true,
+        },
+        {
+          label: "部门",
+          prop: "deptId",
+          type: "select",
+          span: 12,
+          search: true,
+          required: false,
+        },
+        {
+          label: "状态",
+          prop: "status",
+          type: "radio",
+          span: 12,
+          search: true,
+          required: true,
+        },
+        {
+          label: "创建时间",
+          prop: "createTime",
+          type: "datetime",
+          span: 12,
+          search: false,
+          required: false,
+        },
+        {
+          label: "备注",
+          prop: "remark",
+          type: "textarea",
+          span: 24,
+          search: false,
+          required: false,
+        },
+      ];
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            activeTab: "crud",
+            previewType: "crud",
+            previewKey: 1,
+            previewForm: {},
+            entityName: "User",
+            moduleName: "user",
+            apiPath: "@/api/system/user",
+            rowKey: "id",
+            fieldTypes: [
+              "",
+              "textarea",
+              "number",
+              "select",
+              "radio",
+              "checkbox",
+              "date",
+              "datetime",
+              "daterange",
+              "switch",
+              "upload",
+              "phone",
+            ],
+            fields: JSON.parse(JSON.stringify(fieldSample)),
+          };
+        },
+        mounted() {
+          this.resetPreview();
+        },
+        computed: {
+          cleanFields() {
+            return this.fields
+              .filter((field) => field.prop && field.label)
+              .map((field) => ({
+                label: field.label,
+                prop: field.prop,
+                type: field.type,
+                span: field.span || 12,
+                search: !!field.search,
+                required: !!field.required,
+              }));
+          },
+          optionObject() {
+            return {
+              height: "auto",
+              calcHeight: 32,
+              border: true,
+              stripe: true,
+              index: true,
+              selection: true,
+              rowKey: this.rowKey,
+              columnStateKey: this.moduleName + "-crud",
+              searchShow: true,
+              searchMenuSpan: 6,
+              column: this.cleanFields.map((field) => this.toColumn(field)),
+            };
+          },
+          formOptionObject() {
+            return {
+              labelWidth: 100,
+              span: 12,
+              column: this.cleanFields.map((field) => this.toColumn(field)),
+            };
+          },
+          activeCode() {
+            if (this.activeTab === "form") return this.formCode;
+            if (this.activeTab === "types") return this.typeCode;
+            if (this.activeTab === "preview") return "";
+            return this.crudCode;
+          },
+          previewRows() {
+            return Array.from({ length: 5 }).map((_, index) => {
+              const row = { [this.rowKey || "id"]: index + 1 };
+              this.cleanFields.forEach((field) => {
+                row[field.prop] = this.mockValue(field, index + 1);
+              });
+              return row;
+            });
+          },
+          crudCode() {
+            const optionCode = this.stringify(this.optionObject, 0);
+            return [
+              "<template>",
+              "  <avue-crud",
+              '    ref="crudRef"',
+              '    v-model="form"',
+              '    v-model:page="page"',
+              '    v-model:search="search"',
+              '    :option="option"',
+              '    :data="data"',
+              '    :table-loading="loading"',
+              '    @row-save="rowSave"',
+              '    @row-update="rowUpdate"',
+              '    @row-del="rowDel"',
+              '    @search-change="searchChange"',
+              '    @search-reset="searchReset"',
+              '    @refresh-change="onLoad"',
+              '    @on-load="onLoad"',
+              "  />",
+              "</template>",
+              "",
+              "<script setup>",
+              "import { reactive, ref } from 'vue'",
+              "import { ElMessage, ElMessageBox } from 'element-plus'",
+              "import { getList, add, update, remove } from '" +
+                this.apiPath +
+                "'",
+              "",
+              "const crudRef = ref(null)",
+              "const form = ref({})",
+              "const search = ref({})",
+              "const loading = ref(false)",
+              "const data = ref([])",
+              "const page = ref({ currentPage: 1, pageSize: 10, total: 0 })",
+              "",
+              "const option = reactive(" + optionCode + ")",
+              "",
+              "const onLoad = () => {",
+              "  loading.value = true",
+              "  getList(page.value.currentPage, page.value.pageSize, search.value).then((res) => {",
+              "    const result = res.data.data",
+              "    data.value = result.records || []",
+              "    page.value.total = result.total || 0",
+              "  }).finally(() => {",
+              "    loading.value = false",
+              "  })",
+              "}",
+              "",
+              "const rowSave = (row, done, loadingDone) => {",
+              "  add(row).then(() => {",
+              "    ElMessage.success('新增成功')",
+              "    done()",
+              "    onLoad()",
+              "  }).catch(() => loadingDone())",
+              "}",
+              "",
+              "const rowUpdate = (row, index, done, loadingDone) => {",
+              "  update(row).then(() => {",
+              "    ElMessage.success('更新成功')",
+              "    done()",
+              "    onLoad()",
+              "  }).catch(() => loadingDone())",
+              "}",
+              "",
+              "const rowDel = (row) => {",
+              "  ElMessageBox.confirm('确定删除该数据吗？', '提示', { type: 'warning' })",
+              "    .then(() => remove(row." + this.rowKey + "))",
+              "    .then(() => {",
+              "      ElMessage.success('删除成功')",
+              "      onLoad()",
+              "    })",
+              "}",
+              "",
+              "const searchChange = (params, done) => {",
+              "  page.value.currentPage = 1",
+              "  search.value = params",
+              "  onLoad()",
+              "  done()",
+              "}",
+              "",
+              "const searchReset = () => {",
+              "  search.value = {}",
+              "  onLoad()",
+              "}",
+              "<\/script>",
+            ].join("\n");
+          },
+          formCode() {
+            const optionCode = this.stringify(this.formOptionObject, 0);
+            return [
+              "<template>",
+              '  <avue-form ref="formRef" v-model="form" :option="option" @submit="handleSubmit" />',
+              "</template>",
+              "",
+              "<script setup>",
+              "import { reactive, ref } from 'vue'",
+              "import { ElMessage } from 'element-plus'",
+              "",
+              "const formRef = ref(null)",
+              "const form = ref({})",
+              "const option = reactive(" + optionCode + ")",
+              "",
+              "const handleSubmit = (row, done) => {",
+              "  console.log(row)",
+              "  ElMessage.success('提交成功')",
+              "  done()",
+              "}",
+              "<\/script>",
+            ].join("\n");
+          },
+          typeCode() {
+            const name = this.toPascal(this.entityName);
+            const lines = this.cleanFields.map((field) => {
+              return "  " + field.prop + "?: " + this.toTsType(field);
+            });
+            const searchLines = this.cleanFields
+              .filter((field) => field.search)
+              .map((field) => "  " + field.prop + "?: " + this.toTsType(field));
+            return [
+              "export interface " + name + "Item {",
+              "  " + this.rowKey + "?: string | number",
+              ...lines,
+              "}",
+              "",
+              "export interface " +
+                name +
+                "Form extends Partial<" +
+                name +
+                "Item> {}",
+              "",
+              "export interface " + name + "Search {",
+              ...searchLines,
+              "}",
+            ].join("\n");
+          },
+        },
+        methods: {
+          noop() {},
+          resetPreview() {
+            const form = {};
+            this.cleanFields.forEach((field, index) => {
+              form[field.prop] = this.mockValue(field, index + 1);
+            });
+            this.previewForm = form;
+            this.previewKey += 1;
+          },
+          loadSample() {
+            this.fields = JSON.parse(JSON.stringify(fieldSample));
+            this.$nextTick(() => this.resetPreview());
+          },
+          addField() {
+            const index = this.fields.length + 1;
+            this.fields.push({
+              label: "字段" + index,
+              prop: "field" + index,
+              type: "",
+              span: 12,
+              search: false,
+              required: false,
+            });
+            this.$nextTick(() => this.resetPreview());
+          },
+          removeField(index) {
+            this.fields.splice(index, 1);
+            this.$nextTick(() => this.resetPreview());
+          },
+          toColumn(field) {
+            const column = {
+              label: field.label,
+              prop: field.prop,
+              span: field.span || 12,
+            };
+            if (field.type) column.type = field.type;
+            if (field.search) column.search = true;
+            if (["select", "radio", "checkbox"].includes(field.type)) {
+              column.dicData = [
+                { label: "启用", value: 1 },
+                { label: "禁用", value: 0 },
+              ];
+            }
+            if (field.required) {
+              column.rules = [
+                {
+                  required: true,
+                  message: "请输入" + field.label,
+                  trigger: [
+                    "select",
+                    "radio",
+                    "checkbox",
+                    "date",
+                    "datetime",
+                  ].includes(field.type)
+                    ? "change"
+                    : "blur",
+                },
+              ];
+            }
+            return column;
+          },
+          stringify(value, space) {
+            return JSON.stringify(value, null, 2)
+              .split("\n")
+              .map((line, index) => (index === 0 ? line : "  " + line))
+              .join("\n");
+          },
+          toPascal(value) {
+            return (value || "Entity")
+              .replace(/(^|[-_\\s]+)([a-zA-Z0-9])/g, (_, __, char) =>
+                char.toUpperCase(),
+              )
+              .replace(/[^a-zA-Z0-9]/g, "");
+          },
+          toTsType(field) {
+            if (field.type === "number") return "number";
+            if (field.type === "checkbox") return "Array<string | number>";
+            if (field.type === "switch") return "boolean | number";
+            return "string";
+          },
+          mockValue(field, index) {
+            if (field.type === "number") return index * 10;
+            if (field.type === "switch") return index % 2 === 0;
+            if (["select", "radio"].includes(field.type)) return index % 2;
+            if (field.type === "checkbox") return [index % 2];
+            if (field.type && field.type.indexOf("date") !== -1) {
+              return "2026-06-" + String(index + 10).padStart(2, "0");
+            }
+            if (field.type === "textarea") return "示例备注 " + index;
+            return (field.label || field.prop || "字段") + index;
+          },
+          copyCode() {
+            const done = () => this.$message.success("已复制");
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(this.activeCode).then(done);
+              return;
+            }
+            const textarea = document.createElement("textarea");
+            textarea.value = this.activeCode;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+            done();
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

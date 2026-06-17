@@ -28,6 +28,7 @@ import $Print from "plugin/print/";
 import $ImagePreview from "packages/core/components/image-preview/";
 import $DialogForm from "packages/core/components/dialog-form/";
 import createIcon from "./icon";
+import { validateOption, warnOption } from "core/option";
 
 type AnyRecord = Record<string, any>;
 type AppWithContext = App & { _context: any };
@@ -48,6 +49,7 @@ export interface AvueInstallOptions extends AnyRecord {
   formOption?: AnyRecord;
   crudOption?: AnyRecord;
   appendToBody?: boolean;
+  optionValidate?: boolean;
   canvas?: AnyRecord;
   qiniu?: AnyRecord;
   ali?: AnyRecord;
@@ -77,6 +79,8 @@ const plugins: AnyRecord = {
   loadScript,
   findObject,
   randomId,
+  validateOption,
+  warnOption,
 };
 
 const directive: AnyRecord = {
@@ -91,6 +95,7 @@ export const install = function (app: App, opts: AvueInstallOptions = {}) {
     formOption: opts.formOption ?? {},
     crudOption: opts.crudOption ?? {},
     appendToBody: validData(opts.appendToBody, true),
+    optionValidate: validData(opts.optionValidate, true),
     canvas: {
       text: "avuejs.com",
       fontFamily: "microsoft yahei",
@@ -196,6 +201,8 @@ export {
   loadScript,
   findObject,
   randomId,
+  validateOption,
+  warnOption,
 };
 export * from "./ui/element-plus/";
 export * from "./ui/data/";

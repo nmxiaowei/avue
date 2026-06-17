@@ -33,6 +33,10 @@
       </template>
 
     </el-table>
+    <template #footer v-if="crud.columnStateEnabled">
+      <el-button :size="crud.size"
+                 @click="crud.resetColumnState()">{{ t('crud.column.reset') }}</el-button>
+    </template>
 
   </el-drawer>
 </template>
@@ -87,6 +91,7 @@ export default create({
       } else if (prop === 'filters') {
         this.crud.refreshTable()
       }
+      this.crud.saveColumnState(prop)
     },
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0]

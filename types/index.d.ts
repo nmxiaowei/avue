@@ -34,6 +34,11 @@ export interface AvueAliOptions {
   [key: string]: any;
 }
 
+export interface AvueOptionWarning {
+  path: string;
+  message: string;
+}
+
 export type AvueLocalePrimitive = string | number | boolean;
 
 export interface AvueLocaleMessages {
@@ -68,6 +73,7 @@ export interface AvueInstallOptions {
   formOption?: AnyRecord;
   crudOption?: AnyRecord;
   appendToBody?: boolean;
+  optionValidate?: boolean;
   canvas?: AvueCanvasOptions;
   qiniu?: AvueQiniuOptions;
   ali?: AvueAliOptions;
@@ -99,6 +105,8 @@ export interface AvueUtilityExports {
   loadScript(type?: "js" | "css", url?: string, dom?: "head" | "body"): Promise<void>;
   findObject<T = AnyRecord>(list?: T[], value?: any, prop?: string): T | undefined;
   randomId(): string;
+  validateOption(option?: AnyRecord, component?: string): AvueOptionWarning[];
+  warnOption(warnings?: AvueOptionWarning[], component?: string): void;
 }
 
 export type AvueDialogFormOpener = (opt?: AnyRecord) => any;
@@ -224,6 +232,8 @@ export const downFile: AvueUtilityExports["downFile"];
 export const loadScript: AvueUtilityExports["loadScript"];
 export const findObject: AvueUtilityExports["findObject"];
 export const randomId: AvueUtilityExports["randomId"];
+export const validateOption: AvueUtilityExports["validateOption"];
+export const warnOption: AvueUtilityExports["warnOption"];
 export const Arrays: Component;
 export const Article: Component;
 export const Card: Component;

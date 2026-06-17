@@ -208,6 +208,13 @@ import column from "./column/column";
 import columnMenu from "./column/column-menu";
 import columnDefault from "./column/column-default";
 import config from "./config";
+import {
+  applyColumnState,
+  createColumnState,
+  loadColumnState,
+  removeColumnState,
+  saveColumnState,
+} from "core/column-state";
 import { calcCascader, formInitVal } from "core/dataformat";
 import { DIC_PROPS } from "global/variable";
 import { CommonProps } from "element-plus";
@@ -258,6 +265,8 @@ export default create({
     "row-update",
     "change",
     "scroll",
+    "column-state-change",
+    "column-state-reset",
   ],
   directives: {
     permission,
@@ -302,6 +311,7 @@ export default create({
       btnDisabled: false,
       default: {},
       gridShow: false,
+      columnStateSource: null,
     };
   },
   mounted() {
@@ -435,6 +445,22 @@ export default create({
     columnOption() {
       return getColumn(this.tableOption.column);
     },
+    columnStateKey() {
+      return (
+        this.tableOption.columnStateKey ||
+        this.tableOption.columnPersistKey ||
+        this.tableOption.tableId
+      );
+    },
+    columnStateStorage() {
+      return this.tableOption.columnStateStorage || "localStorage";
+    },
+    columnStateEnabled() {
+      return (
+        this.validData(this.tableOption.columnState, true) !== false &&
+        !this.validatenull(this.columnStateKey)
+      );
+    },
     sumColumnList() {
       return this.tableOption.sumColumnList || [];
     },
@@ -565,6 +591,48 @@ export default create({
         };
       });
     },
+    restoreColumnState() {
+      if (!this.columnStateEnabled) return;
+      this.columnStateSource = this.deepClone(this.tableOption.column);
+      const loader = this.tableOption.columnStateLoad;
+      const state =
+        typeof loader === "function"
+          ? loader(this.columnStateKey, this.tableOption)
+          : loadColumnState(this.columnStateKey, this.columnStateStorage);
+      if (!state) return;
+      this.tableOption.column = applyColumnState(this.tableOption.column, state);
+    },
+    saveColumnState(reason = "change") {
+      if (!this.columnStateEnabled) return;
+      if (this.validData(this.tableOption.columnStateAutoSave, true) === false) {
+        return;
+      }
+      const state = createColumnState(this.columnOption);
+      const saver = this.tableOption.columnStateSave;
+      if (typeof saver === "function") {
+        saver(state, this.columnStateKey, reason, this.tableOption);
+      } else {
+        saveColumnState(this.columnStateKey, state, this.columnStateStorage);
+      }
+      this.$emit("column-state-change", state, reason);
+    },
+    resetColumnState(callback) {
+      if (!this.columnStateEnabled) return;
+      const remover = this.tableOption.columnStateRemove;
+      if (typeof remover === "function") {
+        remover(this.columnStateKey, this.tableOption);
+      } else {
+        removeColumnState(this.columnStateKey, this.columnStateStorage);
+      }
+      if (this.columnStateSource) {
+        this.tableOption.column = this.deepClone(this.columnStateSource);
+      }
+      this.refreshTable(() => {
+        this.doLayout();
+        callback && callback();
+        this.$emit("column-state-reset", this.columnStateKey);
+      });
+    },
     handleGridShow() {
       this.gridShow = !this.gridShow;
       this.$emit("grid-status-change", this.gridShow);
@@ -655,6 +723,11 @@ export default create({
     },
     //拖动表头事件
     headerDragend(newWidth, oldWidth, column, event) {
+      const prop = column.property || column.prop;
+      if (prop && this.objectOption[prop]) {
+        this.objectOption[prop].width = newWidth;
+        this.saveColumnState("width");
+      }
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort(oldIndex, newIndex) {
@@ -669,6 +742,12 @@ export default create({
       const targetRow = allColumns.splice(realOldIndex, 1)[0];
       allColumns.splice(realNewIndex, 0, targetRow);
       this.doLayout();
+      this.saveColumnState("sort");
+      this.$emit("column-sortable-change", {
+        oldIndex,
+        newIndex,
+        column: targetRow,
+      });
     },
     scroll(params) {
       this.$emit("scroll", params);

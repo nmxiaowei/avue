@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html class="no-js">
   <head>
@@ -428,7 +428,7 @@
           }, 1000);
           setTimeout(() => {
             this.$message.success(
-              "编辑数据" + JSON.stringify(form) + "数据序号" + index
+              "编辑数据" + JSON.stringify(form) + "数据序号" + index,
             );
             done();
           }, 2000);
@@ -510,7 +510,7 @@
         searchChange(params, done) {
           this.$message.success(
             "search callback" +
-              JSON.stringify(Object.assign(params, this.searchForm))
+              JSON.stringify(Object.assign(params, this.searchForm)),
           );
           done();
         },
@@ -530,7 +530,7 @@
         },
       },
     });
-    app.use(ElementPlus, { locale: ElementPlus.lang.zhCn });
+    app.use(ElementPlus);
     app.use(AVUE);
     app.mount("#app");
   </script>

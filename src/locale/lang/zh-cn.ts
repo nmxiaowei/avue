@@ -248,7 +248,8 @@ export default {
       filters: '筛选',
       sortable: '排序',
       index: '序号',
-      width: '宽度'
+      width: '宽度',
+      reset: '重置列设置'
     },
     emptyText: '暂无数据',
     tipStartTitle: '已选择',

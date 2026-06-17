@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Option Validate</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <script src="../cdn/element-plus/icons-vue.js"></script>
+    <script src="../cdn/element-plus/locale/zh-cn.min.js"></script>
+    <link rel="stylesheet" href="../../dist/index.css" />
+    <script src="../../dist/avue.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #1f2937;
+        background: #f5f7fb;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+      #app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: minmax(360px, 42%) minmax(0, 1fr);
+      }
+      .panel {
+        min-width: 0;
+        padding: 16px;
+      }
+      .panel:first-child {
+        border-right: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .toolbar {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      textarea,
+      pre {
+        width: 100%;
+        min-height: 420px;
+        margin: 0;
+        padding: 12px;
+        border: 1px solid #dfe5ef;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      textarea {
+        resize: vertical;
+        outline: none;
+      }
+      pre {
+        overflow: auto;
+        color: #e5e7eb;
+        background: #111827;
+      }
+      .preview {
+        margin-top: 14px;
+        padding: 14px;
+        border: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      @media (max-width: 900px) {
+        #app {
+          grid-template-columns: 1fr;
+        }
+        .panel:first-child {
+          border-right: 0;
+          border-bottom: 1px solid #dfe5ef;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <section class="panel">
+        <div class="toolbar">
+          <strong>待校验 option</strong>
+          <el-button size="small" type="primary" @click="runValidate"
+            >校验</el-button
+          >
+        </div>
+        <textarea v-model="optionText" spellcheck="false"></textarea>
+      </section>
+      <section class="panel">
+        <div class="toolbar">
+          <strong>校验结果</strong>
+          <el-button size="small" @click="applyPreview">应用到表单</el-button>
+        </div>
+        <pre>{{ resultText }}</pre>
+        <div class="preview">
+          <avue-form
+            :key="previewKey"
+            v-model="form"
+            :option="previewOption"
+          ></avue-form>
+        </div>
+      </section>
+    </div>
+    <script>
+      const invalidOption = {
+        labelWidth: 100,
+        span: 30,
+        column: [
+          {
+            label: "姓名",
+            prop: "name",
+            span: 12,
+            rules: { required: true, message: "请输入姓名" },
+          },
+          {
+            label: "重复姓名",
+            prop: "name",
+            span: 12,
+          },
+          {
+            label: "部门",
+            prop: "dept",
+            type: "select",
+            props: "bad-props",
+          },
+          {
+            prop: "remark",
+            span: 25,
+          },
+        ],
+      };
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            optionText: JSON.stringify(invalidOption, null, 2),
+            resultText: "",
+            previewOption: {
+              optionValidate: true,
+              column: [{ label: "姓名", prop: "name" }],
+            },
+            form: {},
+            previewKey: 1,
+          };
+        },
+        mounted() {
+          this.runValidate();
+        },
+        methods: {
+          parseOption() {
+            return JSON.parse(this.optionText);
+          },
+          runValidate() {
+            try {
+              const option = this.parseOption();
+              const warnings = AVUE.validateOption(option, "form");
+              AVUE.warnOption(warnings, "form");
+              this.resultText = warnings.length
+                ? JSON.stringify(warnings, null, 2)
+                : "未发现配置问题";
+            } catch (error) {
+              this.resultText = error.message;
+            }
+          },
+          applyPreview() {
+            try {
+              this.previewOption = this.parseOption();
+              this.previewKey += 1;
+              this.$message.success("已应用，控制台会输出自动校验 warning");
+            } catch (error) {
+              this.$message.error(error.message);
+            }
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE, { optionValidate: true });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,404 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Playground</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <script src="../cdn/element-plus/icons-vue.js"></script>
+    <script src="../cdn/element-plus/locale/zh-cn.min.js"></script>
+    <link rel="stylesheet" href="../../dist/index.css" />
+    <script src="../../dist/avue.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #1f2937;
+        background: #f5f7fb;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+      #app {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .tool-header {
+        height: 56px;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .tool-title {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .tool-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .workspace {
+        min-height: 0;
+        flex: 1;
+        display: grid;
+        grid-template-columns: minmax(360px, 42%) minmax(0, 1fr);
+      }
+      .editor-panel,
+      .preview-panel {
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .editor-panel {
+        border-right: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .panel-bar {
+        min-height: 48px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid #e7ecf3;
+      }
+      .panel-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #4b5563;
+      }
+      .json-editor {
+        min-height: 0;
+        flex: 1;
+        width: 100%;
+        padding: 14px;
+        border: 0;
+        resize: none;
+        outline: none;
+        color: #111827;
+        background: #fff;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .preview-body {
+        min-height: 0;
+        flex: 1;
+        overflow: auto;
+        padding: 16px;
+      }
+      .preview-surface {
+        min-width: 760px;
+        padding: 16px;
+        border: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .error {
+        margin: 12px 14px 0;
+      }
+      @media (max-width: 900px) {
+        #app {
+          height: auto;
+          min-height: 100vh;
+        }
+        .tool-header,
+        .panel-bar {
+          height: auto;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+        .editor-panel {
+          min-height: 520px;
+          border-right: 0;
+          border-bottom: 1px solid #dfe5ef;
+        }
+        .preview-surface {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="tool-header">
+        <div class="tool-title">Avue Playground / Option 编辑器</div>
+        <div class="tool-actions">
+          <el-radio-group v-model="componentType" size="small">
+            <el-radio-button label="crud">CRUD</el-radio-button>
+            <el-radio-button label="form">Form</el-radio-button>
+          </el-radio-group>
+          <el-button size="small" @click="formatJson">格式化</el-button>
+          <el-button size="small" @click="copyJson">复制配置</el-button>
+          <el-button size="small" type="primary" @click="applyJson"
+            >应用</el-button
+          >
+        </div>
+      </div>
+      <div class="workspace">
+        <section class="editor-panel">
+          <div class="panel-bar">
+            <span class="panel-label">option JSON</span>
+            <el-button size="small" @click="resetSample">恢复示例</el-button>
+          </div>
+          <el-alert
+            v-if="parseError"
+            class="error"
+            type="error"
+            :closable="false"
+            :title="parseError"
+          ></el-alert>
+          <textarea
+            class="json-editor"
+            v-model="editorText"
+            spellcheck="false"
+            @keydown.ctrl.enter.prevent="applyJson"
+          ></textarea>
+        </section>
+        <section class="preview-panel">
+          <div class="panel-bar">
+            <span class="panel-label">实时预览</span>
+            <el-button size="small" @click="refreshMock">刷新数据</el-button>
+          </div>
+          <div class="preview-body">
+            <div class="preview-surface">
+              <avue-crud
+                v-if="componentType === 'crud'"
+                :key="'crud' + previewKey"
+                ref="crud"
+                :option="option"
+                :data="data"
+                v-model="form"
+                v-model:page="page"
+                v-model:search="search"
+                @row-save="rowSave"
+                @row-update="rowUpdate"
+                @row-del="rowDel"
+              ></avue-crud>
+              <avue-form
+                v-else
+                :key="'form' + previewKey"
+                ref="formRef"
+                :option="formOption"
+                v-model="form"
+                @submit="formSubmit"
+              ></avue-form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script>
+      const sampleOption = {
+        columnStateKey: "playground-user-list",
+        border: true,
+        stripe: true,
+        index: true,
+        selection: true,
+        columnBtn: true,
+        searchShow: true,
+        searchIcon: true,
+        dialogWidth: "55%",
+        column: [
+          {
+            label: "姓名",
+            prop: "name",
+            search: true,
+            rules: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+          },
+          {
+            label: "部门",
+            prop: "dept",
+            type: "select",
+            search: true,
+            dicData: [
+              { label: "研发部", value: "dev" },
+              { label: "产品部", value: "product" },
+              { label: "运营部", value: "ops" },
+            ],
+          },
+          {
+            label: "状态",
+            prop: "status",
+            type: "radio",
+            search: true,
+            dicData: [
+              { label: "启用", value: 1 },
+              { label: "禁用", value: 0 },
+            ],
+          },
+          {
+            label: "创建时间",
+            prop: "createTime",
+            type: "date",
+            search: true,
+            searchType: "daterange",
+            width: 150,
+          },
+          {
+            label: "备注",
+            prop: "remark",
+            type: "textarea",
+            span: 24,
+            hide: true,
+          },
+        ],
+      };
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            componentType: "crud",
+            editorText: JSON.stringify(sampleOption, null, 2),
+            parseError: "",
+            option: JSON.parse(JSON.stringify(sampleOption)),
+            form: {},
+            search: {},
+            data: [],
+            page: {
+              total: 0,
+              currentPage: 1,
+              pageSize: 10,
+            },
+            previewKey: 1,
+          };
+        },
+        computed: {
+          formOption() {
+            const option = JSON.parse(JSON.stringify(this.option));
+            option.menuBtn = option.menuBtn !== false;
+            option.submitBtn = option.submitBtn !== false;
+            option.emptyBtn = option.emptyBtn !== false;
+            return option;
+          },
+        },
+        mounted() {
+          this.refreshMock();
+          this.resetForm();
+        },
+        methods: {
+          normalizeColumns(option) {
+            if (Array.isArray(option.column)) return option.column;
+            if (option.column && typeof option.column === "object") {
+              return Object.keys(option.column).map((prop) =>
+                Object.assign({ prop }, option.column[prop]),
+              );
+            }
+            return [];
+          },
+          getDicValue(column, index) {
+            const dic = column.dicData || [];
+            if (dic.length === 0) return "";
+            return dic[index % dic.length].value;
+          },
+          createValue(column, index) {
+            const type = column.type || "input";
+            if (["select", "radio", "checkbox", "switch"].includes(type)) {
+              return this.getDicValue(column, index);
+            }
+            if (type === "number") return index * 10 + 8;
+            if (type && type.indexOf("date") !== -1)
+              return "2026-06-" + String(index + 10).padStart(2, "0");
+            if (type === "textarea") return "第 " + index + " 条备注";
+            return (column.label || column.prop || "字段") + index;
+          },
+          refreshMock() {
+            const columns = this.normalizeColumns(this.option);
+            this.data = Array.from({ length: 6 }).map((_, rowIndex) => {
+              const row = { id: rowIndex + 1 };
+              columns.forEach((column) => {
+                if (column.prop)
+                  row[column.prop] = this.createValue(column, rowIndex + 1);
+              });
+              return row;
+            });
+            this.page.total = this.data.length;
+          },
+          resetForm() {
+            const columns = this.normalizeColumns(this.option);
+            const form = {};
+            columns.forEach((column, index) => {
+              if (column.prop)
+                form[column.prop] = this.createValue(column, index + 1);
+            });
+            this.form = form;
+          },
+          applyJson() {
+            try {
+              const value = JSON.parse(this.editorText);
+              this.option = value;
+              this.parseError = "";
+              this.refreshMock();
+              this.resetForm();
+              this.previewKey += 1;
+              this.$message.success("已应用配置");
+            } catch (error) {
+              this.parseError = error.message;
+            }
+          },
+          formatJson() {
+            try {
+              this.editorText = JSON.stringify(
+                JSON.parse(this.editorText),
+                null,
+                2,
+              );
+              this.parseError = "";
+            } catch (error) {
+              this.parseError = error.message;
+            }
+          },
+          copyJson() {
+            const done = () => this.$message.success("已复制");
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(this.editorText).then(done);
+              return;
+            }
+            const textarea = document.createElement("textarea");
+            textarea.value = this.editorText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+            done();
+          },
+          resetSample() {
+            this.editorText = JSON.stringify(sampleOption, null, 2);
+            this.applyJson();
+          },
+          rowSave(row, done) {
+            row.id = Date.now();
+            this.data.unshift(row);
+            this.page.total = this.data.length;
+            done();
+          },
+          rowUpdate(row, index, done) {
+            this.data.splice(index, 1, row);
+            done();
+          },
+          rowDel(row, index) {
+            this.data.splice(index, 1);
+            this.page.total = this.data.length;
+          },
+          formSubmit(form, done) {
+            this.$message.success(JSON.stringify(form));
+            done();
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>
