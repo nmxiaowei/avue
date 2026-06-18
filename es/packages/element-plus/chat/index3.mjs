@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, withKeys, normalizeStyle, normalizeClass, createElementVNode, toDisplayString, renderSlot, Fragment, renderList, createTextVNode, createCommentVNode, createBlock, withCtx, createVNode, withDirectives, vModelText } from 'vue';
 
 const _hoisted_1 = { ref: "chatAudio" };

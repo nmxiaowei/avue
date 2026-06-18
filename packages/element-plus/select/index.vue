@@ -28,6 +28,7 @@
     @blur="handleBlur"
     @click="handleClick"
     @remove-tag="handleremoveTag"
+    @end-reached="handleEndReached"
     :multiple-limit="limit"
     :allow-create="allowCreate"
     :default-first-option="defaultFirstOption"
@@ -135,6 +136,7 @@ import { DIC_SPLIT } from "global/variable";
 export default create({
   name: "select",
   mixins: [props(), event(), locale],
+  emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached"],
   data() {
     return {
       checked: false,
@@ -172,6 +174,7 @@ export default create({
       default: false,
     },
     removeTag: Function,
+    endReached: Function,
     collapseTags: Boolean,
     collapseTagsTooltip: Boolean,
     maxCollapseTags: Number,
@@ -286,6 +289,16 @@ export default create({
       if (this.removeTag && typeof this.removeTag === 'function') {
         this.removeTag(tagValue);
       }
+    },
+    handleEndReached(...args) {
+      if (this.endReached && typeof this.endReached === "function") {
+        this.endReached({
+          value: this.modelValue,
+          column: this.column,
+          dic: this.dic,
+        });
+      }
+      this.$emit("end-reached", ...args);
     },
   },
 });

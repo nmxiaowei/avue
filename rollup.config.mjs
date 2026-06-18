@@ -637,6 +637,7 @@ function createDistConfig({ minify, env, writeStyles }) {
       format: "umd",
       name: "AVUE",
       exports: "default",
+      inlineDynamicImports: true,
       banner,
       sourcemap: !minify,
       globals: globalExternals,

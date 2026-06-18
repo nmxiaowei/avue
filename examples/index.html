@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Examples</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #1f2937;
+        background: #f5f7fb;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 16px 22px;
+        border-bottom: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .count {
+        color: #64748b;
+        font-size: 13px;
+      }
+      .controls {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: minmax(220px, 420px) 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+      .search {
+        width: 100%;
+        height: 36px;
+        padding: 0 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        outline: none;
+        background: #fff;
+      }
+      .search:focus {
+        border-color: #2563eb;
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tab {
+        height: 32px;
+        padding: 0 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        color: #334155;
+        background: #fff;
+        cursor: pointer;
+      }
+      .tab.active {
+        border-color: #2563eb;
+        color: #fff;
+        background: #2563eb;
+      }
+      .main {
+        padding: 18px 22px 28px;
+      }
+      .section {
+        margin-bottom: 22px;
+      }
+      .section-title {
+        margin: 0 0 10px;
+        color: #334155;
+        font-size: 14px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 10px;
+      }
+      .item {
+        min-height: 86px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid #dfe5ef;
+        border-radius: 8px;
+        text-decoration: none;
+        color: inherit;
+        background: #fff;
+      }
+      .item:hover {
+        border-color: #2563eb;
+      }
+      .item-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .item-path {
+        margin-top: 10px;
+        color: #64748b;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        word-break: break-all;
+      }
+      .empty {
+        padding: 36px 0;
+        color: #64748b;
+        text-align: center;
+      }
+      @media (max-width: 760px) {
+        .header-row,
+        .controls {
+          grid-template-columns: 1fr;
+          align-items: stretch;
+        }
+        .header-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .main,
+        .header {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-row">
+        <h1>Avue 本地示例中心</h1>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="controls">
+        <input class="search" id="search" placeholder="搜索组件、能力或文件路径" />
+        <div class="tabs" id="tabs"></div>
+      </div>
+    </header>
+    <main class="main" id="app"></main>
+    <script>
+      const paths = [
+        "tools/playground.html",
+        "tools/generator.html",
+        "tools/option-validate.html",
+        "data/weather.html",
+        "data/task.html",
+        "data/tabs.html",
+        "data/statistic.html",
+        "data/rotate.html",
+        "data/rank.html",
+        "data/progress.html",
+        "data/profile.html",
+        "data/product.html",
+        "data/price.html",
+        "data/pay.html",
+        "data/panel.html",
+        "data/operateText.html",
+        "data/notice.html",
+        "data/list.html",
+        "data/imgText.html",
+        "data/icons.html",
+        "data/display.html",
+        "data/dashboard.html",
+        "data/countdown.html",
+        "data/cardText.html",
+        "data/card.html",
+        "data/box.html",
+        "element-plus/watermark/index.html",
+        "element-plus/video/index.html",
+        "element-plus/input-tree/index.html",
+        "element-plus/verify/index.html",
+        "element-plus/input-table/index.html",
+        "element-plus/count-up/index.html",
+        "element-plus/image-preview/index.html",
+        "element-plus/tree/virtualize.html",
+        "element-plus/tree/index.html",
+        "element-plus/excel/index.html",
+        "element-plus/flow/index.html",
+        "element-plus/form/cascader.html",
+        "element-plus/form/bind.html",
+        "element-plus/form/ali.html",
+        "element-plus/form/component.html",
+        "element-plus/form/checkbox.html",
+        "element-plus/form/control-dic.html",
+        "element-plus/contextmenu/index.html",
+        "element-plus/chat/index.html",
+        "element-plus/print/index.html",
+        "element-plus/lang/index.html",
+        "element-plus/license/index.html",
+        "element-plus/login/index.html",
+        "element-plus/text-ellipsis/index.html",
+        "element-plus/screenshot/index.html",
+        "element-plus/form/event.html",
+        "element-plus/form/dynamic.html",
+        "element-plus/form/display.html",
+        "element-plus/form/dic.html",
+        "element-plus/form/date.html",
+        "element-plus/form/cos.html",
+        "element-plus/form/img.html",
+        "element-plus/form/icon.html",
+        "element-plus/form/group.html",
+        "element-plus/form/input-cron.html",
+        "element-plus/form/index.html",
+        "element-plus/comment/index.html",
+        "element-plus/form/input-extend.html",
+        "element-plus/form/selects.html",
+        "element-plus/form/select.html",
+        "element-plus/form/select-remote.html",
+        "element-plus/form/search.html",
+        "element-plus/form/qiniu.html",
+        "element-plus/form/mock.html",
+        "element-plus/form/map.html",
+        "element-plus/form/textarea.html",
+        "element-plus/form/table.html",
+        "element-plus/form/upload.html",
+        "element-plus/form/selectslot.html",
+        "element-plus/form/typeslot.html",
+        "element-plus/form/updatedic.html",
+        "element-plus/form/tree.html",
+        "element-plus/card/index.html",
+        "element-plus/sign/index.html",
+        "element-plus/dialog/dialog.html",
+        "element-plus/tabs/index.html",
+        "element-plus/dialog/index.html",
+        "element-plus/select/index.html",
+        "element-plus/draggable/index.html",
+        "element-plus/article/index.html",
+        "element-plus/search/index.html",
+        "element-plus/clipboard/index.html",
+        "element-plus/crud/upload.html",
+        "element-plus/crud/grid.html",
+        "element-plus/crud/filter.html",
+        "element-plus/crud/expand.html",
+        "element-plus/crud/event.html",
+        "element-plus/crud/empty.html",
+        "element-plus/crud/dynamic.html",
+        "element-plus/crud/dic.html",
+        "element-plus/crud/date.html",
+        "element-plus/crud/column-state.html",
+        "element-plus/crud/column-sortable.html",
+        "element-plus/crud/change.html",
+        "element-plus/crud/cell.html",
+        "element-plus/crud/btn.html",
+        "element-plus/crud/bind.html",
+        "element-plus/crud/before.html",
+        "element-plus/crud/array.html",
+        "element-plus/crud/search.html",
+        "element-plus/crud/permission.html",
+        "element-plus/crud/page.html",
+        "element-plus/crud/input-table.html",
+        "element-plus/crud/index.html",
+        "element-plus/crud/header.html",
+        "element-plus/crud/group.html",
+        "element-plus/crud/slot.html",
+        "element-plus/crud/selects.html",
+        "element-plus/crud/select-tree.html",
+        "element-plus/crud/sum.html",
+        "element-plus/crud/sortable.html",
+        "element-plus/crud/tabs.html",
+        "element-plus/crud/tree.html"
+      ];
+
+      const categoryNames = {
+        all: "全部",
+        tools: "开发工具",
+        crud: "CRUD",
+        form: "Form",
+        data: "数据展示",
+        component: "组件",
+        plugin: "插件"
+      };
+
+      const nameMap = {
+        playground: "Option 编辑器",
+        generator: "页面代码生成器",
+        "option-validate": "Option 校验",
+        index: "基础示例",
+        upload: "上传",
+        grid: "卡片模式",
+        filter: "筛选",
+        expand: "展开行",
+        event: "事件",
+        empty: "空状态",
+        dynamic: "动态表单",
+        dic: "字典",
+        date: "日期",
+        "column-sortable": "列拖拽",
+        "column-state": "列持久化",
+        change: "值变化",
+        cell: "单元格编辑",
+        btn: "按钮",
+        bind: "深层绑定",
+        before: "打开关闭前钩子",
+        array: "数组",
+        search: "搜索",
+        permission: "权限",
+        page: "分页",
+        "input-table": "表格选择",
+        header: "表头",
+        group: "分组",
+        slot: "插槽",
+        selects: "多选",
+        "select-tree": "树选择",
+        sum: "合计",
+        sortable: "拖拽排序",
+        tabs: "标签页",
+        tree: "树",
+        cascader: "级联",
+        ali: "阿里云上传",
+        component: "自定义组件",
+        checkbox: "复选框",
+        "control-dic": "字典联动",
+        display: "详情展示",
+        cos: "腾讯云上传",
+        img: "图片",
+        icon: "图标",
+        "input-cron": "Cron",
+        "input-extend": "输入扩展",
+        select: "选择器",
+        "select-remote": "远程选择",
+        qiniu: "七牛上传",
+        mock: "模拟数据",
+        map: "地图",
+        textarea: "文本域",
+        table: "子表单",
+        selectslot: "选择插槽",
+        typeslot: "类型插槽",
+        updatedic: "更新字典",
+        weather: "天气",
+        task: "任务",
+        statistic: "统计",
+        rotate: "轮播",
+        rank: "排行",
+        progress: "进度",
+        profile: "资料",
+        product: "产品",
+        price: "价格",
+        pay: "支付",
+        panel: "面板",
+        operateText: "操作文本",
+        notice: "通知",
+        list: "列表",
+        imgText: "图文",
+        icons: "图标组",
+        dashboard: "仪表盘",
+        countdown: "倒计时",
+        cardText: "文字卡片",
+        card: "卡片",
+        box: "盒子",
+        watermark: "水印",
+        video: "视频",
+        verify: "验证码",
+        "count-up": "数字动画",
+        "image-preview": "图片预览",
+        virtualize: "虚拟滚动",
+        excel: "Excel",
+        flow: "流程",
+        contextmenu: "右键菜单",
+        chat: "聊天",
+        print: "打印",
+        lang: "国际化",
+        license: "许可证",
+        login: "登录",
+        "text-ellipsis": "文本省略",
+        screenshot: "截图",
+        comment: "评论",
+        sign: "签名",
+        dialog: "弹窗",
+        draggable: "拖拽",
+        article: "文章",
+        clipboard: "剪贴板"
+      };
+
+      const state = {
+        category: "all",
+        keyword: ""
+      };
+
+      const getCategory = (path) => {
+        if (path.startsWith("tools/")) return "tools";
+        if (path.startsWith("data/")) return "data";
+        if (path.startsWith("element-plus/crud/")) return "crud";
+        if (path.startsWith("element-plus/form/")) return "form";
+        if (
+          path.includes("watermark") ||
+          path.includes("excel") ||
+          path.includes("contextmenu") ||
+          path.includes("print") ||
+          path.includes("screenshot") ||
+          path.includes("clipboard")
+        ) {
+          return "plugin";
+        }
+        return "component";
+      };
+
+      const getTitle = (path) => {
+        const parts = path.split("/");
+        const file = parts[parts.length - 1].replace(".html", "");
+        const folder = parts[parts.length - 2];
+        if (parts[0] === "tools") return nameMap[file] || file;
+        if (parts[0] === "data") return "Data " + (nameMap[file] || file);
+        if (parts[1] === "crud") return "CRUD " + (nameMap[file] || file);
+        if (parts[1] === "form") return "Form " + (nameMap[file] || file);
+        const base = file === "index" ? folder : file;
+        return (nameMap[folder] || folder) + " / " + (nameMap[base] || base);
+      };
+
+      const items = paths.map((path) => ({
+        path,
+        title: getTitle(path),
+        category: getCategory(path)
+      }));
+
+      const renderTabs = () => {
+        const tabs = ["all", "tools", "crud", "form", "data", "component", "plugin"];
+        document.getElementById("tabs").innerHTML = tabs
+          .map((key) => {
+            const active = state.category === key ? " active" : "";
+            return '<button class="tab' + active + '" data-category="' + key + '">' + categoryNames[key] + "</button>";
+          })
+          .join("");
+      };
+
+      const render = () => {
+        const keyword = state.keyword.trim().toLowerCase();
+        const filtered = items.filter((item) => {
+          const matchCategory = state.category === "all" || item.category === state.category;
+          const text = (item.title + " " + item.path + " " + categoryNames[item.category]).toLowerCase();
+          return matchCategory && (!keyword || text.includes(keyword));
+        });
+
+        document.getElementById("count").textContent = filtered.length + " / " + items.length + " 个示例";
+
+        const groups = filtered.reduce((result, item) => {
+          const key = item.category;
+          if (!result[key]) result[key] = [];
+          result[key].push(item);
+          return result;
+        }, {});
+
+        const html = Object.keys(categoryNames)
+          .filter((key) => key !== "all" && groups[key])
+          .map((key) => {
+            const cards = groups[key]
+              .map((item) => {
+                return [
+                  '<a class="item" href="' + item.path + '" target="_blank">',
+                  '  <span class="item-title">' + item.title + "</span>",
+                  '  <span class="item-path">' + item.path + "</span>",
+                  "</a>"
+                ].join("");
+              })
+              .join("");
+            return [
+              '<section class="section">',
+              '  <h2 class="section-title">' + categoryNames[key] + "</h2>",
+              '  <div class="grid">' + cards + "</div>",
+              "</section>"
+            ].join("");
+          })
+          .join("");
+
+        document.getElementById("app").innerHTML = html || '<div class="empty">没有匹配的示例</div>';
+        renderTabs();
+      };
+
+      document.getElementById("search").addEventListener("input", (event) => {
+        state.keyword = event.target.value;
+        render();
+      });
+
+      document.getElementById("tabs").addEventListener("click", (event) => {
+        const category = event.target.getAttribute("data-category");
+        if (!category) return;
+        state.category = category;
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>

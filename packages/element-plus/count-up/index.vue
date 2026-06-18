@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import CountUp from "countup.js";
 import create from "core/create";
 export default create({
   name: "count-up",
@@ -67,7 +66,9 @@ export default create({
 
   },
   methods: {
-    init () {
+    async init () {
+      if (this.c || typeof window === 'undefined') return;
+      const { default: CountUp } = await import("countup.js");
       if (!this.c) {
         this.c = new CountUp(
           this.$el,

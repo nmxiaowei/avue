@@ -1,5 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import CountUp from '../../../_virtual/countUp.min.mjs';
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 
 var script = create({
@@ -64,7 +63,9 @@ var script = create({
 
   },
   methods: {
-    init () {
+    async init () {
+      if (this.c || typeof window === 'undefined') return;
+      const { default: CountUp } = await import('../../../_virtual/countUp.min.mjs').then(function (n) { return n.c; });
       if (!this.c) {
         this.c = new CountUp(
           this.$el,

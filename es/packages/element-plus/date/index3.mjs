@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, normalizeClass, createVNode, withCtx, createElementVNode, renderSlot, toDisplayString } from 'vue';
 
 const _hoisted_1 = { class: "el-date-table-cell" };
@@ -22,6 +22,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "cell-class-name": _ctx.cellClassName,
       editable: _ctx.editable,
       "unlink-panels": _ctx.unlinkPanels,
+      "single-panel": _ctx.singlePanel,
       "default-value": _ctx.defaultValue,
       "default-time": _ctx.defaultTime,
       "range-separator": _ctx.rangeSeparator,
@@ -55,7 +56,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         ])
       ]),
       _: 3 /* FORWARDED */
-    }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])
+    }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "single-panel", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])
   ], 2 /* CLASS */))
 }
 

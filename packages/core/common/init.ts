@@ -1,6 +1,7 @@
 import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
 import { DIC_PROPS } from 'global/variable';
 import slot from 'core/slot';
+import { validateOption, warnOption } from 'core/option';
 
 export default function (name: string) {
   return {
@@ -77,6 +78,17 @@ export default function (name: string) {
           ...this.option,
         };
         this.tableOption = option;
+        const componentName =
+          name || (this.$options.name || '').replace(/^avue-/, '') || 'component';
+        if (
+          this.$AVUE.optionValidate !== false &&
+          option.optionValidate !== false
+        ) {
+          warnOption(validateOption(option, componentName), componentName);
+        }
+        if (name === 'crud' && typeof this.restoreColumnState === 'function') {
+          this.restoreColumnState();
+        }
         this.handleLocalDic();
         if (type !== false) this.handleLoadDic();
       },

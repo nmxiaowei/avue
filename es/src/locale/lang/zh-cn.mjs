@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 var defaultLang = {
     common: {
         submitBtn: '确定',
@@ -249,7 +249,8 @@ var defaultLang = {
             filters: '筛选',
             sortable: '排序',
             index: '序号',
-            width: '宽度'
+            width: '宽度',
+            reset: '重置列设置'
         },
         emptyText: '暂无数据',
         tipStartTitle: '已选择',

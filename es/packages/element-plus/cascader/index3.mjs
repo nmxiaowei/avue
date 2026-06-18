@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createBlock, normalizeClass, withCtx, renderSlot, createElementBlock, toDisplayString } from 'vue';
 
 const _hoisted_1 = { key: 1 };
@@ -18,6 +18,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     props: _ctx.allProps,
     size: _ctx.size,
     effect: _ctx.effect,
+    "virtual-scroll": _ctx.virtualScroll,
+    "fit-input-width": _ctx.fitInputWidth,
+    height: _ctx.height,
+    "item-size": _ctx.itemSize,
     clearable: _ctx.clearableVal,
     "show-all-levels": _ctx.showAllLevels,
     filterable: _ctx.filterable,
@@ -41,7 +45,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         : (openBlock(), createElementBlock("span", _hoisted_1, toDisplayString(data[_ctx.labelKey]), 1 /* TEXT */))
     ]),
     _: 3 /* FORWARDED */
-  }, 8 /* PROPS */, ["options", "class", "onClick", "onChange", "modelValue", "placeholder", "props", "size", "effect", "clearable", "show-all-levels", "filterable", "popper-class", "separator", "disabled", "show-checked-strategy", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "onFocus", "onBlur"]))
+  }, 8 /* PROPS */, ["options", "class", "onClick", "onChange", "modelValue", "placeholder", "props", "size", "effect", "virtual-scroll", "fit-input-width", "height", "item-size", "clearable", "show-all-levels", "filterable", "popper-class", "separator", "disabled", "show-checked-strategy", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "onFocus", "onBlur"]))
 }
 
 export { render };

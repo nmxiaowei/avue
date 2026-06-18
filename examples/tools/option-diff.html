@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Option Diff</title>
+    <script src="../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../cdn/element-plus/index.css" />
+    <script src="../cdn/element-plus/index.full.min.js"></script>
+    <script src="../cdn/element-plus/locale/zh-cn.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #1f2937;
+        background: #f5f7fb;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+      }
+      #app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .header {
+        min-height: 56px;
+        padding: 10px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .title {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .editor-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 14px;
+      }
+      .editor {
+        min-height: 320px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #dfe5ef;
+        background: #fff;
+      }
+      .editor-title {
+        padding: 10px 12px;
+        border-bottom: 1px solid #e7ecf3;
+        font-weight: 700;
+      }
+      textarea {
+        min-height: 280px;
+        flex: 1;
+        width: 100%;
+        padding: 12px;
+        border: 0;
+        resize: vertical;
+        outline: none;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .result {
+        padding: 0 14px 16px;
+      }
+      .value-cell {
+        max-width: 360px;
+        white-space: pre-wrap;
+        word-break: break-all;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 12px;
+      }
+      @media (max-width: 900px) {
+        .header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .editor-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="header">
+        <div class="title">Avue Option 配置差异对比</div>
+        <div>
+          <el-button size="small" @click="loadSample">示例配置</el-button>
+          <el-button size="small" @click="formatJson">格式化</el-button>
+          <el-button size="small" type="primary" @click="compare">对比</el-button>
+        </div>
+      </div>
+      <div class="editor-grid">
+        <section class="editor">
+          <div class="editor-title">旧 option</div>
+          <textarea v-model="leftText" spellcheck="false"></textarea>
+        </section>
+        <section class="editor">
+          <div class="editor-title">新 option</div>
+          <textarea v-model="rightText" spellcheck="false"></textarea>
+        </section>
+      </div>
+      <section class="result">
+        <el-alert
+          v-if="error"
+          type="error"
+          :closable="false"
+          :title="error"
+          style="margin-bottom: 12px"
+        ></el-alert>
+        <el-table :data="diffList" border size="small">
+          <el-table-column prop="type" label="类型" width="90">
+            <template #default="{ row }">
+              <el-tag
+                :type="row.type === '新增' ? 'success' : row.type === '删除' ? 'danger' : 'warning'"
+              >{{ row.type }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="path" label="路径" min-width="220"></el-table-column>
+          <el-table-column label="旧值" min-width="220">
+            <template #default="{ row }">
+              <div class="value-cell">{{ stringifyValue(row.oldValue) }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column label="新值" min-width="220">
+            <template #default="{ row }">
+              <div class="value-cell">{{ stringifyValue(row.newValue) }}</div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </section>
+    </div>
+    <script>
+      const oldOption = {
+        border: true,
+        index: true,
+        column: [
+          { label: "姓名", prop: "name", search: true },
+          { label: "状态", prop: "status", type: "select" },
+        ],
+      };
+      const newOption = {
+        border: true,
+        stripe: true,
+        index: true,
+        column: [
+          { label: "姓名", prop: "name", search: true, width: 140 },
+          {
+            label: "状态",
+            prop: "status",
+            type: "radio",
+            dicData: [
+              { label: "启用", value: 1 },
+              { label: "禁用", value: 0 },
+            ],
+          },
+          { label: "备注", prop: "remark", type: "textarea", span: 24 },
+        ],
+      };
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            leftText: JSON.stringify(oldOption, null, 2),
+            rightText: JSON.stringify(newOption, null, 2),
+            diffList: [],
+            error: "",
+          };
+        },
+        mounted() {
+          this.compare();
+        },
+        methods: {
+          parse(text) {
+            return JSON.parse(text);
+          },
+          isObject(value) {
+            return value && Object.prototype.toString.call(value) === "[object Object]";
+          },
+          normalizeArray(path, list) {
+            if (
+              path.endsWith("column") &&
+              Array.isArray(list) &&
+              list.every((item) => item && item.prop)
+            ) {
+              return list.reduce((result, item) => {
+                result[item.prop] = item;
+                return result;
+              }, {});
+            }
+            return list;
+          },
+          walk(left, right, path, result) {
+            left = this.normalizeArray(path, left);
+            right = this.normalizeArray(path, right);
+            if (Array.isArray(left) || Array.isArray(right)) {
+              if (JSON.stringify(left) !== JSON.stringify(right)) {
+                result.push({ type: "变更", path, oldValue: left, newValue: right });
+              }
+              return;
+            }
+            if (this.isObject(left) && this.isObject(right)) {
+              const keys = Array.from(new Set(Object.keys(left).concat(Object.keys(right))));
+              keys.forEach((key) => {
+                const nextPath = path ? path + "." + key : key;
+                if (!(key in left)) {
+                  result.push({ type: "新增", path: nextPath, oldValue: undefined, newValue: right[key] });
+                } else if (!(key in right)) {
+                  result.push({ type: "删除", path: nextPath, oldValue: left[key], newValue: undefined });
+                } else {
+                  this.walk(left[key], right[key], nextPath, result);
+                }
+              });
+              return;
+            }
+            if (left !== right) {
+              result.push({ type: "变更", path, oldValue: left, newValue: right });
+            }
+          },
+          compare() {
+            try {
+              const result = [];
+              this.walk(this.parse(this.leftText), this.parse(this.rightText), "option", result);
+              this.diffList = result;
+              this.error = "";
+            } catch (error) {
+              this.error = error.message;
+            }
+          },
+          formatJson() {
+            try {
+              this.leftText = JSON.stringify(this.parse(this.leftText), null, 2);
+              this.rightText = JSON.stringify(this.parse(this.rightText), null, 2);
+              this.error = "";
+            } catch (error) {
+              this.error = error.message;
+            }
+          },
+          loadSample() {
+            this.leftText = JSON.stringify(oldOption, null, 2);
+            this.rightText = JSON.stringify(newOption, null, 2);
+            this.compare();
+          },
+          stringifyValue(value) {
+            if (value === undefined) return "-";
+            if (typeof value === "string") return value;
+            return JSON.stringify(value, null, 2);
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

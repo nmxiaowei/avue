@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import packages from '../../../src/core/packages.mjs';
 import create from '../../../src/core/create.mjs';
 import props from '../../core/common/props.mjs';
@@ -10,6 +10,7 @@ import { DIC_SPLIT } from '../../../src/global/variable.mjs';
 var script = create({
   name: "select",
   mixins: [props(), event(), locale],
+  emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached"],
   data() {
     return {
       checked: false,
@@ -47,6 +48,7 @@ var script = create({
       default: false,
     },
     removeTag: Function,
+    endReached: Function,
     collapseTags: Boolean,
     collapseTagsTooltip: Boolean,
     maxCollapseTags: Number,
@@ -161,6 +163,16 @@ var script = create({
       if (this.removeTag && typeof this.removeTag === 'function') {
         this.removeTag(tagValue);
       }
+    },
+    handleEndReached(...args) {
+      if (this.endReached && typeof this.endReached === "function") {
+        this.endReached({
+          value: this.modelValue,
+          column: this.column,
+          dic: this.dic,
+        });
+      }
+      this.$emit("end-reached", ...args);
     },
   },
 });

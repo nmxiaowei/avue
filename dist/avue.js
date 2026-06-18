@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('element-plus'), require('axios'), require('@element-plus/icons-vue')) :
   typeof define === 'function' && define.amd ? define(['vue', 'element-plus', 'axios', '@element-plus/icons-vue'], factory) :
@@ -22,24 +22,39 @@
     return Object.freeze(n);
   }
 
+  function _mergeNamespaces(n, m) {
+    m.forEach(function (e) {
+      e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
+        if (k !== 'default' && !(k in n)) {
+          var d = Object.getOwnPropertyDescriptor(e, k);
+          Object.defineProperty(n, k, d.get ? d : {
+            enumerable: true,
+            get: function () { return e[k]; }
+          });
+        }
+      });
+    });
+    return Object.freeze(n);
+  }
+
   var Icons__namespace = /*#__PURE__*/_interopNamespaceDefault(Icons);
 
-  function _typeof(o) {
+  function _typeof$1(o) {
     "@babel/helpers - typeof";
 
-    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
       return typeof o;
     } : function (o) {
       return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
-    }, _typeof(o);
+    }, _typeof$1(o);
   }
 
   function toPrimitive(t, r) {
-    if ("object" != _typeof(t) || !t) return t;
+    if ("object" != _typeof$1(t) || !t) return t;
     var e = t[Symbol.toPrimitive];
     if (void 0 !== e) {
       var i = e.call(t, r);
-      if ("object" != _typeof(i)) return i;
+      if ("object" != _typeof$1(i)) return i;
       throw new TypeError("@@toPrimitive must return a primitive value.");
     }
     return ("string" === r ? String : Number)(t);
@@ -47,7 +62,7 @@
 
   function toPropertyKey(t) {
     var i = toPrimitive(t, "string");
-    return "symbol" == _typeof(i) ? i : i + "";
+    return "symbol" == _typeof$1(i) ? i : i + "";
   }
 
   function _defineProperty$1(e, r, t) {
@@ -59,33 +74,401 @@
     }) : e[r] = t, e;
   }
 
+  function asyncGeneratorStep(n, t, e, r, o, a, c) {
+    try {
+      var i = n[a](c),
+        u = i.value;
+    } catch (n) {
+      return void e(n);
+    }
+    i.done ? t(u) : Promise.resolve(u).then(r, o);
+  }
+  function _asyncToGenerator(n) {
+    return function () {
+      var t = this,
+        e = arguments;
+      return new Promise(function (r, o) {
+        var a = n.apply(t, e);
+        function _next(n) {
+          asyncGeneratorStep(a, r, o, _next, _throw, "next", n);
+        }
+        function _throw(n) {
+          asyncGeneratorStep(a, r, o, _next, _throw, "throw", n);
+        }
+        _next(void 0);
+      });
+    };
+  }
+
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
   function getDefaultExportFromCjs (x) {
   	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
   }
 
-  function commonjsRequire(path) {
-  	throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+  var regeneratorRuntime$1 = {exports: {}};
+
+  var _typeof = {exports: {}};
+
+  var hasRequired_typeof;
+
+  function require_typeof () {
+  	if (hasRequired_typeof) return _typeof.exports;
+  	hasRequired_typeof = 1;
+  	(function (module) {
+  		function _typeof(o) {
+  		  "@babel/helpers - typeof";
+
+  		  return module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+  		    return typeof o;
+  		  } : function (o) {
+  		    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  		  }, module.exports.__esModule = true, module.exports["default"] = module.exports, _typeof(o);
+  		}
+  		module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports; 
+  	} (_typeof));
+  	return _typeof.exports;
   }
 
-  var countUp_min$1 = {exports: {}};
+  var hasRequiredRegeneratorRuntime;
 
-  var countUp_min = countUp_min$1.exports;
-
-  var hasRequiredCountUp_min;
-
-  function requireCountUp_min () {
-  	if (hasRequiredCountUp_min) return countUp_min$1.exports;
-  	hasRequiredCountUp_min = 1;
-  	(function (module, exports$1) {
-  		!function(a,n){module.exports=n(commonjsRequire,exports$1,module);}(countUp_min,function(a,n,t){var e=function(a,n,t,e,i,r){function o(a){var n,t,e,i,r,o,s=a<0;if(a=Math.abs(a).toFixed(l.decimals),a+="",n=a.split("."),t=n[0],e=n.length>1?l.options.decimal+n[1]:"",l.options.useGrouping){for(i="",r=0,o=t.length;r<o;++r)0!==r&&r%3===0&&(i=l.options.separator+i),i=t[o-r-1]+i;t=i;}return l.options.numerals.length&&(t=t.replace(/[0-9]/g,function(a){return l.options.numerals[+a]}),e=e.replace(/[0-9]/g,function(a){return l.options.numerals[+a]})),(s?"-":"")+l.options.prefix+t+e+l.options.suffix}function s(a,n,t,e){return t*(-Math.pow(2,-10*a/e)+1)*1024/1023+n}function u(a){return "number"==typeof a&&!isNaN(a)}var l=this;if(l.version=function(){return "1.9.3"},l.options={useEasing:true,useGrouping:true,separator:",",decimal:".",easingFn:s,formattingFn:o,prefix:"",suffix:"",numerals:[]},r&&"object"==typeof r)for(var m in l.options)r.hasOwnProperty(m)&&null!==r[m]&&(l.options[m]=r[m]);""===l.options.separator?l.options.useGrouping=false:l.options.separator=""+l.options.separator;for(var d=0,c=["webkit","moz","ms","o"],f=0;f<c.length&&!window.requestAnimationFrame;++f)window.requestAnimationFrame=window[c[f]+"RequestAnimationFrame"],window.cancelAnimationFrame=window[c[f]+"CancelAnimationFrame"]||window[c[f]+"CancelRequestAnimationFrame"];window.requestAnimationFrame||(window.requestAnimationFrame=function(a,n){var t=(new Date).getTime(),e=Math.max(0,16-(t-d)),i=window.setTimeout(function(){a(t+e);},e);return d=t+e,i}),window.cancelAnimationFrame||(window.cancelAnimationFrame=function(a){clearTimeout(a);}),l.initialize=function(){return !!l.initialized||(l.error="",l.d="string"==typeof a?document.getElementById(a):a,l.d?(l.startVal=Number(n),l.endVal=Number(t),u(l.startVal)&&u(l.endVal)?(l.decimals=Math.max(0,e||0),l.dec=Math.pow(10,l.decimals),l.duration=1e3*Number(i)||2e3,l.countDown=l.startVal>l.endVal,l.frameVal=l.startVal,l.initialized=true,true):(l.error="[CountUp] startVal ("+n+") or endVal ("+t+") is not a number",false)):(l.error="[CountUp] target is null or undefined",false))},l.printValue=function(a){var n=l.options.formattingFn(a);"INPUT"===l.d.tagName?this.d.value=n:"text"===l.d.tagName||"tspan"===l.d.tagName?this.d.textContent=n:this.d.innerHTML=n;},l.count=function(a){l.startTime||(l.startTime=a),l.timestamp=a;var n=a-l.startTime;l.remaining=l.duration-n,l.options.useEasing?l.countDown?l.frameVal=l.startVal-l.options.easingFn(n,0,l.startVal-l.endVal,l.duration):l.frameVal=l.options.easingFn(n,l.startVal,l.endVal-l.startVal,l.duration):l.countDown?l.frameVal=l.startVal-(l.startVal-l.endVal)*(n/l.duration):l.frameVal=l.startVal+(l.endVal-l.startVal)*(n/l.duration),l.countDown?l.frameVal=l.frameVal<l.endVal?l.endVal:l.frameVal:l.frameVal=l.frameVal>l.endVal?l.endVal:l.frameVal,l.frameVal=Math.round(l.frameVal*l.dec)/l.dec,l.printValue(l.frameVal),n<l.duration?l.rAF=requestAnimationFrame(l.count):l.callback&&l.callback();},l.start=function(a){l.initialize()&&(l.callback=a,l.rAF=requestAnimationFrame(l.count));},l.pauseResume=function(){l.paused?(l.paused=false,delete l.startTime,l.duration=l.remaining,l.startVal=l.frameVal,requestAnimationFrame(l.count)):(l.paused=true,cancelAnimationFrame(l.rAF));},l.reset=function(){l.paused=false,delete l.startTime,l.initialized=false,l.initialize()&&(cancelAnimationFrame(l.rAF),l.printValue(l.startVal));},l.update=function(a){if(l.initialize()){if(a=Number(a),!u(a))return void(l.error="[CountUp] update() - new endVal is not a number: "+a);l.error="",a!==l.frameVal&&(cancelAnimationFrame(l.rAF),l.paused=false,delete l.startTime,l.startVal=l.frameVal,l.endVal=a,l.countDown=l.startVal>l.endVal,l.rAF=requestAnimationFrame(l.count));}},l.initialize()&&l.printValue(l.startVal);};return e}); 
-  	} (countUp_min$1, countUp_min$1.exports));
-  	return countUp_min$1.exports;
+  function requireRegeneratorRuntime () {
+  	if (hasRequiredRegeneratorRuntime) return regeneratorRuntime$1.exports;
+  	hasRequiredRegeneratorRuntime = 1;
+  	(function (module) {
+  		var _typeof = require_typeof()["default"];
+  		function _regeneratorRuntime() {
+  		  module.exports = _regeneratorRuntime = function _regeneratorRuntime() {
+  		    return e;
+  		  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
+  		  var t,
+  		    e = {},
+  		    r = Object.prototype,
+  		    n = r.hasOwnProperty,
+  		    o = Object.defineProperty || function (t, e, r) {
+  		      t[e] = r.value;
+  		    },
+  		    i = "function" == typeof Symbol ? Symbol : {},
+  		    a = i.iterator || "@@iterator",
+  		    c = i.asyncIterator || "@@asyncIterator",
+  		    u = i.toStringTag || "@@toStringTag";
+  		  function define(t, e, r) {
+  		    return Object.defineProperty(t, e, {
+  		      value: r,
+  		      enumerable: true,
+  		      configurable: true,
+  		      writable: true
+  		    }), t[e];
+  		  }
+  		  try {
+  		    define({}, "");
+  		  } catch (t) {
+  		    define = function define(t, e, r) {
+  		      return t[e] = r;
+  		    };
+  		  }
+  		  function wrap(t, e, r, n) {
+  		    var i = e && e.prototype instanceof Generator ? e : Generator,
+  		      a = Object.create(i.prototype),
+  		      c = new Context(n || []);
+  		    return o(a, "_invoke", {
+  		      value: makeInvokeMethod(t, r, c)
+  		    }), a;
+  		  }
+  		  function tryCatch(t, e, r) {
+  		    try {
+  		      return {
+  		        type: "normal",
+  		        arg: t.call(e, r)
+  		      };
+  		    } catch (t) {
+  		      return {
+  		        type: "throw",
+  		        arg: t
+  		      };
+  		    }
+  		  }
+  		  e.wrap = wrap;
+  		  var h = "suspendedStart",
+  		    l = "suspendedYield",
+  		    f = "executing",
+  		    s = "completed",
+  		    y = {};
+  		  function Generator() {}
+  		  function GeneratorFunction() {}
+  		  function GeneratorFunctionPrototype() {}
+  		  var p = {};
+  		  define(p, a, function () {
+  		    return this;
+  		  });
+  		  var d = Object.getPrototypeOf,
+  		    v = d && d(d(values([])));
+  		  v && v !== r && n.call(v, a) && (p = v);
+  		  var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p);
+  		  function defineIteratorMethods(t) {
+  		    ["next", "throw", "return"].forEach(function (e) {
+  		      define(t, e, function (t) {
+  		        return this._invoke(e, t);
+  		      });
+  		    });
+  		  }
+  		  function AsyncIterator(t, e) {
+  		    function invoke(r, o, i, a) {
+  		      var c = tryCatch(t[r], t, o);
+  		      if ("throw" !== c.type) {
+  		        var u = c.arg,
+  		          h = u.value;
+  		        return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) {
+  		          invoke("next", t, i, a);
+  		        }, function (t) {
+  		          invoke("throw", t, i, a);
+  		        }) : e.resolve(h).then(function (t) {
+  		          u.value = t, i(u);
+  		        }, function (t) {
+  		          return invoke("throw", t, i, a);
+  		        });
+  		      }
+  		      a(c.arg);
+  		    }
+  		    var r;
+  		    o(this, "_invoke", {
+  		      value: function value(t, n) {
+  		        function callInvokeWithMethodAndArg() {
+  		          return new e(function (e, r) {
+  		            invoke(t, n, e, r);
+  		          });
+  		        }
+  		        return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+  		      }
+  		    });
+  		  }
+  		  function makeInvokeMethod(e, r, n) {
+  		    var o = h;
+  		    return function (i, a) {
+  		      if (o === f) throw Error("Generator is already running");
+  		      if (o === s) {
+  		        if ("throw" === i) throw a;
+  		        return {
+  		          value: t,
+  		          done: true
+  		        };
+  		      }
+  		      for (n.method = i, n.arg = a;;) {
+  		        var c = n.delegate;
+  		        if (c) {
+  		          var u = maybeInvokeDelegate(c, n);
+  		          if (u) {
+  		            if (u === y) continue;
+  		            return u;
+  		          }
+  		        }
+  		        if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) {
+  		          if (o === h) throw o = s, n.arg;
+  		          n.dispatchException(n.arg);
+  		        } else "return" === n.method && n.abrupt("return", n.arg);
+  		        o = f;
+  		        var p = tryCatch(e, r, n);
+  		        if ("normal" === p.type) {
+  		          if (o = n.done ? s : l, p.arg === y) continue;
+  		          return {
+  		            value: p.arg,
+  		            done: n.done
+  		          };
+  		        }
+  		        "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg);
+  		      }
+  		    };
+  		  }
+  		  function maybeInvokeDelegate(e, r) {
+  		    var n = r.method,
+  		      o = e.iterator[n];
+  		    if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y;
+  		    var i = tryCatch(o, e.iterator, r.arg);
+  		    if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y;
+  		    var a = i.arg;
+  		    return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y);
+  		  }
+  		  function pushTryEntry(t) {
+  		    var e = {
+  		      tryLoc: t[0]
+  		    };
+  		    1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e);
+  		  }
+  		  function resetTryEntry(t) {
+  		    var e = t.completion || {};
+  		    e.type = "normal", delete e.arg, t.completion = e;
+  		  }
+  		  function Context(t) {
+  		    this.tryEntries = [{
+  		      tryLoc: "root"
+  		    }], t.forEach(pushTryEntry, this), this.reset(true);
+  		  }
+  		  function values(e) {
+  		    if (e || "" === e) {
+  		      var r = e[a];
+  		      if (r) return r.call(e);
+  		      if ("function" == typeof e.next) return e;
+  		      if (!isNaN(e.length)) {
+  		        var o = -1,
+  		          i = function next() {
+  		            for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = false, next;
+  		            return next.value = t, next.done = true, next;
+  		          };
+  		        return i.next = i;
+  		      }
+  		    }
+  		    throw new TypeError(_typeof(e) + " is not iterable");
+  		  }
+  		  return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", {
+  		    value: GeneratorFunctionPrototype,
+  		    configurable: true
+  		  }), o(GeneratorFunctionPrototype, "constructor", {
+  		    value: GeneratorFunction,
+  		    configurable: true
+  		  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) {
+  		    var e = "function" == typeof t && t.constructor;
+  		    return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name));
+  		  }, e.mark = function (t) {
+  		    return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t;
+  		  }, e.awrap = function (t) {
+  		    return {
+  		      __await: t
+  		    };
+  		  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () {
+  		    return this;
+  		  }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) {
+  		    void 0 === i && (i = Promise);
+  		    var a = new AsyncIterator(wrap(t, r, n, o), i);
+  		    return e.isGeneratorFunction(r) ? a : a.next().then(function (t) {
+  		      return t.done ? t.value : a.next();
+  		    });
+  		  }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () {
+  		    return this;
+  		  }), define(g, "toString", function () {
+  		    return "[object Generator]";
+  		  }), e.keys = function (t) {
+  		    var e = Object(t),
+  		      r = [];
+  		    for (var n in e) r.push(n);
+  		    return r.reverse(), function next() {
+  		      for (; r.length;) {
+  		        var t = r.pop();
+  		        if (t in e) return next.value = t, next.done = false, next;
+  		      }
+  		      return next.done = true, next;
+  		    };
+  		  }, e.values = values, Context.prototype = {
+  		    constructor: Context,
+  		    reset: function reset(e) {
+  		      if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = false, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t);
+  		    },
+  		    stop: function stop() {
+  		      this.done = true;
+  		      var t = this.tryEntries[0].completion;
+  		      if ("throw" === t.type) throw t.arg;
+  		      return this.rval;
+  		    },
+  		    dispatchException: function dispatchException(e) {
+  		      if (this.done) throw e;
+  		      var r = this;
+  		      function handle(n, o) {
+  		        return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o;
+  		      }
+  		      for (var o = this.tryEntries.length - 1; o >= 0; --o) {
+  		        var i = this.tryEntries[o],
+  		          a = i.completion;
+  		        if ("root" === i.tryLoc) return handle("end");
+  		        if (i.tryLoc <= this.prev) {
+  		          var c = n.call(i, "catchLoc"),
+  		            u = n.call(i, "finallyLoc");
+  		          if (c && u) {
+  		            if (this.prev < i.catchLoc) return handle(i.catchLoc, true);
+  		            if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+  		          } else if (c) {
+  		            if (this.prev < i.catchLoc) return handle(i.catchLoc, true);
+  		          } else {
+  		            if (!u) throw Error("try statement without catch or finally");
+  		            if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+  		          }
+  		        }
+  		      }
+  		    },
+  		    abrupt: function abrupt(t, e) {
+  		      for (var r = this.tryEntries.length - 1; r >= 0; --r) {
+  		        var o = this.tryEntries[r];
+  		        if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) {
+  		          var i = o;
+  		          break;
+  		        }
+  		      }
+  		      i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null);
+  		      var a = i ? i.completion : {};
+  		      return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a);
+  		    },
+  		    complete: function complete(t, e) {
+  		      if ("throw" === t.type) throw t.arg;
+  		      return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y;
+  		    },
+  		    finish: function finish(t) {
+  		      for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+  		        var r = this.tryEntries[e];
+  		        if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y;
+  		      }
+  		    },
+  		    "catch": function _catch(t) {
+  		      for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+  		        var r = this.tryEntries[e];
+  		        if (r.tryLoc === t) {
+  		          var n = r.completion;
+  		          if ("throw" === n.type) {
+  		            var o = n.arg;
+  		            resetTryEntry(r);
+  		          }
+  		          return o;
+  		        }
+  		      }
+  		      throw Error("illegal catch attempt");
+  		    },
+  		    delegateYield: function delegateYield(e, r, n) {
+  		      return this.delegate = {
+  		        iterator: values(e),
+  		        resultName: r,
+  		        nextLoc: n
+  		      }, "next" === this.method && (this.arg = t), y;
+  		    }
+  		  }, e;
+  		}
+  		module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports; 
+  	} (regeneratorRuntime$1));
+  	return regeneratorRuntime$1.exports;
   }
 
-  var countUp_minExports = requireCountUp_min();
-  var CountUp = /*@__PURE__*/getDefaultExportFromCjs(countUp_minExports);
+  var regenerator;
+  var hasRequiredRegenerator;
+
+  function requireRegenerator () {
+  	if (hasRequiredRegenerator) return regenerator;
+  	hasRequiredRegenerator = 1;
+  	// TODO(Babel 8): Remove this file.
+
+  	var runtime = requireRegeneratorRuntime()();
+  	regenerator = runtime;
+
+  	// Copied from https://github.com/facebook/regenerator/blob/main/packages/runtime/runtime.js#L736=
+  	try {
+  	  regeneratorRuntime = runtime;
+  	} catch (accidentalStrictMode) {
+  	  if (typeof globalThis === "object") {
+  	    globalThis.regeneratorRuntime = runtime;
+  	  } else {
+  	    Function("r", "regeneratorRuntime = r")(runtime);
+  	  }
+  	}
+  	return regenerator;
+  }
+
+  var regeneratorExports = requireRegenerator();
+  var _regeneratorRuntime = /*@__PURE__*/getDefaultExportFromCjs(regeneratorExports);
 
   var ELEMENT = '__';
   var MODS = '--';
@@ -230,10 +613,33 @@
     },
     methods: {
       init: function init() {
-        if (!this.c) {
-          this.c = new CountUp(this.$el, this.start, this.end, this.decimals, this.duration, this.options);
-          this.c.start();
-        }
+        var _this = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          var _yield$import, CountUp;
+          return _regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                if (!(_this.c || typeof window === 'undefined')) {
+                  _context.next = 2;
+                  break;
+                }
+                return _context.abrupt("return");
+              case 2:
+                _context.next = 4;
+                return Promise.resolve().then(function () { return countUp_min$1; });
+              case 4:
+                _yield$import = _context.sent;
+                CountUp = _yield$import["default"];
+                if (!_this.c) {
+                  _this.c = new CountUp(_this.$el, _this.start, _this.end, _this.decimals, _this.duration, _this.options);
+                  _this.c.start();
+                }
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        }))();
       },
       pauseResume: function pauseResume() {
         if (this.c && this.c.pauseResume) {
@@ -753,7 +1159,8 @@
         filters: 'Filter',
         sortable: 'Sort',
         index: 'Index',
-        width: 'Width'
+        width: 'Width',
+        reset: 'Reset Columns'
       },
       emptyText: 'No Data',
       tipStartTitle: 'Selected',
@@ -1036,7 +1443,8 @@
         filters: '过滤',
         sortable: '排序',
         index: '顺序',
-        width: '宽度'
+        width: '宽度',
+        reset: '重置列设置'
       },
       emptyText: '暂无数据',
       tipStartTitle: '当前表格已选择',
@@ -1319,7 +1727,8 @@
         filters: '筛选',
         sortable: '排序',
         index: '序号',
-        width: '宽度'
+        width: '宽度',
+        reset: '重置列设置'
       },
       emptyText: '暂无数据',
       tipStartTitle: '已选择',
@@ -4687,10 +5096,10 @@
       args[_key - 1] = arguments[_key];
     }
     var formatArgs = args;
-    if (args.length === 1 && _typeof(args[0]) === 'object') {
+    if (args.length === 1 && _typeof$1(args[0]) === 'object') {
       formatArgs = args[0];
     }
-    if (!formatArgs || _typeof(formatArgs) !== 'object') {
+    if (!formatArgs || _typeof$1(formatArgs) !== 'object') {
       formatArgs = {};
     }
     return string.replace(RE_NARGS, function (match, _prefix, key, index) {
@@ -6682,7 +7091,7 @@
     });
   };
   function downFile(url, saveName) {
-    if (_typeof(url) === 'object' && url instanceof Blob) {
+    if (_typeof$1(url) === 'object' && url instanceof Blob) {
       url = URL.createObjectURL(url);
     }
     var aLink = document.createElement('a');
@@ -6997,8 +7406,8 @@
     return !validatenull(val) ? val : dafult;
   };
 
-  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var key = 'key';
   function getDataType() {
     var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -7136,7 +7545,7 @@
         columnData[prop] = getDataType(dic, ele.props, ele.dataType);
       }
     });
-    var result = _objectSpread$b(_objectSpread$b({}, optionData), columnData);
+    var result = _objectSpread$d(_objectSpread$d({}, optionData), columnData);
     Object.keys(result).forEach(function (ele) {
       safe.DIC[ele] = result[ele];
     });
@@ -7252,8 +7661,180 @@
     }
   };
 
-  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var warned = new Set();
+  var KNOWN_TYPES = new Set(['', 'input', 'textarea', 'password', 'phone', 'currency', 'bankCard', 'idCard', 'email', 'code', 'plate', 'ip', 'mac', 'uscc', 'number', 'switch', 'upload', 'img', 'array', 'url', 'dynamic', 'slider', 'rate', 'input-tag', 'tag', 'mention', 'input-table', 'input-tree', 'input-icon', 'input-map', 'input-color', 'input-number', 'input-cron', 'cron', 'title'].concat(_toConsumableArray(DATE_LIST), _toConsumableArray(SELECT_LIST)));
+  var isObject = function isObject(value) {
+    return value && Object.prototype.toString.call(value) === '[object Object]';
+  };
+  var normalizeColumn = function normalizeColumn(column, path, warnings) {
+    if (Array.isArray(column)) {
+      return column.map(function (item, index) {
+        return {
+          item: item,
+          path: "".concat(path, "[").concat(index, "]")
+        };
+      });
+    }
+    if (isObject(column)) {
+      return Object.keys(column).map(function (prop) {
+        return {
+          item: _objectSpread$c(_objectSpread$c({}, column[prop]), {}, {
+            prop: column[prop].prop || prop
+          }),
+          path: "".concat(path, ".").concat(prop)
+        };
+      });
+    }
+    warnings.push({
+      path: path,
+      message: 'column 应为数组或对象格式'
+    });
+    return [];
+  };
+  var validSpan = function validSpan(value) {
+    return value === undefined || Number(value) >= 1 && Number(value) <= 24;
+  };
+  var _visitColumns = function visitColumns(column, path, warnings, propMap) {
+    normalizeColumn(column, path, warnings).forEach(function (_ref) {
+      var item = _ref.item,
+        itemPath = _ref.path;
+      if (!isObject(item)) {
+        warnings.push({
+          path: itemPath,
+          message: '字段配置应为对象'
+        });
+        return;
+      }
+      if (!item.prop) {
+        warnings.push({
+          path: itemPath,
+          message: '缺少 prop，字段无法稳定绑定表单值或表格列'
+        });
+      } else if (propMap[item.prop]) {
+        warnings.push({
+          path: itemPath,
+          message: "prop \"".concat(item.prop, "\" \u91CD\u590D\uFF0C\u5DF2\u5728 ").concat(propMap[item.prop], " \u51FA\u73B0")
+        });
+      } else {
+        propMap[item.prop] = itemPath;
+      }
+      if (!item.label && item.type !== 'title') {
+        warnings.push({
+          path: itemPath,
+          message: '建议补充 label，避免表头或表单标签为空'
+        });
+      }
+      if (!validSpan(item.span)) {
+        warnings.push({
+          path: "".concat(itemPath, ".span"),
+          message: 'span 应在 1 到 24 之间'
+        });
+      }
+      if (!validSpan(item.searchSpan)) {
+        warnings.push({
+          path: "".concat(itemPath, ".searchSpan"),
+          message: 'searchSpan 应在 1 到 24 之间'
+        });
+      }
+      if (item.type && !KNOWN_TYPES.has(item.type)) {
+        warnings.push({
+          path: "".concat(itemPath, ".type"),
+          message: "\u672A\u77E5\u5B57\u6BB5\u7C7B\u578B \"".concat(item.type, "\"\uFF0C\u8BF7\u786E\u8BA4\u662F\u5426\u5DF2\u6CE8\u518C\u81EA\u5B9A\u4E49\u7EC4\u4EF6")
+        });
+      }
+      if (item.dicData !== undefined && !Array.isArray(item.dicData)) {
+        warnings.push({
+          path: "".concat(itemPath, ".dicData"),
+          message: 'dicData 应为数组'
+        });
+      }
+      if (item.rules !== undefined && !Array.isArray(item.rules)) {
+        warnings.push({
+          path: "".concat(itemPath, ".rules"),
+          message: 'rules 应为数组'
+        });
+      }
+      if (item.props !== undefined && !isObject(item.props)) {
+        warnings.push({
+          path: "".concat(itemPath, ".props"),
+          message: 'props 应为对象'
+        });
+      }
+      if (item.cascader !== undefined && !Array.isArray(item.cascader)) {
+        warnings.push({
+          path: "".concat(itemPath, ".cascader"),
+          message: 'cascader 应为 prop 数组'
+        });
+      }
+      if (item.children && item.children.column) {
+        _visitColumns(item.children.column, "".concat(itemPath, ".children.column"), warnings, propMap);
+      }
+    });
+  };
+  var validateOption = function validateOption() {
+    var option = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var component = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'component';
+    var warnings = [];
+    if (!isObject(option)) {
+      return [{
+        path: component,
+        message: 'option 应为对象'
+      }];
+    }
+    if (!validSpan(option.span)) {
+      warnings.push({
+        path: "".concat(component, ".span"),
+        message: 'span 应在 1 到 24 之间'
+      });
+    }
+    if (!validSpan(option.searchSpan)) {
+      warnings.push({
+        path: "".concat(component, ".searchSpan"),
+        message: 'searchSpan 应在 1 到 24 之间'
+      });
+    }
+    var propMap = {};
+    if (option.column) {
+      _visitColumns(option.column, "".concat(component, ".column"), warnings, propMap);
+    } else if (['crud', 'form', 'search'].includes(component)) {
+      warnings.push({
+        path: "".concat(component, ".column"),
+        message: '缺少 column 配置'
+      });
+    }
+    if (Array.isArray(option.group)) {
+      option.group.forEach(function (group, index) {
+        if (!isObject(group)) {
+          warnings.push({
+            path: "".concat(component, ".group[").concat(index, "]"),
+            message: '分组配置应为对象'
+          });
+          return;
+        }
+        if (group.column) {
+          _visitColumns(group.column, "".concat(component, ".group[").concat(index, "].column"), warnings, propMap);
+        }
+      });
+    }
+    return warnings;
+  };
+  var warnOption = function warnOption() {
+    var warnings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var component = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'component';
+    warnings.forEach(function (warning) {
+      var key = "".concat(component, ":").concat(warning.path, ":").concat(warning.message);
+      if (warned.has(key)) return;
+      warned.add(key);
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn("[Avue option warn][".concat(component, "] ").concat(warning.path, ": ").concat(warning.message));
+      }
+    });
+  };
+
+  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   function init (name) {
     return {
       mixins: [slot],
@@ -7306,7 +7887,7 @@
           return document.body.clientWidth <= 768;
         },
         resultOption: function resultOption() {
-          return _objectSpread$a(_objectSpread$a({}, this.tableOption), {
+          return _objectSpread$b(_objectSpread$b({}, this.tableOption), {
             column: this.propOption || []
           });
         },
@@ -7324,8 +7905,15 @@
       methods: {
         init: function init(type) {
           var globOption = this.deepClone(this.$AVUE["".concat(name, "Option")]);
-          var option = _objectSpread$a(_objectSpread$a({}, globOption), this.option);
+          var option = _objectSpread$b(_objectSpread$b({}, globOption), this.option);
           this.tableOption = option;
+          var componentName = name || (this.$options.name || '').replace(/^avue-/, '') || 'component';
+          if (this.$AVUE.optionValidate !== false && option.optionValidate !== false) {
+            warnOption(validateOption(option, componentName), componentName);
+          }
+          if (name === 'crud' && typeof this.restoreColumnState === 'function') {
+            this.restoreColumnState();
+          }
           this.handleLocalDic();
           if (type !== false) this.handleLoadDic();
         },
@@ -8564,6 +9152,7 @@
         } else if (prop === 'filters') {
           this.crud.refreshTable();
         }
+        this.crud.saveColumnState(prop);
       },
       rowDrop: function rowDrop() {
         var _this2 = this;
@@ -8581,6 +9170,7 @@
     var _component_el_table_column = vue.resolveComponent("el-table-column");
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
     var _component_el_table = vue.resolveComponent("el-table");
+    var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_drawer = vue.resolveComponent("el-drawer");
     return _ctx.columnBox ? (vue.openBlock(), vue.createBlock(_component_el_drawer, {
       key: 0,
@@ -8590,10 +9180,10 @@
       title: _ctx.t('crud.showTitle'),
       size: _ctx.crud.isMobile ? '100%' : '40%',
       modelValue: _ctx.columnBox,
-      "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
         return _ctx.columnBox = $event;
       })
-    }, {
+    }, vue.createSlots({
       "default": vue.withCtx(function () {
         return [vue.createVNode(_component_el_table, {
           data: _ctx.data,
@@ -8639,8 +9229,24 @@
           _: 1 /* STABLE */
         }, 8 /* PROPS */, ["data", "size"])];
       }),
-      _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["append-to-body", "class", "title", "size", "modelValue"])) : vue.createCommentVNode("v-if", true);
+      _: 2 /* DYNAMIC */
+    }, [_ctx.crud.columnStateEnabled ? {
+      name: "footer",
+      fn: vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          size: _ctx.crud.size,
+          onClick: _cache[0] || (_cache[0] = function ($event) {
+            return _ctx.crud.resetColumnState();
+          })
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t('crud.column.reset')), 1 /* TEXT */)];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["size"])];
+      }),
+      key: "0"
+    } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["append-to-body", "class", "title", "size", "modelValue"])) : vue.createCommentVNode("v-if", true);
   }
 
   script$1d.render = render$1d;
@@ -9649,8 +10255,8 @@
     }
   };
 
-  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$19 = {
     name: 'form-temp',
     mixins: [slot],
@@ -9748,7 +10354,7 @@
       },
       getPlaceholder: getPlaceholder,
       getBind: function getBind(column) {
-        var params = _objectSpread$9(_objectSpread$9(_objectSpread$9({}, column), this.params), this.$uploadFun(column));
+        var params = _objectSpread$a(_objectSpread$a(_objectSpread$a({}, column), this.params), this.$uploadFun(column));
         ['value', 'className'].forEach(function (ele) {
           delete params[ele];
         });
@@ -10942,12 +11548,104 @@
   script$13.render = render$13;
   script$13.__file = "packages/element-plus/crud/column/column-default.vue";
 
+  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var STORAGE_PREFIX = 'AVUE_COLUMN_STATE:';
+  var STATE_KEYS = ['hide', 'fixed', 'filters', 'sortable', 'width'];
+  var getStorage = function getStorage() {
+    var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'localStorage';
+    if (typeof window === 'undefined') return null;
+    var storage = type === 'sessionStorage' ? window.sessionStorage : window.localStorage;
+    return storage || null;
+  };
+  var normalizeColumns = function normalizeColumns() {
+    var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    if (Array.isArray(columns)) return columns;
+    return Object.keys(columns).map(function (prop) {
+      return _objectSpread$9(_objectSpread$9({}, columns[prop]), {}, {
+        prop: columns[prop].prop || prop
+      });
+    });
+  };
+  var getColumnStateStorageKey = function getColumnStateStorageKey(key) {
+    return "".concat(STORAGE_PREFIX).concat(key);
+  };
+  var createColumnState = function createColumnState() {
+    var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    return {
+      version: 1,
+      columns: normalizeColumns(columns).filter(function (column) {
+        return column && column.prop;
+      }).map(function (column, index) {
+        var item = {
+          prop: column.prop,
+          order: index
+        };
+        STATE_KEYS.forEach(function (key) {
+          if (column[key] !== undefined) item[key] = column[key];
+        });
+        return item;
+      })
+    };
+  };
+  var applyColumnState = function applyColumnState() {
+    var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var state = arguments.length > 1 ? arguments[1] : undefined;
+    var columnList = normalizeColumns(columns);
+    if (!state || !Array.isArray(state.columns)) return columnList;
+    var stateMap = state.columns.reduce(function (map, item) {
+      if (item && item.prop) map[item.prop] = item;
+      return map;
+    }, {});
+    columnList.forEach(function (column) {
+      var item = stateMap[column.prop];
+      if (!item) return;
+      STATE_KEYS.forEach(function (key) {
+        if (item[key] !== undefined) column[key] = item[key];
+      });
+    });
+    columnList.sort(function (a, b) {
+      var _a, _b;
+      var aOrder = (_a = stateMap[a.prop]) === null || _a === void 0 ? void 0 : _a.order;
+      var bOrder = (_b = stateMap[b.prop]) === null || _b === void 0 ? void 0 : _b.order;
+      if (aOrder === undefined && bOrder === undefined) return 0;
+      if (aOrder === undefined) return 1;
+      if (bOrder === undefined) return -1;
+      return aOrder - bOrder;
+    });
+    return columnList;
+  };
+  var loadColumnState = function loadColumnState(key, storageType) {
+    var storage = getStorage(storageType);
+    if (!storage || !key) return null;
+    try {
+      var value = storage.getItem(getColumnStateStorageKey(key));
+      return value ? JSON.parse(value) : null;
+    } catch (error) {
+      return null;
+    }
+  };
+  var saveColumnState = function saveColumnState(key, state, storageType) {
+    var storage = getStorage(storageType);
+    if (!storage || !key) return;
+    try {
+      storage.setItem(getColumnStateStorageKey(key), JSON.stringify(state));
+    } catch (error) {}
+  };
+  var removeColumnState = function removeColumnState(key, storageType) {
+    var storage = getStorage(storageType);
+    if (!storage || !key) return;
+    try {
+      storage.removeItem(getColumnStateStorageKey(key));
+    } catch (error) {}
+  };
+
   function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
   function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$12 = create({
     name: "crud",
     mixins: [init("crud"), locale],
-    emits: ["update:modelValue", "tree-load", "selection-clear", "header-dragend", "expand-change", "current-row-change", "refresh-change", "selection-change", "select", "select-all", "sortable-change", "column-sortable-change", "filter", "filter-change", "sort-change", "row-dblclick", "row-click", "cell-mouse-enter", "cell-mouse-leave", "cell-click", "header-click", "tab-click", "enter", "error", "date-change", "grid-status-change", "update:search", "update:page", "search-icon-change", "search-change", "search-reset", "on-load", "current-change", "size-change", "row-contextmenu", "header-contextmenu", "cell-dblclick", "row-del", "row-save", "row-update", "change", "scroll"],
+    emits: ["update:modelValue", "tree-load", "selection-clear", "header-dragend", "expand-change", "current-row-change", "refresh-change", "selection-change", "select", "select-all", "sortable-change", "column-sortable-change", "filter", "filter-change", "sort-change", "row-dblclick", "row-click", "cell-mouse-enter", "cell-mouse-leave", "cell-click", "header-click", "tab-click", "enter", "error", "date-change", "grid-status-change", "update:search", "update:page", "search-icon-change", "search-change", "search-reset", "on-load", "current-change", "size-change", "row-contextmenu", "header-contextmenu", "cell-dblclick", "row-del", "row-save", "row-update", "change", "scroll", "column-state-change", "column-state-reset"],
     directives: {
       permission: permission
     },
@@ -10998,14 +11696,14 @@
         btnDisabledList: {},
         btnDisabled: false,
         "default": {},
-        gridShow: false
+        gridShow: false,
+        columnStateSource: null
       };
     },
     mounted: function mounted() {
       this.dataInit();
       this.getTableHeight();
       this.initFun();
-      this.initVirtualizeFun();
     },
     computed: {
       columnVirtualizeOption: function columnVirtualizeOption() {
@@ -11123,6 +11821,15 @@
       columnOption: function columnOption() {
         return getColumn(this.tableOption.column);
       },
+      columnStateKey: function columnStateKey() {
+        return this.tableOption.columnStateKey || this.tableOption.columnPersistKey || this.tableOption.tableId;
+      },
+      columnStateStorage: function columnStateStorage() {
+        return this.tableOption.columnStateStorage || "localStorage";
+      },
+      columnStateEnabled: function columnStateEnabled() {
+        return this.validData(this.tableOption.columnState, true) !== false && !this.validatenull(this.columnStateKey);
+      },
       sumColumnList: function sumColumnList() {
         return this.tableOption.sumColumnList || [];
       },
@@ -11226,12 +11933,8 @@
       }
     },
     methods: {
-      initVirtualizeFun: function initVirtualizeFun() {
-        if (!this.virtualize) return;
-        this.initTableMethods(["scrollTo", "scrollToTop", "scrollToLeft", "scrollRow"]);
-      },
       initFun: function initFun() {
-        this.initTableMethods(["scrollTo", "setScrollTop", "setScrollLeft", "columns", "doLayout", "updateKeyChildren", "toggleAllSelection", "toggleRowSelection", "toggleRowExpansion", "setCurrentRow", "clearFilter", "clearSort"]);
+        this.initTableMethods(["scrollTo", "setScrollTop", "setScrollLeft", "columns", "doLayout", "updateKeyChildren", "getHalfSelectionRows", "toggleAllSelection", "toggleRowSelection", "toggleRowExpansion", "setCurrentRow", "clearFilter", "clearSort"]);
       },
       initTableMethods: function initTableMethods(methods) {
         var _this2 = this;
@@ -11242,6 +11945,47 @@
               return tableRef[ele].apply(tableRef, arguments);
             }
           };
+        });
+      },
+      restoreColumnState: function restoreColumnState() {
+        if (!this.columnStateEnabled) return;
+        this.columnStateSource = this.deepClone(this.tableOption.column);
+        var loader = this.tableOption.columnStateLoad;
+        var state = typeof loader === "function" ? loader(this.columnStateKey, this.tableOption) : loadColumnState(this.columnStateKey, this.columnStateStorage);
+        if (!state) return;
+        this.tableOption.column = applyColumnState(this.tableOption.column, state);
+      },
+      saveColumnState: function saveColumnState$1() {
+        var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "change";
+        if (!this.columnStateEnabled) return;
+        if (this.validData(this.tableOption.columnStateAutoSave, true) === false) {
+          return;
+        }
+        var state = createColumnState(this.columnOption);
+        var saver = this.tableOption.columnStateSave;
+        if (typeof saver === "function") {
+          saver(state, this.columnStateKey, reason, this.tableOption);
+        } else {
+          saveColumnState(this.columnStateKey, state, this.columnStateStorage);
+        }
+        this.$emit("column-state-change", state, reason);
+      },
+      resetColumnState: function resetColumnState(callback) {
+        var _this3 = this;
+        if (!this.columnStateEnabled) return;
+        var remover = this.tableOption.columnStateRemove;
+        if (typeof remover === "function") {
+          remover(this.columnStateKey, this.tableOption);
+        } else {
+          removeColumnState(this.columnStateKey, this.columnStateStorage);
+        }
+        if (this.columnStateSource) {
+          this.tableOption.column = this.deepClone(this.columnStateSource);
+        }
+        this.refreshTable(function () {
+          _this3.doLayout();
+          callback && callback();
+          _this3.$emit("column-state-reset", _this3.columnStateKey);
         });
       },
       handleGridShow: function handleGridShow() {
@@ -11266,13 +12010,13 @@
         }
       },
       getTableHeight: function getTableHeight() {
-        var _this3 = this;
+        var _this4 = this;
         this.$nextTick(function () {
-          if (_this3.isAutoHeight) {
+          if (_this4.isAutoHeight) {
             var clientHeight = document.documentElement.clientHeight;
-            var calcHeight = _this3.calcHeight || 0;
-            var tableRef = _this3.$refs.table;
-            var tablePageRef = _this3.$refs.tablePage;
+            var calcHeight = _this4.calcHeight || 0;
+            var tableRef = _this4.$refs.table;
+            var tablePageRef = _this4.$refs.tablePage;
             var tableHeight = clientHeight - calcHeight;
             if (tableRef) {
               var height = tableRef.$el.offsetTop || 0;
@@ -11282,11 +12026,11 @@
               var _height = tablePageRef.$el.offsetHeight || 0;
               tableHeight -= _height;
             }
-            _this3.tableHeight = tableHeight;
+            _this4.tableHeight = tableHeight;
           } else {
-            _this3.tableHeight = _this3.tableOption.height;
+            _this4.tableHeight = _this4.tableOption.height;
           }
-          _this3.doLayout();
+          _this4.doLayout();
         });
       },
       refreshTable: function refreshTable(callback) {
@@ -11319,12 +12063,12 @@
         this.$refs.table.clearSelection();
       },
       dataInit: function dataInit() {
-        var _this4 = this;
+        var _this5 = this;
         this.list = this.data;
         //初始化序列的参数
         this.list.forEach(function (ele, index) {
-          if (ele.$cellEdit && !_this4.cascaderFormList[index]) {
-            _this4.cascaderFormList[index] = _this4.deepClone(ele);
+          if (ele.$cellEdit && !_this5.cascaderFormList[index]) {
+            _this5.cascaderFormList[index] = _this5.deepClone(ele);
           }
           ele.$cellEdit = ele.$cellEdit || false;
           ele.$index = index;
@@ -11332,6 +12076,11 @@
       },
       //拖动表头事件
       headerDragend: function headerDragend(newWidth, oldWidth, column, event) {
+        var prop = column.property || column.prop;
+        if (prop && this.objectOption[prop]) {
+          this.objectOption[prop].width = newWidth;
+          this.saveColumnState("width");
+        }
         this.$emit("header-dragend", newWidth, oldWidth, column, event);
       },
       headerSort: function headerSort(oldIndex, newIndex) {
@@ -11350,6 +12099,12 @@
         var targetRow = allColumns.splice(realOldIndex, 1)[0];
         allColumns.splice(realNewIndex, 0, targetRow);
         this.doLayout();
+        this.saveColumnState("sort");
+        this.$emit("column-sortable-change", {
+          oldIndex: oldIndex,
+          newIndex: newIndex,
+          column: targetRow
+        });
       },
       scroll: function scroll(params) {
         this.$emit("scroll", params);
@@ -11368,10 +12123,10 @@
       },
       // 选中实例
       toggleSelection: function toggleSelection(rows, checked) {
-        var _this5 = this;
+        var _this6 = this;
         if (rows) {
           rows.forEach(function (row) {
-            _this5.$refs.table.toggleRowSelection(row, checked);
+            _this6.$refs.table.toggleRowSelection(row, checked);
           });
         } else {
           this.$refs.table.clearSelection();
@@ -11468,27 +12223,27 @@
         }
       },
       rowCellUpdate: function rowCellUpdate(row, index) {
-        var _this6 = this;
+        var _this7 = this;
         var done = function done(newRow) {
           row = newRow || row;
-          _this6.btnDisabledList[index] = false;
-          _this6.btnDisabled = false;
+          _this7.btnDisabledList[index] = false;
+          _this7.btnDisabled = false;
           row.$cellEdit = false;
-          _this6.list[index] = row;
-          _this6.cascaderIndexList.splice(_this6.cascaderIndexList.indexOf(index), 1);
-          delete _this6.cascaderFormList[index];
+          _this7.list[index] = row;
+          _this7.cascaderIndexList.splice(_this7.cascaderIndexList.indexOf(index), 1);
+          delete _this7.cascaderFormList[index];
         };
         var loading = function loading() {
-          _this6.btnDisabledList[index] = false;
-          _this6.btnDisabled = false;
+          _this7.btnDisabledList[index] = false;
+          _this7.btnDisabled = false;
         };
         this.validateCellField(index).then(function () {
-          _this6.btnDisabledList[index] = true;
-          _this6.btnDisabled = true;
-          if (_this6.validatenull(row[_this6.rowKey])) {
-            _this6.$emit("row-save", row, done, loading);
+          _this7.btnDisabledList[index] = true;
+          _this7.btnDisabled = true;
+          if (_this7.validatenull(row[_this7.rowKey])) {
+            _this7.$emit("row-save", row, done, loading);
           } else {
-            _this6.$emit("row-update", row, index, done, loading);
+            _this7.$emit("row-update", row, index, done, loading);
           }
         });
       },
@@ -11502,17 +12257,17 @@
       },
       // 对部分表单字段进行校验
       validateCellForm: function validateCellForm(cb) {
-        var _this7 = this;
+        var _this8 = this;
         return new Promise(function (resolve) {
-          _this7.$refs.cellForm.validate(function (valid, msg) {
+          _this8.$refs.cellForm.validate(function (valid, msg) {
             resolve(msg);
           });
         });
       },
       validateCellField: function validateCellField(index) {
-        var _this8 = this;
+        var _this9 = this;
         return new Promise(function (resolve, reject) {
-          _this8.$refs.cellForm.validate(function (valid) {
+          _this9.$refs.cellForm.validate(function (valid) {
             var msg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var result = true;
             var list = [];
@@ -11523,7 +12278,7 @@
                 list.push(ele);
               }
             });
-            if (!_this8.validatenull(list)) _this8.$refs.cellForm.clearValidate(list);
+            if (!_this9.validatenull(list)) _this9.$refs.cellForm.clearValidate(list);
             if (result) resolve();
           });
         });
@@ -11574,11 +12329,11 @@
       },
       // 删除
       rowDel: function rowDel(row, index) {
-        var _this9 = this;
+        var _this10 = this;
         this.$emit("row-del", row, index, function () {
-          var _this9$findData = _this9.findData(row[_this9.rowKey]),
-            parentList = _this9$findData.parentList,
-            index = _this9$findData.index;
+          var _this10$findData = _this10.findData(row[_this10.rowKey]),
+            parentList = _this10$findData.parentList,
+            index = _this10$findData.index;
           if (parentList) parentList.splice(index, 1);
         });
       },
@@ -11588,7 +12343,7 @@
       },
       //合集统计逻辑
       tableSummaryMethod: function tableSummaryMethod(param) {
-        var _this10 = this;
+        var _this11 = this;
         var sumsList = {};
         var sums = [];
         var columns = param.columns,
@@ -11602,7 +12357,7 @@
           this.sumsList = sumsList;
         } else {
           columns.forEach(function (column, index) {
-            var currItem = _this10.sumColumnList.find(function (item) {
+            var currItem = _this11.sumColumnList.find(function (item) {
               return item.name === column.property;
             });
             if (currItem) {
@@ -11675,11 +12430,11 @@
         });
       },
       findData: function findData(id) {
-        var _this11 = this;
+        var _this12 = this;
         var result = {};
         var _callback = function callback(parentList, parent) {
           parentList.forEach(function (ele, index) {
-            if (ele[_this11.rowKey] == id) {
+            if (ele[_this12.rowKey] == id) {
               result = {
                 item: ele,
                 index: index,
@@ -11687,8 +12442,8 @@
                 parent: parent
               };
             }
-            if (ele[_this11.childrenKey]) {
-              _callback(ele[_this11.childrenKey], ele);
+            if (ele[_this12.childrenKey]) {
+              _callback(ele[_this12.childrenKey], ele);
             }
           });
         };
@@ -12285,7 +13040,7 @@
         var textObj = {
           date: date || dayjs().format('YYYY-MM-DD HH:mm:ss'),
           text: function () {
-            if (_typeof(text) != 'object') {
+            if (_typeof$1(text) != 'object') {
               return {
                 text: text
               };
@@ -13095,7 +13850,7 @@
     function create() {
       Object.keys(column).forEach(function (index) {
         var ele = column[index];
-        var isObject = _typeof(ele.mock) === 'object';
+        var isObject = _typeof$1(ele.mock) === 'object';
         var params = isObject ? ele.mock || {} : {};
         params.dic = dicData[ele.prop] || [];
         params.props = ele.props || {};
@@ -14530,6 +15285,10 @@
         "default": true
       },
       unlinkPanels: Boolean,
+      singlePanel: {
+        type: Boolean,
+        "default": undefined
+      },
       value: {},
       startPlaceholder: String,
       endPlaceholder: String,
@@ -14567,6 +15326,7 @@
       "cell-class-name": _ctx.cellClassName,
       editable: _ctx.editable,
       "unlink-panels": _ctx.unlinkPanels,
+      "single-panel": _ctx.singlePanel,
       "default-value": _ctx.defaultValue,
       "default-time": _ctx.defaultTime,
       "range-separator": _ctx.rangeSeparator,
@@ -14596,7 +15356,7 @@
         }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$u, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
       }),
       _: 3 /* FORWARDED */
-    }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])], 2 /* CLASS */);
+    }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "single-panel", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])], 2 /* CLASS */);
   }
 
   script$X.render = render$X;
@@ -17421,6 +18181,7 @@
   var script$O = create({
     name: "select",
     mixins: [props(), event(), locale],
+    emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached"],
     data: function data() {
       return {
         checked: false,
@@ -17458,6 +18219,7 @@
         "default": false
       },
       removeTag: Function,
+      endReached: Function,
       collapseTags: Boolean,
       collapseTagsTooltip: Boolean,
       maxCollapseTags: Number,
@@ -17570,6 +18332,19 @@
         if (this.removeTag && typeof this.removeTag === 'function') {
           this.removeTag(tagValue);
         }
+      },
+      handleEndReached: function handleEndReached() {
+        if (this.endReached && typeof this.endReached === "function") {
+          this.endReached({
+            value: this.modelValue,
+            column: this.column,
+            dic: this.dic
+          });
+        }
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+        this.$emit.apply(this, ["end-reached"].concat(args));
       }
     }
   });
@@ -17609,6 +18384,7 @@
       onBlur: _ctx.handleBlur,
       onClick: _ctx.handleClick,
       onRemoveTag: _ctx.handleremoveTag,
+      onEndReached: _ctx.handleEndReached,
       "multiple-limit": _ctx.limit,
       "allow-create": _ctx.allowCreate,
       "default-first-option": _ctx.defaultFirstOption,
@@ -17708,7 +18484,7 @@
         }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */))], 64 /* STABLE_FRAGMENT */))];
       }),
       _: 3 /* FORWARDED */
-    }, 40 /* PROPS, NEED_HYDRATION */, ["class", "modelValue", "size", "options", "props", "loading", "loading-text", "value-on-clear", "multiple", "filterable", "remote", "readonly", "no-match-text", "no-data-text", "remote-method", "popper-class", "popper-append-to-body", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "clearable", "placeholder", "onFocus", "onBlur", "onClick", "onRemoveTag", "multiple-limit", "allow-create", "default-first-option", "disabled"]);
+    }, 40 /* PROPS, NEED_HYDRATION */, ["class", "modelValue", "size", "options", "props", "loading", "loading-text", "value-on-clear", "multiple", "filterable", "remote", "readonly", "no-match-text", "no-data-text", "remote-method", "popper-class", "popper-append-to-body", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "clearable", "placeholder", "onFocus", "onBlur", "onClick", "onRemoveTag", "onEndReached", "multiple-limit", "allow-create", "default-first-option", "disabled"]);
   }
 
   script$O.render = render$O;
@@ -17723,6 +18499,16 @@
         type: String,
         "default": "light"
       },
+      virtualScroll: {
+        type: Boolean,
+        "default": undefined
+      },
+      fitInputWidth: {
+        type: Boolean,
+        "default": undefined
+      },
+      height: Number,
+      itemSize: Number,
       showCheckedStrategy: String,
       checkStrictly: {
         type: Boolean,
@@ -17831,6 +18617,10 @@
       props: _ctx.allProps,
       size: _ctx.size,
       effect: _ctx.effect,
+      "virtual-scroll": _ctx.virtualScroll,
+      "fit-input-width": _ctx.fitInputWidth,
+      height: _ctx.height,
+      "item-size": _ctx.itemSize,
       clearable: _ctx.clearableVal,
       "show-all-levels": _ctx.showAllLevels,
       filterable: _ctx.filterable,
@@ -17854,7 +18644,7 @@
         }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$B, vue.toDisplayString(data[_ctx.labelKey]), 1 /* TEXT */))];
       }),
       _: 3 /* FORWARDED */
-    }, 8 /* PROPS */, ["options", "class", "onClick", "onChange", "modelValue", "placeholder", "props", "size", "effect", "clearable", "show-all-levels", "filterable", "popper-class", "separator", "disabled", "show-checked-strategy", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "onFocus", "onBlur"]);
+    }, 8 /* PROPS */, ["options", "class", "onClick", "onChange", "modelValue", "placeholder", "props", "size", "effect", "virtual-scroll", "fit-input-width", "height", "item-size", "clearable", "show-all-levels", "filterable", "popper-class", "separator", "disabled", "show-checked-strategy", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "onFocus", "onBlur"]);
   }
 
   script$N.render = render$N;
@@ -20541,7 +21331,7 @@
       },
       isObject: function isObject() {
         var obj = this.text[0];
-        return _typeof(obj) === "object" || this.dataType == "object" || this.isJson;
+        return _typeof$1(obj) === "object" || this.dataType == "object" || this.isJson;
       },
       acceptList: function acceptList() {
         if (Array.isArray(this.accept)) {
@@ -26108,7 +26898,7 @@
   function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var components = _objectSpread$2(_objectSpread$2({}, elementComponents), dataComponents);
 
-  var version = '3.9.0';
+  var version = '3.9.2';
 
   var contextmenu = (function () {
     var dialogDom;
@@ -26209,7 +26999,9 @@
     };
   })();
 
-  var XLSX = window.XLSX;
+  var getXLSX = function getXLSX() {
+    return typeof window === 'undefined' ? undefined : window.XLSX;
+  };
   var $Export = {
     buildHeader: function buildHeader(revealList) {
       var _this = this;
@@ -26332,7 +27124,7 @@
       }
       return merges;
     },
-    aoa_to_sheet: function aoa_to_sheet(data, headerRows) {
+    aoa_to_sheet: function aoa_to_sheet(data, headerRows, xlsx) {
       var ws = {};
       var range = {
         s: {
@@ -26419,7 +27211,7 @@
               }
             };
           }
-          var cell_ref = XLSX.utils.encode_cell({
+          var cell_ref = xlsx.utils.encode_cell({
             c: C,
             r: R
           });
@@ -26434,7 +27226,7 @@
         }
       }
       if (range.s.c < 10000000) {
-        ws['!ref'] = XLSX.utils.encode_range(range);
+        ws['!ref'] = xlsx.utils.encode_range(range);
       }
       return ws;
     },
@@ -26448,7 +27240,8 @@
     },
     excel: function excel(params) {
       var _this2 = this;
-      if (!window.XLSX) {
+      var xlsx = getXLSX();
+      if (!xlsx) {
         packages.logs('xlsx');
         return;
       }
@@ -26479,7 +27272,7 @@
         var headerRows = _params.header.length;
         (_params$header = _params.header).push.apply(_params$header, _toConsumableArray(_params.data).concat([[]]));
         var merges = _this2.doMerges(_params.header);
-        var ws = _this2.aoa_to_sheet(_params.header, headerRows);
+        var ws = _this2.aoa_to_sheet(_params.header, headerRows, xlsx);
         ws['!merges'] = merges;
         ws['!freeze'] = {
           xSplit: '1',
@@ -26502,7 +27295,7 @@
           type: 'binary',
           cellStyles: true
         };
-        var wbout = XLSX.write(workbook, wopts);
+        var wbout = xlsx.write(workbook, wopts);
         var blob = new Blob([_this2.s2ab(wbout)], {
           type: 'application/octet-stream'
         });
@@ -26511,7 +27304,7 @@
       });
     },
     xlsx: function xlsx(file) {
-      if (!window.saveAs || !window.XLSX) {
+      if (typeof window === 'undefined' || !window.saveAs || !window.XLSX) {
         packages.logs('file-saver');
         packages.logs('xlsx');
         return;
@@ -26759,10 +27552,10 @@
     isInBody: function isInBody(node) {
       return node === document.body ? false : document.body.contains(node);
     },
-    isDOM: (typeof HTMLElement === "undefined" ? "undefined" : _typeof(HTMLElement)) === 'object' ? function (obj) {
+    isDOM: (typeof HTMLElement === "undefined" ? "undefined" : _typeof$1(HTMLElement)) === 'object' ? function (obj) {
       return obj instanceof HTMLElement;
     } : function (obj) {
-      return obj && _typeof(obj) === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
+      return obj && _typeof$1(obj) === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
     }
   };
 
@@ -27293,7 +28086,9 @@
     downFile: downFile,
     loadScript: loadScript,
     findObject: findObject,
-    randomId: randomId
+    randomId: randomId,
+    validateOption: validateOption,
+    warnOption: warnOption
   };
   var directive = {
     contextmenu: contextmenu
@@ -27308,6 +28103,7 @@
       formOption: (_d = opts.formOption) !== null && _d !== void 0 ? _d : {},
       crudOption: (_e = opts.crudOption) !== null && _e !== void 0 ? _e : {},
       appendToBody: validData(opts.appendToBody, true),
+      optionValidate: validData(opts.optionValidate, true),
       canvas: _objectSpread({
         text: "avuejs.com",
         fontFamily: "microsoft yahei",
@@ -27359,7 +28155,7 @@
       var ctx = safe !== null && safe !== void 0 ? safe : this;
       var result = {};
       UPLOAD_HOOK_KEYS.forEach(function (key) {
-        if (column && column.type === "upload" && !column[key]) {
+        if (!column || column.type === "upload" && !column[key]) {
           result[key] = ctx[key];
         }
       });
@@ -27372,6 +28168,33 @@
     locale: locale$1,
     install: install
   }, components), plugins);
+
+  function commonjsRequire(path) {
+  	throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+  }
+
+  var countUp_min$3 = {exports: {}};
+
+  var countUp_min$2 = countUp_min$3.exports;
+
+  var hasRequiredCountUp_min;
+
+  function requireCountUp_min () {
+  	if (hasRequiredCountUp_min) return countUp_min$3.exports;
+  	hasRequiredCountUp_min = 1;
+  	(function (module, exports$1) {
+  		!function(a,n){module.exports=n(commonjsRequire,exports$1,module);}(countUp_min$2,function(a,n,t){var e=function(a,n,t,e,i,r){function o(a){var n,t,e,i,r,o,s=a<0;if(a=Math.abs(a).toFixed(l.decimals),a+="",n=a.split("."),t=n[0],e=n.length>1?l.options.decimal+n[1]:"",l.options.useGrouping){for(i="",r=0,o=t.length;r<o;++r)0!==r&&r%3===0&&(i=l.options.separator+i),i=t[o-r-1]+i;t=i;}return l.options.numerals.length&&(t=t.replace(/[0-9]/g,function(a){return l.options.numerals[+a]}),e=e.replace(/[0-9]/g,function(a){return l.options.numerals[+a]})),(s?"-":"")+l.options.prefix+t+e+l.options.suffix}function s(a,n,t,e){return t*(-Math.pow(2,-10*a/e)+1)*1024/1023+n}function u(a){return "number"==typeof a&&!isNaN(a)}var l=this;if(l.version=function(){return "1.9.3"},l.options={useEasing:true,useGrouping:true,separator:",",decimal:".",easingFn:s,formattingFn:o,prefix:"",suffix:"",numerals:[]},r&&"object"==typeof r)for(var m in l.options)r.hasOwnProperty(m)&&null!==r[m]&&(l.options[m]=r[m]);""===l.options.separator?l.options.useGrouping=false:l.options.separator=""+l.options.separator;for(var d=0,c=["webkit","moz","ms","o"],f=0;f<c.length&&!window.requestAnimationFrame;++f)window.requestAnimationFrame=window[c[f]+"RequestAnimationFrame"],window.cancelAnimationFrame=window[c[f]+"CancelAnimationFrame"]||window[c[f]+"CancelRequestAnimationFrame"];window.requestAnimationFrame||(window.requestAnimationFrame=function(a,n){var t=(new Date).getTime(),e=Math.max(0,16-(t-d)),i=window.setTimeout(function(){a(t+e);},e);return d=t+e,i}),window.cancelAnimationFrame||(window.cancelAnimationFrame=function(a){clearTimeout(a);}),l.initialize=function(){return !!l.initialized||(l.error="",l.d="string"==typeof a?document.getElementById(a):a,l.d?(l.startVal=Number(n),l.endVal=Number(t),u(l.startVal)&&u(l.endVal)?(l.decimals=Math.max(0,e||0),l.dec=Math.pow(10,l.decimals),l.duration=1e3*Number(i)||2e3,l.countDown=l.startVal>l.endVal,l.frameVal=l.startVal,l.initialized=true,true):(l.error="[CountUp] startVal ("+n+") or endVal ("+t+") is not a number",false)):(l.error="[CountUp] target is null or undefined",false))},l.printValue=function(a){var n=l.options.formattingFn(a);"INPUT"===l.d.tagName?this.d.value=n:"text"===l.d.tagName||"tspan"===l.d.tagName?this.d.textContent=n:this.d.innerHTML=n;},l.count=function(a){l.startTime||(l.startTime=a),l.timestamp=a;var n=a-l.startTime;l.remaining=l.duration-n,l.options.useEasing?l.countDown?l.frameVal=l.startVal-l.options.easingFn(n,0,l.startVal-l.endVal,l.duration):l.frameVal=l.options.easingFn(n,l.startVal,l.endVal-l.startVal,l.duration):l.countDown?l.frameVal=l.startVal-(l.startVal-l.endVal)*(n/l.duration):l.frameVal=l.startVal+(l.endVal-l.startVal)*(n/l.duration),l.countDown?l.frameVal=l.frameVal<l.endVal?l.endVal:l.frameVal:l.frameVal=l.frameVal>l.endVal?l.endVal:l.frameVal,l.frameVal=Math.round(l.frameVal*l.dec)/l.dec,l.printValue(l.frameVal),n<l.duration?l.rAF=requestAnimationFrame(l.count):l.callback&&l.callback();},l.start=function(a){l.initialize()&&(l.callback=a,l.rAF=requestAnimationFrame(l.count));},l.pauseResume=function(){l.paused?(l.paused=false,delete l.startTime,l.duration=l.remaining,l.startVal=l.frameVal,requestAnimationFrame(l.count)):(l.paused=true,cancelAnimationFrame(l.rAF));},l.reset=function(){l.paused=false,delete l.startTime,l.initialized=false,l.initialize()&&(cancelAnimationFrame(l.rAF),l.printValue(l.startVal));},l.update=function(a){if(l.initialize()){if(a=Number(a),!u(a))return void(l.error="[CountUp] update() - new endVal is not a number: "+a);l.error="",a!==l.frameVal&&(cancelAnimationFrame(l.rAF),l.paused=false,delete l.startTime,l.startVal=l.frameVal,l.endVal=a,l.countDown=l.startVal>l.endVal,l.rAF=requestAnimationFrame(l.count));}},l.initialize()&&l.printValue(l.startVal);};return e}); 
+  	} (countUp_min$3, countUp_min$3.exports));
+  	return countUp_min$3.exports;
+  }
+
+  var countUp_minExports = requireCountUp_min();
+  var countUp_min = /*@__PURE__*/getDefaultExportFromCjs(countUp_minExports);
+
+  var countUp_min$1 = /*#__PURE__*/_mergeNamespaces({
+    __proto__: null,
+    default: countUp_min
+  }, [countUp_minExports]);
 
   return Avue;
 

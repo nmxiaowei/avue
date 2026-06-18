@@ -248,7 +248,8 @@ export default {
       filters: '过滤',
       sortable: '排序',
       index: '顺序',
-      width: '宽度'
+      width: '宽度',
+      reset: '重置列设置'
     },
     emptyText: '暂无数据',
     tipStartTitle: '当前表格已选择',

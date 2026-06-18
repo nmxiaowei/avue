@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.0 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import packages from '../../../src/core/packages.mjs';
 import locale from '../../../src/core/locale.mjs';
@@ -17,6 +17,7 @@ import './column/column.mjs';
 import './column/column-menu.mjs';
 import './column/column-default.mjs';
 import config from './config.mjs';
+import { removeColumnState, createColumnState, saveColumnState, loadColumnState, applyColumnState } from '../../../src/core/column-state.mjs';
 import { formInitVal, calcCascader } from '../../../src/core/dataformat.mjs';
 import { DIC_PROPS } from '../../../src/global/variable.mjs';
 import 'element-plus';
@@ -80,6 +81,8 @@ var script = create({
     "row-update",
     "change",
     "scroll",
+    "column-state-change",
+    "column-state-reset",
   ],
   directives: {
     permission,
@@ -124,13 +127,13 @@ var script = create({
       btnDisabled: false,
       default: {},
       gridShow: false,
+      columnStateSource: null,
     };
   },
   mounted() {
     this.dataInit();
     this.getTableHeight();
     this.initFun();
-    this.initVirtualizeFun();
   },
   computed: {
     columnVirtualizeOption() {
@@ -188,7 +191,7 @@ var script = create({
       return this.getSlotList(
         ["-error", "-label", "-type", "-form", "-header", "-desc"],
         this.$slots,
-        this.propOption
+        this.propOption,
       );
     },
     searchSlot() {
@@ -203,7 +206,7 @@ var script = create({
       return this.getSlotList(
         ["-header", "-form"],
         this.$slots,
-        this.propOption
+        this.propOption,
       ).concat(result);
     },
     calcHeight() {
@@ -257,6 +260,22 @@ var script = create({
     },
     columnOption() {
       return getColumn(this.tableOption.column);
+    },
+    columnStateKey() {
+      return (
+        this.tableOption.columnStateKey ||
+        this.tableOption.columnPersistKey ||
+        this.tableOption.tableId
+      );
+    },
+    columnStateStorage() {
+      return this.tableOption.columnStateStorage || "localStorage";
+    },
+    columnStateEnabled() {
+      return (
+        this.validData(this.tableOption.columnState, true) !== false &&
+        !this.validatenull(this.columnStateKey)
+      );
     },
     sumColumnList() {
       return this.tableOption.sumColumnList || [];
@@ -361,15 +380,6 @@ var script = create({
     },
   },
   methods: {
-    initVirtualizeFun() {
-      if (!this.virtualize) return;
-      this.initTableMethods([
-        "scrollTo",
-        "scrollToTop",
-        "scrollToLeft",
-        "scrollRow",
-      ]);
-    },
     initFun() {
       this.initTableMethods([
         "scrollTo",
@@ -378,6 +388,7 @@ var script = create({
         "columns",
         "doLayout",
         "updateKeyChildren",
+        "getHalfSelectionRows",
         "toggleAllSelection",
         "toggleRowSelection",
         "toggleRowExpansion",
@@ -394,6 +405,48 @@ var script = create({
             return tableRef[ele](...args);
           }
         };
+      });
+    },
+    restoreColumnState() {
+      if (!this.columnStateEnabled) return;
+      this.columnStateSource = this.deepClone(this.tableOption.column);
+      const loader = this.tableOption.columnStateLoad;
+      const state =
+        typeof loader === "function"
+          ? loader(this.columnStateKey, this.tableOption)
+          : loadColumnState(this.columnStateKey, this.columnStateStorage);
+      if (!state) return;
+      this.tableOption.column = applyColumnState(this.tableOption.column, state);
+    },
+    saveColumnState(reason = "change") {
+      if (!this.columnStateEnabled) return;
+      if (this.validData(this.tableOption.columnStateAutoSave, true) === false) {
+        return;
+      }
+      const state = createColumnState(this.columnOption);
+      const saver = this.tableOption.columnStateSave;
+      if (typeof saver === "function") {
+        saver(state, this.columnStateKey, reason, this.tableOption);
+      } else {
+        saveColumnState(this.columnStateKey, state, this.columnStateStorage);
+      }
+      this.$emit("column-state-change", state, reason);
+    },
+    resetColumnState(callback) {
+      if (!this.columnStateEnabled) return;
+      const remover = this.tableOption.columnStateRemove;
+      if (typeof remover === "function") {
+        remover(this.columnStateKey, this.tableOption);
+      } else {
+        removeColumnState(this.columnStateKey, this.columnStateStorage);
+      }
+      if (this.columnStateSource) {
+        this.tableOption.column = this.deepClone(this.columnStateSource);
+      }
+      this.refreshTable(() => {
+        this.doLayout();
+        callback && callback();
+        this.$emit("column-state-reset", this.columnStateKey);
       });
     },
     handleGridShow() {
@@ -456,7 +509,7 @@ var script = create({
     menuIcon(value) {
       return this.validData(
         this.tableOption[value + "Text"],
-        this.t("crud." + value)
+        this.t("crud." + value),
       );
     },
     getBtnIcon(value) {
@@ -486,11 +539,16 @@ var script = create({
     },
     //拖动表头事件
     headerDragend(newWidth, oldWidth, column, event) {
+      const prop = column.property || column.prop;
+      if (prop && this.objectOption[prop]) {
+        this.objectOption[prop].width = newWidth;
+        this.saveColumnState("width");
+      }
       this.$emit("header-dragend", newWidth, oldWidth, column, event);
     },
     headerSort(oldIndex, newIndex) {
       const visibleColumns = this.columnOption.filter(
-        (col) => col.hide !== true
+        (col) => col.hide !== true,
       );
       const oldProp = visibleColumns[oldIndex].prop;
       const newProp = visibleColumns[newIndex].prop;
@@ -500,6 +558,12 @@ var script = create({
       const targetRow = allColumns.splice(realOldIndex, 1)[0];
       allColumns.splice(realNewIndex, 0, targetRow);
       this.doLayout();
+      this.saveColumnState("sort");
+      this.$emit("column-sortable-change", {
+        oldIndex,
+        newIndex,
+        column: targetRow,
+      });
     },
     scroll(params) {
       this.$emit("scroll", params);
@@ -594,8 +658,8 @@ var script = create({
             $index: len,
           },
           formDefault,
-          row
-        )
+          row,
+        ),
       );
       this.list.push(row);
     },
@@ -748,7 +812,7 @@ var script = create({
       } else {
         columns.forEach((column, index) => {
           let currItem = this.sumColumnList.find(
-            (item) => item.name === column.property
+            (item) => item.name === column.property,
           );
           if (currItem) {
             let decimals = currItem.decimals !== void 0 ? currItem.decimals : 2;
@@ -759,7 +823,7 @@ var script = create({
                 break;
               case "avg":
                 let avgValues = data.map((item) =>
-                  Number(item[column.property])
+                  Number(item[column.property]),
                 );
                 let nowindex = 1;
                 sums[index] = avgValues.reduce((perv, curr) => {

@@ -248,7 +248,8 @@ export default {
       filters: 'Filter',
       sortable: 'Sort',
       index: 'Index',
-      width: 'Width'
+      width: 'Width',
+      reset: 'Reset Columns'
     },
     emptyText: 'No Data',
     tipStartTitle: 'Selected',
