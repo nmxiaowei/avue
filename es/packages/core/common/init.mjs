@@ -1,7 +1,8 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { loadCascaderDic, loadDic, loadLocalDic, sendDic } from '../../../src/core/dic.mjs';
 import { DIC_PROPS } from '../../../src/global/variable.mjs';
 import slot from '../../../src/core/slot.mjs';
+import { warnOption, validateOption } from '../../../src/core/option.mjs';
 
 function init (name) {
     return {
@@ -79,6 +80,14 @@ function init (name) {
                     ...this.option,
                 };
                 this.tableOption = option;
+                const componentName = name || (this.$options.name || '').replace(/^avue-/, '') || 'component';
+                if (this.$AVUE.optionValidate !== false &&
+                    option.optionValidate !== false) {
+                    warnOption(validateOption(option, componentName), componentName);
+                }
+                if (name === 'crud' && typeof this.restoreColumnState === 'function') {
+                    this.restoreColumnState();
+                }
                 this.handleLocalDic();
                 if (type !== false)
                     this.handleLoadDic();

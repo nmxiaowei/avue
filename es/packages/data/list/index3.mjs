@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, createElementVNode, toDisplayString, renderSlot, createCommentVNode, Fragment, renderList, normalizeStyle, normalizeClass, createBlock, withCtx, createTextVNode, withModifiers } from 'vue';
 
 const _hoisted_1 = { class: "data-list" };

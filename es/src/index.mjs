@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import components from './ui/index.mjs';
 import { version } from './version.mjs';
 import * as axios$1 from '../_virtual/axios.mjs';
@@ -16,6 +16,7 @@ import Print from './plugin/print/index.mjs';
 import $ImagePreview from '../packages/core/components/image-preview/index2.mjs';
 import $DialogForm from '../packages/core/components/dialog-form/index2.mjs';
 import createIcon from './icon.mjs';
+import { warnOption, validateOption } from './core/option.mjs';
 import '../packages/element-plus/count-up/index.mjs';
 import '../packages/element-plus/article/index.mjs';
 import '../packages/element-plus/crud/index.mjs';
@@ -178,6 +179,8 @@ const plugins = {
     loadScript,
     findObject,
     randomId,
+    validateOption,
+    warnOption,
 };
 const directive = {
     contextmenu,
@@ -191,6 +194,7 @@ const install = function (app, opts = {}) {
         formOption: (_d = opts.formOption) !== null && _d !== void 0 ? _d : {},
         crudOption: (_e = opts.crudOption) !== null && _e !== void 0 ? _e : {},
         appendToBody: validData(opts.appendToBody, true),
+        optionValidate: validData(opts.optionValidate, true),
         canvas: {
             text: "avuejs.com",
             fontFamily: "microsoft yahei",
@@ -243,7 +247,7 @@ const install = function (app, opts = {}) {
         const ctx = safe !== null && safe !== void 0 ? safe : this;
         const result = {};
         UPLOAD_HOOK_KEYS.forEach((key) => {
-            if (column && column.type === "upload" && !column[key]) {
+            if (!column || (column.type === "upload" && !column[key])) {
                 result[key] = ctx[key];
             }
         });
@@ -259,4 +263,4 @@ const Avue = {
     ...plugins,
 };
 
-export { $Clipboard, $DialogForm, $Export, $ImagePreview, log as $Log, Print as $Print, $Screenshot, $Watermark, dataURLtoFile, deepClone, Avue as default, downFile, findArray, findNode, findObject, install, isJson, loadScript, locale, randomId, setPx, validData, validatenull, version };
+export { $Clipboard, $DialogForm, $Export, $ImagePreview, log as $Log, Print as $Print, $Screenshot, $Watermark, dataURLtoFile, deepClone, Avue as default, downFile, findArray, findNode, findObject, install, isJson, loadScript, locale, randomId, setPx, validData, validateOption, validatenull, version, warnOption };

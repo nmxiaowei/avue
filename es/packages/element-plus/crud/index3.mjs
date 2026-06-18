@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, resolveDirective, openBlock, createElementBlock, normalizeClass, createBlock, resolveDynamicComponent, normalizeStyle, withCtx, createTextVNode, toDisplayString, createCommentVNode, createVNode, createSlots, renderSlot, normalizeProps, guardReactiveProps, renderList, createElementVNode, withDirectives } from 'vue';
 
 const _hoisted_1 = {
@@ -108,7 +108,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               class: normalizeClass({
             'avue-crud--indeterminate': _ctx.validData(
               _ctx.tableOption.indeterminate,
-              false
+              false,
             ),
           }),
               size: _ctx.size,

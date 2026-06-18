@@ -1,10 +1,11 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { resolveComponent, openBlock, createBlock, normalizeClass, withCtx, createVNode, createElementBlock, Fragment, renderList, createCommentVNode } from 'vue';
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { resolveComponent, openBlock, createBlock, normalizeClass, createSlots, withCtx, createVNode, createElementBlock, Fragment, renderList, createCommentVNode, createTextVNode, toDisplayString } from 'vue';
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_el_table_column = resolveComponent("el-table-column");
   const _component_el_checkbox = resolveComponent("el-checkbox");
   const _component_el_table = resolveComponent("el-table");
+  const _component_el_button = resolveComponent("el-button");
   const _component_el_drawer = resolveComponent("el-drawer");
 
   return (_ctx.columnBox)
@@ -16,8 +17,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         title: _ctx.t('crud.showTitle'),
         size: _ctx.crud.isMobile?'100%':'40%',
         modelValue: _ctx.columnBox,
-        "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => ((_ctx.columnBox) = $event))
-      }, {
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => ((_ctx.columnBox) = $event))
+      }, createSlots({
         default: withCtx(() => [
           createVNode(_component_el_table, {
             data: _ctx.data,
@@ -63,8 +64,26 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             _: 1 /* STABLE */
           }, 8 /* PROPS */, ["data", "size"])
         ]),
-        _: 1 /* STABLE */
-      }, 8 /* PROPS */, ["append-to-body", "class", "title", "size", "modelValue"]))
+        _: 2 /* DYNAMIC */
+      }, [
+        (_ctx.crud.columnStateEnabled)
+          ? {
+              name: "footer",
+              fn: withCtx(() => [
+                createVNode(_component_el_button, {
+                  size: _ctx.crud.size,
+                  onClick: _cache[0] || (_cache[0] = $event => (_ctx.crud.resetColumnState()))
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode(toDisplayString(_ctx.t('crud.column.reset')), 1 /* TEXT */)
+                  ]),
+                  _: 1 /* STABLE */
+                }, 8 /* PROPS */, ["size"])
+              ]),
+              key: "0"
+            }
+          : undefined
+      ]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["append-to-body", "class", "title", "size", "modelValue"]))
     : createCommentVNode("v-if", true)
 }
 

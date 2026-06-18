@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../../src/core/create.mjs';
 import locale from '../../../../src/core/locale.mjs';
 import '../../../../src/plugin/logs/index.mjs';
@@ -50,6 +50,7 @@ var script = create({
       } else if (prop === 'filters') {
         this.crud.refreshTable();
       }
+      this.crud.saveColumnState(prop);
     },
     rowDrop () {
       const el = this.$refs.table.$el.querySelectorAll(config.dropRowClass)[0];

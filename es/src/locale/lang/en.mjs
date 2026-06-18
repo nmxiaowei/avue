@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.1 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 var enLang = {
     common: {
         submitBtn: 'Confirm',
@@ -249,7 +249,8 @@ var enLang = {
             filters: 'Filter',
             sortable: 'Sort',
             index: 'Index',
-            width: 'Width'
+            width: 'Width',
+            reset: 'Reset Columns'
         },
         emptyText: 'No Data',
         tipStartTitle: 'Selected',
