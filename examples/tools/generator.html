@@ -75,6 +75,50 @@
         justify-content: space-between;
         gap: 8px;
       }
+      .quick-types {
+        margin-bottom: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .field-row--active > td {
+        background: #eff6ff !important;
+      }
+      .property-panel {
+        margin-top: 14px;
+        padding: 12px;
+        border: 1px solid #dfe5ef;
+        border-radius: 8px;
+        background: #f8fafc;
+      }
+      .property-title {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-weight: 700;
+      }
+      .property-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .switch-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .dic-list {
+        margin-top: 10px;
+      }
+      .dic-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 46px;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
       .code-toolbar {
         height: 50px;
         padding: 8px 12px;
@@ -135,6 +179,11 @@
         .setting-row {
           grid-template-columns: 1fr;
         }
+        .property-grid,
+        .switch-grid,
+        .dic-row {
+          grid-template-columns: 1fr;
+        }
         .preview-surface {
           min-width: 0;
         }
@@ -147,6 +196,7 @@
         <div class="tool-title">Avue 页面代码生成器</div>
         <div>
           <el-button size="small" @click="loadSample">示例字段</el-button>
+          <el-button size="small" @click="copyOption">复制 option</el-button>
           <el-button size="small" type="primary" @click="copyCode"
             >复制当前代码</el-button
           >
@@ -183,7 +233,22 @@
             <strong>字段配置</strong>
             <el-button size="small" @click="addField">新增字段</el-button>
           </div>
-          <el-table :data="fields" border size="small">
+          <div class="quick-types">
+            <el-button
+              v-for="item in quickTypes"
+              :key="item.type"
+              size="small"
+              @click="addTypedField(item)"
+            >{{ item.label }}</el-button>
+          </div>
+          <el-table
+            :data="fields"
+            border
+            size="small"
+            highlight-current-row
+            :row-class-name="getFieldRowClass"
+            @current-change="selectField"
+          >
             <el-table-column label="标签" min-width="120">
               <template #default="{ row }">
                 <el-input class="compact-input" v-model="row.label"></el-input>
@@ -227,14 +292,73 @@
                 <el-checkbox v-model="row.required"></el-checkbox>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="86" align="center">
+            <el-table-column label="操作" width="132" align="center">
               <template #default="{ $index }">
-                <el-button link type="danger" @click="removeField($index)"
-                  >删除</el-button
-                >
+                <el-button link @click="moveField($index, -1)">上移</el-button>
+                <el-button link @click="moveField($index, 1)">下移</el-button>
+                <el-button link type="danger" @click="removeField($index)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
+          <div class="property-panel" v-if="selectedField">
+            <div class="property-title">
+              <span>字段属性</span>
+              <el-button size="small" @click="cloneField">复制字段</el-button>
+            </div>
+            <div class="property-grid">
+              <el-input v-model="selectedField.label" placeholder="字段标签"></el-input>
+              <el-input v-model="selectedField.prop" placeholder="字段 prop"></el-input>
+              <el-select v-model="selectedField.type" placeholder="字段类型">
+                <el-option
+                  v-for="type in fieldTypes"
+                  :key="type"
+                  :label="type || 'input'"
+                  :value="type"
+                ></el-option>
+              </el-select>
+              <el-input-number
+                v-model="selectedField.span"
+                :min="1"
+                :max="24"
+                controls-position="right"
+                style="width: 100%"
+              ></el-input-number>
+              <el-input v-model="selectedField.width" placeholder="表格列宽，如 160"></el-input>
+              <el-input-number
+                v-model="selectedField.searchSpan"
+                :min="1"
+                :max="24"
+                controls-position="right"
+                style="width: 100%"
+                placeholder="搜索栅格"
+              ></el-input-number>
+            </div>
+            <div class="switch-grid">
+              <el-checkbox v-model="selectedField.search">搜索</el-checkbox>
+              <el-checkbox v-model="selectedField.required">必填</el-checkbox>
+              <el-checkbox v-model="selectedField.hide">隐藏列</el-checkbox>
+              <el-checkbox v-model="selectedField.disabled">禁用</el-checkbox>
+              <el-checkbox v-model="selectedField.overHidden">溢出提示</el-checkbox>
+              <el-checkbox v-model="selectedField.sortable">排序</el-checkbox>
+              <el-checkbox v-model="selectedField.filters">筛选</el-checkbox>
+              <el-checkbox v-model="selectedField.multiple">多选</el-checkbox>
+            </div>
+            <div class="dic-list" v-if="hasDic(selectedField)">
+              <div class="property-title">
+                <span>字典项</span>
+                <el-button size="small" @click="addDicItem(selectedField)">新增字典</el-button>
+              </div>
+              <div
+                class="dic-row"
+                v-for="(item, index) in selectedField.dicData"
+                :key="index"
+              >
+                <el-input v-model="item.label" placeholder="label"></el-input>
+                <el-input v-model="item.value" placeholder="value"></el-input>
+                <el-button link type="danger" @click="removeDicItem(selectedField, index)">删除</el-button>
+              </div>
+            </div>
+          </div>
         </section>
         <section class="code-panel">
           <div class="code-toolbar">
@@ -336,6 +460,17 @@
             moduleName: "user",
             apiPath: "@/api/system/user",
             rowKey: "id",
+            selectedIndex: 0,
+            quickTypes: [
+              { label: "文本", type: "" },
+              { label: "数字", type: "number" },
+              { label: "下拉", type: "select" },
+              { label: "单选", type: "radio" },
+              { label: "多选", type: "checkbox" },
+              { label: "日期", type: "date" },
+              { label: "开关", type: "switch" },
+              { label: "上传", type: "upload" },
+            ],
             fieldTypes: [
               "",
               "textarea",
@@ -349,6 +484,10 @@
               "switch",
               "upload",
               "phone",
+              "input-tag",
+              "tree",
+              "rate",
+              "slider",
             ],
             fields: JSON.parse(JSON.stringify(fieldSample)),
           };
@@ -357,6 +496,9 @@
           this.resetPreview();
         },
         computed: {
+          selectedField() {
+            return this.fields[this.selectedIndex] || null;
+          },
           cleanFields() {
             return this.fields
               .filter((field) => field.prop && field.label)
@@ -366,8 +508,24 @@
                 type: field.type,
                 span: field.span || 12,
                 search: !!field.search,
+                searchSpan: field.searchSpan,
                 required: !!field.required,
+                width: field.width,
+                hide: !!field.hide,
+                disabled: !!field.disabled,
+                overHidden: !!field.overHidden,
+                sortable: !!field.sortable,
+                filters: !!field.filters,
+                multiple: !!field.multiple,
+                dicData: Array.isArray(field.dicData)
+                  ? field.dicData.filter(
+                      (item) => item.label !== "" && item.value !== "",
+                    )
+                  : undefined,
               }));
+          },
+          optionJson() {
+            return JSON.stringify(this.optionObject, null, 2);
           },
           optionObject() {
             return {
@@ -545,6 +703,53 @@
         },
         methods: {
           noop() {},
+          createField(type = "", label) {
+            const index = this.fields.length + 1;
+            const field = {
+              label: label || "字段" + index,
+              prop: "field" + index,
+              type,
+              span: type === "textarea" || type === "upload" ? 24 : 12,
+              search: false,
+              required: false,
+              hide: false,
+              disabled: false,
+              overHidden: false,
+              sortable: false,
+              filters: false,
+              multiple: type === "checkbox",
+            };
+            if (["select", "radio", "checkbox"].includes(type)) {
+              field.dicData = [
+                { label: "选项一", value: 1 },
+                { label: "选项二", value: 0 },
+              ];
+            }
+            return field;
+          },
+          hasDic(field) {
+            return (
+              field &&
+              ["select", "radio", "checkbox", "tree", "cascader"].includes(
+                field.type,
+              )
+            );
+          },
+          ensureDic(field) {
+            if (!field.dicData) {
+              field.dicData = [
+                { label: "选项一", value: 1 },
+                { label: "选项二", value: 0 },
+              ];
+            }
+          },
+          selectField(row) {
+            const index = this.fields.indexOf(row);
+            if (index !== -1) this.selectedIndex = index;
+          },
+          getFieldRowClass({ rowIndex }) {
+            return rowIndex === this.selectedIndex ? "field-row--active" : "";
+          },
           resetPreview() {
             const form = {};
             this.cleanFields.forEach((field, index) => {
@@ -555,23 +760,52 @@
           },
           loadSample() {
             this.fields = JSON.parse(JSON.stringify(fieldSample));
+            this.selectedIndex = 0;
+            this.$nextTick(() => this.resetPreview());
+          },
+          addTypedField(item) {
+            const field = this.createField(item.type, item.label);
+            this.fields.push(field);
+            this.selectedIndex = this.fields.length - 1;
             this.$nextTick(() => this.resetPreview());
           },
           addField() {
-            const index = this.fields.length + 1;
-            this.fields.push({
-              label: "字段" + index,
-              prop: "field" + index,
-              type: "",
-              span: 12,
-              search: false,
-              required: false,
-            });
+            this.fields.push(this.createField());
+            this.selectedIndex = this.fields.length - 1;
             this.$nextTick(() => this.resetPreview());
           },
           removeField(index) {
             this.fields.splice(index, 1);
+            this.selectedIndex = Math.max(0, Math.min(this.selectedIndex, this.fields.length - 1));
             this.$nextTick(() => this.resetPreview());
+          },
+          moveField(index, step) {
+            const target = index + step;
+            if (target < 0 || target >= this.fields.length) return;
+            const field = this.fields.splice(index, 1)[0];
+            this.fields.splice(target, 0, field);
+            this.selectedIndex = target;
+            this.$nextTick(() => this.resetPreview());
+          },
+          cloneField() {
+            if (!this.selectedField) return;
+            const field = JSON.parse(JSON.stringify(this.selectedField));
+            field.label = field.label + "副本";
+            field.prop = field.prop + "Copy";
+            this.fields.splice(this.selectedIndex + 1, 0, field);
+            this.selectedIndex += 1;
+            this.$nextTick(() => this.resetPreview());
+          },
+          addDicItem(field) {
+            this.ensureDic(field);
+            field.dicData.push({
+              label: "新选项",
+              value: field.dicData.length + 1,
+            });
+          },
+          removeDicItem(field, index) {
+            if (!field.dicData) return;
+            field.dicData.splice(index, 1);
           },
           toColumn(field) {
             const column = {
@@ -581,7 +815,17 @@
             };
             if (field.type) column.type = field.type;
             if (field.search) column.search = true;
-            if (["select", "radio", "checkbox"].includes(field.type)) {
+            if (field.searchSpan) column.searchSpan = field.searchSpan;
+            if (field.width) column.width = field.width;
+            if (field.hide) column.hide = true;
+            if (field.disabled) column.disabled = true;
+            if (field.overHidden) column.overHidden = true;
+            if (field.sortable) column.sortable = true;
+            if (field.filters) column.filters = true;
+            if (field.multiple) column.multiple = true;
+            if (Array.isArray(field.dicData) && field.dicData.length > 0) {
+              column.dicData = field.dicData;
+            } else if (["select", "radio", "checkbox"].includes(field.type)) {
               column.dicData = [
                 { label: "启用", value: 1 },
                 { label: "禁用", value: 0 },
@@ -636,14 +880,20 @@
             if (field.type === "textarea") return "示例备注 " + index;
             return (field.label || field.prop || "字段") + index;
           },
+          copyOption() {
+            this.copyText(this.optionJson);
+          },
           copyCode() {
+            this.copyText(this.activeCode);
+          },
+          copyText(text) {
             const done = () => this.$message.success("已复制");
             if (navigator.clipboard) {
-              navigator.clipboard.writeText(this.activeCode).then(done);
+              navigator.clipboard.writeText(text).then(done);
               return;
             }
             const textarea = document.createElement("textarea");
-            textarea.value = this.activeCode;
+            textarea.value = text;
             document.body.appendChild(textarea);
             textarea.select();
             document.execCommand("copy");
