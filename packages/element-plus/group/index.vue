@@ -15,8 +15,10 @@
         <template #title
                   v-else-if="(label || icon)&&header">
           <div :class="b('header')">
-            <i :class="[icon,b('icon')]"
-               v-if="icon"></i>
+            <icon-temp v-if="icon"
+                       :class="b('icon')"
+                       :text="icon"
+                       :size="20"></icon-temp>
             <h1 :class="b('title')"
                 v-if="label">{{label}}</h1>
           </div>
@@ -29,8 +31,12 @@
 
 <script>
 import create from "core/create";
+import iconTemp from "common/components/icon/index";
 export default create({
   name: "group",
+  components: {
+    iconTemp
+  },
   empit: ['change'],
   data () {
     return {

@@ -58,7 +58,16 @@
                         v-if="getSlotName(tabs, 'H', $slots)"
                       ></slot>
                       <template v-else>
-                        <i :class="tabs.icon">&nbsp;</i>
+                        <icon-temp
+                          v-if="tabs.icon"
+                          :text="tabs.icon"
+                          :size="14"
+                          :icon-style="{
+                            fontSize: '14px',
+                            width: '14px',
+                            height: '14px',
+                          }"
+                        ></icon-temp>&nbsp;
                         {{ tabs.label }}
                       </template>
                     </span>
@@ -243,6 +252,7 @@ import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
 import formTemp from "common/components/form/index";
+import iconTemp from "common/components/icon/index";
 import formMenu from "./menu";
 import { DIC_PROPS } from "global/variable";
 import {
@@ -278,6 +288,7 @@ export default create({
   components: {
     formTemp,
     formMenu,
+    iconTemp,
   },
   data() {
     return {

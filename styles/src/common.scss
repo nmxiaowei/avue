@@ -206,12 +206,12 @@ body {
 }
 
 .avue-icon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  svg,
-  i {
+  >svg,
+  >.avue-icon__font {
     width: 20px;
     height: 20px;
     font-size: 20px;
@@ -219,8 +219,8 @@ body {
 
   &--small {
 
-    svg,
-    i {
+    >svg,
+    >.avue-icon__font {
       font-size: 15px;
       width: 15px;
       height: 15px;

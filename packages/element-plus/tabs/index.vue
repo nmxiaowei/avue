@@ -15,11 +15,10 @@
                 :active="active === index + ''">
           </slot>
           <template v-else>
-            <template v-if="column.icon">
-              <el-icon>
-                <component :is="column.icon" />
-              </el-icon>&nbsp;
-            </template>
+            <icon-temp v-if="column.icon"
+                       :text="column.icon"
+                       :size="14"
+                       :icon-style="{fontSize: '14px', width: '14px', height: '14px'}"></icon-temp>&nbsp;
             {{column.label}}
           </template>
         </template>
@@ -31,8 +30,12 @@
 
 <script>
 import create from "core/create";
+import iconTemp from "common/components/icon/index";
 export default create({
   name: "tabs",
+  components: {
+    iconTemp
+  },
   props: {
     option: {
       type: Object,
