@@ -162,15 +162,18 @@ export default create({
       form: {}
     }
   },
+  beforeUnmount () {
+    this.clearTimer();
+  },
   methods: {
     onSend () {
       const callback = () => {
+        this.clearTimer();
         this.nowtime = this.time;
         this.check = setInterval(() => {
           this.nowtime--
-          if (this.nowtime === 0) {
-            clearInterval(this.check);
-            this.check = null;
+          if (this.nowtime <= 0) {
+            this.clearTimer();
           }
         }, 1000)
       }
@@ -179,6 +182,12 @@ export default create({
     },
     onRefresh () {
       this.$emit('refresh');
+    },
+    clearTimer () {
+      if (this.check) {
+        clearInterval(this.check);
+        this.check = null;
+      }
     },
     onSubmit () {
       const onCover = () => {

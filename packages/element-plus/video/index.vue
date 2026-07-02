@@ -22,6 +22,7 @@ import create from "core/create";
 import RecordVideo from 'plugin/video/'
 export default create({
   name: 'video',
+  emits: ['data-change', 'video-error'],
   props: {
     background: {
       type: String
@@ -52,37 +53,73 @@ export default create({
   },
   data () {
     return {
-      videoObj: null
+      videoObj: null,
+      reader: null,
+      videoUnmounted: false
     }
   },
   mounted () {
+    this.videoUnmounted = false;
     this.init();
+  },
+  beforeUnmount () {
+    this.videoUnmounted = true;
+    if (this.reader) {
+      this.reader.onloadend = null;
+      if (this.reader.readyState === FileReader.LOADING) {
+        this.reader.abort();
+      }
+      this.reader = null;
+    }
+    if (this.videoObj) {
+      if (this.videoObj.mediaRecorder) {
+        this.videoObj.mediaRecorder.removeEventListener('stop', this.getData, false);
+      }
+      this.videoObj.destroy();
+      this.videoObj = null;
+    }
   },
   methods: {
     init () {
-      this.videoObj = new RecordVideo(this.$refs.main);
-      const videoPromise = this.videoObj.init();
+      const videoObj = new RecordVideo(this.$refs.main);
+      this.videoObj = videoObj;
+      const videoPromise = videoObj.init();
       videoPromise
         .then(() => {
-          this.videoObj.mediaRecorder.addEventListener('stop', this.getData, false);
+          if (
+            this.videoUnmounted ||
+            this.videoObj !== videoObj ||
+            !videoObj.mediaRecorder
+          ) {
+            return;
+          }
+          videoObj.mediaRecorder.addEventListener('stop', this.getData, false);
         })
+        .catch((error) => {
+          if (!this.videoUnmounted && this.videoObj === videoObj) {
+            this.$emit('video-error', error);
+          }
+        });
     },
     startRecord () {
-      this.videoObj.startRecord()
+      if (this.videoObj) this.videoObj.startRecord()
     },
     stopRecord () {
-      this.videoObj.stopRecord();
+      if (this.videoObj) this.videoObj.stopRecord();
     },
     getData () {
+      if (this.videoUnmounted || !this.videoObj) return;
       const blob = new Blob(this.videoObj.chunks, {
         type: 'video/mp4'
       });
       const reader = new FileReader();
+      this.reader = reader;
+      reader.onloadend = () => {
+        if (this.videoUnmounted || this.reader !== reader) return;
+        this.$emit('data-change', reader.result)
+        this.reader = null;
+      };
       reader.readAsDataURL(blob);
-      reader.addEventListener('loadend', () => {
-        var video_base64 = reader.result;
-        this.$emit('data-change', video_base64)
-      });
     }
   }
 })

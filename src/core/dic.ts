@@ -27,134 +27,127 @@ function getResData(data: any, props: Record<string, any>, dataType: any) {
   return res;
 }
 
-export const loadCascaderDic = (columnOption: Record<string, any>[], safe: any) => {
-  return new Promise<Record<string, any>>((resolve) => {
-    const list: Promise<any>[] = [];
-    const result: Record<string, any> = {};
-    const columnList = columnOption.filter((ele) => ele.parentProp);
-    safe.data.forEach((ele: any, index: number) => {
-      if (!safe.cascaderDIC[index]) safe.cascaderDIC[index] = {};
-      columnList.forEach((column) => {
-        if (column.hide !== true && column.dicFlag !== false) {
-          list.push(
-            new Promise((resolve) => {
-              if (ele[column.parentProp]) {
-                sendDic(
-                  {
-                    url: column.dicUrl,
-                    props: column.props,
-                    method: column.dicMethod,
-                    headers: column.dicHeaders,
-                    formatter: column.dicFormatter,
-                    query: column.dicQuery,
-                    dataType: column.dataType,
-                    form: ele,
-                    value: ele[column.parentProp],
-                  },
-                  safe
-                ).then((res) => {
-                  const obj = {
-                    prop: column.prop,
-                    data: res,
-                    index,
-                  };
-                  safe.cascaderDIC[index][obj.prop] = obj.data;
-                  resolve(obj);
-                });
-              } else {
-                const obj = {
-                  prop: column.prop,
-                  data: [],
-                  index,
-                };
-                safe.cascaderDIC[index][obj.prop] = obj.data;
-                resolve(obj);
-              }
-            })
-          );
-        }
-      });
-    });
-    Promise.all(list).then((data: any[]) => {
-      data.forEach((ele) => {
-        if (!result[ele.index]) result[ele.index] = {};
-        result[ele.index][ele.prop] = ele.data;
-      });
-      resolve(result);
-    });
-  });
-};
+export const loadCascaderDic = async (
+  columnOption: Record<string, any>[] = [],
+  safe: any,
+) => {
+  const columnList = columnOption.filter((ele) => ele.parentProp);
+  const tasks: Promise<{ prop: string; data: any[]; index: number }>[] = [];
 
-export const loadDic = (option: Record<string, any>, safe: any) => {
-  return new Promise<Record<string, any>>((resolve) => {
-    const list: Promise<any>[] = [];
-    const result: Record<string, any> = {};
-    let notList: string[] = [];
-    const nameList: string[] = [];
-    const column = option.column || [];
-    column.forEach((ele: any) => {
-      const url = ele.dicUrl;
-      const prop = ele.prop;
-      const parentProp = ele.parentProp;
-      notList = notList.concat(ele.cascader || []);
-      const flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
-      if (url && !parentProp && !flag) {
-        list.push(
-          new Promise((resolve) => {
-            sendDic(
-              {
-                url,
-                name: prop,
-                method: ele.dicMethod,
-                headers: ele.dicHeaders,
-                formatter: ele.dicFormatter,
-                props: ele.props,
-                dataType: ele.dataType,
-                query: ele.dicQuery,
-              },
-              safe
-            ).then((res) => {
-              safe.DIC[prop] = res;
-              resolve(res);
-            });
-          })
-        );
-        nameList.push(prop);
+  (safe.data || []).forEach((form: any, index: number) => {
+    columnList.forEach((column) => {
+      if (column.hide === true || column.dicFlag === false) return;
+
+      const value = form[column.parentProp];
+      if (validatenull(value)) {
+        tasks.push(Promise.resolve({ prop: column.prop, data: [], index }));
+        return;
       }
-    });
-    Promise.all(list).then((res: any[]) => {
-      nameList.forEach((ele, index) => {
-        result[ele] = res[index];
-      });
-      resolve(result);
+
+      tasks.push(
+        sendDic(
+          {
+            url: column.dicUrl,
+            props: column.props,
+            method: column.dicMethod,
+            headers: column.dicHeaders,
+            formatter: column.dicFormatter,
+            query: column.dicQuery,
+            dataType: column.dataType,
+            form,
+            value,
+          },
+          safe,
+        ).then((data) => ({ prop: column.prop, data, index })),
+      );
     });
   });
+
+  const result: Record<string, any> = {};
+  const data = await Promise.all(tasks);
+  data.forEach((item) => {
+    if (!result[item.index]) result[item.index] = {};
+    result[item.index][item.prop] = item.data;
+  });
+  return result;
 };
 
-export const loadLocalDic = (option: Record<string, any>, safe: any) => {
+export const loadDic = async (option: Record<string, any>, safe: any) => {
+  let notList: string[] = [];
+  const tasks: Promise<{ prop: string; data: any[] }>[] = [];
+  const column = option.column || [];
+
+  column.forEach((ele: any) => {
+    const url = ele.dicUrl;
+    const prop = ele.prop;
+    const parentProp = ele.parentProp;
+    notList = notList.concat(ele.cascader || []);
+    const flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
+    if (!url || parentProp || flag) return;
+
+    tasks.push(
+      sendDic(
+        {
+          url,
+          name: prop,
+          method: ele.dicMethod,
+          headers: ele.dicHeaders,
+          formatter: ele.dicFormatter,
+          props: ele.props,
+          dataType: ele.dataType,
+          query: ele.dicQuery,
+        },
+        safe,
+      ).then((data) => ({ prop, data })),
+    );
+  });
+
+  const result: Record<string, any> = {};
+  const data = await Promise.all(tasks);
+  data.forEach((item) => {
+    result[item.prop] = item.data;
+  });
+  return result;
+};
+
+export const loadLocalDic = (option: Record<string, any>) => {
   const columnData: Record<string, any> = {};
   const optionData = option.dicData || {};
-  option.column.forEach((ele: any) => {
+  const tasks: Promise<{ prop: string; data: any[] }>[] = [];
+
+  (option.column || []).forEach((ele: any) => {
     const dic = ele.dicData;
     const prop = ele.prop;
     if (dic instanceof Function) {
-      const dicResult = dic(ele);
-      if (dicResult instanceof Promise) {
-        dicResult.then((res: any[]) => {
-          safe.DIC[prop] = getDataType(res, ele.props, ele.dataType);
-        });
-      } else {
-        columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
+      try {
+        const dicResult = dic(ele);
+        if (dicResult && typeof dicResult.then === 'function') {
+          tasks.push(
+            Promise.resolve(dicResult).then((res: any[]) => ({
+              prop,
+              data: getDataType(res, ele.props, ele.dataType),
+            })),
+          );
+        } else {
+          columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
+        }
+      } catch (error) {
+        tasks.push(Promise.reject(error));
       }
     } else if (dic instanceof Array) {
       columnData[prop] = getDataType(dic, ele.props, ele.dataType);
     }
   });
-  const result = { ...optionData, ...columnData };
-  Object.keys(result).forEach((ele) => {
-    safe.DIC[ele] = result[ele];
-  });
-  return result;
+
+  return {
+    data: { ...optionData, ...columnData },
+    pending: Promise.all(tasks).then((items) => {
+      return items.reduce((result, item) => {
+        result[item.prop] = item.data;
+        return result;
+      }, {} as Record<string, any>);
+    }),
+  };
 };
 
 export const sendDic = (params: Record<string, any>, safe: any) => {
@@ -176,6 +169,8 @@ export const sendDic = (params: Record<string, any>, safe: any) => {
   query = column.dicQuery || query || {};
   formatter = column.dicFormatter || formatter;
   props = column.props || props || {};
+  if (!url) return Promise.resolve([]);
+
   const list = url.match(/[^\{\}]+(?=\})/g) || [];
   list.forEach((ele: string) => {
     let result = ele === key ? value : form[ele];
@@ -197,9 +192,26 @@ export const sendDic = (params: Record<string, any>, safe: any) => {
     return result;
   };
 
-  return new Promise<any[]>((resolve, reject) => {
-    if (!url) resolve([]);
-    const callback = (res: any) => {
+  const getData = () => {
+    const data = getKey(query);
+    if (method == 'get') return { params: data };
+    return { data };
+  };
+
+  return Promise.resolve()
+    .then(() =>
+      safe.$axios(
+        Object.assign(
+          {
+            url,
+            method,
+            headers: getKey(headers),
+          },
+          getData(),
+        ),
+      ),
+    )
+    .then((res: any) => {
       let currentList: any[] = [];
       res = res.data || {};
       if (typeof formatter === 'function') {
@@ -207,29 +219,6 @@ export const sendDic = (params: Record<string, any>, safe: any) => {
       } else {
         currentList = getResData(res, props, dataType);
       }
-      resolve(currentList);
-    };
-    const getData = () => {
-      const data = getKey(query);
-      if (method == 'get') return { params: data };
-      return { data };
-    };
-    safe
-      .$axios(
-        Object.assign(
-          {
-            url,
-            method,
-            headers: getKey(headers),
-          },
-          getData()
-        )
-      )
-      .then(function (res: any) {
-        callback(res);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
+      return currentList;
+    });
 };

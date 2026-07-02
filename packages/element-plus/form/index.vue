@@ -262,7 +262,6 @@ import {
   calcCount,
   calcCascader,
 } from "core/dataformat";
-import { sendDic } from "core/dic";
 import {
   getColumn,
   filterParams,
@@ -736,14 +735,15 @@ export default create({
             return;
           }
           // 根据当前节点值获取下一个节点的字典
-          sendDic(
+          this.requestDic(
             {
               column: columnNext,
               value: value,
               form: this.form,
             },
-            this
+            `form-cascader:${columnNextProp}`
           ).then((res) => {
+            if (!res) return;
             //首次加载的放入队列记录
             if (!this.formList.includes(str)) this.formList.push(str);
             // 修改字典

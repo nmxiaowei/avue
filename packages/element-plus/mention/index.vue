@@ -42,11 +42,14 @@ import { sendDic } from "core/dic";
 export default create({
   name: "mention",
   mixins: [props(), event()],
+  emits: ["dic-error"],
   data () {
     return {
       created: false,
       loading: false,
       netDic: [],
+      remoteRequestId: 0,
+      remoteUnmounted: false,
     };
   },
   props: {
@@ -75,6 +78,10 @@ export default create({
   },
   created () { },
   mounted () { },
+  beforeUnmount () {
+    this.remoteUnmounted = true;
+    this.remoteRequestId++;
+  },
   computed: {
     options () {
       return this.netDic.map(ele => {
@@ -103,14 +110,31 @@ export default create({
       }
     },
     handleRemoteMethod (query) {
-      this.loading = true
-      sendDic({
-        column: this.column,
-        value: query,
-      }, this).then(res => {
-        this.loading = false;
-        this.netDic = res;
-      });
+      const requestId = ++this.remoteRequestId;
+      this.loading = true;
+      sendDic(
+        {
+          column: this.column,
+          value: query,
+        },
+        this
+      )
+        .then(res => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.netDic = res;
+        })
+        .catch(error => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.$emit("dic-error", {
+            type: "mention-remote",
+            error,
+          });
+        })
+        .finally(() => {
+          if (!this.remoteUnmounted && requestId === this.remoteRequestId) {
+            this.loading = false;
+          }
+        });
     }
   }
 });
