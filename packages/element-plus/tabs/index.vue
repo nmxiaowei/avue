@@ -6,10 +6,22 @@
       <el-tab-pane :name="index+''"
                    :disabled="column.disabled"
                    v-for="(column,index) in columnOption"
-                   :key="index">
+                   :key="column.prop">
         <template #label>
-          <i :class="column.icon"></i>&nbsp;
-          {{column.label}}
+          <slot v-if="$slots.label"
+                name="label"
+                :column="column"
+                :index="index"
+                :active="active === index + ''">
+          </slot>
+          <template v-else>
+            <template v-if="column.icon">
+              <el-icon>
+                <component :is="column.icon" />
+              </el-icon>&nbsp;
+            </template>
+            {{column.label}}
+          </template>
         </template>
       </el-tab-pane>
     </el-tabs>
