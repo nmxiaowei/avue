@@ -594,13 +594,15 @@ export default create({
     restoreColumnState() {
       if (!this.columnStateEnabled) return;
       this.columnStateSource = this.deepClone(this.tableOption.column);
+      const columns = this.deepClone(this.columnStateSource);
       const loader = this.tableOption.columnStateLoad;
       const state =
         typeof loader === "function"
           ? loader(this.columnStateKey, this.tableOption)
           : loadColumnState(this.columnStateKey, this.columnStateStorage);
-      if (!state) return;
-      this.tableOption.column = applyColumnState(this.tableOption.column, state);
+      this.tableOption.column = state
+        ? applyColumnState(columns, state)
+        : columns;
     },
     saveColumnState(reason = "change") {
       if (!this.columnStateEnabled) return;
