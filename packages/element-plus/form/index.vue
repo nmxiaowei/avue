@@ -167,6 +167,9 @@
                     :disabled="validTip(column)"
                     :content="validData(column.tip, getPlaceholder(column))"
                     :placement="column.tipPlacement"
+                    :trigger-keys="
+                      validTip(column) ? undefined : ['Enter', 'NumpadEnter']
+                    "
                   >
                     <div>
                       <slot
