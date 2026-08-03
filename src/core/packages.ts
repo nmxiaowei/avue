@@ -38,9 +38,9 @@ const list: Record<string, { url: string; title: string; github?: string }> = {
     github: 'https://github.com/eligrey/FileSaver.js',
   },
   xlsx: {
-    url: 'https://cdn.staticfile.org/xlsx/0.18.2/xlsx.full.min.js',
-    title: '需要引入 Excel 操作包',
-    github: 'https://github.com/protobi/js-xlsx',
+    url: 'https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js',
+    title: '需要引入支持样式的 Excel 操作包',
+    github: 'https://github.com/gitbrent/xlsx-js-style',
   },
   mock: {
     url: 'https://cdn.staticfile.org/Mock.js/1.0.1-beta3/mock-min.js',

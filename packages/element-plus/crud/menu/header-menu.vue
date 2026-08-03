@@ -39,57 +39,79 @@
                  :size="crud.size"></avue-date>
       <slot name="menu-right"
             :size="crud.size"></slot>
-      <el-button :icon="crud.getBtnIcon('excelBtn')"
-                 :class="b('excelBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="rowExcel"
-                 v-permission="crud.getPermission('excelBtn')"
-                 v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
-      </el-button>
-      <el-button :icon="crud.getBtnIcon('printBtn')"
-                 :class="b('printBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="rowPrint"
-                 v-permission="crud.getPermission('printBtn')"
-                 v-if="validData(crud.tableOption.printBtn,config.printBtn)">
-      </el-button>
-      <el-button :icon="crud.getBtnIcon('refreshBtn')"
-                 :class="b('refreshBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="crud.refreshChange"
-                 v-permission="crud.getPermission('refreshBtn')"
-                 v-if="validData(crud.tableOption.refreshBtn,config.refreshBtn)"></el-button>
-      <el-button :icon="crud.getBtnIcon('columnBtn')"
-                 :class="b('columnBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="crud.$refs.dialogColumn.handleShow()"
-                 v-permission="crud.getPermission('columnBtn')"
-                 v-if="validData(crud.tableOption.columnBtn,config.columnBtn)"></el-button>
-      <el-button :icon="crud.getBtnIcon('searchBtn')"
-                 :class="b('searchBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="crud.$refs.headerSearch.handleSearchShow()"
-                 v-if="(crud.$refs.headerSearch || {}).searchFlag&&validData(crud.tableOption.searchShowBtn,true)"></el-button>
-      <el-button :icon="crud.getBtnIcon('filterBtn')"
-                 :class="b('filterBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="crud.$refs.dialogFilter.handleShow()"
-                 v-permission="crud.getPermission('filterBtn')"
-                 v-if="validData(crud.tableOption.filterBtn,config.filterBtn)"></el-button>
+      <el-tooltip :content="t('crud.excelBtn')"
+                  placement="top"
+                  v-if="validData(crud.tableOption.excelBtn,config.excelBtn)">
+        <el-button :icon="crud.getBtnIcon('excelBtn')"
+                   :class="b('excelBtn')"
+                   circle
+                   :size="crud.size"
+                   @click="rowExcel"
+                   v-permission="crud.getPermission('excelBtn')">
+        </el-button>
+      </el-tooltip>
+      <el-tooltip :content="t('crud.printBtn')"
+                  placement="top"
+                  v-if="validData(crud.tableOption.printBtn,config.printBtn)">
+        <el-button :icon="crud.getBtnIcon('printBtn')"
+                   :class="b('printBtn')"
+                   circle
+                   :size="crud.size"
+                   :loading="printLoading"
+                   @click="rowPrint"
+                   v-permission="crud.getPermission('printBtn')">
+        </el-button>
+      </el-tooltip>
+      <el-tooltip :content="t('crud.refreshBtn')"
+                  placement="top"
+                  v-if="validData(crud.tableOption.refreshBtn,config.refreshBtn)">
+        <el-button :icon="crud.getBtnIcon('refreshBtn')"
+                   :class="b('refreshBtn')"
+                   circle
+                   :size="crud.size"
+                   @click="crud.refreshChange"
+                   v-permission="crud.getPermission('refreshBtn')"></el-button>
+      </el-tooltip>
+      <el-tooltip :content="t('crud.columnBtn')"
+                  placement="top"
+                  v-if="validData(crud.tableOption.columnBtn,config.columnBtn)">
+        <el-button :icon="crud.getBtnIcon('columnBtn')"
+                   :class="b('columnBtn')"
+                   circle
+                   :size="crud.size"
+                   @click="crud.$refs.dialogColumn.handleShow()"
+                   v-permission="crud.getPermission('columnBtn')"></el-button>
+      </el-tooltip>
+      <el-tooltip :content="t('crud.searchBtn')"
+                  placement="top"
+                  v-if="(crud.$refs.headerSearch || {}).searchFlag&&validData(crud.tableOption.searchShowBtn,true)">
+        <el-button :icon="crud.getBtnIcon('searchBtn')"
+                   :class="b('searchBtn')"
+                   circle
+                   :size="crud.size"
+                   @click="crud.$refs.headerSearch.handleSearchShow()"></el-button>
+      </el-tooltip>
+      <el-tooltip :content="t('crud.filterBtn')"
+                  placement="top"
+                  v-if="validData(crud.tableOption.filterBtn,config.filterBtn)">
+        <el-button :icon="crud.getBtnIcon('filterBtn')"
+                   :class="b('filterBtn')"
+                   circle
+                   :size="crud.size"
+                   @click="crud.$refs.dialogFilter.handleShow()"
+                   v-permission="crud.getPermission('filterBtn')"></el-button>
+      </el-tooltip>
 
-      <el-button :icon="crud.getBtnIcon('gridBtn')"
-                 :class="b('gridBtn')"
-                 circle
-                 :size="crud.size"
-                 @click="crud.handleGridShow()"
-                 v-permission="crud.getPermission('gridBtn')"
-                 v-if="validData(crud.tableOption.gridBtn,config.gridBtn)"></el-button>
+      <el-tooltip :content="t('crud.gridBtn')"
+                  placement="top"
+                  v-if="validData(crud.tableOption.gridBtn,config.gridBtn)">
+        <el-button :icon="crud.getBtnIcon('gridBtn')"
+                   :class="b('gridBtn')"
+                   circle
+                   :size="crud.size"
+                   @click="crud.handleGridShow()"
+                   v-permission="crud.getPermission('gridBtn')"></el-button>
+      </el-tooltip>
 
     </div>
   </div>
@@ -112,6 +134,7 @@ export default create({
   data () {
     return {
       dateCreate: false,
+      printLoading: false,
       shortcuts: [
         {
           text: this.t('date.t'),
@@ -168,7 +191,18 @@ export default create({
       this.crud.$refs.dialogExcel.handleShow()
     },
     rowPrint () {
-      this.$Print(this.crud.$refs.table)
+      if (this.printLoading) return
+      this.printLoading = true
+      try {
+        this.$Print(this.crud.$refs.table, {
+          title: this.crud.tableOption.title,
+          hiddenColumnLabels: [this.crud.tableOption.menuTitle || this.t('crud.menu')],
+          onReady: () => { this.printLoading = false },
+          onError: () => { this.printLoading = false }
+        })
+      } catch {
+        this.printLoading = false
+      }
     }
   }
 });
