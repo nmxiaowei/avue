@@ -175,6 +175,7 @@ export interface AvueComponentExports {
   InputIcon: Component;
   InputMap: Component;
   InputNumber: Component;
+  InputOtp: Component;
   InputTable: Component;
   InputTag: Component;
   InputTree: Component;
@@ -278,6 +279,7 @@ export const InputCron: Component;
 export const InputIcon: Component;
 export const InputMap: Component;
 export const InputNumber: Component;
+export const InputOtp: Component;
 export const InputTable: Component;
 export const InputTag: Component;
 export const InputTree: Component;

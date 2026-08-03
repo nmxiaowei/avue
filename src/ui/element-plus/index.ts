@@ -24,6 +24,7 @@ import InputIcon from 'packages/element-plus/input-icon';
 import InputTag from 'packages/element-plus/input-tag';
 import InputTable from 'packages/element-plus/input-table';
 import InputCron from 'packages/element-plus/input-cron';
+import InputOtp from 'packages/element-plus/input-otp';
 import Mention from 'packages/element-plus/mention';
 import Verifys from 'packages/element-plus/verify';
 import Switchs from 'packages/element-plus/switch';
@@ -69,6 +70,7 @@ export {
   InputTag,
   InputTable,
   InputCron,
+  InputOtp,
   Mention,
   Verifys,
   Switchs,
@@ -114,6 +116,7 @@ const elementComponents = {
   InputTag,
   InputTable,
   InputCron,
+  InputOtp,
   Mention,
   Switchs,
   Rate,

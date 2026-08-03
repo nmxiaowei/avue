@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avue Input OTP 示例</title>
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f5f7fa;
+      }
+
+      .demo-card {
+        max-width: 920px;
+        margin: 0 auto 20px;
+        padding: 24px;
+        background: #fff;
+        border-radius: 8px;
+      }
+
+      .demo-card h2 {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <section class="demo-card">
+        <h2>独立组件</h2>
+        <avue-input-otp
+          v-model="otp"
+          inputmode="numeric"
+          :validator="onlyAllowNumber"
+          @finish="handleFinish"
+        ></avue-input-otp>
+        <p>当前值：{{ otp }}</p>
+      </section>
+
+      <section class="demo-card">
+        <h2>Form column</h2>
+        <avue-form v-model="form" :option="formOption"></avue-form>
+      </section>
+
+      <section class="demo-card">
+        <h2>CRUD cell column</h2>
+        <avue-crud :data="crudData" :option="crudOption"></avue-crud>
+      </section>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            otp: "123",
+            form: {
+              otp: "",
+            },
+            formOption: {
+              submitBtn: false,
+              emptyBtn: false,
+              column: [
+                {
+                  label: "登录验证码",
+                  prop: "otp",
+                  type: "otp",
+                  otpType: "filled",
+                  length: 4,
+                  inputmode: "numeric",
+                  validator: (value) => /^\d$/.test(value),
+                },
+              ],
+            },
+            crudData: [
+              {
+                id: 1,
+                name: "演示账号",
+                otp: "2468",
+              },
+            ],
+            crudOption: {
+              border: true,
+              column: [
+                {
+                  label: "账号",
+                  prop: "name",
+                },
+                {
+                  label: "一次性密码",
+                  prop: "otp",
+                  type: "otp",
+                  otpType: "underlined",
+                  length: 4,
+                  mask: true,
+                  cell: true,
+                  inputmode: "numeric",
+                  validator: (value) => /^\d$/.test(value),
+                },
+              ],
+            },
+          };
+        },
+        methods: {
+          onlyAllowNumber(value) {
+            return /^\d$/.test(value);
+          },
+          handleFinish({ value }) {
+            ElementPlus.ElMessage.success(`验证码已输入完成：${value}`);
+          },
+        },
+      });
+
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>
