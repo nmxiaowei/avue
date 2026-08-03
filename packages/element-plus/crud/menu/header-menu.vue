@@ -79,7 +79,7 @@
                    :class="b('columnBtn')"
                    circle
                    :size="crud.size"
-                   @click="crud.$refs.dialogColumn.handleShow()"
+                   @click="crud.$refs.dialogColumn.handleShow($event.currentTarget)"
                    v-permission="crud.getPermission('columnBtn')"></el-button>
       </el-tooltip>
       <el-tooltip :content="t('crud.searchBtn')"

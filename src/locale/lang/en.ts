@@ -249,7 +249,13 @@ export default {
       sortable: 'Sort',
       index: 'Index',
       width: 'Width',
-      reset: 'Reset Columns'
+      reset: 'Reset Columns',
+      all: 'All',
+      restore: 'Restore Defaults',
+      cancel: 'Cancel',
+      confirm: 'Confirm',
+      fixedLeft: 'Fix to Left',
+      fixedRight: 'Fix to Right'
     },
     emptyText: 'No Data',
     tipStartTitle: 'Selected',
