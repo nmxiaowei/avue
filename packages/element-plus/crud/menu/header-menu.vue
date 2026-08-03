@@ -87,6 +87,7 @@
                   v-if="(crud.$refs.headerSearch || {}).searchFlag&&validData(crud.tableOption.searchShowBtn,true)">
         <el-button :icon="crud.getBtnIcon('searchBtn')"
                    :class="b('searchBtn')"
+                   :type="crud.searchShow ? 'primary' : undefined"
                    circle
                    :size="crud.size"
                    @click="crud.$refs.headerSearch.handleSearchShow()"></el-button>
@@ -107,6 +108,7 @@
                   v-if="validData(crud.tableOption.gridBtn,config.gridBtn)">
         <el-button :icon="crud.getBtnIcon('gridBtn')"
                    :class="b('gridBtn')"
+                   :type="crud.gridShow ? 'primary' : undefined"
                    circle
                    :size="crud.size"
                    @click="crud.handleGridShow()"

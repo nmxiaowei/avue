@@ -310,6 +310,7 @@ export default create({
       btnDisabledList: {},
       btnDisabled: false,
       default: {},
+      searchShow: true,
       gridShow: false,
       columnStateSource: null,
     };
