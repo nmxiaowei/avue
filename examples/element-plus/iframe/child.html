@@ -31,23 +31,86 @@
         background: #ecf5ff;
         border-radius: 4px;
       }
+
+      .dialog-mask {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(0, 0, 0, 0.45);
+      }
+
+      .dialog-mask.is-visible {
+        display: flex;
+      }
+
+      .dialog {
+        width: min(420px, 100%);
+        padding: 24px;
+        text-align: left;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      }
+
+      .dialog h3 {
+        margin: 0 0 12px;
+      }
+
+      .dialog p {
+        margin: 0 0 20px;
+        color: #606266;
+      }
+
+      .dialog button {
+        padding: 8px 14px;
+        color: #fff;
+        cursor: pointer;
+        background: #409eff;
+        border: 0;
+        border-radius: 4px;
+      }
     </style>
   </head>
 
   <body>
     <main class="content">
       <h2>嵌入页面已加载</h2>
-      <p>此页会向父页面发送 ready 和 ping 回调消息。</p>
+      <p>父页面可以通过消息通知此页展示弹窗。</p>
       <code>window.parent.postMessage(...)</code>
     </main>
 
+    <div id="dialogMask" class="dialog-mask" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <section class="dialog">
+        <h3 id="dialogTitle"></h3>
+        <p id="dialogMessage"></p>
+        <button id="closeDialog" type="button">知道了</button>
+      </section>
+    </div>
+
     <script>
+      const dialogMask = document.getElementById("dialogMask");
+      const dialogTitle = document.getElementById("dialogTitle");
+      const dialogMessage = document.getElementById("dialogMessage");
+
+      const closeDialog = () => {
+        dialogMask.classList.remove("is-visible");
+        window.parent.postMessage({ type: "dialog-closed" }, "*");
+      };
+
+      document.getElementById("closeDialog").addEventListener("click", closeDialog);
+
       window.parent.postMessage({ type: "ready", message: "iframe 页面已就绪" }, "*");
 
       window.addEventListener("message", (event) => {
-        if (event.data && event.data.type === "ping") {
+        if (event.data && event.data.type === "open-dialog") {
+          dialogTitle.textContent = event.data.title || "通知";
+          dialogMessage.textContent = event.data.message || "父页面发起了弹窗请求。";
+          dialogMask.classList.add("is-visible");
           window.parent.postMessage(
-            { type: "pong", receivedAt: Date.now(), request: event.data },
+            { type: "dialog-opened", openedAt: Date.now(), request: event.data },
             "*",
           );
         }

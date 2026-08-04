@@ -49,7 +49,7 @@
     <div id="app">
       <div class="actions">
         <el-button type="primary" @click="reload">重新加载</el-button>
-        <el-button @click="sendMessage">发送消息</el-button>
+        <el-button @click="openChildDialog">通知子页面弹窗</el-button>
         <el-button @click="focus">聚焦 iframe</el-button>
       </div>
 
@@ -83,9 +83,11 @@
           reload() {
             this.$refs.iframePage.reload();
           },
-          sendMessage() {
+          openChildDialog() {
             this.$refs.iframePage.postMessage({
-              type: "ping",
+              type: "open-dialog",
+              title: "来自父页面的通知",
+              message: "父页面已通过 postMessage 要求子页面展示弹窗。",
               time: Date.now(),
             });
           },
