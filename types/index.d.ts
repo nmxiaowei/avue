@@ -184,6 +184,7 @@ export interface AvueComponentExports {
   Mention: Component;
   Radio: Component;
   Rate: Component;
+  QRCode: Component;
   Search: Component;
   Select: Component;
   Sign: Component;
@@ -288,6 +289,7 @@ export const Login: Component;
 export const Mention: Component;
 export const Radio: Component;
 export const Rate: Component;
+export const QRCode: Component;
 export const Search: Component;
 export const Select: Component;
 export const Sign: Component;

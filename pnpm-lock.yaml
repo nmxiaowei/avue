@@ -29,6 +29,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.23
+      qrcode-generator:
+        specifier: ^2.0.4
+        version: 2.0.4
       vue:
         specifier: '>=3.2.0'
         version: 3.5.27(typescript@5.9.3)
@@ -1785,6 +1788,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  qrcode-generator@2.0.4:
+    resolution: {integrity: sha512-mZSiP6RnbHl4xL2Ap5HfkjLnmxfKcPWpWe/c+5XxCuetEenqmNFf1FH/ftXPCtFG5/TDobjsjz6sSNL0Sr8Z9g==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -3846,6 +3852,8 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   punycode@2.3.1: {}
+
+  qrcode-generator@2.0.4: {}
 
   queue-microtask@1.2.3: {}
 

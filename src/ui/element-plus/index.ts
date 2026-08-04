@@ -41,6 +41,7 @@ import Video from 'packages/element-plus/video';
 import Login from 'packages/element-plus/login';
 import Arrays from 'packages/element-plus/array';
 import textEllipsis from 'packages/element-plus/text-ellipsis';
+import QRCode from 'packages/element-plus/qrcode';
 
 export {
   Arrays,
@@ -86,6 +87,7 @@ export {
   Video,
   Login,
   textEllipsis,
+  QRCode,
 };
 
 const elementComponents = {
@@ -132,6 +134,7 @@ const elementComponents = {
   textEllipsis,
   Sign,
   Login,
+  QRCode,
 };
 
 export default elementComponents;

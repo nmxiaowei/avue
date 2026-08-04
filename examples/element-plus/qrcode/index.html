@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avue QRCode 示例</title>
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        color: #303133;
+        background: #f5f7fa;
+      }
+
+      .demo-card {
+        max-width: 960px;
+        margin: 0 auto 20px;
+        padding: 24px;
+        background: #fff;
+        border-radius: 8px;
+      }
+
+      .demo-card h2 {
+        margin-top: 0;
+        font-size: 18px;
+      }
+
+      .demo-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .demo-input {
+        width: 360px;
+        max-width: 100%;
+      }
+
+      .status-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <section class="demo-card">
+        <h2>基本使用</h2>
+        <div class="demo-row">
+          <avue-qrcode :value="text"></avue-qrcode>
+          <el-input
+            v-model="text"
+            class="demo-input"
+            placeholder="请输入二维码内容"
+            :maxlength="60"
+            show-word-limit
+          ></el-input>
+        </div>
+      </section>
+
+      <section class="demo-card">
+        <h2>不同状态</h2>
+        <div class="demo-row">
+          <div v-for="status in statuses" :key="status" class="status-item">
+            <avue-qrcode
+              value="https://www.antdv.com/"
+              :status="status"
+              @refresh="handleRefresh"
+            ></avue-qrcode>
+            <span>{{ status }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-card">
+        <h2>尺寸、纠错等级和 Icon</h2>
+        <div class="demo-row">
+          <el-button-group>
+            <el-button @click="decrease">small</el-button>
+            <el-button @click="increase">large</el-button>
+          </el-button-group>
+          <el-radio-group v-model="errorLevel">
+            <el-radio-button v-for="level in levels" :key="level" :label="level">
+              {{ level }}
+            </el-radio-button>
+          </el-radio-group>
+          <avue-qrcode
+            :size="size"
+            :icon-size="size / 4"
+            :error-level="errorLevel"
+            value="https://www.antdv.com/"
+            :icon="icon"
+          ></avue-qrcode>
+        </div>
+      </section>
+
+      <section class="demo-card">
+        <h2>渲染类型、颜色和下载</h2>
+        <div class="demo-row">
+          <avue-qrcode
+            ref="downloadQrcode"
+            value="https://www.antdv.com/"
+            type="canvas"
+            color="#409eff"
+            bg-color="#ecf5ff"
+          ></avue-qrcode>
+          <avue-qrcode
+            value="https://www.antdv.com/"
+            type="svg"
+            color="#67c23a"
+            bg-color="#f0f9eb"
+          ></avue-qrcode>
+          <el-button type="primary" @click="download">下载 Canvas 二维码</el-button>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            text: "https://www.antdv.com/",
+            statuses: ["active", "loading", "expired", "scanned"],
+            levels: ["L", "M", "Q", "H"],
+            errorLevel: "M",
+            size: 160,
+            icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23409eff'/%3E%3Cpath d='M18 18h28v28H18z' fill='white'/%3E%3Cpath d='M26 26h12v12H26z' fill='%23409eff'/%3E%3C/svg%3E",
+          };
+        },
+        methods: {
+          decrease() {
+            this.size = Math.max(48, this.size - 10);
+          },
+          increase() {
+            this.size = Math.min(300, this.size + 10);
+          },
+          handleRefresh() {
+            ElementPlus.ElMessage.success("已触发 refresh 事件");
+          },
+          async download() {
+            const url = await this.$refs.downloadQrcode.toDataURL();
+            const link = document.createElement("a");
+            link.download = "QRCode.png";
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          },
+        },
+      });
+
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

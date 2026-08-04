@@ -141,7 +141,7 @@ const option = ref({
 
 - 表单与表格：`avue-form`、`avue-crud`、`avue-search`
 - 输入组件：`avue-input`、`avue-select`、`avue-input-tree`、`avue-input-table`
-- 业务组件：`avue-login`、`avue-tabs`、`avue-tree`、`avue-chat`、`avue-flow`
+- 业务组件：`avue-login`、`avue-tabs`、`avue-tree`、`avue-chat`、`avue-flow`、`avue-qrcode`
 - 数据展示：`avue-card`、`avue-comment`、`avue-count-up`、`avue-article`
 - 插件能力：导出、打印、截图、剪贴板、水印、日志、图片预览、弹窗表单
 
