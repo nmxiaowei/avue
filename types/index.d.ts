@@ -169,6 +169,7 @@ export interface AvueComponentExports {
   Flow: Component;
   Form: Component;
   Group: Component;
+  Iframe: Component;
   Input: Component;
   InputColor: Component;
   InputCron: Component;
@@ -274,6 +275,7 @@ export const Dynamic: Component;
 export const Flow: Component;
 export const Form: Component;
 export const Group: Component;
+export const Iframe: Component;
 export const Input: Component;
 export const InputColor: Component;
 export const InputCron: Component;

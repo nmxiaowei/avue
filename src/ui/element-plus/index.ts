@@ -42,6 +42,7 @@ import Login from 'packages/element-plus/login';
 import Arrays from 'packages/element-plus/array';
 import textEllipsis from 'packages/element-plus/text-ellipsis';
 import QRCode from 'packages/element-plus/qrcode';
+import Iframe from 'packages/element-plus/iframe';
 
 export {
   Arrays,
@@ -88,6 +89,7 @@ export {
   Login,
   textEllipsis,
   QRCode,
+  Iframe,
 };
 
 const elementComponents = {
@@ -135,6 +137,7 @@ const elementComponents = {
   Sign,
   Login,
   QRCode,
+  Iframe,
 };
 
 export default elementComponents;

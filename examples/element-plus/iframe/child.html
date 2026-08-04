@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iframe 子页面</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: grid;
+        min-height: 100vh;
+        margin: 0;
+        place-items: center;
+        color: #303133;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #fff;
+      }
+
+      .content {
+        text-align: center;
+      }
+
+      code {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 6px 10px;
+        color: #409eff;
+        background: #ecf5ff;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="content">
+      <h2>嵌入页面已加载</h2>
+      <p>此页会向父页面发送 ready 和 ping 回调消息。</p>
+      <code>window.parent.postMessage(...)</code>
+    </main>
+
+    <script>
+      window.parent.postMessage({ type: "ready", message: "iframe 页面已就绪" }, "*");
+
+      window.addEventListener("message", (event) => {
+        if (event.data && event.data.type === "ping") {
+          window.parent.postMessage(
+            { type: "pong", receivedAt: Date.now(), request: event.data },
+            "*",
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
