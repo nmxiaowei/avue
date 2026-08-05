@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avue Iframe 示例</title>
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f5f7fa;
+      }
+
+      .iframe-page {
+        height: 560px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .message-log {
+        box-sizing: border-box;
+        min-height: 88px;
+        margin-top: 16px;
+        padding: 12px;
+        overflow: auto;
+        color: #606266;
+        font: 13px/1.6 Consolas, monospace;
+        white-space: pre-wrap;
+        background: #fff;
+        border: 1px solid #ebeef5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="actions">
+        <el-button type="primary" @click="reload">重新加载</el-button>
+        <el-button @click="openChildDialog">通知子页面弹窗</el-button>
+        <el-button @click="focus">聚焦 iframe</el-button>
+      </div>
+
+      <main class="iframe-page">
+        <avue-iframe
+          ref="iframePage"
+          src="./child.html"
+          :timeout="10000"
+          @before-load="writeLog('before-load')"
+          @load="writeLog('load')"
+          @error="writeLog('error')"
+          @timeout="writeLog('timeout')"
+          @message="handleMessage"
+        ></avue-iframe>
+      </main>
+
+      <pre class="message-log">{{ logs.join('\n') }}</pre>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            logs: [],
+          };
+        },
+        methods: {
+          writeLog(message) {
+            this.logs.unshift(`[${new Date().toLocaleTimeString()}] ${message}`);
+          },
+          reload() {
+            this.$refs.iframePage.reload();
+          },
+          openChildDialog() {
+            this.$refs.iframePage.postMessage({
+              type: "open-dialog",
+              title: "来自父页面的通知",
+              message: "父页面已通过 postMessage 要求子页面展示弹窗。",
+              time: Date.now(),
+            });
+          },
+          focus() {
+            this.$refs.iframePage.focus();
+          },
+          handleMessage({ data, origin }) {
+            this.writeLog(`message from ${origin || "local"}: ${JSON.stringify(data)}`);
+          },
+        },
+      });
+
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

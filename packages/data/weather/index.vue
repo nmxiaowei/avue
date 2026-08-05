@@ -15,7 +15,8 @@
           </div>
           <div class="data-weather__body">
             <div class="data-weather__icon">
-              <i :class="getWeatherIcon(item.weather)" :style="{fontSize: '48px'}"></i>
+              <icon-temp :text="getWeatherIcon(item.weather)"
+                         :size="48"></icon-temp>
             </div>
             <div class="data-weather__temp">
               <span class="data-weather__temp-value">{{ item.temp }}</span>
@@ -37,6 +38,7 @@
 
 <script>
 import create from "core/create";
+import iconTemp from "common/components/icon/index";
 import locale from "core/locale";
 
 const WEATHER_GRADIENTS = {
@@ -57,6 +59,9 @@ const WEATHER_ICONS = {
 
 export default create({
   name: "data-weather",
+  components: {
+    iconTemp
+  },
   mixins: [locale],
   data() {
     return {};

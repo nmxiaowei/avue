@@ -30,18 +30,29 @@
         </template>
       </header-menu>
       <div
-        class="avue-crud__tip"
+        :class="b('tip')"
         v-if="validData(tableOption.tip, config.tip) && tableOption.selection"
+        role="status"
+        aria-live="polite"
       >
-        <span class="avue-crud__tip-name">
-          {{ t("crud.tipStartTitle") }}
-          <span class="avue-crud__tip-count">{{ selectLen }}</span>
-          {{ t("crud.tipEndTitle") }}
-        </span>
-        <span class="avue-crud__tip-button" @click="clearSelection">{{
-          t("crud.emptyBtn")
-        }}</span>
-        <slot name="tip"></slot>
+        <div :class="b('tip-content')">
+          <el-icon-circle-check-filled :class="b('tip-icon')" aria-hidden="true" />
+          <span :class="b('tip-name')">{{ t("crud.tipStartTitle") }}</span>
+          <span :class="b('tip-count')">{{ selectLen }}</span>
+          <span :class="b('tip-suffix')">{{ t("crud.tipEndTitle") }}</span>
+        </div>
+        <div :class="b('tip-actions')">
+          <slot name="tip" :selection="tableSelect" :count="selectLen"></slot>
+          <el-button
+            v-if="selectLen > 0"
+            text
+            type="primary"
+            :icon="getBtnIcon('emptyBtn')"
+            :class="b('tip-button')"
+            :size="size"
+            @click="clearSelection"
+          >{{ t("crud.emptyBtn") }}</el-button>
+        </div>
       </div>
       <slot name="body"></slot>
       <el-form :model="cellForm" @validate="handleValidate" ref="cellForm">
@@ -310,6 +321,7 @@ export default create({
       btnDisabledList: {},
       btnDisabled: false,
       default: {},
+      searchShow: true,
       gridShow: false,
       columnStateSource: null,
     };
@@ -594,13 +606,15 @@ export default create({
     restoreColumnState() {
       if (!this.columnStateEnabled) return;
       this.columnStateSource = this.deepClone(this.tableOption.column);
+      const columns = this.deepClone(this.columnStateSource);
       const loader = this.tableOption.columnStateLoad;
       const state =
         typeof loader === "function"
           ? loader(this.columnStateKey, this.tableOption)
           : loadColumnState(this.columnStateKey, this.columnStateStorage);
-      if (!state) return;
-      this.tableOption.column = applyColumnState(this.tableOption.column, state);
+      this.tableOption.column = state
+        ? applyColumnState(columns, state)
+        : columns;
     },
     saveColumnState(reason = "change") {
       if (!this.columnStateEnabled) return;

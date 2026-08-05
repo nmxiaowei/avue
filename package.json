@@ -1,6 +1,6 @@
 {
   "name": "@smallwei/avue",
-  "version": "3.9.2",
+  "version": "3.9.3",
   "description": "A Magic Configurable Web Framework",
   "main": "lib/index.js",
   "module": "es/index.mjs",
@@ -72,7 +72,8 @@
     "countup.js": "^1.9.3",
     "dayjs": "^1.10.4",
     "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "qrcode-generator": "^2.0.4"
   },
   "files": [
     "es",

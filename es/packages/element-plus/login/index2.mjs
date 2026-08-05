@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import locale from '../../../src/core/locale.mjs';
 
@@ -86,15 +86,18 @@ var script = create({
       form: {}
     }
   },
+  beforeUnmount () {
+    this.clearTimer();
+  },
   methods: {
     onSend () {
       const callback = () => {
+        this.clearTimer();
         this.nowtime = this.time;
         this.check = setInterval(() => {
           this.nowtime--;
-          if (this.nowtime === 0) {
-            clearInterval(this.check);
-            this.check = null;
+          if (this.nowtime <= 0) {
+            this.clearTimer();
           }
         }, 1000);
       };
@@ -103,6 +106,12 @@ var script = create({
     },
     onRefresh () {
       this.$emit('refresh');
+    },
+    clearTimer () {
+      if (this.check) {
+        clearInterval(this.check);
+        this.check = null;
+      }
     },
     onSubmit () {
       const onCover = () => {

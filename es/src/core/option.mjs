@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { DATE_LIST, SELECT_LIST } from '../global/variable.mjs';
 
 const warned = new Set();
@@ -36,7 +36,9 @@ const KNOWN_TYPES = new Set([
     'input-color',
     'input-number',
     'input-cron',
+    'input-otp',
     'cron',
+    'otp',
     'title',
     ...DATE_LIST,
     ...SELECT_LIST,

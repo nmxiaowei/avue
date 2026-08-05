@@ -8,7 +8,7 @@
   <a href="https://gitee.com/smallweigit/avue/stargazers"><img src="https://gitee.com/smallweigit/avue/badge/star.svg?theme=dark" alt="star"></a>
   <a href="https://gitee.com/smallweigit/avue/members"><img src="https://gitee.com/smallweigit/avue/badge/fork.svg?theme=dark" alt="fork"></a>
   <a href="https://gitee.com/smallweigit/avue"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="license"></a>
-  <a href="https://gitee.com/smallweigit/avue"><img src="https://img.shields.io/badge/version-3.8.2-blue.svg" alt="version"></a>
+  <a href="https://gitee.com/smallweigit/avue"><img src="https://img.shields.io/badge/version-3.9.3-blue.svg" alt="version"></a>
 </p>
 
 # Avue.js
@@ -141,7 +141,7 @@ const option = ref({
 
 - 表单与表格：`avue-form`、`avue-crud`、`avue-search`
 - 输入组件：`avue-input`、`avue-select`、`avue-input-tree`、`avue-input-table`
-- 业务组件：`avue-login`、`avue-tabs`、`avue-tree`、`avue-chat`、`avue-flow`
+- 业务组件：`avue-login`、`avue-tabs`、`avue-tree`、`avue-chat`、`avue-flow`、`avue-qrcode`
 - 数据展示：`avue-card`、`avue-comment`、`avue-count-up`、`avue-article`
 - 插件能力：导出、打印、截图、剪贴板、水印、日志、图片预览、弹窗表单
 

@@ -69,6 +69,7 @@ export default create({
       this.crud.getTableHeight()
     },
     searchShow () {
+      this.crud.searchShow = this.searchShow
       this.crud.getTableHeight()
     }
   },

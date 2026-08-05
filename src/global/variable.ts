@@ -44,7 +44,7 @@ export const DATE_LIST = [
 ];
 
 export const CHILDREN_LIST = ['table', 'dynamic'];
-export const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag'];
+export const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag', 'otp'];
 export const ARRAY_LIST = ['img', 'array', 'url'];
 export const MULTIPLE_LIST = ['cascader', 'tree', 'select', 'table'];
 export const RANGE_LIST = ['slider'];

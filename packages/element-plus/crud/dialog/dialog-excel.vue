@@ -153,7 +153,7 @@ export default {
         list.forEach((ele, index) => {
           let children = ele.children
           if (children && !Array.isArray(children)) delete ele.children
-          else if (ele.showColumn === false) count.push(index)
+          else if (ele.showColumn === false || ele.excel === false) count.push(index)
           else {
             ele.prop = ele.prop || uuid()
             prop.push(ele.prop)

@@ -10,7 +10,10 @@
              :style="getItemStyle(item)"
              @click="item.click && item.click(item)">
           <div class="data-statistic__icon" v-if="item.icon">
-            <i :class="item.icon" :style="{color: item.iconColor || '#409eff', fontSize: (item.iconSize || 40) + 'px'}"></i>
+            <icon-temp :text="item.icon"
+                       :color="item.iconColor || '#409eff'"
+                       :size="item.iconSize || 40"
+                       :icon-style="getIconStyle(item)"></icon-temp>
           </div>
           <div class="data-statistic__content">
             <div class="data-statistic__title">{{ item.title }}</div>
@@ -37,8 +40,12 @@
 
 <script>
 import create from "core/create";
+import iconTemp from "common/components/icon/index";
 export default create({
   name: "data-statistic",
+  components: {
+    iconTemp
+  },
   data() {
     return {};
   },
@@ -60,6 +67,15 @@ export default create({
     }
   },
   methods: {
+    getIconStyle(item) {
+      const size = (item.iconSize || 40) + 'px';
+      return {
+        color: item.iconColor || '#409eff',
+        fontSize: size,
+        width: size,
+        height: size
+      };
+    },
     getItemStyle(item) {
       return {
         backgroundColor: item.backgroundColor || '#fff',

@@ -1,7 +1,8 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, normalizeClass, createVNode, withCtx, createElementVNode, createCommentVNode, toDisplayString, Fragment, renderList, createTextVNode } from 'vue';
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_icon_temp = resolveComponent("icon-temp");
   const _component_el_button = resolveComponent("el-button");
   const _component_el_input = resolveComponent("el-input");
   const _component_cron_tab = resolveComponent("cron-tab");
@@ -31,9 +32,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _ctx.handleShow,
           disabled: _ctx.disabled
         }, {
-          default: withCtx(() => _cache[11] || (_cache[11] = [
-            createElementVNode("i", { class: "el-icon-setting" }, null, -1 /* HOISTED */)
-          ])),
+          default: withCtx(() => [
+            createVNode(_component_icon_temp, {
+              text: "el-icon-setting",
+              size: 16
+            })
+          ]),
           _: 1 /* STABLE */
         }, 8 /* PROPS */, ["onClick", "disabled"])
       ]),

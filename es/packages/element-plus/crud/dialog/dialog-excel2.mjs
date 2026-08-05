@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import locale from '../../../../src/core/locale.mjs';
 import { detail } from '../../../../src/core/detail.mjs';
 import { uuid } from '../../../../src/utils/util.mjs';
@@ -130,7 +130,7 @@ var script = {
         list.forEach((ele, index) => {
           let children = ele.children;
           if (children && !Array.isArray(children)) delete ele.children;
-          else if (ele.showColumn === false) count.push(index);
+          else if (ele.showColumn === false || ele.excel === false) count.push(index);
           else {
             ele.prop = ele.prop || uuid();
             prop.push(ele.prop);

@@ -1,8 +1,10 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import props from '../../core/common/props.mjs';
 import event from '../../core/common/event.mjs';
+import '../../core/components/icon/index.mjs';
 import locale from '../../../src/core/locale.mjs';
+import script$1 from '../../core/components/icon/index2.mjs';
 
 // Cron Tab 子组件
 const CronTab = {
@@ -90,7 +92,10 @@ const CronTab = {
 
 var script = create({
   name: "input-cron",
-  components: { CronTab },
+  components: {
+    CronTab,
+    iconTemp: script$1
+  },
   mixins: [props(), event(), locale],
   props: {
     prefixIcon: String,

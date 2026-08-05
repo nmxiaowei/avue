@@ -58,7 +58,16 @@
                         v-if="getSlotName(tabs, 'H', $slots)"
                       ></slot>
                       <template v-else>
-                        <i :class="tabs.icon">&nbsp;</i>
+                        <icon-temp
+                          v-if="tabs.icon"
+                          :text="tabs.icon"
+                          :size="14"
+                          :icon-style="{
+                            fontSize: '14px',
+                            width: '14px',
+                            height: '14px',
+                          }"
+                        ></icon-temp>&nbsp;
                         {{ tabs.label }}
                       </template>
                     </span>
@@ -158,6 +167,9 @@
                     :disabled="validTip(column)"
                     :content="validData(column.tip, getPlaceholder(column))"
                     :placement="column.tipPlacement"
+                    :trigger-keys="
+                      validTip(column) ? undefined : ['Enter', 'NumpadEnter']
+                    "
                   >
                     <div>
                       <slot
@@ -243,6 +255,7 @@ import { detail } from "core/detail";
 import create from "core/create";
 import init from "common/common/init";
 import formTemp from "common/components/form/index";
+import iconTemp from "common/components/icon/index";
 import formMenu from "./menu";
 import { DIC_PROPS } from "global/variable";
 import {
@@ -252,7 +265,6 @@ import {
   calcCount,
   calcCascader,
 } from "core/dataformat";
-import { sendDic } from "core/dic";
 import {
   getColumn,
   filterParams,
@@ -278,6 +290,7 @@ export default create({
   components: {
     formTemp,
     formMenu,
+    iconTemp,
   },
   data() {
     return {
@@ -725,14 +738,15 @@ export default create({
             return;
           }
           // 根据当前节点值获取下一个节点的字典
-          sendDic(
+          this.requestDic(
             {
               column: columnNext,
               value: value,
               form: this.form,
             },
-            this
+            `form-cascader:${columnNextProp}`
           ).then((res) => {
+            if (!res) return;
             //首次加载的放入队列记录
             if (!this.formList.includes(str)) this.formList.push(str);
             // 修改字典

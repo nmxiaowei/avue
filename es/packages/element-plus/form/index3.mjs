@@ -1,9 +1,10 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, normalizeStyle, normalizeClass, createVNode, withModifiers, withCtx, Fragment, renderList, createBlock, createSlots, withDirectives, resolveDynamicComponent, createElementVNode, renderSlot, mergeProps, toDisplayString, createCommentVNode, vShow, createTextVNode, normalizeProps, guardReactiveProps } from 'vue';
 
 const _hoisted_1 = ["innerHTML"];
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_icon_temp = resolveComponent("icon-temp");
   const _component_el_tab_pane = resolveComponent("el-tab-pane");
   const _component_el_tabs = resolveComponent("el-tabs");
   const _component_el_icon_info_filled = resolveComponent("el-icon-info-filled");
@@ -82,10 +83,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                                               column: tabs
                                             })
                                           : (openBlock(), createElementBlock(Fragment, { key: 1 }, [
-                                              createElementVNode("i", {
-                                                class: normalizeClass(tabs.icon)
-                                              }, " ", 2 /* CLASS */),
-                                              createTextVNode(" " + toDisplayString(tabs.label), 1 /* TEXT */)
+                                              (tabs.icon)
+                                                ? (openBlock(), createBlock(_component_icon_temp, {
+                                                    key: 0,
+                                                    text: tabs.icon,
+                                                    size: 14,
+                                                    "icon-style": {
+                            fontSize: '14px',
+                            width: '14px',
+                            height: '14px',
+                          }
+                                                  }, null, 8 /* PROPS */, ["text"]))
+                                                : createCommentVNode("v-if", true),
+                                              createTextVNode("  " + toDisplayString(tabs.label), 1 /* TEXT */)
                                             ], 64 /* STABLE_FRAGMENT */))
                                       ])
                                     ]),
@@ -148,7 +158,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                                         (openBlock(), createBlock(resolveDynamicComponent(_ctx.validTip(column) ? 'div' : 'elTooltip'), {
                                           disabled: _ctx.validTip(column),
                                           content: _ctx.validData(column.tip, _ctx.getPlaceholder(column)),
-                                          placement: column.tipPlacement
+                                          placement: column.tipPlacement,
+                                          "trigger-keys": 
+                      _ctx.validTip(column) ? undefined : ['Enter', 'NumpadEnter']
+                    
                                         }, {
                                           default: withCtx(() => [
                                             createElementVNode("div", null, [
@@ -208,7 +221,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                                             ])
                                           ]),
                                           _: 2 /* DYNAMIC */
-                                        }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled", "content", "placement"]))
+                                        }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled", "content", "placement", "trigger-keys"]))
                                       ]),
                                       _: 2 /* DYNAMIC */
                                     }, [

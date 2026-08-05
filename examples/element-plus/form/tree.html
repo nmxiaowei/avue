@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html class="no-js">
   <head>
@@ -24,7 +24,7 @@
     </div>
   </body>
   <script>
-    const baseUrl = "https://cli.avuejs.com/api/area";
+    const baseUrl = "https://api.avuejs.com/area";
     var app = Vue.createApp({
       data() {
         return {
@@ -1204,7 +1204,7 @@
                         return Object.assign(ele, {
                           leaf: level >= stop_level,
                         });
-                      })
+                      }),
                     );
                   };
                   if (level == 0) {

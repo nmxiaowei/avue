@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import { getFixed } from '../../../src/utils/util.mjs';
 
@@ -68,7 +68,10 @@ var script = create({
       overActive: false,
       rangeActive: false,
       active: false,
-      keyDown: null,
+      focusTimer: null,
+      documentMoveHandler: null,
+      documentUpHandler: null,
+      documentKeydownHandler: null,
       rangeList: [
         {
           classname: "left",
@@ -151,7 +154,7 @@ var script = create({
       if (val) {
         this.handleKeydown();
       } else {
-        document.onkeydown = this.keyDown;
+        this.removeKeydown();
       }
     },
     width (val) {
@@ -190,6 +193,14 @@ var script = create({
   mounted () {
     this.init();
   },
+  beforeUnmount () {
+    if (this.focusTimer) {
+      clearTimeout(this.focusTimer);
+      this.focusTimer = null;
+    }
+    this.removeDocumentDrag();
+    this.removeKeydown();
+  },
   methods: {
     init () {
       this.children = this.$refs.item.firstChild;
@@ -197,7 +208,6 @@ var script = create({
       this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
       this.baseLeft = getFixed(this.left);
       this.baseTop = getFixed(this.top);
-      this.keyDown = document.onkeydown;
       this.$nextTick(() => {
         this.first = false;
       });
@@ -242,7 +252,7 @@ var script = create({
       this.handleMouseDown();
       let disX = e.clientX;
       let disY = e.clientY;
-      document.onmousemove = e => {
+      this.bindDocumentDrag(e => {
         this.moveActive = true;
         if (position === "right") {
           x = true;
@@ -297,8 +307,7 @@ var script = create({
           if (yp) this.baseTop = getFixed(this.baseTop - calc);
           this.baseHeight = getFixed(this.baseHeight + calc);
         }
-      };
-      this.handleClear();
+      });
 
     },
     handleOut () {
@@ -324,33 +333,47 @@ var script = create({
     },
     handleMove (e) {
       if (this.disabled || this.lock) return
-      setTimeout(() => {
-        this.$refs.input.focus();
+      this.focusTimer = setTimeout(() => {
+        if (this.$refs.input) this.$refs.input.focus();
+        this.focusTimer = null;
       });
       this.active = true;
       this.handleMouseDown();
       let disX = e.clientX;
       let disY = e.clientY;
-      document.onmousemove = (e) => {
+      this.bindDocumentDrag((e) => {
         let left = e.clientX - disX;
         let top = e.clientY - disY;
         disX = e.clientX;
         disY = e.clientY;
         this.baseLeft = getFixed(this.baseLeft + left * this.step);
         this.baseTop = getFixed(this.baseTop + top * this.step);
-      };
-      this.handleClear();
+      });
     },
-    handleClear () {
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
+    bindDocumentDrag (moveHandler) {
+      this.removeDocumentDrag();
+      this.documentMoveHandler = moveHandler;
+      this.documentUpHandler = () => {
+        this.removeDocumentDrag();
         this.handleMouseUp();
       };
+      document.addEventListener('mousemove', this.documentMoveHandler);
+      document.addEventListener('mouseup', this.documentUpHandler);
+    },
+    removeDocumentDrag () {
+      if (this.documentMoveHandler) {
+        document.removeEventListener('mousemove', this.documentMoveHandler);
+        this.documentMoveHandler = null;
+      }
+      if (this.documentUpHandler) {
+        document.removeEventListener('mouseup', this.documentUpHandler);
+        this.documentUpHandler = null;
+      }
     },
     handleKeydown () {
-      document.onkeydown = (event) => {
-        var e = event || window.event || arguments.callee.caller.arguments[0];
+      if (this.documentKeydownHandler) return;
+      this.documentKeydownHandler = (event) => {
+        const e = event || window.event;
         let step = 1 * this.step;
         if (this.$refs.input.focused) {
           if (e && e.keyCode == 38) {//上
@@ -362,8 +385,8 @@ var script = create({
           } else if (e && e.keyCode == 39) {//右
             this.baseLeft = getFixed(this.baseLeft + step);
           }
-          event.stopPropagation();
-          event.preventDefault();
+          e.stopPropagation();
+          e.preventDefault();
           this.$emit("blur", {
             index: this.index,
             width: this.baseWidth,
@@ -371,9 +394,14 @@ var script = create({
             left: this.baseLeft,
             top: this.baseTop
           });
-          this.keyDown && this.keyDown(event);
         }
       };
+      document.addEventListener('keydown', this.documentKeydownHandler);
+    },
+    removeKeydown () {
+      if (!this.documentKeydownHandler) return;
+      document.removeEventListener('keydown', this.documentKeydownHandler);
+      this.documentKeydownHandler = null;
     },
     handleMouseDown (e) {
       this.moveActive = true;

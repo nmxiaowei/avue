@@ -6,10 +6,21 @@
       <el-tab-pane :name="index+''"
                    :disabled="column.disabled"
                    v-for="(column,index) in columnOption"
-                   :key="index">
+                   :key="column.prop">
         <template #label>
-          <i :class="column.icon"></i>&nbsp;
-          {{column.label}}
+          <slot v-if="$slots.label"
+                name="label"
+                :column="column"
+                :index="index"
+                :active="active === index + ''">
+          </slot>
+          <template v-else>
+            <icon-temp v-if="column.icon"
+                       :text="column.icon"
+                       :size="14"
+                       :icon-style="{fontSize: '14px', width: '14px', height: '14px'}"></icon-temp>&nbsp;
+            {{column.label}}
+          </template>
         </template>
       </el-tab-pane>
     </el-tabs>
@@ -19,8 +30,12 @@
 
 <script>
 import create from "core/create";
+import iconTemp from "common/components/icon/index";
 export default create({
   name: "tabs",
+  components: {
+    iconTemp
+  },
   props: {
     option: {
       type: Object,

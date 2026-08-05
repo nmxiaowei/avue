@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 var zhLang = {
     common: {
         submitBtn: '确定',
@@ -250,7 +250,13 @@ var zhLang = {
             sortable: '排序',
             index: '顺序',
             width: '宽度',
-            reset: '重置列设置'
+            reset: '重置列设置',
+            all: '全部',
+            restore: '恢复默认',
+            cancel: '取消',
+            confirm: '确认',
+            fixedLeft: '固定到左侧',
+            fixedRight: '固定到右侧'
         },
         emptyText: '暂无数据',
         tipStartTitle: '当前表格已选择',
@@ -268,6 +274,10 @@ var zhLang = {
         open: '展开',
         shrink: '收缩',
         printBtn: '打印',
+        refreshBtn: '刷新',
+        columnBtn: '列设置',
+        filterBtn: '筛选',
+        gridBtn: '卡片视图',
         mockBtn: '模拟',
         excelBtn: '导出',
         updateBtn: '修改',

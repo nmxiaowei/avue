@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html class="no-js">
   <head>
@@ -51,7 +51,7 @@
     </div>
   </body>
   <script>
-    let baseUrl = "https://cli.avuejs.com/api/area";
+    let baseUrl = "https://api.avuejs.com/area";
     var app = Vue.createApp({
       data() {
         return {
@@ -170,7 +170,7 @@
                   label: "name",
                   value: "code",
                 },
-                dicUrl: "http://cli.avuejs.com/api/area/getProvince",
+                dicUrl: "https://api.avuejs.com/area/getProvince",
               },
               {
                 width: 150,
@@ -229,7 +229,7 @@
                   label: "name",
                   value: "code",
                 },
-                dicUrl: "http://cli.avuejs.com/api/area/getProvince/{{key}}",
+                dicUrl: "https://api.avuejs.com/area/getProvince/{{key}}",
                 cell: true,
               },
               {
@@ -303,7 +303,7 @@
           }, 1000);
           setTimeout(() => {
             this.$message.success(
-              "编辑数据" + JSON.stringify(form) + "数据序号" + index
+              "编辑数据" + JSON.stringify(form) + "数据序号" + index,
             );
             done();
           }, 2000);

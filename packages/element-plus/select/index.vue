@@ -136,7 +136,7 @@ import { DIC_SPLIT } from "global/variable";
 export default create({
   name: "select",
   mixins: [props(), event(), locale],
-  emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached"],
+  emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached", "dic-error"],
   data() {
     return {
       checked: false,
@@ -144,6 +144,9 @@ export default create({
       create: false,
       netDic: [],
       loading: false,
+      sortable: null,
+      remoteRequestId: 0,
+      remoteUnmounted: false,
     };
   },
   props: {
@@ -224,6 +227,14 @@ export default create({
       this.setSort();
     }
   },
+  beforeUnmount() {
+    this.remoteUnmounted = true;
+    this.remoteRequestId++;
+    if (this.sortable && typeof this.sortable.destroy === "function") {
+      this.sortable.destroy();
+    }
+    this.sortable = null;
+  },
   methods: {
     handleModelValue(val) {
       if (!this.validatenull(this.text)) {
@@ -263,6 +274,7 @@ export default create({
       });
     },
     handleRemoteMethod(query) {
+      const requestId = ++this.remoteRequestId;
       this.loading = true;
       sendDic(
         {
@@ -270,10 +282,23 @@ export default create({
           value: query,
         },
         this
-      ).then((res) => {
-        this.loading = false;
-        this.netDic = res;
-      });
+      )
+        .then((res) => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.netDic = res;
+        })
+        .catch((error) => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.$emit("dic-error", {
+            type: "select-remote",
+            error,
+          });
+        })
+        .finally(() => {
+          if (!this.remoteUnmounted && requestId === this.remoteRequestId) {
+            this.loading = false;
+          }
+        });
     },
     checkChange(val) {
       this.text = [];

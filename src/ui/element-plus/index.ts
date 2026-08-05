@@ -24,6 +24,7 @@ import InputIcon from 'packages/element-plus/input-icon';
 import InputTag from 'packages/element-plus/input-tag';
 import InputTable from 'packages/element-plus/input-table';
 import InputCron from 'packages/element-plus/input-cron';
+import InputOtp from 'packages/element-plus/input-otp';
 import Mention from 'packages/element-plus/mention';
 import Verifys from 'packages/element-plus/verify';
 import Switchs from 'packages/element-plus/switch';
@@ -40,6 +41,8 @@ import Video from 'packages/element-plus/video';
 import Login from 'packages/element-plus/login';
 import Arrays from 'packages/element-plus/array';
 import textEllipsis from 'packages/element-plus/text-ellipsis';
+import QRCode from 'packages/element-plus/qrcode';
+import Iframe from 'packages/element-plus/iframe';
 
 export {
   Arrays,
@@ -69,6 +72,7 @@ export {
   InputTag,
   InputTable,
   InputCron,
+  InputOtp,
   Mention,
   Verifys,
   Switchs,
@@ -84,6 +88,8 @@ export {
   Video,
   Login,
   textEllipsis,
+  QRCode,
+  Iframe,
 };
 
 const elementComponents = {
@@ -114,6 +120,7 @@ const elementComponents = {
   InputTag,
   InputTable,
   InputCron,
+  InputOtp,
   Mention,
   Switchs,
   Rate,
@@ -129,6 +136,8 @@ const elementComponents = {
   textEllipsis,
   Sign,
   Login,
+  QRCode,
+  Iframe,
 };
 
 export default elementComponents;

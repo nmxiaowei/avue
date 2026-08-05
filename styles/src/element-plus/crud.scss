@@ -181,29 +181,96 @@ $space-width: 15px;
   }
 
   &__tip {
-    padding: 4px 10px 6px 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 8px 12px;
     width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #d9ecff;
-    background-color: #ecf5ff;
-    color: #409eff;
-    font-size: 12px;
-    border-radius: 3px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    border: 1px solid var(--el-color-primary-light-7);
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--el-color-primary-light-9), #fff 78%);
+    color: var(--el-text-color-regular);
+    font-size: 13px;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 3px;
+      background-color: var(--el-color-primary);
+      content: '';
+    }
+
+    &-content,
+    &-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    &-content {
+      min-width: 0;
+      padding-left: 2px;
+    }
+
+    &-icon {
+      flex: 0 0 auto;
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+      color: var(--el-color-primary);
+      font-size: 16px;
+    }
 
     &-name {
-      margin-right: 10px;
+      flex: 0 0 auto;
     }
 
     &-count {
-      padding: 0 1px;
-      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      margin: 0 4px;
+      border-radius: 11px;
+      background-color: var(--el-color-primary);
+      color: #fff;
+      font-size: 12px;
       font-weight: bold;
     }
 
+    &-suffix {
+      flex: 0 0 auto;
+    }
+
+    &-actions {
+      flex: 0 0 auto;
+      gap: 8px;
+      margin-left: 16px;
+    }
+
     &-button {
-      cursor: pointer;
-      font-size: 12px;
+      flex: 0 0 auto;
       font-weight: bold;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__tip {
+      align-items: flex-start;
+      flex-direction: column;
+
+      &-actions {
+        margin-top: 4px;
+        margin-left: 27px;
+      }
     }
   }
 
@@ -429,5 +496,107 @@ $space-width: 15px;
   .el-table__header-wrapper tr th.el-table-fixed-column--left,
   .el-table__header-wrapper tr th.el-table-fixed-column--right {
     background-color: #fff;
+  }
+}
+
+.avue-crud__column-popper {
+  padding: 0 !important;
+  min-width: 280px;
+
+  .avue-crud__column-panel {
+    &__header,
+    &__footer {
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 0 16px;
+    }
+
+    &__header {
+      border-bottom: 1px solid var(--el-border-color-lighter);
+
+      .el-checkbox__label {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--el-color-primary);
+      }
+    }
+
+    &__list {
+      max-height: min(420px, 52vh);
+      overflow-y: auto;
+      padding: 4px 8px;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 4px;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--el-fill-color-light);
+      }
+
+      .el-checkbox {
+        flex: 0 0 auto;
+        margin-right: 8px;
+      }
+    }
+
+    &__label {
+      flex: 1;
+      min-width: 0;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    &__drag {
+      width: 22px;
+      color: var(--el-text-color-placeholder);
+      cursor: move;
+      font-size: 20px;
+      letter-spacing: -3px;
+      line-height: 1;
+      transform: rotate(90deg);
+    }
+
+    &__actions {
+      display: flex;
+      flex: 0 0 auto;
+      margin-left: 6px;
+
+      .el-button {
+        margin-left: 0;
+        min-width: 28px;
+        min-height: 28px;
+        padding: 6px;
+        font-size: 16px;
+        color: var(--el-text-color-secondary);
+
+        &.is-active {
+          color: var(--el-color-primary);
+          background-color: var(--el-color-primary-light-9);
+        }
+      }
+    }
+
+    &__footer {
+      justify-content: space-between;
+      border-top: 1px solid var(--el-border-color-lighter);
+
+      .el-button {
+        margin-left: 0;
+      }
+    }
+
+    &__footer-actions {
+      display: flex;
+      gap: 8px;
+    }
   }
 }

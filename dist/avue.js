@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('element-plus'), require('axios'), require('@element-plus/icons-vue')) :
   typeof define === 'function' && define.amd ? define(['vue', 'element-plus', 'axios', '@element-plus/icons-vue'], factory) :
@@ -530,7 +530,7 @@
   };
   var DATE_LIST = ['dates', 'date', 'datetime', 'datetimerange', 'daterange', 'time', 'timerange', 'week', 'month', 'months', 'monthrange', 'year', 'years', 'yearrange'];
   var CHILDREN_LIST = ['table', 'dynamic'];
-  var INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag'];
+  var INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag', 'otp'];
   var ARRAY_LIST = ['img', 'array', 'url'];
   var MULTIPLE_LIST = ['cascader', 'tree', 'select', 'table'];
   var RANGE_LIST = ['slider'];
@@ -551,7 +551,7 @@
     return sfc;
   }
 
-  var script$1k = create({
+  var script$1n = create({
     name: "count-up",
     props: {
       animation: {
@@ -665,12 +665,12 @@
     }
   });
 
-  function render$1k(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1n(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("span", null, vue.toDisplayString(_ctx.end), 1 /* TEXT */);
   }
 
-  script$1k.render = render$1k;
-  script$1k.__file = "packages/element-plus/count-up/index.vue";
+  script$1n.render = render$1n;
+  script$1n.__file = "packages/element-plus/count-up/index.vue";
 
   var propsDefault$2 = {
     title: "title",
@@ -678,7 +678,7 @@
     lead: "lead",
     body: "body"
   };
-  var script$1j = create({
+  var script$1m = create({
     name: "article",
     props: {
       data: {
@@ -723,11 +723,11 @@
     mounted: function mounted() {}
   });
 
-  var _hoisted_1$W = ["textContent"];
+  var _hoisted_1$Y = ["textContent"];
   var _hoisted_2$D = ["textContent"];
   var _hoisted_3$t = ["textContent"];
-  var _hoisted_4$q = ["innerHTML"];
-  function render$1j(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_4$r = ["innerHTML"];
+  function render$1m(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [vue.createElementVNode("div", {
@@ -736,7 +736,7 @@
       key: 0,
       "class": vue.normalizeClass(_ctx.b('title')),
       textContent: vue.toDisplayString(_ctx.title)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$W)) : vue.createCommentVNode("v-if", true), _ctx.meta ? (vue.openBlock(), vue.createElementBlock("small", {
+    }, null, 10 /* CLASS, PROPS */, _hoisted_1$Y)) : vue.createCommentVNode("v-if", true), _ctx.meta ? (vue.openBlock(), vue.createElementBlock("small", {
       key: 1,
       "class": vue.normalizeClass(_ctx.b('meta')),
       textContent: vue.toDisplayString(_ctx.meta)
@@ -748,11 +748,11 @@
       key: 1,
       "class": vue.normalizeClass(_ctx.b('body')),
       innerHTML: _ctx.body
-    }, null, 10 /* CLASS, PROPS */, _hoisted_4$q)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
+    }, null, 10 /* CLASS, PROPS */, _hoisted_4$r)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$1j.render = render$1j;
-  script$1j.__file = "packages/element-plus/article/index.vue";
+  script$1m.render = render$1m;
+  script$1m.__file = "packages/element-plus/article/index.vue";
 
   function _arrayLikeToArray$1(r, a) {
     (null == a || a > r.length) && (a = r.length);
@@ -887,9 +887,9 @@
       github: 'https://github.com/eligrey/FileSaver.js'
     },
     xlsx: {
-      url: 'https://cdn.staticfile.org/xlsx/0.18.2/xlsx.full.min.js',
-      title: '需要引入 Excel 操作包',
-      github: 'https://github.com/protobi/js-xlsx'
+      url: 'https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js',
+      title: '需要引入支持样式的 Excel 操作包',
+      github: 'https://github.com/gitbrent/xlsx-js-style'
     },
     mock: {
       url: 'https://cdn.staticfile.org/Mock.js/1.0.1-beta3/mock-min.js',
@@ -1160,7 +1160,13 @@
         sortable: 'Sort',
         index: 'Index',
         width: 'Width',
-        reset: 'Reset Columns'
+        reset: 'Reset Columns',
+        all: 'All',
+        restore: 'Restore Defaults',
+        cancel: 'Cancel',
+        confirm: 'Confirm',
+        fixedLeft: 'Fix to Left',
+        fixedRight: 'Fix to Right'
       },
       emptyText: 'No Data',
       tipStartTitle: 'Selected',
@@ -1178,6 +1184,10 @@
       open: 'Expand',
       shrink: 'Collapse',
       printBtn: 'Print',
+      refreshBtn: 'Refresh',
+      columnBtn: 'Column Settings',
+      filterBtn: 'Filter',
+      gridBtn: 'Card View',
       mockBtn: 'Mock',
       excelBtn: 'Export',
       updateBtn: 'Update',
@@ -1444,7 +1454,13 @@
         sortable: '排序',
         index: '顺序',
         width: '宽度',
-        reset: '重置列设置'
+        reset: '重置列设置',
+        all: '全部',
+        restore: '恢复默认',
+        cancel: '取消',
+        confirm: '确认',
+        fixedLeft: '固定到左侧',
+        fixedRight: '固定到右侧'
       },
       emptyText: '暂无数据',
       tipStartTitle: '当前表格已选择',
@@ -1462,6 +1478,10 @@
       open: '展开',
       shrink: '收缩',
       printBtn: '打印',
+      refreshBtn: '刷新',
+      columnBtn: '列设置',
+      filterBtn: '筛选',
+      gridBtn: '卡片视图',
       mockBtn: '模拟',
       excelBtn: '导出',
       updateBtn: '修改',
@@ -1728,7 +1748,13 @@
         sortable: '排序',
         index: '序号',
         width: '宽度',
-        reset: '重置列设置'
+        reset: '重置列设置',
+        all: '全部',
+        restore: '恢复默认',
+        cancel: '取消',
+        confirm: '确认',
+        fixedLeft: '固定到左侧',
+        fixedRight: '固定到右侧'
       },
       emptyText: '暂无数据',
       tipStartTitle: '已选择',
@@ -1746,6 +1772,10 @@
       open: '展开',
       shrink: '收起',
       printBtn: '打印',
+      refreshBtn: '刷新',
+      columnBtn: '列设置',
+      filterBtn: '筛选',
+      gridBtn: '卡片视图',
       mockBtn: '模拟',
       excelBtn: '导出',
       updateBtn: '更新',
@@ -7406,8 +7436,8 @@
     return !validatenull(val) ? val : dafult;
   };
 
-  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$e(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$e(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$e(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$e(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var key = 'key';
   function getDataType() {
     var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -7433,20 +7463,37 @@
     if (dataType) res = getDataType(res, props, dataType);
     return res;
   }
-  var loadCascaderDic = function loadCascaderDic(columnOption, safe) {
-    return new Promise(function (resolve) {
-      var list = [];
-      var result = {};
-      var columnList = columnOption.filter(function (ele) {
-        return ele.parentProp;
-      });
-      safe.data.forEach(function (ele, index) {
-        if (!safe.cascaderDIC[index]) safe.cascaderDIC[index] = {};
-        columnList.forEach(function (column) {
-          if (column.hide !== true && column.dicFlag !== false) {
-            list.push(new Promise(function (resolve) {
-              if (ele[column.parentProp]) {
-                sendDic({
+  var loadCascaderDic = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+      var columnOption,
+        safe,
+        columnList,
+        tasks,
+        result,
+        data,
+        _args = arguments;
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            columnOption = _args.length > 0 && _args[0] !== undefined ? _args[0] : [];
+            safe = _args.length > 1 ? _args[1] : undefined;
+            columnList = columnOption.filter(function (ele) {
+              return ele.parentProp;
+            });
+            tasks = [];
+            (safe.data || []).forEach(function (form, index) {
+              columnList.forEach(function (column) {
+                if (column.hide === true || column.dicFlag === false) return;
+                var value = form[column.parentProp];
+                if (validatenull(value)) {
+                  tasks.push(Promise.resolve({
+                    prop: column.prop,
+                    data: [],
+                    index: index
+                  }));
+                  return;
+                }
+                tasks.push(sendDic({
                   url: column.dicUrl,
                   props: column.props,
                   method: column.dicMethod,
@@ -7454,102 +7501,123 @@
                   formatter: column.dicFormatter,
                   query: column.dicQuery,
                   dataType: column.dataType,
-                  form: ele,
-                  value: ele[column.parentProp]
-                }, safe).then(function (res) {
-                  var obj = {
+                  form: form,
+                  value: value
+                }, safe).then(function (data) {
+                  return {
                     prop: column.prop,
-                    data: res,
+                    data: data,
                     index: index
                   };
-                  safe.cascaderDIC[index][obj.prop] = obj.data;
-                  resolve(obj);
-                });
-              } else {
-                var obj = {
-                  prop: column.prop,
-                  data: [],
-                  index: index
-                };
-                safe.cascaderDIC[index][obj.prop] = obj.data;
-                resolve(obj);
-              }
-            }));
-          }
-        });
-      });
-      Promise.all(list).then(function (data) {
-        data.forEach(function (ele) {
-          if (!result[ele.index]) result[ele.index] = {};
-          result[ele.index][ele.prop] = ele.data;
-        });
-        resolve(result);
-      });
-    });
-  };
-  var loadDic = function loadDic(option, safe) {
-    return new Promise(function (resolve) {
-      var list = [];
-      var result = {};
-      var notList = [];
-      var nameList = [];
-      var column = option.column || [];
-      column.forEach(function (ele) {
-        var url = ele.dicUrl;
-        var prop = ele.prop;
-        var parentProp = ele.parentProp;
-        notList = notList.concat(ele.cascader || []);
-        var flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
-        if (url && !parentProp && !flag) {
-          list.push(new Promise(function (resolve) {
-            sendDic({
-              url: url,
-              method: ele.dicMethod,
-              headers: ele.dicHeaders,
-              formatter: ele.dicFormatter,
-              props: ele.props,
-              dataType: ele.dataType,
-              query: ele.dicQuery
-            }, safe).then(function (res) {
-              safe.DIC[prop] = res;
-              resolve(res);
+                }));
+              });
             });
-          }));
-          nameList.push(prop);
+            result = {};
+            _context.next = 8;
+            return Promise.all(tasks);
+          case 8:
+            data = _context.sent;
+            data.forEach(function (item) {
+              if (!result[item.index]) result[item.index] = {};
+              result[item.index][item.prop] = item.data;
+            });
+            return _context.abrupt("return", result);
+          case 11:
+          case "end":
+            return _context.stop();
         }
-      });
-      Promise.all(list).then(function (res) {
-        nameList.forEach(function (ele, index) {
-          result[ele] = res[index];
-        });
-        resolve(result);
-      });
-    });
-  };
-  var loadLocalDic = function loadLocalDic(option, safe) {
+      }, _callee);
+    }));
+    return function loadCascaderDic() {
+      return _ref.apply(this, arguments);
+    };
+  }();
+  var loadDic = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee2(option, safe) {
+      var notList, tasks, column, result, data;
+      return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            notList = [];
+            tasks = [];
+            column = option.column || [];
+            column.forEach(function (ele) {
+              var url = ele.dicUrl;
+              var prop = ele.prop;
+              var parentProp = ele.parentProp;
+              notList = notList.concat(ele.cascader || []);
+              var flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
+              if (!url || parentProp || flag) return;
+              tasks.push(sendDic({
+                url: url,
+                method: ele.dicMethod,
+                headers: ele.dicHeaders,
+                formatter: ele.dicFormatter,
+                props: ele.props,
+                dataType: ele.dataType,
+                query: ele.dicQuery
+              }, safe).then(function (data) {
+                return {
+                  prop: prop,
+                  data: data
+                };
+              }));
+            });
+            result = {};
+            _context2.next = 7;
+            return Promise.all(tasks);
+          case 7:
+            data = _context2.sent;
+            data.forEach(function (item) {
+              result[item.prop] = item.data;
+            });
+            return _context2.abrupt("return", result);
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function loadDic(_x, _x2) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+  var loadLocalDic = function loadLocalDic(option) {
     var columnData = {};
     var optionData = option.dicData || {};
-    option.column.forEach(function (ele) {
+    var tasks = [];
+    (option.column || []).forEach(function (ele) {
       var dic = ele.dicData;
       var prop = ele.prop;
       if (dic instanceof Function) {
-        var dicResult = dic(ele);
-        if (dicResult instanceof Promise) {
-          dicResult.then(function (res) {
-            safe.DIC[prop] = getDataType(res, ele.props, ele.dataType);
-          });
-        } else {
-          columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
+        try {
+          var dicResult = dic(ele);
+          if (dicResult && typeof dicResult.then === 'function') {
+            tasks.push(Promise.resolve(dicResult).then(function (res) {
+              return {
+                prop: prop,
+                data: getDataType(res, ele.props, ele.dataType)
+              };
+            }));
+          } else {
+            columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
+          }
+        } catch (error) {
+          tasks.push(Promise.reject(error));
         }
       } else if (dic instanceof Array) {
         columnData[prop] = getDataType(dic, ele.props, ele.dataType);
       }
     });
-    var result = _objectSpread$d(_objectSpread$d({}, optionData), columnData);
-    Object.keys(result).forEach(function (ele) {
-      safe.DIC[ele] = result[ele];
-    });
-    return result;
+    return {
+      data: _objectSpread$e(_objectSpread$e({}, optionData), columnData),
+      pending: Promise.all(tasks).then(function (items) {
+        return items.reduce(function (result, item) {
+          result[item.prop] = item.data;
+          return result;
+        }, {});
+      })
+    };
   };
   var sendDic = function sendDic(params, safe) {
     var url = params.url,
@@ -7570,6 +7638,7 @@
     query = column.dicQuery || query || {};
     formatter = column.dicFormatter || formatter;
     props = column.props || props || {};
+    if (!url) return Promise.resolve([]);
     var list = url.match(/[^\{\}]+(?=\})/g) || [];
     list.forEach(function (ele) {
       var result = ele === key ? value : form[ele];
@@ -7589,36 +7658,30 @@
       });
       return result;
     };
-    return new Promise(function (resolve, reject) {
-      if (!url) resolve([]);
-      var callback = function callback(res) {
-        var currentList = [];
-        res = res.data || {};
-        if (typeof formatter === 'function') {
-          currentList = formatter(res, form);
-        } else {
-          currentList = getResData(res, props, dataType);
-        }
-        resolve(currentList);
+    var getData = function getData() {
+      var data = getKey(query);
+      if (method == 'get') return {
+        params: data
       };
-      var getData = function getData() {
-        var data = getKey(query);
-        if (method == 'get') return {
-          params: data
-        };
-        return {
-          data: data
-        };
+      return {
+        data: data
       };
-      safe.$axios(Object.assign({
+    };
+    return Promise.resolve().then(function () {
+      return safe.$axios(Object.assign({
         url: url,
         method: method,
         headers: getKey(headers)
-      }, getData())).then(function (res) {
-        callback(res);
-      })["catch"](function (err) {
-        reject(err);
-      });
+      }, getData()));
+    }).then(function (res) {
+      var currentList = [];
+      res = res.data || {};
+      if (typeof formatter === 'function') {
+        currentList = formatter(res, form);
+      } else {
+        currentList = getResData(res, props, dataType);
+      }
+      return currentList;
     });
   };
 
@@ -7661,10 +7724,10 @@
     }
   };
 
-  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var warned = new Set();
-  var KNOWN_TYPES = new Set(['', 'input', 'textarea', 'password', 'phone', 'currency', 'bankCard', 'idCard', 'email', 'code', 'plate', 'ip', 'mac', 'uscc', 'number', 'switch', 'upload', 'img', 'array', 'url', 'dynamic', 'slider', 'rate', 'input-tag', 'tag', 'mention', 'input-table', 'input-tree', 'input-icon', 'input-map', 'input-color', 'input-number', 'input-cron', 'cron', 'title'].concat(_toConsumableArray(DATE_LIST), _toConsumableArray(SELECT_LIST)));
+  var KNOWN_TYPES = new Set(['', 'input', 'textarea', 'password', 'phone', 'currency', 'bankCard', 'idCard', 'email', 'code', 'plate', 'ip', 'mac', 'uscc', 'number', 'switch', 'upload', 'img', 'array', 'url', 'dynamic', 'slider', 'rate', 'input-tag', 'tag', 'mention', 'input-table', 'input-tree', 'input-icon', 'input-map', 'input-color', 'input-number', 'input-cron', 'input-otp', 'cron', 'otp', 'title'].concat(_toConsumableArray(DATE_LIST), _toConsumableArray(SELECT_LIST)));
   var isObject = function isObject(value) {
     return value && Object.prototype.toString.call(value) === '[object Object]';
   };
@@ -7680,7 +7743,7 @@
     if (isObject(column)) {
       return Object.keys(column).map(function (prop) {
         return {
-          item: _objectSpread$c(_objectSpread$c({}, column[prop]), {}, {
+          item: _objectSpread$d(_objectSpread$d({}, column[prop]), {}, {
             prop: column[prop].prop || prop
           }),
           path: "".concat(path, ".").concat(prop)
@@ -7833,12 +7896,25 @@
     });
   };
 
-  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var dicRequestStates = new WeakMap();
+  var getDicRequestState = function getDicRequestState(safe) {
+    var state = dicRequestStates.get(safe);
+    if (!state) {
+      state = {
+        active: new Set(),
+        sequence: {},
+        unmounted: false
+      };
+      dicRequestStates.set(safe, state);
+    }
+    return state;
+  };
   function init (name) {
     return {
       mixins: [slot],
-      emits: ['update:modelValue', 'change'],
+      emits: ['update:modelValue', 'change', 'dic-error'],
       props: {
         tableData: {
           type: Object,
@@ -7876,18 +7952,26 @@
           DIC: {},
           cascaderDIC: {},
           tableOption: {},
-          objectOption: {}
+          objectOption: {},
+          dicLoading: false,
+          dicError: null
         };
       },
       mounted: function mounted() {
+        getDicRequestState(this).unmounted = false;
         this.init();
+      },
+      beforeUnmount: function beforeUnmount() {
+        var state = getDicRequestState(this);
+        state.unmounted = true;
+        state.active.clear();
       },
       computed: {
         isMobile: function isMobile() {
           return document.body.clientWidth <= 768;
         },
         resultOption: function resultOption() {
-          return _objectSpread$b(_objectSpread$b({}, this.tableOption), {
+          return _objectSpread$c(_objectSpread$c({}, this.tableOption), {
             column: this.propOption || []
           });
         },
@@ -7905,7 +7989,7 @@
       methods: {
         init: function init(type) {
           var globOption = this.deepClone(this.$AVUE["".concat(name, "Option")]);
-          var option = _objectSpread$b(_objectSpread$b({}, globOption), this.option);
+          var option = _objectSpread$c(_objectSpread$c({}, globOption), this.option);
           this.tableOption = option;
           var componentName = name || (this.$options.name || '').replace(/^avue-/, '') || 'component';
           if (this.$AVUE.optionValidate !== false && option.optionValidate !== false) {
@@ -7919,14 +8003,15 @@
         },
         dicInit: function dicInit(type) {
           if (type === 'cascader') {
-            this.handleLoadCascaderDic();
+            return this.handleLoadCascaderDic();
           } else {
-            this.handleLoadDic();
+            return this.handleLoadDic();
           }
         },
         updateDic: function updateDic(prop, list) {
           var _this2 = this;
           var column = this.findObject(this.propOption, prop);
+          if (!column) return Promise.resolve(null);
           var formatter = column.dicFormatter;
           var callback = function callback(currentList) {
             var useFormatter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -7937,17 +8022,18 @@
             }
           };
           if (this.validatenull(list) && this.validatenull(prop)) {
-            this.handleLoadDic();
-            return;
+            return this.handleLoadDic();
           }
           if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-            sendDic({
+            return this.requestDic({
               column: column
-            }, this).then(function (currentList) {
-              callback(currentList, false);
+            }, "update:".concat(prop)).then(function (currentList) {
+              if (currentList) callback(currentList, false);
+              return currentList;
             });
           } else {
             callback(list || []);
+            return Promise.resolve(list || []);
           }
         },
         handleSetDic: function handleSetDic(list) {
@@ -7957,19 +8043,78 @@
           });
         },
         handleLocalDic: function handleLocalDic() {
-          loadLocalDic(this.resultOption, this);
+          var _this3 = this;
+          var localDic = loadLocalDic(this.resultOption);
+          this.handleSetDic(this.DIC, localDic.data);
+          return this.runDicRequest('local-dic', function () {
+            return localDic.pending;
+          }, function (result) {
+            _this3.handleSetDic(_this3.DIC, result);
+          });
         },
         handleLoadDic: function handleLoadDic() {
-          loadDic(this.resultOption, this);
+          var _this4 = this;
+          return this.runDicRequest('dic', function () {
+            return loadDic(_this4.resultOption, _this4);
+          }, function (result) {
+            _this4.handleSetDic(_this4.DIC, result);
+          });
         },
         handleLoadCascaderDic: function handleLoadCascaderDic() {
-          loadCascaderDic(this.propOption, this);
+          var _this5 = this;
+          return this.runDicRequest('cascader', function () {
+            return loadCascaderDic(_this5.propOption, _this5);
+          }, function (result) {
+            Object.keys(result).forEach(function (index) {
+              if (!_this5.cascaderDIC[index]) _this5.cascaderDIC[index] = {};
+              _this5.handleSetDic(_this5.cascaderDIC[index], result[index]);
+            });
+          });
+        },
+        requestDic: function requestDic(params) {
+          var _this6 = this;
+          var requestType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'manual';
+          return this.runDicRequest(requestType, function () {
+            return sendDic(params, _this6);
+          });
+        },
+        runDicRequest: function runDicRequest(requestType, request, apply) {
+          var _this7 = this;
+          var state = getDicRequestState(this);
+          var requestId = (state.sequence[requestType] || 0) + 1;
+          var token = "".concat(requestType, ":").concat(requestId);
+          state.sequence[requestType] = requestId;
+          state.active.add(token);
+          this.dicLoading = true;
+          this.dicError = null;
+          var isCurrent = function isCurrent() {
+            return !state.unmounted && state.sequence[requestType] === requestId;
+          };
+          return Promise.resolve().then(request).then(function (result) {
+            if (!isCurrent()) return null;
+            if (apply) apply(result);
+            return result;
+          })["catch"](function (error) {
+            if (isCurrent()) {
+              _this7.dicError = error;
+              _this7.$emit('dic-error', {
+                type: requestType,
+                error: error
+              });
+            }
+            return null;
+          })["finally"](function () {
+            state.active["delete"](token);
+            if (!state.unmounted) {
+              _this7.dicLoading = state.active.size > 0;
+            }
+          });
         }
       }
     };
   }
 
-  var script$1i = create({
+  var script$1l = create({
     name: "crud__grid",
     inject: ["crud"],
     mixins: [locale],
@@ -8161,11 +8306,11 @@
     }
   });
 
-  var _hoisted_1$V = ["onClick", "onDblclick"];
+  var _hoisted_1$X = ["onClick", "onDblclick"];
   var _hoisted_2$C = {
     key: 0
   };
-  function render$1i(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1l(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
     var _component_el_col = vue.resolveComponent("el-col");
     var _component_el_row = vue.resolveComponent("el-row");
@@ -8254,7 +8399,7 @@
                         }),
                         _: 2 /* DYNAMIC */
                       }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["class", "content"]);
-                    }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */))], 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$V);
+                    }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */))], 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$X);
                   }), 128 /* KEYED_FRAGMENT */))], 6 /* CLASS, STYLE */)];
                 }),
                 _: 2 /* DYNAMIC */
@@ -8276,10 +8421,10 @@
     }, null, 8 /* PROPS */, ["description"]))], 64 /* STABLE_FRAGMENT */))], 6 /* CLASS, STYLE */);
   }
 
-  script$1i.render = render$1i;
-  script$1i.__file = "packages/element-plus/crud/grid/index.vue";
+  script$1l.render = render$1l;
+  script$1l.__file = "packages/element-plus/crud/grid/index.vue";
 
-  var script$1h = {
+  var script$1k = {
     props: {
       className: String,
       labeClassName: String,
@@ -8313,12 +8458,12 @@
     }
   };
 
-  function render$1h(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1k(_ctx, _cache, $props, $setup, $data, $options) {
     return null;
   }
 
-  script$1h.render = render$1h;
-  script$1h.__file = "packages/element-plus/crud/grid/item.vue";
+  script$1k.render = render$1k;
+  script$1k.__file = "packages/element-plus/crud/grid/item.vue";
 
   // crud 配置文件
   var config$2 = {
@@ -8395,7 +8540,7 @@
     ghostClass: 'avue-crud__ghost'
   };
 
-  var script$1g = create({
+  var script$1j = create({
     name: "crud",
     inject: ["crud"],
     props: {
@@ -8483,7 +8628,7 @@
     }
   });
 
-  function render$1g(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1j(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_pagination = vue.resolveComponent("el-pagination");
     var _component_el_card = vue.resolveComponent("el-card");
     return _ctx.pageFlag && _ctx.validData(_ctx.crud.tableOption.page, true) ? (vue.openBlock(), vue.createBlock(_component_el_card, {
@@ -8519,8 +8664,8 @@
     }, 8 /* PROPS */, ["shadow", "class"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1g.render = render$1g;
-  script$1g.__file = "packages/element-plus/crud/menu/table-page.vue";
+  script$1j.render = render$1j;
+  script$1j.__file = "packages/element-plus/crud/menu/table-page.vue";
 
   var count$1 = 0;
   var calcCascader = function calcCascader() {
@@ -8665,7 +8810,7 @@
     return placeholder;
   };
 
-  var script$1f = create({
+  var script$1i = create({
     name: "crud__search",
     inject: ["crud"],
     mixins: [locale, slot],
@@ -8686,6 +8831,7 @@
         this.crud.getTableHeight();
       },
       searchShow: function searchShow() {
+        this.crud.searchShow = this.searchShow;
         this.crud.getTableHeight();
       }
     },
@@ -8850,7 +8996,7 @@
     }
   });
 
-  function render$1f(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1i(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_avue_form = vue.resolveComponent("avue-form");
     var _component_el_card = vue.resolveComponent("el-card");
@@ -8916,10 +9062,10 @@
     }, 8 /* PROPS */, ["shadow", "class"])), [[vue.vShow, _ctx.searchShow && _ctx.searchFlag]]) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1f.render = render$1f;
-  script$1f.__file = "packages/element-plus/crud/menu/header-search.vue";
+  script$1i.render = render$1i;
+  script$1i.__file = "packages/element-plus/crud/menu/header-search.vue";
 
-  var script$1e = create({
+  var script$1h = create({
     name: "crud",
     mixins: [locale],
     directives: {
@@ -8929,6 +9075,7 @@
     data: function data() {
       return {
         dateCreate: false,
+        printLoading: false,
         shortcuts: [{
           text: this.t('date.t'),
           value: new Date()
@@ -8979,14 +9126,31 @@
         this.crud.$refs.dialogExcel.handleShow();
       },
       rowPrint: function rowPrint() {
-        this.$Print(this.crud.$refs.table);
+        var _this = this;
+        if (this.printLoading) return;
+        this.printLoading = true;
+        try {
+          this.$Print(this.crud.$refs.table, {
+            title: this.crud.tableOption.title,
+            hiddenColumnLabels: [this.crud.tableOption.menuTitle || this.t('crud.menu')],
+            onReady: function onReady() {
+              _this.printLoading = false;
+            },
+            onError: function onError() {
+              _this.printLoading = false;
+            }
+          });
+        } catch (_unused) {
+          this.printLoading = false;
+        }
       }
     }
   });
 
-  function render$1e(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1h(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_avue_date = vue.resolveComponent("avue-date");
+    var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     var _directive_permission = vue.resolveDirective("permission");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b('header'))
@@ -9040,219 +9204,452 @@
       size: _ctx.crud.size
     }, null, 8 /* PROPS */, ["onChange", "shortcuts", "size"])) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "menu-right", {
       size: _ctx.crud.size
-    }), _ctx.validData(_ctx.crud.tableOption.excelBtn, _ctx.config.excelBtn) ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_el_button, {
+    }), _ctx.validData(_ctx.crud.tableOption.excelBtn, _ctx.config.excelBtn) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 1,
-      icon: _ctx.crud.getBtnIcon('excelBtn'),
-      "class": vue.normalizeClass(_ctx.b('excelBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _ctx.rowExcel
-    }, null, 8 /* PROPS */, ["icon", "class", "size", "onClick"])), [[_directive_permission, _ctx.crud.getPermission('excelBtn')]]) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.printBtn, _ctx.config.printBtn) ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_el_button, {
+      content: _ctx.t('crud.excelBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.withDirectives(vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('excelBtn'),
+          "class": vue.normalizeClass(_ctx.b('excelBtn')),
+          circle: "",
+          size: _ctx.crud.size,
+          onClick: _ctx.rowExcel
+        }, null, 8 /* PROPS */, ["icon", "class", "size", "onClick"]), [[_directive_permission, _ctx.crud.getPermission('excelBtn')]])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.printBtn, _ctx.config.printBtn) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 2,
-      icon: _ctx.crud.getBtnIcon('printBtn'),
-      "class": vue.normalizeClass(_ctx.b('printBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _ctx.rowPrint
-    }, null, 8 /* PROPS */, ["icon", "class", "size", "onClick"])), [[_directive_permission, _ctx.crud.getPermission('printBtn')]]) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.refreshBtn, _ctx.config.refreshBtn) ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_el_button, {
+      content: _ctx.t('crud.printBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.withDirectives(vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('printBtn'),
+          "class": vue.normalizeClass(_ctx.b('printBtn')),
+          circle: "",
+          size: _ctx.crud.size,
+          loading: _ctx.printLoading,
+          onClick: _ctx.rowPrint
+        }, null, 8 /* PROPS */, ["icon", "class", "size", "loading", "onClick"]), [[_directive_permission, _ctx.crud.getPermission('printBtn')]])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.refreshBtn, _ctx.config.refreshBtn) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 3,
-      icon: _ctx.crud.getBtnIcon('refreshBtn'),
-      "class": vue.normalizeClass(_ctx.b('refreshBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _ctx.crud.refreshChange
-    }, null, 8 /* PROPS */, ["icon", "class", "size", "onClick"])), [[_directive_permission, _ctx.crud.getPermission('refreshBtn')]]) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.columnBtn, _ctx.config.columnBtn) ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_el_button, {
+      content: _ctx.t('crud.refreshBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.withDirectives(vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('refreshBtn'),
+          "class": vue.normalizeClass(_ctx.b('refreshBtn')),
+          circle: "",
+          size: _ctx.crud.size,
+          onClick: _ctx.crud.refreshChange
+        }, null, 8 /* PROPS */, ["icon", "class", "size", "onClick"]), [[_directive_permission, _ctx.crud.getPermission('refreshBtn')]])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.columnBtn, _ctx.config.columnBtn) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 4,
-      icon: _ctx.crud.getBtnIcon('columnBtn'),
-      "class": vue.normalizeClass(_ctx.b('columnBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _cache[0] || (_cache[0] = function ($event) {
-        return _ctx.crud.$refs.dialogColumn.handleShow();
-      })
-    }, null, 8 /* PROPS */, ["icon", "class", "size"])), [[_directive_permission, _ctx.crud.getPermission('columnBtn')]]) : vue.createCommentVNode("v-if", true), (_ctx.crud.$refs.headerSearch || {}).searchFlag && _ctx.validData(_ctx.crud.tableOption.searchShowBtn, true) ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+      content: _ctx.t('crud.columnBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.withDirectives(vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('columnBtn'),
+          "class": vue.normalizeClass(_ctx.b('columnBtn')),
+          circle: "",
+          size: _ctx.crud.size,
+          onClick: _cache[0] || (_cache[0] = function ($event) {
+            return _ctx.crud.$refs.dialogColumn.handleShow($event.currentTarget);
+          })
+        }, null, 8 /* PROPS */, ["icon", "class", "size"]), [[_directive_permission, _ctx.crud.getPermission('columnBtn')]])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true), (_ctx.crud.$refs.headerSearch || {}).searchFlag && _ctx.validData(_ctx.crud.tableOption.searchShowBtn, true) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 5,
-      icon: _ctx.crud.getBtnIcon('searchBtn'),
-      "class": vue.normalizeClass(_ctx.b('searchBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _cache[1] || (_cache[1] = function ($event) {
-        return _ctx.crud.$refs.headerSearch.handleSearchShow();
-      })
-    }, null, 8 /* PROPS */, ["icon", "class", "size"])) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.filterBtn, _ctx.config.filterBtn) ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_el_button, {
+      content: _ctx.t('crud.searchBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('searchBtn'),
+          "class": vue.normalizeClass(_ctx.b('searchBtn')),
+          type: _ctx.crud.searchShow ? 'primary' : undefined,
+          circle: "",
+          size: _ctx.crud.size,
+          onClick: _cache[1] || (_cache[1] = function ($event) {
+            return _ctx.crud.$refs.headerSearch.handleSearchShow();
+          })
+        }, null, 8 /* PROPS */, ["icon", "class", "type", "size"])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.filterBtn, _ctx.config.filterBtn) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 6,
-      icon: _ctx.crud.getBtnIcon('filterBtn'),
-      "class": vue.normalizeClass(_ctx.b('filterBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _cache[2] || (_cache[2] = function ($event) {
-        return _ctx.crud.$refs.dialogFilter.handleShow();
-      })
-    }, null, 8 /* PROPS */, ["icon", "class", "size"])), [[_directive_permission, _ctx.crud.getPermission('filterBtn')]]) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.gridBtn, _ctx.config.gridBtn) ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_el_button, {
+      content: _ctx.t('crud.filterBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.withDirectives(vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('filterBtn'),
+          "class": vue.normalizeClass(_ctx.b('filterBtn')),
+          circle: "",
+          size: _ctx.crud.size,
+          onClick: _cache[2] || (_cache[2] = function ($event) {
+            return _ctx.crud.$refs.dialogFilter.handleShow();
+          })
+        }, null, 8 /* PROPS */, ["icon", "class", "size"]), [[_directive_permission, _ctx.crud.getPermission('filterBtn')]])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.crud.tableOption.gridBtn, _ctx.config.gridBtn) ? (vue.openBlock(), vue.createBlock(_component_el_tooltip, {
       key: 7,
-      icon: _ctx.crud.getBtnIcon('gridBtn'),
-      "class": vue.normalizeClass(_ctx.b('gridBtn')),
-      circle: "",
-      size: _ctx.crud.size,
-      onClick: _cache[3] || (_cache[3] = function ($event) {
-        return _ctx.crud.handleGridShow();
-      })
-    }, null, 8 /* PROPS */, ["icon", "class", "size"])), [[_directive_permission, _ctx.crud.getPermission('gridBtn')]]) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
+      content: _ctx.t('crud.gridBtn'),
+      placement: "top"
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.withDirectives(vue.createVNode(_component_el_button, {
+          icon: _ctx.crud.getBtnIcon('gridBtn'),
+          "class": vue.normalizeClass(_ctx.b('gridBtn')),
+          type: _ctx.crud.gridShow ? 'primary' : undefined,
+          circle: "",
+          size: _ctx.crud.size,
+          onClick: _cache[3] || (_cache[3] = function ($event) {
+            return _ctx.crud.handleGridShow();
+          })
+        }, null, 8 /* PROPS */, ["icon", "class", "type", "size"]), [[_directive_permission, _ctx.crud.getPermission('gridBtn')]])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$1e.render = render$1e;
-  script$1e.__file = "packages/element-plus/crud/menu/header-menu.vue";
+  script$1h.render = render$1h;
+  script$1h.__file = "packages/element-plus/crud/menu/header-menu.vue";
 
-  var script$1d = create({
-    name: 'crud',
+  var script$1g = create({
+    name: "crud",
     mixins: [locale],
     inject: ["crud"],
     data: function data() {
       return {
         data: [],
-        columnBox: false
+        columnBox: false,
+        triggerRef: null,
+        columnSnapshot: null,
+        confirmed: false,
+        columnSortable: null
       };
     },
     computed: {
-      defaultColumn: function defaultColumn() {
-        return [{
-          label: this.t('crud.column.hide'),
-          prop: 'hide'
-        }, {
-          label: this.t('crud.column.fixed'),
-          prop: 'fixed'
-        }, {
-          label: this.t('crud.column.filters'),
-          prop: 'filters'
-        }, {
-          label: this.t('crud.column.sortable'),
-          prop: 'sortable'
-        }, {
-          label: this.t('crud.column.width'),
-          prop: 'width',
-          hide: true
-        }];
-      }
-    },
-    methods: {
-      handleShow: function handleShow() {
+      isAllVisible: function isAllVisible() {
         var _this = this;
-        this.data = [];
-        this.crud.propOption.forEach(function (column) {
-          if (column.showColumn != false) _this.data.push(column);
-        });
-        this.columnBox = true;
-        this.$nextTick(function () {
-          return _this.rowDrop();
+        return this.data.length > 0 && this.data.every(function (column) {
+          return _this.isVisible(column);
         });
       },
+      isIndeterminate: function isIndeterminate() {
+        var _this2 = this;
+        var visibleCount = this.data.filter(function (column) {
+          return _this2.isVisible(column);
+        }).length;
+        return visibleCount > 0 && visibleCount < this.data.length;
+      }
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.destroySortable();
+    },
+    methods: {
+      handleShow: function handleShow(triggerRef) {
+        var _this3 = this;
+        if (triggerRef) this.triggerRef = triggerRef;
+        if (!this.triggerRef) return;
+        this.destroySortable();
+        this.data = this.crud.propOption.filter(function (column) {
+          return column.showColumn !== false;
+        });
+        this.columnSnapshot = this.crud.deepClone(this.crud.tableOption.column);
+        this.confirmed = false;
+        this.columnBox = true;
+        this.$nextTick(function () {
+          return _this3.rowDrop();
+        });
+      },
+      isVisible: function isVisible(column) {
+        var _this$crud$objectOpti;
+        return ((_this$crud$objectOpti = this.crud.objectOption[column.prop]) === null || _this$crud$objectOpti === void 0 ? void 0 : _this$crud$objectOpti.hide) !== true;
+      },
+      isFixed: function isFixed(column, position) {
+        var _this$crud$objectOpti2;
+        var fixed = (_this$crud$objectOpti2 = this.crud.objectOption[column.prop]) === null || _this$crud$objectOpti2 === void 0 ? void 0 : _this$crud$objectOpti2.fixed;
+        return position === "left" ? fixed === true || fixed === "left" : fixed === "right";
+      },
+      isLegacyEnabled: function isLegacyEnabled(column, prop) {
+        var _this$crud$objectOpti3;
+        return ((_this$crud$objectOpti3 = this.crud.objectOption[column.prop]) === null || _this$crud$objectOpti3 === void 0 ? void 0 : _this$crud$objectOpti3[prop]) === true;
+      },
+      handleCheckAll: function handleCheckAll(visible) {
+        var _this4 = this;
+        this.data.forEach(function (column) {
+          _this4.crud.objectOption[column.prop].hide = !visible;
+        });
+        this.handleChange("hide");
+      },
+      handleVisibleChange: function handleVisibleChange(column, visible) {
+        this.crud.objectOption[column.prop].hide = !visible;
+        this.handleChange("hide");
+      },
+      handleFixedChange: function handleFixedChange(column, position) {
+        var target = this.crud.objectOption[column.prop];
+        target.fixed = this.isFixed(column, position) ? false : position;
+        this.handleChange("fixed");
+      },
+      handleLegacyChange: function handleLegacyChange(column, prop) {
+        var target = this.crud.objectOption[column.prop];
+        target[prop] = !this.isLegacyEnabled(column, prop);
+        this.handleChange(prop);
+      },
       handleChange: function handleChange(prop) {
-        if (prop === 'hide') {
+        if (prop === "hide") {
           this.crud.gridShow ? this.crud.refreshTable() : this.crud.doLayout();
-        } else if (prop === 'filters') {
+        } else if (prop === "filters") {
           this.crud.refreshTable();
         }
         this.crud.saveColumnState(prop);
       },
+      handleConfirm: function handleConfirm() {
+        this.confirmed = true;
+        this.columnBox = false;
+      },
+      handleCancel: function handleCancel() {
+        this.restoreColumn();
+        this.confirmed = true;
+        this.columnBox = false;
+      },
+      handleHide: function handleHide() {
+        if (!this.confirmed) this.restoreColumn();
+        this.destroySortable();
+        this.data = [];
+      },
+      handleReset: function handleReset() {
+        var _this5 = this;
+        if (!this.crud.columnStateEnabled) return;
+        this.crud.resetColumnState(function () {
+          _this5.data = _this5.crud.propOption.filter(function (column) {
+            return column.showColumn !== false;
+          });
+          _this5.$nextTick(function () {
+            return _this5.rowDrop();
+          });
+        });
+      },
+      restoreColumn: function restoreColumn() {
+        var _this6 = this;
+        if (!this.columnSnapshot) return;
+        this.crud.tableOption.column = this.crud.deepClone(this.columnSnapshot);
+        this.crud.refreshTable(function () {
+          return _this6.crud.doLayout();
+        });
+        this.crud.saveColumnState("cancel");
+      },
+      destroySortable: function destroySortable() {
+        if (this.columnSortable) this.columnSortable.destroy();
+        this.columnSortable = null;
+      },
       rowDrop: function rowDrop() {
-        var _this2 = this;
-        var el = this.$refs.table.$el.querySelectorAll(config$2.dropRowClass)[0];
-        this.crud.tableDrop('column', el, function (evt) {
+        var _this7 = this;
+        if (!this.$refs.list) return;
+        this.destroySortable();
+        this.columnSortable = this.crud.tableDrop("column", this.$refs.list, function (evt) {
           var oldIndex = evt.oldIndex;
           var newIndex = evt.newIndex;
-          _this2.crud.headerSort(oldIndex, newIndex);
+          if (oldIndex === newIndex) return;
+          var column = _this7.data.splice(oldIndex, 1)[0];
+          _this7.data.splice(newIndex, 0, column);
+          _this7.sortColumn(oldIndex, newIndex);
         });
+      },
+      sortColumn: function sortColumn(oldIndex, newIndex) {
+        this.crud.headerSort(oldIndex, newIndex);
       }
     }
   });
 
-  function render$1d(_ctx, _cache, $props, $setup, $data, $options) {
-    var _component_el_table_column = vue.resolveComponent("el-table-column");
+  var _hoisted_1$W = {
+    "class": "avue-crud__column-panel"
+  };
+  var _hoisted_2$B = {
+    "class": "avue-crud__column-panel__header"
+  };
+  var _hoisted_3$s = {
+    ref: "list",
+    "class": "avue-crud__column-panel__list"
+  };
+  var _hoisted_4$q = {
+    "class": "avue-crud__column-panel__label"
+  };
+  var _hoisted_5$n = {
+    "class": "avue-crud__column-panel__actions"
+  };
+  var _hoisted_6$k = {
+    "class": "avue-crud__column-panel__footer"
+  };
+  var _hoisted_7$h = {
+    "class": "avue-crud__column-panel__footer-actions"
+  };
+  function render$1g(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
-    var _component_el_table = vue.resolveComponent("el-table");
     var _component_el_button = vue.resolveComponent("el-button");
-    var _component_el_drawer = vue.resolveComponent("el-drawer");
-    return _ctx.columnBox ? (vue.openBlock(), vue.createBlock(_component_el_drawer, {
+    var _component_el_tooltip = vue.resolveComponent("el-tooltip");
+    var _component_el_popover = vue.resolveComponent("el-popover");
+    return _ctx.triggerRef ? (vue.openBlock(), vue.createBlock(_component_el_popover, {
       key: 0,
-      "append-to-body": _ctx.$AVUE.appendToBody,
-      "lock-scroll": "",
-      "class": vue.normalizeClass(['avue-dialog', _ctx.b('column')].join(' ')),
-      title: _ctx.t('crud.showTitle'),
-      size: _ctx.crud.isMobile ? '100%' : '40%',
-      modelValue: _ctx.columnBox,
-      "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      visible: _ctx.columnBox,
+      "onUpdate:visible": _cache[0] || (_cache[0] = function ($event) {
         return _ctx.columnBox = $event;
-      })
-    }, vue.createSlots({
+      }),
+      "virtual-ref": _ctx.triggerRef,
+      "virtual-triggering": "",
+      placement: "bottom-end",
+      width: _ctx.crud.isMobile ? 320 : 320,
+      "popper-class": "avue-crud__column-popper",
+      onHide: _ctx.handleHide
+    }, {
       "default": vue.withCtx(function () {
-        return [vue.createVNode(_component_el_table, {
-          data: _ctx.data,
-          ref: "table",
-          height: "100%",
-          size: _ctx.crud.size,
-          border: ""
+        return [vue.createElementVNode("div", _hoisted_1$W, [vue.createElementVNode("div", _hoisted_2$B, [vue.createVNode(_component_el_checkbox, {
+          "model-value": _ctx.isAllVisible,
+          indeterminate: _ctx.isIndeterminate,
+          onChange: _ctx.handleCheckAll
         }, {
           "default": vue.withCtx(function () {
-            return [vue.createVNode(_component_el_table_column, {
-              align: "center",
-              width: "100",
-              "header-align": "center",
-              prop: "label",
-              key: "label",
-              label: _ctx.t('crud.column.name')
-            }, null, 8 /* PROPS */, ["label"]), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.defaultColumn, function (item, index) {
-              return vue.openBlock(), vue.createElementBlock(vue.Fragment, {
-                key: item.prop
-              }, [item.hide !== true ? (vue.openBlock(), vue.createBlock(_component_el_table_column, {
-                key: 0,
-                label: item.label,
-                prop: item.prop,
-                align: "center",
-                "header-align": "center"
-              }, {
-                "default": vue.withCtx(function (_ref) {
-                  var row = _ref.row;
-                  return [vue.createVNode(_component_el_checkbox, {
-                    onChange: function onChange($event) {
-                      return _ctx.handleChange(item.prop);
-                    },
-                    modelValue: _ctx.crud.objectOption[row.prop][item.prop],
-                    "onUpdate:modelValue": function onUpdateModelValue($event) {
-                      return _ctx.crud.objectOption[row.prop][item.prop] = $event;
-                    }
-                  }, null, 8 /* PROPS */, ["onChange", "modelValue", "onUpdate:modelValue"])];
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.all")), 1 /* TEXT */)];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["model-value", "indeterminate", "onChange"])]), vue.createElementVNode("div", _hoisted_3$s, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (column) {
+          return vue.openBlock(), vue.createElementBlock("div", {
+            key: column.prop,
+            "class": "avue-crud__column-panel__item"
+          }, [vue.createVNode(_component_el_checkbox, {
+            "model-value": _ctx.isVisible(column),
+            "aria-label": column.label,
+            onChange: function onChange($event) {
+              return _ctx.handleVisibleChange(column, $event);
+            }
+          }, null, 8 /* PROPS */, ["model-value", "aria-label", "onChange"]), _cache[1] || (_cache[1] = vue.createElementVNode("span", {
+            "class": "avue-crud__column-panel__drag",
+            "aria-hidden": "true"
+          }, "⠿", -1 /* HOISTED */)), vue.createElementVNode("span", _hoisted_4$q, vue.toDisplayString(column.label), 1 /* TEXT */), vue.createElementVNode("div", _hoisted_5$n, [vue.createVNode(_component_el_tooltip, {
+            content: _ctx.t('crud.column.fixedLeft'),
+            placement: "top"
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_button, {
+                text: "",
+                circle: "",
+                icon: "el-icon-d-arrow-left",
+                "class": vue.normalizeClass({
+                  'is-active': _ctx.isFixed(column, 'left')
                 }),
-                _: 2 /* DYNAMIC */
-              }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["label", "prop"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
-            }), 128 /* KEYED_FRAGMENT */))];
-          }),
-          _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["data", "size"])];
-      }),
-      _: 2 /* DYNAMIC */
-    }, [_ctx.crud.columnStateEnabled ? {
-      name: "footer",
-      fn: vue.withCtx(function () {
-        return [vue.createVNode(_component_el_button, {
-          size: _ctx.crud.size,
-          onClick: _cache[0] || (_cache[0] = function ($event) {
-            return _ctx.crud.resetColumnState();
-          })
+                "aria-label": _ctx.t('crud.column.fixedLeft'),
+                onClick: function onClick($event) {
+                  return _ctx.handleFixedChange(column, 'left');
+                }
+              }, null, 8 /* PROPS */, ["class", "aria-label", "onClick"])];
+            }),
+            _: 2 /* DYNAMIC */
+          }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["content"]), vue.createVNode(_component_el_tooltip, {
+            content: _ctx.t('crud.column.fixedRight'),
+            placement: "top"
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_button, {
+                text: "",
+                circle: "",
+                icon: "el-icon-d-arrow-right",
+                "class": vue.normalizeClass({
+                  'is-active': _ctx.isFixed(column, 'right')
+                }),
+                "aria-label": _ctx.t('crud.column.fixedRight'),
+                onClick: function onClick($event) {
+                  return _ctx.handleFixedChange(column, 'right');
+                }
+              }, null, 8 /* PROPS */, ["class", "aria-label", "onClick"])];
+            }),
+            _: 2 /* DYNAMIC */
+          }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["content"]), vue.createVNode(_component_el_tooltip, {
+            content: _ctx.t('crud.column.filters'),
+            placement: "top"
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_button, {
+                text: "",
+                circle: "",
+                icon: "el-icon-filter",
+                "class": vue.normalizeClass({
+                  'is-active': _ctx.isLegacyEnabled(column, 'filters')
+                }),
+                "aria-label": _ctx.t('crud.column.filters'),
+                onClick: function onClick($event) {
+                  return _ctx.handleLegacyChange(column, 'filters');
+                }
+              }, null, 8 /* PROPS */, ["class", "aria-label", "onClick"])];
+            }),
+            _: 2 /* DYNAMIC */
+          }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["content"]), vue.createVNode(_component_el_tooltip, {
+            content: _ctx.t('crud.column.sortable'),
+            placement: "top"
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_button, {
+                text: "",
+                circle: "",
+                icon: "el-icon-sort",
+                "class": vue.normalizeClass({
+                  'is-active': _ctx.isLegacyEnabled(column, 'sortable')
+                }),
+                "aria-label": _ctx.t('crud.column.sortable'),
+                onClick: function onClick($event) {
+                  return _ctx.handleLegacyChange(column, 'sortable');
+                }
+              }, null, 8 /* PROPS */, ["class", "aria-label", "onClick"])];
+            }),
+            _: 2 /* DYNAMIC */
+          }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["content"])])]);
+        }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), vue.createElementVNode("div", _hoisted_6$k, [vue.createVNode(_component_el_button, {
+          text: "",
+          disabled: !_ctx.crud.columnStateEnabled,
+          onClick: _ctx.handleReset
         }, {
           "default": vue.withCtx(function () {
-            return [vue.createTextVNode(vue.toDisplayString(_ctx.t('crud.column.reset')), 1 /* TEXT */)];
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.restore")), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["size"])];
+        }, 8 /* PROPS */, ["disabled", "onClick"]), vue.createElementVNode("span", _hoisted_7$h, [vue.createVNode(_component_el_button, {
+          text: "",
+          onClick: _ctx.handleCancel
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.cancel")), 1 /* TEXT */)];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"]), vue.createVNode(_component_el_button, {
+          text: "",
+          type: "primary",
+          onClick: _ctx.handleConfirm
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.confirm")), 1 /* TEXT */)];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])])])])];
       }),
-      key: "0"
-    } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["append-to-body", "class", "title", "size", "modelValue"])) : vue.createCommentVNode("v-if", true);
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["visible", "virtual-ref", "width", "onHide"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1d.render = render$1d;
-  script$1d.__file = "packages/element-plus/crud/dialog/dialog-column.vue";
+  script$1g.render = render$1g;
+  script$1g.__file = "packages/element-plus/crud/dialog/dialog-column.vue";
 
-  var script$1c = create({
+  var script$1f = create({
     name: "crud",
     mixins: [locale],
     inject: ["crud"],
@@ -9338,10 +9735,10 @@
     }
   });
 
-  var _hoisted_1$U = {
+  var _hoisted_1$V = {
     "class": "avue-dialog__footer"
   };
-  function render$1c(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1f(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_button_group = vue.resolveComponent("el-button-group");
     var _component_el_col = vue.resolveComponent("el-col");
@@ -9459,7 +9856,7 @@
             }), 128 /* KEYED_FRAGMENT */))];
           }),
           _: 1 /* STABLE */
-        }), vue.createElementVNode("span", _hoisted_1$U, [vue.createVNode(_component_el_button, {
+        }), vue.createElementVNode("span", _hoisted_1$V, [vue.createVNode(_component_el_button, {
           type: "primary",
           size: _ctx.crud.size,
           onClick: _ctx.handleSubmit
@@ -9484,10 +9881,10 @@
     }, 8 /* PROPS */, ["class", "append-to-body", "title", "size", "modelValue"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1c.render = render$1c;
-  script$1c.__file = "packages/element-plus/crud/dialog/dialog-filter.vue";
+  script$1f.render = render$1f;
+  script$1f.__file = "packages/element-plus/crud/dialog/dialog-filter.vue";
 
-  var script$1b = create({
+  var script$1e = create({
     name: "crud",
     mixins: [locale],
     emits: ["update:modelValue", "change"],
@@ -9723,10 +10120,10 @@
     }
   });
 
-  var _hoisted_1$T = {
+  var _hoisted_1$U = {
     "class": "el-dialog__title"
   };
-  function render$1b(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1e(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_avue_form = vue.resolveComponent("avue-form");
     var _component_el_button = vue.resolveComponent("el-button");
@@ -9756,7 +10153,7 @@
       header: vue.withCtx(function () {
         return [vue.createElementVNode("div", {
           "class": vue.normalizeClass(_ctx.b('dialog__header'))
-        }, [vue.createElementVNode("span", _hoisted_1$T, vue.toDisplayString(_ctx.dialogTitle), 1 /* TEXT */), vue.createElementVNode("div", {
+        }, [vue.createElementVNode("span", _hoisted_1$U, vue.toDisplayString(_ctx.dialogTitle), 1 /* TEXT */), vue.createElementVNode("div", {
           "class": vue.normalizeClass(_ctx.b('dialog__menu'))
         }, [vue.createVNode(_component_el_icon, {
           "class": "el-dialog__close",
@@ -9844,8 +10241,8 @@
     }, 16 /* FULL_PROPS */, ["draggable", "class", "append-to-body", "top", "title", "close-on-press-escape", "close-on-click-modal", "modal", "modal-penetrable", "show-close", "header-class", "body-class", "footer-class", "modelValue", "before-close"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1b.render = render$1b;
-  script$1b.__file = "packages/element-plus/crud/dialog/dialog-form.vue";
+  script$1e.render = render$1e;
+  script$1e.__file = "packages/element-plus/crud/dialog/dialog-form.vue";
 
   function _arrayWithHoles(r) {
     if (Array.isArray(r)) return r;
@@ -9979,7 +10376,7 @@
     return result;
   };
 
-  var script$1a = {
+  var script$1d = {
     name: 'crud',
     mixins: [locale],
     inject: ['crud'],
@@ -10106,7 +10503,7 @@
           var count = [];
           list.forEach(function (ele, index) {
             var children = ele.children;
-            if (children && !Array.isArray(children)) delete ele.children;else if (ele.showColumn === false) count.push(index);else {
+            if (children && !Array.isArray(children)) delete ele.children;else if (ele.showColumn === false || ele.excel === false) count.push(index);else {
               ele.prop = ele.prop || uuid();
               prop.push(ele.prop);
               if (ele.children) _findProp(children);
@@ -10156,17 +10553,17 @@
     }
   };
 
-  var _hoisted_1$S = {
+  var _hoisted_1$T = {
     key: 0
   };
-  var _hoisted_2$B = {
+  var _hoisted_2$A = {
     "class": "avue-dialog__footer"
   };
-  function render$1a(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1d(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_avue_form = vue.resolveComponent("avue-form");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_dialog = vue.resolveComponent("el-dialog");
-    return $data.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$S, [_cache[3] || (_cache[3] = vue.createTextVNode("  ")), vue.createVNode(_component_el_dialog, {
+    return $data.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$T, [_cache[3] || (_cache[3] = vue.createTextVNode("  ")), vue.createVNode(_component_el_dialog, {
       title: _ctx.t('crud.excelBtn'),
       "lock-scroll": "",
       "append-to-body": _ctx.$AVUE.appendToBody,
@@ -10185,7 +10582,7 @@
             return $data.form = $event;
           }),
           option: $data.option
-        }, null, 8 /* PROPS */, ["modelValue", "option"]), vue.createElementVNode("span", _hoisted_2$B, [vue.createVNode(_component_el_button, {
+        }, null, 8 /* PROPS */, ["modelValue", "option"]), vue.createElementVNode("span", _hoisted_2$A, [vue.createVNode(_component_el_button, {
           type: "primary",
           size: $options.crud.size,
           onClick: $options.handleSubmit
@@ -10210,8 +10607,8 @@
     }, 8 /* PROPS */, ["title", "append-to-body", "modelValue", "width"])])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1a.render = render$1a;
-  script$1a.__file = "packages/element-plus/crud/dialog/dialog-excel.vue";
+  script$1d.render = render$1d;
+  script$1d.__file = "packages/element-plus/crud/dialog/dialog-excel.vue";
 
   var custom = {
     props: {
@@ -10255,9 +10652,9 @@
     }
   };
 
-  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$19 = {
+  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$1c = {
     name: 'form-temp',
     mixins: [slot],
     emits: ['update:modelValue', 'change', 'enter'],
@@ -10354,7 +10751,7 @@
       },
       getPlaceholder: getPlaceholder,
       getBind: function getBind(column) {
-        var params = _objectSpread$a(_objectSpread$a(_objectSpread$a({}, column), this.params), this.$uploadFun(column));
+        var params = _objectSpread$b(_objectSpread$b(_objectSpread$b({}, column), this.params), this.$uploadFun(column));
         ['value', 'className'].forEach(function (ele) {
           delete params[ele];
         });
@@ -10373,8 +10770,8 @@
     }
   };
 
-  var _hoisted_1$R = ["innerHTML"];
-  function render$19(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$S = ["innerHTML"];
+  function render$1c(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_custom = vue.resolveComponent("custom");
     return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [$props.render ? (vue.openBlock(), vue.createBlock(_component_custom, {
       key: 0,
@@ -10422,7 +10819,7 @@
       fn: vue.withCtx(function () {
         return [vue.createElementVNode("span", {
           innerHTML: $options.params.html
-        }, null, 8 /* PROPS */, _hoisted_1$R)];
+        }, null, 8 /* PROPS */, _hoisted_1$S)];
       }),
       key: "1"
     } : undefined, vue.renderList($props.columnSlot, function (item) {
@@ -10448,14 +10845,18 @@
     }, vue.toDisplayString($props.column.description), 3 /* TEXT, CLASS */))], 64 /* STABLE_FRAGMENT */)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
   }
 
-  script$19.render = render$19;
-  script$19.__file = "packages/core/components/form/index.vue";
+  script$1c.render = render$1c;
+  script$1c.__file = "packages/core/components/form/index.vue";
 
-  var script$18 = {
+  var script$1b = {
     name: 'icon-temp',
     props: {
       small: Boolean,
       color: String,
+      iconStyle: {
+        type: [String, Object, Array],
+        "default": ''
+      },
       size: {
         type: [String, Number],
         "default": 32
@@ -10464,50 +10865,68 @@
         type: String,
         "default": ''
       }
+    },
+    computed: {
+      customIconStyle: function customIconStyle() {
+        return [this.color ? {
+          color: this.color
+        } : {}, this.iconStyle];
+      },
+      iconSize: function iconSize() {
+        return this.small ? 15 : this.size;
+      },
+      isSvgIcon: function isSvgIcon() {
+        return this.text.includes('#');
+      },
+      isElementIcon: function isElementIcon() {
+        return this.text.indexOf('el-') === 0;
+      }
     }
   };
 
-  var _hoisted_1$Q = {
-    key: 0,
-    "aria-hidden": "true"
-  };
-  var _hoisted_2$A = ["xlink:href"];
-  function render$18(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$R = ["xlink:href"];
+  function render$1b(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon = vue.resolveComponent("el-icon");
     return $props.text ? (vue.openBlock(), vue.createElementBlock("span", {
       key: 0,
       "class": vue.normalizeClass(["avue-icon", {
         'avue-icon--small': $props.small
       }])
-    }, [$props.text.includes('#') ? (vue.openBlock(), vue.createElementBlock("svg", _hoisted_1$Q, [vue.createElementVNode("use", {
+    }, [$options.isSvgIcon ? (vue.openBlock(), vue.createElementBlock("svg", {
+      key: 0,
+      style: vue.normalizeStyle($options.customIconStyle),
+      "aria-hidden": "true"
+    }, [vue.createElementVNode("use", {
       "xlink:href": $props.text
-    }, null, 8 /* PROPS */, _hoisted_2$A)])) : $props.text.indexOf('el-') == 0 ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+    }, null, 8 /* PROPS */, _hoisted_1$R)], 4 /* STYLE */)) : $options.isElementIcon ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
       key: 1,
-      size: $props.size,
-      color: $props.color
+      size: $options.iconSize,
+      color: $props.color,
+      style: vue.normalizeStyle($props.iconStyle)
     }, {
       "default": vue.withCtx(function () {
         return [(vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.text)))];
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["size", "color"])) : (vue.openBlock(), vue.createElementBlock("i", {
+    }, 8 /* PROPS */, ["size", "color", "style"])) : (vue.openBlock(), vue.createElementBlock("i", {
       key: 2,
-      "class": vue.normalizeClass($props.text)
-    }, null, 2 /* CLASS */))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true);
+      "class": vue.normalizeClass([$props.text, 'avue-icon__font']),
+      style: vue.normalizeStyle($options.customIconStyle)
+    }, null, 6 /* CLASS, STYLE */))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true);
   }
 
-  script$18.render = render$18;
-  script$18.__file = "packages/core/components/icon/index.vue";
+  script$1b.render = render$1b;
+  script$1b.__file = "packages/core/components/icon/index.vue";
 
   var count = {};
-  var script$17 = {
+  var script$1a = {
     name: "column-slot",
     inject: ["dynamic", "crud"],
     components: {
       custom: custom,
-      tableItemCard: script$1h,
-      formTemp: script$19,
-      iconTemp: script$18
+      tableItemCard: script$1k,
+      formTemp: script$1c,
+      iconTemp: script$1b
     },
     props: {
       column: Object,
@@ -10579,11 +10998,12 @@
             if (_this2.validatenull(cascader) || _this2.validatenull(value) || _this2.validatenull(columnNext)) {
               return;
             }
-            sendDic({
+            _this2.crud.requestDic({
               column: columnNext,
               value: value,
               form: row
-            }, _this2).then(function (res) {
+            }, "cell-cascader:".concat(rowIndex, ":").concat(columnNextProp)).then(function (res) {
+              if (!res) return;
               var dic = res || [];
               //首次加载的放入队列记录
               if (!_this2.crud.cascaderIndexList.includes(rowIndex)) {
@@ -10644,16 +11064,16 @@
     }
   };
 
-  var _hoisted_1$P = {
+  var _hoisted_1$Q = {
     key: 1
   };
   var _hoisted_2$z = {
     key: 0,
     "class": "avue-crud__img"
   };
-  var _hoisted_3$s = ["innerHTML"];
+  var _hoisted_3$r = ["innerHTML"];
   var _hoisted_4$p = ["title", "textContent"];
-  function render$17(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1a(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_form_temp = vue.resolveComponent("form-temp");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     var _component_el_form_item = vue.resolveComponent("el-form-item");
@@ -10704,7 +11124,7 @@
         }, {
           column: $props.column,
           $index: $index
-        }))) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$P, vue.toDisplayString($props.column.label), 1 /* TEXT */))];
+        }))) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$Q, vue.toDisplayString($props.column.label), 1 /* TEXT */))];
       }),
       "default": vue.withCtx(function (_ref2) {
         var row = _ref2.row,
@@ -10851,7 +11271,7 @@
         }, null, 8 /* PROPS */, ["text"])) : $props.column.html ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 5,
           innerHTML: $options.handleDetail(row, $props.column)
-        }, null, 8 /* PROPS */, _hoisted_3$s)) : (vue.openBlock(), vue.createElementBlock("span", {
+        }, null, 8 /* PROPS */, _hoisted_3$r)) : (vue.openBlock(), vue.createElementBlock("span", {
           key: 6,
           "class": vue.normalizeClass({
             'avue-crud__ellipsis': $props.column.ellipsis
@@ -10864,14 +11284,14 @@
     }, 8 /* PROPS */, ["prop", "grid-row", "label", "class-name", "label-class-name", "column-key", "filter-placement", "filtered-value", "filtered-multiple", "filters", "filter-method", "filter-multiple", "show-overflow-tooltip", "tooltip-formatter", "min-width", "sortable", "sort-method", "sort-orders", "sort-by", "resizable", "render-header", "align", "header-align", "width", "fixed"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$17.render = render$17;
-  script$17.__file = "packages/element-plus/crud/column/column-slot.vue";
+  script$1a.render = render$1a;
+  script$1a.__file = "packages/element-plus/crud/column/column-slot.vue";
 
-  var script$16 = {
+  var script$19 = {
     name: "column-dynamic",
     components: {
-      columnSlot: script$17,
-      tableItemCard: script$1h
+      columnSlot: script$1a,
+      tableItemCard: script$1k
     },
     inject: ["dynamic", "crud"],
     props: {
@@ -10886,10 +11306,10 @@
     }
   };
 
-  var _hoisted_1$O = {
+  var _hoisted_1$P = {
     key: 1
   };
-  function render$16(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$19(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_column_dynamic = vue.resolveComponent("column-dynamic", true);
     var _component_column_slot = vue.resolveComponent("column-slot");
     return _ctx.getColumnProp($props.columnOption, 'hide') ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($options.crud.tableColumnName), {
@@ -10925,7 +11345,7 @@
         }, {
           column: $props.columnOption,
           $index: $index
-        }))) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$O, vue.toDisplayString($props.columnOption.label), 1 /* TEXT */))];
+        }))) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$P, vue.toDisplayString($props.columnOption.label), 1 /* TEXT */))];
       }),
       "default": vue.withCtx(function () {
         return [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($props.columnOption.children, function (column) {
@@ -10965,17 +11385,17 @@
     }, 8 /* PROPS */, ["prop", "label", "class-name", "label-class-name", "filters", "filter-method", "filter-multiple", "show-overflow-tooltip", "tooltip-formatter", "min-width", "sortable", "render-header", "align", "header-align", "width", "fixed"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$16.render = render$16;
-  script$16.__file = "packages/element-plus/crud/column/column-dynamic.vue";
+  script$19.render = render$19;
+  script$19.__file = "packages/element-plus/crud/column/column-dynamic.vue";
 
-  var script$15 = create({
+  var script$18 = create({
     name: "crud",
     data: function data() {
       return {};
     },
     components: {
-      columnSlot: script$17,
-      columnDynamic: script$16
+      columnSlot: script$1a,
+      columnDynamic: script$19
     },
     inject: ["crud"],
     provide: function provide() {
@@ -11058,7 +11478,7 @@
     }
   });
 
-  function render$15(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$18(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_column_dynamic = vue.resolveComponent("column-dynamic");
     var _component_column_slot = vue.resolveComponent("column-slot");
     return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [vue.renderSlot(_ctx.$slots, "header"), vue.createCommentVNode(" 动态列 "), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.list, function (column) {
@@ -11097,10 +11517,10 @@
     }), 128 /* KEYED_FRAGMENT */)), vue.renderSlot(_ctx.$slots, "footer")], 64 /* STABLE_FRAGMENT */);
   }
 
-  script$15.render = render$15;
-  script$15.__file = "packages/element-plus/crud/column/column.vue";
+  script$18.render = render$18;
+  script$18.__file = "packages/element-plus/crud/column/column.vue";
 
-  var script$14 = create({
+  var script$17 = create({
     name: "crud",
     data: function data() {
       return {
@@ -11108,7 +11528,7 @@
       };
     },
     components: {
-      tableItemCard: script$1h
+      tableItemCard: script$1k
     },
     mixins: [locale],
     inject: ["crud"],
@@ -11150,10 +11570,10 @@
     }
   });
 
-  var _hoisted_1$N = {
+  var _hoisted_1$O = {
     key: 1
   };
-  function render$14(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$17(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_arrow_down = vue.resolveComponent("el-icon-arrow-down");
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_el_button = vue.resolveComponent("el-button");
@@ -11179,7 +11599,7 @@
           key: 0
         }, scope, {
           size: _ctx.crud.size
-        })) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$N, vue.toDisplayString(_ctx.crud.tableOption.menuTitle || _ctx.t("crud.menu")), 1 /* TEXT */))];
+        })) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$O, vue.toDisplayString(_ctx.crud.tableOption.menuTitle || _ctx.t("crud.menu")), 1 /* TEXT */))];
       }),
       "default": vue.withCtx(function (_ref) {
         var row = _ref.row,
@@ -11419,10 +11839,10 @@
     }, 8 /* PROPS */, ["class-name", "label-class-name", "fixed", "label", "align", "header-align", "width"])) : vue.createCommentVNode("v-if", true)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
   }
 
-  script$14.render = render$14;
-  script$14.__file = "packages/element-plus/crud/column/column-menu.vue";
+  script$17.render = render$17;
+  script$17.__file = "packages/element-plus/crud/column/column-menu.vue";
 
-  var script$13 = create({
+  var script$16 = create({
     name: "crud",
     data: function data() {
       return {
@@ -11432,7 +11852,7 @@
       };
     },
     components: {
-      tableItemCard: script$1h
+      tableItemCard: script$1k
     },
     mixins: [locale],
     inject: ["crud"],
@@ -11498,7 +11918,7 @@
     }
   });
 
-  function render$13(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$16(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [vue.createCommentVNode(" 折叠面板  "), _ctx.crud.tableOption.expand ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.crud.tableColumnName), {
       key: 0,
       type: "expand",
@@ -11545,11 +11965,11 @@
     }, 8 /* PROPS */, ["fixed", "label", "class-name", "label-class-name", "width", "index"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
   }
 
-  script$13.render = render$13;
-  script$13.__file = "packages/element-plus/crud/column/column-default.vue";
+  script$16.render = render$16;
+  script$16.__file = "packages/element-plus/crud/column/column-default.vue";
 
-  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var STORAGE_PREFIX = 'AVUE_COLUMN_STATE:';
   var STATE_KEYS = ['hide', 'fixed', 'filters', 'sortable', 'width'];
   var getStorage = function getStorage() {
@@ -11562,7 +11982,7 @@
     var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     if (Array.isArray(columns)) return columns;
     return Object.keys(columns).map(function (prop) {
-      return _objectSpread$9(_objectSpread$9({}, columns[prop]), {}, {
+      return _objectSpread$a(_objectSpread$a({}, columns[prop]), {}, {
         prop: columns[prop].prop || prop
       });
     });
@@ -11640,9 +12060,9 @@
     } catch (error) {}
   };
 
-  function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$12 = create({
+  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$15 = create({
     name: "crud",
     mixins: [init("crud"), locale],
     emits: ["update:modelValue", "tree-load", "selection-clear", "header-dragend", "expand-change", "current-row-change", "refresh-change", "selection-change", "select", "select-all", "sortable-change", "column-sortable-change", "filter", "filter-change", "sort-change", "row-dblclick", "row-click", "cell-mouse-enter", "cell-mouse-leave", "cell-click", "header-click", "tab-click", "enter", "error", "date-change", "grid-status-change", "update:search", "update:page", "search-icon-change", "search-change", "search-reset", "on-load", "current-change", "size-change", "row-contextmenu", "header-contextmenu", "cell-dblclick", "row-del", "row-save", "row-update", "change", "scroll", "column-state-change", "column-state-reset"],
@@ -11655,26 +12075,26 @@
       };
     },
     components: {
-      tableCard: script$1i,
-      tableItemCard: script$1h,
-      column: script$15,
-      columnDefault: script$13,
+      tableCard: script$1l,
+      tableItemCard: script$1k,
+      column: script$18,
+      columnDefault: script$16,
       //其它列,
-      columnMenu: script$14,
+      columnMenu: script$17,
       //操作栏，
-      tablePage: script$1g,
+      tablePage: script$1j,
       //分页
-      headerSearch: script$1f,
+      headerSearch: script$1i,
       //搜索
-      headerMenu: script$1e,
+      headerMenu: script$1h,
       //菜单头部
-      dialogColumn: script$1d,
+      dialogColumn: script$1g,
       //显隐列
-      dialogFilter: script$1c,
+      dialogFilter: script$1f,
       //过滤器
-      dialogForm: script$1b,
+      dialogForm: script$1e,
       //分页
-      dialogExcel: script$1a //导出
+      dialogExcel: script$1d //导出
     },
     data: function data() {
       return {
@@ -11696,6 +12116,7 @@
         btnDisabledList: {},
         btnDisabled: false,
         "default": {},
+        searchShow: true,
         gridShow: false,
         columnStateSource: null
       };
@@ -11708,7 +12129,7 @@
     computed: {
       columnVirtualizeOption: function columnVirtualizeOption() {
         return this.columnOption.map(function (ele) {
-          return _objectSpread$8(_objectSpread$8({}, ele), {
+          return _objectSpread$9(_objectSpread$9({}, ele), {
             key: ele.prop,
             title: ele.label,
             dataKey: ele.prop
@@ -11950,10 +12371,10 @@
       restoreColumnState: function restoreColumnState() {
         if (!this.columnStateEnabled) return;
         this.columnStateSource = this.deepClone(this.tableOption.column);
+        var columns = this.deepClone(this.columnStateSource);
         var loader = this.tableOption.columnStateLoad;
         var state = typeof loader === "function" ? loader(this.columnStateKey, this.tableOption) : loadColumnState(this.columnStateKey, this.columnStateStorage);
-        if (!state) return;
-        this.tableOption.column = applyColumnState(this.tableOption.column, state);
+        this.tableOption.column = state ? applyColumnState(columns, state) : columns;
       },
       saveColumnState: function saveColumnState$1() {
         var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "change";
@@ -12453,19 +12874,11 @@
     }
   });
 
-  var _hoisted_1$M = {
-    key: 1,
-    "class": "avue-crud__tip"
-  };
-  var _hoisted_2$y = {
-    "class": "avue-crud__tip-name"
-  };
-  var _hoisted_3$r = {
-    "class": "avue-crud__tip-count"
-  };
-  function render$12(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$15(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_header_search = vue.resolveComponent("header-search");
     var _component_header_menu = vue.resolveComponent("header-menu");
+    var _component_el_icon_circle_check_filled = vue.resolveComponent("el-icon-circle-check-filled");
+    var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_empty = vue.resolveComponent("el-empty");
     var _component_column_default = vue.resolveComponent("column-default");
     var _component_column_menu = vue.resolveComponent("column-menu");
@@ -12523,12 +12936,41 @@
             return [vue.renderSlot(_ctx.$slots, "menu-right", vue.normalizeProps(vue.guardReactiveProps(scope)))];
           }),
           _: 3 /* FORWARDED */
-        }, 512 /* NEED_PATCH */)) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.tableOption.tip, _ctx.config.tip) && _ctx.tableOption.selection ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$M, [vue.createElementVNode("span", _hoisted_2$y, [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.tipStartTitle")) + " ", 1 /* TEXT */), vue.createElementVNode("span", _hoisted_3$r, vue.toDisplayString(_ctx.selectLen), 1 /* TEXT */), vue.createTextVNode(" " + vue.toDisplayString(_ctx.t("crud.tipEndTitle")), 1 /* TEXT */)]), vue.createElementVNode("span", {
-          "class": "avue-crud__tip-button",
-          onClick: _cache[0] || (_cache[0] = function () {
-            return _ctx.clearSelection && _ctx.clearSelection.apply(_ctx, arguments);
-          })
-        }, vue.toDisplayString(_ctx.t("crud.emptyBtn")), 1 /* TEXT */), vue.renderSlot(_ctx.$slots, "tip")])) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "body"), vue.createVNode(_component_el_form, {
+        }, 512 /* NEED_PATCH */)) : vue.createCommentVNode("v-if", true), _ctx.validData(_ctx.tableOption.tip, _ctx.config.tip) && _ctx.tableOption.selection ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 1,
+          "class": vue.normalizeClass(_ctx.b('tip')),
+          role: "status",
+          "aria-live": "polite"
+        }, [vue.createElementVNode("div", {
+          "class": vue.normalizeClass(_ctx.b('tip-content'))
+        }, [vue.createVNode(_component_el_icon_circle_check_filled, {
+          "class": vue.normalizeClass(_ctx.b('tip-icon')),
+          "aria-hidden": "true"
+        }, null, 8 /* PROPS */, ["class"]), vue.createElementVNode("span", {
+          "class": vue.normalizeClass(_ctx.b('tip-name'))
+        }, vue.toDisplayString(_ctx.t("crud.tipStartTitle")), 3 /* TEXT, CLASS */), vue.createElementVNode("span", {
+          "class": vue.normalizeClass(_ctx.b('tip-count'))
+        }, vue.toDisplayString(_ctx.selectLen), 3 /* TEXT, CLASS */), vue.createElementVNode("span", {
+          "class": vue.normalizeClass(_ctx.b('tip-suffix'))
+        }, vue.toDisplayString(_ctx.t("crud.tipEndTitle")), 3 /* TEXT, CLASS */)], 2 /* CLASS */), vue.createElementVNode("div", {
+          "class": vue.normalizeClass(_ctx.b('tip-actions'))
+        }, [vue.renderSlot(_ctx.$slots, "tip", {
+          selection: _ctx.tableSelect,
+          count: _ctx.selectLen
+        }), _ctx.selectLen > 0 ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+          key: 0,
+          text: "",
+          type: "primary",
+          icon: _ctx.getBtnIcon('emptyBtn'),
+          "class": vue.normalizeClass(_ctx.b('tip-button')),
+          size: _ctx.size,
+          onClick: _ctx.clearSelection
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.emptyBtn")), 1 /* TEXT */)];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["icon", "class", "size", "onClick"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "body"), vue.createVNode(_component_el_form, {
           model: _ctx.cellForm,
           onValidate: _ctx.handleValidate,
           ref: "cellForm"
@@ -12706,15 +13148,15 @@
     }, null, 512 /* NEED_PATCH */)], 2 /* CLASS */);
   }
 
-  script$12.render = render$12;
-  script$12.__file = "packages/element-plus/crud/index.vue";
+  script$15.render = render$15;
+  script$15.__file = "packages/element-plus/crud/index.vue";
 
   var propsDefault$1 = {
     img: "img",
     title: "title",
     info: "info"
   };
-  var script$11 = create({
+  var script$14 = create({
     name: "card",
     mixins: [locale],
     props: {
@@ -12769,9 +13211,9 @@
     }
   });
 
-  var _hoisted_1$L = ["onClick"];
-  var _hoisted_2$x = ["src"];
-  function render$11(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$N = ["onClick"];
+  var _hoisted_2$y = ["src"];
+  function render$14(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_plus = vue.resolveComponent("el-icon-plus");
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_el_col = vue.resolveComponent("el-col");
@@ -12821,7 +13263,7 @@
               }, [vue.createElementVNode("img", {
                 src: item[_ctx.imgKey],
                 alt: ""
-              }, null, 8 /* PROPS */, _hoisted_2$x)], 2 /* CLASS */), vue.createElementVNode("div", {
+              }, null, 8 /* PROPS */, _hoisted_2$y)], 2 /* CLASS */), vue.createElementVNode("div", {
                 "class": vue.normalizeClass(_ctx.b('detail'))
               }, [vue.createElementVNode("div", {
                 "class": vue.normalizeClass(_ctx.b('title'))
@@ -12832,7 +13274,7 @@
               }, [vue.renderSlot(_ctx.$slots, "menu", {
                 index: index,
                 row: item
-              })], 2 /* CLASS */)], 10 /* CLASS, PROPS */, _hoisted_1$L)];
+              })], 2 /* CLASS */)], 10 /* CLASS, PROPS */, _hoisted_1$N)];
             }),
             _: 2 /* DYNAMIC */
           }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["span"]);
@@ -12842,10 +13284,10 @@
     }, 8 /* PROPS */, ["gutter"])], 2 /* CLASS */);
   }
 
-  script$11.render = render$11;
-  script$11.__file = "packages/element-plus/card/index.vue";
+  script$14.render = render$14;
+  script$14.__file = "packages/element-plus/card/index.vue";
 
-  var script$10 = create({
+  var script$13 = create({
     name: "chat",
     mixins: [locale],
     data: function data() {
@@ -13169,10 +13611,10 @@
     }
   });
 
-  var _hoisted_1$K = {
+  var _hoisted_1$M = {
     ref: "chatAudio"
   };
-  var _hoisted_2$w = ["src"];
+  var _hoisted_2$x = ["src"];
   var _hoisted_3$q = ["src"];
   var _hoisted_4$o = ["src"];
   var _hoisted_5$m = {
@@ -13236,7 +13678,7 @@
   var _hoisted_26 = ["src"];
   var _hoisted_27 = ["src"];
   var _hoisted_28 = ["src"];
-  function render$10(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$13(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_picture = vue.resolveComponent("el-icon-picture");
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_el_icon_video_camera = vue.resolveComponent("el-icon-video-camera");
@@ -13258,10 +13700,10 @@
       onKeyup: _cache[11] || (_cache[11] = vue.withKeys(function () {
         return _ctx.handleSend && _ctx.handleSend.apply(_ctx, arguments);
       }, ["enter"]))
-    }, [vue.createElementVNode("audio", _hoisted_1$K, [vue.createElementVNode("source", {
+    }, [vue.createElementVNode("audio", _hoisted_1$M, [vue.createElementVNode("source", {
       src: _ctx.audio[0],
       type: "audio/ogg"
-    }, null, 8 /* PROPS */, _hoisted_2$w), vue.createElementVNode("source", {
+    }, null, 8 /* PROPS */, _hoisted_2$x), vue.createElementVNode("source", {
       src: _ctx.audio[1],
       type: "audio/mpeg"
     }, null, 8 /* PROPS */, _hoisted_3$q), vue.createElementVNode("source", {
@@ -13551,15 +13993,15 @@
     }, 8 /* PROPS */, ["modelValue", "append-to-body", "before-close"])])) : vue.createCommentVNode("v-if", true)], 38 /* CLASS, STYLE, NEED_HYDRATION */);
   }
 
-  script$10.render = render$10;
-  script$10.__file = "packages/element-plus/chat/index.vue";
+  script$13.render = render$13;
+  script$13.__file = "packages/element-plus/chat/index.vue";
 
   var propsDefault = {
     avatar: "avatar",
     author: "author",
     body: "body"
   };
-  var script$$ = create({
+  var script$12 = create({
     name: "comment",
     props: {
       reverse: {
@@ -13608,10 +14050,10 @@
     mounted: function mounted() {}
   });
 
-  var _hoisted_1$J = ["src"];
-  var _hoisted_2$v = ["textContent"];
+  var _hoisted_1$L = ["src"];
+  var _hoisted_2$w = ["textContent"];
   var _hoisted_3$p = ["innerHTML"];
-  function render$$(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$12(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b({
         'reverse': _ctx.reverse
@@ -13620,7 +14062,7 @@
       src: _ctx.avatar,
       alt: "",
       "class": vue.normalizeClass(_ctx.b('avatar'))
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$J), vue.createElementVNode("div", {
+    }, null, 10 /* CLASS, PROPS */, _hoisted_1$L), vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('main'))
     }, [vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('header'))
@@ -13628,17 +14070,17 @@
       key: 0,
       "class": vue.normalizeClass(_ctx.b('author')),
       textContent: vue.toDisplayString(_ctx.author)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_2$v)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */), _ctx.body ? (vue.openBlock(), vue.createElementBlock("div", {
+    }, null, 10 /* CLASS, PROPS */, _hoisted_2$w)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */), _ctx.body ? (vue.openBlock(), vue.createElementBlock("div", {
       key: 0,
       "class": vue.normalizeClass(_ctx.b('body')),
       innerHTML: _ctx.body
     }, null, 10 /* CLASS, PROPS */, _hoisted_3$p)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */);
   }
 
-  script$$.render = render$$;
-  script$$.__file = "packages/element-plus/comment/index.vue";
+  script$12.render = render$12;
+  script$12.__file = "packages/element-plus/comment/index.vue";
 
-  var script$_ = create({
+  var script$11 = create({
     name: 'form',
     inject: ["formSafe"],
     mixins: [locale],
@@ -13660,7 +14102,7 @@
     }
   });
 
-  function render$_(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$11(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_col = vue.resolveComponent("el-col");
     return _ctx.validData(_ctx.formSafe.tableOption.menuBtn, true) ? (vue.openBlock(), vue.createBlock(_component_el_col, {
@@ -13731,8 +14173,8 @@
     }, 8 /* PROPS */, ["span", "md", "xs", "style", "class"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$_.render = render$_;
-  script$_.__file = "packages/element-plus/form/menu.vue";
+  script$11.render = render$11;
+  script$11.__file = "packages/element-plus/form/menu.vue";
 
   var mock = (function (column, dicData, defaultForm, run) {
     if (!run) return;
@@ -13894,15 +14336,16 @@
     xsSpan: 24
   };
 
-  function ownKeys$7(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$7(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$7(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$7(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$Z = create({
+  function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$10 = create({
     name: "form",
     mixins: [init("form")],
     emits: ["update:modelValue", "update:status", "reset-change", "mock-change", "tab-click", "submit", "error"],
     components: {
-      formTemp: script$19,
-      formMenu: script$_
+      formTemp: script$1c,
+      formMenu: script$11,
+      iconTemp: script$1b
     },
     data: function data() {
       return {
@@ -14054,7 +14497,7 @@
 
         // 处理分组配置
         var processedGroups = (tableOption.group || []).map(function (groupItem) {
-          return _objectSpread$7(_objectSpread$7({}, groupItem), {}, {
+          return _objectSpread$8(_objectSpread$8({}, groupItem), {}, {
             column: getColumn(groupItem.column)
           });
         });
@@ -14324,11 +14767,12 @@
               return;
             }
             // 根据当前节点值获取下一个节点的字典
-            sendDic({
+            _this10.requestDic({
               column: columnNext,
               value: value,
               form: _this10.form
-            }, _this10).then(function (res) {
+            }, "form-cascader:".concat(columnNextProp)).then(function (res) {
+              if (!res) return;
               //首次加载的放入队列记录
               if (!_this10.formList.includes(str)) _this10.formList.push(str);
               // 修改字典
@@ -14545,8 +14989,9 @@
     }
   });
 
-  var _hoisted_1$I = ["innerHTML"];
-  function render$Z(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$K = ["innerHTML"];
+  function render$10(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_tab_pane = vue.resolveComponent("el-tab-pane");
     var _component_el_tabs = vue.resolveComponent("el-tabs");
     var _component_el_icon_info_filled = vue.resolveComponent("el-icon-info-filled");
@@ -14626,9 +15071,16 @@
                               column: tabs
                             }) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
                               key: 1
-                            }, [vue.createElementVNode("i", {
-                              "class": vue.normalizeClass(tabs.icon)
-                            }, " ", 2 /* CLASS */), vue.createTextVNode(" " + vue.toDisplayString(tabs.label), 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */))])];
+                            }, [tabs.icon ? (vue.openBlock(), vue.createBlock(_component_icon_temp, {
+                              key: 0,
+                              text: tabs.icon,
+                              size: 14,
+                              "icon-style": {
+                                fontSize: '14px',
+                                width: '14px',
+                                height: '14px'
+                              }
+                            }, null, 8 /* PROPS */, ["text"])) : vue.createCommentVNode("v-if", true), vue.createTextVNode("  " + vue.toDisplayString(tabs.label), 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */))])];
                           }),
                           _: 2 /* DYNAMIC */
                         }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["name"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
@@ -14670,7 +15122,8 @@
                             return [(vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.validTip(column) ? 'div' : 'elTooltip'), {
                               disabled: _ctx.validTip(column),
                               content: _ctx.validData(column.tip, _ctx.getPlaceholder(column)),
-                              placement: column.tipPlacement
+                              placement: column.tipPlacement,
+                              "trigger-keys": _ctx.validTip(column) ? undefined : ['Enter', 'NumpadEnter']
                             }, {
                               "default": vue.withCtx(function () {
                                 return [vue.createElementVNode("div", null, [_ctx.$slots[column.prop] ? vue.renderSlot(_ctx.$slots, column.prop, {
@@ -14731,7 +15184,7 @@
                                 })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["column", "box-type", "dic", "props", "propsHttp", "render", "row", "clearValidate", "table-data", "readonly", "disabled", "enter", "size", "modelValue", "onUpdate:modelValue", "onEnter", "column-slot", "onChange"]))])];
                               }),
                               _: 2 /* DYNAMIC */
-                            }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled", "content", "placement"]))];
+                            }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled", "content", "placement", "trigger-keys"]))];
                           }),
                           _: 2 /* DYNAMIC */
                         }, [_ctx.getSlotName(column, 'L', _ctx.$slots) ? {
@@ -14758,7 +15211,7 @@
                               content: vue.withCtx(function () {
                                 return [vue.createElementVNode("div", {
                                   innerHTML: column.labelTip
-                                }, null, 8 /* PROPS */, _hoisted_1$I)];
+                                }, null, 8 /* PROPS */, _hoisted_1$K)];
                               }),
                               "default": vue.withCtx(function () {
                                 return [vue.createVNode(_component_el_icon, null, {
@@ -14839,8 +15292,8 @@
     }, 8 /* PROPS */, ["status-icon", "model", "scroll-to-error", "hide-required-asterisk", "require-asterisk-position", "scroll-into-view-options", "label-suffix", "size", "label-position", "label-width"])], 6 /* CLASS, STYLE */);
   }
 
-  script$Z.render = render$Z;
-  script$Z.__file = "packages/element-plus/form/index.vue";
+  script$10.render = render$10;
+  script$10.__file = "packages/element-plus/form/index.vue";
 
   function props () {
     return {
@@ -15154,7 +15607,7 @@
     };
   }
 
-  var script$Y = create({
+  var script$$ = create({
     name: "checkbox",
     props: {
       fill: String,
@@ -15210,7 +15663,7 @@
     }
   });
 
-  function render$Y(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$$(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
     var _component_el_checkbox_group = vue.resolveComponent("el-checkbox-group");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -15265,10 +15718,10 @@
     }, 8 /* PROPS */, ["modelValue", "onChange", "disabled", "size", "fill", "text-color", "min", "max", "onClick"])], 2 /* CLASS */);
   }
 
-  script$Y.render = render$Y;
-  script$Y.__file = "packages/element-plus/checkbox/index.vue";
+  script$$.render = render$$;
+  script$$.__file = "packages/element-plus/checkbox/index.vue";
 
-  var script$X = create({
+  var script$_ = create({
     name: "date",
     mixins: [props(), event(), locale],
     props: {
@@ -15304,14 +15757,14 @@
     }
   });
 
-  var _hoisted_1$H = {
+  var _hoisted_1$J = {
     "class": "el-date-table-cell"
   };
-  var _hoisted_2$u = {
+  var _hoisted_2$v = {
     key: 1,
     "class": "el-date-table-cell__text"
   };
-  function render$X(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$_(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_date_picker = vue.resolveComponent("el-date-picker");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
@@ -15350,19 +15803,19 @@
       disabled: _ctx.disabled
     }, {
       "default": vue.withCtx(function (cell) {
-        return [vue.createElementVNode("div", _hoisted_1$H, [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
+        return [vue.createElementVNode("div", _hoisted_1$J, [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
           key: 0,
           item: cell
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$u, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$v, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "single-panel", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])], 2 /* CLASS */);
   }
 
-  script$X.render = render$X;
-  script$X.__file = "packages/element-plus/date/index.vue";
+  script$_.render = render$_;
+  script$_.__file = "packages/element-plus/date/index.vue";
 
-  var script$W = create({
+  var script$Z = create({
     name: "draggable",
     props: {
       index: {
@@ -15428,7 +15881,10 @@
         overActive: false,
         rangeActive: false,
         active: false,
-        keyDown: null,
+        focusTimer: null,
+        documentMoveHandler: null,
+        documentUpHandler: null,
+        documentKeydownHandler: null,
         rangeList: [{
           classname: "left"
         }, {
@@ -15499,7 +15955,7 @@
         if (val) {
           this.handleKeydown();
         } else {
-          document.onkeydown = this.keyDown;
+          this.removeKeydown();
         }
       },
       width: function width(val) {
@@ -15538,6 +15994,14 @@
     mounted: function mounted() {
       this.init();
     },
+    beforeUnmount: function beforeUnmount() {
+      if (this.focusTimer) {
+        clearTimeout(this.focusTimer);
+        this.focusTimer = null;
+      }
+      this.removeDocumentDrag();
+      this.removeKeydown();
+    },
     methods: {
       init: function init() {
         var _this2 = this;
@@ -15546,7 +16010,6 @@
         this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
         this.baseLeft = getFixed(this.left);
         this.baseTop = getFixed(this.top);
-        this.keyDown = document.onkeydown;
         this.$nextTick(function () {
           _this2.first = false;
         });
@@ -15593,7 +16056,7 @@
         this.handleMouseDown();
         var disX = e.clientX;
         var disY = e.clientY;
-        document.onmousemove = function (e) {
+        this.bindDocumentDrag(function (e) {
           _this4.moveActive = true;
           if (position === "right") {
             x = true;
@@ -15648,8 +16111,7 @@
             if (yp) _this4.baseTop = getFixed(_this4.baseTop - _calc);
             _this4.baseHeight = getFixed(_this4.baseHeight + _calc);
           }
-        };
-        this.handleClear();
+        });
       },
       handleOut: function handleOut() {
         this.overActive = false;
@@ -15675,36 +16137,49 @@
       handleMove: function handleMove(e) {
         var _this5 = this;
         if (this.disabled || this.lock) return;
-        setTimeout(function () {
-          _this5.$refs.input.focus();
+        this.focusTimer = setTimeout(function () {
+          if (_this5.$refs.input) _this5.$refs.input.focus();
+          _this5.focusTimer = null;
         });
         this.active = true;
         this.handleMouseDown();
         var disX = e.clientX;
         var disY = e.clientY;
-        document.onmousemove = function (e) {
+        this.bindDocumentDrag(function (e) {
           var left = e.clientX - disX;
           var top = e.clientY - disY;
           disX = e.clientX;
           disY = e.clientY;
           _this5.baseLeft = getFixed(_this5.baseLeft + left * _this5.step);
           _this5.baseTop = getFixed(_this5.baseTop + top * _this5.step);
-        };
-        this.handleClear();
+        });
       },
-      handleClear: function handleClear() {
+      bindDocumentDrag: function bindDocumentDrag(moveHandler) {
         var _this6 = this;
-        document.onmouseup = function () {
-          document.onmousemove = null;
-          document.onmouseup = null;
+        this.removeDocumentDrag();
+        this.documentMoveHandler = moveHandler;
+        this.documentUpHandler = function () {
+          _this6.removeDocumentDrag();
           _this6.handleMouseUp();
         };
+        document.addEventListener('mousemove', this.documentMoveHandler);
+        document.addEventListener('mouseup', this.documentUpHandler);
+      },
+      removeDocumentDrag: function removeDocumentDrag() {
+        if (this.documentMoveHandler) {
+          document.removeEventListener('mousemove', this.documentMoveHandler);
+          this.documentMoveHandler = null;
+        }
+        if (this.documentUpHandler) {
+          document.removeEventListener('mouseup', this.documentUpHandler);
+          this.documentUpHandler = null;
+        }
       },
       handleKeydown: function handleKeydown() {
-        var _arguments = arguments,
-          _this7 = this;
-        document.onkeydown = function (event) {
-          var e = event || window.event || _arguments.callee.caller.arguments[0];
+        var _this7 = this;
+        if (this.documentKeydownHandler) return;
+        this.documentKeydownHandler = function (event) {
+          var e = event || window.event;
           var step = 1 * _this7.step;
           if (_this7.$refs.input.focused) {
             if (e && e.keyCode == 38) {
@@ -15720,8 +16195,8 @@
               //右
               _this7.baseLeft = getFixed(_this7.baseLeft + step);
             }
-            event.stopPropagation();
-            event.preventDefault();
+            e.stopPropagation();
+            e.preventDefault();
             _this7.$emit("blur", {
               index: _this7.index,
               width: _this7.baseWidth,
@@ -15729,9 +16204,14 @@
               left: _this7.baseLeft,
               top: _this7.baseTop
             });
-            _this7.keyDown && _this7.keyDown(event);
           }
         };
+        document.addEventListener('keydown', this.documentKeydownHandler);
+      },
+      removeKeydown: function removeKeydown() {
+        if (!this.documentKeydownHandler) return;
+        document.removeEventListener('keydown', this.documentKeydownHandler);
+        this.documentKeydownHandler = null;
       },
       handleMouseDown: function handleMouseDown(e) {
         this.moveActive = true;
@@ -15757,8 +16237,8 @@
     }
   });
 
-  var _hoisted_1$G = ["onMousedown"];
-  function render$W(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$I = ["onMousedown"];
+  function render$Z(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b({
@@ -15807,7 +16287,7 @@
         onMousedown: vue.withModifiers(function ($event) {
           return _ctx.rangeMove($event, item.classname);
         }, ["stop"])
-      }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$G)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
+      }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$I)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
     }), 256 /* UNKEYED_FRAGMENT */)) : vue.createCommentVNode("v-if", true), vue.withDirectives(vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('menu')),
       style: vue.normalizeStyle(_ctx.styleMenuName)
@@ -15823,10 +16303,10 @@
     }, null, 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 38 /* CLASS, STYLE, NEED_HYDRATION */);
   }
 
-  script$W.render = render$W;
-  script$W.__file = "packages/element-plus/draggable/index.vue";
+  script$Z.render = render$Z;
+  script$Z.__file = "packages/element-plus/draggable/index.vue";
 
-  var script$V = create({
+  var script$Y = create({
     name: 'flow',
     props: {
       active: [String, Number],
@@ -15878,8 +16358,8 @@
     }
   });
 
-  var _hoisted_1$F = ["left", "top"];
-  function render$V(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$H = ["left", "top"];
+  function render$Y(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_rank = vue.resolveComponent("el-icon-rank");
     var _component_el_icon = vue.resolveComponent("el-icon");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -15917,17 +16397,17 @@
       "class": vue.normalizeClass(_ctx.b('node-body'))
     }, [vue.renderSlot(_ctx.$slots, "default", {
       node: _ctx.node
-    })], 2 /* CLASS */)], 2 /* CLASS */)], 44 /* STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$F);
+    })], 2 /* CLASS */)], 2 /* CLASS */)], 44 /* STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$H);
   }
 
-  script$V.render = render$V;
-  script$V.__file = "packages/element-plus/flow/node.vue";
+  script$Y.render = render$Y;
+  script$Y.__file = "packages/element-plus/flow/node.vue";
 
-  var script$U = create({
+  var script$X = create({
     name: "flow",
     mixins: [locale],
     components: {
-      flowNode: script$V
+      flowNode: script$Y
     },
     data: function data() {
       return {
@@ -16242,8 +16722,8 @@
     }
   });
 
-  var _hoisted_1$E = ["id"];
-  function render$U(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$G = ["id"];
+  function render$X(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_flow_node = vue.resolveComponent("flow-node");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
@@ -16279,14 +16759,17 @@
         }),
         _: 2 /* DYNAMIC */
       }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["node", "id", "onClick", "onChangeNodeSite", "index", "active"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
-    }), 256 /* UNKEYED_FRAGMENT */))], 12 /* STYLE, PROPS */, _hoisted_1$E)], 6 /* CLASS, STYLE */);
+    }), 256 /* UNKEYED_FRAGMENT */))], 12 /* STYLE, PROPS */, _hoisted_1$G)], 6 /* CLASS, STYLE */);
   }
 
-  script$U.render = render$U;
-  script$U.__file = "packages/element-plus/flow/index.vue";
+  script$X.render = render$X;
+  script$X.__file = "packages/element-plus/flow/index.vue";
 
-  var script$T = create({
+  var script$W = create({
     name: "group",
+    components: {
+      iconTemp: script$1b
+    },
     empit: ['change'],
     data: function data() {
       return {
@@ -16344,7 +16827,8 @@
     }
   });
 
-  function render$T(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$W(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_collapse_item = vue.resolveComponent("el-collapse-item");
     var _component_el_collapse = vue.resolveComponent("el-collapse");
     return _ctx.display ? (vue.openBlock(), vue.createElementBlock("div", {
@@ -16382,10 +16866,12 @@
           fn: vue.withCtx(function () {
             return [vue.createElementVNode("div", {
               "class": vue.normalizeClass(_ctx.b('header'))
-            }, [_ctx.icon ? (vue.openBlock(), vue.createElementBlock("i", {
+            }, [_ctx.icon ? (vue.openBlock(), vue.createBlock(_component_icon_temp, {
               key: 0,
-              "class": vue.normalizeClass([_ctx.icon, _ctx.b('icon')])
-            }, null, 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.label ? (vue.openBlock(), vue.createElementBlock("h1", {
+              "class": vue.normalizeClass(_ctx.b('icon')),
+              text: _ctx.icon,
+              size: 20
+            }, null, 8 /* PROPS */, ["class", "text"])) : vue.createCommentVNode("v-if", true), _ctx.label ? (vue.openBlock(), vue.createElementBlock("h1", {
               key: 1,
               "class": vue.normalizeClass(_ctx.b('title'))
             }, vue.toDisplayString(_ctx.label), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)];
@@ -16397,10 +16883,10 @@
     }, 8 /* PROPS */, ["onChange", "modelValue"])], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true);
   }
 
-  script$T.render = render$T;
-  script$T.__file = "packages/element-plus/group/index.vue";
+  script$W.render = render$W;
+  script$W.__file = "packages/element-plus/group/index.vue";
 
-  var script$S = create({
+  var script$V = create({
     name: 'license',
     props: {
       id: {
@@ -16546,8 +17032,8 @@
     }
   });
 
-  var _hoisted_1$D = ["id"];
-  function render$S(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$F = ["id"];
+  function render$V(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
       style: {
@@ -16556,13 +17042,13 @@
     }, [vue.createElementVNode("canvas", {
       id: 'canvas' + _ctx.id,
       ref: "canvas"
-    }, null, 8 /* PROPS */, _hoisted_1$D), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */);
+    }, null, 8 /* PROPS */, _hoisted_1$F), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */);
   }
 
-  script$S.render = render$S;
-  script$S.__file = "packages/element-plus/license/index.vue";
+  script$V.render = render$V;
+  script$V.__file = "packages/element-plus/license/index.vue";
 
-  var script$R = create({
+  var script$U = create({
     name: "time",
     mixins: [props(), event(), locale],
     data: function data() {
@@ -16605,7 +17091,7 @@
     }
   });
 
-  function render$R(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$U(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [(vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.componentName), {
@@ -16641,11 +17127,11 @@
     }, null, 40 /* PROPS, NEED_HYDRATION */, ["modelValue", "popper-class", "is-range", "size", "editable", "disabled-hours", "disabled-minutes", "disabled-seconds", "default-value", "range-separator", "onVisibleChange", "arrow-control", "start-placeholder", "end-placeholder", "format", "readonly", "clearable", "start", "end", "step", "max-time", "min-time", "value-format", "placeholder", "onClick", "disabled"]))], 2 /* CLASS */);
   }
 
-  script$R.render = render$R;
-  script$R.__file = "packages/element-plus/time/index.vue";
+  script$U.render = render$U;
+  script$U.__file = "packages/element-plus/time/index.vue";
 
-  function ownKeys$6(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$6(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$6(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$7(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$7(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$7(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$7(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var defaultPhoneCodeOptions = [{
     code: '+86',
     flag: '🇨🇳',
@@ -16761,7 +17247,7 @@
     AUD: 'A$',
     CAD: 'C$'
   };
-  var script$Q = create({
+  var script$T = create({
     name: "input",
     mixins: [props(), event(), locale],
     emits: ['update:modelValue', 'click', 'focus', 'blur', 'change', 'id-card-valid', 'code-complete', 'uscc-valid'],
@@ -17165,7 +17651,7 @@
         return list.map(function (item) {
           var flag = item.flag || '';
           var name = item.name || (item.nameKey ? _this.t(item.nameKey) : item.code);
-          return _objectSpread$6(_objectSpread$6({}, item), {}, {
+          return _objectSpread$7(_objectSpread$7({}, item), {}, {
             name: name,
             label: item.label || [flag, item.code].filter(Boolean).join(' ')
           });
@@ -17770,11 +18256,11 @@
     }
   });
 
-  var _hoisted_1$C = {
+  var _hoisted_1$E = {
     key: 0,
     "class": "avue-input__phone"
   };
-  var _hoisted_2$t = {
+  var _hoisted_2$u = {
     style: {
       "float": "left"
     }
@@ -17821,7 +18307,7 @@
   var _hoisted_16$3 = {
     "class": "avue-input__uscc-valid"
   };
-  function render$Q(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$T(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_option = vue.resolveComponent("el-option");
     var _component_el_select = vue.resolveComponent("el-select");
     var _component_el_input = vue.resolveComponent("el-input");
@@ -17829,7 +18315,7 @@
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
-    }, [vue.createCommentVNode(" 手机号输入（带国际区号，需要特殊布局） "), _ctx.isPhone ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$C, [vue.createVNode(_component_el_select, {
+    }, [vue.createCommentVNode(" 手机号输入（带国际区号，需要特殊布局） "), _ctx.isPhone ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$E, [vue.createVNode(_component_el_select, {
       modelValue: _ctx.phoneCode,
       "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
         return _ctx.phoneCode = $event;
@@ -17851,7 +18337,7 @@
             value: item.code
           }, {
             "default": vue.withCtx(function () {
-              return [vue.createElementVNode("span", _hoisted_2$t, vue.toDisplayString(item.name), 1 /* TEXT */), vue.createElementVNode("span", _hoisted_3$o, vue.toDisplayString(item.code), 1 /* TEXT */)];
+              return [vue.createElementVNode("span", _hoisted_2$u, vue.toDisplayString(item.name), 1 /* TEXT */), vue.createElementVNode("span", _hoisted_3$o, vue.toDisplayString(item.code), 1 /* TEXT */)];
             }),
             _: 2 /* DYNAMIC */
           }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["label", "value"]);
@@ -18122,10 +18608,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["class", "size", "clearable", "modelValue", "onClick", "type", "maxlength", "minlength", "show-password", "rows", "autosize", "prefix-icon", "suffix-icon", "readonly", "placeholder", "show-word-limit", "onFocus", "onBlur", "onInput", "disabled", "autocomplete", "formatter", "parser"])], 64 /* STABLE_FRAGMENT */))], 2 /* CLASS */);
   }
 
-  script$Q.render = render$Q;
-  script$Q.__file = "packages/element-plus/input/index.vue";
+  script$T.render = render$T;
+  script$T.__file = "packages/element-plus/input/index.vue";
 
-  var script$P = create({
+  var script$S = create({
     name: "radio",
     mixins: [props(), event()],
     data: function data() {
@@ -18142,7 +18628,7 @@
     methods: {}
   });
 
-  function render$P(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$S(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_radio_group = vue.resolveComponent("el-radio-group");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
@@ -18175,20 +18661,23 @@
     }, 8 /* PROPS */, ["modelValue", "size", "onClick", "disabled"])], 2 /* CLASS */);
   }
 
-  script$P.render = render$P;
-  script$P.__file = "packages/element-plus/radio/index.vue";
+  script$S.render = render$S;
+  script$S.__file = "packages/element-plus/radio/index.vue";
 
-  var script$O = create({
+  var script$R = create({
     name: "select",
     mixins: [props(), event(), locale],
-    emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached"],
+    emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached", "dic-error"],
     data: function data() {
       return {
         checked: false,
         indeterminate: false,
         create: false,
         netDic: [],
-        loading: false
+        loading: false,
+        sortable: null,
+        remoteRequestId: 0,
+        remoteUnmounted: false
       };
     },
     props: {
@@ -18269,6 +18758,14 @@
         this.setSort();
       }
     },
+    beforeUnmount: function beforeUnmount() {
+      this.remoteUnmounted = true;
+      this.remoteRequestId++;
+      if (this.sortable && typeof this.sortable.destroy === "function") {
+        this.sortable.destroy();
+      }
+      this.sortable = null;
+    },
     methods: {
       handleModelValue: function handleModelValue(val) {
         if (!this.validatenull(this.text)) {
@@ -18306,13 +18803,24 @@
       },
       handleRemoteMethod: function handleRemoteMethod(query) {
         var _this2 = this;
+        var requestId = ++this.remoteRequestId;
         this.loading = true;
         sendDic({
           column: this.column,
           value: query
         }, this).then(function (res) {
-          _this2.loading = false;
+          if (_this2.remoteUnmounted || requestId !== _this2.remoteRequestId) return;
           _this2.netDic = res;
+        })["catch"](function (error) {
+          if (_this2.remoteUnmounted || requestId !== _this2.remoteRequestId) return;
+          _this2.$emit("dic-error", {
+            type: "select-remote",
+            error: error
+          });
+        })["finally"](function () {
+          if (!_this2.remoteUnmounted && requestId === _this2.remoteRequestId) {
+            _this2.loading = false;
+          }
         });
       },
       checkChange: function checkChange(val) {
@@ -18349,7 +18857,7 @@
     }
   });
 
-  function render$O(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$R(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_option = vue.resolveComponent("el-option");
     var _component_el_option_group = vue.resolveComponent("el-option-group");
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
@@ -18487,10 +18995,10 @@
     }, 40 /* PROPS, NEED_HYDRATION */, ["class", "modelValue", "size", "options", "props", "loading", "loading-text", "value-on-clear", "multiple", "filterable", "remote", "readonly", "no-match-text", "no-data-text", "remote-method", "popper-class", "popper-append-to-body", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "clearable", "placeholder", "onFocus", "onBlur", "onClick", "onRemoveTag", "onEndReached", "multiple-limit", "allow-create", "default-first-option", "disabled"]);
   }
 
-  script$O.render = render$O;
-  script$O.__file = "packages/element-plus/select/index.vue";
+  script$R.render = render$R;
+  script$R.__file = "packages/element-plus/select/index.vue";
 
-  var script$N = create({
+  var script$Q = create({
     name: "cascader",
     mixins: [props(), event()],
     props: {
@@ -18598,10 +19106,10 @@
     }
   });
 
-  var _hoisted_1$B = {
+  var _hoisted_1$D = {
     key: 1
   };
-  function render$N(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$Q(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_cascader = vue.resolveComponent("el-cascader");
     return vue.openBlock(), vue.createBlock(_component_el_cascader, {
       ref: "cascader",
@@ -18641,16 +19149,16 @@
           key: 0,
           data: data,
           node: node
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$B, vue.toDisplayString(data[_ctx.labelKey]), 1 /* TEXT */))];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$D, vue.toDisplayString(data[_ctx.labelKey]), 1 /* TEXT */))];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["options", "class", "onClick", "onChange", "modelValue", "placeholder", "props", "size", "effect", "virtual-scroll", "fit-input-width", "height", "item-size", "clearable", "show-all-levels", "filterable", "popper-class", "separator", "disabled", "show-checked-strategy", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "onFocus", "onBlur"]);
   }
 
-  script$N.render = render$N;
-  script$N.__file = "packages/element-plus/cascader/index.vue";
+  script$Q.render = render$Q;
+  script$Q.__file = "packages/element-plus/cascader/index.vue";
 
-  var script$M = create({
+  var script$P = create({
     name: "input-color",
     mixins: [props(), event()],
     props: {
@@ -18674,7 +19182,7 @@
     }
   });
 
-  function render$M(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$P(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_color_picker = vue.resolveComponent("el-color-picker");
     var _component_el_input = vue.resolveComponent("el-input");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -18713,10 +19221,10 @@
     }, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "placeholder", "modelValue", "size", "readonly", "onClick", "clearable", "disabled"])], 2 /* CLASS */);
   }
 
-  script$M.render = render$M;
-  script$M.__file = "packages/element-plus/input-color/index.vue";
+  script$P.render = render$P;
+  script$P.__file = "packages/element-plus/input-color/index.vue";
 
-  var script$L = create({
+  var script$O = create({
     name: "input-number",
     mixins: [props(), event()],
     data: function data() {
@@ -18772,7 +19280,7 @@
     methods: {}
   });
 
-  function render$L(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$O(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input_number = vue.resolveComponent("el-input-number");
     return vue.openBlock(), vue.createBlock(_component_el_input_number, {
       modelValue: _ctx.text,
@@ -18822,10 +19330,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "onClick", "onFocus", "onBlur", "precision", "placeholder", "step-strictly", "size", "min", "align", "max", "step", "clearable", "readonly", "controls-position", "controls", "disabled-scientific", "disabled"]);
   }
 
-  script$L.render = render$L;
-  script$L.__file = "packages/element-plus/input-number/index.vue";
+  script$O.render = render$O;
+  script$O.__file = "packages/element-plus/input-number/index.vue";
 
-  var script$K = create({
+  var script$N = create({
     name: "input-tree",
     mixins: [props(), event()],
     data: function data() {
@@ -18966,13 +19474,13 @@
     }
   });
 
-  var _hoisted_1$A = {
+  var _hoisted_1$C = {
     key: 1,
     style: {
       "margin-left": "8px"
     }
   };
-  function render$K(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$N(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_tree_select = vue.resolveComponent("el-tree-select");
     return vue.openBlock(), vue.createBlock(_component_el_tree_select, {
       ref: "tree",
@@ -19025,7 +19533,7 @@
           value: _ctx.valueKey,
           node: node,
           item: data
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$A, [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.getLabelText(data)), 1 /* TEXT */), data[_ctx.descKey] ? (vue.openBlock(), vue.createElementBlock("span", {
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$C, [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.getLabelText(data)), 1 /* TEXT */), data[_ctx.descKey] ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
           "class": vue.normalizeClass(_ctx.b('desc'))
         }, vue.toDisplayString(data[_ctx.descKey]), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)]))];
@@ -19034,10 +19542,10 @@
     }, 8 /* PROPS */, ["class", "cache-data", "modelValue", "loading", "lazy", "load", "size", "onCheck", "filter-node-method", "loading-text", "collapse-tags", "clearable", "placeholder", "popper-class", "popper-append-to-body", "multiple", "node-key", "show-checkbox", "filterable", "check-strictly", "disabled", "accordion", "icon-class", "indent", "onFocus", "onBlur", "check-on-click-leaf", "default-checked-keys", "default-expanded-keys", "default-expand-all", "check-on-click-node", "expand-on-click-node", "onNodeClick", "props", "data"]);
   }
 
-  script$K.render = render$K;
-  script$K.__file = "packages/element-plus/input-tree/index.vue";
+  script$N.render = render$N;
+  script$N.__file = "packages/element-plus/input-tree/index.vue";
 
-  var script$J = create({
+  var script$M = create({
     name: "input-map",
     mixins: [props(), event(), locale],
     props: {
@@ -19274,13 +19782,13 @@
     }
   });
 
-  var _hoisted_1$z = {
+  var _hoisted_1$B = {
     key: 0
   };
-  var _hoisted_2$s = {
+  var _hoisted_2$t = {
     "class": "avue-dialog__footer"
   };
-  function render$J(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$M(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_dialog = vue.resolveComponent("el-dialog");
@@ -19303,7 +19811,7 @@
       onFocus: _ctx.handleShow,
       onClick: _ctx.handleClick,
       placeholder: _ctx.placeholder
-    }, null, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "size", "onClear", "clearable", "rows", "autosize", "disabled", "model-value", "onFocus", "onClick", "placeholder"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$z, [vue.createVNode(_component_el_dialog, {
+    }, null, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "size", "onClear", "clearable", "rows", "autosize", "disabled", "model-value", "onFocus", "onClick", "placeholder"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$B, [vue.createVNode(_component_el_dialog, {
       "class": "avue-dialog",
       width: _ctx.dialogWidth,
       "before-close": _ctx.beforeClose,
@@ -19341,7 +19849,7 @@
         }, null, 2 /* CLASS */), vue.createElementVNode("div", {
           id: "map__result",
           "class": vue.normalizeClass(_ctx.b('content-result'))
-        }, null, 2 /* CLASS */)], 2 /* CLASS */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("span", _hoisted_2$s, [!(_ctx.disabled || _ctx.readonly) ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+        }, null, 2 /* CLASS */)], 2 /* CLASS */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("span", _hoisted_2$t, [!(_ctx.disabled || _ctx.readonly) ? (vue.openBlock(), vue.createBlock(_component_el_button, {
           key: 0,
           type: "primary",
           size: _ctx.size,
@@ -19358,13 +19866,13 @@
     }, 8 /* PROPS */, ["width", "before-close", "append-to-body", "title", "onClose", "modelValue"])])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$J.render = render$J;
-  script$J.__file = "packages/element-plus/input-map/index.vue";
+  script$M.render = render$M;
+  script$M.__file = "packages/element-plus/input-map/index.vue";
 
-  var script$I = create({
+  var script$L = create({
     name: "input-icon",
     components: {
-      iconTemp: script$18
+      iconTemp: script$1b
     },
     mixins: [props(), event(), locale],
     props: {
@@ -19445,11 +19953,11 @@
     }
   });
 
-  var _hoisted_1$y = {
+  var _hoisted_1$A = {
     key: 0
   };
-  var _hoisted_2$r = ["onClick"];
-  function render$I(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_2$s = ["onClick"];
+  function render$L(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_avue_tabs = vue.resolveComponent("avue-tabs");
@@ -19482,7 +19990,7 @@
         }, null, 8 /* PROPS */, ["onClick", "text", "small"])];
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "placeholder", "modelValue", "popper-class", "size", "onClear", "clearable", "disabled", "onClick", "onFocus"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$y, [vue.createVNode(_component_el_dialog, {
+    }, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "placeholder", "modelValue", "popper-class", "size", "onClear", "clearable", "disabled", "onClick", "onFocus"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$A, [vue.createVNode(_component_el_dialog, {
       "class": "avue-dialog",
       title: _ctx.placeholder,
       "before-close": _ctx.beforeClose,
@@ -19521,17 +20029,17 @@
             size: item.size,
             small: _ctx.size === 'small',
             color: item.color
-          }, null, 8 /* PROPS */, ["text", "size", "small", "color"]), vue.createElementVNode("p", null, vue.toDisplayString(item.label || item.value), 1 /* TEXT */)], 10 /* CLASS, PROPS */, _hoisted_2$r);
+          }, null, 8 /* PROPS */, ["text", "size", "small", "color"]), vue.createElementVNode("p", null, vue.toDisplayString(item.label || item.value), 1 /* TEXT */)], 10 /* CLASS, PROPS */, _hoisted_2$s);
         }), 128 /* KEYED_FRAGMENT */)), _cache[3] || (_cache[3] = vue.createTextVNode("　 "))], 2 /* CLASS */)];
       }),
       _: 1 /* STABLE */
     }, 8 /* PROPS */, ["title", "before-close", "append-to-body", "modelValue", "width"])])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$I.render = render$I;
-  script$I.__file = "packages/element-plus/input-icon/index.vue";
+  script$L.render = render$L;
+  script$L.__file = "packages/element-plus/input-icon/index.vue";
 
-  var script$H = create({
+  var script$K = create({
     name: "input-tag",
     mixins: [props(), event()],
     data: function data() {
@@ -19577,10 +20085,10 @@
     }
   });
 
-  var _hoisted_1$x = {
+  var _hoisted_1$z = {
     key: 1
   };
-  function render$H(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$K(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input_tag = vue.resolveComponent("el-input-tag");
     return vue.openBlock(), vue.createBlock(_component_el_input_tag, {
       modelValue: _ctx.text,
@@ -19606,7 +20114,7 @@
         return [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
           key: 0,
           value: value
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$x, vue.toDisplayString(value), 1 /* TEXT */))];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$z, vue.toDisplayString(value), 1 /* TEXT */))];
       }),
       _: 2 /* DYNAMIC */
     }, [_ctx.prefix ? {
@@ -19632,10 +20140,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "onClick", "onFocus", "onBlur", "onChange", "placeholder", "size", "min", "max", "draggable", "clearable", "readonly", "disabled"]);
   }
 
-  script$H.render = render$H;
-  script$H.__file = "packages/element-plus/input-tag/index.vue";
+  script$K.render = render$K;
+  script$K.__file = "packages/element-plus/input-tag/index.vue";
 
-  var script$G = create({
+  var script$J = create({
     name: "input-table",
     mixins: [props(), event(), locale],
     data: function data() {
@@ -19874,10 +20382,10 @@
     }
   });
 
-  var _hoisted_1$w = {
+  var _hoisted_1$y = {
     "class": "avue-dialog__footer"
   };
-  function render$G(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$J(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_avue_crud = vue.resolveComponent("avue-crud");
     var _component_el_button = vue.resolveComponent("el-button");
@@ -19931,7 +20439,7 @@
           "onUpdate:page": _cache[1] || (_cache[1] = function ($event) {
             return _ctx.page = $event;
           })
-        }, null, 8 /* PROPS */, ["class", "option", "data", "table-loading", "onOnLoad", "onSearchChange", "onSearchReset", "onSelectAll", "onSelect", "rowClassName", "onCurrentRowChange", "search", "page"]), vue.createElementVNode("span", _hoisted_1$w, [vue.createVNode(_component_el_button, {
+        }, null, 8 /* PROPS */, ["class", "option", "data", "table-loading", "onOnLoad", "onSearchChange", "onSearchReset", "onSelectAll", "onSelect", "rowClassName", "onCurrentRowChange", "search", "page"]), vue.createElementVNode("span", _hoisted_1$y, [vue.createVNode(_component_el_button, {
           type: "primary",
           size: _ctx.size,
           icon: "el-icon-check",
@@ -19949,11 +20457,11 @@
     }, 8 /* PROPS */, ["class", "width", "before-close", "append-to-body", "title", "modelValue"])], 2 /* CLASS */);
   }
 
-  script$G.render = render$G;
-  script$G.__file = "packages/element-plus/input-table/index.vue";
+  script$J.render = render$J;
+  script$J.__file = "packages/element-plus/input-table/index.vue";
 
-  function ownKeys$5(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$5(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$5(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$5(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$6(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$6(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$6(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
   // Cron Tab 子组件
   var CronTab = {
@@ -20000,15 +20508,16 @@
     },
     methods: {
       updateData: function updateData(key, value) {
-        this.$emit('update:modelValue', _objectSpread$5(_objectSpread$5({}, this.data), {}, _defineProperty$1({}, key, value)));
+        this.$emit('update:modelValue', _objectSpread$6(_objectSpread$6({}, this.data), {}, _defineProperty$1({}, key, value)));
       }
     },
     template: "\n    <div class=\"avue-input-cron__tab\">\n      <el-radio-group :model-value=\"data.type\" @update:model-value=\"val => updateData('type', val)\">\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"every\">{{ t('cron.every', { label: typeLabel }) }}</el-radio>\n        </div>\n        <div class=\"avue-input-cron__option\" v-if=\"showNotSpecify\">\n          <el-radio label=\"notSpecify\">{{ t('cron.notSpecify') }}</el-radio>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"range\">{{ t('cron.range') }}</el-radio>\n          <span v-if=\"data.type === 'range'\" class=\"avue-input-cron__inline\">\n            {{ t('cron.from') }}\n            <el-input-number v-model=\"data.rangeStart\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('rangeStart', val)\" />\n            {{ t('cron.to') }}\n            <el-input-number v-model=\"data.rangeEnd\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('rangeEnd', val)\" />\n            {{ typeLabel }}\n          </span>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"step\">{{ t('cron.step') }}</el-radio>\n          <span v-if=\"data.type === 'step'\" class=\"avue-input-cron__inline\">\n            {{ t('cron.startingFrom') }}\n            <el-input-number v-model=\"data.stepStart\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('stepStart', val)\" />\n            {{ typeLabel }}\n            {{ t('cron.everyInterval') }}\n            <el-input-number v-model=\"data.stepValue\" :min=\"1\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('stepValue', val)\" />\n            {{ typeLabel }}\n          </span>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"specify\">{{ t('cron.specify') }}</el-radio>\n        </div>\n      </el-radio-group>\n      <div v-if=\"data.type === 'specify'\" class=\"avue-input-cron__specify\">\n        <el-checkbox-group :model-value=\"data.values\" @update:model-value=\"val => updateData('values', val)\">\n          <el-checkbox v-for=\"opt in options\" :key=\"opt.value\" :label=\"opt.value\">{{ opt.label }}</el-checkbox>\n        </el-checkbox-group>\n      </div>\n    </div>\n  "
   };
-  var script$F = create({
+  var script$I = create({
     name: "input-cron",
     components: {
-      CronTab: CronTab
+      CronTab: CronTab,
+      iconTemp: script$1b
     },
     mixins: [props(), event(), locale],
     props: {
@@ -20185,16 +20694,16 @@
             stepValue: 1
           }
         };
-        var base = _objectSpread$5(_objectSpread$5({}, defaults[type]), {}, {
+        var base = _objectSpread$6(_objectSpread$6({}, defaults[type]), {}, {
           values: []
         });
         if (part === '*') {
-          return _objectSpread$5(_objectSpread$5({}, base), {}, {
+          return _objectSpread$6(_objectSpread$6({}, base), {}, {
             type: 'every'
           });
         }
         if (part === '?') {
-          return _objectSpread$5(_objectSpread$5({}, base), {}, {
+          return _objectSpread$6(_objectSpread$6({}, base), {}, {
             type: 'notSpecify'
           });
         }
@@ -20203,7 +20712,7 @@
             _part$split2 = _slicedToArray(_part$split, 2),
             start = _part$split2[0],
             step = _part$split2[1];
-          return _objectSpread$5(_objectSpread$5({}, base), {}, {
+          return _objectSpread$6(_objectSpread$6({}, base), {}, {
             type: 'step',
             stepStart: parseInt(start) || 0,
             stepValue: parseInt(step) || 1
@@ -20214,7 +20723,7 @@
             _part$split4 = _slicedToArray(_part$split3, 2),
             _start = _part$split4[0],
             end = _part$split4[1];
-          return _objectSpread$5(_objectSpread$5({}, base), {}, {
+          return _objectSpread$6(_objectSpread$6({}, base), {}, {
             type: 'range',
             rangeStart: parseInt(_start),
             rangeEnd: parseInt(end)
@@ -20224,7 +20733,7 @@
           var values = part.split(',').map(function (v) {
             return parseInt(v);
           });
-          return _objectSpread$5(_objectSpread$5({}, base), {}, {
+          return _objectSpread$6(_objectSpread$6({}, base), {}, {
             type: 'specify',
             values: values
           });
@@ -20232,12 +20741,12 @@
         // 单个数字
         var num = parseInt(part);
         if (!isNaN(num)) {
-          return _objectSpread$5(_objectSpread$5({}, base), {}, {
+          return _objectSpread$6(_objectSpread$6({}, base), {}, {
             type: 'specify',
             values: [num]
           });
         }
-        return _objectSpread$5(_objectSpread$5({}, base), {}, {
+        return _objectSpread$6(_objectSpread$6({}, base), {}, {
           type: 'every'
         });
       },
@@ -20333,7 +20842,8 @@
     }
   });
 
-  function render$F(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$I(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_cron_tab = vue.resolveComponent("cron-tab");
@@ -20364,9 +20874,10 @@
           disabled: _ctx.disabled
         }, {
           "default": vue.withCtx(function () {
-            return _cache[11] || (_cache[11] = [vue.createElementVNode("i", {
-              "class": "el-icon-setting"
-            }, null, -1 /* HOISTED */)]);
+            return [vue.createVNode(_component_icon_temp, {
+              text: "el-icon-setting",
+              size: 16
+            })];
           }),
           _: 1 /* STABLE */
         }, 8 /* PROPS */, ["onClick", "disabled"])];
@@ -20545,17 +21056,127 @@
     }, 8 /* PROPS */, ["title", "append-to-body", "modelValue"])], 2 /* CLASS */);
   }
 
-  script$F.render = render$F;
-  script$F.__file = "packages/element-plus/input-cron/index.vue";
+  script$I.render = render$I;
+  script$I.__file = "packages/element-plus/input-cron/index.vue";
 
-  var script$E = create({
+  var OTP_TYPES = ["outlined", "filled", "underlined"];
+  var script$H = create({
+    name: "input-otp",
+    mixins: [props(), event()],
+    emits: ["finish"],
+    expose: ["inputRefs", "focus", "blur"],
+    props: {
+      length: {
+        type: Number,
+        "default": 6
+      },
+      validator: Function,
+      inputmode: String,
+      otpType: {
+        type: String,
+        "default": "outlined",
+        validator: function validator(value) {
+          return OTP_TYPES.includes(value);
+        }
+      },
+      mask: Boolean,
+      separator: {
+        type: [String, Object, Function],
+        "default": undefined
+      },
+      validateEvent: {
+        type: Boolean,
+        "default": true
+      },
+      id: String,
+      ariaLabel: String,
+      finish: Function
+    },
+    computed: {
+      resolvedType: function resolvedType() {
+        return OTP_TYPES.includes(this.type) ? this.type : this.otpType;
+      },
+      inputRefs: function inputRefs() {
+        var _this$$refs$inputOtp;
+        return ((_this$$refs$inputOtp = this.$refs.inputOtp) === null || _this$$refs$inputOtp === void 0 ? void 0 : _this$$refs$inputOtp.inputRefs) || [];
+      }
+    },
+    methods: {
+      handleChange: function handleChange(value) {
+        this.$emit("update:modelValue", value);
+      },
+      handleNativeChange: function handleNativeChange(value) {
+        this.bindEvent("change", {
+          value: value
+        });
+      },
+      focus: function focus(index) {
+        var inputOtp = this.$refs.inputOtp;
+        if (!inputOtp) return;
+        index === undefined ? inputOtp.focus() : inputOtp.focus(index);
+      },
+      blur: function blur() {
+        var _this$$refs$inputOtp2;
+        (_this$$refs$inputOtp2 = this.$refs.inputOtp) === null || _this$$refs$inputOtp2 === void 0 || _this$$refs$inputOtp2.blur();
+      },
+      handleFinish: function handleFinish(value) {
+        this.bindEvent("finish", {
+          value: value
+        });
+      }
+    }
+  });
+
+  function render$H(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_el_input_otp = vue.resolveComponent("el-input-otp");
+    return vue.openBlock(), vue.createBlock(_component_el_input_otp, {
+      ref: "inputOtp",
+      modelValue: _ctx.text,
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+        return _ctx.text = $event;
+      }),
+      "class": vue.normalizeClass(_ctx.b()),
+      length: _ctx.length,
+      validator: _ctx.validator,
+      inputmode: _ctx.inputmode,
+      type: _ctx.resolvedType,
+      size: _ctx.size,
+      mask: _ctx.mask,
+      disabled: _ctx.disabled,
+      separator: _ctx.separator,
+      "validate-event": _ctx.validateEvent,
+      readonly: _ctx.readonly,
+      id: _ctx.id,
+      "aria-label": _ctx.ariaLabel,
+      onFocus: _ctx.handleFocus,
+      onBlur: _ctx.handleBlur,
+      onChange: _ctx.handleNativeChange,
+      onFinish: _ctx.handleFinish
+    }, vue.createSlots({
+      _: 2 /* DYNAMIC */
+    }, [_ctx.$slots.separator ? {
+      name: "separator",
+      fn: vue.withCtx(function (scope) {
+        return [vue.renderSlot(_ctx.$slots, "separator", vue.normalizeProps(vue.guardReactiveProps(scope)))];
+      }),
+      key: "0"
+    } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "length", "validator", "inputmode", "type", "size", "mask", "disabled", "separator", "validate-event", "readonly", "id", "aria-label", "onFocus", "onBlur", "onChange", "onFinish"]);
+  }
+
+  script$H.render = render$H;
+  script$H.__file = "packages/element-plus/input-otp/index.vue";
+
+  var script$G = create({
     name: "mention",
     mixins: [props(), event()],
+    emits: ["dic-error"],
     data: function data() {
       return {
         created: false,
         loading: false,
-        netDic: []
+        netDic: [],
+        remoteRequestId: 0,
+        remoteUnmounted: false
       };
     },
     props: {
@@ -20584,6 +21205,10 @@
     },
     created: function created() {},
     mounted: function mounted() {},
+    beforeUnmount: function beforeUnmount() {
+      this.remoteUnmounted = true;
+      this.remoteRequestId++;
+    },
     computed: {
       options: function options() {
         var _this = this;
@@ -20614,22 +21239,33 @@
       },
       handleRemoteMethod: function handleRemoteMethod(query) {
         var _this2 = this;
+        var requestId = ++this.remoteRequestId;
         this.loading = true;
         sendDic({
           column: this.column,
           value: query
         }, this).then(function (res) {
-          _this2.loading = false;
+          if (_this2.remoteUnmounted || requestId !== _this2.remoteRequestId) return;
           _this2.netDic = res;
+        })["catch"](function (error) {
+          if (_this2.remoteUnmounted || requestId !== _this2.remoteRequestId) return;
+          _this2.$emit("dic-error", {
+            type: "mention-remote",
+            error: error
+          });
+        })["finally"](function () {
+          if (!_this2.remoteUnmounted && requestId === _this2.remoteRequestId) {
+            _this2.loading = false;
+          }
         });
       }
     }
   });
 
-  var _hoisted_1$v = {
+  var _hoisted_1$x = {
     key: 1
   };
-  function render$E(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$G(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_mention = vue.resolveComponent("el-mention");
     return vue.openBlock(), vue.createBlock(_component_el_mention, {
       modelValue: _ctx.text,
@@ -20662,7 +21298,7 @@
           item: item,
           label: _ctx.labelKey,
           value: _ctx.valueKey
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$v, vue.toDisplayString(item.label), 1 /* TEXT */))];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$x, vue.toDisplayString(item.label), 1 /* TEXT */))];
       }),
       _: 2 /* DYNAMIC */
     }, [_ctx.prepend ? {
@@ -20688,10 +21324,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "onClick", "onFocus", "onBlur", "placeholder", "size", "prefix", "options", "loading", "split", "whole", "check-is-whole", "clearable", "readonly", "disabled"]);
   }
 
-  script$E.render = render$E;
-  script$E.__file = "packages/element-plus/mention/index.vue";
+  script$G.render = render$G;
+  script$G.__file = "packages/element-plus/mention/index.vue";
 
-  var script$D = create({
+  var script$F = create({
     name: 'verify',
     props: {
       size: {
@@ -20739,7 +21375,7 @@
     }
   });
 
-  function render$D(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$F(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.list, function (item, index) {
@@ -20751,10 +21387,10 @@
     }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */);
   }
 
-  script$D.render = render$D;
-  script$D.__file = "packages/element-plus/verify/index.vue";
+  script$F.render = render$F;
+  script$F.__file = "packages/element-plus/verify/index.vue";
 
-  var script$C = create({
+  var script$E = create({
     name: "switch",
     mixins: [props(), event()],
     props: {
@@ -20801,7 +21437,7 @@
     }
   });
 
-  function render$C(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$E(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_switch = vue.resolveComponent("el-switch");
     return vue.openBlock(), vue.createElementBlock("div", null, [vue.createVNode(_component_el_switch, {
       modelValue: _ctx.text,
@@ -20825,10 +21461,10 @@
     }, null, 8 /* PROPS */, ["modelValue", "onClick", "loading", "inline-prompt", "active-icon", "before-change", "active-action-icon", "active-text", "active-value", "inactive-icon", "inactive-action-icon", "inactive-value", "inactive-text", "width", "disabled"])]);
   }
 
-  script$C.render = render$C;
-  script$C.__file = "packages/element-plus/switch/index.vue";
+  script$E.render = render$E;
+  script$E.__file = "packages/element-plus/switch/index.vue";
 
-  var script$B = create({
+  var script$D = create({
     name: "rate",
     mixins: [props(), event()],
     props: {
@@ -20862,7 +21498,7 @@
     methods: {}
   });
 
-  function render$B(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$D(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_rate = vue.resolveComponent("el-rate");
     return vue.openBlock(), vue.createBlock(_component_el_rate, {
       modelValue: _ctx.text,
@@ -20881,8 +21517,8 @@
     }, null, 8 /* PROPS */, ["modelValue", "onClick", "max", "readonly", "texts", "show-text", "icon-classes", "void-icon-class", "disabled", "colors"]);
   }
 
-  script$B.render = render$B;
-  script$B.__file = "packages/element-plus/rate/index.vue";
+  script$D.render = render$D;
+  script$D.__file = "packages/element-plus/rate/index.vue";
 
   function _classCallCheck(a, n) {
     if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
@@ -21216,8 +21852,8 @@
     return client;
   };
 
-  function ownKeys$4(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$4(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$4(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$5(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$5(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$5(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$5(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   function getFileUrl(home) {
     var uri = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri;
@@ -21227,7 +21863,7 @@
   function isFileReady(file) {
     return file.status === FILE_STATUS_READY;
   }
-  var script$A = create({
+  var script$C = create({
     name: "upload",
     mixins: [props(), event(), locale],
     data: function data() {
@@ -21510,7 +22146,7 @@
           this.handleSized(file, this.text);
           return;
         }
-        var headers = _objectSpread$4(_objectSpread$4({}, this.headers), {}, {
+        var headers = _objectSpread$5(_objectSpread$5({}, this.headers), {}, {
           "Content-Type": "multipart/form-data"
         });
         //oss配置属性
@@ -21720,8 +22356,8 @@
     }
   });
 
-  var _hoisted_1$u = ["element-loading-text"];
-  var _hoisted_2$q = {
+  var _hoisted_1$w = ["element-loading-text"];
+  var _hoisted_2$r = {
     "class": "el-upload__text"
   };
   var _hoisted_3$n = ["innerHTML"];
@@ -21756,7 +22392,7 @@
   var _hoisted_15$5 = {
     "class": "el-upload-list__item-file-name"
   };
-  function render$A(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$C(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_plus = vue.resolveComponent("el-icon-plus");
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_el_progress = vue.resolveComponent("el-progress");
@@ -21972,7 +22608,7 @@
             return [vue.createVNode(_component_el_icon_plus)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["class"]))], 8 /* PROPS */, _hoisted_1$u)), [[_directive_loading, _ctx.firstFile.loading, void 0, {
+        }, 8 /* PROPS */, ["class"]))], 8 /* PROPS */, _hoisted_1$w)), [[_directive_loading, _ctx.firstFile.loading, void 0, {
           lock: true
         }]]), _ctx.menu ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 2,
@@ -22012,7 +22648,7 @@
             return [vue.createVNode(_component_el_icon_upload)];
           }),
           _: 1 /* STABLE */
-        }), vue.createElementVNode("div", _hoisted_2$q, [vue.createElementVNode("em", null, vue.toDisplayString(_ctx.fileText || _ctx.t("upload.upload")), 1 /* TEXT */)])], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        }), vue.createElementVNode("div", _hoisted_2$r, [vue.createElementVNode("em", null, vue.toDisplayString(_ctx.fileText || _ctx.t("upload.upload")), 1 /* TEXT */)])], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 3
         }, [_ctx.$slots.button ? vue.renderSlot(_ctx.$slots, "button", {
           key: 0,
@@ -22034,8 +22670,8 @@
     }, 8 /* PROPS */, ["class", "onClick", "action", "on-remove", "accept", "before-remove", "multiple", "on-preview", "limit", "http-request", "drag", "readonly", "directory", "show-file-list", "list-type", "on-change", "on-exceed", "disabled", "file-list"]);
   }
 
-  script$A.render = render$A;
-  script$A.__file = "packages/element-plus/upload/index.vue";
+  script$C.render = render$C;
+  script$C.__file = "packages/element-plus/upload/index.vue";
 
   //绘制五角星  
   /** 
@@ -22062,7 +22698,7 @@
     context.fill();
     context.restore();
   }
-  var script$z = create({
+  var script$B = create({
     name: "sign",
     props: {
       width: {
@@ -22251,8 +22887,8 @@
     }
   });
 
-  var _hoisted_1$t = ["width", "height"];
-  function render$z(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$v = ["width", "height"];
+  function render$B(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [vue.createElementVNode("canvas", {
@@ -22260,13 +22896,13 @@
       width: _ctx.width,
       height: _ctx.height,
       ref: "canvas"
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$t)], 2 /* CLASS */);
+    }, null, 10 /* CLASS, PROPS */, _hoisted_1$v)], 2 /* CLASS */);
   }
 
-  script$z.render = render$z;
-  script$z.__file = "packages/element-plus/sign/index.vue";
+  script$B.render = render$B;
+  script$B.__file = "packages/element-plus/sign/index.vue";
 
-  var script$y = create({
+  var script$A = create({
     name: "slider",
     mixins: [props(), event()],
     props: _defineProperty$1({
@@ -22311,7 +22947,7 @@
     methods: {}
   });
 
-  function render$y(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$A(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_slider = vue.resolveComponent("el-slider");
     return vue.openBlock(), vue.createBlock(_component_el_slider, {
       modelValue: _ctx.text,
@@ -22333,10 +22969,10 @@
     }, null, 8 /* PROPS */, ["modelValue", "disabled", "vertical", "height", "step", "min", "max", "range", "show-stops", "show-input", "marks", "format-tooltip", "onClick"]);
   }
 
-  script$y.render = render$y;
-  script$y.__file = "packages/element-plus/slider/index.vue";
+  script$A.render = render$A;
+  script$A.__file = "packages/element-plus/slider/index.vue";
 
-  var script$x = create({
+  var script$z = create({
     name: "tree",
     mixins: [locale],
     directives: {
@@ -22691,10 +23327,10 @@
     }
   });
 
-  var _hoisted_1$s = {
+  var _hoisted_1$u = {
     "class": "el-tree-node__label"
   };
-  function render$x(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$z(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_el_scrollbar = vue.resolveComponent("el-scrollbar");
@@ -22786,7 +23422,7 @@
             return [vue.renderSlot(_ctx.$slots, "default", {
               node: node,
               data: _ctx.data
-            }), vue.createElementVNode("span", _hoisted_1$s, vue.toDisplayString(node.label), 1 /* TEXT */)];
+            }), vue.createElementVNode("span", _hoisted_1$u, vue.toDisplayString(node.label), 1 /* TEXT */)];
           }),
           key: "1"
         }]), 1064 /* PROPS, NEED_HYDRATION, DYNAMIC_SLOTS */, ["data", "lazy", "load", "draggable", "height", "props", "icon-class", "indent", "highlight-current", "show-checkbox", "accordion", "node-key", "check-strictly", "check-on-click-node", "filter-node-method", "check-on-click-leaf", "expand-on-click-node", "onCheckChange", "onNodeClick", "onNodeExpand", "onNodeDragStart", "onNodeDragEnter", "onNodeDragLeave", "onNodeDragOver", "onNodeDragEnd", "onNodeDrop", "allow-drop", "allow-drag", "onNodeContextmenu", "default-expand-all", "default-expanded-keys"])), [[_directive_loading, _ctx.loading]])];
@@ -22847,10 +23483,10 @@
     }, 8 /* PROPS */, ["title", "modelValue", "append-to-body", "before-close", "width"])], 2 /* CLASS */);
   }
 
-  script$x.render = render$x;
-  script$x.__file = "packages/element-plus/tree/index.vue";
+  script$z.render = render$z;
+  script$z.__file = "packages/element-plus/tree/index.vue";
 
-  var script$w = create({
+  var script$y = create({
     name: 'title',
     mixins: [props(), event()],
     props: {
@@ -22865,7 +23501,7 @@
     methods: {}
   });
 
-  function render$w(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$y(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [vue.createElementVNode("p", {
@@ -22873,10 +23509,10 @@
     }, vue.toDisplayString(_ctx.text), 5 /* TEXT, STYLE */)], 2 /* CLASS */);
   }
 
-  script$w.render = render$w;
-  script$w.__file = "packages/element-plus/title/index.vue";
+  script$y.render = render$y;
+  script$y.__file = "packages/element-plus/title/index.vue";
 
-  var script$v = create({
+  var script$x = create({
     name: "search",
     mixins: [init()],
     props: {
@@ -22983,8 +23619,8 @@
     }
   });
 
-  var _hoisted_1$r = ["onClick"];
-  function render$v(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$t = ["onClick"];
+  function render$x(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_col = vue.resolveComponent("el-col");
     var _component_el_row = vue.resolveComponent("el-row");
     return vue.openBlock(), vue.createBlock(_component_el_row, {
@@ -23019,7 +23655,7 @@
                     return _ctx.handleClick(column, item);
                   },
                   key: _ctx.getKey(item, column.props, _ctx.valueKey)
-                }, vue.toDisplayString(_ctx.getKey(item, column.props, _ctx.labelKey)), 11 /* TEXT, CLASS, PROPS */, _hoisted_1$r);
+                }, vue.toDisplayString(_ctx.getKey(item, column.props, _ctx.labelKey)), 11 /* TEXT, CLASS, PROPS */, _hoisted_1$t);
               }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */)];
             }),
             _: 2 /* DYNAMIC */
@@ -23030,11 +23666,14 @@
     }, 8 /* PROPS */, ["class"]);
   }
 
-  script$v.render = render$v;
-  script$v.__file = "packages/element-plus/search/index.vue";
+  script$x.render = render$x;
+  script$x.__file = "packages/element-plus/search/index.vue";
 
-  var script$u = create({
+  var script$w = create({
     name: "tabs",
+    components: {
+      iconTemp: script$1b
+    },
     props: {
       option: {
         type: Object,
@@ -23072,7 +23711,8 @@
     }
   });
 
-  function render$u(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$w(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_tab_pane = vue.resolveComponent("el-tab-pane");
     var _component_el_tabs = vue.resolveComponent("el-tabs");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -23090,27 +23730,41 @@
           return vue.openBlock(), vue.createBlock(_component_el_tab_pane, {
             name: index + '',
             disabled: column.disabled,
-            key: index
+            key: column.prop
           }, {
             label: vue.withCtx(function () {
-              return [vue.createElementVNode("i", {
-                "class": vue.normalizeClass(column.icon)
-              }, null, 2 /* CLASS */), vue.createTextVNode("  " + vue.toDisplayString(column.label), 1 /* TEXT */)];
+              return [_ctx.$slots.label ? vue.renderSlot(_ctx.$slots, "label", {
+                key: 0,
+                column: column,
+                index: index,
+                active: _ctx.active === index + ''
+              }) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+                key: 1
+              }, [column.icon ? (vue.openBlock(), vue.createBlock(_component_icon_temp, {
+                key: 0,
+                text: column.icon,
+                size: 14,
+                "icon-style": {
+                  fontSize: '14px',
+                  width: '14px',
+                  height: '14px'
+                }
+              }, null, 8 /* PROPS */, ["text"])) : vue.createCommentVNode("v-if", true), vue.createTextVNode("  " + vue.toDisplayString(column.label), 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */))];
             }),
             _: 2 /* DYNAMIC */
           }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["name", "disabled"]);
         }), 128 /* KEYED_FRAGMENT */))];
       }),
-      _: 1 /* STABLE */
+      _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["modelValue", "tab-position", "type"])], 2 /* CLASS */);
   }
 
-  script$u.render = render$u;
-  script$u.__file = "packages/element-plus/tabs/index.vue";
+  script$w.render = render$w;
+  script$w.__file = "packages/element-plus/tabs/index.vue";
 
-  function ownKeys$3(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$t = create({
+  function ownKeys$4(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$4(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$4(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$v = create({
     name: "dynamic",
     mixins: [props(), event()],
     data: function data() {
@@ -23236,7 +23890,7 @@
         var _callback = function callback(list) {
           list.forEach(function (ele, index) {
             if (ele.children && Array.isArray(ele.children)) _callback(ele.children);else {
-              list[index] = _objectSpread$3(_objectSpread$3({}, ele), {
+              list[index] = _objectSpread$4(_objectSpread$4({}, ele), {
                 hide: _this.validData(ele.hide, !_this.validParams(ele, 'display', true)),
                 disabled: _this.validParams(ele, 'disabled', false),
                 detail: _this.validParams(ele, 'detail', false),
@@ -23260,7 +23914,7 @@
         });
 
         // 返回合并后的选项对象
-        return _objectSpread$3(_objectSpread$3(_objectSpread$3({}, options), {
+        return _objectSpread$4(_objectSpread$4(_objectSpread$4({}, options), {
           column: columnOption
         }), childOptions);
       }
@@ -23348,7 +24002,7 @@
         var _this3 = this;
         var callback = function callback() {
           var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-          var row = _this3.deepClone(_objectSpread$3(_objectSpread$3(_objectSpread$3({}, _this3.valueOption), obj), {
+          var row = _this3.deepClone(_objectSpread$4(_objectSpread$4(_objectSpread$4({}, _this3.valueOption), obj), {
             $index: _this3.textLen
           }));
           if (_this3.isCrud) {
@@ -23370,11 +24024,11 @@
     if (null == t) throw new TypeError("Cannot destructure " + t);
   }
 
-  var _hoisted_1$q = ["onMouseenter", "onMouseleave"];
-  var _hoisted_2$p = {
+  var _hoisted_1$s = ["onMouseenter", "onMouseleave"];
+  var _hoisted_2$q = {
     key: 1
   };
-  function render$t(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$v(_ctx, _cache, $props, $setup, $data, $options) {
     var _this = this;
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_avue_form = vue.resolveComponent("avue-form");
@@ -23450,7 +24104,7 @@
             })))];
           })
         };
-      })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["table-data", "option", "modelValue", "onUpdate:modelValue"]))], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$q);
+      })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["table-data", "option", "modelValue", "onUpdate:modelValue"]))], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$s);
     }), 128 /* KEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */)) : _ctx.isCrud ? (vue.openBlock(), vue.createBlock(_component_avue_crud, vue.mergeProps({
       key: 1,
       ref: "main",
@@ -23488,7 +24142,7 @@
           disabled: _ctx.disabled,
           icon: "el-icon-delete",
           circle: ""
-        }, null, 8 /* PROPS */, ["onClick", "size", "disabled"])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$p, vue.toDisplayString(scope.row.$index + 1), 1 /* TEXT */))];
+        }, null, 8 /* PROPS */, ["onClick", "size", "disabled"])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$q, vue.toDisplayString(scope.row.$index + 1), 1 /* TEXT */))];
       }),
       _: 2 /* DYNAMIC */
     }, [vue.renderList(_ctx.columnSlot, function (item) {
@@ -23503,47 +24157,71 @@
     })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["option", "disabled", "onCellMouseEnter", "onCellMouseLeave", "onSelectionChange", "onSortableChange", "data"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$t.render = render$t;
-  script$t.__file = "packages/element-plus/dynamic/index.vue";
+  script$v.render = render$v;
+  script$v.__file = "packages/element-plus/dynamic/index.vue";
 
   var RecordVideo = /*#__PURE__*/function () {
     function RecordVideo(videoObj) {
+      var _this = this;
       _classCallCheck(this, RecordVideo);
       this.video = videoObj;
       this.mediaRecorder = null;
+      this.stream = null;
       this.chunks = [];
+      this.objectUrl = null;
+      this.destroyed = false;
+      this.handleLoadedMetadata = function () {
+        var playResult = _this.video.play();
+        if (playResult && typeof playResult["catch"] === 'function') {
+          playResult["catch"](function () {
+            return undefined;
+          });
+        }
+      };
+      this.handleDataAvailable = function (event) {
+        if (event.data && event.data.size > 0) {
+          _this.chunks.push(event.data);
+        }
+      };
     }
     return _createClass(RecordVideo, [{
       key: "init",
       value: function init() {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-          navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: true
-          }).then(function (stream) {
-            if ('srcObject' in _this.video) {
-              _this.video.srcObject = stream;
-            } else {
-              _this.video.src = window.URL.createObjectURL(stream);
-            }
-            _this.video.addEventListener('loadmetadata', function () {
-              _this.video.play();
+        var _this2 = this;
+        if (!this.isSupport()) {
+          return Promise.reject(new Error('MediaDevices.getUserMedia is not supported'));
+        }
+        this.destroyed = false;
+        return navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: true
+        }).then(function (stream) {
+          if (_this2.destroyed) {
+            stream.getTracks().forEach(function (track) {
+              return track.stop();
             });
-            _this.mediaRecorder = new MediaRecorder(stream);
-            _this.mediaRecorder.addEventListener('dataavailable', function (e) {
-              _this.chunks.push(e.data);
-            });
-            resolve();
-          })["catch"](function (error) {
-            reject(error);
-          });
+            return;
+          }
+          _this2.stream = stream;
+          if ('srcObject' in _this2.video) {
+            _this2.video.srcObject = stream;
+          } else {
+            _this2.objectUrl = window.URL.createObjectURL(stream);
+            _this2.video.src = _this2.objectUrl;
+          }
+          _this2.video.addEventListener('loadedmetadata', _this2.handleLoadedMetadata);
+          _this2.mediaRecorder = new MediaRecorder(stream);
+          _this2.mediaRecorder.addEventListener('dataavailable', _this2.handleDataAvailable);
+        })["catch"](function (error) {
+          _this2.destroy();
+          throw error;
         });
       }
     }, {
       key: "startRecord",
       value: function startRecord() {
         if (this.mediaRecorder && this.mediaRecorder.state === 'inactive') {
+          this.chunks = [];
           this.mediaRecorder.start();
         }
       }
@@ -23557,17 +24235,47 @@
     }, {
       key: "isSupport",
       value: function isSupport() {
-        var flag = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+        var flag = typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
         if (flag) {
           return true;
         }
         return false;
       }
+    }, {
+      key: "destroy",
+      value: function destroy() {
+        this.destroyed = true;
+        this.video.removeEventListener('loadedmetadata', this.handleLoadedMetadata);
+        if (this.mediaRecorder) {
+          this.mediaRecorder.removeEventListener('dataavailable', this.handleDataAvailable);
+          if (this.mediaRecorder.state !== 'inactive') {
+            this.mediaRecorder.stop();
+          }
+        }
+        if (this.stream) {
+          this.stream.getTracks().forEach(function (track) {
+            return track.stop();
+          });
+        }
+        this.video.pause();
+        if ('srcObject' in this.video) {
+          this.video.srcObject = null;
+        }
+        if (this.objectUrl) {
+          window.URL.revokeObjectURL(this.objectUrl);
+          this.video.removeAttribute('src');
+        }
+        this.mediaRecorder = null;
+        this.stream = null;
+        this.objectUrl = null;
+        this.chunks = [];
+      }
     }]);
   }();
 
-  var script$s = create({
+  var script$u = create({
     name: 'video',
+    emits: ['data-change', 'video-error'],
     props: {
       background: {
         type: String
@@ -23598,44 +24306,75 @@
     },
     data: function data() {
       return {
-        videoObj: null
+        videoObj: null,
+        reader: null,
+        videoUnmounted: false
       };
     },
     mounted: function mounted() {
+      this.videoUnmounted = false;
       this.init();
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.videoUnmounted = true;
+      if (this.reader) {
+        this.reader.onloadend = null;
+        if (this.reader.readyState === FileReader.LOADING) {
+          this.reader.abort();
+        }
+        this.reader = null;
+      }
+      if (this.videoObj) {
+        if (this.videoObj.mediaRecorder) {
+          this.videoObj.mediaRecorder.removeEventListener('stop', this.getData, false);
+        }
+        this.videoObj.destroy();
+        this.videoObj = null;
+      }
     },
     methods: {
       init: function init() {
         var _this = this;
-        this.videoObj = new RecordVideo(this.$refs.main);
-        var videoPromise = this.videoObj.init();
+        var videoObj = new RecordVideo(this.$refs.main);
+        this.videoObj = videoObj;
+        var videoPromise = videoObj.init();
         videoPromise.then(function () {
-          _this.videoObj.mediaRecorder.addEventListener('stop', _this.getData, false);
+          if (_this.videoUnmounted || _this.videoObj !== videoObj || !videoObj.mediaRecorder) {
+            return;
+          }
+          videoObj.mediaRecorder.addEventListener('stop', _this.getData, false);
+        })["catch"](function (error) {
+          if (!_this.videoUnmounted && _this.videoObj === videoObj) {
+            _this.$emit('video-error', error);
+          }
         });
       },
       startRecord: function startRecord() {
-        this.videoObj.startRecord();
+        if (this.videoObj) this.videoObj.startRecord();
       },
       stopRecord: function stopRecord() {
-        this.videoObj.stopRecord();
+        if (this.videoObj) this.videoObj.stopRecord();
       },
       getData: function getData() {
         var _this2 = this;
+        if (this.videoUnmounted || !this.videoObj) return;
         var blob = new Blob(this.videoObj.chunks, {
           type: 'video/mp4'
         });
         var reader = new FileReader();
+        this.reader = reader;
+        reader.onloadend = function () {
+          if (_this2.videoUnmounted || _this2.reader !== reader) return;
+          _this2.$emit('data-change', reader.result);
+          _this2.reader = null;
+        };
         reader.readAsDataURL(blob);
-        reader.addEventListener('loadend', function () {
-          var video_base64 = reader.result;
-          _this2.$emit('data-change', video_base64);
-        });
       }
     }
   });
 
-  var _hoisted_1$p = ["src"];
-  function render$s(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$r = ["src"];
+  function render$u(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
       style: vue.normalizeStyle(_ctx.styleName)
@@ -23653,7 +24392,7 @@
       style: vue.normalizeStyle(_ctx.imgStyleName),
       "class": vue.normalizeClass(_ctx.b('img')),
       src: _ctx.background
-    }, null, 14 /* CLASS, STYLE, PROPS */, _hoisted_1$p), vue.createElementVNode("video", {
+    }, null, 14 /* CLASS, STYLE, PROPS */, _hoisted_1$r), vue.createElementVNode("video", {
       "class": vue.normalizeClass(_ctx.b('main')),
       ref: "main",
       autoplay: "",
@@ -23661,10 +24400,10 @@
     }, null, 2 /* CLASS */)], 6 /* CLASS, STYLE */);
   }
 
-  script$s.render = render$s;
-  script$s.__file = "packages/element-plus/video/index.vue";
+  script$u.render = render$u;
+  script$u.__file = "packages/element-plus/video/index.vue";
 
-  var script$r = create({
+  var script$t = create({
     name: 'login',
     mixins: [locale],
     emits: ['update:modelValue', 'send', 'refresh', 'submit'],
@@ -23747,16 +24486,19 @@
         form: {}
       };
     },
+    beforeUnmount: function beforeUnmount() {
+      this.clearTimer();
+    },
     methods: {
       onSend: function onSend() {
         var _this = this;
         var callback = function callback() {
+          _this.clearTimer();
           _this.nowtime = _this.time;
           _this.check = setInterval(function () {
             _this.nowtime--;
-            if (_this.nowtime === 0) {
-              clearInterval(_this.check);
-              _this.check = null;
+            if (_this.nowtime <= 0) {
+              _this.clearTimer();
             }
           }, 1000);
         };
@@ -23765,6 +24507,12 @@
       },
       onRefresh: function onRefresh() {
         this.$emit('refresh');
+      },
+      clearTimer: function clearTimer() {
+        if (this.check) {
+          clearInterval(this.check);
+          this.check = null;
+        }
       },
       onSubmit: function onSubmit() {
         var _this2 = this;
@@ -23788,11 +24536,11 @@
     }
   });
 
-  var _hoisted_1$o = {
+  var _hoisted_1$q = {
     key: 1
   };
-  var _hoisted_2$o = ["src"];
-  function render$r(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_2$p = ["src"];
+  function render$t(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     var _component_el_form_item = vue.resolveComponent("el-form-item");
@@ -23904,7 +24652,7 @@
                         return [vue.createTextVNode(vue.toDisplayString(_ctx.sendText), 1 /* TEXT */)];
                       }),
                       _: 1 /* STABLE */
-                    }, 8 /* PROPS */, ["class", "disabled", "onClick"])) : vue.createCommentVNode("v-if", true), _ctx.isImg ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$o, [vue.createElementVNode("img", {
+                    }, 8 /* PROPS */, ["class", "disabled", "onClick"])) : vue.createCommentVNode("v-if", true), _ctx.isImg ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$q, [vue.createElementVNode("img", {
                       src: _ctx.codesrc,
                       alt: "",
                       onClick: _cache[2] || (_cache[2] = function () {
@@ -23912,7 +24660,7 @@
                       }),
                       width: "80",
                       height: "25"
-                    }, null, 8 /* PROPS */, _hoisted_2$o)])) : vue.createCommentVNode("v-if", true)];
+                    }, null, 8 /* PROPS */, _hoisted_2$p)])) : vue.createCommentVNode("v-if", true)];
                   }),
                   _: 1 /* STABLE */
                 }, 8 /* PROPS */, ["modelValue", "prefix-icon", "placeholder", "autocomplete"])];
@@ -23941,10 +24689,10 @@
     }, 8 /* PROPS */, ["model", "size", "label-width"])], 6 /* CLASS, STYLE */);
   }
 
-  script$r.render = render$r;
-  script$r.__file = "packages/element-plus/login/index.vue";
+  script$t.render = render$t;
+  script$t.__file = "packages/element-plus/login/index.vue";
 
-  var script$q = create({
+  var script$s = create({
     name: 'array',
     mixins: [props(), event()],
     data: function data() {
@@ -24003,7 +24751,7 @@
     }
   });
 
-  function render$q(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$s(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_link = vue.resolveComponent("el-link");
     var _component_el_input = vue.resolveComponent("el-input");
@@ -24093,10 +24841,10 @@
     }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */);
   }
 
-  script$q.render = render$q;
-  script$q.__file = "packages/element-plus/array/index.vue";
+  script$s.render = render$s;
+  script$s.__file = "packages/element-plus/array/index.vue";
 
-  var script$p = create({
+  var script$r = create({
     name: "text-ellipsis",
     props: {
       text: String,
@@ -24172,7 +24920,7 @@
     }
   });
 
-  function render$p(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$r(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
@@ -24202,52 +24950,2843 @@
     })], 6 /* CLASS, STYLE */);
   }
 
+  script$r.render = render$r;
+  script$r.__file = "packages/element-plus/text-ellipsis/index.vue";
+
+  //---------------------------------------------------------------------
+  //
+  // QR Code Generator for JavaScript
+  //
+  // Copyright (c) 2009 Kazuhiko Arase
+  //
+  // URL: http://www.d-project.com/
+  //
+  // Licensed under the MIT license:
+  //  http://www.opensource.org/licenses/mit-license.php
+  //
+  // The word 'QR Code' is registered trademark of
+  // DENSO WAVE INCORPORATED
+  //  http://www.denso-wave.com/qrcode/faqpatent-e.html
+  //
+  //---------------------------------------------------------------------
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  const qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    const PAD0 = 0xEC;
+    const PAD1 = 0x11;
+
+    let _typeNumber = typeNumber;
+    const _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    let _modules = null;
+    let _moduleCount = 0;
+    let _dataCache = null;
+    const _dataList = [];
+
+    const _this = {};
+
+    const makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        const modules = new Array(moduleCount);
+        for (let row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (let col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    const setupPositionProbePattern = function(row, col) {
+
+      for (let r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (let c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    const getBestMaskPattern = function() {
+
+      let minLostPoint = 0;
+      let pattern = 0;
+
+      for (let i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        const lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    const setupTimingPattern = function() {
+
+      for (let r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (let c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    const setupPositionAdjustPattern = function() {
+
+      const pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (let i = 0; i < pos.length; i += 1) {
+
+        for (let j = 0; j < pos.length; j += 1) {
+
+          const row = pos[i];
+          const col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (let r = -2; r <= 2; r += 1) {
+
+            for (let c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const setupTypeNumber = function(test) {
+
+      const bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (let i = 0; i < 18; i += 1) {
+        const mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (let i = 0; i < 18; i += 1) {
+        const mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    const setupTypeInfo = function(test, maskPattern) {
+
+      const data = (_errorCorrectionLevel << 3) | maskPattern;
+      const bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (let i = 0; i < 15; i += 1) {
+
+        const mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (let i = 0; i < 15; i += 1) {
+
+        const mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    const mapData = function(data, maskPattern) {
+
+      let inc = -1;
+      let row = _moduleCount - 1;
+      let bitIndex = 7;
+      let byteIndex = 0;
+      const maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (let col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (let c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              let dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              const mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    const createBytes = function(buffer, rsBlocks) {
+
+      let offset = 0;
+
+      let maxDcCount = 0;
+      let maxEcCount = 0;
+
+      const dcdata = new Array(rsBlocks.length);
+      const ecdata = new Array(rsBlocks.length);
+
+      for (let r = 0; r < rsBlocks.length; r += 1) {
+
+        const dcCount = rsBlocks[r].dataCount;
+        const ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (let i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        const rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        const rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        const modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (let i = 0; i < ecdata[r].length; i += 1) {
+          const modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      let totalCodeCount = 0;
+      for (let i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      const data = new Array(totalCodeCount);
+      let index = 0;
+
+      for (let i = 0; i < maxDcCount; i += 1) {
+        for (let r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (let i = 0; i < maxEcCount; i += 1) {
+        for (let r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    const createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      const rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      const buffer = qrBitBuffer();
+
+      for (let i = 0; i < dataList.length; i += 1) {
+        const data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      let totalDataCount = 0;
+      for (let i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      let newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        let typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          const rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          const buffer = qrBitBuffer();
+
+          for (let i = 0; i < _dataList.length; i++) {
+            const data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          let totalDataCount = 0;
+          for (let i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      let qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (let r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (let c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      let opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      const size = _this.getModuleCount() * cellSize + margin * 2;
+      let c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      const size = _this.getModuleCount() * cellSize + margin * 2;
+      const min = margin;
+      const max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          const c = Math.floor( (x - min) / cellSize);
+          const r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      const size = _this.getModuleCount() * cellSize + margin * 2;
+
+      let img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    const escapeXml = function(s) {
+      let escaped = '';
+      for (let i = 0; i < s.length; i += 1) {
+        const c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    const _createHalfASCII = function(margin) {
+      const cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      const size = _this.getModuleCount() * cellSize + margin * 2;
+      const min = margin;
+      const max = size - margin;
+
+      let y, x, r1, r2, p;
+
+      const blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      const blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      let ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      const size = _this.getModuleCount() * cellSize + margin * 2;
+      const min = margin;
+      const max = size - margin;
+
+      let y, x, r, p;
+
+      const white = Array(cellSize+1).join('██');
+      const black = Array(cellSize+1).join('  ');
+
+      let ascii = '';
+      let line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      const length = _this.getModuleCount();
+      for (let row = 0; row < length; row++) {
+        for (let col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytes = function(s) {
+    const bytes = [];
+    for (let i = 0; i < s.length; i += 1) {
+      const c = s.charCodeAt(i);
+      bytes.push(c & 0xff);
+    }
+    return bytes;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    const unicodeMap = function() {
+
+      const bin = base64DecodeInputStream(unicodeData);
+      const read = function() {
+        const b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      let count = 0;
+      const unicodeMap = {};
+      while (true) {
+        const b0 = bin.read();
+        if (b0 == -1) break;
+        const b1 = read();
+        const b2 = read();
+        const b3 = read();
+        const k = String.fromCharCode( (b0 << 8) | b1);
+        const v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    const unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      const bytes = [];
+      for (let i = 0; i < s.length; i += 1) {
+        const c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          const b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  const QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  const QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  const QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  const QRUtil = function() {
+
+    const PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    const G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    const G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    const _this = {};
+
+    const getBCHDigit = function(data) {
+      let digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      let d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      let d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      let a = qrPolynomial([1], 0);
+      for (let i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      const moduleCount = qrcode.getModuleCount();
+
+      let lostPoint = 0;
+
+      // LEVEL1
+
+      for (let row = 0; row < moduleCount; row += 1) {
+        for (let col = 0; col < moduleCount; col += 1) {
+
+          let sameCount = 0;
+          const dark = qrcode.isDark(row, col);
+
+          for (let r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (let c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      }
+      // LEVEL2
+
+      for (let row = 0; row < moduleCount - 1; row += 1) {
+        for (let col = 0; col < moduleCount - 1; col += 1) {
+          let count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (let row = 0; row < moduleCount; row += 1) {
+        for (let col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (let col = 0; col < moduleCount; col += 1) {
+        for (let row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      let darkCount = 0;
+
+      for (let col = 0; col < moduleCount; col += 1) {
+        for (let row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      const ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  const QRMath = function() {
+
+    const EXP_TABLE = new Array(256);
+    const LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (let i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (let i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (let i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    const _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  const qrPolynomial = function(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    const _num = function() {
+      let offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      const _num = new Array(num.length - offset + shift);
+      for (let i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    const _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      const num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (let i = 0; i < _this.getLength(); i += 1) {
+        for (let j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      const ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      const num = new Array(_this.getLength() );
+      for (let i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (let i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  const QRRSBlock = function() {
+
+    const RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    const qrRSBlock = function(totalCount, dataCount) {
+      const _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    const _this = {};
+
+    const getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      const rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      const length = rsBlock.length / 3;
+
+      const list = [];
+
+      for (let i = 0; i < length; i += 1) {
+
+        const count = rsBlock[i * 3 + 0];
+        const totalCount = rsBlock[i * 3 + 1];
+        const dataCount = rsBlock[i * 3 + 2];
+
+        for (let j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  const qrBitBuffer = function() {
+
+    const _buffer = [];
+    let _length = 0;
+
+    const _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      const bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (let i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      const bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  const qrNumber = function(data) {
+
+    const _mode = QRMode.MODE_NUMBER;
+    const _data = data;
+
+    const _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      const data = _data;
+
+      let i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    const strToNum = function(s) {
+      let num = 0;
+      for (let i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    const chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  const qrAlphaNum = function(data) {
+
+    const _mode = QRMode.MODE_ALPHA_NUM;
+    const _data = data;
+
+    const _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      const s = _data;
+
+      let i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    const getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case '\u0020' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  const qr8BitByte = function(data) {
+
+    const _mode = QRMode.MODE_8BIT_BYTE;
+    const _bytes = qrcode.stringToBytes(data);
+
+    const _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (let i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  const qrKanji = function(data) {
+
+    const _mode = QRMode.MODE_KANJI;
+
+    const stringToBytes = qrcode.stringToBytes;
+    !function(c, code) {
+      // self test for sjis support.
+      const test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    const _bytes = stringToBytes(data);
+
+    const _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      const data = _bytes;
+
+      let i = 0;
+
+      while (i + 1 < data.length) {
+
+        let c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  const byteArrayOutputStream = function() {
+
+    const _bytes = [];
+
+    const _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (let i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (let i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      let s = '';
+      s += '[';
+      for (let i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  const base64EncodeOutputStream = function() {
+
+    let _buffer = 0;
+    let _buflen = 0;
+    let _length = 0;
+    let _base64 = '';
+
+    const _this = {};
+
+    const writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    const encode = function(n) {
+      if (n < 0) {
+        throw 'n:' + n;
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      } else {
+        throw 'n:' + n;
+      }
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        const padlen = 3 - _length % 3;
+        for (let i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  const base64DecodeInputStream = function(str) {
+
+    const _str = str;
+    let _pos = 0;
+    let _buffer = 0;
+    let _buflen = 0;
+
+    const _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        const c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      const n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    const decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  const gifImage = function(width, height) {
+
+    const _width = width;
+    const _height = height;
+    const _data = new Array(width * height);
+
+    const _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      const lzwMinCodeSize = 2;
+      const raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      let offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    const bitOutputStream = function(out) {
+
+      const _out = out;
+      let _bitLength = 0;
+      let _bitBuffer = 0;
+
+      const _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    const getLZWRaster = function(lzwMinCodeSize) {
+
+      const clearCode = 1 << lzwMinCodeSize;
+      const endCode = (1 << lzwMinCodeSize) + 1;
+      let bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      const table = lzwTable();
+
+      for (let i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      const byteOut = byteArrayOutputStream();
+      const bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      let dataIndex = 0;
+
+      let s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        const c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    const lzwTable = function() {
+
+      const _map = {};
+      let _size = 0;
+
+      const _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  const createDataURL = function(width, height, getPixel) {
+    const gif = gifImage(width, height);
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    const b = byteArrayOutputStream();
+    gif.write(b);
+
+    const base64 = base64EncodeOutputStream();
+    const bytes = b.toByteArray();
+    for (let i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  qrcode.stringToBytes;
+
+  var QUIET_ZONE_SIZE = 4;
+  qrcode.stringToBytes = function (value) {
+    if (typeof TextEncoder !== 'undefined') {
+      return Array.from(new TextEncoder().encode(value));
+    }
+    var bytes = [];
+    for (var index = 0; index < value.length; index += 1) {
+      var code = value.charCodeAt(index);
+      if (code < 0x80) {
+        bytes.push(code);
+      } else if (code < 0x800) {
+        bytes.push(0xc0 | code >> 6, 0x80 | code & 0x3f);
+      } else if (code < 0xd800 || code >= 0xe000) {
+        bytes.push(0xe0 | code >> 12, 0x80 | code >> 6 & 0x3f, 0x80 | code & 0x3f);
+      } else {
+        index += 1;
+        var surrogate = value.charCodeAt(index);
+        var point = 0x10000 + ((code & 0x3ff) << 10 | surrogate & 0x3ff);
+        bytes.push(0xf0 | point >> 18, 0x80 | point >> 12 & 0x3f, 0x80 | point >> 6 & 0x3f, 0x80 | point & 0x3f);
+      }
+    }
+    return bytes;
+  };
+  function escapeXml(value) {
+    return String(value).replace(/[&<>"']/g, function (character) {
+      var entities = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&apos;'
+      };
+      return entities[character];
+    });
+  }
+  var script$q = create({
+    name: 'qrcode',
+    emits: ['refresh', 'error', 'icon-error'],
+    props: {
+      value: {
+        type: String,
+        "default": ''
+      },
+      type: {
+        type: String,
+        "default": 'canvas',
+        validator: function validator(value) {
+          return ['canvas', 'svg'].includes(value);
+        }
+      },
+      icon: String,
+      size: {
+        type: Number,
+        "default": 160
+      },
+      iconSize: {
+        type: Number,
+        "default": 40
+      },
+      color: {
+        type: String,
+        "default": '#000'
+      },
+      bgColor: {
+        type: String,
+        "default": 'transparent'
+      },
+      bordered: {
+        type: Boolean,
+        "default": true
+      },
+      errorLevel: {
+        type: String,
+        "default": 'M',
+        validator: function validator(value) {
+          return ['L', 'M', 'Q', 'H'].includes(value);
+        }
+      },
+      status: {
+        type: String,
+        "default": 'active',
+        validator: function validator(value) {
+          return ['active', 'expired', 'loading', 'scanned'].includes(value);
+        }
+      }
+    },
+    data: function data() {
+      return {
+        qrcode: null,
+        errorMessage: '',
+        renderSequence: 0
+      };
+    },
+    computed: {
+      displaySize: function displaySize() {
+        return Math.max(1, Number(this.size) || 160);
+      },
+      displayIconSize: function displayIconSize() {
+        return Math.min(Math.max(0, Number(this.iconSize) || 0), this.displaySize / 2);
+      },
+      styleName: function styleName() {
+        return {
+          width: "".concat(this.displaySize, "px"),
+          height: "".concat(this.displaySize, "px"),
+          backgroundColor: this.bgColor
+        };
+      },
+      svgContent: function svgContent() {
+        if (!this.qrcode) return '';
+        var moduleCount = this.qrcode.getModuleCount();
+        var totalSize = moduleCount + QUIET_ZONE_SIZE * 2;
+        var path = '';
+        for (var row = 0; row < moduleCount; row += 1) {
+          for (var column = 0; column < moduleCount; column += 1) {
+            if (this.qrcode.isDark(row, column)) {
+              path += "M".concat(column + QUIET_ZONE_SIZE, " ").concat(row + QUIET_ZONE_SIZE, "h1v1h-1z");
+            }
+          }
+        }
+        var icon = '';
+        if (this.icon && this.displayIconSize > 0) {
+          var iconSize = this.displayIconSize / this.displaySize * totalSize;
+          var iconPadding = Math.max(totalSize * 0.025, 0.5);
+          var backgroundSize = iconSize + iconPadding * 2;
+          var position = (totalSize - backgroundSize) / 2;
+          var iconPosition = position + iconPadding;
+          var background = this.bgColor === 'transparent' ? '#fff' : this.bgColor;
+          icon = "<rect x=\"".concat(position, "\" y=\"").concat(position, "\" width=\"").concat(backgroundSize, "\" height=\"").concat(backgroundSize, "\" fill=\"").concat(escapeXml(background), "\"/><image x=\"").concat(iconPosition, "\" y=\"").concat(iconPosition, "\" width=\"").concat(iconSize, "\" height=\"").concat(iconSize, "\" href=\"").concat(escapeXml(this.icon), "\" preserveAspectRatio=\"xMidYMid meet\"/>");
+        }
+        return "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 ".concat(totalSize, " ").concat(totalSize, "\" width=\"100%\" height=\"100%\" aria-hidden=\"true\"><rect width=\"100%\" height=\"100%\" fill=\"").concat(escapeXml(this.bgColor), "\"/><path d=\"").concat(path, "\" fill=\"").concat(escapeXml(this.color), "\"/>").concat(icon, "</svg>");
+      }
+    },
+    watch: {
+      value: function value() {
+        this.updateQRCode();
+      },
+      errorLevel: function errorLevel() {
+        this.updateQRCode();
+      },
+      type: function type() {
+        this.scheduleCanvasRender();
+      },
+      size: function size() {
+        this.scheduleCanvasRender();
+      },
+      icon: function icon() {
+        this.scheduleCanvasRender();
+      },
+      iconSize: function iconSize() {
+        this.scheduleCanvasRender();
+      },
+      color: function color() {
+        this.scheduleCanvasRender();
+      },
+      bgColor: function bgColor() {
+        this.scheduleCanvasRender();
+      }
+    },
+    created: function created() {
+      this.updateQRCode();
+    },
+    mounted: function mounted() {
+      this.scheduleCanvasRender();
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.renderSequence += 1;
+    },
+    methods: {
+      updateQRCode: function updateQRCode() {
+        try {
+          var instance = qrcode(0, this.errorLevel);
+          instance.addData(this.value || '');
+          instance.make();
+          this.qrcode = instance;
+          this.errorMessage = '';
+        } catch (error) {
+          this.qrcode = null;
+          this.errorMessage = '二维码内容过长，请缩短内容后重试';
+          this.$emit('error', error);
+        }
+        this.scheduleCanvasRender();
+      },
+      scheduleCanvasRender: function scheduleCanvasRender() {
+        var _this = this;
+        if (this.type !== 'canvas') return;
+        this.$nextTick(function () {
+          return _this.renderCanvas();
+        });
+      },
+      renderCanvas: function renderCanvas() {
+        var canvas = this.$refs.canvas;
+        if (!canvas || !this.qrcode) return;
+        var renderSequence = this.renderSequence + 1;
+        this.renderSequence = renderSequence;
+        var devicePixelRatio = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
+        var width = Math.round(this.displaySize * devicePixelRatio);
+        canvas.width = width;
+        canvas.height = width;
+        var context = canvas.getContext('2d');
+        var scale = width / this.displaySize;
+        context.setTransform(scale, 0, 0, scale, 0, 0);
+        context.clearRect(0, 0, this.displaySize, this.displaySize);
+        context.fillStyle = this.bgColor;
+        context.fillRect(0, 0, this.displaySize, this.displaySize);
+        var moduleCount = this.qrcode.getModuleCount();
+        var cellSize = this.displaySize / (moduleCount + QUIET_ZONE_SIZE * 2);
+        context.fillStyle = this.color;
+        for (var row = 0; row < moduleCount; row += 1) {
+          for (var column = 0; column < moduleCount; column += 1) {
+            if (!this.qrcode.isDark(row, column)) continue;
+            var left = Math.round((column + QUIET_ZONE_SIZE) * cellSize);
+            var top = Math.round((row + QUIET_ZONE_SIZE) * cellSize);
+            var right = Math.round((column + QUIET_ZONE_SIZE + 1) * cellSize);
+            var bottom = Math.round((row + QUIET_ZONE_SIZE + 1) * cellSize);
+            context.fillRect(left, top, right - left, bottom - top);
+          }
+        }
+        this.renderCanvasIcon(context, renderSequence);
+      },
+      renderCanvasIcon: function renderCanvasIcon(context, renderSequence) {
+        var _this2 = this;
+        if (!this.icon || !this.displayIconSize) return;
+        var image = new Image();
+        image.onload = function () {
+          if (renderSequence !== _this2.renderSequence) return;
+          var iconPadding = Math.max(_this2.displaySize * 0.025, 2);
+          var backgroundSize = _this2.displayIconSize + iconPadding * 2;
+          var position = (_this2.displaySize - backgroundSize) / 2;
+          context.fillStyle = _this2.bgColor === 'transparent' ? '#fff' : _this2.bgColor;
+          context.fillRect(position, position, backgroundSize, backgroundSize);
+          context.drawImage(image, position + iconPadding, position + iconPadding, _this2.displayIconSize, _this2.displayIconSize);
+        };
+        image.onerror = function () {
+          if (renderSequence === _this2.renderSequence) _this2.$emit('icon-error');
+        };
+        image.src = this.icon;
+      },
+      refresh: function refresh() {
+        this.$emit('refresh');
+      },
+      toDataURL: function toDataURL() {
+        var _arguments = arguments,
+          _this3 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          var type, quality, canvas;
+          return _regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                type = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 'image/png';
+                quality = _arguments.length > 1 ? _arguments[1] : undefined;
+                _context.next = 4;
+                return _this3.$nextTick();
+              case 4:
+                if (!(_this3.type === 'svg')) {
+                  _context.next = 6;
+                  break;
+                }
+                return _context.abrupt("return", "data:image/svg+xml;charset=utf-8,".concat(encodeURIComponent(_this3.svgContent)));
+              case 6:
+                canvas = _this3.$refs.canvas;
+                if (canvas) {
+                  _context.next = 9;
+                  break;
+                }
+                throw new Error('二维码画布尚未初始化');
+              case 9:
+                return _context.abrupt("return", canvas.toDataURL(type, quality));
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        }))();
+      }
+    }
+  });
+
+  var _hoisted_1$p = ["innerHTML"];
+  var _hoisted_2$o = {
+    key: 2
+  };
+  function render$q(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("div", {
+      "class": vue.normalizeClass([_ctx.b(), _defineProperty$1({}, _ctx.b('bordered'), _ctx.bordered)]),
+      style: vue.normalizeStyle(_ctx.styleName),
+      role: "img",
+      "aria-label": "二维码"
+    }, [_ctx.type === 'canvas' && _ctx.qrcode ? (vue.openBlock(), vue.createElementBlock("canvas", {
+      key: 0,
+      ref: "canvas",
+      "class": vue.normalizeClass(_ctx.b('canvas'))
+    }, null, 2 /* CLASS */)) : _ctx.type === 'svg' && _ctx.qrcode ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('svg')),
+      innerHTML: _ctx.svgContent
+    }, null, 10 /* CLASS, PROPS */, _hoisted_1$p)) : vue.createCommentVNode("v-if", true), _ctx.errorMessage ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 2,
+      "class": vue.normalizeClass([_ctx.b('status'), _ctx.b('status-error')])
+    }, vue.toDisplayString(_ctx.errorMessage), 3 /* TEXT, CLASS */)) : _ctx.status !== 'active' ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 3,
+      "class": vue.normalizeClass(_ctx.b('status'))
+    }, [_ctx.status === 'loading' ? (vue.openBlock(), vue.createElementBlock("span", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('loading'))
+    }, null, 2 /* CLASS */)) : _ctx.status === 'expired' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 1
+    }, [_cache[1] || (_cache[1] = vue.createElementVNode("span", null, "二维码已过期", -1 /* HOISTED */)), vue.createElementVNode("button", {
+      "class": vue.normalizeClass(_ctx.b('refresh')),
+      type: "button",
+      onClick: _cache[0] || (_cache[0] = function () {
+        return _ctx.refresh && _ctx.refresh.apply(_ctx, arguments);
+      })
+    }, " 点击刷新 ", 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$o, "已扫描"))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
+  }
+
+  script$q.render = render$q;
+  script$q.__file = "packages/element-plus/qrcode/index.vue";
+
+  function ownKeys$3(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var toCssSize = function toCssSize(value) {
+    return typeof value === 'number' ? "".concat(value, "px") : value;
+  };
+  var script$p = create({
+    name: 'iframe',
+    emits: ['before-load', 'load', 'ready', 'error', 'timeout', 'reload', 'message'],
+    props: {
+      src: {
+        type: String,
+        "default": ''
+      },
+      name: String,
+      title: {
+        type: String,
+        "default": '嵌入页面'
+      },
+      width: {
+        type: [String, Number],
+        "default": '100%'
+      },
+      height: {
+        type: [String, Number],
+        "default": '100%'
+      },
+      showLoading: {
+        type: Boolean,
+        "default": true
+      },
+      loadingText: {
+        type: String,
+        "default": '页面加载中...'
+      },
+      timeout: {
+        type: Number,
+        "default": 0
+      },
+      timeoutText: {
+        type: String,
+        "default": '页面加载超时'
+      },
+      errorText: {
+        type: String,
+        "default": '页面加载失败'
+      }
+    },
+    data: function data() {
+      return {
+        currentSrc: this.src,
+        frameKey: 0,
+        loading: false,
+        loadError: null,
+        isTimedOut: false,
+        loadTimer: null,
+        unmounted: false
+      };
+    },
+    computed: {
+      hasSrc: function hasSrc() {
+        return Boolean(this.currentSrc);
+      },
+      styleName: function styleName() {
+        return {
+          width: toCssSize(this.width),
+          height: toCssSize(this.height)
+        };
+      }
+    },
+    watch: {
+      src: function src(value) {
+        this.currentSrc = value || '';
+        this.frameKey += 1;
+        this.startLoading();
+      },
+      timeout: function timeout() {
+        if (this.loading) this.setLoadTimer();
+      }
+    },
+    created: function created() {
+      this.startLoading();
+    },
+    mounted: function mounted() {
+      window.addEventListener('message', this.handleMessage);
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.unmounted = true;
+      this.clearLoadTimer();
+      window.removeEventListener('message', this.handleMessage);
+    },
+    methods: {
+      startLoading: function startLoading() {
+        this.clearLoadTimer();
+        this.loadError = null;
+        this.isTimedOut = false;
+        this.loading = this.hasSrc;
+        if (!this.hasSrc) return;
+        this.$emit('before-load', this.getPayload());
+        this.setLoadTimer();
+      },
+      setLoadTimer: function setLoadTimer() {
+        var _this = this;
+        this.clearLoadTimer();
+        if (!this.timeout || this.timeout < 1) return;
+        this.loadTimer = window.setTimeout(function () {
+          if (_this.unmounted || !_this.loading) return;
+          _this.loading = false;
+          _this.isTimedOut = true;
+          _this.$emit('timeout', _objectSpread$3(_objectSpread$3({}, _this.getPayload()), {}, {
+            timeout: _this.timeout
+          }));
+        }, this.timeout);
+      },
+      clearLoadTimer: function clearLoadTimer() {
+        if (this.loadTimer !== null) window.clearTimeout(this.loadTimer);
+        this.loadTimer = null;
+      },
+      handleLoad: function handleLoad() {
+        if (this.unmounted) return;
+        this.clearLoadTimer();
+        this.loading = false;
+        this.loadError = null;
+        this.isTimedOut = false;
+        var payload = this.getPayload();
+        this.$emit('load', payload);
+        this.$emit('ready', payload);
+      },
+      handleError: function handleError(event) {
+        if (this.unmounted) return;
+        this.clearLoadTimer();
+        this.loading = false;
+        this.isTimedOut = false;
+        this.loadError = event;
+        this.$emit('error', _objectSpread$3(_objectSpread$3({}, this.getPayload()), {}, {
+          error: event
+        }));
+      },
+      handleMessage: function handleMessage(event) {
+        var frameWindow = this.getWindow();
+        if (!frameWindow || event.source !== frameWindow) return;
+        this.$emit('message', {
+          data: event.data,
+          origin: event.origin,
+          source: event.source
+        });
+      },
+      getPayload: function getPayload() {
+        return {
+          src: this.currentSrc,
+          iframe: this.getIframe(),
+          window: this.getWindow()
+        };
+      },
+      getIframe: function getIframe() {
+        return this.$refs.iframe || null;
+      },
+      getWindow: function getWindow() {
+        var iframe = this.getIframe();
+        return iframe ? iframe.contentWindow : null;
+      },
+      reload: function reload() {
+        if (!this.hasSrc) return false;
+        this.frameKey += 1;
+        this.startLoading();
+        this.$emit('reload', this.getPayload());
+        return true;
+      },
+      focus: function focus() {
+        var frameWindow = this.getWindow();
+        if (!frameWindow) return false;
+        frameWindow.focus();
+        return true;
+      },
+      postMessage: function postMessage(data) {
+        var targetOrigin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '*';
+        var transfer = arguments.length > 2 ? arguments[2] : undefined;
+        var frameWindow = this.getWindow();
+        if (!frameWindow) return false;
+        if (transfer) {
+          frameWindow.postMessage(data, targetOrigin, transfer);
+        } else {
+          frameWindow.postMessage(data, targetOrigin);
+        }
+        return true;
+      }
+    }
+  });
+
+  var _hoisted_1$o = ["src", "name", "title"];
+  function render$p(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("div", {
+      "class": vue.normalizeClass(_ctx.b()),
+      style: vue.normalizeStyle(_ctx.styleName)
+    }, [_ctx.hasSrc ? (vue.openBlock(), vue.createElementBlock("iframe", {
+      key: _ctx.frameKey,
+      ref: "iframe",
+      "class": vue.normalizeClass(_ctx.b('content')),
+      src: _ctx.currentSrc,
+      name: _ctx.name,
+      title: _ctx.title,
+      onLoad: _cache[0] || (_cache[0] = function () {
+        return _ctx.handleLoad && _ctx.handleLoad.apply(_ctx, arguments);
+      }),
+      onError: _cache[1] || (_cache[1] = function () {
+        return _ctx.handleError && _ctx.handleError.apply(_ctx, arguments);
+      })
+    }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$o)) : vue.createCommentVNode("v-if", true), !_ctx.hasSrc ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('state'))
+    }, [vue.renderSlot(_ctx.$slots, "empty", {}, function () {
+      return [_cache[3] || (_cache[3] = vue.createTextVNode("暂无嵌入页面"))];
+    })], 2 /* CLASS */)) : _ctx.loadError || _ctx.isTimedOut ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 2,
+      "class": vue.normalizeClass([_ctx.b('state'), _ctx.b('state-error')])
+    }, [vue.renderSlot(_ctx.$slots, "error", {
+      error: _ctx.loadError,
+      timedOut: _ctx.isTimedOut,
+      reload: _ctx.reload
+    }, function () {
+      return [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.isTimedOut ? _ctx.timeoutText : _ctx.errorText), 1 /* TEXT */), vue.createElementVNode("button", {
+        type: "button",
+        "class": vue.normalizeClass(_ctx.b('retry')),
+        onClick: _cache[2] || (_cache[2] = function () {
+          return _ctx.reload && _ctx.reload.apply(_ctx, arguments);
+        })
+      }, "重新加载", 2 /* CLASS */)];
+    })], 2 /* CLASS */)) : _ctx.loading && _ctx.showLoading ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 3,
+      "class": vue.normalizeClass([_ctx.b('state'), _ctx.b('state-loading')])
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('spinner'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", null, vue.toDisplayString(_ctx.loadingText), 1 /* TEXT */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
+  }
+
   script$p.render = render$p;
-  script$p.__file = "packages/element-plus/text-ellipsis/index.vue";
+  script$p.__file = "packages/element-plus/iframe/index.vue";
 
   var elementComponents = {
-    Arrays: script$q,
-    Article: script$1j,
-    Crud: script$12,
-    Card: script$11,
-    Chat: script$10,
-    Comment: script$$,
-    Form: script$Z,
-    Checkbox: script$Y,
-    Date: script$X,
-    CountUp: script$1k,
-    Draggable: script$W,
-    Flow: script$U,
-    Group: script$T,
-    License: script$S,
-    Time: script$R,
-    Input: script$Q,
-    Radio: script$P,
-    Select: script$O,
-    Cascader: script$N,
-    InputColor: script$M,
-    InputNumber: script$L,
-    InputTree: script$K,
-    InputIcon: script$I,
-    InputMap: script$J,
-    InputTag: script$H,
-    InputTable: script$G,
-    InputCron: script$F,
-    Mention: script$E,
-    Switchs: script$C,
-    Rate: script$B,
-    Upload: script$A,
-    Slider: script$y,
-    Tree: script$x,
-    Title: script$w,
-    Search: script$v,
-    Tabs: script$u,
-    Dynamic: script$t,
-    Video: script$s,
-    Verifys: script$D,
-    textEllipsis: script$p,
-    Sign: script$z,
-    Login: script$r
+    Arrays: script$s,
+    Article: script$1m,
+    Crud: script$15,
+    Card: script$14,
+    Chat: script$13,
+    Comment: script$12,
+    Form: script$10,
+    Checkbox: script$$,
+    Date: script$_,
+    CountUp: script$1n,
+    Draggable: script$Z,
+    Flow: script$X,
+    Group: script$W,
+    License: script$V,
+    Time: script$U,
+    Input: script$T,
+    Radio: script$S,
+    Select: script$R,
+    Cascader: script$Q,
+    InputColor: script$P,
+    InputNumber: script$O,
+    InputTree: script$N,
+    InputIcon: script$L,
+    InputMap: script$M,
+    InputTag: script$K,
+    InputTable: script$J,
+    InputCron: script$I,
+    InputOtp: script$H,
+    Mention: script$G,
+    Switchs: script$E,
+    Rate: script$D,
+    Upload: script$C,
+    Slider: script$A,
+    Tree: script$z,
+    Title: script$y,
+    Search: script$x,
+    Tabs: script$w,
+    Dynamic: script$v,
+    Video: script$u,
+    Verifys: script$F,
+    textEllipsis: script$r,
+    Sign: script$B,
+    Login: script$t,
+    QRCode: script$q,
+    Iframe: script$p
   };
 
   var script$o = create({
@@ -25513,6 +29052,9 @@
 
   var script$b = create({
     name: "data-statistic",
+    components: {
+      iconTemp: script$1b
+    },
     data: function data() {
       return {};
     },
@@ -25536,6 +29078,15 @@
       }
     },
     methods: {
+      getIconStyle: function getIconStyle(item) {
+        var size = (item.iconSize || 40) + 'px';
+        return {
+          color: item.iconColor || '#409eff',
+          fontSize: size,
+          width: size,
+          height: size
+        };
+      },
       getItemStyle: function getItemStyle(item) {
         return {
           backgroundColor: item.backgroundColor || '#fff',
@@ -25579,6 +29130,7 @@
     "class": "data-statistic__trend-text"
   };
   function render$b(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_avue_count_up = vue.resolveComponent("avue-count-up");
     var _component_el_col = vue.resolveComponent("el-col");
     var _component_el_row = vue.resolveComponent("el-row");
@@ -25600,13 +29152,12 @@
                 onClick: function onClick($event) {
                   return item.click && item.click(item);
                 }
-              }, [item.icon ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$a, [vue.createElementVNode("i", {
-                "class": vue.normalizeClass(item.icon),
-                style: vue.normalizeStyle({
-                  color: item.iconColor || '#409eff',
-                  fontSize: (item.iconSize || 40) + 'px'
-                })
-              }, null, 6 /* CLASS, STYLE */)])) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", _hoisted_4$9, [vue.createElementVNode("div", _hoisted_5$9, vue.toDisplayString(item.title), 1 /* TEXT */), vue.createElementVNode("div", {
+              }, [item.icon ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$a, [vue.createVNode(_component_icon_temp, {
+                text: item.icon,
+                color: item.iconColor || '#409eff',
+                size: item.iconSize || 40,
+                "icon-style": _ctx.getIconStyle(item)
+              }, null, 8 /* PROPS */, ["text", "color", "size", "icon-style"])])) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", _hoisted_4$9, [vue.createElementVNode("div", _hoisted_5$9, vue.toDisplayString(item.title), 1 /* TEXT */), vue.createElementVNode("div", {
                 "class": "data-statistic__value",
                 style: vue.normalizeStyle({
                   color: item.valueColor
@@ -25646,6 +29197,9 @@
   };
   var script$a = create({
     name: "data-weather",
+    components: {
+      iconTemp: script$1b
+    },
     mixins: [locale],
     data: function data() {
       return {};
@@ -25734,6 +29288,7 @@
     "class": "data-weather__range"
   };
   function render$a(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_col = vue.resolveComponent("el-col");
     var _component_el_row = vue.resolveComponent("el-row");
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$9, [vue.createVNode(_component_el_row, {
@@ -25754,12 +29309,10 @@
                 onClick: function onClick($event) {
                   return item.click && item.click(item);
                 }
-              }, [vue.createElementVNode("div", _hoisted_3$9, [vue.createElementVNode("span", _hoisted_4$8, vue.toDisplayString(item.city), 1 /* TEXT */), vue.createElementVNode("span", _hoisted_5$8, vue.toDisplayString(item.date), 1 /* TEXT */)]), vue.createElementVNode("div", _hoisted_6$8, [vue.createElementVNode("div", _hoisted_7$8, [vue.createElementVNode("i", {
-                "class": vue.normalizeClass(_ctx.getWeatherIcon(item.weather)),
-                style: {
-                  fontSize: '48px'
-                }
-              }, null, 2 /* CLASS */)]), vue.createElementVNode("div", _hoisted_8$7, [vue.createElementVNode("span", _hoisted_9$6, vue.toDisplayString(item.temp), 1 /* TEXT */), _cache[0] || (_cache[0] = vue.createElementVNode("span", {
+              }, [vue.createElementVNode("div", _hoisted_3$9, [vue.createElementVNode("span", _hoisted_4$8, vue.toDisplayString(item.city), 1 /* TEXT */), vue.createElementVNode("span", _hoisted_5$8, vue.toDisplayString(item.date), 1 /* TEXT */)]), vue.createElementVNode("div", _hoisted_6$8, [vue.createElementVNode("div", _hoisted_7$8, [vue.createVNode(_component_icon_temp, {
+                text: _ctx.getWeatherIcon(item.weather),
+                size: 48
+              }, null, 8 /* PROPS */, ["text"])]), vue.createElementVNode("div", _hoisted_8$7, [vue.createElementVNode("span", _hoisted_9$6, vue.toDisplayString(item.temp), 1 /* TEXT */), _cache[0] || (_cache[0] = vue.createElementVNode("span", {
                 "class": "data-weather__temp-unit"
               }, "°C", -1 /* HOISTED */))])]), vue.createElementVNode("div", _hoisted_10$6, [vue.createElementVNode("span", _hoisted_11$5, vue.toDisplayString(item.weather), 1 /* TEXT */), item.wind ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_12$5, vue.toDisplayString(item.wind), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true)]), item.tempLow !== undefined ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_13$5, vue.toDisplayString(item.tempLow) + "° ~ " + vue.toDisplayString(item.tempHigh) + "° ", 1 /* TEXT */)) : vue.createCommentVNode("v-if", true)], 12 /* STYLE, PROPS */, _hoisted_2$9)];
             }),
@@ -26618,6 +30171,9 @@
 
   var script$3 = create({
     name: "data-list",
+    components: {
+      iconTemp: script$1b
+    },
     data: function data() {
       return {};
     },
@@ -26694,6 +30250,7 @@
     "class": "data-list__action"
   };
   function render$3(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_tag = vue.resolveComponent("el-tag");
     var _component_el_button = vue.resolveComponent("el-button");
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [_ctx.title ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$2, [vue.createElementVNode("span", _hoisted_3$2, vue.toDisplayString(_ctx.title), 1 /* TEXT */), _ctx.$slots.extra ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$1, [vue.renderSlot(_ctx.$slots, "extra")])) : vue.createCommentVNode("v-if", true)])) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", _hoisted_5$1, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (item, index) {
@@ -26707,13 +30264,15 @@
         key: 0,
         src: item.avatar,
         alt: item.title
-      }, null, 8 /* PROPS */, _hoisted_8)) : item.icon ? (vue.openBlock(), vue.createElementBlock("i", {
+      }, null, 8 /* PROPS */, _hoisted_8)) : item.icon ? (vue.openBlock(), vue.createBlock(_component_icon_temp, {
         key: 1,
-        "class": vue.normalizeClass(item.icon),
-        style: vue.normalizeStyle({
+        text: item.icon,
+        color: item.iconColor,
+        size: 24,
+        "icon-style": {
           color: item.iconColor
-        })
-      }, null, 6 /* CLASS, STYLE */)) : vue.createCommentVNode("v-if", true)])) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", _hoisted_9, [vue.createElementVNode("div", _hoisted_10, [vue.createElementVNode("span", _hoisted_11, vue.toDisplayString(item.title), 1 /* TEXT */), item.tag ? (vue.openBlock(), vue.createBlock(_component_el_tag, {
+        }
+      }, null, 8 /* PROPS */, ["text", "color", "icon-style"])) : vue.createCommentVNode("v-if", true)])) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", _hoisted_9, [vue.createElementVNode("div", _hoisted_10, [vue.createElementVNode("span", _hoisted_11, vue.toDisplayString(item.title), 1 /* TEXT */), item.tag ? (vue.openBlock(), vue.createBlock(_component_el_tag, {
         key: 0,
         size: "small",
         type: item.tagType || ''
@@ -26898,7 +30457,7 @@
   function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var components = _objectSpread$2(_objectSpread$2({}, elementComponents), dataComponents);
 
-  var version = '3.9.2';
+  var version = '3.9.3';
 
   var contextmenu = (function () {
     var dialogDom;
@@ -27001,6 +30560,109 @@
 
   var getXLSX = function getXLSX() {
     return typeof window === 'undefined' ? undefined : window.XLSX;
+  };
+  var EXCEL_COLORS = {
+    header: 'FFE2F0D9',
+    headerText: 'FF245B36',
+    headerBorder: 'FFB7D7A8',
+    border: 'FFE5E7EB',
+    stripe: 'FFF4FAF0',
+    text: 'FF1F2937'
+  };
+  var getTextWidth = function getTextWidth(value) {
+    return Array.from(String(validData(value, ''))).reduce(function (width, _char) {
+      return width + (_char.charCodeAt(0) > 255 ? 2 : 1);
+    }, 0);
+  };
+  var getColumnWidths = function getColumnWidths(data, columnCount) {
+    return Array.from({
+      length: columnCount
+    }, function (_, columnIndex) {
+      var width = data.reduce(function (maxWidth, row) {
+        return Math.max(maxWidth, getTextWidth(row[columnIndex]));
+      }, 10);
+      return {
+        wch: Math.min(Math.max(width + 2, 12), 36)
+      };
+    });
+  };
+  var createBorder = function createBorder(color) {
+    return {
+      top: {
+        style: 'thin',
+        color: {
+          rgb: color
+        }
+      },
+      left: {
+        style: 'thin',
+        color: {
+          rgb: color
+        }
+      },
+      bottom: {
+        style: 'thin',
+        color: {
+          rgb: color
+        }
+      },
+      right: {
+        style: 'thin',
+        color: {
+          rgb: color
+        }
+      }
+    };
+  };
+  var createCellStyle = function createCellStyle(isHeader, isStripe, value) {
+    if (isHeader) {
+      return {
+        font: {
+          name: 'Microsoft YaHei',
+          sz: 11,
+          color: {
+            rgb: EXCEL_COLORS.headerText
+          },
+          bold: true
+        },
+        fill: {
+          patternType: 'solid',
+          fgColor: {
+            rgb: EXCEL_COLORS.header
+          }
+        },
+        border: createBorder(EXCEL_COLORS.headerBorder),
+        alignment: {
+          wrapText: true,
+          horizontal: 'center',
+          vertical: 'center'
+        }
+      };
+    }
+    var style = {
+      font: {
+        name: 'Microsoft YaHei',
+        sz: 10,
+        color: {
+          rgb: EXCEL_COLORS.text
+        }
+      },
+      border: createBorder(EXCEL_COLORS.border),
+      alignment: {
+        wrapText: true,
+        horizontal: typeof value === 'number' ? 'right' : 'left',
+        vertical: 'center'
+      }
+    };
+    if (isStripe) {
+      style.fill = {
+        patternType: 'solid',
+        fgColor: {
+          rgb: EXCEL_COLORS.stripe
+        }
+      };
+    }
+    return style;
   };
   var $Export = {
     buildHeader: function buildHeader(revealList) {
@@ -27150,67 +30812,11 @@
           if (range.e.c < C) {
             range.e.c = C;
           }
+          var value = validData(data[R][C], '');
           var cell = {
-            v: validData(data[R][C], ''),
-            s: {
-              font: {
-                name: '宋体',
-                sz: 11,
-                color: {
-                  auto: 1,
-                  rgb: '000000'
-                },
-                bold: true
-              },
-              alignment: {
-                wrapText: 1,
-                horizontal: 'center',
-                vertical: 'center',
-                indent: 0
-              }
-            }
+            v: value,
+            s: createCellStyle(R < headerRows, R >= headerRows && (R - headerRows) % 2 === 1, value)
           };
-          if (R < headerRows) {
-            cell.s.border = {
-              top: {
-                style: 'thin',
-                color: {
-                  rgb: 'EBEEF5'
-                }
-              },
-              left: {
-                style: 'thin',
-                color: {
-                  rgb: 'EBEEF5'
-                }
-              },
-              bottom: {
-                style: 'thin',
-                color: {
-                  rgb: 'EBEEF5'
-                }
-              },
-              right: {
-                style: 'thin',
-                color: {
-                  rgb: 'EBEEF5'
-                }
-              }
-            };
-            cell.s.fill = {
-              patternType: 'solid',
-              fgColor: {
-                theme: 3,
-                tint: 0.3999755851924192,
-                rgb: 'F5F7FA'
-              },
-              bgColor: {
-                theme: 7,
-                tint: 0.3999755851924192,
-                rgb: 'F5F7FA'
-              }
-            };
-          }
           var cell_ref = xlsx.utils.encode_cell({
             c: C,
             r: R
@@ -27281,12 +30887,24 @@
           activePane: 'bottomRight',
           state: 'frozen'
         };
-        ws['!cols'] = [{
-          wpx: 165
-        }];
+        ws['!cols'] = getColumnWidths(_params.header, _params.prop.length);
+        ws['!rows'] = _params.header.map(function (_row, index) {
+          return {
+            hpt: index < headerRows ? 26 : index === _params.header.length - 1 ? 8 : 20
+          };
+        });
+        if (_params.data.length > 0 && _params.prop.length > 0) {
+          ws['!autofilter'] = {
+            ref: "A".concat(headerRows, ":").concat(xlsx.utils.encode_col(_params.prop.length - 1)).concat(headerRows + _params.data.length)
+          };
+        }
         var workbook = {
           SheetNames: ['Sheet1'],
-          Sheets: {}
+          Sheets: {},
+          Props: {
+            Title: _params.title,
+            CreatedDate: new Date()
+          }
         };
         workbook.Sheets.Sheet1 = ws;
         var wopts = {
@@ -27425,11 +31043,185 @@
     });
   }
 
+  var getElement = function getElement(source) {
+    if (source instanceof HTMLElement) return source;
+    if (source && source.$el instanceof HTMLElement) return source.$el;
+    return undefined;
+  };
+  var escapeHtml = function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, function (_char) {
+      var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      };
+      return map[_char];
+    });
+  };
+  var getText = function getText(element) {
+    return (element.textContent || '').replace(/\s+/g, ' ').trim();
+  };
+  var toAbsoluteUrl = function toAbsoluteUrl(url) {
+    try {
+      return new URL(url, document.baseURI).href;
+    } catch (_a) {
+      return url;
+    }
+  };
+  var getCellMatrix = function getCellMatrix(row) {
+    var matrix = [];
+    var index = 0;
+    Array.from(row.cells).forEach(function (cell) {
+      while (matrix[index]) index++;
+      var colSpan = Math.max(cell.colSpan || 1, 1);
+      for (var offset = 0; offset < colSpan; offset++) {
+        matrix[index + offset] = cell;
+      }
+      index += colSpan;
+    });
+    return matrix;
+  };
+  var getHeaderColumns = function getHeaderColumns(table) {
+    var _a;
+    var rows = Array.from(((_a = table.tHead) === null || _a === void 0 ? void 0 : _a.rows) || table.rows);
+    var matrix = [];
+    rows.forEach(function (row, rowIndex) {
+      var columnIndex = 0;
+      Array.from(row.cells).forEach(function (cell) {
+        while (matrix[rowIndex] && matrix[rowIndex][columnIndex]) columnIndex++;
+        var colSpan = Math.max(cell.colSpan || 1, 1);
+        var rowSpan = Math.max(cell.rowSpan || 1, 1);
+        for (var rowOffset = 0; rowOffset < rowSpan; rowOffset++) {
+          var targetRow = rowIndex + rowOffset;
+          if (!matrix[targetRow]) matrix[targetRow] = [];
+          for (var colOffset = 0; colOffset < colSpan; colOffset++) {
+            matrix[targetRow][columnIndex + colOffset] = cell;
+          }
+        }
+        columnIndex += colSpan;
+      });
+    });
+    var lastRow = matrix[matrix.length - 1] || [];
+    return lastRow.map(function (cell, index) {
+      return cell ? {
+        index: index,
+        cell: cell
+      } : undefined;
+    }).filter(function (column) {
+      return Boolean(column);
+    });
+  };
+  var isControlColumn = function isControlColumn(cell) {
+    return cell.classList.contains('el-table-column--selection') || cell.classList.contains('el-table-column--expand') || cell.classList.contains('el-table__expand-column') || Boolean(cell.querySelector('.el-checkbox, .el-radio'));
+  };
+  var isActionColumn = function isActionColumn(column, rows, options) {
+    var _a;
+    var label = getText(column.cell);
+    if ((_a = options.hiddenColumnLabels) === null || _a === void 0 ? void 0 : _a.includes(label)) return true;
+    return rows.some(function (row) {
+      var _a;
+      return Boolean((_a = row[column.index]) === null || _a === void 0 ? void 0 : _a.querySelector('.avue-crud__menu'));
+    });
+  };
+  var replaceFieldValue = function replaceFieldValue(element) {
+    element.querySelectorAll('input, textarea, select').forEach(function (field) {
+      var _a;
+      var value = '';
+      if (field instanceof HTMLSelectElement) {
+        value = ((_a = field.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.text) || '';
+      } else if (field instanceof HTMLInputElement) {
+        value = field.type === 'checkbox' || field.type === 'radio' ? field.checked ? '√' : '' : field.value;
+      } else if (field instanceof HTMLTextAreaElement) {
+        value = field.value;
+      }
+      field.replaceWith(document.createTextNode(value));
+    });
+  };
+  var getCellHtml = function getCellHtml(cell) {
+    var content = cell.querySelector('.cell') || cell;
+    var clone = content.cloneNode(true);
+    replaceFieldValue(clone);
+    clone.querySelectorAll('.no-print, script, style, button, .el-button, .el-checkbox, .el-radio, .el-switch, .caret-wrapper, [data-print-ignore="true"]').forEach(function (element) {
+      return element.remove();
+    });
+    clone.querySelectorAll('*').forEach(function (element) {
+      Array.from(element.attributes).filter(function (attribute) {
+        return attribute.name.toLowerCase().startsWith('on');
+      }).forEach(function (attribute) {
+        return element.removeAttribute(attribute.name);
+      });
+    });
+    clone.querySelectorAll('a').forEach(function (link) {
+      link.removeAttribute('href');
+      link.style.color = 'inherit';
+      link.style.textDecoration = 'none';
+    });
+    clone.querySelectorAll('img').forEach(function (image) {
+      var source = image.currentSrc || image.getAttribute('src');
+      if (source) image.setAttribute('src', toAbsoluteUrl(source));
+      image.removeAttribute('srcset');
+      image.style.maxWidth = '100%';
+      image.style.maxHeight = '80px';
+      image.style.height = 'auto';
+    });
+    return clone.innerHTML.trim() || escapeHtml(getText(content));
+  };
+  var getBodyRows = function getBodyRows(table) {
+    var tableRows = [];
+    Array.from(table.tBodies).forEach(function (body) {
+      tableRows.push.apply(tableRows, _toConsumableArray(Array.from(body.rows)));
+    });
+    return tableRows.filter(function (row) {
+      return !row.classList.contains('el-table__expanded-row') && !row.querySelector('.el-table__expanded-cell');
+    }).map(getCellMatrix);
+  };
+  var getTableTitle = function getTableTitle(root, options) {
+    if (options.title) return options.title;
+    var crud = root.closest('.avue-crud');
+    var title = crud === null || crud === void 0 ? void 0 : crud.querySelector('h1, h2, h3, h4, h5, h6');
+    return title ? getText(title) : '';
+  };
+  /**
+   * 将 Element Plus 表格转为独立的静态 HTML，避免固定列、滚动容器和页面样式影响打印结果。
+   */
+  var buildTablePrintHtml = function buildTablePrintHtml(source) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var root = getElement(source);
+    var tableRoot = (root === null || root === void 0 ? void 0 : root.matches('.el-table')) ? root : root === null || root === void 0 ? void 0 : root.querySelector('.el-table');
+    var headerTable = tableRoot === null || tableRoot === void 0 ? void 0 : tableRoot.querySelector('.el-table__header-wrapper table');
+    var bodyTable = tableRoot === null || tableRoot === void 0 ? void 0 : tableRoot.querySelector('.el-table__body-wrapper table');
+    if (!root || !headerTable || !bodyTable) return undefined;
+    var rows = getBodyRows(bodyTable);
+    var columns = getHeaderColumns(headerTable).filter(function (column) {
+      if (isControlColumn(column.cell)) return false;
+      if (isActionColumn(column, rows, options)) return false;
+      if (getCellHtml(column.cell)) return true;
+      return rows.some(function (row) {
+        return Boolean(row[column.index] && getCellHtml(row[column.index]));
+      });
+    });
+    if (columns.length === 0) return undefined;
+    var title = getTableTitle(root, options);
+    var titleHtml = title ? "<h1 class=\"avue-print__title\">".concat(escapeHtml(title), "</h1>") : '';
+    var headerHtml = columns.map(function (column) {
+      return "<th>".concat(getCellHtml(column.cell), "</th>");
+    }).join('');
+    var bodyHtml = rows.length ? rows.map(function (row) {
+      return "<tr>".concat(columns.map(function (column) {
+        return "<td>".concat(row[column.index] ? getCellHtml(row[column.index]) : '', "</td>");
+      }).join(''), "</tr>");
+    }).join('') : "<tr><td class=\"avue-print__empty\" colspan=\"".concat(columns.length, "\">").concat(escapeHtml(options.emptyText || '暂无数据'), "</td></tr>");
+    var documentTitle = options.documentTitle || title || document.title;
+    return "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>".concat(escapeHtml(documentTitle), "</title>\n    <style>\n      @page { margin: 12mm; }\n      * { box-sizing: border-box; }\n      body { margin: 0; color: #1f2937; background: #fff; font: 12px/1.5 \"Microsoft YaHei\", Arial, sans-serif; }\n      .avue-print__title { margin: 0 0 16px; color: #111827; font-size: 20px; text-align: center; }\n      table { width: 100%; border-collapse: collapse; table-layout: auto; }\n      thead { display: table-header-group; }\n      tr { break-inside: avoid; page-break-inside: avoid; }\n      th, td { padding: 8px 10px; border: 1px solid #dcdfe6; vertical-align: middle; word-break: break-word; overflow-wrap: anywhere; }\n      th { color: #fff; font-weight: 600; text-align: center; background: #2563eb; }\n      tbody tr:nth-child(even) { background: #f8fafc; }\n      td img { display: inline-block; max-width: 100%; max-height: 80px; object-fit: contain; vertical-align: middle; }\n      .avue-print__empty { padding: 32px; color: #909399; text-align: center; }\n    </style>\n  </head>\n  <body>\n    ").concat(titleHtml, "\n    <table>\n      <thead><tr>").concat(headerHtml, "</tr></thead>\n      <tbody>").concat(bodyHtml, "</tbody>\n    </table>\n  </body>\n</html>");
+  };
+
   var _Print = function Print(dom, options) {
     if (!(this instanceof _Print)) return new _Print(dom, options);
     this.options = this.extend({
       noPrint: '.no-print'
-    }, options);
+    }, options || {});
     if (typeof dom === 'string') {
       this.dom = document.querySelector(dom);
     } else {
@@ -27440,8 +31232,22 @@
   };
   _Print.prototype = {
     init: function init() {
-      var content = this.getStyle() + this.getHtml();
-      this.writeIframe(content);
+      try {
+        var content = buildTablePrintHtml(this.dom, this.options) || this.getStyle() + this.getHtml();
+        this.writeIframe(content);
+      } catch (error) {
+        this.handleError(error);
+      }
+    },
+    handleReady: function handleReady() {
+      if (typeof this.options.onReady === 'function') this.options.onReady();
+    },
+    handleError: function handleError(error) {
+      if (typeof this.options.onError === 'function') {
+        this.options.onError(error);
+        return;
+      }
+      console.error(error);
     },
     extend: function extend(obj, obj2) {
       for (var k in obj2) {
@@ -27517,37 +31323,97 @@
       var doc;
       var iframe = document.createElement('iframe');
       var f = document.body.appendChild(iframe);
+      var loaded = false;
+      var failed = false;
+      var loadTimer;
       iframe.id = 'myIframe';
       iframe.setAttribute('style', 'position:absolute;width:0;height:0;top:-10px;left:-10px;');
       w = f.contentWindow || f.contentDocument;
       doc = f.contentDocument || f.contentWindow.document;
+      var _this = this;
+      iframe.onload = function () {
+        if (loaded || failed) return;
+        loaded = true;
+        if (loadTimer !== undefined) window.clearTimeout(loadTimer);
+        _this.waitForImages(doc, function () {
+          _this.handleReady();
+          _this.toPrint(w);
+          setTimeout(function () {
+            if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+          }, 1000);
+        });
+      };
+      iframe.onerror = function () {
+        if (failed) return;
+        failed = true;
+        if (loadTimer !== undefined) window.clearTimeout(loadTimer);
+        _this.handleError(new Error('打印内容加载失败'));
+        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+      };
       doc.open();
       doc.write(content);
       doc.close();
-      var _this = this;
-      iframe.onload = function () {
-        _this.toPrint(w);
-        setTimeout(function () {
-          document.body.removeChild(iframe);
-        }, 100);
+      if (!loaded) {
+        loadTimer = window.setTimeout(function () {
+          if (loaded || failed) return;
+          failed = true;
+          _this.handleError(new Error('打印内容加载超时'));
+          if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+        }, 15000);
+      }
+    },
+    waitForImages: function waitForImages(doc, callback) {
+      var images = Array.from(doc.images);
+      if (images.length === 0) {
+        callback();
+        return;
+      }
+      var completed = 0;
+      var finished = false;
+      var timer;
+      var finish = function finish() {
+        if (finished) return;
+        finished = true;
+        if (timer !== undefined) window.clearTimeout(timer);
+        callback();
       };
+      var done = function done() {
+        completed++;
+        if (completed === images.length) finish();
+      };
+      images.forEach(function (image) {
+        if (image.complete) {
+          done();
+        } else {
+          image.addEventListener('load', done, {
+            once: true
+          });
+          image.addEventListener('error', done, {
+            once: true
+          });
+        }
+      });
+      if (!finished) {
+        timer = window.setTimeout(finish, 10000);
+      }
     },
     toPrint: function toPrint(frameWindow) {
-      try {
-        setTimeout(function () {
+      var _this = this;
+      setTimeout(function () {
+        try {
           frameWindow.focus();
           try {
             if (!frameWindow.document.execCommand('print', false, null)) {
               frameWindow.print();
             }
-          } catch (e) {
+          } catch (_a) {
             frameWindow.print();
           }
           frameWindow.close();
-        }, 10);
-      } catch (err) {
-        console.log('err', err);
-      }
+        } catch (error) {
+          _this.handleError(error);
+        }
+      }, 10);
     },
     isInBody: function isInBody(node) {
       return node === document.body ? false : document.body.contains(node);

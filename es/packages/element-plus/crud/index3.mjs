@@ -1,16 +1,11 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, resolveDirective, openBlock, createElementBlock, normalizeClass, createBlock, resolveDynamicComponent, normalizeStyle, withCtx, createTextVNode, toDisplayString, createCommentVNode, createVNode, createSlots, renderSlot, normalizeProps, guardReactiveProps, renderList, createElementVNode, withDirectives } from 'vue';
-
-const _hoisted_1 = {
-  key: 1,
-  class: "avue-crud__tip"
-};
-const _hoisted_2 = { class: "avue-crud__tip-name" };
-const _hoisted_3 = { class: "avue-crud__tip-count" };
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_header_search = resolveComponent("header-search");
   const _component_header_menu = resolveComponent("header-menu");
+  const _component_el_icon_circle_check_filled = resolveComponent("el-icon-circle-check-filled");
+  const _component_el_button = resolveComponent("el-button");
   const _component_el_empty = resolveComponent("el-empty");
   const _component_column_default = resolveComponent("column-default");
   const _component_column_menu = resolveComponent("column-menu");
@@ -79,18 +74,54 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             }, 512 /* NEED_PATCH */))
           : createCommentVNode("v-if", true),
         (_ctx.validData(_ctx.tableOption.tip, _ctx.config.tip) && _ctx.tableOption.selection)
-          ? (openBlock(), createElementBlock("div", _hoisted_1, [
-              createElementVNode("span", _hoisted_2, [
-                createTextVNode(toDisplayString(_ctx.t("crud.tipStartTitle")) + " ", 1 /* TEXT */),
-                createElementVNode("span", _hoisted_3, toDisplayString(_ctx.selectLen), 1 /* TEXT */),
-                createTextVNode(" " + toDisplayString(_ctx.t("crud.tipEndTitle")), 1 /* TEXT */)
-              ]),
-              createElementVNode("span", {
-                class: "avue-crud__tip-button",
-                onClick: _cache[0] || (_cache[0] = (...args) => (_ctx.clearSelection && _ctx.clearSelection(...args)))
-              }, toDisplayString(_ctx.t("crud.emptyBtn")), 1 /* TEXT */),
-              renderSlot(_ctx.$slots, "tip")
-            ]))
+          ? (openBlock(), createElementBlock("div", {
+              key: 1,
+              class: normalizeClass(_ctx.b('tip')),
+              role: "status",
+              "aria-live": "polite"
+            }, [
+              createElementVNode("div", {
+                class: normalizeClass(_ctx.b('tip-content'))
+              }, [
+                createVNode(_component_el_icon_circle_check_filled, {
+                  class: normalizeClass(_ctx.b('tip-icon')),
+                  "aria-hidden": "true"
+                }, null, 8 /* PROPS */, ["class"]),
+                createElementVNode("span", {
+                  class: normalizeClass(_ctx.b('tip-name'))
+                }, toDisplayString(_ctx.t("crud.tipStartTitle")), 3 /* TEXT, CLASS */),
+                createElementVNode("span", {
+                  class: normalizeClass(_ctx.b('tip-count'))
+                }, toDisplayString(_ctx.selectLen), 3 /* TEXT, CLASS */),
+                createElementVNode("span", {
+                  class: normalizeClass(_ctx.b('tip-suffix'))
+                }, toDisplayString(_ctx.t("crud.tipEndTitle")), 3 /* TEXT, CLASS */)
+              ], 2 /* CLASS */),
+              createElementVNode("div", {
+                class: normalizeClass(_ctx.b('tip-actions'))
+              }, [
+                renderSlot(_ctx.$slots, "tip", {
+                  selection: _ctx.tableSelect,
+                  count: _ctx.selectLen
+                }),
+                (_ctx.selectLen > 0)
+                  ? (openBlock(), createBlock(_component_el_button, {
+                      key: 0,
+                      text: "",
+                      type: "primary",
+                      icon: _ctx.getBtnIcon('emptyBtn'),
+                      class: normalizeClass(_ctx.b('tip-button')),
+                      size: _ctx.size,
+                      onClick: _ctx.clearSelection
+                    }, {
+                      default: withCtx(() => [
+                        createTextVNode(toDisplayString(_ctx.t("crud.emptyBtn")), 1 /* TEXT */)
+                      ]),
+                      _: 1 /* STABLE */
+                    }, 8 /* PROPS */, ["icon", "class", "size", "onClick"]))
+                  : createCommentVNode("v-if", true)
+              ], 2 /* CLASS */)
+            ], 2 /* CLASS */))
           : createCommentVNode("v-if", true),
         renderSlot(_ctx.$slots, "body"),
         createVNode(_component_el_form, {

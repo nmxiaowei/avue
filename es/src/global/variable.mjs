@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 const KEY_COMPONENT_NAME = 'avue-';
 const KEY_ECHART_NAME = 'echart-';
 const DIC_PROPS = {
@@ -41,7 +41,7 @@ const DATE_LIST = [
     'yearrange',
 ];
 const CHILDREN_LIST = ['table', 'dynamic'];
-const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag'];
+const INPUT_LIST = ['tree', 'number', 'icon', 'color', 'table', 'map', 'tag', 'otp'];
 const ARRAY_LIST = ['img', 'array', 'url'];
 const MULTIPLE_LIST = ['cascader', 'tree', 'select', 'table'];
 const RANGE_LIST = ['slider'];

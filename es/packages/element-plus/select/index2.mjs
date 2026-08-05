@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import packages from '../../../src/core/packages.mjs';
 import create from '../../../src/core/create.mjs';
 import props from '../../core/common/props.mjs';
@@ -10,7 +10,7 @@ import { DIC_SPLIT } from '../../../src/global/variable.mjs';
 var script = create({
   name: "select",
   mixins: [props(), event(), locale],
-  emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached"],
+  emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached", "dic-error"],
   data() {
     return {
       checked: false,
@@ -18,6 +18,9 @@ var script = create({
       create: false,
       netDic: [],
       loading: false,
+      sortable: null,
+      remoteRequestId: 0,
+      remoteUnmounted: false,
     };
   },
   props: {
@@ -98,6 +101,14 @@ var script = create({
       this.setSort();
     }
   },
+  beforeUnmount() {
+    this.remoteUnmounted = true;
+    this.remoteRequestId++;
+    if (this.sortable && typeof this.sortable.destroy === "function") {
+      this.sortable.destroy();
+    }
+    this.sortable = null;
+  },
   methods: {
     handleModelValue(val) {
       if (!this.validatenull(this.text)) {
@@ -137,6 +148,7 @@ var script = create({
       });
     },
     handleRemoteMethod(query) {
+      const requestId = ++this.remoteRequestId;
       this.loading = true;
       sendDic(
         {
@@ -144,10 +156,23 @@ var script = create({
           value: query,
         },
         this
-      ).then((res) => {
-        this.loading = false;
-        this.netDic = res;
-      });
+      )
+        .then((res) => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.netDic = res;
+        })
+        .catch((error) => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.$emit("dic-error", {
+            type: "select-remote",
+            error,
+          });
+        })
+        .finally(() => {
+          if (!this.remoteUnmounted && requestId === this.remoteRequestId) {
+            this.loading = false;
+          }
+        });
     },
     checkChange(val) {
       this.text = [];

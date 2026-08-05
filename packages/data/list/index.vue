@@ -11,7 +11,11 @@
            @click="handleClick(item)">
         <div class="data-list__avatar" v-if="item.avatar || item.icon">
           <img v-if="item.avatar" :src="item.avatar" :alt="item.title" />
-          <i v-else-if="item.icon" :class="item.icon" :style="{color: item.iconColor}"></i>
+          <icon-temp v-else-if="item.icon"
+                     :text="item.icon"
+                     :color="item.iconColor"
+                     :size="24"
+                     :icon-style="{color: item.iconColor}"></icon-temp>
         </div>
         <div class="data-list__body">
           <div class="data-list__title-row">
@@ -40,8 +44,12 @@
 
 <script>
 import create from "core/create";
+import iconTemp from "common/components/icon/index";
 export default create({
   name: "data-list",
+  components: {
+    iconTemp
+  },
   data() {
     return {};
   },

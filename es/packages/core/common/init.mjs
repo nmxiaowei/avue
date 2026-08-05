@@ -1,13 +1,26 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { loadCascaderDic, loadDic, loadLocalDic, sendDic } from '../../../src/core/dic.mjs';
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { sendDic, loadCascaderDic, loadDic, loadLocalDic } from '../../../src/core/dic.mjs';
 import { DIC_PROPS } from '../../../src/global/variable.mjs';
 import slot from '../../../src/core/slot.mjs';
 import { warnOption, validateOption } from '../../../src/core/option.mjs';
 
+const dicRequestStates = new WeakMap();
+const getDicRequestState = (safe) => {
+    let state = dicRequestStates.get(safe);
+    if (!state) {
+        state = {
+            active: new Set(),
+            sequence: {},
+            unmounted: false,
+        };
+        dicRequestStates.set(safe, state);
+    }
+    return state;
+};
 function init (name) {
     return {
         mixins: [slot],
-        emits: ['update:modelValue', 'change'],
+        emits: ['update:modelValue', 'change', 'dic-error'],
         props: {
             tableData: {
                 type: Object,
@@ -43,10 +56,18 @@ function init (name) {
                 cascaderDIC: {},
                 tableOption: {},
                 objectOption: {},
+                dicLoading: false,
+                dicError: null,
             };
         },
         mounted() {
+            getDicRequestState(this).unmounted = false;
             this.init();
+        },
+        beforeUnmount() {
+            const state = getDicRequestState(this);
+            state.unmounted = true;
+            state.active.clear();
         },
         computed: {
             isMobile() {
@@ -94,14 +115,16 @@ function init (name) {
             },
             dicInit(type) {
                 if (type === 'cascader') {
-                    this.handleLoadCascaderDic();
+                    return this.handleLoadCascaderDic();
                 }
                 else {
-                    this.handleLoadDic();
+                    return this.handleLoadDic();
                 }
             },
             updateDic(prop, list) {
                 const column = this.findObject(this.propOption, prop);
+                if (!column)
+                    return Promise.resolve(null);
                 const formatter = column.dicFormatter;
                 const callback = (currentList, useFormatter = true) => {
                     if (useFormatter && typeof formatter === 'function') {
@@ -112,18 +135,20 @@ function init (name) {
                     }
                 };
                 if (this.validatenull(list) && this.validatenull(prop)) {
-                    this.handleLoadDic();
-                    return;
+                    return this.handleLoadDic();
                 }
                 if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-                    sendDic({
+                    return this.requestDic({
                         column,
-                    }, this).then((currentList) => {
-                        callback(currentList, false);
+                    }, `update:${prop}`).then((currentList) => {
+                        if (currentList)
+                            callback(currentList, false);
+                        return currentList;
                     });
                 }
                 else {
                     callback(list || []);
+                    return Promise.resolve(list || []);
                 }
             },
             handleSetDic(list, res = {}) {
@@ -132,13 +157,63 @@ function init (name) {
                 });
             },
             handleLocalDic() {
-                loadLocalDic(this.resultOption, this);
+                const localDic = loadLocalDic(this.resultOption);
+                this.handleSetDic(this.DIC, localDic.data);
+                return this.runDicRequest('local-dic', () => localDic.pending, (result) => {
+                    this.handleSetDic(this.DIC, result);
+                });
             },
             handleLoadDic() {
-                loadDic(this.resultOption, this);
+                return this.runDicRequest('dic', () => loadDic(this.resultOption, this), (result) => {
+                    this.handleSetDic(this.DIC, result);
+                });
             },
             handleLoadCascaderDic() {
-                loadCascaderDic(this.propOption, this);
+                return this.runDicRequest('cascader', () => loadCascaderDic(this.propOption, this), (result) => {
+                    Object.keys(result).forEach((index) => {
+                        if (!this.cascaderDIC[index])
+                            this.cascaderDIC[index] = {};
+                        this.handleSetDic(this.cascaderDIC[index], result[index]);
+                    });
+                });
+            },
+            requestDic(params, requestType = 'manual') {
+                return this.runDicRequest(requestType, () => sendDic(params, this));
+            },
+            runDicRequest(requestType, request, apply) {
+                const state = getDicRequestState(this);
+                const requestId = (state.sequence[requestType] || 0) + 1;
+                const token = `${requestType}:${requestId}`;
+                state.sequence[requestType] = requestId;
+                state.active.add(token);
+                this.dicLoading = true;
+                this.dicError = null;
+                const isCurrent = () => !state.unmounted && state.sequence[requestType] === requestId;
+                return Promise.resolve()
+                    .then(request)
+                    .then((result) => {
+                    if (!isCurrent())
+                        return null;
+                    if (apply)
+                        apply(result);
+                    return result;
+                })
+                    .catch((error) => {
+                    if (isCurrent()) {
+                        this.dicError = error;
+                        this.$emit('dic-error', {
+                            type: requestType,
+                            error,
+                        });
+                    }
+                    return null;
+                })
+                    .finally(() => {
+                    state.active.delete(token);
+                    if (!state.unmounted) {
+                        this.dicLoading = state.active.size > 0;
+                    }
+                });
             },
         },
     };
