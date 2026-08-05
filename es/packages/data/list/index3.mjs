@@ -1,5 +1,5 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { resolveComponent, openBlock, createElementBlock, createElementVNode, toDisplayString, renderSlot, createCommentVNode, Fragment, renderList, normalizeStyle, normalizeClass, createBlock, withCtx, createTextVNode, withModifiers } from 'vue';
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { resolveComponent, openBlock, createElementBlock, createElementVNode, toDisplayString, renderSlot, createCommentVNode, Fragment, renderList, createBlock, withCtx, createTextVNode, normalizeStyle, withModifiers } from 'vue';
 
 const _hoisted_1 = { class: "data-list" };
 const _hoisted_2 = {
@@ -39,6 +39,7 @@ const _hoisted_15 = {
 };
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_icon_temp = resolveComponent("icon-temp");
   const _component_el_tag = resolveComponent("el-tag");
   const _component_el_button = resolveComponent("el-button");
 
@@ -69,11 +70,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                       alt: item.title
                     }, null, 8 /* PROPS */, _hoisted_8))
                   : (item.icon)
-                    ? (openBlock(), createElementBlock("i", {
+                    ? (openBlock(), createBlock(_component_icon_temp, {
                         key: 1,
-                        class: normalizeClass(item.icon),
-                        style: normalizeStyle({color: item.iconColor})
-                      }, null, 6 /* CLASS, STYLE */))
+                        text: item.icon,
+                        color: item.iconColor,
+                        size: 24,
+                        "icon-style": {color: item.iconColor}
+                      }, null, 8 /* PROPS */, ["text", "color", "icon-style"]))
                     : createCommentVNode("v-if", true)
               ]))
             : createCommentVNode("v-if", true),

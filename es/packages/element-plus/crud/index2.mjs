@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import packages from '../../../src/core/packages.mjs';
 import locale from '../../../src/core/locale.mjs';
@@ -126,6 +126,7 @@ var script = create({
       btnDisabledList: {},
       btnDisabled: false,
       default: {},
+      searchShow: true,
       gridShow: false,
       columnStateSource: null,
     };
@@ -410,13 +411,15 @@ var script = create({
     restoreColumnState() {
       if (!this.columnStateEnabled) return;
       this.columnStateSource = this.deepClone(this.tableOption.column);
+      const columns = this.deepClone(this.columnStateSource);
       const loader = this.tableOption.columnStateLoad;
       const state =
         typeof loader === "function"
           ? loader(this.columnStateKey, this.tableOption)
           : loadColumnState(this.columnStateKey, this.columnStateStorage);
-      if (!state) return;
-      this.tableOption.column = applyColumnState(this.tableOption.column, state);
+      this.tableOption.column = state
+        ? applyColumnState(columns, state)
+        : columns;
     },
     saveColumnState(reason = "change") {
       if (!this.columnStateEnabled) return;

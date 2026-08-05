@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import props from '../../core/common/props.mjs';
 import event from '../../core/common/event.mjs';
@@ -7,11 +7,14 @@ import { sendDic } from '../../../src/core/dic.mjs';
 var script = create({
   name: "mention",
   mixins: [props(), event()],
+  emits: ["dic-error"],
   data () {
     return {
       created: false,
       loading: false,
       netDic: [],
+      remoteRequestId: 0,
+      remoteUnmounted: false,
     };
   },
   props: {
@@ -40,6 +43,10 @@ var script = create({
   },
   created () { },
   mounted () { },
+  beforeUnmount () {
+    this.remoteUnmounted = true;
+    this.remoteRequestId++;
+  },
   computed: {
     options () {
       return this.netDic.map(ele => {
@@ -68,14 +75,31 @@ var script = create({
       }
     },
     handleRemoteMethod (query) {
+      const requestId = ++this.remoteRequestId;
       this.loading = true;
-      sendDic({
-        column: this.column,
-        value: query,
-      }, this).then(res => {
-        this.loading = false;
-        this.netDic = res;
-      });
+      sendDic(
+        {
+          column: this.column,
+          value: query,
+        },
+        this
+      )
+        .then(res => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.netDic = res;
+        })
+        .catch(error => {
+          if (this.remoteUnmounted || requestId !== this.remoteRequestId) return;
+          this.$emit("dic-error", {
+            type: "mention-remote",
+            error,
+          });
+        })
+        .finally(() => {
+          if (!this.remoteUnmounted && requestId === this.remoteRequestId) {
+            this.loading = false;
+          }
+        });
     }
   }
 });

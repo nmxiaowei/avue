@@ -1,5 +1,5 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { resolveComponent, openBlock, createElementBlock, createVNode, withCtx, Fragment, renderList, createBlock, createElementVNode, normalizeStyle, normalizeClass, createCommentVNode, toDisplayString } from 'vue';
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { resolveComponent, openBlock, createElementBlock, createVNode, withCtx, Fragment, renderList, createBlock, createElementVNode, normalizeStyle, createCommentVNode, toDisplayString, normalizeClass } from 'vue';
 
 const _hoisted_1 = { class: "data-statistic" };
 const _hoisted_2 = ["onClick"];
@@ -28,6 +28,7 @@ const _hoisted_10 = {
 };
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_icon_temp = resolveComponent("icon-temp");
   const _component_avue_count_up = resolveComponent("avue-count-up");
   const _component_el_col = resolveComponent("el-col");
   const _component_el_row = resolveComponent("el-row");
@@ -50,10 +51,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               }, [
                 (item.icon)
                   ? (openBlock(), createElementBlock("div", _hoisted_3, [
-                      createElementVNode("i", {
-                        class: normalizeClass(item.icon),
-                        style: normalizeStyle({color: item.iconColor || '#409eff', fontSize: (item.iconSize || 40) + 'px'})
-                      }, null, 6 /* CLASS, STYLE */)
+                      createVNode(_component_icon_temp, {
+                        text: item.icon,
+                        color: item.iconColor || '#409eff',
+                        size: item.iconSize || 40,
+                        "icon-style": _ctx.getIconStyle(item)
+                      }, null, 8 /* PROPS */, ["text", "color", "size", "icon-style"])
                     ]))
                   : createCommentVNode("v-if", true),
                 createElementVNode("div", _hoisted_4, [

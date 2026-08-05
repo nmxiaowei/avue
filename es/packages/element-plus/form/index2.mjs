@@ -1,17 +1,18 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { detail } from '../../../src/core/detail.mjs';
 import create from '../../../src/core/create.mjs';
 import init from '../../core/common/init.mjs';
 import '../../core/components/form/index.mjs';
+import '../../core/components/icon/index.mjs';
 import './menu.mjs';
 import { DIC_PROPS } from '../../../src/global/variable.mjs';
 import { getPlaceholder, getComponent, formInitVal, calcCount, calcCascader } from '../../../src/core/dataformat.mjs';
-import { sendDic } from '../../../src/core/dic.mjs';
 import { filterParams, clearVal, blankVal, setAsVal, getAsVal, getColumn } from '../../../src/utils/util.mjs';
 import mock from '../../../src/utils/mock.mjs';
 import config from './config.mjs';
-import script$1 from './menu2.mjs';
-import script$2 from '../../core/components/form/index2.mjs';
+import script$1 from '../../core/components/icon/index2.mjs';
+import script$2 from './menu2.mjs';
+import script$3 from '../../core/components/form/index2.mjs';
 
 var script = create({
   name: "form",
@@ -26,8 +27,9 @@ var script = create({
     "error",
   ],
   components: {
-    formTemp: script$2,
-    formMenu: script$1,
+    formTemp: script$3,
+    formMenu: script$2,
+    iconTemp: script$1,
   },
   data() {
     return {
@@ -475,14 +477,15 @@ var script = create({
             return;
           }
           // 根据当前节点值获取下一个节点的字典
-          sendDic(
+          this.requestDic(
             {
               column: columnNext,
               value: value,
               form: this.form,
             },
-            this
+            `form-cascader:${columnNextProp}`
           ).then((res) => {
+            if (!res) return;
             //首次加载的放入队列记录
             if (!this.formList.includes(str)) this.formList.push(str);
             // 修改字典

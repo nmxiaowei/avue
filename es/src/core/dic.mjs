@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { getAsVal, detailDataType } from '../utils/util.mjs';
 import { validatenull } from '../utils/validate.mjs';
 import { DIC_PROPS } from '../global/variable.mjs';
@@ -28,126 +28,106 @@ function getResData(data, props, dataType) {
         res = getDataType(res, props, dataType);
     return res;
 }
-const loadCascaderDic = (columnOption, safe) => {
-    return new Promise((resolve) => {
-        const list = [];
-        const result = {};
-        const columnList = columnOption.filter((ele) => ele.parentProp);
-        safe.data.forEach((ele, index) => {
-            if (!safe.cascaderDIC[index])
-                safe.cascaderDIC[index] = {};
-            columnList.forEach((column) => {
-                if (column.hide !== true && column.dicFlag !== false) {
-                    list.push(new Promise((resolve) => {
-                        if (ele[column.parentProp]) {
-                            sendDic({
-                                url: column.dicUrl,
-                                props: column.props,
-                                method: column.dicMethod,
-                                headers: column.dicHeaders,
-                                formatter: column.dicFormatter,
-                                query: column.dicQuery,
-                                dataType: column.dataType,
-                                form: ele,
-                                value: ele[column.parentProp],
-                            }, safe).then((res) => {
-                                const obj = {
-                                    prop: column.prop,
-                                    data: res,
-                                    index,
-                                };
-                                safe.cascaderDIC[index][obj.prop] = obj.data;
-                                resolve(obj);
-                            });
-                        }
-                        else {
-                            const obj = {
-                                prop: column.prop,
-                                data: [],
-                                index,
-                            };
-                            safe.cascaderDIC[index][obj.prop] = obj.data;
-                            resolve(obj);
-                        }
-                    }));
-                }
-            });
-        });
-        Promise.all(list).then((data) => {
-            data.forEach((ele) => {
-                if (!result[ele.index])
-                    result[ele.index] = {};
-                result[ele.index][ele.prop] = ele.data;
-            });
-            resolve(result);
-        });
-    });
-};
-const loadDic = (option, safe) => {
-    return new Promise((resolve) => {
-        const list = [];
-        const result = {};
-        let notList = [];
-        const nameList = [];
-        const column = option.column || [];
-        column.forEach((ele) => {
-            const url = ele.dicUrl;
-            const prop = ele.prop;
-            const parentProp = ele.parentProp;
-            notList = notList.concat(ele.cascader || []);
-            const flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
-            if (url && !parentProp && !flag) {
-                list.push(new Promise((resolve) => {
-                    sendDic({
-                        url,
-                        method: ele.dicMethod,
-                        headers: ele.dicHeaders,
-                        formatter: ele.dicFormatter,
-                        props: ele.props,
-                        dataType: ele.dataType,
-                        query: ele.dicQuery,
-                    }, safe).then((res) => {
-                        safe.DIC[prop] = res;
-                        resolve(res);
-                    });
-                }));
-                nameList.push(prop);
+const loadCascaderDic = async (columnOption = [], safe) => {
+    const columnList = columnOption.filter((ele) => ele.parentProp);
+    const tasks = [];
+    (safe.data || []).forEach((form, index) => {
+        columnList.forEach((column) => {
+            if (column.hide === true || column.dicFlag === false)
+                return;
+            const value = form[column.parentProp];
+            if (validatenull(value)) {
+                tasks.push(Promise.resolve({ prop: column.prop, data: [], index }));
+                return;
             }
-        });
-        Promise.all(list).then((res) => {
-            nameList.forEach((ele, index) => {
-                result[ele] = res[index];
-            });
-            resolve(result);
+            tasks.push(sendDic({
+                url: column.dicUrl,
+                props: column.props,
+                method: column.dicMethod,
+                headers: column.dicHeaders,
+                formatter: column.dicFormatter,
+                query: column.dicQuery,
+                dataType: column.dataType,
+                form,
+                value,
+            }, safe).then((data) => ({ prop: column.prop, data, index })));
         });
     });
+    const result = {};
+    const data = await Promise.all(tasks);
+    data.forEach((item) => {
+        if (!result[item.index])
+            result[item.index] = {};
+        result[item.index][item.prop] = item.data;
+    });
+    return result;
 };
-const loadLocalDic = (option, safe) => {
+const loadDic = async (option, safe) => {
+    let notList = [];
+    const tasks = [];
+    const column = option.column || [];
+    column.forEach((ele) => {
+        const url = ele.dicUrl;
+        const prop = ele.prop;
+        const parentProp = ele.parentProp;
+        notList = notList.concat(ele.cascader || []);
+        const flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
+        if (!url || parentProp || flag)
+            return;
+        tasks.push(sendDic({
+            url,
+            method: ele.dicMethod,
+            headers: ele.dicHeaders,
+            formatter: ele.dicFormatter,
+            props: ele.props,
+            dataType: ele.dataType,
+            query: ele.dicQuery,
+        }, safe).then((data) => ({ prop, data })));
+    });
+    const result = {};
+    const data = await Promise.all(tasks);
+    data.forEach((item) => {
+        result[item.prop] = item.data;
+    });
+    return result;
+};
+const loadLocalDic = (option) => {
     const columnData = {};
     const optionData = option.dicData || {};
-    option.column.forEach((ele) => {
+    const tasks = [];
+    (option.column || []).forEach((ele) => {
         const dic = ele.dicData;
         const prop = ele.prop;
         if (dic instanceof Function) {
-            const dicResult = dic(ele);
-            if (dicResult instanceof Promise) {
-                dicResult.then((res) => {
-                    safe.DIC[prop] = getDataType(res, ele.props, ele.dataType);
-                });
+            try {
+                const dicResult = dic(ele);
+                if (dicResult && typeof dicResult.then === 'function') {
+                    tasks.push(Promise.resolve(dicResult).then((res) => ({
+                        prop,
+                        data: getDataType(res, ele.props, ele.dataType),
+                    })));
+                }
+                else {
+                    columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
+                }
             }
-            else {
-                columnData[prop] = getDataType(dicResult, ele.props, ele.dataType);
+            catch (error) {
+                tasks.push(Promise.reject(error));
             }
         }
         else if (dic instanceof Array) {
             columnData[prop] = getDataType(dic, ele.props, ele.dataType);
         }
     });
-    const result = { ...optionData, ...columnData };
-    Object.keys(result).forEach((ele) => {
-        safe.DIC[ele] = result[ele];
-    });
-    return result;
+    return {
+        data: { ...optionData, ...columnData },
+        pending: Promise.all(tasks).then((items) => {
+            return items.reduce((result, item) => {
+                result[item.prop] = item.data;
+                return result;
+            }, {});
+        }),
+    };
 };
 const sendDic = (params, safe) => {
     let { url, query, method, props, formatter, headers, value, column = {}, form = {}, dataType, } = params;
@@ -157,6 +137,8 @@ const sendDic = (params, safe) => {
     query = column.dicQuery || query || {};
     formatter = column.dicFormatter || formatter;
     props = column.props || props || {};
+    if (!url)
+        return Promise.resolve([]);
     const list = url.match(/[^\{\}]+(?=\})/g) || [];
     list.forEach((ele) => {
         let result = ele === key ? value : form[ele];
@@ -178,38 +160,28 @@ const sendDic = (params, safe) => {
         });
         return result;
     };
-    return new Promise((resolve, reject) => {
-        if (!url)
-            resolve([]);
-        const callback = (res) => {
-            let currentList = [];
-            res = res.data || {};
-            if (typeof formatter === 'function') {
-                currentList = formatter(res, form);
-            }
-            else {
-                currentList = getResData(res, props, dataType);
-            }
-            resolve(currentList);
-        };
-        const getData = () => {
-            const data = getKey(query);
-            if (method == 'get')
-                return { params: data };
-            return { data };
-        };
-        safe
-            .$axios(Object.assign({
-            url,
-            method,
-            headers: getKey(headers),
-        }, getData()))
-            .then(function (res) {
-            callback(res);
-        })
-            .catch((err) => {
-            reject(err);
-        });
+    const getData = () => {
+        const data = getKey(query);
+        if (method == 'get')
+            return { params: data };
+        return { data };
+    };
+    return Promise.resolve()
+        .then(() => safe.$axios(Object.assign({
+        url,
+        method,
+        headers: getKey(headers),
+    }, getData())))
+        .then((res) => {
+        let currentList = [];
+        res = res.data || {};
+        if (typeof formatter === 'function') {
+            currentList = formatter(res, form);
+        }
+        else {
+            currentList = getResData(res, props, dataType);
+        }
+        return currentList;
     });
 };
 

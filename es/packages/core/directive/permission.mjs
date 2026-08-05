@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 var permission = (() => {
     function init(el, binding) {
         const value = binding.value;

@@ -1,8 +1,13 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
+import '../../core/components/icon/index.mjs';
+import script$1 from '../../core/components/icon/index2.mjs';
 
 var script = create({
   name: "group",
+  components: {
+    iconTemp: script$1
+  },
   empit: ['change'],
   data () {
     return {

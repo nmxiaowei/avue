@@ -1,5 +1,5 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { resolveComponent, openBlock, createElementBlock, createVNode, withCtx, Fragment, renderList, createBlock, createElementVNode, normalizeStyle, toDisplayString, normalizeClass, createCommentVNode } from 'vue';
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { resolveComponent, openBlock, createElementBlock, createVNode, withCtx, Fragment, renderList, createBlock, createElementVNode, normalizeStyle, toDisplayString, createCommentVNode } from 'vue';
 
 const _hoisted_1 = { class: "data-weather" };
 const _hoisted_2 = ["onClick"];
@@ -22,6 +22,7 @@ const _hoisted_13 = {
 };
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_icon_temp = resolveComponent("icon-temp");
   const _component_el_col = resolveComponent("el-col");
   const _component_el_row = resolveComponent("el-row");
 
@@ -47,10 +48,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 ]),
                 createElementVNode("div", _hoisted_6, [
                   createElementVNode("div", _hoisted_7, [
-                    createElementVNode("i", {
-                      class: normalizeClass(_ctx.getWeatherIcon(item.weather)),
-                      style: {fontSize: '48px'}
-                    }, null, 2 /* CLASS */)
+                    createVNode(_component_icon_temp, {
+                      text: _ctx.getWeatherIcon(item.weather),
+                      size: 48
+                    }, null, 8 /* PROPS */, ["text"])
                   ]),
                   createElementVNode("div", _hoisted_8, [
                     createElementVNode("span", _hoisted_9, toDisplayString(item.temp), 1 /* TEXT */),

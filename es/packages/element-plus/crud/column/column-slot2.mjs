@@ -1,7 +1,6 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { detail } from '../../../../src/core/detail.mjs';
 import { DIC_PROPS, DIC_SHOW_SPLIT } from '../../../../src/global/variable.mjs';
-import { sendDic } from '../../../../src/core/dic.mjs';
 import { blankVal, isMediaType } from '../../../../src/utils/util.mjs';
 import custom from '../../../core/components/form/custom.mjs';
 import '../../../core/components/form/index.mjs';
@@ -86,14 +85,15 @@ var script = {
           ) {
             return;
           }
-          sendDic(
+          this.crud.requestDic(
             {
               column: columnNext,
               value: value,
               form: row,
             },
-            this
+            `cell-cascader:${rowIndex}:${columnNextProp}`
           ).then((res) => {
+            if (!res) return;
             const dic = res || [];
             //首次加载的放入队列记录
             if (!this.crud.cascaderIndexList.includes(rowIndex)) {

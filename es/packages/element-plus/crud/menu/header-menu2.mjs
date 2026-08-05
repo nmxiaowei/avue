@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../../src/core/create.mjs';
 import locale from '../../../../src/core/locale.mjs';
 import '../../../../src/plugin/logs/index.mjs';
@@ -19,6 +19,7 @@ var script = create({
   data () {
     return {
       dateCreate: false,
+      printLoading: false,
       shortcuts: [
         {
           text: this.t('date.t'),
@@ -75,7 +76,18 @@ var script = create({
       this.crud.$refs.dialogExcel.handleShow();
     },
     rowPrint () {
-      this.$Print(this.crud.$refs.table);
+      if (this.printLoading) return
+      this.printLoading = true;
+      try {
+        this.$Print(this.crud.$refs.table, {
+          title: this.crud.tableOption.title,
+          hiddenColumnLabels: [this.crud.tableOption.menuTitle || this.t('crud.menu')],
+          onReady: () => { this.printLoading = false; },
+          onError: () => { this.printLoading = false; }
+        });
+      } catch {
+        this.printLoading = false;
+      }
     }
   }
 });

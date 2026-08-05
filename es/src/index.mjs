@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import components from './ui/index.mjs';
 import { version } from './version.mjs';
 import * as axios$1 from '../_virtual/axios.mjs';
@@ -43,6 +43,7 @@ import '../packages/element-plus/input-icon/index.mjs';
 import '../packages/element-plus/input-tag/index.mjs';
 import '../packages/element-plus/input-table/index.mjs';
 import '../packages/element-plus/input-cron/index.mjs';
+import '../packages/element-plus/input-otp/index.mjs';
 import '../packages/element-plus/mention/index.mjs';
 import '../packages/element-plus/verify/index.mjs';
 import '../packages/element-plus/switch/index.mjs';
@@ -59,6 +60,8 @@ import '../packages/element-plus/video/index.mjs';
 import '../packages/element-plus/login/index.mjs';
 import '../packages/element-plus/array/index.mjs';
 import '../packages/element-plus/text-ellipsis/index.mjs';
+import '../packages/element-plus/qrcode/index.mjs';
+import '../packages/element-plus/iframe/index.mjs';
 import '../packages/data/tabs/index.mjs';
 import '../packages/data/cardText/index.mjs';
 import '../packages/data/box/index.mjs';
@@ -120,18 +123,21 @@ export { default as Dynamic } from '../packages/element-plus/dynamic/index2.mjs'
 export { default as Flow } from '../packages/element-plus/flow/index2.mjs';
 export { default as Form } from '../packages/element-plus/form/index2.mjs';
 export { default as Group } from '../packages/element-plus/group/index2.mjs';
+export { default as Iframe } from '../packages/element-plus/iframe/index2.mjs';
 export { default as Input } from '../packages/element-plus/input/index2.mjs';
 export { default as InputColor } from '../packages/element-plus/input-color/index2.mjs';
 export { default as InputCron } from '../packages/element-plus/input-cron/index2.mjs';
 export { default as InputIcon } from '../packages/element-plus/input-icon/index2.mjs';
 export { default as InputMap } from '../packages/element-plus/input-map/index2.mjs';
 export { default as InputNumber } from '../packages/element-plus/input-number/index2.mjs';
+export { default as InputOtp } from '../packages/element-plus/input-otp/index2.mjs';
 export { default as InputTable } from '../packages/element-plus/input-table/index2.mjs';
 export { default as InputTag } from '../packages/element-plus/input-tag/index2.mjs';
 export { default as InputTree } from '../packages/element-plus/input-tree/index2.mjs';
 export { default as License } from '../packages/element-plus/license/index2.mjs';
 export { default as Login } from '../packages/element-plus/login/index2.mjs';
 export { default as Mention } from '../packages/element-plus/mention/index2.mjs';
+export { default as QRCode } from '../packages/element-plus/qrcode/index2.mjs';
 export { default as Radio } from '../packages/element-plus/radio/index2.mjs';
 export { default as Rate } from '../packages/element-plus/rate/index2.mjs';
 export { default as Search } from '../packages/element-plus/search/index2.mjs';

@@ -8,7 +8,7 @@
   <a href="https://gitee.com/smallweigit/avue/stargazers"><img src="https://gitee.com/smallweigit/avue/badge/star.svg?theme=dark" alt="star"></a>
   <a href="https://gitee.com/smallweigit/avue/members"><img src="https://gitee.com/smallweigit/avue/badge/fork.svg?theme=dark" alt="fork"></a>
   <a href="https://gitee.com/smallweigit/avue"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="license"></a>
-  <a href="https://gitee.com/smallweigit/avue"><img src="https://img.shields.io/badge/version-3.8.2-blue.svg" alt="version"></a>
+  <a href="https://gitee.com/smallweigit/avue"><img src="https://img.shields.io/badge/version-3.9.3-blue.svg" alt="version"></a>
 </p>
 
 # Avue.js

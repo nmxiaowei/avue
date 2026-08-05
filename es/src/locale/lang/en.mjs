@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 var enLang = {
     common: {
         submitBtn: 'Confirm',
@@ -250,7 +250,13 @@ var enLang = {
             sortable: 'Sort',
             index: 'Index',
             width: 'Width',
-            reset: 'Reset Columns'
+            reset: 'Reset Columns',
+            all: 'All',
+            restore: 'Restore Defaults',
+            cancel: 'Cancel',
+            confirm: 'Confirm',
+            fixedLeft: 'Fix to Left',
+            fixedRight: 'Fix to Right'
         },
         emptyText: 'No Data',
         tipStartTitle: 'Selected',
@@ -268,6 +274,10 @@ var enLang = {
         open: 'Expand',
         shrink: 'Collapse',
         printBtn: 'Print',
+        refreshBtn: 'Refresh',
+        columnBtn: 'Column Settings',
+        filterBtn: 'Filter',
+        gridBtn: 'Card View',
         mockBtn: 'Mock',
         excelBtn: 'Export',
         updateBtn: 'Update',

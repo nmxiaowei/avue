@@ -1,7 +1,8 @@
-/*! Avue.js v3.9.2 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { resolveComponent, openBlock, createElementBlock, normalizeClass, renderSlot, createVNode, withCtx, createSlots, createElementVNode, createCommentVNode, toDisplayString } from 'vue';
+/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { resolveComponent, openBlock, createElementBlock, normalizeClass, renderSlot, createVNode, withCtx, createSlots, createElementVNode, createBlock, createCommentVNode, toDisplayString } from 'vue';
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_icon_temp = resolveComponent("icon-temp");
   const _component_el_collapse_item = resolveComponent("el-collapse-item");
   const _component_el_collapse = resolveComponent("el-collapse");
 
@@ -46,10 +47,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                           class: normalizeClass(_ctx.b('header'))
                         }, [
                           (_ctx.icon)
-                            ? (openBlock(), createElementBlock("i", {
+                            ? (openBlock(), createBlock(_component_icon_temp, {
                                 key: 0,
-                                class: normalizeClass([_ctx.icon,_ctx.b('icon')])
-                              }, null, 2 /* CLASS */))
+                                class: normalizeClass(_ctx.b('icon')),
+                                text: _ctx.icon,
+                                size: 20
+                              }, null, 8 /* PROPS */, ["class", "text"]))
                             : createCommentVNode("v-if", true),
                           (_ctx.label)
                             ? (openBlock(), createElementBlock("h1", {
