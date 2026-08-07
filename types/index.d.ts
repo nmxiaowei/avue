@@ -134,6 +134,7 @@ export interface AvueComponentExports {
   Arrays: Component;
   Article: Component;
   Card: Component;
+  Captcha: Component;
   Cascader: Component;
   Chat: Component;
   Checkbox: Component;
@@ -240,6 +241,7 @@ export const warnOption: AvueUtilityExports["warnOption"];
 export const Arrays: Component;
 export const Article: Component;
 export const Card: Component;
+export const Captcha: Component;
 export const Cascader: Component;
 export const Chat: Component;
 export const Checkbox: Component;
