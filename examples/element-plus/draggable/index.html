@@ -22,7 +22,7 @@
         border: 1px solid #d9ecff;
         border-radius: 10px;
       }
-      .card { height: 100%; padding: 18px; box-sizing: border-box; color: #fff; background: linear-gradient(135deg, #409eff, #79bbff); border-radius: 8px; }
+      .card { width: 100%; height: 100%; padding: 18px; box-sizing: border-box; overflow: hidden; color: #fff; background: linear-gradient(135deg, #409eff, #79bbff); border-radius: 8px; }
     </style>
   </head>
   <body>
@@ -30,6 +30,7 @@
       <el-space wrap style="margin-bottom: 14px">
         <el-switch v-model="locked" active-text="锁定" inactive-text="可编辑"></el-switch>
         <el-tag>坐标 {{ card.left }}, {{ card.top }}；尺寸 {{ card.width }} × {{ card.height }}</el-tag>
+        <el-tag type="success">内容始终贴合拖拽框</el-tag>
       </el-space>
       <div class="stage">
         <avue-draggable

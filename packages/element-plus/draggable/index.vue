@@ -172,10 +172,16 @@ export default create({
       this.setSize(this.baseWidth, this.toNumber(value, this.baseHeight));
     },
     left (value) {
-      this.baseLeft = this.toNumber(value, 0);
+      this.setLeft(value);
     },
     top (value) {
-      this.baseTop = this.toNumber(value, 0);
+      this.setTop(value);
+    },
+    bounds: {
+      deep: true,
+      handler () {
+        this.normalizeBox();
+      }
     },
     baseWidth () {
       this.syncChildSize();
@@ -193,10 +199,17 @@ export default create({
   methods: {
     init () {
       this.children = this.$refs.item && this.$refs.item.firstElementChild;
-      this.baseWidth = this.toNumber(this.width, this.children ? this.children.offsetWidth : 0);
-      this.baseHeight = this.toNumber(this.height, this.children ? this.children.offsetHeight : 0);
-      this.baseLeft = this.toNumber(this.left, 0);
-      this.baseTop = this.toNumber(this.top, 0);
+      this.baseWidth = this.constrainSizeToBounds(
+        this.clampSize(this.toNumber(this.width, this.children ? this.children.offsetWidth : 0), 'width'),
+        'width'
+      );
+      this.baseHeight = this.constrainSizeToBounds(
+        this.clampSize(this.toNumber(this.height, this.children ? this.children.offsetHeight : 0), 'height'),
+        'height'
+      );
+      const position = this.constrainPosition(this.toNumber(this.left, 0), this.toNumber(this.top, 0));
+      this.baseLeft = position.left;
+      this.baseTop = position.top;
       this.syncChildSize();
     },
     toNumber (value, fallback = 0) {
@@ -204,13 +217,17 @@ export default create({
       return Number.isFinite(number) ? getFixed(number) : fallback;
     },
     setSize (width, height) {
-      this.baseWidth = this.clampSize(width, 'width');
-      this.baseHeight = this.clampSize(height, 'height');
+      this.baseWidth = this.constrainSizeToBounds(this.clampSize(width, 'width'), 'width');
+      this.baseHeight = this.constrainSizeToBounds(this.clampSize(height, 'height'), 'height');
+      const position = this.constrainPosition(this.baseLeft, this.baseTop);
+      this.baseLeft = position.left;
+      this.baseTop = position.top;
     },
     syncChildSize () {
       if (!this.resize || !this.children || !this.children.style) return;
-      this.children.style.width = this.setPx(this.baseWidth);
-      this.children.style.height = this.setPx(this.baseHeight);
+      this.children.style.boxSizing = 'border-box';
+      this.children.style.width = '100%';
+      this.children.style.height = '100%';
     },
     getRangeStyle (position) {
       const offset = (10 * this.scaleVal) / 2;
@@ -335,6 +352,22 @@ export default create({
       const max = Number(maxValue);
       return getFixed(Math.max(min, Number.isFinite(max) && max > 0 ? Math.min(value, max) : value));
     },
+    constrainSizeToBounds (value, dimension) {
+      const bounds = this.getBounds();
+      if (!bounds) return getFixed(value);
+      const limit = dimension === 'width'
+        ? Math.max(0, bounds.right - bounds.left)
+        : Math.max(0, bounds.bottom - bounds.top);
+      return getFixed(Math.min(value, limit));
+    },
+    normalizeBox () {
+      if (!this.bounds) return;
+      this.baseWidth = this.constrainSizeToBounds(this.clampSize(this.baseWidth, 'width'), 'width');
+      this.baseHeight = this.constrainSizeToBounds(this.clampSize(this.baseHeight, 'height'), 'height');
+      const position = this.constrainPosition(this.baseLeft, this.baseTop);
+      this.baseLeft = position.left;
+      this.baseTop = position.top;
+    },
     getBounds () {
       if (!this.bounds || typeof this.bounds !== 'object') return null;
       const left = this.toNumber(this.bounds.left, 0);
@@ -374,11 +407,15 @@ export default create({
         if (sides.includes('top')) top = bounds.bottom - height;
         else height = bounds.bottom - top;
       }
+      width = this.constrainSizeToBounds(this.clampSize(width, 'width'), 'width');
+      height = this.constrainSizeToBounds(this.clampSize(height, 'height'), 'height');
+      left = Math.min(Math.max(left, bounds.left), Math.max(bounds.left, bounds.right - width));
+      top = Math.min(Math.max(top, bounds.top), Math.max(bounds.top, bounds.bottom - height));
       return {
         left: getFixed(left),
         top: getFixed(top),
-        width: this.clampSize(width, 'width'),
-        height: this.clampSize(height, 'height')
+        width,
+        height
       };
     },
     emitMove (delta) {
