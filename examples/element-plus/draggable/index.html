@@ -1,74 +1,78 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
     <script src="../../cdn/element-plus/icons-vue.js"></script>
-
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
     <style>
-      body,
-      html,
-      #app {
-        height: 100%;
+      .stage {
+        position: relative;
+        width: min(860px, 100%);
+        height: 480px;
+        overflow: hidden;
+        background-color: #f8fbff;
+        background-image: radial-gradient(#c6e2ff 1px, transparent 1px);
+        background-size: 10px 10px;
+        border: 1px solid #d9ecff;
+        border-radius: 10px;
       }
-
-      #app {
-        background-size: 30px 30px, 30px 30px;
-        background-image: linear-gradient(
-            rgba(0, 0, 0, 0.1) 1px,
-            transparent 0px
-          ),
-          linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 0px);
-      }
+      .card { height: 100%; padding: 18px; box-sizing: border-box; color: #fff; background: linear-gradient(135deg, #409eff, #79bbff); border-radius: 8px; }
     </style>
   </head>
-
   <body>
-    <div id="app">
-      <div style="position: relative; height: 400px">
+    <div id="app" style="padding: 24px">
+      <el-space wrap style="margin-bottom: 14px">
+        <el-switch v-model="locked" active-text="锁定" inactive-text="可编辑"></el-switch>
+        <el-tag>坐标 {{ card.left }}, {{ card.top }}；尺寸 {{ card.width }} × {{ card.height }}</el-tag>
+      </el-space>
+      <div class="stage">
         <avue-draggable
-          :left="200"
-          :top="200"
-          @blur="handleBlur"
-          @focus="handleFocus"
+          v-bind="card"
+          :lock="locked"
+          :grid="10"
+          :min-width="140"
+          :min-height="90"
+          :bounds="{ left: 0, top: 0, width: 860, height: 480 }"
+          :mask="false"
+          @change="updateCard"
         >
-          <div style="width: 200px; height: 200px; background: red"></div>
-        </avue-draggable>
-        <avue-draggable :left="500" :top="200" :scale="3">
-          <div style="width: 200px; height: 200px; background: red"></div>
+          <div class="card">
+            <h3 style="margin-top: 0">可拖拽卡片</h3>
+            <p>拖动主体移动；选中后拖动圆点调整尺寸。</p>
+            <el-button size="small" data-avue-draggable-ignore @click="message">卡片内按钮</el-button>
+          </div>
+          <template #menu>
+            <span>方向键微调，Shift 加速</span>
+          </template>
         </avue-draggable>
       </div>
     </div>
   </body>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          locked: false,
+          card: { index: 'card-1', left: 80, top: 80, width: 260, height: 150 },
+        };
+      },
+      methods: {
+        updateCard(change) {
+          Object.assign(this.card, change);
+        },
+        message() {
+          this.$message.success('按钮交互不会触发拖拽');
+        },
+      },
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount('#app');
+  </script>
 </html>
-
-<script>
-  var app = Vue.createApp({
-    data() {
-      return {
-        value: "",
-      };
-    },
-    methods: {
-      handleFocus() {
-        console.log("focus");
-      },
-      handleBlur() {
-        console.log("blur");
-      },
-    },
-  });
-  app.use(ElementPlus);
-  app.use(AVUE);
-  app.mount("#app");
-</script>

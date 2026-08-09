@@ -1,43 +1,48 @@
 <template>
-  <div :class="b({'active':((active || overActive)&&!readonly),'move':moveActive,'click':disabled})"
-       @mousedown.stop="handleMove"
-       @mouseover.stop="handleOver"
-       @mouseout.stop="handleOut"
-       :style="styleName">
-    <el-input ref="input"
-              :class="b('focus')"
-              v-model="value"></el-input>
-    <div :class="b('wrapper')"
-         ref="wrapper">
-      <template v-if="(active || overActive || moveActive)&&!readonly">
+  <div ref="root"
+       :class="b({
+         active: (active || overActive || moveActive) && !readonly,
+         move: moveActive,
+         disabled
+       })"
+       :style="styleName"
+       tabindex="0"
+       role="group"
+       :aria-label="`可拖拽元素 ${index || ''}`"
+       @pointerdown.stop="handleMove"
+       @mouseenter="handleOver"
+       @mouseleave="handleOut"
+       @keydown="handleKeydown">
+    <div ref="wrapper"
+         :class="b('wrapper')">
+      <template v-if="(active || overActive || moveActive) && !readonly">
         <div :style="styleLineName"
-             :class="b('line',['left'])"></div>
+             :class="b('line', ['left'])"></div>
         <div :style="styleLineName"
-             :class="b('line',['top'])"></div>
-        <div :class="b('line',['label'])"
-             :style="styleLabelName">{{baseLeft}},{{baseTop}}</div>
+             :class="b('line', ['top'])"></div>
+        <div :class="b('line', ['label'])"
+             :style="styleLabelName">{{ baseLeft }}, {{ baseTop }} · {{ baseWidth }} × {{ baseHeight }}</div>
       </template>
-      <template v-for="(item,index) in rangeList"
-                v-if="!readonly">
-        <div :class="b('range',[item.classname])"
-             :key="index"
-             v-if="active"
-             :style="[styleRangeName,getRangeStyle(item.classname)]"
-             @mousedown.stop="rangeMove($event,item.classname)"></div>
+      <template v-if="active && resize && !readonly && !disabled">
+        <div v-for="item in rangeList"
+             :key="item.classname"
+             :class="b('range', [item.classname])"
+             :style="[styleRangeName, getRangeStyle(item.classname)]"
+             @pointerdown.stop.prevent="rangeMove($event, item.classname)"></div>
       </template>
-      <div :class="b('menu')"
-           :style="styleMenuName"
-           v-show="active || overActive">
+      <div v-show="active || overActive"
+           :class="b('menu')"
+           :style="styleMenuName">
         <slot name="menu"
-              :zIndex="zIndex"
+              :z-index="zIndex"
               :index="index"></slot>
       </div>
-      <div :class="b('item')"
-           ref="item">
+      <div ref="item"
+           :class="b('item')">
         <slot></slot>
       </div>
-      <div :class="b('mask')"
-           v-if="!disabled && mask"></div>
+      <div v-if="!disabled && mask"
+           :class="b('mask')"></div>
     </div>
   </div>
 </template>
@@ -45,12 +50,12 @@
 <script>
 import create from "core/create";
 import { getFixed } from "utils/util";
+
 export default create({
-  name: "draggable",
+  name: 'draggable',
+  emits: ['move', 'resize', 'change', 'focus', 'blur', 'over', 'out'],
   props: {
-    index: {
-      type: [String, Number],
-    },
+    index: [String, Number],
     mask: {
       type: Boolean,
       default: true
@@ -59,413 +64,397 @@ export default create({
       type: Number,
       default: 1
     },
-    readonly: {
-      type: Boolean,
-      default: false
-    },
+    readonly: Boolean,
     resize: {
       type: Boolean,
       default: true
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
+    disabled: Boolean,
     step: {
       type: Number,
       default: 1
     },
-    lock: {
-      type: Boolean,
-      default: false
+    grid: {
+      type: Number,
+      default: 0
     },
+    lock: Boolean,
     zIndex: {
       type: [Number, String],
       default: 1
     },
     left: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     top: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
-    width: {
-      type: Number
+    width: [Number, String],
+    height: [Number, String],
+    minWidth: {
+      type: Number,
+      default: 20
     },
-    height: {
-      type: Number
+    minHeight: {
+      type: Number,
+      default: 20
+    },
+    maxWidth: Number,
+    maxHeight: Number,
+    bounds: Object,
+    handle: String,
+    ignore: {
+      type: String,
+      default: 'input, textarea, button, select, a, [data-avue-draggable-ignore]'
     }
   },
   data () {
     return {
-      first: true,
-      value: '',
       baseWidth: 0,
       baseHeight: 0,
       baseLeft: 0,
       baseTop: 0,
-      children: {},
+      children: null,
       moveActive: false,
       overActive: false,
-      rangeActive: false,
       active: false,
-      focusTimer: null,
       documentMoveHandler: null,
       documentUpHandler: null,
-      documentKeydownHandler: null,
       rangeList: [
-        {
-          classname: "left",
-        },
-        {
-          classname: "right",
-        },
-        {
-          classname: "top",
-        },
-        {
-          classname: "bottom",
-        },
-        {
-          classname: "top-left",
-        },
-        {
-          classname: "top-right",
-        },
-        {
-          classname: "bottom-left",
-        },
-        {
-          classname: "bottom-right",
-        }
+        { classname: 'left' },
+        { classname: 'right' },
+        { classname: 'top' },
+        { classname: 'bottom' },
+        { classname: 'top-left' },
+        { classname: 'top-right' },
+        { classname: 'bottom-left' },
+        { classname: 'bottom-right' }
       ]
     };
   },
   computed: {
     scaleVal () {
-      return this.scale;
+      return Number(this.scale) > 0 ? Number(this.scale) : 1;
     },
     styleMenuName () {
       return {
-        transformOrigin: "0 0",
+        transformOrigin: '0 0',
         transform: `scale(${this.scaleVal})`
       };
     },
     styleLineName () {
-      return {
-        borderWidth: this.setPx(this.scaleVal)
-      };
+      return { borderWidth: this.setPx(this.scaleVal) };
     },
     styleRangeName () {
-      const calc = 10 * this.scaleVal;
-      return {
-        width: this.setPx(calc),
-        height: this.setPx(calc)
-      };
+      const size = 10 * this.scaleVal;
+      return { width: this.setPx(size), height: this.setPx(size) };
     },
     styleLabelName () {
-      return {
-        fontSize: this.setPx(18 * this.scaleVal)
-      };
+      return { fontSize: this.setPx(Math.max(11, 14 * this.scaleVal)) };
     },
     styleName () {
-      return Object.assign(
-        (() => {
-          if (this.active) {
-            return Object.assign(
-              {
-                zIndex: 9999
-              },
-              this.styleLineName
-            );
-          }
-          return { zIndex: this.zIndex };
-        })(),
-        {
-          top: this.setPx(this.baseTop),
-          left: this.setPx(this.baseLeft),
-          width: this.setPx(this.baseWidth),
-          height: this.setPx(this.baseHeight)
-        }
-      );
+      return {
+        zIndex: this.active ? 9999 : this.zIndex,
+        top: this.setPx(this.baseTop),
+        left: this.setPx(this.baseLeft),
+        width: this.setPx(this.baseWidth),
+        height: this.setPx(this.baseHeight)
+      };
     }
   },
   watch: {
-    active (val) {
-      if (val) {
-        this.handleKeydown()
-      } else {
-        this.removeKeydown()
-      }
+    width (value) {
+      this.setSize(this.toNumber(value, this.baseWidth), this.baseHeight);
     },
-    width (val) {
-      this.baseWidth = getFixed(val) || this.children.offsetWidth;
+    height (value) {
+      this.setSize(this.baseWidth, this.toNumber(value, this.baseHeight));
     },
-    height (val) {
-      this.baseHeight = getFixed(val) || this.children.offsetHeight;
+    left (value) {
+      this.baseLeft = this.toNumber(value, 0);
     },
-    left (val) {
-      this.baseLeft = getFixed(val);
+    top (value) {
+      this.baseTop = this.toNumber(value, 0);
     },
-    top (val) {
-      this.baseTop = getFixed(val);
+    baseWidth () {
+      this.syncChildSize();
     },
-    baseWidth (val) {
-      this.$refs.wrapper.style.width = this.setPx(val);
-      if (this.resize && this.children.style) {
-        this.children.style.width = this.setPx(val);
-      }
-    },
-    baseHeight (val) {
-      this.$refs.wrapper.style.height = this.setPx(val);
-      if (this.resize && this.children.style) {
-        this.children.style.height = this.setPx(val);
-      }
-    },
-    baseLeft (n, o) {
-      if (this.first) return
-      this.setMove(n - o, 0);
-    },
-    baseTop (n, o) {
-      if (this.first) return
-      this.setMove(0, n - o);
+    baseHeight () {
+      this.syncChildSize();
     }
   },
   mounted () {
     this.init();
   },
   beforeUnmount () {
-    if (this.focusTimer) {
-      clearTimeout(this.focusTimer);
-      this.focusTimer = null;
-    }
     this.removeDocumentDrag();
-    this.removeKeydown();
   },
   methods: {
     init () {
-      this.children = this.$refs.item.firstChild;
-      this.baseWidth = getFixed(this.width) || this.children.offsetWidth;
-      this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
-      this.baseLeft = getFixed(this.left);
-      this.baseTop = getFixed(this.top);
-      this.$nextTick(() => {
-        this.first = false
-      })
+      this.children = this.$refs.item && this.$refs.item.firstElementChild;
+      this.baseWidth = this.toNumber(this.width, this.children ? this.children.offsetWidth : 0);
+      this.baseHeight = this.toNumber(this.height, this.children ? this.children.offsetHeight : 0);
+      this.baseLeft = this.toNumber(this.left, 0);
+      this.baseTop = this.toNumber(this.top, 0);
+      this.syncChildSize();
     },
-    setMove (left, top) {
-      this.$emit('move', {
-        index: this.index,
-        left: left,
-        top: top
-      })
+    toNumber (value, fallback = 0) {
+      const number = Number(value);
+      return Number.isFinite(number) ? getFixed(number) : fallback;
+    },
+    setSize (width, height) {
+      this.baseWidth = this.clampSize(width, 'width');
+      this.baseHeight = this.clampSize(height, 'height');
+    },
+    syncChildSize () {
+      if (!this.resize || !this.children || !this.children.style) return;
+      this.children.style.width = this.setPx(this.baseWidth);
+      this.children.style.height = this.setPx(this.baseHeight);
+    },
+    getRangeStyle (position) {
+      const offset = (10 * this.scaleVal) / 2;
+      return position.split('-').reduce((style, side) => {
+        style[side] = this.setPx(-offset);
+        return style;
+      }, {});
     },
     setLeft (left) {
-      this.baseLeft = left;
+      this.baseLeft = this.constrainPosition(this.toNumber(left), this.baseTop).left;
     },
     setTop (top) {
-      this.baseTop = top;
+      this.baseTop = this.constrainPosition(this.baseLeft, this.toNumber(top)).top;
     },
-    getRangeStyle (postion) {
-      const calc = (10 * this.scaleVal) / 2;
-      let result = {};
-      let list = postion.split("-");
-      list.forEach(ele => {
-        result[ele] = this.setPx(-calc);
-      });
-      return result;
+    setOverActive (value) {
+      this.overActive = !!value;
     },
-    setOverActive (val) {
-      this.overActive = val;
-    },
-    setActive (val) {
-      this.active = val;
-    },
-    rangeMove (e, position) {
-      if (this.disabled || this.lock) return
-      //移动的方向
-      let x, y;
-      //移动的位置
-      let xp, yp;
-      //移动的正负
-      let xc, yc;
-      this.rangeActive = true;
-      this.handleMouseDown();
-      let disX = e.clientX;
-      let disY = e.clientY;
-      this.bindDocumentDrag(e => {
-        this.moveActive = true;
-        if (position === "right") {
-          x = true;
-          y = false;
-        } else if (position === "left") {
-          x = true;
-          xp = true;
-          xc = true;
-          y = false;
-        } else if (position === "top") {
-          x = false;
-          y = true;
-          yp = true;
-          yc = true;
-        } else if (position === "bottom") {
-          x = false;
-          y = true;
-        } else if (position === "bottom-right") {
-          x = true;
-          y = true;
-        } else if (position === "bottom-left") {
-          x = true;
-          y = true;
-          xp = true;
-          xc = true;
-        } else if (position === "top-right") {
-          x = true;
-          y = true;
-          yp = true;
-          yc = true;
-        } else if (position === "top-left") {
-          x = true;
-          y = true;
-          xp = true;
-          xc = true;
-          yp = true;
-          yc = true;
-        }
-        let left = e.clientX - disX;
-        let top = e.clientY - disY;
-        disX = e.clientX;
-        disY = e.clientY;
-        if (x) {
-          let calc = left * this.step;
-          if (xc) calc = -calc;
-          if (xp) this.baseLeft = getFixed(this.baseLeft - calc);
-          this.baseWidth = getFixed(this.baseWidth + calc);
-        }
-        if (y) {
-          let calc = top * this.step;
-          if (yc) calc = -calc;
-          if (yp) this.baseTop = getFixed(this.baseTop - calc);
-          this.baseHeight = getFixed(this.baseHeight + calc);
-        }
-      });
-
-    },
-    handleOut () {
-      this.overActive = false
-      this.$emit("out", {
-        index: this.index,
-        width: this.baseWidth,
-        height: this.baseHeight,
-        left: this.baseLeft,
-        top: this.baseTop
-      });
+    setActive (value) {
+      this.active = !!value;
+      if (this.active) this.focusRoot();
     },
     handleOver () {
-      if (this.disabled) return
-      this.overActive = true
-      this.$emit("over", {
+      if (this.disabled) return;
+      this.overActive = true;
+      this.$emit('over', this.getState());
+    },
+    handleOut () {
+      this.overActive = false;
+      this.$emit('out', this.getState());
+    },
+    handleMove (event) {
+      if (event.button !== 0 || this.disabled || this.lock || this.readonly) return;
+      const target = event.target;
+      if (this.handle && (!target.closest || !target.closest(this.handle))) return;
+      if (!this.handle && this.ignore && target.closest && target.closest(this.ignore)) return;
+      this.active = true;
+      this.focusRoot();
+      this.handleMouseDown('move');
+      const start = this.getPointerState(event);
+      this.bindDocumentDrag(
+        (moveEvent) => this.applyMove(moveEvent, start),
+        event.pointerId
+      );
+    },
+    rangeMove (event, position) {
+      if (event.button !== 0 || this.disabled || this.lock || this.readonly || !this.resize) return;
+      this.active = true;
+      this.focusRoot();
+      this.handleMouseDown('resize');
+      const start = { ...this.getPointerState(event), position };
+      this.bindDocumentDrag(
+        (moveEvent) => this.applyResize(moveEvent, start),
+        event.pointerId
+      );
+    },
+    getPointerState (event) {
+      return {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        left: this.baseLeft,
+        top: this.baseTop,
+        width: this.baseWidth,
+        height: this.baseHeight
+      };
+    },
+    getDelta (event, start) {
+      const multiplier = Number(this.step) || 1;
+      return {
+        x: (event.clientX - start.clientX) / this.scaleVal * multiplier,
+        y: (event.clientY - start.clientY) / this.scaleVal * multiplier
+      };
+    },
+    applyMove (event, start) {
+      const delta = this.getDelta(event, start);
+      const position = this.constrainPosition(
+        this.snap(start.left + delta.x),
+        this.snap(start.top + delta.y)
+      );
+      this.baseLeft = position.left;
+      this.baseTop = position.top;
+      this.emitMove(delta);
+    },
+    applyResize (event, start) {
+      const delta = this.getDelta(event, start);
+      const sides = start.position.split('-');
+      let left = start.left;
+      let top = start.top;
+      let width = start.width;
+      let height = start.height;
+      if (sides.includes('left')) {
+        left = this.snap(start.left + delta.x);
+        width = start.width - delta.x;
+      }
+      if (sides.includes('right')) width = start.width + delta.x;
+      if (sides.includes('top')) {
+        top = this.snap(start.top + delta.y);
+        height = start.height - delta.y;
+      }
+      if (sides.includes('bottom')) height = start.height + delta.y;
+
+      const right = start.left + start.width;
+      const bottom = start.top + start.height;
+      width = this.clampSize(this.snap(width), 'width');
+      height = this.clampSize(this.snap(height), 'height');
+      if (sides.includes('left')) left = right - width;
+      if (sides.includes('top')) top = bottom - height;
+      const bounded = this.constrainResize(left, top, width, height, sides);
+      this.baseLeft = bounded.left;
+      this.baseTop = bounded.top;
+      this.baseWidth = bounded.width;
+      this.baseHeight = bounded.height;
+      this.$emit('resize', this.getState({ deltaX: delta.x, deltaY: delta.y }));
+      this.$emit('change', { type: 'resize', ...this.getState() });
+    },
+    snap (value) {
+      const grid = Number(this.grid);
+      return getFixed(grid > 0 ? Math.round(value / grid) * grid : value);
+    },
+    clampSize (value, dimension) {
+      const min = dimension === 'width' ? Number(this.minWidth) || 0 : Number(this.minHeight) || 0;
+      const maxValue = dimension === 'width' ? this.maxWidth : this.maxHeight;
+      const max = Number(maxValue);
+      return getFixed(Math.max(min, Number.isFinite(max) && max > 0 ? Math.min(value, max) : value));
+    },
+    getBounds () {
+      if (!this.bounds || typeof this.bounds !== 'object') return null;
+      const left = this.toNumber(this.bounds.left, 0);
+      const top = this.toNumber(this.bounds.top, 0);
+      const right = Number.isFinite(Number(this.bounds.right))
+        ? Number(this.bounds.right)
+        : Number.isFinite(Number(this.bounds.width)) ? left + Number(this.bounds.width) : Infinity;
+      const bottom = Number.isFinite(Number(this.bounds.bottom))
+        ? Number(this.bounds.bottom)
+        : Number.isFinite(Number(this.bounds.height)) ? top + Number(this.bounds.height) : Infinity;
+      return { left, top, right, bottom };
+    },
+    constrainPosition (left, top) {
+      const bounds = this.getBounds();
+      if (!bounds) return { left: getFixed(left), top: getFixed(top) };
+      return {
+        left: getFixed(Math.min(Math.max(left, bounds.left), Math.max(bounds.left, bounds.right - this.baseWidth))),
+        top: getFixed(Math.min(Math.max(top, bounds.top), Math.max(bounds.top, bounds.bottom - this.baseHeight)))
+      };
+    },
+    constrainResize (left, top, width, height, sides) {
+      const bounds = this.getBounds();
+      if (!bounds) return { left, top, width, height };
+      if (sides.includes('left') && left < bounds.left) {
+        width -= bounds.left - left;
+        left = bounds.left;
+      }
+      if (sides.includes('top') && top < bounds.top) {
+        height -= bounds.top - top;
+        top = bounds.top;
+      }
+      if (left + width > bounds.right) {
+        if (sides.includes('left')) left = bounds.right - width;
+        else width = bounds.right - left;
+      }
+      if (top + height > bounds.bottom) {
+        if (sides.includes('top')) top = bounds.bottom - height;
+        else height = bounds.bottom - top;
+      }
+      return {
+        left: getFixed(left),
+        top: getFixed(top),
+        width: this.clampSize(width, 'width'),
+        height: this.clampSize(height, 'height')
+      };
+    },
+    emitMove (delta) {
+      this.$emit('move', { index: this.index, left: getFixed(delta.x), top: getFixed(delta.y) });
+      this.$emit('change', { type: 'move', ...this.getState() });
+    },
+    getState (extra = {}) {
+      return {
         index: this.index,
         width: this.baseWidth,
         height: this.baseHeight,
         left: this.baseLeft,
-        top: this.baseTop
-      });
+        top: this.baseTop,
+        ...extra
+      };
     },
-    handleMove (e) {
-      if (this.disabled || this.lock) return
-      this.focusTimer = setTimeout(() => {
-        if (this.$refs.input) this.$refs.input.focus()
-        this.focusTimer = null;
-      })
-      this.active = true;
-      this.handleMouseDown();
-      let disX = e.clientX;
-      let disY = e.clientY;
-      this.bindDocumentDrag((e) => {
-        let left = e.clientX - disX;
-        let top = e.clientY - disY;
-        disX = e.clientX;
-        disY = e.clientY;
-        this.baseLeft = getFixed(this.baseLeft + left * this.step);
-        this.baseTop = getFixed(this.baseTop + top * this.step);
-      });
-    },
-    bindDocumentDrag (moveHandler) {
+    bindDocumentDrag (moveHandler, pointerId) {
       this.removeDocumentDrag();
-      this.documentMoveHandler = moveHandler;
-      this.documentUpHandler = () => {
+      this.documentMoveHandler = (event) => {
+        if (pointerId !== undefined && event.pointerId !== pointerId) return;
+        this.moveActive = true;
+        moveHandler(event);
+      };
+      this.documentUpHandler = (event) => {
+        if (pointerId !== undefined && event.pointerId !== pointerId) return;
         this.removeDocumentDrag();
         this.handleMouseUp();
       };
-      document.addEventListener('mousemove', this.documentMoveHandler);
-      document.addEventListener('mouseup', this.documentUpHandler);
+      document.addEventListener('pointermove', this.documentMoveHandler);
+      document.addEventListener('pointerup', this.documentUpHandler);
+      document.addEventListener('pointercancel', this.documentUpHandler);
     },
     removeDocumentDrag () {
       if (this.documentMoveHandler) {
-        document.removeEventListener('mousemove', this.documentMoveHandler);
+        document.removeEventListener('pointermove', this.documentMoveHandler);
         this.documentMoveHandler = null;
       }
       if (this.documentUpHandler) {
-        document.removeEventListener('mouseup', this.documentUpHandler);
+        document.removeEventListener('pointerup', this.documentUpHandler);
+        document.removeEventListener('pointercancel', this.documentUpHandler);
         this.documentUpHandler = null;
       }
     },
-    handleKeydown () {
-      if (this.documentKeydownHandler) return;
-      this.documentKeydownHandler = (event) => {
-        const e = event || window.event;
-        let step = 1 * this.step;
-        if (this.$refs.input.focused) {
-          if (e && e.keyCode == 38) {//上
-            this.baseTop = getFixed(this.baseTop - step)
-          } else if (e && e.keyCode == 37) {//左
-            this.baseLeft = getFixed(this.baseLeft - step)
-          } else if (e && e.keyCode == 40) {//下
-            this.baseTop = getFixed(this.baseTop + step)
-          } else if (e && e.keyCode == 39) {//右
-            this.baseLeft = getFixed(this.baseLeft + step)
-          }
-          e.stopPropagation()
-          e.preventDefault();
-          this.$emit("blur", {
-            index: this.index,
-            width: this.baseWidth,
-            height: this.baseHeight,
-            left: this.baseLeft,
-            top: this.baseTop
-          });
-        }
-      };
-      document.addEventListener('keydown', this.documentKeydownHandler);
+    focusRoot () {
+      if (this.$refs.root && document.activeElement !== this.$refs.root) {
+        this.$refs.root.focus({ preventScroll: true });
+      }
     },
-    removeKeydown () {
-      if (!this.documentKeydownHandler) return;
-      document.removeEventListener('keydown', this.documentKeydownHandler);
-      this.documentKeydownHandler = null;
+    handleKeydown (event) {
+      if (!this.active || this.disabled || this.lock || this.readonly) return;
+      if (event.key === 'Escape') {
+        this.active = false;
+        return;
+      }
+      const step = Number(event.shiftKey ? this.step * 10 : this.step) || 1;
+      let left = this.baseLeft;
+      let top = this.baseTop;
+      if (event.key === 'ArrowUp') top -= step;
+      else if (event.key === 'ArrowDown') top += step;
+      else if (event.key === 'ArrowLeft') left -= step;
+      else if (event.key === 'ArrowRight') left += step;
+      else return;
+      event.preventDefault();
+      const previous = { left: this.baseLeft, top: this.baseTop };
+      const position = this.constrainPosition(this.snap(left), this.snap(top));
+      this.baseLeft = position.left;
+      this.baseTop = position.top;
+      this.emitMove({ x: this.baseLeft - previous.left, y: this.baseTop - previous.top });
     },
-    handleMouseDown (e) {
+    handleMouseDown (type) {
       this.moveActive = true;
-      this.$emit("focus", {
-        index: this.index,
-        width: this.baseWidth,
-        height: this.baseHeight,
-        left: this.baseLeft,
-        top: this.baseTop
-      });
+      this.$emit('focus', { type, ...this.getState() });
     },
     handleMouseUp () {
       this.moveActive = false;
-      this.rangeActive = false;
-      this.$emit("blur", {
-        index: this.index,
-        width: this.baseWidth,
-        height: this.baseHeight,
-        left: this.baseLeft,
-        top: this.baseTop
-      });
+      this.$emit('blur', this.getState());
     }
   }
 });
