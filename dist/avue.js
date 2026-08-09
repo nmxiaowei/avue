@@ -36047,10 +36047,10 @@
       return value;
     }
   };
-  var Print = /*#__PURE__*/function () {
-    function Print(dom) {
+  var PrintInstance = /*#__PURE__*/function () {
+    function PrintInstance(dom) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      _classCallCheck(this, Print);
+      _classCallCheck(this, PrintInstance);
       this.iframe = null;
       this.options = _objectSpread$2({
         noPrint: '.no-print',
@@ -36059,7 +36059,7 @@
       this.dom = this.resolveDom(dom);
       this.init();
     }
-    return _createClass(Print, [{
+    return _createClass(PrintInstance, [{
       key: "resolveDom",
       value: function resolveDom(dom) {
         var element = typeof dom === 'string' ? document.querySelector(dom) : dom instanceof HTMLElement ? dom : dom === null || dom === void 0 ? void 0 : dom.$el;
@@ -36255,6 +36255,13 @@
       }
     }]);
   }();
+  /**
+   * 保持 $Print(dom, options) 与 new $Print(dom, options) 两种历史调用方式。
+   */
+  function Print(dom) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    return new PrintInstance(dom, options);
+  }
 
   var script$1 = create({
     name: "image-preview",
