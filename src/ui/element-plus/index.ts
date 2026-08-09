@@ -44,6 +44,8 @@ import Arrays from 'packages/element-plus/array';
 import textEllipsis from 'packages/element-plus/text-ellipsis';
 import QRCode from 'packages/element-plus/qrcode';
 import Iframe from 'packages/element-plus/iframe';
+import FilterBuilder from 'packages/element-plus/filter-builder';
+import FileManager from 'packages/element-plus/file-manager';
 
 export {
   Arrays,
@@ -92,6 +94,8 @@ export {
   textEllipsis,
   QRCode,
   Iframe,
+  FilterBuilder,
+  FileManager,
 };
 
 const elementComponents = {
@@ -141,6 +145,8 @@ const elementComponents = {
   Login,
   QRCode,
   Iframe,
+  FilterBuilder,
+  FileManager,
 };
 
 export default elementComponents;

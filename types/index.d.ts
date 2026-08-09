@@ -167,6 +167,8 @@ export interface AvueComponentExports {
   Date: Component;
   Draggable: Component;
   Dynamic: Component;
+  FileManager: Component;
+  FilterBuilder: Component;
   Flow: Component;
   Form: Component;
   Group: Component;
@@ -274,6 +276,8 @@ export const DataWeather: Component;
 export const Date: Component;
 export const Draggable: Component;
 export const Dynamic: Component;
+export const FileManager: Component;
+export const FilterBuilder: Component;
 export const Flow: Component;
 export const Form: Component;
 export const Group: Component;
