@@ -20,7 +20,7 @@ const toAbsoluteUrl = (value: string) => {
   }
 };
 
-class Print {
+class PrintInstance {
   dom: HTMLElement;
   options: PrintOptions;
   iframe: HTMLIFrameElement | null = null;
@@ -212,6 +212,13 @@ class Print {
       }
     });
   }
+}
+
+/**
+ * 保持 $Print(dom, options) 与 new $Print(dom, options) 两种历史调用方式。
+ */
+function Print(dom: any, options: PrintOptions = {}) {
+  return new PrintInstance(dom, options);
 }
 
 export default Print;
