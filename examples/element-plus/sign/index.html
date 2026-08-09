@@ -1,49 +1,69 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
+    <title>Avue Sign</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; color: #303133; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      #app { max-width: 760px; margin: 0 auto; }
+      .panel { padding: 20px; border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgb(15 23 42 / 6%); }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .result { min-height: 96px; margin-top: 16px; padding: 12px; border: 1px dashed #dcdfe6; border-radius: 8px; color: #606266; }
+      .result img { max-width: 100%; max-height: 160px; margin-top: 8px; display: block; }
+    </style>
   </head>
-
   <body>
     <div id="app">
-      <avue-sign ref="sign"></avue-sign>
-      <el-button type="primary" @click="handleSubmit">生成</el-button>
-      <el-button
-        type="primary"
-        @click="$refs.sign.getStar('这里是用途','这里是单位的名称','1221332')"
-        >印章</el-button
-      >
-      <el-button @click="$refs.sign.clear()">清空</el-button>
-      <div>
-        结果
-        <img :src="img" alt="" width="80" height="50" />
+      <div class="panel">
+        <avue-sign
+          ref="sign"
+          title="电子签名"
+          show-toolbar
+          :line-width="lineWidth"
+          line-color="#1d4ed8"
+          @change="handleChange"
+          @clear="img = ''"
+        ></avue-sign>
+        <div class="actions">
+          <el-button type="primary" @click="handleSubmit">生成 PNG</el-button>
+          <el-button @click="createSeal">生成印章</el-button>
+          <el-button @click="$refs.sign.clear()">清空签名</el-button>
+          <el-select v-model="lineWidth" style="width: 120px">
+            <el-option :value="2" label="细笔" />
+            <el-option :value="4" label="标准" />
+            <el-option :value="7" label="粗笔" />
+          </el-select>
+        </div>
+        <div class="result">
+          <div>导出结果</div>
+          <img v-if="img" :src="img" alt="签名导出预览" />
+          <span v-else>签名完成后会在此预览</span>
+        </div>
       </div>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
+    const app = Vue.createApp({
       data() {
-        return {
-          img: "",
-        };
+        return { img: "", lineWidth: 4 };
       },
       methods: {
+        handleChange(value) {
+          this.img = value;
+        },
         handleSubmit() {
-          this.img = this.$refs.sign.submit(80, 50);
-          console.log(this.img);
+          this.img = this.$refs.sign.submit();
+        },
+        createSeal() {
+          this.img = this.$refs.sign.getStar("合同专用章", "AVUE 科技有限公司", "2026.08.09");
         },
       },
     });

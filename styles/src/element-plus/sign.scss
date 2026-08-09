@@ -1,6 +1,118 @@
-.avue-sign{
-  padding: 5px;
-  &__canvas{
-    border:1px solid #ccc;
+.avue-sign {
+  overflow: hidden;
+  border: 1px solid var(--el-border-color-lighter, #e4e7ed);
+  border-radius: 10px;
+  color: var(--el-text-color-primary, #303133);
+  background: var(--el-bg-color, #fff);
+  box-shadow: 0 6px 18px rgb(15 23 42 / 5%);
+
+  &__header {
+    min-height: 42px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--el-border-color-lighter, #ebeef5);
+  }
+
+  &__title {
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__status {
+    margin-left: auto;
+    color: var(--el-text-color-secondary, #909399);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  &__tools {
+    margin-left: auto;
+  }
+
+  &__clear {
+    min-width: 48px;
+    height: 28px;
+    padding: 0 9px;
+    border: 1px solid var(--el-border-color, #dcdfe6);
+    border-radius: 6px;
+    color: var(--el-text-color-regular, #606266);
+    font: inherit;
+    font-size: 12px;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+
+    &:hover:not(:disabled) {
+      border-color: var(--el-color-primary, #409eff);
+      color: var(--el-color-primary, #409eff);
+      background: var(--el-color-primary-light-9, #ecf5ff);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+  }
+
+  &__surface {
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(to right, rgb(148 163 184 / 10%) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(148 163 184 / 10%) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  &__canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    vertical-align: top;
+    cursor: crosshair;
+    outline: none;
+    touch-action: none;
+    user-select: none;
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--el-color-primary, #409eff);
+    }
+  }
+
+  &__placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    color: var(--el-text-color-placeholder, #a8abb2);
+    font-size: 14px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+
+  &__footer {
+    padding: 10px 12px;
+    border-top: 1px solid var(--el-border-color-lighter, #ebeef5);
+  }
+
+  &.is-disabled {
+    .avue-sign__canvas {
+      cursor: not-allowed;
+      opacity: 0.72;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .avue-sign {
+    border-radius: 8px;
+
+    &__header {
+      min-height: 40px;
+      padding: 0 10px;
+    }
   }
 }
