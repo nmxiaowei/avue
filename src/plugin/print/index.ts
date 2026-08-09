@@ -1,228 +1,217 @@
 import { buildTablePrintHtml } from 'utils/print';
 
-const Print: any = function (dom: any, options: Record<string, any>) {
-  if (!(this instanceof Print)) return new Print(dom, options);
+interface PrintOptions {
+  noPrint?: string;
+  documentTitle?: string;
+  title?: string;
+  timeout?: number;
+  onReady?: () => void;
+  onBeforePrint?: () => void;
+  onAfterPrint?: () => void;
+  onError?: (error: Error) => void;
+  [key: string]: any;
+}
 
-  this.options = this.extend(
-    {
-      noPrint: '.no-print',
-    },
-    options || {}
-  );
-
-  if (typeof dom === 'string') {
-    this.dom = document.querySelector(dom);
-  } else {
-    this.isDOM(dom);
-    this.dom = this.isDOM(dom) ? dom : dom.$el;
+const toAbsoluteUrl = (value: string) => {
+  try {
+    return new URL(value, document.baseURI).href;
+  } catch {
+    return value;
   }
-  this.init();
 };
 
-Print.prototype = {
-  init: function () {
+class Print {
+  dom: HTMLElement;
+  options: PrintOptions;
+  iframe: HTMLIFrameElement | null = null;
+
+  constructor(dom: any, options: PrintOptions = {}) {
+    this.options = {
+      noPrint: '.no-print',
+      timeout: 15000,
+      ...options
+    };
+    this.dom = this.resolveDom(dom);
+    this.init();
+  }
+
+  resolveDom(dom: any) {
+    const element = typeof dom === 'string'
+      ? document.querySelector<HTMLElement>(dom)
+      : dom instanceof HTMLElement ? dom : dom?.$el;
+    if (!(element instanceof HTMLElement)) throw new TypeError('未找到可打印的 DOM 节点。');
+    return element;
+  }
+
+  init() {
     try {
-      const content = buildTablePrintHtml(this.dom, this.options) || this.getStyle() + this.getHtml();
+      const content = buildTablePrintHtml(this.dom, this.options) || this.getDocumentHtml();
       this.writeIframe(content);
     } catch (error) {
       this.handleError(error);
     }
-  },
-  handleReady: function () {
-    if (typeof this.options.onReady === 'function') this.options.onReady();
-  },
-  handleError: function (error: Error) {
-    if (typeof this.options.onError === 'function') {
-      this.options.onError(error);
-      return;
-    }
-    console.error(error);
-  },
-  extend: function (obj: Record<string, any>, obj2: Record<string, any>) {
-    for (const k in obj2) {
-      obj[k] = obj2[k];
-    }
-    return obj;
-  },
+  }
 
-  getStyle: function () {
-    let str = '';
-    const styles = document.querySelectorAll('style,link');
-    for (let i = 0; i < styles.length; i++) {
-      str += (styles[i] as HTMLElement).outerHTML;
-    }
-    str += `<style>${this.options.noPrint ? this.options.noPrint : '.no-print'}{display:none;}</style>`;
+  handleError(error: unknown) {
+    const normalized = error instanceof Error ? error : new Error(String(error || '打印失败。'));
+    if (typeof this.options.onError === 'function') this.options.onError(normalized);
+    else console.error(normalized);
+  }
 
-    return str;
-  },
+  getStyle() {
+    const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+      .map((style) => (style as HTMLElement).outerHTML)
+      .join('');
+    const noPrint = this.options.noPrint || '.no-print';
+    return `${styles}<style>
+      ${noPrint}{display:none !important;}
+      html,body{min-height:auto !important;background:#fff !important;}
+      @media print{.avue-print-root{margin:0 !important;}}
+    </style>`;
+  }
 
-  getHtml: function () {
-    const inputs = document.querySelectorAll('input');
-    const textareas = document.querySelectorAll('textarea');
-    const selects = document.querySelectorAll('select');
+  syncFormState(source: HTMLElement, clone: HTMLElement) {
+    const sourceFields = Array.from(source.querySelectorAll('input, textarea, select'));
+    const cloneFields = Array.from(clone.querySelectorAll('input, textarea, select'));
+    sourceFields.forEach((field, index) => {
+      const cloned = cloneFields[index];
+      if (!cloned) return;
+      if (field instanceof HTMLInputElement && cloned instanceof HTMLInputElement) {
+        if (field.type === 'checkbox' || field.type === 'radio') cloned.checked = field.checked;
+        else cloned.value = field.value;
+      } else if (field instanceof HTMLTextAreaElement && cloned instanceof HTMLTextAreaElement) {
+        cloned.value = field.value;
+        cloned.textContent = field.value;
+      } else if (field instanceof HTMLSelectElement && cloned instanceof HTMLSelectElement) {
+        cloned.selectedIndex = field.selectedIndex;
+        Array.from(cloned.options).forEach((option, optionIndex) => {
+          option.selected = field.options[optionIndex]?.selected || false;
+        });
+      }
+    });
+  }
 
-    for (let k = 0; k < inputs.length; k++) {
-      const input = inputs[k];
-      if (input.type == 'checkbox' || input.type == 'radio') {
-        if (input.checked == true) {
-          input.setAttribute('checked', 'checked');
-        } else {
-          input.removeAttribute('checked');
-        }
-      } else {
-        input.setAttribute('value', input.value);
+  sanitizeClone(clone: HTMLElement) {
+    const noPrint = this.options.noPrint;
+    if (noPrint) {
+      try {
+        clone.querySelectorAll(noPrint).forEach((element) => element.remove());
+      } catch {
+        // 自定义选择器无效时不影响正常打印。
       }
     }
+    clone.querySelectorAll('script, noscript, style, [data-print-ignore="true"]').forEach((element) => element.remove());
+    clone.querySelectorAll('*').forEach((element) => {
+      Array.from(element.attributes)
+        .filter((attribute) => attribute.name.toLowerCase().startsWith('on'))
+        .forEach((attribute) => element.removeAttribute(attribute.name));
+    });
+    clone.querySelectorAll('img').forEach((image) => {
+      const source = image.currentSrc || image.getAttribute('src');
+      if (source) image.setAttribute('src', toAbsoluteUrl(source));
+      image.removeAttribute('srcset');
+    });
+    clone.querySelectorAll('a').forEach((link) => {
+      link.removeAttribute('target');
+      const href = link.getAttribute('href');
+      if (href) link.setAttribute('href', toAbsoluteUrl(href));
+    });
+  }
 
-    for (let k2 = 0; k2 < textareas.length; k2++) {
-      if (textareas[k2].type == 'textarea') {
-        textareas[k2].innerHTML = textareas[k2].value;
-      }
-    }
+  getDocumentHtml() {
+    const clone = this.dom.cloneNode(true) as HTMLElement;
+    this.syncFormState(this.dom, clone);
+    this.sanitizeClone(clone);
+    const title = this.options.documentTitle || document.title || '打印预览';
+    return `<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="${document.baseURI}" />
+    <title>${title}</title>
+    ${this.getStyle()}
+  </head>
+  <body><main class="avue-print-root">${clone.outerHTML}</main></body>
+</html>`;
+  }
 
-    for (let k3 = 0; k3 < selects.length; k3++) {
-      if (selects[k3].type == 'select-one') {
-        const child = selects[k3].children;
-        for (const i in child) {
-          const option = child[i as any] as HTMLOptionElement | undefined;
-          if (option && option.tagName == 'OPTION') {
-            if (option.selected == true) {
-              option.setAttribute('selected', 'selected');
-            } else {
-              option.removeAttribute('selected');
-            }
-          }
-        }
-      }
-    }
-    return this.wrapperRefDom(this.dom).outerHTML;
-  },
-  wrapperRefDom: function (refDom: HTMLElement) {
-    let prevDom: HTMLElement | null = null;
-    let currDom: HTMLElement | null = refDom;
-    if (!this.isInBody(currDom)) return currDom;
-
-    while (currDom) {
-      if (prevDom) {
-        const element = currDom.cloneNode(false) as HTMLElement;
-        element.appendChild(prevDom);
-        prevDom = element;
-      } else {
-        prevDom = currDom.cloneNode(true) as HTMLElement;
-      }
-
-      currDom = currDom.parentElement;
-    }
-
-    return prevDom;
-  },
-
-  writeIframe: function (content: string) {
-    let w;
-    let doc;
+  writeIframe(content: string) {
     const iframe = document.createElement('iframe');
-    const f = document.body.appendChild(iframe);
-    let loaded = false;
-    let failed = false;
-    let loadTimer: number | undefined;
-    iframe.id = 'myIframe';
-    iframe.setAttribute('style', 'position:absolute;width:0;height:0;top:-10px;left:-10px;');
-    w = f.contentWindow || f.contentDocument;
-    doc = f.contentDocument || f.contentWindow.document;
-    const _this = this;
-    iframe.onload = function () {
-      if (loaded || failed) return;
-      loaded = true;
-      if (loadTimer !== undefined) window.clearTimeout(loadTimer);
-      _this.waitForImages(doc, function () {
-        _this.handleReady();
-        _this.toPrint(w);
-        setTimeout(function () {
-          if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-        }, 1000);
+    iframe.setAttribute('title', '打印预览');
+    iframe.setAttribute('aria-hidden', 'true');
+    iframe.setAttribute('style', 'position:fixed;width:1px;height:1px;right:0;bottom:0;border:0;opacity:0;pointer-events:none;');
+    this.iframe = iframe;
+    let settled = false;
+    const cleanup = () => {
+      if (!this.iframe) return;
+      this.iframe.remove();
+      this.iframe = null;
+    };
+    const fail = (error: Error) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      this.handleError(error);
+    };
+    const timer = window.setTimeout(() => fail(new Error('打印内容加载超时。')), Number(this.options.timeout) || 15000);
+    iframe.onload = () => {
+      if (settled) return;
+      const frameWindow = iframe.contentWindow;
+      const frameDocument = iframe.contentDocument;
+      if (!frameWindow || !frameDocument) {
+        fail(new Error('无法创建打印窗口。'));
+        return;
+      }
+      this.waitForAssets(frameDocument, () => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        try {
+          this.options.onReady?.();
+          this.options.onBeforePrint?.();
+          let printFinished = false;
+          const afterPrint = () => {
+            if (printFinished) return;
+            printFinished = true;
+            cleanup();
+            this.options.onAfterPrint?.();
+          };
+          frameWindow.addEventListener('afterprint', afterPrint, { once: true });
+          frameWindow.focus();
+          frameWindow.print();
+          window.setTimeout(afterPrint, 60000);
+        } catch (error) {
+          cleanup();
+          this.handleError(error);
+        }
       });
     };
-    iframe.onerror = function () {
-      if (failed) return;
-      failed = true;
-      if (loadTimer !== undefined) window.clearTimeout(loadTimer);
-      _this.handleError(new Error('打印内容加载失败'));
-      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-    };
-    doc.open();
-    doc.write(content);
-    doc.close();
-    if (!loaded) {
-      loadTimer = window.setTimeout(function () {
-        if (loaded || failed) return;
-        failed = true;
-        _this.handleError(new Error('打印内容加载超时'));
-        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      }, 15000);
-    }
-  },
+    iframe.onerror = () => fail(new Error('打印内容加载失败。'));
+    iframe.srcdoc = content;
+    document.body.appendChild(iframe);
+  }
 
-  waitForImages: function (doc: Document, callback: () => void) {
+  waitForAssets(doc: Document, done: () => void) {
     const images = Array.from(doc.images);
-    if (images.length === 0) {
-      callback();
+    const fonts = (doc as any).fonts?.ready;
+    const finish = () => Promise.resolve(fonts).catch(() => undefined).then(done);
+    if (!images.length) {
+      finish();
       return;
     }
     let completed = 0;
-    let finished = false;
-    let timer: number | undefined;
-    const finish = function () {
-      if (finished) return;
-      finished = true;
-      if (timer !== undefined) window.clearTimeout(timer);
-      callback();
-    };
-    const done = function () {
-      completed++;
+    const complete = () => {
+      completed += 1;
       if (completed === images.length) finish();
     };
     images.forEach((image) => {
-      if (image.complete) {
-        done();
-      } else {
-        image.addEventListener('load', done, { once: true });
-        image.addEventListener('error', done, { once: true });
+      if (image.complete) complete();
+      else {
+        image.addEventListener('load', complete, { once: true });
+        image.addEventListener('error', complete, { once: true });
       }
     });
-    if (!finished) {
-      timer = window.setTimeout(finish, 10000);
-    }
-  },
-
-  toPrint: function (frameWindow: Window) {
-    const _this = this;
-    setTimeout(function () {
-      try {
-        frameWindow.focus();
-        try {
-          if (!frameWindow.document.execCommand('print', false, null)) {
-            frameWindow.print();
-          }
-        } catch {
-          frameWindow.print();
-        }
-        frameWindow.close();
-      } catch (error) {
-        _this.handleError(error);
-      }
-    }, 10);
-  },
-  isInBody: function (node: HTMLElement) {
-    return node === document.body ? false : document.body.contains(node);
-  },
-  isDOM:
-    typeof HTMLElement === 'object'
-      ? function (obj: any) {
-          return obj instanceof HTMLElement;
-        }
-      : function (obj: any) {
-          return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
-        },
-};
+  }
+}
 
 export default Print;
