@@ -1,38 +1,48 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
     <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
   </head>
-
   <body>
-    <div id="app">
-      <el-button @click.native="startRecord">开始</el-button>
-      <el-button type="danger" @click="stopRecord">停止</el-button>
-      <el-button type="warning" @click="getRecord">捕捉</el-button>
-      <br />
-      <br />
+    <div id="app" style="max-width: 760px; padding: 24px">
+      <el-space wrap style="margin-bottom: 16px">
+        <el-button type="primary" :disabled="recording" @click="startRecord">开始录制</el-button>
+        <el-button type="danger" :disabled="!recording" @click="stopRecord">停止录制</el-button>
+        <el-button :disabled="!ready" @click="takePhoto">截图</el-button>
+        <el-button @click="$refs.video.retry()">重新连接</el-button>
+      </el-space>
       <avue-video
-        background="https://avuejs.com/images/face.png"
-        @data-change="dataChange"
         ref="video"
+        width="640"
+        background="https://avuejs.com/images/face.png"
+        :audio="false"
+        mirror
+        @ready="ready = true"
+        @record-start="recording = true"
+        @record-stop="recording = false"
+        @data-change="handleVideo"
+        @photo-change="handlePhoto"
+        @video-error="handleError"
       ></avue-video>
+      <el-divider v-if="photo || recordUrl">预览结果</el-divider>
+      <el-image v-if="photo" :src="photo" style="width: 180px; margin-right: 16px" fit="cover"></el-image>
+      <video v-if="recordUrl" :src="recordUrl" controls style="width: 360px; max-width: 100%"></video>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
+    const app = Vue.createApp({
+      data() {
+        return { ready: false, recording: false, photo: '', recordUrl: '' };
+      },
       methods: {
         startRecord() {
           this.$refs.video.startRecord();
@@ -40,16 +50,23 @@
         stopRecord() {
           this.$refs.video.stopRecord();
         },
-        getRecord() {
-          this.$refs.video.getRecord();
+        takePhoto() {
+          this.photo = this.$refs.video.takePhoto('image/jpeg', 0.9);
         },
-        dataChange(data) {
-          console.log(data);
+        handlePhoto(data) {
+          this.photo = data;
+        },
+        handleVideo(data) {
+          this.recordUrl = data;
+        },
+        handleError(error) {
+          this.ready = false;
+          this.$message.error(error.message || '摄像头连接失败，请检查权限');
         },
       },
     });
     app.use(ElementPlus);
     app.use(AVUE);
-    app.mount("#app");
+    app.mount('#app');
   </script>
 </html>
