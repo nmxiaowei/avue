@@ -1,74 +1,49 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Clipboard</title>
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      #app { max-width: 680px; margin: 0 auto; padding: 22px; border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgb(15 23 42 / 6%); }
+      .status { margin-top: 12px; color: #909399; font-size: 13px; }
+    </style>
   </head>
-
   <body>
     <div id="app">
+      <el-input v-model="text" type="textarea" :rows="5" show-word-limit maxlength="500" placeholder="输入要复制的内容"></el-input>
       <p>
-        <el-button @click="copy">直接复制</el-button>
-        <el-button @click="textarea=''">清 空</el-button>
+        <el-button type="primary" :loading="copying" @click="copyText">复制内容</el-button>
+        <el-button @click="text = ''">清空</el-button>
+        <el-button text @click="copyDemo">复制示例文本</el-button>
       </p>
-      <el-input placeholder="内容" v-model="text">
-        <template #append>
-          <el-button @click="copyText" color="primary">复制</el-button>
-        </template>
-      </el-input>
-      <div style="margin-top: 10px">
-        <el-input
-          type="textarea"
-          v-model="textarea"
-          cols="40"
-          rows="3"
-        ></el-input>
-      </div>
+      <p class="status">{{ status }}</p>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
-      data() {
-        return {
-          text: "",
-          textarea: "",
-        };
-      },
+    const app = Vue.createApp({
+      data() { return { text: "", copying: false, status: "优先使用系统 Clipboard API，失败时自动降级。" }; },
       methods: {
-        copyText() {
-          this.$Clipboard({
-            text: this.text,
-          })
-            .then(() => {
-              this.$message.success("复制成功");
-            })
-            .catch(() => {
-              this.$message.error("复制失败");
-            });
+        async copy(value) {
+          this.copying = true;
+          try {
+            await this.$Clipboard({ text: value });
+            this.status = "已复制 " + String(value).length + " 个字符";
+            this.$message.success("复制成功");
+          } catch (error) {
+            this.status = error.message || "复制失败";
+            this.$message.error(this.status);
+          } finally { this.copying = false; }
         },
-        copy() {
-          this.$Clipboard({
-            text: "测试==复制至剪切板的文本==测试",
-          })
-            .then(() => {
-              this.$message.success("复制成功");
-            })
-            .catch(() => {
-              this.$message.error("复制失败");
-            });
-        },
+        copyText() { this.copy(this.text); },
+        copyDemo() { this.copy("测试：复制至剪切板的文本"); },
       },
     });
     app.use(ElementPlus);
