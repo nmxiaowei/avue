@@ -1,7 +1,6 @@
 import CountUp from 'packages/element-plus/count-up';
 import Article from 'packages/element-plus/article';
 import Crud from 'packages/element-plus/crud';
-import Card from 'packages/element-plus/card';
 import Chat from 'packages/element-plus/chat';
 import Comment from 'packages/element-plus/comment';
 import Form from 'packages/element-plus/form';
@@ -50,7 +49,6 @@ export {
   Arrays,
   Article,
   Crud,
-  Card,
   Chat,
   Comment,
   Form,
@@ -100,7 +98,6 @@ const elementComponents = {
   Arrays,
   Article,
   Crud,
-  Card,
   Chat,
   Comment,
   Form,
