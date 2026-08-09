@@ -672,8 +672,8 @@
   script$1o.render = render$1o;
   script$1o.__file = "packages/element-plus/count-up/index.vue";
 
-  function ownKeys$m(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$m(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$m(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$m(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$p(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$p(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$p(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$p(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var propsDefault = {
     title: "title",
     meta: "meta",
@@ -731,7 +731,7 @@
     },
     computed: {
       fieldProps: function fieldProps() {
-        return _objectSpread$m(_objectSpread$m(_objectSpread$m({}, propsDefault), this.option && this.option.props || {}), this.props || {});
+        return _objectSpread$p(_objectSpread$p(_objectSpread$p({}, propsDefault), this.option && this.option.props || {}), this.props || {});
       },
       titleKey: function titleKey() {
         return this.fieldProps.title;
@@ -904,7 +904,7 @@
   var _hoisted_1$Y = {
     key: 0
   };
-  var _hoisted_2$H = ["innerHTML"];
+  var _hoisted_2$I = ["innerHTML"];
   function render$1n(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_image_viewer = vue.resolveComponent("el-image-viewer");
     return vue.openBlock(), vue.createElementBlock("article", {
@@ -957,7 +957,7 @@
     }, function () {
       return [vue.createElementVNode("div", {
         innerHTML: _ctx.formattedBody
-      }, null, 8 /* PROPS */, _hoisted_2$H)];
+      }, null, 8 /* PROPS */, _hoisted_2$I)];
     })], 2 /* CLASS */)) : _ctx.$slots.empty ? (vue.openBlock(), vue.createElementBlock("div", {
       key: 3,
       "class": vue.normalizeClass(_ctx.b('empty'))
@@ -7661,8 +7661,8 @@
     return !validatenull(val) ? val : dafult;
   };
 
-  function ownKeys$l(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$l(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$l(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$l(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$o(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$o(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$o(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$o(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var key = 'key';
   function getDataType() {
     var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -7835,7 +7835,7 @@
       }
     });
     return {
-      data: _objectSpread$l(_objectSpread$l({}, optionData), columnData),
+      data: _objectSpread$o(_objectSpread$o({}, optionData), columnData),
       pending: Promise.all(tasks).then(function (items) {
         return items.reduce(function (result, item) {
           result[item.prop] = item.data;
@@ -7949,8 +7949,8 @@
     }
   };
 
-  function ownKeys$k(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$k(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$k(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$k(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$n(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$n(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$n(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$n(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var warned = new Set();
   var KNOWN_TYPES = new Set(['', 'input', 'textarea', 'password', 'phone', 'currency', 'bankCard', 'idCard', 'email', 'code', 'plate', 'ip', 'mac', 'uscc', 'number', 'switch', 'upload', 'img', 'array', 'url', 'dynamic', 'slider', 'rate', 'input-tag', 'tag', 'mention', 'input-table', 'input-tree', 'input-icon', 'input-map', 'input-color', 'input-number', 'input-cron', 'input-otp', 'cron', 'otp', 'title'].concat(_toConsumableArray(DATE_LIST), _toConsumableArray(SELECT_LIST)));
   var isObject = function isObject(value) {
@@ -7968,7 +7968,7 @@
     if (isObject(column)) {
       return Object.keys(column).map(function (prop) {
         return {
-          item: _objectSpread$k(_objectSpread$k({}, column[prop]), {}, {
+          item: _objectSpread$n(_objectSpread$n({}, column[prop]), {}, {
             prop: column[prop].prop || prop
           }),
           path: "".concat(path, ".").concat(prop)
@@ -8121,8 +8121,8 @@
     });
   };
 
-  function ownKeys$j(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$j(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$j(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$j(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$m(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$m(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$m(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$m(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var dicRequestStates = new WeakMap();
   var getDicRequestState = function getDicRequestState(safe) {
     var state = dicRequestStates.get(safe);
@@ -8196,7 +8196,7 @@
           return document.body.clientWidth <= 768;
         },
         resultOption: function resultOption() {
-          return _objectSpread$j(_objectSpread$j({}, this.tableOption), {
+          return _objectSpread$m(_objectSpread$m({}, this.tableOption), {
             column: this.propOption || []
           });
         },
@@ -8214,7 +8214,7 @@
       methods: {
         init: function init(type) {
           var globOption = this.deepClone(this.$AVUE["".concat(name, "Option")]);
-          var option = _objectSpread$j(_objectSpread$j({}, globOption), this.option);
+          var option = _objectSpread$m(_objectSpread$m({}, globOption), this.option);
           this.tableOption = option;
           var componentName = name || (this.$options.name || '').replace(/^avue-/, '') || 'component';
           if (this.$AVUE.optionValidate !== false && option.optionValidate !== false) {
@@ -8532,7 +8532,7 @@
   });
 
   var _hoisted_1$X = ["onClick", "onDblclick"];
-  var _hoisted_2$G = {
+  var _hoisted_2$H = {
     key: 0
   };
   function render$1m(_ctx, _cache, $props, $setup, $data, $options) {
@@ -8587,7 +8587,7 @@
                         return _ctx.handleCellDblClick(row, item);
                       }, ["stop"]),
                       key: columnIndex
-                    }, [item.type == 'selection' ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$G, [vue.createVNode(_component_el_checkbox, {
+                    }, [item.type == 'selection' ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$H, [vue.createVNode(_component_el_checkbox, {
                       value: index,
                       label: index,
                       disabled: _ctx.isDisabled(row, index),
@@ -8691,7 +8691,7 @@
   script$1l.__file = "packages/element-plus/crud/grid/item.vue";
 
   // crud 配置文件
-  var config$2 = {
+  var config$1 = {
     menuWidth: 220,
     menuFixed: 'right',
     menuXsWidth: 100,
@@ -8778,7 +8778,7 @@
     },
     data: function data() {
       return {
-        config: config$2,
+        config: config$1,
         defaultPage: {
           single: false,
           //简单分页
@@ -9048,7 +9048,7 @@
     watch: {
       "crud.propOption": {
         handler: function handler() {
-          this.searchShow = validData(this.crud.tableOption.searchShow, config$2.searchShow);
+          this.searchShow = validData(this.crud.tableOption.searchShow, config$1.searchShow);
         },
         immediate: true
       },
@@ -9117,9 +9117,9 @@
                 type: getSearchType(ele),
                 detail: false,
                 dicFlag: ele.cascader ? true : _this.validData(ele.dicFlag, false),
-                span: ele.searchSpan || option.searchSpan || config$2.searchSpan,
+                span: ele.searchSpan || option.searchSpan || config$1.searchSpan,
                 control: ele.searchControl,
-                labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config$2.searchLabelWidth,
+                labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config$1.searchLabelWidth,
                 labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
                 size: ele.searchSize || option.searchSize,
                 value: ele.searchValue,
@@ -9157,10 +9157,10 @@
             printBtn: false,
             mockBtn: false,
             submitText: option.searchBtnText || _this.t('crud.searchBtn'),
-            submitBtn: _this.validData(option.searchBtn, config$2.searchSubBtn),
+            submitBtn: _this.validData(option.searchBtn, config$1.searchSubBtn),
             submitIcon: _this.crud.getBtnIcon('searchBtn'),
             emptyText: option.emptyBtnText || _this.t('crud.emptyBtn'),
-            emptyBtn: _this.validData(option.emptyBtn, config$2.emptyBtn),
+            emptyBtn: _this.validData(option.emptyBtn, config$1.emptyBtn),
             emptyIcon: _this.crud.getBtnIcon('emptyBtn'),
             menuSpan: function () {
               if (_this.show || !_this.isSearchIcon) {
@@ -9319,7 +9319,7 @@
             return date;
           }
         }],
-        config: config$2
+        config: config$1
       };
     },
     created: function created() {
@@ -9702,14 +9702,14 @@
   var _hoisted_1$W = {
     "class": "avue-crud__column-panel"
   };
-  var _hoisted_2$F = {
+  var _hoisted_2$G = {
     "class": "avue-crud__column-panel__header"
   };
-  var _hoisted_3$u = {
+  var _hoisted_3$v = {
     ref: "list",
     "class": "avue-crud__column-panel__list"
   };
-  var _hoisted_4$s = {
+  var _hoisted_4$t = {
     "class": "avue-crud__column-panel__label"
   };
   var _hoisted_5$p = {
@@ -9740,7 +9740,7 @@
       onHide: _ctx.handleHide
     }, {
       "default": vue.withCtx(function () {
-        return [vue.createElementVNode("div", _hoisted_1$W, [vue.createElementVNode("div", _hoisted_2$F, [vue.createVNode(_component_el_checkbox, {
+        return [vue.createElementVNode("div", _hoisted_1$W, [vue.createElementVNode("div", _hoisted_2$G, [vue.createVNode(_component_el_checkbox, {
           "model-value": _ctx.isAllVisible,
           indeterminate: _ctx.isIndeterminate,
           onChange: _ctx.handleCheckAll
@@ -9749,7 +9749,7 @@
             return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.all")), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["model-value", "indeterminate", "onChange"])]), vue.createElementVNode("div", _hoisted_3$u, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (column) {
+        }, 8 /* PROPS */, ["model-value", "indeterminate", "onChange"])]), vue.createElementVNode("div", _hoisted_3$v, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (column) {
           return vue.openBlock(), vue.createElementBlock("div", {
             key: column.prop,
             "class": "avue-crud__column-panel__item"
@@ -9762,7 +9762,7 @@
           }, null, 8 /* PROPS */, ["model-value", "aria-label", "onChange"]), _cache[1] || (_cache[1] = vue.createElementVNode("span", {
             "class": "avue-crud__column-panel__drag",
             "aria-hidden": "true"
-          }, "⠿", -1 /* HOISTED */)), vue.createElementVNode("span", _hoisted_4$s, vue.toDisplayString(column.label), 1 /* TEXT */), vue.createElementVNode("div", _hoisted_5$p, [vue.createVNode(_component_el_tooltip, {
+          }, "⠿", -1 /* HOISTED */)), vue.createElementVNode("span", _hoisted_4$t, vue.toDisplayString(column.label), 1 /* TEXT */), vue.createElementVNode("div", _hoisted_5$p, [vue.createVNode(_component_el_tooltip, {
             content: _ctx.t('crud.column.fixedLeft'),
             placement: "top"
           }, {
@@ -10118,7 +10118,7 @@
       return {
         loading: false,
         disabled: false,
-        config: config$2,
+        config: config$1,
         boxType: "",
         fullscreen: false,
         boxVisible: false
@@ -10144,7 +10144,7 @@
       },
       width: function width() {
         var dialogWidth = this.crud.tableOption.dialogWidth + "";
-        var defaultWidth = this.crud.isMobile ? "100%" : config$2.dialogWidth;
+        var defaultWidth = this.crud.isMobile ? "100%" : config$1.dialogWidth;
         var result = this.validData(dialogWidth, defaultWidth);
         return this.setPx(result);
       },
@@ -10781,7 +10781,7 @@
   var _hoisted_1$T = {
     key: 0
   };
-  var _hoisted_2$E = {
+  var _hoisted_2$F = {
     "class": "avue-dialog__footer"
   };
   function render$1e(_ctx, _cache, $props, $setup, $data, $options) {
@@ -10807,7 +10807,7 @@
             return $data.form = $event;
           }),
           option: $data.option
-        }, null, 8 /* PROPS */, ["modelValue", "option"]), vue.createElementVNode("span", _hoisted_2$E, [vue.createVNode(_component_el_button, {
+        }, null, 8 /* PROPS */, ["modelValue", "option"]), vue.createElementVNode("span", _hoisted_2$F, [vue.createVNode(_component_el_button, {
           type: "primary",
           size: $options.crud.size,
           onClick: $options.handleSubmit
@@ -10877,8 +10877,8 @@
     }
   };
 
-  function ownKeys$i(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$i(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$i(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$i(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$l(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$l(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$l(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$l(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$1d = {
     name: 'form-temp',
     mixins: [slot],
@@ -10976,7 +10976,7 @@
       },
       getPlaceholder: getPlaceholder,
       getBind: function getBind(column) {
-        var params = _objectSpread$i(_objectSpread$i(_objectSpread$i({}, column), this.params), this.$uploadFun(column));
+        var params = _objectSpread$l(_objectSpread$l(_objectSpread$l({}, column), this.params), this.$uploadFun(column));
         ['value', 'className'].forEach(function (ele) {
           delete params[ele];
         });
@@ -11292,12 +11292,12 @@
   var _hoisted_1$Q = {
     key: 1
   };
-  var _hoisted_2$D = {
+  var _hoisted_2$E = {
     key: 0,
     "class": "avue-crud__img"
   };
-  var _hoisted_3$t = ["innerHTML"];
-  var _hoisted_4$r = ["title", "textContent"];
+  var _hoisted_3$u = ["innerHTML"];
+  var _hoisted_4$s = ["title", "textContent"];
   function render$1b(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_form_temp = vue.resolveComponent("form-temp");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
@@ -11443,7 +11443,7 @@
           label: $options.handleDetail(row, $props.column)
         }) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 3
-        }, [['img', 'upload'].includes($props.column.type) ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$D, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.getImgList(row, $props.column), function (item, index) {
+        }, [['img', 'upload'].includes($props.column.type) ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$E, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.getImgList(row, $props.column), function (item, index) {
           return vue.openBlock(), vue.createElementBlock(vue.Fragment, {
             key: index
           }, [$options.isMediaType(item, $props.column.fileType) ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($options.isMediaType(item, $props.column.fileType)), {
@@ -11496,14 +11496,14 @@
         }, null, 8 /* PROPS */, ["text"])) : $props.column.html ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 5,
           innerHTML: $options.handleDetail(row, $props.column)
-        }, null, 8 /* PROPS */, _hoisted_3$t)) : (vue.openBlock(), vue.createElementBlock("span", {
+        }, null, 8 /* PROPS */, _hoisted_3$u)) : (vue.openBlock(), vue.createElementBlock("span", {
           key: 6,
           "class": vue.normalizeClass({
             'avue-crud__ellipsis': $props.column.ellipsis
           }),
           title: $props.column.ellipsis ? $options.handleDetail(row, $props.column) : '',
           textContent: vue.toDisplayString($options.handleDetail(row, $props.column))
-        }, null, 10 /* CLASS, PROPS */, _hoisted_4$r))], 64 /* STABLE_FRAGMENT */))];
+        }, null, 10 /* CLASS, PROPS */, _hoisted_4$s))], 64 /* STABLE_FRAGMENT */))];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["prop", "grid-row", "label", "class-name", "label-class-name", "column-key", "filter-placement", "filtered-value", "filtered-multiple", "filters", "filter-method", "filter-multiple", "show-overflow-tooltip", "tooltip-formatter", "min-width", "sortable", "sort-method", "sort-orders", "sort-by", "resizable", "render-header", "align", "header-align", "width", "fixed"])) : vue.createCommentVNode("v-if", true);
@@ -11749,7 +11749,7 @@
     name: "crud",
     data: function data() {
       return {
-        config: config$2
+        config: config$1
       };
     },
     components: {
@@ -12071,7 +12071,7 @@
     name: "crud",
     data: function data() {
       return {
-        config: config$2,
+        config: config$1,
         rowSortable: null,
         columnSortable: null
       };
@@ -12193,8 +12193,8 @@
   script$17.render = render$17;
   script$17.__file = "packages/element-plus/crud/column/column-default.vue";
 
-  function ownKeys$h(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$h(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$h(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$h(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$k(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$k(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$k(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$k(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var STORAGE_PREFIX = 'AVUE_COLUMN_STATE:';
   var STATE_KEYS = ['hide', 'fixed', 'filters', 'sortable', 'width'];
   var getStorage = function getStorage() {
@@ -12207,7 +12207,7 @@
     var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     if (Array.isArray(columns)) return columns;
     return Object.keys(columns).map(function (prop) {
-      return _objectSpread$h(_objectSpread$h({}, columns[prop]), {}, {
+      return _objectSpread$k(_objectSpread$k({}, columns[prop]), {}, {
         prop: columns[prop].prop || prop
       });
     });
@@ -12285,8 +12285,8 @@
     } catch (error) {}
   };
 
-  function ownKeys$g(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$g(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$g(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$g(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$j(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$j(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$j(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$j(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$16 = create({
     name: "crud",
     mixins: [init("crud"), locale],
@@ -12327,7 +12327,7 @@
         cellForm: {
           list: []
         },
-        config: config$2,
+        config: config$1,
         list: [],
         listError: {},
         tableForm: {},
@@ -12354,7 +12354,7 @@
     computed: {
       columnVirtualizeOption: function columnVirtualizeOption() {
         return this.columnOption.map(function (ele) {
-          return _objectSpread$g(_objectSpread$g({}, ele), {
+          return _objectSpread$j(_objectSpread$j({}, ele), {
             key: ele.prop,
             title: ele.label,
             dataKey: ele.prop
@@ -12698,7 +12698,7 @@
       },
       getBtnIcon: function getBtnIcon(value) {
         var name = value + "Icon";
-        return this.tableOption[name] ? this.tableOption[name].trim() : config$2[name];
+        return this.tableOption[name] ? this.tableOption[name].trim() : config$1[name];
       },
       //对部分表单字段进行校验的方法
       validateField: function validateField(val, fn) {
@@ -13065,8 +13065,8 @@
           return;
         }
         return window.Sortable.create(el, {
-          ghostClass: config$2.ghostClass,
-          chosenClass: config$2.ghostClass,
+          ghostClass: config$1.ghostClass,
+          chosenClass: config$1.ghostClass,
           animation: 100,
           delay: 100,
           onEnd: function onEnd(evt) {
@@ -13376,8 +13376,8 @@
   script$16.render = render$16;
   script$16.__file = "packages/element-plus/crud/index.vue";
 
-  function ownKeys$f(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$f(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$f(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$f(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$i(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$i(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$i(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$i(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var allowedTags$1 = new Set(['A', 'AUDIO', 'B', 'BR', 'CODE', 'EM', 'FILE', 'I', 'IMG', 'LI', 'MAP', 'OL', 'P', 'PRE', 'STRONG', 'UL', 'VIDEO']);
   var script$15 = create({
     name: "chat",
@@ -13516,7 +13516,7 @@
           if (!valid) return;
           var detail = _this.getDetail(_this.upload);
           _this.upload.box = false;
-          _this.$emit('upload', _objectSpread$f(_objectSpread$f({}, _this.upload), {}, {
+          _this.$emit('upload', _objectSpread$i(_objectSpread$i({}, _this.upload), {}, {
             detail: detail
           }));
           _this.$emit('submit', detail);
@@ -13764,9 +13764,9 @@
     ref: "chatAudio",
     preload: "none"
   };
-  var _hoisted_2$C = ["src"];
-  var _hoisted_3$s = ["src"];
-  var _hoisted_4$q = ["src"];
+  var _hoisted_2$D = ["src"];
+  var _hoisted_3$t = ["src"];
+  var _hoisted_4$r = ["src"];
   var _hoisted_5$o = {
     "class": "web__logo"
   };
@@ -13854,13 +13854,13 @@
     }, [vue.createElementVNode("audio", _hoisted_1$N, [vue.createElementVNode("source", {
       src: _ctx.audio[0],
       type: "audio/ogg"
-    }, null, 8 /* PROPS */, _hoisted_2$C), vue.createElementVNode("source", {
+    }, null, 8 /* PROPS */, _hoisted_2$D), vue.createElementVNode("source", {
       src: _ctx.audio[1],
       type: "audio/mpeg"
-    }, null, 8 /* PROPS */, _hoisted_3$s), vue.createElementVNode("source", {
+    }, null, 8 /* PROPS */, _hoisted_3$t), vue.createElementVNode("source", {
       src: _ctx.audio[2],
       type: "audio/wav"
-    }, null, 8 /* PROPS */, _hoisted_4$q)], 512 /* NEED_PATCH */), vue.createElementVNode("header", _hoisted_5$o, [_ctx.config.img ? (vue.openBlock(), vue.createElementBlock("img", {
+    }, null, 8 /* PROPS */, _hoisted_4$r)], 512 /* NEED_PATCH */), vue.createElementVNode("header", _hoisted_5$o, [_ctx.config.img ? (vue.openBlock(), vue.createElementBlock("img", {
       key: 0,
       src: _ctx.config.img,
       "class": "web__logo-img",
@@ -14202,8 +14202,8 @@
   script$15.render = render$15;
   script$15.__file = "packages/element-plus/chat/index.vue";
 
-  function ownKeys$e(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$e(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$e(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$e(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$h(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$h(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$h(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$h(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var defaultProps = {
     avatar: 'avatar',
     author: 'author',
@@ -14249,7 +14249,7 @@
     },
     computed: {
       fieldProps: function fieldProps() {
-        return _objectSpread$e(_objectSpread$e(_objectSpread$e({}, defaultProps), this.option && this.option.props || {}), this.props || {});
+        return _objectSpread$h(_objectSpread$h(_objectSpread$h({}, defaultProps), this.option && this.option.props || {}), this.props || {});
       },
       avatar: function avatar() {
         return this.data[this.fieldProps.avatar];
@@ -14335,8 +14335,8 @@
   });
 
   var _hoisted_1$M = ["disabled", "aria-label"];
-  var _hoisted_2$B = ["src", "alt"];
-  var _hoisted_3$r = ["innerHTML"];
+  var _hoisted_2$C = ["src", "alt"];
+  var _hoisted_3$s = ["innerHTML"];
   function render$14(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("article", {
       "class": vue.normalizeClass(_ctx.b({
@@ -14356,7 +14356,7 @@
       src: _ctx.avatar,
       alt: _ctx.avatarAlt,
       "class": vue.normalizeClass(_ctx.b('avatar'))
-    }, null, 10 /* CLASS, PROPS */, _hoisted_2$B)) : (vue.openBlock(), vue.createElementBlock("span", {
+    }, null, 10 /* CLASS, PROPS */, _hoisted_2$C)) : (vue.openBlock(), vue.createElementBlock("span", {
       key: 1,
       "class": vue.normalizeClass(_ctx.b('avatar-fallback'))
     }, vue.toDisplayString(_ctx.authorInitial), 3 /* TEXT, CLASS */))], 10 /* CLASS, PROPS */, _hoisted_1$M)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", {
@@ -14381,7 +14381,7 @@
       key: 0,
       "class": vue.normalizeClass(_ctx.b('body')),
       innerHTML: _ctx.formattedBody
-    }, null, 10 /* CLASS, PROPS */, _hoisted_3$r)) : vue.createCommentVNode("v-if", true), _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("footer", {
+    }, null, 10 /* CLASS, PROPS */, _hoisted_3$s)) : vue.createCommentVNode("v-if", true), _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("footer", {
       key: 1,
       "class": vue.normalizeClass(_ctx.b('footer'))
     }, [vue.renderSlot(_ctx.$slots, "footer", {
@@ -14642,14 +14642,14 @@
   });
 
   // form 配置文件
-  var config$1 = {
+  var config = {
     labelWidth: 90,
     span: 12,
     xsSpan: 24
   };
 
-  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$g(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$g(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$g(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$g(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$12 = create({
     name: "form",
     mixins: [init("form")],
@@ -14661,7 +14661,7 @@
     },
     data: function data() {
       return {
-        config: config$1,
+        config: config,
         activeName: "",
         allDisabled: false,
         tableOption: {},
@@ -14809,7 +14809,7 @@
 
         // 处理分组配置
         var processedGroups = (tableOption.group || []).map(function (groupItem) {
-          return _objectSpread$d(_objectSpread$d({}, groupItem), {}, {
+          return _objectSpread$g(_objectSpread$g({}, groupItem), {}, {
             column: getColumn(groupItem.column)
           });
         });
@@ -16072,7 +16072,7 @@
   var _hoisted_1$K = {
     "class": "el-date-table-cell"
   };
-  var _hoisted_2$A = {
+  var _hoisted_2$B = {
     key: 1,
     "class": "el-date-table-cell__text"
   };
@@ -16118,7 +16118,7 @@
         return [vue.createElementVNode("div", _hoisted_1$K, [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
           key: 0,
           item: cell
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$A, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$B, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "single-panel", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])], 2 /* CLASS */);
@@ -16127,8 +16127,8 @@
   script$10.render = render$10;
   script$10.__file = "packages/element-plus/date/index.vue";
 
-  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$f(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$f(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$f(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$f(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$$ = create({
     name: 'draggable',
     emits: ['move', 'resize', 'change', 'focus', 'blur', 'over', 'out'],
@@ -16264,10 +16264,16 @@
         this.setSize(this.baseWidth, this.toNumber(value, this.baseHeight));
       },
       left: function left(value) {
-        this.baseLeft = this.toNumber(value, 0);
+        this.setLeft(value);
       },
       top: function top(value) {
-        this.baseTop = this.toNumber(value, 0);
+        this.setTop(value);
+      },
+      bounds: {
+        deep: true,
+        handler: function handler() {
+          this.normalizeBox();
+        }
       },
       baseWidth: function baseWidth() {
         this.syncChildSize();
@@ -16285,10 +16291,11 @@
     methods: {
       init: function init() {
         this.children = this.$refs.item && this.$refs.item.firstElementChild;
-        this.baseWidth = this.toNumber(this.width, this.children ? this.children.offsetWidth : 0);
-        this.baseHeight = this.toNumber(this.height, this.children ? this.children.offsetHeight : 0);
-        this.baseLeft = this.toNumber(this.left, 0);
-        this.baseTop = this.toNumber(this.top, 0);
+        this.baseWidth = this.constrainSizeToBounds(this.clampSize(this.toNumber(this.width, this.children ? this.children.offsetWidth : 0), 'width'), 'width');
+        this.baseHeight = this.constrainSizeToBounds(this.clampSize(this.toNumber(this.height, this.children ? this.children.offsetHeight : 0), 'height'), 'height');
+        var position = this.constrainPosition(this.toNumber(this.left, 0), this.toNumber(this.top, 0));
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
         this.syncChildSize();
       },
       toNumber: function toNumber(value) {
@@ -16297,13 +16304,17 @@
         return Number.isFinite(number) ? getFixed(number) : fallback;
       },
       setSize: function setSize(width, height) {
-        this.baseWidth = this.clampSize(width, 'width');
-        this.baseHeight = this.clampSize(height, 'height');
+        this.baseWidth = this.constrainSizeToBounds(this.clampSize(width, 'width'), 'width');
+        this.baseHeight = this.constrainSizeToBounds(this.clampSize(height, 'height'), 'height');
+        var position = this.constrainPosition(this.baseLeft, this.baseTop);
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
       },
       syncChildSize: function syncChildSize() {
         if (!this.resize || !this.children || !this.children.style) return;
-        this.children.style.width = this.setPx(this.baseWidth);
-        this.children.style.height = this.setPx(this.baseHeight);
+        this.children.style.boxSizing = 'border-box';
+        this.children.style.width = '100%';
+        this.children.style.height = '100%';
       },
       getRangeStyle: function getRangeStyle(position) {
         var _this = this;
@@ -16355,7 +16366,7 @@
         this.active = true;
         this.focusRoot();
         this.handleMouseDown('resize');
-        var start = _objectSpread$c(_objectSpread$c({}, this.getPointerState(event)), {}, {
+        var start = _objectSpread$f(_objectSpread$f({}, this.getPointerState(event)), {}, {
           position: position
         });
         this.bindDocumentDrag(function (moveEvent) {
@@ -16418,7 +16429,7 @@
           deltaX: delta.x,
           deltaY: delta.y
         }));
-        this.$emit('change', _objectSpread$c({
+        this.$emit('change', _objectSpread$f({
           type: 'resize'
         }, this.getState()));
       },
@@ -16431,6 +16442,20 @@
         var maxValue = dimension === 'width' ? this.maxWidth : this.maxHeight;
         var max = Number(maxValue);
         return getFixed(Math.max(min, Number.isFinite(max) && max > 0 ? Math.min(value, max) : value));
+      },
+      constrainSizeToBounds: function constrainSizeToBounds(value, dimension) {
+        var bounds = this.getBounds();
+        if (!bounds) return getFixed(value);
+        var limit = dimension === 'width' ? Math.max(0, bounds.right - bounds.left) : Math.max(0, bounds.bottom - bounds.top);
+        return getFixed(Math.min(value, limit));
+      },
+      normalizeBox: function normalizeBox() {
+        if (!this.bounds) return;
+        this.baseWidth = this.constrainSizeToBounds(this.clampSize(this.baseWidth, 'width'), 'width');
+        this.baseHeight = this.constrainSizeToBounds(this.clampSize(this.baseHeight, 'height'), 'height');
+        var position = this.constrainPosition(this.baseLeft, this.baseTop);
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
       },
       getBounds: function getBounds() {
         if (!this.bounds || _typeof$1(this.bounds) !== 'object') return null;
@@ -16478,11 +16503,15 @@
         if (top + height > bounds.bottom) {
           if (sides.includes('top')) top = bounds.bottom - height;else height = bounds.bottom - top;
         }
+        width = this.constrainSizeToBounds(this.clampSize(width, 'width'), 'width');
+        height = this.constrainSizeToBounds(this.clampSize(height, 'height'), 'height');
+        left = Math.min(Math.max(left, bounds.left), Math.max(bounds.left, bounds.right - width));
+        top = Math.min(Math.max(top, bounds.top), Math.max(bounds.top, bounds.bottom - height));
         return {
           left: getFixed(left),
           top: getFixed(top),
-          width: this.clampSize(width, 'width'),
-          height: this.clampSize(height, 'height')
+          width: width,
+          height: height
         };
       },
       emitMove: function emitMove(delta) {
@@ -16491,13 +16520,13 @@
           left: getFixed(delta.x),
           top: getFixed(delta.y)
         });
-        this.$emit('change', _objectSpread$c({
+        this.$emit('change', _objectSpread$f({
           type: 'move'
         }, this.getState()));
       },
       getState: function getState() {
         var extra = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        return _objectSpread$c({
+        return _objectSpread$f({
           index: this.index,
           width: this.baseWidth,
           height: this.baseHeight,
@@ -16565,7 +16594,7 @@
       },
       handleMouseDown: function handleMouseDown(type) {
         this.moveActive = true;
-        this.$emit('focus', _objectSpread$c({
+        this.$emit('focus', _objectSpread$f({
           type: type
         }, this.getState()));
       },
@@ -16577,7 +16606,7 @@
   });
 
   var _hoisted_1$J = ["aria-label"];
-  var _hoisted_2$z = ["onPointerdown"];
+  var _hoisted_2$A = ["onPointerdown"];
   function render$$(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       ref: "root",
@@ -16626,7 +16655,7 @@
         onPointerdown: vue.withModifiers(function ($event) {
           return _ctx.rangeMove($event, item.classname);
         }, ["stop", "prevent"])
-      }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_2$z);
+      }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_2$A);
     }), 128 /* KEYED_FRAGMENT */)) : vue.createCommentVNode("v-if", true), vue.withDirectives(vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('menu')),
       style: vue.normalizeStyle(_ctx.styleMenuName)
@@ -16734,8 +16763,8 @@
   script$_.render = render$_;
   script$_.__file = "packages/element-plus/flow/node.vue";
 
-  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$e(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$e(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$e(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$e(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$Z = create({
     name: 'flow',
     mixins: [locale],
@@ -16920,7 +16949,7 @@
         if (!this.jsPlumb) return;
         this.jsPlumb.ready(function () {
           if (!_this2.jsPlumb) return;
-          _this2.jsPlumb.importDefaults(_objectSpread$b(_objectSpread$b({}, _this2.jsplumbSetting), {}, {
+          _this2.jsPlumb.importDefaults(_objectSpread$e(_objectSpread$e({}, _this2.jsplumbSetting), {}, {
             ConnectionsDetachable: _this2.editable
           }));
           _this2.bindJsPlumbEvents();
@@ -17096,7 +17125,7 @@
           this.notifyError("\u8282\u70B9 ".concat(nodeId, " \u5DF2\u5B58\u5728"));
           return null;
         }
-        var node = _objectSpread$b({
+        var node = _objectSpread$e({
           id: nodeId,
           name: name,
           left: 0,
@@ -17333,17 +17362,46 @@
   script$Y.__file = "packages/element-plus/group/index.vue";
 
   var script$X = create({
-    name: 'license',
+    name: "license",
+    emits: ["ready", "change", "error", "asset-error", "download"],
     props: {
       id: {
-        type: String,
-        "default": ''
+        type: [String, Number],
+        "default": ""
       },
       option: {
         type: Object,
         "default": function _default() {
           return {};
         }
+      },
+      showStatus: Boolean
+    },
+    data: function data() {
+      return {
+        base64: "",
+        draw: false,
+        canvas: null,
+        context: null,
+        loading: false,
+        error: "",
+        renderVersion: 0,
+        renderPromise: Promise.resolve(null)
+      };
+    },
+    computed: {
+      img: function img() {
+        return this.option.img;
+      },
+      list: function list() {
+        return Array.isArray(this.option.list) ? this.option.list : [];
+      },
+      mimeType: function mimeType() {
+        return this.option.mimeType || this.option.type || "image/jpeg";
+      },
+      imageQuality: function imageQuality() {
+        var quality = Number(this.option.quality);
+        return Number.isFinite(quality) ? Math.min(1, Math.max(0, quality)) : 0.92;
       }
     },
     watch: {
@@ -17354,141 +17412,441 @@
         deep: true
       }
     },
-    data: function data() {
-      return {
-        base64: '',
-        draw: false,
-        canvas: '',
-        context: ''
-      };
-    },
-    computed: {
-      img: function img() {
-        return this.option.img;
-      },
-      list: function list() {
-        return this.option.list || [];
-      }
-    },
     mounted: function mounted() {
-      this.canvas = document.getElementById("canvas" + this.id);
-      this.context = this.canvas.getContext("2d");
+      this.canvas = this.$refs.canvas;
+      this.context = this.canvas && this.canvas.getContext("2d");
       this.init();
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.renderVersion += 1;
     },
     methods: {
       init: function init() {
+        if (!this.canvas) return Promise.resolve(null);
+        var version = ++this.renderVersion;
+        this.renderPromise = this.render(version);
+        return this.renderPromise;
+      },
+      render: function render(version) {
         var _this = this;
-        this.draw = false;
-        var beauty = new Image();
-        beauty.src = this.img;
-        beauty.onload = function () {
-          var width = _this.option.width || beauty.width;
-          var height = _this.option.width ? beauty.height / beauty.width * _this.option.width : beauty.height;
-          _this.$refs.canvas.width = width;
-          _this.$refs.canvas.height = height;
-          _this.context.clearRect(0, 0, width, height);
-          _this.context.drawImage(beauty, 0, 0, width, height);
-          _this.list.forEach(function (ele, index) {
-            var callback = function callback() {
-              if (index == _this.list.length - 1) {
-                setTimeout(function () {
-                  _this.draw = true;
-                }, 0);
-              }
-            };
-            if (ele.img) {
-              var img = new Image();
-              img.src = ele.img;
-              img.onload = function () {
-                var widths = ele.width || img.width;
-                var heights = ele.width ? img.height / img.width * ele.width : img.height;
-                _this.context.drawImage(img, ele.left, ele.top, widths, heights);
-                callback();
-              };
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          var background, width, height, index, payload;
+          return _regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                _this.draw = false;
+                _this.loading = true;
+                _this.error = "";
+                _this.base64 = "";
+                _context.prev = 4;
+                if (!_this.img) {
+                  _context.next = 11;
+                  break;
+                }
+                _context.next = 8;
+                return _this.loadImage(_this.img, _this.option.crossOrigin);
+              case 8:
+                _context.t0 = _context.sent;
+                _context.next = 12;
+                break;
+              case 11:
+                _context.t0 = null;
+              case 12:
+                background = _context.t0;
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 15;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 15:
+                width = _this.getSize(_this.option.width, background ? background.width : 600);
+                height = _this.getHeight(background, width);
+                _this.canvas.width = width;
+                _this.canvas.height = height;
+                _this.context = _this.canvas.getContext("2d");
+                _this.context.imageSmoothingEnabled = true;
+                _this.clearCanvas(width, height);
+                if (background) _this.context.drawImage(background, 0, 0, width, height);
+                index = 0;
+              case 24:
+                if (!(index < _this.list.length)) {
+                  _context.next = 32;
+                  break;
+                }
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 27;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 27:
+                _context.next = 29;
+                return _this.drawLayer(_this.list[index], index);
+              case 29:
+                index++;
+                _context.next = 24;
+                break;
+              case 32:
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 34;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 34:
+                _this.base64 = _this.toDataURL();
+                _this.draw = true;
+                _this.loading = false;
+                payload = {
+                  base64: _this.base64,
+                  width: width,
+                  height: height
+                };
+                _this.$emit("change", payload);
+                _this.$emit("ready", payload);
+                return _context.abrupt("return", payload);
+              case 43:
+                _context.prev = 43;
+                _context.t1 = _context["catch"](4);
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 47;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 47:
+                _this.draw = false;
+                _this.loading = false;
+                _this.error = _context.t1 && _context.t1.message ? _context.t1.message : "授权凭证生成失败，请检查素材地址。";
+                _this.$emit("error", {
+                  error: _context.t1,
+                  message: _this.error
+                });
+                return _context.abrupt("return", null);
+              case 52:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, null, [[4, 43]]);
+        }))();
+      },
+      getSize: function getSize(value, fallback) {
+        var size = Number(value);
+        return Number.isFinite(size) && size > 0 ? Math.round(size) : Math.max(1, Math.round(fallback));
+      },
+      getHeight: function getHeight(background, width) {
+        if (this.option.height !== undefined && this.option.height !== null && this.option.height !== "") {
+          return this.getSize(this.option.height, 340);
+        }
+        if (background && this.option.width) {
+          return Math.max(1, Math.round(background.height / background.width * width));
+        }
+        return background ? background.height : 340;
+      },
+      clearCanvas: function clearCanvas(width, height) {
+        this.context.clearRect(0, 0, width, height);
+        if (this.option.backgroundColor !== "transparent") {
+          this.context.save();
+          this.context.fillStyle = this.option.backgroundColor || "#ffffff";
+          this.context.fillRect(0, 0, width, height);
+          this.context.restore();
+        }
+      },
+      loadImage: function loadImage(src, crossOrigin) {
+        return new Promise(function (resolve, reject) {
+          var image = new Image();
+          if (crossOrigin) image.crossOrigin = crossOrigin;
+          image.onload = function () {
+            return resolve(image);
+          };
+          image.onerror = function () {
+            return reject(new Error("\u7D20\u6750\u52A0\u8F7D\u5931\u8D25\uFF1A".concat(src)));
+          };
+          image.src = src;
+        });
+      },
+      drawLayer: function drawLayer(layer, index) {
+        var _this2 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+          var image, width, height;
+          return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(!layer || _typeof$1(layer) !== "object")) {
+                  _context2.next = 2;
+                  break;
+                }
+                return _context2.abrupt("return");
+              case 2:
+                if (!layer.img) {
+                  _context2.next = 16;
+                  break;
+                }
+                _context2.prev = 3;
+                _context2.next = 6;
+                return _this2.loadImage(layer.img, layer.crossOrigin || _this2.option.crossOrigin);
+              case 6:
+                image = _context2.sent;
+                width = _this2.getSize(layer.width, image.width);
+                height = layer.height !== undefined && layer.height !== null && layer.height !== "" ? _this2.getSize(layer.height, image.height) : Math.max(1, Math.round(image.height / image.width * width));
+                _this2.context.drawImage(image, _this2.toNumber(layer.left), _this2.toNumber(layer.top), width, height);
+                _context2.next = 15;
+                break;
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](3);
+                _this2.$emit("asset-error", {
+                  error: _context2.t0,
+                  layer: layer,
+                  index: index
+                });
+              case 15:
+                return _context2.abrupt("return");
+              case 16:
+                _this2.drawText(layer);
+              case 17:
+              case "end":
+                return _context2.stop();
+            }
+          }, _callee2, null, [[3, 12]]);
+        }))();
+      },
+      drawText: function drawText(layer) {
+        var _this3 = this;
+        var size = this.getSize(layer.size, 16);
+        var lineHeight = this.getSize(layer.lineHeight, Math.round(size * 1.5));
+        var maxWidth = Number(layer.maxWidth);
+        var text = String(layer.text === undefined || layer.text === null ? "" : layer.text);
+        this.context.save();
+        this.context.translate(this.toNumber(layer.left), this.toNumber(layer.top));
+        if (layer.rotate) this.context.rotate(Number(layer.rotate) * Math.PI / 180);
+        this.context.font = "".concat(layer.bold ? "bold " : "").concat(size, "px ").concat(layer.style || layer.fontFamily || "sans-serif");
+        this.context.fillStyle = layer.color || "#000000";
+        this.context.globalAlpha = layer.opacity === undefined ? 1 : Math.min(1, Math.max(0, Number(layer.opacity)));
+        this.context.textAlign = layer.align || "left";
+        this.context.textBaseline = layer.baseline || "alphabetic";
+        var lines = maxWidth > 0 ? this.wrapText(text, maxWidth) : text.split(/\r?\n/);
+        lines.forEach(function (line, index) {
+          return _this3.context.fillText(line, 0, index * lineHeight, maxWidth > 0 ? maxWidth : undefined);
+        });
+        this.context.restore();
+      },
+      wrapText: function wrapText(text, maxWidth) {
+        var _this4 = this;
+        var lines = [];
+        text.split(/\r?\n/).forEach(function (paragraph) {
+          var line = "";
+          Array.from(paragraph).forEach(function (_char) {
+            var next = line + _char;
+            if (line && _this4.context.measureText(next).width > maxWidth) {
+              lines.push(line);
+              line = _char;
             } else {
-              if (ele.bold) {
-                _this.context.font = "bold ".concat(ele.size, "px ").concat(ele.style);
-              } else {
-                _this.context.font = "".concat(ele.size, "px ").concat(ele.style);
-              }
-              _this.context.fillStyle = ele.color;
-              _this.context.fillText(ele.text, ele.left, ele.top);
-              _this.context.stroke();
-              callback();
+              line = next;
             }
           });
-        };
+          lines.push(line);
+        });
+        return lines;
+      },
+      toNumber: function toNumber(value) {
+        var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var number = Number(value);
+        return Number.isFinite(number) ? number : fallback;
+      },
+      toDataURL: function toDataURL() {
+        var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.mimeType;
+        var quality = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.imageQuality;
+        if (!this.canvas) return "";
+        return this.canvas.toDataURL(type || "image/jpeg", quality);
+      },
+      waitForRender: function waitForRender() {
+        var _this5 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee3() {
+          var result;
+          return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+            while (1) switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _this5.renderPromise;
+              case 2:
+                result = _context3.sent;
+                if (!(!result || !_this5.draw)) {
+                  _context3.next = 5;
+                  break;
+                }
+                throw new Error(_this5.error || "授权凭证尚未生成完成。");
+              case 5:
+                return _context3.abrupt("return", result);
+              case 6:
+              case "end":
+                return _context3.stop();
+            }
+          }, _callee3);
+        }))();
       },
       getFile: function getFile() {
-        var _this2 = this;
-        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().getTime();
-        return new Promise(function (resolve) {
-          var time = setInterval(function () {
-            if (_this2.draw) {
-              var data = _this2.canvas.toDataURL('image/jpeg', 1.0);
-              var _file = _this2.dataURLtoFile(data, name);
-              clearInterval(time);
-              resolve(_file);
+        var _arguments = arguments,
+          _this6 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee4() {
+          var name, type, quality, data;
+          return _regeneratorRuntime.wrap(function _callee4$(_context4) {
+            while (1) switch (_context4.prev = _context4.next) {
+              case 0:
+                name = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : "".concat(Date.now(), ".jpg");
+                type = _arguments.length > 1 ? _arguments[1] : undefined;
+                quality = _arguments.length > 2 ? _arguments[2] : undefined;
+                _context4.next = 5;
+                return _this6.waitForRender();
+              case 5:
+                data = _this6.toDataURL(type, quality);
+                _this6.base64 = data;
+                return _context4.abrupt("return", _this6.dataURLtoFile(data, name));
+              case 8:
+              case "end":
+                return _context4.stop();
             }
-          }, 1000);
-        });
+          }, _callee4);
+        }))();
       },
       downFile: function downFile$1() {
-        var filename = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().getTime();
-        downFile(this.base64, filename);
-      },
-      getBase64: function getBase64() {
-        var _this3 = this;
-        return new Promise(function (resolve) {
-          var time = setInterval(function () {
-            if (_this3.draw) {
-              var data = _this3.canvas.toDataURL('image/jpeg', 1.0);
-              _this3.base64 = data;
-              clearInterval(time);
-              resolve(data);
+        var _arguments2 = arguments,
+          _this7 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee5() {
+          var filename, type, quality, data;
+          return _regeneratorRuntime.wrap(function _callee5$(_context5) {
+            while (1) switch (_context5.prev = _context5.next) {
+              case 0:
+                filename = _arguments2.length > 0 && _arguments2[0] !== undefined ? _arguments2[0] : "".concat(Date.now(), ".jpg");
+                type = _arguments2.length > 1 ? _arguments2[1] : undefined;
+                quality = _arguments2.length > 2 ? _arguments2[2] : undefined;
+                _context5.next = 5;
+                return _this7.waitForRender();
+              case 5:
+                data = _this7.toDataURL(type, quality);
+                _this7.base64 = data;
+                downFile(data, filename);
+                _this7.$emit("download", {
+                  type: "image",
+                  filename: filename,
+                  base64: data
+                });
+                return _context5.abrupt("return", data);
+              case 10:
+              case "end":
+                return _context5.stop();
             }
-          }, 100);
-        });
+          }, _callee5);
+        }))();
+      },
+      getBase64: function getBase64(type, quality) {
+        var _this8 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee6() {
+          var data;
+          return _regeneratorRuntime.wrap(function _callee6$(_context6) {
+            while (1) switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this8.waitForRender();
+              case 2:
+                data = _this8.toDataURL(type, quality);
+                _this8.base64 = data;
+                return _context6.abrupt("return", data);
+              case 5:
+              case "end":
+                return _context6.stop();
+            }
+          }, _callee6);
+        }))();
       },
       getPdf: function getPdf() {
-        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().getTime();
-        var contentWidth = this.canvas.width;
-        var contentHeight = this.canvas.height;
-        var pageHeight = contentWidth / 592.28 * 841.89;
-        var leftHeight = contentHeight;
-        var position = 0;
-        var imgWidth = 595.28;
-        var imgHeight = 592.28 / contentWidth * contentHeight;
-        var pageData = this.canvas.toDataURL('image/jpeg', 1.0);
-        var PDF = new window.jsPDF('', 'pt', 'a4');
-        if (leftHeight < pageHeight) {
-          PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
-        } else {
-          while (leftHeight > 0) {
-            PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
-            leftHeight -= pageHeight;
-            position -= 841.89;
-            if (leftHeight > 0) {
-              PDF.addPage();
+        var _arguments3 = arguments,
+          _this9 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee7() {
+          var name, error, contentWidth, contentHeight, pageHeight, leftHeight, position, imgWidth, imgHeight, pageData, PDF, filename;
+          return _regeneratorRuntime.wrap(function _callee7$(_context7) {
+            while (1) switch (_context7.prev = _context7.next) {
+              case 0:
+                name = _arguments3.length > 0 && _arguments3[0] !== undefined ? _arguments3[0] : Date.now();
+                _context7.next = 3;
+                return _this9.waitForRender();
+              case 3:
+                if (!(typeof window === "undefined" || !window.jsPDF)) {
+                  _context7.next = 7;
+                  break;
+                }
+                error = new Error("未检测到 jsPDF，请先引入 jsPDF 后再导出 PDF。");
+                _this9.$emit("error", {
+                  error: error,
+                  message: error.message
+                });
+                throw error;
+              case 7:
+                contentWidth = _this9.canvas.width;
+                contentHeight = _this9.canvas.height;
+                pageHeight = contentWidth / 592.28 * 841.89;
+                leftHeight = contentHeight;
+                position = 0;
+                imgWidth = 595.28;
+                imgHeight = 592.28 / contentWidth * contentHeight;
+                pageData = _this9.toDataURL("image/jpeg", 1);
+                PDF = new window.jsPDF("", "pt", "a4");
+                while (leftHeight > 0) {
+                  PDF.addImage(pageData, "JPEG", 0, position, imgWidth, imgHeight);
+                  leftHeight -= pageHeight;
+                  position -= 841.89;
+                  if (leftHeight > 0) PDF.addPage();
+                }
+                filename = "".concat(name, ".pdf");
+                PDF.save(filename);
+                _this9.$emit("download", {
+                  type: "pdf",
+                  filename: filename
+                });
+              case 20:
+              case "end":
+                return _context7.stop();
             }
-          }
-        }
-        PDF.save("".concat(name, ".pdf"));
+          }, _callee7);
+        }))();
       }
     }
   });
 
-  var _hoisted_1$H = ["id"];
+  var _hoisted_1$H = {
+    key: 0
+  };
+  var _hoisted_2$z = {
+    key: 1
+  };
+  var _hoisted_3$r = {
+    key: 2
+  };
+  var _hoisted_4$q = {
+    key: 3
+  };
   function render$X(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b()),
-      style: {
-        "position": "relative"
-      }
+      "class": vue.normalizeClass(_ctx.b())
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-wrap'))
     }, [vue.createElementVNode("canvas", {
-      id: 'canvas' + _ctx.id,
-      ref: "canvas"
-    }, null, 8 /* PROPS */, _hoisted_1$H), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */);
+      ref: "canvas",
+      "class": vue.normalizeClass(_ctx.b('canvas'))
+    }, "当前浏览器不支持生成授权凭证。", 2 /* CLASS */), _ctx.loading ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('loading'))
+    }, "正在生成授权凭证…", 2 /* CLASS */)) : _ctx.error ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('error'))
+    }, vue.toDisplayString(_ctx.error), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */), _ctx.showStatus ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass([_ctx.b('status'), {
+        'is-ready': _ctx.draw,
+        'is-error': _ctx.error
+      }])
+    }, [_ctx.loading ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$H, "素材加载中")) : _ctx.error ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$z, "生成失败")) : _ctx.draw ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$r, "已生成，可导出图片或 PDF")) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$q, "等待生成"))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "default", {
+      ready: _ctx.draw,
+      loading: _ctx.loading,
+      error: _ctx.error
+    })], 2 /* CLASS */);
   }
 
   script$X.render = render$X;
@@ -17576,8 +17934,8 @@
   script$W.render = render$W;
   script$W.__file = "packages/element-plus/time/index.vue";
 
-  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var defaultPhoneCodeOptions = [{
     code: '+86',
     flag: '🇨🇳',
@@ -18097,7 +18455,7 @@
         return list.map(function (item) {
           var flag = item.flag || '';
           var name = item.name || (item.nameKey ? _this.t(item.nameKey) : item.code);
-          return _objectSpread$a(_objectSpread$a({}, item), {}, {
+          return _objectSpread$d(_objectSpread$d({}, item), {}, {
             name: name,
             label: item.label || [flag, item.code].filter(Boolean).join(' ')
           });
@@ -20906,8 +21264,8 @@
   script$L.render = render$L;
   script$L.__file = "packages/element-plus/input-table/index.vue";
 
-  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
   // Cron Tab 子组件
   var CronTab = {
@@ -20954,7 +21312,7 @@
     },
     methods: {
       updateData: function updateData(key, value) {
-        this.$emit('update:modelValue', _objectSpread$9(_objectSpread$9({}, this.data), {}, _defineProperty$1({}, key, value)));
+        this.$emit('update:modelValue', _objectSpread$c(_objectSpread$c({}, this.data), {}, _defineProperty$1({}, key, value)));
       }
     },
     template: "\n    <div class=\"avue-input-cron__tab\">\n      <el-radio-group :model-value=\"data.type\" @update:model-value=\"val => updateData('type', val)\">\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"every\">{{ t('cron.every', { label: typeLabel }) }}</el-radio>\n        </div>\n        <div class=\"avue-input-cron__option\" v-if=\"showNotSpecify\">\n          <el-radio label=\"notSpecify\">{{ t('cron.notSpecify') }}</el-radio>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"range\">{{ t('cron.range') }}</el-radio>\n          <span v-if=\"data.type === 'range'\" class=\"avue-input-cron__inline\">\n            {{ t('cron.from') }}\n            <el-input-number v-model=\"data.rangeStart\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('rangeStart', val)\" />\n            {{ t('cron.to') }}\n            <el-input-number v-model=\"data.rangeEnd\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('rangeEnd', val)\" />\n            {{ typeLabel }}\n          </span>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"step\">{{ t('cron.step') }}</el-radio>\n          <span v-if=\"data.type === 'step'\" class=\"avue-input-cron__inline\">\n            {{ t('cron.startingFrom') }}\n            <el-input-number v-model=\"data.stepStart\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('stepStart', val)\" />\n            {{ typeLabel }}\n            {{ t('cron.everyInterval') }}\n            <el-input-number v-model=\"data.stepValue\" :min=\"1\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('stepValue', val)\" />\n            {{ typeLabel }}\n          </span>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"specify\">{{ t('cron.specify') }}</el-radio>\n        </div>\n      </el-radio-group>\n      <div v-if=\"data.type === 'specify'\" class=\"avue-input-cron__specify\">\n        <el-checkbox-group :model-value=\"data.values\" @update:model-value=\"val => updateData('values', val)\">\n          <el-checkbox v-for=\"opt in options\" :key=\"opt.value\" :label=\"opt.value\">{{ opt.label }}</el-checkbox>\n        </el-checkbox-group>\n      </div>\n    </div>\n  "
@@ -21140,16 +21498,16 @@
             stepValue: 1
           }
         };
-        var base = _objectSpread$9(_objectSpread$9({}, defaults[type]), {}, {
+        var base = _objectSpread$c(_objectSpread$c({}, defaults[type]), {}, {
           values: []
         });
         if (part === '*') {
-          return _objectSpread$9(_objectSpread$9({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'every'
           });
         }
         if (part === '?') {
-          return _objectSpread$9(_objectSpread$9({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'notSpecify'
           });
         }
@@ -21158,7 +21516,7 @@
             _part$split2 = _slicedToArray(_part$split, 2),
             start = _part$split2[0],
             step = _part$split2[1];
-          return _objectSpread$9(_objectSpread$9({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'step',
             stepStart: parseInt(start) || 0,
             stepValue: parseInt(step) || 1
@@ -21169,7 +21527,7 @@
             _part$split4 = _slicedToArray(_part$split3, 2),
             _start = _part$split4[0],
             end = _part$split4[1];
-          return _objectSpread$9(_objectSpread$9({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'range',
             rangeStart: parseInt(_start),
             rangeEnd: parseInt(end)
@@ -21179,7 +21537,7 @@
           var values = part.split(',').map(function (v) {
             return parseInt(v);
           });
-          return _objectSpread$9(_objectSpread$9({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'specify',
             values: values
           });
@@ -21187,12 +21545,12 @@
         // 单个数字
         var num = parseInt(part);
         if (!isNaN(num)) {
-          return _objectSpread$9(_objectSpread$9({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'specify',
             values: [num]
           });
         }
-        return _objectSpread$9(_objectSpread$9({}, base), {}, {
+        return _objectSpread$c(_objectSpread$c({}, base), {}, {
           type: 'every'
         });
       },
@@ -21773,8 +22131,8 @@
   script$I.render = render$I;
   script$I.__file = "packages/element-plus/mention/index.vue";
 
-  function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var CAPTCHA_TYPES = ['slider', 'text', 'math', 'rotate', 'icon', 'sequence', 'drag', 'code', 'path'];
   var DEFAULT_TEXT_POOL = '春夏秋冬诚信安全智慧服务登录验证用户数据网络星辰山河风云花鸟';
   var CHOICE_COLORS = ['#f72585', '#4361ee', '#4cc9f0', '#38b000', '#f77f00', '#8338ec'];
@@ -22284,7 +22642,7 @@
             shapeIndex = shapeCandidates[randomInt(0, shapeCandidates.length - 1)];
           }
           var position = this.createSliderTargetPosition(targets);
-          targets.push(_objectSpread$8({
+          targets.push(_objectSpread$b({
             id: "target-".concat(index),
             correct: index === 0,
             shape: PUZZLE_SHAPES[shapeIndex]
@@ -22424,7 +22782,7 @@
         this.iconOptions = shuffle(options).map(function (item, index) {
           var position = _this2.createChoicePosition(positions, 16, options.length, index, 46);
           positions.push(position);
-          return _objectSpread$8(_objectSpread$8(_objectSpread$8({
+          return _objectSpread$b(_objectSpread$b(_objectSpread$b({
             id: "icon-".concat(item.value, "-").concat(index)
           }, item), position), {}, {
             color: CHOICE_COLORS[randomInt(0, CHOICE_COLORS.length - 1)],
@@ -22459,7 +22817,7 @@
         this.sequenceOptions = shuffle(options).map(function (item, index) {
           var position = _this3.createChoicePosition(positions, 16, options.length, index, 48);
           positions.push(position);
-          return _objectSpread$8(_objectSpread$8({}, item), position);
+          return _objectSpread$b(_objectSpread$b({}, item), position);
         });
       },
       createDragChallenge: function createDragChallenge() {
@@ -22497,7 +22855,7 @@
         return values.map(function (value, index) {
           var position = _this4.createChoicePosition(positions, top, values.length, index, optionSize);
           positions.push(position);
-          return _objectSpread$8(_objectSpread$8({
+          return _objectSpread$b(_objectSpread$b({
             id: "".concat(value, "-").concat(index),
             value: value
           }, position), {}, {
@@ -22613,7 +22971,7 @@
         this.message = '';
         this.dragStartX = event.clientX;
         this.dragStartY = event.clientY;
-        this.dragStartOffset = _objectSpread$8({}, this.dragOffset);
+        this.dragStartOffset = _objectSpread$b({}, this.dragOffset);
         window.addEventListener('pointermove', this.moveDrag);
         window.addEventListener('pointerup', this.finishDrag);
         window.addEventListener('pointercancel', this.finishDrag);
@@ -23339,246 +23697,287 @@
     }), e;
   }
 
+  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var defaultOption = {
+    width: 400,
+    height: 200,
+    text: 'avueJS',
+    fontSize: '30px',
+    fontStyle: 'Microsoft YaHei, sans-serif',
+    textAlign: 'center',
+    color: 'rgba(100,100,100,0.15)',
+    degree: -20,
+    zIndex: 9999,
+    id: ''
+  };
   var WaterMark = /*#__PURE__*/function () {
     function WaterMark() {
       var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       _classCallCheck(this, WaterMark);
-      this.CONTAINERID = randomId();
-      this.drawCanvas = this.drawCanvas.bind(this);
-      this.parentObserver = this.parentObserver.bind(this);
-      this.Repaint = this.Repaint.bind(this);
       this.styleStr = '';
       this.isOberserve = false;
-      this.init(opt);
-      this.drawCanvas();
-      this.parentObserver();
+      this.container = null;
+      this.parent = null;
+      this.overlayObserver = null;
+      this.parentObserver = null;
+      this.parentOriginalPosition = null;
+      this.removed = false;
+      this.CONTAINERID = "avue-watermark-".concat(randomId());
+      this.option = _objectSpread$a(_objectSpread$a({}, defaultOption), opt);
+      if (typeof document !== 'undefined') this.drawCanvas();
     }
     return _createClass(WaterMark, [{
-      key: "init",
-      value: function init(opt) {
-        this.option = Object.assign({
-          width: 400,
-          height: 200,
-          text: 'avueJS',
-          fontSize: '30px',
-          fontStyle: 'microsoft yahei',
-          textAlign: 'center',
-          color: 'rgba(100,100,100,0.15)',
-          degree: -20
-        }, opt);
+      key: "getParent",
+      value: function getParent() {
+        var target = this.option.id;
+        if (!target) return document.body;
+        if (target instanceof HTMLElement) return target;
+        return document.getElementById(String(target)) || document.body;
+      }
+    }, {
+      key: "getBackgroundUrl",
+      value: function getBackgroundUrl() {
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Number(this.option.width) || defaultOption.width);
+        canvas.height = Math.max(1, Number(this.option.height) || defaultOption.height);
+        var context = canvas.getContext('2d');
+        if (!context) return '';
+        context.font = "".concat(this.option.fontSize, " ").concat(this.option.fontStyle);
+        context.textAlign = this.option.textAlign;
+        context.textBaseline = 'middle';
+        context.fillStyle = this.option.color;
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(Number(this.option.degree) * Math.PI / 180);
+        context.fillText(String(this.option.text || ''), 0, 0);
+        return canvas.toDataURL('image/png');
+      }
+    }, {
+      key: "getStyle",
+      value: function getStyle(parent, backgroundUrl) {
+        var local = Boolean(this.option.id) && parent !== document.body;
+        return ["position:".concat(local ? 'absolute' : 'fixed'), 'inset:0', 'display:block', 'overflow:hidden', "z-index:".concat(Number(this.option.zIndex) || defaultOption.zIndex), 'pointer-events:none', 'user-select:none', "background-repeat:repeat", "background-size:".concat(Math.max(1, Number(this.option.width) || defaultOption.width), "px ").concat(Math.max(1, Number(this.option.height) || defaultOption.height), "px"), "background-image:url(\"".concat(backgroundUrl, "\")")].join(';');
+      }
+    }, {
+      key: "prepareParent",
+      value: function prepareParent(parent) {
+        if (!this.option.id || parent === document.body || typeof window === 'undefined') return;
+        if (window.getComputedStyle(parent).position === 'static') {
+          this.parentOriginalPosition = parent.style.position;
+          parent.style.position = 'relative';
+        }
+      }
+    }, {
+      key: "observe",
+      value: function observe() {
+        var _this = this;
+        this.disconnectObservers();
+        if (!this.container || !this.parent || typeof MutationObserver === 'undefined') return;
+        this.overlayObserver = new MutationObserver(function () {
+          if (_this.isOberserve || !_this.container) return;
+          _this.isOberserve = true;
+          if (_this.container.id !== _this.CONTAINERID) _this.container.id = _this.CONTAINERID;
+          if (_this.container.getAttribute('style') !== _this.styleStr) {
+            _this.container.setAttribute('style', _this.styleStr);
+          }
+          _this.isOberserve = false;
+        });
+        this.overlayObserver.observe(this.container, {
+          attributes: true,
+          attributeFilter: ['id', 'style']
+        });
+        this.parentObserver = new MutationObserver(function () {
+          var _a;
+          if (!_this.isOberserve && _this.container && !((_a = _this.parent) === null || _a === void 0 ? void 0 : _a.contains(_this.container))) _this.drawCanvas();
+        });
+        this.parentObserver.observe(this.parent, {
+          childList: true
+        });
+      }
+    }, {
+      key: "disconnectObservers",
+      value: function disconnectObservers() {
+        var _a, _b;
+        (_a = this.overlayObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
+        (_b = this.parentObserver) === null || _b === void 0 ? void 0 : _b.disconnect();
+        this.overlayObserver = null;
+        this.parentObserver = null;
+      }
+    }, {
+      key: "restoreParentPosition",
+      value: function restoreParentPosition() {
+        if (this.parent && this.parentOriginalPosition !== null && this.parent.style.position === 'relative') {
+          this.parent.style.position = this.parentOriginalPosition;
+        }
+        this.parentOriginalPosition = null;
       }
     }, {
       key: "drawCanvas",
       value: function drawCanvas() {
-        this.isOberserve = true;
-        var divContainer = document.createElement('div');
-        var canvas = document.createElement('canvas');
-        var context = canvas.getContext('2d');
-        divContainer.id = this.CONTAINERID;
-        canvas.width = this.option.width;
-        canvas.height = this.option.height;
-        if (!context) return;
-        context.font = "".concat(this.option.fontSize, " ").concat(this.option.fontStyle);
-        context.textAlign = this.option.textAlign;
-        context.fillStyle = this.option.color;
-        context.translate(canvas.width / 2, canvas.height / 2);
-        context.rotate(this.option.degree * Math.PI / 180);
-        context.fillText(this.option.text, 0, 0);
-        var backgroundUrl = canvas.toDataURL('image/png');
-        var flag = this.option.id;
-        var el = null;
-        if (flag) el = document.getElementById(flag);
-        this.styleStr = "\n      position:".concat(flag ? 'absolute' : 'fixed', ";\n      top:0;\n      left:0;\n      width:").concat(flag && el ? el.offsetWidth + 'px' : '100%', ";\n      height:").concat(flag && el ? el.offsetHeight + 'px' : '100%', ";\n      z-index:9999;\n      pointer-events:none;\n      background-repeat:repeat;\n      background-image:url('").concat(backgroundUrl, "')");
-        divContainer.setAttribute('style', this.styleStr);
-        if (flag && el) {
-          el.appendChild(divContainer);
-        } else {
-          document.body.appendChild(divContainer);
-        }
-        this.wmObserver(divContainer);
-        this.isOberserve = false;
-      }
-    }, {
-      key: "wmObserver",
-      value: function wmObserver(divContainer) {
-        var _this = this;
-        var wmConf = {
-          attributes: true,
-          childList: true,
-          characterData: true
-        };
-        var wmObserver = new MutationObserver(function (mo) {
-          if (!_this.isOberserve) {
-            var target = mo[0].target;
-            target.setAttribute('style', _this.styleStr);
-            target.setAttribute('id', _this.CONTAINERID);
-            wmObserver.takeRecords();
-          }
-        });
-        wmObserver.observe(divContainer, wmConf);
-      }
-    }, {
-      key: "parentObserver",
-      value: function parentObserver() {
-        var _this2 = this;
         var _a;
-        var bodyObserver = new MutationObserver(function () {
-          if (!_this2.isOberserve) {
-            var wm = document.querySelector("#".concat(_this2.CONTAINERID));
-            if (!wm) {
-              _this2.drawCanvas();
-            } else if (wm.getAttribute('style') !== _this2.styleStr) {
-              wm.setAttribute('style', _this2.styleStr);
-            }
-          }
-        });
-        var parentNode = (_a = document.querySelector("#".concat(this.CONTAINERID))) === null || _a === void 0 ? void 0 : _a.parentNode;
-        if (parentNode) {
-          bodyObserver.observe(parentNode, {
-            childList: true
-          });
-        }
+        if (typeof document === 'undefined') return;
+        this.removed = false;
+        this.isOberserve = true;
+        this.disconnectObservers();
+        (_a = this.container) === null || _a === void 0 ? void 0 : _a.remove();
+        this.restoreParentPosition();
+        var parent = this.getParent();
+        this.prepareParent(parent);
+        var container = document.createElement('div');
+        container.id = this.CONTAINERID;
+        container.className = 'avue-watermark';
+        container.setAttribute('aria-hidden', 'true');
+        this.styleStr = this.getStyle(parent, this.getBackgroundUrl());
+        container.setAttribute('style', this.styleStr);
+        parent.appendChild(container);
+        this.container = container;
+        this.parent = parent;
+        this.isOberserve = false;
+        this.observe();
       }
     }, {
       key: "Repaint",
       value: function Repaint() {
         var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        this.remove();
-        this.init(opt);
+        this.option = _objectSpread$a(_objectSpread$a({}, this.option), opt);
         this.drawCanvas();
+        return this;
       }
     }, {
       key: "remove",
       value: function remove() {
         var _a;
+        this.removed = true;
         this.isOberserve = true;
-        var wm = document.querySelector("#".concat(this.CONTAINERID));
-        (_a = wm === null || wm === void 0 ? void 0 : wm.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(wm);
+        this.disconnectObservers();
+        (_a = this.container) === null || _a === void 0 ? void 0 : _a.remove();
+        this.restoreParentPosition();
+        this.container = null;
+        this.parent = null;
+        this.isOberserve = false;
       }
     }]);
   }();
 
-  var canvas;
-  var ctx;
-  var configDefault = {
-    width: 200,
-    height: 200
-  };
-  var config = {
+  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var detailDefault = {
     text: 'avueJS',
-    fontFamily: 'microsoft yahei',
-    color: '#999',
+    fontFamily: 'Microsoft YaHei, sans-serif',
+    color: '#999999',
     fontSize: 16,
     opacity: 100,
     bottom: 10,
     right: 10,
-    ratio: 1
+    ratio: 0.92,
+    scaleWithImage: true
   };
   function $Watermark () {
     var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     return new WaterMark(opt);
   }
-  function detailImg(file) {
-    var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    return new Promise(function (resolve) {
-      var text = option.text,
-        fontFamily = option.fontFamily,
-        color = option.color,
-        fontSize = option.fontSize,
-        opacity = option.opacity,
-        bottom = option.bottom,
-        right = option.right,
-        ratio = option.ratio;
-      initParams();
-      fileToBase64(file, initImg);
-      function initParams() {
-        config.text = text || config.text;
-        config.fontFamily = fontFamily || config.fontFamily;
-        config.color = color || config.color;
-        config.fontSize = fontSize || config.fontSize;
-        config.opacity = opacity || config.opacity;
-        config.bottom = bottom || config.bottom;
-        config.right = right || config.right;
-        config.ratio = ratio || config.ratio;
-      }
-      function initImg(data) {
-        var img = new Image();
-        img.src = data;
-        img.onload = function () {
-          var width = img.width;
-          var height = img.height;
-          cretedCanvas(width, height);
-          ctx === null || ctx === void 0 ? void 0 : ctx.drawImage(img, 0, 0, width, height);
-          setText(width, height);
-          var currentCanvas = document.getElementById('canvas');
-          resolve(dataURLtoFile(currentCanvas.toDataURL(file.type, config.ratio), file.name));
+  var loadFileImage = function loadFileImage(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onerror = function () {
+        return reject(new Error('图片读取失败。'));
+      };
+      reader.onload = function () {
+        var image = new Image();
+        image.onerror = function () {
+          return reject(new Error('图片解析失败。'));
         };
-      }
-      function cretedCanvas(width, height) {
-        canvas = document.getElementById('canvas');
-        if (canvas === null) {
-          canvas = document.createElement('canvas');
-          canvas.id = 'canvas';
-          canvas.className = 'avue-canvas';
-          document.body.appendChild(canvas);
-        }
-        ctx = canvas.getContext('2d');
-        canvas.width = width;
-        canvas.height = height;
-      }
-      function setText(width, height) {
-        var txt = config.text;
-        var param = calcParam(txt, width, height);
-        if (!ctx) return;
-        ctx.font = param.fontSize + 'px ' + config.fontFamily;
-        ctx.fillStyle = config.color;
-        ctx.globalAlpha = config.opacity / 100;
-        ctx.fillText(txt, param.x, param.y);
-      }
-      function calcParam(txt, width, height) {
-        var x;
-        var y;
-        var calcFontSize = config.fontSize / configDefault.width;
-        var fontSize = calcFontSize * width;
-        if (config.bottom) {
-          y = configDefault.height - config.bottom;
-        } else {
-          y = config.top;
-        }
-        if (config.right) {
-          x = configDefault.width - config.right;
-        } else {
-          x = config.left;
-        }
-        if (!ctx) {
-          return {
-            x: 0,
-            y: 0,
-            fontSize: fontSize
-          };
-        }
-        ctx.font = config.fontSize + 'px ' + config.fontFamily;
-        var txtWidth = Number(ctx.measureText(txt).width);
-        x = x - txtWidth;
-        var calcPosX = x / configDefault.width;
-        var calcPosY = y / configDefault.height;
-        x = calcPosX * width;
-        y = calcPosY * height;
-        return {
-          x: x,
-          y: y,
-          fontSize: fontSize
+        image.onload = function () {
+          return resolve(image);
         };
-      }
-      function fileToBase64(rawFile, callback) {
-        var reader = new FileReader();
-        reader.readAsDataURL(rawFile);
-        reader.onload = function (e) {
-          var _a;
-          callback((_a = e.target) === null || _a === void 0 ? void 0 : _a.result);
-        };
-      }
+        image.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
     });
+  };
+  /**
+   * 为图片生成水印文件。每次调用使用独立 Canvas，避免并发任务互相覆盖。
+   */
+  function detailImg(_x) {
+    return _detailImg.apply(this, arguments);
+  }
+  function _detailImg() {
+    _detailImg = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee(file) {
+      var option,
+        config,
+        image,
+        canvas,
+        context,
+        scale,
+        fontSize,
+        ratio,
+        opacity,
+        text,
+        textWidth,
+        hasLeft,
+        hasTop,
+        x,
+        y,
+        type,
+        _args = arguments;
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            option = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+            if (!(typeof File === 'undefined' || !(file instanceof File))) {
+              _context.next = 3;
+              break;
+            }
+            throw new TypeError('请传入有效的图片文件。');
+          case 3:
+            if (file.type.startsWith('image/')) {
+              _context.next = 5;
+              break;
+            }
+            throw new TypeError('仅支持图片文件添加水印。');
+          case 5:
+            config = _objectSpread$9(_objectSpread$9({}, detailDefault), option);
+            _context.next = 8;
+            return loadFileImage(file);
+          case 8:
+            image = _context.sent;
+            canvas = document.createElement('canvas');
+            canvas.width = image.naturalWidth || image.width;
+            canvas.height = image.naturalHeight || image.height;
+            context = canvas.getContext('2d');
+            if (context) {
+              _context.next = 15;
+              break;
+            }
+            throw new Error('当前浏览器不支持 Canvas。');
+          case 15:
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+            scale = config.scaleWithImage ? canvas.width / 200 : 1;
+            fontSize = Math.max(1, Number(config.fontSize) * scale);
+            ratio = Math.min(1, Math.max(0, Number(config.ratio) || detailDefault.ratio));
+            opacity = Math.min(1, Math.max(0, Number(config.opacity) / 100));
+            context.save();
+            context.font = "".concat(fontSize, "px ").concat(config.fontFamily);
+            context.fillStyle = config.color;
+            context.globalAlpha = opacity;
+            context.textBaseline = 'alphabetic';
+            text = String(config.text || '');
+            textWidth = context.measureText(text).width;
+            hasLeft = option.left !== undefined && option.left !== null;
+            hasTop = option.top !== undefined && option.top !== null;
+            x = hasLeft ? Number(option.left) * scale : canvas.width - Number(config.right) * scale - textWidth;
+            y = hasTop ? Number(option.top) * scale + fontSize : canvas.height - Number(config.bottom) * scale;
+            context.fillText(text, x, y);
+            context.restore();
+            type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+            return _context.abrupt("return", dataURLtoFile(canvas.toDataURL(type, ratio), file.name));
+          case 35:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _detailImg.apply(this, arguments);
   }
 
   var getToken = function getToken(accessKey, secretKey, putPolicy) {
@@ -23655,8 +24054,8 @@
     return client;
   };
 
-  function ownKeys$7(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$7(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$7(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$7(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   function getFileUrl(home) {
     var uri = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri;
@@ -23949,7 +24348,7 @@
           this.handleSized(file, this.text);
           return;
         }
-        var headers = _objectSpread$7(_objectSpread$7({}, this.headers), {}, {
+        var headers = _objectSpread$8(_objectSpread$8({}, this.headers), {}, {
           "Content-Type": "multipart/form-data"
         });
         //oss配置属性
@@ -25692,8 +26091,8 @@
   script$y.render = render$y;
   script$y.__file = "packages/element-plus/tabs/index.vue";
 
-  function ownKeys$6(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$6(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$6(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$7(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$7(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$7(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$7(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$x = create({
     name: "dynamic",
     mixins: [props(), event()],
@@ -25820,7 +26219,7 @@
         var _callback = function callback(list) {
           list.forEach(function (ele, index) {
             if (ele.children && Array.isArray(ele.children)) _callback(ele.children);else {
-              list[index] = _objectSpread$6(_objectSpread$6({}, ele), {
+              list[index] = _objectSpread$7(_objectSpread$7({}, ele), {
                 hide: _this.validData(ele.hide, !_this.validParams(ele, 'display', true)),
                 disabled: _this.validParams(ele, 'disabled', false),
                 detail: _this.validParams(ele, 'detail', false),
@@ -25844,7 +26243,7 @@
         });
 
         // 返回合并后的选项对象
-        return _objectSpread$6(_objectSpread$6(_objectSpread$6({}, options), {
+        return _objectSpread$7(_objectSpread$7(_objectSpread$7({}, options), {
           column: columnOption
         }), childOptions);
       }
@@ -25932,7 +26331,7 @@
         var _this3 = this;
         var callback = function callback() {
           var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-          var row = _this3.deepClone(_objectSpread$6(_objectSpread$6(_objectSpread$6({}, _this3.valueOption), obj), {
+          var row = _this3.deepClone(_objectSpread$7(_objectSpread$7(_objectSpread$7({}, _this3.valueOption), obj), {
             $index: _this3.textLen
           }));
           if (_this3.isCrud) {
@@ -26518,8 +26917,8 @@
   script$w.render = render$w;
   script$w.__file = "packages/element-plus/video/index.vue";
 
-  function ownKeys$5(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$5(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$5(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$5(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$6(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$6(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$6(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var script$v = create({
     name: 'login',
     mixins: [locale],
@@ -26588,7 +26987,7 @@
       modelValue: {
         handler: function handler(value) {
           var _this = this;
-          var nextForm = _objectSpread$5({
+          var nextForm = _objectSpread$6({
             username: '',
             password: '',
             code: ''
@@ -26608,7 +27007,7 @@
       },
       form: {
         handler: function handler(value) {
-          if (!this.syncing) this.$emit('update:modelValue', _objectSpread$5({}, value));
+          if (!this.syncing) this.$emit('update:modelValue', _objectSpread$6({}, value));
         },
         deep: true
       }
@@ -26642,7 +27041,7 @@
             if (_this2.nowtime <= 0) _this2.clearTimer();
           }, 1000);
         };
-        this.$emit('send', done, _objectSpread$5({}, this.form));
+        this.$emit('send', done, _objectSpread$6({}, this.form));
         this.$nextTick(function () {
           if (!completed) _this2.sending = false;
         });
@@ -29655,8 +30054,8 @@
   script$s.render = render$s;
   script$s.__file = "packages/element-plus/qrcode/index.vue";
 
-  function ownKeys$4(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$4(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$4(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$5(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$5(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$5(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$5(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var toCssSize = function toCssSize(value) {
     return typeof value === 'number' ? "".concat(value, "px") : value;
   };
@@ -29763,7 +30162,7 @@
           if (_this.unmounted || !_this.loading) return;
           _this.loading = false;
           _this.isTimedOut = true;
-          _this.$emit('timeout', _objectSpread$4(_objectSpread$4({}, _this.getPayload()), {}, {
+          _this.$emit('timeout', _objectSpread$5(_objectSpread$5({}, _this.getPayload()), {}, {
             timeout: _this.timeout
           }));
         }, this.timeout);
@@ -29788,7 +30187,7 @@
         this.loading = false;
         this.isTimedOut = false;
         this.loadError = event;
-        this.$emit('error', _objectSpread$4(_objectSpread$4({}, this.getPayload()), {}, {
+        this.$emit('error', _objectSpread$5(_objectSpread$5({}, this.getPayload()), {}, {
           error: event
         }));
       },
@@ -30472,10 +30871,10 @@
     return i;
   }
 
-  var _excluded = ["_objectUrl"],
+  var _excluded$1 = ["_objectUrl"],
     _excluded2 = ["children"];
-  function ownKeys$3(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$4(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$4(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$4(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var ROOT_FOLDER_ID = "__avue_root__";
   var IMAGE_EXTENSIONS = ["bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
   var VIDEO_EXTENSIONS = ["m4v", "mov", "mp4", "ogv", "webm"];
@@ -30581,7 +30980,7 @@
         var nodes = {};
         var root = [];
         this.localFolders.forEach(function (folder) {
-          nodes[folder.id] = _objectSpread$3(_objectSpread$3({}, folder), {}, {
+          nodes[folder.id] = _objectSpread$4(_objectSpread$4({}, folder), {}, {
             children: []
           });
         });
@@ -30691,7 +31090,7 @@
           var previous = previousFiles.find(function (item) {
             return item.id === id && item.url === value.url;
           });
-          return _objectSpread$3(_objectSpread$3({}, value), {}, {
+          return _objectSpread$4(_objectSpread$4({}, value), {}, {
             id: id,
             name: value.name || _this6.getFileName(value.url) || "未命名文件",
             url: value.url || value.downloadUrl || "",
@@ -30709,7 +31108,7 @@
           (Array.isArray(items) ? items : []).forEach(function (folder) {
             var value = folder || {};
             var id = value.id || _this7.createLocalId("folder");
-            result.push(_objectSpread$3(_objectSpread$3({}, value), {}, {
+            result.push(_objectSpread$4(_objectSpread$4({}, value), {}, {
               id: id,
               name: value.name || "未命名文件夹",
               parentId: value.parentId || parentId || ""
@@ -30735,8 +31134,8 @@
       },
       toExternalFile: function toExternalFile(file) {
         file._objectUrl;
-          var value = _objectWithoutProperties(file, _excluded);
-        return _objectSpread$3({}, value);
+          var value = _objectWithoutProperties(file, _excluded$1);
+        return _objectSpread$4({}, value);
       },
       emitFiles: function emitFiles() {
         var _this9 = this;
@@ -30750,7 +31149,7 @@
         var folders = this.localFolders.map(function (_ref) {
           _ref.children;
             var folder = _objectWithoutProperties(_ref, _excluded2);
-          return _objectSpread$3({}, folder);
+          return _objectSpread$4({}, folder);
         });
         this.$emit("update:folders", folders);
       },
@@ -31002,7 +31401,7 @@
           target.name = name;
           this.folderDialogVisible = false;
           this.emitFolders();
-          this.$emit("folder-rename", _objectSpread$3({}, target));
+          this.$emit("folder-rename", _objectSpread$4({}, target));
           return;
         }
         var folder = {
@@ -31013,7 +31412,7 @@
         this.localFolders.push(folder);
         this.folderDialogVisible = false;
         this.emitFolders();
-        this.$emit("folder-create", _objectSpread$3({}, folder));
+        this.$emit("folder-create", _objectSpread$4({}, folder));
         this.selectFolder(folder.id);
       },
       openRemoveFolder: function openRemoveFolder(folder) {
@@ -31031,7 +31430,7 @@
         this.folderDeleteDialogVisible = false;
         this.folderToDelete = null;
         this.emitFolders();
-        this.$emit("folder-remove", _objectSpread$3({}, folder));
+        this.$emit("folder-remove", _objectSpread$4({}, folder));
         if (this.activeFolderId === folder.id) this.selectFolder(nextFolderId);
       },
       openRenameDialog: function openRenameDialog() {
@@ -34676,9 +35075,9 @@
     DataDashboard: script$2
   };
 
-  function ownKeys$2(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var components = _objectSpread$2(_objectSpread$2({}, elementComponents), dataComponents);
+  function ownKeys$3(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var components = _objectSpread$3(_objectSpread$3({}, elementComponents), dataComponents);
 
   var version = '3.9.3';
 
@@ -35194,19 +35593,22 @@
       }
       return buf;
     },
-    excel: function excel(params) {
-      var _this2 = this;
+    excel: function excel() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var xlsx = getXLSX();
       if (!xlsx) {
         packages.logs('xlsx');
-        return;
+        return Promise.reject(new Error('未检测到 xlsx，请先引入 xlsx。'));
       }
-      return new Promise(function (resolve) {
+      try {
         var _params$header;
+        var columns = Array.isArray(params.columns) ? params.columns : [];
+        var rows = Array.isArray(params.data) ? params.data : [];
+        if (!columns.length) throw new Error('导出 Excel 至少需要一列配置。');
         var _params = {
           prop: []
         };
-        _params.header = _this2.buildHeader(params.columns);
+        _params.header = this.buildHeader(columns);
         _params.title = params.title || dayjs().format('YYYY-MM-DD HH:mm:ss');
         var _callback = function callback(list) {
           list.forEach(function (ele) {
@@ -35217,18 +35619,19 @@
             }
           });
         };
-        _callback(params.columns);
-        _params.data = params.data.map(function (row) {
+        _callback(columns);
+        if (!_params.prop.length) throw new Error('导出 Excel 未找到有效字段。');
+        _params.data = rows.map(function (row) {
           return _params.prop.map(function (prop) {
-            var data = row[prop];
+            var data = row ? row[prop] : '';
             if (isJson(data)) data = JSON.stringify(data);
             return data;
           });
         });
         var headerRows = _params.header.length;
-        (_params$header = _params.header).push.apply(_params$header, _toConsumableArray(_params.data).concat([[]]));
-        var merges = _this2.doMerges(_params.header);
-        var ws = _this2.aoa_to_sheet(_params.header, headerRows, xlsx);
+        (_params$header = _params.header).push.apply(_params$header, _toConsumableArray(_params.data));
+        var merges = this.doMerges(_params.header);
+        var ws = this.aoa_to_sheet(_params.header, headerRows, xlsx);
         ws['!merges'] = merges;
         ws['!freeze'] = {
           xSplit: '1',
@@ -35240,7 +35643,7 @@
         ws['!cols'] = getColumnWidths(_params.header, _params.prop.length);
         ws['!rows'] = _params.header.map(function (_row, index) {
           return {
-            hpt: index < headerRows ? 26 : index === _params.header.length - 1 ? 8 : 20
+            hpt: index < headerRows ? 26 : 20
           };
         });
         if (_params.data.length > 0 && _params.prop.length > 0) {
@@ -35249,55 +35652,52 @@
           };
         }
         var workbook = {
-          SheetNames: ['Sheet1'],
+          SheetNames: [params.sheetName || 'Sheet1'],
           Sheets: {},
           Props: {
             Title: _params.title,
             CreatedDate: new Date()
           }
         };
-        workbook.Sheets.Sheet1 = ws;
+        workbook.Sheets[workbook.SheetNames[0]] = ws;
         var wopts = {
           bookType: 'xlsx',
           bookSST: false,
-          type: 'binary',
+          type: 'array',
           cellStyles: true
         };
         var wbout = xlsx.write(workbook, wopts);
-        var blob = new Blob([_this2.s2ab(wbout)], {
-          type: 'application/octet-stream'
+        var blob = new Blob([wbout], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         });
-        downFile(blob, _params.title + '.xlsx');
-        resolve();
-      });
+        var filename = String(params.filename || _params.title).replace(/[\\/:*?"<>|]/g, '-') + '.xlsx';
+        downFile(blob, filename);
+        return Promise.resolve({
+          filename: filename,
+          sheetName: workbook.SheetNames[0],
+          rows: _params.data.length
+        });
+      } catch (error) {
+        return Promise.reject(error instanceof Error ? error : new Error(String(error || 'Excel 导出失败。')));
+      }
     },
     xlsx: function xlsx(file) {
-      if (typeof window === 'undefined' || !window.saveAs || !window.XLSX) {
-        packages.logs('file-saver');
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      if (typeof window === 'undefined' || !window.XLSX) {
         packages.logs('xlsx');
-        return;
+        return Promise.reject(new Error('未检测到 xlsx，请先引入 xlsx。'));
       }
+      if (!(file instanceof File)) return Promise.reject(new TypeError('请传入有效的 Excel 文件。'));
       var xlsx = window.XLSX;
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
         var reader = new FileReader();
-        var fixdata = function fixdata(data) {
-          var o = '';
-          var l = 0;
-          var w = 10240;
-          for (; l < data.byteLength / w; ++l) {
-            o += String.fromCharCode.apply(null, Array.from(new Uint8Array(data.slice(l * w, l * w + w))));
-          }
-          o += String.fromCharCode.apply(null, Array.from(new Uint8Array(data.slice(l * w))));
-          return o;
-        };
-        var getHeaderRow = function getHeaderRow(sheet) {
+        var getHeaderRow = function getHeaderRow(sheet, rowIndex) {
           var headers = [];
           var range = xlsx.utils.decode_range(sheet['!ref']);
-          var R = range.s.r;
           for (var C = range.s.c; C <= range.e.c; ++C) {
             var cell = sheet[xlsx.utils.encode_cell({
               c: C,
-              r: R
+              r: rowIndex
             })];
             var hdr = 'UNKNOWN ' + C;
             if (cell && cell.t) hdr = xlsx.utils.format_cell(cell);
@@ -35306,91 +35706,162 @@
           return headers;
         };
         reader.onload = function (e) {
-          var data = e.target.result;
-          var fixedData = fixdata(data);
-          var workbook = xlsx.read(btoa(fixedData), {
-            type: 'base64'
-          });
-          var firstSheetName = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[firstSheetName];
-          var header = getHeaderRow(worksheet);
-          var results = xlsx.utils.sheet_to_json(worksheet);
-          resolve({
-            header: header,
-            results: results
-          });
+          try {
+            var data = e.target.result;
+            var workbook = xlsx.read(data, {
+              type: 'array',
+              cellDates: true
+            });
+            var sheetName = options.sheetName || workbook.SheetNames[Number(options.sheetIndex) || 0];
+            var worksheet = workbook.Sheets[sheetName];
+            if (!worksheet || !worksheet['!ref']) throw new Error('未找到可读取的工作表。');
+            var headerRow = Math.max(0, Number(options.headerRow) || 0);
+            var header = getHeaderRow(worksheet, headerRow);
+            var results = xlsx.utils.sheet_to_json(worksheet, {
+              range: headerRow,
+              raw: options.raw === true,
+              defval: options.defval === undefined ? '' : options.defval
+            });
+            resolve({
+              header: header,
+              results: results,
+              sheetName: sheetName
+            });
+          } catch (error) {
+            reject(error instanceof Error ? error : new Error(String(error || 'Excel 解析失败。')));
+          }
+        };
+        reader.onerror = function () {
+          return reject(new Error('Excel 文件读取失败。'));
+        };
+        reader.onabort = function () {
+          return reject(new Error('Excel 文件读取已取消。'));
         };
         reader.readAsArrayBuffer(file);
       });
     }
   };
 
+  var _excluded = ["download", "filename", "type", "quality", "onSuccess", "onError", "renderer"];
   function $Screenshot (doc) {
     var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    if (!window.html2canvas) {
-      packages.logs('Screenshot');
-      return;
+    var _a;
+    if (typeof window === 'undefined' || typeof HTMLElement === 'undefined' || !(doc instanceof HTMLElement)) {
+      return Promise.reject(new TypeError('请传入需要截图的 DOM 节点。'));
     }
-    return window.html2canvas(doc, option);
+    var renderer = option.renderer || window.html2canvas;
+    if (typeof renderer !== 'function') {
+      packages.logs('Screenshot');
+      var error = new Error('未检测到 html2canvas，请先引入 html2canvas。');
+      (_a = option.onError) === null || _a === void 0 ? void 0 : _a.call(option, error);
+      return Promise.reject(error);
+    }
+    var download = option.download,
+      _option$filename = option.filename,
+      filename = _option$filename === void 0 ? "screenshot-".concat(Date.now(), ".png") : _option$filename,
+      _option$type = option.type,
+      type = _option$type === void 0 ? 'image/png' : _option$type,
+      quality = option.quality,
+      onSuccess = option.onSuccess,
+      onError = option.onError;
+      option.renderer;
+      var rendererOption = _objectWithoutProperties(option, _excluded);
+    return Promise.resolve(renderer(doc, rendererOption)).then(function (canvas) {
+      if (!(canvas instanceof HTMLCanvasElement)) throw new Error('截图插件未返回 Canvas。');
+      if (download) downFile(canvas.toDataURL(type, quality), filename);
+      onSuccess === null || onSuccess === void 0 ? void 0 : onSuccess(canvas);
+      return canvas;
+    })["catch"](function (error) {
+      var normalized = error instanceof Error ? error : new Error(String(error || '截图失败。'));
+      onError === null || onError === void 0 ? void 0 : onError(normalized);
+      throw normalized;
+    });
   }
 
-  function select(element) {
-    var selectedText = '';
-    if (element.nodeName === 'SELECT') {
-      element.focus();
-      selectedText = element.value;
-    } else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
-      var input = element;
-      var isReadOnly = input.hasAttribute('readonly');
-      if (!isReadOnly) {
-        input.setAttribute('readonly', '');
-      }
-      input.select();
-      input.setSelectionRange(0, input.value.length);
-      if (!isReadOnly) {
-        input.removeAttribute('readonly');
-      }
-      selectedText = input.value;
-    } else {
-      if (element.hasAttribute('contenteditable')) {
-        element.focus();
-      }
-      var selection = window.getSelection();
-      var range = document.createRange();
-      range.selectNodeContents(element);
-      selection === null || selection === void 0 ? void 0 : selection.removeAllRanges();
-      selection === null || selection === void 0 ? void 0 : selection.addRange(range);
-      selectedText = (selection === null || selection === void 0 ? void 0 : selection.toString()) || '';
+  var legacyCopy = function legacyCopy(text) {
+    var _a;
+    var activeElement = document.activeElement;
+    var selection = window.getSelection();
+    var ranges = selection ? Array.from({
+      length: selection.rangeCount
+    }, function (_, index) {
+      return selection.getRangeAt(index).cloneRange();
+    }) : [];
+    var textarea = document.createElement('textarea');
+    var isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.setAttribute('aria-hidden', 'true');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '0';
+    textarea.style[isRTL ? 'right' : 'left'] = '-9999px';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+    var copied = document.execCommand('copy');
+    textarea.remove();
+    if (selection) {
+      selection.removeAllRanges();
+      ranges.forEach(function (range) {
+        return selection.addRange(range);
+      });
     }
-    return selectedText;
-  }
-  function $Clipboard (_ref) {
-    var text = _ref.text;
-    return new Promise(function (resolve, reject) {
-      var container = document.body;
-      var isRTL = document.documentElement.getAttribute('dir') == 'rtl';
-      var fakeElem = document.createElement('textarea');
-      fakeElem.style.fontSize = '12pt';
-      fakeElem.style.border = '0';
-      fakeElem.style.padding = '0';
-      fakeElem.style.margin = '0';
-      fakeElem.style.position = 'absolute';
-      fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px';
-      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-      fakeElem.style.top = "".concat(yPosition, "px");
-      fakeElem.setAttribute('readonly', '');
-      fakeElem.value = text;
-      container.appendChild(fakeElem);
-      select(fakeElem);
-      try {
-        document.execCommand('copy');
-        resolve();
-      } catch (err) {
-        reject(err);
-      } finally {
-        container.removeChild(fakeElem);
-      }
+    (_a = activeElement === null || activeElement === void 0 ? void 0 : activeElement.focus) === null || _a === void 0 ? void 0 : _a.call(activeElement, {
+      preventScroll: true
     });
+    if (!copied) throw new Error('浏览器拒绝写入剪切板。');
+  };
+  function $Clipboard (_x) {
+    return _ref2.apply(this, arguments);
+  }
+  function _ref2() {
+    _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee(_ref) {
+      var text, _ref$fallback, fallback, value, clipboard;
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            text = _ref.text, _ref$fallback = _ref.fallback, fallback = _ref$fallback === void 0 ? true : _ref$fallback;
+            if (!(typeof document === 'undefined')) {
+              _context.next = 3;
+              break;
+            }
+            throw new Error('当前环境不支持剪切板。');
+          case 3:
+            value = text === null || text === undefined ? '' : String(text);
+            clipboard = navigator.clipboard;
+            if (!(clipboard && typeof clipboard.writeText === 'function' && window.isSecureContext)) {
+              _context.next = 16;
+              break;
+            }
+            _context.prev = 6;
+            _context.next = 9;
+            return clipboard.writeText(value);
+          case 9:
+            return _context.abrupt("return");
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](6);
+            if (fallback) {
+              _context.next = 16;
+              break;
+            }
+            throw _context.t0;
+          case 16:
+            if (fallback) {
+              _context.next = 18;
+              break;
+            }
+            throw new Error('当前浏览器不支持剪切板写入。');
+          case 18:
+            legacyCopy(value);
+          case 19:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, null, [[6, 12]]);
+    }));
+    return _ref2.apply(this, arguments);
   }
 
   var getElement = function getElement(source) {
@@ -35413,7 +35884,7 @@
   var getText = function getText(element) {
     return (element.textContent || '').replace(/\s+/g, ' ').trim();
   };
-  var toAbsoluteUrl = function toAbsoluteUrl(url) {
+  var toAbsoluteUrl$1 = function toAbsoluteUrl(url) {
     try {
       return new URL(url, document.baseURI).href;
     } catch (_a) {
@@ -35510,7 +35981,7 @@
     });
     clone.querySelectorAll('img').forEach(function (image) {
       var source = image.currentSrc || image.getAttribute('src');
-      if (source) image.setAttribute('src', toAbsoluteUrl(source));
+      if (source) image.setAttribute('src', toAbsoluteUrl$1(source));
       image.removeAttribute('srcset');
       image.style.maxWidth = '100%';
       image.style.maxHeight = '80px';
@@ -35567,213 +36038,223 @@
     return "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>".concat(escapeHtml(documentTitle), "</title>\n    <style>\n      @page { margin: 12mm; }\n      * { box-sizing: border-box; }\n      body { margin: 0; color: #1f2937; background: #fff; font: 12px/1.5 \"Microsoft YaHei\", Arial, sans-serif; }\n      .avue-print__title { margin: 0 0 16px; color: #111827; font-size: 20px; text-align: center; }\n      table { width: 100%; border-collapse: collapse; table-layout: auto; }\n      thead { display: table-header-group; }\n      tr { break-inside: avoid; page-break-inside: avoid; }\n      th, td { padding: 8px 10px; border: 1px solid #dcdfe6; vertical-align: middle; word-break: break-word; overflow-wrap: anywhere; }\n      th { color: #fff; font-weight: 600; text-align: center; background: #2563eb; }\n      tbody tr:nth-child(even) { background: #f8fafc; }\n      td img { display: inline-block; max-width: 100%; max-height: 80px; object-fit: contain; vertical-align: middle; }\n      .avue-print__empty { padding: 32px; color: #909399; text-align: center; }\n    </style>\n  </head>\n  <body>\n    ").concat(titleHtml, "\n    <table>\n      <thead><tr>").concat(headerHtml, "</tr></thead>\n      <tbody>").concat(bodyHtml, "</tbody>\n    </table>\n  </body>\n</html>");
   };
 
-  var _Print = function Print(dom, options) {
-    if (!(this instanceof _Print)) return new _Print(dom, options);
-    this.options = this.extend({
-      noPrint: '.no-print'
-    }, options || {});
-    if (typeof dom === 'string') {
-      this.dom = document.querySelector(dom);
-    } else {
-      this.isDOM(dom);
-      this.dom = this.isDOM(dom) ? dom : dom.$el;
+  function ownKeys$2(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var toAbsoluteUrl = function toAbsoluteUrl(value) {
+    try {
+      return new URL(value, document.baseURI).href;
+    } catch (_a) {
+      return value;
     }
-    this.init();
   };
-  _Print.prototype = {
-    init: function init() {
-      try {
-        var content = buildTablePrintHtml(this.dom, this.options) || this.getStyle() + this.getHtml();
-        this.writeIframe(content);
-      } catch (error) {
-        this.handleError(error);
+  var Print = /*#__PURE__*/function () {
+    function Print(dom) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      _classCallCheck(this, Print);
+      this.iframe = null;
+      this.options = _objectSpread$2({
+        noPrint: '.no-print',
+        timeout: 15000
+      }, options);
+      this.dom = this.resolveDom(dom);
+      this.init();
+    }
+    return _createClass(Print, [{
+      key: "resolveDom",
+      value: function resolveDom(dom) {
+        var element = typeof dom === 'string' ? document.querySelector(dom) : dom instanceof HTMLElement ? dom : dom === null || dom === void 0 ? void 0 : dom.$el;
+        if (!(element instanceof HTMLElement)) throw new TypeError('未找到可打印的 DOM 节点。');
+        return element;
       }
-    },
-    handleReady: function handleReady() {
-      if (typeof this.options.onReady === 'function') this.options.onReady();
-    },
-    handleError: function handleError(error) {
-      if (typeof this.options.onError === 'function') {
-        this.options.onError(error);
-        return;
-      }
-      console.error(error);
-    },
-    extend: function extend(obj, obj2) {
-      for (var k in obj2) {
-        obj[k] = obj2[k];
-      }
-      return obj;
-    },
-    getStyle: function getStyle() {
-      var str = '';
-      var styles = document.querySelectorAll('style,link');
-      for (var i = 0; i < styles.length; i++) {
-        str += styles[i].outerHTML;
-      }
-      str += "<style>".concat(this.options.noPrint ? this.options.noPrint : '.no-print', "{display:none;}</style>");
-      return str;
-    },
-    getHtml: function getHtml() {
-      var inputs = document.querySelectorAll('input');
-      var textareas = document.querySelectorAll('textarea');
-      var selects = document.querySelectorAll('select');
-      for (var k = 0; k < inputs.length; k++) {
-        var input = inputs[k];
-        if (input.type == 'checkbox' || input.type == 'radio') {
-          if (input.checked == true) {
-            input.setAttribute('checked', 'checked');
-          } else {
-            input.removeAttribute('checked');
-          }
-        } else {
-          input.setAttribute('value', input.value);
-        }
-      }
-      for (var k2 = 0; k2 < textareas.length; k2++) {
-        if (textareas[k2].type == 'textarea') {
-          textareas[k2].innerHTML = textareas[k2].value;
-        }
-      }
-      for (var k3 = 0; k3 < selects.length; k3++) {
-        if (selects[k3].type == 'select-one') {
-          var child = selects[k3].children;
-          for (var i in child) {
-            var option = child[i];
-            if (option && option.tagName == 'OPTION') {
-              if (option.selected == true) {
-                option.setAttribute('selected', 'selected');
-              } else {
-                option.removeAttribute('selected');
-              }
-            }
-          }
-        }
-      }
-      return this.wrapperRefDom(this.dom).outerHTML;
-    },
-    wrapperRefDom: function wrapperRefDom(refDom) {
-      var prevDom = null;
-      var currDom = refDom;
-      if (!this.isInBody(currDom)) return currDom;
-      while (currDom) {
-        if (prevDom) {
-          var element = currDom.cloneNode(false);
-          element.appendChild(prevDom);
-          prevDom = element;
-        } else {
-          prevDom = currDom.cloneNode(true);
-        }
-        currDom = currDom.parentElement;
-      }
-      return prevDom;
-    },
-    writeIframe: function writeIframe(content) {
-      var w;
-      var doc;
-      var iframe = document.createElement('iframe');
-      var f = document.body.appendChild(iframe);
-      var loaded = false;
-      var failed = false;
-      var loadTimer;
-      iframe.id = 'myIframe';
-      iframe.setAttribute('style', 'position:absolute;width:0;height:0;top:-10px;left:-10px;');
-      w = f.contentWindow || f.contentDocument;
-      doc = f.contentDocument || f.contentWindow.document;
-      var _this = this;
-      iframe.onload = function () {
-        if (loaded || failed) return;
-        loaded = true;
-        if (loadTimer !== undefined) window.clearTimeout(loadTimer);
-        _this.waitForImages(doc, function () {
-          _this.handleReady();
-          _this.toPrint(w);
-          setTimeout(function () {
-            if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-          }, 1000);
-        });
-      };
-      iframe.onerror = function () {
-        if (failed) return;
-        failed = true;
-        if (loadTimer !== undefined) window.clearTimeout(loadTimer);
-        _this.handleError(new Error('打印内容加载失败'));
-        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      };
-      doc.open();
-      doc.write(content);
-      doc.close();
-      if (!loaded) {
-        loadTimer = window.setTimeout(function () {
-          if (loaded || failed) return;
-          failed = true;
-          _this.handleError(new Error('打印内容加载超时'));
-          if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-        }, 15000);
-      }
-    },
-    waitForImages: function waitForImages(doc, callback) {
-      var images = Array.from(doc.images);
-      if (images.length === 0) {
-        callback();
-        return;
-      }
-      var completed = 0;
-      var finished = false;
-      var timer;
-      var finish = function finish() {
-        if (finished) return;
-        finished = true;
-        if (timer !== undefined) window.clearTimeout(timer);
-        callback();
-      };
-      var done = function done() {
-        completed++;
-        if (completed === images.length) finish();
-      };
-      images.forEach(function (image) {
-        if (image.complete) {
-          done();
-        } else {
-          image.addEventListener('load', done, {
-            once: true
-          });
-          image.addEventListener('error', done, {
-            once: true
-          });
-        }
-      });
-      if (!finished) {
-        timer = window.setTimeout(finish, 10000);
-      }
-    },
-    toPrint: function toPrint(frameWindow) {
-      var _this = this;
-      setTimeout(function () {
+    }, {
+      key: "init",
+      value: function init() {
         try {
-          frameWindow.focus();
-          try {
-            if (!frameWindow.document.execCommand('print', false, null)) {
-              frameWindow.print();
-            }
-          } catch (_a) {
-            frameWindow.print();
-          }
-          frameWindow.close();
+          var content = buildTablePrintHtml(this.dom, this.options) || this.getDocumentHtml();
+          this.writeIframe(content);
         } catch (error) {
-          _this.handleError(error);
+          this.handleError(error);
         }
-      }, 10);
-    },
-    isInBody: function isInBody(node) {
-      return node === document.body ? false : document.body.contains(node);
-    },
-    isDOM: (typeof HTMLElement === "undefined" ? "undefined" : _typeof$1(HTMLElement)) === 'object' ? function (obj) {
-      return obj instanceof HTMLElement;
-    } : function (obj) {
-      return obj && _typeof$1(obj) === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
-    }
-  };
+      }
+    }, {
+      key: "handleError",
+      value: function handleError(error) {
+        var normalized = error instanceof Error ? error : new Error(String(error || '打印失败。'));
+        if (typeof this.options.onError === 'function') this.options.onError(normalized);else console.error(normalized);
+      }
+    }, {
+      key: "getStyle",
+      value: function getStyle() {
+        var styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]')).map(function (style) {
+          return style.outerHTML;
+        }).join('');
+        var noPrint = this.options.noPrint || '.no-print';
+        return "".concat(styles, "<style>\n      ").concat(noPrint, "{display:none !important;}\n      html,body{min-height:auto !important;background:#fff !important;}\n      @media print{.avue-print-root{margin:0 !important;}}\n    </style>");
+      }
+    }, {
+      key: "syncFormState",
+      value: function syncFormState(source, clone) {
+        var sourceFields = Array.from(source.querySelectorAll('input, textarea, select'));
+        var cloneFields = Array.from(clone.querySelectorAll('input, textarea, select'));
+        sourceFields.forEach(function (field, index) {
+          var cloned = cloneFields[index];
+          if (!cloned) return;
+          if (field instanceof HTMLInputElement && cloned instanceof HTMLInputElement) {
+            if (field.type === 'checkbox' || field.type === 'radio') cloned.checked = field.checked;else cloned.value = field.value;
+          } else if (field instanceof HTMLTextAreaElement && cloned instanceof HTMLTextAreaElement) {
+            cloned.value = field.value;
+            cloned.textContent = field.value;
+          } else if (field instanceof HTMLSelectElement && cloned instanceof HTMLSelectElement) {
+            cloned.selectedIndex = field.selectedIndex;
+            Array.from(cloned.options).forEach(function (option, optionIndex) {
+              var _a;
+              option.selected = ((_a = field.options[optionIndex]) === null || _a === void 0 ? void 0 : _a.selected) || false;
+            });
+          }
+        });
+      }
+    }, {
+      key: "sanitizeClone",
+      value: function sanitizeClone(clone) {
+        var noPrint = this.options.noPrint;
+        if (noPrint) {
+          try {
+            clone.querySelectorAll(noPrint).forEach(function (element) {
+              return element.remove();
+            });
+          } catch (_a) {
+            // 自定义选择器无效时不影响正常打印。
+          }
+        }
+        clone.querySelectorAll('script, noscript, style, [data-print-ignore="true"]').forEach(function (element) {
+          return element.remove();
+        });
+        clone.querySelectorAll('*').forEach(function (element) {
+          Array.from(element.attributes).filter(function (attribute) {
+            return attribute.name.toLowerCase().startsWith('on');
+          }).forEach(function (attribute) {
+            return element.removeAttribute(attribute.name);
+          });
+        });
+        clone.querySelectorAll('img').forEach(function (image) {
+          var source = image.currentSrc || image.getAttribute('src');
+          if (source) image.setAttribute('src', toAbsoluteUrl(source));
+          image.removeAttribute('srcset');
+        });
+        clone.querySelectorAll('a').forEach(function (link) {
+          link.removeAttribute('target');
+          var href = link.getAttribute('href');
+          if (href) link.setAttribute('href', toAbsoluteUrl(href));
+        });
+      }
+    }, {
+      key: "getDocumentHtml",
+      value: function getDocumentHtml() {
+        var clone = this.dom.cloneNode(true);
+        this.syncFormState(this.dom, clone);
+        this.sanitizeClone(clone);
+        var title = this.options.documentTitle || document.title || '打印预览';
+        return "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <base href=\"".concat(document.baseURI, "\" />\n    <title>").concat(title, "</title>\n    ").concat(this.getStyle(), "\n  </head>\n  <body><main class=\"avue-print-root\">").concat(clone.outerHTML, "</main></body>\n</html>");
+      }
+    }, {
+      key: "writeIframe",
+      value: function writeIframe(content) {
+        var _this = this;
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('title', '打印预览');
+        iframe.setAttribute('aria-hidden', 'true');
+        iframe.setAttribute('style', 'position:fixed;width:1px;height:1px;right:0;bottom:0;border:0;opacity:0;pointer-events:none;');
+        this.iframe = iframe;
+        var settled = false;
+        var cleanup = function cleanup() {
+          if (!_this.iframe) return;
+          _this.iframe.remove();
+          _this.iframe = null;
+        };
+        var fail = function fail(error) {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          _this.handleError(error);
+        };
+        var timer = window.setTimeout(function () {
+          return fail(new Error('打印内容加载超时。'));
+        }, Number(this.options.timeout) || 15000);
+        iframe.onload = function () {
+          if (settled) return;
+          var frameWindow = iframe.contentWindow;
+          var frameDocument = iframe.contentDocument;
+          if (!frameWindow || !frameDocument) {
+            fail(new Error('无法创建打印窗口。'));
+            return;
+          }
+          _this.waitForAssets(frameDocument, function () {
+            var _a, _b, _c, _d;
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timer);
+            try {
+              (_b = (_a = _this.options).onReady) === null || _b === void 0 ? void 0 : _b.call(_a);
+              (_d = (_c = _this.options).onBeforePrint) === null || _d === void 0 ? void 0 : _d.call(_c);
+              var printFinished = false;
+              var afterPrint = function afterPrint() {
+                var _a, _b;
+                if (printFinished) return;
+                printFinished = true;
+                cleanup();
+                (_b = (_a = _this.options).onAfterPrint) === null || _b === void 0 ? void 0 : _b.call(_a);
+              };
+              frameWindow.addEventListener('afterprint', afterPrint, {
+                once: true
+              });
+              frameWindow.focus();
+              frameWindow.print();
+              window.setTimeout(afterPrint, 60000);
+            } catch (error) {
+              cleanup();
+              _this.handleError(error);
+            }
+          });
+        };
+        iframe.onerror = function () {
+          return fail(new Error('打印内容加载失败。'));
+        };
+        iframe.srcdoc = content;
+        document.body.appendChild(iframe);
+      }
+    }, {
+      key: "waitForAssets",
+      value: function waitForAssets(doc, done) {
+        var _a;
+        var images = Array.from(doc.images);
+        var fonts = (_a = doc.fonts) === null || _a === void 0 ? void 0 : _a.ready;
+        var finish = function finish() {
+          return Promise.resolve(fonts)["catch"](function () {
+            return undefined;
+          }).then(done);
+        };
+        if (!images.length) {
+          finish();
+          return;
+        }
+        var completed = 0;
+        var complete = function complete() {
+          completed += 1;
+          if (completed === images.length) finish();
+        };
+        images.forEach(function (image) {
+          if (image.complete) complete();else {
+            image.addEventListener('load', complete, {
+              once: true
+            });
+            image.addEventListener('error', complete, {
+              once: true
+            });
+          }
+        });
+      }
+    }]);
+  }();
 
   var script$1 = create({
     name: "image-preview",
@@ -35827,7 +36308,7 @@
         return url.substring(url.lastIndexOf('/') + 1);
       },
       handlePrint: function handlePrint() {
-        _Print("#avue-image-preview__".concat(this.count));
+        Print("#avue-image-preview__".concat(this.count));
       },
       handlePrev: function handlePrev() {
         this.stopItem();
@@ -36286,7 +36767,7 @@
     $DialogForm: $DialogForm,
     $ImagePreview: $ImagePreview,
     $Export: $Export,
-    $Print: _Print,
+    $Print: Print,
     $Clipboard: $Clipboard,
     $Watermark: $Watermark,
     $Log: log,
