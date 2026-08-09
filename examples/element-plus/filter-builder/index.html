@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AvueFilterBuilder 示例</title>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; color: #303133; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      .demo { max-width: 1080px; padding: 24px; margin: 0 auto; border-radius: 10px; background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, .04); }
+      h1 { margin-top: 0; font-size: 20px; }
+      p { color: #606266; line-height: 1.7; }
+      pre { max-height: 300px; padding: 16px; overflow: auto; color: #d6e4ff; background: #1e293b; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="demo">
+      <h1>AvueFilterBuilder 高级筛选器</h1>
+      <p>通过 <code>v-model</code> 获取可直接转换为后端查询参数的逻辑与条件列表。</p>
+      <avue-filter-builder v-model="filter" :fields="fields" @change="handleChange"></avue-filter-builder>
+      <h3>当前筛选条件</h3>
+      <pre>{{ JSON.stringify(filter, null, 2) }}</pre>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            fields: [
+              { label: "订单编号", value: "orderNo", type: "text", placeholder: "请输入订单编号" },
+              { label: "订单状态", value: "status", type: "select", options: [
+                { label: "待支付", value: "pending" },
+                { label: "处理中", value: "processing" },
+                { label: "已完成", value: "completed" },
+                { label: "已取消", value: "cancelled" }
+              ] },
+              { label: "订单金额", value: "amount", type: "number", precision: 2, step: 10 },
+              { label: "创建日期", value: "createdAt", type: "daterange" },
+              { label: "是否开票", value: "invoiced", type: "boolean" }
+            ],
+            filter: {
+              logic: "and",
+              rules: [
+                { id: "status_rule", field: "status", operator: "eq", value: "processing" },
+                { id: "date_rule", field: "createdAt", operator: "between", value: ["2026-01-01", "2026-01-31"] }
+              ]
+            }
+          };
+        },
+        methods: {
+          handleChange(value) {
+            console.log("筛选条件已更新", value);
+          }
+        }
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>
