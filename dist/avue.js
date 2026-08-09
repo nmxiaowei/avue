@@ -672,14 +672,19 @@
   script$1o.render = render$1o;
   script$1o.__file = "packages/element-plus/count-up/index.vue";
 
+  function ownKeys$m(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$m(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$m(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$m(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var propsDefault = {
     title: "title",
     meta: "meta",
     lead: "lead",
     body: "body"
   };
+  var allowedTags$2 = new Set(["A", "B", "BLOCKQUOTE", "BR", "CODE", "DEL", "DIV", "EM", "FIGCAPTION", "FIGURE", "H1", "H2", "H3", "H4", "H5", "H6", "HR", "I", "IMG", "LI", "MARK", "OL", "P", "PRE", "S", "SMALL", "SPAN", "STRONG", "SUB", "SUP", "TABLE", "TBODY", "TD", "TH", "THEAD", "TR", "UL"]);
+  var dangerousTags = new Set(["EMBED", "FORM", "IFRAME", "OBJECT", "SCRIPT", "STYLE"]);
   var script$1n = create({
     name: "article",
+    emits: ["image-click", "link-click", "preview-open", "preview-close"],
     props: {
       data: {
         type: Object,
@@ -690,22 +695,55 @@
       props: {
         type: Object,
         "default": function _default() {
-          return propsDefault;
+          return {};
         }
+      },
+      option: {
+        type: Object,
+        "default": function _default() {
+          return {};
+        }
+      },
+      sanitize: {
+        type: [Boolean, Function],
+        "default": true
+      },
+      preview: {
+        type: Boolean,
+        "default": true
+      },
+      showInfo: Boolean,
+      titleLevel: {
+        type: Number,
+        "default": 1
+      },
+      maxWidth: {
+        type: [Number, String],
+        "default": ""
       }
     },
+    data: function data() {
+      return {
+        previewVisible: false,
+        previewImages: [],
+        previewIndex: 0
+      };
+    },
     computed: {
+      fieldProps: function fieldProps() {
+        return _objectSpread$m(_objectSpread$m(_objectSpread$m({}, propsDefault), this.option && this.option.props || {}), this.props || {});
+      },
       titleKey: function titleKey() {
-        return this.props.title || propsDefault.title;
+        return this.fieldProps.title;
       },
       metaKey: function metaKey() {
-        return this.props.meta || propsDefault.meta;
+        return this.fieldProps.meta;
       },
       leadKey: function leadKey() {
-        return this.props.lead || propsDefault.lead;
+        return this.fieldProps.lead;
       },
       bodyKey: function bodyKey() {
-        return this.props.body || propsDefault.body;
+        return this.fieldProps.body;
       },
       title: function title() {
         return this.data[this.titleKey];
@@ -718,37 +756,224 @@
       },
       body: function body() {
         return this.data[this.bodyKey];
+      },
+      hasBody: function hasBody() {
+        return this.body !== undefined && this.body !== null && this.body !== "";
+      },
+      formattedBody: function formattedBody() {
+        var content = String(this.body || "");
+        if (typeof this.sanitize === "function") return String(this.sanitize(content) || "");
+        return this.sanitize ? this.sanitizeHtml(content) : content;
+      },
+      wordCount: function wordCount() {
+        var content = String(this.body || "").replace(/<[^>]*>/g, "").replace(/\s/g, "");
+        return content.length;
+      },
+      readingMinutes: function readingMinutes() {
+        return Math.max(1, Math.ceil(this.wordCount / 400));
+      },
+      titleTag: function titleTag() {
+        var level = Math.min(6, Math.max(1, Number(this.titleLevel) || 1));
+        return "h".concat(level);
+      },
+      styleName: function styleName() {
+        if (this.maxWidth === "" || this.maxWidth === undefined || this.maxWidth === null) return {};
+        var size = typeof this.maxWidth === "number" ? "".concat(this.maxWidth, "px") : this.maxWidth;
+        return {
+          maxWidth: size
+        };
       }
     },
-    mounted: function mounted() {}
+    methods: {
+      sanitizeHtml: function sanitizeHtml(content) {
+        var _this = this;
+        if (typeof document === "undefined") return this.escapeHtml(content);
+        var container = document.createElement("div");
+        container.innerHTML = content;
+        Array.from(container.querySelectorAll("*")).forEach(function (node) {
+          var tag = node.tagName;
+          if (dangerousTags.has(tag)) {
+            node.remove();
+            return;
+          }
+          if (!allowedTags$2.has(tag)) {
+            node.replaceWith(document.createTextNode(node.textContent || ""));
+            return;
+          }
+          Array.from(node.attributes).forEach(function (attribute) {
+            var name = attribute.name.toLowerCase();
+            var isLinkAttribute = tag === "A" && ["href", "title"].includes(name);
+            var isImageAttribute = tag === "IMG" && ["src", "alt", "title", "width", "height"].includes(name);
+            var isTableAttribute = ["TD", "TH"].includes(tag) && ["colspan", "rowspan"].includes(name);
+            if (!isLinkAttribute && !isImageAttribute && !isTableAttribute) node.removeAttribute(attribute.name);
+          });
+          if (tag === "A") {
+            var href = _this.safeUrl(node.getAttribute("href"));
+            if (href) {
+              node.setAttribute("href", href);
+              if (/^https?:/i.test(href)) {
+                node.setAttribute("target", "_blank");
+                node.setAttribute("rel", "noopener noreferrer");
+              }
+            } else {
+              node.removeAttribute("href");
+            }
+          }
+          if (tag === "IMG") {
+            var src = _this.safeUrl(node.getAttribute("src"), true);
+            if (src) {
+              node.setAttribute("src", src);
+              node.setAttribute("loading", "lazy");
+              node.setAttribute("decoding", "async");
+            } else {
+              node.remove();
+            }
+          }
+        });
+        return container.innerHTML;
+      },
+      safeUrl: function safeUrl(value) {
+        var allowDataImage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        if (!value || typeof window === "undefined") return "";
+        try {
+          var url = new URL(value, window.location.origin);
+          var isHttp = ["http:", "https:"].includes(url.protocol);
+          var isContact = ["mailto:", "tel:"].includes(url.protocol);
+          var isDataImage = allowDataImage && url.protocol === "data:" && /^data:image\//i.test(value);
+          return isHttp || isContact || isDataImage ? url.href : "";
+        } catch (error) {
+          return "";
+        }
+      },
+      escapeHtml: function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, function (_char) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            "\"": "&quot;"
+          }[_char];
+        });
+      },
+      handleBodyClick: function handleBodyClick(event) {
+        var _this2 = this;
+        var target = event.target;
+        if (!(target instanceof Element)) return;
+        var link = target.closest("a");
+        if (link) {
+          this.$emit("link-click", {
+            data: this.data,
+            href: link.getAttribute("href") || "",
+            event: event
+          });
+        }
+        var image = target.closest("img");
+        if (!image) return;
+        var src = this.safeUrl(image.getAttribute("src"), true);
+        this.$emit("image-click", {
+          data: this.data,
+          src: src,
+          event: event
+        });
+        if (!this.preview || !src || !this.$refs.body) return;
+        var images = Array.from(this.$refs.body.querySelectorAll("img")).map(function (item) {
+          return _this2.safeUrl(item.getAttribute("src"), true);
+        }).filter(Boolean);
+        var index = images.indexOf(src);
+        if (index === -1) return;
+        this.previewImages = images;
+        this.previewIndex = index;
+        this.previewVisible = true;
+        this.$emit("preview-open", {
+          data: this.data,
+          src: src,
+          index: index,
+          images: images
+        });
+      },
+      closePreview: function closePreview() {
+        this.previewVisible = false;
+        this.$emit("preview-close", {
+          data: this.data
+        });
+      }
+    }
   });
 
-  var _hoisted_1$Y = ["textContent"];
-  var _hoisted_2$H = ["textContent"];
-  var _hoisted_3$v = ["textContent"];
-  var _hoisted_4$t = ["innerHTML"];
+  var _hoisted_1$Y = {
+    key: 0
+  };
+  var _hoisted_2$H = ["innerHTML"];
   function render$1n(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b())
-    }, [vue.createElementVNode("div", {
+    var _component_el_image_viewer = vue.resolveComponent("el-image-viewer");
+    return vue.openBlock(), vue.createElementBlock("article", {
+      "class": vue.normalizeClass([_ctx.b(), {
+        'is-previewable': _ctx.preview
+      }]),
+      style: vue.normalizeStyle(_ctx.styleName)
+    }, [_ctx.title || _ctx.meta || _ctx.$slots.header ? (vue.openBlock(), vue.createElementBlock("header", {
+      key: 0,
       "class": vue.normalizeClass(_ctx.b('header'))
-    }, [_ctx.title ? (vue.openBlock(), vue.createElementBlock("div", {
-      key: 0,
-      "class": vue.normalizeClass(_ctx.b('title')),
-      textContent: vue.toDisplayString(_ctx.title)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$Y)) : vue.createCommentVNode("v-if", true), _ctx.meta ? (vue.openBlock(), vue.createElementBlock("small", {
+    }, [vue.renderSlot(_ctx.$slots, "header", {
+      data: _ctx.data
+    }, function () {
+      return [_ctx.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.titleTag), {
+        key: 0,
+        "class": vue.normalizeClass(_ctx.b('title'))
+      }, {
+        "default": vue.withCtx(function () {
+          return [vue.createTextVNode(vue.toDisplayString(_ctx.title), 1 /* TEXT */)];
+        }),
+        _: 1 /* STABLE */
+      }, 8 /* PROPS */, ["class"])) : vue.createCommentVNode("v-if", true), _ctx.meta || _ctx.showInfo && _ctx.hasBody ? (vue.openBlock(), vue.createElementBlock("div", {
+        key: 1,
+        "class": vue.normalizeClass(_ctx.b('meta'))
+      }, [_ctx.meta ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$Y, vue.toDisplayString(_ctx.meta), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true), _ctx.showInfo && _ctx.hasBody ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        key: 1
+      }, [_ctx.meta ? (vue.openBlock(), vue.createElementBlock("span", {
+        key: 0,
+        "class": vue.normalizeClass(_ctx.b('meta-separator'))
+      }, "·", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("span", null, vue.toDisplayString(_ctx.wordCount) + " 字", 1 /* TEXT */), vue.createElementVNode("span", {
+        "class": vue.normalizeClass(_ctx.b('meta-separator'))
+      }, "·", 2 /* CLASS */), vue.createElementVNode("span", null, "约 " + vue.toDisplayString(_ctx.readingMinutes) + " 分钟阅读", 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)];
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.lead || _ctx.$slots.lead ? (vue.openBlock(), vue.createElementBlock("aside", {
       key: 1,
-      "class": vue.normalizeClass(_ctx.b('meta')),
-      textContent: vue.toDisplayString(_ctx.meta)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_2$H)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */), _ctx.lead ? (vue.openBlock(), vue.createElementBlock("div", {
-      key: 0,
-      "class": vue.normalizeClass(_ctx.b('lead')),
-      textContent: vue.toDisplayString(_ctx.lead)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_3$v)) : vue.createCommentVNode("v-if", true), _ctx.body ? (vue.openBlock(), vue.createElementBlock("div", {
-      key: 1,
+      "class": vue.normalizeClass(_ctx.b('lead'))
+    }, [vue.renderSlot(_ctx.$slots, "lead", {
+      data: _ctx.data
+    }, function () {
+      return [vue.createTextVNode(vue.toDisplayString(_ctx.lead), 1 /* TEXT */)];
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.hasBody || _ctx.$slots.body ? (vue.openBlock(), vue.createElementBlock("section", {
+      key: 2,
+      ref: "body",
       "class": vue.normalizeClass(_ctx.b('body')),
-      innerHTML: _ctx.body
-    }, null, 10 /* CLASS, PROPS */, _hoisted_4$t)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
+      onClick: _cache[0] || (_cache[0] = function () {
+        return _ctx.handleBodyClick && _ctx.handleBodyClick.apply(_ctx, arguments);
+      })
+    }, [vue.renderSlot(_ctx.$slots, "body", {
+      data: _ctx.data,
+      content: _ctx.formattedBody
+    }, function () {
+      return [vue.createElementVNode("div", {
+        innerHTML: _ctx.formattedBody
+      }, null, 8 /* PROPS */, _hoisted_2$H)];
+    })], 2 /* CLASS */)) : _ctx.$slots.empty ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 3,
+      "class": vue.normalizeClass(_ctx.b('empty'))
+    }, [vue.renderSlot(_ctx.$slots, "empty", {
+      data: _ctx.data
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("footer", {
+      key: 4,
+      "class": vue.normalizeClass(_ctx.b('footer'))
+    }, [vue.renderSlot(_ctx.$slots, "footer", {
+      data: _ctx.data
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.previewVisible ? (vue.openBlock(), vue.createBlock(_component_el_image_viewer, {
+      key: 5,
+      "url-list": _ctx.previewImages,
+      "initial-index": _ctx.previewIndex,
+      onClose: _ctx.closePreview
+    }, null, 8 /* PROPS */, ["url-list", "initial-index", "onClose"])) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
   }
 
   script$1n.render = render$1n;
