@@ -10,6 +10,7 @@
   "jsdelivr": "dist/avue.min.js",
   "scripts": {
     "dev": "pnpm gen:version && rollup -cw --silent --environment BUILD:watch",
+    "examples:dev": "node scripts/serve-examples.js",
     "build:esm": "pnpm gen:version && rollup -c --silent --environment BUILD:esm",
     "build:cjs": "pnpm gen:version && rollup -c --silent --environment BUILD:cjs",
     "build:browser": "pnpm gen:version && rollup -c --silent --environment BUILD:browser",
