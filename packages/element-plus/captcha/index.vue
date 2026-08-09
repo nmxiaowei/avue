@@ -198,6 +198,33 @@
       <div :class="b('canvas-prompt')">将图形拖到相同轮廓中</div>
     </template>
 
+    <template v-else-if="captchaType === 'code'">
+      <div ref="scene" :class="b('scene', 'code')" :style="sceneStyle">
+        <span :class="b('scene-decoration', 'one')"></span>
+        <span :class="b('scene-decoration', 'two')"></span>
+        <div :class="b('code-value')" aria-label="验证码内容">
+          <span v-for="(character, index) in codeChars"
+                :key="`${character}-${index}`"
+                :class="b('code-character')"
+                :style="getCodeCharacterStyle(index)">{{ character }}</span>
+        </div>
+      </div>
+      <div :class="b('code-prompt')">
+        <label :for="codeInputId">请输入图中的字母和数字</label>
+        <input :id="codeInputId"
+               ref="codeInput"
+               v-model="codeInput"
+               type="text"
+               :maxlength="safeCodeLength"
+               autocomplete="one-time-code"
+               :disabled="disabled || verified"
+               @keydown.enter.prevent="verify(codeInput)">
+        <button type="button"
+                :disabled="disabled || verified || !codeInput"
+                @click="verify(codeInput)">确认</button>
+      </div>
+    </template>
+
     <template v-else>
       <div ref="scene" :class="b('scene', 'path')" :style="sceneStyle">
         <span :class="b('scene-decoration', 'one')"></span>
@@ -237,7 +264,7 @@
 <script>
 import create from 'core/create';
 
-const CAPTCHA_TYPES = ['slider', 'text', 'math', 'rotate', 'icon', 'sequence', 'drag', 'path'];
+const CAPTCHA_TYPES = ['slider', 'text', 'math', 'rotate', 'icon', 'sequence', 'drag', 'code', 'path'];
 const DEFAULT_TEXT_POOL = '春夏秋冬诚信安全智慧服务登录验证用户数据网络星辰山河风云花鸟';
 const CHOICE_COLORS = ['#f72585', '#4361ee', '#4cc9f0', '#38b000', '#f77f00', '#8338ec'];
 const PUZZLE_SHAPES = ['a', 'b'];
@@ -400,6 +427,18 @@ export default create({
       type: Number,
       default: 4,
     },
+    codeLength: {
+      type: Number,
+      default: 4,
+    },
+    codeCharacters: {
+      type: String,
+      default: '23456789ABCDEFGHJKLMNPQRSTUVWXYZ',
+    },
+    codeCaseSensitive: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -440,6 +479,9 @@ export default create({
       pathDragStartX: 0,
       pathDragStartProgress: 0,
       pathActive: false,
+      codeValue: '',
+      codeInput: '',
+      codeInputId: `captcha-code-${Math.random().toString(36).slice(2, 10)}`,
       refreshTimer: null,
     };
   },
@@ -562,6 +604,12 @@ export default create({
       const controlY = Math.max(16, this.safeHeight * 0.14);
       return `M ${start.x} ${start.y} Q ${this.getSceneWidth() / 2} ${controlY} ${end.x} ${end.y}`;
     },
+    safeCodeLength() {
+      return Math.min(Math.max(Number(this.codeLength) || 4, 3), 8);
+    },
+    codeChars() {
+      return this.codeValue.split('');
+    },
   },
   watch: {
     modelValue(value) {
@@ -603,6 +651,12 @@ export default create({
     sequenceLength() {
       if (this.captchaType === 'sequence') this.refresh();
     },
+    codeLength() {
+      if (this.captchaType === 'code') this.refresh();
+    },
+    codeCharacters() {
+      if (this.captchaType === 'code') this.refresh();
+    },
   },
   mounted() {
     this.$nextTick(() => this.refresh());
@@ -640,6 +694,7 @@ export default create({
       if (this.captchaType === 'icon') this.createIconChallenge();
       if (this.captchaType === 'sequence') this.createSequenceChallenge();
       if (this.captchaType === 'drag') this.createDragChallenge();
+      if (this.captchaType === 'code') this.createCodeChallenge();
       this.updateValue(false);
       this.$emit('refresh', { type: this.captchaType });
     },
@@ -670,6 +725,19 @@ export default create({
       this.sliderTarget = correctTarget.x;
       this.pieceTop = correctTarget.y;
       this.pieceShape = correctTarget.shape;
+    },
+    createCodeChallenge() {
+      const characters = [...new Set(String(this.codeCharacters || '').split('').filter(Boolean))];
+      const pool = characters.length ? characters : '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'.split('');
+      const values = new Uint32Array(this.safeCodeLength);
+      if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+        crypto.getRandomValues(values);
+      }
+      this.codeValue = Array.from({ length: this.safeCodeLength }, (_, index) => {
+        const random = values[index] || Math.floor(Math.random() * 0x100000000);
+        return pool[random % pool.length];
+      }).join('');
+      this.codeInput = '';
     },
     createSliderTargetPosition(targets) {
       const maxX = this.sliderMax;
@@ -1057,8 +1125,17 @@ export default create({
       }
     },
     verify(value) {
-      if (this.captchaType !== 'math' || value === undefined) return;
-      this.selectMath({ value: String(value).trim() });
+      if (value === undefined) return;
+      if (this.captchaType === 'math') {
+        this.selectMath({ value: String(value).trim() });
+        return;
+      }
+      if (this.captchaType !== 'code' || this.disabled || this.verified) return;
+      const input = String(value).trim();
+      const expected = this.codeCaseSensitive ? this.codeValue : this.codeValue.toUpperCase();
+      const actual = this.codeCaseSensitive ? input : input.toUpperCase();
+      if (actual === expected) this.succeed();
+      else this.fail('验证码不正确，请重试');
     },
     succeed() {
       this.clearRefreshTimer();
@@ -1085,6 +1162,13 @@ export default create({
       if (this.modelValue === value) return;
       this.$emit('update:modelValue', value);
       this.$emit('change', { value, type: this.captchaType });
+    },
+    getCodeCharacterStyle(index) {
+      const rotations = [-8, 5, -3, 7, -6, 3, 8, -4];
+      const offsets = [3, -2, 1, -3, 2, -1, 3, -2];
+      return {
+        transform: `translateY(${offsets[index % offsets.length]}px) rotate(${rotations[index % rotations.length]}deg)`
+      };
     },
   },
 });

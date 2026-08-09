@@ -20,6 +20,7 @@
         <el-radio-button label="icon">图标点选</el-radio-button>
         <el-radio-button label="sequence">顺序点选</el-radio-button>
         <el-radio-button label="drag">拖拽匹配</el-radio-button>
+        <el-radio-button label="code">字母数字</el-radio-button>
         <el-radio-button label="path">轨迹滑动</el-radio-button>
       </el-radio-group>
       <avue-captcha
@@ -27,6 +28,8 @@
         :type="type"
         :target-text="['诚', '信']"
         :background-image="backgroundImage"
+        :code-length="4"
+        code-characters="23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
         @success="onSuccess"
         @fail="onFail"
       ></avue-captcha>

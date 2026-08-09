@@ -199,7 +199,6 @@ export interface AvueComponentExports {
   Title: Component;
   Tree: Component;
   Upload: Component;
-  Verifys: Component;
   Video: Component;
   textEllipsis: Component;
 }
@@ -308,7 +307,6 @@ export const Time: Component;
 export const Title: Component;
 export const Tree: Component;
 export const Upload: Component;
-export const Verifys: Component;
 export const Video: Component;
 export const textEllipsis: Component;
 export default Avue;
