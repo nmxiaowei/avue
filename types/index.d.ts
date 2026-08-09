@@ -119,15 +119,62 @@ export type AvueImagePreviewOpener = (
 ) => any;
 export type AvueImagePreviewFactory = (context: any) => AvueImagePreviewOpener;
 
+export interface AvueClipboardOptions {
+  text: string | number | null | undefined;
+  fallback?: boolean;
+}
+
+export interface AvueScreenshotOptions extends AnyRecord {
+  download?: boolean;
+  filename?: string;
+  type?: string;
+  quality?: number;
+  onSuccess?: (canvas: HTMLCanvasElement) => void;
+  onError?: (error: Error) => void;
+}
+
+export interface AvueWatermarkOptions extends AnyRecord {
+  id?: string | HTMLElement;
+  text?: string;
+  width?: number;
+  height?: number;
+  fontSize?: string | number;
+  fontStyle?: string;
+  color?: string;
+  degree?: number;
+  zIndex?: number;
+}
+
+export interface AvueWatermarkInstance {
+  remove(): void;
+  Repaint(option?: AvueWatermarkOptions): AvueWatermarkInstance;
+}
+
+export interface AvuePrintOptions extends AnyRecord {
+  noPrint?: string;
+  documentTitle?: string;
+  timeout?: number;
+  onReady?: () => void;
+  onBeforePrint?: () => void;
+  onAfterPrint?: () => void;
+  onError?: (error: Error) => void;
+}
+
+export interface AvueExcelPlugin {
+  excel(params: AnyRecord): Promise<{ filename: string; sheetName: string; rows: number }>;
+  xlsx(file: File, options?: AnyRecord): Promise<{ header: any[]; results: any[]; sheetName: string }>;
+  [key: string]: any;
+}
+
 export interface AvuePluginExports extends AvueUtilityExports {
   $DialogForm: AvueDialogFormFactory;
   $ImagePreview: AvueImagePreviewFactory;
-  $Export: any;
-  $Print: any;
-  $Clipboard: ({ text }: { text: string }) => Promise<void>;
-  $Watermark: any;
+  $Export: AvueExcelPlugin;
+  $Print: (dom: string | HTMLElement | { $el: HTMLElement }, options?: AvuePrintOptions) => any;
+  $Clipboard: (options: AvueClipboardOptions) => Promise<void>;
+  $Watermark: (option?: AvueWatermarkOptions) => AvueWatermarkInstance;
   $Log: any;
-  $Screenshot: (doc: HTMLElement, option?: AnyRecord) => any;
+  $Screenshot: (doc: HTMLElement, option?: AvueScreenshotOptions) => Promise<HTMLCanvasElement>;
 }
 
 export interface AvueComponentExports {
@@ -218,12 +265,12 @@ export const locale: AvueLocale;
 export function install(app: App, options?: AvueInstallOptions): void;
 export const $DialogForm: AvueDialogFormFactory;
 export const $ImagePreview: AvueImagePreviewFactory;
-export const $Export: any;
-export const $Print: any;
-export const $Clipboard: ({ text }: { text: string }) => Promise<void>;
-export const $Watermark: any;
+export const $Export: AvueExcelPlugin;
+export const $Print: (dom: string | HTMLElement | { $el: HTMLElement }, options?: AvuePrintOptions) => any;
+export const $Clipboard: (options: AvueClipboardOptions) => Promise<void>;
+export const $Watermark: (option?: AvueWatermarkOptions) => AvueWatermarkInstance;
 export const $Log: any;
-export const $Screenshot: (doc: HTMLElement, option?: AnyRecord) => any;
+export const $Screenshot: (doc: HTMLElement, option?: AvueScreenshotOptions) => Promise<HTMLCanvasElement>;
 export const deepClone: AvueUtilityExports["deepClone"];
 export const dataURLtoFile: AvueUtilityExports["dataURLtoFile"];
 export const isJson: AvueUtilityExports["isJson"];
@@ -314,12 +361,12 @@ declare module "@vue/runtime-core" {
     $AVUE: AnyRecord;
     $DialogForm: AvueDialogFormOpener;
     $ImagePreview: AvueImagePreviewOpener;
-    $Export: any;
-    $Print: any;
-    $Clipboard: ({ text }: { text: string }) => Promise<void>;
-    $Watermark: any;
+    $Export: AvueExcelPlugin;
+    $Print: (dom: string | HTMLElement | { $el: HTMLElement }, options?: AvuePrintOptions) => any;
+    $Clipboard: (options: AvueClipboardOptions) => Promise<void>;
+    $Watermark: (option?: AvueWatermarkOptions) => AvueWatermarkInstance;
     $Log: any;
-    $Screenshot: (doc: HTMLElement, option?: AnyRecord) => any;
+    $Screenshot: (doc: HTMLElement, option?: AvueScreenshotOptions) => Promise<HTMLCanvasElement>;
     $axios: any;
     $uploadFun: (column?: AnyRecord, safe?: any) => AnyRecord;
   }
