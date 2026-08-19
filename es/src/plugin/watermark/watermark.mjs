@@ -1,111 +1,154 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { randomId } from '../../utils/util.mjs';
 
+const defaultOption = {
+    width: 400,
+    height: 200,
+    text: 'avueJS',
+    fontSize: '30px',
+    fontStyle: 'Microsoft YaHei, sans-serif',
+    textAlign: 'center',
+    color: 'rgba(100,100,100,0.15)',
+    degree: -20,
+    zIndex: 9999,
+    id: ''
+};
 class WaterMark {
     constructor(opt = {}) {
-        this.CONTAINERID = randomId();
-        this.drawCanvas = this.drawCanvas.bind(this);
-        this.parentObserver = this.parentObserver.bind(this);
-        this.Repaint = this.Repaint.bind(this);
         this.styleStr = '';
         this.isOberserve = false;
-        this.init(opt);
-        this.drawCanvas();
-        this.parentObserver();
+        this.container = null;
+        this.parent = null;
+        this.overlayObserver = null;
+        this.parentObserver = null;
+        this.parentOriginalPosition = null;
+        this.removed = false;
+        this.CONTAINERID = `avue-watermark-${randomId()}`;
+        this.option = { ...defaultOption, ...opt };
+        if (typeof document !== 'undefined')
+            this.drawCanvas();
     }
-    init(opt) {
-        this.option = Object.assign({
-            width: 400,
-            height: 200,
-            text: 'avueJS',
-            fontSize: '30px',
-            fontStyle: 'microsoft yahei',
-            textAlign: 'center',
-            color: 'rgba(100,100,100,0.15)',
-            degree: -20,
-        }, opt);
+    getParent() {
+        const target = this.option.id;
+        if (!target)
+            return document.body;
+        if (target instanceof HTMLElement)
+            return target;
+        return document.getElementById(String(target)) || document.body;
     }
-    drawCanvas() {
-        this.isOberserve = true;
-        const divContainer = document.createElement('div');
+    getBackgroundUrl() {
         const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Number(this.option.width) || defaultOption.width);
+        canvas.height = Math.max(1, Number(this.option.height) || defaultOption.height);
         const context = canvas.getContext('2d');
-        divContainer.id = this.CONTAINERID;
-        canvas.width = this.option.width;
-        canvas.height = this.option.height;
         if (!context)
-            return;
+            return '';
         context.font = `${this.option.fontSize} ${this.option.fontStyle}`;
         context.textAlign = this.option.textAlign;
+        context.textBaseline = 'middle';
         context.fillStyle = this.option.color;
         context.translate(canvas.width / 2, canvas.height / 2);
-        context.rotate((this.option.degree * Math.PI) / 180);
-        context.fillText(this.option.text, 0, 0);
-        const backgroundUrl = canvas.toDataURL('image/png');
-        const flag = this.option.id;
-        let el = null;
-        if (flag)
-            el = document.getElementById(flag);
-        this.styleStr = `
-      position:${flag ? 'absolute' : 'fixed'};
-      top:0;
-      left:0;
-      width:${flag && el ? el.offsetWidth + 'px' : '100%'};
-      height:${flag && el ? el.offsetHeight + 'px' : '100%'};
-      z-index:9999;
-      pointer-events:none;
-      background-repeat:repeat;
-      background-image:url('${backgroundUrl}')`;
-        divContainer.setAttribute('style', this.styleStr);
-        if (flag && el) {
-            el.appendChild(divContainer);
-        }
-        else {
-            document.body.appendChild(divContainer);
-        }
-        this.wmObserver(divContainer);
-        this.isOberserve = false;
+        context.rotate((Number(this.option.degree) * Math.PI) / 180);
+        context.fillText(String(this.option.text || ''), 0, 0);
+        return canvas.toDataURL('image/png');
     }
-    wmObserver(divContainer) {
-        const wmConf = { attributes: true, childList: true, characterData: true };
-        const wmObserver = new MutationObserver((mo) => {
-            if (!this.isOberserve) {
-                const target = mo[0].target;
-                target.setAttribute('style', this.styleStr);
-                target.setAttribute('id', this.CONTAINERID);
-                wmObserver.takeRecords();
+    getStyle(parent, backgroundUrl) {
+        const local = Boolean(this.option.id) && parent !== document.body;
+        return [
+            `position:${local ? 'absolute' : 'fixed'}`,
+            'inset:0',
+            'display:block',
+            'overflow:hidden',
+            `z-index:${Number(this.option.zIndex) || defaultOption.zIndex}`,
+            'pointer-events:none',
+            'user-select:none',
+            `background-repeat:repeat`,
+            `background-size:${Math.max(1, Number(this.option.width) || defaultOption.width)}px ${Math.max(1, Number(this.option.height) || defaultOption.height)}px`,
+            `background-image:url("${backgroundUrl}")`
+        ].join(';');
+    }
+    prepareParent(parent) {
+        if (!this.option.id || parent === document.body || typeof window === 'undefined')
+            return;
+        if (window.getComputedStyle(parent).position === 'static') {
+            this.parentOriginalPosition = parent.style.position;
+            parent.style.position = 'relative';
+        }
+    }
+    observe() {
+        this.disconnectObservers();
+        if (!this.container || !this.parent || typeof MutationObserver === 'undefined')
+            return;
+        this.overlayObserver = new MutationObserver(() => {
+            if (this.isOberserve || !this.container)
+                return;
+            this.isOberserve = true;
+            if (this.container.id !== this.CONTAINERID)
+                this.container.id = this.CONTAINERID;
+            if (this.container.getAttribute('style') !== this.styleStr) {
+                this.container.setAttribute('style', this.styleStr);
             }
+            this.isOberserve = false;
         });
-        wmObserver.observe(divContainer, wmConf);
+        this.overlayObserver.observe(this.container, { attributes: true, attributeFilter: ['id', 'style'] });
+        this.parentObserver = new MutationObserver(() => {
+            var _a;
+            if (!this.isOberserve && this.container && !((_a = this.parent) === null || _a === void 0 ? void 0 : _a.contains(this.container)))
+                this.drawCanvas();
+        });
+        this.parentObserver.observe(this.parent, { childList: true });
     }
-    parentObserver() {
+    disconnectObservers() {
+        var _a, _b;
+        (_a = this.overlayObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
+        (_b = this.parentObserver) === null || _b === void 0 ? void 0 : _b.disconnect();
+        this.overlayObserver = null;
+        this.parentObserver = null;
+    }
+    restoreParentPosition() {
+        if (this.parent && this.parentOriginalPosition !== null && this.parent.style.position === 'relative') {
+            this.parent.style.position = this.parentOriginalPosition;
+        }
+        this.parentOriginalPosition = null;
+    }
+    drawCanvas() {
         var _a;
-        const bodyObserver = new MutationObserver(() => {
-            if (!this.isOberserve) {
-                const wm = document.querySelector(`#${this.CONTAINERID}`);
-                if (!wm) {
-                    this.drawCanvas();
-                }
-                else if (wm.getAttribute('style') !== this.styleStr) {
-                    wm.setAttribute('style', this.styleStr);
-                }
-            }
-        });
-        const parentNode = (_a = document.querySelector(`#${this.CONTAINERID}`)) === null || _a === void 0 ? void 0 : _a.parentNode;
-        if (parentNode) {
-            bodyObserver.observe(parentNode, { childList: true });
-        }
+        if (typeof document === 'undefined')
+            return;
+        this.removed = false;
+        this.isOberserve = true;
+        this.disconnectObservers();
+        (_a = this.container) === null || _a === void 0 ? void 0 : _a.remove();
+        this.restoreParentPosition();
+        const parent = this.getParent();
+        this.prepareParent(parent);
+        const container = document.createElement('div');
+        container.id = this.CONTAINERID;
+        container.className = 'avue-watermark';
+        container.setAttribute('aria-hidden', 'true');
+        this.styleStr = this.getStyle(parent, this.getBackgroundUrl());
+        container.setAttribute('style', this.styleStr);
+        parent.appendChild(container);
+        this.container = container;
+        this.parent = parent;
+        this.isOberserve = false;
+        this.observe();
     }
     Repaint(opt = {}) {
-        this.remove();
-        this.init(opt);
+        this.option = { ...this.option, ...opt };
         this.drawCanvas();
+        return this;
     }
     remove() {
         var _a;
+        this.removed = true;
         this.isOberserve = true;
-        const wm = document.querySelector(`#${this.CONTAINERID}`);
-        (_a = wm === null || wm === void 0 ? void 0 : wm.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(wm);
+        this.disconnectObservers();
+        (_a = this.container) === null || _a === void 0 ? void 0 : _a.remove();
+        this.restoreParentPosition();
+        this.container = null;
+        this.parent = null;
+        this.isOberserve = false;
     }
 }
 

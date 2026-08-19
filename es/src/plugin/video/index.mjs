@@ -1,7 +1,8 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 class RecordVideo {
-    constructor(videoObj) {
+    constructor(videoObj, options = {}) {
         this.video = videoObj;
+        this.options = options;
         this.mediaRecorder = null;
         this.stream = null;
         this.chunks = [];
@@ -21,11 +22,11 @@ class RecordVideo {
     }
     init() {
         if (!this.isSupport()) {
-            return Promise.reject(new Error('MediaDevices.getUserMedia is not supported'));
+            return Promise.reject(new Error('MediaDevices.getUserMedia or MediaRecorder is not supported'));
         }
         this.destroyed = false;
         return navigator.mediaDevices
-            .getUserMedia({
+            .getUserMedia(this.options.constraints || {
             audio: true,
             video: true,
         })
@@ -43,7 +44,10 @@ class RecordVideo {
                 this.video.src = this.objectUrl;
             }
             this.video.addEventListener('loadedmetadata', this.handleLoadedMetadata);
-            this.mediaRecorder = new MediaRecorder(stream);
+            const recorderOptions = this.getRecorderOptions();
+            this.mediaRecorder = recorderOptions
+                ? new MediaRecorder(stream, recorderOptions)
+                : new MediaRecorder(stream);
             this.mediaRecorder.addEventListener('dataavailable', this.handleDataAvailable);
         })
             .catch((error) => {
@@ -55,21 +59,60 @@ class RecordVideo {
         if (this.mediaRecorder && this.mediaRecorder.state === 'inactive') {
             this.chunks = [];
             this.mediaRecorder.start();
+            return true;
         }
+        return false;
     }
     stopRecord() {
         if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
             this.mediaRecorder.stop();
+            return true;
         }
+        return false;
+    }
+    getBlob() {
+        var _a, _b;
+        if (!this.chunks.length)
+            return null;
+        const type = ((_a = this.mediaRecorder) === null || _a === void 0 ? void 0 : _a.mimeType) || ((_b = this.chunks[0]) === null || _b === void 0 ? void 0 : _b.type) || 'video/webm';
+        return new Blob(this.chunks, { type });
+    }
+    captureFrame(type = 'image/png', quality) {
+        if (this.video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+            return null;
+        }
+        const width = this.video.videoWidth || this.video.clientWidth;
+        const height = this.video.videoHeight || this.video.clientHeight;
+        if (!width || !height)
+            return null;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext('2d');
+        if (!context)
+            return null;
+        context.drawImage(this.video, 0, 0, width, height);
+        return canvas.toDataURL(type, quality);
     }
     isSupport() {
         const flag = typeof navigator !== 'undefined' &&
             navigator.mediaDevices &&
-            navigator.mediaDevices.getUserMedia;
+            navigator.mediaDevices.getUserMedia &&
+            typeof MediaRecorder !== 'undefined';
         if (flag) {
             return true;
         }
         return false;
+    }
+    getRecorderOptions() {
+        const mimeType = this.options.mimeType;
+        if (!mimeType ||
+            typeof MediaRecorder === 'undefined' ||
+            !MediaRecorder.isTypeSupported ||
+            !MediaRecorder.isTypeSupported(mimeType)) {
+            return undefined;
+        }
+        return { mimeType };
     }
     destroy() {
         this.destroyed = true;

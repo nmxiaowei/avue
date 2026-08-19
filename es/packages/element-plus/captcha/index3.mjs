@@ -1,5 +1,5 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { openBlock, createElementBlock, normalizeStyle, normalizeClass, Fragment, createElementVNode, renderList, createCommentVNode, toDisplayString, withModifiers, createTextVNode } from 'vue';
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { openBlock, createElementBlock, normalizeStyle, normalizeClass, Fragment, createElementVNode, renderList, createCommentVNode, toDisplayString, withModifiers, createTextVNode, withDirectives, withKeys, vModelText } from 'vue';
 
 const _hoisted_1 = ["d"];
 const _hoisted_2 = ["id"];
@@ -16,11 +16,14 @@ const _hoisted_12 = ["disabled"];
 const _hoisted_13 = ["disabled", "aria-label", "onClick"];
 const _hoisted_14 = ["disabled", "aria-label", "onClick"];
 const _hoisted_15 = ["disabled"];
-const _hoisted_16 = ["viewBox"];
-const _hoisted_17 = ["d"];
-const _hoisted_18 = ["cx", "cy"];
-const _hoisted_19 = ["disabled"];
-const _hoisted_20 = ["disabled"];
+const _hoisted_16 = ["for"];
+const _hoisted_17 = ["id", "maxlength", "disabled"];
+const _hoisted_18 = ["disabled"];
+const _hoisted_19 = ["viewBox"];
+const _hoisted_20 = ["d"];
+const _hoisted_21 = ["cx", "cy"];
+const _hoisted_22 = ["disabled"];
+const _hoisted_23 = ["disabled"];
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (openBlock(), createElementBlock("div", {
@@ -72,7 +75,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   y1: "0",
                   x2: "1",
                   y2: "1"
-                }, _cache[6] || (_cache[6] = [
+                }, _cache[9] || (_cache[9] = [
                   createElementVNode("stop", {
                     offset: "0",
                     "stop-color": "#c9e7ff"
@@ -129,7 +132,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               disabled: _ctx.disabled || _ctx.verified,
               "aria-label": "拖动滑块完成验证",
               onPointerdown: _cache[0] || (_cache[0] = withModifiers((...args) => (_ctx.startSlide && _ctx.startSlide(...args)), ["prevent"]))
-            }, _cache[7] || (_cache[7] = [
+            }, _cache[10] || (_cache[10] = [
               createElementVNode("span", { "aria-hidden": "true" }, "›", -1 /* HOISTED */)
             ]), 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_8)
           ], 2 /* CLASS */)
@@ -174,7 +177,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             createElementVNode("div", {
               class: normalizeClass(_ctx.b('canvas-prompt'))
             }, [
-              _cache[8] || (_cache[8] = createTextVNode(" 请依次点击 ")),
+              _cache[11] || (_cache[11] = createTextVNode(" 请依次点击 ")),
               createElementVNode("strong", null, "【" + toDisplayString(_ctx.targetTextLabel) + "】", 1 /* TEXT */)
             ], 2 /* CLASS */)
           ], 64 /* STABLE_FRAGMENT */))
@@ -218,7 +221,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               createElementVNode("div", {
                 class: normalizeClass(_ctx.b('canvas-prompt'))
               }, [
-                _cache[9] || (_cache[9] = createTextVNode(" 请选择正确的计算结果：")),
+                _cache[12] || (_cache[12] = createTextVNode(" 请选择正确的计算结果：")),
                 createElementVNode("strong", null, toDisplayString(_ctx.mathExpression), 1 /* TEXT */)
               ], 2 /* CLASS */)
             ], 64 /* STABLE_FRAGMENT */))
@@ -314,7 +317,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   createElementVNode("div", {
                     class: normalizeClass(_ctx.b('canvas-prompt'))
                   }, [
-                    _cache[10] || (_cache[10] = createTextVNode("请点击 ")),
+                    _cache[13] || (_cache[13] = createTextVNode("请点击 ")),
                     createElementVNode("strong", null, toDisplayString(_ctx.iconTarget.label), 1 /* TEXT */)
                   ], 2 /* CLASS */)
                 ], 64 /* STABLE_FRAGMENT */))
@@ -358,7 +361,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                     createElementVNode("div", {
                       class: normalizeClass(_ctx.b('canvas-prompt'))
                     }, [
-                      _cache[11] || (_cache[11] = createTextVNode("请依次点击 ")),
+                      _cache[14] || (_cache[14] = createTextVNode("请依次点击 ")),
                       createElementVNode("strong", null, toDisplayString(_ctx.sequenceTargetLabel), 1 /* TEXT */)
                     ], 2 /* CLASS */)
                   ], 64 /* STABLE_FRAGMENT */))
@@ -399,53 +402,102 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         class: normalizeClass(_ctx.b('canvas-prompt'))
                       }, "将图形拖到相同轮廓中", 2 /* CLASS */)
                     ], 64 /* STABLE_FRAGMENT */))
-                  : (openBlock(), createElementBlock(Fragment, { key: 7 }, [
-                      createElementVNode("div", {
-                        ref: "scene",
-                        class: normalizeClass(_ctx.b('scene', 'path')),
-                        style: normalizeStyle(_ctx.sceneStyle)
-                      }, [
-                        createElementVNode("span", {
-                          class: normalizeClass(_ctx.b('scene-decoration', 'one'))
-                        }, null, 2 /* CLASS */),
-                        createElementVNode("span", {
-                          class: normalizeClass(_ctx.b('scene-decoration', 'two'))
-                        }, null, 2 /* CLASS */),
-                        (openBlock(), createElementBlock("svg", {
-                          class: normalizeClass(_ctx.b('path-track')),
-                          viewBox: `0 0 ${_ctx.getSceneWidth()} ${_ctx.safeHeight}`,
-                          "aria-hidden": "true"
+                  : (_ctx.captchaType === 'code')
+                    ? (openBlock(), createElementBlock(Fragment, { key: 7 }, [
+                        createElementVNode("div", {
+                          ref: "scene",
+                          class: normalizeClass(_ctx.b('scene', 'code')),
+                          style: normalizeStyle(_ctx.sceneStyle)
                         }, [
-                          createElementVNode("path", {
-                            d: _ctx.pathLine,
-                            class: normalizeClass(_ctx.b('path-line'))
-                          }, null, 10 /* CLASS, PROPS */, _hoisted_17),
-                          createElementVNode("circle", {
-                            cx: _ctx.pathEndPoint.x,
-                            cy: _ctx.pathEndPoint.y,
-                            r: "8",
-                            class: normalizeClass(_ctx.b('path-end'))
-                          }, null, 10 /* CLASS, PROPS */, _hoisted_18)
-                        ], 10 /* CLASS, PROPS */, _hoisted_16)),
-                        createElementVNode("button", {
-                          type: "button",
-                          class: normalizeClass(_ctx.b('path-marker')),
-                          style: normalizeStyle(_ctx.pathMarkerStyle),
-                          disabled: _ctx.disabled || _ctx.verified,
-                          "aria-label": "沿轨迹滑动到终点",
-                          onPointerdown: _cache[4] || (_cache[4] = withModifiers((...args) => (_ctx.startPath && _ctx.startPath(...args)), ["prevent"]))
-                        }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_19),
-                        (_ctx.verified)
-                          ? (openBlock(), createElementBlock("div", {
-                              key: 0,
-                              class: normalizeClass(_ctx.b('mask'))
-                            }, "验证通过", 2 /* CLASS */))
-                          : createCommentVNode("v-if", true)
-                      ], 6 /* CLASS, STYLE */),
-                      createElementVNode("div", {
-                        class: normalizeClass(_ctx.b('canvas-prompt'))
-                      }, "沿轨迹将圆点滑动到终点", 2 /* CLASS */)
-                    ], 64 /* STABLE_FRAGMENT */)),
+                          createElementVNode("span", {
+                            class: normalizeClass(_ctx.b('scene-decoration', 'one'))
+                          }, null, 2 /* CLASS */),
+                          createElementVNode("span", {
+                            class: normalizeClass(_ctx.b('scene-decoration', 'two'))
+                          }, null, 2 /* CLASS */),
+                          createElementVNode("div", {
+                            class: normalizeClass(_ctx.b('code-value')),
+                            "aria-label": "验证码内容"
+                          }, [
+                            (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.codeChars, (character, index) => {
+                              return (openBlock(), createElementBlock("span", {
+                                key: `${character}-${index}`,
+                                class: normalizeClass(_ctx.b('code-character')),
+                                style: normalizeStyle(_ctx.getCodeCharacterStyle(index))
+                              }, toDisplayString(character), 7 /* TEXT, CLASS, STYLE */))
+                            }), 128 /* KEYED_FRAGMENT */))
+                          ], 2 /* CLASS */)
+                        ], 6 /* CLASS, STYLE */),
+                        createElementVNode("div", {
+                          class: normalizeClass(_ctx.b('code-prompt'))
+                        }, [
+                          createElementVNode("label", { for: _ctx.codeInputId }, "请输入图中的字母和数字", 8 /* PROPS */, _hoisted_16),
+                          withDirectives(createElementVNode("input", {
+                            id: _ctx.codeInputId,
+                            ref: "codeInput",
+                            "onUpdate:modelValue": _cache[4] || (_cache[4] = $event => ((_ctx.codeInput) = $event)),
+                            type: "text",
+                            maxlength: _ctx.safeCodeLength,
+                            autocomplete: "one-time-code",
+                            disabled: _ctx.disabled || _ctx.verified,
+                            onKeydown: _cache[5] || (_cache[5] = withKeys(withModifiers($event => (_ctx.verify(_ctx.codeInput)), ["prevent"]), ["enter"]))
+                          }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_17), [
+                            [vModelText, _ctx.codeInput]
+                          ]),
+                          createElementVNode("button", {
+                            type: "button",
+                            disabled: _ctx.disabled || _ctx.verified || !_ctx.codeInput,
+                            onClick: _cache[6] || (_cache[6] = $event => (_ctx.verify(_ctx.codeInput)))
+                          }, "确认", 8 /* PROPS */, _hoisted_18)
+                        ], 2 /* CLASS */)
+                      ], 64 /* STABLE_FRAGMENT */))
+                    : (openBlock(), createElementBlock(Fragment, { key: 8 }, [
+                        createElementVNode("div", {
+                          ref: "scene",
+                          class: normalizeClass(_ctx.b('scene', 'path')),
+                          style: normalizeStyle(_ctx.sceneStyle)
+                        }, [
+                          createElementVNode("span", {
+                            class: normalizeClass(_ctx.b('scene-decoration', 'one'))
+                          }, null, 2 /* CLASS */),
+                          createElementVNode("span", {
+                            class: normalizeClass(_ctx.b('scene-decoration', 'two'))
+                          }, null, 2 /* CLASS */),
+                          (openBlock(), createElementBlock("svg", {
+                            class: normalizeClass(_ctx.b('path-track')),
+                            viewBox: `0 0 ${_ctx.getSceneWidth()} ${_ctx.safeHeight}`,
+                            "aria-hidden": "true"
+                          }, [
+                            createElementVNode("path", {
+                              d: _ctx.pathLine,
+                              class: normalizeClass(_ctx.b('path-line'))
+                            }, null, 10 /* CLASS, PROPS */, _hoisted_20),
+                            createElementVNode("circle", {
+                              cx: _ctx.pathEndPoint.x,
+                              cy: _ctx.pathEndPoint.y,
+                              r: "8",
+                              class: normalizeClass(_ctx.b('path-end'))
+                            }, null, 10 /* CLASS, PROPS */, _hoisted_21)
+                          ], 10 /* CLASS, PROPS */, _hoisted_19)),
+                          createElementVNode("button", {
+                            type: "button",
+                            class: normalizeClass(_ctx.b('path-marker')),
+                            style: normalizeStyle(_ctx.pathMarkerStyle),
+                            disabled: _ctx.disabled || _ctx.verified,
+                            "aria-label": "沿轨迹滑动到终点",
+                            onPointerdown: _cache[7] || (_cache[7] = withModifiers((...args) => (_ctx.startPath && _ctx.startPath(...args)), ["prevent"]))
+                          }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_22),
+                          (_ctx.verified)
+                            ? (openBlock(), createElementBlock("div", {
+                                key: 0,
+                                class: normalizeClass(_ctx.b('mask'))
+                              }, "验证通过", 2 /* CLASS */))
+                            : createCommentVNode("v-if", true)
+                        ], 6 /* CLASS, STYLE */),
+                        createElementVNode("div", {
+                          class: normalizeClass(_ctx.b('canvas-prompt'))
+                        }, "沿轨迹将圆点滑动到终点", 2 /* CLASS */)
+                      ], 64 /* STABLE_FRAGMENT */)),
     createElementVNode("div", {
       class: normalizeClass(_ctx.b('footer'))
     }, [
@@ -458,8 +510,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         class: normalizeClass(_ctx.b('refresh')),
         disabled: _ctx.disabled,
         "aria-label": "刷新验证码",
-        onClick: _cache[5] || (_cache[5] = (...args) => (_ctx.refresh && _ctx.refresh(...args)))
-      }, " ↻ 换一组 ", 10 /* CLASS, PROPS */, _hoisted_20)
+        onClick: _cache[8] || (_cache[8] = (...args) => (_ctx.refresh && _ctx.refresh(...args)))
+      }, " ↻ 换一组 ", 10 /* CLASS, PROPS */, _hoisted_23)
     ], 2 /* CLASS */)
   ], 6 /* CLASS, STYLE */))
 }

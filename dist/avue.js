@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('element-plus'), require('axios'), require('@element-plus/icons-vue')) :
   typeof define === 'function' && define.amd ? define(['vue', 'element-plus', 'axios', '@element-plus/icons-vue'], factory) :
@@ -35079,7 +35079,7 @@
   function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var components = _objectSpread$3(_objectSpread$3({}, elementComponents), dataComponents);
 
-  var version = '3.9.3';
+  var version = '3.9.4';
 
   var GUTTER = 8;
   var stateMap = new WeakMap();

@@ -1,54 +1,40 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 
 var script = create({
   name: 'flow',
+  emits: ['click', 'change-node-site'],
   props: {
     active: [String, Number],
-    index: [String, Number],
-    node: Object
-  },
-  data () {
-    return {
-      // 控制节点操作显示
-      mouseEnter: false
-    }
+    node: {
+      type: Object,
+      required: true
+    },
+    nodeWidth: [String, Number],
+    nodeHeight: [String, Number],
+    editable: Boolean
   },
   computed: {
-    // 节点容器样式
-    flowNodeContainer: {
-      get () {
-        return {
-          position: 'absolute',
-          width: '200px',
-          top: this.setPx(this.node.top),
-          left: this.setPx(this.node.left),
-          boxShadow: this.mouseEnter ? '#66a6e0 0px 0px 12px 0px' : '',
-          backgroundColor: 'transparent'
-        }
+    flowNodeContainer () {
+      return {
+        width: this.setPx(this.node.width || this.nodeWidth),
+        minHeight: this.setPx(this.node.height || this.nodeHeight),
+        top: this.setPx(this.node.top || 0),
+        left: this.setPx(this.node.left || 0)
       }
     }
   },
   methods: {
-    // 鼠标进入
-    showDelete () {
-      this.mouseEnter = true;
+    handleClick () {
+      this.$emit('click', this.node);
     },
-    // 鼠标离开
-    hideDelete () {
-      this.mouseEnter = false;
-    },
-    // 鼠标移动后抬起
     changeNodeSite () {
-      // 避免抖动
-      if (this.node.left == this.$refs.node.style.left && this.node.top == this.$refs.node.style.top) {
-        return;
-      }
-      this.$emit('changeNodeSite', {
-        index: this.index,
-        left: Number(this.$refs.node.style.left.replace('px', '')),
-        top: Number(this.$refs.node.style.top.replace('px', '')),
-      });
+      if (!this.editable || !this.$refs.node) return;
+      const left = Number.parseFloat(this.$refs.node.style.left);
+      const top = Number.parseFloat(this.$refs.node.style.top);
+      if (Number.isNaN(left) || Number.isNaN(top)) return;
+      if (Number(this.node.left || 0) === left && Number(this.node.top || 0) === top) return;
+      this.$emit('change-node-site', { id: this.node.id, left, top });
     }
   }
 });

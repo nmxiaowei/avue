@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { isJson, downFile, validData } from '../../utils/util.mjs';
 import packages from '../../core/packages.mjs';
 import dayjs from '../../../_virtual/dayjs.min.mjs';
@@ -187,17 +187,21 @@ var $Export = {
         }
         return buf;
     },
-    excel(params) {
+    excel(params = {}) {
         const xlsx = getXLSX();
         if (!xlsx) {
             packages.logs('xlsx');
-            return;
+            return Promise.reject(new Error('未检测到 xlsx，请先引入 xlsx。'));
         }
-        return new Promise((resolve) => {
+        try {
+            const columns = Array.isArray(params.columns) ? params.columns : [];
+            const rows = Array.isArray(params.data) ? params.data : [];
+            if (!columns.length)
+                throw new Error('导出 Excel 至少需要一列配置。');
             const _params = {
                 prop: []
             };
-            _params.header = this.buildHeader(params.columns);
+            _params.header = this.buildHeader(columns);
             _params.title = params.title || dayjs().format('YYYY-MM-DD HH:mm:ss');
             const callback = (list) => {
                 list.forEach((ele) => {
@@ -209,15 +213,17 @@ var $Export = {
                     }
                 });
             };
-            callback(params.columns);
-            _params.data = params.data.map((row) => _params.prop.map((prop) => {
-                let data = row[prop];
+            callback(columns);
+            if (!_params.prop.length)
+                throw new Error('导出 Excel 未找到有效字段。');
+            _params.data = rows.map((row) => _params.prop.map((prop) => {
+                let data = row ? row[prop] : '';
                 if (isJson(data))
                     data = JSON.stringify(data);
                 return data;
             }));
             const headerRows = _params.header.length;
-            _params.header.push(..._params.data, []);
+            _params.header.push(..._params.data);
             const merges = this.doMerges(_params.header);
             const ws = this.aoa_to_sheet(_params.header, headerRows, xlsx);
             ws['!merges'] = merges;
@@ -230,7 +236,7 @@ var $Export = {
             };
             ws['!cols'] = getColumnWidths(_params.header, _params.prop.length);
             ws['!rows'] = _params.header.map((_row, index) => ({
-                hpt: index < headerRows ? 26 : index === _params.header.length - 1 ? 8 : 20
+                hpt: index < headerRows ? 26 : 20
             }));
             if (_params.data.length > 0 && _params.prop.length > 0) {
                 ws['!autofilter'] = {
@@ -238,51 +244,47 @@ var $Export = {
                 };
             }
             const workbook = {
-                SheetNames: ['Sheet1'],
+                SheetNames: [params.sheetName || 'Sheet1'],
                 Sheets: {},
                 Props: {
                     Title: _params.title,
                     CreatedDate: new Date()
                 }
             };
-            workbook.Sheets.Sheet1 = ws;
+            workbook.Sheets[workbook.SheetNames[0]] = ws;
             const wopts = {
                 bookType: 'xlsx',
                 bookSST: false,
-                type: 'binary',
+                type: 'array',
                 cellStyles: true
             };
             const wbout = xlsx.write(workbook, wopts);
-            const blob = new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' });
-            downFile(blob, _params.title + '.xlsx');
-            resolve();
-        });
-    },
-    xlsx(file) {
-        if (typeof window === 'undefined' || !window.saveAs || !window.XLSX) {
-            packages.logs('file-saver');
-            packages.logs('xlsx');
-            return;
+            const blob = new Blob([wbout], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            const filename = String(params.filename || _params.title).replace(/[\\/:*?"<>|]/g, '-') + '.xlsx';
+            downFile(blob, filename);
+            return Promise.resolve({ filename, sheetName: workbook.SheetNames[0], rows: _params.data.length });
         }
+        catch (error) {
+            return Promise.reject(error instanceof Error ? error : new Error(String(error || 'Excel 导出失败。')));
+        }
+    },
+    xlsx(file, options = {}) {
+        if (typeof window === 'undefined' || !window.XLSX) {
+            packages.logs('xlsx');
+            return Promise.reject(new Error('未检测到 xlsx，请先引入 xlsx。'));
+        }
+        if (!(file instanceof File))
+            return Promise.reject(new TypeError('请传入有效的 Excel 文件。'));
         const xlsx = window.XLSX;
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            const fixdata = (data) => {
-                let o = '';
-                let l = 0;
-                const w = 10240;
-                for (; l < data.byteLength / w; ++l) {
-                    o += String.fromCharCode.apply(null, Array.from(new Uint8Array(data.slice(l * w, l * w + w))));
-                }
-                o += String.fromCharCode.apply(null, Array.from(new Uint8Array(data.slice(l * w))));
-                return o;
-            };
-            const getHeaderRow = (sheet) => {
+            const getHeaderRow = (sheet, rowIndex) => {
                 const headers = [];
                 const range = xlsx.utils.decode_range(sheet['!ref']);
-                const R = range.s.r;
                 for (let C = range.s.c; C <= range.e.c; ++C) {
-                    const cell = sheet[xlsx.utils.encode_cell({ c: C, r: R })];
+                    const cell = sheet[xlsx.utils.encode_cell({ c: C, r: rowIndex })];
                     let hdr = 'UNKNOWN ' + C;
                     if (cell && cell.t)
                         hdr = xlsx.utils.format_cell(cell);
@@ -291,15 +293,28 @@ var $Export = {
                 return headers;
             };
             reader.onload = (e) => {
-                const data = e.target.result;
-                const fixedData = fixdata(data);
-                const workbook = xlsx.read(btoa(fixedData), { type: 'base64' });
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                const header = getHeaderRow(worksheet);
-                const results = xlsx.utils.sheet_to_json(worksheet);
-                resolve({ header, results });
+                try {
+                    const data = e.target.result;
+                    const workbook = xlsx.read(data, { type: 'array', cellDates: true });
+                    const sheetName = options.sheetName || workbook.SheetNames[Number(options.sheetIndex) || 0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    if (!worksheet || !worksheet['!ref'])
+                        throw new Error('未找到可读取的工作表。');
+                    const headerRow = Math.max(0, Number(options.headerRow) || 0);
+                    const header = getHeaderRow(worksheet, headerRow);
+                    const results = xlsx.utils.sheet_to_json(worksheet, {
+                        range: headerRow,
+                        raw: options.raw === true,
+                        defval: options.defval === undefined ? '' : options.defval
+                    });
+                    resolve({ header, results, sheetName });
+                }
+                catch (error) {
+                    reject(error instanceof Error ? error : new Error(String(error || 'Excel 解析失败。')));
+                }
             };
+            reader.onerror = () => reject(new Error('Excel 文件读取失败。'));
+            reader.onabort = () => reject(new Error('Excel 文件读取已取消。'));
             reader.readAsArrayBuffer(file);
         });
     }

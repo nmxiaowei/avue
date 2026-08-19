@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, resolveDirective, openBlock, createBlock, normalizeClass, withCtx, createVNode, createElementBlock, withDirectives, Fragment, renderSlot, resolveDynamicComponent, withModifiers, createCommentVNode, createElementVNode, toDisplayString, createTextVNode } from 'vue';
 
 const _hoisted_1 = ["element-loading-text"];

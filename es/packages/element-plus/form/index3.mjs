@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, normalizeStyle, normalizeClass, createVNode, withModifiers, withCtx, Fragment, renderList, createBlock, createSlots, withDirectives, resolveDynamicComponent, createElementVNode, renderSlot, mergeProps, toDisplayString, createCommentVNode, vShow, createTextVNode, normalizeProps, guardReactiveProps } from 'vue';
 
 const _hoisted_1 = ["innerHTML"];
