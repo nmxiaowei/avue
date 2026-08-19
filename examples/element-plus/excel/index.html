@@ -1,81 +1,73 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Excel</title>
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <!-- 导入表格需要的包 -->
-
     <script src="../../cdn/filesaver/FileSaver.min.js"></script>
     <script src="../../cdn/xlsx/xlsx.full.min.js"></script>
-
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      #app { max-width: 960px; margin: 0 auto; padding: 20px; border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgb(15 23 42 / 6%); }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+    </style>
   </head>
-
   <body>
     <div id="app">
-      <div style="display: flex">
-        <el-button type="primary" @click="handleGet">下载模版</el-button>
-        <div style="width: 20px"></div>
-        <el-upload
-          :show-file-list="false"
-          action="action"
-          :on-change="handleChange"
-        >
-          <el-button type="primary">导入 excel</el-button>
+      <div class="actions">
+        <el-button type="primary" :loading="exporting" @click="handleExport">导出当前数据</el-button>
+        <el-upload :show-file-list="false" accept=".xlsx,.xls" :auto-upload="false" :on-change="handleChange">
+          <el-button :loading="importing">导入 Excel</el-button>
         </el-upload>
+        <el-tag v-if="sheetName" type="success">当前工作表：{{ sheetName }}</el-tag>
       </div>
-      <br />
       <avue-crud :option="option" :data="list"></avue-crud>
     </div>
   </body>
-</html>
-
-<script>
-  var app = Vue.createApp({
-    data() {
-      return {
-        list: [],
-        option: {
-          excelBtn: true,
-          column: [
-            {
-              label: "id",
-              prop: "id",
-            },
-            {
-              label: "姓名",
-              prop: "name",
-            },
-            {
-              label: "年龄",
-              prop: "sex",
-            },
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          exporting: false, importing: false, sheetName: "",
+          list: [
+            { id: 1, name: "张三", age: 26, status: "启用" },
+            { id: 2, name: "李四", age: 31, status: "启用" },
           ],
+          option: { excelBtn: false, column: [
+            { label: "ID", prop: "id" }, { label: "姓名", prop: "name" },
+            { label: "年龄", prop: "age" }, { label: "状态", prop: "status" },
+          ] },
+        };
+      },
+      methods: {
+        async handleExport() {
+          this.exporting = true;
+          try {
+            const result = await this.$Export.excel({ title: "用户数据", sheetName: "用户", columns: this.option.column, data: this.list });
+            this.$message.success("已导出 " + result.rows + " 条数据");
+          } catch (error) { this.$message.error(error.message || "导出失败"); }
+          finally { this.exporting = false; }
         },
-      };
-    },
-    methods: {
-      handleGet() {
-        window.open("/cdn/demo.xlsx");
+        async handleChange(file) {
+          this.importing = true;
+          try {
+            const data = await this.$Export.xlsx(file.raw, { defval: "" });
+            this.list = data.results;
+            this.sheetName = data.sheetName;
+            this.$message.success("已导入 " + data.results.length + " 条数据");
+          } catch (error) { this.$message.error(error.message || "导入失败"); }
+          finally { this.importing = false; }
+        },
       },
-      handleChange(file, fileLis) {
-        this.$Export.xlsx(file.raw).then((data) => {
-          this.list = data.results;
-        });
-      },
-    },
-  });
-  app.use(ElementPlus);
-  app.use(AVUE);
-  app.mount("#app");
-</script>
+    });
+    app.use(ElementPlus);
+    app.use(AVUE);
+    app.mount("#app");
+  </script>
+</html>

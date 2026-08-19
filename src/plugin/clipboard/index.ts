@@ -1,67 +1,46 @@
-function select(element: HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement | HTMLElement) {
-  let selectedText = '';
-
-  if (element.nodeName === 'SELECT') {
-    (element as HTMLSelectElement).focus();
-    selectedText = (element as HTMLSelectElement).value;
-  } else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
-    const input = element as HTMLInputElement | HTMLTextAreaElement;
-    const isReadOnly = input.hasAttribute('readonly');
-
-    if (!isReadOnly) {
-      input.setAttribute('readonly', '');
-    }
-
-    input.select();
-    input.setSelectionRange(0, input.value.length);
-
-    if (!isReadOnly) {
-      input.removeAttribute('readonly');
-    }
-
-    selectedText = input.value;
-  } else {
-    if (element.hasAttribute('contenteditable')) {
-      element.focus();
-    }
-
-    const selection = window.getSelection();
-    const range = document.createRange();
-
-    range.selectNodeContents(element);
-    selection?.removeAllRanges();
-    selection?.addRange(range);
-
-    selectedText = selection?.toString() || '';
-  }
-
-  return selectedText;
+export interface ClipboardOption {
+  text: string | number | null | undefined;
+  fallback?: boolean;
 }
 
-export default function ({ text }: { text: string }) {
-  return new Promise<void>((resolve, reject) => {
-    const container = document.body;
-    const isRTL = document.documentElement.getAttribute('dir') == 'rtl';
-    const fakeElem = document.createElement('textarea');
-    fakeElem.style.fontSize = '12pt';
-    fakeElem.style.border = '0';
-    fakeElem.style.padding = '0';
-    fakeElem.style.margin = '0';
-    fakeElem.style.position = 'absolute';
-    fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px';
-    const yPosition = window.pageYOffset || document.documentElement.scrollTop;
-    fakeElem.style.top = `${yPosition}px`;
-    fakeElem.setAttribute('readonly', '');
-    fakeElem.value = text;
-    container.appendChild(fakeElem);
-    select(fakeElem);
+const legacyCopy = (text: string) => {
+  const activeElement = document.activeElement as HTMLElement | null;
+  const selection = window.getSelection();
+  const ranges = selection ? Array.from({ length: selection.rangeCount }, (_, index) => selection.getRangeAt(index).cloneRange()) : [];
+  const textarea = document.createElement('textarea');
+  const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.setAttribute('aria-hidden', 'true');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  textarea.style[isRTL ? 'right' : 'left'] = '-9999px';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+  const copied = document.execCommand('copy');
+  textarea.remove();
+  if (selection) {
+    selection.removeAllRanges();
+    ranges.forEach((range) => selection.addRange(range));
+  }
+  activeElement?.focus?.({ preventScroll: true });
+  if (!copied) throw new Error('浏览器拒绝写入剪切板。');
+};
+
+export default async function ({ text, fallback = true }: ClipboardOption) {
+  if (typeof document === 'undefined') throw new Error('当前环境不支持剪切板。');
+  const value = text === null || text === undefined ? '' : String(text);
+  const clipboard = navigator.clipboard;
+  if (clipboard && typeof clipboard.writeText === 'function' && window.isSecureContext) {
     try {
-      document.execCommand('copy');
-      resolve();
-    } catch (err) {
-      reject(err);
-    } finally {
-      container.removeChild(fakeElem);
+      await clipboard.writeText(value);
+      return;
+    } catch (error) {
+      if (!fallback) throw error;
     }
-  });
+  }
+  if (!fallback) throw new Error('当前浏览器不支持剪切板写入。');
+  legacyCopy(value);
 }

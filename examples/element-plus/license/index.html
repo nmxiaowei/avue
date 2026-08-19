@@ -1,69 +1,71 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue License</title>
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <script src="../../cdn/mock/mock-min.js"></script>
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      #app { max-width: 1040px; margin: 0 auto; }
+      .panel { padding: 20px; border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgb(15 23 42 / 6%); }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .preview { max-width: 220px; margin-top: 16px; padding: 8px; border: 1px solid #ebeef5; border-radius: 8px; background: #fff; }
+      .preview img { width: 100%; display: block; }
+    </style>
   </head>
-
   <body>
     <div id="app">
-      <avue-license :option="option" id="1"></avue-license>
+      <div class="panel">
+        <avue-license
+          ref="license"
+          :option="option"
+          show-status
+          @ready="handleReady"
+          @error="handleError"
+          @asset-error="handleAssetError"
+        ></avue-license>
+        <div class="actions">
+          <el-button type="primary" :loading="loading" @click="refresh">重新生成</el-button>
+          <el-button :disabled="loading" @click="preview">预览导出图片</el-button>
+          <el-button :disabled="loading" @click="download">下载 JPG</el-button>
+        </div>
+        <div v-if="result" class="preview"><img :src="result" alt="授权凭证导出预览" /></div>
+      </div>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
+    const app = Vue.createApp({
       data() {
         return {
+          loading: true,
+          result: "",
           option: {
             img: "../../images/sqstemp.jpg",
+            width: 820,
+            quality: 0.94,
             list: [
-              {
-                left: 310,
-                top: 625,
-                text: "这是公司的名称",
-                color: "#000",
-                size: 29,
-                style: "黑体",
-              },
-              {
-                left: 690,
-                top: 1077,
-                text: "这里是授权编号",
-                color: "#000",
-                size: 26,
-                style: "黑体",
-              },
-              {
-                left: 690,
-                top: 1125,
-                text: "这里是授权日期",
-                color: "#000",
-                size: 26,
-                style: "黑体",
-              },
-              {
-                left: 450,
-                top: 120,
-                img: "../../images/logo.jpg",
-                width: 100,
-              },
+              { left: 170, top: 420, text: "这是公司的名称", color: "#111827", size: 29, style: "Microsoft YaHei", bold: true },
+              { left: 510, top: 720, text: "AVUE-20260809-001", color: "#111827", size: 22, style: "Microsoft YaHei" },
+              { left: 510, top: 754, text: "授权有效期：2026-08-09", color: "#111827", size: 20, style: "Microsoft YaHei" },
+              { left: 370, top: 72, img: "../../images/logo.jpg", width: 84 },
             ],
           },
         };
       },
-      methods: {},
+      methods: {
+        handleReady() { this.loading = false; },
+        handleError({ message }) { this.loading = false; this.$message.error(message); },
+        handleAssetError() { this.$message.warning("部分叠加素材加载失败，已跳过。"); },
+        async refresh() { this.loading = true; await this.$refs.license.init(); },
+        async preview() { this.result = await this.$refs.license.getBase64(); },
+        async download() { await this.$refs.license.downFile("授权凭证.jpg"); },
+      },
     });
     app.use(ElementPlus);
     app.use(AVUE);

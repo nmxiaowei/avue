@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../../cdn/axios/axios.js"></script>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
+  <body>
+    <div id="app" style="padding: 24px">
+      <el-radio-group v-model="type" style="margin-bottom: 16px">
+        <el-radio-button label="slider">滑动拼图</el-radio-button>
+        <el-radio-button label="text">文字点选</el-radio-button>
+        <el-radio-button label="math">算术验证</el-radio-button>
+        <el-radio-button label="rotate">旋转校正</el-radio-button>
+        <el-radio-button label="icon">图标点选</el-radio-button>
+        <el-radio-button label="sequence">顺序点选</el-radio-button>
+        <el-radio-button label="drag">拖拽匹配</el-radio-button>
+        <el-radio-button label="code">字母数字</el-radio-button>
+        <el-radio-button label="path">轨迹滑动</el-radio-button>
+      </el-radio-group>
+      <avue-captcha
+        v-model="passed"
+        :type="type"
+        :target-text="['诚', '信']"
+        :background-image="backgroundImage"
+        :code-length="4"
+        code-characters="23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+        @success="onSuccess"
+        @fail="onFail"
+      ></avue-captcha>
+      <p>验证状态：{{ passed ? '通过' : '未通过' }}</p>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            type: 'slider',
+            passed: false,
+            backgroundImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"%3E%3Cdefs%3E%3ClinearGradient id="g" x1="0" x2="1" y1="0" y2="1"%3E%3Cstop stop-color="%235b9dff"/%3E%3Cstop offset="1" stop-color="%23c3e7ff"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="800" height="400" fill="url(%23g)"/%3E%3Ccircle cx="130" cy="95" r="55" fill="%23fff" fill-opacity=".18"/%3E%3Ccircle cx="650" cy="310" r="90" fill="%23fff" fill-opacity=".15"/%3E%3C/svg%3E',
+          };
+        },
+        methods: {
+          onSuccess() {
+            ElementPlus.ElMessage.success('验证通过');
+          },
+          onFail({ message }) {
+            ElementPlus.ElMessage.warning(message);
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount('#app');
+    </script>
+  </body>
+</html>

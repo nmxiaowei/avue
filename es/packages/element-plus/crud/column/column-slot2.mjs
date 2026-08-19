@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { detail } from '../../../../src/core/detail.mjs';
 import { DIC_PROPS, DIC_SHOW_SPLIT } from '../../../../src/global/variable.mjs';
 import { blankVal, isMediaType } from '../../../../src/utils/util.mjs';

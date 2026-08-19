@@ -1,83 +1,65 @@
 <template>
   <div ref="node"
+       :class="b('node-wrapper')"
        :style="flowNodeContainer"
-       @mouseenter="showDelete"
-       @mouseleave="hideDelete"
-       @mouseup="changeNodeSite"
-       :left="node.left"
-       :top="node.top"
-       disabled
-       :mask="false">
-    <div :class="b('node',{'active':active===node.id})">
+       tabindex="0"
+       role="button"
+       @click="handleClick"
+       @keydown.enter.prevent="handleClick"
+       @mouseup="changeNodeSite">
+    <div :class="b('node', { active: active === node.id })">
       <div :class="b('node-header')">
-        <span :class="b('node-drag')">
-        </span>
-        <el-icon>
-          <el-icon-rank />
-        </el-icon>
+        <span v-if="editable"
+              :class="b('node-drag')"
+              title="拖动节点"></span>
+        <el-icon><el-icon-rank /></el-icon>
         <slot name="header"
-              :node="node">
-        </slot>
+              :node="node"></slot>
       </div>
       <div :class="b('node-body')">
-        <slot :node="node">
-        </slot>
+        <slot :node="node">{{ node.name }}</slot>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
 import create from "core/create";
+
 export default create({
   name: 'flow',
+  emits: ['click', 'change-node-site'],
   props: {
     active: [String, Number],
-    index: [String, Number],
-    node: Object
-  },
-  data () {
-    return {
-      // 控制节点操作显示
-      mouseEnter: false
-    }
+    node: {
+      type: Object,
+      required: true
+    },
+    nodeWidth: [String, Number],
+    nodeHeight: [String, Number],
+    editable: Boolean
   },
   computed: {
-    // 节点容器样式
-    flowNodeContainer: {
-      get () {
-        return {
-          position: 'absolute',
-          width: '200px',
-          top: this.setPx(this.node.top),
-          left: this.setPx(this.node.left),
-          boxShadow: this.mouseEnter ? '#66a6e0 0px 0px 12px 0px' : '',
-          backgroundColor: 'transparent'
-        }
+    flowNodeContainer () {
+      return {
+        width: this.setPx(this.node.width || this.nodeWidth),
+        minHeight: this.setPx(this.node.height || this.nodeHeight),
+        top: this.setPx(this.node.top || 0),
+        left: this.setPx(this.node.left || 0)
       }
     }
   },
   methods: {
-    // 鼠标进入
-    showDelete () {
-      this.mouseEnter = true
+    handleClick () {
+      this.$emit('click', this.node);
     },
-    // 鼠标离开
-    hideDelete () {
-      this.mouseEnter = false
-    },
-    // 鼠标移动后抬起
     changeNodeSite () {
-      // 避免抖动
-      if (this.node.left == this.$refs.node.style.left && this.node.top == this.$refs.node.style.top) {
-        return;
-      }
-      this.$emit('changeNodeSite', {
-        index: this.index,
-        left: Number(this.$refs.node.style.left.replace('px', '')),
-        top: Number(this.$refs.node.style.top.replace('px', '')),
-      })
+      if (!this.editable || !this.$refs.node) return;
+      const left = Number.parseFloat(this.$refs.node.style.left);
+      const top = Number.parseFloat(this.$refs.node.style.top);
+      if (Number.isNaN(left) || Number.isNaN(top)) return;
+      if (Number(this.node.left || 0) === left && Number(this.node.top || 0) === top) return;
+      this.$emit('change-node-site', { id: this.node.id, left, top });
     }
   }
 })

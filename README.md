@@ -162,6 +162,16 @@ pnpm install
 pnpm dev
 ```
 
+### 运行本地示例
+
+示例服务不依赖额外的开发服务器，直接提供 `examples`、`dist` 和 `lib` 中的静态资源：
+
+```bash
+pnpm examples:dev
+```
+
+启动后访问 `http://127.0.0.1:5175/examples/`。如需在修改组件源码后实时查看效果，请在另一个终端运行 `pnpm dev`，以持续更新示例引用的 `dist` 浏览器包。
+
 常用命令：
 
 ```bash

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AvueFileManager 文件管理与预览示例</title>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; color: #303133; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      .demo { max-width: 1320px; padding: 24px; margin: 0 auto; border-radius: 10px; background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, .04); }
+      h1 { margin-top: 0; font-size: 20px; }
+      p { color: #606266; line-height: 1.7; }
+      pre { max-height: 180px; padding: 12px; overflow: auto; color: #d6e4ff; background: #1e293b; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="demo">
+      <h1>AvueFileManager 文件管理与预览</h1>
+      <p>组件内置图片、音视频、PDF、文本和下载预览。此示例不配置后端上传接口：新上传的文件会生成浏览器临时地址，便于即时预览；生产环境可通过 <code>upload-request</code> 对接已有上传服务。</p>
+      <avue-file-manager
+        v-model="files"
+        v-model:folders="folders"
+        :height="620"
+        accept="image/*,.txt,.json,.pdf"
+        :max-size="10"
+        @select="handleSelect"
+        @change="handleChange"
+        @error="handleError"
+      ></avue-file-manager>
+      <h3>当前文件数据</h3>
+      <pre>{{ JSON.stringify(files, null, 2) }}</pre>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            folders: [
+              { id: "design", name: "设计素材" },
+              { id: "documents", name: "产品文档" },
+              { id: "archive", name: "历史归档", parentId: "documents" }
+            ],
+            files: [
+              { id: "logo", name: "avue-logo.jpg", type: "image/jpeg", size: 39231, url: "../../images/logo.jpg", folderId: "design" },
+              { id: "config", name: "component-config.json", type: "application/json", size: 158, folderId: "documents", content: JSON.stringify({ preview: true, manager: true }, null, 2) },
+              { id: "brief", name: "项目说明.txt", type: "text/plain", size: 96, folderId: "archive", content: "双击文件可触发预览事件；单击后可移动、重命名或删除。" }
+            ]
+          };
+        },
+        methods: {
+          handleSelect(file) { console.log("选择文件", file); },
+          handleChange(files) { console.log("文件列表更新", files); },
+          handleError(error, file) { console.warn("文件操作失败", file, error); }
+        }
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

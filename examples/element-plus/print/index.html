@@ -2,38 +2,52 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Print</title>
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
+    <style>
+      body { margin: 0; padding: 24px; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      #app { max-width: 820px; margin: 0 auto; }
+      .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+      #test { padding: 28px; border-radius: 10px; background: #fff; box-shadow: 0 8px 24px rgb(15 23 42 / 6%); }
+      .no-print { color: #909399; font-size: 13px; }
+    </style>
   </head>
-
   <body>
     <div id="app">
-      <el-button type="primary" @click="handlePrint1">打印局部</el-button>
-      <el-button type="primary" @click="handlePrint">打印全部</el-button>
-      <div id="test">
-        <h2 style="color: red">我是测试字段</h2>
+      <div class="toolbar">
+        <el-button type="primary" @click="handlePrint">打印凭证</el-button>
+        <el-button @click="handlePrintAll">打印整个示例</el-button>
       </div>
+      <section id="test">
+        <h2>授权确认单</h2>
+        <p>打印会克隆目标节点，页面中的输入值和选中状态不会被改写。</p>
+        <el-form label-width="88px" style="max-width: 460px">
+          <el-form-item label="申请人"><el-input v-model="name"></el-input></el-form-item>
+          <el-form-item label="授权状态"><el-switch v-model="approved" active-text="已通过" inactive-text="待确认"></el-switch></el-form-item>
+        </el-form>
+        <p class="no-print">这条说明带有 no-print，不会出现在打印结果中。</p>
+      </section>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
+    const app = Vue.createApp({
+      data() { return { name: "Avue 用户", approved: true }; },
       methods: {
-        handlePrint1() {
-          this.$Print("#test");
+        print(target) {
+          this.$Print(target, {
+            documentTitle: "授权确认单",
+            onReady: () => this.$message.success("打印内容已准备完成"),
+            onError: (error) => this.$message.error(error.message),
+          });
         },
-        handlePrint() {
-          this.$Print("#app");
-        },
+        handlePrint() { this.print("#test"); },
+        handlePrintAll() { this.print("#app"); },
       },
     });
     app.use(ElementPlus);

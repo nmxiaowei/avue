@@ -1,0 +1,106 @@
+.avue-filter-builder {
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 8px;
+  background: var(--el-bg-color);
+
+  &__header,
+  &__logic,
+  &__actions,
+  &__rule {
+    display: flex;
+    align-items: center;
+  }
+
+  &__header {
+    min-height: 58px;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--el-border-color-lighter);
+  }
+
+  &__logic,
+  &__actions {
+    gap: 10px;
+  }
+
+  &__logic-label {
+    color: var(--el-text-color-regular);
+    white-space: nowrap;
+  }
+
+  &__rules {
+    padding: 12px 16px 16px;
+  }
+
+  &__rule {
+    gap: 10px;
+    min-width: 0;
+
+    & + & {
+      margin-top: 10px;
+    }
+
+    > .el-select,
+    > .el-input,
+    > .el-input-number,
+    > .el-date-editor {
+      flex: 1 1 0;
+      min-width: 144px;
+    }
+
+    > .el-input-number {
+      width: auto;
+    }
+  }
+
+  &__empty-value {
+    flex: 1 1 0;
+    min-width: 144px;
+    padding: 0 12px;
+    color: var(--el-text-color-secondary);
+    font-size: 13px;
+    line-height: 32px;
+    border: 1px dashed var(--el-border-color);
+    border-radius: 4px;
+  }
+
+  &__remove {
+    flex: 0 0 auto;
+  }
+
+  .el-empty {
+    padding: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .avue-filter-builder {
+    &__header,
+    &__rule {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__header {
+      gap: 12px;
+    }
+
+    &__actions {
+      justify-content: flex-end;
+    }
+
+    &__rule > .el-select,
+    &__rule > .el-input,
+    &__rule > .el-input-number,
+    &__rule > .el-date-editor,
+    &__empty-value {
+      width: 100%;
+      min-width: 0;
+    }
+
+    &__remove {
+      align-self: flex-end;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('element-plus'), require('axios'), require('@element-plus/icons-vue')) :
   typeof define === 'function' && define.amd ? define(['vue', 'element-plus', 'axios', '@element-plus/icons-vue'], factory) :
@@ -551,7 +551,7 @@
     return sfc;
   }
 
-  var script$1n = create({
+  var script$1o = create({
     name: "count-up",
     props: {
       animation: {
@@ -665,21 +665,26 @@
     }
   });
 
-  function render$1n(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1o(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("span", null, vue.toDisplayString(_ctx.end), 1 /* TEXT */);
   }
 
-  script$1n.render = render$1n;
-  script$1n.__file = "packages/element-plus/count-up/index.vue";
+  script$1o.render = render$1o;
+  script$1o.__file = "packages/element-plus/count-up/index.vue";
 
-  var propsDefault$2 = {
+  function ownKeys$p(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$p(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$p(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$p(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var propsDefault = {
     title: "title",
     meta: "meta",
     lead: "lead",
     body: "body"
   };
-  var script$1m = create({
+  var allowedTags$2 = new Set(["A", "B", "BLOCKQUOTE", "BR", "CODE", "DEL", "DIV", "EM", "FIGCAPTION", "FIGURE", "H1", "H2", "H3", "H4", "H5", "H6", "HR", "I", "IMG", "LI", "MARK", "OL", "P", "PRE", "S", "SMALL", "SPAN", "STRONG", "SUB", "SUP", "TABLE", "TBODY", "TD", "TH", "THEAD", "TR", "UL"]);
+  var dangerousTags = new Set(["EMBED", "FORM", "IFRAME", "OBJECT", "SCRIPT", "STYLE"]);
+  var script$1n = create({
     name: "article",
+    emits: ["image-click", "link-click", "preview-open", "preview-close"],
     props: {
       data: {
         type: Object,
@@ -690,22 +695,55 @@
       props: {
         type: Object,
         "default": function _default() {
-          return propsDefault$2;
+          return {};
         }
+      },
+      option: {
+        type: Object,
+        "default": function _default() {
+          return {};
+        }
+      },
+      sanitize: {
+        type: [Boolean, Function],
+        "default": true
+      },
+      preview: {
+        type: Boolean,
+        "default": true
+      },
+      showInfo: Boolean,
+      titleLevel: {
+        type: Number,
+        "default": 1
+      },
+      maxWidth: {
+        type: [Number, String],
+        "default": ""
       }
     },
+    data: function data() {
+      return {
+        previewVisible: false,
+        previewImages: [],
+        previewIndex: 0
+      };
+    },
     computed: {
+      fieldProps: function fieldProps() {
+        return _objectSpread$p(_objectSpread$p(_objectSpread$p({}, propsDefault), this.option && this.option.props || {}), this.props || {});
+      },
       titleKey: function titleKey() {
-        return this.props.title || propsDefault$2.title;
+        return this.fieldProps.title;
       },
       metaKey: function metaKey() {
-        return this.props.meta || propsDefault$2.meta;
+        return this.fieldProps.meta;
       },
       leadKey: function leadKey() {
-        return this.props.lead || propsDefault$2.lead;
+        return this.fieldProps.lead;
       },
       bodyKey: function bodyKey() {
-        return this.props.body || propsDefault$2.body;
+        return this.fieldProps.body;
       },
       title: function title() {
         return this.data[this.titleKey];
@@ -718,41 +756,228 @@
       },
       body: function body() {
         return this.data[this.bodyKey];
+      },
+      hasBody: function hasBody() {
+        return this.body !== undefined && this.body !== null && this.body !== "";
+      },
+      formattedBody: function formattedBody() {
+        var content = String(this.body || "");
+        if (typeof this.sanitize === "function") return String(this.sanitize(content) || "");
+        return this.sanitize ? this.sanitizeHtml(content) : content;
+      },
+      wordCount: function wordCount() {
+        var content = String(this.body || "").replace(/<[^>]*>/g, "").replace(/\s/g, "");
+        return content.length;
+      },
+      readingMinutes: function readingMinutes() {
+        return Math.max(1, Math.ceil(this.wordCount / 400));
+      },
+      titleTag: function titleTag() {
+        var level = Math.min(6, Math.max(1, Number(this.titleLevel) || 1));
+        return "h".concat(level);
+      },
+      styleName: function styleName() {
+        if (this.maxWidth === "" || this.maxWidth === undefined || this.maxWidth === null) return {};
+        var size = typeof this.maxWidth === "number" ? "".concat(this.maxWidth, "px") : this.maxWidth;
+        return {
+          maxWidth: size
+        };
       }
     },
-    mounted: function mounted() {}
+    methods: {
+      sanitizeHtml: function sanitizeHtml(content) {
+        var _this = this;
+        if (typeof document === "undefined") return this.escapeHtml(content);
+        var container = document.createElement("div");
+        container.innerHTML = content;
+        Array.from(container.querySelectorAll("*")).forEach(function (node) {
+          var tag = node.tagName;
+          if (dangerousTags.has(tag)) {
+            node.remove();
+            return;
+          }
+          if (!allowedTags$2.has(tag)) {
+            node.replaceWith(document.createTextNode(node.textContent || ""));
+            return;
+          }
+          Array.from(node.attributes).forEach(function (attribute) {
+            var name = attribute.name.toLowerCase();
+            var isLinkAttribute = tag === "A" && ["href", "title"].includes(name);
+            var isImageAttribute = tag === "IMG" && ["src", "alt", "title", "width", "height"].includes(name);
+            var isTableAttribute = ["TD", "TH"].includes(tag) && ["colspan", "rowspan"].includes(name);
+            if (!isLinkAttribute && !isImageAttribute && !isTableAttribute) node.removeAttribute(attribute.name);
+          });
+          if (tag === "A") {
+            var href = _this.safeUrl(node.getAttribute("href"));
+            if (href) {
+              node.setAttribute("href", href);
+              if (/^https?:/i.test(href)) {
+                node.setAttribute("target", "_blank");
+                node.setAttribute("rel", "noopener noreferrer");
+              }
+            } else {
+              node.removeAttribute("href");
+            }
+          }
+          if (tag === "IMG") {
+            var src = _this.safeUrl(node.getAttribute("src"), true);
+            if (src) {
+              node.setAttribute("src", src);
+              node.setAttribute("loading", "lazy");
+              node.setAttribute("decoding", "async");
+            } else {
+              node.remove();
+            }
+          }
+        });
+        return container.innerHTML;
+      },
+      safeUrl: function safeUrl(value) {
+        var allowDataImage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        if (!value || typeof window === "undefined") return "";
+        try {
+          var url = new URL(value, window.location.origin);
+          var isHttp = ["http:", "https:"].includes(url.protocol);
+          var isContact = ["mailto:", "tel:"].includes(url.protocol);
+          var isDataImage = allowDataImage && url.protocol === "data:" && /^data:image\//i.test(value);
+          return isHttp || isContact || isDataImage ? url.href : "";
+        } catch (error) {
+          return "";
+        }
+      },
+      escapeHtml: function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, function (_char) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            "\"": "&quot;"
+          }[_char];
+        });
+      },
+      handleBodyClick: function handleBodyClick(event) {
+        var _this2 = this;
+        var target = event.target;
+        if (!(target instanceof Element)) return;
+        var link = target.closest("a");
+        if (link) {
+          this.$emit("link-click", {
+            data: this.data,
+            href: link.getAttribute("href") || "",
+            event: event
+          });
+        }
+        var image = target.closest("img");
+        if (!image) return;
+        var src = this.safeUrl(image.getAttribute("src"), true);
+        this.$emit("image-click", {
+          data: this.data,
+          src: src,
+          event: event
+        });
+        if (!this.preview || !src || !this.$refs.body) return;
+        var images = Array.from(this.$refs.body.querySelectorAll("img")).map(function (item) {
+          return _this2.safeUrl(item.getAttribute("src"), true);
+        }).filter(Boolean);
+        var index = images.indexOf(src);
+        if (index === -1) return;
+        this.previewImages = images;
+        this.previewIndex = index;
+        this.previewVisible = true;
+        this.$emit("preview-open", {
+          data: this.data,
+          src: src,
+          index: index,
+          images: images
+        });
+      },
+      closePreview: function closePreview() {
+        this.previewVisible = false;
+        this.$emit("preview-close", {
+          data: this.data
+        });
+      }
+    }
   });
 
-  var _hoisted_1$Y = ["textContent"];
-  var _hoisted_2$D = ["textContent"];
-  var _hoisted_3$t = ["textContent"];
-  var _hoisted_4$r = ["innerHTML"];
-  function render$1m(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b())
-    }, [vue.createElementVNode("div", {
+  var _hoisted_1$Y = {
+    key: 0
+  };
+  var _hoisted_2$I = ["innerHTML"];
+  function render$1n(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_el_image_viewer = vue.resolveComponent("el-image-viewer");
+    return vue.openBlock(), vue.createElementBlock("article", {
+      "class": vue.normalizeClass([_ctx.b(), {
+        'is-previewable': _ctx.preview
+      }]),
+      style: vue.normalizeStyle(_ctx.styleName)
+    }, [_ctx.title || _ctx.meta || _ctx.$slots.header ? (vue.openBlock(), vue.createElementBlock("header", {
+      key: 0,
       "class": vue.normalizeClass(_ctx.b('header'))
-    }, [_ctx.title ? (vue.openBlock(), vue.createElementBlock("div", {
-      key: 0,
-      "class": vue.normalizeClass(_ctx.b('title')),
-      textContent: vue.toDisplayString(_ctx.title)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$Y)) : vue.createCommentVNode("v-if", true), _ctx.meta ? (vue.openBlock(), vue.createElementBlock("small", {
+    }, [vue.renderSlot(_ctx.$slots, "header", {
+      data: _ctx.data
+    }, function () {
+      return [_ctx.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.titleTag), {
+        key: 0,
+        "class": vue.normalizeClass(_ctx.b('title'))
+      }, {
+        "default": vue.withCtx(function () {
+          return [vue.createTextVNode(vue.toDisplayString(_ctx.title), 1 /* TEXT */)];
+        }),
+        _: 1 /* STABLE */
+      }, 8 /* PROPS */, ["class"])) : vue.createCommentVNode("v-if", true), _ctx.meta || _ctx.showInfo && _ctx.hasBody ? (vue.openBlock(), vue.createElementBlock("div", {
+        key: 1,
+        "class": vue.normalizeClass(_ctx.b('meta'))
+      }, [_ctx.meta ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$Y, vue.toDisplayString(_ctx.meta), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true), _ctx.showInfo && _ctx.hasBody ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        key: 1
+      }, [_ctx.meta ? (vue.openBlock(), vue.createElementBlock("span", {
+        key: 0,
+        "class": vue.normalizeClass(_ctx.b('meta-separator'))
+      }, "·", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("span", null, vue.toDisplayString(_ctx.wordCount) + " 字", 1 /* TEXT */), vue.createElementVNode("span", {
+        "class": vue.normalizeClass(_ctx.b('meta-separator'))
+      }, "·", 2 /* CLASS */), vue.createElementVNode("span", null, "约 " + vue.toDisplayString(_ctx.readingMinutes) + " 分钟阅读", 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)];
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.lead || _ctx.$slots.lead ? (vue.openBlock(), vue.createElementBlock("aside", {
       key: 1,
-      "class": vue.normalizeClass(_ctx.b('meta')),
-      textContent: vue.toDisplayString(_ctx.meta)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_2$D)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */), _ctx.lead ? (vue.openBlock(), vue.createElementBlock("div", {
-      key: 0,
-      "class": vue.normalizeClass(_ctx.b('lead')),
-      textContent: vue.toDisplayString(_ctx.lead)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_3$t)) : vue.createCommentVNode("v-if", true), _ctx.body ? (vue.openBlock(), vue.createElementBlock("div", {
-      key: 1,
+      "class": vue.normalizeClass(_ctx.b('lead'))
+    }, [vue.renderSlot(_ctx.$slots, "lead", {
+      data: _ctx.data
+    }, function () {
+      return [vue.createTextVNode(vue.toDisplayString(_ctx.lead), 1 /* TEXT */)];
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.hasBody || _ctx.$slots.body ? (vue.openBlock(), vue.createElementBlock("section", {
+      key: 2,
+      ref: "body",
       "class": vue.normalizeClass(_ctx.b('body')),
-      innerHTML: _ctx.body
-    }, null, 10 /* CLASS, PROPS */, _hoisted_4$r)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
+      onClick: _cache[0] || (_cache[0] = function () {
+        return _ctx.handleBodyClick && _ctx.handleBodyClick.apply(_ctx, arguments);
+      })
+    }, [vue.renderSlot(_ctx.$slots, "body", {
+      data: _ctx.data,
+      content: _ctx.formattedBody
+    }, function () {
+      return [vue.createElementVNode("div", {
+        innerHTML: _ctx.formattedBody
+      }, null, 8 /* PROPS */, _hoisted_2$I)];
+    })], 2 /* CLASS */)) : _ctx.$slots.empty ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 3,
+      "class": vue.normalizeClass(_ctx.b('empty'))
+    }, [vue.renderSlot(_ctx.$slots, "empty", {
+      data: _ctx.data
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("footer", {
+      key: 4,
+      "class": vue.normalizeClass(_ctx.b('footer'))
+    }, [vue.renderSlot(_ctx.$slots, "footer", {
+      data: _ctx.data
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.previewVisible ? (vue.openBlock(), vue.createBlock(_component_el_image_viewer, {
+      key: 5,
+      "url-list": _ctx.previewImages,
+      "initial-index": _ctx.previewIndex,
+      onClose: _ctx.closePreview
+    }, null, 8 /* PROPS */, ["url-list", "initial-index", "onClose"])) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
   }
 
-  script$1m.render = render$1m;
-  script$1m.__file = "packages/element-plus/article/index.vue";
+  script$1n.render = render$1n;
+  script$1n.__file = "packages/element-plus/article/index.vue";
 
   function _arrayLikeToArray$1(r, a) {
     (null == a || a > r.length) && (a = r.length);
@@ -7436,8 +7661,8 @@
     return !validatenull(val) ? val : dafult;
   };
 
-  function ownKeys$e(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$e(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$e(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$e(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$o(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$o(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$o(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$o(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var key = 'key';
   function getDataType() {
     var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -7610,7 +7835,7 @@
       }
     });
     return {
-      data: _objectSpread$e(_objectSpread$e({}, optionData), columnData),
+      data: _objectSpread$o(_objectSpread$o({}, optionData), columnData),
       pending: Promise.all(tasks).then(function (items) {
         return items.reduce(function (result, item) {
           result[item.prop] = item.data;
@@ -7724,8 +7949,8 @@
     }
   };
 
-  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$n(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$n(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$n(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$n(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var warned = new Set();
   var KNOWN_TYPES = new Set(['', 'input', 'textarea', 'password', 'phone', 'currency', 'bankCard', 'idCard', 'email', 'code', 'plate', 'ip', 'mac', 'uscc', 'number', 'switch', 'upload', 'img', 'array', 'url', 'dynamic', 'slider', 'rate', 'input-tag', 'tag', 'mention', 'input-table', 'input-tree', 'input-icon', 'input-map', 'input-color', 'input-number', 'input-cron', 'input-otp', 'cron', 'otp', 'title'].concat(_toConsumableArray(DATE_LIST), _toConsumableArray(SELECT_LIST)));
   var isObject = function isObject(value) {
@@ -7743,7 +7968,7 @@
     if (isObject(column)) {
       return Object.keys(column).map(function (prop) {
         return {
-          item: _objectSpread$d(_objectSpread$d({}, column[prop]), {}, {
+          item: _objectSpread$n(_objectSpread$n({}, column[prop]), {}, {
             prop: column[prop].prop || prop
           }),
           path: "".concat(path, ".").concat(prop)
@@ -7896,8 +8121,8 @@
     });
   };
 
-  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$m(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$m(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$m(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$m(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var dicRequestStates = new WeakMap();
   var getDicRequestState = function getDicRequestState(safe) {
     var state = dicRequestStates.get(safe);
@@ -7971,7 +8196,7 @@
           return document.body.clientWidth <= 768;
         },
         resultOption: function resultOption() {
-          return _objectSpread$c(_objectSpread$c({}, this.tableOption), {
+          return _objectSpread$m(_objectSpread$m({}, this.tableOption), {
             column: this.propOption || []
           });
         },
@@ -7989,7 +8214,7 @@
       methods: {
         init: function init(type) {
           var globOption = this.deepClone(this.$AVUE["".concat(name, "Option")]);
-          var option = _objectSpread$c(_objectSpread$c({}, globOption), this.option);
+          var option = _objectSpread$m(_objectSpread$m({}, globOption), this.option);
           this.tableOption = option;
           var componentName = name || (this.$options.name || '').replace(/^avue-/, '') || 'component';
           if (this.$AVUE.optionValidate !== false && option.optionValidate !== false) {
@@ -8114,7 +8339,7 @@
     };
   }
 
-  var script$1l = create({
+  var script$1m = create({
     name: "crud__grid",
     inject: ["crud"],
     mixins: [locale],
@@ -8307,10 +8532,10 @@
   });
 
   var _hoisted_1$X = ["onClick", "onDblclick"];
-  var _hoisted_2$C = {
+  var _hoisted_2$H = {
     key: 0
   };
-  function render$1l(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1m(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
     var _component_el_col = vue.resolveComponent("el-col");
     var _component_el_row = vue.resolveComponent("el-row");
@@ -8362,7 +8587,7 @@
                         return _ctx.handleCellDblClick(row, item);
                       }, ["stop"]),
                       key: columnIndex
-                    }, [item.type == 'selection' ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$C, [vue.createVNode(_component_el_checkbox, {
+                    }, [item.type == 'selection' ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$H, [vue.createVNode(_component_el_checkbox, {
                       value: index,
                       label: index,
                       disabled: _ctx.isDisabled(row, index),
@@ -8421,10 +8646,10 @@
     }, null, 8 /* PROPS */, ["description"]))], 64 /* STABLE_FRAGMENT */))], 6 /* CLASS, STYLE */);
   }
 
-  script$1l.render = render$1l;
-  script$1l.__file = "packages/element-plus/crud/grid/index.vue";
+  script$1m.render = render$1m;
+  script$1m.__file = "packages/element-plus/crud/grid/index.vue";
 
-  var script$1k = {
+  var script$1l = {
     props: {
       className: String,
       labeClassName: String,
@@ -8458,15 +8683,15 @@
     }
   };
 
-  function render$1k(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1l(_ctx, _cache, $props, $setup, $data, $options) {
     return null;
   }
 
-  script$1k.render = render$1k;
-  script$1k.__file = "packages/element-plus/crud/grid/item.vue";
+  script$1l.render = render$1l;
+  script$1l.__file = "packages/element-plus/crud/grid/item.vue";
 
   // crud 配置文件
-  var config$2 = {
+  var config$1 = {
     menuWidth: 220,
     menuFixed: 'right',
     menuXsWidth: 100,
@@ -8540,7 +8765,7 @@
     ghostClass: 'avue-crud__ghost'
   };
 
-  var script$1j = create({
+  var script$1k = create({
     name: "crud",
     inject: ["crud"],
     props: {
@@ -8553,7 +8778,7 @@
     },
     data: function data() {
       return {
-        config: config$2,
+        config: config$1,
         defaultPage: {
           single: false,
           //简单分页
@@ -8628,7 +8853,7 @@
     }
   });
 
-  function render$1j(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1k(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_pagination = vue.resolveComponent("el-pagination");
     var _component_el_card = vue.resolveComponent("el-card");
     return _ctx.pageFlag && _ctx.validData(_ctx.crud.tableOption.page, true) ? (vue.openBlock(), vue.createBlock(_component_el_card, {
@@ -8664,8 +8889,8 @@
     }, 8 /* PROPS */, ["shadow", "class"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1j.render = render$1j;
-  script$1j.__file = "packages/element-plus/crud/menu/table-page.vue";
+  script$1k.render = render$1k;
+  script$1k.__file = "packages/element-plus/crud/menu/table-page.vue";
 
   var count$1 = 0;
   var calcCascader = function calcCascader() {
@@ -8810,7 +9035,7 @@
     return placeholder;
   };
 
-  var script$1i = create({
+  var script$1j = create({
     name: "crud__search",
     inject: ["crud"],
     mixins: [locale, slot],
@@ -8823,7 +9048,7 @@
     watch: {
       "crud.propOption": {
         handler: function handler() {
-          this.searchShow = validData(this.crud.tableOption.searchShow, config$2.searchShow);
+          this.searchShow = validData(this.crud.tableOption.searchShow, config$1.searchShow);
         },
         immediate: true
       },
@@ -8892,9 +9117,9 @@
                 type: getSearchType(ele),
                 detail: false,
                 dicFlag: ele.cascader ? true : _this.validData(ele.dicFlag, false),
-                span: ele.searchSpan || option.searchSpan || config$2.searchSpan,
+                span: ele.searchSpan || option.searchSpan || config$1.searchSpan,
                 control: ele.searchControl,
-                labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config$2.searchLabelWidth,
+                labelWidth: ele.searchLabelWidth || option.searchLabelWidth || config$1.searchLabelWidth,
                 labelPosition: ele.searchLabelPosition || option.searchLabelPosition,
                 size: ele.searchSize || option.searchSize,
                 value: ele.searchValue,
@@ -8932,10 +9157,10 @@
             printBtn: false,
             mockBtn: false,
             submitText: option.searchBtnText || _this.t('crud.searchBtn'),
-            submitBtn: _this.validData(option.searchBtn, config$2.searchSubBtn),
+            submitBtn: _this.validData(option.searchBtn, config$1.searchSubBtn),
             submitIcon: _this.crud.getBtnIcon('searchBtn'),
             emptyText: option.emptyBtnText || _this.t('crud.emptyBtn'),
-            emptyBtn: _this.validData(option.emptyBtn, config$2.emptyBtn),
+            emptyBtn: _this.validData(option.emptyBtn, config$1.emptyBtn),
             emptyIcon: _this.crud.getBtnIcon('emptyBtn'),
             menuSpan: function () {
               if (_this.show || !_this.isSearchIcon) {
@@ -8996,7 +9221,7 @@
     }
   });
 
-  function render$1i(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1j(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_avue_form = vue.resolveComponent("avue-form");
     var _component_el_card = vue.resolveComponent("el-card");
@@ -9062,10 +9287,10 @@
     }, 8 /* PROPS */, ["shadow", "class"])), [[vue.vShow, _ctx.searchShow && _ctx.searchFlag]]) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1i.render = render$1i;
-  script$1i.__file = "packages/element-plus/crud/menu/header-search.vue";
+  script$1j.render = render$1j;
+  script$1j.__file = "packages/element-plus/crud/menu/header-search.vue";
 
-  var script$1h = create({
+  var script$1i = create({
     name: "crud",
     mixins: [locale],
     directives: {
@@ -9094,7 +9319,7 @@
             return date;
           }
         }],
-        config: config$2
+        config: config$1
       };
     },
     created: function created() {
@@ -9147,7 +9372,7 @@
     }
   });
 
-  function render$1h(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1i(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_avue_date = vue.resolveComponent("avue-date");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
@@ -9323,10 +9548,10 @@
     }, 8 /* PROPS */, ["content"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$1h.render = render$1h;
-  script$1h.__file = "packages/element-plus/crud/menu/header-menu.vue";
+  script$1i.render = render$1i;
+  script$1i.__file = "packages/element-plus/crud/menu/header-menu.vue";
 
-  var script$1g = create({
+  var script$1h = create({
     name: "crud",
     mixins: [locale],
     inject: ["crud"],
@@ -9477,26 +9702,26 @@
   var _hoisted_1$W = {
     "class": "avue-crud__column-panel"
   };
-  var _hoisted_2$B = {
+  var _hoisted_2$G = {
     "class": "avue-crud__column-panel__header"
   };
-  var _hoisted_3$s = {
+  var _hoisted_3$v = {
     ref: "list",
     "class": "avue-crud__column-panel__list"
   };
-  var _hoisted_4$q = {
+  var _hoisted_4$t = {
     "class": "avue-crud__column-panel__label"
   };
-  var _hoisted_5$n = {
+  var _hoisted_5$p = {
     "class": "avue-crud__column-panel__actions"
   };
-  var _hoisted_6$k = {
+  var _hoisted_6$m = {
     "class": "avue-crud__column-panel__footer"
   };
-  var _hoisted_7$h = {
+  var _hoisted_7$j = {
     "class": "avue-crud__column-panel__footer-actions"
   };
-  function render$1g(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1h(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
@@ -9515,7 +9740,7 @@
       onHide: _ctx.handleHide
     }, {
       "default": vue.withCtx(function () {
-        return [vue.createElementVNode("div", _hoisted_1$W, [vue.createElementVNode("div", _hoisted_2$B, [vue.createVNode(_component_el_checkbox, {
+        return [vue.createElementVNode("div", _hoisted_1$W, [vue.createElementVNode("div", _hoisted_2$G, [vue.createVNode(_component_el_checkbox, {
           "model-value": _ctx.isAllVisible,
           indeterminate: _ctx.isIndeterminate,
           onChange: _ctx.handleCheckAll
@@ -9524,7 +9749,7 @@
             return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.all")), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["model-value", "indeterminate", "onChange"])]), vue.createElementVNode("div", _hoisted_3$s, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (column) {
+        }, 8 /* PROPS */, ["model-value", "indeterminate", "onChange"])]), vue.createElementVNode("div", _hoisted_3$v, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (column) {
           return vue.openBlock(), vue.createElementBlock("div", {
             key: column.prop,
             "class": "avue-crud__column-panel__item"
@@ -9537,7 +9762,7 @@
           }, null, 8 /* PROPS */, ["model-value", "aria-label", "onChange"]), _cache[1] || (_cache[1] = vue.createElementVNode("span", {
             "class": "avue-crud__column-panel__drag",
             "aria-hidden": "true"
-          }, "⠿", -1 /* HOISTED */)), vue.createElementVNode("span", _hoisted_4$q, vue.toDisplayString(column.label), 1 /* TEXT */), vue.createElementVNode("div", _hoisted_5$n, [vue.createVNode(_component_el_tooltip, {
+          }, "⠿", -1 /* HOISTED */)), vue.createElementVNode("span", _hoisted_4$t, vue.toDisplayString(column.label), 1 /* TEXT */), vue.createElementVNode("div", _hoisted_5$p, [vue.createVNode(_component_el_tooltip, {
             content: _ctx.t('crud.column.fixedLeft'),
             placement: "top"
           }, {
@@ -9614,7 +9839,7 @@
             }),
             _: 2 /* DYNAMIC */
           }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["content"])])]);
-        }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), vue.createElementVNode("div", _hoisted_6$k, [vue.createVNode(_component_el_button, {
+        }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), vue.createElementVNode("div", _hoisted_6$m, [vue.createVNode(_component_el_button, {
           text: "",
           disabled: !_ctx.crud.columnStateEnabled,
           onClick: _ctx.handleReset
@@ -9623,7 +9848,7 @@
             return [vue.createTextVNode(vue.toDisplayString(_ctx.t("crud.column.restore")), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["disabled", "onClick"]), vue.createElementVNode("span", _hoisted_7$h, [vue.createVNode(_component_el_button, {
+        }, 8 /* PROPS */, ["disabled", "onClick"]), vue.createElementVNode("span", _hoisted_7$j, [vue.createVNode(_component_el_button, {
           text: "",
           onClick: _ctx.handleCancel
         }, {
@@ -9646,10 +9871,10 @@
     }, 8 /* PROPS */, ["visible", "virtual-ref", "width", "onHide"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1g.render = render$1g;
-  script$1g.__file = "packages/element-plus/crud/dialog/dialog-column.vue";
+  script$1h.render = render$1h;
+  script$1h.__file = "packages/element-plus/crud/dialog/dialog-column.vue";
 
-  var script$1f = create({
+  var script$1g = create({
     name: "crud",
     mixins: [locale],
     inject: ["crud"],
@@ -9738,7 +9963,7 @@
   var _hoisted_1$V = {
     "class": "avue-dialog__footer"
   };
-  function render$1f(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1g(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_button_group = vue.resolveComponent("el-button-group");
     var _component_el_col = vue.resolveComponent("el-col");
@@ -9881,10 +10106,10 @@
     }, 8 /* PROPS */, ["class", "append-to-body", "title", "size", "modelValue"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1f.render = render$1f;
-  script$1f.__file = "packages/element-plus/crud/dialog/dialog-filter.vue";
+  script$1g.render = render$1g;
+  script$1g.__file = "packages/element-plus/crud/dialog/dialog-filter.vue";
 
-  var script$1e = create({
+  var script$1f = create({
     name: "crud",
     mixins: [locale],
     emits: ["update:modelValue", "change"],
@@ -9893,7 +10118,7 @@
       return {
         loading: false,
         disabled: false,
-        config: config$2,
+        config: config$1,
         boxType: "",
         fullscreen: false,
         boxVisible: false
@@ -9919,7 +10144,7 @@
       },
       width: function width() {
         var dialogWidth = this.crud.tableOption.dialogWidth + "";
-        var defaultWidth = this.crud.isMobile ? "100%" : config$2.dialogWidth;
+        var defaultWidth = this.crud.isMobile ? "100%" : config$1.dialogWidth;
         var result = this.validData(dialogWidth, defaultWidth);
         return this.setPx(result);
       },
@@ -10123,7 +10348,7 @@
   var _hoisted_1$U = {
     "class": "el-dialog__title"
   };
-  function render$1e(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1f(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_avue_form = vue.resolveComponent("avue-form");
     var _component_el_button = vue.resolveComponent("el-button");
@@ -10241,8 +10466,8 @@
     }, 16 /* FULL_PROPS */, ["draggable", "class", "append-to-body", "top", "title", "close-on-press-escape", "close-on-click-modal", "modal", "modal-penetrable", "show-close", "header-class", "body-class", "footer-class", "modelValue", "before-close"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1e.render = render$1e;
-  script$1e.__file = "packages/element-plus/crud/dialog/dialog-form.vue";
+  script$1f.render = render$1f;
+  script$1f.__file = "packages/element-plus/crud/dialog/dialog-form.vue";
 
   function _arrayWithHoles(r) {
     if (Array.isArray(r)) return r;
@@ -10376,7 +10601,7 @@
     return result;
   };
 
-  var script$1d = {
+  var script$1e = {
     name: 'crud',
     mixins: [locale],
     inject: ['crud'],
@@ -10556,10 +10781,10 @@
   var _hoisted_1$T = {
     key: 0
   };
-  var _hoisted_2$A = {
+  var _hoisted_2$F = {
     "class": "avue-dialog__footer"
   };
-  function render$1d(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1e(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_avue_form = vue.resolveComponent("avue-form");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_dialog = vue.resolveComponent("el-dialog");
@@ -10582,7 +10807,7 @@
             return $data.form = $event;
           }),
           option: $data.option
-        }, null, 8 /* PROPS */, ["modelValue", "option"]), vue.createElementVNode("span", _hoisted_2$A, [vue.createVNode(_component_el_button, {
+        }, null, 8 /* PROPS */, ["modelValue", "option"]), vue.createElementVNode("span", _hoisted_2$F, [vue.createVNode(_component_el_button, {
           type: "primary",
           size: $options.crud.size,
           onClick: $options.handleSubmit
@@ -10607,8 +10832,8 @@
     }, 8 /* PROPS */, ["title", "append-to-body", "modelValue", "width"])])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1d.render = render$1d;
-  script$1d.__file = "packages/element-plus/crud/dialog/dialog-excel.vue";
+  script$1e.render = render$1e;
+  script$1e.__file = "packages/element-plus/crud/dialog/dialog-excel.vue";
 
   var custom = {
     props: {
@@ -10652,9 +10877,9 @@
     }
   };
 
-  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$1c = {
+  function ownKeys$l(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$l(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$l(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$l(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$1d = {
     name: 'form-temp',
     mixins: [slot],
     emits: ['update:modelValue', 'change', 'enter'],
@@ -10751,7 +10976,7 @@
       },
       getPlaceholder: getPlaceholder,
       getBind: function getBind(column) {
-        var params = _objectSpread$b(_objectSpread$b(_objectSpread$b({}, column), this.params), this.$uploadFun(column));
+        var params = _objectSpread$l(_objectSpread$l(_objectSpread$l({}, column), this.params), this.$uploadFun(column));
         ['value', 'className'].forEach(function (ele) {
           delete params[ele];
         });
@@ -10771,7 +10996,7 @@
   };
 
   var _hoisted_1$S = ["innerHTML"];
-  function render$1c(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1d(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_custom = vue.resolveComponent("custom");
     return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [$props.render ? (vue.openBlock(), vue.createBlock(_component_custom, {
       key: 0,
@@ -10845,10 +11070,10 @@
     }, vue.toDisplayString($props.column.description), 3 /* TEXT, CLASS */))], 64 /* STABLE_FRAGMENT */)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
   }
 
-  script$1c.render = render$1c;
-  script$1c.__file = "packages/core/components/form/index.vue";
+  script$1d.render = render$1d;
+  script$1d.__file = "packages/core/components/form/index.vue";
 
-  var script$1b = {
+  var script$1c = {
     name: 'icon-temp',
     props: {
       small: Boolean,
@@ -10885,7 +11110,7 @@
   };
 
   var _hoisted_1$R = ["xlink:href"];
-  function render$1b(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1c(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon = vue.resolveComponent("el-icon");
     return $props.text ? (vue.openBlock(), vue.createElementBlock("span", {
       key: 0,
@@ -10915,18 +11140,18 @@
     }, null, 6 /* CLASS, STYLE */))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1b.render = render$1b;
-  script$1b.__file = "packages/core/components/icon/index.vue";
+  script$1c.render = render$1c;
+  script$1c.__file = "packages/core/components/icon/index.vue";
 
   var count = {};
-  var script$1a = {
+  var script$1b = {
     name: "column-slot",
     inject: ["dynamic", "crud"],
     components: {
       custom: custom,
-      tableItemCard: script$1k,
-      formTemp: script$1c,
-      iconTemp: script$1b
+      tableItemCard: script$1l,
+      formTemp: script$1d,
+      iconTemp: script$1c
     },
     props: {
       column: Object,
@@ -11067,13 +11292,13 @@
   var _hoisted_1$Q = {
     key: 1
   };
-  var _hoisted_2$z = {
+  var _hoisted_2$E = {
     key: 0,
     "class": "avue-crud__img"
   };
-  var _hoisted_3$r = ["innerHTML"];
-  var _hoisted_4$p = ["title", "textContent"];
-  function render$1a(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_3$u = ["innerHTML"];
+  var _hoisted_4$s = ["title", "textContent"];
+  function render$1b(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_form_temp = vue.resolveComponent("form-temp");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     var _component_el_form_item = vue.resolveComponent("el-form-item");
@@ -11218,7 +11443,7 @@
           label: $options.handleDetail(row, $props.column)
         }) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 3
-        }, [['img', 'upload'].includes($props.column.type) ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$z, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.getImgList(row, $props.column), function (item, index) {
+        }, [['img', 'upload'].includes($props.column.type) ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$E, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.getImgList(row, $props.column), function (item, index) {
           return vue.openBlock(), vue.createElementBlock(vue.Fragment, {
             key: index
           }, [$options.isMediaType(item, $props.column.fileType) ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($options.isMediaType(item, $props.column.fileType)), {
@@ -11271,27 +11496,27 @@
         }, null, 8 /* PROPS */, ["text"])) : $props.column.html ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 5,
           innerHTML: $options.handleDetail(row, $props.column)
-        }, null, 8 /* PROPS */, _hoisted_3$r)) : (vue.openBlock(), vue.createElementBlock("span", {
+        }, null, 8 /* PROPS */, _hoisted_3$u)) : (vue.openBlock(), vue.createElementBlock("span", {
           key: 6,
           "class": vue.normalizeClass({
             'avue-crud__ellipsis': $props.column.ellipsis
           }),
           title: $props.column.ellipsis ? $options.handleDetail(row, $props.column) : '',
           textContent: vue.toDisplayString($options.handleDetail(row, $props.column))
-        }, null, 10 /* CLASS, PROPS */, _hoisted_4$p))], 64 /* STABLE_FRAGMENT */))];
+        }, null, 10 /* CLASS, PROPS */, _hoisted_4$s))], 64 /* STABLE_FRAGMENT */))];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["prop", "grid-row", "label", "class-name", "label-class-name", "column-key", "filter-placement", "filtered-value", "filtered-multiple", "filters", "filter-method", "filter-multiple", "show-overflow-tooltip", "tooltip-formatter", "min-width", "sortable", "sort-method", "sort-orders", "sort-by", "resizable", "render-header", "align", "header-align", "width", "fixed"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$1a.render = render$1a;
-  script$1a.__file = "packages/element-plus/crud/column/column-slot.vue";
+  script$1b.render = render$1b;
+  script$1b.__file = "packages/element-plus/crud/column/column-slot.vue";
 
-  var script$19 = {
+  var script$1a = {
     name: "column-dynamic",
     components: {
-      columnSlot: script$1a,
-      tableItemCard: script$1k
+      columnSlot: script$1b,
+      tableItemCard: script$1l
     },
     inject: ["dynamic", "crud"],
     props: {
@@ -11309,7 +11534,7 @@
   var _hoisted_1$P = {
     key: 1
   };
-  function render$19(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1a(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_column_dynamic = vue.resolveComponent("column-dynamic", true);
     var _component_column_slot = vue.resolveComponent("column-slot");
     return _ctx.getColumnProp($props.columnOption, 'hide') ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($options.crud.tableColumnName), {
@@ -11385,17 +11610,17 @@
     }, 8 /* PROPS */, ["prop", "label", "class-name", "label-class-name", "filters", "filter-method", "filter-multiple", "show-overflow-tooltip", "tooltip-formatter", "min-width", "sortable", "render-header", "align", "header-align", "width", "fixed"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$19.render = render$19;
-  script$19.__file = "packages/element-plus/crud/column/column-dynamic.vue";
+  script$1a.render = render$1a;
+  script$1a.__file = "packages/element-plus/crud/column/column-dynamic.vue";
 
-  var script$18 = create({
+  var script$19 = create({
     name: "crud",
     data: function data() {
       return {};
     },
     components: {
-      columnSlot: script$1a,
-      columnDynamic: script$19
+      columnSlot: script$1b,
+      columnDynamic: script$1a
     },
     inject: ["crud"],
     provide: function provide() {
@@ -11478,7 +11703,7 @@
     }
   });
 
-  function render$18(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$19(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_column_dynamic = vue.resolveComponent("column-dynamic");
     var _component_column_slot = vue.resolveComponent("column-slot");
     return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [vue.renderSlot(_ctx.$slots, "header"), vue.createCommentVNode(" 动态列 "), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.list, function (column) {
@@ -11517,18 +11742,18 @@
     }), 128 /* KEYED_FRAGMENT */)), vue.renderSlot(_ctx.$slots, "footer")], 64 /* STABLE_FRAGMENT */);
   }
 
-  script$18.render = render$18;
-  script$18.__file = "packages/element-plus/crud/column/column.vue";
+  script$19.render = render$19;
+  script$19.__file = "packages/element-plus/crud/column/column.vue";
 
-  var script$17 = create({
+  var script$18 = create({
     name: "crud",
     data: function data() {
       return {
-        config: config$2
+        config: config$1
       };
     },
     components: {
-      tableItemCard: script$1k
+      tableItemCard: script$1l
     },
     mixins: [locale],
     inject: ["crud"],
@@ -11573,7 +11798,7 @@
   var _hoisted_1$O = {
     key: 1
   };
-  function render$17(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$18(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_arrow_down = vue.resolveComponent("el-icon-arrow-down");
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_el_button = vue.resolveComponent("el-button");
@@ -11839,20 +12064,20 @@
     }, 8 /* PROPS */, ["class-name", "label-class-name", "fixed", "label", "align", "header-align", "width"])) : vue.createCommentVNode("v-if", true)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
   }
 
-  script$17.render = render$17;
-  script$17.__file = "packages/element-plus/crud/column/column-menu.vue";
+  script$18.render = render$18;
+  script$18.__file = "packages/element-plus/crud/column/column-menu.vue";
 
-  var script$16 = create({
+  var script$17 = create({
     name: "crud",
     data: function data() {
       return {
-        config: config$2,
+        config: config$1,
         rowSortable: null,
         columnSortable: null
       };
     },
     components: {
-      tableItemCard: script$1k
+      tableItemCard: script$1l
     },
     mixins: [locale],
     inject: ["crud"],
@@ -11918,7 +12143,7 @@
     }
   });
 
-  function render$16(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$17(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [vue.createCommentVNode(" 折叠面板  "), _ctx.crud.tableOption.expand ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.crud.tableColumnName), {
       key: 0,
       type: "expand",
@@ -11965,11 +12190,11 @@
     }, 8 /* PROPS */, ["fixed", "label", "class-name", "label-class-name", "width", "index"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
   }
 
-  script$16.render = render$16;
-  script$16.__file = "packages/element-plus/crud/column/column-default.vue";
+  script$17.render = render$17;
+  script$17.__file = "packages/element-plus/crud/column/column-default.vue";
 
-  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$k(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$k(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$k(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$k(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var STORAGE_PREFIX = 'AVUE_COLUMN_STATE:';
   var STATE_KEYS = ['hide', 'fixed', 'filters', 'sortable', 'width'];
   var getStorage = function getStorage() {
@@ -11982,7 +12207,7 @@
     var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     if (Array.isArray(columns)) return columns;
     return Object.keys(columns).map(function (prop) {
-      return _objectSpread$a(_objectSpread$a({}, columns[prop]), {}, {
+      return _objectSpread$k(_objectSpread$k({}, columns[prop]), {}, {
         prop: columns[prop].prop || prop
       });
     });
@@ -12060,9 +12285,9 @@
     } catch (error) {}
   };
 
-  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$15 = create({
+  function ownKeys$j(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$j(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$j(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$j(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$16 = create({
     name: "crud",
     mixins: [init("crud"), locale],
     emits: ["update:modelValue", "tree-load", "selection-clear", "header-dragend", "expand-change", "current-row-change", "refresh-change", "selection-change", "select", "select-all", "sortable-change", "column-sortable-change", "filter", "filter-change", "sort-change", "row-dblclick", "row-click", "cell-mouse-enter", "cell-mouse-leave", "cell-click", "header-click", "tab-click", "enter", "error", "date-change", "grid-status-change", "update:search", "update:page", "search-icon-change", "search-change", "search-reset", "on-load", "current-change", "size-change", "row-contextmenu", "header-contextmenu", "cell-dblclick", "row-del", "row-save", "row-update", "change", "scroll", "column-state-change", "column-state-reset"],
@@ -12075,26 +12300,26 @@
       };
     },
     components: {
-      tableCard: script$1l,
-      tableItemCard: script$1k,
-      column: script$18,
-      columnDefault: script$16,
+      tableCard: script$1m,
+      tableItemCard: script$1l,
+      column: script$19,
+      columnDefault: script$17,
       //其它列,
-      columnMenu: script$17,
+      columnMenu: script$18,
       //操作栏，
-      tablePage: script$1j,
+      tablePage: script$1k,
       //分页
-      headerSearch: script$1i,
+      headerSearch: script$1j,
       //搜索
-      headerMenu: script$1h,
+      headerMenu: script$1i,
       //菜单头部
-      dialogColumn: script$1g,
+      dialogColumn: script$1h,
       //显隐列
-      dialogFilter: script$1f,
+      dialogFilter: script$1g,
       //过滤器
-      dialogForm: script$1e,
+      dialogForm: script$1f,
       //分页
-      dialogExcel: script$1d //导出
+      dialogExcel: script$1e //导出
     },
     data: function data() {
       return {
@@ -12102,7 +12327,7 @@
         cellForm: {
           list: []
         },
-        config: config$2,
+        config: config$1,
         list: [],
         listError: {},
         tableForm: {},
@@ -12129,7 +12354,7 @@
     computed: {
       columnVirtualizeOption: function columnVirtualizeOption() {
         return this.columnOption.map(function (ele) {
-          return _objectSpread$9(_objectSpread$9({}, ele), {
+          return _objectSpread$j(_objectSpread$j({}, ele), {
             key: ele.prop,
             title: ele.label,
             dataKey: ele.prop
@@ -12473,7 +12698,7 @@
       },
       getBtnIcon: function getBtnIcon(value) {
         var name = value + "Icon";
-        return this.tableOption[name] ? this.tableOption[name].trim() : config$2[name];
+        return this.tableOption[name] ? this.tableOption[name].trim() : config$1[name];
       },
       //对部分表单字段进行校验的方法
       validateField: function validateField(val, fn) {
@@ -12840,8 +13065,8 @@
           return;
         }
         return window.Sortable.create(el, {
-          ghostClass: config$2.ghostClass,
-          chosenClass: config$2.ghostClass,
+          ghostClass: config$1.ghostClass,
+          chosenClass: config$1.ghostClass,
           animation: 100,
           delay: 100,
           onEnd: function onEnd(evt) {
@@ -12874,7 +13099,7 @@
     }
   });
 
-  function render$15(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$16(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_header_search = vue.resolveComponent("header-search");
     var _component_header_menu = vue.resolveComponent("header-menu");
     var _component_el_icon_circle_check_filled = vue.resolveComponent("el-icon-circle-check-filled");
@@ -13148,153 +13373,22 @@
     }, null, 512 /* NEED_PATCH */)], 2 /* CLASS */);
   }
 
-  script$15.render = render$15;
-  script$15.__file = "packages/element-plus/crud/index.vue";
+  script$16.render = render$16;
+  script$16.__file = "packages/element-plus/crud/index.vue";
 
-  var propsDefault$1 = {
-    img: "img",
-    title: "title",
-    info: "info"
-  };
-  var script$14 = create({
-    name: "card",
-    mixins: [locale],
-    props: {
-      props: {
-        type: Object,
-        "default": function _default() {
-          return propsDefault$1;
-        }
-      },
-      option: {
-        type: Object,
-        "default": function _default() {
-          return {};
-        }
-      },
-      data: {
-        type: Array,
-        "default": function _default() {
-          return [];
-        }
-      }
-    },
-    data: function data() {
-      return {
-        propsDefault: propsDefault$1
-      };
-    },
-    computed: {
-      imgKey: function imgKey() {
-        return this.option.props.img || this.propsDefault.img;
-      },
-      titleKey: function titleKey() {
-        return this.option.props.title || this.propsDefault.title;
-      },
-      infoKey: function infoKey() {
-        return this.option.props.info || this.propsDefault.info;
-      },
-      span: function span() {
-        return this.option.span || 8;
-      },
-      gutter: function gutter() {
-        return this.option.gutter || 20;
-      }
-    },
-    methods: {
-      rowAdd: function rowAdd() {
-        this.$emit("row-add");
-      },
-      rowClick: function rowClick(row, index) {
-        this.$emit("row-click", row, index);
-      }
-    }
-  });
-
-  var _hoisted_1$N = ["onClick"];
-  var _hoisted_2$y = ["src"];
-  function render$14(_ctx, _cache, $props, $setup, $data, $options) {
-    var _component_el_icon_plus = vue.resolveComponent("el-icon-plus");
-    var _component_el_icon = vue.resolveComponent("el-icon");
-    var _component_el_col = vue.resolveComponent("el-col");
-    var _component_el_row = vue.resolveComponent("el-row");
-    return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b())
-    }, [vue.createVNode(_component_el_row, {
-      span: 24,
-      gutter: _ctx.gutter
-    }, {
-      "default": vue.withCtx(function () {
-        return [_ctx.validData(_ctx.option.addBtn, true) ? (vue.openBlock(), vue.createBlock(_component_el_col, {
-          key: 0,
-          span: _ctx.span
-        }, {
-          "default": vue.withCtx(function () {
-            return [vue.createElementVNode("div", {
-              "class": vue.normalizeClass(_ctx.b('item', {
-                'add': true
-              })),
-              onClick: _cache[0] || (_cache[0] = function ($event) {
-                return _ctx.rowAdd();
-              })
-            }, [vue.createVNode(_component_el_icon, null, {
-              "default": vue.withCtx(function () {
-                return [vue.createVNode(_component_el_icon_plus)];
-              }),
-              _: 1 /* STABLE */
-            }), vue.createElementVNode("span", null, vue.toDisplayString(_ctx.t('crud.addBtn')), 1 /* TEXT */)], 2 /* CLASS */)];
-          }),
-          _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["span"])) : vue.createCommentVNode("v-if", true), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.data, function (item, index) {
-          return vue.openBlock(), vue.createBlock(_component_el_col, {
-            span: _ctx.span,
-            key: index
-          }, {
-            "default": vue.withCtx(function () {
-              return [vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('item')),
-                onClick: function onClick($event) {
-                  return _ctx.rowClick(item, index);
-                }
-              }, [vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('body'))
-              }, [vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('avatar'))
-              }, [vue.createElementVNode("img", {
-                src: item[_ctx.imgKey],
-                alt: ""
-              }, null, 8 /* PROPS */, _hoisted_2$y)], 2 /* CLASS */), vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('detail'))
-              }, [vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('title'))
-              }, vue.toDisplayString(item[_ctx.titleKey]), 3 /* TEXT, CLASS */), vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('info'))
-              }, vue.toDisplayString(item[_ctx.infoKey]), 3 /* TEXT, CLASS */)], 2 /* CLASS */)], 2 /* CLASS */), vue.createElementVNode("div", {
-                "class": vue.normalizeClass(_ctx.b('menu'))
-              }, [vue.renderSlot(_ctx.$slots, "menu", {
-                index: index,
-                row: item
-              })], 2 /* CLASS */)], 10 /* CLASS, PROPS */, _hoisted_1$N)];
-            }),
-            _: 2 /* DYNAMIC */
-          }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["span"]);
-        }), 128 /* KEYED_FRAGMENT */))];
-      }),
-      _: 3 /* FORWARDED */
-    }, 8 /* PROPS */, ["gutter"])], 2 /* CLASS */);
-  }
-
-  script$14.render = render$14;
-  script$14.__file = "packages/element-plus/card/index.vue";
-
-  var script$13 = create({
+  function ownKeys$i(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$i(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$i(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$i(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var allowedTags$1 = new Set(['A', 'AUDIO', 'B', 'BR', 'CODE', 'EM', 'FILE', 'I', 'IMG', 'LI', 'MAP', 'OL', 'P', 'PRE', 'STRONG', 'UL', 'VIDEO']);
+  var script$15 = create({
     name: "chat",
     mixins: [locale],
+    emits: ['update:modelValue', 'change', 'submit', 'keyadd', 'keysend', 'message-add', 'upload', 'preview', 'notification-error'],
     data: function data() {
       return {
         upload: {
           box: false,
-          src: "",
+          src: '',
+          name: '',
           type: '',
           title: ''
         },
@@ -13302,8 +13396,10 @@
         imgSrc: '',
         videoSrc: '',
         audioSrc: '',
-        keys: "",
-        show: false
+        keys: '',
+        show: false,
+        localMessageId: 0,
+        messageKeyMap: new WeakMap()
       };
     },
     props: {
@@ -13332,7 +13428,8 @@
         "default": 520
       },
       modelValue: {
-        type: String
+        type: String,
+        "default": ''
       },
       notice: {
         type: Boolean,
@@ -13361,12 +13458,20 @@
         "default": function _default() {
           return [];
         }
-      }
+      },
+      autoScroll: {
+        type: Boolean,
+        "default": true
+      },
+      clearOnSend: Boolean,
+      disabled: Boolean,
+      loading: Boolean,
+      sanitize: Function
     },
     computed: {
       msg: {
         get: function get() {
-          return this.modelValue;
+          return this.modelValue || '';
         },
         set: function set(val) {
           this.$emit('update:modelValue', val);
@@ -13384,307 +13489,356 @@
         };
       },
       msgActive: function msgActive() {
-        return !this.validatenull(this.msg.replace(/[\r\n]/g, ""));
+        return !this.validatenull(this.msg.replace(/[\r\n]/g, '').trim());
       },
       messagePlaceholder: function messagePlaceholder() {
         return this.placeholder || this.t('chat.inputPlaceholder');
+      },
+      headerInitial: function headerInitial() {
+        return this.getInitial(this.config.name || '客服');
       }
+    },
+    watch: {
+      list: {
+        handler: function handler() {
+          if (this.autoScroll) this.setScroll();
+        },
+        deep: true
+      }
+    },
+    mounted: function mounted() {
+      if (this.autoScroll) this.setScroll();
     },
     methods: {
       uploadSubmit: function uploadSubmit() {
         var _this = this;
-        this.$refs.form.validate(function (valid) {
-          if (valid) {
-            _this.upload.box = false;
-            _this.$emit('submit', _this.getDetail(_this.upload));
-          }
+        this.$refs.uploadForm.validate(function (valid) {
+          if (!valid) return;
+          var detail = _this.getDetail(_this.upload);
+          _this.upload.box = false;
+          _this.$emit('upload', _objectSpread$i(_objectSpread$i({}, _this.upload), {}, {
+            detail: detail
+          }));
+          _this.$emit('submit', detail);
         });
       },
       handleUpload: function handleUpload(type) {
         this.upload.type = type;
         this.upload.src = '';
-        if (type === 'img') {
-          this.upload.title = this.t('chat.uploadImageTitle');
-        } else if (type === 'video') {
-          this.upload.title = this.t('chat.uploadVideoTitle');
-        } else if (type === 'file') {
-          this.upload.title = this.t('chat.uploadFileTitle');
-        }
+        this.upload.name = '';
+        var titles = {
+          img: this.t('chat.uploadImageTitle'),
+          video: this.t('chat.uploadVideoTitle'),
+          file: this.t('chat.uploadFileTitle')
+        };
+        this.upload.title = titles[type] || '';
         this.upload.box = true;
       },
-      handleClose: function handleClose(done) {
-        this.imgSrc = undefined;
-        this.videoSrc = undefined;
-        this.audioSrc = undefined;
-        done();
-      },
       addKey: function addKey() {
-        if (this.keys !== '') {
-          this.$emit('keyadd', this.keys);
-          this.keys = '';
-        }
+        var key = this.keys.trim();
+        if (key) this.$emit('keyadd', key);
+        this.keys = '';
         this.visible = false;
       },
       sendKey: function sendKey(key) {
         this.$emit('keysend', key);
       },
       getAudio: function getAudio() {
-        this.$refs.chatAudio.play();
+        var audio = this.$refs.chatAudio;
+        if (!audio) return;
+        var result = audio.play();
+        if (result && typeof result["catch"] === 'function') result["catch"](function () {
+          return undefined;
+        });
       },
       getNotification: function getNotification(text) {
-        var safe = this;
-        var NotificationInstance = Notification || window.Notification;
-        if (!!NotificationInstance) {
-          var setPermission = function setPermission() {
-            //请求获取通知权限
-            NotificationInstance.requestPermission(function (PERMISSION) {
-              if (PERMISSION === 'granted') {
-                CreatNotification();
-              } else {
-                console.log(safe.t('chat.notificationRejected'));
-              }
-            });
+        var _this2 = this;
+        var NotificationInstance = typeof window !== 'undefined' ? window.Notification : undefined;
+        if (!NotificationInstance) return;
+        var showNotification = function showNotification() {
+          var notification = new NotificationInstance(_this2.config.name || '新消息', {
+            body: typeof text === 'string' ? text : text && text.text || '',
+            icon: _this2.config.img
+          });
+          notification.onshow = function () {
+            _this2.getAudio();
+            setTimeout(function () {
+              return notification.close();
+            }, 2500);
           };
-          var CreatNotification = function CreatNotification() {
-            var n = new Notification(safe.config.name, {
-              body: text,
-              icon: safe.config.img
-            });
-            n.onshow = function () {
-              safe.getAudio();
-              setTimeout(function () {
-                n.close();
-              }, 2500);
-            };
-            n.onclick = function (e) {
-              n.close();
-            };
+          notification.onclick = function () {
+            return notification.close();
           };
-          var permissionNow = NotificationInstance.permission;
-          if (permissionNow === 'granted') {
-            //允许通知
-            CreatNotification();
-          } else if (permissionNow === 'denied') {
-            console.log(this.t('chat.notificationDenied'));
+        };
+        if (NotificationInstance.permission === 'granted') {
+          showNotification();
+        } else if (NotificationInstance.permission === 'default') {
+          NotificationInstance.requestPermission().then(function (permission) {
+            return permission === 'granted' && showNotification();
+          })["catch"](function (error) {
+            return _this2.$emit('notification-error', error);
+          });
+        }
+      },
+      pushMsg: function pushMsg() {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var mine = params.mine === true;
+        var content = params.text || {};
+        var message = {
+          id: params.id || "chat-".concat(Date.now(), "-").concat(this.localMessageId++),
+          date: params.date || dayjs().format('YYYY-MM-DD HH:mm:ss'),
+          text: _typeof$1(content) === 'object' ? content : {
+            text: content
+          },
+          mine: mine,
+          img: params.img || (mine ? this.config.myImg : this.config.img),
+          name: params.name || (mine ? this.config.myName : this.config.name)
+        };
+        this.list.push(message);
+        this.$emit('message-add', message);
+        if (this.autoScroll) this.setScroll();
+        return message;
+      },
+      setScroll: function setScroll(top) {
+        var _this3 = this;
+        this.$nextTick(function () {
+          var main = _this3.$refs.main;
+          if (main) main.scrollTop = top === undefined ? main.scrollHeight : top;
+        });
+      },
+      handleSend: function handleSend() {
+        if (!this.msgActive || this.disabled || this.loading) return;
+        var message = this.msg;
+        this.$emit('submit', message);
+        if (this.clearOnSend) this.msg = '';
+      },
+      handleItemMsg: function handleItemMsg(item) {
+        this.$emit('submit', item.ask || item.text || '');
+      },
+      getMessageText: function getMessageText(item) {
+        return item && item.text ? item.text.text || '' : '';
+      },
+      getMessageKey: function getMessageKey(item) {
+        if (item.id || item.key) return item.id || item.key;
+        if (item && _typeof$1(item) === 'object') {
+          if (!this.messageKeyMap.has(item)) {
+            this.messageKeyMap.set(item, "chat-message-".concat(this.localMessageId++));
+          }
+          return this.messageKeyMap.get(item);
+        }
+        return "chat-message-".concat(String(item));
+      },
+      getInitial: function getInitial(value) {
+        return String(value || '?').trim().slice(0, 1).toUpperCase();
+      },
+      truncateKey: function truncateKey(value) {
+        var text = String(value || '');
+        return text.length > 24 ? "".concat(text.slice(0, 24), "\u2026") : text;
+      },
+      formatContent: function formatContent() {
+        var _this4 = this;
+        var content = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var html = typeof this.sanitize === 'function' ? this.sanitize(String(content)) : String(content);
+        if (typeof document === 'undefined') return this.escapeHtml(html);
+        var container = document.createElement('div');
+        container.innerHTML = html;
+        Array.from(container.querySelectorAll('*')).forEach(function (node) {
+          var tag = node.tagName;
+          if (!allowedTags$1.has(tag)) {
+            node.replaceWith(document.createTextNode(node.textContent || ''));
+            return;
+          }
+          Array.from(node.attributes).forEach(function (attribute) {
+            var allowed = attribute.name.startsWith('data-') || tag === 'A' && ['href', 'target', 'rel'].includes(attribute.name);
+            if (!allowed) node.removeAttribute(attribute.name);
+          });
+          _this4.decorateContentNode(node, tag);
+        });
+        return container.innerHTML;
+      },
+      decorateContentNode: function decorateContentNode(node, tag) {
+        var source = this.safeUrl(node.getAttribute('data-src'));
+        if (tag === 'IMG') {
+          node.className = 'web__msg--img';
+          if (source) node.setAttribute('src', source);
+          node.setAttribute('loading', 'lazy');
+        } else if (tag === 'VIDEO') {
+          node.className = 'web__msg--video';
+          if (source) node.setAttribute('src', source);
+          node.setAttribute('preload', 'metadata');
+        } else if (tag === 'AUDIO') {
+          node.className = 'web__msg--audio';
+          if (source) node.setAttribute('src', source);
+          node.setAttribute('controls', 'controls');
+        } else if (tag === 'FILE' || tag === 'MAP') {
+          node.className = "web__msg--file".concat(tag === 'MAP' ? ' web__msg--map' : '');
+          node.textContent = '';
+          var title = document.createElement('h2');
+          title.textContent = tag === 'MAP' ? this.t('chat.mapLabel') : this.t('chat.fileLabel');
+          var detail = document.createElement('span');
+          detail.textContent = tag === 'MAP' ? "".concat(node.getAttribute('data-longitude') || '', ", ").concat(node.getAttribute('data-latitude') || '', " ").concat(node.getAttribute('data-address') || '') : node.getAttribute('data-name') || '';
+          node.append(title, detail);
+        } else if (tag === 'A') {
+          var href = this.safeUrl(node.getAttribute('href'));
+          if (href) {
+            node.setAttribute('href', href);
+            node.setAttribute('target', '_blank');
+            node.setAttribute('rel', 'noopener noreferrer');
           } else {
-            setPermission();
+            node.removeAttribute('href');
           }
         }
       },
-      //mine为'我'的对话
-      //text为内容
-      pushMsg: function pushMsg() {
-        var _this2 = this;
-        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var mine = params.mine === true ? true : false;
-        var text = params.text || {};
-        var date = params.date;
-        var textObj = {
-          date: date || dayjs().format('YYYY-MM-DD HH:mm:ss'),
-          text: function () {
-            if (_typeof$1(text) != 'object') {
-              return {
-                text: text
-              };
-            }
-            return text;
-          }(),
-          mine: mine,
-          img: mine ? this.config.myImg : this.config.img,
-          name: mine ? this.config.myName : this.config.name
-        };
-        this.list.push(textObj);
-        setTimeout(function () {
-          _this2.setScroll();
-        }, 50);
-      },
-      setScroll: function setScroll(count) {
-        var _this3 = this;
-        //滚动条一直处于下方
-        this.$nextTick(function () {
-          _this3.$refs.main.scrollTop = count || _this3.$refs.main.scrollHeight;
-        });
-      },
-      //用户主动发送
-      handleSend: function handleSend() {
-        if (this.msgActive) {
-          this.$emit('submit');
-        }
-      },
-      //选择列表
-      handleItemMsg: function handleItemMsg(item) {
-        this.$emit('submit', item.ask);
-      },
-      //处理排版
-      handleDetail: function handleDetail() {
-        var _this4 = this;
-        var html = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var result = html;
-        setTimeout(function () {
-          var list = _this4.$refs.content || [];
-          list.forEach(function (ele) {
-            var _loop = function _loop() {
-              var child = ele.children[i];
-              if (child.getAttribute('data-flag') != 0) {
-                child.setAttribute('data-flag', 0);
-                child.onclick = function () {
-                  _this4.handleEvent(child.dataset);
-                };
-                if (child.tagName === 'IMG') {
-                  child.className = 'web__msg--img';
-                  child.src = child.getAttribute('data-src');
-                } else if (child.tagName === 'VIDEO') {
-                  child.className = 'web__msg--video';
-                  child.src = child.getAttribute('data-src');
-                } else if (child.tagName === 'AUDIO') {
-                  child.className = 'web__msg--audio';
-                  child.controls = 'controls';
-                  child.src = child.getAttribute('data-src');
-                } else if (child.tagName === 'FILE') {
-                  child.className = 'web__msg--file';
-                  child.innerHTML = "<h2>".concat(_this4.t('chat.fileLabel'), "</h2><span>").concat(child.getAttribute('data-name'), "</span>");
-                } else if (child.tagName === 'MAP') {
-                  child.className = 'web__msg--file web__msg--map';
-                  child.innerHTML = "<h2>".concat(_this4.t('chat.mapLabel'), "</h2><span>").concat(child.getAttribute('data-longitude'), " , ").concat(child.getAttribute('data-latitude'), "<br />").concat(child.getAttribute('data-address'), "</span>");
-                }
-                _this4.setScroll();
-              }
-            };
-            for (var i = 0; i < ele.children.length; i++) {
-              _loop();
-            }
-          });
-        }, 0);
-        return result;
+      handleContentClick: function handleContentClick(event) {
+        var target = event.target.closest && event.target.closest('[data-type]');
+        if (!target || !this.$refs.main.contains(target)) return;
+        this.handleEvent(target.dataset);
       },
       getDetail: function getDetail() {
         var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var type = params.type,
-          src = params.src,
-          name = params.name,
-          longitude = params.longitude,
-          latitude = params.latitude,
-          address = params.address;
-        if (type === 'img') {
-          return "<img data-type=\"IMG\" data-src=\"".concat(src, "\"  />");
-        } else if (type === 'video') {
-          return "<video data-type=\"VIDEO\"  data-src=\"".concat(src, "\"></video>");
-        } else if (type === 'audio') {
-          return "<audio data-type=\"AUDIO\"  data-src=\"".concat(src, "\"></audio>");
-        } else if (type === 'file') {
-          return "<file data-type=\"FILE\" data-name=\"".concat(name, "\" data-src=\"").concat(src, "\"></file>");
-        } else if (type === 'map') {
-          return "<map data-type=\"MAP\" data-src=\"".concat(src, "\" data-address=\"").concat(address, " \"data-latitude=\"").concat(latitude, "\" data-longitude=\"").concat(longitude, "\"></map>");
+        var type = String(params.type || '').toUpperCase();
+        var src = this.escapeAttribute(params.src || '');
+        if (type === 'IMG') return "<img data-type=\"IMG\" data-src=\"".concat(src, "\">");
+        if (type === 'VIDEO') return "<video data-type=\"VIDEO\" data-src=\"".concat(src, "\"></video>");
+        if (type === 'AUDIO') return "<audio data-type=\"AUDIO\" data-src=\"".concat(src, "\"></audio>");
+        if (type === 'FILE') return "<file data-type=\"FILE\" data-name=\"".concat(this.escapeAttribute(params.name || ''), "\" data-src=\"").concat(src, "\"></file>");
+        if (type === 'MAP') {
+          return "<map data-type=\"MAP\" data-src=\"".concat(src, "\" data-address=\"").concat(this.escapeAttribute(params.address || ''), "\" data-latitude=\"").concat(this.escapeAttribute(params.latitude || ''), "\" data-longitude=\"").concat(this.escapeAttribute(params.longitude || ''), "\"></map>");
         }
+        return '';
       },
-      //处理事件
       handleEvent: function handleEvent(params) {
         var _this5 = this;
-        var callback = function callback() {
-          if (params.type === 'IMG') {
-            _this5.imgSrc = params.src;
-            _this5.show = true;
-          } else if (params.type === 'VIDEO') {
-            _this5.videoSrc = params.src;
-            _this5.show = true;
-          } else if (params.type === 'AUDIO') {
-            _this5.audioSrc = params.src;
-            _this5.show = true;
-          } else if (params.type === 'FILE') {
-            window.open(params.src);
+        var open = function open() {
+          var type = String(params.type || '').toUpperCase();
+          var source = _this5.safeUrl(params.src);
+          if (type === 'IMG') _this5.imgSrc = source;else if (type === 'VIDEO') _this5.videoSrc = source;else if (type === 'AUDIO') _this5.audioSrc = source;else if (type === 'FILE' && source && typeof window !== 'undefined') {
+            var opened = window.open(source, '_blank', 'noopener');
+            if (opened) opened.opener = null;
+            return;
           }
+          if (_this5.imgSrc || _this5.videoSrc || _this5.audioSrc) _this5.show = true;
+          _this5.$emit('preview', params);
         };
-        if (typeof this.beforeOpen === 'function') {
-          this.beforeOpen(params, callback);
-        } else {
-          callback();
+        if (typeof this.beforeOpen === 'function') this.beforeOpen(params, open);else open();
+      },
+      resetPreview: function resetPreview() {
+        this.imgSrc = '';
+        this.videoSrc = '';
+        this.audioSrc = '';
+      },
+      rootSendMsg: function rootSendMsg(message) {
+        var result = this.pushMsg({
+          text: message
+        });
+        if (this.notice) this.getNotification(message);
+        return result;
+      },
+      safeUrl: function safeUrl(value) {
+        if (!value || typeof window === 'undefined') return '';
+        try {
+          var url = new URL(value, window.location.origin);
+          return ['http:', 'https:', 'blob:'].includes(url.protocol) || url.protocol === 'data:' && /^data:(image|audio|video)\//.test(value) ? url.href : '';
+        } catch (error) {
+          return '';
         }
       },
-      rootSendMsg: function rootSendMsg(msg) {
-        this.pushMsg({
-          text: msg
+      escapeHtml: function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, function (_char) {
+          return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+          }[_char];
         });
-        if (this.notice) {
-          this.getNotification(msg.text || msg);
-        }
+      },
+      escapeAttribute: function escapeAttribute(value) {
+        return this.escapeHtml(value);
       }
     }
   });
 
-  var _hoisted_1$M = {
-    ref: "chatAudio"
+  var _hoisted_1$N = {
+    ref: "chatAudio",
+    preload: "none"
   };
-  var _hoisted_2$x = ["src"];
-  var _hoisted_3$q = ["src"];
-  var _hoisted_4$o = ["src"];
-  var _hoisted_5$m = {
+  var _hoisted_2$D = ["src"];
+  var _hoisted_3$t = ["src"];
+  var _hoisted_4$r = ["src"];
+  var _hoisted_5$o = {
     "class": "web__logo"
   };
-  var _hoisted_6$j = ["src"];
-  var _hoisted_7$g = {
+  var _hoisted_6$l = ["src", "alt"];
+  var _hoisted_7$i = {
+    key: 1,
+    "class": "web__logo-avatar"
+  };
+  var _hoisted_8$g = {
     "class": "web__logo-info"
   };
-  var _hoisted_8$f = {
+  var _hoisted_9$e = {
     "class": "web__logo-name"
   };
-  var _hoisted_9$d = {
+  var _hoisted_10$c = {
+    key: 0,
     "class": "web__logo-dept"
   };
-  var _hoisted_10$b = {
+  var _hoisted_11$a = {
     "class": "web__content"
   };
-  var _hoisted_11$9 = {
-    "class": "web__main",
-    ref: "main"
+  var _hoisted_12$9 = {
+    key: 0,
+    "class": "web__empty"
   };
-  var _hoisted_12$8 = {
+  var _hoisted_13$9 = {
     "class": "web__main-user"
   };
-  var _hoisted_13$8 = ["src"];
-  var _hoisted_14$7 = {
+  var _hoisted_14$8 = ["src", "alt"];
+  var _hoisted_15$8 = {
+    key: 1,
+    "class": "web__main-user-avatar"
+  };
+  var _hoisted_16$5 = {
+    key: 0
+  };
+  var _hoisted_17$3 = {
     "class": "web__main-text"
   };
-  var _hoisted_15$7 = ["innerHTML"];
-  var _hoisted_16$4 = {
+  var _hoisted_18$2 = ["innerHTML"];
+  var _hoisted_19$2 = {
     key: 0,
     "class": "web__main-list"
   };
-  var _hoisted_17$2 = ["onClick"];
-  var _hoisted_18$1 = {
+  var _hoisted_20$1 = ["onClick"];
+  var _hoisted_21$1 = {
+    "class": "web__footer"
+  };
+  var _hoisted_22$1 = {
     "class": "web__tools"
   };
-  var _hoisted_19$1 = {
+  var _hoisted_23$1 = {
     "class": "web__msg"
   };
-  var _hoisted_20 = ["placeholder"];
-  var _hoisted_21 = {
+  var _hoisted_24 = ["placeholder", "disabled"];
+  var _hoisted_25 = {
     "class": "web__msg-menu"
   };
-  var _hoisted_22 = {
-    style: {
-      "text-align": "right",
-      "margin": "0"
-    }
+  var _hoisted_26 = {
+    "class": "web__quick-actions"
   };
-  var _hoisted_23 = {
-    key: 0
-  };
-  var _hoisted_24 = {
-    "class": "dialog-footer"
-  };
-  var _hoisted_25 = {
-    key: 1
-  };
-  var _hoisted_26 = ["src"];
   var _hoisted_27 = ["src"];
   var _hoisted_28 = ["src"];
-  function render$13(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_29 = ["src"];
+  function render$15(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_picture = vue.resolveComponent("el-icon-picture");
     var _component_el_icon = vue.resolveComponent("el-icon");
+    var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_icon_video_camera = vue.resolveComponent("el-icon-video-camera");
     var _component_el_icon_folder_opened = vue.resolveComponent("el-icon-folder-opened");
     var _component_el_input = vue.resolveComponent("el-input");
-    var _component_el_button = vue.resolveComponent("el-button");
+    var _component_el_icon_plus = vue.resolveComponent("el-icon-plus");
     var _component_el_popover = vue.resolveComponent("el-popover");
     var _component_el_dropdown_item = vue.resolveComponent("el-dropdown-item");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
@@ -13696,92 +13850,129 @@
     var _component_el_dialog = vue.resolveComponent("el-dialog");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
-      style: vue.normalizeStyle(_ctx.heightStyleName),
-      onKeyup: _cache[11] || (_cache[11] = vue.withKeys(function () {
-        return _ctx.handleSend && _ctx.handleSend.apply(_ctx, arguments);
-      }, ["enter"]))
-    }, [vue.createElementVNode("audio", _hoisted_1$M, [vue.createElementVNode("source", {
+      style: vue.normalizeStyle(_ctx.heightStyleName)
+    }, [vue.createElementVNode("audio", _hoisted_1$N, [vue.createElementVNode("source", {
       src: _ctx.audio[0],
       type: "audio/ogg"
-    }, null, 8 /* PROPS */, _hoisted_2$x), vue.createElementVNode("source", {
+    }, null, 8 /* PROPS */, _hoisted_2$D), vue.createElementVNode("source", {
       src: _ctx.audio[1],
       type: "audio/mpeg"
-    }, null, 8 /* PROPS */, _hoisted_3$q), vue.createElementVNode("source", {
+    }, null, 8 /* PROPS */, _hoisted_3$t), vue.createElementVNode("source", {
       src: _ctx.audio[2],
       type: "audio/wav"
-    }, null, 8 /* PROPS */, _hoisted_4$o)], 512 /* NEED_PATCH */), vue.createElementVNode("div", _hoisted_5$m, [vue.createElementVNode("img", {
+    }, null, 8 /* PROPS */, _hoisted_4$r)], 512 /* NEED_PATCH */), vue.createElementVNode("header", _hoisted_5$o, [_ctx.config.img ? (vue.openBlock(), vue.createElementBlock("img", {
+      key: 0,
       src: _ctx.config.img,
       "class": "web__logo-img",
-      alt: ""
-    }, null, 8 /* PROPS */, _hoisted_6$j), vue.createElementVNode("div", _hoisted_7$g, [vue.createElementVNode("p", _hoisted_8$f, vue.toDisplayString(_ctx.config.name), 1 /* TEXT */), vue.createElementVNode("p", _hoisted_9$d, vue.toDisplayString(_ctx.config.dept), 1 /* TEXT */)]), vue.renderSlot(_ctx.$slots, "header")]), vue.createElementVNode("div", _hoisted_10$b, [vue.createElementVNode("div", {
+      alt: _ctx.config.name || ''
+    }, null, 8 /* PROPS */, _hoisted_6$l)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_7$i, vue.toDisplayString(_ctx.headerInitial), 1 /* TEXT */)), vue.createElementVNode("div", _hoisted_8$g, [vue.createElementVNode("p", _hoisted_9$e, vue.toDisplayString(_ctx.config.name || '在线客服'), 1 /* TEXT */), _ctx.config.dept ? (vue.openBlock(), vue.createElementBlock("p", _hoisted_10$c, vue.toDisplayString(_ctx.config.dept), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true)]), vue.renderSlot(_ctx.$slots, "header")]), vue.createElementVNode("div", _hoisted_11$a, [vue.createElementVNode("section", {
+      "class": "web__panel",
       style: vue.normalizeStyle(_ctx.widthStyleName)
-    }, [vue.createElementVNode("div", _hoisted_11$9, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.list, function (item, index) {
+    }, [vue.createElementVNode("div", {
+      ref: "main",
+      "class": "web__main",
+      "aria-live": "polite",
+      onClick: _cache[0] || (_cache[0] = function () {
+        return _ctx.handleContentClick && _ctx.handleContentClick.apply(_ctx, arguments);
+      })
+    }, [!_ctx.list.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_12$9, "暂无消息，开始聊天吧")) : (vue.openBlock(true), vue.createElementBlock(vue.Fragment, {
+      key: 1
+    }, vue.renderList(_ctx.list, function (item) {
       return vue.openBlock(), vue.createElementBlock("div", {
+        key: _ctx.getMessageKey(item),
         "class": vue.normalizeClass(["web__main-item", {
           'web__main-item--mine': item.mine
-        }]),
-        key: index
-      }, [vue.createElementVNode("div", _hoisted_12$8, [vue.createElementVNode("img", {
-        src: item.img
-      }, null, 8 /* PROPS */, _hoisted_13$8), vue.createElementVNode("cite", null, [vue.createTextVNode(vue.toDisplayString(item.name) + " ", 1 /* TEXT */), vue.createElementVNode("i", null, vue.toDisplayString(item.date), 1 /* TEXT */)])]), vue.createElementVNode("div", _hoisted_14$7, [_cache[12] || (_cache[12] = vue.createElementVNode("div", {
+        }])
+      }, [vue.createElementVNode("div", _hoisted_13$9, [item.img ? (vue.openBlock(), vue.createElementBlock("img", {
+        key: 0,
+        src: item.img,
+        alt: item.name || ''
+      }, null, 8 /* PROPS */, _hoisted_14$8)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_15$8, vue.toDisplayString(_ctx.getInitial(item.name)), 1 /* TEXT */)), vue.createElementVNode("cite", null, [vue.createTextVNode(vue.toDisplayString(item.name || (item.mine ? _ctx.config.myName : _ctx.config.name) || '用户') + " ", 1 /* TEXT */), item.date ? (vue.openBlock(), vue.createElementBlock("i", _hoisted_16$5, vue.toDisplayString(item.date), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true)])]), vue.createElementVNode("div", _hoisted_17$3, [_cache[14] || (_cache[14] = vue.createElementVNode("div", {
         "class": "web__main-arrow"
       }, null, -1 /* HOISTED */)), vue.createElementVNode("span", {
-        innerHTML: _ctx.handleDetail(item.text.text),
-        ref_for: true,
-        ref: "content"
-      }, null, 8 /* PROPS */, _hoisted_15$7), !_ctx.validatenull(item.text.list) ? (vue.openBlock(), vue.createElementBlock("ul", _hoisted_16$4, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(item.text.list, function (citem, cindex) {
+        innerHTML: _ctx.formatContent(_ctx.getMessageText(item))
+      }, null, 8 /* PROPS */, _hoisted_18$2), item.text && item.text.list && item.text.list.length ? (vue.openBlock(), vue.createElementBlock("ul", _hoisted_19$2, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(item.text.list, function (option) {
         return vue.openBlock(), vue.createElementBlock("li", {
+          key: option.id || option.ask || option.text,
           onClick: function onClick($event) {
-            return _ctx.handleItemMsg(citem);
-          },
-          key: cindex
-        }, vue.toDisplayString(citem.text), 9 /* TEXT, PROPS */, _hoisted_17$2);
+            return _ctx.handleItemMsg(option);
+          }
+        }, vue.toDisplayString(option.text), 9 /* TEXT, PROPS */, _hoisted_20$1);
       }), 128 /* KEYED_FRAGMENT */))])) : vue.createCommentVNode("v-if", true)])], 2 /* CLASS */);
-    }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), vue.createElementVNode("div", {
-      "class": "web__footer",
-      style: vue.normalizeStyle(_ctx.widthStyleName)
-    }, [vue.createElementVNode("div", _hoisted_18$1, [_ctx.tools.img ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+    }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), vue.createElementVNode("footer", _hoisted_21$1, [vue.createElementVNode("div", _hoisted_22$1, [_ctx.tools.img ? (vue.openBlock(), vue.createBlock(_component_el_button, {
       key: 0,
-      onClick: _cache[0] || (_cache[0] = function ($event) {
+      text: "",
+      circle: "",
+      title: "添加图片",
+      disabled: _ctx.disabled || _ctx.loading,
+      onClick: _cache[1] || (_cache[1] = function ($event) {
         return _ctx.handleUpload('img');
       })
     }, {
       "default": vue.withCtx(function () {
-        return [vue.createVNode(_component_el_icon_picture)];
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_picture)];
+          }),
+          _: 1 /* STABLE */
+        })];
       }),
       _: 1 /* STABLE */
-    })) : vue.createCommentVNode("v-if", true), _ctx.tools.video ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+    }, 8 /* PROPS */, ["disabled"])) : vue.createCommentVNode("v-if", true), _ctx.tools.video ? (vue.openBlock(), vue.createBlock(_component_el_button, {
       key: 1,
-      onClick: _cache[1] || (_cache[1] = function ($event) {
+      text: "",
+      circle: "",
+      title: "添加视频",
+      disabled: _ctx.disabled || _ctx.loading,
+      onClick: _cache[2] || (_cache[2] = function ($event) {
         return _ctx.handleUpload('video');
       })
     }, {
       "default": vue.withCtx(function () {
-        return [vue.createVNode(_component_el_icon_video_camera)];
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_video_camera)];
+          }),
+          _: 1 /* STABLE */
+        })];
       }),
       _: 1 /* STABLE */
-    })) : vue.createCommentVNode("v-if", true), _ctx.tools.file ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+    }, 8 /* PROPS */, ["disabled"])) : vue.createCommentVNode("v-if", true), _ctx.tools.file ? (vue.openBlock(), vue.createBlock(_component_el_button, {
       key: 2,
-      onClick: _cache[2] || (_cache[2] = function ($event) {
+      text: "",
+      circle: "",
+      title: "添加文件",
+      disabled: _ctx.disabled || _ctx.loading,
+      onClick: _cache[3] || (_cache[3] = function ($event) {
         return _ctx.handleUpload('file');
       })
     }, {
       "default": vue.withCtx(function () {
-        return [vue.createVNode(_component_el_icon_folder_opened)];
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_folder_opened)];
+          }),
+          _: 1 /* STABLE */
+        })];
       }),
       _: 1 /* STABLE */
-    })) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "menu")]), vue.createElementVNode("div", _hoisted_19$1, [vue.withDirectives(vue.createElementVNode("textarea", {
-      "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    }, 8 /* PROPS */, ["disabled"])) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "menu")]), vue.createElementVNode("div", _hoisted_23$1, [vue.withDirectives(vue.createElementVNode("textarea", {
+      "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
         return _ctx.msg = $event;
       }),
       rows: "2",
       placeholder: _ctx.messagePlaceholder,
-      "class": "web__msg-input"
-    }, null, 8 /* PROPS */, _hoisted_20), [[vue.vModelText, _ctx.msg]]), vue.createElementVNode("div", _hoisted_21, [vue.createVNode(_component_el_dropdown, {
+      disabled: _ctx.disabled || _ctx.loading,
+      "class": "web__msg-input",
+      onKeydown: _cache[5] || (_cache[5] = vue.withKeys(vue.withModifiers(function () {
+        return _ctx.handleSend && _ctx.handleSend.apply(_ctx, arguments);
+      }, ["exact", "prevent"]), ["enter"]))
+    }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_24), [[vue.vModelText, _ctx.msg]]), vue.createElementVNode("div", _hoisted_25, [vue.createVNode(_component_el_dropdown, {
       "split-button": "",
       "class": "web__msg-submit",
       type: "primary",
       size: _ctx.size,
+      disabled: _ctx.disabled || _ctx.loading || !_ctx.msgActive,
       onClick: _ctx.handleSend,
       trigger: "click"
     }, {
@@ -13791,42 +13982,49 @@
             return [vue.createVNode(_component_el_dropdown_item, null, {
               "default": vue.withCtx(function () {
                 return [vue.createVNode(_component_el_popover, {
-                  placement: "top",
-                  width: "160",
-                  modelValue: _ctx.visible,
-                  "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+                  visible: _ctx.visible,
+                  "onUpdate:visible": _cache[8] || (_cache[8] = function ($event) {
                     return _ctx.visible = $event;
-                  })
+                  }),
+                  placement: "top",
+                  width: "220"
                 }, {
                   reference: vue.withCtx(function () {
                     return [vue.createVNode(_component_el_button, {
-                      texts: "",
-                      icon: "el-icon-plus"
-                    })];
+                      text: "",
+                      size: _ctx.size
+                    }, {
+                      "default": vue.withCtx(function () {
+                        return [vue.createVNode(_component_el_icon, null, {
+                          "default": vue.withCtx(function () {
+                            return [vue.createVNode(_component_el_icon_plus)];
+                          }),
+                          _: 1 /* STABLE */
+                        }), _cache[15] || (_cache[15] = vue.createTextVNode(" 添加快捷回复 "))];
+                      }),
+                      _: 1 /* STABLE */
+                    }, 8 /* PROPS */, ["size"])];
                   }),
                   "default": vue.withCtx(function () {
-                    return [vue.createElementVNode("div", null, [vue.createVNode(_component_el_input, {
+                    return [vue.createVNode(_component_el_input, {
+                      modelValue: _ctx.keys,
+                      "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+                        return _ctx.keys = $event;
+                      }),
                       size: _ctx.size,
-                      style: {
-                        "margin-bottom": "10px"
-                      },
                       rows: 3,
                       "show-word-limit": "",
                       placeholder: _ctx.t('chat.quickReplyPlaceholder'),
-                      modelValue: _ctx.keys,
-                      "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-                        return _ctx.keys = $event;
-                      }),
                       type: "textarea"
-                    }, null, 8 /* PROPS */, ["size", "placeholder", "modelValue"]), vue.createElementVNode("div", _hoisted_22, [vue.createVNode(_component_el_button, {
+                    }, null, 8 /* PROPS */, ["modelValue", "size", "placeholder"]), vue.createElementVNode("div", _hoisted_26, [vue.createVNode(_component_el_button, {
                       size: _ctx.size,
                       text: "",
-                      onClick: _cache[5] || (_cache[5] = function ($event) {
+                      onClick: _cache[7] || (_cache[7] = function ($event) {
                         return _ctx.visible = false;
                       })
                     }, {
                       "default": vue.withCtx(function () {
-                        return [vue.createTextVNode(vue.toDisplayString(_ctx.t("common.cancelBtn")), 1 /* TEXT */)];
+                        return [vue.createTextVNode(vue.toDisplayString(_ctx.t('common.cancelBtn')), 1 /* TEXT */)];
                       }),
                       _: 1 /* STABLE */
                     }, 8 /* PROPS */, ["size"]), vue.createVNode(_component_el_button, {
@@ -13835,24 +14033,23 @@
                       onClick: _ctx.addKey
                     }, {
                       "default": vue.withCtx(function () {
-                        return [vue.createTextVNode(vue.toDisplayString(_ctx.t("common.submitBtn")), 1 /* TEXT */)];
+                        return [vue.createTextVNode(vue.toDisplayString(_ctx.t('common.submitBtn')), 1 /* TEXT */)];
                       }),
                       _: 1 /* STABLE */
-                    }, 8 /* PROPS */, ["size", "onClick"])])])];
+                    }, 8 /* PROPS */, ["size", "onClick"])])];
                   }),
                   _: 1 /* STABLE */
-                }, 8 /* PROPS */, ["modelValue"])];
+                }, 8 /* PROPS */, ["visible"])];
               }),
               _: 1 /* STABLE */
-            }), vue.createVNode(_component_el_scrollbar, {
-              style: {
-                "height": "100px"
-              }
+            }), _ctx.keylist.length ? (vue.openBlock(), vue.createBlock(_component_el_scrollbar, {
+              key: 0,
+              "max-height": "160px"
             }, {
               "default": vue.withCtx(function () {
-                return [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.keylist, function (item, index) {
+                return [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.keylist, function (item) {
                   return vue.openBlock(), vue.createBlock(_component_el_dropdown_item, {
-                    key: index,
+                    key: item,
                     onClick: function onClick($event) {
                       return _ctx.sendKey(item);
                     }
@@ -13864,7 +14061,7 @@
                         placement: "top"
                       }, {
                         "default": vue.withCtx(function () {
-                          return [vue.createElementVNode("span", null, vue.toDisplayString(item.substr(0, 10)) + vue.toDisplayString(item.length > 10 ? '...' : ''), 1 /* TEXT */)];
+                          return [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.truncateKey(item)), 1 /* TEXT */)];
                         }),
                         _: 2 /* DYNAMIC */
                       }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["content"])];
@@ -13874,50 +14071,50 @@
                 }), 128 /* KEYED_FRAGMENT */))];
               }),
               _: 1 /* STABLE */
-            })];
+            })) : vue.createCommentVNode("v-if", true)];
           }),
           _: 1 /* STABLE */
         })];
       }),
       "default": vue.withCtx(function () {
-        return [vue.createTextVNode(vue.toDisplayString(_ctx.t("chat.sendBtn")) + " ", 1 /* TEXT */)];
+        return [vue.createTextVNode(vue.toDisplayString(_ctx.t('chat.sendBtn')) + " ", 1 /* TEXT */)];
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["size", "onClick"])])])], 4 /* STYLE */)], 4 /* STYLE */), vue.renderSlot(_ctx.$slots, "default")]), _ctx.upload.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_23, [vue.createVNode(_component_el_dialog, {
+    }, 8 /* PROPS */, ["size", "disabled", "onClick"])])])])], 4 /* STYLE */), vue.renderSlot(_ctx.$slots, "default")]), vue.createVNode(_component_el_dialog, {
+      modelValue: _ctx.upload.box,
+      "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+        return _ctx.upload.box = $event;
+      }),
       title: _ctx.upload.title,
       "destroy-on-close": "",
       "append-to-body": _ctx.$AVUE.appendToBody,
-      modelValue: _ctx.upload.box,
-      "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
-        return _ctx.upload.box = $event;
-      }),
-      width: "30%"
+      width: "min(460px, 90vw)"
     }, {
       footer: vue.withCtx(function () {
-        return [vue.createElementVNode("span", _hoisted_24, [vue.createVNode(_component_el_button, {
-          onClick: _cache[8] || (_cache[8] = function ($event) {
+        return [vue.createVNode(_component_el_button, {
+          size: "small",
+          onClick: _cache[11] || (_cache[11] = function ($event) {
             return _ctx.upload.box = false;
-          }),
-          size: "small"
+          })
         }, {
           "default": vue.withCtx(function () {
-            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("common.cancelBtn")), 1 /* TEXT */)];
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t('common.cancelBtn')), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
         }), vue.createVNode(_component_el_button, {
           type: "primary",
-          onClick: _ctx.uploadSubmit,
-          size: "small"
+          size: "small",
+          onClick: _ctx.uploadSubmit
         }, {
           "default": vue.withCtx(function () {
-            return [vue.createTextVNode(vue.toDisplayString(_ctx.t("common.submitBtn")), 1 /* TEXT */)];
+            return [vue.createTextVNode(vue.toDisplayString(_ctx.t('common.submitBtn')), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["onClick"])])];
+        }, 8 /* PROPS */, ["onClick"])];
       }),
       "default": vue.withCtx(function () {
         return [vue.createVNode(_component_el_form, {
-          ref: "form",
+          ref: "uploadForm",
           model: _ctx.upload
         }, {
           "default": vue.withCtx(function () {
@@ -13930,84 +14127,95 @@
             }, {
               "default": vue.withCtx(function () {
                 return [vue.createVNode(_component_el_input, {
-                  size: _ctx.size,
-                  style: {
-                    "margin-bottom": "10px"
-                  },
-                  rows: 4,
-                  "show-word-limit": "",
-                  maxlength: "100",
-                  placeholder: _ctx.t('chat.addressPlaceholder'),
                   modelValue: _ctx.upload.src,
-                  "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+                  "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
                     return _ctx.upload.src = $event;
                   }),
+                  size: _ctx.size,
+                  rows: 4,
+                  "show-word-limit": "",
+                  maxlength: "500",
+                  placeholder: _ctx.t('chat.addressPlaceholder'),
                   type: "textarea"
-                }, null, 8 /* PROPS */, ["size", "placeholder", "modelValue"])];
+                }, null, 8 /* PROPS */, ["modelValue", "size", "placeholder"])];
               }),
               _: 1 /* STABLE */
-            }, 8 /* PROPS */, ["rules"])];
+            }, 8 /* PROPS */, ["rules"]), _ctx.upload.type === 'file' ? (vue.openBlock(), vue.createBlock(_component_el_form_item, {
+              key: 0,
+              label: "文件名称",
+              prop: "name",
+              rules: [{
+                required: true,
+                message: '请输入文件名称'
+              }]
+            }, {
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_input, {
+                  modelValue: _ctx.upload.name,
+                  "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+                    return _ctx.upload.name = $event;
+                  }),
+                  size: _ctx.size,
+                  placeholder: "例如：产品资料.pdf"
+                }, null, 8 /* PROPS */, ["modelValue", "size"])];
+              }),
+              _: 1 /* STABLE */
+            })) : vue.createCommentVNode("v-if", true)];
           }),
           _: 1 /* STABLE */
         }, 8 /* PROPS */, ["model"])];
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["title", "append-to-body", "modelValue"])])) : vue.createCommentVNode("v-if", true), _ctx.show ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_25, [vue.createVNode(_component_el_dialog, {
+    }, 8 /* PROPS */, ["modelValue", "title", "append-to-body"]), vue.createVNode(_component_el_dialog, {
       modelValue: _ctx.show,
-      "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+      "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
         return _ctx.show = $event;
       }),
-      width: "40%",
+      width: "min(680px, 90vw)",
       "destroy-on-close": "",
       "append-to-body": _ctx.$AVUE.appendToBody,
-      "before-close": _ctx.handleClose,
-      "class": "web__dialog"
+      "class": "web__dialog",
+      onClosed: _ctx.resetPreview
     }, {
       "default": vue.withCtx(function () {
         return [_ctx.imgSrc ? (vue.openBlock(), vue.createElementBlock("img", {
           key: 0,
           src: _ctx.imgSrc,
-          style: {
-            "width": "100%",
-            "object-fit": "cover"
-          }
-        }, null, 8 /* PROPS */, _hoisted_26)) : vue.createCommentVNode("v-if", true), _ctx.videoSrc ? (vue.openBlock(), vue.createElementBlock("video", {
+          "class": "web__preview-image",
+          alt: "预览图片"
+        }, null, 8 /* PROPS */, _hoisted_27)) : vue.createCommentVNode("v-if", true), _ctx.videoSrc ? (vue.openBlock(), vue.createElementBlock("video", {
           key: 1,
           src: _ctx.videoSrc,
-          style: {
-            "width": "100%",
-            "object-fit": "cover"
-          },
-          controls: "controls"
-        }, null, 8 /* PROPS */, _hoisted_27)) : vue.createCommentVNode("v-if", true), _ctx.audioSrc ? (vue.openBlock(), vue.createElementBlock("audio", {
+          "class": "web__preview-media",
+          controls: ""
+        }, null, 8 /* PROPS */, _hoisted_28)) : vue.createCommentVNode("v-if", true), _ctx.audioSrc ? (vue.openBlock(), vue.createElementBlock("audio", {
           key: 2,
           src: _ctx.audioSrc,
-          style: {
-            "width": "100%",
-            "object-fit": "cover"
-          },
-          controls: "controls"
-        }, null, 8 /* PROPS */, _hoisted_28)) : vue.createCommentVNode("v-if", true)];
+          "class": "web__preview-media",
+          controls: ""
+        }, null, 8 /* PROPS */, _hoisted_29)) : vue.createCommentVNode("v-if", true)];
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["modelValue", "append-to-body", "before-close"])])) : vue.createCommentVNode("v-if", true)], 38 /* CLASS, STYLE, NEED_HYDRATION */);
+    }, 8 /* PROPS */, ["modelValue", "append-to-body", "onClosed"])], 6 /* CLASS, STYLE */);
   }
 
-  script$13.render = render$13;
-  script$13.__file = "packages/element-plus/chat/index.vue";
+  script$15.render = render$15;
+  script$15.__file = "packages/element-plus/chat/index.vue";
 
-  var propsDefault = {
-    avatar: "avatar",
-    author: "author",
-    body: "body"
+  function ownKeys$h(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$h(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$h(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$h(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var defaultProps = {
+    avatar: 'avatar',
+    author: 'author',
+    body: 'body',
+    time: 'time'
   };
-  var script$12 = create({
-    name: "comment",
+  var allowedTags = new Set(['A', 'B', 'BLOCKQUOTE', 'BR', 'CODE', 'EM', 'I', 'IMG', 'LI', 'OL', 'P', 'PRE', 'STRONG', 'UL']);
+  var script$14 = create({
+    name: 'comment',
+    emits: ['avatar-click'],
     props: {
-      reverse: {
-        type: Boolean,
-        "default": false
-      },
+      reverse: Boolean,
       data: {
         type: Object,
         "default": function _default() {
@@ -14017,7 +14225,7 @@
       props: {
         type: Object,
         "default": function _default() {
-          return propsDefault;
+          return {};
         }
       },
       option: {
@@ -14025,62 +14233,166 @@
         "default": function _default() {
           return {};
         }
+      },
+      showAvatar: {
+        type: Boolean,
+        "default": true
+      },
+      avatarAlt: {
+        type: String,
+        "default": ''
+      },
+      sanitize: {
+        type: [Boolean, Function],
+        "default": true
       }
     },
     computed: {
-      avatarKey: function avatarKey() {
-        return this.props.avatar || propsDefault.avatar;
-      },
-      authorKey: function authorKey() {
-        return this.props.author || propsDefault.author;
-      },
-      bodyKey: function bodyKey() {
-        return this.props.body || propsDefault.body;
+      fieldProps: function fieldProps() {
+        return _objectSpread$h(_objectSpread$h(_objectSpread$h({}, defaultProps), this.option && this.option.props || {}), this.props || {});
       },
       avatar: function avatar() {
-        return this.data[this.avatarKey];
+        return this.data[this.fieldProps.avatar];
       },
       author: function author() {
-        return this.data[this.authorKey];
+        return this.data[this.fieldProps.author];
       },
       body: function body() {
-        return this.data[this.bodyKey];
+        return this.data[this.fieldProps.body];
+      },
+      time: function time() {
+        return this.data[this.fieldProps.time];
+      },
+      authorInitial: function authorInitial() {
+        return String(this.author || '?').trim().slice(0, 1).toUpperCase();
+      },
+      formattedBody: function formattedBody() {
+        var content = String(this.body || '');
+        if (typeof this.sanitize === 'function') return this.sanitize(content);
+        return this.sanitize ? this.sanitizeHtml(content) : content;
       }
     },
-    mounted: function mounted() {}
+    methods: {
+      sanitizeHtml: function sanitizeHtml(content) {
+        var _this = this;
+        if (typeof document === 'undefined') return this.escapeHtml(content);
+        var container = document.createElement('div');
+        container.innerHTML = content;
+        Array.from(container.querySelectorAll('*')).forEach(function (node) {
+          var tag = node.tagName;
+          if (!allowedTags.has(tag)) {
+            node.replaceWith(document.createTextNode(node.textContent || ''));
+            return;
+          }
+          Array.from(node.attributes).forEach(function (attribute) {
+            var isLink = tag === 'A' && ['href', 'target', 'rel'].includes(attribute.name);
+            var isImage = tag === 'IMG' && attribute.name === 'src';
+            if (!isLink && !isImage) node.removeAttribute(attribute.name);
+          });
+          if (tag === 'A') {
+            var href = _this.safeUrl(node.getAttribute('href'));
+            if (href) {
+              node.setAttribute('href', href);
+              node.setAttribute('target', '_blank');
+              node.setAttribute('rel', 'noopener noreferrer');
+            } else {
+              node.removeAttribute('href');
+            }
+          }
+          if (tag === 'IMG') {
+            var src = _this.safeUrl(node.getAttribute('src'));
+            if (src) {
+              node.setAttribute('src', src);
+              node.setAttribute('loading', 'lazy');
+            } else {
+              node.remove();
+            }
+          }
+        });
+        return container.innerHTML;
+      },
+      safeUrl: function safeUrl(value) {
+        if (!value || typeof window === 'undefined') return '';
+        try {
+          var url = new URL(value, window.location.origin);
+          return ['http:', 'https:'].includes(url.protocol) || url.protocol === 'data:' && /^data:image\//.test(value) ? url.href : '';
+        } catch (error) {
+          return '';
+        }
+      },
+      escapeHtml: function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, function (_char) {
+          return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+          }[_char];
+        });
+      }
+    }
   });
 
-  var _hoisted_1$L = ["src"];
-  var _hoisted_2$w = ["textContent"];
-  var _hoisted_3$p = ["innerHTML"];
-  function render$12(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", {
+  var _hoisted_1$M = ["disabled", "aria-label"];
+  var _hoisted_2$C = ["src", "alt"];
+  var _hoisted_3$s = ["innerHTML"];
+  function render$14(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("article", {
       "class": vue.normalizeClass(_ctx.b({
-        'reverse': _ctx.reverse
+        reverse: _ctx.reverse
       }))
-    }, [vue.createElementVNode("img", {
-      src: _ctx.avatar,
-      alt: "",
-      "class": vue.normalizeClass(_ctx.b('avatar'))
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$L), vue.createElementVNode("div", {
-      "class": vue.normalizeClass(_ctx.b('main'))
-    }, [vue.createElementVNode("div", {
-      "class": vue.normalizeClass(_ctx.b('header'))
-    }, [_ctx.author ? (vue.openBlock(), vue.createElementBlock("div", {
+    }, [_ctx.showAvatar ? (vue.openBlock(), vue.createElementBlock("button", {
       key: 0,
-      "class": vue.normalizeClass(_ctx.b('author')),
-      textContent: vue.toDisplayString(_ctx.author)
-    }, null, 10 /* CLASS, PROPS */, _hoisted_2$w)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */), _ctx.body ? (vue.openBlock(), vue.createElementBlock("div", {
+      type: "button",
+      "class": vue.normalizeClass(_ctx.b('avatar-button')),
+      disabled: !_ctx.avatar,
+      "aria-label": _ctx.avatar ? "\u67E5\u770B ".concat(_ctx.author || '用户', " \u7684\u5934\u50CF") : '暂无头像',
+      onClick: _cache[0] || (_cache[0] = function ($event) {
+        return _ctx.$emit('avatar-click', _ctx.data);
+      })
+    }, [_ctx.avatar ? (vue.openBlock(), vue.createElementBlock("img", {
+      key: 0,
+      src: _ctx.avatar,
+      alt: _ctx.avatarAlt,
+      "class": vue.normalizeClass(_ctx.b('avatar'))
+    }, null, 10 /* CLASS, PROPS */, _hoisted_2$C)) : (vue.openBlock(), vue.createElementBlock("span", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('avatar-fallback'))
+    }, vue.toDisplayString(_ctx.authorInitial), 3 /* TEXT, CLASS */))], 10 /* CLASS, PROPS */, _hoisted_1$M)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('main'))
+    }, [vue.createElementVNode("header", {
+      "class": vue.normalizeClass(_ctx.b('header'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('meta'))
+    }, [_ctx.author ? (vue.openBlock(), vue.createElementBlock("strong", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('author'))
+    }, vue.toDisplayString(_ctx.author), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true), _ctx.time ? (vue.openBlock(), vue.createElementBlock("time", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('time'))
+    }, vue.toDisplayString(_ctx.time), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('actions'))
+    }, [vue.renderSlot(_ctx.$slots, "default", {
+      data: _ctx.data
+    }), vue.renderSlot(_ctx.$slots, "actions", {
+      data: _ctx.data
+    })], 2 /* CLASS */)], 2 /* CLASS */), _ctx.body !== undefined && _ctx.body !== null && _ctx.body !== '' ? (vue.openBlock(), vue.createElementBlock("div", {
       key: 0,
       "class": vue.normalizeClass(_ctx.b('body')),
-      innerHTML: _ctx.body
-    }, null, 10 /* CLASS, PROPS */, _hoisted_3$p)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */);
+      innerHTML: _ctx.formattedBody
+    }, null, 10 /* CLASS, PROPS */, _hoisted_3$s)) : vue.createCommentVNode("v-if", true), _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("footer", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('footer'))
+    }, [vue.renderSlot(_ctx.$slots, "footer", {
+      data: _ctx.data
+    })], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */);
   }
 
-  script$12.render = render$12;
-  script$12.__file = "packages/element-plus/comment/index.vue";
+  script$14.render = render$14;
+  script$14.__file = "packages/element-plus/comment/index.vue";
 
-  var script$11 = create({
+  var script$13 = create({
     name: 'form',
     inject: ["formSafe"],
     mixins: [locale],
@@ -14102,7 +14414,7 @@
     }
   });
 
-  function render$11(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$13(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_col = vue.resolveComponent("el-col");
     return _ctx.validData(_ctx.formSafe.tableOption.menuBtn, true) ? (vue.openBlock(), vue.createBlock(_component_el_col, {
@@ -14173,8 +14485,8 @@
     }, 8 /* PROPS */, ["span", "md", "xs", "style", "class"])) : vue.createCommentVNode("v-if", true);
   }
 
-  script$11.render = render$11;
-  script$11.__file = "packages/element-plus/form/menu.vue";
+  script$13.render = render$13;
+  script$13.__file = "packages/element-plus/form/menu.vue";
 
   var mock = (function (column, dicData, defaultForm, run) {
     if (!run) return;
@@ -14330,26 +14642,26 @@
   });
 
   // form 配置文件
-  var config$1 = {
+  var config = {
     labelWidth: 90,
     span: 12,
     xsSpan: 24
   };
 
-  function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$10 = create({
+  function ownKeys$g(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$g(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$g(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$g(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$12 = create({
     name: "form",
     mixins: [init("form")],
     emits: ["update:modelValue", "update:status", "reset-change", "mock-change", "tab-click", "submit", "error"],
     components: {
-      formTemp: script$1c,
-      formMenu: script$11,
-      iconTemp: script$1b
+      formTemp: script$1d,
+      formMenu: script$13,
+      iconTemp: script$1c
     },
     data: function data() {
       return {
-        config: config$1,
+        config: config,
         activeName: "",
         allDisabled: false,
         tableOption: {},
@@ -14497,7 +14809,7 @@
 
         // 处理分组配置
         var processedGroups = (tableOption.group || []).map(function (groupItem) {
-          return _objectSpread$8(_objectSpread$8({}, groupItem), {}, {
+          return _objectSpread$g(_objectSpread$g({}, groupItem), {}, {
             column: getColumn(groupItem.column)
           });
         });
@@ -14989,8 +15301,8 @@
     }
   });
 
-  var _hoisted_1$K = ["innerHTML"];
-  function render$10(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$L = ["innerHTML"];
+  function render$12(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_tab_pane = vue.resolveComponent("el-tab-pane");
     var _component_el_tabs = vue.resolveComponent("el-tabs");
@@ -15211,7 +15523,7 @@
                               content: vue.withCtx(function () {
                                 return [vue.createElementVNode("div", {
                                   innerHTML: column.labelTip
-                                }, null, 8 /* PROPS */, _hoisted_1$K)];
+                                }, null, 8 /* PROPS */, _hoisted_1$L)];
                               }),
                               "default": vue.withCtx(function () {
                                 return [vue.createVNode(_component_el_icon, null, {
@@ -15292,8 +15604,8 @@
     }, 8 /* PROPS */, ["status-icon", "model", "scroll-to-error", "hide-required-asterisk", "require-asterisk-position", "scroll-into-view-options", "label-suffix", "size", "label-position", "label-width"])], 6 /* CLASS, STYLE */);
   }
 
-  script$10.render = render$10;
-  script$10.__file = "packages/element-plus/form/index.vue";
+  script$12.render = render$12;
+  script$12.__file = "packages/element-plus/form/index.vue";
 
   function props () {
     return {
@@ -15607,7 +15919,7 @@
     };
   }
 
-  var script$$ = create({
+  var script$11 = create({
     name: "checkbox",
     props: {
       fill: String,
@@ -15663,7 +15975,7 @@
     }
   });
 
-  function render$$(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$11(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
     var _component_el_checkbox_group = vue.resolveComponent("el-checkbox-group");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -15718,10 +16030,10 @@
     }, 8 /* PROPS */, ["modelValue", "onChange", "disabled", "size", "fill", "text-color", "min", "max", "onClick"])], 2 /* CLASS */);
   }
 
-  script$$.render = render$$;
-  script$$.__file = "packages/element-plus/checkbox/index.vue";
+  script$11.render = render$11;
+  script$11.__file = "packages/element-plus/checkbox/index.vue";
 
-  var script$_ = create({
+  var script$10 = create({
     name: "date",
     mixins: [props(), event(), locale],
     props: {
@@ -15757,14 +16069,14 @@
     }
   });
 
-  var _hoisted_1$J = {
+  var _hoisted_1$K = {
     "class": "el-date-table-cell"
   };
-  var _hoisted_2$v = {
+  var _hoisted_2$B = {
     key: 1,
     "class": "el-date-table-cell__text"
   };
-  function render$_(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$10(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_date_picker = vue.resolveComponent("el-date-picker");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
@@ -15803,24 +16115,25 @@
       disabled: _ctx.disabled
     }, {
       "default": vue.withCtx(function (cell) {
-        return [vue.createElementVNode("div", _hoisted_1$J, [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
+        return [vue.createElementVNode("div", _hoisted_1$K, [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
           key: 0,
           item: cell
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$v, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$B, vue.toDisplayString(cell.renderText || cell.text), 1 /* TEXT */))])];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["type", "modelValue", "popper-class", "size", "cell-class-name", "editable", "unlink-panels", "single-panel", "default-value", "default-time", "range-separator", "start-placeholder", "end-placeholder", "format", "clearable", "shortcuts", "disabled-date", "disabled-hours", "disabled-minutes", "disabled-seconds", "value-format", "placeholder", "prefix-icon", "show-now", "onBlur", "onFocus", "onClick", "readonly", "disabled"])], 2 /* CLASS */);
   }
 
-  script$_.render = render$_;
-  script$_.__file = "packages/element-plus/date/index.vue";
+  script$10.render = render$10;
+  script$10.__file = "packages/element-plus/date/index.vue";
 
-  var script$Z = create({
-    name: "draggable",
+  function ownKeys$f(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$f(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$f(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$f(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$$ = create({
+    name: 'draggable',
+    emits: ['move', 'resize', 'change', 'focus', 'blur', 'over', 'out'],
     props: {
-      index: {
-        type: [String, Number]
-      },
+      index: [String, Number],
       mask: {
         type: Boolean,
         "default": true
@@ -15829,88 +16142,90 @@
         type: Number,
         "default": 1
       },
-      readonly: {
-        type: Boolean,
-        "default": false
-      },
+      readonly: Boolean,
       resize: {
         type: Boolean,
         "default": true
       },
-      disabled: {
-        type: Boolean,
-        "default": false
-      },
+      disabled: Boolean,
       step: {
         type: Number,
         "default": 1
       },
-      lock: {
-        type: Boolean,
-        "default": false
+      grid: {
+        type: Number,
+        "default": 0
       },
+      lock: Boolean,
       zIndex: {
         type: [Number, String],
         "default": 1
       },
       left: {
-        type: Number,
+        type: [Number, String],
         "default": 0
       },
       top: {
-        type: Number,
+        type: [Number, String],
         "default": 0
       },
-      width: {
-        type: Number
+      width: [Number, String],
+      height: [Number, String],
+      minWidth: {
+        type: Number,
+        "default": 20
       },
-      height: {
-        type: Number
+      minHeight: {
+        type: Number,
+        "default": 20
+      },
+      maxWidth: Number,
+      maxHeight: Number,
+      bounds: Object,
+      handle: String,
+      ignore: {
+        type: String,
+        "default": 'input, textarea, button, select, a, [data-avue-draggable-ignore]'
       }
     },
     data: function data() {
       return {
-        first: true,
-        value: '',
         baseWidth: 0,
         baseHeight: 0,
         baseLeft: 0,
         baseTop: 0,
-        children: {},
+        children: null,
         moveActive: false,
         overActive: false,
-        rangeActive: false,
         active: false,
-        focusTimer: null,
         documentMoveHandler: null,
         documentUpHandler: null,
-        documentKeydownHandler: null,
         rangeList: [{
-          classname: "left"
+          classname: 'left'
         }, {
-          classname: "right"
+          classname: 'right'
         }, {
-          classname: "top"
+          classname: 'top'
         }, {
-          classname: "bottom"
+          classname: 'bottom'
         }, {
-          classname: "top-left"
+          classname: 'top-left'
         }, {
-          classname: "top-right"
+          classname: 'top-right'
         }, {
-          classname: "bottom-left"
+          classname: 'bottom-left'
         }, {
-          classname: "bottom-right"
+          classname: 'bottom-right'
         }]
       };
     },
     computed: {
       scaleVal: function scaleVal() {
-        return this.scale;
+        return Number(this.scale) > 0 ? Number(this.scale) : 1;
       },
       styleMenuName: function styleMenuName() {
         return {
-          transformOrigin: "0 0",
+          transformOrigin: '0 0',
           transform: "scale(".concat(this.scaleVal, ")")
         };
       },
@@ -15920,352 +16235,405 @@
         };
       },
       styleRangeName: function styleRangeName() {
-        var calc = 10 * this.scaleVal;
+        var size = 10 * this.scaleVal;
         return {
-          width: this.setPx(calc),
-          height: this.setPx(calc)
+          width: this.setPx(size),
+          height: this.setPx(size)
         };
       },
       styleLabelName: function styleLabelName() {
         return {
-          fontSize: this.setPx(18 * this.scaleVal)
+          fontSize: this.setPx(Math.max(11, 14 * this.scaleVal))
         };
       },
       styleName: function styleName() {
-        var _this = this;
-        return Object.assign(function () {
-          if (_this.active) {
-            return Object.assign({
-              zIndex: 9999
-            }, _this.styleLineName);
-          }
-          return {
-            zIndex: _this.zIndex
-          };
-        }(), {
+        return {
+          zIndex: this.active ? 9999 : this.zIndex,
           top: this.setPx(this.baseTop),
           left: this.setPx(this.baseLeft),
           width: this.setPx(this.baseWidth),
           height: this.setPx(this.baseHeight)
-        });
+        };
       }
     },
     watch: {
-      active: function active(val) {
-        if (val) {
-          this.handleKeydown();
-        } else {
-          this.removeKeydown();
+      width: function width(value) {
+        this.setSize(this.toNumber(value, this.baseWidth), this.baseHeight);
+      },
+      height: function height(value) {
+        this.setSize(this.baseWidth, this.toNumber(value, this.baseHeight));
+      },
+      left: function left(value) {
+        this.setLeft(value);
+      },
+      top: function top(value) {
+        this.setTop(value);
+      },
+      bounds: {
+        deep: true,
+        handler: function handler() {
+          this.normalizeBox();
         }
       },
-      width: function width(val) {
-        this.baseWidth = getFixed(val) || this.children.offsetWidth;
+      baseWidth: function baseWidth() {
+        this.syncChildSize();
       },
-      height: function height(val) {
-        this.baseHeight = getFixed(val) || this.children.offsetHeight;
-      },
-      left: function left(val) {
-        this.baseLeft = getFixed(val);
-      },
-      top: function top(val) {
-        this.baseTop = getFixed(val);
-      },
-      baseWidth: function baseWidth(val) {
-        this.$refs.wrapper.style.width = this.setPx(val);
-        if (this.resize && this.children.style) {
-          this.children.style.width = this.setPx(val);
-        }
-      },
-      baseHeight: function baseHeight(val) {
-        this.$refs.wrapper.style.height = this.setPx(val);
-        if (this.resize && this.children.style) {
-          this.children.style.height = this.setPx(val);
-        }
-      },
-      baseLeft: function baseLeft(n, o) {
-        if (this.first) return;
-        this.setMove(n - o, 0);
-      },
-      baseTop: function baseTop(n, o) {
-        if (this.first) return;
-        this.setMove(0, n - o);
+      baseHeight: function baseHeight() {
+        this.syncChildSize();
       }
     },
     mounted: function mounted() {
       this.init();
     },
     beforeUnmount: function beforeUnmount() {
-      if (this.focusTimer) {
-        clearTimeout(this.focusTimer);
-        this.focusTimer = null;
-      }
       this.removeDocumentDrag();
-      this.removeKeydown();
     },
     methods: {
       init: function init() {
-        var _this2 = this;
-        this.children = this.$refs.item.firstChild;
-        this.baseWidth = getFixed(this.width) || this.children.offsetWidth;
-        this.baseHeight = getFixed(this.height) || this.children.offsetHeight;
-        this.baseLeft = getFixed(this.left);
-        this.baseTop = getFixed(this.top);
-        this.$nextTick(function () {
-          _this2.first = false;
-        });
+        this.children = this.$refs.item && this.$refs.item.firstElementChild;
+        this.baseWidth = this.constrainSizeToBounds(this.clampSize(this.toNumber(this.width, this.children ? this.children.offsetWidth : 0), 'width'), 'width');
+        this.baseHeight = this.constrainSizeToBounds(this.clampSize(this.toNumber(this.height, this.children ? this.children.offsetHeight : 0), 'height'), 'height');
+        var position = this.constrainPosition(this.toNumber(this.left, 0), this.toNumber(this.top, 0));
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
+        this.syncChildSize();
       },
-      setMove: function setMove(left, top) {
-        this.$emit('move', {
-          index: this.index,
-          left: left,
-          top: top
-        });
+      toNumber: function toNumber(value) {
+        var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var number = Number(value);
+        return Number.isFinite(number) ? getFixed(number) : fallback;
+      },
+      setSize: function setSize(width, height) {
+        this.baseWidth = this.constrainSizeToBounds(this.clampSize(width, 'width'), 'width');
+        this.baseHeight = this.constrainSizeToBounds(this.clampSize(height, 'height'), 'height');
+        var position = this.constrainPosition(this.baseLeft, this.baseTop);
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
+      },
+      syncChildSize: function syncChildSize() {
+        if (!this.resize || !this.children || !this.children.style) return;
+        this.children.style.boxSizing = 'border-box';
+        this.children.style.width = '100%';
+        this.children.style.height = '100%';
+      },
+      getRangeStyle: function getRangeStyle(position) {
+        var _this = this;
+        var offset = 10 * this.scaleVal / 2;
+        return position.split('-').reduce(function (style, side) {
+          style[side] = _this.setPx(-offset);
+          return style;
+        }, {});
       },
       setLeft: function setLeft(left) {
-        this.baseLeft = left;
+        this.baseLeft = this.constrainPosition(this.toNumber(left), this.baseTop).left;
       },
       setTop: function setTop(top) {
-        this.baseTop = top;
+        this.baseTop = this.constrainPosition(this.baseLeft, this.toNumber(top)).top;
       },
-      getRangeStyle: function getRangeStyle(postion) {
-        var _this3 = this;
-        var calc = 10 * this.scaleVal / 2;
-        var result = {};
-        var list = postion.split("-");
-        list.forEach(function (ele) {
-          result[ele] = _this3.setPx(-calc);
-        });
-        return result;
+      setOverActive: function setOverActive(value) {
+        this.overActive = !!value;
       },
-      setOverActive: function setOverActive(val) {
-        this.overActive = val;
-      },
-      setActive: function setActive(val) {
-        this.active = val;
-      },
-      rangeMove: function rangeMove(e, position) {
-        var _this4 = this;
-        if (this.disabled || this.lock) return;
-        //移动的方向
-        var x, y;
-        //移动的位置
-        var xp, yp;
-        //移动的正负
-        var xc, yc;
-        this.rangeActive = true;
-        this.handleMouseDown();
-        var disX = e.clientX;
-        var disY = e.clientY;
-        this.bindDocumentDrag(function (e) {
-          _this4.moveActive = true;
-          if (position === "right") {
-            x = true;
-            y = false;
-          } else if (position === "left") {
-            x = true;
-            xp = true;
-            xc = true;
-            y = false;
-          } else if (position === "top") {
-            x = false;
-            y = true;
-            yp = true;
-            yc = true;
-          } else if (position === "bottom") {
-            x = false;
-            y = true;
-          } else if (position === "bottom-right") {
-            x = true;
-            y = true;
-          } else if (position === "bottom-left") {
-            x = true;
-            y = true;
-            xp = true;
-            xc = true;
-          } else if (position === "top-right") {
-            x = true;
-            y = true;
-            yp = true;
-            yc = true;
-          } else if (position === "top-left") {
-            x = true;
-            y = true;
-            xp = true;
-            xc = true;
-            yp = true;
-            yc = true;
-          }
-          var left = e.clientX - disX;
-          var top = e.clientY - disY;
-          disX = e.clientX;
-          disY = e.clientY;
-          if (x) {
-            var calc = left * _this4.step;
-            if (xc) calc = -calc;
-            if (xp) _this4.baseLeft = getFixed(_this4.baseLeft - calc);
-            _this4.baseWidth = getFixed(_this4.baseWidth + calc);
-          }
-          if (y) {
-            var _calc = top * _this4.step;
-            if (yc) _calc = -_calc;
-            if (yp) _this4.baseTop = getFixed(_this4.baseTop - _calc);
-            _this4.baseHeight = getFixed(_this4.baseHeight + _calc);
-          }
-        });
-      },
-      handleOut: function handleOut() {
-        this.overActive = false;
-        this.$emit("out", {
-          index: this.index,
-          width: this.baseWidth,
-          height: this.baseHeight,
-          left: this.baseLeft,
-          top: this.baseTop
-        });
+      setActive: function setActive(value) {
+        this.active = !!value;
+        if (this.active) this.focusRoot();
       },
       handleOver: function handleOver() {
         if (this.disabled) return;
         this.overActive = true;
-        this.$emit("over", {
+        this.$emit('over', this.getState());
+      },
+      handleOut: function handleOut() {
+        this.overActive = false;
+        this.$emit('out', this.getState());
+      },
+      handleMove: function handleMove(event) {
+        var _this2 = this;
+        if (event.button !== 0 || this.disabled || this.lock || this.readonly) return;
+        var target = event.target;
+        if (this.handle && (!target.closest || !target.closest(this.handle))) return;
+        if (!this.handle && this.ignore && target.closest && target.closest(this.ignore)) return;
+        this.active = true;
+        this.focusRoot();
+        this.handleMouseDown('move');
+        var start = this.getPointerState(event);
+        this.bindDocumentDrag(function (moveEvent) {
+          return _this2.applyMove(moveEvent, start);
+        }, event.pointerId);
+      },
+      rangeMove: function rangeMove(event, position) {
+        var _this3 = this;
+        if (event.button !== 0 || this.disabled || this.lock || this.readonly || !this.resize) return;
+        this.active = true;
+        this.focusRoot();
+        this.handleMouseDown('resize');
+        var start = _objectSpread$f(_objectSpread$f({}, this.getPointerState(event)), {}, {
+          position: position
+        });
+        this.bindDocumentDrag(function (moveEvent) {
+          return _this3.applyResize(moveEvent, start);
+        }, event.pointerId);
+      },
+      getPointerState: function getPointerState(event) {
+        return {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          left: this.baseLeft,
+          top: this.baseTop,
+          width: this.baseWidth,
+          height: this.baseHeight
+        };
+      },
+      getDelta: function getDelta(event, start) {
+        var multiplier = Number(this.step) || 1;
+        return {
+          x: (event.clientX - start.clientX) / this.scaleVal * multiplier,
+          y: (event.clientY - start.clientY) / this.scaleVal * multiplier
+        };
+      },
+      applyMove: function applyMove(event, start) {
+        var delta = this.getDelta(event, start);
+        var position = this.constrainPosition(this.snap(start.left + delta.x), this.snap(start.top + delta.y));
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
+        this.emitMove(delta);
+      },
+      applyResize: function applyResize(event, start) {
+        var delta = this.getDelta(event, start);
+        var sides = start.position.split('-');
+        var left = start.left;
+        var top = start.top;
+        var width = start.width;
+        var height = start.height;
+        if (sides.includes('left')) {
+          left = this.snap(start.left + delta.x);
+          width = start.width - delta.x;
+        }
+        if (sides.includes('right')) width = start.width + delta.x;
+        if (sides.includes('top')) {
+          top = this.snap(start.top + delta.y);
+          height = start.height - delta.y;
+        }
+        if (sides.includes('bottom')) height = start.height + delta.y;
+        var right = start.left + start.width;
+        var bottom = start.top + start.height;
+        width = this.clampSize(this.snap(width), 'width');
+        height = this.clampSize(this.snap(height), 'height');
+        if (sides.includes('left')) left = right - width;
+        if (sides.includes('top')) top = bottom - height;
+        var bounded = this.constrainResize(left, top, width, height, sides);
+        this.baseLeft = bounded.left;
+        this.baseTop = bounded.top;
+        this.baseWidth = bounded.width;
+        this.baseHeight = bounded.height;
+        this.$emit('resize', this.getState({
+          deltaX: delta.x,
+          deltaY: delta.y
+        }));
+        this.$emit('change', _objectSpread$f({
+          type: 'resize'
+        }, this.getState()));
+      },
+      snap: function snap(value) {
+        var grid = Number(this.grid);
+        return getFixed(grid > 0 ? Math.round(value / grid) * grid : value);
+      },
+      clampSize: function clampSize(value, dimension) {
+        var min = dimension === 'width' ? Number(this.minWidth) || 0 : Number(this.minHeight) || 0;
+        var maxValue = dimension === 'width' ? this.maxWidth : this.maxHeight;
+        var max = Number(maxValue);
+        return getFixed(Math.max(min, Number.isFinite(max) && max > 0 ? Math.min(value, max) : value));
+      },
+      constrainSizeToBounds: function constrainSizeToBounds(value, dimension) {
+        var bounds = this.getBounds();
+        if (!bounds) return getFixed(value);
+        var limit = dimension === 'width' ? Math.max(0, bounds.right - bounds.left) : Math.max(0, bounds.bottom - bounds.top);
+        return getFixed(Math.min(value, limit));
+      },
+      normalizeBox: function normalizeBox() {
+        if (!this.bounds) return;
+        this.baseWidth = this.constrainSizeToBounds(this.clampSize(this.baseWidth, 'width'), 'width');
+        this.baseHeight = this.constrainSizeToBounds(this.clampSize(this.baseHeight, 'height'), 'height');
+        var position = this.constrainPosition(this.baseLeft, this.baseTop);
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
+      },
+      getBounds: function getBounds() {
+        if (!this.bounds || _typeof$1(this.bounds) !== 'object') return null;
+        var left = this.toNumber(this.bounds.left, 0);
+        var top = this.toNumber(this.bounds.top, 0);
+        var right = Number.isFinite(Number(this.bounds.right)) ? Number(this.bounds.right) : Number.isFinite(Number(this.bounds.width)) ? left + Number(this.bounds.width) : Infinity;
+        var bottom = Number.isFinite(Number(this.bounds.bottom)) ? Number(this.bounds.bottom) : Number.isFinite(Number(this.bounds.height)) ? top + Number(this.bounds.height) : Infinity;
+        return {
+          left: left,
+          top: top,
+          right: right,
+          bottom: bottom
+        };
+      },
+      constrainPosition: function constrainPosition(left, top) {
+        var bounds = this.getBounds();
+        if (!bounds) return {
+          left: getFixed(left),
+          top: getFixed(top)
+        };
+        return {
+          left: getFixed(Math.min(Math.max(left, bounds.left), Math.max(bounds.left, bounds.right - this.baseWidth))),
+          top: getFixed(Math.min(Math.max(top, bounds.top), Math.max(bounds.top, bounds.bottom - this.baseHeight)))
+        };
+      },
+      constrainResize: function constrainResize(left, top, width, height, sides) {
+        var bounds = this.getBounds();
+        if (!bounds) return {
+          left: left,
+          top: top,
+          width: width,
+          height: height
+        };
+        if (sides.includes('left') && left < bounds.left) {
+          width -= bounds.left - left;
+          left = bounds.left;
+        }
+        if (sides.includes('top') && top < bounds.top) {
+          height -= bounds.top - top;
+          top = bounds.top;
+        }
+        if (left + width > bounds.right) {
+          if (sides.includes('left')) left = bounds.right - width;else width = bounds.right - left;
+        }
+        if (top + height > bounds.bottom) {
+          if (sides.includes('top')) top = bounds.bottom - height;else height = bounds.bottom - top;
+        }
+        width = this.constrainSizeToBounds(this.clampSize(width, 'width'), 'width');
+        height = this.constrainSizeToBounds(this.clampSize(height, 'height'), 'height');
+        left = Math.min(Math.max(left, bounds.left), Math.max(bounds.left, bounds.right - width));
+        top = Math.min(Math.max(top, bounds.top), Math.max(bounds.top, bounds.bottom - height));
+        return {
+          left: getFixed(left),
+          top: getFixed(top),
+          width: width,
+          height: height
+        };
+      },
+      emitMove: function emitMove(delta) {
+        this.$emit('move', {
+          index: this.index,
+          left: getFixed(delta.x),
+          top: getFixed(delta.y)
+        });
+        this.$emit('change', _objectSpread$f({
+          type: 'move'
+        }, this.getState()));
+      },
+      getState: function getState() {
+        var extra = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        return _objectSpread$f({
           index: this.index,
           width: this.baseWidth,
           height: this.baseHeight,
           left: this.baseLeft,
           top: this.baseTop
-        });
+        }, extra);
       },
-      handleMove: function handleMove(e) {
-        var _this5 = this;
-        if (this.disabled || this.lock) return;
-        this.focusTimer = setTimeout(function () {
-          if (_this5.$refs.input) _this5.$refs.input.focus();
-          _this5.focusTimer = null;
-        });
-        this.active = true;
-        this.handleMouseDown();
-        var disX = e.clientX;
-        var disY = e.clientY;
-        this.bindDocumentDrag(function (e) {
-          var left = e.clientX - disX;
-          var top = e.clientY - disY;
-          disX = e.clientX;
-          disY = e.clientY;
-          _this5.baseLeft = getFixed(_this5.baseLeft + left * _this5.step);
-          _this5.baseTop = getFixed(_this5.baseTop + top * _this5.step);
-        });
-      },
-      bindDocumentDrag: function bindDocumentDrag(moveHandler) {
-        var _this6 = this;
+      bindDocumentDrag: function bindDocumentDrag(moveHandler, pointerId) {
+        var _this4 = this;
         this.removeDocumentDrag();
-        this.documentMoveHandler = moveHandler;
-        this.documentUpHandler = function () {
-          _this6.removeDocumentDrag();
-          _this6.handleMouseUp();
+        this.documentMoveHandler = function (event) {
+          if (pointerId !== undefined && event.pointerId !== pointerId) return;
+          _this4.moveActive = true;
+          moveHandler(event);
         };
-        document.addEventListener('mousemove', this.documentMoveHandler);
-        document.addEventListener('mouseup', this.documentUpHandler);
+        this.documentUpHandler = function (event) {
+          if (pointerId !== undefined && event.pointerId !== pointerId) return;
+          _this4.removeDocumentDrag();
+          _this4.handleMouseUp();
+        };
+        document.addEventListener('pointermove', this.documentMoveHandler);
+        document.addEventListener('pointerup', this.documentUpHandler);
+        document.addEventListener('pointercancel', this.documentUpHandler);
       },
       removeDocumentDrag: function removeDocumentDrag() {
         if (this.documentMoveHandler) {
-          document.removeEventListener('mousemove', this.documentMoveHandler);
+          document.removeEventListener('pointermove', this.documentMoveHandler);
           this.documentMoveHandler = null;
         }
         if (this.documentUpHandler) {
-          document.removeEventListener('mouseup', this.documentUpHandler);
+          document.removeEventListener('pointerup', this.documentUpHandler);
+          document.removeEventListener('pointercancel', this.documentUpHandler);
           this.documentUpHandler = null;
         }
       },
-      handleKeydown: function handleKeydown() {
-        var _this7 = this;
-        if (this.documentKeydownHandler) return;
-        this.documentKeydownHandler = function (event) {
-          var e = event || window.event;
-          var step = 1 * _this7.step;
-          if (_this7.$refs.input.focused) {
-            if (e && e.keyCode == 38) {
-              //上
-              _this7.baseTop = getFixed(_this7.baseTop - step);
-            } else if (e && e.keyCode == 37) {
-              //左
-              _this7.baseLeft = getFixed(_this7.baseLeft - step);
-            } else if (e && e.keyCode == 40) {
-              //下
-              _this7.baseTop = getFixed(_this7.baseTop + step);
-            } else if (e && e.keyCode == 39) {
-              //右
-              _this7.baseLeft = getFixed(_this7.baseLeft + step);
-            }
-            e.stopPropagation();
-            e.preventDefault();
-            _this7.$emit("blur", {
-              index: _this7.index,
-              width: _this7.baseWidth,
-              height: _this7.baseHeight,
-              left: _this7.baseLeft,
-              top: _this7.baseTop
-            });
-          }
-        };
-        document.addEventListener('keydown', this.documentKeydownHandler);
+      focusRoot: function focusRoot() {
+        if (this.$refs.root && document.activeElement !== this.$refs.root) {
+          this.$refs.root.focus({
+            preventScroll: true
+          });
+        }
       },
-      removeKeydown: function removeKeydown() {
-        if (!this.documentKeydownHandler) return;
-        document.removeEventListener('keydown', this.documentKeydownHandler);
-        this.documentKeydownHandler = null;
-      },
-      handleMouseDown: function handleMouseDown(e) {
-        this.moveActive = true;
-        this.$emit("focus", {
-          index: this.index,
-          width: this.baseWidth,
-          height: this.baseHeight,
+      handleKeydown: function handleKeydown(event) {
+        if (!this.active || this.disabled || this.lock || this.readonly) return;
+        if (event.key === 'Escape') {
+          this.active = false;
+          return;
+        }
+        var step = Number(event.shiftKey ? this.step * 10 : this.step) || 1;
+        var left = this.baseLeft;
+        var top = this.baseTop;
+        if (event.key === 'ArrowUp') top -= step;else if (event.key === 'ArrowDown') top += step;else if (event.key === 'ArrowLeft') left -= step;else if (event.key === 'ArrowRight') left += step;else return;
+        event.preventDefault();
+        var previous = {
           left: this.baseLeft,
           top: this.baseTop
+        };
+        var position = this.constrainPosition(this.snap(left), this.snap(top));
+        this.baseLeft = position.left;
+        this.baseTop = position.top;
+        this.emitMove({
+          x: this.baseLeft - previous.left,
+          y: this.baseTop - previous.top
         });
+      },
+      handleMouseDown: function handleMouseDown(type) {
+        this.moveActive = true;
+        this.$emit('focus', _objectSpread$f({
+          type: type
+        }, this.getState()));
       },
       handleMouseUp: function handleMouseUp() {
         this.moveActive = false;
-        this.rangeActive = false;
-        this.$emit("blur", {
-          index: this.index,
-          width: this.baseWidth,
-          height: this.baseHeight,
-          left: this.baseLeft,
-          top: this.baseTop
-        });
+        this.$emit('blur', this.getState());
       }
     }
   });
 
-  var _hoisted_1$I = ["onMousedown"];
-  function render$Z(_ctx, _cache, $props, $setup, $data, $options) {
-    var _component_el_input = vue.resolveComponent("el-input");
+  var _hoisted_1$J = ["aria-label"];
+  var _hoisted_2$A = ["onPointerdown"];
+  function render$$(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
+      ref: "root",
       "class": vue.normalizeClass(_ctx.b({
-        'active': (_ctx.active || _ctx.overActive) && !_ctx.readonly,
-        'move': _ctx.moveActive,
-        'click': _ctx.disabled
+        active: (_ctx.active || _ctx.overActive || _ctx.moveActive) && !_ctx.readonly,
+        move: _ctx.moveActive,
+        disabled: _ctx.disabled
       })),
-      onMousedown: _cache[1] || (_cache[1] = vue.withModifiers(function () {
+      style: vue.normalizeStyle(_ctx.styleName),
+      tabindex: "0",
+      role: "group",
+      "aria-label": "\u53EF\u62D6\u62FD\u5143\u7D20 ".concat(_ctx.index || ''),
+      onPointerdown: _cache[0] || (_cache[0] = vue.withModifiers(function () {
         return _ctx.handleMove && _ctx.handleMove.apply(_ctx, arguments);
       }, ["stop"])),
-      onMouseover: _cache[2] || (_cache[2] = vue.withModifiers(function () {
+      onMouseenter: _cache[1] || (_cache[1] = function () {
         return _ctx.handleOver && _ctx.handleOver.apply(_ctx, arguments);
-      }, ["stop"])),
-      onMouseout: _cache[3] || (_cache[3] = vue.withModifiers(function () {
+      }),
+      onMouseleave: _cache[2] || (_cache[2] = function () {
         return _ctx.handleOut && _ctx.handleOut.apply(_ctx, arguments);
-      }, ["stop"])),
-      style: vue.normalizeStyle(_ctx.styleName)
-    }, [vue.createVNode(_component_el_input, {
-      ref: "input",
-      "class": vue.normalizeClass(_ctx.b('focus')),
-      modelValue: _ctx.value,
-      "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-        return _ctx.value = $event;
+      }),
+      onKeydown: _cache[3] || (_cache[3] = function () {
+        return _ctx.handleKeydown && _ctx.handleKeydown.apply(_ctx, arguments);
       })
-    }, null, 8 /* PROPS */, ["class", "modelValue"]), vue.createElementVNode("div", {
-      "class": vue.normalizeClass(_ctx.b('wrapper')),
-      ref: "wrapper"
+    }, [vue.createElementVNode("div", {
+      ref: "wrapper",
+      "class": vue.normalizeClass(_ctx.b('wrapper'))
     }, [(_ctx.active || _ctx.overActive || _ctx.moveActive) && !_ctx.readonly ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 0
     }, [vue.createElementVNode("div", {
@@ -16277,116 +16645,106 @@
     }, null, 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('line', ['label'])),
       style: vue.normalizeStyle(_ctx.styleLabelName)
-    }, vue.toDisplayString(_ctx.baseLeft) + "," + vue.toDisplayString(_ctx.baseTop), 7 /* TEXT, CLASS, STYLE */)], 64 /* STABLE_FRAGMENT */)) : vue.createCommentVNode("v-if", true), !_ctx.readonly ? (vue.openBlock(true), vue.createElementBlock(vue.Fragment, {
+    }, vue.toDisplayString(_ctx.baseLeft) + ", " + vue.toDisplayString(_ctx.baseTop) + " · " + vue.toDisplayString(_ctx.baseWidth) + " × " + vue.toDisplayString(_ctx.baseHeight), 7 /* TEXT, CLASS, STYLE */)], 64 /* STABLE_FRAGMENT */)) : vue.createCommentVNode("v-if", true), _ctx.active && _ctx.resize && !_ctx.readonly && !_ctx.disabled ? (vue.openBlock(true), vue.createElementBlock(vue.Fragment, {
       key: 1
-    }, vue.renderList(_ctx.rangeList, function (item, index) {
-      return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [_ctx.active ? (vue.openBlock(), vue.createElementBlock("div", {
+    }, vue.renderList(_ctx.rangeList, function (item) {
+      return vue.openBlock(), vue.createElementBlock("div", {
+        key: item.classname,
         "class": vue.normalizeClass(_ctx.b('range', [item.classname])),
-        key: index,
         style: vue.normalizeStyle([_ctx.styleRangeName, _ctx.getRangeStyle(item.classname)]),
-        onMousedown: vue.withModifiers(function ($event) {
+        onPointerdown: vue.withModifiers(function ($event) {
           return _ctx.rangeMove($event, item.classname);
-        }, ["stop"])
-      }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$I)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
-    }), 256 /* UNKEYED_FRAGMENT */)) : vue.createCommentVNode("v-if", true), vue.withDirectives(vue.createElementVNode("div", {
+        }, ["stop", "prevent"])
+      }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_2$A);
+    }), 128 /* KEYED_FRAGMENT */)) : vue.createCommentVNode("v-if", true), vue.withDirectives(vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('menu')),
       style: vue.normalizeStyle(_ctx.styleMenuName)
     }, [vue.renderSlot(_ctx.$slots, "menu", {
       zIndex: _ctx.zIndex,
       index: _ctx.index
     })], 6 /* CLASS, STYLE */), [[vue.vShow, _ctx.active || _ctx.overActive]]), vue.createElementVNode("div", {
-      "class": vue.normalizeClass(_ctx.b('item')),
-      ref: "item"
+      ref: "item",
+      "class": vue.normalizeClass(_ctx.b('item'))
     }, [vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */), !_ctx.disabled && _ctx.mask ? (vue.openBlock(), vue.createElementBlock("div", {
       key: 2,
       "class": vue.normalizeClass(_ctx.b('mask'))
-    }, null, 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 38 /* CLASS, STYLE, NEED_HYDRATION */);
+    }, null, 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)], 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$J);
   }
 
-  script$Z.render = render$Z;
-  script$Z.__file = "packages/element-plus/draggable/index.vue";
+  script$$.render = render$$;
+  script$$.__file = "packages/element-plus/draggable/index.vue";
 
-  var script$Y = create({
+  var script$_ = create({
     name: 'flow',
+    emits: ['click', 'change-node-site'],
     props: {
       active: [String, Number],
-      index: [String, Number],
-      node: Object
-    },
-    data: function data() {
-      return {
-        // 控制节点操作显示
-        mouseEnter: false
-      };
+      node: {
+        type: Object,
+        required: true
+      },
+      nodeWidth: [String, Number],
+      nodeHeight: [String, Number],
+      editable: Boolean
     },
     computed: {
-      // 节点容器样式
-      flowNodeContainer: {
-        get: function get() {
-          return {
-            position: 'absolute',
-            width: '200px',
-            top: this.setPx(this.node.top),
-            left: this.setPx(this.node.left),
-            boxShadow: this.mouseEnter ? '#66a6e0 0px 0px 12px 0px' : '',
-            backgroundColor: 'transparent'
-          };
-        }
+      flowNodeContainer: function flowNodeContainer() {
+        return {
+          width: this.setPx(this.node.width || this.nodeWidth),
+          minHeight: this.setPx(this.node.height || this.nodeHeight),
+          top: this.setPx(this.node.top || 0),
+          left: this.setPx(this.node.left || 0)
+        };
       }
     },
     methods: {
-      // 鼠标进入
-      showDelete: function showDelete() {
-        this.mouseEnter = true;
+      handleClick: function handleClick() {
+        this.$emit('click', this.node);
       },
-      // 鼠标离开
-      hideDelete: function hideDelete() {
-        this.mouseEnter = false;
-      },
-      // 鼠标移动后抬起
       changeNodeSite: function changeNodeSite() {
-        // 避免抖动
-        if (this.node.left == this.$refs.node.style.left && this.node.top == this.$refs.node.style.top) {
-          return;
-        }
-        this.$emit('changeNodeSite', {
-          index: this.index,
-          left: Number(this.$refs.node.style.left.replace('px', '')),
-          top: Number(this.$refs.node.style.top.replace('px', ''))
+        if (!this.editable || !this.$refs.node) return;
+        var left = Number.parseFloat(this.$refs.node.style.left);
+        var top = Number.parseFloat(this.$refs.node.style.top);
+        if (Number.isNaN(left) || Number.isNaN(top)) return;
+        if (Number(this.node.left || 0) === left && Number(this.node.top || 0) === top) return;
+        this.$emit('change-node-site', {
+          id: this.node.id,
+          left: left,
+          top: top
         });
       }
     }
   });
 
-  var _hoisted_1$H = ["left", "top"];
-  function render$Y(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$_(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_rank = vue.resolveComponent("el-icon-rank");
     var _component_el_icon = vue.resolveComponent("el-icon");
     return vue.openBlock(), vue.createElementBlock("div", {
       ref: "node",
+      "class": vue.normalizeClass(_ctx.b('node-wrapper')),
       style: vue.normalizeStyle(_ctx.flowNodeContainer),
-      onMouseenter: _cache[0] || (_cache[0] = function () {
-        return _ctx.showDelete && _ctx.showDelete.apply(_ctx, arguments);
+      tabindex: "0",
+      role: "button",
+      onClick: _cache[0] || (_cache[0] = function () {
+        return _ctx.handleClick && _ctx.handleClick.apply(_ctx, arguments);
       }),
-      onMouseleave: _cache[1] || (_cache[1] = function () {
-        return _ctx.hideDelete && _ctx.hideDelete.apply(_ctx, arguments);
-      }),
+      onKeydown: _cache[1] || (_cache[1] = vue.withKeys(vue.withModifiers(function () {
+        return _ctx.handleClick && _ctx.handleClick.apply(_ctx, arguments);
+      }, ["prevent"]), ["enter"])),
       onMouseup: _cache[2] || (_cache[2] = function () {
         return _ctx.changeNodeSite && _ctx.changeNodeSite.apply(_ctx, arguments);
-      }),
-      left: _ctx.node.left,
-      top: _ctx.node.top,
-      disabled: "",
-      mask: false
+      })
     }, [vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('node', {
-        'active': _ctx.active === _ctx.node.id
+        active: _ctx.active === _ctx.node.id
       }))
     }, [vue.createElementVNode("div", {
       "class": vue.normalizeClass(_ctx.b('node-header'))
-    }, [vue.createElementVNode("span", {
-      "class": vue.normalizeClass(_ctx.b('node-drag'))
-    }, null, 2 /* CLASS */), vue.createVNode(_component_el_icon, null, {
+    }, [_ctx.editable ? (vue.openBlock(), vue.createElementBlock("span", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('node-drag')),
+      title: "拖动节点"
+    }, null, 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createVNode(_component_el_icon, null, {
       "default": vue.withCtx(function () {
         return [vue.createVNode(_component_el_icon_rank)];
       }),
@@ -16397,93 +16755,36 @@
       "class": vue.normalizeClass(_ctx.b('node-body'))
     }, [vue.renderSlot(_ctx.$slots, "default", {
       node: _ctx.node
-    })], 2 /* CLASS */)], 2 /* CLASS */)], 44 /* STYLE, PROPS, NEED_HYDRATION */, _hoisted_1$H);
+    }, function () {
+      return [vue.createTextVNode(vue.toDisplayString(_ctx.node.name), 1 /* TEXT */)];
+    })], 2 /* CLASS */)], 2 /* CLASS */)], 38 /* CLASS, STYLE, NEED_HYDRATION */);
   }
 
-  script$Y.render = render$Y;
-  script$Y.__file = "packages/element-plus/flow/node.vue";
+  script$_.render = render$_;
+  script$_.__file = "packages/element-plus/flow/node.vue";
 
-  var script$X = create({
-    name: "flow",
+  function ownKeys$e(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$e(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$e(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$e(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$Z = create({
+    name: 'flow',
     mixins: [locale],
     components: {
-      flowNode: script$Y
+      flowNode: script$_
     },
-    data: function data() {
-      return {
-        active: '',
-        jsPlumb: {},
-        id: '',
-        // 默认设置参数
-        jsplumbSetting: {
-          // 动态锚点、位置自适应
-          Anchors: ['Top', 'TopCenter', 'TopRight', 'TopLeft', 'Right', 'RightMiddle', 'Bottom', 'BottomCenter', 'BottomRight', 'BottomLeft', 'Left', 'LeftMiddle'],
-          Container: '',
-          // 连线的样式 StateMachine、Flowchart
-          Connector: 'Flowchart',
-          // 鼠标不能拖动删除线
-          ConnectionsDetachable: false,
-          // 删除线的时候节点不删除
-          DeleteEndpointsOnDetach: false,
-          // 连线的端点
-          // Endpoint: ["Dot", {radius: 5}],
-          Endpoint: ['Rectangle', {
-            height: 10,
-            width: 10
-          }],
-          // 线端点的样式
-          EndpointStyle: {
-            fill: 'rgba(255,255,255,0)',
-            outlineWidth: 1
-          },
-          LogEnabled: true,
-          // 是否打开jsPlumb的内部日志记录
-          // 绘制线
-          PaintStyle: {
-            stroke: 'black',
-            strokeWidth: 3
-          },
-          // 绘制箭头
-          Overlays: [['Arrow', {
-            width: 12,
-            length: 12,
-            location: 1
-          }]],
-          RenderMode: 'svg'
-        },
-        // jsplumb连接参数
-        jsplumbConnectOptions: {
-          isSource: true,
-          isTarget: true,
-          // 动态锚点、提供了4个方向 Continuous、AutoDefault
-          anchor: 'Continuous'
-        },
-        jsplumbSourceOptions: {
-          filter: '.avue-flow__node-drag',
-          /* "span"表示标签，".className"表示类，"#id"表示元素id*/
-          filterExclude: false,
-          anchor: 'Continuous',
-          allowLoopback: false
-        },
-        jsplumbTargetOptions: {
-          filter: '.avue-flow__node-drag',
-          /*"span"表示标签，".className"表示类，"#id"表示元素id */
-          filterExclude: false,
-          anchor: 'Continuous',
-          allowLoopback: false
-        },
-        loadEasyFlowFinish: false
-      };
-    },
+    emits: ['update:modelValue', 'click', 'node-click', 'node-add', 'node-remove', 'node-change', 'line-add', 'line-remove', 'change', 'ready', 'error'],
     props: {
       modelValue: {
-        type: String,
-        "default": function _default() {
-          return {};
-        }
+        type: [String, Number],
+        "default": ''
       },
       option: {
-        type: Object
+        type: Object,
+        "default": function _default() {
+          return {
+            nodeList: [],
+            lineList: []
+          };
+        }
       },
       width: {
         type: [Number, String],
@@ -16492,283 +16793,457 @@
       height: {
         type: [Number, String],
         "default": '100%'
+      },
+      editable: {
+        type: Boolean,
+        "default": true
+      },
+      showGrid: {
+        type: Boolean,
+        "default": true
+      },
+      gridSize: {
+        type: Number,
+        "default": 20
+      },
+      nodeWidth: {
+        type: [Number, String],
+        "default": 220
+      },
+      nodeHeight: {
+        type: [Number, String],
+        "default": 96
+      },
+      confirmDelete: {
+        type: Boolean,
+        "default": true
+      }
+    },
+    data: function data() {
+      return {
+        active: '',
+        jsPlumb: null,
+        id: '',
+        isInitializing: false,
+        jsplumbSetting: {
+          Anchors: ['Top', 'TopCenter', 'TopRight', 'TopLeft', 'Right', 'RightMiddle', 'Bottom', 'BottomCenter', 'BottomRight', 'BottomLeft', 'Left', 'LeftMiddle'],
+          Container: '',
+          Connector: ['Flowchart', {
+            cornerRadius: 6,
+            stub: 18
+          }],
+          ConnectionsDetachable: true,
+          DeleteEndpointsOnDetach: false,
+          Endpoint: ['Dot', {
+            radius: 5
+          }],
+          EndpointStyle: {
+            fill: '#fff',
+            stroke: '#409eff',
+            strokeWidth: 1.5
+          },
+          PaintStyle: {
+            stroke: '#409eff',
+            strokeWidth: 2
+          },
+          HoverPaintStyle: {
+            stroke: '#66b1ff',
+            strokeWidth: 3
+          },
+          Overlays: [['Arrow', {
+            width: 10,
+            length: 10,
+            location: 1
+          }]],
+          RenderMode: 'svg'
+        },
+        jsplumbConnectOptions: {
+          isSource: true,
+          isTarget: true,
+          anchor: 'Continuous'
+        },
+        jsplumbSourceOptions: {
+          filter: '.avue-flow__node-drag',
+          filterExclude: false,
+          anchor: 'Continuous',
+          allowLoopback: false
+        },
+        jsplumbTargetOptions: {
+          filter: '.avue-flow__node-drag',
+          filterExclude: false,
+          anchor: 'Continuous',
+          allowLoopback: false
+        }
+      };
+    },
+    computed: {
+      styleName: function styleName() {
+        return {
+          width: this.setPx(this.width),
+          height: this.setPx(this.height)
+        };
+      },
+      canvasStyle: function canvasStyle() {
+        return {
+          minWidth: this.setPx(this.width),
+          minHeight: this.setPx(this.height)
+        };
+      },
+      gridStyle: function gridStyle() {
+        var size = Math.max(Number(this.gridSize) || 20, 8);
+        return {
+          backgroundSize: "".concat(size, "px ").concat(size, "px")
+        };
+      },
+      nodeList: function nodeList() {
+        return Array.isArray(this.option && this.option.nodeList) ? this.option.nodeList : [];
+      },
+      lineList: function lineList() {
+        return Array.isArray(this.option && this.option.lineList) ? this.option.lineList : [];
+      }
+    },
+    watch: {
+      modelValue: {
+        handler: function handler(value) {
+          this.active = value;
+        },
+        immediate: true
+      },
+      active: function active(value) {
+        this.$emit('update:modelValue', value);
       }
     },
     created: function created() {
       this.id = randomId();
       this.jsplumbSetting.Container = this.id;
+      this.ensureOption();
     },
     mounted: function mounted() {
       this.init();
     },
-    watch: {
-      modelValue: {
-        handler: function handler(val) {
-          this.active = val;
-        },
-        immediate: true
-      },
-      active: function active(val) {
-        this.$emit('update:modelValue', val);
-      }
-    },
-    computed: {
-      styleName: function styleName() {
-        return {
-          position: 'relative',
-          width: this.setPx(this.width),
-          height: this.setPx(this.height)
-        };
-      }
+    beforeUnmount: function beforeUnmount() {
+      if (!this.jsPlumb) return;
+      this.jsPlumb.reset();
+      this.jsPlumb = null;
     },
     methods: {
+      ensureOption: function ensureOption() {
+        if (!this.option || _typeof$1(this.option) !== 'object') return false;
+        if (!Array.isArray(this.option.nodeList)) this.option.nodeList = [];
+        if (!Array.isArray(this.option.lineList)) this.option.lineList = [];
+        return true;
+      },
       init: function init() {
-        var _this2 = this;
+        var _this = this;
+        if (typeof jsPlumb === 'undefined') {
+          this.$emit('error', new Error('未找到 jsPlumb，请在使用 avue-flow 前引入 jsPlumb。'));
+          return;
+        }
         this.jsPlumb = jsPlumb.getInstance();
         this.$nextTick(function () {
-          _this2.jsPlumbInit();
+          return _this.jsPlumbInit();
         });
+      },
+      jsPlumbInit: function jsPlumbInit() {
+        var _this2 = this;
+        if (!this.jsPlumb) return;
+        this.jsPlumb.ready(function () {
+          if (!_this2.jsPlumb) return;
+          _this2.jsPlumb.importDefaults(_objectSpread$e(_objectSpread$e({}, _this2.jsplumbSetting), {}, {
+            ConnectionsDetachable: _this2.editable
+          }));
+          _this2.bindJsPlumbEvents();
+          _this2.isInitializing = true;
+          _this2.jsPlumb.setSuspendDrawing(true);
+          _this2.loadEasyFlow();
+          _this2.jsPlumb.setSuspendDrawing(false, true);
+          _this2.$nextTick(function () {
+            _this2.isInitializing = false;
+            _this2.revalidate();
+            _this2.$emit('ready', _this2.jsPlumb);
+          });
+        });
+      },
+      bindJsPlumbEvents: function bindJsPlumbEvents() {
+        var _this3 = this;
+        this.jsPlumb.bind('click', function (connection) {
+          if (!_this3.editable) return;
+          _this3.withConfirm(_this3.t('flow.deleteLineConfirm'), function () {
+            _this3.jsPlumb.deleteConnection(connection);
+          });
+        });
+        this.jsPlumb.bind('connection', function (event) {
+          if (_this3.isInitializing) return;
+          var from = event.sourceId || event.source && event.source.id;
+          var to = event.targetId || event.target && event.target.id;
+          _this3.addLine(from, to);
+        });
+        this.jsPlumb.bind('connectionDetached', function (event) {
+          if (_this3.isInitializing) return;
+          _this3.deleteLine(event.sourceId, event.targetId);
+        });
+        this.jsPlumb.bind('connectionMoved', function (event) {
+          if (_this3.isInitializing) return;
+          _this3.deleteLine(event.originalSourceId, event.originalTargetId);
+          _this3.addLine(event.sourceId, event.targetId);
+        });
+        this.jsPlumb.bind('beforeDrop', function (event) {
+          return _this3.canConnect(event.sourceId, event.targetId);
+        });
+      },
+      canConnect: function canConnect(from, to) {
+        if (!this.editable) return false;
+        if (from === to) {
+          this.notifyError(this.t('flow.noSelfConnect'));
+          return false;
+        }
+        if (this.hasLine(from, to)) {
+          this.notifyError(this.t('flow.noDuplicateConnect'));
+          return false;
+        }
+        if (this.hasLine(to, from)) {
+          this.notifyError(this.t('flow.noLoopConnect'));
+          return false;
+        }
+        return true;
+      },
+      notifyError: function notifyError(message) {
+        if (this.$message) this.$message.error(message);
       },
       handleClick: function handleClick(node) {
+        this.active = node.id;
         this.$emit('click', node);
+        this.$emit('node-click', node);
       },
-      // 是否具有该线
       hasLine: function hasLine(from, to) {
-        for (var i = 0; i < this.data.lineList.length; i++) {
-          var line = this.data.lineList[i];
-          if (line.from === from && line.to === to) {
-            return true;
-          }
-        }
-        return false;
-      },
-      // 是否含有相反的线
-      hashOppositeLine: function hashOppositeLine(from, to) {
-        return this.hasLine(to, from);
-      },
-      // 删除线
-      deleteLine: function deleteLine(from, to) {
-        this.option.lineList = this.option.lineList.filter(function (line) {
-          return line.from !== from && line.to !== to;
+        return this.lineList.some(function (line) {
+          return line.from === from && line.to === to;
         });
       },
-      // 改变连线
-      changeLine: function changeLine(oldFrom, oldTo) {
-        this.deleteLine(oldFrom, oldTo);
+      addLine: function addLine(from, to) {
+        if (!from || !to || !this.ensureOption() || this.hasLine(from, to)) return false;
+        var line = {
+          from: from,
+          to: to
+        };
+        this.option.lineList.push(line);
+        this.$emit('line-add', line);
+        this.$emit('change', {
+          type: 'line-add',
+          line: line,
+          option: this.option
+        });
+        return true;
       },
-      // 改变节点的位置
+      deleteLine: function deleteLine(from, to) {
+        if (!this.ensureOption()) return false;
+        var index = this.option.lineList.findIndex(function (line) {
+          return line.from === from && line.to === to;
+        });
+        if (index === -1) return false;
+        var _this$option$lineList = this.option.lineList.splice(index, 1),
+          _this$option$lineList2 = _slicedToArray(_this$option$lineList, 1),
+          line = _this$option$lineList2[0];
+        this.$emit('line-remove', line);
+        this.$emit('change', {
+          type: 'line-remove',
+          line: line,
+          option: this.option
+        });
+        return true;
+      },
       changeNodeSite: function changeNodeSite(_ref) {
-        var index = _ref.index,
+        var id = _ref.id,
           left = _ref.left,
           top = _ref.top;
-        for (var i = 0; i < this.option.nodeList.length; i++) {
-          this.option.nodeList[i];
-          if (i === index) {
-            this.option.nodeList[i].left = left;
-            this.option.nodeList[i].top = top;
-          }
-        }
+        var node = this.nodeList.find(function (item) {
+          return item.id === id;
+        });
+        if (!node || Number(node.left) === left && Number(node.top) === top) return;
+        node.left = left;
+        node.top = top;
+        this.$emit('node-change', node);
+        this.$emit('change', {
+          type: 'node-change',
+          node: node,
+          option: this.option
+        });
+        this.revalidate();
       },
-      //删除节点
       deleteNode: function deleteNode(nodeId) {
-        var _this3 = this;
-        this.$confirm(this.t('flow.deleteNodeConfirm', {
+        var _this4 = this;
+        var node = this.nodeList.find(function (item) {
+          return item.id === nodeId;
+        });
+        if (!node) return Promise.resolve(false);
+        return this.withConfirm(this.t('flow.deleteNodeConfirm', {
           nodeId: nodeId
-        }), this.t('common.tip'), {
+        }), function () {
+          node.display = true;
+          _this4.lineList.filter(function (line) {
+            return line.from === nodeId || line.to === nodeId;
+          }).forEach(function (line) {
+            return _this4.deleteLine(line.from, line.to);
+          });
+          _this4.$nextTick(function () {
+            if (_this4.jsPlumb) _this4.jsPlumb.removeAllEndpoints(nodeId);
+            _this4.revalidate();
+          });
+          _this4.$emit('node-remove', node);
+          _this4.$emit('change', {
+            type: 'node-remove',
+            node: node,
+            option: _this4.option
+          });
+        });
+      },
+      withConfirm: function withConfirm(message, callback) {
+        if (!this.confirmDelete || typeof this.$confirm !== 'function') {
+          callback();
+          return Promise.resolve(true);
+        }
+        return this.$confirm(message, this.t('common.tip'), {
           confirmButtonText: this.t('common.submitBtn'),
           cancelButtonText: this.t('common.cancelBtn'),
           type: 'warning',
           closeOnClickModal: false
         }).then(function () {
-          _this3.option.nodeList.forEach(function (node) {
-            if (node.id === nodeId) {
-              node.display = true;
-            }
-          });
-          _this3.$nextTick(function () {
-            this.jsPlumb.removeAllEndpoints(nodeId);
-          });
-        })["catch"](function () {});
-        return true;
+          callback();
+          return true;
+        })["catch"](function () {
+          return false;
+        });
       },
-      // 添加新的节点
       addNode: function addNode(name) {
-        var index = this.option.nodeList.length;
-        var nodeId = 'node' + index;
-        this.option.nodeList.push({
-          id: 'node' + index,
+        var _this5 = this;
+        var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        if (!this.ensureOption()) return null;
+        var nodeId = config.id || this.getNextNodeId();
+        if (this.nodeList.some(function (node) {
+          return node.id === nodeId;
+        })) {
+          this.notifyError("\u8282\u70B9 ".concat(nodeId, " \u5DF2\u5B58\u5728"));
+          return null;
+        }
+        var node = _objectSpread$e({
+          id: nodeId,
           name: name,
           left: 0,
           top: 0
-        });
+        }, config);
+        this.option.nodeList.push(node);
         this.$nextTick(function () {
-          this.jsPlumb.makeSource(nodeId, this.jsplumbSourceOptions);
-          this.jsPlumb.makeTarget(nodeId, this.jsplumbTargetOptions);
-          this.jsPlumb.draggable(nodeId, {
-            containment: 'parent'
-          });
+          _this5.makeNodeInteractive(node.id);
+          _this5.revalidate();
+        });
+        this.$emit('node-add', node);
+        this.$emit('change', {
+          type: 'node-add',
+          node: node,
+          option: this.option
+        });
+        return node;
+      },
+      getNextNodeId: function getNextNodeId() {
+        var index = this.nodeList.length;
+        var id = "node".concat(index);
+        while (this.nodeList.some(function (node) {
+          return node.id === id;
+        })) {
+          index += 1;
+          id = "node".concat(index);
+        }
+        return id;
+      },
+      makeNodeInteractive: function makeNodeInteractive(nodeId) {
+        if (!this.jsPlumb || !this.editable) return;
+        this.jsPlumb.makeSource(nodeId, this.jsplumbSourceOptions);
+        this.jsPlumb.makeTarget(nodeId, this.jsplumbTargetOptions);
+        this.jsPlumb.draggable(nodeId, {
+          containment: 'parent'
         });
       },
       loadEasyFlow: function loadEasyFlow() {
-        // 初始化节点
-        for (var i = 0; i < this.option.nodeList.length; i++) {
-          var node = this.option.nodeList[i];
-          // 设置源点，可以拖出线连接其他节点
-          this.jsPlumb.makeSource(node.id, this.jsplumbSourceOptions);
-          // // 设置目标点，其他源点拖出的线可以连接该节点
-          this.jsPlumb.makeTarget(node.id, this.jsplumbTargetOptions);
-          this.jsPlumb.draggable(node.id);
-        }
-
-        // 初始化连线
-        for (var i = 0; i < this.option.lineList.length; i++) {
-          var line = this.option.lineList[i];
-          this.jsPlumb.connect({
-            source: line.from,
-            target: line.to
-          }, this.jsplumbConnectOptions);
-        }
-        this.$nextTick(function () {
-          this.loadEasyFlowFinish = true;
+        var _this6 = this;
+        this.nodeList.forEach(function (node) {
+          if (!node.display) _this6.makeNodeInteractive(node.id);
+        });
+        this.lineList.forEach(function (line) {
+          if (_this6.getVisibleNode(line.from) && _this6.getVisibleNode(line.to)) {
+            _this6.jsPlumb.connect({
+              source: line.from,
+              target: line.to
+            }, _this6.jsplumbConnectOptions);
+          }
         });
       },
-      jsPlumbInit: function jsPlumbInit() {
-        var _this = this;
-        this.jsPlumb.ready(function () {
-          // 导入默认配置
-          _this.jsPlumb.importDefaults(_this.jsplumbSetting);
-          // 会使整个jsPlumb立即重绘。
-          _this.jsPlumb.setSuspendDrawing(false, true);
-          // 初始化节点
-          _this.loadEasyFlow();
-
-          // 单点击了连接线,
-          _this.jsPlumb.bind('click', function (conn, originalEvent) {
-            console.log('click', conn);
-            _this.$confirm(_this.t('flow.deleteLineConfirm'), _this.t('common.tip'), {
-              confirmButtonText: _this.t('common.submitBtn'),
-              cancelButtonText: _this.t('common.cancelBtn'),
-              type: 'warning'
-            }).then(function () {
-              _this.jsPlumb.deleteConnection(conn);
-            })["catch"](function () {});
-          });
-          // 连线
-          _this.jsPlumb.bind('connection', function (evt) {
-            console.log('connection', evt);
-            var from = evt.source.id;
-            var to = evt.target.id;
-            if (_this.loadEasyFlowFinish) {
-              _this.option.lineList.push({
-                from: from,
-                to: to
-              });
-            }
-          });
-
-          // 删除连线
-          _this.jsPlumb.bind('connectionDetached', function (evt) {
-            console.log('connectionDetached', evt);
-            _this.deleteLine(evt.sourceId, evt.targetId);
-          });
-
-          // 改变线的连接节点
-          _this.jsPlumb.bind('connectionMoved', function (evt) {
-            console.log('connectionMoved', evt);
-            _this.changeLine(evt.originalSourceId, evt.originalTargetId);
-          });
-
-          // 单击endpoint
-          // jsPlumb.bind("endpointClick", function (evt) {
-          //   console.log('endpointClick', evt)
-          // })
-          //
-          // // 双击endpoint
-          // jsPlumb.bind("endpointDblClick", function (evt) {
-          //   console.log('endpointDblClick', evt)
-          // })
-
-          // contextmenu
-          _this.jsPlumb.bind('contextmenu', function (evt) {
-            console.log('contextmenu', evt);
-          });
-
-          // beforeDrop
-          _this.jsPlumb.bind('beforeDrop', function (evt) {
-            console.log('beforeDrop', evt);
-            var from = evt.sourceId;
-            var to = evt.targetId;
-            if (from === to) {
-              _this.$message.error(_this.t('flow.noSelfConnect'));
-              return false;
-            }
-            if (_this.hasLine(from, to)) {
-              _this.$message.error(_this.t('flow.noDuplicateConnect'));
-              return false;
-            }
-            if (_this.hashOppositeLine(from, to)) {
-              _this.$message.error(_this.t('flow.noLoopConnect'));
-              return false;
-            }
-            return true;
-          });
-
-          // beforeDetach
-          _this.jsPlumb.bind('beforeDetach', function (evt) {
-            console.log('beforeDetach', evt);
-          });
+      getVisibleNode: function getVisibleNode(id) {
+        return this.nodeList.find(function (node) {
+          return node.id === id && !node.display;
         });
+      },
+      revalidate: function revalidate() {
+        if (this.jsPlumb) this.jsPlumb.repaintEverything();
       }
     }
   });
 
-  var _hoisted_1$G = ["id"];
-  function render$X(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$I = ["id"];
+  function render$Z(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_flow_node = vue.resolveComponent("flow-node");
     return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b()),
+      "class": vue.normalizeClass(_ctx.b({
+        readonly: !_ctx.editable
+      })),
       style: vue.normalizeStyle(_ctx.styleName)
     }, [vue.createElementVNode("div", {
       id: _ctx.id,
-      style: vue.normalizeStyle(_ctx.styleName)
-    }, [_cache[0] || (_cache[0] = vue.createElementVNode("div", {
-      "class": "avue-grid"
-    }, null, -1 /* HOISTED */)), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.option.nodeList, function (node, index) {
-      return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [!node.display ? (vue.openBlock(), vue.createBlock(_component_flow_node, {
-        node: node,
+      "class": vue.normalizeClass(_ctx.b('canvas')),
+      style: vue.normalizeStyle(_ctx.canvasStyle)
+    }, [_ctx.showGrid ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('grid')),
+      style: vue.normalizeStyle(_ctx.gridStyle)
+    }, null, 6 /* CLASS, STYLE */)) : vue.createCommentVNode("v-if", true), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.nodeList, function (node) {
+      return vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        key: node.id
+      }, [!node.display ? (vue.openBlock(), vue.createBlock(_component_flow_node, {
+        key: 0,
         id: node.id,
+        node: node,
+        active: _ctx.active,
+        "node-width": _ctx.nodeWidth,
+        "node-height": _ctx.nodeHeight,
+        editable: _ctx.editable,
         onClick: function onClick($event) {
           return _ctx.handleClick(node);
         },
-        onChangeNodeSite: _ctx.changeNodeSite,
-        index: index,
-        active: _ctx.active,
-        key: index
+        onChangeNodeSite: _ctx.changeNodeSite
       }, {
         header: vue.withCtx(function (_ref) {
-          var node = _ref.node;
+          var currentNode = _ref.node;
           return [vue.renderSlot(_ctx.$slots, "header", {
-            node: node
+            node: currentNode
           })];
         }),
         "default": vue.withCtx(function (_ref2) {
-          var node = _ref2.node;
+          var currentNode = _ref2.node;
           return [vue.renderSlot(_ctx.$slots, "default", {
-            node: node
+            node: currentNode
           })];
         }),
         _: 2 /* DYNAMIC */
-      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["node", "id", "onClick", "onChangeNodeSite", "index", "active"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
-    }), 256 /* UNKEYED_FRAGMENT */))], 12 /* STYLE, PROPS */, _hoisted_1$G)], 6 /* CLASS, STYLE */);
+      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["id", "node", "active", "node-width", "node-height", "editable", "onClick", "onChangeNodeSite"])) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
+    }), 128 /* KEYED_FRAGMENT */))], 14 /* CLASS, STYLE, PROPS */, _hoisted_1$I)], 6 /* CLASS, STYLE */);
   }
 
-  script$X.render = render$X;
-  script$X.__file = "packages/element-plus/flow/index.vue";
+  script$Z.render = render$Z;
+  script$Z.__file = "packages/element-plus/flow/index.vue";
 
-  var script$W = create({
+  var script$Y = create({
     name: "group",
     components: {
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     empit: ['change'],
     data: function data() {
@@ -16827,7 +17302,7 @@
     }
   });
 
-  function render$W(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$Y(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_collapse_item = vue.resolveComponent("el-collapse-item");
     var _component_el_collapse = vue.resolveComponent("el-collapse");
@@ -16883,21 +17358,50 @@
     }, 8 /* PROPS */, ["onChange", "modelValue"])], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true);
   }
 
-  script$W.render = render$W;
-  script$W.__file = "packages/element-plus/group/index.vue";
+  script$Y.render = render$Y;
+  script$Y.__file = "packages/element-plus/group/index.vue";
 
-  var script$V = create({
-    name: 'license',
+  var script$X = create({
+    name: "license",
+    emits: ["ready", "change", "error", "asset-error", "download"],
     props: {
       id: {
-        type: String,
-        "default": ''
+        type: [String, Number],
+        "default": ""
       },
       option: {
         type: Object,
         "default": function _default() {
           return {};
         }
+      },
+      showStatus: Boolean
+    },
+    data: function data() {
+      return {
+        base64: "",
+        draw: false,
+        canvas: null,
+        context: null,
+        loading: false,
+        error: "",
+        renderVersion: 0,
+        renderPromise: Promise.resolve(null)
+      };
+    },
+    computed: {
+      img: function img() {
+        return this.option.img;
+      },
+      list: function list() {
+        return Array.isArray(this.option.list) ? this.option.list : [];
+      },
+      mimeType: function mimeType() {
+        return this.option.mimeType || this.option.type || "image/jpeg";
+      },
+      imageQuality: function imageQuality() {
+        var quality = Number(this.option.quality);
+        return Number.isFinite(quality) ? Math.min(1, Math.max(0, quality)) : 0.92;
       }
     },
     watch: {
@@ -16908,147 +17412,447 @@
         deep: true
       }
     },
-    data: function data() {
-      return {
-        base64: '',
-        draw: false,
-        canvas: '',
-        context: ''
-      };
-    },
-    computed: {
-      img: function img() {
-        return this.option.img;
-      },
-      list: function list() {
-        return this.option.list || [];
-      }
-    },
     mounted: function mounted() {
-      this.canvas = document.getElementById("canvas" + this.id);
-      this.context = this.canvas.getContext("2d");
+      this.canvas = this.$refs.canvas;
+      this.context = this.canvas && this.canvas.getContext("2d");
       this.init();
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.renderVersion += 1;
     },
     methods: {
       init: function init() {
+        if (!this.canvas) return Promise.resolve(null);
+        var version = ++this.renderVersion;
+        this.renderPromise = this.render(version);
+        return this.renderPromise;
+      },
+      render: function render(version) {
         var _this = this;
-        this.draw = false;
-        var beauty = new Image();
-        beauty.src = this.img;
-        beauty.onload = function () {
-          var width = _this.option.width || beauty.width;
-          var height = _this.option.width ? beauty.height / beauty.width * _this.option.width : beauty.height;
-          _this.$refs.canvas.width = width;
-          _this.$refs.canvas.height = height;
-          _this.context.clearRect(0, 0, width, height);
-          _this.context.drawImage(beauty, 0, 0, width, height);
-          _this.list.forEach(function (ele, index) {
-            var callback = function callback() {
-              if (index == _this.list.length - 1) {
-                setTimeout(function () {
-                  _this.draw = true;
-                }, 0);
-              }
-            };
-            if (ele.img) {
-              var img = new Image();
-              img.src = ele.img;
-              img.onload = function () {
-                var widths = ele.width || img.width;
-                var heights = ele.width ? img.height / img.width * ele.width : img.height;
-                _this.context.drawImage(img, ele.left, ele.top, widths, heights);
-                callback();
-              };
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          var background, width, height, index, payload;
+          return _regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                _this.draw = false;
+                _this.loading = true;
+                _this.error = "";
+                _this.base64 = "";
+                _context.prev = 4;
+                if (!_this.img) {
+                  _context.next = 11;
+                  break;
+                }
+                _context.next = 8;
+                return _this.loadImage(_this.img, _this.option.crossOrigin);
+              case 8:
+                _context.t0 = _context.sent;
+                _context.next = 12;
+                break;
+              case 11:
+                _context.t0 = null;
+              case 12:
+                background = _context.t0;
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 15;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 15:
+                width = _this.getSize(_this.option.width, background ? background.width : 600);
+                height = _this.getHeight(background, width);
+                _this.canvas.width = width;
+                _this.canvas.height = height;
+                _this.context = _this.canvas.getContext("2d");
+                _this.context.imageSmoothingEnabled = true;
+                _this.clearCanvas(width, height);
+                if (background) _this.context.drawImage(background, 0, 0, width, height);
+                index = 0;
+              case 24:
+                if (!(index < _this.list.length)) {
+                  _context.next = 32;
+                  break;
+                }
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 27;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 27:
+                _context.next = 29;
+                return _this.drawLayer(_this.list[index], index);
+              case 29:
+                index++;
+                _context.next = 24;
+                break;
+              case 32:
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 34;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 34:
+                _this.base64 = _this.toDataURL();
+                _this.draw = true;
+                _this.loading = false;
+                payload = {
+                  base64: _this.base64,
+                  width: width,
+                  height: height
+                };
+                _this.$emit("change", payload);
+                _this.$emit("ready", payload);
+                return _context.abrupt("return", payload);
+              case 43:
+                _context.prev = 43;
+                _context.t1 = _context["catch"](4);
+                if (!(version !== _this.renderVersion)) {
+                  _context.next = 47;
+                  break;
+                }
+                return _context.abrupt("return", null);
+              case 47:
+                _this.draw = false;
+                _this.loading = false;
+                _this.error = _context.t1 && _context.t1.message ? _context.t1.message : "授权凭证生成失败，请检查素材地址。";
+                _this.$emit("error", {
+                  error: _context.t1,
+                  message: _this.error
+                });
+                return _context.abrupt("return", null);
+              case 52:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, null, [[4, 43]]);
+        }))();
+      },
+      getSize: function getSize(value, fallback) {
+        var size = Number(value);
+        return Number.isFinite(size) && size > 0 ? Math.round(size) : Math.max(1, Math.round(fallback));
+      },
+      getHeight: function getHeight(background, width) {
+        if (this.option.height !== undefined && this.option.height !== null && this.option.height !== "") {
+          return this.getSize(this.option.height, 340);
+        }
+        if (background && this.option.width) {
+          return Math.max(1, Math.round(background.height / background.width * width));
+        }
+        return background ? background.height : 340;
+      },
+      clearCanvas: function clearCanvas(width, height) {
+        this.context.clearRect(0, 0, width, height);
+        if (this.option.backgroundColor !== "transparent") {
+          this.context.save();
+          this.context.fillStyle = this.option.backgroundColor || "#ffffff";
+          this.context.fillRect(0, 0, width, height);
+          this.context.restore();
+        }
+      },
+      loadImage: function loadImage(src, crossOrigin) {
+        return new Promise(function (resolve, reject) {
+          var image = new Image();
+          if (crossOrigin) image.crossOrigin = crossOrigin;
+          image.onload = function () {
+            return resolve(image);
+          };
+          image.onerror = function () {
+            return reject(new Error("\u7D20\u6750\u52A0\u8F7D\u5931\u8D25\uFF1A".concat(src)));
+          };
+          image.src = src;
+        });
+      },
+      drawLayer: function drawLayer(layer, index) {
+        var _this2 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+          var image, width, height;
+          return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(!layer || _typeof$1(layer) !== "object")) {
+                  _context2.next = 2;
+                  break;
+                }
+                return _context2.abrupt("return");
+              case 2:
+                if (!layer.img) {
+                  _context2.next = 16;
+                  break;
+                }
+                _context2.prev = 3;
+                _context2.next = 6;
+                return _this2.loadImage(layer.img, layer.crossOrigin || _this2.option.crossOrigin);
+              case 6:
+                image = _context2.sent;
+                width = _this2.getSize(layer.width, image.width);
+                height = layer.height !== undefined && layer.height !== null && layer.height !== "" ? _this2.getSize(layer.height, image.height) : Math.max(1, Math.round(image.height / image.width * width));
+                _this2.context.drawImage(image, _this2.toNumber(layer.left), _this2.toNumber(layer.top), width, height);
+                _context2.next = 15;
+                break;
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](3);
+                _this2.$emit("asset-error", {
+                  error: _context2.t0,
+                  layer: layer,
+                  index: index
+                });
+              case 15:
+                return _context2.abrupt("return");
+              case 16:
+                _this2.drawText(layer);
+              case 17:
+              case "end":
+                return _context2.stop();
+            }
+          }, _callee2, null, [[3, 12]]);
+        }))();
+      },
+      drawText: function drawText(layer) {
+        var _this3 = this;
+        var size = this.getSize(layer.size, 16);
+        var lineHeight = this.getSize(layer.lineHeight, Math.round(size * 1.5));
+        var maxWidth = Number(layer.maxWidth);
+        var text = String(layer.text === undefined || layer.text === null ? "" : layer.text);
+        this.context.save();
+        this.context.translate(this.toNumber(layer.left), this.toNumber(layer.top));
+        if (layer.rotate) this.context.rotate(Number(layer.rotate) * Math.PI / 180);
+        this.context.font = "".concat(layer.bold ? "bold " : "").concat(size, "px ").concat(layer.style || layer.fontFamily || "sans-serif");
+        this.context.fillStyle = layer.color || "#000000";
+        this.context.globalAlpha = layer.opacity === undefined ? 1 : Math.min(1, Math.max(0, Number(layer.opacity)));
+        this.context.textAlign = layer.align || "left";
+        this.context.textBaseline = layer.baseline || "alphabetic";
+        var lines = maxWidth > 0 ? this.wrapText(text, maxWidth) : text.split(/\r?\n/);
+        lines.forEach(function (line, index) {
+          return _this3.context.fillText(line, 0, index * lineHeight, maxWidth > 0 ? maxWidth : undefined);
+        });
+        this.context.restore();
+      },
+      wrapText: function wrapText(text, maxWidth) {
+        var _this4 = this;
+        var lines = [];
+        text.split(/\r?\n/).forEach(function (paragraph) {
+          var line = "";
+          Array.from(paragraph).forEach(function (_char) {
+            var next = line + _char;
+            if (line && _this4.context.measureText(next).width > maxWidth) {
+              lines.push(line);
+              line = _char;
             } else {
-              if (ele.bold) {
-                _this.context.font = "bold ".concat(ele.size, "px ").concat(ele.style);
-              } else {
-                _this.context.font = "".concat(ele.size, "px ").concat(ele.style);
-              }
-              _this.context.fillStyle = ele.color;
-              _this.context.fillText(ele.text, ele.left, ele.top);
-              _this.context.stroke();
-              callback();
+              line = next;
             }
           });
-        };
+          lines.push(line);
+        });
+        return lines;
+      },
+      toNumber: function toNumber(value) {
+        var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var number = Number(value);
+        return Number.isFinite(number) ? number : fallback;
+      },
+      toDataURL: function toDataURL() {
+        var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.mimeType;
+        var quality = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.imageQuality;
+        if (!this.canvas) return "";
+        return this.canvas.toDataURL(type || "image/jpeg", quality);
+      },
+      waitForRender: function waitForRender() {
+        var _this5 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee3() {
+          var result;
+          return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+            while (1) switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _this5.renderPromise;
+              case 2:
+                result = _context3.sent;
+                if (!(!result || !_this5.draw)) {
+                  _context3.next = 5;
+                  break;
+                }
+                throw new Error(_this5.error || "授权凭证尚未生成完成。");
+              case 5:
+                return _context3.abrupt("return", result);
+              case 6:
+              case "end":
+                return _context3.stop();
+            }
+          }, _callee3);
+        }))();
       },
       getFile: function getFile() {
-        var _this2 = this;
-        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().getTime();
-        return new Promise(function (resolve) {
-          var time = setInterval(function () {
-            if (_this2.draw) {
-              var data = _this2.canvas.toDataURL('image/jpeg', 1.0);
-              var _file = _this2.dataURLtoFile(data, name);
-              clearInterval(time);
-              resolve(_file);
+        var _arguments = arguments,
+          _this6 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee4() {
+          var name, type, quality, data;
+          return _regeneratorRuntime.wrap(function _callee4$(_context4) {
+            while (1) switch (_context4.prev = _context4.next) {
+              case 0:
+                name = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : "".concat(Date.now(), ".jpg");
+                type = _arguments.length > 1 ? _arguments[1] : undefined;
+                quality = _arguments.length > 2 ? _arguments[2] : undefined;
+                _context4.next = 5;
+                return _this6.waitForRender();
+              case 5:
+                data = _this6.toDataURL(type, quality);
+                _this6.base64 = data;
+                return _context4.abrupt("return", _this6.dataURLtoFile(data, name));
+              case 8:
+              case "end":
+                return _context4.stop();
             }
-          }, 1000);
-        });
+          }, _callee4);
+        }))();
       },
       downFile: function downFile$1() {
-        var filename = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().getTime();
-        downFile(this.base64, filename);
-      },
-      getBase64: function getBase64() {
-        var _this3 = this;
-        return new Promise(function (resolve) {
-          var time = setInterval(function () {
-            if (_this3.draw) {
-              var data = _this3.canvas.toDataURL('image/jpeg', 1.0);
-              _this3.base64 = data;
-              clearInterval(time);
-              resolve(data);
+        var _arguments2 = arguments,
+          _this7 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee5() {
+          var filename, type, quality, data;
+          return _regeneratorRuntime.wrap(function _callee5$(_context5) {
+            while (1) switch (_context5.prev = _context5.next) {
+              case 0:
+                filename = _arguments2.length > 0 && _arguments2[0] !== undefined ? _arguments2[0] : "".concat(Date.now(), ".jpg");
+                type = _arguments2.length > 1 ? _arguments2[1] : undefined;
+                quality = _arguments2.length > 2 ? _arguments2[2] : undefined;
+                _context5.next = 5;
+                return _this7.waitForRender();
+              case 5:
+                data = _this7.toDataURL(type, quality);
+                _this7.base64 = data;
+                downFile(data, filename);
+                _this7.$emit("download", {
+                  type: "image",
+                  filename: filename,
+                  base64: data
+                });
+                return _context5.abrupt("return", data);
+              case 10:
+              case "end":
+                return _context5.stop();
             }
-          }, 100);
-        });
+          }, _callee5);
+        }))();
+      },
+      getBase64: function getBase64(type, quality) {
+        var _this8 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee6() {
+          var data;
+          return _regeneratorRuntime.wrap(function _callee6$(_context6) {
+            while (1) switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this8.waitForRender();
+              case 2:
+                data = _this8.toDataURL(type, quality);
+                _this8.base64 = data;
+                return _context6.abrupt("return", data);
+              case 5:
+              case "end":
+                return _context6.stop();
+            }
+          }, _callee6);
+        }))();
       },
       getPdf: function getPdf() {
-        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().getTime();
-        var contentWidth = this.canvas.width;
-        var contentHeight = this.canvas.height;
-        var pageHeight = contentWidth / 592.28 * 841.89;
-        var leftHeight = contentHeight;
-        var position = 0;
-        var imgWidth = 595.28;
-        var imgHeight = 592.28 / contentWidth * contentHeight;
-        var pageData = this.canvas.toDataURL('image/jpeg', 1.0);
-        var PDF = new window.jsPDF('', 'pt', 'a4');
-        if (leftHeight < pageHeight) {
-          PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
-        } else {
-          while (leftHeight > 0) {
-            PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
-            leftHeight -= pageHeight;
-            position -= 841.89;
-            if (leftHeight > 0) {
-              PDF.addPage();
+        var _arguments3 = arguments,
+          _this9 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee7() {
+          var name, error, contentWidth, contentHeight, pageHeight, leftHeight, position, imgWidth, imgHeight, pageData, PDF, filename;
+          return _regeneratorRuntime.wrap(function _callee7$(_context7) {
+            while (1) switch (_context7.prev = _context7.next) {
+              case 0:
+                name = _arguments3.length > 0 && _arguments3[0] !== undefined ? _arguments3[0] : Date.now();
+                _context7.next = 3;
+                return _this9.waitForRender();
+              case 3:
+                if (!(typeof window === "undefined" || !window.jsPDF)) {
+                  _context7.next = 7;
+                  break;
+                }
+                error = new Error("未检测到 jsPDF，请先引入 jsPDF 后再导出 PDF。");
+                _this9.$emit("error", {
+                  error: error,
+                  message: error.message
+                });
+                throw error;
+              case 7:
+                contentWidth = _this9.canvas.width;
+                contentHeight = _this9.canvas.height;
+                pageHeight = contentWidth / 592.28 * 841.89;
+                leftHeight = contentHeight;
+                position = 0;
+                imgWidth = 595.28;
+                imgHeight = 592.28 / contentWidth * contentHeight;
+                pageData = _this9.toDataURL("image/jpeg", 1);
+                PDF = new window.jsPDF("", "pt", "a4");
+                while (leftHeight > 0) {
+                  PDF.addImage(pageData, "JPEG", 0, position, imgWidth, imgHeight);
+                  leftHeight -= pageHeight;
+                  position -= 841.89;
+                  if (leftHeight > 0) PDF.addPage();
+                }
+                filename = "".concat(name, ".pdf");
+                PDF.save(filename);
+                _this9.$emit("download", {
+                  type: "pdf",
+                  filename: filename
+                });
+              case 20:
+              case "end":
+                return _context7.stop();
             }
-          }
-        }
-        PDF.save("".concat(name, ".pdf"));
+          }, _callee7);
+        }))();
       }
     }
   });
 
-  var _hoisted_1$F = ["id"];
-  function render$V(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$H = {
+    key: 0
+  };
+  var _hoisted_2$z = {
+    key: 1
+  };
+  var _hoisted_3$r = {
+    key: 2
+  };
+  var _hoisted_4$q = {
+    key: 3
+  };
+  function render$X(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b()),
-      style: {
-        "position": "relative"
-      }
+      "class": vue.normalizeClass(_ctx.b())
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-wrap'))
     }, [vue.createElementVNode("canvas", {
-      id: 'canvas' + _ctx.id,
-      ref: "canvas"
-    }, null, 8 /* PROPS */, _hoisted_1$F), vue.renderSlot(_ctx.$slots, "default")], 2 /* CLASS */);
+      ref: "canvas",
+      "class": vue.normalizeClass(_ctx.b('canvas'))
+    }, "当前浏览器不支持生成授权凭证。", 2 /* CLASS */), _ctx.loading ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('loading'))
+    }, "正在生成授权凭证…", 2 /* CLASS */)) : _ctx.error ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('error'))
+    }, vue.toDisplayString(_ctx.error), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */), _ctx.showStatus ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass([_ctx.b('status'), {
+        'is-ready': _ctx.draw,
+        'is-error': _ctx.error
+      }])
+    }, [_ctx.loading ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$H, "素材加载中")) : _ctx.error ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$z, "生成失败")) : _ctx.draw ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$r, "已生成，可导出图片或 PDF")) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$q, "等待生成"))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "default", {
+      ready: _ctx.draw,
+      loading: _ctx.loading,
+      error: _ctx.error
+    })], 2 /* CLASS */);
   }
 
-  script$V.render = render$V;
-  script$V.__file = "packages/element-plus/license/index.vue";
+  script$X.render = render$X;
+  script$X.__file = "packages/element-plus/license/index.vue";
 
-  var script$U = create({
+  var script$W = create({
     name: "time",
     mixins: [props(), event(), locale],
     data: function data() {
@@ -17091,7 +17895,7 @@
     }
   });
 
-  function render$U(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$W(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [(vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.componentName), {
@@ -17127,11 +17931,11 @@
     }, null, 40 /* PROPS, NEED_HYDRATION */, ["modelValue", "popper-class", "is-range", "size", "editable", "disabled-hours", "disabled-minutes", "disabled-seconds", "default-value", "range-separator", "onVisibleChange", "arrow-control", "start-placeholder", "end-placeholder", "format", "readonly", "clearable", "start", "end", "step", "max-time", "min-time", "value-format", "placeholder", "onClick", "disabled"]))], 2 /* CLASS */);
   }
 
-  script$U.render = render$U;
-  script$U.__file = "packages/element-plus/time/index.vue";
+  script$W.render = render$W;
+  script$W.__file = "packages/element-plus/time/index.vue";
 
-  function ownKeys$7(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$7(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$7(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$7(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$d(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$d(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$d(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$d(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var defaultPhoneCodeOptions = [{
     code: '+86',
     flag: '🇨🇳',
@@ -17247,7 +18051,7 @@
     AUD: 'A$',
     CAD: 'C$'
   };
-  var script$T = create({
+  var script$V = create({
     name: "input",
     mixins: [props(), event(), locale],
     emits: ['update:modelValue', 'click', 'focus', 'blur', 'change', 'id-card-valid', 'code-complete', 'uscc-valid'],
@@ -17651,7 +18455,7 @@
         return list.map(function (item) {
           var flag = item.flag || '';
           var name = item.name || (item.nameKey ? _this.t(item.nameKey) : item.code);
-          return _objectSpread$7(_objectSpread$7({}, item), {}, {
+          return _objectSpread$d(_objectSpread$d({}, item), {}, {
             name: name,
             label: item.label || [flag, item.code].filter(Boolean).join(' ')
           });
@@ -18256,58 +19060,58 @@
     }
   });
 
-  var _hoisted_1$E = {
+  var _hoisted_1$G = {
     key: 0,
     "class": "avue-input__phone"
   };
-  var _hoisted_2$u = {
+  var _hoisted_2$y = {
     style: {
       "float": "left"
     }
   };
-  var _hoisted_3$o = {
+  var _hoisted_3$q = {
     style: {
       "float": "right",
       "color": "#8492a6",
       "font-size": "12px"
     }
   };
-  var _hoisted_4$n = {
+  var _hoisted_4$p = {
     "class": "avue-input__code"
   };
-  var _hoisted_5$l = ["value", "disabled", "readonly", "onInput", "onKeydown"];
-  var _hoisted_6$i = {
+  var _hoisted_5$n = ["value", "disabled", "readonly", "onInput", "onKeydown"];
+  var _hoisted_6$k = {
     "class": "avue-input__plate"
   };
-  var _hoisted_7$f = {
+  var _hoisted_7$h = {
     "class": "avue-input__ip"
   };
-  var _hoisted_8$e = ["value", "disabled", "readonly", "onInput", "onKeydown"];
-  var _hoisted_9$c = {
+  var _hoisted_8$f = ["value", "disabled", "readonly", "onInput", "onKeydown"];
+  var _hoisted_9$d = {
     key: 0,
     "class": "avue-input__ip-dot"
   };
-  var _hoisted_10$a = {
+  var _hoisted_10$b = {
     "class": "avue-input__mac"
   };
-  var _hoisted_11$8 = ["value", "disabled", "readonly", "onInput", "onKeydown"];
-  var _hoisted_12$7 = {
+  var _hoisted_11$9 = ["value", "disabled", "readonly", "onInput", "onKeydown"];
+  var _hoisted_12$8 = {
     key: 0,
     "class": "avue-input__mac-sep"
   };
-  var _hoisted_13$7 = {
+  var _hoisted_13$8 = {
     "class": "avue-input__bank-card-type"
   };
-  var _hoisted_14$6 = {
+  var _hoisted_14$7 = {
     "class": "avue-input__id-card-info"
   };
-  var _hoisted_15$6 = {
+  var _hoisted_15$7 = {
     "class": "avue-input__email-valid"
   };
-  var _hoisted_16$3 = {
+  var _hoisted_16$4 = {
     "class": "avue-input__uscc-valid"
   };
-  function render$T(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$V(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_option = vue.resolveComponent("el-option");
     var _component_el_select = vue.resolveComponent("el-select");
     var _component_el_input = vue.resolveComponent("el-input");
@@ -18315,7 +19119,7 @@
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
-    }, [vue.createCommentVNode(" 手机号输入（带国际区号，需要特殊布局） "), _ctx.isPhone ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$E, [vue.createVNode(_component_el_select, {
+    }, [vue.createCommentVNode(" 手机号输入（带国际区号，需要特殊布局） "), _ctx.isPhone ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$G, [vue.createVNode(_component_el_select, {
       modelValue: _ctx.phoneCode,
       "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
         return _ctx.phoneCode = $event;
@@ -18337,7 +19141,7 @@
             value: item.code
           }, {
             "default": vue.withCtx(function () {
-              return [vue.createElementVNode("span", _hoisted_2$u, vue.toDisplayString(item.name), 1 /* TEXT */), vue.createElementVNode("span", _hoisted_3$o, vue.toDisplayString(item.code), 1 /* TEXT */)];
+              return [vue.createElementVNode("span", _hoisted_2$y, vue.toDisplayString(item.name), 1 /* TEXT */), vue.createElementVNode("span", _hoisted_3$q, vue.toDisplayString(item.code), 1 /* TEXT */)];
             }),
             _: 2 /* DYNAMIC */
           }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["label", "value"]);
@@ -18369,7 +19173,7 @@
       }
     }, null, 8 /* PROPS */, ["size", "clearable", "modelValue", "onClick", "maxlength", "prefix-icon", "suffix-icon", "readonly", "placeholder", "onFocus", "onBlur", "disabled"])])) : _ctx.isCode ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 1
-    }, [vue.createCommentVNode(" 验证码输入（分段输入框） "), vue.createElementVNode("div", _hoisted_4$n, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.codeValues, function (val, index) {
+    }, [vue.createCommentVNode(" 验证码输入（分段输入框） "), vue.createElementVNode("div", _hoisted_4$p, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.codeValues, function (val, index) {
       return vue.openBlock(), vue.createElementBlock("input", {
         key: index,
         type: "text",
@@ -18399,10 +19203,10 @@
         ref: function ref(el) {
           return _ctx.codeRefs[index] = el;
         }
-      }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_5$l);
+      }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_5$n);
     }), 128 /* KEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */)) : _ctx.isPlate ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 2
-    }, [vue.createCommentVNode(" 车牌号输入（省份选择 + 车牌号） "), vue.createElementVNode("div", _hoisted_6$i, [vue.createVNode(_component_el_select, {
+    }, [vue.createCommentVNode(" 车牌号输入（省份选择 + 车牌号） "), vue.createElementVNode("div", _hoisted_6$k, [vue.createVNode(_component_el_select, {
       modelValue: _ctx.plateProvince,
       "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
         return _ctx.plateProvince = $event;
@@ -18445,7 +19249,7 @@
       }
     }, null, 8 /* PROPS */, ["size", "clearable", "modelValue", "onClick", "readonly", "placeholder", "onFocus", "onBlur", "onInput", "disabled"])])], 64 /* STABLE_FRAGMENT */)) : _ctx.isIp ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 3
-    }, [vue.createCommentVNode(" IP地址输入（4段输入框） "), vue.createElementVNode("div", _hoisted_7$f, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.ipSegments, function (seg, index) {
+    }, [vue.createCommentVNode(" IP地址输入（4段输入框） "), vue.createElementVNode("div", _hoisted_7$h, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.ipSegments, function (seg, index) {
       return vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: index
       }, [vue.createElementVNode("input", {
@@ -18473,10 +19277,10 @@
         ref: function ref(el) {
           return _ctx.ipRefs[index] = el;
         }
-      }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_8$e), index < 3 ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_9$c, ".")) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
+      }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_8$f), index < 3 ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_9$d, ".")) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
     }), 128 /* KEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */)) : _ctx.isMac ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 4
-    }, [vue.createCommentVNode(" MAC地址输入（6段输入框） "), vue.createElementVNode("div", _hoisted_10$a, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.macSegments, function (seg, index) {
+    }, [vue.createCommentVNode(" MAC地址输入（6段输入框） "), vue.createElementVNode("div", _hoisted_10$b, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.macSegments, function (seg, index) {
       return vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: index
       }, [vue.createElementVNode("input", {
@@ -18504,7 +19308,7 @@
         ref: function ref(el) {
           return _ctx.macRefs[index] = el;
         }
-      }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_11$8), index < 5 ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_12$7, vue.toDisplayString(_ctx.macSeparator), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
+      }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_11$9), index < 5 ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_12$8, vue.toDisplayString(_ctx.macSeparator), 1 /* TEXT */)) : vue.createCommentVNode("v-if", true)], 64 /* STABLE_FRAGMENT */);
     }), 128 /* KEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 5
     }, [vue.createCommentVNode(" 统一输入框（货币、银行卡、身份证、邮箱、社会信用代码、默认类型） "), vue.createVNode(_component_el_input, {
@@ -18576,7 +19380,7 @@
     } : undefined, _ctx.isBankCard && _ctx.showBankCardType && _ctx.bankCardType ? {
       name: "suffix",
       fn: vue.withCtx(function () {
-        return [vue.createElementVNode("span", _hoisted_13$7, vue.toDisplayString(_ctx.bankCardType), 1 /* TEXT */)];
+        return [vue.createElementVNode("span", _hoisted_13$8, vue.toDisplayString(_ctx.bankCardType), 1 /* TEXT */)];
       }),
       key: "3"
     } : _ctx.isIdCard && _ctx.showIdCardInfo && _ctx.idCardInfo ? {
@@ -18587,7 +19391,7 @@
           placement: "top"
         }, {
           "default": vue.withCtx(function () {
-            return [vue.createElementVNode("span", _hoisted_14$6, vue.toDisplayString(_ctx.idCardValid ? '✓' : '✗'), 1 /* TEXT */)];
+            return [vue.createElementVNode("span", _hoisted_14$7, vue.toDisplayString(_ctx.idCardValid ? '✓' : '✗'), 1 /* TEXT */)];
           }),
           _: 1 /* STABLE */
         }, 8 /* PROPS */, ["content"])];
@@ -18596,22 +19400,22 @@
     } : _ctx.isEmail && _ctx.emailValid !== null ? {
       name: "suffix",
       fn: vue.withCtx(function () {
-        return [vue.createElementVNode("span", _hoisted_15$6, vue.toDisplayString(_ctx.emailValid ? '✓' : '✗'), 1 /* TEXT */)];
+        return [vue.createElementVNode("span", _hoisted_15$7, vue.toDisplayString(_ctx.emailValid ? '✓' : '✗'), 1 /* TEXT */)];
       }),
       key: "5"
     } : _ctx.isUscc && _ctx.usccValid !== null ? {
       name: "suffix",
       fn: vue.withCtx(function () {
-        return [vue.createElementVNode("span", _hoisted_16$3, vue.toDisplayString(_ctx.usccValid ? '✓' : '✗'), 1 /* TEXT */)];
+        return [vue.createElementVNode("span", _hoisted_16$4, vue.toDisplayString(_ctx.usccValid ? '✓' : '✗'), 1 /* TEXT */)];
       }),
       key: "6"
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["class", "size", "clearable", "modelValue", "onClick", "type", "maxlength", "minlength", "show-password", "rows", "autosize", "prefix-icon", "suffix-icon", "readonly", "placeholder", "show-word-limit", "onFocus", "onBlur", "onInput", "disabled", "autocomplete", "formatter", "parser"])], 64 /* STABLE_FRAGMENT */))], 2 /* CLASS */);
   }
 
-  script$T.render = render$T;
-  script$T.__file = "packages/element-plus/input/index.vue";
+  script$V.render = render$V;
+  script$V.__file = "packages/element-plus/input/index.vue";
 
-  var script$S = create({
+  var script$U = create({
     name: "radio",
     mixins: [props(), event()],
     data: function data() {
@@ -18628,7 +19432,7 @@
     methods: {}
   });
 
-  function render$S(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$U(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_radio_group = vue.resolveComponent("el-radio-group");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
@@ -18661,10 +19465,10 @@
     }, 8 /* PROPS */, ["modelValue", "size", "onClick", "disabled"])], 2 /* CLASS */);
   }
 
-  script$S.render = render$S;
-  script$S.__file = "packages/element-plus/radio/index.vue";
+  script$U.render = render$U;
+  script$U.__file = "packages/element-plus/radio/index.vue";
 
-  var script$R = create({
+  var script$T = create({
     name: "select",
     mixins: [props(), event(), locale],
     emits: ["update:modelValue", "click", "focus", "blur", "change", "end-reached", "dic-error"],
@@ -18857,7 +19661,7 @@
     }
   });
 
-  function render$R(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$T(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_option = vue.resolveComponent("el-option");
     var _component_el_option_group = vue.resolveComponent("el-option-group");
     var _component_el_checkbox = vue.resolveComponent("el-checkbox");
@@ -18995,10 +19799,10 @@
     }, 40 /* PROPS, NEED_HYDRATION */, ["class", "modelValue", "size", "options", "props", "loading", "loading-text", "value-on-clear", "multiple", "filterable", "remote", "readonly", "no-match-text", "no-data-text", "remote-method", "popper-class", "popper-append-to-body", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "clearable", "placeholder", "onFocus", "onBlur", "onClick", "onRemoveTag", "onEndReached", "multiple-limit", "allow-create", "default-first-option", "disabled"]);
   }
 
-  script$R.render = render$R;
-  script$R.__file = "packages/element-plus/select/index.vue";
+  script$T.render = render$T;
+  script$T.__file = "packages/element-plus/select/index.vue";
 
-  var script$Q = create({
+  var script$S = create({
     name: "cascader",
     mixins: [props(), event()],
     props: {
@@ -19106,10 +19910,10 @@
     }
   });
 
-  var _hoisted_1$D = {
+  var _hoisted_1$F = {
     key: 1
   };
-  function render$Q(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$S(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_cascader = vue.resolveComponent("el-cascader");
     return vue.openBlock(), vue.createBlock(_component_el_cascader, {
       ref: "cascader",
@@ -19149,16 +19953,16 @@
           key: 0,
           data: data,
           node: node
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$D, vue.toDisplayString(data[_ctx.labelKey]), 1 /* TEXT */))];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$F, vue.toDisplayString(data[_ctx.labelKey]), 1 /* TEXT */))];
       }),
       _: 3 /* FORWARDED */
     }, 8 /* PROPS */, ["options", "class", "onClick", "onChange", "modelValue", "placeholder", "props", "size", "effect", "virtual-scroll", "fit-input-width", "height", "item-size", "clearable", "show-all-levels", "filterable", "popper-class", "separator", "disabled", "show-checked-strategy", "collapse-tags", "collapse-tags-tooltip", "max-collapse-tags", "onFocus", "onBlur"]);
   }
 
-  script$Q.render = render$Q;
-  script$Q.__file = "packages/element-plus/cascader/index.vue";
+  script$S.render = render$S;
+  script$S.__file = "packages/element-plus/cascader/index.vue";
 
-  var script$P = create({
+  var script$R = create({
     name: "input-color",
     mixins: [props(), event()],
     props: {
@@ -19182,7 +19986,7 @@
     }
   });
 
-  function render$P(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$R(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_color_picker = vue.resolveComponent("el-color-picker");
     var _component_el_input = vue.resolveComponent("el-input");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -19221,10 +20025,10 @@
     }, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "placeholder", "modelValue", "size", "readonly", "onClick", "clearable", "disabled"])], 2 /* CLASS */);
   }
 
-  script$P.render = render$P;
-  script$P.__file = "packages/element-plus/input-color/index.vue";
+  script$R.render = render$R;
+  script$R.__file = "packages/element-plus/input-color/index.vue";
 
-  var script$O = create({
+  var script$Q = create({
     name: "input-number",
     mixins: [props(), event()],
     data: function data() {
@@ -19280,7 +20084,7 @@
     methods: {}
   });
 
-  function render$O(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$Q(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input_number = vue.resolveComponent("el-input-number");
     return vue.openBlock(), vue.createBlock(_component_el_input_number, {
       modelValue: _ctx.text,
@@ -19330,10 +20134,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "onClick", "onFocus", "onBlur", "precision", "placeholder", "step-strictly", "size", "min", "align", "max", "step", "clearable", "readonly", "controls-position", "controls", "disabled-scientific", "disabled"]);
   }
 
-  script$O.render = render$O;
-  script$O.__file = "packages/element-plus/input-number/index.vue";
+  script$Q.render = render$Q;
+  script$Q.__file = "packages/element-plus/input-number/index.vue";
 
-  var script$N = create({
+  var script$P = create({
     name: "input-tree",
     mixins: [props(), event()],
     data: function data() {
@@ -19474,13 +20278,13 @@
     }
   });
 
-  var _hoisted_1$C = {
+  var _hoisted_1$E = {
     key: 1,
     style: {
       "margin-left": "8px"
     }
   };
-  function render$N(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$P(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_tree_select = vue.resolveComponent("el-tree-select");
     return vue.openBlock(), vue.createBlock(_component_el_tree_select, {
       ref: "tree",
@@ -19533,7 +20337,7 @@
           value: _ctx.valueKey,
           node: node,
           item: data
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$C, [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.getLabelText(data)), 1 /* TEXT */), data[_ctx.descKey] ? (vue.openBlock(), vue.createElementBlock("span", {
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$E, [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.getLabelText(data)), 1 /* TEXT */), data[_ctx.descKey] ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
           "class": vue.normalizeClass(_ctx.b('desc'))
         }, vue.toDisplayString(data[_ctx.descKey]), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)]))];
@@ -19542,10 +20346,10 @@
     }, 8 /* PROPS */, ["class", "cache-data", "modelValue", "loading", "lazy", "load", "size", "onCheck", "filter-node-method", "loading-text", "collapse-tags", "clearable", "placeholder", "popper-class", "popper-append-to-body", "multiple", "node-key", "show-checkbox", "filterable", "check-strictly", "disabled", "accordion", "icon-class", "indent", "onFocus", "onBlur", "check-on-click-leaf", "default-checked-keys", "default-expanded-keys", "default-expand-all", "check-on-click-node", "expand-on-click-node", "onNodeClick", "props", "data"]);
   }
 
-  script$N.render = render$N;
-  script$N.__file = "packages/element-plus/input-tree/index.vue";
+  script$P.render = render$P;
+  script$P.__file = "packages/element-plus/input-tree/index.vue";
 
-  var script$M = create({
+  var script$O = create({
     name: "input-map",
     mixins: [props(), event(), locale],
     props: {
@@ -19782,13 +20586,13 @@
     }
   });
 
-  var _hoisted_1$B = {
+  var _hoisted_1$D = {
     key: 0
   };
-  var _hoisted_2$t = {
+  var _hoisted_2$x = {
     "class": "avue-dialog__footer"
   };
-  function render$M(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$O(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_dialog = vue.resolveComponent("el-dialog");
@@ -19811,7 +20615,7 @@
       onFocus: _ctx.handleShow,
       onClick: _ctx.handleClick,
       placeholder: _ctx.placeholder
-    }, null, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "size", "onClear", "clearable", "rows", "autosize", "disabled", "model-value", "onFocus", "onClick", "placeholder"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$B, [vue.createVNode(_component_el_dialog, {
+    }, null, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "size", "onClear", "clearable", "rows", "autosize", "disabled", "model-value", "onFocus", "onClick", "placeholder"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$D, [vue.createVNode(_component_el_dialog, {
       "class": "avue-dialog",
       width: _ctx.dialogWidth,
       "before-close": _ctx.beforeClose,
@@ -19849,7 +20653,7 @@
         }, null, 2 /* CLASS */), vue.createElementVNode("div", {
           id: "map__result",
           "class": vue.normalizeClass(_ctx.b('content-result'))
-        }, null, 2 /* CLASS */)], 2 /* CLASS */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("span", _hoisted_2$t, [!(_ctx.disabled || _ctx.readonly) ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+        }, null, 2 /* CLASS */)], 2 /* CLASS */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("span", _hoisted_2$x, [!(_ctx.disabled || _ctx.readonly) ? (vue.openBlock(), vue.createBlock(_component_el_button, {
           key: 0,
           type: "primary",
           size: _ctx.size,
@@ -19866,13 +20670,13 @@
     }, 8 /* PROPS */, ["width", "before-close", "append-to-body", "title", "onClose", "modelValue"])])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$M.render = render$M;
-  script$M.__file = "packages/element-plus/input-map/index.vue";
+  script$O.render = render$O;
+  script$O.__file = "packages/element-plus/input-map/index.vue";
 
-  var script$L = create({
+  var script$N = create({
     name: "input-icon",
     components: {
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     mixins: [props(), event(), locale],
     props: {
@@ -19953,11 +20757,11 @@
     }
   });
 
-  var _hoisted_1$A = {
+  var _hoisted_1$C = {
     key: 0
   };
-  var _hoisted_2$s = ["onClick"];
-  function render$L(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_2$w = ["onClick"];
+  function render$N(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_avue_tabs = vue.resolveComponent("avue-tabs");
@@ -19990,7 +20794,7 @@
         }, null, 8 /* PROPS */, ["onClick", "text", "small"])];
       }),
       _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "placeholder", "modelValue", "popper-class", "size", "onClear", "clearable", "disabled", "onClick", "onFocus"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$A, [vue.createVNode(_component_el_dialog, {
+    }, 8 /* PROPS */, ["prefix-icon", "suffix-icon", "placeholder", "modelValue", "popper-class", "size", "onClear", "clearable", "disabled", "onClick", "onFocus"]), _ctx.box ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$C, [vue.createVNode(_component_el_dialog, {
       "class": "avue-dialog",
       title: _ctx.placeholder,
       "before-close": _ctx.beforeClose,
@@ -20029,17 +20833,17 @@
             size: item.size,
             small: _ctx.size === 'small',
             color: item.color
-          }, null, 8 /* PROPS */, ["text", "size", "small", "color"]), vue.createElementVNode("p", null, vue.toDisplayString(item.label || item.value), 1 /* TEXT */)], 10 /* CLASS, PROPS */, _hoisted_2$s);
+          }, null, 8 /* PROPS */, ["text", "size", "small", "color"]), vue.createElementVNode("p", null, vue.toDisplayString(item.label || item.value), 1 /* TEXT */)], 10 /* CLASS, PROPS */, _hoisted_2$w);
         }), 128 /* KEYED_FRAGMENT */)), _cache[3] || (_cache[3] = vue.createTextVNode("　 "))], 2 /* CLASS */)];
       }),
       _: 1 /* STABLE */
     }, 8 /* PROPS */, ["title", "before-close", "append-to-body", "modelValue", "width"])])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$L.render = render$L;
-  script$L.__file = "packages/element-plus/input-icon/index.vue";
+  script$N.render = render$N;
+  script$N.__file = "packages/element-plus/input-icon/index.vue";
 
-  var script$K = create({
+  var script$M = create({
     name: "input-tag",
     mixins: [props(), event()],
     data: function data() {
@@ -20085,10 +20889,10 @@
     }
   });
 
-  var _hoisted_1$z = {
+  var _hoisted_1$B = {
     key: 1
   };
-  function render$K(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$M(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input_tag = vue.resolveComponent("el-input-tag");
     return vue.openBlock(), vue.createBlock(_component_el_input_tag, {
       modelValue: _ctx.text,
@@ -20114,7 +20918,7 @@
         return [_ctx.$slots["default"] ? vue.renderSlot(_ctx.$slots, "default", {
           key: 0,
           value: value
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$z, vue.toDisplayString(value), 1 /* TEXT */))];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$B, vue.toDisplayString(value), 1 /* TEXT */))];
       }),
       _: 2 /* DYNAMIC */
     }, [_ctx.prefix ? {
@@ -20140,10 +20944,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "onClick", "onFocus", "onBlur", "onChange", "placeholder", "size", "min", "max", "draggable", "clearable", "readonly", "disabled"]);
   }
 
-  script$K.render = render$K;
-  script$K.__file = "packages/element-plus/input-tag/index.vue";
+  script$M.render = render$M;
+  script$M.__file = "packages/element-plus/input-tag/index.vue";
 
-  var script$J = create({
+  var script$L = create({
     name: "input-table",
     mixins: [props(), event(), locale],
     data: function data() {
@@ -20382,10 +21186,10 @@
     }
   });
 
-  var _hoisted_1$y = {
+  var _hoisted_1$A = {
     "class": "avue-dialog__footer"
   };
-  function render$J(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$L(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_avue_crud = vue.resolveComponent("avue-crud");
     var _component_el_button = vue.resolveComponent("el-button");
@@ -20439,7 +21243,7 @@
           "onUpdate:page": _cache[1] || (_cache[1] = function ($event) {
             return _ctx.page = $event;
           })
-        }, null, 8 /* PROPS */, ["class", "option", "data", "table-loading", "onOnLoad", "onSearchChange", "onSearchReset", "onSelectAll", "onSelect", "rowClassName", "onCurrentRowChange", "search", "page"]), vue.createElementVNode("span", _hoisted_1$y, [vue.createVNode(_component_el_button, {
+        }, null, 8 /* PROPS */, ["class", "option", "data", "table-loading", "onOnLoad", "onSearchChange", "onSearchReset", "onSelectAll", "onSelect", "rowClassName", "onCurrentRowChange", "search", "page"]), vue.createElementVNode("span", _hoisted_1$A, [vue.createVNode(_component_el_button, {
           type: "primary",
           size: _ctx.size,
           icon: "el-icon-check",
@@ -20457,11 +21261,11 @@
     }, 8 /* PROPS */, ["class", "width", "before-close", "append-to-body", "title", "modelValue"])], 2 /* CLASS */);
   }
 
-  script$J.render = render$J;
-  script$J.__file = "packages/element-plus/input-table/index.vue";
+  script$L.render = render$L;
+  script$L.__file = "packages/element-plus/input-table/index.vue";
 
-  function ownKeys$6(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$6(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$6(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$c(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$c(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$c(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$c(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
   // Cron Tab 子组件
   var CronTab = {
@@ -20508,16 +21312,16 @@
     },
     methods: {
       updateData: function updateData(key, value) {
-        this.$emit('update:modelValue', _objectSpread$6(_objectSpread$6({}, this.data), {}, _defineProperty$1({}, key, value)));
+        this.$emit('update:modelValue', _objectSpread$c(_objectSpread$c({}, this.data), {}, _defineProperty$1({}, key, value)));
       }
     },
     template: "\n    <div class=\"avue-input-cron__tab\">\n      <el-radio-group :model-value=\"data.type\" @update:model-value=\"val => updateData('type', val)\">\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"every\">{{ t('cron.every', { label: typeLabel }) }}</el-radio>\n        </div>\n        <div class=\"avue-input-cron__option\" v-if=\"showNotSpecify\">\n          <el-radio label=\"notSpecify\">{{ t('cron.notSpecify') }}</el-radio>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"range\">{{ t('cron.range') }}</el-radio>\n          <span v-if=\"data.type === 'range'\" class=\"avue-input-cron__inline\">\n            {{ t('cron.from') }}\n            <el-input-number v-model=\"data.rangeStart\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('rangeStart', val)\" />\n            {{ t('cron.to') }}\n            <el-input-number v-model=\"data.rangeEnd\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('rangeEnd', val)\" />\n            {{ typeLabel }}\n          </span>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"step\">{{ t('cron.step') }}</el-radio>\n          <span v-if=\"data.type === 'step'\" class=\"avue-input-cron__inline\">\n            {{ t('cron.startingFrom') }}\n            <el-input-number v-model=\"data.stepStart\" :min=\"min\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('stepStart', val)\" />\n            {{ typeLabel }}\n            {{ t('cron.everyInterval') }}\n            <el-input-number v-model=\"data.stepValue\" :min=\"1\" :max=\"max\" size=\"small\" style=\"width:80px\" @change=\"val => updateData('stepValue', val)\" />\n            {{ typeLabel }}\n          </span>\n        </div>\n        <div class=\"avue-input-cron__option\">\n          <el-radio label=\"specify\">{{ t('cron.specify') }}</el-radio>\n        </div>\n      </el-radio-group>\n      <div v-if=\"data.type === 'specify'\" class=\"avue-input-cron__specify\">\n        <el-checkbox-group :model-value=\"data.values\" @update:model-value=\"val => updateData('values', val)\">\n          <el-checkbox v-for=\"opt in options\" :key=\"opt.value\" :label=\"opt.value\">{{ opt.label }}</el-checkbox>\n        </el-checkbox-group>\n      </div>\n    </div>\n  "
   };
-  var script$I = create({
+  var script$K = create({
     name: "input-cron",
     components: {
       CronTab: CronTab,
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     mixins: [props(), event(), locale],
     props: {
@@ -20694,16 +21498,16 @@
             stepValue: 1
           }
         };
-        var base = _objectSpread$6(_objectSpread$6({}, defaults[type]), {}, {
+        var base = _objectSpread$c(_objectSpread$c({}, defaults[type]), {}, {
           values: []
         });
         if (part === '*') {
-          return _objectSpread$6(_objectSpread$6({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'every'
           });
         }
         if (part === '?') {
-          return _objectSpread$6(_objectSpread$6({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'notSpecify'
           });
         }
@@ -20712,7 +21516,7 @@
             _part$split2 = _slicedToArray(_part$split, 2),
             start = _part$split2[0],
             step = _part$split2[1];
-          return _objectSpread$6(_objectSpread$6({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'step',
             stepStart: parseInt(start) || 0,
             stepValue: parseInt(step) || 1
@@ -20723,7 +21527,7 @@
             _part$split4 = _slicedToArray(_part$split3, 2),
             _start = _part$split4[0],
             end = _part$split4[1];
-          return _objectSpread$6(_objectSpread$6({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'range',
             rangeStart: parseInt(_start),
             rangeEnd: parseInt(end)
@@ -20733,7 +21537,7 @@
           var values = part.split(',').map(function (v) {
             return parseInt(v);
           });
-          return _objectSpread$6(_objectSpread$6({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'specify',
             values: values
           });
@@ -20741,12 +21545,12 @@
         // 单个数字
         var num = parseInt(part);
         if (!isNaN(num)) {
-          return _objectSpread$6(_objectSpread$6({}, base), {}, {
+          return _objectSpread$c(_objectSpread$c({}, base), {}, {
             type: 'specify',
             values: [num]
           });
         }
-        return _objectSpread$6(_objectSpread$6({}, base), {}, {
+        return _objectSpread$c(_objectSpread$c({}, base), {}, {
           type: 'every'
         });
       },
@@ -20842,7 +21646,7 @@
     }
   });
 
-  function render$I(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$K(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_input = vue.resolveComponent("el-input");
@@ -21056,11 +21860,11 @@
     }, 8 /* PROPS */, ["title", "append-to-body", "modelValue"])], 2 /* CLASS */);
   }
 
-  script$I.render = render$I;
-  script$I.__file = "packages/element-plus/input-cron/index.vue";
+  script$K.render = render$K;
+  script$K.__file = "packages/element-plus/input-cron/index.vue";
 
   var OTP_TYPES = ["outlined", "filled", "underlined"];
-  var script$H = create({
+  var script$J = create({
     name: "input-otp",
     mixins: [props(), event()],
     emits: ["finish"],
@@ -21127,7 +21931,7 @@
     }
   });
 
-  function render$H(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$J(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input_otp = vue.resolveComponent("el-input-otp");
     return vue.openBlock(), vue.createBlock(_component_el_input_otp, {
       ref: "inputOtp",
@@ -21163,10 +21967,10 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "length", "validator", "inputmode", "type", "size", "mask", "disabled", "separator", "validate-event", "readonly", "id", "aria-label", "onFocus", "onBlur", "onChange", "onFinish"]);
   }
 
-  script$H.render = render$H;
-  script$H.__file = "packages/element-plus/input-otp/index.vue";
+  script$J.render = render$J;
+  script$J.__file = "packages/element-plus/input-otp/index.vue";
 
-  var script$G = create({
+  var script$I = create({
     name: "mention",
     mixins: [props(), event()],
     emits: ["dic-error"],
@@ -21262,10 +22066,10 @@
     }
   });
 
-  var _hoisted_1$x = {
+  var _hoisted_1$z = {
     key: 1
   };
-  function render$G(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$I(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_mention = vue.resolveComponent("el-mention");
     return vue.openBlock(), vue.createBlock(_component_el_mention, {
       modelValue: _ctx.text,
@@ -21298,7 +22102,7 @@
           item: item,
           label: _ctx.labelKey,
           value: _ctx.valueKey
-        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$x, vue.toDisplayString(item.label), 1 /* TEXT */))];
+        }) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$z, vue.toDisplayString(item.label), 1 /* TEXT */))];
       }),
       _: 2 /* DYNAMIC */
     }, [_ctx.prepend ? {
@@ -21324,73 +22128,1430 @@
     } : undefined]), 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "class", "onClick", "onFocus", "onBlur", "placeholder", "size", "prefix", "options", "loading", "split", "whole", "check-is-whole", "clearable", "readonly", "disabled"]);
   }
 
-  script$G.render = render$G;
-  script$G.__file = "packages/element-plus/mention/index.vue";
+  script$I.render = render$I;
+  script$I.__file = "packages/element-plus/mention/index.vue";
 
-  var script$F = create({
-    name: 'verify',
+  function ownKeys$b(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$b(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$b(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$b(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var CAPTCHA_TYPES = ['slider', 'text', 'math', 'rotate', 'icon', 'sequence', 'drag', 'code', 'path'];
+  var DEFAULT_TEXT_POOL = '春夏秋冬诚信安全智慧服务登录验证用户数据网络星辰山河风云花鸟';
+  var CHOICE_COLORS = ['#f72585', '#4361ee', '#4cc9f0', '#38b000', '#f77f00', '#8338ec'];
+  var PUZZLE_SHAPES = ['a', 'b'];
+  var DEFAULT_ICON_POOL = [{
+    value: '★',
+    label: '星星'
+  }, {
+    value: '♥',
+    label: '爱心'
+  }, {
+    value: '☀',
+    label: '太阳'
+  }, {
+    value: '☁',
+    label: '云朵'
+  }, {
+    value: '✦',
+    label: '闪光'
+  }, {
+    value: '✿',
+    label: '花朵'
+  }, {
+    value: '◆',
+    label: '菱形'
+  }, {
+    value: '♣',
+    label: '梅花'
+  }];
+  var SEQUENCE_COLORS = [{
+    value: '#ef476f',
+    label: '红色'
+  }, {
+    value: '#4361ee',
+    label: '蓝色'
+  }, {
+    value: '#06b6a4',
+    label: '绿色'
+  }, {
+    value: '#f59e0b',
+    label: '橙色'
+  }];
+  var SEQUENCE_SHAPES = [{
+    value: 'circle',
+    label: '圆形'
+  }, {
+    value: 'square',
+    label: '方形'
+  }, {
+    value: 'triangle',
+    label: '三角形'
+  }, {
+    value: 'diamond',
+    label: '菱形'
+  }];
+  var DRAG_SHAPES = ['circle', 'square', 'triangle', 'diamond'];
+  var PUZZLE_PATHS = {
+    a: 'M10,10H38C38,-2,62,-2,62,10H90V38C102,38,102,62,90,62V90H62C62,78,38,78,38,90H10V62C-2,62,-2,38,10,38Z',
+    b: 'M10,10H38C38,22,62,22,62,10H90V38C78,38,78,62,90,62V90H62C62,102,38,102,38,90H10V62C22,62,22,38,10,38Z'
+  };
+  var randomInt = function randomInt(min, max) {
+    var start = Math.ceil(min);
+    var end = Math.floor(max);
+    return Math.floor(Math.random() * (end - start + 1)) + start;
+  };
+  var shuffle = function shuffle(list) {
+    var result = _toConsumableArray(list);
+    for (var index = result.length - 1; index > 0; index -= 1) {
+      var randomIndex = randomInt(0, index);
+      var _ref = [result[randomIndex], result[index]];
+      result[index] = _ref[0];
+      result[randomIndex] = _ref[1];
+    }
+    return result;
+  };
+  var toCssUrl = function toCssUrl(value) {
+    return "url(".concat(JSON.stringify(String(value)), ")");
+  };
+  var script$H = create({
+    name: 'captcha',
+    emits: ['update:modelValue', 'change', 'success', 'fail', 'refresh'],
+    expose: ['refresh', 'reset', 'verify'],
     props: {
-      size: {
-        type: [Number, String],
-        "default": 50
+      modelValue: {
+        type: Boolean,
+        "default": false
       },
-      modelValue: [Number, String],
-      len: {
-        type: [Number, String],
-        "default": 6
-      }
-    },
-    computed: {
-      data: {
-        get: function get() {
-          return this.modelValue || '';
-        },
-        set: function set(val) {
-          var value = val + '';
-          this.$emit('update:modelValue', value);
-          this.$emit('change', value);
+      type: {
+        type: String,
+        "default": 'slider',
+        validator: function validator(value) {
+          return CAPTCHA_TYPES.includes(value);
         }
       },
-      styleName: function styleName() {
-        return {
-          padding: "".concat(this.setPx(this.size / 7), " ").concat(this.setPx(this.size / 4)),
-          fontSize: this.setPx(this.size)
-        };
+      width: {
+        type: [Number, String],
+        "default": 320
       },
-      list: function list() {
-        return this.data.split('');
+      height: {
+        type: Number,
+        "default": 160
+      },
+      pieceSize: {
+        type: Number,
+        "default": 42
+      },
+      tolerance: {
+        type: Number,
+        "default": 6
+      },
+      sliderTargetCount: {
+        type: Number,
+        "default": 2
+      },
+      rotateStep: {
+        type: Number,
+        "default": 30
+      },
+      image: {
+        type: String,
+        "default": ''
+      },
+      backgroundImage: {
+        type: String,
+        "default": ''
+      },
+      backgroundSize: {
+        type: String,
+        "default": 'cover'
+      },
+      backgroundPosition: {
+        type: String,
+        "default": 'center'
+      },
+      disabled: {
+        type: Boolean,
+        "default": false
+      },
+      autoRefresh: {
+        type: Boolean,
+        "default": true
+      },
+      refreshDelay: {
+        type: Number,
+        "default": 900
+      },
+      targetText: {
+        type: [String, Array],
+        "default": ''
+      },
+      textPool: {
+        type: [String, Array],
+        "default": DEFAULT_TEXT_POOL
+      },
+      textOptionCount: {
+        type: Number,
+        "default": 8
+      },
+      targetIcon: {
+        type: String,
+        "default": ''
+      },
+      iconPool: {
+        type: Array,
+        "default": function _default() {
+          return DEFAULT_ICON_POOL;
+        }
+      },
+      iconOptionCount: {
+        type: Number,
+        "default": 6
+      },
+      sequenceLength: {
+        type: Number,
+        "default": 3
+      },
+      dragTolerance: {
+        type: Number,
+        "default": 16
+      },
+      mathQuestion: {
+        type: String,
+        "default": ''
+      },
+      mathAnswer: {
+        type: [Number, String],
+        "default": undefined
+      },
+      mathOptions: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      },
+      mathOptionCount: {
+        type: Number,
+        "default": 4
+      },
+      codeLength: {
+        type: Number,
+        "default": 4
+      },
+      codeCharacters: {
+        type: String,
+        "default": '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
+      },
+      codeCaseSensitive: {
+        type: Boolean,
+        "default": false
       }
     },
-    created: function created() {
-      this.randomn();
+    data: function data() {
+      var _ref2;
+      return _ref2 = {
+        verified: false,
+        status: 'ready',
+        message: '',
+        sliderOffset: 0,
+        sliderTarget: 0,
+        sliderTargets: [],
+        pieceTop: 24,
+        pieceShape: 'a',
+        puzzleId: "captcha-puzzle-".concat(Math.random().toString(36).slice(2, 10)),
+        dragStartX: 0,
+        dragStartOffset: 0,
+        dragging: false,
+        selectedTextIds: [],
+        textOptions: [],
+        textTargets: [],
+        mathExpression: '',
+        expectedMathAnswer: '',
+        mathResultOptions: [],
+        rotation: 0,
+        iconOptions: [],
+        iconTarget: {},
+        sequenceOptions: [],
+        sequenceTargets: [],
+        selectedSequenceIds: [],
+        dragShape: 'circle',
+        dragColor: '#4361ee',
+        dragSource: {
+          x: 20,
+          y: 20
+        },
+        dragTarget: {
+          x: 180,
+          y: 80
+        },
+        dragOffset: {
+          x: 0,
+          y: 0
+        }
+      }, _defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_defineProperty$1(_ref2, "dragStartX", 0), "dragStartY", 0), "dragStartOffset", {
+        x: 0,
+        y: 0
+      }), "dragActive", false), "pathProgress", 0), "pathDragStartX", 0), "pathDragStartProgress", 0), "pathActive", false), "codeValue", ''), "codeInput", ''), _defineProperty$1(_defineProperty$1(_ref2, "codeInputId", "captcha-code-".concat(Math.random().toString(36).slice(2, 10))), "refreshTimer", null);
+    },
+    computed: {
+      captchaType: function captchaType() {
+        return CAPTCHA_TYPES.includes(this.type) ? this.type : 'slider';
+      },
+      rootStyle: function rootStyle() {
+        return {
+          width: this.setPx(this.width)
+        };
+      },
+      safeHeight: function safeHeight() {
+        return Math.max(96, Number(this.height) || 160);
+      },
+      safePieceSize: function safePieceSize() {
+        return Math.min(Math.max(30, Number(this.pieceSize) || 42), this.safeHeight - 20);
+      },
+      sliderMax: function sliderMax() {
+        return Math.max(1, this.getSceneWidth() - this.safePieceSize - 8);
+      },
+      sceneStyle: function sceneStyle() {
+        var style = {
+          height: "".concat(this.safeHeight, "px")
+        };
+        if (this.backgroundSource) {
+          style.backgroundImage = toCssUrl(this.backgroundSource);
+          style.backgroundSize = this.backgroundSize;
+          style.backgroundPosition = this.backgroundPosition;
+        }
+        return style;
+      },
+      backgroundSource: function backgroundSource() {
+        return this.backgroundImage || this.image;
+      },
+      pieceStyle: function pieceStyle() {
+        return {
+          width: "".concat(this.safePieceSize, "px"),
+          height: "".concat(this.safePieceSize, "px"),
+          top: "".concat(this.pieceTop, "px"),
+          transform: "translateX(".concat(this.sliderOffset, "px)")
+        };
+      },
+      piecePath: function piecePath() {
+        return this.getPuzzlePath(this.pieceShape);
+      },
+      pieceClipId: function pieceClipId() {
+        return "".concat(this.puzzleId, "-clip");
+      },
+      pieceGradientId: function pieceGradientId() {
+        return "".concat(this.puzzleId, "-gradient");
+      },
+      progressStyle: function progressStyle() {
+        return {
+          width: "".concat(Math.min(100, (this.sliderOffset + 20) / this.sliderMax * 100), "%")
+        };
+      },
+      sliderButtonStyle: function sliderButtonStyle() {
+        return {
+          transform: "translateX(".concat(this.sliderOffset, "px)")
+        };
+      },
+      sliderTip: function sliderTip() {
+        if (this.verified) return '验证通过';
+        if (this.dragging) return '松开以完成验证';
+        return '拖动滑块匹配正确缺口';
+      },
+      targetTextLabel: function targetTextLabel() {
+        return this.textTargets.join(' ');
+      },
+      sequenceTargetLabel: function sequenceTargetLabel() {
+        return this.sequenceTargets.map(function (item) {
+          return item.label;
+        }).join(' → ');
+      },
+      choiceFontSize: function choiceFontSize() {
+        var width = this.getSceneWidth();
+        return Math.max(16, Math.min(22, Math.floor(Math.min(width / 14, this.safeHeight / 6.5))));
+      },
+      mathChoiceFontSize: function mathChoiceFontSize() {
+        var width = this.getSceneWidth();
+        return Math.max(14, Math.min(18, Math.floor(Math.min(width / 16, this.safeHeight / 8))));
+      },
+      rotateDialStyle: function rotateDialStyle() {
+        return {
+          transform: "rotate(".concat(this.rotation, "deg)")
+        };
+      },
+      dragSize: function dragSize() {
+        return 42;
+      },
+      dragCurrentPosition: function dragCurrentPosition() {
+        return {
+          x: this.dragSource.x + this.dragOffset.x,
+          y: this.dragSource.y + this.dragOffset.y
+        };
+      },
+      dragPieceStyle: function dragPieceStyle() {
+        return {
+          width: "".concat(this.dragSize, "px"),
+          height: "".concat(this.dragSize, "px"),
+          left: "".concat(this.dragCurrentPosition.x, "px"),
+          top: "".concat(this.dragCurrentPosition.y, "px"),
+          backgroundColor: this.dragColor
+        };
+      },
+      dragTargetStyle: function dragTargetStyle() {
+        return {
+          width: "".concat(this.dragSize, "px"),
+          height: "".concat(this.dragSize, "px"),
+          left: "".concat(this.dragTarget.x, "px"),
+          top: "".concat(this.dragTarget.y, "px"),
+          borderColor: this.dragColor
+        };
+      },
+      pathStartPoint: function pathStartPoint() {
+        return this.getPathPoint(0);
+      },
+      pathEndPoint: function pathEndPoint() {
+        return this.getPathPoint(1);
+      },
+      pathMarkerStyle: function pathMarkerStyle() {
+        var point = this.getPathPoint(this.pathProgress);
+        return {
+          left: "".concat(point.x - 15, "px"),
+          top: "".concat(point.y - 15, "px")
+        };
+      },
+      pathLine: function pathLine() {
+        var start = this.pathStartPoint;
+        var end = this.pathEndPoint;
+        var controlY = Math.max(16, this.safeHeight * 0.14);
+        return "M ".concat(start.x, " ").concat(start.y, " Q ").concat(this.getSceneWidth() / 2, " ").concat(controlY, " ").concat(end.x, " ").concat(end.y);
+      },
+      safeCodeLength: function safeCodeLength() {
+        return Math.min(Math.max(Number(this.codeLength) || 4, 3), 8);
+      },
+      codeChars: function codeChars() {
+        return this.codeValue.split('');
+      }
+    },
+    watch: {
+      modelValue: function modelValue(value) {
+        if (value === false && this.verified) this.refresh();
+      },
+      type: function type() {
+        this.refresh();
+      },
+      targetText: {
+        handler: function handler() {
+          if (this.captchaType === 'text') this.refresh();
+        },
+        deep: true
+      },
+      mathQuestion: function mathQuestion() {
+        if (this.captchaType === 'math') this.refresh();
+      },
+      mathAnswer: function mathAnswer() {
+        if (this.captchaType === 'math') this.refresh();
+      },
+      mathOptions: {
+        handler: function handler() {
+          if (this.captchaType === 'math') this.refresh();
+        },
+        deep: true
+      },
+      sliderTargetCount: function sliderTargetCount() {
+        if (this.captchaType === 'slider') this.refresh();
+      },
+      targetIcon: function targetIcon() {
+        if (this.captchaType === 'icon') this.refresh();
+      },
+      iconPool: {
+        handler: function handler() {
+          if (this.captchaType === 'icon') this.refresh();
+        },
+        deep: true
+      },
+      sequenceLength: function sequenceLength() {
+        if (this.captchaType === 'sequence') this.refresh();
+      },
+      codeLength: function codeLength() {
+        if (this.captchaType === 'code') this.refresh();
+      },
+      codeCharacters: function codeCharacters() {
+        if (this.captchaType === 'code') this.refresh();
+      }
+    },
+    mounted: function mounted() {
+      var _this = this;
+      this.$nextTick(function () {
+        return _this.refresh();
+      });
+    },
+    beforeUnmount: function beforeUnmount() {
+      this.clearRefreshTimer();
+      this.stopSlide();
+      this.stopDrag();
+      this.stopPath();
     },
     methods: {
-      randomn: function randomn() {
-        var n = this.len;
-        if (n > 21) return null;
-        var re = new RegExp("(\\d{" + n + "})(\\.|$)");
-        var num = (Array(n - 1).join(0) + Math.pow(10, n) * Math.random()).match(re)[1];
-        this.data = num;
+      getSceneWidth: function getSceneWidth() {
+        var _this$$refs$scene;
+        var width = (_this$$refs$scene = this.$refs.scene) === null || _this$$refs$scene === void 0 ? void 0 : _this$$refs$scene.clientWidth;
+        if (width) return width;
+        var propWidth = Number(this.width);
+        return Number.isFinite(propWidth) && propWidth > 0 ? propWidth : 320;
+      },
+      refresh: function refresh() {
+        this.clearRefreshTimer();
+        this.stopSlide();
+        this.stopDrag();
+        this.stopPath();
+        this.verified = false;
+        this.status = 'ready';
+        this.message = '';
+        this.sliderOffset = 0;
+        this.selectedTextIds = [];
+        this.selectedSequenceIds = [];
+        this.dragOffset = {
+          x: 0,
+          y: 0
+        };
+        this.pathProgress = 0;
+        if (this.captchaType === 'slider') this.createSliderChallenge();
+        if (this.captchaType === 'text') this.createTextChallenge();
+        if (this.captchaType === 'math') this.createMathChallenge();
+        if (this.captchaType === 'rotate') this.createRotateChallenge();
+        if (this.captchaType === 'icon') this.createIconChallenge();
+        if (this.captchaType === 'sequence') this.createSequenceChallenge();
+        if (this.captchaType === 'drag') this.createDragChallenge();
+        if (this.captchaType === 'code') this.createCodeChallenge();
+        this.updateValue(false);
+        this.$emit('refresh', {
+          type: this.captchaType
+        });
+      },
+      reset: function reset() {
+        this.refresh();
+      },
+      createSliderChallenge: function createSliderChallenge() {
+        var targetCount = Math.min(4, Math.max(1, Number(this.sliderTargetCount) || 2));
+        var correctShapeIndex = randomInt(0, PUZZLE_SHAPES.length - 1);
+        var targets = [];
+        for (var index = 0; index < targetCount; index += 1) {
+          var shapeIndex = correctShapeIndex;
+          if (index > 0) {
+            var shapeCandidates = PUZZLE_SHAPES.map(function (_, shapeIndex) {
+              return shapeIndex;
+            }).filter(function (shapeIndex) {
+              return shapeIndex !== correctShapeIndex;
+            });
+            shapeIndex = shapeCandidates[randomInt(0, shapeCandidates.length - 1)];
+          }
+          var position = this.createSliderTargetPosition(targets);
+          targets.push(_objectSpread$b({
+            id: "target-".concat(index),
+            correct: index === 0,
+            shape: PUZZLE_SHAPES[shapeIndex]
+          }, position));
+        }
+        var correctTarget = targets[0];
+        this.sliderTargets = shuffle(targets);
+        this.sliderTarget = correctTarget.x;
+        this.pieceTop = correctTarget.y;
+        this.pieceShape = correctTarget.shape;
+      },
+      createCodeChallenge: function createCodeChallenge() {
+        var characters = _toConsumableArray(new Set(String(this.codeCharacters || '').split('').filter(Boolean)));
+        var pool = characters.length ? characters : '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'.split('');
+        var values = new Uint32Array(this.safeCodeLength);
+        if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+          crypto.getRandomValues(values);
+        }
+        this.codeValue = Array.from({
+          length: this.safeCodeLength
+        }, function (_, index) {
+          var random = values[index] || Math.floor(Math.random() * 0x100000000);
+          return pool[random % pool.length];
+        }).join('');
+        this.codeInput = '';
+      },
+      createSliderTargetPosition: function createSliderTargetPosition(targets) {
+        var maxX = this.sliderMax;
+        var minTarget = Math.min(Math.max(20, Math.round(maxX * 0.28)), maxX);
+        var minY = 10;
+        var maxY = Math.max(minY, this.safeHeight - this.safePieceSize - 10);
+        var minDistance = this.safePieceSize * 1.55;
+        var _loop = function _loop() {
+            var position = {
+              x: randomInt(minTarget, maxX),
+              y: randomInt(minY, maxY)
+            };
+            var available = targets.every(function (target) {
+              var xDistance = target.x - position.x;
+              var yDistance = target.y - position.y;
+              return xDistance * xDistance + yDistance * yDistance >= minDistance * minDistance;
+            });
+            if (available) return {
+              v: position
+            };
+          },
+          _ret;
+        for (var attempt = 0; attempt < 100; attempt += 1) {
+          _ret = _loop();
+          if (_ret) return _ret.v;
+        }
+        var index = targets.length;
+        return {
+          x: Math.max(minTarget, maxX - index * (this.safePieceSize + 8)),
+          y: minY + (maxY - minY) * (index % 2)
+        };
+      },
+      getSliderTargetStyle: function getSliderTargetStyle(target) {
+        return {
+          width: "".concat(this.safePieceSize, "px"),
+          height: "".concat(this.safePieceSize, "px"),
+          left: "".concat(target.x, "px"),
+          top: "".concat(target.y, "px")
+        };
+      },
+      getPuzzlePath: function getPuzzlePath(shape) {
+        return PUZZLE_PATHS[shape] || PUZZLE_PATHS.a;
+      },
+      createTextChallenge: function createTextChallenge() {
+        var pool = Array.isArray(this.textPool) ? this.textPool : String(this.textPool).split('');
+        var uniquePool = _toConsumableArray(new Set(pool.filter(Boolean)));
+        var providedTargets = Array.isArray(this.targetText) ? this.targetText : String(this.targetText || '').split('').filter(Boolean);
+        var targetCount = Math.min(3, Math.max(1, providedTargets.length || 2));
+        this.textTargets = providedTargets.length ? providedTargets.slice(0, targetCount) : shuffle(uniquePool).slice(0, targetCount);
+        var optionCount = Math.max(this.textTargets.length, Number(this.textOptionCount) || 8);
+        var options = _toConsumableArray(this.textTargets);
+        shuffle(uniquePool).forEach(function (item) {
+          if (options.length < optionCount && !options.includes(item)) options.push(item);
+        });
+        this.textOptions = this.createChoiceOptions(shuffle(options), 16);
+      },
+      createMathChallenge: function createMathChallenge() {
+        if (this.mathQuestion && this.mathAnswer !== undefined) {
+          this.mathExpression = this.mathQuestion;
+          this.expectedMathAnswer = String(this.mathAnswer).trim();
+          this.createMathOptions();
+          return;
+        }
+        var first = randomInt(5, 20);
+        var second = randomInt(1, 9);
+        var isSubtraction = Math.random() > 0.5;
+        this.mathExpression = isSubtraction ? "".concat(first, " \u2212 ").concat(second, " = ?") : "".concat(first, " + ").concat(second, " = ?");
+        this.expectedMathAnswer = String(isSubtraction ? first - second : first + second);
+        this.createMathOptions();
+      },
+      createMathOptions: function createMathOptions() {
+        var answer = this.expectedMathAnswer;
+        var providedOptions = this.mathOptions.map(function (item) {
+          return String(item).trim();
+        }).filter(Boolean);
+        var optionCount = Math.max(2, Number(this.mathOptionCount) || 4);
+        var options = _toConsumableArray(new Set(providedOptions));
+        if (!options.includes(answer)) options.push(answer);
+        var answerNumber = Number(answer);
+        var attempts = 0;
+        while (options.length < optionCount && Number.isFinite(answerNumber) && attempts < 100) {
+          attempts += 1;
+          var offset = randomInt(-8, 8) || 1;
+          var result = String(Math.max(0, answerNumber + offset));
+          if (!options.includes(result)) options.push(result);
+        }
+        this.mathResultOptions = this.createChoiceOptions(shuffle(options), 20);
+      },
+      createRotateChallenge: function createRotateChallenge() {
+        var step = Math.max(1, Number(this.rotateStep) || 30);
+        this.rotation = randomInt(1, Math.max(1, Math.floor(360 / step) - 1)) * step;
+      },
+      createIconChallenge: function createIconChallenge() {
+        var _this2 = this;
+        var pool = this.iconPool.map(function (item) {
+          return typeof item === 'string' ? {
+            value: item,
+            label: item
+          } : item;
+        }).filter(function (item) {
+          return item && item.value && item.label;
+        });
+        var options = shuffle(pool).slice(0, Math.max(2, Number(this.iconOptionCount) || 6));
+        var target = pool.find(function (item) {
+          return item.value === _this2.targetIcon || item.label === _this2.targetIcon;
+        }) || options[0] || DEFAULT_ICON_POOL[0];
+        if (!options.some(function (item) {
+          return item.value === target.value;
+        })) options[0] = target;
+        var positions = [];
+        this.iconTarget = target;
+        this.iconOptions = shuffle(options).map(function (item, index) {
+          var position = _this2.createChoicePosition(positions, 16, options.length, index, 46);
+          positions.push(position);
+          return _objectSpread$b(_objectSpread$b(_objectSpread$b({
+            id: "icon-".concat(item.value, "-").concat(index)
+          }, item), position), {}, {
+            color: CHOICE_COLORS[randomInt(0, CHOICE_COLORS.length - 1)],
+            rotate: randomInt(-15, 15)
+          });
+        });
+      },
+      createSequenceChallenge: function createSequenceChallenge() {
+        var _this3 = this;
+        var options = [];
+        var _loop2 = function _loop2() {
+          var color = SEQUENCE_COLORS[randomInt(0, SEQUENCE_COLORS.length - 1)];
+          var shape = SEQUENCE_SHAPES[randomInt(0, SEQUENCE_SHAPES.length - 1)];
+          var id = "".concat(color.value, "-").concat(shape.value);
+          if (!options.some(function (item) {
+            return item.id === id;
+          })) {
+            options.push({
+              id: id,
+              color: color.value,
+              shape: shape.value,
+              label: "".concat(color.label).concat(shape.label)
+            });
+          }
+        };
+        while (options.length < 6) {
+          _loop2();
+        }
+        var targetLength = Math.min(options.length, Math.max(2, Number(this.sequenceLength) || 3));
+        this.sequenceTargets = shuffle(options).slice(0, targetLength);
+        var positions = [];
+        this.sequenceOptions = shuffle(options).map(function (item, index) {
+          var position = _this3.createChoicePosition(positions, 16, options.length, index, 48);
+          positions.push(position);
+          return _objectSpread$b(_objectSpread$b({}, item), position);
+        });
+      },
+      createDragChallenge: function createDragChallenge() {
+        var size = this.dragSize;
+        var sceneWidth = this.getSceneWidth();
+        var maxX = Math.max(16, sceneWidth - size - 16);
+        var maxY = Math.max(16, this.safeHeight - size - 16);
+        this.dragShape = DRAG_SHAPES[randomInt(0, DRAG_SHAPES.length - 1)];
+        this.dragColor = CHOICE_COLORS[randomInt(0, CHOICE_COLORS.length - 1)];
+        this.dragSource = {
+          x: randomInt(16, Math.max(16, Math.round(maxX * 0.35))),
+          y: randomInt(16, maxY)
+        };
+        var target = {
+          x: maxX,
+          y: maxY
+        };
+        for (var attempt = 0; attempt < 80; attempt += 1) {
+          var candidate = {
+            x: randomInt(16, maxX),
+            y: randomInt(16, maxY)
+          };
+          var xDistance = candidate.x - this.dragSource.x;
+          var yDistance = candidate.y - this.dragSource.y;
+          if (xDistance * xDistance + yDistance * yDistance >= Math.pow(size * 1.7, 2)) {
+            target = candidate;
+            break;
+          }
+        }
+        this.dragTarget = target;
+      },
+      createChoiceOptions: function createChoiceOptions(values, top, optionSize) {
+        var _this4 = this;
+        var positions = [];
+        return values.map(function (value, index) {
+          var position = _this4.createChoicePosition(positions, top, values.length, index, optionSize);
+          positions.push(position);
+          return _objectSpread$b(_objectSpread$b({
+            id: "".concat(value, "-").concat(index),
+            value: value
+          }, position), {}, {
+            color: CHOICE_COLORS[randomInt(0, CHOICE_COLORS.length - 1)],
+            rotate: randomInt(-18, 18)
+          });
+        });
+      },
+      createChoicePosition: function createChoicePosition(positions, top, count, index, optionSize) {
+        var fontSize = optionSize || (this.captchaType === 'math' ? this.mathChoiceFontSize : this.choiceFontSize);
+        var hitAreaSize = Math.max(fontSize, 42);
+        var sceneWidth = this.getSceneWidth();
+        var sidePadding = 18;
+        var minX = sidePadding;
+        var maxX = Math.max(minX, sceneWidth - hitAreaSize - sidePadding);
+        var minY = Math.min(top, this.safeHeight - hitAreaSize - 8);
+        var maxY = Math.max(minY, this.safeHeight - hitAreaSize - 10);
+        var minDistance = Math.max(hitAreaSize, 34);
+        var _loop3 = function _loop3() {
+            var position = {
+              x: randomInt(minX, maxX),
+              y: randomInt(minY, maxY)
+            };
+            var available = positions.every(function (item) {
+              var xDistance = item.x - position.x;
+              var yDistance = item.y - position.y;
+              return xDistance * xDistance + yDistance * yDistance >= minDistance * minDistance;
+            });
+            if (available) return {
+              v: position
+            };
+          },
+          _ret2;
+        for (var attempt = 0; attempt < 100; attempt += 1) {
+          _ret2 = _loop3();
+          if (_ret2) return _ret2.v;
+        }
+        var columns = Math.min(4, Math.max(2, Math.ceil(Math.sqrt(count * 1.5))));
+        var rows = Math.ceil(count / columns);
+        var column = index % columns;
+        var row = Math.floor(index / columns);
+        return {
+          x: Math.round(minX + (maxX - minX) * (column + 0.5) / columns),
+          y: Math.round(minY + (maxY - minY) * (row + 0.5) / Math.max(1, rows))
+        };
+      },
+      getChoiceOptionStyle: function getChoiceOptionStyle(item) {
+        var isMath = this.captchaType === 'math';
+        return {
+          left: "".concat(item.x, "px"),
+          top: "".concat(item.y, "px"),
+          color: item.color,
+          fontSize: "".concat(isMath ? this.mathChoiceFontSize : this.choiceFontSize, "px"),
+          transform: "rotate(".concat(item.rotate, "deg)")
+        };
+      },
+      getIconOptionStyle: function getIconOptionStyle(item) {
+        return {
+          left: "".concat(item.x, "px"),
+          top: "".concat(item.y, "px"),
+          color: item.color,
+          transform: "rotate(".concat(item.rotate, "deg)")
+        };
+      },
+      getSequenceOptionStyle: function getSequenceOptionStyle(item) {
+        return {
+          left: "".concat(item.x, "px"),
+          top: "".concat(item.y, "px"),
+          backgroundColor: item.color
+        };
+      },
+      getPathPoint: function getPathPoint(progress) {
+        var width = this.getSceneWidth();
+        var startX = 30;
+        var endX = Math.max(startX, width - 30);
+        var t = Math.min(1, Math.max(0, progress));
+        return {
+          x: startX + (endX - startX) * t,
+          y: this.safeHeight - 28 - Math.sin(Math.PI * t) * this.safeHeight * 0.42
+        };
+      },
+      rotateCaptcha: function rotateCaptcha(direction) {
+        if (this.disabled || this.verified) return;
+        var step = Math.max(1, Number(this.rotateStep) || 30);
+        this.rotation = ((this.rotation + direction * step) % 360 + 360) % 360;
+        this.status = 'ready';
+        this.message = '';
+        if (this.rotation === 0) this.succeed();
+      },
+      selectIcon: function selectIcon(item) {
+        if (this.disabled || this.verified) return;
+        if (item.value === this.iconTarget.value) {
+          this.succeed();
+        } else {
+          this.fail('图标不正确，请重试');
+        }
+      },
+      selectSequence: function selectSequence(item) {
+        var _this$sequenceTargets;
+        if (this.disabled || this.verified || this.selectedSequenceIds.includes(item.id)) return;
+        var selectedIndex = this.selectedSequenceIds.length;
+        if (item.id !== ((_this$sequenceTargets = this.sequenceTargets[selectedIndex]) === null || _this$sequenceTargets === void 0 ? void 0 : _this$sequenceTargets.id)) {
+          this.fail('点击顺序不正确，请重试');
+          return;
+        }
+        this.selectedSequenceIds.push(item.id);
+        if (this.selectedSequenceIds.length === this.sequenceTargets.length) this.succeed();
+      },
+      startDrag: function startDrag(event) {
+        if (this.disabled || this.verified) return;
+        this.dragActive = true;
+        this.status = 'ready';
+        this.message = '';
+        this.dragStartX = event.clientX;
+        this.dragStartY = event.clientY;
+        this.dragStartOffset = _objectSpread$b({}, this.dragOffset);
+        window.addEventListener('pointermove', this.moveDrag);
+        window.addEventListener('pointerup', this.finishDrag);
+        window.addEventListener('pointercancel', this.finishDrag);
+      },
+      moveDrag: function moveDrag(event) {
+        if (!this.dragActive) return;
+        var sceneWidth = this.getSceneWidth();
+        var maxX = Math.max(0, sceneWidth - this.dragSize - this.dragSource.x);
+        var maxY = Math.max(0, this.safeHeight - this.dragSize - this.dragSource.y);
+        var minX = -this.dragSource.x;
+        var minY = -this.dragSource.y;
+        this.dragOffset = {
+          x: Math.min(maxX, Math.max(minX, this.dragStartOffset.x + event.clientX - this.dragStartX)),
+          y: Math.min(maxY, Math.max(minY, this.dragStartOffset.y + event.clientY - this.dragStartY))
+        };
+      },
+      finishDrag: function finishDrag() {
+        if (!this.dragActive) return;
+        var position = this.dragCurrentPosition;
+        var xDistance = position.x - this.dragTarget.x;
+        var yDistance = position.y - this.dragTarget.y;
+        var tolerance = Math.max(4, Number(this.dragTolerance) || 16);
+        this.stopDrag();
+        if (xDistance * xDistance + yDistance * yDistance <= tolerance * tolerance) {
+          this.succeed();
+        } else {
+          this.fail('位置不正确，请重试');
+        }
+      },
+      stopDrag: function stopDrag() {
+        this.dragActive = false;
+        if (typeof window === 'undefined') return;
+        window.removeEventListener('pointermove', this.moveDrag);
+        window.removeEventListener('pointerup', this.finishDrag);
+        window.removeEventListener('pointercancel', this.finishDrag);
+      },
+      startPath: function startPath(event) {
+        if (this.disabled || this.verified) return;
+        this.pathActive = true;
+        this.status = 'ready';
+        this.message = '';
+        this.pathDragStartX = event.clientX;
+        this.pathDragStartProgress = this.pathProgress;
+        window.addEventListener('pointermove', this.movePath);
+        window.addEventListener('pointerup', this.finishPath);
+        window.addEventListener('pointercancel', this.finishPath);
+      },
+      movePath: function movePath(event) {
+        if (!this.pathActive) return;
+        var usableWidth = Math.max(1, this.getSceneWidth() - 60);
+        this.pathProgress = Math.min(1, Math.max(0, this.pathDragStartProgress + (event.clientX - this.pathDragStartX) / usableWidth));
+      },
+      finishPath: function finishPath() {
+        if (!this.pathActive) return;
+        var passed = this.pathProgress >= 0.95;
+        this.stopPath();
+        if (passed) {
+          this.pathProgress = 1;
+          this.succeed();
+        } else {
+          this.fail('请沿轨迹滑动到终点');
+        }
+      },
+      stopPath: function stopPath() {
+        this.pathActive = false;
+        if (typeof window === 'undefined') return;
+        window.removeEventListener('pointermove', this.movePath);
+        window.removeEventListener('pointerup', this.finishPath);
+        window.removeEventListener('pointercancel', this.finishPath);
+      },
+      startSlide: function startSlide(event) {
+        if (this.disabled || this.verified) return;
+        this.dragging = true;
+        this.status = 'ready';
+        this.message = '';
+        this.dragStartX = event.clientX;
+        this.dragStartOffset = this.sliderOffset;
+        window.addEventListener('pointermove', this.moveSlide);
+        window.addEventListener('pointerup', this.finishSlide);
+        window.addEventListener('pointercancel', this.finishSlide);
+      },
+      moveSlide: function moveSlide(event) {
+        if (!this.dragging) return;
+        var offset = this.dragStartOffset + event.clientX - this.dragStartX;
+        this.sliderOffset = Math.min(this.sliderMax, Math.max(0, offset));
+      },
+      finishSlide: function finishSlide() {
+        if (!this.dragging) return;
+        var passed = Math.abs(this.sliderOffset - this.sliderTarget) <= Math.max(1, Number(this.tolerance) || 6);
+        this.stopSlide();
+        if (passed) {
+          this.succeed();
+        } else {
+          this.fail('位置不正确，请重试');
+        }
+      },
+      stopSlide: function stopSlide() {
+        this.dragging = false;
+        if (typeof window === 'undefined') return;
+        window.removeEventListener('pointermove', this.moveSlide);
+        window.removeEventListener('pointerup', this.finishSlide);
+        window.removeEventListener('pointercancel', this.finishSlide);
+      },
+      selectText: function selectText(item) {
+        if (this.disabled || this.verified || this.selectedTextIds.includes(item.id)) return;
+        var selectedIndex = this.selectedTextIds.length;
+        if (item.value !== this.textTargets[selectedIndex]) {
+          this.fail('点击顺序不正确，请重试');
+          return;
+        }
+        this.selectedTextIds.push(item.id);
+        if (this.selectedTextIds.length === this.textTargets.length) this.succeed();
+      },
+      selectMath: function selectMath(item) {
+        if (this.disabled || this.verified) return;
+        if (item.value === this.expectedMathAnswer) {
+          this.succeed();
+        } else {
+          this.fail('结果不正确，请重试');
+        }
+      },
+      verify: function verify(value) {
+        if (value === undefined) return;
+        if (this.captchaType === 'math') {
+          this.selectMath({
+            value: String(value).trim()
+          });
+          return;
+        }
+        if (this.captchaType !== 'code' || this.disabled || this.verified) return;
+        var input = String(value).trim();
+        var expected = this.codeCaseSensitive ? this.codeValue : this.codeValue.toUpperCase();
+        var actual = this.codeCaseSensitive ? input : input.toUpperCase();
+        if (actual === expected) this.succeed();else this.fail('验证码不正确，请重试');
+      },
+      succeed: function succeed() {
+        this.clearRefreshTimer();
+        this.verified = true;
+        this.status = 'success';
+        this.message = '验证通过';
+        this.updateValue(true);
+        this.$emit('success', {
+          type: this.captchaType
+        });
+      },
+      fail: function fail(message) {
+        var _this5 = this;
+        this.status = 'error';
+        this.message = message;
+        this.$emit('fail', {
+          type: this.captchaType,
+          message: message
+        });
+        if (!this.autoRefresh) return;
+        this.clearRefreshTimer();
+        this.refreshTimer = window.setTimeout(function () {
+          return _this5.refresh();
+        }, Math.max(0, Number(this.refreshDelay) || 0));
+      },
+      clearRefreshTimer: function clearRefreshTimer() {
+        if (this.refreshTimer === null) return;
+        clearTimeout(this.refreshTimer);
+        this.refreshTimer = null;
+      },
+      updateValue: function updateValue(value) {
+        if (this.modelValue === value) return;
+        this.$emit('update:modelValue', value);
+        this.$emit('change', {
+          value: value,
+          type: this.captchaType
+        });
+      },
+      getCodeCharacterStyle: function getCodeCharacterStyle(index) {
+        var rotations = [-8, 5, -3, 7, -6, 3, 8, -4];
+        var offsets = [3, -2, 1, -3, 2, -1, 3, -2];
+        return {
+          transform: "translateY(".concat(offsets[index % offsets.length], "px) rotate(").concat(rotations[index % rotations.length], "deg)")
+        };
       }
     }
   });
 
-  function render$F(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$y = ["d"];
+  var _hoisted_2$v = ["id"];
+  var _hoisted_3$p = ["d"];
+  var _hoisted_4$o = ["id"];
+  var _hoisted_5$m = ["href", "clip-path"];
+  var _hoisted_6$j = ["d", "fill"];
+  var _hoisted_7$g = ["d"];
+  var _hoisted_8$e = ["disabled"];
+  var _hoisted_9$c = ["disabled", "aria-label", "onClick"];
+  var _hoisted_10$a = ["disabled", "aria-label", "onClick"];
+  var _hoisted_11$8 = ["disabled"];
+  var _hoisted_12$7 = ["disabled"];
+  var _hoisted_13$7 = ["disabled", "aria-label", "onClick"];
+  var _hoisted_14$6 = ["disabled", "aria-label", "onClick"];
+  var _hoisted_15$6 = ["disabled"];
+  var _hoisted_16$3 = ["for"];
+  var _hoisted_17$2 = ["id", "maxlength", "disabled"];
+  var _hoisted_18$1 = ["disabled"];
+  var _hoisted_19$1 = ["viewBox"];
+  var _hoisted_20 = ["d"];
+  var _hoisted_21 = ["cx", "cy"];
+  var _hoisted_22 = ["disabled"];
+  var _hoisted_23 = ["disabled"];
+  function render$H(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b())
-    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.list, function (item, index) {
+      "class": vue.normalizeClass([_ctx.b(), _ctx.b("is-".concat(_ctx.captchaType)), _defineProperty$1(_defineProperty$1(_defineProperty$1({}, _ctx.b('success'), _ctx.verified), _ctx.b('error'), _ctx.status === 'error'), _ctx.b('disabled'), _ctx.disabled)]),
+      style: vue.normalizeStyle(_ctx.rootStyle)
+    }, [_ctx.captchaType === 'slider' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 0
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.sliderTargets, function (target) {
+      return vue.openBlock(), vue.createElementBlock("svg", {
+        key: target.id,
+        "class": vue.normalizeClass([_ctx.b('slider-target'), _ctx.b("slider-target-".concat(target.shape)), _defineProperty$1({}, _ctx.b('slider-target-decoy'), !target.correct)]),
+        style: vue.normalizeStyle(_ctx.getSliderTargetStyle(target)),
+        viewBox: "0 0 100 100",
+        preserveAspectRatio: "none",
+        "aria-hidden": "true"
+      }, [vue.createElementVNode("path", {
+        "class": vue.normalizeClass(_ctx.b('slider-target-path')),
+        d: _ctx.getPuzzlePath(target.shape)
+      }, null, 10 /* CLASS, PROPS */, _hoisted_1$y)], 6 /* CLASS, STYLE */);
+    }), 128 /* KEYED_FRAGMENT */)), (vue.openBlock(), vue.createElementBlock("svg", {
+      "class": vue.normalizeClass(_ctx.b('slider-piece')),
+      style: vue.normalizeStyle(_ctx.pieceStyle),
+      viewBox: "0 0 100 100",
+      preserveAspectRatio: "none",
+      "aria-hidden": "true"
+    }, [vue.createElementVNode("defs", null, [vue.createElementVNode("clipPath", {
+      id: _ctx.pieceClipId
+    }, [vue.createElementVNode("path", {
+      d: _ctx.piecePath
+    }, null, 8 /* PROPS */, _hoisted_3$p)], 8 /* PROPS */, _hoisted_2$v), vue.createElementVNode("linearGradient", {
+      id: _ctx.pieceGradientId,
+      x1: "0",
+      y1: "0",
+      x2: "1",
+      y2: "1"
+    }, _cache[9] || (_cache[9] = [vue.createElementVNode("stop", {
+      offset: "0",
+      "stop-color": "#c9e7ff"
+    }, null, -1 /* HOISTED */), vue.createElementVNode("stop", {
+      offset: "1",
+      "stop-color": "#72adf2"
+    }, null, -1 /* HOISTED */)]), 8 /* PROPS */, _hoisted_4$o)]), _ctx.backgroundSource ? (vue.openBlock(), vue.createElementBlock("image", {
+      key: 0,
+      href: _ctx.backgroundSource,
+      x: "0",
+      y: "0",
+      width: "100",
+      height: "100",
+      preserveAspectRatio: "xMidYMid slice",
+      "clip-path": "url(#".concat(_ctx.pieceClipId, ")")
+    }, null, 8 /* PROPS */, _hoisted_5$m)) : (vue.openBlock(), vue.createElementBlock("path", {
+      key: 1,
+      d: _ctx.piecePath,
+      fill: "url(#".concat(_ctx.pieceGradientId, ")")
+    }, null, 8 /* PROPS */, _hoisted_6$j)), vue.createElementVNode("path", {
+      "class": vue.normalizeClass(_ctx.b('slider-piece-outline')),
+      d: _ctx.piecePath
+    }, null, 10 /* CLASS, PROPS */, _hoisted_7$g)], 6 /* CLASS, STYLE */)), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      ref: "slider",
+      "class": vue.normalizeClass(_ctx.b('slider'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('slider-progress')),
+      style: vue.normalizeStyle(_ctx.progressStyle)
+    }, null, 6 /* CLASS, STYLE */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('slider-text'))
+    }, vue.toDisplayString(_ctx.sliderTip), 3 /* TEXT, CLASS */), vue.createElementVNode("button", {
+      type: "button",
+      "class": vue.normalizeClass(_ctx.b('slider-button')),
+      style: vue.normalizeStyle(_ctx.sliderButtonStyle),
+      disabled: _ctx.disabled || _ctx.verified,
+      "aria-label": "拖动滑块完成验证",
+      onPointerdown: _cache[0] || (_cache[0] = vue.withModifiers(function () {
+        return _ctx.startSlide && _ctx.startSlide.apply(_ctx, arguments);
+      }, ["prevent"]))
+    }, _cache[10] || (_cache[10] = [vue.createElementVNode("span", {
+      "aria-hidden": "true"
+    }, "›", -1 /* HOISTED */)]), 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_8$e)], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'text' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 1
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'text')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('text-options')),
+      role: "group",
+      "aria-label": "文字验证码选项"
+    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.textOptions, function (item) {
+      return vue.openBlock(), vue.createElementBlock("button", {
+        key: item.id,
+        type: "button",
+        "class": vue.normalizeClass([_ctx.b('text-option'), _defineProperty$1({}, _ctx.b('text-option-selected'), _ctx.selectedTextIds.includes(item.id))]),
+        style: vue.normalizeStyle(_ctx.getChoiceOptionStyle(item)),
+        disabled: _ctx.disabled || _ctx.verified || _ctx.selectedTextIds.includes(item.id),
+        "aria-label": "\u70B9\u51FB\u6587\u5B57 ".concat(item.value),
+        onClick: function onClick($event) {
+          return _ctx.selectText(item);
+        }
+      }, vue.toDisplayString(item.value), 15 /* TEXT, CLASS, STYLE, PROPS */, _hoisted_9$c);
+    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, [_cache[11] || (_cache[11] = vue.createTextVNode(" 请依次点击 ")), vue.createElementVNode("strong", null, "【" + vue.toDisplayString(_ctx.targetTextLabel) + "】", 1 /* TEXT */)], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'math' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 2
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'math')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('math-options')),
+      role: "group",
+      "aria-label": "算术验证码选项"
+    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.mathResultOptions, function (item) {
+      return vue.openBlock(), vue.createElementBlock("button", {
+        key: item.id,
+        type: "button",
+        "class": vue.normalizeClass(_ctx.b('math-option')),
+        style: vue.normalizeStyle(_ctx.getChoiceOptionStyle(item)),
+        disabled: _ctx.disabled || _ctx.verified,
+        "aria-label": "\u9009\u62E9\u7ED3\u679C ".concat(item.value),
+        onClick: function onClick($event) {
+          return _ctx.selectMath(item);
+        }
+      }, vue.toDisplayString(item.value), 15 /* TEXT, CLASS, STYLE, PROPS */, _hoisted_10$a);
+    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, [_cache[12] || (_cache[12] = vue.createTextVNode(" 请选择正确的计算结果：")), vue.createElementVNode("strong", null, vue.toDisplayString(_ctx.mathExpression), 1 /* TEXT */)], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'rotate' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 3
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'rotate')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('rotate-dial')),
+      style: vue.normalizeStyle(_ctx.rotateDialStyle),
+      "aria-hidden": "true"
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('rotate-arrow'))
+    }, "↑", 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('rotate-mark'))
+    }, "AVUE", 2 /* CLASS */)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('rotate-controls'))
+    }, [vue.createElementVNode("button", {
+      type: "button",
+      disabled: _ctx.disabled || _ctx.verified,
+      "aria-label": "逆时针旋转",
+      onClick: _cache[1] || (_cache[1] = function ($event) {
+        return _ctx.rotateCaptcha(-1);
+      })
+    }, "↺", 8 /* PROPS */, _hoisted_11$8), vue.createElementVNode("button", {
+      type: "button",
+      disabled: _ctx.disabled || _ctx.verified,
+      "aria-label": "顺时针旋转",
+      onClick: _cache[2] || (_cache[2] = function ($event) {
+        return _ctx.rotateCaptcha(1);
+      })
+    }, "↻", 8 /* PROPS */, _hoisted_12$7)], 2 /* CLASS */), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, "将图案旋转至正向", 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'icon' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 4
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'icon')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('icon-options')),
+      role: "group",
+      "aria-label": "图标验证码选项"
+    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.iconOptions, function (item) {
+      return vue.openBlock(), vue.createElementBlock("button", {
+        key: item.id,
+        type: "button",
+        "class": vue.normalizeClass(_ctx.b('icon-option')),
+        style: vue.normalizeStyle(_ctx.getIconOptionStyle(item)),
+        disabled: _ctx.disabled || _ctx.verified,
+        "aria-label": "\u70B9\u51FB".concat(item.label),
+        onClick: function onClick($event) {
+          return _ctx.selectIcon(item);
+        }
+      }, vue.toDisplayString(item.value), 15 /* TEXT, CLASS, STYLE, PROPS */, _hoisted_13$7);
+    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, [_cache[13] || (_cache[13] = vue.createTextVNode("请点击 ")), vue.createElementVNode("strong", null, vue.toDisplayString(_ctx.iconTarget.label), 1 /* TEXT */)], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'sequence' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 5
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'sequence')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('sequence-options')),
+      role: "group",
+      "aria-label": "顺序验证码选项"
+    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.sequenceOptions, function (item) {
+      return vue.openBlock(), vue.createElementBlock("button", {
+        key: item.id,
+        type: "button",
+        "class": vue.normalizeClass([_ctx.b('sequence-option'), _ctx.b("sequence-option-".concat(item.shape)), _defineProperty$1({}, _ctx.b('sequence-option-selected'), _ctx.selectedSequenceIds.includes(item.id))]),
+        style: vue.normalizeStyle(_ctx.getSequenceOptionStyle(item)),
+        disabled: _ctx.disabled || _ctx.verified || _ctx.selectedSequenceIds.includes(item.id),
+        "aria-label": "\u70B9\u51FB".concat(item.label),
+        onClick: function onClick($event) {
+          return _ctx.selectSequence(item);
+        }
+      }, null, 14 /* CLASS, STYLE, PROPS */, _hoisted_14$6);
+    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, [_cache[14] || (_cache[14] = vue.createTextVNode("请依次点击 ")), vue.createElementVNode("strong", null, vue.toDisplayString(_ctx.sequenceTargetLabel), 1 /* TEXT */)], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'drag' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 6
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'drag')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass([_ctx.b('drag-target'), _ctx.b("drag-shape-".concat(_ctx.dragShape))]),
+      style: vue.normalizeStyle(_ctx.dragTargetStyle),
+      "aria-hidden": "true"
+    }, null, 6 /* CLASS, STYLE */), vue.createElementVNode("button", {
+      type: "button",
+      "class": vue.normalizeClass([_ctx.b('drag-piece'), _ctx.b("drag-shape-".concat(_ctx.dragShape))]),
+      style: vue.normalizeStyle(_ctx.dragPieceStyle),
+      disabled: _ctx.disabled || _ctx.verified,
+      "aria-label": "拖动图形到匹配轮廓",
+      onPointerdown: _cache[3] || (_cache[3] = vue.withModifiers(function () {
+        return _ctx.startDrag && _ctx.startDrag.apply(_ctx, arguments);
+      }, ["prevent"]))
+    }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_15$6), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, "将图形拖到相同轮廓中", 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : _ctx.captchaType === 'code' ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 7
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'code')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('code-value')),
+      "aria-label": "验证码内容"
+    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.codeChars, function (character, index) {
       return vue.openBlock(), vue.createElementBlock("span", {
-        "class": vue.normalizeClass(_ctx.b('item')),
-        style: vue.normalizeStyle(_ctx.styleName),
-        key: index
-      }, vue.toDisplayString(item), 7 /* TEXT, CLASS, STYLE */);
-    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */);
+        key: "".concat(character, "-").concat(index),
+        "class": vue.normalizeClass(_ctx.b('code-character')),
+        style: vue.normalizeStyle(_ctx.getCodeCharacterStyle(index))
+      }, vue.toDisplayString(character), 7 /* TEXT, CLASS, STYLE */);
+    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('code-prompt'))
+    }, [vue.createElementVNode("label", {
+      "for": _ctx.codeInputId
+    }, "请输入图中的字母和数字", 8 /* PROPS */, _hoisted_16$3), vue.withDirectives(vue.createElementVNode("input", {
+      id: _ctx.codeInputId,
+      ref: "codeInput",
+      "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+        return _ctx.codeInput = $event;
+      }),
+      type: "text",
+      maxlength: _ctx.safeCodeLength,
+      autocomplete: "one-time-code",
+      disabled: _ctx.disabled || _ctx.verified,
+      onKeydown: _cache[5] || (_cache[5] = vue.withKeys(vue.withModifiers(function ($event) {
+        return _ctx.verify(_ctx.codeInput);
+      }, ["prevent"]), ["enter"]))
+    }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_17$2), [[vue.vModelText, _ctx.codeInput]]), vue.createElementVNode("button", {
+      type: "button",
+      disabled: _ctx.disabled || _ctx.verified || !_ctx.codeInput,
+      onClick: _cache[6] || (_cache[6] = function ($event) {
+        return _ctx.verify(_ctx.codeInput);
+      })
+    }, "确认", 8 /* PROPS */, _hoisted_18$1)], 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      key: 8
+    }, [vue.createElementVNode("div", {
+      ref: "scene",
+      "class": vue.normalizeClass(_ctx.b('scene', 'path')),
+      style: vue.normalizeStyle(_ctx.sceneStyle)
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'one'))
+    }, null, 2 /* CLASS */), vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('scene-decoration', 'two'))
+    }, null, 2 /* CLASS */), (vue.openBlock(), vue.createElementBlock("svg", {
+      "class": vue.normalizeClass(_ctx.b('path-track')),
+      viewBox: "0 0 ".concat(_ctx.getSceneWidth(), " ").concat(_ctx.safeHeight),
+      "aria-hidden": "true"
+    }, [vue.createElementVNode("path", {
+      d: _ctx.pathLine,
+      "class": vue.normalizeClass(_ctx.b('path-line'))
+    }, null, 10 /* CLASS, PROPS */, _hoisted_20), vue.createElementVNode("circle", {
+      cx: _ctx.pathEndPoint.x,
+      cy: _ctx.pathEndPoint.y,
+      r: "8",
+      "class": vue.normalizeClass(_ctx.b('path-end'))
+    }, null, 10 /* CLASS, PROPS */, _hoisted_21)], 10 /* CLASS, PROPS */, _hoisted_19$1)), vue.createElementVNode("button", {
+      type: "button",
+      "class": vue.normalizeClass(_ctx.b('path-marker')),
+      style: vue.normalizeStyle(_ctx.pathMarkerStyle),
+      disabled: _ctx.disabled || _ctx.verified,
+      "aria-label": "沿轨迹滑动到终点",
+      onPointerdown: _cache[7] || (_cache[7] = vue.withModifiers(function () {
+        return _ctx.startPath && _ctx.startPath.apply(_ctx, arguments);
+      }, ["prevent"]))
+    }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_22), _ctx.verified ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('mask'))
+    }, "验证通过", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('canvas-prompt'))
+    }, "沿轨迹将圆点滑动到终点", 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('footer'))
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('message')),
+      role: "status"
+    }, vue.toDisplayString(_ctx.message), 3 /* TEXT, CLASS */), vue.createElementVNode("button", {
+      type: "button",
+      "class": vue.normalizeClass(_ctx.b('refresh')),
+      disabled: _ctx.disabled,
+      "aria-label": "刷新验证码",
+      onClick: _cache[8] || (_cache[8] = function () {
+        return _ctx.refresh && _ctx.refresh.apply(_ctx, arguments);
+      })
+    }, " ↻ 换一组 ", 10 /* CLASS, PROPS */, _hoisted_23)], 2 /* CLASS */)], 6 /* CLASS, STYLE */);
   }
 
-  script$F.render = render$F;
-  script$F.__file = "packages/element-plus/verify/index.vue";
+  script$H.render = render$H;
+  script$H.__file = "packages/element-plus/captcha/index.vue";
 
-  var script$E = create({
+  var script$G = create({
     name: "switch",
     mixins: [props(), event()],
     props: {
@@ -21437,7 +23598,7 @@
     }
   });
 
-  function render$E(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$G(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_switch = vue.resolveComponent("el-switch");
     return vue.openBlock(), vue.createElementBlock("div", null, [vue.createVNode(_component_el_switch, {
       modelValue: _ctx.text,
@@ -21461,10 +23622,10 @@
     }, null, 8 /* PROPS */, ["modelValue", "onClick", "loading", "inline-prompt", "active-icon", "before-change", "active-action-icon", "active-text", "active-value", "inactive-icon", "inactive-action-icon", "inactive-value", "inactive-text", "width", "disabled"])]);
   }
 
-  script$E.render = render$E;
-  script$E.__file = "packages/element-plus/switch/index.vue";
+  script$G.render = render$G;
+  script$G.__file = "packages/element-plus/switch/index.vue";
 
-  var script$D = create({
+  var script$F = create({
     name: "rate",
     mixins: [props(), event()],
     props: {
@@ -21498,7 +23659,7 @@
     methods: {}
   });
 
-  function render$D(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$F(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_rate = vue.resolveComponent("el-rate");
     return vue.openBlock(), vue.createBlock(_component_el_rate, {
       modelValue: _ctx.text,
@@ -21517,8 +23678,8 @@
     }, null, 8 /* PROPS */, ["modelValue", "onClick", "max", "readonly", "texts", "show-text", "icon-classes", "void-icon-class", "disabled", "colors"]);
   }
 
-  script$D.render = render$D;
-  script$D.__file = "packages/element-plus/rate/index.vue";
+  script$F.render = render$F;
+  script$F.__file = "packages/element-plus/rate/index.vue";
 
   function _classCallCheck(a, n) {
     if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
@@ -21536,246 +23697,287 @@
     }), e;
   }
 
+  function ownKeys$a(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$a(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$a(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$a(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var defaultOption = {
+    width: 400,
+    height: 200,
+    text: 'avueJS',
+    fontSize: '30px',
+    fontStyle: 'Microsoft YaHei, sans-serif',
+    textAlign: 'center',
+    color: 'rgba(100,100,100,0.15)',
+    degree: -20,
+    zIndex: 9999,
+    id: ''
+  };
   var WaterMark = /*#__PURE__*/function () {
     function WaterMark() {
       var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       _classCallCheck(this, WaterMark);
-      this.CONTAINERID = randomId();
-      this.drawCanvas = this.drawCanvas.bind(this);
-      this.parentObserver = this.parentObserver.bind(this);
-      this.Repaint = this.Repaint.bind(this);
       this.styleStr = '';
       this.isOberserve = false;
-      this.init(opt);
-      this.drawCanvas();
-      this.parentObserver();
+      this.container = null;
+      this.parent = null;
+      this.overlayObserver = null;
+      this.parentObserver = null;
+      this.parentOriginalPosition = null;
+      this.removed = false;
+      this.CONTAINERID = "avue-watermark-".concat(randomId());
+      this.option = _objectSpread$a(_objectSpread$a({}, defaultOption), opt);
+      if (typeof document !== 'undefined') this.drawCanvas();
     }
     return _createClass(WaterMark, [{
-      key: "init",
-      value: function init(opt) {
-        this.option = Object.assign({
-          width: 400,
-          height: 200,
-          text: 'avueJS',
-          fontSize: '30px',
-          fontStyle: 'microsoft yahei',
-          textAlign: 'center',
-          color: 'rgba(100,100,100,0.15)',
-          degree: -20
-        }, opt);
+      key: "getParent",
+      value: function getParent() {
+        var target = this.option.id;
+        if (!target) return document.body;
+        if (target instanceof HTMLElement) return target;
+        return document.getElementById(String(target)) || document.body;
+      }
+    }, {
+      key: "getBackgroundUrl",
+      value: function getBackgroundUrl() {
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Number(this.option.width) || defaultOption.width);
+        canvas.height = Math.max(1, Number(this.option.height) || defaultOption.height);
+        var context = canvas.getContext('2d');
+        if (!context) return '';
+        context.font = "".concat(this.option.fontSize, " ").concat(this.option.fontStyle);
+        context.textAlign = this.option.textAlign;
+        context.textBaseline = 'middle';
+        context.fillStyle = this.option.color;
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(Number(this.option.degree) * Math.PI / 180);
+        context.fillText(String(this.option.text || ''), 0, 0);
+        return canvas.toDataURL('image/png');
+      }
+    }, {
+      key: "getStyle",
+      value: function getStyle(parent, backgroundUrl) {
+        var local = Boolean(this.option.id) && parent !== document.body;
+        return ["position:".concat(local ? 'absolute' : 'fixed'), 'inset:0', 'display:block', 'overflow:hidden', "z-index:".concat(Number(this.option.zIndex) || defaultOption.zIndex), 'pointer-events:none', 'user-select:none', "background-repeat:repeat", "background-size:".concat(Math.max(1, Number(this.option.width) || defaultOption.width), "px ").concat(Math.max(1, Number(this.option.height) || defaultOption.height), "px"), "background-image:url(\"".concat(backgroundUrl, "\")")].join(';');
+      }
+    }, {
+      key: "prepareParent",
+      value: function prepareParent(parent) {
+        if (!this.option.id || parent === document.body || typeof window === 'undefined') return;
+        if (window.getComputedStyle(parent).position === 'static') {
+          this.parentOriginalPosition = parent.style.position;
+          parent.style.position = 'relative';
+        }
+      }
+    }, {
+      key: "observe",
+      value: function observe() {
+        var _this = this;
+        this.disconnectObservers();
+        if (!this.container || !this.parent || typeof MutationObserver === 'undefined') return;
+        this.overlayObserver = new MutationObserver(function () {
+          if (_this.isOberserve || !_this.container) return;
+          _this.isOberserve = true;
+          if (_this.container.id !== _this.CONTAINERID) _this.container.id = _this.CONTAINERID;
+          if (_this.container.getAttribute('style') !== _this.styleStr) {
+            _this.container.setAttribute('style', _this.styleStr);
+          }
+          _this.isOberserve = false;
+        });
+        this.overlayObserver.observe(this.container, {
+          attributes: true,
+          attributeFilter: ['id', 'style']
+        });
+        this.parentObserver = new MutationObserver(function () {
+          var _a;
+          if (!_this.isOberserve && _this.container && !((_a = _this.parent) === null || _a === void 0 ? void 0 : _a.contains(_this.container))) _this.drawCanvas();
+        });
+        this.parentObserver.observe(this.parent, {
+          childList: true
+        });
+      }
+    }, {
+      key: "disconnectObservers",
+      value: function disconnectObservers() {
+        var _a, _b;
+        (_a = this.overlayObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
+        (_b = this.parentObserver) === null || _b === void 0 ? void 0 : _b.disconnect();
+        this.overlayObserver = null;
+        this.parentObserver = null;
+      }
+    }, {
+      key: "restoreParentPosition",
+      value: function restoreParentPosition() {
+        if (this.parent && this.parentOriginalPosition !== null && this.parent.style.position === 'relative') {
+          this.parent.style.position = this.parentOriginalPosition;
+        }
+        this.parentOriginalPosition = null;
       }
     }, {
       key: "drawCanvas",
       value: function drawCanvas() {
-        this.isOberserve = true;
-        var divContainer = document.createElement('div');
-        var canvas = document.createElement('canvas');
-        var context = canvas.getContext('2d');
-        divContainer.id = this.CONTAINERID;
-        canvas.width = this.option.width;
-        canvas.height = this.option.height;
-        if (!context) return;
-        context.font = "".concat(this.option.fontSize, " ").concat(this.option.fontStyle);
-        context.textAlign = this.option.textAlign;
-        context.fillStyle = this.option.color;
-        context.translate(canvas.width / 2, canvas.height / 2);
-        context.rotate(this.option.degree * Math.PI / 180);
-        context.fillText(this.option.text, 0, 0);
-        var backgroundUrl = canvas.toDataURL('image/png');
-        var flag = this.option.id;
-        var el = null;
-        if (flag) el = document.getElementById(flag);
-        this.styleStr = "\n      position:".concat(flag ? 'absolute' : 'fixed', ";\n      top:0;\n      left:0;\n      width:").concat(flag && el ? el.offsetWidth + 'px' : '100%', ";\n      height:").concat(flag && el ? el.offsetHeight + 'px' : '100%', ";\n      z-index:9999;\n      pointer-events:none;\n      background-repeat:repeat;\n      background-image:url('").concat(backgroundUrl, "')");
-        divContainer.setAttribute('style', this.styleStr);
-        if (flag && el) {
-          el.appendChild(divContainer);
-        } else {
-          document.body.appendChild(divContainer);
-        }
-        this.wmObserver(divContainer);
-        this.isOberserve = false;
-      }
-    }, {
-      key: "wmObserver",
-      value: function wmObserver(divContainer) {
-        var _this = this;
-        var wmConf = {
-          attributes: true,
-          childList: true,
-          characterData: true
-        };
-        var wmObserver = new MutationObserver(function (mo) {
-          if (!_this.isOberserve) {
-            var target = mo[0].target;
-            target.setAttribute('style', _this.styleStr);
-            target.setAttribute('id', _this.CONTAINERID);
-            wmObserver.takeRecords();
-          }
-        });
-        wmObserver.observe(divContainer, wmConf);
-      }
-    }, {
-      key: "parentObserver",
-      value: function parentObserver() {
-        var _this2 = this;
         var _a;
-        var bodyObserver = new MutationObserver(function () {
-          if (!_this2.isOberserve) {
-            var wm = document.querySelector("#".concat(_this2.CONTAINERID));
-            if (!wm) {
-              _this2.drawCanvas();
-            } else if (wm.getAttribute('style') !== _this2.styleStr) {
-              wm.setAttribute('style', _this2.styleStr);
-            }
-          }
-        });
-        var parentNode = (_a = document.querySelector("#".concat(this.CONTAINERID))) === null || _a === void 0 ? void 0 : _a.parentNode;
-        if (parentNode) {
-          bodyObserver.observe(parentNode, {
-            childList: true
-          });
-        }
+        if (typeof document === 'undefined') return;
+        this.removed = false;
+        this.isOberserve = true;
+        this.disconnectObservers();
+        (_a = this.container) === null || _a === void 0 ? void 0 : _a.remove();
+        this.restoreParentPosition();
+        var parent = this.getParent();
+        this.prepareParent(parent);
+        var container = document.createElement('div');
+        container.id = this.CONTAINERID;
+        container.className = 'avue-watermark';
+        container.setAttribute('aria-hidden', 'true');
+        this.styleStr = this.getStyle(parent, this.getBackgroundUrl());
+        container.setAttribute('style', this.styleStr);
+        parent.appendChild(container);
+        this.container = container;
+        this.parent = parent;
+        this.isOberserve = false;
+        this.observe();
       }
     }, {
       key: "Repaint",
       value: function Repaint() {
         var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        this.remove();
-        this.init(opt);
+        this.option = _objectSpread$a(_objectSpread$a({}, this.option), opt);
         this.drawCanvas();
+        return this;
       }
     }, {
       key: "remove",
       value: function remove() {
         var _a;
+        this.removed = true;
         this.isOberserve = true;
-        var wm = document.querySelector("#".concat(this.CONTAINERID));
-        (_a = wm === null || wm === void 0 ? void 0 : wm.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(wm);
+        this.disconnectObservers();
+        (_a = this.container) === null || _a === void 0 ? void 0 : _a.remove();
+        this.restoreParentPosition();
+        this.container = null;
+        this.parent = null;
+        this.isOberserve = false;
       }
     }]);
   }();
 
-  var canvas;
-  var ctx;
-  var configDefault = {
-    width: 200,
-    height: 200
-  };
-  var config = {
+  function ownKeys$9(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$9(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$9(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var detailDefault = {
     text: 'avueJS',
-    fontFamily: 'microsoft yahei',
-    color: '#999',
+    fontFamily: 'Microsoft YaHei, sans-serif',
+    color: '#999999',
     fontSize: 16,
     opacity: 100,
     bottom: 10,
     right: 10,
-    ratio: 1
+    ratio: 0.92,
+    scaleWithImage: true
   };
   function $Watermark () {
     var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     return new WaterMark(opt);
   }
-  function detailImg(file) {
-    var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    return new Promise(function (resolve) {
-      var text = option.text,
-        fontFamily = option.fontFamily,
-        color = option.color,
-        fontSize = option.fontSize,
-        opacity = option.opacity,
-        bottom = option.bottom,
-        right = option.right,
-        ratio = option.ratio;
-      initParams();
-      fileToBase64(file, initImg);
-      function initParams() {
-        config.text = text || config.text;
-        config.fontFamily = fontFamily || config.fontFamily;
-        config.color = color || config.color;
-        config.fontSize = fontSize || config.fontSize;
-        config.opacity = opacity || config.opacity;
-        config.bottom = bottom || config.bottom;
-        config.right = right || config.right;
-        config.ratio = ratio || config.ratio;
-      }
-      function initImg(data) {
-        var img = new Image();
-        img.src = data;
-        img.onload = function () {
-          var width = img.width;
-          var height = img.height;
-          cretedCanvas(width, height);
-          ctx === null || ctx === void 0 ? void 0 : ctx.drawImage(img, 0, 0, width, height);
-          setText(width, height);
-          var currentCanvas = document.getElementById('canvas');
-          resolve(dataURLtoFile(currentCanvas.toDataURL(file.type, config.ratio), file.name));
+  var loadFileImage = function loadFileImage(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onerror = function () {
+        return reject(new Error('图片读取失败。'));
+      };
+      reader.onload = function () {
+        var image = new Image();
+        image.onerror = function () {
+          return reject(new Error('图片解析失败。'));
         };
-      }
-      function cretedCanvas(width, height) {
-        canvas = document.getElementById('canvas');
-        if (canvas === null) {
-          canvas = document.createElement('canvas');
-          canvas.id = 'canvas';
-          canvas.className = 'avue-canvas';
-          document.body.appendChild(canvas);
-        }
-        ctx = canvas.getContext('2d');
-        canvas.width = width;
-        canvas.height = height;
-      }
-      function setText(width, height) {
-        var txt = config.text;
-        var param = calcParam(txt, width, height);
-        if (!ctx) return;
-        ctx.font = param.fontSize + 'px ' + config.fontFamily;
-        ctx.fillStyle = config.color;
-        ctx.globalAlpha = config.opacity / 100;
-        ctx.fillText(txt, param.x, param.y);
-      }
-      function calcParam(txt, width, height) {
-        var x;
-        var y;
-        var calcFontSize = config.fontSize / configDefault.width;
-        var fontSize = calcFontSize * width;
-        if (config.bottom) {
-          y = configDefault.height - config.bottom;
-        } else {
-          y = config.top;
-        }
-        if (config.right) {
-          x = configDefault.width - config.right;
-        } else {
-          x = config.left;
-        }
-        if (!ctx) {
-          return {
-            x: 0,
-            y: 0,
-            fontSize: fontSize
-          };
-        }
-        ctx.font = config.fontSize + 'px ' + config.fontFamily;
-        var txtWidth = Number(ctx.measureText(txt).width);
-        x = x - txtWidth;
-        var calcPosX = x / configDefault.width;
-        var calcPosY = y / configDefault.height;
-        x = calcPosX * width;
-        y = calcPosY * height;
-        return {
-          x: x,
-          y: y,
-          fontSize: fontSize
+        image.onload = function () {
+          return resolve(image);
         };
-      }
-      function fileToBase64(rawFile, callback) {
-        var reader = new FileReader();
-        reader.readAsDataURL(rawFile);
-        reader.onload = function (e) {
-          var _a;
-          callback((_a = e.target) === null || _a === void 0 ? void 0 : _a.result);
-        };
-      }
+        image.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
     });
+  };
+  /**
+   * 为图片生成水印文件。每次调用使用独立 Canvas，避免并发任务互相覆盖。
+   */
+  function detailImg(_x) {
+    return _detailImg.apply(this, arguments);
+  }
+  function _detailImg() {
+    _detailImg = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee(file) {
+      var option,
+        config,
+        image,
+        canvas,
+        context,
+        scale,
+        fontSize,
+        ratio,
+        opacity,
+        text,
+        textWidth,
+        hasLeft,
+        hasTop,
+        x,
+        y,
+        type,
+        _args = arguments;
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            option = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+            if (!(typeof File === 'undefined' || !(file instanceof File))) {
+              _context.next = 3;
+              break;
+            }
+            throw new TypeError('请传入有效的图片文件。');
+          case 3:
+            if (file.type.startsWith('image/')) {
+              _context.next = 5;
+              break;
+            }
+            throw new TypeError('仅支持图片文件添加水印。');
+          case 5:
+            config = _objectSpread$9(_objectSpread$9({}, detailDefault), option);
+            _context.next = 8;
+            return loadFileImage(file);
+          case 8:
+            image = _context.sent;
+            canvas = document.createElement('canvas');
+            canvas.width = image.naturalWidth || image.width;
+            canvas.height = image.naturalHeight || image.height;
+            context = canvas.getContext('2d');
+            if (context) {
+              _context.next = 15;
+              break;
+            }
+            throw new Error('当前浏览器不支持 Canvas。');
+          case 15:
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+            scale = config.scaleWithImage ? canvas.width / 200 : 1;
+            fontSize = Math.max(1, Number(config.fontSize) * scale);
+            ratio = Math.min(1, Math.max(0, Number(config.ratio) || detailDefault.ratio));
+            opacity = Math.min(1, Math.max(0, Number(config.opacity) / 100));
+            context.save();
+            context.font = "".concat(fontSize, "px ").concat(config.fontFamily);
+            context.fillStyle = config.color;
+            context.globalAlpha = opacity;
+            context.textBaseline = 'alphabetic';
+            text = String(config.text || '');
+            textWidth = context.measureText(text).width;
+            hasLeft = option.left !== undefined && option.left !== null;
+            hasTop = option.top !== undefined && option.top !== null;
+            x = hasLeft ? Number(option.left) * scale : canvas.width - Number(config.right) * scale - textWidth;
+            y = hasTop ? Number(option.top) * scale + fontSize : canvas.height - Number(config.bottom) * scale;
+            context.fillText(text, x, y);
+            context.restore();
+            type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+            return _context.abrupt("return", dataURLtoFile(canvas.toDataURL(type, ratio), file.name));
+          case 35:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _detailImg.apply(this, arguments);
   }
 
   var getToken = function getToken(accessKey, secretKey, putPolicy) {
@@ -21852,8 +24054,8 @@
     return client;
   };
 
-  function ownKeys$5(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$5(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$5(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$5(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$8(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$8(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$8(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   function getFileUrl(home) {
     var uri = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     return uri.match(/(^http:\/\/|^https:\/\/|^\/\/|data:image\/)/) ? uri : home + uri;
@@ -21863,7 +24065,7 @@
   function isFileReady(file) {
     return file.status === FILE_STATUS_READY;
   }
-  var script$C = create({
+  var script$E = create({
     name: "upload",
     mixins: [props(), event(), locale],
     data: function data() {
@@ -22146,7 +24348,7 @@
           this.handleSized(file, this.text);
           return;
         }
-        var headers = _objectSpread$5(_objectSpread$5({}, this.headers), {}, {
+        var headers = _objectSpread$8(_objectSpread$8({}, this.headers), {}, {
           "Content-Type": "multipart/form-data"
         });
         //oss配置属性
@@ -22356,19 +24558,19 @@
     }
   });
 
-  var _hoisted_1$w = ["element-loading-text"];
-  var _hoisted_2$r = {
+  var _hoisted_1$x = ["element-loading-text"];
+  var _hoisted_2$u = {
     "class": "el-upload__text"
   };
-  var _hoisted_3$n = ["innerHTML"];
-  var _hoisted_4$m = ["element-loading-text"];
-  var _hoisted_5$k = {
+  var _hoisted_3$o = ["innerHTML"];
+  var _hoisted_4$n = ["element-loading-text"];
+  var _hoisted_5$l = {
     "class": "el-upload-list__item-actions"
   };
-  var _hoisted_6$h = {
+  var _hoisted_6$i = {
     "class": "el-upload-list__item-preview"
   };
-  var _hoisted_7$e = {
+  var _hoisted_7$f = {
     key: 0,
     "class": "el-upload-list__item-delete"
   };
@@ -22392,7 +24594,7 @@
   var _hoisted_15$5 = {
     "class": "el-upload-list__item-file-name"
   };
-  function render$C(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$E(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_icon_plus = vue.resolveComponent("el-icon-plus");
     var _component_el_icon = vue.resolveComponent("el-icon");
     var _component_el_progress = vue.resolveComponent("el-progress");
@@ -22433,7 +24635,7 @@
         return [vue.createElementVNode("div", {
           "class": "el-upload__tip",
           innerHTML: _ctx.tip
-        }, null, 8 /* PROPS */, _hoisted_3$n)];
+        }, null, 8 /* PROPS */, _hoisted_3$o)];
       }),
       file: vue.withCtx(function (_ref) {
         var file = _ref.file;
@@ -22464,7 +24666,7 @@
             return [vue.createVNode(_component_el_icon_document)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["class"]))], 64 /* STABLE_FRAGMENT */))], 64 /* STABLE_FRAGMENT */)), vue.createElementVNode("span", _hoisted_5$k, [vue.createElementVNode("span", _hoisted_6$h, [vue.createVNode(_component_el_icon, null, {
+        }, 8 /* PROPS */, ["class"]))], 64 /* STABLE_FRAGMENT */))], 64 /* STABLE_FRAGMENT */)), vue.createElementVNode("span", _hoisted_5$l, [vue.createElementVNode("span", _hoisted_6$i, [vue.createVNode(_component_el_icon, null, {
           "default": vue.withCtx(function () {
             return [vue.createVNode(_component_el_icon_zoom_in, {
               onClick: vue.withModifiers(function ($event) {
@@ -22473,7 +24675,7 @@
             }, null, 8 /* PROPS */, ["onClick"])];
           }),
           _: 2 /* DYNAMIC */
-        }, 1024 /* DYNAMIC_SLOTS */)]), !_ctx.disabled ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_7$e, [vue.createVNode(_component_el_icon, null, {
+        }, 1024 /* DYNAMIC_SLOTS */)]), !_ctx.disabled ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_7$f, [vue.createVNode(_component_el_icon, null, {
           "default": vue.withCtx(function () {
             return [vue.createVNode(_component_el_icon_delete, {
               onClick: vue.withModifiers(function ($event) {
@@ -22554,7 +24756,7 @@
           "class": vue.normalizeClass(_ctx.b('progress')),
           percentage: file.percentage,
           "stroke-width": 3
-        }, null, 8 /* PROPS */, ["class", "percentage"])) : vue.createCommentVNode("v-if", true)])], 8 /* PROPS */, _hoisted_12$6))], 8 /* PROPS */, _hoisted_4$m)), [[_directive_loading, file.loading, void 0, {
+        }, null, 8 /* PROPS */, ["class", "percentage"])) : vue.createCommentVNode("v-if", true)])], 8 /* PROPS */, _hoisted_12$6))], 8 /* PROPS */, _hoisted_4$n)), [[_directive_loading, file.loading, void 0, {
           lock: true
         }]])];
       }),
@@ -22608,7 +24810,7 @@
             return [vue.createVNode(_component_el_icon_plus)];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["class"]))], 8 /* PROPS */, _hoisted_1$w)), [[_directive_loading, _ctx.firstFile.loading, void 0, {
+        }, 8 /* PROPS */, ["class"]))], 8 /* PROPS */, _hoisted_1$x)), [[_directive_loading, _ctx.firstFile.loading, void 0, {
           lock: true
         }]]), _ctx.menu ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 2,
@@ -22648,7 +24850,7 @@
             return [vue.createVNode(_component_el_icon_upload)];
           }),
           _: 1 /* STABLE */
-        }), vue.createElementVNode("div", _hoisted_2$r, [vue.createElementVNode("em", null, vue.toDisplayString(_ctx.fileText || _ctx.t("upload.upload")), 1 /* TEXT */)])], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        }), vue.createElementVNode("div", _hoisted_2$u, [vue.createElementVNode("em", null, vue.toDisplayString(_ctx.fileText || _ctx.t("upload.upload")), 1 /* TEXT */)])], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 3
         }, [_ctx.$slots.button ? vue.renderSlot(_ctx.$slots, "button", {
           key: 0,
@@ -22670,35 +24872,40 @@
     }, 8 /* PROPS */, ["class", "onClick", "action", "on-remove", "accept", "before-remove", "multiple", "on-preview", "limit", "http-request", "drag", "readonly", "directory", "show-file-list", "list-type", "on-change", "on-exceed", "disabled", "file-list"]);
   }
 
-  script$C.render = render$C;
-  script$C.__file = "packages/element-plus/upload/index.vue";
+  script$E.render = render$E;
+  script$E.__file = "packages/element-plus/upload/index.vue";
 
-  //绘制五角星  
-  /** 
-   * 创建一个五角星形状. 该五角星的中心坐标为(sx,sy),中心到顶点的距离为radius,rotate=0时一个顶点在对称轴上 
-   * rotate:绕对称轴旋转rotate弧度 
-   */
-  function create5star(context, sx, sy, radius, color, rotato) {
+  function create5star(context, sx, sy, radius, color) {
     context.save();
     context.fillStyle = color;
-    context.translate(sx, sy); //移动坐标原点  
-    context.rotate(Math.PI + rotato); //旋转  
-    context.beginPath(); //创建路径  
-    var x = Math.sin(0);
-    var y = Math.cos(0);
-    var dig = Math.PI / 5 * 4;
-    for (var i = 0; i < 5; i++) {
-      //画五角星的五条边  
-      var x = Math.sin(i * dig);
-      var y = Math.cos(i * dig);
-      context.lineTo(x * radius, y * radius);
+    context.beginPath();
+    for (var index = 0; index < 10; index++) {
+      var angle = -Math.PI / 2 + index * Math.PI / 5;
+      var currentRadius = index % 2 === 0 ? radius : radius * 0.42;
+      var x = sx + Math.cos(angle) * currentRadius;
+      var y = sy + Math.sin(angle) * currentRadius;
+      if (index === 0) context.moveTo(x, y);else context.lineTo(x, y);
     }
     context.closePath();
-    context.stroke();
     context.fill();
     context.restore();
   }
-  var script$B = create({
+  function drawArcText(context, value, centerX, centerY, radius) {
+    var chars = Array.from(String(value || ""));
+    if (!chars.length) return;
+    var totalAngle = Math.min(Math.PI * 1.08, Math.max(Math.PI / 7, chars.length * Math.PI / 12));
+    var startAngle = -Math.PI / 2 - totalAngle / 2;
+    var step = chars.length === 1 ? 0 : totalAngle / (chars.length - 1);
+    chars.forEach(function (_char, index) {
+      var angle = startAngle + index * step;
+      context.save();
+      context.translate(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius);
+      context.rotate(angle + Math.PI / 2);
+      context.fillText(_char, 0, 0);
+      context.restore();
+    });
+  }
+  var script$D = create({
     name: "sign",
     props: {
       width: {
@@ -22708,201 +24915,323 @@
       height: {
         type: Number,
         "default": 400
+      },
+      disabled: Boolean,
+      readonly: Boolean,
+      lineWidth: {
+        type: Number,
+        "default": 3
+      },
+      lineColor: {
+        type: String,
+        "default": "#1f2937"
+      },
+      backgroundColor: {
+        type: String,
+        "default": "#ffffff"
+      },
+      title: String,
+      placeholder: {
+        type: String,
+        "default": "请在此处签名"
+      },
+      clearText: {
+        type: String,
+        "default": "清空"
+      },
+      showToolbar: Boolean,
+      ariaLabel: {
+        type: String,
+        "default": "签名画板"
       }
     },
+    emits: ["start", "change", "end", "clear", "seal", "update:modelValue"],
     data: function data() {
       return {
-        disabled: false,
-        linex: [],
-        liney: [],
-        linen: [],
-        canvas: {},
-        context: {}
+        canvas: null,
+        context: null,
+        isDrawing: false,
+        activePointerId: null,
+        hasDrawn: false,
+        sealed: false,
+        lastPoint: null
       };
     },
     computed: {
+      canvasWidth: function canvasWidth() {
+        return this.getCanvasSize(this.width, 600);
+      },
+      canvasHeight: function canvasHeight() {
+        return this.getCanvasSize(this.height, 400);
+      },
       styleName: function styleName() {
         return {
-          width: this.setPx(this.width),
-          height: this.setPx(this.height)
+          width: "min(100%, ".concat(this.canvasWidth, "px)")
         };
+      },
+      surfaceStyle: function surfaceStyle() {
+        return {
+          backgroundColor: this.backgroundColor
+        };
+      },
+      canvasStyle: function canvasStyle() {
+        return {
+          aspectRatio: "".concat(this.canvasWidth, " / ").concat(this.canvasHeight)
+        };
+      },
+      isDisabled: function isDisabled() {
+        return this.disabled || this.readonly || this.sealed;
+      },
+      isEmpty: function isEmpty() {
+        return !this.hasDrawn;
+      },
+      statusText: function statusText() {
+        if (this.sealed) return "已生成印章";
+        return this.hasDrawn ? "签名已填写" : "待签名";
+      }
+    },
+    watch: {
+      width: function width() {
+        this.resizeCanvas();
+      },
+      height: function height() {
+        this.resizeCanvas();
+      },
+      backgroundColor: function backgroundColor() {
+        if (!this.hasDrawn) this.clearCanvas();
       }
     },
     mounted: function mounted() {
       this.init();
     },
     methods: {
-      getStar: function getStar(text, text1, text2) {
-        var canvas = this.canvas;
-        var context = this.context;
-        // 绘制印章边框   
-        var width = canvas.width / 2;
-        var height = canvas.height / 2;
-        context.lineWidth = 7;
-        context.strokeStyle = "#f00";
-        context.beginPath();
-        context.arc(width, height, 110, 0, Math.PI * 2);
-        context.stroke();
-
-        //画五角星
-        create5star(context, width, height, 20, "#f00", 0);
-
-        // 绘制印章名称   
-        context.font = '18px SimHei';
-        context.textBaseline = 'middle'; //设置文本的垂直对齐方式
-        context.textAlign = 'center'; //设置文本的水平对对齐方式
-        context.lineWidth = 1;
-        context.strokeStyle = '#f00';
-        context.strokeText(text, width, height + 50);
-
-        // 绘制印章副属性名称   
-        context.font = '14px SimHei';
-        context.textBaseline = 'middle'; //设置文本的垂直对齐方式
-        context.textAlign = 'center'; //设置文本的水平对对齐方式
-        context.lineWidth = 1;
-        context.strokeStyle = '#f00';
-        context.strokeText(text2, width, height + 80);
-
-        // 绘制印章单位   
-        context.translate(width, height); // 平移到此位置,
-        context.font = '22px SimHei';
-        var count = text1.length; // 字数   
-        var angle = 4 * Math.PI / (3 * (count - 1)); // 字间角度   
-        var chars = text1.split("");
-        var c;
-        for (var i = 0; i < count; i++) {
-          c = chars[i]; // 需要绘制的字符   
-          if (i == 0) context.rotate(5 * Math.PI / 6);else context.rotate(angle); // 
-          context.save();
-          context.translate(90, 0); // 平移到此位置,此时字和x轴垂直   
-          context.rotate(Math.PI / 2); // 旋转90度,让字平行于x轴   
-          context.strokeText(c, 0, 0); // 此点为字的中心点   
-          context.restore();
-          context.save(); //锁画布(为了保存之前的画布状态)  
-        }
-        this.disabled = true;
-      },
-      submit: function submit(width, height) {
-        if (!width) width = this.width;
-        if (!height) height = this.height;
-        return this.canvas.toDataURL("i/png");
-      },
-      clear: function clear() {
-        this.linex = new Array();
-        this.liney = new Array();
-        this.linen = new Array();
-        this.disabled = false;
-        this.canvas.width = this.canvas.width;
+      getCanvasSize: function getCanvasSize(value, fallback) {
+        var size = Number(value);
+        return Number.isFinite(size) && size > 0 ? Math.round(size) : fallback;
       },
       init: function init() {
         this.canvas = this.$refs.canvas;
-        var canvas = this.canvas;
-        var _safe = this;
-        //注册相关事件
-        if (typeof document.ontouchstart != "undefined") {
-          //适配移动设备
-          canvas.addEventListener('touchmove', onMouseMove, false);
-          canvas.addEventListener('touchstart', onMouseDown, false);
-          canvas.addEventListener('touchend', onMouseUp, false);
-        } else {
-          //适配电脑
-          canvas.addEventListener('mousemove', onMouseMove, false);
-          canvas.addEventListener('mousedown', onMouseDown, false);
-          canvas.addEventListener('mouseup', onMouseUp, false);
-          canvas.addEventListener('mouseleave', onMouseUp, false);
-        }
-        //初始化上下文和参数
-        this.context = canvas.getContext('2d');
-        var context = this.context;
-        this.linex = new Array();
-        this.liney = new Array();
-        this.linen = new Array();
-        var lastX = 1;
-        var lastY = 30;
-        var flag = 0;
-
-        //根据鼠标坐标获取绘图坐标
-        function getCanvasPos(canvas, evt) {
-          var rect = canvas.getBoundingClientRect();
-          var x, y;
-          if (evt.targetTouches) {
-            x = evt.targetTouches[0].clientX;
-            y = evt.targetTouches[0].clientY;
-          } else {
-            x = evt.clientX;
-            y = evt.clientY;
+        this.context = this.canvas && this.canvas.getContext("2d");
+        this.clearCanvas();
+      },
+      resizeCanvas: function resizeCanvas() {
+        var _this = this;
+        if (!this.canvas || !this.context) return;
+        var image = document.createElement("canvas");
+        image.width = this.canvas.width;
+        image.height = this.canvas.height;
+        image.getContext("2d").drawImage(this.canvas, 0, 0);
+        var hasDrawn = this.hasDrawn;
+        this.$nextTick(function () {
+          _this.context = _this.canvas.getContext("2d");
+          _this.clearCanvas();
+          if (hasDrawn) {
+            _this.context.drawImage(image, 0, 0, _this.canvasWidth, _this.canvasHeight);
           }
-          return {
-            x: (x - rect.left) * (canvas.width / rect.width),
-            y: (y - rect.top) * (canvas.height / rect.height)
-          };
+        });
+      },
+      clearCanvas: function clearCanvas() {
+        if (!this.context || !this.canvas) return;
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.backgroundColor && this.backgroundColor !== "transparent") {
+          this.context.save();
+          this.context.fillStyle = this.backgroundColor;
+          this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+          this.context.restore();
         }
-
-        //鼠标移动的时候
-        function onMouseMove(evt) {
-          if (_safe.disabled) return;
-          var x = getCanvasPos(canvas, evt).x,
-            y = getCanvasPos(canvas, evt).y;
-
-          //判断是否处于按下状态
-          if (flag == 1) {
-            //如果是则画图
-            _safe.linex.push(x);
-            _safe.liney.push(y);
-            _safe.linen.push(1);
-            context.save();
-            context.translate(context.canvas.width / 2, context.canvas.height / 2);
-            context.translate(-context.canvas.width / 2, -context.canvas.height / 2);
-            context.beginPath();
-            context.lineWidth = 2;
-            for (var i = 1; i < _safe.linex.length; i++) {
-              lastX = _safe.linex[i];
-              lastY = _safe.liney[i];
-              if (_safe.linen[i] == 0) context.moveTo(lastX, lastY);else context.lineTo(lastX, lastY);
-            }
-            context.shadowBlur = 10;
-            context.stroke();
-            context.restore();
-          }
-          evt.preventDefault();
+      },
+      getPoint: function getPoint(event) {
+        var rect = this.canvas.getBoundingClientRect();
+        return {
+          x: (event.clientX - rect.left) * (this.canvas.width / rect.width),
+          y: (event.clientY - rect.top) * (this.canvas.height / rect.height)
+        };
+      },
+      setPenStyle: function setPenStyle() {
+        this.context.lineCap = "round";
+        this.context.lineJoin = "round";
+        this.context.lineWidth = Math.max(1, Number(this.lineWidth) || 1);
+        this.context.strokeStyle = this.lineColor;
+        this.context.fillStyle = this.lineColor;
+      },
+      drawPoint: function drawPoint(point) {
+        this.setPenStyle();
+        this.context.beginPath();
+        this.context.arc(point.x, point.y, this.context.lineWidth / 2, 0, Math.PI * 2);
+        this.context.fill();
+      },
+      onPointerDown: function onPointerDown(event) {
+        if (this.isDisabled || event.button > 0 || event.isPrimary === false) return;
+        event.preventDefault();
+        this.isDrawing = true;
+        this.activePointerId = event.pointerId;
+        this.lastPoint = this.getPoint(event);
+        this.drawPoint(this.lastPoint);
+        this.hasDrawn = true;
+        this.canvas.setPointerCapture && this.canvas.setPointerCapture(event.pointerId);
+        this.$emit("start", this.lastPoint);
+      },
+      onPointerMove: function onPointerMove(event) {
+        if (!this.isDrawing || event.pointerId !== this.activePointerId || this.isDisabled) return;
+        event.preventDefault();
+        var point = this.getPoint(event);
+        this.setPenStyle();
+        this.context.beginPath();
+        this.context.moveTo(this.lastPoint.x, this.lastPoint.y);
+        this.context.lineTo(point.x, point.y);
+        this.context.stroke();
+        this.lastPoint = point;
+      },
+      onPointerUp: function onPointerUp(event) {
+        if (!this.isDrawing || event.pointerId !== this.activePointerId) return;
+        if (this.canvas.hasPointerCapture && this.canvas.hasPointerCapture(event.pointerId)) {
+          this.canvas.releasePointerCapture(event.pointerId);
         }
-
-        //当鼠标按下的时候修改按下标志，并开始记录坐标
-        function onMouseDown(evt) {
-          if (_safe.disabled) return;
-          var x = getCanvasPos(canvas, evt).x,
-            y = getCanvasPos(canvas, evt).y;
-          flag = 1;
-          _safe.linex.push(x);
-          _safe.liney.push(y);
-          _safe.linen.push(0);
+        this.isDrawing = false;
+        this.activePointerId = null;
+        this.lastPoint = null;
+        var value = this.emitChange();
+        this.$emit("end", value);
+      },
+      emitChange: function emitChange() {
+        var value = this.submit();
+        this.$emit("change", value);
+        this.$emit("update:modelValue", value);
+        return value;
+      },
+      getStar: function getStar() {
+        var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+        var text1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+        var text2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+        if (this.disabled || this.readonly || !this.context) return;
+        this.clearCanvas();
+        var width = this.canvas.width;
+        var height = this.canvas.height;
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var radius = Math.max(28, Math.min(width, height) / 2 - 22);
+        var color = "#dc2626";
+        this.context.save();
+        this.context.strokeStyle = color;
+        this.context.fillStyle = color;
+        this.context.lineWidth = Math.max(2, radius / 28);
+        this.context.beginPath();
+        this.context.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        this.context.stroke();
+        create5star(this.context, centerX, centerY - radius * 0.1, radius * 0.19, color);
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.font = "".concat(Math.max(12, radius * 0.17), "px SimHei, sans-serif");
+        drawArcText(this.context, text1, centerX, centerY, radius * 0.72);
+        this.context.font = "".concat(Math.max(11, radius * 0.15), "px SimHei, sans-serif");
+        this.context.fillText(String(text || ""), centerX, centerY + radius * 0.35);
+        this.context.font = "".concat(Math.max(10, radius * 0.11), "px SimHei, sans-serif");
+        this.context.fillText(String(text2 || ""), centerX, centerY + radius * 0.58);
+        this.context.restore();
+        this.hasDrawn = true;
+        this.sealed = true;
+        var value = this.emitChange();
+        this.$emit("seal", value);
+        return value;
+      },
+      submit: function submit(width, height) {
+        var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "image/png";
+        var quality = arguments.length > 3 ? arguments[3] : undefined;
+        if (!this.canvas) return "";
+        var targetWidth = this.getCanvasSize(width, this.canvas.width);
+        var targetHeight = this.getCanvasSize(height, this.canvas.height);
+        var exportCanvas = this.canvas;
+        if (targetWidth !== this.canvas.width || targetHeight !== this.canvas.height) {
+          exportCanvas = document.createElement("canvas");
+          exportCanvas.width = targetWidth;
+          exportCanvas.height = targetHeight;
+          var exportContext = exportCanvas.getContext("2d");
+          exportContext.drawImage(this.canvas, 0, 0, targetWidth, targetHeight);
         }
-
-        //鼠标松开清除标志
-        function onMouseUp() {
-          if (_safe.disabled) return;
-          flag = 0;
-        }
+        return exportCanvas.toDataURL(type || "image/png", quality);
+      },
+      clear: function clear() {
+        if (this.disabled || this.readonly) return;
+        this.isDrawing = false;
+        this.activePointerId = null;
+        this.lastPoint = null;
+        this.hasDrawn = false;
+        this.sealed = false;
+        this.clearCanvas();
+        this.$emit("clear");
+        this.emitChange();
+      },
+      isEmptySignature: function isEmptySignature() {
+        return !this.hasDrawn;
       }
     }
   });
 
-  var _hoisted_1$v = ["width", "height"];
-  function render$B(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$w = ["disabled"];
+  var _hoisted_2$t = ["width", "height", "tabindex", "aria-label"];
+  function render$D(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b())
+      "class": vue.normalizeClass([_ctx.b(), {
+        'is-disabled': _ctx.isDisabled
+      }]),
+      style: vue.normalizeStyle(_ctx.styleName)
+    }, [_ctx.title || _ctx.showToolbar || _ctx.$slots.header ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('header'))
+    }, [vue.renderSlot(_ctx.$slots, "header", {}, function () {
+      return [_ctx.title ? (vue.openBlock(), vue.createElementBlock("div", {
+        key: 0,
+        "class": vue.normalizeClass(_ctx.b('title'))
+      }, vue.toDisplayString(_ctx.title), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", {
+        "class": vue.normalizeClass(_ctx.b('status'))
+      }, vue.toDisplayString(_ctx.statusText), 3 /* TEXT, CLASS */)];
+    }), _ctx.showToolbar ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('tools'))
+    }, [vue.createElementVNode("button", {
+      type: "button",
+      "class": vue.normalizeClass(_ctx.b('clear')),
+      disabled: _ctx.disabled || _ctx.readonly,
+      onClick: _cache[0] || (_cache[0] = function () {
+        return _ctx.clear && _ctx.clear.apply(_ctx, arguments);
+      })
+    }, vue.toDisplayString(_ctx.clearText), 11 /* TEXT, CLASS, PROPS */, _hoisted_1$w)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('surface')),
+      style: vue.normalizeStyle(_ctx.surfaceStyle)
     }, [vue.createElementVNode("canvas", {
+      ref: "canvas",
       "class": vue.normalizeClass(_ctx.b('canvas')),
-      width: _ctx.width,
-      height: _ctx.height,
-      ref: "canvas"
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$v)], 2 /* CLASS */);
+      width: _ctx.canvasWidth,
+      height: _ctx.canvasHeight,
+      style: vue.normalizeStyle(_ctx.canvasStyle),
+      tabindex: _ctx.isDisabled ? -1 : 0,
+      "aria-label": _ctx.ariaLabel,
+      role: "img",
+      onPointerdown: _cache[1] || (_cache[1] = function () {
+        return _ctx.onPointerDown && _ctx.onPointerDown.apply(_ctx, arguments);
+      }),
+      onPointermove: _cache[2] || (_cache[2] = function () {
+        return _ctx.onPointerMove && _ctx.onPointerMove.apply(_ctx, arguments);
+      }),
+      onPointerup: _cache[3] || (_cache[3] = function () {
+        return _ctx.onPointerUp && _ctx.onPointerUp.apply(_ctx, arguments);
+      }),
+      onPointercancel: _cache[4] || (_cache[4] = function () {
+        return _ctx.onPointerUp && _ctx.onPointerUp.apply(_ctx, arguments);
+      })
+    }, null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, _hoisted_2$t), _ctx.isEmpty ? (vue.openBlock(), vue.createElementBlock("span", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('placeholder'))
+    }, vue.toDisplayString(_ctx.placeholder), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('footer'))
+    }, [vue.renderSlot(_ctx.$slots, "footer")], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
   }
 
-  script$B.render = render$B;
-  script$B.__file = "packages/element-plus/sign/index.vue";
+  script$D.render = render$D;
+  script$D.__file = "packages/element-plus/sign/index.vue";
 
-  var script$A = create({
+  var script$C = create({
     name: "slider",
     mixins: [props(), event()],
     props: _defineProperty$1({
@@ -22947,7 +25276,7 @@
     methods: {}
   });
 
-  function render$A(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$C(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_slider = vue.resolveComponent("el-slider");
     return vue.openBlock(), vue.createBlock(_component_el_slider, {
       modelValue: _ctx.text,
@@ -22969,10 +25298,10 @@
     }, null, 8 /* PROPS */, ["modelValue", "disabled", "vertical", "height", "step", "min", "max", "range", "show-stops", "show-input", "marks", "format-tooltip", "onClick"]);
   }
 
-  script$A.render = render$A;
-  script$A.__file = "packages/element-plus/slider/index.vue";
+  script$C.render = render$C;
+  script$C.__file = "packages/element-plus/slider/index.vue";
 
-  var script$z = create({
+  var script$B = create({
     name: "tree",
     mixins: [locale],
     directives: {
@@ -23327,10 +25656,10 @@
     }
   });
 
-  var _hoisted_1$u = {
+  var _hoisted_1$v = {
     "class": "el-tree-node__label"
   };
-  function render$z(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$B(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_el_scrollbar = vue.resolveComponent("el-scrollbar");
@@ -23422,7 +25751,7 @@
             return [vue.renderSlot(_ctx.$slots, "default", {
               node: node,
               data: _ctx.data
-            }), vue.createElementVNode("span", _hoisted_1$u, vue.toDisplayString(node.label), 1 /* TEXT */)];
+            }), vue.createElementVNode("span", _hoisted_1$v, vue.toDisplayString(node.label), 1 /* TEXT */)];
           }),
           key: "1"
         }]), 1064 /* PROPS, NEED_HYDRATION, DYNAMIC_SLOTS */, ["data", "lazy", "load", "draggable", "height", "props", "icon-class", "indent", "highlight-current", "show-checkbox", "accordion", "node-key", "check-strictly", "check-on-click-node", "filter-node-method", "check-on-click-leaf", "expand-on-click-node", "onCheckChange", "onNodeClick", "onNodeExpand", "onNodeDragStart", "onNodeDragEnter", "onNodeDragLeave", "onNodeDragOver", "onNodeDragEnd", "onNodeDrop", "allow-drop", "allow-drag", "onNodeContextmenu", "default-expand-all", "default-expanded-keys"])), [[_directive_loading, _ctx.loading]])];
@@ -23483,10 +25812,10 @@
     }, 8 /* PROPS */, ["title", "modelValue", "append-to-body", "before-close", "width"])], 2 /* CLASS */);
   }
 
-  script$z.render = render$z;
-  script$z.__file = "packages/element-plus/tree/index.vue";
+  script$B.render = render$B;
+  script$B.__file = "packages/element-plus/tree/index.vue";
 
-  var script$y = create({
+  var script$A = create({
     name: 'title',
     mixins: [props(), event()],
     props: {
@@ -23501,7 +25830,7 @@
     methods: {}
   });
 
-  function render$y(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$A(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b())
     }, [vue.createElementVNode("p", {
@@ -23509,10 +25838,10 @@
     }, vue.toDisplayString(_ctx.text), 5 /* TEXT, STYLE */)], 2 /* CLASS */);
   }
 
-  script$y.render = render$y;
-  script$y.__file = "packages/element-plus/title/index.vue";
+  script$A.render = render$A;
+  script$A.__file = "packages/element-plus/title/index.vue";
 
-  var script$x = create({
+  var script$z = create({
     name: "search",
     mixins: [init()],
     props: {
@@ -23619,8 +25948,8 @@
     }
   });
 
-  var _hoisted_1$t = ["onClick"];
-  function render$x(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$u = ["onClick"];
+  function render$z(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_col = vue.resolveComponent("el-col");
     var _component_el_row = vue.resolveComponent("el-row");
     return vue.openBlock(), vue.createBlock(_component_el_row, {
@@ -23655,7 +25984,7 @@
                     return _ctx.handleClick(column, item);
                   },
                   key: _ctx.getKey(item, column.props, _ctx.valueKey)
-                }, vue.toDisplayString(_ctx.getKey(item, column.props, _ctx.labelKey)), 11 /* TEXT, CLASS, PROPS */, _hoisted_1$t);
+                }, vue.toDisplayString(_ctx.getKey(item, column.props, _ctx.labelKey)), 11 /* TEXT, CLASS, PROPS */, _hoisted_1$u);
               }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */)];
             }),
             _: 2 /* DYNAMIC */
@@ -23666,13 +25995,13 @@
     }, 8 /* PROPS */, ["class"]);
   }
 
-  script$x.render = render$x;
-  script$x.__file = "packages/element-plus/search/index.vue";
+  script$z.render = render$z;
+  script$z.__file = "packages/element-plus/search/index.vue";
 
-  var script$w = create({
+  var script$y = create({
     name: "tabs",
     components: {
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     props: {
       option: {
@@ -23711,7 +26040,7 @@
     }
   });
 
-  function render$w(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$y(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_icon_temp = vue.resolveComponent("icon-temp");
     var _component_el_tab_pane = vue.resolveComponent("el-tab-pane");
     var _component_el_tabs = vue.resolveComponent("el-tabs");
@@ -23759,12 +26088,12 @@
     }, 8 /* PROPS */, ["modelValue", "tab-position", "type"])], 2 /* CLASS */);
   }
 
-  script$w.render = render$w;
-  script$w.__file = "packages/element-plus/tabs/index.vue";
+  script$y.render = render$y;
+  script$y.__file = "packages/element-plus/tabs/index.vue";
 
-  function ownKeys$4(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$4(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$4(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var script$v = create({
+  function ownKeys$7(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$7(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$7(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$7(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$x = create({
     name: "dynamic",
     mixins: [props(), event()],
     data: function data() {
@@ -23890,7 +26219,7 @@
         var _callback = function callback(list) {
           list.forEach(function (ele, index) {
             if (ele.children && Array.isArray(ele.children)) _callback(ele.children);else {
-              list[index] = _objectSpread$4(_objectSpread$4({}, ele), {
+              list[index] = _objectSpread$7(_objectSpread$7({}, ele), {
                 hide: _this.validData(ele.hide, !_this.validParams(ele, 'display', true)),
                 disabled: _this.validParams(ele, 'disabled', false),
                 detail: _this.validParams(ele, 'detail', false),
@@ -23914,7 +26243,7 @@
         });
 
         // 返回合并后的选项对象
-        return _objectSpread$4(_objectSpread$4(_objectSpread$4({}, options), {
+        return _objectSpread$7(_objectSpread$7(_objectSpread$7({}, options), {
           column: columnOption
         }), childOptions);
       }
@@ -24002,7 +26331,7 @@
         var _this3 = this;
         var callback = function callback() {
           var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-          var row = _this3.deepClone(_objectSpread$4(_objectSpread$4(_objectSpread$4({}, _this3.valueOption), obj), {
+          var row = _this3.deepClone(_objectSpread$7(_objectSpread$7(_objectSpread$7({}, _this3.valueOption), obj), {
             $index: _this3.textLen
           }));
           if (_this3.isCrud) {
@@ -24024,11 +26353,11 @@
     if (null == t) throw new TypeError("Cannot destructure " + t);
   }
 
-  var _hoisted_1$s = ["onMouseenter", "onMouseleave"];
-  var _hoisted_2$q = {
+  var _hoisted_1$t = ["onMouseenter", "onMouseleave"];
+  var _hoisted_2$s = {
     key: 1
   };
-  function render$v(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$x(_ctx, _cache, $props, $setup, $data, $options) {
     var _this = this;
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_avue_form = vue.resolveComponent("avue-form");
@@ -24104,7 +26433,7 @@
             })))];
           })
         };
-      })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["table-data", "option", "modelValue", "onUpdate:modelValue"]))], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$s);
+      })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["table-data", "option", "modelValue", "onUpdate:modelValue"]))], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$t);
     }), 128 /* KEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */)) : _ctx.isCrud ? (vue.openBlock(), vue.createBlock(_component_avue_crud, vue.mergeProps({
       key: 1,
       ref: "main",
@@ -24142,7 +26471,7 @@
           disabled: _ctx.disabled,
           icon: "el-icon-delete",
           circle: ""
-        }, null, 8 /* PROPS */, ["onClick", "size", "disabled"])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$q, vue.toDisplayString(scope.row.$index + 1), 1 /* TEXT */))];
+        }, null, 8 /* PROPS */, ["onClick", "size", "disabled"])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$s, vue.toDisplayString(scope.row.$index + 1), 1 /* TEXT */))];
       }),
       _: 2 /* DYNAMIC */
     }, [vue.renderList(_ctx.columnSlot, function (item) {
@@ -24157,14 +26486,16 @@
     })]), 1040 /* FULL_PROPS, DYNAMIC_SLOTS */, ["option", "disabled", "onCellMouseEnter", "onCellMouseLeave", "onSelectionChange", "onSortableChange", "data"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */);
   }
 
-  script$v.render = render$v;
-  script$v.__file = "packages/element-plus/dynamic/index.vue";
+  script$x.render = render$x;
+  script$x.__file = "packages/element-plus/dynamic/index.vue";
 
   var RecordVideo = /*#__PURE__*/function () {
     function RecordVideo(videoObj) {
       var _this = this;
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       _classCallCheck(this, RecordVideo);
       this.video = videoObj;
+      this.options = options;
       this.mediaRecorder = null;
       this.stream = null;
       this.chunks = [];
@@ -24189,10 +26520,10 @@
       value: function init() {
         var _this2 = this;
         if (!this.isSupport()) {
-          return Promise.reject(new Error('MediaDevices.getUserMedia is not supported'));
+          return Promise.reject(new Error('MediaDevices.getUserMedia or MediaRecorder is not supported'));
         }
         this.destroyed = false;
-        return navigator.mediaDevices.getUserMedia({
+        return navigator.mediaDevices.getUserMedia(this.options.constraints || {
           audio: true,
           video: true
         }).then(function (stream) {
@@ -24210,7 +26541,8 @@
             _this2.video.src = _this2.objectUrl;
           }
           _this2.video.addEventListener('loadedmetadata', _this2.handleLoadedMetadata);
-          _this2.mediaRecorder = new MediaRecorder(stream);
+          var recorderOptions = _this2.getRecorderOptions();
+          _this2.mediaRecorder = recorderOptions ? new MediaRecorder(stream, recorderOptions) : new MediaRecorder(stream);
           _this2.mediaRecorder.addEventListener('dataavailable', _this2.handleDataAvailable);
         })["catch"](function (error) {
           _this2.destroy();
@@ -24223,23 +26555,67 @@
         if (this.mediaRecorder && this.mediaRecorder.state === 'inactive') {
           this.chunks = [];
           this.mediaRecorder.start();
+          return true;
         }
+        return false;
       }
     }, {
       key: "stopRecord",
       value: function stopRecord() {
         if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
           this.mediaRecorder.stop();
+          return true;
         }
+        return false;
+      }
+    }, {
+      key: "getBlob",
+      value: function getBlob() {
+        var _a, _b;
+        if (!this.chunks.length) return null;
+        var type = ((_a = this.mediaRecorder) === null || _a === void 0 ? void 0 : _a.mimeType) || ((_b = this.chunks[0]) === null || _b === void 0 ? void 0 : _b.type) || 'video/webm';
+        return new Blob(this.chunks, {
+          type: type
+        });
+      }
+    }, {
+      key: "captureFrame",
+      value: function captureFrame() {
+        var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'image/png';
+        var quality = arguments.length > 1 ? arguments[1] : undefined;
+        if (this.video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+          return null;
+        }
+        var width = this.video.videoWidth || this.video.clientWidth;
+        var height = this.video.videoHeight || this.video.clientHeight;
+        if (!width || !height) return null;
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        var context = canvas.getContext('2d');
+        if (!context) return null;
+        context.drawImage(this.video, 0, 0, width, height);
+        return canvas.toDataURL(type, quality);
       }
     }, {
       key: "isSupport",
       value: function isSupport() {
-        var flag = typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+        var flag = typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && typeof MediaRecorder !== 'undefined';
         if (flag) {
           return true;
         }
         return false;
+      }
+    }, {
+      key: "getRecorderOptions",
+      value: function getRecorderOptions() {
+        var mimeType = this.options.mimeType;
+        if (!mimeType || typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported || !MediaRecorder.isTypeSupported(mimeType)) {
+          return undefined;
+        }
+        return {
+          mimeType: mimeType
+        };
       }
     }, {
       key: "destroy",
@@ -24273,140 +26649,280 @@
     }]);
   }();
 
-  var script$u = create({
+  var script$w = create({
     name: 'video',
-    emits: ['data-change', 'video-error'],
+    emits: ['data-change', 'photo-change', 'video-error', 'ready', 'record-start', 'record-stop', 'status-change'],
     props: {
-      background: {
-        type: String
-      },
+      background: String,
       width: {
         type: [String, Number],
         "default": 500
+      },
+      height: {
+        type: [String, Number],
+        "default": ''
+      },
+      aspectRatio: {
+        type: [String, Number],
+        "default": '16 / 9'
+      },
+      autoplay: {
+        type: Boolean,
+        "default": true
+      },
+      muted: {
+        type: Boolean,
+        "default": true
+      },
+      autoStart: {
+        type: Boolean,
+        "default": true
+      },
+      audio: {
+        type: [Boolean, Object],
+        "default": false
+      },
+      video: {
+        type: [Boolean, Object],
+        "default": true
+      },
+      mimeType: String,
+      mirror: Boolean,
+      showBorder: {
+        type: Boolean,
+        "default": true
+      },
+      showStatus: {
+        type: Boolean,
+        "default": true
       }
     },
     computed: {
       styleName: function styleName() {
+        var style = {
+          width: this.setPx(this.width),
+          '--avue-video-aspect-ratio': this.aspectRatio
+        };
+        if (this.height !== '') {
+          style.height = this.setPx(this.height);
+        }
+        return style;
+      },
+      constraints: function constraints() {
         return {
-          width: this.setPx(this.width)
+          audio: this.audio,
+          video: this.video
         };
       },
-      imgStyleName: function imgStyleName() {
-        return {
-          width: this.setPx(this.width / 2)
-        };
-      },
-      borderStyleName: function borderStyleName() {
-        return {
-          width: this.setPx(this.width / 15),
-          height: this.setPx(this.width / 15),
-          borderWidth: this.setPx(5)
-        };
+      statusText: function statusText() {
+        if (this.error) return this.error.message || '摄像头不可用';
+        if (this.isLoading) return '正在连接摄像头…';
+        return this.autoStart ? '等待摄像头就绪…' : '点击开始录制以启用摄像头';
       }
     },
     data: function data() {
       return {
         videoObj: null,
         reader: null,
-        videoUnmounted: false
+        videoUnmounted: false,
+        isReady: false,
+        isLoading: false,
+        isRecording: false,
+        error: null
       };
     },
     mounted: function mounted() {
       this.videoUnmounted = false;
-      this.init();
+      if (this.autoStart) this.init();
     },
     beforeUnmount: function beforeUnmount() {
       this.videoUnmounted = true;
-      if (this.reader) {
-        this.reader.onloadend = null;
-        if (this.reader.readyState === FileReader.LOADING) {
-          this.reader.abort();
-        }
-        this.reader = null;
-      }
-      if (this.videoObj) {
-        if (this.videoObj.mediaRecorder) {
-          this.videoObj.mediaRecorder.removeEventListener('stop', this.getData, false);
-        }
-        this.videoObj.destroy();
-        this.videoObj = null;
-      }
+      this.clearReader();
+      this.destroyVideo();
     },
     methods: {
       init: function init() {
         var _this = this;
-        var videoObj = new RecordVideo(this.$refs.main);
+        if (this.isLoading) return Promise.resolve(false);
+        this.destroyVideo();
+        this.error = null;
+        this.isReady = false;
+        this.isRecording = false;
+        this.isLoading = true;
+        this.$emit('status-change', 'loading');
+        var videoObj = new RecordVideo(this.$refs.main, {
+          constraints: this.constraints,
+          mimeType: this.mimeType
+        });
         this.videoObj = videoObj;
-        var videoPromise = videoObj.init();
-        videoPromise.then(function () {
-          if (_this.videoUnmounted || _this.videoObj !== videoObj || !videoObj.mediaRecorder) {
-            return;
-          }
-          videoObj.mediaRecorder.addEventListener('stop', _this.getData, false);
+        return videoObj.init().then(function (stream) {
+          if (_this.videoUnmounted || _this.videoObj !== videoObj) return false;
+          videoObj.mediaRecorder.addEventListener('stop', _this.handleRecordStop, false);
+          _this.isReady = true;
+          _this.$emit('ready', stream);
+          _this.$emit('status-change', 'ready');
+          return true;
         })["catch"](function (error) {
           if (!_this.videoUnmounted && _this.videoObj === videoObj) {
+            _this.error = error;
             _this.$emit('video-error', error);
+            _this.$emit('status-change', 'error');
+          }
+          return false;
+        })["finally"](function () {
+          if (!_this.videoUnmounted && _this.videoObj === videoObj) {
+            _this.isLoading = false;
           }
         });
       },
+      retry: function retry() {
+        return this.init();
+      },
       startRecord: function startRecord() {
-        if (this.videoObj) this.videoObj.startRecord();
+        var _this2 = this;
+        if (!this.isReady) {
+          return this.init().then(function (ready) {
+            return ready && _this2.startRecord();
+          });
+        }
+        if (!this.videoObj || !this.videoObj.startRecord()) return false;
+        this.isRecording = true;
+        this.$emit('record-start');
+        this.$emit('status-change', 'recording');
+        return true;
       },
       stopRecord: function stopRecord() {
-        if (this.videoObj) this.videoObj.stopRecord();
+        return !!(this.videoObj && this.videoObj.stopRecord());
+      },
+      handleRecordStop: function handleRecordStop() {
+        if (this.videoUnmounted) return;
+        this.isRecording = false;
+        this.$emit('record-stop');
+        this.$emit('status-change', 'ready');
+        this.getData();
       },
       getData: function getData() {
-        var _this2 = this;
-        if (this.videoUnmounted || !this.videoObj) return;
-        var blob = new Blob(this.videoObj.chunks, {
-          type: 'video/mp4'
+        var _this3 = this;
+        if (this.videoUnmounted || !this.videoObj) return Promise.resolve(null);
+        var blob = this.videoObj.getBlob();
+        if (!blob || !blob.size) return Promise.resolve(null);
+        this.clearReader();
+        return new Promise(function (resolve, reject) {
+          var reader = new FileReader();
+          _this3.reader = reader;
+          reader.onload = function () {
+            if (_this3.videoUnmounted || _this3.reader !== reader) return;
+            _this3.$emit('data-change', reader.result, blob);
+            _this3.reader = null;
+            resolve(reader.result);
+          };
+          reader.onerror = function () {
+            if (_this3.reader === reader) _this3.reader = null;
+            reject(reader.error);
+          };
+          reader.readAsDataURL(blob);
         });
-        var reader = new FileReader();
-        this.reader = reader;
-        reader.onloadend = function () {
-          if (_this2.videoUnmounted || _this2.reader !== reader) return;
-          _this2.$emit('data-change', reader.result);
-          _this2.reader = null;
-        };
-        reader.readAsDataURL(blob);
+      },
+      takePhoto: function takePhoto() {
+        var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'image/png';
+        var quality = arguments.length > 1 ? arguments[1] : undefined;
+        if (!this.videoObj) return null;
+        var data = this.videoObj.captureFrame(type, quality);
+        if (data) this.$emit('photo-change', data);
+        return data;
+      },
+      // 保留旧示例中的调用名称，返回当前画面截图。
+      getRecord: function getRecord() {
+        return this.takePhoto('image/png');
+      },
+      handleVideoError: function handleVideoError(event) {
+        if (this.videoUnmounted || this.error) return;
+        var error = new Error('视频流播放失败');
+        error.event = event;
+        this.error = error;
+        this.$emit('video-error', error);
+        this.$emit('status-change', 'error');
+      },
+      clearReader: function clearReader() {
+        if (!this.reader) return;
+        this.reader.onload = null;
+        this.reader.onerror = null;
+        if (this.reader.readyState === FileReader.LOADING) this.reader.abort();
+        this.reader = null;
+      },
+      destroyVideo: function destroyVideo() {
+        if (!this.videoObj) return;
+        if (this.videoObj.mediaRecorder) {
+          this.videoObj.mediaRecorder.removeEventListener('stop', this.handleRecordStop, false);
+        }
+        this.videoObj.destroy();
+        this.videoObj = null;
       }
     }
   });
 
-  var _hoisted_1$r = ["src"];
-  function render$u(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$s = ["autoplay", "muted"];
+  var _hoisted_2$r = ["src"];
+  function render$w(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_el_button = vue.resolveComponent("el-button");
     return vue.openBlock(), vue.createElementBlock("div", {
-      "class": vue.normalizeClass(_ctx.b()),
+      "class": vue.normalizeClass(_ctx.b({
+        ready: _ctx.isReady,
+        recording: _ctx.isRecording
+      })),
       style: vue.normalizeStyle(_ctx.styleName)
-    }, [vue.createElementVNode("div", {
-      "class": vue.normalizeClass(_ctx.b('border'))
-    }, [vue.createElementVNode("span", {
-      style: vue.normalizeStyle(_ctx.borderStyleName)
-    }, null, 4 /* STYLE */), vue.createElementVNode("span", {
-      style: vue.normalizeStyle(_ctx.borderStyleName)
-    }, null, 4 /* STYLE */), vue.createElementVNode("span", {
-      style: vue.normalizeStyle(_ctx.borderStyleName)
-    }, null, 4 /* STYLE */), vue.createElementVNode("span", {
-      style: vue.normalizeStyle(_ctx.borderStyleName)
-    }, null, 4 /* STYLE */)], 2 /* CLASS */), vue.createElementVNode("img", {
-      style: vue.normalizeStyle(_ctx.imgStyleName),
-      "class": vue.normalizeClass(_ctx.b('img')),
-      src: _ctx.background
-    }, null, 14 /* CLASS, STYLE, PROPS */, _hoisted_1$r), vue.createElementVNode("video", {
-      "class": vue.normalizeClass(_ctx.b('main')),
+    }, [_ctx.showBorder ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('border')),
+      "aria-hidden": "true"
+    }, _cache[1] || (_cache[1] = [vue.createElementVNode("span", null, null, -1 /* HOISTED */), vue.createElementVNode("span", null, null, -1 /* HOISTED */), vue.createElementVNode("span", null, null, -1 /* HOISTED */), vue.createElementVNode("span", null, null, -1 /* HOISTED */)]), 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("video", {
       ref: "main",
-      autoplay: "",
-      muted: ""
-    }, null, 2 /* CLASS */)], 6 /* CLASS, STYLE */);
+      "class": vue.normalizeClass([_ctx.b('main'), _defineProperty$1({}, _ctx.b('main--mirror'), _ctx.mirror)]),
+      autoplay: _ctx.autoplay,
+      muted: _ctx.muted,
+      playsinline: "",
+      onError: _cache[0] || (_cache[0] = function () {
+        return _ctx.handleVideoError && _ctx.handleVideoError.apply(_ctx, arguments);
+      })
+    }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$s), _ctx.background ? (vue.openBlock(), vue.createElementBlock("img", {
+      key: 1,
+      "class": vue.normalizeClass(_ctx.b('guide')),
+      src: _ctx.background,
+      alt: "",
+      "aria-hidden": "true"
+    }, null, 10 /* CLASS, PROPS */, _hoisted_2$r)) : vue.createCommentVNode("v-if", true), _ctx.showStatus && !_ctx.isReady ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 2,
+      "class": vue.normalizeClass(_ctx.b('status')),
+      role: "status"
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('status-dot'))
+    }, null, 2 /* CLASS */), vue.createTextVNode(" " + vue.toDisplayString(_ctx.statusText) + " ", 1 /* TEXT */), _ctx.error ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+      key: 0,
+      text: "",
+      type: "primary",
+      size: "small",
+      onClick: _ctx.retry
+    }, {
+      "default": vue.withCtx(function () {
+        return _cache[2] || (_cache[2] = [vue.createTextVNode("重试")]);
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["onClick"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.renderSlot(_ctx.$slots, "overlay", {
+      ready: _ctx.isReady,
+      recording: _ctx.isRecording,
+      error: _ctx.error
+    })], 6 /* CLASS, STYLE */);
   }
 
-  script$u.render = render$u;
-  script$u.__file = "packages/element-plus/video/index.vue";
+  script$w.render = render$w;
+  script$w.__file = "packages/element-plus/video/index.vue";
 
-  var script$t = create({
+  function ownKeys$6(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$6(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$6(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var script$v = create({
     name: 'login',
     mixins: [locale],
-    emits: ['update:modelValue', 'send', 'refresh', 'submit'],
+    emits: ['update:modelValue', 'send', 'refresh', 'submit', 'invalid'],
     props: {
       modelValue: {
         type: Object,
@@ -24414,22 +26930,22 @@
           return {};
         }
       },
-      codesrc: {
-        type: String
-      },
+      codesrc: String,
       option: {
         type: Object,
         "default": function _default() {
           return {};
         }
-      }
+      },
+      loading: Boolean,
+      disabled: Boolean
     },
     computed: {
-      labelWidth: function labelWidth() {
-        return this.option.labelWidth || 80;
+      formLabelWidth: function formLabelWidth() {
+        return this.setPx(this.option.labelWidth || 88);
       },
       time: function time() {
-        return this.option.time || 60;
+        return Number(this.option.time) || 60;
       },
       isImg: function isImg() {
         return this.codeType === 'img';
@@ -24456,34 +26972,53 @@
         return this.option.column || {};
       },
       sendDisabled: function sendDisabled() {
-        return !this.validatenull(this.check);
+        return this.nowtime > 0 || this.sending;
       },
       sendText: function sendText() {
         return this.nowtime > 0 ? this.t('login.resendCode', {
           time: this.nowtime
         }) : this.t('login.sendCode');
+      },
+      submitText: function submitText() {
+        return this.option.submitText || this.t('login.submitBtn');
       }
     },
     watch: {
       modelValue: {
-        handler: function handler() {
-          this.form = this.modelValue;
-        },
-        deep: true
-      },
-      form: {
-        handler: function handler() {
-          this.$emit('update:modelValue', this.form);
+        handler: function handler(value) {
+          var _this = this;
+          var nextForm = _objectSpread$6({
+            username: '',
+            password: '',
+            code: ''
+          }, value || {});
+          var same = Object.keys(nextForm).length === Object.keys(this.form).length && Object.keys(nextForm).every(function (key) {
+            return nextForm[key] === _this.form[key];
+          });
+          if (same) return;
+          this.syncing = true;
+          this.form = nextForm;
+          this.$nextTick(function () {
+            _this.syncing = false;
+          });
         },
         deep: true,
         immediate: true
+      },
+      form: {
+        handler: function handler(value) {
+          if (!this.syncing) this.$emit('update:modelValue', _objectSpread$6({}, value));
+        },
+        deep: true
       }
     },
     data: function data() {
       return {
         nowtime: 0,
         check: null,
-        form: {}
+        form: {},
+        sending: false,
+        syncing: false
       };
     },
     beforeUnmount: function beforeUnmount() {
@@ -24491,56 +27026,58 @@
     },
     methods: {
       onSend: function onSend() {
-        var _this = this;
-        var callback = function callback() {
-          _this.clearTimer();
-          _this.nowtime = _this.time;
-          _this.check = setInterval(function () {
-            _this.nowtime--;
-            if (_this.nowtime <= 0) {
-              _this.clearTimer();
-            }
+        var _this2 = this;
+        if (this.sendDisabled || this.disabled || this.loading) return;
+        this.sending = true;
+        var completed = false;
+        var done = function done() {
+          if (completed) return;
+          completed = true;
+          _this2.sending = false;
+          _this2.clearTimer();
+          _this2.nowtime = _this2.time;
+          _this2.check = setInterval(function () {
+            _this2.nowtime -= 1;
+            if (_this2.nowtime <= 0) _this2.clearTimer();
           }, 1000);
         };
-        if (this.sendDisabled) return;
-        this.$emit('send', callback);
+        this.$emit('send', done, _objectSpread$6({}, this.form));
+        this.$nextTick(function () {
+          if (!completed) _this2.sending = false;
+        });
       },
       onRefresh: function onRefresh() {
-        this.$emit('refresh');
+        if (!this.disabled && !this.loading) this.$emit('refresh');
       },
       clearTimer: function clearTimer() {
         if (this.check) {
           clearInterval(this.check);
           this.check = null;
         }
+        this.nowtime = 0;
       },
       onSubmit: function onSubmit() {
-        var _this2 = this;
-        var onCover = function onCover() {
-          var form = {};
-          for (var o in _this2.form) {
-            var key = o;
-            if (_this2[o].prop) {
-              key = _this2[o].prop;
-            }
-            form[key] = _this2.form[o];
+        var _this3 = this;
+        if (this.disabled || this.loading || !this.$refs.form) return;
+        this.$refs.form.validate(function (valid, fields) {
+          if (!valid) {
+            _this3.$emit('invalid', fields);
+            return;
           }
-          return form;
-        };
-        this.$refs.form.validate(function (valid) {
-          if (valid) {
-            _this2.$emit('submit', onCover());
-          }
+          var result = {};
+          Object.keys(_this3.form).forEach(function (key) {
+            var column = _this3[key] || {};
+            result[column.prop || key] = _this3.form[key];
+          });
+          _this3.$emit('submit', result);
         });
       }
     }
   });
 
-  var _hoisted_1$q = {
-    key: 1
-  };
-  var _hoisted_2$p = ["src"];
-  function render$t(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$r = ["disabled"];
+  var _hoisted_2$q = ["src"];
+  function render$v(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_input = vue.resolveComponent("el-input");
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     var _component_el_form_item = vue.resolveComponent("el-form-item");
@@ -24552,18 +27089,18 @@
         width: _ctx.setPx(_ctx.width)
       })
     }, [vue.createVNode(_component_el_form, {
-      model: _ctx.form,
       ref: "form",
+      model: _ctx.form,
       size: _ctx.$AVUE.size,
+      "label-width": _ctx.formLabelWidth,
       "label-suffix": ":",
-      "label-width": _ctx.setPx(_ctx.labelWidth)
+      onKeyup: vue.withKeys(_ctx.onSubmit, ["enter"])
     }, {
       "default": vue.withCtx(function () {
         return [!_ctx.username.hide ? (vue.openBlock(), vue.createBlock(_component_el_form_item, {
           key: 0,
           label: _ctx.username.label || _ctx.t('login.usernameLabel'),
           rules: _ctx.username.rules,
-          "label-width": _ctx.setPx(_ctx.username.labelWidth),
           prop: "username"
         }, {
           "default": vue.withCtx(function () {
@@ -24580,18 +27117,18 @@
                   }),
                   "prefix-icon": _ctx.username.prefixIcon || 'el-icon-user',
                   placeholder: _ctx.username.placeholder || _ctx.t('login.usernamePlaceholder'),
-                  autocomplete: _ctx.username.autocomplete
-                }, null, 8 /* PROPS */, ["modelValue", "prefix-icon", "placeholder", "autocomplete"])];
+                  autocomplete: _ctx.username.autocomplete || 'username',
+                  disabled: _ctx.disabled || _ctx.loading
+                }, null, 8 /* PROPS */, ["modelValue", "prefix-icon", "placeholder", "autocomplete", "disabled"])];
               }),
               _: 1 /* STABLE */
             }, 8 /* PROPS */, ["content", "disabled"])];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["label", "rules", "label-width"])) : vue.createCommentVNode("v-if", true), !_ctx.password.hide ? (vue.openBlock(), vue.createBlock(_component_el_form_item, {
+        }, 8 /* PROPS */, ["label", "rules"])) : vue.createCommentVNode("v-if", true), !_ctx.password.hide ? (vue.openBlock(), vue.createBlock(_component_el_form_item, {
           key: 1,
           label: _ctx.password.label || _ctx.t('login.passwordLabel'),
           rules: _ctx.password.rules,
-          "label-width": _ctx.setPx(_ctx.password.labelWidth),
           prop: "password"
         }, {
           "default": vue.withCtx(function () {
@@ -24602,26 +27139,26 @@
             }, {
               "default": vue.withCtx(function () {
                 return [vue.createVNode(_component_el_input, {
-                  type: "password",
-                  "prefix-icon": _ctx.password.prefixIcon || 'el-icon-unlock',
-                  placeholder: _ctx.password.placeholder || _ctx.t('login.passwordPlaceholder'),
-                  "show-password": "",
                   modelValue: _ctx.form.password,
                   "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
                     return _ctx.form.password = $event;
                   }),
-                  autocomplete: _ctx.password.autocomplete
-                }, null, 8 /* PROPS */, ["prefix-icon", "placeholder", "modelValue", "autocomplete"])];
+                  type: "password",
+                  "show-password": "",
+                  "prefix-icon": _ctx.password.prefixIcon || 'el-icon-unlock',
+                  placeholder: _ctx.password.placeholder || _ctx.t('login.passwordPlaceholder'),
+                  autocomplete: _ctx.password.autocomplete || 'current-password',
+                  disabled: _ctx.disabled || _ctx.loading
+                }, null, 8 /* PROPS */, ["modelValue", "prefix-icon", "placeholder", "autocomplete", "disabled"])];
               }),
               _: 1 /* STABLE */
             }, 8 /* PROPS */, ["content", "disabled"])];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["label", "rules", "label-width"])) : vue.createCommentVNode("v-if", true), !_ctx.code.hide ? (vue.openBlock(), vue.createBlock(_component_el_form_item, {
+        }, 8 /* PROPS */, ["label", "rules"])) : vue.createCommentVNode("v-if", true), !_ctx.code.hide ? (vue.openBlock(), vue.createBlock(_component_el_form_item, {
           key: 2,
           label: _ctx.code.label || _ctx.t('login.codeLabel'),
           rules: _ctx.code.rules,
-          "label-width": _ctx.setPx(_ctx.code.labelWidth),
           prop: "code"
         }, {
           "default": vue.withCtx(function () {
@@ -24638,61 +27175,74 @@
                   }),
                   "prefix-icon": _ctx.code.prefixIcon || 'el-icon-c-scale-to-original',
                   placeholder: _ctx.code.placeholder || _ctx.t('login.codePlaceholder'),
-                  autocomplete: _ctx.code.autocomplete
+                  autocomplete: _ctx.code.autocomplete || 'one-time-code',
+                  disabled: _ctx.disabled || _ctx.loading
                 }, {
                   append: vue.withCtx(function () {
                     return [_ctx.isPhone ? (vue.openBlock(), vue.createBlock(_component_el_button, {
                       key: 0,
                       type: "primary",
                       "class": vue.normalizeClass(_ctx.b('send')),
-                      disabled: _ctx.sendDisabled,
+                      disabled: _ctx.sendDisabled || _ctx.disabled || _ctx.loading,
+                      loading: _ctx.sending,
                       onClick: _ctx.onSend
                     }, {
                       "default": vue.withCtx(function () {
                         return [vue.createTextVNode(vue.toDisplayString(_ctx.sendText), 1 /* TEXT */)];
                       }),
                       _: 1 /* STABLE */
-                    }, 8 /* PROPS */, ["class", "disabled", "onClick"])) : vue.createCommentVNode("v-if", true), _ctx.isImg ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$q, [vue.createElementVNode("img", {
-                      src: _ctx.codesrc,
-                      alt: "",
+                    }, 8 /* PROPS */, ["class", "disabled", "loading", "onClick"])) : _ctx.isImg ? (vue.openBlock(), vue.createElementBlock("button", {
+                      key: 1,
+                      type: "button",
+                      "class": vue.normalizeClass(_ctx.b('captcha')),
+                      disabled: _ctx.disabled || _ctx.loading,
+                      "aria-label": "刷新验证码",
                       onClick: _cache[2] || (_cache[2] = function () {
                         return _ctx.onRefresh && _ctx.onRefresh.apply(_ctx, arguments);
-                      }),
-                      width: "80",
-                      height: "25"
-                    }, null, 8 /* PROPS */, _hoisted_2$p)])) : vue.createCommentVNode("v-if", true)];
+                      })
+                    }, [vue.createElementVNode("img", {
+                      src: _ctx.codesrc,
+                      alt: "验证码"
+                    }, null, 8 /* PROPS */, _hoisted_2$q)], 10 /* CLASS, PROPS */, _hoisted_1$r)) : vue.createCommentVNode("v-if", true)];
                   }),
                   _: 1 /* STABLE */
-                }, 8 /* PROPS */, ["modelValue", "prefix-icon", "placeholder", "autocomplete"])];
+                }, 8 /* PROPS */, ["modelValue", "prefix-icon", "placeholder", "autocomplete", "disabled"])];
               }),
               _: 1 /* STABLE */
             }, 8 /* PROPS */, ["content", "disabled"])];
           }),
           _: 1 /* STABLE */
-        }, 8 /* PROPS */, ["label", "rules", "label-width"])) : vue.createCommentVNode("v-if", true), vue.createVNode(_component_el_form_item, null, {
+        }, 8 /* PROPS */, ["label", "rules"])) : vue.createCommentVNode("v-if", true), vue.createVNode(_component_el_form_item, {
+          "class": vue.normalizeClass(_ctx.b('actions'))
+        }, {
           "default": vue.withCtx(function () {
             return [vue.createVNode(_component_el_button, {
               type: "primary",
-              onClick: _ctx.onSubmit,
-              "class": vue.normalizeClass(_ctx.b('submit'))
+              "native-type": "button",
+              "class": vue.normalizeClass(_ctx.b('submit')),
+              disabled: _ctx.disabled,
+              loading: _ctx.loading,
+              onClick: _ctx.onSubmit
             }, {
               "default": vue.withCtx(function () {
-                return [vue.createTextVNode(vue.toDisplayString(_ctx.t('login.submitBtn')), 1 /* TEXT */)];
+                return [vue.createTextVNode(vue.toDisplayString(_ctx.submitText), 1 /* TEXT */)];
               }),
               _: 1 /* STABLE */
-            }, 8 /* PROPS */, ["onClick", "class"])];
+            }, 8 /* PROPS */, ["class", "disabled", "loading", "onClick"])];
           }),
           _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["class"]), vue.renderSlot(_ctx.$slots, "footer", {
+          form: _ctx.form
         })];
       }),
-      _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["model", "size", "label-width"])], 6 /* CLASS, STYLE */);
+      _: 3 /* FORWARDED */
+    }, 8 /* PROPS */, ["model", "size", "label-width", "onKeyup"])], 6 /* CLASS, STYLE */);
   }
 
-  script$t.render = render$t;
-  script$t.__file = "packages/element-plus/login/index.vue";
+  script$v.render = render$v;
+  script$v.__file = "packages/element-plus/login/index.vue";
 
-  var script$s = create({
+  var script$u = create({
     name: 'array',
     mixins: [props(), event()],
     data: function data() {
@@ -24751,7 +27301,7 @@
     }
   });
 
-  function render$s(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$u(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_button = vue.resolveComponent("el-button");
     var _component_el_link = vue.resolveComponent("el-link");
     var _component_el_input = vue.resolveComponent("el-input");
@@ -24841,10 +27391,10 @@
     }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */);
   }
 
-  script$s.render = render$s;
-  script$s.__file = "packages/element-plus/array/index.vue";
+  script$u.render = render$u;
+  script$u.__file = "packages/element-plus/array/index.vue";
 
-  var script$r = create({
+  var script$t = create({
     name: "text-ellipsis",
     props: {
       text: String,
@@ -24920,7 +27470,7 @@
     }
   });
 
-  function render$r(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$t(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_tooltip = vue.resolveComponent("el-tooltip");
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
@@ -24950,8 +27500,8 @@
     })], 6 /* CLASS, STYLE */);
   }
 
-  script$r.render = render$r;
-  script$r.__file = "packages/element-plus/text-ellipsis/index.vue";
+  script$t.render = render$t;
+  script$t.__file = "packages/element-plus/text-ellipsis/index.vue";
 
   //---------------------------------------------------------------------
   //
@@ -27221,7 +29771,7 @@
       return entities[character];
     });
   }
-  var script$q = create({
+  var script$s = create({
     name: 'qrcode',
     emits: ['refresh', 'error', 'icon-error'],
     props: {
@@ -27463,11 +30013,11 @@
     }
   });
 
-  var _hoisted_1$p = ["innerHTML"];
-  var _hoisted_2$o = {
+  var _hoisted_1$q = ["innerHTML"];
+  var _hoisted_2$p = {
     key: 2
   };
-  function render$q(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$s(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass([_ctx.b(), _defineProperty$1({}, _ctx.b('bordered'), _ctx.bordered)]),
       style: vue.normalizeStyle(_ctx.styleName),
@@ -27481,7 +30031,7 @@
       key: 1,
       "class": vue.normalizeClass(_ctx.b('svg')),
       innerHTML: _ctx.svgContent
-    }, null, 10 /* CLASS, PROPS */, _hoisted_1$p)) : vue.createCommentVNode("v-if", true), _ctx.errorMessage ? (vue.openBlock(), vue.createElementBlock("div", {
+    }, null, 10 /* CLASS, PROPS */, _hoisted_1$q)) : vue.createCommentVNode("v-if", true), _ctx.errorMessage ? (vue.openBlock(), vue.createElementBlock("div", {
       key: 2,
       "class": vue.normalizeClass([_ctx.b('status'), _ctx.b('status-error')])
     }, vue.toDisplayString(_ctx.errorMessage), 3 /* TEXT, CLASS */)) : _ctx.status !== 'active' ? (vue.openBlock(), vue.createElementBlock("div", {
@@ -27498,18 +30048,18 @@
       onClick: _cache[0] || (_cache[0] = function () {
         return _ctx.refresh && _ctx.refresh.apply(_ctx, arguments);
       })
-    }, " 点击刷新 ", 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$o, "已扫描"))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
+    }, " 点击刷新 ", 2 /* CLASS */)], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$p, "已扫描"))], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
   }
 
-  script$q.render = render$q;
-  script$q.__file = "packages/element-plus/qrcode/index.vue";
+  script$s.render = render$s;
+  script$s.__file = "packages/element-plus/qrcode/index.vue";
 
-  function ownKeys$3(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  function ownKeys$5(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$5(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$5(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$5(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var toCssSize = function toCssSize(value) {
     return typeof value === 'number' ? "".concat(value, "px") : value;
   };
-  var script$p = create({
+  var script$r = create({
     name: 'iframe',
     emits: ['before-load', 'load', 'ready', 'error', 'timeout', 'reload', 'message'],
     props: {
@@ -27612,7 +30162,7 @@
           if (_this.unmounted || !_this.loading) return;
           _this.loading = false;
           _this.isTimedOut = true;
-          _this.$emit('timeout', _objectSpread$3(_objectSpread$3({}, _this.getPayload()), {}, {
+          _this.$emit('timeout', _objectSpread$5(_objectSpread$5({}, _this.getPayload()), {}, {
             timeout: _this.timeout
           }));
         }, this.timeout);
@@ -27637,7 +30187,7 @@
         this.loading = false;
         this.isTimedOut = false;
         this.loadError = event;
-        this.$emit('error', _objectSpread$3(_objectSpread$3({}, this.getPayload()), {}, {
+        this.$emit('error', _objectSpread$5(_objectSpread$5({}, this.getPayload()), {}, {
           error: event
         }));
       },
@@ -27692,8 +30242,8 @@
     }
   });
 
-  var _hoisted_1$o = ["src", "name", "title"];
-  function render$p(_ctx, _cache, $props, $setup, $data, $options) {
+  var _hoisted_1$p = ["src", "name", "title"];
+  function render$r(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", {
       "class": vue.normalizeClass(_ctx.b()),
       style: vue.normalizeStyle(_ctx.styleName)
@@ -27710,7 +30260,7 @@
       onError: _cache[1] || (_cache[1] = function () {
         return _ctx.handleError && _ctx.handleError.apply(_ctx, arguments);
       })
-    }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$o)) : vue.createCommentVNode("v-if", true), !_ctx.hasSrc ? (vue.openBlock(), vue.createElementBlock("div", {
+    }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$p)) : vue.createCommentVNode("v-if", true), !_ctx.hasSrc ? (vue.openBlock(), vue.createElementBlock("div", {
       key: 1,
       "class": vue.normalizeClass(_ctx.b('state'))
     }, [vue.renderSlot(_ctx.$slots, "empty", {}, function () {
@@ -27738,55 +30288,2127 @@
     }, null, 2 /* CLASS */), vue.createElementVNode("span", null, vue.toDisplayString(_ctx.loadingText), 1 /* TEXT */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */);
   }
 
+  script$r.render = render$r;
+  script$r.__file = "packages/element-plus/iframe/index.vue";
+
+  var OPERATOR_MAP = {
+    text: [{
+      label: "等于",
+      value: "eq"
+    }, {
+      label: "不等于",
+      value: "ne"
+    }, {
+      label: "包含",
+      value: "contains"
+    }, {
+      label: "不包含",
+      value: "notContains"
+    }, {
+      label: "为空",
+      value: "isEmpty"
+    }, {
+      label: "不为空",
+      value: "isNotEmpty"
+    }],
+    number: [{
+      label: "等于",
+      value: "eq"
+    }, {
+      label: "不等于",
+      value: "ne"
+    }, {
+      label: "大于",
+      value: "gt"
+    }, {
+      label: "大于等于",
+      value: "gte"
+    }, {
+      label: "小于",
+      value: "lt"
+    }, {
+      label: "小于等于",
+      value: "lte"
+    }, {
+      label: "为空",
+      value: "isEmpty"
+    }, {
+      label: "不为空",
+      value: "isNotEmpty"
+    }],
+    select: [{
+      label: "等于",
+      value: "eq"
+    }, {
+      label: "不等于",
+      value: "ne"
+    }, {
+      label: "属于",
+      value: "in"
+    }, {
+      label: "不属于",
+      value: "notIn"
+    }, {
+      label: "为空",
+      value: "isEmpty"
+    }, {
+      label: "不为空",
+      value: "isNotEmpty"
+    }],
+    "boolean": [{
+      label: "等于",
+      value: "eq"
+    }, {
+      label: "不等于",
+      value: "ne"
+    }],
+    date: [{
+      label: "等于",
+      value: "eq"
+    }, {
+      label: "早于",
+      value: "lt"
+    }, {
+      label: "晚于",
+      value: "gt"
+    }, {
+      label: "为空",
+      value: "isEmpty"
+    }, {
+      label: "不为空",
+      value: "isNotEmpty"
+    }],
+    datetime: [{
+      label: "等于",
+      value: "eq"
+    }, {
+      label: "早于",
+      value: "lt"
+    }, {
+      label: "晚于",
+      value: "gt"
+    }, {
+      label: "为空",
+      value: "isEmpty"
+    }, {
+      label: "不为空",
+      value: "isNotEmpty"
+    }],
+    daterange: [{
+      label: "介于",
+      value: "between"
+    }, {
+      label: "不介于",
+      value: "notBetween"
+    }]
+  };
+  var EMPTY_VALUE_OPERATORS = ["isEmpty", "isNotEmpty"];
+  var script$q = create({
+    name: "filter-builder",
+    props: {
+      modelValue: {
+        type: Object,
+        "default": function _default() {
+          return {
+            logic: "and",
+            rules: []
+          };
+        }
+      },
+      fields: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      },
+      disabled: {
+        type: Boolean,
+        "default": false
+      },
+      emptyText: {
+        type: String,
+        "default": "暂未添加筛选条件"
+      }
+    },
+    emits: ["update:modelValue", "change"],
+    data: function data() {
+      return {
+        filter: this.normalizeFilter(this.modelValue),
+        ruleSeed: 0
+      };
+    },
+    computed: {
+      fieldMap: function fieldMap() {
+        return this.fields.reduce(function (result, field) {
+          result[field.value] = field;
+          return result;
+        }, {});
+      }
+    },
+    watch: {
+      modelValue: {
+        deep: true,
+        handler: function handler(value) {
+          this.filter = this.normalizeFilter(value);
+        }
+      }
+    },
+    methods: {
+      normalizeFilter: function normalizeFilter(value) {
+        var _this = this;
+        var rules = Array.isArray(value && value.rules) ? value.rules : [];
+        return {
+          logic: value && value.logic === "or" ? "or" : "and",
+          rules: rules.map(function (rule) {
+            return {
+              id: rule.id || _this.createRuleId(),
+              field: rule.field || "",
+              operator: rule.operator || "",
+              value: rule.value === undefined ? "" : rule.value
+            };
+          })
+        };
+      },
+      createRuleId: function createRuleId() {
+        this.ruleSeed = (Number(this.ruleSeed) || 0) + 1;
+        return "filter_rule_".concat(Date.now(), "_").concat(this.ruleSeed);
+      },
+      createRule: function createRule() {
+        var field = this.fields[0] || {};
+        var operators = this.getOperators({
+          field: field.value
+        });
+        return {
+          id: this.createRuleId(),
+          field: field.value || "",
+          operator: operators[0] ? operators[0].value : "",
+          value: this.getDefaultValue(field, operators[0] && operators[0].value)
+        };
+      },
+      getDefaultValue: function getDefaultValue(field, operator) {
+        if (EMPTY_VALUE_OPERATORS.includes(operator)) return "";
+        if (field && field.type === "daterange") return [];
+        if (field && field.multiple) return [];
+        return "";
+      },
+      getField: function getField(rule) {
+        return this.fieldMap[rule.field] || {};
+      },
+      getFieldType: function getFieldType(rule) {
+        return this.getField(rule).type || "text";
+      },
+      getOperators: function getOperators(rule) {
+        var field = this.getField(rule);
+        var operators = field.operators || OPERATOR_MAP[field.type || "text"] || OPERATOR_MAP.text;
+        return operators.map(function (operator) {
+          return typeof operator === "string" ? OPERATOR_MAP.text.find(function (item) {
+            return item.value === operator;
+          }) || {
+            label: operator,
+            value: operator
+          } : operator;
+        });
+      },
+      getFieldOptions: function getFieldOptions(rule) {
+        var field = this.getField(rule);
+        return field.options || field.dicData || [];
+      },
+      getOptionValue: function getOptionValue(option) {
+        return _typeof$1(option) === "object" ? option.value : option;
+      },
+      getOptionLabel: function getOptionLabel(option) {
+        return _typeof$1(option) === "object" ? option.label === undefined ? option.value : option.label : option;
+      },
+      isMultipleValue: function isMultipleValue(rule) {
+        return this.getField(rule).multiple || ["in", "notIn"].includes(rule.operator);
+      },
+      needsValue: function needsValue(rule) {
+        return !EMPTY_VALUE_OPERATORS.includes(rule.operator);
+      },
+      addRule: function addRule() {
+        this.filter.rules.push(this.createRule());
+        this.emitChange();
+      },
+      removeRule: function removeRule(id) {
+        this.filter.rules = this.filter.rules.filter(function (rule) {
+          return rule.id !== id;
+        });
+        this.emitChange();
+      },
+      clearRules: function clearRules() {
+        this.filter.rules = [];
+        this.emitChange();
+      },
+      handleFieldChange: function handleFieldChange(rule) {
+        var operators = this.getOperators(rule);
+        rule.operator = operators[0] ? operators[0].value : "";
+        rule.value = this.getDefaultValue(this.getField(rule), rule.operator);
+        this.emitChange();
+      },
+      getValue: function getValue() {
+        return this.copyFilter();
+      },
+      setValue: function setValue(value) {
+        this.filter = this.normalizeFilter(value);
+        this.emitChange();
+      },
+      copyFilter: function copyFilter() {
+        return {
+          logic: this.filter.logic,
+          rules: this.filter.rules.map(function (rule) {
+            return {
+              id: rule.id,
+              field: rule.field,
+              operator: rule.operator,
+              value: Array.isArray(rule.value) ? _toConsumableArray(rule.value) : rule.value
+            };
+          })
+        };
+      },
+      emitChange: function emitChange() {
+        var value = this.copyFilter();
+        this.$emit("update:modelValue", value);
+        this.$emit("change", value);
+      }
+    }
+  });
+
+  function render$q(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_el_radio_button = vue.resolveComponent("el-radio-button");
+    var _component_el_radio_group = vue.resolveComponent("el-radio-group");
+    var _component_el_button = vue.resolveComponent("el-button");
+    var _component_el_icon_plus = vue.resolveComponent("el-icon-plus");
+    var _component_el_icon = vue.resolveComponent("el-icon");
+    var _component_el_option = vue.resolveComponent("el-option");
+    var _component_el_select = vue.resolveComponent("el-select");
+    var _component_el_date_picker = vue.resolveComponent("el-date-picker");
+    var _component_el_input_number = vue.resolveComponent("el-input-number");
+    var _component_el_input = vue.resolveComponent("el-input");
+    var _component_el_icon_delete = vue.resolveComponent("el-icon-delete");
+    var _component_el_empty = vue.resolveComponent("el-empty");
+    return vue.openBlock(), vue.createElementBlock("section", {
+      "class": vue.normalizeClass(_ctx.b())
+    }, [vue.createElementVNode("header", {
+      "class": vue.normalizeClass(_ctx.b('header'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('logic'))
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('logic-label'))
+    }, "满足以下", 2 /* CLASS */), vue.createVNode(_component_el_radio_group, {
+      modelValue: _ctx.filter.logic,
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+        return _ctx.filter.logic = $event;
+      }),
+      disabled: _ctx.disabled,
+      size: "small",
+      onChange: _ctx.emitChange
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_radio_button, {
+          label: "and"
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[1] || (_cache[1] = [vue.createTextVNode("所有条件")]);
+          }),
+          _: 1 /* STABLE */
+        }), vue.createVNode(_component_el_radio_button, {
+          label: "or"
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[2] || (_cache[2] = [vue.createTextVNode("任一条件")]);
+          }),
+          _: 1 /* STABLE */
+        })];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["modelValue", "disabled", "onChange"])], 2 /* CLASS */), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('actions'))
+    }, [_ctx.filter.rules.length ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+      key: 0,
+      text: "",
+      disabled: _ctx.disabled,
+      onClick: _ctx.clearRules
+    }, {
+      "default": vue.withCtx(function () {
+        return _cache[3] || (_cache[3] = [vue.createTextVNode(" 清空 ")]);
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"])) : vue.createCommentVNode("v-if", true), vue.createVNode(_component_el_button, {
+      type: "primary",
+      disabled: _ctx.disabled || !_ctx.fields.length,
+      onClick: _ctx.addRule
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_plus)];
+          }),
+          _: 1 /* STABLE */
+        }), _cache[4] || (_cache[4] = vue.createTextVNode(" 添加条件 "))];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"])], 2 /* CLASS */)], 2 /* CLASS */), _ctx.filter.rules.length ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('rules'))
+    }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.filter.rules, function (rule) {
+      return vue.openBlock(), vue.createElementBlock("div", {
+        key: rule.id,
+        "class": vue.normalizeClass(_ctx.b('rule'))
+      }, [vue.createVNode(_component_el_select, {
+        modelValue: rule.field,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.field = $event;
+        },
+        disabled: _ctx.disabled,
+        filterable: "",
+        placeholder: "选择字段",
+        onChange: function onChange($event) {
+          return _ctx.handleFieldChange(rule);
+        }
+      }, {
+        "default": vue.withCtx(function () {
+          return [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.fields, function (field) {
+            return vue.openBlock(), vue.createBlock(_component_el_option, {
+              key: field.value,
+              label: field.label,
+              value: field.value
+            }, null, 8 /* PROPS */, ["label", "value"]);
+          }), 128 /* KEYED_FRAGMENT */))];
+        }),
+        _: 2 /* DYNAMIC */
+      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"]), vue.createVNode(_component_el_select, {
+        modelValue: rule.operator,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.operator = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        placeholder: "选择条件",
+        onChange: _ctx.emitChange
+      }, {
+        "default": vue.withCtx(function () {
+          return [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.getOperators(rule), function (operator) {
+            return vue.openBlock(), vue.createBlock(_component_el_option, {
+              key: operator.value,
+              label: operator.label,
+              value: operator.value
+            }, null, 8 /* PROPS */, ["label", "value"]);
+          }), 128 /* KEYED_FRAGMENT */))];
+        }),
+        _: 2 /* DYNAMIC */
+      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"]), _ctx.needsValue(rule) ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        key: 0
+      }, [_ctx.getFieldType(rule) === 'select' ? (vue.openBlock(), vue.createBlock(_component_el_select, {
+        key: 0,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        multiple: _ctx.isMultipleValue(rule),
+        clearable: "",
+        filterable: "",
+        "collapse-tags": "",
+        "collapse-tags-tooltip": "",
+        placeholder: "选择值",
+        onChange: _ctx.emitChange
+      }, {
+        "default": vue.withCtx(function () {
+          return [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.getFieldOptions(rule), function (option) {
+            return vue.openBlock(), vue.createBlock(_component_el_option, {
+              key: _ctx.getOptionValue(option),
+              label: _ctx.getOptionLabel(option),
+              value: _ctx.getOptionValue(option)
+            }, null, 8 /* PROPS */, ["label", "value"]);
+          }), 128 /* KEYED_FRAGMENT */))];
+        }),
+        _: 2 /* DYNAMIC */
+      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "onUpdate:modelValue", "disabled", "multiple", "onChange"])) : _ctx.getFieldType(rule) === 'boolean' ? (vue.openBlock(), vue.createBlock(_component_el_select, {
+        key: 1,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        clearable: "",
+        placeholder: "选择值",
+        onChange: _ctx.emitChange
+      }, {
+        "default": vue.withCtx(function () {
+          return [vue.createVNode(_component_el_option, {
+            label: "是",
+            value: true
+          }), vue.createVNode(_component_el_option, {
+            label: "否",
+            value: false
+          })];
+        }),
+        _: 2 /* DYNAMIC */
+      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : _ctx.getFieldType(rule) === 'date' ? (vue.openBlock(), vue.createBlock(_component_el_date_picker, {
+        key: 2,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        clearable: "",
+        type: "date",
+        "value-format": "YYYY-MM-DD",
+        placeholder: "选择日期",
+        onChange: _ctx.emitChange
+      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : _ctx.getFieldType(rule) === 'datetime' ? (vue.openBlock(), vue.createBlock(_component_el_date_picker, {
+        key: 3,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        clearable: "",
+        type: "datetime",
+        "value-format": "YYYY-MM-DD HH:mm:ss",
+        placeholder: "选择日期时间",
+        onChange: _ctx.emitChange
+      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : _ctx.getFieldType(rule) === 'daterange' ? (vue.openBlock(), vue.createBlock(_component_el_date_picker, {
+        key: 4,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        clearable: "",
+        type: "daterange",
+        "value-format": "YYYY-MM-DD",
+        "range-separator": "至",
+        "start-placeholder": "开始日期",
+        "end-placeholder": "结束日期",
+        onChange: _ctx.emitChange
+      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : _ctx.getFieldType(rule) === 'number' ? (vue.openBlock(), vue.createBlock(_component_el_input_number, {
+        key: 5,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        "controls-position": "right",
+        precision: _ctx.getField(rule).precision,
+        step: _ctx.getField(rule).step || 1,
+        onChange: _ctx.emitChange
+      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "disabled", "precision", "step", "onChange"])) : (vue.openBlock(), vue.createBlock(_component_el_input, {
+        key: 6,
+        modelValue: rule.value,
+        "onUpdate:modelValue": function onUpdateModelValue($event) {
+          return rule.value = $event;
+        },
+        disabled: _ctx.disabled || !rule.field,
+        clearable: "",
+        placeholder: _ctx.getField(rule).placeholder || '输入值',
+        onChange: _ctx.emitChange
+      }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue", "disabled", "placeholder", "onChange"]))], 64 /* STABLE_FRAGMENT */)) : (vue.openBlock(), vue.createElementBlock("div", {
+        key: 1,
+        "class": vue.normalizeClass(_ctx.b('empty-value'))
+      }, "无需填写值", 2 /* CLASS */)), vue.createVNode(_component_el_button, {
+        "class": vue.normalizeClass(_ctx.b('remove')),
+        disabled: _ctx.disabled,
+        text: "",
+        type: "danger",
+        "aria-label": "\u5220\u9664".concat(_ctx.getField(rule).label || '条件'),
+        onClick: function onClick($event) {
+          return _ctx.removeRule(rule.id);
+        }
+      }, {
+        "default": vue.withCtx(function () {
+          return [vue.createVNode(_component_el_icon, null, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_icon_delete)];
+            }),
+            _: 1 /* STABLE */
+          })];
+        }),
+        _: 2 /* DYNAMIC */
+      }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["class", "disabled", "aria-label", "onClick"])], 2 /* CLASS */);
+    }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */)) : (vue.openBlock(), vue.createBlock(_component_el_empty, {
+      key: 1,
+      "image-size": 72,
+      description: _ctx.emptyText
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          type: "primary",
+          disabled: _ctx.disabled || !_ctx.fields.length,
+          onClick: _ctx.addRule
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[5] || (_cache[5] = [vue.createTextVNode(" 添加第一个条件 ")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["disabled", "onClick"])];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["description"]))], 2 /* CLASS */);
+  }
+
+  script$q.render = render$q;
+  script$q.__file = "packages/element-plus/filter-builder/index.vue";
+
+  function _objectWithoutPropertiesLoose(r, e) {
+    if (null == r) return {};
+    var t = {};
+    for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+      if (e.includes(n)) continue;
+      t[n] = r[n];
+    }
+    return t;
+  }
+
+  function _objectWithoutProperties(e, t) {
+    if (null == e) return {};
+    var o,
+      r,
+      i = _objectWithoutPropertiesLoose(e, t);
+    if (Object.getOwnPropertySymbols) {
+      var s = Object.getOwnPropertySymbols(e);
+      for (r = 0; r < s.length; r++) o = s[r], t.includes(o) || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+    }
+    return i;
+  }
+
+  var _excluded$1 = ["_objectUrl"],
+    _excluded2 = ["children"];
+  function ownKeys$4(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$4(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$4(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var ROOT_FOLDER_ID = "__avue_root__";
+  var IMAGE_EXTENSIONS = ["bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
+  var VIDEO_EXTENSIONS = ["m4v", "mov", "mp4", "ogv", "webm"];
+  var AUDIO_EXTENSIONS = ["aac", "flac", "m4a", "mp3", "oga", "ogg", "wav"];
+  var TEXT_EXTENSIONS = ["csv", "css", "html", "htm", "js", "json", "log", "md", "sql", "text", "ts", "txt", "xml", "yaml", "yml"];
+  var script$p = create({
+    name: "file-manager",
+    props: {
+      modelValue: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      },
+      folders: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      },
+      rootLabel: {
+        type: String,
+        "default": "全部文件"
+      },
+      height: {
+        type: [Number, String],
+        "default": 560
+      },
+      accept: {
+        type: String,
+        "default": ""
+      },
+      multiple: {
+        type: Boolean,
+        "default": true
+      },
+      maxSize: {
+        type: Number,
+        "default": 0
+      },
+      showUpload: {
+        type: Boolean,
+        "default": true
+      },
+      showPreview: {
+        type: Boolean,
+        "default": true
+      },
+      download: {
+        type: Boolean,
+        "default": true
+      },
+      disabled: {
+        type: Boolean,
+        "default": false
+      },
+      readonly: {
+        type: Boolean,
+        "default": false
+      },
+      uploadRequest: Function
+    },
+    emits: ["update:modelValue", "update:folders", "change", "select", "preview", "download", "upload", "remove", "error", "folder-change", "folder-create", "folder-rename", "folder-remove"],
+    data: function data() {
+      return {
+        rootFolderId: ROOT_FOLDER_ID,
+        localFiles: this.normalizeFiles(this.modelValue),
+        localFolders: this.normalizeFolders(this.folders),
+        activeFolderId: ROOT_FOLDER_ID,
+        selectedFileId: "",
+        keyword: "",
+        idSeed: 0,
+        folderDialogVisible: false,
+        folderDialogError: "",
+        folderName: "",
+        folderDialogMode: "create",
+        folderTargetId: ROOT_FOLDER_ID,
+        folderDeleteDialogVisible: false,
+        folderToDelete: null,
+        renameDialogVisible: false,
+        renameDialogError: "",
+        renameValue: "",
+        moveDialogVisible: false,
+        targetFolderId: ROOT_FOLDER_ID,
+        textContent: "",
+        textError: "",
+        textLoading: false,
+        requestSeed: 0,
+        requestController: null
+      };
+    },
+    computed: {
+      isDisabled: function isDisabled() {
+        return this.disabled || this.readonly;
+      },
+      treeProps: function treeProps() {
+        return {
+          label: "name",
+          children: "children"
+        };
+      },
+      folderTree: function folderTree() {
+        var nodes = {};
+        var root = [];
+        this.localFolders.forEach(function (folder) {
+          nodes[folder.id] = _objectSpread$4(_objectSpread$4({}, folder), {}, {
+            children: []
+          });
+        });
+        Object.values(nodes).forEach(function (folder) {
+          if (folder.parentId && nodes[folder.parentId]) {
+            nodes[folder.parentId].children.push(folder);
+          } else {
+            root.push(folder);
+          }
+        });
+        return root;
+      },
+      activeFolderName: function activeFolderName() {
+        var _this = this;
+        if (this.activeFolderId === ROOT_FOLDER_ID) return this.rootLabel;
+        return (this.localFolders.find(function (folder) {
+          return folder.id === _this.activeFolderId;
+        }) || {}).name || this.rootLabel;
+      },
+      folderDialogTitle: function folderDialogTitle() {
+        return this.folderDialogMode === "rename" ? "重命名文件夹" : "新建文件夹";
+      },
+      rootFilesCount: function rootFilesCount() {
+        return this.localFiles.filter(function (file) {
+          return file.folderId === ROOT_FOLDER_ID;
+        }).length;
+      },
+      visibleFiles: function visibleFiles() {
+        var _this2 = this;
+        var keyword = this.keyword.trim().toLowerCase();
+        return this.localFiles.filter(function (file) {
+          var sameFolder = file.folderId === _this2.activeFolderId;
+          return sameFolder && (!keyword || file.name.toLowerCase().includes(keyword));
+        });
+      },
+      selectedFile: function selectedFile() {
+        var _this3 = this;
+        return this.localFiles.find(function (file) {
+          return file.id === _this3.selectedFileId;
+        }) || null;
+      },
+      workspaceStyle: function workspaceStyle() {
+        var height = typeof this.height === "number" ? "".concat(this.height, "px") : this.height;
+        return {
+          minHeight: height
+        };
+      },
+      previewHeight: function previewHeight() {
+        if (typeof this.height === "number") return Math.max(this.height - 54, 280);
+        return this.height;
+      },
+      previewContentStyle: function previewContentStyle() {
+        var height = typeof this.previewHeight === "number" ? "".concat(this.previewHeight, "px") : this.previewHeight;
+        return {
+          minHeight: height
+        };
+      },
+      downloadable: function downloadable() {
+        return this.download && this.selectedFile && Boolean(this.selectedFile.url || this.selectedFile.downloadUrl);
+      }
+    },
+    watch: {
+      modelValue: {
+        deep: true,
+        handler: function handler(value) {
+          this.syncFiles(value);
+        }
+      },
+      folders: {
+        deep: true,
+        handler: function handler(value) {
+          var _this4 = this;
+          this.localFolders = this.normalizeFolders(value);
+          if (this.activeFolderId !== ROOT_FOLDER_ID && !this.localFolders.some(function (folder) {
+            return folder.id === _this4.activeFolderId;
+          })) {
+            this.selectFolder(ROOT_FOLDER_ID);
+          }
+        }
+      },
+      selectedFile: {
+        immediate: true,
+        handler: function handler(file) {
+          this.loadTextContent(file);
+        }
+      }
+    },
+    beforeUnmount: function beforeUnmount() {
+      var _this5 = this;
+      this.abortTextRequest();
+      this.localFiles.forEach(function (file) {
+        return _this5.revokeObjectUrl(file);
+      });
+    },
+    methods: {
+      createLocalId: function createLocalId(prefix) {
+        var seed = Number(this.idSeed) || 0;
+        this.idSeed = seed + 1;
+        return "".concat(prefix, "_").concat(Date.now(), "_").concat(this.idSeed);
+      },
+      normalizeFiles: function normalizeFiles(files) {
+        var _this6 = this;
+        var previousFiles = Array.isArray(this.localFiles) ? this.localFiles : [];
+        return (Array.isArray(files) ? files : []).map(function (file) {
+          var value = file || {};
+          var id = value.id || value.uid || _this6.createLocalId("file");
+          var previous = previousFiles.find(function (item) {
+            return item.id === id && item.url === value.url;
+          });
+          return _objectSpread$4(_objectSpread$4({}, value), {}, {
+            id: id,
+            name: value.name || _this6.getFileName(value.url) || "未命名文件",
+            url: value.url || value.downloadUrl || "",
+            folderId: value.folderId || ROOT_FOLDER_ID,
+            status: value.status || "success",
+            _objectUrl: previous && previous._objectUrl
+          });
+        });
+      },
+      normalizeFolders: function normalizeFolders(folders) {
+        var _this7 = this;
+        var result = [];
+        var _append = function append(items) {
+          var parentId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+          (Array.isArray(items) ? items : []).forEach(function (folder) {
+            var value = folder || {};
+            var id = value.id || _this7.createLocalId("folder");
+            result.push(_objectSpread$4(_objectSpread$4({}, value), {}, {
+              id: id,
+              name: value.name || "未命名文件夹",
+              parentId: value.parentId || parentId || ""
+            }));
+            if (value.children) _append(value.children, id);
+          });
+        };
+        _append(folders);
+        return result;
+      },
+      syncFiles: function syncFiles(files) {
+        var _this8 = this;
+        var nextFiles = this.normalizeFiles(files);
+        this.localFiles.forEach(function (file) {
+          if (!nextFiles.some(function (next) {
+            return next.id === file.id && next.url === file.url;
+          })) {
+            _this8.revokeObjectUrl(file);
+          }
+        });
+        this.localFiles = nextFiles;
+        if (this.selectedFileId && !this.selectedFile) this.selectedFileId = "";
+      },
+      toExternalFile: function toExternalFile(file) {
+        file._objectUrl;
+          var value = _objectWithoutProperties(file, _excluded$1);
+        return _objectSpread$4({}, value);
+      },
+      emitFiles: function emitFiles() {
+        var _this9 = this;
+        var files = this.localFiles.map(function (file) {
+          return _this9.toExternalFile(file);
+        });
+        this.$emit("update:modelValue", files);
+        this.$emit("change", files);
+      },
+      emitFolders: function emitFolders() {
+        var folders = this.localFolders.map(function (_ref) {
+          _ref.children;
+            var folder = _objectWithoutProperties(_ref, _excluded2);
+          return _objectSpread$4({}, folder);
+        });
+        this.$emit("update:folders", folders);
+      },
+      selectFolder: function selectFolder(id) {
+        var _this10 = this;
+        this.activeFolderId = id;
+        this.selectedFileId = "";
+        this.$emit("folder-change", id);
+        this.$nextTick(function () {
+          if (_this10.$refs.folderTree && id !== ROOT_FOLDER_ID) _this10.$refs.folderTree.setCurrentKey(id);
+        });
+      },
+      handleFolderClick: function handleFolderClick(folder) {
+        this.selectFolder(folder.id);
+      },
+      handleRootCommand: function handleRootCommand(command) {
+        if (command === "create") this.openCreateFolder(ROOT_FOLDER_ID);
+      },
+      handleFolderCommand: function handleFolderCommand(command, folder) {
+        this.selectFolder(folder.id);
+        if (command === "create") {
+          this.openCreateFolder(folder.id);
+        } else if (command === "rename") {
+          this.openRenameFolder(folder);
+        } else if (command === "remove") {
+          this.openRemoveFolder(folder);
+        }
+      },
+      getFolderFileCount: function getFolderFileCount(folderId) {
+        return this.localFiles.filter(function (file) {
+          return file.folderId === folderId;
+        }).length;
+      },
+      getFolderPath: function getFolderPath(folderId) {
+        var path = [];
+        var folder = this.localFolders.find(function (item) {
+          return item.id === folderId;
+        });
+        var visited = new Set();
+        while (folder && !visited.has(folder.id)) {
+          visited.add(folder.id);
+          path.unshift(folder.name);
+          folder = this.localFolders.find(function (item) {
+            return item.id === folder.parentId;
+          });
+        }
+        return path.join(" / ");
+      },
+      selectFiles: function selectFiles() {
+        if (this.isDisabled || !this.$refs.fileInput) return;
+        this.$refs.fileInput.click();
+      },
+      handleNativeFileChange: function handleNativeFileChange(event) {
+        var _this11 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          var files, _i, _files, file;
+          return _regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                files = Array.from(event.target.files || []);
+                event.target.value = "";
+                _i = 0, _files = files;
+              case 3:
+                if (!(_i < _files.length)) {
+                  _context.next = 10;
+                  break;
+                }
+                file = _files[_i];
+                _context.next = 7;
+                return _this11.addFile(file);
+              case 7:
+                _i++;
+                _context.next = 3;
+                break;
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        }))();
+      },
+      addFile: function addFile(rawFile) {
+        var _this12 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+          var error, objectUrl, entry, result, data, target, _target;
+          return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(_this12.maxSize > 0 && rawFile.size > _this12.maxSize * 1024 * 1024)) {
+                  _context2.next = 4;
+                  break;
+                }
+                error = new Error("".concat(rawFile.name, " \u8D85\u8FC7 ").concat(_this12.maxSize, "MB \u9650\u5236"));
+                _this12.$emit("error", error, rawFile);
+                return _context2.abrupt("return");
+              case 4:
+                objectUrl = typeof URL !== "undefined" && URL.createObjectURL ? URL.createObjectURL(rawFile) : "";
+                entry = {
+                  id: _this12.createLocalId("file"),
+                  name: rawFile.name,
+                  size: rawFile.size,
+                  type: rawFile.type,
+                  url: objectUrl,
+                  folderId: _this12.activeFolderId,
+                  status: _this12.uploadRequest ? "uploading" : "success",
+                  _objectUrl: objectUrl
+                };
+                _this12.localFiles.push(entry);
+                _this12.selectedFileId = entry.id;
+                _this12.emitFiles();
+                _this12.$emit("upload", rawFile, _this12.toExternalFile(entry));
+                if (!(typeof _this12.uploadRequest !== "function")) {
+                  _context2.next = 12;
+                  break;
+                }
+                return _context2.abrupt("return");
+              case 12:
+                _context2.prev = 12;
+                _context2.next = 15;
+                return _this12.uploadRequest(rawFile, {
+                  folderId: _this12.activeFolderId,
+                  file: _this12.toExternalFile(entry)
+                });
+              case 15:
+                result = _context2.sent;
+                data = typeof result === "string" ? {
+                  url: result
+                } : result || {};
+                target = _this12.localFiles.find(function (file) {
+                  return file.id === entry.id;
+                });
+                if (target) {
+                  _context2.next = 20;
+                  break;
+                }
+                return _context2.abrupt("return");
+              case 20:
+                if (data.url && data.url !== target.url) _this12.revokeObjectUrl(target);
+                Object.assign(target, data, {
+                  status: data.status || "success",
+                  _objectUrl: data.url ? "" : target._objectUrl
+                });
+                _this12.emitFiles();
+                _context2.next = 30;
+                break;
+              case 25:
+                _context2.prev = 25;
+                _context2.t0 = _context2["catch"](12);
+                _target = _this12.localFiles.find(function (file) {
+                  return file.id === entry.id;
+                });
+                if (_target) {
+                  _target.status = "error";
+                  _target.errorMessage = _context2.t0.message || "上传失败";
+                  _this12.emitFiles();
+                }
+                _this12.$emit("error", _context2.t0, rawFile);
+              case 30:
+              case "end":
+                return _context2.stop();
+            }
+          }, _callee2, null, [[12, 25]]);
+        }))();
+      },
+      revokeObjectUrl: function revokeObjectUrl(file) {
+        if (file && file._objectUrl && typeof URL !== "undefined" && URL.revokeObjectURL) {
+          URL.revokeObjectURL(file._objectUrl);
+          file._objectUrl = "";
+        }
+      },
+      selectFile: function selectFile(file) {
+        this.selectedFileId = file.id;
+        this.$emit("select", this.toExternalFile(file));
+      },
+      previewFile: function previewFile(file) {
+        this.selectFile(file);
+        this.$emit("preview", this.toExternalFile(file));
+      },
+      handleFileCommand: function handleFileCommand(command, file) {
+        this.selectFile(file);
+        if (command === "preview") {
+          this.previewFile(file);
+        } else if (command === "move") {
+          this.openMoveDialog();
+        } else if (command === "rename") {
+          this.openRenameDialog();
+        } else if (command === "remove") {
+          this.removeSelectedFile();
+        }
+      },
+      removeSelectedFile: function removeSelectedFile() {
+        if (!this.selectedFile || this.isDisabled) return;
+        var file = this.selectedFile;
+        this.localFiles = this.localFiles.filter(function (item) {
+          return item.id !== file.id;
+        });
+        this.revokeObjectUrl(file);
+        this.selectedFileId = "";
+        this.emitFiles();
+        this.$emit("remove", this.toExternalFile(file));
+      },
+      canRemoveFolder: function canRemoveFolder(folder) {
+        if (!folder || !folder.id) return false;
+        var hasChildren = this.localFolders.some(function (item) {
+          return item.parentId === folder.id;
+        });
+        var hasFiles = this.localFiles.some(function (file) {
+          return file.folderId === folder.id;
+        });
+        return !hasChildren && !hasFiles;
+      },
+      openCreateFolder: function openCreateFolder() {
+        var parentId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.activeFolderId;
+        if (this.isDisabled) return;
+        this.folderDialogMode = "create";
+        this.folderTargetId = parentId || ROOT_FOLDER_ID;
+        this.folderName = "";
+        this.folderDialogError = "";
+        this.folderDialogVisible = true;
+      },
+      openRenameFolder: function openRenameFolder(folder) {
+        if (!folder || this.isDisabled) return;
+        this.folderDialogMode = "rename";
+        this.folderTargetId = folder.id;
+        this.folderName = folder.name;
+        this.folderDialogError = "";
+        this.folderDialogVisible = true;
+      },
+      saveFolder: function saveFolder() {
+        var _this13 = this;
+        var name = this.folderName.trim();
+        if (!name) {
+          this.folderDialogError = "请输入文件夹名称";
+          return;
+        }
+        var target = this.localFolders.find(function (folder) {
+          return folder.id === _this13.folderTargetId;
+        });
+        var parentId = this.folderDialogMode === "rename" ? target && target.parentId || "" : this.folderTargetId === ROOT_FOLDER_ID ? "" : this.folderTargetId;
+        var duplicated = this.localFolders.some(function (folder) {
+          return folder.id !== _this13.folderTargetId && folder.parentId === parentId && folder.name === name;
+        });
+        if (duplicated) {
+          this.folderDialogError = "同一层级下已存在同名文件夹";
+          return;
+        }
+        if (this.folderDialogMode === "rename") {
+          if (!target) return;
+          target.name = name;
+          this.folderDialogVisible = false;
+          this.emitFolders();
+          this.$emit("folder-rename", _objectSpread$4({}, target));
+          return;
+        }
+        var folder = {
+          id: this.createLocalId("folder"),
+          name: name,
+          parentId: parentId
+        };
+        this.localFolders.push(folder);
+        this.folderDialogVisible = false;
+        this.emitFolders();
+        this.$emit("folder-create", _objectSpread$4({}, folder));
+        this.selectFolder(folder.id);
+      },
+      openRemoveFolder: function openRemoveFolder(folder) {
+        if (this.isDisabled || !this.canRemoveFolder(folder)) return;
+        this.folderToDelete = folder;
+        this.folderDeleteDialogVisible = true;
+      },
+      removeFolder: function removeFolder() {
+        var folder = this.folderToDelete;
+        if (!folder || !this.canRemoveFolder(folder)) return;
+        var nextFolderId = folder.parentId || ROOT_FOLDER_ID;
+        this.localFolders = this.localFolders.filter(function (item) {
+          return item.id !== folder.id;
+        });
+        this.folderDeleteDialogVisible = false;
+        this.folderToDelete = null;
+        this.emitFolders();
+        this.$emit("folder-remove", _objectSpread$4({}, folder));
+        if (this.activeFolderId === folder.id) this.selectFolder(nextFolderId);
+      },
+      openRenameDialog: function openRenameDialog() {
+        if (!this.selectedFile || this.isDisabled) return;
+        this.renameValue = this.selectedFile.name;
+        this.renameDialogError = "";
+        this.renameDialogVisible = true;
+      },
+      renameFile: function renameFile() {
+        var _this14 = this;
+        var name = this.renameValue.trim();
+        if (!name) {
+          this.renameDialogError = "请输入文件名称";
+          return;
+        }
+        var duplicated = this.localFiles.some(function (file) {
+          return file.id !== _this14.selectedFile.id && file.folderId === _this14.selectedFile.folderId && file.name === name;
+        });
+        if (duplicated) {
+          this.renameDialogError = "当前文件夹已存在同名文件";
+          return;
+        }
+        this.selectedFile.name = name;
+        this.renameDialogVisible = false;
+        this.emitFiles();
+      },
+      openMoveDialog: function openMoveDialog() {
+        if (!this.selectedFile || this.isDisabled) return;
+        this.targetFolderId = this.selectedFile.folderId || ROOT_FOLDER_ID;
+        this.moveDialogVisible = true;
+      },
+      moveFile: function moveFile() {
+        if (!this.selectedFile) return;
+        var fileId = this.selectedFile.id;
+        this.selectedFile.folderId = this.targetFolderId;
+        this.moveDialogVisible = false;
+        this.emitFiles();
+        this.selectFolder(this.targetFolderId);
+        this.selectedFileId = fileId;
+      },
+      getFileName: function getFileName(url) {
+        if (!url) return "";
+        return url.split("?")[0].split("/").pop() || "";
+      },
+      getFileExtension: function getFileExtension(file) {
+        var name = file && (file.name || file.url) || "";
+        var extension = name.split("?")[0].split(".").pop();
+        return extension && extension !== name ? extension.toLowerCase() : "";
+      },
+      getFileKind: function getFileKind(file) {
+        var type = String(file && file.type || "").toLowerCase();
+        var extension = this.getFileExtension(file);
+        if (type.startsWith("image/") || IMAGE_EXTENSIONS.includes(extension)) return "image";
+        if (type.startsWith("video/") || VIDEO_EXTENSIONS.includes(extension)) return "video";
+        if (type.startsWith("audio/") || AUDIO_EXTENSIONS.includes(extension)) return "audio";
+        if (type === "application/pdf" || extension === "pdf") return "pdf";
+        if (type.startsWith("text/") || TEXT_EXTENSIONS.includes(extension)) return "text";
+        return "file";
+      },
+      formatSize: function formatSize(size) {
+        var value = Number(size);
+        if (!Number.isFinite(value) || value < 0) return "";
+        if (value < 1024) return "".concat(value, " B");
+        if (value < 1024 * 1024) return "".concat((value / 1024).toFixed(1), " KB");
+        if (value < 1024 * 1024 * 1024) return "".concat((value / 1024 / 1024).toFixed(1), " MB");
+        return "".concat((value / 1024 / 1024 / 1024).toFixed(1), " GB");
+      },
+      abortTextRequest: function abortTextRequest() {
+        if (this.requestController) {
+          this.requestController.abort();
+          this.requestController = null;
+        }
+      },
+      loadTextContent: function loadTextContent(file) {
+        var _this15 = this;
+        return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee3() {
+          var requestId, controller, response, content;
+          return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+            while (1) switch (_context3.prev = _context3.next) {
+              case 0:
+                _this15.abortTextRequest();
+                _this15.textContent = "";
+                _this15.textError = "";
+                _this15.textLoading = false;
+                if (!(!file || _this15.getFileKind(file) !== "text")) {
+                  _context3.next = 6;
+                  break;
+                }
+                return _context3.abrupt("return");
+              case 6:
+                if (!(file.content !== undefined && file.content !== null)) {
+                  _context3.next = 9;
+                  break;
+                }
+                _this15.textContent = String(file.content);
+                return _context3.abrupt("return");
+              case 9:
+                if (!(!file.url || typeof fetch !== "function")) {
+                  _context3.next = 11;
+                  break;
+                }
+                return _context3.abrupt("return");
+              case 11:
+                requestId = ++_this15.requestSeed;
+                controller = new AbortController();
+                _this15.requestController = controller;
+                _this15.textLoading = true;
+                _context3.prev = 15;
+                _context3.next = 18;
+                return fetch(file.url, {
+                  signal: controller.signal
+                });
+              case 18:
+                response = _context3.sent;
+                if (response.ok) {
+                  _context3.next = 21;
+                  break;
+                }
+                throw new Error("\u8BF7\u6C42\u5931\u8D25\uFF08".concat(response.status, "\uFF09"));
+              case 21:
+                _context3.next = 23;
+                return response.text();
+              case 23:
+                content = _context3.sent;
+                if (!(requestId !== _this15.requestSeed)) {
+                  _context3.next = 26;
+                  break;
+                }
+                return _context3.abrupt("return");
+              case 26:
+                _this15.textContent = content;
+                _context3.next = 35;
+                break;
+              case 29:
+                _context3.prev = 29;
+                _context3.t0 = _context3["catch"](15);
+                if (!(_context3.t0.name === "AbortError" || requestId !== _this15.requestSeed)) {
+                  _context3.next = 33;
+                  break;
+                }
+                return _context3.abrupt("return");
+              case 33:
+                _this15.textError = _context3.t0.message || "无法读取文件内容";
+                _this15.$emit("error", _context3.t0, file);
+              case 35:
+                _context3.prev = 35;
+                if (requestId === _this15.requestSeed) {
+                  _this15.textLoading = false;
+                  _this15.requestController = null;
+                }
+                return _context3.finish(35);
+              case 38:
+              case "end":
+                return _context3.stop();
+            }
+          }, _callee3, null, [[15, 29, 35, 38]]);
+        }))();
+      },
+      downloadSelected: function downloadSelected() {
+        if (!this.selectedFile || !this.downloadable) return;
+        var link = document.createElement("a");
+        link.href = this.selectedFile.downloadUrl || this.selectedFile.url;
+        link.download = this.selectedFile.name || "";
+        link.rel = "noopener";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        this.$emit("download", this.toExternalFile(this.selectedFile));
+      },
+      handlePreviewError: function handlePreviewError(error) {
+        this.$emit("error", error, this.selectedFile ? this.toExternalFile(this.selectedFile) : null);
+      }
+    }
+  });
+
+  var _hoisted_1$o = ["accept", "multiple", "disabled"];
+  var _hoisted_2$o = ["onClick", "onDblclick", "onKeyup"];
+  var _hoisted_3$n = ["title"];
+  var _hoisted_4$m = ["src"];
+  var _hoisted_5$k = ["src"];
+  var _hoisted_6$h = ["src", "title"];
+  var _hoisted_7$e = {
+    key: 2
+  };
+  function render$p(_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_el_icon_upload = vue.resolveComponent("el-icon-upload");
+    var _component_el_icon = vue.resolveComponent("el-icon");
+    var _component_el_button = vue.resolveComponent("el-button");
+    var _component_el_icon_folder_add = vue.resolveComponent("el-icon-folder-add");
+    var _component_el_icon_search = vue.resolveComponent("el-icon-search");
+    var _component_el_input = vue.resolveComponent("el-input");
+    var _component_el_icon_folder_opened = vue.resolveComponent("el-icon-folder-opened");
+    var _component_el_icon_more_filled = vue.resolveComponent("el-icon-more-filled");
+    var _component_el_dropdown_item = vue.resolveComponent("el-dropdown-item");
+    var _component_el_dropdown_menu = vue.resolveComponent("el-dropdown-menu");
+    var _component_el_dropdown = vue.resolveComponent("el-dropdown");
+    var _component_el_tree = vue.resolveComponent("el-tree");
+    var _component_el_scrollbar = vue.resolveComponent("el-scrollbar");
+    var _component_el_empty = vue.resolveComponent("el-empty");
+    var _component_el_icon_picture = vue.resolveComponent("el-icon-picture");
+    var _component_el_icon_video_play = vue.resolveComponent("el-icon-video-play");
+    var _component_el_icon_headset = vue.resolveComponent("el-icon-headset");
+    var _component_el_icon_document = vue.resolveComponent("el-icon-document");
+    var _component_el_icon_files = vue.resolveComponent("el-icon-files");
+    var _component_el_icon_download = vue.resolveComponent("el-icon-download");
+    var _component_el_image = vue.resolveComponent("el-image");
+    var _component_el_skeleton = vue.resolveComponent("el-skeleton");
+    var _component_el_result = vue.resolveComponent("el-result");
+    var _component_el_form_item = vue.resolveComponent("el-form-item");
+    var _component_el_form = vue.resolveComponent("el-form");
+    var _component_el_dialog = vue.resolveComponent("el-dialog");
+    var _component_el_option = vue.resolveComponent("el-option");
+    var _component_el_select = vue.resolveComponent("el-select");
+    return vue.openBlock(), vue.createElementBlock("section", {
+      "class": vue.normalizeClass(_ctx.b())
+    }, [vue.createElementVNode("header", {
+      "class": vue.normalizeClass(_ctx.b('toolbar'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('toolbar-left'))
+    }, [_ctx.showUpload ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+      key: 0,
+      type: "primary",
+      disabled: _ctx.isDisabled,
+      onClick: _ctx.selectFiles
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_upload)];
+          }),
+          _: 1 /* STABLE */
+        }), _cache[26] || (_cache[26] = vue.createTextVNode(" 上传文件 "))];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"])) : vue.createCommentVNode("v-if", true), vue.createVNode(_component_el_button, {
+      disabled: _ctx.isDisabled,
+      onClick: _ctx.openCreateFolder
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_folder_add)];
+          }),
+          _: 1 /* STABLE */
+        }), _cache[27] || (_cache[27] = vue.createTextVNode(" 新建文件夹 "))];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"]), vue.createVNode(_component_el_button, {
+      disabled: _ctx.isDisabled || !_ctx.selectedFile,
+      onClick: _ctx.openMoveDialog
+    }, {
+      "default": vue.withCtx(function () {
+        return _cache[28] || (_cache[28] = [vue.createTextVNode(" 移动 ")]);
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"]), vue.createVNode(_component_el_button, {
+      disabled: _ctx.isDisabled || !_ctx.selectedFile,
+      onClick: _ctx.openRenameDialog
+    }, {
+      "default": vue.withCtx(function () {
+        return _cache[29] || (_cache[29] = [vue.createTextVNode(" 重命名 ")]);
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"]), vue.createVNode(_component_el_button, {
+      type: "danger",
+      disabled: _ctx.isDisabled || !_ctx.selectedFile,
+      onClick: _ctx.removeSelectedFile
+    }, {
+      "default": vue.withCtx(function () {
+        return _cache[30] || (_cache[30] = [vue.createTextVNode(" 删除 ")]);
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["disabled", "onClick"])], 2 /* CLASS */), vue.createVNode(_component_el_input, {
+      modelValue: _ctx.keyword,
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+        return _ctx.keyword = $event;
+      }),
+      clearable: "",
+      "class": vue.normalizeClass(_ctx.b('search')),
+      placeholder: "搜索当前文件夹"
+    }, {
+      prefix: vue.withCtx(function () {
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_search)];
+          }),
+          _: 1 /* STABLE */
+        })];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["modelValue", "class"])], 2 /* CLASS */), vue.createElementVNode("input", {
+      ref: "fileInput",
+      accept: _ctx.accept,
+      multiple: _ctx.multiple,
+      type: "file",
+      disabled: _ctx.isDisabled,
+      "class": vue.normalizeClass(_ctx.b('native-input')),
+      onChange: _cache[1] || (_cache[1] = function () {
+        return _ctx.handleNativeFileChange && _ctx.handleNativeFileChange.apply(_ctx, arguments);
+      })
+    }, null, 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_1$o), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('workspace')),
+      style: vue.normalizeStyle(_ctx.workspaceStyle)
+    }, [vue.createElementVNode("aside", {
+      "class": vue.normalizeClass(_ctx.b('folders'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('folder-title'))
+    }, "文件夹", 2 /* CLASS */), vue.createVNode(_component_el_scrollbar, null, {
+      "default": vue.withCtx(function () {
+        return [vue.createElementVNode("div", {
+          "class": vue.normalizeClass([_ctx.b('root'), {
+            'is-active': _ctx.activeFolderId === _ctx.rootFolderId
+          }]),
+          role: "button",
+          tabindex: "0",
+          onClick: _cache[4] || (_cache[4] = function ($event) {
+            return _ctx.selectFolder(_ctx.rootFolderId);
+          }),
+          onKeyup: _cache[5] || (_cache[5] = vue.withKeys(function ($event) {
+            return _ctx.selectFolder(_ctx.rootFolderId);
+          }, ["enter"]))
+        }, [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_folder_opened)];
+          }),
+          _: 1 /* STABLE */
+        }), vue.createElementVNode("span", null, vue.toDisplayString(_ctx.rootLabel), 1 /* TEXT */), vue.createElementVNode("em", null, vue.toDisplayString(_ctx.rootFilesCount), 1 /* TEXT */), vue.createVNode(_component_el_dropdown, {
+          "class": vue.normalizeClass(_ctx.b('root-menu')),
+          disabled: _ctx.isDisabled,
+          trigger: "click",
+          onCommand: _ctx.handleRootCommand,
+          onClick: _cache[3] || (_cache[3] = vue.withModifiers(function () {}, ["stop"]))
+        }, {
+          dropdown: vue.withCtx(function () {
+            return [vue.createVNode(_component_el_dropdown_menu, null, {
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_dropdown_item, {
+                  command: "create",
+                  disabled: _ctx.isDisabled
+                }, {
+                  "default": vue.withCtx(function () {
+                    return _cache[31] || (_cache[31] = [vue.createTextVNode("新建文件夹")]);
+                  }),
+                  _: 1 /* STABLE */
+                }, 8 /* PROPS */, ["disabled"])];
+              }),
+              _: 1 /* STABLE */
+            })];
+          }),
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_button, {
+              text: "",
+              circle: "",
+              disabled: _ctx.isDisabled,
+              "aria-label": "根目录操作菜单",
+              onClick: _cache[2] || (_cache[2] = vue.withModifiers(function () {}, ["stop"]))
+            }, {
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_icon, null, {
+                  "default": vue.withCtx(function () {
+                    return [vue.createVNode(_component_el_icon_more_filled)];
+                  }),
+                  _: 1 /* STABLE */
+                })];
+              }),
+              _: 1 /* STABLE */
+            }, 8 /* PROPS */, ["disabled"])];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["class", "disabled", "onCommand"])], 34 /* CLASS, NEED_HYDRATION */), vue.createVNode(_component_el_tree, {
+          ref: "folderTree",
+          data: _ctx.folderTree,
+          props: _ctx.treeProps,
+          "node-key": "id",
+          "highlight-current": "",
+          "current-node-key": _ctx.activeFolderId,
+          "expand-on-click-node": false,
+          onNodeClick: _ctx.handleFolderClick
+        }, {
+          "default": vue.withCtx(function (_ref) {
+            var data = _ref.data;
+            return [vue.createElementVNode("span", {
+              "class": vue.normalizeClass(_ctx.b('folder-node'))
+            }, [vue.createElementVNode("span", null, vue.toDisplayString(data.name), 1 /* TEXT */), vue.createElementVNode("em", null, vue.toDisplayString(_ctx.getFolderFileCount(data.id)), 1 /* TEXT */), vue.createVNode(_component_el_dropdown, {
+              "class": vue.normalizeClass(_ctx.b('folder-menu')),
+              disabled: _ctx.isDisabled,
+              trigger: "click",
+              onCommand: function onCommand($event) {
+                return _ctx.handleFolderCommand($event, data);
+              },
+              onClick: _cache[7] || (_cache[7] = vue.withModifiers(function () {}, ["stop"]))
+            }, {
+              dropdown: vue.withCtx(function () {
+                return [vue.createVNode(_component_el_dropdown_menu, null, {
+                  "default": vue.withCtx(function () {
+                    return [vue.createVNode(_component_el_dropdown_item, {
+                      command: "create",
+                      disabled: _ctx.isDisabled
+                    }, {
+                      "default": vue.withCtx(function () {
+                        return _cache[32] || (_cache[32] = [vue.createTextVNode("新建子文件夹")]);
+                      }),
+                      _: 1 /* STABLE */
+                    }, 8 /* PROPS */, ["disabled"]), vue.createVNode(_component_el_dropdown_item, {
+                      command: "rename",
+                      disabled: _ctx.isDisabled
+                    }, {
+                      "default": vue.withCtx(function () {
+                        return _cache[33] || (_cache[33] = [vue.createTextVNode("重命名")]);
+                      }),
+                      _: 1 /* STABLE */
+                    }, 8 /* PROPS */, ["disabled"]), vue.createVNode(_component_el_dropdown_item, {
+                      command: "remove",
+                      divided: "",
+                      disabled: _ctx.isDisabled || !_ctx.canRemoveFolder(data)
+                    }, {
+                      "default": vue.withCtx(function () {
+                        return _cache[34] || (_cache[34] = [vue.createTextVNode("删除")]);
+                      }),
+                      _: 2 /* DYNAMIC */
+                    }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled"])];
+                  }),
+                  _: 2 /* DYNAMIC */
+                }, 1024 /* DYNAMIC_SLOTS */)];
+              }),
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_button, {
+                  text: "",
+                  circle: "",
+                  disabled: _ctx.isDisabled,
+                  "aria-label": "".concat(data.name, " \u64CD\u4F5C\u83DC\u5355"),
+                  onClick: _cache[6] || (_cache[6] = vue.withModifiers(function () {}, ["stop"]))
+                }, {
+                  "default": vue.withCtx(function () {
+                    return [vue.createVNode(_component_el_icon, null, {
+                      "default": vue.withCtx(function () {
+                        return [vue.createVNode(_component_el_icon_more_filled)];
+                      }),
+                      _: 1 /* STABLE */
+                    })];
+                  }),
+                  _: 2 /* DYNAMIC */
+                }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled", "aria-label"])];
+              }),
+              _: 2 /* DYNAMIC */
+            }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["class", "disabled", "onCommand"])], 2 /* CLASS */)];
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["data", "props", "current-node-key", "onNodeClick"])];
+      }),
+      _: 1 /* STABLE */
+    })], 2 /* CLASS */), vue.createElementVNode("main", {
+      "class": vue.normalizeClass(_ctx.b('files'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('files-header'))
+    }, [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.activeFolderName), 1 /* TEXT */), vue.createElementVNode("small", null, vue.toDisplayString(_ctx.visibleFiles.length) + " 个文件", 1 /* TEXT */)], 2 /* CLASS */), vue.createVNode(_component_el_scrollbar, {
+      "class": vue.normalizeClass(_ctx.b('files-scroll'))
+    }, {
+      "default": vue.withCtx(function () {
+        return [!_ctx.visibleFiles.length ? (vue.openBlock(), vue.createBlock(_component_el_empty, {
+          key: 0,
+          description: "当前文件夹暂无文件"
+        })) : (vue.openBlock(), vue.createElementBlock("div", {
+          key: 1,
+          "class": vue.normalizeClass(_ctx.b('grid'))
+        }, [(vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.visibleFiles, function (file) {
+          return vue.openBlock(), vue.createElementBlock("div", {
+            key: file.id,
+            "class": vue.normalizeClass([_ctx.b('file'), {
+              'is-active': file.id === _ctx.selectedFileId
+            }]),
+            role: "button",
+            tabindex: "0",
+            onClick: function onClick($event) {
+              return _ctx.selectFile(file);
+            },
+            onDblclick: function onDblclick($event) {
+              return _ctx.previewFile(file);
+            },
+            onKeyup: vue.withKeys(function ($event) {
+              return _ctx.previewFile(file);
+            }, ["enter"])
+          }, [vue.createVNode(_component_el_dropdown, {
+            "class": vue.normalizeClass(_ctx.b('file-menu')),
+            disabled: _ctx.isDisabled,
+            trigger: "click",
+            onCommand: function onCommand($event) {
+              return _ctx.handleFileCommand($event, file);
+            },
+            onClick: _cache[9] || (_cache[9] = vue.withModifiers(function () {}, ["stop"]))
+          }, {
+            dropdown: vue.withCtx(function () {
+              return [vue.createVNode(_component_el_dropdown_menu, null, {
+                "default": vue.withCtx(function () {
+                  return [vue.createVNode(_component_el_dropdown_item, {
+                    command: "preview"
+                  }, {
+                    "default": vue.withCtx(function () {
+                      return _toConsumableArray(_cache[35] || (_cache[35] = [vue.createTextVNode("预览")]));
+                    }),
+                    _: 1 /* STABLE */
+                  }), vue.createVNode(_component_el_dropdown_item, {
+                    command: "move",
+                    disabled: _ctx.isDisabled
+                  }, {
+                    "default": vue.withCtx(function () {
+                      return _toConsumableArray(_cache[36] || (_cache[36] = [vue.createTextVNode("移动")]));
+                    }),
+                    _: 1 /* STABLE */
+                  }, 8 /* PROPS */, ["disabled"]), vue.createVNode(_component_el_dropdown_item, {
+                    command: "rename",
+                    disabled: _ctx.isDisabled
+                  }, {
+                    "default": vue.withCtx(function () {
+                      return _toConsumableArray(_cache[37] || (_cache[37] = [vue.createTextVNode("重命名")]));
+                    }),
+                    _: 1 /* STABLE */
+                  }, 8 /* PROPS */, ["disabled"]), vue.createVNode(_component_el_dropdown_item, {
+                    command: "remove",
+                    divided: "",
+                    disabled: _ctx.isDisabled
+                  }, {
+                    "default": vue.withCtx(function () {
+                      return _toConsumableArray(_cache[38] || (_cache[38] = [vue.createTextVNode("删除")]));
+                    }),
+                    _: 1 /* STABLE */
+                  }, 8 /* PROPS */, ["disabled"])];
+                }),
+                _: 1 /* STABLE */
+              })];
+            }),
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_button, {
+                text: "",
+                circle: "",
+                disabled: _ctx.isDisabled,
+                "aria-label": "".concat(file.name, " \u64CD\u4F5C\u83DC\u5355"),
+                onClick: _cache[8] || (_cache[8] = vue.withModifiers(function () {}, ["stop"]))
+              }, {
+                "default": vue.withCtx(function () {
+                  return [vue.createVNode(_component_el_icon, null, {
+                    "default": vue.withCtx(function () {
+                      return [vue.createVNode(_component_el_icon_more_filled)];
+                    }),
+                    _: 1 /* STABLE */
+                  })];
+                }),
+                _: 2 /* DYNAMIC */
+              }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["disabled", "aria-label"])];
+            }),
+            _: 2 /* DYNAMIC */
+          }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["class", "disabled", "onCommand"]), vue.createElementVNode("span", {
+            "class": vue.normalizeClass(_ctx.b('file-icon'))
+          }, [_ctx.getFileKind(file) === 'image' ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+            key: 0
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_icon_picture)];
+            }),
+            _: 1 /* STABLE */
+          })) : _ctx.getFileKind(file) === 'video' ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+            key: 1
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_icon_video_play)];
+            }),
+            _: 1 /* STABLE */
+          })) : _ctx.getFileKind(file) === 'audio' ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+            key: 2
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_icon_headset)];
+            }),
+            _: 1 /* STABLE */
+          })) : _ctx.getFileKind(file) === 'pdf' ? (vue.openBlock(), vue.createBlock(_component_el_icon, {
+            key: 3
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_icon_document)];
+            }),
+            _: 1 /* STABLE */
+          })) : (vue.openBlock(), vue.createBlock(_component_el_icon, {
+            key: 4
+          }, {
+            "default": vue.withCtx(function () {
+              return [vue.createVNode(_component_el_icon_files)];
+            }),
+            _: 1 /* STABLE */
+          }))], 2 /* CLASS */), vue.createElementVNode("span", {
+            "class": vue.normalizeClass(_ctx.b('file-name')),
+            title: file.name
+          }, vue.toDisplayString(file.name), 11 /* TEXT, CLASS, PROPS */, _hoisted_3$n), vue.createElementVNode("small", null, vue.toDisplayString(_ctx.formatSize(file.size) || _ctx.getFileExtension(file).toUpperCase() || '文件'), 1 /* TEXT */), file.status === 'uploading' ? (vue.openBlock(), vue.createElementBlock("span", {
+            key: 0,
+            "class": vue.normalizeClass(_ctx.b('file-status'))
+          }, "上传中", 2 /* CLASS */)) : file.status === 'error' ? (vue.openBlock(), vue.createElementBlock("span", {
+            key: 1,
+            "class": vue.normalizeClass([_ctx.b('file-status'), 'is-error'])
+          }, "上传失败", 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_2$o);
+        }), 128 /* KEYED_FRAGMENT */))], 2 /* CLASS */))];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["class"])], 2 /* CLASS */), _ctx.showPreview ? (vue.openBlock(), vue.createElementBlock("aside", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('preview'))
+    }, [_ctx.selectedFile ? (vue.openBlock(), vue.createElementBlock("header", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('preview-toolbar'))
+    }, [vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('preview-meta'))
+    }, [vue.createElementVNode("span", {
+      "class": vue.normalizeClass(_ctx.b('preview-name'))
+    }, vue.toDisplayString(_ctx.selectedFile.name), 3 /* TEXT, CLASS */), _ctx.selectedFile.size ? (vue.openBlock(), vue.createElementBlock("span", {
+      key: 0,
+      "class": vue.normalizeClass(_ctx.b('preview-size'))
+    }, vue.toDisplayString(_ctx.formatSize(_ctx.selectedFile.size)), 3 /* TEXT, CLASS */)) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */), _ctx.downloadable ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+      key: 0,
+      text: "",
+      type: "primary",
+      onClick: _ctx.downloadSelected
+    }, {
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_icon, null, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_icon_download)];
+          }),
+          _: 1 /* STABLE */
+        }), _cache[39] || (_cache[39] = vue.createTextVNode(" 下载 "))];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["onClick"])) : vue.createCommentVNode("v-if", true)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true), vue.createElementVNode("div", {
+      "class": vue.normalizeClass(_ctx.b('preview-content')),
+      style: vue.normalizeStyle(_ctx.previewContentStyle)
+    }, [!_ctx.selectedFile ? (vue.openBlock(), vue.createBlock(_component_el_empty, {
+      key: 0,
+      description: "请选择文件进行预览"
+    })) : _ctx.getFileKind(_ctx.selectedFile) === 'image' ? (vue.openBlock(), vue.createBlock(_component_el_image, {
+      key: 1,
+      src: _ctx.selectedFile.url,
+      "preview-src-list": [_ctx.selectedFile.url],
+      fit: "contain",
+      "class": vue.normalizeClass(_ctx.b('preview-image')),
+      onError: _ctx.handlePreviewError
+    }, null, 8 /* PROPS */, ["src", "preview-src-list", "class", "onError"])) : _ctx.getFileKind(_ctx.selectedFile) === 'video' ? (vue.openBlock(), vue.createElementBlock("video", {
+      key: 2,
+      src: _ctx.selectedFile.url,
+      controls: "",
+      preload: "metadata",
+      "class": vue.normalizeClass(_ctx.b('preview-media')),
+      onError: _cache[10] || (_cache[10] = function () {
+        return _ctx.handlePreviewError && _ctx.handlePreviewError.apply(_ctx, arguments);
+      })
+    }, "当前浏览器不支持视频预览。", 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_4$m)) : _ctx.getFileKind(_ctx.selectedFile) === 'audio' ? (vue.openBlock(), vue.createElementBlock("audio", {
+      key: 3,
+      src: _ctx.selectedFile.url,
+      controls: "",
+      preload: "metadata",
+      "class": vue.normalizeClass(_ctx.b('preview-audio')),
+      onError: _cache[11] || (_cache[11] = function () {
+        return _ctx.handlePreviewError && _ctx.handlePreviewError.apply(_ctx, arguments);
+      })
+    }, "当前浏览器不支持音频预览。", 42 /* CLASS, PROPS, NEED_HYDRATION */, _hoisted_5$k)) : _ctx.getFileKind(_ctx.selectedFile) === 'pdf' ? (vue.openBlock(), vue.createElementBlock("iframe", {
+      key: 4,
+      src: _ctx.selectedFile.url,
+      title: _ctx.selectedFile.name,
+      "class": vue.normalizeClass(_ctx.b('preview-iframe'))
+    }, null, 10 /* CLASS, PROPS */, _hoisted_6$h)) : _ctx.getFileKind(_ctx.selectedFile) === 'text' ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 5,
+      "class": vue.normalizeClass(_ctx.b('preview-text'))
+    }, [_ctx.textLoading ? (vue.openBlock(), vue.createBlock(_component_el_skeleton, {
+      key: 0,
+      animated: "",
+      rows: 8
+    })) : _ctx.textError ? (vue.openBlock(), vue.createBlock(_component_el_result, {
+      key: 1,
+      icon: "error",
+      title: "文本预览失败",
+      "sub-title": _ctx.textError
+    }, {
+      extra: vue.withCtx(function () {
+        return [_ctx.downloadable ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+          key: 0,
+          type: "primary",
+          onClick: _ctx.downloadSelected
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[40] || (_cache[40] = [vue.createTextVNode("下载文件")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])) : vue.createCommentVNode("v-if", true)];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["sub-title"])) : (vue.openBlock(), vue.createElementBlock("pre", _hoisted_7$e, vue.toDisplayString(_ctx.textContent), 1 /* TEXT */))], 2 /* CLASS */)) : (vue.openBlock(), vue.createBlock(_component_el_result, {
+      key: 6,
+      icon: "info",
+      title: "暂不支持在线预览"
+    }, {
+      "sub-title": vue.withCtx(function () {
+        return [vue.createElementVNode("span", null, vue.toDisplayString(_ctx.selectedFile.name) + " 可下载后在本地打开。", 1 /* TEXT */)];
+      }),
+      extra: vue.withCtx(function () {
+        return [_ctx.downloadable ? (vue.openBlock(), vue.createBlock(_component_el_button, {
+          key: 0,
+          type: "primary",
+          onClick: _ctx.downloadSelected
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[41] || (_cache[41] = [vue.createTextVNode("下载文件")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])) : vue.createCommentVNode("v-if", true)];
+      }),
+      _: 1 /* STABLE */
+    }))], 6 /* CLASS, STYLE */)], 2 /* CLASS */)) : vue.createCommentVNode("v-if", true)], 6 /* CLASS, STYLE */), vue.createVNode(_component_el_dialog, {
+      modelValue: _ctx.folderDialogVisible,
+      "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+        return _ctx.folderDialogVisible = $event;
+      }),
+      title: _ctx.folderDialogTitle,
+      width: "400px",
+      "append-to-body": ""
+    }, {
+      footer: vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          onClick: _cache[14] || (_cache[14] = function ($event) {
+            return _ctx.folderDialogVisible = false;
+          })
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[42] || (_cache[42] = [vue.createTextVNode("取消")]);
+          }),
+          _: 1 /* STABLE */
+        }), vue.createVNode(_component_el_button, {
+          type: "primary",
+          onClick: _ctx.saveFolder
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[43] || (_cache[43] = [vue.createTextVNode("确定")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])];
+      }),
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_form, {
+          onSubmit: _cache[13] || (_cache[13] = vue.withModifiers(function () {}, ["prevent"]))
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_form_item, {
+              label: "文件夹名称",
+              error: _ctx.folderDialogError
+            }, {
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_input, {
+                  modelValue: _ctx.folderName,
+                  "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+                    return _ctx.folderName = $event;
+                  }),
+                  maxlength: "50",
+                  "show-word-limit": "",
+                  onKeyup: vue.withKeys(_ctx.saveFolder, ["enter"])
+                }, null, 8 /* PROPS */, ["modelValue", "onKeyup"])];
+              }),
+              _: 1 /* STABLE */
+            }, 8 /* PROPS */, ["error"])];
+          }),
+          _: 1 /* STABLE */
+        })];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["modelValue", "title"]), vue.createVNode(_component_el_dialog, {
+      modelValue: _ctx.folderDeleteDialogVisible,
+      "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
+        return _ctx.folderDeleteDialogVisible = $event;
+      }),
+      title: "删除文件夹",
+      width: "400px",
+      "append-to-body": ""
+    }, {
+      footer: vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          onClick: _cache[16] || (_cache[16] = function ($event) {
+            return _ctx.folderDeleteDialogVisible = false;
+          })
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[44] || (_cache[44] = [vue.createTextVNode("取消")]);
+          }),
+          _: 1 /* STABLE */
+        }), vue.createVNode(_component_el_button, {
+          type: "danger",
+          onClick: _ctx.removeFolder
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[45] || (_cache[45] = [vue.createTextVNode("删除")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])];
+      }),
+      "default": vue.withCtx(function () {
+        return [vue.createElementVNode("p", null, "确定删除文件夹“" + vue.toDisplayString(_ctx.folderToDelete ? _ctx.folderToDelete.name : '') + "”吗？", 1 /* TEXT */)];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["modelValue"]), vue.createVNode(_component_el_dialog, {
+      modelValue: _ctx.renameDialogVisible,
+      "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
+        return _ctx.renameDialogVisible = $event;
+      }),
+      title: "重命名文件",
+      width: "400px",
+      "append-to-body": ""
+    }, {
+      footer: vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          onClick: _cache[20] || (_cache[20] = function ($event) {
+            return _ctx.renameDialogVisible = false;
+          })
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[46] || (_cache[46] = [vue.createTextVNode("取消")]);
+          }),
+          _: 1 /* STABLE */
+        }), vue.createVNode(_component_el_button, {
+          type: "primary",
+          onClick: _ctx.renameFile
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[47] || (_cache[47] = [vue.createTextVNode("确定")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])];
+      }),
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_form, {
+          onSubmit: _cache[19] || (_cache[19] = vue.withModifiers(function () {}, ["prevent"]))
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_form_item, {
+              label: "文件名称",
+              error: _ctx.renameDialogError
+            }, {
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_input, {
+                  modelValue: _ctx.renameValue,
+                  "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
+                    return _ctx.renameValue = $event;
+                  }),
+                  maxlength: "100",
+                  "show-word-limit": "",
+                  onKeyup: vue.withKeys(_ctx.renameFile, ["enter"])
+                }, null, 8 /* PROPS */, ["modelValue", "onKeyup"])];
+              }),
+              _: 1 /* STABLE */
+            }, 8 /* PROPS */, ["error"])];
+          }),
+          _: 1 /* STABLE */
+        })];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["modelValue"]), vue.createVNode(_component_el_dialog, {
+      modelValue: _ctx.moveDialogVisible,
+      "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
+        return _ctx.moveDialogVisible = $event;
+      }),
+      title: "移动文件",
+      width: "400px",
+      "append-to-body": ""
+    }, {
+      footer: vue.withCtx(function () {
+        return [vue.createVNode(_component_el_button, {
+          onClick: _cache[24] || (_cache[24] = function ($event) {
+            return _ctx.moveDialogVisible = false;
+          })
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[48] || (_cache[48] = [vue.createTextVNode("取消")]);
+          }),
+          _: 1 /* STABLE */
+        }), vue.createVNode(_component_el_button, {
+          type: "primary",
+          onClick: _ctx.moveFile
+        }, {
+          "default": vue.withCtx(function () {
+            return _cache[49] || (_cache[49] = [vue.createTextVNode("确定")]);
+          }),
+          _: 1 /* STABLE */
+        }, 8 /* PROPS */, ["onClick"])];
+      }),
+      "default": vue.withCtx(function () {
+        return [vue.createVNode(_component_el_form, {
+          onSubmit: _cache[23] || (_cache[23] = vue.withModifiers(function () {}, ["prevent"]))
+        }, {
+          "default": vue.withCtx(function () {
+            return [vue.createVNode(_component_el_form_item, {
+              label: "目标文件夹"
+            }, {
+              "default": vue.withCtx(function () {
+                return [vue.createVNode(_component_el_select, {
+                  modelValue: _ctx.targetFolderId,
+                  "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
+                    return _ctx.targetFolderId = $event;
+                  }),
+                  filterable: "",
+                  placeholder: "选择文件夹"
+                }, {
+                  "default": vue.withCtx(function () {
+                    return [vue.createVNode(_component_el_option, {
+                      label: _ctx.rootLabel,
+                      value: _ctx.rootFolderId
+                    }, null, 8 /* PROPS */, ["label", "value"]), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.localFolders, function (folder) {
+                      return vue.openBlock(), vue.createBlock(_component_el_option, {
+                        key: folder.id,
+                        label: _ctx.getFolderPath(folder.id),
+                        value: folder.id
+                      }, null, 8 /* PROPS */, ["label", "value"]);
+                    }), 128 /* KEYED_FRAGMENT */))];
+                  }),
+                  _: 1 /* STABLE */
+                }, 8 /* PROPS */, ["modelValue"])];
+              }),
+              _: 1 /* STABLE */
+            })];
+          }),
+          _: 1 /* STABLE */
+        })];
+      }),
+      _: 1 /* STABLE */
+    }, 8 /* PROPS */, ["modelValue"])], 2 /* CLASS */);
+  }
+
   script$p.render = render$p;
-  script$p.__file = "packages/element-plus/iframe/index.vue";
+  script$p.__file = "packages/element-plus/file-manager/index.vue";
 
   var elementComponents = {
-    Arrays: script$s,
-    Article: script$1m,
-    Crud: script$15,
-    Card: script$14,
-    Chat: script$13,
-    Comment: script$12,
-    Form: script$10,
-    Checkbox: script$$,
-    Date: script$_,
-    CountUp: script$1n,
-    Draggable: script$Z,
-    Flow: script$X,
-    Group: script$W,
-    License: script$V,
-    Time: script$U,
-    Input: script$T,
-    Radio: script$S,
-    Select: script$R,
-    Cascader: script$Q,
-    InputColor: script$P,
-    InputNumber: script$O,
-    InputTree: script$N,
-    InputIcon: script$L,
-    InputMap: script$M,
-    InputTag: script$K,
-    InputTable: script$J,
-    InputCron: script$I,
-    InputOtp: script$H,
-    Mention: script$G,
-    Switchs: script$E,
-    Rate: script$D,
-    Upload: script$C,
-    Slider: script$A,
-    Tree: script$z,
-    Title: script$y,
-    Search: script$x,
-    Tabs: script$w,
-    Dynamic: script$v,
-    Video: script$u,
-    Verifys: script$F,
-    textEllipsis: script$r,
-    Sign: script$B,
-    Login: script$t,
-    QRCode: script$q,
-    Iframe: script$p
+    Arrays: script$u,
+    Article: script$1n,
+    Crud: script$16,
+    Chat: script$15,
+    Comment: script$14,
+    Form: script$12,
+    Checkbox: script$11,
+    Date: script$10,
+    CountUp: script$1o,
+    Draggable: script$$,
+    Flow: script$Z,
+    Group: script$Y,
+    License: script$X,
+    Time: script$W,
+    Input: script$V,
+    Radio: script$U,
+    Select: script$T,
+    Cascader: script$S,
+    InputColor: script$R,
+    InputNumber: script$Q,
+    InputTree: script$P,
+    InputIcon: script$N,
+    InputMap: script$O,
+    InputTag: script$M,
+    InputTable: script$L,
+    InputCron: script$K,
+    InputOtp: script$J,
+    Mention: script$I,
+    Switchs: script$G,
+    Rate: script$F,
+    Upload: script$E,
+    Slider: script$C,
+    Tree: script$B,
+    Title: script$A,
+    Search: script$z,
+    Tabs: script$y,
+    Dynamic: script$x,
+    Video: script$w,
+    Captcha: script$H,
+    textEllipsis: script$t,
+    Sign: script$D,
+    Login: script$v,
+    QRCode: script$s,
+    Iframe: script$r,
+    FilterBuilder: script$q,
+    FileManager: script$p
   };
 
   var script$o = create({
@@ -29053,7 +33675,7 @@
   var script$b = create({
     name: "data-statistic",
     components: {
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     data: function data() {
       return {};
@@ -29198,7 +33820,7 @@
   var script$a = create({
     name: "data-weather",
     components: {
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     mixins: [locale],
     data: function data() {
@@ -30172,7 +34794,7 @@
   var script$3 = create({
     name: "data-list",
     components: {
-      iconTemp: script$1b
+      iconTemp: script$1c
     },
     data: function data() {
       return {};
@@ -30453,110 +35075,237 @@
     DataDashboard: script$2
   };
 
-  function ownKeys$2(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-  function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-  var components = _objectSpread$2(_objectSpread$2({}, elementComponents), dataComponents);
+  function ownKeys$3(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var components = _objectSpread$3(_objectSpread$3({}, elementComponents), dataComponents);
 
-  var version = '3.9.3';
+  var version = '3.9.4';
 
-  var contextmenu = (function () {
-    var dialogDom;
-    var _closeDialog;
-    function setupChildMenus(items, currentDialogDom, divTop, clientHeight) {
-      items.forEach(function (ele, i) {
-        var childDom = ele.querySelector('ul');
-        if (!childDom) return;
-        Object.assign(childDom.style, {
-          position: 'absolute',
-          top: '-9999px',
-          width: 'max-content'
-        });
-        if (ele._onEnter) {
-          ele.removeEventListener('mouseenter', ele._onEnter);
-          ele.removeEventListener('mouseleave', ele._onLeave);
-        }
-        ele._onEnter = function () {
-          var calcHeight = clientHeight - (divTop + ele.clientHeight * (i + 1)) - childDom.clientHeight;
-          childDom.style.left = "".concat(currentDialogDom.clientWidth + 1, "px");
-          childDom.style.top = "".concat(calcHeight < 0 ? calcHeight : 0, "px");
-        };
-        ele._onLeave = function () {
-          childDom.style.top = '-9999px';
-        };
-        ele.addEventListener('mouseenter', ele._onEnter);
-        ele.addEventListener('mouseleave', ele._onLeave);
-      });
-    }
-    function setEvent(el, binding) {
-      var dom = document.getElementById(binding.value.id);
-      if (dom) dom.style.display = 'none';
-      el.oncontextmenu = function (e) {
-        e.preventDefault();
-        var _binding$value = binding.value,
-          id = _binding$value.id,
-          event = _binding$value.event,
-          hide = _binding$value.hide,
-          value = _binding$value.value;
-        dialogDom = document.getElementById(id);
-        if (!dialogDom) return;
-        var _document$documentEle = document.documentElement,
-          clientWidth = _document$documentEle.clientWidth,
-          clientHeight = _document$documentEle.clientHeight;
-        var divLeft = e.clientX,
-          divTop = e.clientY;
-        dialogDom.style.display = 'block';
-        var _dialogDom = dialogDom,
-          dialogDomWidth = _dialogDom.offsetWidth,
-          dialogDomHeight = _dialogDom.offsetHeight;
-        if (clientHeight - divTop - dialogDomHeight < 0) {
-          divTop -= dialogDomHeight;
-        }
-        if (clientWidth - divLeft - dialogDomWidth < 0) {
-          divLeft -= dialogDomWidth;
-        }
-        var firstLevelItems = Array.from(dialogDom.querySelectorAll('li')).filter(function (item) {
-          return item.parentNode === dialogDom;
-        });
-        setupChildMenus(firstLevelItems, dialogDom, divTop, clientHeight);
-        if (_closeDialog) {
-          document.removeEventListener('click', _closeDialog);
-        }
-        _closeDialog = function closeDialog() {
-          if (!dialogDom) return;
-          dialogDom.style.display = 'none';
-          hide && hide(value, e);
-          document.removeEventListener('click', _closeDialog);
-          _closeDialog = null;
-        };
-        var showDialog = function showDialog() {
-          if (!dialogDom) return;
-          Object.assign(dialogDom.style, {
-            position: 'fixed',
-            zIndex: 1024,
-            top: "".concat(divTop, "px"),
-            left: "".concat(divLeft, "px")
-          });
-          document.addEventListener('click', _closeDialog);
-        };
-        event ? event(value, showDialog) : showDialog();
-      };
-    }
+  var GUTTER = 8;
+  var stateMap = new WeakMap();
+  var activeState = null;
+  var clamp = function clamp(value, min, max) {
+    var upper = Math.max(min, max);
+    return Math.min(upper, Math.max(min, value));
+  };
+  function getViewport() {
+    var root = document.documentElement;
     return {
-      mounted: function mounted(el, binding) {
-        setEvent(el, binding);
-      },
-      updated: function updated(el, binding) {
-        setEvent(el, binding);
-      },
-      unmounted: function unmounted(el) {
-        el.oncontextmenu = null;
-        if (_closeDialog) {
-          document.removeEventListener('click', _closeDialog);
-          _closeDialog = null;
-        }
+      width: root.clientWidth || window.innerWidth,
+      height: root.clientHeight || window.innerHeight
+    };
+  }
+  function clearSubmenus(state) {
+    state.submenuCleanups.forEach(function (cleanup) {
+      return cleanup();
+    });
+    state.submenuCleanups = [];
+  }
+  function hideSubmenus(dialog) {
+    dialog.querySelectorAll('.avue-contextmenu__submenu').forEach(function (menu) {
+      menu.style.display = 'none';
+      menu.style.visibility = 'hidden';
+    });
+  }
+  function setupSubmenus(state, menu) {
+    var items = Array.from(menu.children).filter(function (item) {
+      return item instanceof HTMLElement && item.tagName === 'LI';
+    });
+    items.forEach(function (item) {
+      var submenu = Array.from(item.children).find(function (child) {
+        return child instanceof HTMLElement && (child.tagName === 'UL' || child.tagName === 'OL');
+      });
+      if (!submenu) return;
+      submenu.classList.add('avue-contextmenu', 'avue-contextmenu__submenu');
+      Object.assign(submenu.style, {
+        position: 'fixed',
+        display: 'none',
+        visibility: 'hidden'
+      });
+      var show = function show() {
+        var viewport = getViewport();
+        var itemRect = item.getBoundingClientRect();
+        submenu.style.display = 'block';
+        submenu.style.visibility = 'hidden';
+        var submenuRect = submenu.getBoundingClientRect();
+        var openLeft = itemRect.right + 4;
+        var left = openLeft + submenuRect.width + GUTTER > viewport.width ? itemRect.left - submenuRect.width - 4 : openLeft;
+        submenu.style.left = "".concat(clamp(left, GUTTER, viewport.width - submenuRect.width - GUTTER), "px");
+        submenu.style.top = "".concat(clamp(itemRect.top, GUTTER, viewport.height - submenuRect.height - GUTTER), "px");
+        submenu.style.visibility = 'visible';
+      };
+      var hide = function hide() {
+        submenu.style.display = 'none';
+        submenu.style.visibility = 'hidden';
+      };
+      item.addEventListener('mouseenter', show);
+      item.addEventListener('mouseleave', hide);
+      state.submenuCleanups.push(function () {
+        item.removeEventListener('mouseenter', show);
+        item.removeEventListener('mouseleave', hide);
+      });
+      setupSubmenus(state, submenu);
+    });
+  }
+  function removeGlobalListeners() {
+    document.removeEventListener('pointerdown', handleDocumentPointerDown, true);
+    document.removeEventListener('keydown', handleDocumentKeydown, true);
+  }
+  function closeActive() {
+    var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'close';
+    var state = activeState;
+    if (!state) return;
+    activeState = null;
+    removeGlobalListeners();
+    clearSubmenus(state);
+    if (state.dialog) {
+      if (state.dialogClick) {
+        state.dialog.removeEventListener('click', state.dialogClick);
+        state.dialogClick = undefined;
+      }
+      state.dialog.style.display = 'none';
+      state.dialog.style.visibility = 'hidden';
+      state.dialog.setAttribute('aria-hidden', 'true');
+    }
+    var _ref = state.binding.value || {},
+      hide = _ref.hide,
+      value = _ref.value;
+    if (hide && state.triggerEvent) hide(value, state.triggerEvent, reason);
+  }
+  function handleDocumentPointerDown(event) {
+    var state = activeState;
+    if (!state || !state.dialog) return;
+    var target = event.target;
+    if (target && (state.dialog.contains(target) || state.el.contains(target))) return;
+    closeActive('outside');
+  }
+  function handleDocumentKeydown(event) {
+    var state = activeState;
+    if (!state || !state.dialog) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeActive('escape');
+      return;
+    }
+    if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key)) return;
+    var items = Array.from(state.dialog.children).filter(function (item) {
+      return item instanceof HTMLElement && item.tagName === 'LI';
+    });
+    if (!items.length) return;
+    event.preventDefault();
+    var currentIndex = items.findIndex(function (item) {
+      return item === document.activeElement;
+    });
+    if (event.key === 'Enter' && currentIndex >= 0) {
+      items[currentIndex].click();
+      return;
+    }
+    var nextIndex = event.key === 'ArrowUp' ? (currentIndex - 1 + items.length) % items.length : (currentIndex + 1) % items.length;
+    items[nextIndex].focus();
+  }
+  function placeDialog(state) {
+    var dialog = state.dialog;
+    var triggerEvent = state.triggerEvent;
+    if (!dialog || !triggerEvent) return;
+    var viewport = getViewport();
+    dialog.classList.add('avue-contextmenu');
+    dialog.setAttribute('role', 'menu');
+    dialog.setAttribute('tabindex', '-1');
+    Object.assign(dialog.style, {
+      position: 'fixed',
+      zIndex: '3000',
+      display: 'block',
+      visibility: 'hidden',
+      left: '0px',
+      top: '0px'
+    });
+    var rect = dialog.getBoundingClientRect();
+    var left = clamp(triggerEvent.clientX, GUTTER, viewport.width - rect.width - GUTTER);
+    var top = clamp(triggerEvent.clientY, GUTTER, viewport.height - rect.height - GUTTER);
+    dialog.style.left = "".concat(left, "px");
+    dialog.style.top = "".concat(top, "px");
+    dialog.style.visibility = 'visible';
+    dialog.setAttribute('aria-hidden', 'false');
+    clearSubmenus(state);
+    hideSubmenus(dialog);
+    setupSubmenus(state, dialog);
+    Array.from(dialog.children).forEach(function (item) {
+      if (item instanceof HTMLElement && item.tagName === 'LI') {
+        item.setAttribute('role', 'menuitem');
+        item.setAttribute('tabindex', '-1');
+      }
+    });
+    state.dialogClick = function (event) {
+      var target = event.target;
+      if (!target || !target.closest('li') || target.closest('[data-contextmenu-keep-open]')) return;
+      closeActive('select');
+    };
+    dialog.addEventListener('click', state.dialogClick);
+    dialog.focus();
+    document.addEventListener('pointerdown', handleDocumentPointerDown, true);
+    document.addEventListener('keydown', handleDocumentKeydown, true);
+  }
+  function openContextMenu(state, event) {
+    var config = state.binding.value || {};
+    if (config.disabled || !config.id) return;
+    var dialog = document.getElementById(config.id);
+    if (!dialog) return;
+    event.preventDefault();
+    if (activeState) closeActive('switch');
+    state.dialog = dialog;
+    state.triggerEvent = event;
+    var show = function show() {
+      if (activeState && activeState !== state) closeActive('switch');
+      activeState = state;
+      placeDialog(state);
+    };
+    if (typeof config.event === 'function') {
+      var result = config.event(config.value, show, event);
+      if (result === false) return;
+    } else {
+      show();
+    }
+  }
+  function bind(el, binding) {
+    var existing = stateMap.get(el);
+    if (existing) {
+      existing.binding = binding;
+      return;
+    }
+    var state = {
+      el: el,
+      binding: binding,
+      dialog: null,
+      triggerEvent: null,
+      submenuCleanups: [],
+      handler: function handler(event) {
+        return openContextMenu(state, event);
       }
     };
-  })();
+    el.addEventListener('contextmenu', state.handler);
+    stateMap.set(el, state);
+    var id = binding.value && binding.value.id;
+    if (id) {
+      var dialog = document.getElementById(id);
+      if (dialog) dialog.style.display = 'none';
+    }
+  }
+  var contextmenu = {
+    mounted: function mounted(el, binding) {
+      bind(el, binding);
+    },
+    updated: function updated(el, binding) {
+      bind(el, binding);
+    },
+    unmounted: function unmounted(el) {
+      var state = stateMap.get(el);
+      if (!state) return;
+      if (activeState === state) closeActive('unmount');
+      clearSubmenus(state);
+      el.removeEventListener('contextmenu', state.handler);
+      stateMap["delete"](el);
+    }
+  };
 
   var getXLSX = function getXLSX() {
     return typeof window === 'undefined' ? undefined : window.XLSX;
@@ -30844,19 +35593,22 @@
       }
       return buf;
     },
-    excel: function excel(params) {
-      var _this2 = this;
+    excel: function excel() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var xlsx = getXLSX();
       if (!xlsx) {
         packages.logs('xlsx');
-        return;
+        return Promise.reject(new Error('未检测到 xlsx，请先引入 xlsx。'));
       }
-      return new Promise(function (resolve) {
+      try {
         var _params$header;
+        var columns = Array.isArray(params.columns) ? params.columns : [];
+        var rows = Array.isArray(params.data) ? params.data : [];
+        if (!columns.length) throw new Error('导出 Excel 至少需要一列配置。');
         var _params = {
           prop: []
         };
-        _params.header = _this2.buildHeader(params.columns);
+        _params.header = this.buildHeader(columns);
         _params.title = params.title || dayjs().format('YYYY-MM-DD HH:mm:ss');
         var _callback = function callback(list) {
           list.forEach(function (ele) {
@@ -30867,18 +35619,19 @@
             }
           });
         };
-        _callback(params.columns);
-        _params.data = params.data.map(function (row) {
+        _callback(columns);
+        if (!_params.prop.length) throw new Error('导出 Excel 未找到有效字段。');
+        _params.data = rows.map(function (row) {
           return _params.prop.map(function (prop) {
-            var data = row[prop];
+            var data = row ? row[prop] : '';
             if (isJson(data)) data = JSON.stringify(data);
             return data;
           });
         });
         var headerRows = _params.header.length;
-        (_params$header = _params.header).push.apply(_params$header, _toConsumableArray(_params.data).concat([[]]));
-        var merges = _this2.doMerges(_params.header);
-        var ws = _this2.aoa_to_sheet(_params.header, headerRows, xlsx);
+        (_params$header = _params.header).push.apply(_params$header, _toConsumableArray(_params.data));
+        var merges = this.doMerges(_params.header);
+        var ws = this.aoa_to_sheet(_params.header, headerRows, xlsx);
         ws['!merges'] = merges;
         ws['!freeze'] = {
           xSplit: '1',
@@ -30890,7 +35643,7 @@
         ws['!cols'] = getColumnWidths(_params.header, _params.prop.length);
         ws['!rows'] = _params.header.map(function (_row, index) {
           return {
-            hpt: index < headerRows ? 26 : index === _params.header.length - 1 ? 8 : 20
+            hpt: index < headerRows ? 26 : 20
           };
         });
         if (_params.data.length > 0 && _params.prop.length > 0) {
@@ -30899,55 +35652,52 @@
           };
         }
         var workbook = {
-          SheetNames: ['Sheet1'],
+          SheetNames: [params.sheetName || 'Sheet1'],
           Sheets: {},
           Props: {
             Title: _params.title,
             CreatedDate: new Date()
           }
         };
-        workbook.Sheets.Sheet1 = ws;
+        workbook.Sheets[workbook.SheetNames[0]] = ws;
         var wopts = {
           bookType: 'xlsx',
           bookSST: false,
-          type: 'binary',
+          type: 'array',
           cellStyles: true
         };
         var wbout = xlsx.write(workbook, wopts);
-        var blob = new Blob([_this2.s2ab(wbout)], {
-          type: 'application/octet-stream'
+        var blob = new Blob([wbout], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         });
-        downFile(blob, _params.title + '.xlsx');
-        resolve();
-      });
+        var filename = String(params.filename || _params.title).replace(/[\\/:*?"<>|]/g, '-') + '.xlsx';
+        downFile(blob, filename);
+        return Promise.resolve({
+          filename: filename,
+          sheetName: workbook.SheetNames[0],
+          rows: _params.data.length
+        });
+      } catch (error) {
+        return Promise.reject(error instanceof Error ? error : new Error(String(error || 'Excel 导出失败。')));
+      }
     },
     xlsx: function xlsx(file) {
-      if (typeof window === 'undefined' || !window.saveAs || !window.XLSX) {
-        packages.logs('file-saver');
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      if (typeof window === 'undefined' || !window.XLSX) {
         packages.logs('xlsx');
-        return;
+        return Promise.reject(new Error('未检测到 xlsx，请先引入 xlsx。'));
       }
+      if (!(file instanceof File)) return Promise.reject(new TypeError('请传入有效的 Excel 文件。'));
       var xlsx = window.XLSX;
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
         var reader = new FileReader();
-        var fixdata = function fixdata(data) {
-          var o = '';
-          var l = 0;
-          var w = 10240;
-          for (; l < data.byteLength / w; ++l) {
-            o += String.fromCharCode.apply(null, Array.from(new Uint8Array(data.slice(l * w, l * w + w))));
-          }
-          o += String.fromCharCode.apply(null, Array.from(new Uint8Array(data.slice(l * w))));
-          return o;
-        };
-        var getHeaderRow = function getHeaderRow(sheet) {
+        var getHeaderRow = function getHeaderRow(sheet, rowIndex) {
           var headers = [];
           var range = xlsx.utils.decode_range(sheet['!ref']);
-          var R = range.s.r;
           for (var C = range.s.c; C <= range.e.c; ++C) {
             var cell = sheet[xlsx.utils.encode_cell({
               c: C,
-              r: R
+              r: rowIndex
             })];
             var hdr = 'UNKNOWN ' + C;
             if (cell && cell.t) hdr = xlsx.utils.format_cell(cell);
@@ -30956,91 +35706,162 @@
           return headers;
         };
         reader.onload = function (e) {
-          var data = e.target.result;
-          var fixedData = fixdata(data);
-          var workbook = xlsx.read(btoa(fixedData), {
-            type: 'base64'
-          });
-          var firstSheetName = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[firstSheetName];
-          var header = getHeaderRow(worksheet);
-          var results = xlsx.utils.sheet_to_json(worksheet);
-          resolve({
-            header: header,
-            results: results
-          });
+          try {
+            var data = e.target.result;
+            var workbook = xlsx.read(data, {
+              type: 'array',
+              cellDates: true
+            });
+            var sheetName = options.sheetName || workbook.SheetNames[Number(options.sheetIndex) || 0];
+            var worksheet = workbook.Sheets[sheetName];
+            if (!worksheet || !worksheet['!ref']) throw new Error('未找到可读取的工作表。');
+            var headerRow = Math.max(0, Number(options.headerRow) || 0);
+            var header = getHeaderRow(worksheet, headerRow);
+            var results = xlsx.utils.sheet_to_json(worksheet, {
+              range: headerRow,
+              raw: options.raw === true,
+              defval: options.defval === undefined ? '' : options.defval
+            });
+            resolve({
+              header: header,
+              results: results,
+              sheetName: sheetName
+            });
+          } catch (error) {
+            reject(error instanceof Error ? error : new Error(String(error || 'Excel 解析失败。')));
+          }
+        };
+        reader.onerror = function () {
+          return reject(new Error('Excel 文件读取失败。'));
+        };
+        reader.onabort = function () {
+          return reject(new Error('Excel 文件读取已取消。'));
         };
         reader.readAsArrayBuffer(file);
       });
     }
   };
 
+  var _excluded = ["download", "filename", "type", "quality", "onSuccess", "onError", "renderer"];
   function $Screenshot (doc) {
     var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    if (!window.html2canvas) {
-      packages.logs('Screenshot');
-      return;
+    var _a;
+    if (typeof window === 'undefined' || typeof HTMLElement === 'undefined' || !(doc instanceof HTMLElement)) {
+      return Promise.reject(new TypeError('请传入需要截图的 DOM 节点。'));
     }
-    return window.html2canvas(doc, option);
+    var renderer = option.renderer || window.html2canvas;
+    if (typeof renderer !== 'function') {
+      packages.logs('Screenshot');
+      var error = new Error('未检测到 html2canvas，请先引入 html2canvas。');
+      (_a = option.onError) === null || _a === void 0 ? void 0 : _a.call(option, error);
+      return Promise.reject(error);
+    }
+    var download = option.download,
+      _option$filename = option.filename,
+      filename = _option$filename === void 0 ? "screenshot-".concat(Date.now(), ".png") : _option$filename,
+      _option$type = option.type,
+      type = _option$type === void 0 ? 'image/png' : _option$type,
+      quality = option.quality,
+      onSuccess = option.onSuccess,
+      onError = option.onError;
+      option.renderer;
+      var rendererOption = _objectWithoutProperties(option, _excluded);
+    return Promise.resolve(renderer(doc, rendererOption)).then(function (canvas) {
+      if (!(canvas instanceof HTMLCanvasElement)) throw new Error('截图插件未返回 Canvas。');
+      if (download) downFile(canvas.toDataURL(type, quality), filename);
+      onSuccess === null || onSuccess === void 0 ? void 0 : onSuccess(canvas);
+      return canvas;
+    })["catch"](function (error) {
+      var normalized = error instanceof Error ? error : new Error(String(error || '截图失败。'));
+      onError === null || onError === void 0 ? void 0 : onError(normalized);
+      throw normalized;
+    });
   }
 
-  function select(element) {
-    var selectedText = '';
-    if (element.nodeName === 'SELECT') {
-      element.focus();
-      selectedText = element.value;
-    } else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
-      var input = element;
-      var isReadOnly = input.hasAttribute('readonly');
-      if (!isReadOnly) {
-        input.setAttribute('readonly', '');
-      }
-      input.select();
-      input.setSelectionRange(0, input.value.length);
-      if (!isReadOnly) {
-        input.removeAttribute('readonly');
-      }
-      selectedText = input.value;
-    } else {
-      if (element.hasAttribute('contenteditable')) {
-        element.focus();
-      }
-      var selection = window.getSelection();
-      var range = document.createRange();
-      range.selectNodeContents(element);
-      selection === null || selection === void 0 ? void 0 : selection.removeAllRanges();
-      selection === null || selection === void 0 ? void 0 : selection.addRange(range);
-      selectedText = (selection === null || selection === void 0 ? void 0 : selection.toString()) || '';
+  var legacyCopy = function legacyCopy(text) {
+    var _a;
+    var activeElement = document.activeElement;
+    var selection = window.getSelection();
+    var ranges = selection ? Array.from({
+      length: selection.rangeCount
+    }, function (_, index) {
+      return selection.getRangeAt(index).cloneRange();
+    }) : [];
+    var textarea = document.createElement('textarea');
+    var isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.setAttribute('aria-hidden', 'true');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '0';
+    textarea.style[isRTL ? 'right' : 'left'] = '-9999px';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+    var copied = document.execCommand('copy');
+    textarea.remove();
+    if (selection) {
+      selection.removeAllRanges();
+      ranges.forEach(function (range) {
+        return selection.addRange(range);
+      });
     }
-    return selectedText;
-  }
-  function $Clipboard (_ref) {
-    var text = _ref.text;
-    return new Promise(function (resolve, reject) {
-      var container = document.body;
-      var isRTL = document.documentElement.getAttribute('dir') == 'rtl';
-      var fakeElem = document.createElement('textarea');
-      fakeElem.style.fontSize = '12pt';
-      fakeElem.style.border = '0';
-      fakeElem.style.padding = '0';
-      fakeElem.style.margin = '0';
-      fakeElem.style.position = 'absolute';
-      fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px';
-      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-      fakeElem.style.top = "".concat(yPosition, "px");
-      fakeElem.setAttribute('readonly', '');
-      fakeElem.value = text;
-      container.appendChild(fakeElem);
-      select(fakeElem);
-      try {
-        document.execCommand('copy');
-        resolve();
-      } catch (err) {
-        reject(err);
-      } finally {
-        container.removeChild(fakeElem);
-      }
+    (_a = activeElement === null || activeElement === void 0 ? void 0 : activeElement.focus) === null || _a === void 0 ? void 0 : _a.call(activeElement, {
+      preventScroll: true
     });
+    if (!copied) throw new Error('浏览器拒绝写入剪切板。');
+  };
+  function $Clipboard (_x) {
+    return _ref2.apply(this, arguments);
+  }
+  function _ref2() {
+    _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee(_ref) {
+      var text, _ref$fallback, fallback, value, clipboard;
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            text = _ref.text, _ref$fallback = _ref.fallback, fallback = _ref$fallback === void 0 ? true : _ref$fallback;
+            if (!(typeof document === 'undefined')) {
+              _context.next = 3;
+              break;
+            }
+            throw new Error('当前环境不支持剪切板。');
+          case 3:
+            value = text === null || text === undefined ? '' : String(text);
+            clipboard = navigator.clipboard;
+            if (!(clipboard && typeof clipboard.writeText === 'function' && window.isSecureContext)) {
+              _context.next = 16;
+              break;
+            }
+            _context.prev = 6;
+            _context.next = 9;
+            return clipboard.writeText(value);
+          case 9:
+            return _context.abrupt("return");
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](6);
+            if (fallback) {
+              _context.next = 16;
+              break;
+            }
+            throw _context.t0;
+          case 16:
+            if (fallback) {
+              _context.next = 18;
+              break;
+            }
+            throw new Error('当前浏览器不支持剪切板写入。');
+          case 18:
+            legacyCopy(value);
+          case 19:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, null, [[6, 12]]);
+    }));
+    return _ref2.apply(this, arguments);
   }
 
   var getElement = function getElement(source) {
@@ -31063,7 +35884,7 @@
   var getText = function getText(element) {
     return (element.textContent || '').replace(/\s+/g, ' ').trim();
   };
-  var toAbsoluteUrl = function toAbsoluteUrl(url) {
+  var toAbsoluteUrl$1 = function toAbsoluteUrl(url) {
     try {
       return new URL(url, document.baseURI).href;
     } catch (_a) {
@@ -31160,7 +35981,7 @@
     });
     clone.querySelectorAll('img').forEach(function (image) {
       var source = image.currentSrc || image.getAttribute('src');
-      if (source) image.setAttribute('src', toAbsoluteUrl(source));
+      if (source) image.setAttribute('src', toAbsoluteUrl$1(source));
       image.removeAttribute('srcset');
       image.style.maxWidth = '100%';
       image.style.maxHeight = '80px';
@@ -31217,213 +36038,230 @@
     return "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>".concat(escapeHtml(documentTitle), "</title>\n    <style>\n      @page { margin: 12mm; }\n      * { box-sizing: border-box; }\n      body { margin: 0; color: #1f2937; background: #fff; font: 12px/1.5 \"Microsoft YaHei\", Arial, sans-serif; }\n      .avue-print__title { margin: 0 0 16px; color: #111827; font-size: 20px; text-align: center; }\n      table { width: 100%; border-collapse: collapse; table-layout: auto; }\n      thead { display: table-header-group; }\n      tr { break-inside: avoid; page-break-inside: avoid; }\n      th, td { padding: 8px 10px; border: 1px solid #dcdfe6; vertical-align: middle; word-break: break-word; overflow-wrap: anywhere; }\n      th { color: #fff; font-weight: 600; text-align: center; background: #2563eb; }\n      tbody tr:nth-child(even) { background: #f8fafc; }\n      td img { display: inline-block; max-width: 100%; max-height: 80px; object-fit: contain; vertical-align: middle; }\n      .avue-print__empty { padding: 32px; color: #909399; text-align: center; }\n    </style>\n  </head>\n  <body>\n    ").concat(titleHtml, "\n    <table>\n      <thead><tr>").concat(headerHtml, "</tr></thead>\n      <tbody>").concat(bodyHtml, "</tbody>\n    </table>\n  </body>\n</html>");
   };
 
-  var _Print = function Print(dom, options) {
-    if (!(this instanceof _Print)) return new _Print(dom, options);
-    this.options = this.extend({
-      noPrint: '.no-print'
-    }, options || {});
-    if (typeof dom === 'string') {
-      this.dom = document.querySelector(dom);
-    } else {
-      this.isDOM(dom);
-      this.dom = this.isDOM(dom) ? dom : dom.$el;
+  function ownKeys$2(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+  var toAbsoluteUrl = function toAbsoluteUrl(value) {
+    try {
+      return new URL(value, document.baseURI).href;
+    } catch (_a) {
+      return value;
     }
-    this.init();
   };
-  _Print.prototype = {
-    init: function init() {
-      try {
-        var content = buildTablePrintHtml(this.dom, this.options) || this.getStyle() + this.getHtml();
-        this.writeIframe(content);
-      } catch (error) {
-        this.handleError(error);
+  var PrintInstance = /*#__PURE__*/function () {
+    function PrintInstance(dom) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      _classCallCheck(this, PrintInstance);
+      this.iframe = null;
+      this.options = _objectSpread$2({
+        noPrint: '.no-print',
+        timeout: 15000
+      }, options);
+      this.dom = this.resolveDom(dom);
+      this.init();
+    }
+    return _createClass(PrintInstance, [{
+      key: "resolveDom",
+      value: function resolveDom(dom) {
+        var element = typeof dom === 'string' ? document.querySelector(dom) : dom instanceof HTMLElement ? dom : dom === null || dom === void 0 ? void 0 : dom.$el;
+        if (!(element instanceof HTMLElement)) throw new TypeError('未找到可打印的 DOM 节点。');
+        return element;
       }
-    },
-    handleReady: function handleReady() {
-      if (typeof this.options.onReady === 'function') this.options.onReady();
-    },
-    handleError: function handleError(error) {
-      if (typeof this.options.onError === 'function') {
-        this.options.onError(error);
-        return;
-      }
-      console.error(error);
-    },
-    extend: function extend(obj, obj2) {
-      for (var k in obj2) {
-        obj[k] = obj2[k];
-      }
-      return obj;
-    },
-    getStyle: function getStyle() {
-      var str = '';
-      var styles = document.querySelectorAll('style,link');
-      for (var i = 0; i < styles.length; i++) {
-        str += styles[i].outerHTML;
-      }
-      str += "<style>".concat(this.options.noPrint ? this.options.noPrint : '.no-print', "{display:none;}</style>");
-      return str;
-    },
-    getHtml: function getHtml() {
-      var inputs = document.querySelectorAll('input');
-      var textareas = document.querySelectorAll('textarea');
-      var selects = document.querySelectorAll('select');
-      for (var k = 0; k < inputs.length; k++) {
-        var input = inputs[k];
-        if (input.type == 'checkbox' || input.type == 'radio') {
-          if (input.checked == true) {
-            input.setAttribute('checked', 'checked');
-          } else {
-            input.removeAttribute('checked');
-          }
-        } else {
-          input.setAttribute('value', input.value);
-        }
-      }
-      for (var k2 = 0; k2 < textareas.length; k2++) {
-        if (textareas[k2].type == 'textarea') {
-          textareas[k2].innerHTML = textareas[k2].value;
-        }
-      }
-      for (var k3 = 0; k3 < selects.length; k3++) {
-        if (selects[k3].type == 'select-one') {
-          var child = selects[k3].children;
-          for (var i in child) {
-            var option = child[i];
-            if (option && option.tagName == 'OPTION') {
-              if (option.selected == true) {
-                option.setAttribute('selected', 'selected');
-              } else {
-                option.removeAttribute('selected');
-              }
-            }
-          }
-        }
-      }
-      return this.wrapperRefDom(this.dom).outerHTML;
-    },
-    wrapperRefDom: function wrapperRefDom(refDom) {
-      var prevDom = null;
-      var currDom = refDom;
-      if (!this.isInBody(currDom)) return currDom;
-      while (currDom) {
-        if (prevDom) {
-          var element = currDom.cloneNode(false);
-          element.appendChild(prevDom);
-          prevDom = element;
-        } else {
-          prevDom = currDom.cloneNode(true);
-        }
-        currDom = currDom.parentElement;
-      }
-      return prevDom;
-    },
-    writeIframe: function writeIframe(content) {
-      var w;
-      var doc;
-      var iframe = document.createElement('iframe');
-      var f = document.body.appendChild(iframe);
-      var loaded = false;
-      var failed = false;
-      var loadTimer;
-      iframe.id = 'myIframe';
-      iframe.setAttribute('style', 'position:absolute;width:0;height:0;top:-10px;left:-10px;');
-      w = f.contentWindow || f.contentDocument;
-      doc = f.contentDocument || f.contentWindow.document;
-      var _this = this;
-      iframe.onload = function () {
-        if (loaded || failed) return;
-        loaded = true;
-        if (loadTimer !== undefined) window.clearTimeout(loadTimer);
-        _this.waitForImages(doc, function () {
-          _this.handleReady();
-          _this.toPrint(w);
-          setTimeout(function () {
-            if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-          }, 1000);
-        });
-      };
-      iframe.onerror = function () {
-        if (failed) return;
-        failed = true;
-        if (loadTimer !== undefined) window.clearTimeout(loadTimer);
-        _this.handleError(new Error('打印内容加载失败'));
-        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      };
-      doc.open();
-      doc.write(content);
-      doc.close();
-      if (!loaded) {
-        loadTimer = window.setTimeout(function () {
-          if (loaded || failed) return;
-          failed = true;
-          _this.handleError(new Error('打印内容加载超时'));
-          if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-        }, 15000);
-      }
-    },
-    waitForImages: function waitForImages(doc, callback) {
-      var images = Array.from(doc.images);
-      if (images.length === 0) {
-        callback();
-        return;
-      }
-      var completed = 0;
-      var finished = false;
-      var timer;
-      var finish = function finish() {
-        if (finished) return;
-        finished = true;
-        if (timer !== undefined) window.clearTimeout(timer);
-        callback();
-      };
-      var done = function done() {
-        completed++;
-        if (completed === images.length) finish();
-      };
-      images.forEach(function (image) {
-        if (image.complete) {
-          done();
-        } else {
-          image.addEventListener('load', done, {
-            once: true
-          });
-          image.addEventListener('error', done, {
-            once: true
-          });
-        }
-      });
-      if (!finished) {
-        timer = window.setTimeout(finish, 10000);
-      }
-    },
-    toPrint: function toPrint(frameWindow) {
-      var _this = this;
-      setTimeout(function () {
+    }, {
+      key: "init",
+      value: function init() {
         try {
-          frameWindow.focus();
-          try {
-            if (!frameWindow.document.execCommand('print', false, null)) {
-              frameWindow.print();
-            }
-          } catch (_a) {
-            frameWindow.print();
-          }
-          frameWindow.close();
+          var content = buildTablePrintHtml(this.dom, this.options) || this.getDocumentHtml();
+          this.writeIframe(content);
         } catch (error) {
-          _this.handleError(error);
+          this.handleError(error);
         }
-      }, 10);
-    },
-    isInBody: function isInBody(node) {
-      return node === document.body ? false : document.body.contains(node);
-    },
-    isDOM: (typeof HTMLElement === "undefined" ? "undefined" : _typeof$1(HTMLElement)) === 'object' ? function (obj) {
-      return obj instanceof HTMLElement;
-    } : function (obj) {
-      return obj && _typeof$1(obj) === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
-    }
-  };
+      }
+    }, {
+      key: "handleError",
+      value: function handleError(error) {
+        var normalized = error instanceof Error ? error : new Error(String(error || '打印失败。'));
+        if (typeof this.options.onError === 'function') this.options.onError(normalized);else console.error(normalized);
+      }
+    }, {
+      key: "getStyle",
+      value: function getStyle() {
+        var styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]')).map(function (style) {
+          return style.outerHTML;
+        }).join('');
+        var noPrint = this.options.noPrint || '.no-print';
+        return "".concat(styles, "<style>\n      ").concat(noPrint, "{display:none !important;}\n      html,body{min-height:auto !important;background:#fff !important;}\n      @media print{.avue-print-root{margin:0 !important;}}\n    </style>");
+      }
+    }, {
+      key: "syncFormState",
+      value: function syncFormState(source, clone) {
+        var sourceFields = Array.from(source.querySelectorAll('input, textarea, select'));
+        var cloneFields = Array.from(clone.querySelectorAll('input, textarea, select'));
+        sourceFields.forEach(function (field, index) {
+          var cloned = cloneFields[index];
+          if (!cloned) return;
+          if (field instanceof HTMLInputElement && cloned instanceof HTMLInputElement) {
+            if (field.type === 'checkbox' || field.type === 'radio') cloned.checked = field.checked;else cloned.value = field.value;
+          } else if (field instanceof HTMLTextAreaElement && cloned instanceof HTMLTextAreaElement) {
+            cloned.value = field.value;
+            cloned.textContent = field.value;
+          } else if (field instanceof HTMLSelectElement && cloned instanceof HTMLSelectElement) {
+            cloned.selectedIndex = field.selectedIndex;
+            Array.from(cloned.options).forEach(function (option, optionIndex) {
+              var _a;
+              option.selected = ((_a = field.options[optionIndex]) === null || _a === void 0 ? void 0 : _a.selected) || false;
+            });
+          }
+        });
+      }
+    }, {
+      key: "sanitizeClone",
+      value: function sanitizeClone(clone) {
+        var noPrint = this.options.noPrint;
+        if (noPrint) {
+          try {
+            clone.querySelectorAll(noPrint).forEach(function (element) {
+              return element.remove();
+            });
+          } catch (_a) {
+            // 自定义选择器无效时不影响正常打印。
+          }
+        }
+        clone.querySelectorAll('script, noscript, style, [data-print-ignore="true"]').forEach(function (element) {
+          return element.remove();
+        });
+        clone.querySelectorAll('*').forEach(function (element) {
+          Array.from(element.attributes).filter(function (attribute) {
+            return attribute.name.toLowerCase().startsWith('on');
+          }).forEach(function (attribute) {
+            return element.removeAttribute(attribute.name);
+          });
+        });
+        clone.querySelectorAll('img').forEach(function (image) {
+          var source = image.currentSrc || image.getAttribute('src');
+          if (source) image.setAttribute('src', toAbsoluteUrl(source));
+          image.removeAttribute('srcset');
+        });
+        clone.querySelectorAll('a').forEach(function (link) {
+          link.removeAttribute('target');
+          var href = link.getAttribute('href');
+          if (href) link.setAttribute('href', toAbsoluteUrl(href));
+        });
+      }
+    }, {
+      key: "getDocumentHtml",
+      value: function getDocumentHtml() {
+        var clone = this.dom.cloneNode(true);
+        this.syncFormState(this.dom, clone);
+        this.sanitizeClone(clone);
+        var title = this.options.documentTitle || document.title || '打印预览';
+        return "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <base href=\"".concat(document.baseURI, "\" />\n    <title>").concat(title, "</title>\n    ").concat(this.getStyle(), "\n  </head>\n  <body><main class=\"avue-print-root\">").concat(clone.outerHTML, "</main></body>\n</html>");
+      }
+    }, {
+      key: "writeIframe",
+      value: function writeIframe(content) {
+        var _this = this;
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('title', '打印预览');
+        iframe.setAttribute('aria-hidden', 'true');
+        iframe.setAttribute('style', 'position:fixed;width:1px;height:1px;right:0;bottom:0;border:0;opacity:0;pointer-events:none;');
+        this.iframe = iframe;
+        var settled = false;
+        var cleanup = function cleanup() {
+          if (!_this.iframe) return;
+          _this.iframe.remove();
+          _this.iframe = null;
+        };
+        var fail = function fail(error) {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          _this.handleError(error);
+        };
+        var timer = window.setTimeout(function () {
+          return fail(new Error('打印内容加载超时。'));
+        }, Number(this.options.timeout) || 15000);
+        iframe.onload = function () {
+          if (settled) return;
+          var frameWindow = iframe.contentWindow;
+          var frameDocument = iframe.contentDocument;
+          if (!frameWindow || !frameDocument) {
+            fail(new Error('无法创建打印窗口。'));
+            return;
+          }
+          _this.waitForAssets(frameDocument, function () {
+            var _a, _b, _c, _d;
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timer);
+            try {
+              (_b = (_a = _this.options).onReady) === null || _b === void 0 ? void 0 : _b.call(_a);
+              (_d = (_c = _this.options).onBeforePrint) === null || _d === void 0 ? void 0 : _d.call(_c);
+              var printFinished = false;
+              var afterPrint = function afterPrint() {
+                var _a, _b;
+                if (printFinished) return;
+                printFinished = true;
+                cleanup();
+                (_b = (_a = _this.options).onAfterPrint) === null || _b === void 0 ? void 0 : _b.call(_a);
+              };
+              frameWindow.addEventListener('afterprint', afterPrint, {
+                once: true
+              });
+              frameWindow.focus();
+              frameWindow.print();
+              window.setTimeout(afterPrint, 60000);
+            } catch (error) {
+              cleanup();
+              _this.handleError(error);
+            }
+          });
+        };
+        iframe.onerror = function () {
+          return fail(new Error('打印内容加载失败。'));
+        };
+        iframe.srcdoc = content;
+        document.body.appendChild(iframe);
+      }
+    }, {
+      key: "waitForAssets",
+      value: function waitForAssets(doc, done) {
+        var _a;
+        var images = Array.from(doc.images);
+        var fonts = (_a = doc.fonts) === null || _a === void 0 ? void 0 : _a.ready;
+        var finish = function finish() {
+          return Promise.resolve(fonts)["catch"](function () {
+            return undefined;
+          }).then(done);
+        };
+        if (!images.length) {
+          finish();
+          return;
+        }
+        var completed = 0;
+        var complete = function complete() {
+          completed += 1;
+          if (completed === images.length) finish();
+        };
+        images.forEach(function (image) {
+          if (image.complete) complete();else {
+            image.addEventListener('load', complete, {
+              once: true
+            });
+            image.addEventListener('error', complete, {
+              once: true
+            });
+          }
+        });
+      }
+    }]);
+  }();
+  /**
+   * 保持 $Print(dom, options) 与 new $Print(dom, options) 两种历史调用方式。
+   */
+  function Print(dom) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    return new PrintInstance(dom, options);
+  }
 
   var script$1 = create({
     name: "image-preview",
@@ -31477,7 +36315,7 @@
         return url.substring(url.lastIndexOf('/') + 1);
       },
       handlePrint: function handlePrint() {
-        _Print("#avue-image-preview__".concat(this.count));
+        Print("#avue-image-preview__".concat(this.count));
       },
       handlePrev: function handlePrev() {
         this.stopItem();
@@ -31936,7 +36774,7 @@
     $DialogForm: $DialogForm,
     $ImagePreview: $ImagePreview,
     $Export: $Export,
-    $Print: _Print,
+    $Print: Print,
     $Clipboard: $Clipboard,
     $Watermark: $Watermark,
     $Log: log,

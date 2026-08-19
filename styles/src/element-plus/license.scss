@@ -1,0 +1,60 @@
+.avue-license {
+  width: min(100%, 960px);
+  margin: 0 auto;
+
+  &__canvas-wrap {
+    position: relative;
+    overflow: hidden;
+    min-height: 120px;
+    border: 1px solid var(--el-border-color-lighter, #ebeef5);
+    border-radius: 10px;
+    background: repeating-conic-gradient(#f8fafc 0 25%, #f1f5f9 0 50%) 50% / 20px 20px;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 5%);
+  }
+
+  &__canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+  }
+
+  &__loading,
+  &__error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    transform: translate(-50%, -50%);
+  }
+
+  &__loading {
+    color: var(--el-color-primary, #409eff);
+    background: rgb(236 245 255 / 92%);
+  }
+
+  &__error {
+    max-width: calc(100% - 32px);
+    color: var(--el-color-danger, #f56c6c);
+    text-align: center;
+    background: rgb(254 240 240 / 94%);
+  }
+
+  &__status {
+    margin-top: 10px;
+    color: var(--el-text-color-secondary, #909399);
+    font-size: 13px;
+    text-align: center;
+
+    &.is-ready { color: var(--el-color-success, #67c23a); }
+    &.is-error { color: var(--el-color-danger, #f56c6c); }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .avue-license {
+    &__canvas-wrap { border-radius: 8px; }
+  }
+}

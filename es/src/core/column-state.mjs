@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 const STORAGE_PREFIX = 'AVUE_COLUMN_STATE:';
 const STATE_KEYS = ['hide', 'fixed', 'filters', 'sortable', 'width'];
 const getStorage = (type = 'localStorage') => {

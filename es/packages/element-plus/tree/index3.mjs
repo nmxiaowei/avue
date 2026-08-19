@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, resolveDirective, openBlock, createElementBlock, normalizeClass, createVNode, createSlots, withCtx, renderSlot, withDirectives, createBlock, createCommentVNode, resolveDynamicComponent, createElementVNode, toDisplayString, normalizeStyle, createTextVNode } from 'vue';
 
 const _hoisted_1 = { class: "el-tree-node__label" };

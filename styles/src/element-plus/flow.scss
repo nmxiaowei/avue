@@ -1,46 +1,108 @@
-.avue-flow{
+.avue-flow {
   position: relative;
-  .avue-draggable {
-    padding: 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--el-fill-color-blank, #fff);
+  border: 1px solid var(--el-border-color-lighter, #ebeef5);
+  border-radius: 10px;
+
+  &__canvas {
+    position: relative;
+    min-width: 100%;
+    min-height: 100%;
+    overflow: hidden;
   }
+
+  &__grid {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      var(--el-border-color-lighter, #ebeef5) 1px,
+      transparent 1.2px
+    );
+  }
+
+  &__node-wrapper {
+    position: absolute;
+    z-index: 2;
+    outline: 0;
+    cursor: pointer;
+
+    &:focus-visible .avue-flow__node {
+      box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.2);
+    }
+  }
+
   &__node {
+    display: flex;
+    min-height: 96px;
+    overflow: hidden;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--el-border-color, #dcdfe6);
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(31, 45, 61, 0.1);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+
+    &:hover {
+      border-color: var(--el-color-primary-light-5, #a0cfff);
+      box-shadow: 0 10px 22px rgba(31, 45, 61, 0.14);
+      transform: translateY(-1px);
+    }
+
+    &--active {
+      border-color: var(--el-color-primary, #409eff);
+      box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.16), 0 10px 22px rgba(31, 45, 61, 0.14);
+    }
+  }
+
+  &__node-header {
     position: relative;
     display: flex;
-    flex-direction: column;
-    width: 200px;
-    height: 80px;
-    border-radius: 5px;
-    box-shadow: '#66a6e0 0px 0px 12px 0px';
-    border:1px solid #eee;
-    box-sizing: border-box;
-    overflow: hidden;
-    &--active{
-      border-width: 2px;
-      border-color:#f56c6c;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 12px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--el-color-primary, #409eff), #79bbff);
+
+    .el-icon {
+      margin-right: 6px;
     }
-    .el-icon{
-      margin: 0 2px;
-      display: inline-block;
-    }
-    &-drag{
-      position: absolute;
-      left:0;
-      top:0;
-      width:15px;
-      height:15px;
-      z-index: 1024;
-    }
-    &-header{
-      flex:1;
-      background-color: #66a6e0;
-    }
-    &-body{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex:1.5;
-      text-align: center;
-      background: #fff;
-    }
+  }
+
+  &__node-drag {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    cursor: move;
+  }
+
+  &__node-body {
+    display: flex;
+    min-height: 56px;
+    padding: 10px 12px;
+    align-items: center;
+    color: var(--el-text-color-regular, #606266);
+    font-size: 13px;
+    line-height: 1.5;
+    background: #fff;
+  }
+
+  &--readonly .avue-flow__node-wrapper {
+    cursor: default;
+  }
+
+  .jtk-connector {
+    z-index: 1;
+  }
+
+  .jtk-endpoint {
+    z-index: 3;
   }
 }

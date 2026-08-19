@@ -1,5 +1,10 @@
+export interface RecordVideoOptions {
+  constraints?: MediaStreamConstraints;
+  mimeType?: string;
+}
+
 export default class RecordVideo {
-  video: HTMLMediaElement & { srcObject?: MediaStream | null };
+  video: HTMLVideoElement & { srcObject?: MediaStream | null };
   mediaRecorder: MediaRecorder | null;
   stream: MediaStream | null;
   chunks: Blob[];
@@ -7,9 +12,14 @@ export default class RecordVideo {
   destroyed: boolean;
   handleLoadedMetadata: () => void;
   handleDataAvailable: (event: BlobEvent) => void;
+  options: RecordVideoOptions;
 
-  constructor(videoObj: HTMLMediaElement & { srcObject?: MediaStream | null }) {
+  constructor(
+    videoObj: HTMLVideoElement & { srcObject?: MediaStream | null },
+    options: RecordVideoOptions = {},
+  ) {
     this.video = videoObj;
+    this.options = options;
     this.mediaRecorder = null;
     this.stream = null;
     this.chunks = [];
@@ -30,15 +40,19 @@ export default class RecordVideo {
 
   init() {
     if (!this.isSupport()) {
-      return Promise.reject(new Error('MediaDevices.getUserMedia is not supported'));
+      return Promise.reject(
+        new Error('MediaDevices.getUserMedia or MediaRecorder is not supported'),
+      );
     }
 
     this.destroyed = false;
     return navigator.mediaDevices
-      .getUserMedia({
-        audio: true,
-        video: true,
-      })
+      .getUserMedia(
+        this.options.constraints || {
+          audio: true,
+          video: true,
+        },
+      )
       .then((stream) => {
         if (this.destroyed) {
           stream.getTracks().forEach((track) => track.stop());
@@ -54,7 +68,10 @@ export default class RecordVideo {
         }
 
         this.video.addEventListener('loadedmetadata', this.handleLoadedMetadata);
-        this.mediaRecorder = new MediaRecorder(stream);
+        const recorderOptions = this.getRecorderOptions();
+        this.mediaRecorder = recorderOptions
+          ? new MediaRecorder(stream, recorderOptions)
+          : new MediaRecorder(stream);
         this.mediaRecorder.addEventListener(
           'dataavailable',
           this.handleDataAvailable,
@@ -70,24 +87,66 @@ export default class RecordVideo {
     if (this.mediaRecorder && this.mediaRecorder.state === 'inactive') {
       this.chunks = [];
       this.mediaRecorder.start();
+      return true;
     }
+    return false;
   }
 
   stopRecord() {
     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
       this.mediaRecorder.stop();
+      return true;
     }
+    return false;
+  }
+
+  getBlob() {
+    if (!this.chunks.length) return null;
+    const type =
+      this.mediaRecorder?.mimeType || this.chunks[0]?.type || 'video/webm';
+    return new Blob(this.chunks, { type });
+  }
+
+  captureFrame(type = 'image/png', quality?: number) {
+    if (this.video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+      return null;
+    }
+    const width = this.video.videoWidth || this.video.clientWidth;
+    const height = this.video.videoHeight || this.video.clientHeight;
+    if (!width || !height) return null;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    if (!context) return null;
+    context.drawImage(this.video, 0, 0, width, height);
+    return canvas.toDataURL(type, quality);
   }
 
   isSupport() {
     const flag =
       typeof navigator !== 'undefined' &&
       navigator.mediaDevices &&
-      navigator.mediaDevices.getUserMedia;
+      navigator.mediaDevices.getUserMedia &&
+      typeof MediaRecorder !== 'undefined';
     if (flag) {
       return true;
     }
     return false;
+  }
+
+  getRecorderOptions() {
+    const mimeType = this.options.mimeType;
+    if (
+      !mimeType ||
+      typeof MediaRecorder === 'undefined' ||
+      !MediaRecorder.isTypeSupported ||
+      !MediaRecorder.isTypeSupported(mimeType)
+    ) {
+      return undefined;
+    }
+    return { mimeType };
   }
 
   destroy() {

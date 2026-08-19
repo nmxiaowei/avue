@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
@@ -13,111 +10,81 @@
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
     <script src="../../cdn/element-plus/icons-vue.js"></script>
-    <link rel="stylesheet" href="../../cdn/animate/animate.min.css" />
     <link rel="stylesheet" href="../../../dist/index.css" />
-    <script src="../../../lib/avue.min.js"></script>
+    <script src="../../../dist/avue.min.js"></script>
   </head>
-
   <body>
-    <div id="app">
-      <el-button type="primary" @click="$refs.flow.addNode('测试节点')"
-        >添加节点</el-button
-      >
-      <el-button type="primary" @click="handleNext">下一个节点</el-button>
-      <br /><br />
-      {{option}}
+    <div id="app" style="padding: 24px">
+      <el-space wrap style="margin-bottom: 16px">
+        <el-button type="primary" @click="addNode">添加节点</el-button>
+        <el-button :disabled="!active" @click="removeActive">删除选中节点</el-button>
+        <el-switch v-model="editable" active-text="编辑模式" inactive-text="只读模式"></el-switch>
+        <el-tag>当前节点：{{ active || '未选择' }}</el-tag>
+      </el-space>
       <avue-flow
-        :height="600"
-        :width="1200"
         ref="flow"
+        :height="620"
+        width="100%"
         :option="option"
-        v-model="form"
-        @click="handleClick"
+        :editable="editable"
+        v-model="active"
+        @node-click="handleNodeClick"
+        @change="handleChange"
       >
-        <template #header="scope">
-          <el-icon @click="$refs.flow.deleteNode(scope.node.id)">
-            <el-icon-delete />
-          </el-icon>
-          自定义头部
+        <template #header="{ node }">
+          <span>{{ node.name }}</span>
         </template>
-        <template #="scope"> 自定义身体{{scope.node.name}} </template>
+        <template #default="{ node }">
+          <span>{{ node.description || '拖动标题区域调整位置，并从节点边缘拖出连线' }}</span>
+        </template>
       </avue-flow>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
+    const app = Vue.createApp({
       data() {
         return {
+          active: 'nodeA',
+          editable: true,
           count: 0,
-          form: "",
           option: {
-            name: "流程",
             nodeList: [
-              {
-                id: "nodeA",
-                name: "节点A",
-                left: 39,
-                top: 110,
-              },
-              {
-                id: "nodeB",
-                name: "节点B",
-                left: 340,
-                top: 161,
-              },
-              {
-                id: "nodeC",
-                name: "节点C",
-                left: 739,
-                top: 161,
-              },
-              {
-                id: "nodeD",
-                name: "节点D",
-                left: 739,
-                top: 20,
-              },
+              { id: 'nodeA', name: '开始', left: 60, top: 240, description: '流程发起' },
+              { id: 'nodeB', name: '审核', left: 360, top: 150, description: '业务审核' },
+              { id: 'nodeC', name: '结束', left: 660, top: 240, description: '流程完成' },
             ],
             lineList: [
-              {
-                from: "nodeA",
-                to: "nodeB",
-              },
-              {
-                from: "nodeB",
-                to: "nodeC",
-              },
-              {
-                from: "nodeC",
-                to: "nodeD",
-              },
+              { from: 'nodeA', to: 'nodeB' },
+              { from: 'nodeB', to: 'nodeC' },
             ],
           },
         };
       },
-      computed: {
-        nodeList() {
-          return this.option.nodeList;
-        },
-      },
-      mounted() {
-        this.form = this.nodeList[this.count].id;
-      },
       methods: {
-        handleClick(node) {
-          this.$message.success(JSON.stringify(node));
+        addNode() {
+          this.count += 1;
+          const node = this.$refs.flow.addNode(`节点 ${this.count}`, {
+            left: 180 + this.count * 40,
+            top: 360,
+            description: '新建节点',
+          });
+          if (node) this.active = node.id;
         },
-        handleNext() {
-          this.count++;
-          if (this.count >= this.nodeList.length) {
-            this.count = 0;
-          }
-          this.form = this.nodeList[this.count].id;
+        removeActive() {
+          this.$refs.flow.deleteNode(this.active).then((removed) => {
+            if (removed) this.active = '';
+          });
+        },
+        handleNodeClick(node) {
+          this.$message.success(`已选择：${node.name}`);
+        },
+        handleChange(change) {
+          console.log('flow change', change);
         },
       },
     });
     app.use(ElementPlus);
     app.use(AVUE);
-    app.mount("#app");
+    app.mount('#app');
   </script>
 </html>

@@ -1,5 +1,19 @@
 body {
-  font-family: Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family:
+    Chinese Quote,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    PingFang SC,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol;
 }
 
 * {
@@ -35,7 +49,6 @@ body {
 
   .el-input.is-disabled .el-input__wrapper {
     box-shadow: none;
-
   }
 
   .el-input.is-disabled .el-input__inner,
@@ -58,7 +71,7 @@ body {
   .el-input-group__prepend {
     background-color: transparent;
     border: none;
-    box-shadow:none;
+    box-shadow: none;
   }
 
   .el-input__suffix,
@@ -96,8 +109,8 @@ body {
   }
 
   .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
-    background-color: #409EFF;
-    border-color: #409EFF;
+    background-color: #409eff;
+    border-color: #409eff;
   }
 
   .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
@@ -105,24 +118,26 @@ body {
   }
 
   .el-radio__input.is-disabled.is-checked .el-radio__inner {
-    background-color: #409EFF;
-    border-color: #409EFF;
+    background-color: #409eff;
+    border-color: #409eff;
   }
 
   .el-radio__input.is-disabled.is-checked .el-radio__inner::after {
     background-color: #fff;
   }
 
-  .el-checkbox__input.is-disabled+span.el-checkbox__label,
-  .el-radio__input.is-disabled+span.el-radio__label {
+  .el-checkbox__input.is-disabled + span.el-checkbox__label,
+  .el-radio__input.is-disabled + span.el-radio__label {
     color: #606266;
   }
-  .el-select__wrapper.is-disabled .el-select__selected-item{
-    color:#606266;
+  .el-select__wrapper.is-disabled .el-select__selected-item {
+    color: #606266;
   }
 
-  .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before,
-  .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+  .el-form-item.is-required:not(.is-no-asterisk)
+    .el-form-item__label-wrap
+    > .el-form-item__label:before,
+  .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
     display: none;
   }
 
@@ -210,17 +225,16 @@ body {
   align-items: center;
   justify-content: center;
 
-  >svg,
-  >.avue-icon__font {
+  > svg,
+  > .avue-icon__font {
     width: 20px;
     height: 20px;
     font-size: 20px;
   }
 
   &--small {
-
-    >svg,
-    >.avue-icon__font {
+    > svg,
+    > .avue-icon__font {
       font-size: 15px;
       width: 15px;
       height: 15px;
@@ -228,16 +242,15 @@ body {
   }
 }
 
-
 .avue-dialog {
   min-height: 180px;
   border-radius: 2px;
   max-height: calc(100% - 200px);
   max-width: calc(100% - 100px);
   display: flex;
-  padding:0;
+  padding: 0;
   flex-direction: column;
-  .el-dialog__header{
+  .el-dialog__header {
     padding: 16px;
   }
   .el-dialog__header,
@@ -247,18 +260,18 @@ body {
 
   .el-dialog__title,
   .el-drawer__header {
-    color: rgba(0, 0, 0, .85);
+    color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
     word-wrap: break-word;
   }
 
   .el-dialog__body {
-    padding:20px 20px 60px 20px;
+    padding: 20px 20px 60px 20px;
     flex: 1;
-    overflow: scroll;
+    overflow: auto;
   }
-  .el-dialog__footer{
-    padding:20px;
+  .el-dialog__footer {
+    padding: 20px;
     padding-top: 10px;
   }
 
@@ -306,7 +319,6 @@ body {
     .el-dialog__body {
       padding-bottom: 20px;
     }
-
   }
 }
 

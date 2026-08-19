@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { getDefaultExportFromCjs } from './_commonjsHelpers.mjs';
 import { __require as requireCountUp_min } from '../node_modules/.pnpm/countup.js@1.9.3/node_modules/countup.js/dist/countUp.min.mjs';
 

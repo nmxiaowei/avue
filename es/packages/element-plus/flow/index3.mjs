@@ -1,5 +1,5 @@
-/*! Avue.js v3.9.3 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { resolveComponent, openBlock, createElementBlock, normalizeStyle, normalizeClass, createElementVNode, Fragment, renderList, createBlock, withCtx, renderSlot, createCommentVNode } from 'vue';
+/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { resolveComponent, openBlock, createElementBlock, normalizeStyle, normalizeClass, createElementVNode, createCommentVNode, Fragment, renderList, createBlock, withCtx, renderSlot } from 'vue';
 
 const _hoisted_1 = ["id"];
 
@@ -7,38 +7,49 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_flow_node = resolveComponent("flow-node");
 
   return (openBlock(), createElementBlock("div", {
-    class: normalizeClass(_ctx.b()),
+    class: normalizeClass(_ctx.b({ readonly: !_ctx.editable })),
     style: normalizeStyle(_ctx.styleName)
   }, [
     createElementVNode("div", {
       id: _ctx.id,
-      style: normalizeStyle(_ctx.styleName)
+      class: normalizeClass(_ctx.b('canvas')),
+      style: normalizeStyle(_ctx.canvasStyle)
     }, [
-      _cache[0] || (_cache[0] = createElementVNode("div", { class: "avue-grid" }, null, -1 /* HOISTED */)),
-      (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.option.nodeList, (node, index) => {
-        return (openBlock(), createElementBlock(Fragment, null, [
+      (_ctx.showGrid)
+        ? (openBlock(), createElementBlock("div", {
+            key: 0,
+            class: normalizeClass(_ctx.b('grid')),
+            style: normalizeStyle(_ctx.gridStyle)
+          }, null, 6 /* CLASS, STYLE */))
+        : createCommentVNode("v-if", true),
+      (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.nodeList, (node) => {
+        return (openBlock(), createElementBlock(Fragment, {
+          key: node.id
+        }, [
           (!node.display)
             ? (openBlock(), createBlock(_component_flow_node, {
-                node: node,
+                key: 0,
                 id: node.id,
-                onClick: $event => (_ctx.handleClick(node)),
-                onChangeNodeSite: _ctx.changeNodeSite,
-                index: index,
+                node: node,
                 active: _ctx.active,
-                key: index
+                "node-width": _ctx.nodeWidth,
+                "node-height": _ctx.nodeHeight,
+                editable: _ctx.editable,
+                onClick: $event => (_ctx.handleClick(node)),
+                onChangeNodeSite: _ctx.changeNodeSite
               }, {
-                header: withCtx(({node}) => [
-                  renderSlot(_ctx.$slots, "header", { node: node })
+                header: withCtx(({ node: currentNode }) => [
+                  renderSlot(_ctx.$slots, "header", { node: currentNode })
                 ]),
-                default: withCtx(({node}) => [
-                  renderSlot(_ctx.$slots, "default", { node: node })
+                default: withCtx(({ node: currentNode }) => [
+                  renderSlot(_ctx.$slots, "default", { node: currentNode })
                 ]),
                 _: 2 /* DYNAMIC */
-              }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["node", "id", "onClick", "onChangeNodeSite", "index", "active"]))
+              }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["id", "node", "active", "node-width", "node-height", "editable", "onClick", "onChangeNodeSite"]))
             : createCommentVNode("v-if", true)
         ], 64 /* STABLE_FRAGMENT */))
-      }), 256 /* UNKEYED_FRAGMENT */))
-    ], 12 /* STYLE, PROPS */, _hoisted_1)
+      }), 128 /* KEYED_FRAGMENT */))
+    ], 14 /* CLASS, STYLE, PROPS */, _hoisted_1)
   ], 6 /* CLASS, STYLE */))
 }
 

@@ -1,64 +1,64 @@
 <!DOCTYPE html>
-
 <html class="no-js">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avue Watermark</title>
     <script src="../../cdn/axios/axios.js"></script>
     <script src="../../cdn/vue/vue.global.min.js"></script>
     <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
     <script src="../../cdn/element-plus/index.full.min.js"></script>
-    <script src="../../cdn/element-plus/icons-vue.js"></script>
     <link rel="stylesheet" href="../../../dist/index.css" />
     <script src="../../../dist/avue.js"></script>
     <style>
-      #test {
-        position: relative;
-        width: 300px;
-        height: 300px;
-        border: 1px solid #ccc;
-      }
+      body { margin: 0; padding: 24px; background: #f5f7fa; font-family: Arial, "Microsoft YaHei", sans-serif; }
+      #app { max-width: 840px; margin: 0 auto; }
+      .panel { padding: 20px; border-radius: 12px; background: #fff; box-shadow: 0 8px 24px rgb(15 23 42 / 6%); }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+      #test { position: relative; min-height: 280px; padding: 28px; overflow: hidden; border: 1px solid #dbeafe; border-radius: 10px; background: linear-gradient(135deg, #eff6ff, #fff); }
     </style>
   </head>
-
   <body>
     <div id="app">
-      <el-button @click="submit" type="primary">全局水印</el-button>
-      <el-button @click="submit1" type="primary">局部水印</el-button>
-      <el-button @click="del" type="danger">删除水印</el-button>
-      <br /><br />
-      <div id="test"></div>
+      <div class="panel">
+        <div class="actions">
+          <el-button type="primary" @click="addGlobal">添加全局水印</el-button>
+          <el-button type="primary" plain @click="addLocal">添加局部水印</el-button>
+          <el-button @click="repaint">更新局部文字</el-button>
+          <el-button type="danger" plain @click="remove">删除全部水印</el-button>
+        </div>
+        <div id="test">
+          <h3>局部水印区域</h3>
+          <p>水印会自动覆盖容器尺寸，移除后会同步释放 DOM 观察器。</p>
+        </div>
+      </div>
     </div>
   </body>
   <script>
-    var app = Vue.createApp({
-      data() {
-        return {
-          obj: "",
-          obj1: "",
-        };
-      },
+    const app = Vue.createApp({
+      data() { return { globalWatermark: null, localWatermark: null, version: 1 }; },
+      beforeUnmount() { this.remove(); },
       methods: {
-        submit() {
-          this.$message.success("添加水印成功");
-          this.obj = this.$Watermark({ text: "avue全局水印演示" });
+        addGlobal() {
+          this.globalWatermark?.remove();
+          this.globalWatermark = this.$Watermark({ text: "AVUE 内部资料", width: 260, height: 160 });
+          this.$message.success("已添加全局水印");
         },
-        submit1() {
-          this.$message.success("添加水印成功");
-          this.obj1 = this.$Watermark({
-            id: "test",
-            fontSize: "14px",
-            width: 120,
-            height: 80,
-            text: "avue局部水印演示",
-          });
+        addLocal() {
+          this.localWatermark?.remove();
+          this.localWatermark = this.$Watermark({ id: "test", text: "仅限授权使用", fontSize: "18px", width: 180, height: 110, degree: -24 });
+          this.$message.success("已添加局部水印");
         },
-        del() {
-          this.obj.remove();
-          this.obj1.remove();
+        repaint() {
+          if (!this.localWatermark) return this.addLocal();
+          this.version += 1;
+          this.localWatermark.Repaint({ text: "更新版本 " + this.version });
+        },
+        remove() {
+          this.globalWatermark?.remove();
+          this.localWatermark?.remove();
+          this.globalWatermark = null;
+          this.localWatermark = null;
         },
       },
     });
