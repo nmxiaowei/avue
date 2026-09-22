@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
+    <title>列拖拽排序与列宽调整</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -25,6 +25,8 @@
 
   <body>
     <div id="app">
+      <p>拖动表头内容调整列顺序，拖动表头右边界调整列宽。</p>
+      <p>调整列宽后，这段文字应仍能正常选中和复制。</p>
       <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
     </div>
   </body>
@@ -56,6 +58,7 @@
           ],
           option: {
             sortable: true,
+            border: true,
             addBtn: false,
             menu: false,
             filterBtn: true,

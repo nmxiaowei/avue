@@ -1074,7 +1074,14 @@ export default create({
         animation: 100,
         delay: 100,
         onEnd: (evt) => callback(evt),
-        filter: ".el-table-fixed-column--right",
+        filter: (evt) => {
+          // Let Element Plus own the entire column resize interaction.
+          if (type === "column" && document.body.style.cursor === "col-resize") {
+            return true;
+          }
+          return !!evt.target.closest(".el-table-fixed-column--right");
+        },
+        preventOnFilter: type !== "column",
       });
     },
     findData(id) {
