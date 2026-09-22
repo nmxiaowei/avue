@@ -63,7 +63,7 @@ export default {
     },
     handleDetail (row, column) {
       let result = row[column.prop];
-      let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
+      let DIC = this.crud.getRowDic(row, column)
       result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC)) {
         row["$" + column.prop] = result;

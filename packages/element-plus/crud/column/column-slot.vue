@@ -63,7 +63,7 @@
                 row: row,
                 tableColumn: tableColumn,
                 column: column,
-                dic: crud.DIC[column.prop],
+                dic: crud.getRowDic(row, column),
                 size: crud.size,
                 index: $index,
                 disabled: crud.btnDisabledList[$index],
@@ -87,10 +87,7 @@
                 row: row,
                 label: handleDetail(row, column),
               }"
-              :dic="
-                (crud.cascaderDIC[$index] || {})[column.prop] ||
-                crud.DIC[column.prop]
-              "
+              :dic="crud.getRowDic(row, column)"
               :props="column.props || crud.tableOption.props"
               :readonly="column.readonly"
               :disabled="
@@ -126,7 +123,7 @@
         :tableColumn="tableColumn"
         :column="column"
         :index="$index"
-        :dic="crud.DIC[column.prop]"
+        :dic="crud.getRowDic(row, column)"
         :size="crud.size"
         :label="handleDetail(row, column)"
         :name="column.prop"
@@ -309,9 +306,7 @@ export default {
     },
     handleDetail(row, column) {
       let result;
-      let DIC = column.parentProp
-        ? (this.crud.cascaderDIC[row.$index] || {})[column.prop]
-        : this.crud.DIC[column.prop];
+      let DIC = this.crud.getRowDic(row, column);
       result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC) && this.crud.tableOption.filterDic != true) {
         row["$" + column.prop] = result;

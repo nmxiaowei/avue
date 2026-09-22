@@ -64,7 +64,7 @@ export default {
         list.forEach(ele => {
           let row = this.deepClone(ele);
           columnOption.forEach(column => {
-            let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop]
+            let DIC = this.crud.getRowDic(ele, column)
             row[column.prop] = detail(row, column, option, DIC);
           })
           data.push(row);

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>当前行字典参数</title>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>普通字典列的 <code v-pre>{{key}}</code> 使用当前行该列的值，<code v-pre>{{tenantId}}</code> 使用当前行的 tenantId。</p>
+      <p>本例使用本地模拟接口；同一明细 ID 在不同租户中显示不同名称。</p>
+      <el-button @click="loadPage(1)">第一页</el-button>
+      <el-button @click="loadPage(2)">第二页</el-button>
+      <el-button @click="data[0].orderDetailId = 0">将首行明细 ID 改为 0</el-button>
+      <avue-crud ref="crud" :option="option" :data="data"></avue-crud>
+      <p>请求参数：</p>
+      <pre>{{ requests }}</pre>
+    </div>
+    <script>
+      const requests = Vue.reactive([]);
+      const mockAxios = (config) => {
+        const params = config.params || {};
+        requests.push({ ...params });
+        return Promise.resolve({
+          data: {
+            data: [{
+              dictKey: String(params.id),
+              dictValue: `租户 ${params.tenantId} / 明细 ${params.id}`,
+            }],
+          },
+        });
+      };
+      const app = Vue.createApp({
+        data() {
+          return {
+            requests,
+            data: [],
+            option: {
+              menu: false,
+              addBtn: false,
+              column: [
+                { label: "行 ID", prop: "id" },
+                { label: "租户", prop: "tenantId" },
+                {
+                  label: "订单明细",
+                  prop: "orderDetailId",
+                  type: "select",
+                  dataType: "string",
+                  props: { label: "dictValue", value: "dictKey" },
+                  dicUrl: "/mock/order-detail",
+                  dicQuery: { id: "{{key}}", tenantId: "{{tenantId}}" },
+                  dicFormatter: (res) => res.data,
+                },
+              ],
+            },
+          };
+        },
+        mounted() {
+          this.loadPage(1);
+        },
+        methods: {
+          loadPage(page) {
+            this.data = [
+              { id: page * 2 - 1, tenantId: `A${page}`, orderDetailId: page },
+              { id: page * 2, tenantId: `B${page}`, orderDetailId: page },
+            ];
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE, { axios: mockAxios });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

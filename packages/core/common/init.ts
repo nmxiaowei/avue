@@ -1,4 +1,7 @@
-import { sendDic, loadDic, loadCascaderDic, loadLocalDic } from 'core/dic';
+import {
+  sendDic, loadDic, loadCascaderDic, loadLocalDic,
+  getRowDicRequests, isRowDicColumn,
+} from 'core/dic';
 import { DIC_PROPS } from 'global/variable';
 import slot from 'core/slot';
 import { validateOption, warnOption } from 'core/option';
@@ -44,6 +47,9 @@ export default function (name: string) {
       },
     },
     watch: {
+      rowDicRequests(requests: any[]) {
+        this.handleLoadRowDic(requests);
+      },
       propOption: {
         handler(list: any[]) {
           list.forEach((ele) => (this.objectOption[ele.prop] = ele));
@@ -61,6 +67,8 @@ export default function (name: string) {
       return {
         DIC: {},
         cascaderDIC: {},
+        rowDIC: new Map(),
+        rowDicOverrides: {},
         tableOption: {},
         objectOption: {},
         dicLoading: false,
@@ -77,6 +85,11 @@ export default function (name: string) {
       state.active.clear();
     },
     computed: {
+      rowDicRequests() {
+        return name === 'crud'
+          ? getRowDicRequests(this.propOption, this.data, this.childrenKey)
+          : [];
+      },
       isMobile() {
         return document.body.clientWidth <= 768;
       },
@@ -125,7 +138,10 @@ export default function (name: string) {
         if (type === 'cascader') {
           return this.handleLoadCascaderDic();
         } else {
-          return this.handleLoadDic();
+          return name === 'crud'
+            ? Promise.all([this.handleLoadDic(), this.handleLoadRowDic()])
+              .then(([result]) => result)
+            : this.handleLoadDic();
         }
       },
       updateDic(this: any, prop: string, list?: any[]) {
@@ -138,11 +154,18 @@ export default function (name: string) {
           } else {
             this.DIC[prop] = currentList;
           }
+          if (name === 'crud' && isRowDicColumn(column)) {
+            // A pending automatic response must not replace an explicit dictionary.
+            this.rowDicOverrides[prop] = this.DIC[prop];
+          }
         };
         if (this.validatenull(list) && this.validatenull(prop)) {
           return this.handleLoadDic();
         }
         if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+          if (name === 'crud' && isRowDicColumn(column)) {
+            return this.handleLoadRowDic();
+          }
           return this.requestDic(
             {
               column,
@@ -176,9 +199,44 @@ export default function (name: string) {
       handleLoadDic(this: any) {
         return this.runDicRequest(
           'dic',
-          () => loadDic(this.resultOption, this),
+          () => loadDic(this.resultOption, this, name === 'crud'),
           (result: Record<string, any>) => {
             this.handleSetDic(this.DIC, result);
+          },
+        );
+      },
+      getRowDic(this: any, row: any, column: any) {
+        if (isRowDicColumn(column)) {
+          if (Object.prototype.hasOwnProperty.call(this.rowDicOverrides, column.prop)) {
+            return this.rowDicOverrides[column.prop];
+          }
+          return this.rowDIC.get(row)?.[column.prop];
+        }
+        const cascader = (this.cascaderDIC[row.$index] || {})[column.prop];
+        return column.parentProp ? cascader : cascader || this.DIC[column.prop];
+      },
+      handleLoadRowDic(this: any, requests = this.rowDicRequests) {
+        // Drop the previous page immediately; late responses are guarded by runDicRequest.
+        this.rowDIC = new Map();
+        this.rowDicOverrides = {};
+        return this.runDicRequest(
+          'row-dic',
+          () => Promise.all(requests.map((request: any) => {
+            const { column, value, empty } = request;
+            return (empty ? Promise.resolve([]) : sendDic({
+              column,
+              value,
+              form: this.deepClone(request.form),
+              dataType: column.dataType,
+            }, this)).then((data: any[]) => ({ ...request, data }));
+          })),
+          (result: any[]) => {
+            const dictionaries = new Map();
+            result.forEach(({ form, column, data }) => {
+              if (!dictionaries.has(form)) dictionaries.set(form, {});
+              dictionaries.get(form)[column.prop] = data;
+            });
+            this.rowDIC = dictionaries;
           },
         );
       },
