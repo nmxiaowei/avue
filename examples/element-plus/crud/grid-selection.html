@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>卡片分页多选</title>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>每页第一条禁选；开启保留选择后，翻页勾选第二条，再返回上一页检查回显。</p>
+      <el-checkbox v-model="option.reserveSelection">保留跨页选择</el-checkbox>
+      <el-button @click="$refs.crud.toggleAllSelection()">切换本页全选</el-button>
+      <el-button @click="$refs.crud.toggleSelection([data[1]])">切换本页第二条</el-button>
+      <el-button @click="$refs.crud.toggleSelection([data[1]], true)">选中本页第二条</el-button>
+      <el-button @click="$refs.crud.toggleSelection([data[1]], false)">取消本页第二条</el-button>
+      <el-button @click="$refs.crud.clearSelection()">清空所有选择</el-button>
+      <p>已选 ID：{{ selected.map(row => row.id).join(', ') || '无' }}</p>
+      <avue-crud
+        ref="crud"
+        :option="option"
+        :data="data"
+        v-model:page="page"
+        @current-change="currentChange"
+        @selection-change="selected = $event"
+      ></avue-crud>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            selected: [],
+            data: [
+              { id: 1, name: "张三", page: 1 },
+              { id: 2, name: "李四", page: 1 },
+            ],
+            page: { total: 6, currentPage: 1, pageSize: 2, pageSizes: [2] },
+            option: {
+              grid: true,
+              selection: true,
+              reserveSelection: true,
+              rowKey: "id",
+              selectable: (_row, index) => index === 1,
+              menu: false,
+              addBtn: false,
+              column: [
+                { label: "ID", prop: "id" },
+                { label: "姓名", prop: "name" },
+                { label: "页码", prop: "page" },
+              ],
+            },
+          };
+        },
+        methods: {
+          currentChange(currentPage) {
+            this.data = [
+              { id: currentPage * 2 - 1, name: "张三", page: currentPage },
+              { id: currentPage * 2, name: "李四", page: currentPage },
+            ];
+          },
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount("#app");
+    </script>
+  </body>
+</html>
