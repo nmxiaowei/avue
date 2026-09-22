@@ -22,6 +22,14 @@
 
   <body>
     <div id="app">
+      <p>在未启用前端筛选、列排序或展开行的平面视图中拖动行，排序结果自动同步到绑定数组。</p>
+      <p>绑定数据顺序：{{ list.map(row => row.id).join(', ') }}</p>
+      <p>最近回调：{{ lastSort || '尚未拖拽' }}</p>
+      <el-radio-group v-model="sortMode">
+        <el-radio value="auto" label="auto">自动同步</el-radio>
+        <el-radio value="splice" label="splice">同步回调原地换序</el-radio>
+        <el-radio value="replace" label="replace">同步回调替换数组</el-radio>
+      </el-radio-group>
       <avue-crud
         :data="list"
         :option="option"
@@ -34,6 +42,8 @@
     var app = Vue.createApp({
       data() {
         return {
+          sortMode: 'auto',
+          lastSort: '',
           list: [
             {
               id: 1,
@@ -95,7 +105,15 @@
          * @param {Array} list      排序后的整个对象
          * @param return
          **/
-        sortableChange(oldindex, newindex) {},
+        sortableChange(oldindex, newindex, row, list) {
+          this.lastSort = `${oldindex} → ${newindex}，移动 ID：${row.id}，排序结果：${list.map(item => item.id).join(', ')}`;
+          if (this.sortMode === 'splice') {
+            const moved = this.list.splice(oldindex, 1)[0];
+            this.list.splice(newindex, 0, moved);
+          } else if (this.sortMode === 'replace') {
+            this.list = list;
+          }
+        },
       },
     });
     app.use(ElementPlus);

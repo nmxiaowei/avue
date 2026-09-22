@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>动态子表行拖拽</title>
+    <script src="../../cdn/vue/vue.global.min.js"></script>
+    <script src="../../cdn/sortable/Sortable.min.js"></script>
+    <link rel="stylesheet" href="../../cdn/element-plus/index.css" />
+    <script src="../../cdn/element-plus/index.full.min.js"></script>
+    <script src="../../cdn/element-plus/icons-vue.js"></script>
+    <link rel="stylesheet" href="../../../dist/index.css" />
+    <script src="../../../dist/avue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>在未筛选、未按列排序、未展开的子表中拖动 ID 单元格，再编辑姓名，检查数据与显示行一致。</p>
+      <p>子表数据：{{ form.items.map(row => `${row.id}:${row.name}`).join(', ') }}</p>
+      <p>最近回调：{{ lastSort || '尚未拖拽' }}</p>
+      <avue-form v-model="form" :option="option"></avue-form>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            lastSort: '',
+            form: {
+              items: [
+                { id: 1, name: '张三' },
+                { id: 2, name: '李四' },
+                { id: 3, name: '王五' },
+              ],
+            },
+            option: {
+              submitBtn: false,
+              emptyBtn: false,
+              column: [{
+                label: '子表',
+                prop: 'items',
+                type: 'dynamic',
+                span: 24,
+                children: {
+                  rowKey: 'id',
+                  rowSort: true,
+                  addBtn: false,
+                  delBtn: false,
+                  sortableChange: (oldIndex, newIndex, row, list) => {
+                    this.lastSort = `${oldIndex} → ${newIndex}，移动 ID：${row.id}，排序结果：${list.map(item => item.id).join(', ')}`;
+                  },
+                  column: [
+                    { label: 'ID', prop: 'id', cell: false, width: 100 },
+                    { label: '姓名', prop: 'name' },
+                  ],
+                },
+              }],
+            },
+          };
+        },
+      });
+      app.use(ElementPlus);
+      app.use(AVUE);
+      app.mount('#app');
+    </script>
+  </body>
+</html>

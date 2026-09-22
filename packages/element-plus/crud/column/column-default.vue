@@ -45,6 +45,7 @@
 
 <script>
 
+import { unref } from 'vue';
 import create from "core/create";
 import locale from "core/locale";
 import config from "../config";
@@ -79,6 +80,10 @@ export default create({
     this.rowDrop()
     this.columnDrop()
   },
+  beforeUnmount () {
+    this.rowSortable && this.rowSortable.destroy();
+    this.rowSortable = null;
+  },
   methods: {
     indexMethod (index) {
       return (
@@ -90,16 +95,44 @@ export default create({
     },
     rowDrop (flag) {
       this.$nextTick(() => {
+        this.rowSortable && this.rowSortable.destroy();
+        this.rowSortable = null;
         if (flag == false) {
-          this.rowSortable && this.rowSortable.destroy();
           return
         }
-        if (!this.crud.$refs.table.$el) return
+        if (!this.crud.$refs.table?.$el) return
         const el = this.crud.$refs.table.$el.querySelectorAll(this.config.dropRowClass)[0]
+        if (!el) return
         this.rowSortable = this.crud.tableDrop('row', el, evt => {
           const oldIndex = evt.oldIndex;
           const newIndex = evt.newIndex;
-          this.crud.$emit('sortable-change', oldIndex, newIndex)
+          if (oldIndex === newIndex || !Number.isInteger(oldIndex) || !Number.isInteger(newIndex) || oldIndex < 0 || newIndex < 0) return
+          if (!evt.from || evt.item?.parentNode !== evt.from) return
+          // 先还原 Sortable 移动的 DOM，再由 Vue 根据数据更新顺序。
+          evt.from.removeChild(evt.item);
+          evt.from.insertBefore(evt.item, evt.from.children[oldIndex] || null);
+          const list = this.crud.data;
+          if (oldIndex >= list.length || newIndex >= list.length) return
+          const tableState = this.crud.$refs.table?.store?.states;
+          const visibleRows = unref(tableState?.data);
+          // 筛选、列排序或展开行后，DOM 行号可能不再对应绑定数组。
+          if ((unref(tableState?.sortingColumn) && unref(tableState?.sortOrder)) ||
+            evt.from.children.length !== list.length || !Array.isArray(visibleRows) ||
+            visibleRows.length !== list.length || visibleRows.some((row, index) => row !== list[index])) return
+          const original = list.slice();
+          const sorted = list.slice();
+          const row = sorted.splice(oldIndex, 1)[0];
+          sorted.splice(newIndex, 0, row);
+          const sortable = this.rowSortable;
+          this.crud.$emit('sortable-change', oldIndex, newIndex, row, sorted)
+          this.$nextTick(() => {
+            // 等待父组件同步新数组，兼容回调内的替换数组或原地换序。
+            if (this.rowSortable !== sortable || this.crud.data !== list) return
+            if (list.length === original.length && list.every((item, index) => item === original[index])) {
+              list.splice(oldIndex, 1);
+              list.splice(newIndex, 0, row);
+            }
+          })
         })
       })
     },
