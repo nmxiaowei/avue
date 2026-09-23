@@ -85,10 +85,18 @@ export default function (name: string) {
       state.active.clear();
     },
     computed: {
-      rowDicRequests() {
-        return name === 'crud'
-          ? getRowDicRequests(this.propOption, this.data, this.childrenKey)
+      rowDicColumns() {
+        // propOption has resolved cascader parentProp; those columns keep the parent key.
+        const columns: Record<string, any>[] = name === 'crud'
+          ? this.propOption.filter(isRowDicColumn)
           : [];
+        return new Map(columns.map((column) => [column.prop, column]));
+      },
+      rowDicRequests() {
+        if (!this.rowDicColumns.size) return [];
+        return getRowDicRequests(
+          Array.from(this.rowDicColumns.values()), this.data, this.childrenKey,
+        );
       },
       isMobile() {
         return document.body.clientWidth <= 768;
@@ -138,7 +146,7 @@ export default function (name: string) {
         if (type === 'cascader') {
           return this.handleLoadCascaderDic();
         } else {
-          return name === 'crud'
+          return this.rowDicColumns.size
             ? Promise.all([this.handleLoadDic(), this.handleLoadRowDic()])
               .then(([result]) => result)
             : this.handleLoadDic();
@@ -147,6 +155,7 @@ export default function (name: string) {
       updateDic(this: any, prop: string, list?: any[]) {
         const column = this.findObject(this.propOption, prop);
         if (!column) return Promise.resolve(null);
+        const useRowDic = this.rowDicColumns.has(prop);
         const formatter = column.dicFormatter;
         const callback = (currentList: any[], useFormatter = true) => {
           if (useFormatter && typeof formatter === 'function') {
@@ -154,7 +163,7 @@ export default function (name: string) {
           } else {
             this.DIC[prop] = currentList;
           }
-          if (name === 'crud' && isRowDicColumn(column)) {
+          if (useRowDic) {
             // A pending automatic response must not replace an explicit dictionary.
             this.rowDicOverrides[prop] = this.DIC[prop];
           }
@@ -163,7 +172,7 @@ export default function (name: string) {
           return this.handleLoadDic();
         }
         if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
-          if (name === 'crud' && isRowDicColumn(column)) {
+          if (useRowDic) {
             return this.handleLoadRowDic();
           }
           return this.requestDic(
@@ -199,14 +208,14 @@ export default function (name: string) {
       handleLoadDic(this: any) {
         return this.runDicRequest(
           'dic',
-          () => loadDic(this.resultOption, this, name === 'crud'),
+          () => loadDic(this.resultOption, this, this.rowDicColumns.size > 0),
           (result: Record<string, any>) => {
             this.handleSetDic(this.DIC, result);
           },
         );
       },
       getRowDic(this: any, row: any, column: any) {
-        if (isRowDicColumn(column)) {
+        if (this.rowDicColumns.has(column.prop)) {
           if (Object.prototype.hasOwnProperty.call(this.rowDicOverrides, column.prop)) {
             return this.rowDicOverrides[column.prop];
           }
