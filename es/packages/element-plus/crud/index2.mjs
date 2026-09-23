@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../src/core/create.mjs';
 import packages from '../../../src/core/packages.mjs';
 import locale from '../../../src/core/locale.mjs';
@@ -879,7 +879,14 @@ var script = create({
         animation: 100,
         delay: 100,
         onEnd: (evt) => callback(evt),
-        filter: ".el-table-fixed-column--right",
+        filter: (evt) => {
+          // Let Element Plus own the entire column resize interaction.
+          if (type === "column" && document.body.style.cursor === "col-resize") {
+            return true;
+          }
+          return !!evt.target.closest(".el-table-fixed-column--right");
+        },
+        preventOnFilter: type !== "column",
       });
     },
     findData(id) {

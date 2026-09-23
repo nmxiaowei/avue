@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, normalizeClass, createVNode, withCtx, createElementVNode, renderSlot, toDisplayString } from 'vue';
 
 const _hoisted_1 = { class: "el-date-table-cell" };
@@ -24,7 +24,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "unlink-panels": _ctx.unlinkPanels,
       "single-panel": _ctx.singlePanel,
       "default-value": _ctx.defaultValue,
-      "default-time": _ctx.defaultTime,
+      "default-time": _ctx.defaultTimeVal,
       "range-separator": _ctx.rangeSeparator,
       "start-placeholder": _ctx.startPlaceholder || _ctx.t('date.start'),
       "end-placeholder": _ctx.endPlaceholder || _ctx.t('date.end'),

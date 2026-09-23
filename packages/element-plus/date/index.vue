@@ -10,7 +10,7 @@
       :unlink-panels="unlinkPanels"
       :single-panel="singlePanel"
       :default-value="defaultValue"
-      :default-time="defaultTime"
+      :default-time="defaultTimeVal"
       :range-separator="rangeSeparator"
       :start-placeholder="startPlaceholder || t('date.start')"
       :end-placeholder="endPlaceholder || t('date.end')"
@@ -74,13 +74,28 @@ export default create({
     endPlaceholder: String,
     rangeSeparator: String,
     defaultValue: [String, Array],
-    defaultTime: [String, Array],
+    defaultTime: [String, Date, Array],
     type: {
       type: String,
       default: "date",
     },
     valueFormat: String,
     format: String,
+  },
+  computed: {
+    defaultTimeVal() {
+      const normalizeTime = (time) => {
+        if (typeof time !== "string") return time;
+        const match = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.exec(time);
+        if (!match) return time;
+        const [, hours, minutes, seconds] = match.map(Number);
+        // Element Plus requires a Date and only uses its local time fields.
+        return new Date(2000, 0, 1, hours, minutes, seconds);
+      };
+      return Array.isArray(this.defaultTime)
+        ? this.defaultTime.map(normalizeTime)
+        : normalizeTime(this.defaultTime);
+    },
   },
 });
 </script>

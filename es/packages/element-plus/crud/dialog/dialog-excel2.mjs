@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import locale from '../../../../src/core/locale.mjs';
 import { detail } from '../../../../src/core/detail.mjs';
 import { uuid } from '../../../../src/utils/util.mjs';
@@ -41,7 +41,7 @@ var script = {
         list.forEach(ele => {
           let row = this.deepClone(ele);
           columnOption.forEach(column => {
-            let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop];
+            let DIC = this.crud.getRowDic(ele, column);
             row[column.prop] = detail(row, column, option, DIC);
           });
           data.push(row);

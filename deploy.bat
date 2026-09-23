@@ -35,33 +35,33 @@ echo 开始执行Git操作...
 
 :: 1. 提交到dev分支
 echo 正在提交到dev分支...
-git add .
-git commit -m "build v%version%"
-git push origin dev
+git add . || exit /b 1
+git commit -m "build v%version%" || exit /b 1
+git push origin dev || exit /b 1
 
 :: 2. 创建标签
 echo 正在创建标签 v%version%...
-git tag -a v%version% -m "v%version%"
-git push origin v%version%
+git tag -a v%version% -m "v%version%" || exit /b 1
+git push origin v%version% || exit /b 1
 
 :: 3. 切换到master分支
 echo 正在切换到master分支...
-git checkout master
+git checkout master || exit /b 1
 
-:: 4. 从dev分支检出文件到master
-echo 正在从dev分支检出文件到master...
-git checkout dev ./
+:: 4. 从dev分支同步文件到master，包括已删除文件
+echo 正在从dev分支同步文件到master...
+git restore --source=dev --staged --worktree -- . || exit /b 1
 
 :: 5. 提交到master分支
 echo 正在提交到master分支...
-git add .
-git commit -m "build v%version%"
-git push origin master
+git add . || exit /b 1
+git commit -m "build v%version%" || exit /b 1
+git push origin master || exit /b 1
 
 :: 6. 切回dev分支
 echo 正在切回dev分支...
-git checkout dev
+git checkout dev || exit /b 1
 
 echo 版本 v%version% 发布完成！
 
-endlocal 
+endlocal

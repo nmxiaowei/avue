@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../../src/core/create.mjs';
 import locale from '../../../../src/core/locale.mjs';
 
@@ -16,12 +16,14 @@ var script = create({
     cellStyle: Function,
     cellClassName: Function,
     rowClassName: Function,
+    rowKey: [String, Function],
     height: [String, Number],
     data: Array,
   },
   data() {
     return {
-      checkList: [],
+      selection: [],
+      rowKeys: new WeakMap(),
       span: 8,
       xsSpan: 12,
       id: "crud-grid",
@@ -29,14 +31,71 @@ var script = create({
     };
   },
   computed: {
+    reserveSelection() {
+      return !!this.crud.tableOption.reserveSelection;
+    },
+    checkList: {
+      get() {
+        const selected = new Set(this.selection.map(this.getRowIdentity));
+        return this.data.reduce((result, row, index) => {
+          if (selected.has(this.getRowIdentity(row))) result.push(index);
+          return result;
+        }, []);
+      },
+      set(val) {
+        const current = new Set(this.data.map(this.getRowIdentity));
+        const selected = new Set(val);
+        const result = this.reserveSelection
+          ? this.selection.filter((row) => !current.has(this.getRowIdentity(row)))
+          : [];
+        this.data.forEach((row, index) => {
+          if (selected.has(index)) result.push(row);
+        });
+        this.selection = result;
+      },
+    },
     styleName() {
       return {
         height: this.crud.tableHeight + "px",
       };
     },
   },
+  watch: {
+    data: {
+      handler: "syncSelection",
+      deep: true,
+    },
+    reserveSelection() {
+      this.syncSelection(this.data, this.data);
+    },
+  },
   methods: {
     doLayout() {},
+    getRowKey(row) {
+      if (typeof this.rowKey === "function") return this.rowKey(row);
+      return this.rowKey?.split(".").reduce((value, key) => value?.[key], row);
+    },
+    getRowIdentity(row) {
+      const key = this.getRowKey(row);
+      if (key !== undefined && key !== null) return key;
+      if (!this.rowKeys.has(row)) this.rowKeys.set(row, Symbol());
+      return this.rowKeys.get(row);
+    },
+    syncSelection(data, oldData) {
+      if (!this.reserveSelection && data !== oldData) {
+        this.clearSelection();
+        return;
+      }
+      const current = new Map(data.map((row) => [this.getRowIdentity(row), row]));
+      const selection = this.selection
+        .filter((row) => this.reserveSelection || current.has(this.getRowIdentity(row)))
+        .map((row) => current.get(this.getRowIdentity(row)) || row);
+      if (selection.length !== this.selection.length ||
+        selection.some((row, index) => row !== this.selection[index])) {
+        this.selection = selection;
+        this.checkListChange();
+      }
+    },
     //表格筛选逻辑
     handleFilterMethod(params) {
       const { value, row, column } = params;
@@ -94,36 +153,46 @@ var script = create({
         : false;
     },
     clearSelection() {
-      this.checkList = [];
-      this.checkListChange(this.checkList);
+      if (!this.selection.length) return;
+      this.selection = [];
+      this.checkListChange();
     },
     toggleAllSelection() {
-      if (this.checkList.length === this.crud.data.length) {
-        this.checkList = [];
-      } else {
-        this.checkList = this.crud.data.map((ele, index) => index);
-      }
-      this.checkListChange(this.checkList);
+      const selectable = this.data.reduce((result, row, index) => {
+        if (!this.isDisabled(row, index)) result.push(index);
+        return result;
+      }, []);
+      const checked = this.checkList;
+      const allSelected = selectable.every((index) => checked.includes(index));
+      this.checkList = allSelected
+        ? checked.filter((index) => !selectable.includes(index))
+        : [...new Set([...checked, ...selectable])];
+      this.checkListChange();
+      this.$emit("select-all", this.selection.slice());
     },
-    toggleRowSelection(data, selected) {
-      let index = this.crud.data.findIndex(
-        (ele) => JSON.stringify(ele) == JSON.stringify(data)
+    toggleRowSelection(row, selected, ignoreSelectable = true) {
+      const identity = this.getRowIdentity(row);
+      const dataIndex = this.data.findIndex(
+        (item) => this.getRowIdentity(item) === identity
       );
-      if (selected && index != -1) {
-        this.checkList.push(index);
+      if (dataIndex === -1 && !this.reserveSelection) return;
+      row = this.data[dataIndex] || row;
+      if (!ignoreSelectable && this.isDisabled(row, dataIndex)) return;
+      const index = this.selection.findIndex(
+        (item) => this.getRowIdentity(item) === identity
+      );
+      const checked = typeof selected === "boolean" ? selected : index === -1;
+      if (checked && index === -1) {
+        this.selection.push(row);
+      } else if (!checked && index !== -1) {
+        this.selection.splice(index, 1);
       } else {
-        let checkIndex = this.checkList.findIndex((ele) => ele == index);
-        this.checkList.splice(checkIndex, 1);
+        return;
       }
-      this.checkListChange(this.checkList);
+      this.checkListChange();
     },
-    checkListChange(val) {
-      let result = [];
-      const data = this.crud.data;
-      val.forEach((ele) => {
-        result.push(data[ele]);
-      });
-      this.$emit("selection-change", result);
+    checkListChange() {
+      this.$emit("selection-change", this.selection.slice());
     },
     handleRowDblClick(row, index) {
       this.$emit("row-dblclick", row, index);

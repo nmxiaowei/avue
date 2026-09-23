@@ -26,16 +26,19 @@
     <div id="app">
       <avue-crud
         ref="crud"
+        v-model:search="search"
         :option="option"
         :data="data"
         @date-change="dateChange"
       ></avue-crud>
+      <pre>{{ search }}</pre>
     </div>
   </body>
   <script>
     var app = Vue.createApp({
       data() {
         return {
+          search: {},
           data: [
             {
               name: "smallwei",
@@ -54,6 +57,19 @@
                 search: true,
                 label: "年龄",
                 prop: "sex",
+              },
+              {
+                label: "申请时间",
+                prop: "add_time",
+                width: 180,
+                display: false,
+                type: "date",
+                format: "YYYY-MM-DD HH:mm:ss",
+                valueFormat: "YYYY-MM-DD HH:mm:ss",
+                searchRange: true,
+                defaultTime: ["00:00:00", "23:59:59"],
+                searchSpan: 6,
+                search: true,
               },
             ],
           },

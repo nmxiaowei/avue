@@ -200,6 +200,7 @@ export default create({
       if (!this.confirmed) this.restoreColumn();
       this.destroySortable();
       this.data = [];
+      this.triggerRef = null;
     },
     handleReset() {
       if (!this.crud.columnStateEnabled) return;

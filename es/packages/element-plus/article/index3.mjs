@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { resolveComponent, openBlock, createElementBlock, normalizeStyle, normalizeClass, renderSlot, createBlock, resolveDynamicComponent, withCtx, createTextVNode, toDisplayString, createCommentVNode, Fragment, createElementVNode } from 'vue';
 
 const _hoisted_1 = { key: 0 };
