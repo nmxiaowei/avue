@@ -1,9 +1,57 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { getAsVal, detailDataType } from '../utils/util.mjs';
 import { validatenull } from '../utils/validate.mjs';
 import { DIC_PROPS } from '../global/variable.mjs';
 
 const key = 'key';
+const getDicTemplateKeys = (column) => {
+    const values = [
+        column.dicUrl,
+        ...Object.values(column.dicQuery || {}),
+        ...Object.values(column.dicHeaders || {}),
+    ];
+    const keys = [];
+    values.forEach((value) => {
+        if (typeof value !== 'string')
+            return;
+        (value.match(/\{\{[^{}]+\}\}/g) || []).forEach((match) => {
+            keys.push(match.slice(2, -2));
+        });
+    });
+    return keys;
+};
+const isRowDicColumn = (column) => !!column.dicUrl &&
+    !column.parentProp &&
+    column.remote !== true &&
+    column.lazy !== true &&
+    column.dicFlag !== false &&
+    getDicTemplateKeys(column).length > 0;
+// Only track fields used by the request. Generated $labels must not reload it.
+const getRowDicRequests = (columns = [], rows = [], childrenKey = DIC_PROPS.children) => {
+    const rowColumns = columns.filter(isRowDicColumn);
+    const requests = [];
+    const visit = (list) => {
+        list.forEach((form) => {
+            rowColumns.forEach((column) => {
+                const value = form[column.prop];
+                const values = getDicTemplateKeys(column).map((prop) => prop === key ? value : form[prop]);
+                requests.push({
+                    form,
+                    column: { ...column, props: { ...column.props } },
+                    value,
+                    // Track in-place changes to array-valued request parameters as well.
+                    context: JSON.stringify(values),
+                    empty: values.some(validatenull),
+                });
+            });
+            if (Array.isArray(form[childrenKey]))
+                visit(form[childrenKey]);
+        });
+    };
+    if (rowColumns.length)
+        visit(rows);
+    return requests;
+};
 function getDataType(list = [], props = {}, type) {
     const valueKey = props.value || DIC_PROPS.value;
     const childrenKey = props.children || DIC_PROPS.children;
@@ -62,7 +110,7 @@ const loadCascaderDic = async (columnOption = [], safe) => {
     });
     return result;
 };
-const loadDic = async (option, safe) => {
+const loadDic = async (option, safe, rowScoped = false) => {
     let notList = [];
     const tasks = [];
     const column = option.column || [];
@@ -72,7 +120,7 @@ const loadDic = async (option, safe) => {
         const parentProp = ele.parentProp;
         notList = notList.concat(ele.cascader || []);
         const flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
-        if (!url || parentProp || flag)
+        if (!url || parentProp || flag || (rowScoped && isRowDicColumn(ele)))
             return;
         tasks.push(sendDic({
             url,
@@ -185,4 +233,4 @@ const sendDic = (params, safe) => {
     });
 };
 
-export { loadCascaderDic, loadDic, loadLocalDic, sendDic };
+export { getRowDicRequests, isRowDicColumn, loadCascaderDic, loadDic, loadLocalDic, sendDic };

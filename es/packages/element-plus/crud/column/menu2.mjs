@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import { detail } from '../../../../src/core/detail.mjs';
 import { DIC_SPLIT, DIC_PROPS } from '../../../../src/global/variable.mjs';
 
@@ -40,7 +40,7 @@ var script = {
     },
     handleDetail (row, column) {
       let result = row[column.prop];
-      let DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop];
+      let DIC = this.crud.getRowDic(row, column);
       result = detail(row, column, this.crud.tableOption, DIC);
       if (!this.validatenull(DIC)) {
         row["$" + column.prop] = result;

@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 import create from '../../../../src/core/create.mjs';
 import locale from '../../../../src/core/locale.mjs';
 
@@ -99,6 +99,7 @@ var script = create({
       if (!this.confirmed) this.restoreColumn();
       this.destroySortable();
       this.data = [];
+      this.triggerRef = null;
     },
     handleReset() {
       if (!this.crud.columnStateEnabled) return;

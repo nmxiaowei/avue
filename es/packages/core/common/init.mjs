@@ -1,5 +1,5 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
-import { sendDic, loadCascaderDic, loadDic, loadLocalDic } from '../../../src/core/dic.mjs';
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+import { sendDic, loadCascaderDic, loadDic, loadLocalDic, getRowDicRequests, isRowDicColumn } from '../../../src/core/dic.mjs';
 import { DIC_PROPS } from '../../../src/global/variable.mjs';
 import slot from '../../../src/core/slot.mjs';
 import { warnOption, validateOption } from '../../../src/core/option.mjs';
@@ -37,6 +37,9 @@ function init (name) {
             },
         },
         watch: {
+            rowDicRequests(requests) {
+                this.handleLoadRowDic(requests);
+            },
             propOption: {
                 handler(list) {
                     list.forEach((ele) => (this.objectOption[ele.prop] = ele));
@@ -54,6 +57,8 @@ function init (name) {
             return {
                 DIC: {},
                 cascaderDIC: {},
+                rowDIC: new Map(),
+                rowDicOverrides: {},
                 tableOption: {},
                 objectOption: {},
                 dicLoading: false,
@@ -70,6 +75,18 @@ function init (name) {
             state.active.clear();
         },
         computed: {
+            rowDicColumns() {
+                // propOption has resolved cascader parentProp; those columns keep the parent key.
+                const columns = name === 'crud'
+                    ? this.propOption.filter(isRowDicColumn)
+                    : [];
+                return new Map(columns.map((column) => [column.prop, column]));
+            },
+            rowDicRequests() {
+                if (!this.rowDicColumns.size)
+                    return [];
+                return getRowDicRequests(Array.from(this.rowDicColumns.values()), this.data, this.childrenKey);
+            },
             isMobile() {
                 return document.body.clientWidth <= 768;
             },
@@ -118,13 +135,17 @@ function init (name) {
                     return this.handleLoadCascaderDic();
                 }
                 else {
-                    return this.handleLoadDic();
+                    return this.rowDicColumns.size
+                        ? Promise.all([this.handleLoadDic(), this.handleLoadRowDic()])
+                            .then(([result]) => result)
+                        : this.handleLoadDic();
                 }
             },
             updateDic(prop, list) {
                 const column = this.findObject(this.propOption, prop);
                 if (!column)
                     return Promise.resolve(null);
+                const useRowDic = this.rowDicColumns.has(prop);
                 const formatter = column.dicFormatter;
                 const callback = (currentList, useFormatter = true) => {
                     if (useFormatter && typeof formatter === 'function') {
@@ -133,11 +154,18 @@ function init (name) {
                     else {
                         this.DIC[prop] = currentList;
                     }
+                    if (useRowDic) {
+                        // A pending automatic response must not replace an explicit dictionary.
+                        this.rowDicOverrides[prop] = this.DIC[prop];
+                    }
                 };
                 if (this.validatenull(list) && this.validatenull(prop)) {
                     return this.handleLoadDic();
                 }
                 if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+                    if (useRowDic) {
+                        return this.handleLoadRowDic();
+                    }
                     return this.requestDic({
                         column,
                     }, `update:${prop}`).then((currentList) => {
@@ -164,8 +192,41 @@ function init (name) {
                 });
             },
             handleLoadDic() {
-                return this.runDicRequest('dic', () => loadDic(this.resultOption, this), (result) => {
+                return this.runDicRequest('dic', () => loadDic(this.resultOption, this, this.rowDicColumns.size > 0), (result) => {
                     this.handleSetDic(this.DIC, result);
+                });
+            },
+            getRowDic(row, column) {
+                var _a;
+                if (this.rowDicColumns.has(column.prop)) {
+                    if (Object.prototype.hasOwnProperty.call(this.rowDicOverrides, column.prop)) {
+                        return this.rowDicOverrides[column.prop];
+                    }
+                    return (_a = this.rowDIC.get(row)) === null || _a === void 0 ? void 0 : _a[column.prop];
+                }
+                const cascader = (this.cascaderDIC[row.$index] || {})[column.prop];
+                return column.parentProp ? cascader : cascader || this.DIC[column.prop];
+            },
+            handleLoadRowDic(requests = this.rowDicRequests) {
+                // Drop the previous page immediately; late responses are guarded by runDicRequest.
+                this.rowDIC = new Map();
+                this.rowDicOverrides = {};
+                return this.runDicRequest('row-dic', () => Promise.all(requests.map((request) => {
+                    const { column, value, empty } = request;
+                    return (empty ? Promise.resolve([]) : sendDic({
+                        column,
+                        value,
+                        form: this.deepClone(request.form),
+                        dataType: column.dataType,
+                    }, this)).then((data) => ({ ...request, data }));
+                })), (result) => {
+                    const dictionaries = new Map();
+                    result.forEach(({ form, column, data }) => {
+                        if (!dictionaries.has(form))
+                            dictionaries.set(form, {});
+                        dictionaries.get(form)[column.prop] = data;
+                    });
+                    this.rowDIC = dictionaries;
                 });
             },
             handleLoadCascaderDic() {

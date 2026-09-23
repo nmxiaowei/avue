@@ -1,4 +1,4 @@
-/*! Avue.js v3.9.4 | (c) 2017-2026 Smallwei | Released under the MIT License. */
+/*! Avue.js v3.9.5 | (c) 2017-2026 Smallwei | Released under the MIT License. */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('element-plus'), require('axios'), require('@element-plus/icons-vue')) :
   typeof define === 'function' && define.amd ? define(['vue', 'element-plus', 'axios', '@element-plus/icons-vue'], factory) :
@@ -5514,6 +5514,46 @@
     };
   })();
 
+  function _arrayWithHoles(r) {
+    if (Array.isArray(r)) return r;
+  }
+
+  function _iterableToArrayLimit(r, l) {
+    var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+    if (null != t) {
+      var e,
+        n,
+        i,
+        u,
+        a = [],
+        f = true,
+        o = false;
+      try {
+        if (i = (t = t.call(r)).next, 0 === l) {
+          if (Object(t) !== t) return;
+          f = !1;
+        } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+      } catch (r) {
+        o = true, n = r;
+      } finally {
+        try {
+          if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+        } finally {
+          if (o) throw n;
+        }
+      }
+      return a;
+    }
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  function _slicedToArray(r, e) {
+    return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray$1(r, e) || _nonIterableRest();
+  }
+
   function validatenull(val) {
     if (val instanceof Date || typeof val === 'boolean' || typeof val === 'number') {
       return false;
@@ -7664,6 +7704,51 @@
   function ownKeys$o(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
   function _objectSpread$o(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$o(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$o(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var key = 'key';
+  var getDicTemplateKeys = function getDicTemplateKeys(column) {
+    var values = [column.dicUrl].concat(_toConsumableArray(Object.values(column.dicQuery || {})), _toConsumableArray(Object.values(column.dicHeaders || {})));
+    var keys = [];
+    values.forEach(function (value) {
+      if (typeof value !== 'string') return;
+      (value.match(/\{\{[^{}]+\}\}/g) || []).forEach(function (match) {
+        keys.push(match.slice(2, -2));
+      });
+    });
+    return keys;
+  };
+  var isRowDicColumn = function isRowDicColumn(column) {
+    return !!column.dicUrl && !column.parentProp && column.remote !== true && column.lazy !== true && column.dicFlag !== false && getDicTemplateKeys(column).length > 0;
+  };
+  // Only track fields used by the request. Generated $labels must not reload it.
+  var getRowDicRequests = function getRowDicRequests() {
+    var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var rows = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var childrenKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DIC_PROPS$1.children;
+    var rowColumns = columns.filter(isRowDicColumn);
+    var requests = [];
+    var _visit = function visit(list) {
+      list.forEach(function (form) {
+        rowColumns.forEach(function (column) {
+          var value = form[column.prop];
+          var values = getDicTemplateKeys(column).map(function (prop) {
+            return prop === key ? value : form[prop];
+          });
+          requests.push({
+            form: form,
+            column: _objectSpread$o(_objectSpread$o({}, column), {}, {
+              props: _objectSpread$o({}, column.props)
+            }),
+            value: value,
+            // Track in-place changes to array-valued request parameters as well.
+            context: JSON.stringify(values),
+            empty: values.some(validatenull)
+          });
+        });
+        if (Array.isArray(form[childrenKey])) _visit(form[childrenKey]);
+      });
+    };
+    if (rowColumns.length) _visit(rows);
+    return requests;
+  };
   function getDataType() {
     var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -7759,10 +7844,17 @@
   }();
   var loadDic = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee2(option, safe) {
-      var notList, tasks, column, result, data;
+      var rowScoped,
+        notList,
+        tasks,
+        column,
+        result,
+        data,
+        _args2 = arguments;
       return _regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
+            rowScoped = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : false;
             notList = [];
             tasks = [];
             column = option.column || [];
@@ -7772,7 +7864,7 @@
               var parentProp = ele.parentProp;
               notList = notList.concat(ele.cascader || []);
               var flag = ele.dicFlag === false || ele.lazy === true || notList.includes(prop);
-              if (!url || parentProp || flag) return;
+              if (!url || parentProp || flag || rowScoped && isRowDicColumn(ele)) return;
               tasks.push(sendDic({
                 url: url,
                 method: ele.dicMethod,
@@ -7789,15 +7881,15 @@
               }));
             });
             result = {};
-            _context2.next = 7;
+            _context2.next = 8;
             return Promise.all(tasks);
-          case 7:
+          case 8:
             data = _context2.sent;
             data.forEach(function (item) {
               result[item.prop] = item.data;
             });
             return _context2.abrupt("return", result);
-          case 10:
+          case 11:
           case "end":
             return _context2.stop();
         }
@@ -8156,6 +8248,9 @@
         }
       },
       watch: {
+        rowDicRequests: function rowDicRequests(requests) {
+          this.handleLoadRowDic(requests);
+        },
         propOption: {
           handler: function handler(list) {
             var _this = this;
@@ -8176,6 +8271,8 @@
         return {
           DIC: {},
           cascaderDIC: {},
+          rowDIC: new Map(),
+          rowDicOverrides: {},
           tableOption: {},
           objectOption: {},
           dicLoading: false,
@@ -8192,6 +8289,17 @@
         state.active.clear();
       },
       computed: {
+        rowDicColumns: function rowDicColumns() {
+          // propOption has resolved cascader parentProp; those columns keep the parent key.
+          var columns = name === 'crud' ? this.propOption.filter(isRowDicColumn) : [];
+          return new Map(columns.map(function (column) {
+            return [column.prop, column];
+          }));
+        },
+        rowDicRequests: function rowDicRequests() {
+          if (!this.rowDicColumns.size) return [];
+          return getRowDicRequests(Array.from(this.rowDicColumns.values()), this.data, this.childrenKey);
+        },
         isMobile: function isMobile() {
           return document.body.clientWidth <= 768;
         },
@@ -8230,13 +8338,18 @@
           if (type === 'cascader') {
             return this.handleLoadCascaderDic();
           } else {
-            return this.handleLoadDic();
+            return this.rowDicColumns.size ? Promise.all([this.handleLoadDic(), this.handleLoadRowDic()]).then(function (_ref) {
+              var _ref2 = _slicedToArray(_ref, 1),
+                result = _ref2[0];
+              return result;
+            }) : this.handleLoadDic();
           }
         },
         updateDic: function updateDic(prop, list) {
           var _this2 = this;
           var column = this.findObject(this.propOption, prop);
           if (!column) return Promise.resolve(null);
+          var useRowDic = this.rowDicColumns.has(prop);
           var formatter = column.dicFormatter;
           var callback = function callback(currentList) {
             var useFormatter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -8245,11 +8358,18 @@
             } else {
               _this2.DIC[prop] = currentList;
             }
+            if (useRowDic) {
+              // A pending automatic response must not replace an explicit dictionary.
+              _this2.rowDicOverrides[prop] = _this2.DIC[prop];
+            }
           };
           if (this.validatenull(list) && this.validatenull(prop)) {
             return this.handleLoadDic();
           }
           if (this.validatenull(list) && !this.validatenull(column.dicUrl)) {
+            if (useRowDic) {
+              return this.handleLoadRowDic();
+            }
             return this.requestDic({
               column: column
             }, "update:".concat(prop)).then(function (currentList) {
@@ -8280,31 +8400,76 @@
         handleLoadDic: function handleLoadDic() {
           var _this4 = this;
           return this.runDicRequest('dic', function () {
-            return loadDic(_this4.resultOption, _this4);
+            return loadDic(_this4.resultOption, _this4, _this4.rowDicColumns.size > 0);
           }, function (result) {
             _this4.handleSetDic(_this4.DIC, result);
           });
         },
-        handleLoadCascaderDic: function handleLoadCascaderDic() {
+        getRowDic: function getRowDic(row, column) {
+          var _a;
+          if (this.rowDicColumns.has(column.prop)) {
+            if (Object.prototype.hasOwnProperty.call(this.rowDicOverrides, column.prop)) {
+              return this.rowDicOverrides[column.prop];
+            }
+            return (_a = this.rowDIC.get(row)) === null || _a === void 0 ? void 0 : _a[column.prop];
+          }
+          var cascader = (this.cascaderDIC[row.$index] || {})[column.prop];
+          return column.parentProp ? cascader : cascader || this.DIC[column.prop];
+        },
+        handleLoadRowDic: function handleLoadRowDic() {
           var _this5 = this;
+          var requests = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.rowDicRequests;
+          // Drop the previous page immediately; late responses are guarded by runDicRequest.
+          this.rowDIC = new Map();
+          this.rowDicOverrides = {};
+          return this.runDicRequest('row-dic', function () {
+            return Promise.all(requests.map(function (request) {
+              var column = request.column,
+                value = request.value,
+                empty = request.empty;
+              return (empty ? Promise.resolve([]) : sendDic({
+                column: column,
+                value: value,
+                form: _this5.deepClone(request.form),
+                dataType: column.dataType
+              }, _this5)).then(function (data) {
+                return _objectSpread$m(_objectSpread$m({}, request), {}, {
+                  data: data
+                });
+              });
+            }));
+          }, function (result) {
+            var dictionaries = new Map();
+            result.forEach(function (_ref3) {
+              var form = _ref3.form,
+                column = _ref3.column,
+                data = _ref3.data;
+              if (!dictionaries.has(form)) dictionaries.set(form, {});
+              dictionaries.get(form)[column.prop] = data;
+            });
+            _this5.rowDIC = dictionaries;
+          });
+        },
+        handleLoadCascaderDic: function handleLoadCascaderDic() {
+          var _this6 = this;
           return this.runDicRequest('cascader', function () {
-            return loadCascaderDic(_this5.propOption, _this5);
+            return loadCascaderDic(_this6.propOption, _this6);
           }, function (result) {
             Object.keys(result).forEach(function (index) {
-              if (!_this5.cascaderDIC[index]) _this5.cascaderDIC[index] = {};
-              _this5.handleSetDic(_this5.cascaderDIC[index], result[index]);
+              if (!_this6.cascaderDIC[index]) _this6.cascaderDIC[index] = {};
+              _this6.handleSetDic(_this6.cascaderDIC[index], result[index]);
             });
           });
         },
         requestDic: function requestDic(params) {
-          var _this6 = this;
+          var _this7 = this;
           var requestType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'manual';
           return this.runDicRequest(requestType, function () {
-            return sendDic(params, _this6);
+            return sendDic(params, _this7);
           });
         },
         runDicRequest: function runDicRequest(requestType, request, apply) {
-          var _this7 = this;
+          var _this8 = this;
           var state = getDicRequestState(this);
           var requestId = (state.sequence[requestType] || 0) + 1;
           var token = "".concat(requestType, ":").concat(requestId);
@@ -8321,8 +8486,8 @@
             return result;
           })["catch"](function (error) {
             if (isCurrent()) {
-              _this7.dicError = error;
-              _this7.$emit('dic-error', {
+              _this8.dicError = error;
+              _this8.$emit('dic-error', {
                 type: requestType,
                 error: error
               });
@@ -8331,7 +8496,7 @@
           })["finally"](function () {
             state.active["delete"](token);
             if (!state.unmounted) {
-              _this7.dicLoading = state.active.size > 0;
+              _this8.dicLoading = state.active.size > 0;
             }
           });
         }
@@ -8353,12 +8518,14 @@
       cellStyle: Function,
       cellClassName: Function,
       rowClassName: Function,
+      rowKey: [String, Function],
       height: [String, Number],
       data: Array
     },
     data: function data() {
       return {
-        checkList: [],
+        selection: [],
+        rowKeys: new WeakMap(),
         span: 8,
         xsSpan: 12,
         id: "crud-grid",
@@ -8366,14 +8533,82 @@
       };
     },
     computed: {
+      reserveSelection: function reserveSelection() {
+        return !!this.crud.tableOption.reserveSelection;
+      },
+      checkList: {
+        get: function get() {
+          var _this = this;
+          var selected = new Set(this.selection.map(this.getRowIdentity));
+          return this.data.reduce(function (result, row, index) {
+            if (selected.has(_this.getRowIdentity(row))) result.push(index);
+            return result;
+          }, []);
+        },
+        set: function set(val) {
+          var _this2 = this;
+          var current = new Set(this.data.map(this.getRowIdentity));
+          var selected = new Set(val);
+          var result = this.reserveSelection ? this.selection.filter(function (row) {
+            return !current.has(_this2.getRowIdentity(row));
+          }) : [];
+          this.data.forEach(function (row, index) {
+            if (selected.has(index)) result.push(row);
+          });
+          this.selection = result;
+        }
+      },
       styleName: function styleName() {
         return {
           height: this.crud.tableHeight + "px"
         };
       }
     },
+    watch: {
+      data: {
+        handler: "syncSelection",
+        deep: true
+      },
+      reserveSelection: function reserveSelection() {
+        this.syncSelection(this.data, this.data);
+      }
+    },
     methods: {
       doLayout: function doLayout() {},
+      getRowKey: function getRowKey(row) {
+        var _this$rowKey;
+        if (typeof this.rowKey === "function") return this.rowKey(row);
+        return (_this$rowKey = this.rowKey) === null || _this$rowKey === void 0 ? void 0 : _this$rowKey.split(".").reduce(function (value, key) {
+          return value === null || value === void 0 ? void 0 : value[key];
+        }, row);
+      },
+      getRowIdentity: function getRowIdentity(row) {
+        var key = this.getRowKey(row);
+        if (key !== undefined && key !== null) return key;
+        if (!this.rowKeys.has(row)) this.rowKeys.set(row, Symbol());
+        return this.rowKeys.get(row);
+      },
+      syncSelection: function syncSelection(data, oldData) {
+        var _this3 = this;
+        if (!this.reserveSelection && data !== oldData) {
+          this.clearSelection();
+          return;
+        }
+        var current = new Map(data.map(function (row) {
+          return [_this3.getRowIdentity(row), row];
+        }));
+        var selection = this.selection.filter(function (row) {
+          return _this3.reserveSelection || current.has(_this3.getRowIdentity(row));
+        }).map(function (row) {
+          return current.get(_this3.getRowIdentity(row)) || row;
+        });
+        if (selection.length !== this.selection.length || selection.some(function (row, index) {
+          return row !== _this3.selection[index];
+        })) {
+          this.selection = selection;
+          this.checkListChange();
+        }
+      },
       //表格筛选逻辑
       handleFilterMethod: function handleFilterMethod(params) {
         var value = params.value,
@@ -8387,7 +8622,7 @@
       },
       //表格筛选字典
       handleFilters: function handleFilters(column) {
-        var _this = this;
+        var _this4 = this;
         if (Array.isArray(column.filters)) return column.filters.map(function (ele) {
           return {
             text: ele.label,
@@ -8399,7 +8634,7 @@
         var list = [];
         if (!this.validatenull(DIC)) {
           DIC.forEach(function (ele) {
-            var props = column.props || _this.crud.tableOption.props || {};
+            var props = column.props || _this4.crud.tableOption.props || {};
             list.push({
               text: ele[props.label || DIC_PROPS.label],
               value: ele[props.value || DIC_PROPS.value]
@@ -8434,40 +8669,51 @@
         return typeof this.crud.tableOption.selectable === "function" ? !this.crud.tableOption.selectable(row, index) : false;
       },
       clearSelection: function clearSelection() {
-        this.checkList = [];
-        this.checkListChange(this.checkList);
+        if (!this.selection.length) return;
+        this.selection = [];
+        this.checkListChange();
       },
       toggleAllSelection: function toggleAllSelection() {
-        if (this.checkList.length === this.crud.data.length) {
-          this.checkList = [];
-        } else {
-          this.checkList = this.crud.data.map(function (ele, index) {
-            return index;
-          });
-        }
-        this.checkListChange(this.checkList);
-      },
-      toggleRowSelection: function toggleRowSelection(data, selected) {
-        var index = this.crud.data.findIndex(function (ele) {
-          return JSON.stringify(ele) == JSON.stringify(data);
+        var _this5 = this;
+        var selectable = this.data.reduce(function (result, row, index) {
+          if (!_this5.isDisabled(row, index)) result.push(index);
+          return result;
+        }, []);
+        var checked = this.checkList;
+        var allSelected = selectable.every(function (index) {
+          return checked.includes(index);
         });
-        if (selected && index != -1) {
-          this.checkList.push(index);
-        } else {
-          var checkIndex = this.checkList.findIndex(function (ele) {
-            return ele == index;
-          });
-          this.checkList.splice(checkIndex, 1);
-        }
-        this.checkListChange(this.checkList);
+        this.checkList = allSelected ? checked.filter(function (index) {
+          return !selectable.includes(index);
+        }) : _toConsumableArray(new Set([].concat(_toConsumableArray(checked), _toConsumableArray(selectable))));
+        this.checkListChange();
+        this.$emit("select-all", this.selection.slice());
       },
-      checkListChange: function checkListChange(val) {
-        var result = [];
-        var data = this.crud.data;
-        val.forEach(function (ele) {
-          result.push(data[ele]);
+      toggleRowSelection: function toggleRowSelection(row, selected) {
+        var _this6 = this;
+        var ignoreSelectable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        var identity = this.getRowIdentity(row);
+        var dataIndex = this.data.findIndex(function (item) {
+          return _this6.getRowIdentity(item) === identity;
         });
-        this.$emit("selection-change", result);
+        if (dataIndex === -1 && !this.reserveSelection) return;
+        row = this.data[dataIndex] || row;
+        if (!ignoreSelectable && this.isDisabled(row, dataIndex)) return;
+        var index = this.selection.findIndex(function (item) {
+          return _this6.getRowIdentity(item) === identity;
+        });
+        var checked = typeof selected === "boolean" ? selected : index === -1;
+        if (checked && index === -1) {
+          this.selection.push(row);
+        } else if (!checked && index !== -1) {
+          this.selection.splice(index, 1);
+        } else {
+          return;
+        }
+        this.checkListChange();
+      },
+      checkListChange: function checkListChange() {
+        this.$emit("selection-change", this.selection.slice());
       },
       handleRowDblClick: function handleRowDblClick(row, index) {
         this.$emit("row-dblclick", row, index);
@@ -8570,7 +8816,7 @@
                 sm: _ctx.crud.tableOption.gridSpan || _ctx.span,
                 xs: _ctx.crud.tableOption.gridXsSpan || _ctx.xsSpan,
                 "class": vue.normalizeClass(_ctx.getRowClass(row, index)),
-                key: index
+                key: _ctx.getRowIdentity(row)
               }, {
                 "default": vue.withCtx(function () {
                   return [vue.createElementVNode("div", {
@@ -9654,6 +9900,7 @@
         if (!this.confirmed) this.restoreColumn();
         this.destroySortable();
         this.data = [];
+        this.triggerRef = null;
       },
       handleReset: function handleReset() {
         var _this5 = this;
@@ -10469,46 +10716,6 @@
   script$1f.render = render$1f;
   script$1f.__file = "packages/element-plus/crud/dialog/dialog-form.vue";
 
-  function _arrayWithHoles(r) {
-    if (Array.isArray(r)) return r;
-  }
-
-  function _iterableToArrayLimit(r, l) {
-    var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-    if (null != t) {
-      var e,
-        n,
-        i,
-        u,
-        a = [],
-        f = true,
-        o = false;
-      try {
-        if (i = (t = t.call(r)).next, 0 === l) {
-          if (Object(t) !== t) return;
-          f = !1;
-        } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
-      } catch (r) {
-        o = true, n = r;
-      } finally {
-        try {
-          if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
-        } finally {
-          if (o) throw n;
-        }
-      }
-      return a;
-    }
-  }
-
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-
-  function _slicedToArray(r, e) {
-    return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray$1(r, e) || _nonIterableRest();
-  }
-
   var dayjs_min$1 = {exports: {}};
 
   var dayjs_min = dayjs_min$1.exports;
@@ -10640,7 +10847,7 @@
           list.forEach(function (ele) {
             var row = _this.deepClone(ele);
             columnOption.forEach(function (column) {
-              var DIC = column.parentProp ? (_this.crud.cascaderDIC[row.$index] || {})[column.prop] : _this.crud.DIC[column.prop];
+              var DIC = _this.crud.getRowDic(ele, column);
               row[column.prop] = detail(row, column, option, DIC);
             });
             data.push(row);
@@ -11251,7 +11458,7 @@
       },
       handleDetail: function handleDetail(row, column) {
         var result;
-        var DIC = column.parentProp ? (this.crud.cascaderDIC[row.$index] || {})[column.prop] : this.crud.DIC[column.prop];
+        var DIC = this.crud.getRowDic(row, column);
         result = detail(row, column, this.crud.tableOption, DIC);
         if (!this.validatenull(DIC) && this.crud.tableOption.filterDic != true) {
           row["$" + column.prop] = result;
@@ -11375,7 +11582,7 @@
                   row: row,
                   tableColumn: tableColumn,
                   column: $props.column,
-                  dic: $options.crud.DIC[$props.column.prop],
+                  dic: $options.crud.getRowDic(row, $props.column),
                   size: $options.crud.size,
                   index: $index,
                   disabled: $options.crud.btnDisabledList[$index],
@@ -11395,7 +11602,7 @@
                     row: row,
                     label: $options.handleDetail(row, $props.column)
                   },
-                  dic: ($options.crud.cascaderDIC[$index] || {})[$props.column.prop] || $options.crud.DIC[$props.column.prop],
+                  dic: $options.crud.getRowDic(row, $props.column),
                   props: $props.column.props || $options.crud.tableOption.props,
                   readonly: $props.column.readonly,
                   disabled: $options.crud.disabled || $options.crud.tableOption.disabled || $props.column.disabled || $options.crud.btnDisabledList[$index],
@@ -11438,7 +11645,7 @@
           tableColumn: tableColumn,
           column: $props.column,
           index: $index,
-          dic: $options.crud.DIC[$props.column.prop],
+          dic: $options.crud.getRowDic(row, $props.column),
           size: $options.crud.size,
           label: $options.handleDetail(row, $props.column)
         }) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
@@ -12097,6 +12304,10 @@
       this.rowDrop();
       this.columnDrop();
     },
+    beforeUnmount: function beforeUnmount() {
+      this.rowSortable && this.rowSortable.destroy();
+      this.rowSortable = null;
+    },
     methods: {
       indexMethod: function indexMethod(index) {
         return index + 1 + ((this.crud.page.currentPage || 1) - 1) * (this.crud.page.pageSize || 10);
@@ -12104,16 +12315,48 @@
       rowDrop: function rowDrop(flag) {
         var _this = this;
         this.$nextTick(function () {
+          var _this$crud$$refs$tabl;
+          _this.rowSortable && _this.rowSortable.destroy();
+          _this.rowSortable = null;
           if (flag == false) {
-            _this.rowSortable && _this.rowSortable.destroy();
             return;
           }
-          if (!_this.crud.$refs.table.$el) return;
+          if (!((_this$crud$$refs$tabl = _this.crud.$refs.table) !== null && _this$crud$$refs$tabl !== void 0 && _this$crud$$refs$tabl.$el)) return;
           var el = _this.crud.$refs.table.$el.querySelectorAll(_this.config.dropRowClass)[0];
+          if (!el) return;
           _this.rowSortable = _this.crud.tableDrop('row', el, function (evt) {
+            var _evt$item, _this$crud$$refs$tabl2;
             var oldIndex = evt.oldIndex;
             var newIndex = evt.newIndex;
-            _this.crud.$emit('sortable-change', oldIndex, newIndex);
+            if (oldIndex === newIndex || !Number.isInteger(oldIndex) || !Number.isInteger(newIndex) || oldIndex < 0 || newIndex < 0) return;
+            if (!evt.from || ((_evt$item = evt.item) === null || _evt$item === void 0 ? void 0 : _evt$item.parentNode) !== evt.from) return;
+            // 先还原 Sortable 移动的 DOM，再由 Vue 根据数据更新顺序。
+            evt.from.removeChild(evt.item);
+            evt.from.insertBefore(evt.item, evt.from.children[oldIndex] || null);
+            var list = _this.crud.data;
+            if (oldIndex >= list.length || newIndex >= list.length) return;
+            var tableState = (_this$crud$$refs$tabl2 = _this.crud.$refs.table) === null || _this$crud$$refs$tabl2 === void 0 || (_this$crud$$refs$tabl2 = _this$crud$$refs$tabl2.store) === null || _this$crud$$refs$tabl2 === void 0 ? void 0 : _this$crud$$refs$tabl2.states;
+            var visibleRows = vue.unref(tableState === null || tableState === void 0 ? void 0 : tableState.data);
+            // 筛选、列排序或展开行后，DOM 行号可能不再对应绑定数组。
+            if (vue.unref(tableState === null || tableState === void 0 ? void 0 : tableState.sortingColumn) && vue.unref(tableState === null || tableState === void 0 ? void 0 : tableState.sortOrder) || evt.from.children.length !== list.length || !Array.isArray(visibleRows) || visibleRows.length !== list.length || visibleRows.some(function (row, index) {
+              return row !== list[index];
+            })) return;
+            var original = list.slice();
+            var sorted = list.slice();
+            var row = sorted.splice(oldIndex, 1)[0];
+            sorted.splice(newIndex, 0, row);
+            var sortable = _this.rowSortable;
+            _this.crud.$emit('sortable-change', oldIndex, newIndex, row, sorted);
+            _this.$nextTick(function () {
+              // 等待父组件同步新数组，兼容回调内的替换数组或原地换序。
+              if (_this.rowSortable !== sortable || _this.crud.data !== list) return;
+              if (list.length === original.length && list.every(function (item, index) {
+                return item === original[index];
+              })) {
+                list.splice(oldIndex, 1);
+                list.splice(newIndex, 0, row);
+              }
+            });
           });
         });
       },
@@ -13072,7 +13315,14 @@
           onEnd: function onEnd(evt) {
             return callback(evt);
           },
-          filter: ".el-table-fixed-column--right"
+          filter: function filter(evt) {
+            // Let Element Plus own the entire column resize interaction.
+            if (type === "column" && document.body.style.cursor === "col-resize") {
+              return true;
+            }
+            return !!evt.target.closest(".el-table-fixed-column--right");
+          },
+          preventOnFilter: type !== "column"
         });
       },
       findData: function findData(id) {
@@ -16059,13 +16309,30 @@
       endPlaceholder: String,
       rangeSeparator: String,
       defaultValue: [String, Array],
-      defaultTime: [String, Array],
+      defaultTime: [String, Date, Array],
       type: {
         type: String,
         "default": "date"
       },
       valueFormat: String,
       format: String
+    },
+    computed: {
+      defaultTimeVal: function defaultTimeVal() {
+        var normalizeTime = function normalizeTime(time) {
+          if (typeof time !== "string") return time;
+          var match = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.exec(time);
+          if (!match) return time;
+          var _match$map = match.map(Number),
+            _match$map2 = _slicedToArray(_match$map, 4),
+            hours = _match$map2[1],
+            minutes = _match$map2[2],
+            seconds = _match$map2[3];
+          // Element Plus requires a Date and only uses its local time fields.
+          return new Date(2000, 0, 1, hours, minutes, seconds);
+        };
+        return Array.isArray(this.defaultTime) ? this.defaultTime.map(normalizeTime) : normalizeTime(this.defaultTime);
+      }
     }
   });
 
@@ -16093,7 +16360,7 @@
       "unlink-panels": _ctx.unlinkPanels,
       "single-panel": _ctx.singlePanel,
       "default-value": _ctx.defaultValue,
-      "default-time": _ctx.defaultTime,
+      "default-time": _ctx.defaultTimeVal,
       "range-separator": _ctx.rangeSeparator,
       "start-placeholder": _ctx.startPlaceholder || _ctx.t('date.start'),
       "end-placeholder": _ctx.endPlaceholder || _ctx.t('date.end'),
@@ -35079,7 +35346,7 @@
   function _objectSpread$3(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$3(Object(t), true).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var components = _objectSpread$3(_objectSpread$3({}, elementComponents), dataComponents);
 
-  var version = '3.9.4';
+  var version = '3.9.5';
 
   var GUTTER = 8;
   var stateMap = new WeakMap();
